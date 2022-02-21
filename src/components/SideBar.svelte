@@ -35,7 +35,7 @@
 				<!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
 				<a
 					href="#"
-					class="bg-gray-900 text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+					class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
 				>
 					<!--
                   Heroicon name: outline/home
