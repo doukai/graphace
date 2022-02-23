@@ -1,36 +1,50 @@
-<script>
-	import { operationStore, query } from '@urql/svelte';
-	export let __typeName;
+<script context="module">
+	export async function load({ params }) {
+		return {
+			props: {
+				typeName: params.type
+			}
+		};
+	}
+</script>
 
-	const __type = operationStore(`#graphql
-        query {
-            __type(name:{val:"__Type"}){
-                name
-                kind
-                description
-                fields{
+<script>
+	import { onMount, beforeUpdate, afterUpdate } from 'svelte';
+	import { operationStore, query } from '@urql/svelte';
+	export let typeName;
+
+	const __type = operationStore(
+		`#graphql
+            query ($typeName: String) {
+                __type(name:{val: $typeName}){
                     name
-					type{
-						name
-						kind
-						ofType{
-							name
-							kind
-							ofType{
-								name
-								kind
-								ofType{
-									name
-									kind
-								}
-							}
-						}
-					}
+                    kind
                     description
+                    fields{
+                        name
+                        type{
+                            name
+                            kind
+                            ofType{
+                                name
+                                kind
+                                ofType{
+                                    name
+                                    kind
+                                    ofType{
+                                        name
+                                        kind
+                                    }
+                                }
+                            }
+                        }
+                        description
+                    }
                 }
-            }
-        }
-    `);
+            }`,
+		{ typeName }
+	);
+	query(__type);
 </script>
 
 <div class="flex flex-col">
@@ -38,7 +52,7 @@
 		<div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
 			<div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
 				{#if $__type.fetching}
-					Loading...
+					<div class="min-w-full divide-y divide-gray-20 bg-slate-700 rounded" />
 				{:else}
 					<table class="min-w-full divide-y divide-gray-200">
 						<thead class="bg-gray-50">

@@ -1,15 +1,28 @@
-<script>
+<script lang="ts">
 	import { operationStore, query } from '@urql/svelte';
+	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 	import Icon from '@iconify/svelte';
 
-	const __typeList = operationStore(`#graphql
+	const changeUrl = (url: string) => {
+		goto(url, { keepfocus : true });
+	};
+
+	let activeMenu = $page.url;
+
+	$: if ($page.url) {
+		activeMenu = $page.url;
+	}
+
+	const __typeList = operationStore(
+		`#graphql
         query {
             __typeList(kind: {val: OBJECT}){
                 name
 				description
             }
-        }
-    `);
+        }`
+	);
 
 	query(__typeList);
 </script>
@@ -32,7 +45,11 @@
 					<ul>
 						{#each $__typeList.data.__typeList as __type}
 							<a
-								href="#"
+								href="/types/{__type.name}"
+								on:click={(e) => {
+									e.preventDefault();
+									changeUrl('/types/' + __type.name);
+								}}
 								class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
 							>
 								<Icon class="text-gray-300 mr-3 flex-shrink-0 h-6 w-6" icon="file-icons:graphql" />
