@@ -9,9 +9,14 @@
 </script>
 
 <script>
-	import { onMount, beforeUpdate, afterUpdate } from 'svelte';
+	import { afterUpdate } from 'svelte';
 	import { operationStore, query } from '@urql/svelte';
 	export let typeName;
+
+	afterUpdate(() => {
+		$__type.variables.typeName = typeName;
+		$__type.reexecute();
+	});
 
 	const __type = operationStore(
 		`#graphql
