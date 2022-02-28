@@ -4,7 +4,8 @@
 	export async function load({ params }) {
 		return {
 			props: {
-				typeName: manager.urlToTypeName(params.type)
+				typeName: manager.urlToTypeName(params.type),
+				id: params.id
 			}
 		};
 	}
@@ -13,9 +14,10 @@
 <script lang="ts">
 	import { afterUpdate } from 'svelte';
 	import { operationStore, query } from '@urql/svelte';
-	import Table from '/src/components/types/table/Table.svelte';
+	import Form from '/src/components/types/Form.svelte';
 	export let typeName: string;
-
+	export let id: string;
+	
 	afterUpdate(() => {
 		$query__Type.variables.typeName = typeName;
 		$query__Type.reexecute();
@@ -62,7 +64,7 @@
 				{#if $query__Type.fetching}
 					<div class="min-w-full divide-y divide-gray-20 bg-slate-700 rounded" />
 				{:else}
-					<Table __type={$query__Type.data.__type} />
+					<Form __type={$query__Type.data.__type} {id} />
 				{/if}
 			</div>
 		</div>
