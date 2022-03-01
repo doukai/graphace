@@ -19,12 +19,12 @@
 
 	const queryType = operationStore(
 		`#graphql
-    query ($id: ID) {
-      ${queryTypeFieldName} (id: {val: $id}){
-        ${selections}
-      }
-    }`,
-		id
+		query ($id: ID) {
+			${queryTypeFieldName} (id: {val: $id}){
+				${selections}
+			}
+		}`,
+		{ id }
 	);
 	query(queryType);
 </script>
