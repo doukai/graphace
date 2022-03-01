@@ -47,11 +47,11 @@
 				<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
 					<a
 						href="/types/{manager.typeNameToUrl(__type.name)}/{type[idFieldName]}"
+						class="text-indigo-600 hover:text-indigo-900"
 						on:click={(e) => {
 							e.preventDefault();
 							changeUrl(`/types/${manager.typeNameToUrl(__type.name)}/${type[idFieldName]}`);
 						}}
-						class="text-indigo-600 hover:text-indigo-900"
 					>
 						Edit
 					</a>

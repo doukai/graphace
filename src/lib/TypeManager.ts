@@ -5,6 +5,7 @@ export interface __Type {
     fields: __Field[];
     kind: __TypeKind;
     ofType: __Type;
+    description: string;
 }
 
 export interface __Field {

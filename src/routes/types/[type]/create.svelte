@@ -1,9 +1,53 @@
+<script context="module">
+	import { TypeManager } from '$lib/TypeManager';
+	const manager = new TypeManager();
+	export async function load({ params }) {
+		return {
+			props: {
+				typeName: manager.urlToTypeName(params.type)
+			}
+		};
+	}
+</script>
+
 <script lang="ts">
-	import { TypeManager, type __Type } from '$lib/TypeManager';
-	export let __type: __Type;
+	import { operationStore, query } from '@urql/svelte';
+	import Form from '/src/components/types/Form.svelte';
+	export let typeName: string;
 
 	const manager = new TypeManager();
-	const typeObject = manager.createTypeObject(__type);
+	const query__Type = operationStore(
+		`#graphql
+            query ($typeName: String) {
+                __type(name:{val: $typeName}){
+                    name
+                    kind
+                    description
+                    fields{
+                        name
+                        type{
+                            name
+                            kind
+                            ofType{
+                                name
+                                kind
+                                ofType{
+                                    name
+                                    kind
+                                    ofType{
+                                        name
+                                        kind
+                                    }
+                                }
+                            }
+                        }
+                        description
+                    }
+                }
+            }`,
+		{ typeName }
+	);
+	query(query__Type);
 </script>
 
 <div class="flex flex-col">
@@ -12,7 +56,14 @@
 			<div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
 				<div class="bg-white">
 					<div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-						<Form __type={typeObject} {id} />
+						{#if $query__Type.fetching}
+							<div class="min-w-full divide-y divide-gray-20 bg-slate-700 rounded" />
+						{:else}
+							<Form
+								__type={$query__Type.data.__type}
+								data={manager.createTypeObject($query__Type.data.__type)}
+							/>
+						{/if}
 					</div>
 				</div>
 			</div>
