@@ -35,7 +35,6 @@ export class TypeManager {
         }
     }
 
-
     public getFieldTypeName(type: __Type): string {
         if (type.kind === __TypeKind.NON_NULL) {
             return this.getFieldTypeName(type.ofType);
@@ -44,6 +43,12 @@ export class TypeManager {
         } else {
             return type.name;
         }
+    }
+
+    public createTypeObject(type: __Type): Object {
+        let typeObject = {};
+        type.fields.forEach(field => typeObject[field.name] = null);
+        return typeObject;
     }
 
     public getIdFieldName(fields: __Field[]): string {

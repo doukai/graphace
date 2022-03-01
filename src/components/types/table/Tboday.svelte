@@ -9,7 +9,7 @@
 	};
 
 	const manager: TypeManager = new TypeManager();
-	const queryTypeListName = manager.getQueryTypeListFieldName(__type.name);
+	const queryTypeListFieldName = manager.getQueryTypeListFieldName(__type.name);
 	const fields = __type.fields;
 	const idFieldName = manager.getIdFieldName(__type.fields);
 	const selections = fields
@@ -24,7 +24,7 @@
 	const queryTypeList = operationStore(
 		`#graphql
             query {
-                ${queryTypeListName}{
+                ${queryTypeListFieldName}{
                     ${selections}
                 }
             }
@@ -37,7 +37,7 @@
 	<div class="min-w-full divide-y divide-gray-20 bg-slate-700 rounded" />
 {:else}
 	<tbody>
-		{#each $queryTypeList.data[queryTypeListName] as type}
+		{#each $queryTypeList.data[queryTypeListFieldName] as type}
 			<tr class="bg-white">
 				{#each Object.keys(type) as fieldName}
 					<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">

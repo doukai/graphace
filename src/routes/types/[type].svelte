@@ -14,6 +14,7 @@
 	import { afterUpdate } from 'svelte';
 	import { operationStore, query } from '@urql/svelte';
 	import Table from '/src/components/types/table/Table.svelte';
+	import SectionHead from '/src/components/types/SectionHead.svelte';
 	export let typeName: string;
 
 	afterUpdate(() => {
@@ -23,33 +24,33 @@
 
 	const query__Type = operationStore(
 		`#graphql
-            query ($typeName: String) {
-                __type(name:{val: $typeName}){
-                    name
-                    kind
-                    description
-                    fields{
-                        name
-                        type{
-                            name
-                            kind
-                            ofType{
-                                name
-                                kind
-                                ofType{
-                                    name
-                                    kind
-                                    ofType{
-                                        name
-                                        kind
-                                    }
+        query ($typeName: String) {
+			__type(name:{val: $typeName}){
+            	name
+             	kind
+            	description
+            	fields{
+                	name
+                	type{
+                    	name
+                    	kind
+                    	ofType{
+                        	name
+                        	kind
+                        	ofType{
+                            	name
+                            	kind
+                            	ofType{
+                                	name
+                                	kind
                                 }
                             }
                         }
-                        description
                     }
+                    description
                 }
-            }`,
+            }
+        }`,
 		{ typeName }
 	);
 	query(query__Type);
@@ -59,11 +60,16 @@
 	<div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
 		<div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
 			<div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-				{#if $query__Type.fetching}
-					<div class="min-w-full divide-y divide-gray-20 bg-slate-700 rounded" />
-				{:else}
-					<Table __type={$query__Type.data.__type} />
-				{/if}
+				<div class="bg-white">
+					<div class="max-w-wxl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+						{#if $query__Type.fetching}
+							<div class="min-w-full divide-y divide-gray-20 bg-slate-700 rounded" />
+						{:else}
+							<SectionHead __type={$query__Type.data.__type} />
+							<Table __type={$query__Type.data.__type} />
+						{/if}
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
