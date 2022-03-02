@@ -10,8 +10,7 @@
 	<Thead
 		fields={__type.fields.filter(
 			(field) =>
-				manager.getFieldType(field.type) === __TypeKind.SCALAR ||
-				manager.getFieldType(field.type) === __TypeKind.ENUM
+				!manager.fieldIsList(field.type) && manager.getFieldType(field.type) !== __TypeKind.OBJECT
 		)}
 	/>
 	<Tboday {__type} />

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { mutation } from '@urql/svelte';
-	import { TypeManager, type __Type } from '$lib/TypeManager';
+	import { TypeManager, type __Type, __TypeKind } from '$lib/TypeManager';
 	import { goto } from '$app/navigation';
 	import Input from './Input.svelte';
 	export let data: object;
@@ -25,6 +25,7 @@
 	});
 
 	function save() {
+		debugger;
 		mutationType({ ...data });
 	}
 </script>
@@ -40,7 +41,7 @@
 					</p>
 				{/if}
 			</div>
-			{#each __type.fields as __field}
+			{#each __type.fields.filter((field) => !manager.fieldIsList(field.type) && manager.getFieldType(field.type) !== __TypeKind.OBJECT) as __field}
 				<div class="space-y-6 sm:space-y-5">
 					<div
 						class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5"
@@ -52,7 +53,7 @@
 							{__field.name}
 						</label>
 						<div class="mt-1 sm:mt-0 sm:col-span-2">
-							<Input {__field} data={data[__field.name]} />
+							<Input {__field} bind:data={data[__field.name]} />
 						</div>
 					</div>
 				</div>

@@ -36,6 +36,17 @@ export class TypeManager {
         }
     }
 
+    public fieldIsList(type: __Type): boolean {
+
+        if (type.kind === __TypeKind.NON_NULL) {
+            return this.fieldIsList(type.ofType);
+        } else if (type.kind === __TypeKind.LIST) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public getFieldTypeName(type: __Type): string {
         if (type.kind === __TypeKind.NON_NULL) {
             return this.getFieldTypeName(type.ofType);
@@ -46,7 +57,7 @@ export class TypeManager {
         }
     }
 
-    public createTypeObject(type: __Type): Object {
+    public createTypeObject(type: __Type): object {
         let typeObject = {};
         type.fields.forEach(field => typeObject[field.name] = null);
         return typeObject;
@@ -81,19 +92,30 @@ export class TypeManager {
     }
 
     public fieldsToMutationVariables(__type: __Type): string {
-        return __type.fields.map(field => `$${field.name}: ${this.fieldTypeToArgumentType(field.type)}`).join(",");
+        return __type.fields
+            .filter(
+                (field) =>
+                    !this.fieldIsList(field.type) && this.getFieldType(field.type) !== __TypeKind.OBJECT
+            )
+            .map(field => `$${field.name}: ${this.fieldTypeToArgumentType(field.type)}`)
+            .join(",");
     }
 
     public fieldsToMutationArguments(__type: __Type): string {
-        return __type.fields.map(field => `${field.name}: $${field.name}`).join(",");
+        return __type.fields
+            .filter(
+                (field) =>
+                    !this.fieldIsList(field.type) && this.getFieldType(field.type) !== __TypeKind.OBJECT
+            )
+            .map(field => `${field.name}: $${field.name}`)
+            .join(",");
     }
 
     public fieldsToSelections(__type: __Type): string {
         return __type.fields
             .filter(
                 (field) =>
-                    this.getFieldType(field.type) === __TypeKind.SCALAR ||
-                    this.getFieldType(field.type) === __TypeKind.ENUM
+                    !this.fieldIsList(field.type) && this.getFieldType(field.type) !== __TypeKind.OBJECT
             )
             .map((field) => field.name)
             .join(' ');
