@@ -8,6 +8,8 @@
 	const manager: TypeManager = new TypeManager();
 	const queryTypeFieldName = manager.getQueryTypeFieldName(__type.name);
 	const fields = __type.fields;
+
+	const idFieldName = manager.getIdFieldName(__type.fields);
 	const selections = fields
 		.filter(
 			(field) =>
@@ -20,7 +22,7 @@
 	const queryType = operationStore(
 		`#graphql
 		query ($id: ID) {
-			${queryTypeFieldName} (id: {val: $id}){
+			${queryTypeFieldName} (${idFieldName}: {val: $id}){
 				${selections}
 			}
 		}`,

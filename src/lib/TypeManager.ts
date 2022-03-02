@@ -72,6 +72,42 @@ export class TypeManager {
         }
     }
 
+    public getMutationTypeFieldName(typeName: string): string {
+        if (typeName.startsWith("__")) {
+            return "__" + _.camelCase(typeName.replace("__", ""));
+        } else {
+            return _.camelCase(typeName);
+        }
+    }
+
+    public fieldsToMutationVariables(__type: __Type): string {
+        return __type.fields.map(field => `$${field.name}: ${this.fieldTypeToArgumentType(field.type)}`).join(",");
+    }
+
+    public fieldsToMutationArguments(__type: __Type): string {
+        return __type.fields.map(field => `${field.name}: $${field.name}`).join(",");
+    }
+
+    public fieldsToSelections(__type: __Type): string {
+        return __type.fields
+            .filter(
+                (field) =>
+                    this.getFieldType(field.type) === __TypeKind.SCALAR ||
+                    this.getFieldType(field.type) === __TypeKind.ENUM
+            )
+            .map((field) => field.name)
+            .join(' ');
+    }
+
+    private fieldTypeToArgumentType(__type: __Type): string {
+        if (this.getFieldType(__type) === __TypeKind.OBJECT) {
+            const fieldTypeName = this.getFieldTypeName(__type);
+            return __type.name.replace(fieldTypeName, fieldTypeName + 'Input');
+        } else {
+            return __type.name;
+        }
+    }
+
     public typeNameToUrl(typeName: string): string {
         if (typeName.startsWith("__")) {
             return "__" + _.kebabCase(typeName.replace("__", ""));
