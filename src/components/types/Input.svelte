@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { TypeManager, type __Field } from '$lib/TypeManager';
 	import Toggle from '../Toggle.svelte';
+	import EnumSelect from './EnumSelect.svelte';
 	export let __field: __Field;
 	export let data: object;
 	const manager = new TypeManager();
@@ -23,4 +24,6 @@
 	/>
 {:else if fieldTypeName === 'Boolean'}
 	<Toggle bind:value={data} />
+{:else if manager.fieldIsEnum(__field.type)}
+	<EnumSelect enumName={manager.getFieldTypeName(__field.type)} bind:value={data} />
 {/if}

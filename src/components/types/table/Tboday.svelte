@@ -37,11 +37,11 @@
 	<div class="min-w-full divide-y divide-gray-20 bg-slate-700 rounded" />
 {:else}
 	<tbody>
-		{#each $queryTypeList.data[queryTypeListFieldName] as type}
-			<tr class="bg-white">
+		{#each $queryTypeList.data[queryTypeListFieldName] as type, i}
+			<tr class={i % 2 ? 'bg-gray-50' : 'bg-white'}>
 				{#each Object.keys(type) as fieldName}
 					<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-						{type[fieldName]}
+						{#if type[fieldName]}{type[fieldName]}{/if}
 					</td>
 				{/each}
 				<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

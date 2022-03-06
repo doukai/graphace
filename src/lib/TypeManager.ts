@@ -37,7 +37,6 @@ export class TypeManager {
     }
 
     public fieldIsList(type: __Type): boolean {
-
         if (type.kind === __TypeKind.NON_NULL) {
             return this.fieldIsList(type.ofType);
         } else if (type.kind === __TypeKind.LIST) {
@@ -57,8 +56,16 @@ export class TypeManager {
         }
     }
 
+    public fieldIsEnum(type: __Type): boolean {
+        if (this.getFieldType(type) === __TypeKind.ENUM) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public createTypeObject(type: __Type): object {
-        let typeObject = {};
+        const typeObject: object = {};
         type.fields.forEach(field => typeObject[field.name] = null);
         return typeObject;
     }
