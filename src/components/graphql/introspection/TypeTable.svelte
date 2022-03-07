@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { afterUpdate } from 'svelte';
 	import { operationStore, query } from '@urql/svelte';
 	import { TypeManager, __TypeKind, type __Type } from '$lib/TypeManager';
 	import { goto } from '$app/navigation';
@@ -9,36 +10,41 @@
 	import Tbody from '/src/components/ui/table/body/Tbody.svelte';
 	import Tr from '/src/components/ui/table/body/Tr.svelte';
 	import Td from '/src/components/ui/table/body/Td.svelte';
+	import Loading from '/src/components/ui/table/Loading.svelte';
 	export let __type: __Type;
 
 	const changeUrl = (url: string) => {
 		goto(url, { keepfocus: true });
 	};
 
+	const queryTypeList = operationStore('');
 	const manager: TypeManager = new TypeManager();
-	const queryTypeListFieldName = manager.getQueryTypeListFieldName(__type.name);
-	const fields = __type.fields.filter(
+	$: queryTypeListFieldName = manager.getQueryTypeListFieldName(__type.name);
+	$: fields = __type.fields.filter(
 		(field) =>
 			manager.getFieldType(field.type) === __TypeKind.SCALAR ||
 			manager.getFieldType(field.type) === __TypeKind.ENUM
 	);
-	const idFieldName = manager.getIdFieldName(__type.fields);
-	const selections = fields.map((field) => field.name).join(' ');
+	$: idFieldName = manager.getIdFieldName(__type.fields);
 
-	const queryTypeList = operationStore(
-		`#graphql
-            query {
-                ${queryTypeListFieldName}{
-                    ${selections}
-                }
+	$: {
+		const selections = fields.map((field) => field.name).join(' ');
+		const graphql = `#graphql
+        query {
+            ${queryTypeListFieldName}{
+                ${selections}
             }
-        `
-	);
-	query(queryTypeList);
+        }
+        `;
+		$queryTypeList.query = graphql;
+		query(queryTypeList);
+	}
 </script>
 
-<Table loading={$queryTypeList.fetching}>
-	{#if $queryTypeList.data}
+{#if $queryTypeList.fetching}
+	<Loading />
+{:else}
+	<Table>
 		<Thead>
 			<Thr>
 				{#each fields.map((__field) => __field.name) as name}
@@ -55,5 +61,5 @@
 				</Tr>
 			{/each}
 		</Tbody>
-	{/if}
-</Table>
+	</Table>
+{/if}
