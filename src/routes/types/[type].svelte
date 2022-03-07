@@ -13,7 +13,7 @@
 <script lang="ts">
 	import { afterUpdate } from 'svelte';
 	import { operationStore, query } from '@urql/svelte';
-	import Table from '/src/components/types/table/Table.svelte';
+	import TypeTable from '/src/components/graphql/introspection/TypeTable.svelte';
 	import SectionHead from '/src/components/types/SectionHead.svelte';
 	export let typeName: string;
 
@@ -61,14 +61,14 @@
 		<div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
 			<div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
 				<div class="bg-white">
-					<div class="max-w-wxl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-						{#if $query__Type.fetching}
-							<div class="min-w-full divide-y divide-gray-20 bg-slate-700 rounded" />
-						{:else}
-							<SectionHead __type={$query__Type.data.__type} />
-							<Table __type={$query__Type.data.__type} />
-						{/if}
-					</div>
+					<!-- <div class="max-w-wxl mx-auto py-12 px-4 sm:px-6 lg:px-8"> -->
+					{#if $query__Type.fetching}
+						<div class="min-w-full divide-y divide-gray-20 bg-slate-700 rounded" />
+					{:else}
+						<SectionHead __type={$query__Type.data.__type} />
+						<TypeTable __type={$query__Type.data.__type} />
+					{/if}
+					<!-- </div> -->
 				</div>
 			</div>
 		</div>
