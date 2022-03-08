@@ -10,7 +10,7 @@
 	import Tbody from '/src/components/ui/table/body/Tbody.svelte';
 	import Tr from '/src/components/ui/table/body/Tr.svelte';
 	import Td from '/src/components/ui/table/body/Td.svelte';
-	import Loading from '/src/components/ui/table/Loading.svelte';
+	import TableLoading from '/src/components/ui/table/TableLoading.svelte';
 	export let __type: __Type;
 
 	const changeUrl = (url: string) => {
@@ -26,7 +26,6 @@
 			manager.getFieldType(field.type) === __TypeKind.ENUM
 	);
 	$: idFieldName = manager.getIdFieldName(__type.fields);
-
 	$: {
 		const selections = fields.map((field) => field.name).join(' ');
 		const graphql = `#graphql
@@ -42,7 +41,7 @@
 </script>
 
 {#if $queryTypeList.fetching}
-	<Loading />
+	<TableLoading />
 {:else}
 	<Table>
 		<Thead>
@@ -53,8 +52,8 @@
 			</Thr>
 		</Thead>
 		<Tbody>
-			{#each $queryTypeList.data[queryTypeListFieldName] as data, rowIndex}
-				<Tr {rowIndex}>
+			{#each $queryTypeList.data[queryTypeListFieldName] as data}
+				<Tr>
 					{#each fields.map((__field) => __field.name) as name}
 						<Td>{data[name] ? data[name] : ''}</Td>
 					{/each}

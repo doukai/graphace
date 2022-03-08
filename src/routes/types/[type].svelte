@@ -12,9 +12,13 @@
 
 <script lang="ts">
 	import { afterUpdate } from 'svelte';
+	import { goto } from '$app/navigation';
 	import { operationStore, query } from '@urql/svelte';
 	import TypeTable from '/src/components/graphql/introspection/TypeTable.svelte';
-	import SectionHead from '/src/components/types/SectionHead.svelte';
+	import Section from '/src/components/ui/section/Section.svelte';
+	import SectionHead from '/src/components/ui/section/SectionHead.svelte';
+	import SectionLoading from '/src/components/ui/section/SectionLoading.svelte';
+	import Button from '/src/components/ui/Button.svelte';
 	export let typeName: string;
 
 	afterUpdate(() => {
@@ -56,21 +60,20 @@
 	query(query__Type);
 </script>
 
-<div class="flex flex-col">
-	<div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-		<div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-			<div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-				<div class="bg-white">
-					<!-- <div class="max-w-wxl mx-auto py-12 px-4 sm:px-6 lg:px-8"> -->
-					{#if $query__Type.fetching}
-						<div class="min-w-full divide-y divide-gray-20 bg-slate-700 rounded" />
-					{:else}
-						<SectionHead __type={$query__Type.data.__type} />
-						<TypeTable __type={$query__Type.data.__type} />
-					{/if}
-					<!-- </div> -->
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+<Section>
+	{#if $query__Type.fetching}
+		<SectionLoading />
+	{:else}
+		<SectionHead title={$query__Type.data.__type.name}>
+			<Button
+				on:click={(e) => {
+					e.preventDefault();
+					goto(`/types/${manager.typeNameToUrl(typeName)}/create`);
+				}}
+			>
+				Create
+			</Button>
+		</SectionHead>
+		<TypeTable __type={$query__Type.data.__type} />
+	{/if}
+</Section>
