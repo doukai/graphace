@@ -43,12 +43,12 @@
 				{/if}
 			</div>
 			{#each __type.fields.filter((field) => !manager.fieldIsList(field.type) && manager.getFieldType(field.type) !== __TypeKind.OBJECT) as __field}
-				<div class="space-y-6 sm:space-y-5">
+				<div class="mt-6 sm:mt-5 space-y-6 sm:space-y-5">
 					<div
 						class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5"
 					>
 						<label
-							for="first-name"
+							for={__field.name}
 							class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
 						>
 							{__field.name}

@@ -11,6 +11,7 @@
 	import Tr from '/src/components/ui/table/body/Tr.svelte';
 	import Td from '/src/components/ui/table/body/Td.svelte';
 	import TableLoading from '/src/components/ui/table/TableLoading.svelte';
+	import Link from '/src/components/ui/Link.svelte';
 	export let __type: __Type;
 
 	const changeUrl = (url: string) => {
@@ -49,6 +50,7 @@
 				{#each fields.map((__field) => __field.name) as name}
 					<Th>{name}</Th>
 				{/each}
+				<Td><span class="sr-only">Edit</span></Td>
 			</Thr>
 		</Thead>
 		<Tbody>
@@ -57,6 +59,17 @@
 					{#each fields.map((__field) => __field.name) as name}
 						<Td>{data[name] ? data[name] : ''}</Td>
 					{/each}
+					<Td>
+						<Link
+							href="/types/{manager.typeNameToUrl(__type.name)}/{data[idFieldName]}"
+							on:click={(e) => {
+								e.preventDefault();
+								changeUrl(`/types/${manager.typeNameToUrl(__type.name)}/${data[idFieldName]}`);
+							}}
+						>
+							Edit
+						</Link>
+					</Td>
 				</Tr>
 			{/each}
 		</Tbody>
