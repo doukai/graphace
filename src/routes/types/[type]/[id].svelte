@@ -13,7 +13,7 @@
 
 <script lang="ts">
 	import { operationStore, query } from '@urql/svelte';
-	import Editor from '/src/components/types/Editor.svelte';
+	import TypeForm from '/src/components/graphql/introspection/TypeForm.svelte';
 	export let typeName: string;
 	export let id: string;
 
@@ -60,7 +60,7 @@
 						{#if $query__Type.fetching}
 							<div class="min-w-full divide-y divide-gray-20 bg-slate-700 rounded" />
 						{:else}
-							<Editor __type={$query__Type.data.__type} {id} />
+							<TypeForm __type={$query__Type.data.__type} {id} />
 						{/if}
 					</div>
 				</div>

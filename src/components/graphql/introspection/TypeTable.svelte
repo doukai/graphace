@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { afterUpdate } from 'svelte';
 	import { operationStore, query } from '@urql/svelte';
 	import { TypeManager, __TypeKind, type __Type } from '$lib/TypeManager';
 	import { goto } from '$app/navigation';
@@ -13,10 +12,6 @@
 	import TableLoading from '/src/components/ui/table/TableLoading.svelte';
 	import Link from '/src/components/ui/Link.svelte';
 	export let __type: __Type;
-
-	const changeUrl = (url: string) => {
-		goto(url, { keepfocus: true });
-	};
 
 	const queryTypeList = operationStore('');
 	const manager: TypeManager = new TypeManager();
@@ -64,7 +59,7 @@
 							href="/types/{manager.typeNameToUrl(__type.name)}/{data[idFieldName]}"
 							on:click={(e) => {
 								e.preventDefault();
-								changeUrl(`/types/${manager.typeNameToUrl(__type.name)}/${data[idFieldName]}`);
+								goto(`/types/${manager.typeNameToUrl(__type.name)}/${data[idFieldName]}`);
 							}}
 						>
 							Edit
