@@ -12,20 +12,24 @@
 
 <script lang="ts">
 	import { operationStore, query } from '@urql/svelte';
-	import Form from '/src/components/types/Form.svelte';
+	import Section from '/src/components/ui/section/Section.svelte';
+	import TypeForm from '/src/components/graphql/introspection/TypeForm.svelte';
+	import FormLoading from '/src/components/ui/form/FormLoading.svelte';
 	export let typeName: string;
 
-	const manager = new TypeManager();
-	const query__Type = operationStore(
+	const queryType = operationStore(
 		`#graphql
-            query ($typeName: String) {
-                __type(name:{val: $typeName}){
+        query ($typeName: String) {
+            __type(name:{val: $typeName}){
+                name
+                kind
+                description
+                fields{
                     name
-                    kind
-                    description
-                    fields{
+                    type{
                         name
-                        type{
+                        kind
+                        ofType{
                             name
                             kind
                             ofType{
@@ -34,39 +38,23 @@
                                 ofType{
                                     name
                                     kind
-                                    ofType{
-                                        name
-                                        kind
-                                    }
                                 }
                             }
                         }
-                        description
                     }
+                    description
                 }
-            }`,
+            }
+        }`,
 		{ typeName }
 	);
-	query(query__Type);
+	query(queryType);
 </script>
 
-<div class="flex flex-col">
-	<div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-		<div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-			<div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-				<div class="bg-white">
-					<div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-						{#if $query__Type.fetching}
-							<div class="min-w-full divide-y divide-gray-20 bg-slate-700 rounded" />
-						{:else}
-							<Form
-								__type={$query__Type.data.__type}
-								data={manager.createTypeObject($query__Type.data.__type)}
-							/>
-						{/if}
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+<Section>
+	{#if $queryType.fetching}
+		<FormLoading />
+	{:else}
+		<TypeForm __type={$queryType.data.__type} />
+	{/if}
+</Section>

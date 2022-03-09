@@ -22,11 +22,11 @@
 	export let typeName: string;
 
 	afterUpdate(() => {
-		$query__Type.variables.typeName = typeName;
-		$query__Type.reexecute();
+		$queryType.variables.typeName = typeName;
+		$queryType.reexecute();
 	});
 
-	const query__Type = operationStore(
+	const queryType = operationStore(
 		`#graphql
         query ($typeName: String) {
 			__type(name:{val: $typeName}){
@@ -57,14 +57,14 @@
         }`,
 		{ typeName }
 	);
-	query(query__Type);
+	query(queryType);
 </script>
 
 <Section>
-	{#if $query__Type.fetching}
+	{#if $queryType.fetching}
 		<SectionLoading />
 	{:else}
-		<SectionHead title={$query__Type.data.__type.name}>
+		<SectionHead title={$queryType.data.__type.name}>
 			<Button
 				on:click={(e) => {
 					e.preventDefault();
@@ -74,6 +74,6 @@
 				Create
 			</Button>
 		</SectionHead>
-		<TypeTable __type={$query__Type.data.__type} />
+		<TypeTable __type={$queryType.data.__type} />
 	{/if}
 </Section>

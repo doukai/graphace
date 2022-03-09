@@ -2,19 +2,18 @@
 	import { query, operationStore, mutation } from '@urql/svelte';
 	import { TypeManager, type __Type, __TypeKind } from '$lib/TypeManager';
 	import { goto } from '$app/navigation';
-	import Input from '/src/components/types/Input.svelte';
 	import Form from '/src/components/ui/form/Form.svelte';
+	import FormLoading from '/src/components/ui/form/FormLoading.svelte';
 	import FormItems from '/src/components/ui/form/FormItems.svelte';
 	import FormItem from '/src/components/ui/form/FormItem.svelte';
 	import FormButtons from '/src/components/ui/form/FormButtons.svelte';
 	import Button from '/src/components/ui/Button.svelte';
-	export let id: string;
+	import FieldInput from './FieldInput.svelte';
+	export let id: string = null;
 	export let __type: __Type;
 
 	const manager = new TypeManager();
 	const queryTypeFieldName = manager.getQueryTypeFieldName(__type.name);
-	const fields = __type.fields;
-
 	const idFieldName = manager.getIdFieldName(__type.fields);
 	const selections = manager.fieldsToSelections(__type);
 
@@ -27,9 +26,14 @@
 		}`,
 		{ id }
 	);
-	query(queryData);
 
 	$: data = $queryData.data;
+	$: if (id) {
+		query(queryData);
+	} else {
+		data = {};
+		data[queryTypeFieldName] = manager.createTypeObject(__type);
+	}
 
 	const mutationTypeFieldName = manager.getMutationTypeFieldName(__type.name);
 	const mutationVariables = manager.fieldsToMutationVariables(__type);
@@ -44,21 +48,30 @@
 		}`
 	});
 
-	function save() {
+	$: save = () => {
+		debugger;
 		mutationType({ ...data[queryTypeFieldName] }).then((result) => {
-			data[queryTypeFieldName] = result.data[mutationTypeFieldName];
+			if (!id) {
+				goto(
+					`/types/${manager.typeNameToUrl(__type.name)}/${
+						result.data[mutationTypeFieldName][idFieldName]
+					}`
+				);
+			} else {
+				data[queryTypeFieldName] = result.data[mutationTypeFieldName];
+			}
 		});
-	}
+	};
 </script>
 
-{#if $queryData.fetching}
-	Loading
+{#if id && $queryData.fetching}
+	<FormLoading />
 {:else}
 	<Form>
 		<FormItems title={__type.name}>
 			{#each __type.fields.filter((field) => !manager.fieldIsList(field.type) && manager.getFieldType(field.type) !== __TypeKind.OBJECT) as __field}
-				<FormItem label={__field.name}>
-					<Input {__field} bind:data={data[queryTypeFieldName][__field.name]} />
+				<FormItem label={__field.name} forName={__field.name}>
+					<FieldInput {__field} bind:value={data[queryTypeFieldName][__field.name]} />
 				</FormItem>
 			{/each}
 		</FormItems>

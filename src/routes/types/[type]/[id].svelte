@@ -13,11 +13,13 @@
 
 <script lang="ts">
 	import { operationStore, query } from '@urql/svelte';
+	import Section from '/src/components/ui/section/Section.svelte';
 	import TypeForm from '/src/components/graphql/introspection/TypeForm.svelte';
+	import FormLoading from '/src/components/ui/form/FormLoading.svelte';
 	export let typeName: string;
 	export let id: string;
 
-	const query__Type = operationStore(
+	const queryType = operationStore(
 		`#graphql
             query ($typeName: String) {
                 __type(name:{val: $typeName}){
@@ -48,23 +50,13 @@
             }`,
 		{ typeName }
 	);
-	query(query__Type);
+	query(queryType);
 </script>
 
-<div class="flex flex-col">
-	<div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-		<div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-			<div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-				<div class="bg-white">
-					<div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-						{#if $query__Type.fetching}
-							<div class="min-w-full divide-y divide-gray-20 bg-slate-700 rounded" />
-						{:else}
-							<TypeForm __type={$query__Type.data.__type} {id} />
-						{/if}
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+<Section>
+	{#if $queryType.fetching}
+		<FormLoading />
+	{:else}
+		<TypeForm __type={$queryType.data.__type} {id} />
+	{/if}
+</Section>
