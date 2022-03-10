@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { TypeManager, type __Field } from '$lib/TypeManager';
+	import { TypeManager } from '$lib/TypeManager';
 	import Input from '/src/components/ui/input/Input.svelte';
 	import NumberInput from '/src/components/ui/input/NumberInput.svelte';
 	import Toggle from '/src/components/ui/input/Toggle.svelte';
 	import EnumSelect from './EnumSelect.svelte';
+	import type { __Field } from '$lib/__Field';
 	export let __field: __Field;
 	export let value: any;
 	const manager = new TypeManager();

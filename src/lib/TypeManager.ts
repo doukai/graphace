@@ -1,100 +1,87 @@
 import * as _ from "lodash";
-
-export interface __Type {
-    name: string;
-    fields: __Field[];
-    kind: __TypeKind;
-    ofType: __Type;
-    description: string;
-}
-
-export interface __Field {
-    name: string;
-    type: __Type;
-}
-
-export enum __TypeKind {
-    SCALAR = "SCALAR",
-    OBJECT = "OBJECT",
-    INTERFACE = "INTERFACE",
-    UNION = "UNION",
-    ENUM = "ENUM",
-    INPUT_OBJECT = "INPUT_OBJECT",
-    LIST = "LIST",
-    NON_NULL = "NON_NULL",
-}
+import type { __Field } from "./__Field";
+import type { __Type } from "./__Type";
+import { __TypeKind } from "./__TypeKind";
 
 export class TypeManager {
 
-    public getFieldType(type: __Type): __TypeKind {
-        if (type.kind === __TypeKind.NON_NULL) {
-            return this.getFieldType(type.ofType);
-        } else if (type.kind === __TypeKind.LIST) {
-            return this.getFieldType(type.ofType);
+    public getFieldType(__type: __Type): __TypeKind {
+        if (__type.kind === __TypeKind.NON_NULL) {
+            return this.getFieldType(__type.ofType);
+        } else if (__type.kind === __TypeKind.LIST) {
+            return this.getFieldType(__type.ofType);
         } else {
-            return type.kind;
+            return __type.kind;
         }
     }
 
-    public fieldIsList(type: __Type): boolean {
-        if (type.kind === __TypeKind.NON_NULL) {
-            return this.fieldIsList(type.ofType);
-        } else if (type.kind === __TypeKind.LIST) {
+    public fieldIsList(__type: __Type): boolean {
+        if (__type.kind === __TypeKind.NON_NULL) {
+            return this.fieldIsList(__type.ofType);
+        } else if (__type.kind === __TypeKind.LIST) {
             return true;
         } else {
             return false;
         }
     }
 
-    public getFieldTypeName(type: __Type): string {
-        if (type.kind === __TypeKind.NON_NULL) {
-            return this.getFieldTypeName(type.ofType);
-        } else if (type.kind === __TypeKind.LIST) {
-            return this.getFieldTypeName(type.ofType);
+    public getFieldTypeName(__type: __Type): string {
+        if (__type.kind === __TypeKind.NON_NULL) {
+            return this.getFieldTypeName(__type.ofType);
+        } else if (__type.kind === __TypeKind.LIST) {
+            return this.getFieldTypeName(__type.ofType);
         } else {
-            return type.name;
+            return __type.name;
         }
     }
 
-    public fieldIsEnum(type: __Type): boolean {
-        if (this.getFieldType(type) === __TypeKind.ENUM) {
+    public fieldIsEnum(__type: __Type): boolean {
+        if (this.getFieldType(__type) === __TypeKind.ENUM) {
             return true;
         } else {
             return false;
         }
     }
 
-    public createTypeObject(type: __Type): object {
+    public getSingleTypeFiledList(__type: __Type): __Field[] {
+        return __type.fields.filter(
+            (field) =>
+                this.getFieldType(field.type) === __TypeKind.SCALAR ||
+                this.getFieldType(field.type) === __TypeKind.ENUM
+        );
+    }
+
+    public createTypeObject(__type: __Type): object {
         const typeObject: object = {};
-        type.fields.forEach(field => typeObject[field.name] = null);
+        __type.fields.forEach(field => typeObject[field.name] = null);
         return typeObject;
     }
 
-    public getIdFieldName(fields: __Field[]): string {
-        return fields.find(field => this.getFieldTypeName(field.type) === "ID").name;
+    public getIdFieldName(__type: __Type): string {
+        return __type.fields.find(field => this.getFieldTypeName(field.type) === "ID").name;
     }
 
-    public getQueryTypeListFieldName(typeName: string): string {
-        if (typeName.startsWith("__")) {
-            return "__" + _.camelCase(typeName.replace("__", "")) + "List";
+    public getQueryTypeListFieldName(__type: __Type): string {
+        if (__type.name.startsWith("__")) {
+            return "__" + _.camelCase(__type.name.replace("__", "")) + "List";
         } else {
-            return _.camelCase(typeName) + "List";
+            return _.camelCase(__type.name) + "List";
         }
     }
 
-    public getQueryTypeFieldName(typeName: string): string {
-        if (typeName.startsWith("__")) {
-            return "__" + _.camelCase(typeName.replace("__", ""));
+    public getQueryTypeFieldName(__type: __Type): string {
+        if (__type.name.startsWith("__")) {
+            return "__" + _.camelCase(__type.name.replace("__", ""));
         } else {
-            return _.camelCase(typeName);
+            return _.camelCase(__type.name);
         }
     }
 
-    public getMutationTypeFieldName(typeName: string): string {
-        if (typeName.startsWith("__")) {
-            return "__" + _.camelCase(typeName.replace("__", ""));
+    public getMutationTypeFieldName(__type: __Type): string {
+        if (__type.name.startsWith("__")) {
+            return "__" + _.camelCase(__type.name.replace("__", ""));
         } else {
-            return _.camelCase(typeName);
+            return _.camelCase(__type.name);
         }
     }
 

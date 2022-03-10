@@ -19,6 +19,7 @@
 	import SectionHead from '/src/components/ui/section/SectionHead.svelte';
 	import SectionLoading from '/src/components/ui/section/SectionLoading.svelte';
 	import Button from '/src/components/ui/Button.svelte';
+	import SearchInput from '/src/components/ui/search/SearchInput.svelte';
 	export let typeName: string;
 
 	afterUpdate(() => {
@@ -65,6 +66,7 @@
 		<SectionLoading />
 	{:else}
 		<SectionHead title={$queryType.data.__type.name}>
+			<SearchInput />
 			<Button
 				on:click={(e) => {
 					e.preventDefault();

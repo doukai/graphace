@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { query, operationStore, mutation } from '@urql/svelte';
-	import { TypeManager, type __Type, __TypeKind } from '$lib/TypeManager';
+	import { TypeManager } from '$lib/TypeManager';
+	import type { __Type } from '$lib/__Type';
+	import { __TypeKind } from '$lib/__TypeKind';
 	import { goto } from '$app/navigation';
 	import Form from '/src/components/ui/form/Form.svelte';
 	import FormLoading from '/src/components/ui/form/FormLoading.svelte';
@@ -9,12 +11,12 @@
 	import FormButtons from '/src/components/ui/form/FormButtons.svelte';
 	import Button from '/src/components/ui/Button.svelte';
 	import FieldInput from './FieldInput.svelte';
-	export let id: string = null;
+	export let id: string;
 	export let __type: __Type;
 
 	const manager = new TypeManager();
-	const queryTypeFieldName = manager.getQueryTypeFieldName(__type.name);
-	const idFieldName = manager.getIdFieldName(__type.fields);
+	const queryTypeFieldName = manager.getQueryTypeFieldName(__type);
+	const idFieldName = manager.getIdFieldName(__type);
 	const selections = manager.fieldsToSelections(__type);
 
 	const queryData = operationStore(
@@ -28,14 +30,9 @@
 	);
 
 	$: data = $queryData.data;
-	$: if (id) {
-		query(queryData);
-	} else {
-		data = {};
-		data[queryTypeFieldName] = manager.createTypeObject(__type);
-	}
+	query(queryData);
 
-	const mutationTypeFieldName = manager.getMutationTypeFieldName(__type.name);
+	const mutationTypeFieldName = manager.getMutationTypeFieldName(__type);
 	const mutationVariables = manager.fieldsToMutationVariables(__type);
 	const mutationArguments = manager.fieldsToMutationArguments(__type);
 
@@ -48,28 +45,19 @@
 		}`
 	});
 
-	$: save = () => {
-		debugger;
+	const save = () => {
 		mutationType({ ...data[queryTypeFieldName] }).then((result) => {
-			if (!id) {
-				goto(
-					`/types/${manager.typeNameToUrl(__type.name)}/${
-						result.data[mutationTypeFieldName][idFieldName]
-					}`
-				);
-			} else {
-				data[queryTypeFieldName] = result.data[mutationTypeFieldName];
-			}
+			data[queryTypeFieldName] = result.data[mutationTypeFieldName];
 		});
 	};
 </script>
 
-{#if id && $queryData.fetching}
+{#if $queryData.fetching}
 	<FormLoading />
 {:else}
 	<Form>
 		<FormItems title={__type.name}>
-			{#each __type.fields.filter((field) => !manager.fieldIsList(field.type) && manager.getFieldType(field.type) !== __TypeKind.OBJECT) as __field}
+			{#each manager.getSingleTypeFiledList(__type) as __field}
 				<FormItem label={__field.name} forName={__field.name}>
 					<FieldInput {__field} bind:value={data[queryTypeFieldName][__field.name]} />
 				</FormItem>

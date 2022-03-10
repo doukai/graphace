@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { operationStore, query } from '@urql/svelte';
-	import { TypeManager, __TypeKind, type __Type } from '$lib/TypeManager';
+	import { TypeManager } from '$lib/TypeManager';
+	import { __TypeKind } from '$lib/__TypeKind';
+	import type { __Type } from '$lib/__Type';
 	import { goto } from '$app/navigation';
 	import Table from '/src/components/ui/table/Table.svelte';
 	import Thead from '/src/components/ui/table/head/Thead.svelte';
@@ -15,13 +17,9 @@
 
 	const queryTypeList = operationStore('');
 	const manager: TypeManager = new TypeManager();
-	$: queryTypeListFieldName = manager.getQueryTypeListFieldName(__type.name);
-	$: fields = __type.fields.filter(
-		(field) =>
-			manager.getFieldType(field.type) === __TypeKind.SCALAR ||
-			manager.getFieldType(field.type) === __TypeKind.ENUM
-	);
-	$: idFieldName = manager.getIdFieldName(__type.fields);
+	$: queryTypeListFieldName = manager.getQueryTypeListFieldName(__type);
+	$: fields = manager.getSingleTypeFiledList(__type);
+	$: idFieldName = manager.getIdFieldName(__type);
 	$: {
 		const selections = fields.map((field) => field.name).join(' ');
 		const graphql = `#graphql

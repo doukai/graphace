@@ -14,7 +14,7 @@
 <script lang="ts">
 	import { operationStore, query } from '@urql/svelte';
 	import Section from '/src/components/ui/section/Section.svelte';
-	import TypeForm from '/src/components/graphql/introspection/TypeForm.svelte';
+	import TypeEditor from '/src/components/graphql/introspection/TypeEditor.svelte';
 	import FormLoading from '/src/components/ui/form/FormLoading.svelte';
 	export let typeName: string;
 	export let id: string;
@@ -57,6 +57,6 @@
 	{#if $queryType.fetching}
 		<FormLoading />
 	{:else}
-		<TypeForm __type={$queryType.data.__type} {id} />
+		<TypeEditor __type={$queryType.data.__type} {id} />
 	{/if}
 </Section>

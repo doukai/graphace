@@ -1,20 +1,10 @@
 <script lang="ts">
 	import { TypeManager } from '$lib/TypeManager';
 	import { operationStore, query } from '@urql/svelte';
-	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import Icon from '@iconify/svelte';
 
-	const changeUrl = (url: string) => {
-		goto(url, { keepfocus: true });
-	};
-
-	let activeMenu = $page.url;
 	const manager = new TypeManager();
-
-	$: if ($page.url) {
-		activeMenu = $page.url;
-	}
 
 	const __typeList = operationStore(
 		`#graphql
@@ -50,7 +40,7 @@
 								href="/types/{manager.typeNameToUrl(__type.name)}"
 								on:click={(e) => {
 									e.preventDefault();
-									changeUrl('/types/' + manager.typeNameToUrl(__type.name));
+									goto('/types/' + manager.typeNameToUrl(__type.name));
 								}}
 								class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
 							>
