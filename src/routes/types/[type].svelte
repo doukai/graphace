@@ -59,6 +59,11 @@
 		{ typeName }
 	);
 	query(queryType);
+
+	let queryValue: string = null;
+	let search = (value: string) => {
+		queryValue = value;
+	};
 </script>
 
 <Section>
@@ -66,7 +71,7 @@
 		<SectionLoading />
 	{:else}
 		<SectionHead title={$queryType.data.__type.name}>
-			<SearchInput />
+			<SearchInput onClick={search} />
 			<Button
 				on:click={(e) => {
 					e.preventDefault();
@@ -76,6 +81,6 @@
 				Create
 			</Button>
 		</SectionHead>
-		<TypeTable __type={$queryType.data.__type} />
+		<TypeTable __type={$queryType.data.__type} {queryValue} />
 	{/if}
 </Section>

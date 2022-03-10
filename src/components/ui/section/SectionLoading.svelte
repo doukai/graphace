@@ -2,7 +2,7 @@
 	<div class="pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
 		<div class="h-6 w-20 bg-slate-200" />
 		<div class="mt-3 flex sm:mt-0 sm:ml-4">
-			<div class="ml-3 h-8 w-20 bg-slate-200 rounded" />
+			<div class="ml-3 h-8 w-48 bg-slate-200 rounded" />
 			<div class="ml-3 h-8 w-20 bg-slate-200 rounded" />
 		</div>
 	</div>

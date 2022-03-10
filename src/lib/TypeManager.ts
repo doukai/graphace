@@ -44,11 +44,24 @@ export class TypeManager {
     }
 
     public getSingleTypeFiledList(__type: __Type): __Field[] {
-        return __type.fields.filter(
-            (field) =>
-                this.getFieldType(field.type) === __TypeKind.SCALAR ||
-                this.getFieldType(field.type) === __TypeKind.ENUM
-        );
+        return __type.fields
+            .filter(
+                (field) =>
+                    this.getFieldType(field.type) === __TypeKind.SCALAR ||
+                    this.getFieldType(field.type) === __TypeKind.ENUM
+            );
+    }
+
+    public getAllSingleTypeFiledQueryArguments(__type: __Type): string {
+        return __type.fields
+            .filter(
+                (field) =>
+                    this.getFieldType(field.type) === __TypeKind.SCALAR ||
+                    this.getFieldType(field.type) === __TypeKind.ENUM
+            )
+            .map(field => `${field.name}:{val: $queryValue}`)
+            .join(",")
+            .concat(", cond: OR");
     }
 
     public createTypeObject(__type: __Type): object {

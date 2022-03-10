@@ -1,9 +1,10 @@
 <script lang="ts">
-	export let value: string;
 	export let name: string = '';
 	export let placeholder: string = 'Search';
 	export let borderColor: string = 'indigo';
 	export let color: string = 'gray';
+	export let onClick: Function;
+	let value: string;
 </script>
 
 <div class="mt-3 sm:mt-0 sm:ml-4">
@@ -15,12 +16,12 @@
 				class="focus:ring-{borderColor}-500 focus:border-{borderColor}-500 w-full rounded-none rounded-l-md sm:block sm:text-sm border-{color}-300"
 				{placeholder}
 				bind:value
-				on:click
 			/>
 		</div>
 		<button
 			type="button"
 			class="-ml-px relative inline-flex items-center px-4 py-2 border border-{color}-300 text-sm font-medium rounded-r-md text-{color}-700 bg-{color}-50 hover:bg-{color}-100 focus:outline-none focus:ring-1 focus:ring-{borderColor}-500 focus:border-{borderColor}-500"
+			on:click={onClick(value)}
 		>
 			<!-- Heroicon name: solid/search -->
 			<svg

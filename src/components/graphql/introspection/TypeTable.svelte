@@ -14,6 +14,7 @@
 	import TableLoading from '/src/components/ui/table/TableLoading.svelte';
 	import Link from '/src/components/ui/Link.svelte';
 	export let __type: __Type;
+	export let queryValue: string = null;
 
 	const queryTypeList = operationStore('');
 	const manager: TypeManager = new TypeManager();
@@ -23,13 +24,18 @@
 	$: {
 		const selections = fields.map((field) => field.name).join(' ');
 		const graphql = `#graphql
-        query {
-            ${queryTypeListFieldName}{
+        query ${queryValue ? '($queryValue: String)' : ''}{
+            ${queryTypeListFieldName}${
+			queryValue ? '(' + manager.getAllSingleTypeFiledQueryArguments(__type) + ')' : ''
+		}{
                 ${selections}
             }
         }
         `;
 		$queryTypeList.query = graphql;
+		if (queryValue) {
+			$queryTypeList.variables = { queryValue };
+		}
 		query(queryTypeList);
 	}
 </script>
