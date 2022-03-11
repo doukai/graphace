@@ -183,7 +183,7 @@
 
 		<main class="flex-1">
 			<div class="py-6">
-				<div class="max-w-full mx-auto px-4 sm:px-6 md:px-8">
+				<div class="overflow-hidden max-w-full mx-auto px-4 sm:px-6 md:px-8">
 					<slot />
 				</div>
 			</div>

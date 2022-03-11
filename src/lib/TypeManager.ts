@@ -47,18 +47,13 @@ export class TypeManager {
         return __type.fields
             .filter(
                 (field) =>
-                    this.getFieldType(field.type) === __TypeKind.SCALAR ||
-                    this.getFieldType(field.type) === __TypeKind.ENUM
+                    !this.fieldIsList(field.type) &&
+                    this.getFieldType(field.type) !== __TypeKind.OBJECT
             );
     }
 
     public getAllSingleTypeFiledQueryArguments(__type: __Type): string {
-        return __type.fields
-            .filter(
-                (field) =>
-                    this.getFieldType(field.type) === __TypeKind.SCALAR ||
-                    this.getFieldType(field.type) === __TypeKind.ENUM
-            )
+        return this.getSingleTypeFiledList(__type)
             .map(field => `${field.name}:{val: $queryValue}`)
             .join(",")
             .concat(", cond: OR");
