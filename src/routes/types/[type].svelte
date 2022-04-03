@@ -66,21 +66,21 @@
 	};
 </script>
 
-<Section>
-	{#if $queryType.fetching}
-		<SectionLoading />
-	{:else}
-		<SectionHead title={$queryType.data.__type.name}>
-			<SearchInput onClick={search} />
-			<Button
-				on:click={(e) => {
-					e.preventDefault();
-					goto(`/types/${manager.typeNameToUrl(typeName)}/create`);
-				}}
-			>
-				Create
-			</Button>
-		</SectionHead>
-		<TypeTable __type={$queryType.data.__type} {queryValue} />
-	{/if}
-</Section>
+{#if $queryType.fetching}
+	<SectionLoading />
+{:else}
+	<SectionHead title={$queryType.data.__type.name}>
+		<SearchInput onClick={search} />
+		<button
+			class="ml-3 btn btn-primary"
+			on:click={(e) => {
+				e.preventDefault();
+				goto(`/types/${manager.typeNameToUrl(typeName)}/create`);
+			}}
+		>
+			Create
+		</button>
+	</SectionHead>
+	<div class="divider" />
+	<TypeTable __type={$queryType.data.__type} {queryValue} />
+{/if}

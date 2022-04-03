@@ -3,6 +3,8 @@ import type { __Field } from "./__Field";
 import type { __Type } from "./__Type";
 import { __TypeKind } from "./__TypeKind";
 
+const aggregateSuffix: string[] = ["Count", "Sum", "Avg", "Max", "Min"];
+
 export class TypeManager {
 
     public getFieldType(__type: __Type): __TypeKind {
@@ -49,7 +51,8 @@ export class TypeManager {
                 (field) =>
                     !this.fieldIsList(field.type) &&
                     this.getFieldType(field.type) !== __TypeKind.OBJECT
-            );
+            )
+            .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)));
     }
 
     public getAllSingleTypeFiledQueryArguments(__type: __Type): string {

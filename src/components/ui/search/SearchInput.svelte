@@ -1,40 +1,25 @@
 <script lang="ts">
 	export let name: string = '';
 	export let placeholder: string = 'Search';
-	export let borderColor: string = 'indigo';
-	export let color: string = 'gray';
 	export let onClick: Function;
 	let value: string;
 </script>
 
-<div class="mt-3 sm:mt-0 sm:ml-4">
-	<div class="flex rounded-md shadow-sm">
-		<div class="relative flex-grow focus-within:z-10">
-			<input
-				type="text"
-				{name}
-				class="focus:ring-{borderColor}-500 focus:border-{borderColor}-500 w-full rounded-none rounded-l-md sm:block sm:text-sm border-{color}-300"
-				{placeholder}
-				bind:value
-			/>
-		</div>
-		<button
-			type="button"
-			class="-ml-px relative inline-flex items-center px-4 py-2 border border-{color}-300 text-sm font-medium rounded-r-md text-{color}-700 bg-{color}-50 hover:bg-{color}-100 focus:outline-none focus:ring-1 focus:ring-{borderColor}-500 focus:border-{borderColor}-500"
-			on:click={onClick(value)}
-		>
-			<!-- Heroicon name: solid/search -->
+<div class="form-control">
+	<div class="input-group">
+		<input type="text" class="input input-bordered" {name} {placeholder} bind:value />
+		<button class="btn btn-square" on:click={onClick(value)}>
 			<svg
-				class="h-5 w-5 text-{color}-400"
 				xmlns="http://www.w3.org/2000/svg"
-				viewBox="0 0 20 20"
-				fill="currentColor"
-				aria-hidden="true"
-			>
-				<path
-					fill-rule="evenodd"
-					d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-					clip-rule="evenodd"
+				class="h-6 w-6"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+				><path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
 				/>
 			</svg>
 		</button>
