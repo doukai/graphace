@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { TypeManager } from '$lib/TypeManager';
-	import Input from '/src/components/ui/input/Input.svelte';
-	import NumberInput from '/src/components/ui/input/NumberInput.svelte';
-	import Toggle from '/src/components/ui/input/Toggle.svelte';
+	import Input from '@components/ui/input/Input.svelte';
+	import NumberInput from '@components/ui/input/NumberInput.svelte';
+	import Toggle from '@components/ui/input/Toggle.svelte';
 	import EnumSelect from './EnumSelect.svelte';
 	import type { __Field } from '$lib/__Field';
 	export let __field: __Field;

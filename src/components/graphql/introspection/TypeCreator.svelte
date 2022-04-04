@@ -4,11 +4,10 @@
 	import type { __Type } from '$lib/__Type';
 	import { __TypeKind } from '$lib/__TypeKind';
 	import { goto } from '$app/navigation';
-	import Form from '/src/components/ui/form/Form.svelte';
-	import FormItems from '/src/components/ui/form/FormItems.svelte';
-	import FormItem from '/src/components/ui/form/FormItem.svelte';
-	import FormButtons from '/src/components/ui/form/FormButtons.svelte';
-	import Button from '/src/components/ui/Button.svelte';
+	import Form from '@components/ui/form/Form.svelte';
+	import FormItems from '@components/ui/form/FormItems.svelte';
+	import FormItem from '@components/ui/form/FormItem.svelte';
+	import FormButtons from '@components/ui/form/FormButtons.svelte';
 	import FieldInput from './FieldInput.svelte';
 	export let __type: __Type;
 
@@ -50,21 +49,23 @@
 		{/each}
 	</FormItems>
 	<FormButtons>
-		<Button
+		<button
+			class="ml-3 btn"
 			on:click={(e) => {
 				e.preventDefault();
 				goto(`/types/${manager.typeNameToUrl(__type.name)}`);
 			}}
 		>
 			Cancel
-		</Button>
-		<Button
+		</button>
+		<button
+			class="ml-3 btn"
 			on:click={(e) => {
 				e.preventDefault();
 				save();
 			}}
 		>
 			Save
-		</Button>
+		</button>
 	</FormButtons>
 </Form>

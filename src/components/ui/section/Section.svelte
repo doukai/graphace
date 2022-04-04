@@ -1,3 +1,3 @@
-<div class="bg-white shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+<div class="bg-base-100 shadow-xl rounded-box overflow-hidden">
 	<slot />
 </div>

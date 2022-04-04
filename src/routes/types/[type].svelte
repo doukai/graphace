@@ -15,10 +15,8 @@
 	import { goto } from '$app/navigation';
 	import { operationStore, query } from '@urql/svelte';
 	import TypeTable from '/src/components/graphql/introspection/TypeTable.svelte';
-	import Section from '/src/components/ui/section/Section.svelte';
 	import SectionHead from '/src/components/ui/section/SectionHead.svelte';
 	import SectionLoading from '/src/components/ui/section/SectionLoading.svelte';
-	import Button from '/src/components/ui/Button.svelte';
 	import SearchInput from '/src/components/ui/search/SearchInput.svelte';
 	export let typeName: string;
 
@@ -72,7 +70,7 @@
 	<SectionHead title={$queryType.data.__type.name}>
 		<SearchInput onClick={search} />
 		<button
-			class="ml-3 btn btn-primary"
+			class="ml-3 btn"
 			on:click={(e) => {
 				e.preventDefault();
 				goto(`/types/${manager.typeNameToUrl(typeName)}/create`);

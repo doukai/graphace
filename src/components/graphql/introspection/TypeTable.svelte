@@ -4,15 +4,8 @@
 	import { __TypeKind } from '$lib/__TypeKind';
 	import type { __Type } from '$lib/__Type';
 	import { goto } from '$app/navigation';
-	import Table from '/src/components/ui/table/Table.svelte';
-	import Thead from '/src/components/ui/table/head/Thead.svelte';
-	import Thr from '/src/components/ui/table/head/Thr.svelte';
-	import Th from '/src/components/ui/table/head/Th.svelte';
-	import Tbody from '/src/components/ui/table/body/Tbody.svelte';
-	import Tr from '/src/components/ui/table/body/Tr.svelte';
-	import Td from '/src/components/ui/table/body/Td.svelte';
-	import TableLoading from '/src/components/ui/table/TableLoading.svelte';
-	import Link from '/src/components/ui/Link.svelte';
+	import Table from '@components/ui/table/Table.svelte';
+	import TableLoading from '@components/ui/table/TableLoading.svelte';
 	export let __type: __Type;
 	export let queryValue: string = null;
 
@@ -44,33 +37,33 @@
 	<TableLoading />
 {:else}
 	<Table>
-		<Thead>
-			<Thr>
+		<thead>
+			<tr>
 				{#each fields.map((__field) => __field.name) as name}
-					<Th>{name}</Th>
+					<td>{name}</td>
 				{/each}
-				<Td><span class="sr-only">Edit</span></Td>
-			</Thr>
-		</Thead>
-		<Tbody>
+				<td />
+			</tr>
+		</thead>
+		<tbody>
 			{#each $queryTypeList.data[queryTypeListFieldName] as data}
-				<Tr>
+				<tr class="hover">
 					{#each fields.map((__field) => __field.name) as name}
-						<Td>{data[name] ? data[name] : ''}</Td>
+						<td>{data[name] ? data[name] : ''}</td>
 					{/each}
-					<Td>
-						<Link
-							href="/types/{manager.typeNameToUrl(__type.name)}/{data[idFieldName]}"
+					<td>
+						<button
+							class="btn btn-ghost btn-xs"
 							on:click={(e) => {
 								e.preventDefault();
 								goto(`/types/${manager.typeNameToUrl(__type.name)}/${data[idFieldName]}`);
 							}}
 						>
 							Edit
-						</Link>
-					</Td>
-				</Tr>
+						</button>
+					</td>
+				</tr>
 			{/each}
-		</Tbody>
+		</tbody>
 	</Table>
 {/if}

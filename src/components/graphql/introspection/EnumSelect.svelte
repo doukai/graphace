@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { operationStore, query } from '@urql/svelte';
-	import Select from '/src/components/ui/input/Select.svelte';
+	import Select from '@components/ui/input/Select.svelte';
 	export let value: any;
 	export let enumName: string;
 

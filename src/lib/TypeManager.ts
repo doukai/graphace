@@ -122,6 +122,7 @@ export class TypeManager {
                 (field) =>
                     !this.fieldIsList(field.type) && this.getFieldType(field.type) !== __TypeKind.OBJECT
             )
+            .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)))
             .map((field) => field.name)
             .join(' ');
     }

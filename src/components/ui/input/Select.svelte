@@ -1,12 +1,9 @@
 <script lang="ts">
 	export let name: string;
 	export let value: any;
+	export let placeholder: string = '';
 </script>
 
-<select
-	{name}
-	class="max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
-	bind:value
->
+<select {name} {placeholder} class="select select-bordered w-full max-w-xs" bind:value>
 	<slot />
 </select>
