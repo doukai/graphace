@@ -1,4 +1,6 @@
 import * as _ from "lodash";
+import type { Connection } from "./Connection";
+import type { PageInfo } from "./PageInfo";
 import type { __Field } from "./__Field";
 import type { __Type } from "./__Type";
 import { __TypeKind } from "./__TypeKind";
@@ -58,8 +60,8 @@ export class TypeManager {
     public getAllSingleTypeFiledQueryArguments(__type: __Type): string {
         return this.getSingleTypeFiledList(__type)
             .map(field => `${field.name}:{val: $queryValue}`)
-            .join(",")
-            .concat(", cond: OR");
+            .join(" ")
+            .concat(" cond: OR");
     }
 
     public createTypeObject(__type: __Type): object {
@@ -77,6 +79,14 @@ export class TypeManager {
             return "__" + _.camelCase(__type.name.replace("__", "")) + "List";
         } else {
             return _.camelCase(__type.name) + "List";
+        }
+    }
+
+    public getQueryTypeConnectionFieldName(__type: __Type): string {
+        if (__type.name.startsWith("__")) {
+            return "__" + _.camelCase(__type.name.replace("__", "")) + "Connection";
+        } else {
+            return _.camelCase(__type.name) + "Connection";
         }
     }
 
@@ -135,6 +145,17 @@ export class TypeManager {
             return __type.name;
         }
     }
+
+    public getListFromConnection(connection: Connection, last: boolean): Array<object> {
+        if (last) {
+            return connection.edges.map(edge => edge.node).reverse();
+        }
+        return connection.edges.map(edge => edge.node);
+    };
+
+    public getPageInfoFromConnection(connection: Connection): PageInfo {
+        return connection.pageInfo;
+    };
 
     public typeNameToUrl(typeName: string): string {
         if (typeName.startsWith("__")) {

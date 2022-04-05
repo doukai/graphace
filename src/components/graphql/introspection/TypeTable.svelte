@@ -6,34 +6,74 @@
 	import { goto } from '$app/navigation';
 	import Table from '@components/ui/table/Table.svelte';
 	import TableLoading from '@components/ui/table/TableLoading.svelte';
+	import Pagination from '@components/ui/page/Pagination.svelte';
+
 	export let __type: __Type;
 	export let queryValue: string = null;
-
-	const queryTypeList = operationStore('');
+	const queryTypeConnection = operationStore('');
 	const manager: TypeManager = new TypeManager();
-	$: queryTypeListFieldName = manager.getQueryTypeListFieldName(__type);
+	let last: boolean = false;
+	let pageSize: number = 10;
+	$: queryTypeConnectionFieldName = manager.getQueryTypeConnectionFieldName(__type);
 	$: fields = manager.getSingleTypeFiledList(__type);
 	$: idFieldName = manager.getIdFieldName(__type);
-	$: {
+	$: queryType(__type, pageSize, null, null);
+
+	const queryType = (__type: __Type, pageSize: number, after: string, before: string) => {
+		const variables = queryValue ? '($queryValue: String)' : '';
+		const whereArguments = queryValue ? manager.getAllSingleTypeFiledQueryArguments(__type) : '';
+		let pageArguments = '';
+		if (after) {
+			pageArguments = `after: "${after}" first: ${pageSize}`;
+		} else if (before) {
+			pageArguments = `before: "${before}" last: ${pageSize}`;
+		} else {
+			pageArguments = `first: ${pageSize}`;
+		}
+		let queryArguments = '';
+		if (whereArguments || pageArguments) {
+			queryArguments = `(${whereArguments} ${pageArguments})`;
+		}
 		const selections = fields.map((field) => field.name).join(' ');
 		const graphql = `#graphql
-        query ${queryValue ? '($queryValue: String)' : ''}{
-            ${queryTypeListFieldName}${
-			queryValue ? '(' + manager.getAllSingleTypeFiledQueryArguments(__type) + ')' : ''
-		}{
-                ${selections}
+        query ${variables}{
+            ${queryTypeConnectionFieldName}${queryArguments}{
+				edges {
+					cursor
+					node {
+						${selections}
+					}
+				}
+				pageInfo {
+					hasNextPage
+					hasPreviousPage
+					startCursor
+					endCursor
+				}
             }
         }
         `;
-		$queryTypeList.query = graphql;
+		$queryTypeConnection.query = graphql;
 		if (queryValue) {
-			$queryTypeList.variables = { queryValue };
+			$queryTypeConnection.variables = { queryValue };
 		}
-		query(queryTypeList);
-	}
+		query(queryTypeConnection);
+	};
+	const onNext = (pageSize: number, after: string) => {
+		last = false;
+		queryType(__type, pageSize, after, null);
+	};
+	const onPrevious = (pageSize: number, before: string) => {
+		last = true;
+		queryType(__type, pageSize, null, before);
+	};
+	const onSizeChange = (pageSize: number) => {
+		last = false;
+		queryType(__type, pageSize, null, null);
+	};
 </script>
 
-{#if $queryTypeList.fetching}
+{#if $queryTypeConnection.fetching}
 	<TableLoading />
 {:else}
 	<Table>
@@ -46,7 +86,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each $queryTypeList.data[queryTypeListFieldName] as data}
+			{#each manager.getListFromConnection($queryTypeConnection.data[queryTypeConnectionFieldName], last) as data}
 				<tr class="hover">
 					{#each fields.map((__field) => __field.name) as name}
 						<td>{data[name] ? data[name] : ''}</td>
@@ -66,4 +106,15 @@
 			{/each}
 		</tbody>
 	</Table>
+	<div class="divider" />
+	<Pagination
+		{onNext}
+		{onPrevious}
+		{onSizeChange}
+		hasNextPage={$queryTypeConnection.data[queryTypeConnectionFieldName].pageInfo.hasNextPage}
+		hasPreviousPage={$queryTypeConnection.data[queryTypeConnectionFieldName].pageInfo
+			.hasPreviousPage}
+		startCursor={$queryTypeConnection.data[queryTypeConnectionFieldName].pageInfo.startCursor}
+		endCursor={$queryTypeConnection.data[queryTypeConnectionFieldName].pageInfo.endCursor}
+	/>
 {/if}

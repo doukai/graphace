@@ -1,4 +1,4 @@
-import type { __Type } from "./TypeManager";
+import type { __Type } from "./__Type";
 
 export interface __Field {
     name: string;

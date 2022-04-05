@@ -4,7 +4,7 @@
 	import { themeChange } from 'theme-change';
 	import SideBar from '@components/ui/SideBar.svelte';
 	import NavBar from '@components/ui/NavBar.svelte';
-	import { isOpen } from '$lib/stores/menu';
+	import { isOpen } from '$lib/stores/Menu';
 	import { initClient } from '@urql/svelte';
 
 	onMount(() => {
@@ -15,7 +15,6 @@
 		url: 'http://localhost:8080/graphql',
 		maskTypename: false
 	});
-	let a = isOpen;
 </script>
 
 <div>

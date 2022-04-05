@@ -1,5 +1,5 @@
-import type { __Field } from "./TypeManager";
-import type { __TypeKind } from "./TypeManager";
+import type { __Field } from "./__Field";
+import type { __TypeKind } from "./__TypeKind";
 
 export interface __Type {
     name: string;
