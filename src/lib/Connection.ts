@@ -1,7 +1,7 @@
 import type { Edge } from "./Edge";
 import type { PageInfo } from "./PageInfo";
 
-export interface Connection {
+export type Connection = {
     edges: Array<Edge>
     pageInfo: PageInfo
 }

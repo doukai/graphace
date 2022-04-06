@@ -1,6 +1,6 @@
 import type { __Type } from "./__Type";
 
-export interface __Field {
+export type __Field = {
     name: string;
     type: __Type;
 }

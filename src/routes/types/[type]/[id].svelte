@@ -1,4 +1,4 @@
-<script context="module">
+<!-- <script context="module">
 	import { TypeManager } from '$lib/TypeManager';
 	const manager = new TypeManager();
 	export async function load({ params }) {
@@ -9,54 +9,55 @@
 			}
 		};
 	}
-</script>
-
+</script> -->
 <script lang="ts">
-	import { operationStore, query } from '@urql/svelte';
+	// import { operationStore, query } from '@urql/svelte';
 	import Section from '/src/components/ui/section/Section.svelte';
 	import TypeEditor from '/src/components/graphql/introspection/TypeEditor.svelte';
-	import FormLoading from '/src/components/ui/form/FormLoading.svelte';
-	export let typeName: string;
+	// import FormLoading from '/src/components/ui/form/FormLoading.svelte';
+	import type { __Type } from '$lib/__Type';
+	export let __type: __Type;
 	export let id: string;
 
-	const queryType = operationStore(
-		`#graphql
-            query ($typeName: String) {
-                __type(name:{val: $typeName}){
-                    name
-                    kind
-                    description
-                    fields{
-                        name
-                        type{
-                            name
-                            kind
-                            ofType{
-                                name
-                                kind
-                                ofType{
-                                    name
-                                    kind
-                                    ofType{
-                                        name
-                                        kind
-                                    }
-                                }
-                            }
-                        }
-                        description
-                    }
-                }
-            }`,
-		{ typeName }
-	);
-	query(queryType);
+	// const queryType = operationStore(
+	// 	`#graphql
+	//         query ($typeName: String) {
+	//             __type(name:{val: $typeName}){
+	//                 name
+	//                 kind
+	//                 description
+	//                 fields{
+	//                     name
+	//                     type{
+	//                         name
+	//                         kind
+	//                         ofType{
+	//                             name
+	//                             kind
+	//                             ofType{
+	//                                 name
+	//                                 kind
+	//                                 ofType{
+	//                                     name
+	//                                     kind
+	//                                 }
+	//                             }
+	//                         }
+	//                     }
+	//                     description
+	//                 }
+	//             }
+	//         }
+	//         `,
+	// 	{ typeName }
+	// );
+	// query(queryType);
 </script>
 
 <Section>
-	{#if $queryType.fetching}
+	<!-- {#if $queryType.fetching}
 		<FormLoading />
-	{:else}
-		<TypeEditor __type={$queryType.data.__type} {id} />
-	{/if}
+	{:else} -->
+	<TypeEditor {__type} {id} />
+	<!-- {/if} -->
 </Section>

@@ -1,7 +1,7 @@
 import type { __Field } from "./__Field";
 import type { __TypeKind } from "./__TypeKind";
 
-export interface __Type {
+export type __Type = {
     name: string;
     fields: __Field[];
     kind: __TypeKind;
