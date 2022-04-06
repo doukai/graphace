@@ -7,13 +7,13 @@
 	import { isOpen } from '$lib/stores/Menu';
 	import { initClient } from '@urql/svelte';
 
-	onMount(() => {
-		themeChange(false);
-	});
-
 	initClient({
 		url: 'http://localhost:8080/graphql',
 		maskTypename: false
+	});
+
+	onMount(() => {
+		themeChange(false);
 	});
 </script>
 

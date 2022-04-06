@@ -12,7 +12,6 @@
 	export let queryValue: string = null;
 	const queryTypeConnection = operationStore('');
 	const manager: TypeManager = new TypeManager();
-	let last: boolean = false;
 	let pageSize: number = 10;
 	$: queryTypeConnectionFieldName = manager.getQueryTypeConnectionFieldName(__type);
 	$: fields = manager.getSingleTypeFiledList(__type);
@@ -60,15 +59,12 @@
 		query(queryTypeConnection);
 	};
 	const onNext = (pageSize: number, after: string) => {
-		last = false;
 		queryType(__type, pageSize, after, null);
 	};
 	const onPrevious = (pageSize: number, before: string) => {
-		last = true;
 		queryType(__type, pageSize, null, before);
 	};
 	const onSizeChange = (pageSize: number) => {
-		last = false;
 		queryType(__type, pageSize, null, null);
 	};
 </script>
@@ -86,7 +82,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each manager.getListFromConnection($queryTypeConnection.data[queryTypeConnectionFieldName], last) as data}
+			{#each manager.getListFromConnection($queryTypeConnection.data[queryTypeConnectionFieldName]) as data}
 				<tr class="hover">
 					{#each fields.map((__field) => __field.name) as name}
 						<td>{data[name] ? data[name] : ''}</td>

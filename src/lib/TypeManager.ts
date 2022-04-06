@@ -146,10 +146,7 @@ export class TypeManager {
         }
     }
 
-    public getListFromConnection(connection: Connection, last: boolean): Array<object> {
-        if (last) {
-            return connection.edges.map(edge => edge.node).reverse();
-        }
+    public getListFromConnection(connection: Connection): Array<object> {
         return connection.edges.map(edge => edge.node);
     };
 

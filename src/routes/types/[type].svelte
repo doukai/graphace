@@ -1,13 +1,16 @@
 <script context="module">
 	import { TypeManager } from '$lib/TypeManager';
 	const manager = new TypeManager();
-	export async function load({ params }) {
-		return {
-			props: {
-				typeName: manager.urlToTypeName(params.type)
-			}
-		};
-	}
+	export const load = async ({ fetch, params }) => {
+		const { type } = params;
+		const res = await fetch(`/types/${manager.urlToTypeName(type)}`);
+		if (res.ok) {
+			const { post } = await res.json();
+			return {
+				props: { post }
+			};
+		}
+	};
 </script>
 
 <script lang="ts">
