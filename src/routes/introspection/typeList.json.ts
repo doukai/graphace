@@ -1,11 +1,11 @@
 import { client } from '$lib/GraphqlClient'
+import { gql } from 'graphql-request'
 import type { __Type } from '$lib/__Type';
 import type { RequestHandler } from '@sveltejs/kit'
-import { gql } from 'graphql-request'
 
-type Response = { data: Data };
 type Data = { __typeList: Array<__Type> };
 type Output = { __typeList: Array<__Type> };
+
 export const get: RequestHandler<null, Output> = async () => {
     const query = gql`
         query {
@@ -16,12 +16,12 @@ export const get: RequestHandler<null, Output> = async () => {
         }
     `;
 
-    const { data } = await client.request<Response>(query);
+    const { __typeList } = await client.request<Data>(query);
 
     return {
         status: 200,
         body: {
-            __typeList: data.__typeList
+            __typeList
         }
     };
 }

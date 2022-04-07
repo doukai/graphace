@@ -1,63 +1,39 @@
-<!-- <script context="module">
+<script lang="ts" context="module">
+	import type { Load } from '@sveltejs/kit';
 	import { TypeManager } from '$lib/TypeManager';
 	const manager = new TypeManager();
-	export async function load({ params }) {
-		return {
-			props: {
-				typeName: manager.urlToTypeName(params.type),
-				id: params.id
-			}
-		};
-	}
-</script> -->
+	export const load: Load = async ({ fetch, params }) => {
+		const { type, id } = params;
+		const res = await fetch(`/types/${manager.urlToTypeName(type)}.json`);
+		if (res.ok) {
+			const fetchType = res.json();
+			return {
+				props: {
+					fetchType,
+					id
+				}
+			};
+		} else {
+			throw new Error(res.statusText);
+		}
+	};
+</script>
+
 <script lang="ts">
-	// import { operationStore, query } from '@urql/svelte';
 	import Section from '/src/components/ui/section/Section.svelte';
 	import TypeEditor from '/src/components/graphql/introspection/TypeEditor.svelte';
-	// import FormLoading from '/src/components/ui/form/FormLoading.svelte';
+	import FormLoading from '/src/components/ui/form/FormLoading.svelte';
 	import type { __Type } from '$lib/__Type';
-	export let __type: __Type;
-	export let id: string;
 
-	// const queryType = operationStore(
-	// 	`#graphql
-	//         query ($typeName: String) {
-	//             __type(name:{val: $typeName}){
-	//                 name
-	//                 kind
-	//                 description
-	//                 fields{
-	//                     name
-	//                     type{
-	//                         name
-	//                         kind
-	//                         ofType{
-	//                             name
-	//                             kind
-	//                             ofType{
-	//                                 name
-	//                                 kind
-	//                                 ofType{
-	//                                     name
-	//                                     kind
-	//                                 }
-	//                             }
-	//                         }
-	//                     }
-	//                     description
-	//                 }
-	//             }
-	//         }
-	//         `,
-	// 	{ typeName }
-	// );
-	// query(queryType);
+	type Data = { __type: __Type };
+	export let fetchType: Promise<Data>;
+	export let id: string;
 </script>
 
 <Section>
-	<!-- {#if $queryType.fetching}
+	{#await fetchType}
 		<FormLoading />
-	{:else} -->
-	<TypeEditor {__type} {id} />
-	<!-- {/if} -->
+	{:then response}
+		<TypeEditor __type={response.__type} {id} />
+	{/await}
 </Section>

@@ -1,24 +1,26 @@
 <script lang="ts">
-	import { operationStore, query } from '@urql/svelte';
+	import { goto } from '$app/navigation';
+	import { gql } from 'graphql-request';
+	import { client } from '$lib/GraphqlClient';
 	import { TypeManager } from '$lib/TypeManager';
 	import { __TypeKind } from '$lib/__TypeKind';
 	import type { __Type } from '$lib/__Type';
-	import { goto } from '$app/navigation';
+	import type { Connection } from '$lib/Connection';
 	import Table from '@components/ui/table/Table.svelte';
 	import TableLoading from '@components/ui/table/TableLoading.svelte';
 	import Pagination from '@components/ui/page/Pagination.svelte';
 
 	export let __type: __Type;
 	export let queryValue: string = null;
-	const queryTypeConnection = operationStore('');
-	const manager: TypeManager = new TypeManager();
-	let pageSize: number = 10;
-	$: queryTypeConnectionFieldName = manager.getQueryTypeConnectionFieldName(__type);
-	$: fields = manager.getSingleTypeFiledList(__type);
-	$: idFieldName = manager.getIdFieldName(__type);
-	$: queryType(__type, pageSize, null, null);
 
-	const queryType = (__type: __Type, pageSize: number, after: string, before: string) => {
+	type Data = { connection: Connection };
+	const manager: TypeManager = new TypeManager();
+	const fields = manager.getSingleTypeFiledList(__type);
+	const idFieldName = manager.getIdFieldName(__type);
+	let pageSize: number = 10;
+	let fetchConnection = queryType(__type, pageSize, null, null);
+
+	async function queryType(__type: __Type, pageSize: number, after: string, before: string) {
 		const variables = queryValue ? '($queryValue: String)' : '';
 		const whereArguments = queryValue ? manager.getAllSingleTypeFiledQueryArguments(__type) : '';
 		let pageArguments = '';
@@ -33,10 +35,11 @@
 		if (whereArguments || pageArguments) {
 			queryArguments = `(${whereArguments} ${pageArguments})`;
 		}
+		const queryTypeConnectionFieldName = manager.getQueryTypeConnectionFieldName(__type);
 		const selections = fields.map((field) => field.name).join(' ');
-		const graphql = `#graphql
+		const graphql = gql`
         query ${variables}{
-            ${queryTypeConnectionFieldName}${queryArguments}{
+            connection: ${queryTypeConnectionFieldName}${queryArguments}{
 				edges {
 					cursor
 					node {
@@ -52,26 +55,27 @@
             }
         }
         `;
-		$queryTypeConnection.query = graphql;
-		if (queryValue) {
-			$queryTypeConnection.variables = { queryValue };
-		}
-		query(queryTypeConnection);
+
+		return await client.request<Data>(graphql, { queryValue });
+	}
+
+	const onNext = (selectedPageSize: number, after: string) => {
+		pageSize = selectedPageSize;
+		fetchConnection = queryType(__type, pageSize, after, null);
 	};
-	const onNext = (pageSize: number, after: string) => {
-		queryType(__type, pageSize, after, null);
+	const onPrevious = (selectedPageSize: number, before: string) => {
+		pageSize = selectedPageSize;
+		fetchConnection = queryType(__type, pageSize, null, before);
 	};
-	const onPrevious = (pageSize: number, before: string) => {
-		queryType(__type, pageSize, null, before);
-	};
-	const onSizeChange = (pageSize: number) => {
-		queryType(__type, pageSize, null, null);
+	const onSizeChange = (selectedPageSize: number) => {
+		pageSize = selectedPageSize;
+		fetchConnection = queryType(__type, pageSize, null, null);
 	};
 </script>
 
-{#if $queryTypeConnection.fetching}
+{#await fetchConnection}
 	<TableLoading />
-{:else}
+{:then response}
 	<Table>
 		<thead>
 			<tr>
@@ -82,7 +86,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each manager.getListFromConnection($queryTypeConnection.data[queryTypeConnectionFieldName]) as data}
+			{#each manager.getListFromConnection(response.connection) as data}
 				<tr class="hover">
 					{#each fields.map((__field) => __field.name) as name}
 						<td>{data[name] ? data[name] : ''}</td>
@@ -107,10 +111,10 @@
 		{onNext}
 		{onPrevious}
 		{onSizeChange}
-		hasNextPage={$queryTypeConnection.data[queryTypeConnectionFieldName].pageInfo.hasNextPage}
-		hasPreviousPage={$queryTypeConnection.data[queryTypeConnectionFieldName].pageInfo
-			.hasPreviousPage}
-		startCursor={$queryTypeConnection.data[queryTypeConnectionFieldName].pageInfo.startCursor}
-		endCursor={$queryTypeConnection.data[queryTypeConnectionFieldName].pageInfo.endCursor}
+		{pageSize}
+		hasNextPage={response.connection.pageInfo.hasNextPage}
+		hasPreviousPage={response.connection.pageInfo.hasPreviousPage}
+		startCursor={response.connection.pageInfo.startCursor}
+		endCursor={response.connection.pageInfo.endCursor}
 	/>
-{/if}
+{/await}

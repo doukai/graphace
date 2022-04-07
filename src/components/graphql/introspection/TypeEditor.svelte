@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { query, operationStore, mutation } from '@urql/svelte';
+	import { goto } from '$app/navigation';
+	import { gql } from 'graphql-request';
+	import { client } from '$lib/GraphqlClient';
 	import { TypeManager } from '$lib/TypeManager';
 	import type { __Type } from '$lib/__Type';
 	import { __TypeKind } from '$lib/__TypeKind';
-	import { goto } from '$app/navigation';
 	import Form from '@components/ui/form/Form.svelte';
 	import FormLoading from '@components/ui/form/FormLoading.svelte';
 	import FormItems from '@components/ui/form/FormItems.svelte';
@@ -18,42 +19,43 @@
 	const idFieldName = manager.getIdFieldName(__type);
 	const selections = manager.fieldsToSelections(__type);
 
-	const queryData = operationStore(
-		`#graphql
+	const graphql = gql`
 		query ($id: ID) {
 			${queryTypeFieldName} (${idFieldName}: {val: $id}){
 				${selections}
 			}
-		}`,
-		{ id }
-	);
+		}
+	`;
 
-	$: data = $queryData.data;
-	query(queryData);
+	type Response = { data: any };
+	const queryData = client.request<Response>(graphql, { id });
+
+	let data: any;
+	queryData.then((res) => (data = res.data));
 
 	const mutationTypeFieldName = manager.getMutationTypeFieldName(__type);
 	const mutationVariables = manager.fieldsToMutationVariables(__type);
 	const mutationArguments = manager.fieldsToMutationArguments(__type);
 
-	const mutationType = mutation({
-		query: `#graphql
-		mutation (${mutationVariables}) {
-			${mutationTypeFieldName} (${mutationArguments}) {
-				${selections}
-			}
-		}`
-	});
+	// const mutationType = mutation({
+	// 	query: `#graphql
+	// 	mutation (${mutationVariables}) {
+	// 		${mutationTypeFieldName} (${mutationArguments}) {
+	// 			${selections}
+	// 		}
+	// 	}`
+	// });
 
 	const save = () => {
-		mutationType({ ...data[queryTypeFieldName] }).then((result) => {
-			data[queryTypeFieldName] = result.data[mutationTypeFieldName];
-		});
+		// mutationType({ ...data[queryTypeFieldName] }).then((result) => {
+		// 	data[queryTypeFieldName] = result.data[mutationTypeFieldName];
+		// });
 	};
 </script>
 
-{#if $queryData.fetching}
+{#await queryData}
 	<FormLoading />
-{:else}
+{:then response}
 	<Form>
 		<FormItems title={__type.name}>
 			{#each manager.getSingleTypeFiledList(__type) as __field}
@@ -83,4 +85,4 @@
 			</button>
 		</FormButtons>
 	</Form>
-{/if}
+{/await}
