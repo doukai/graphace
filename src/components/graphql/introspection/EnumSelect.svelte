@@ -1,32 +1,34 @@
 <script lang="ts">
-	import { operationStore, query } from '@urql/svelte';
+	import { gql } from 'graphql-request';
+	import { client } from '$lib/GraphqlClient';
+	import type { __Type } from '$lib/__Type';
 	import Select from '@components/ui/input/Select.svelte';
 	export let value: any;
 	export let enumName: string;
 
-	const queryEnum = operationStore(
-		`#graphql
+	const graphql = gql`
 		query ($enumName: ID) {
-			__type(name:{val:$enumName}){
+			__type(name: { val: $enumName }) {
 				name
-                description
-                enumValues{
-                    name
-                    description
-                }
+				description
+				enumValues {
+					name
+					description
+				}
 			}
-		}`,
-		{ enumName }
-	);
-	query(queryEnum);
+		}
+	`;
+
+	type Response = { __type: __Type };
+	const queryData = client.request<Response>(graphql, { enumName });
 </script>
 
-{#if $queryEnum.fetching}
+{#await queryData}
 	<div class="animate-pulse max-w-lg w-full sm:max-w-xs rounded-md" />
-{:else}
+{:then response}
 	<Select bind:value>
-		{#each $queryEnum.data.__type.enumValues as enumValue}
+		{#each response.__type.enumValues as enumValue}
 			<option value={enumValue.name}>{enumValue.name}</option>
 		{/each}
 	</Select>
-{/if}
+{/await}

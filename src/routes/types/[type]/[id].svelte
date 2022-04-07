@@ -20,10 +20,10 @@
 </script>
 
 <script lang="ts">
-	import Section from '/src/components/ui/section/Section.svelte';
-	import TypeEditor from '/src/components/graphql/introspection/TypeEditor.svelte';
-	import FormLoading from '/src/components/ui/form/FormLoading.svelte';
 	import type { __Type } from '$lib/__Type';
+	import Section from '@components/ui/section/Section.svelte';
+	import TypeEditor from '@components/graphql/introspection/TypeEditor.svelte';
+	import FormLoading from '@components/ui/form/FormLoading.svelte';
 
 	type Data = { __type: __Type };
 	export let fetchType: Promise<Data>;

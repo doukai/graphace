@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { mutation } from '@urql/svelte';
+	import { goto } from '$app/navigation';
+	import { gql } from 'graphql-request';
+	import { client } from '$lib/GraphqlClient';
 	import { TypeManager } from '$lib/TypeManager';
 	import type { __Type } from '$lib/__Type';
 	import { __TypeKind } from '$lib/__TypeKind';
-	import { goto } from '$app/navigation';
 	import Form from '@components/ui/form/Form.svelte';
 	import FormItems from '@components/ui/form/FormItems.svelte';
 	import FormItem from '@components/ui/form/FormItem.svelte';
@@ -12,30 +13,28 @@
 	export let __type: __Type;
 
 	const manager = new TypeManager();
-
-	const data = manager.createTypeObject(__type);
-	const idFieldName = manager.getIdFieldName(__type);
 	const selections = manager.fieldsToSelections(__type);
+
+	let data = manager.createTypeObject(__type);
+
 	const mutationTypeFieldName = manager.getMutationTypeFieldName(__type);
 	const mutationVariables = manager.fieldsToMutationVariables(__type);
 	const mutationArguments = manager.fieldsToMutationArguments(__type);
 
-	const mutationType = mutation({
-		query: `#graphql
+	const mutation = gql`
 		mutation (${mutationVariables}) {
-			${mutationTypeFieldName} (${mutationArguments}) {
+			data: ${mutationTypeFieldName} (${mutationArguments}) {
 				${selections}
 			}
-		}`
-	});
+		}	
+	`;
+
+	client.request(mutation, data);
 
 	const save = () => {
-		mutationType({ ...data }).then((result) => {
-			goto(
-				`/types/${manager.typeNameToUrl(__type.name)}/${
-					result.data[mutationTypeFieldName][idFieldName]
-				}`
-			);
+		debugger;
+		client.request(mutation, data).then((res) => {
+			data = res.data;
 		});
 	};
 </script>

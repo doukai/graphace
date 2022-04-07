@@ -19,10 +19,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import type { __Type } from '$lib/__Type';
-	import TypeTable from '/src/components/graphql/introspection/TypeTable.svelte';
-	import SectionHead from '/src/components/ui/section/SectionHead.svelte';
-	import SectionLoading from '/src/components/ui/section/SectionLoading.svelte';
-	import SearchInput from '/src/components/ui/search/SearchInput.svelte';
+	import TypeTable from '@components/graphql/introspection/TypeTable.svelte';
+	import SectionHead from '@components/ui/section/SectionHead.svelte';
+	import SectionLoading from '@components/ui/section/SectionLoading.svelte';
+	import SearchInput from '@components/ui/search/SearchInput.svelte';
 
 	type Data = { __type: __Type };
 	export let fetchType: Promise<Data>;

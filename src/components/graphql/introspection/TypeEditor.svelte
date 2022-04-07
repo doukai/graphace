@@ -21,7 +21,7 @@
 
 	const graphql = gql`
 		query ($id: ID) {
-			${queryTypeFieldName} (${idFieldName}: {val: $id}){
+			data: ${queryTypeFieldName} (${idFieldName}: {val: $id}){
 				${selections}
 			}
 		}
@@ -31,25 +31,28 @@
 	const queryData = client.request<Response>(graphql, { id });
 
 	let data: any;
-	queryData.then((res) => (data = res.data));
+	queryData.then((res) => {
+		data = res.data;
+	});
 
 	const mutationTypeFieldName = manager.getMutationTypeFieldName(__type);
 	const mutationVariables = manager.fieldsToMutationVariables(__type);
 	const mutationArguments = manager.fieldsToMutationArguments(__type);
 
-	// const mutationType = mutation({
-	// 	query: `#graphql
-	// 	mutation (${mutationVariables}) {
-	// 		${mutationTypeFieldName} (${mutationArguments}) {
-	// 			${selections}
-	// 		}
-	// 	}`
-	// });
+	const mutation = gql`
+		mutation (${mutationVariables}) {
+			data: ${mutationTypeFieldName} (${mutationArguments}) {
+				${selections}
+			}
+		}	
+	`;
+
+	client.request(mutation, data);
 
 	const save = () => {
-		// mutationType({ ...data[queryTypeFieldName] }).then((result) => {
-		// 	data[queryTypeFieldName] = result.data[mutationTypeFieldName];
-		// });
+		client.request(mutation, data).then((res) => {
+			data = res.data;
+		});
 	};
 </script>
 
@@ -60,7 +63,7 @@
 		<FormItems title={__type.name}>
 			{#each manager.getSingleTypeFiledList(__type) as __field}
 				<FormItem label={__field.name} forName={__field.name}>
-					<FieldInput {__field} bind:value={data[queryTypeFieldName][__field.name]} />
+					<FieldInput {__field} bind:value={data[__field.name]} />
 				</FormItem>
 			{/each}
 		</FormItems>
