@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { gql } from 'graphql-request';
 	import { client } from '$lib/GraphqlClient';
-	import type { __Type } from '$lib/__Type';
+	import type { __Type } from '$lib/types/__Type';
 	import Select from '@components/ui/input/Select.svelte';
 	export let value: any;
 	export let enumName: string;

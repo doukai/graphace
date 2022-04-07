@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
-	import type { __Type } from '$lib/__Type';
+	import type { __Type } from '$lib/types/__Type';
 	import { TypeManager } from '$lib/TypeManager';
 
 	const manager = new TypeManager();

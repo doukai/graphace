@@ -19,7 +19,7 @@
 </script>
 
 <script lang="ts">
-	import type { __Type } from '$lib/__Type';
+	import type { __Type } from '$lib/types/__Type';
 	import Section from '@components/ui/section/Section.svelte';
 	import TypeCreator from '@components/graphql/introspection/TypeCreator.svelte';
 	import FormLoading from '@components/ui/form/FormLoading.svelte';

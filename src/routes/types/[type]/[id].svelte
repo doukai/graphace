@@ -20,7 +20,7 @@
 </script>
 
 <script lang="ts">
-	import type { __Type } from '$lib/__Type';
+	import type { __Type } from '$lib/types/__Type';
 	import Section from '@components/ui/section/Section.svelte';
 	import TypeEditor from '@components/graphql/introspection/TypeEditor.svelte';
 	import FormLoading from '@components/ui/form/FormLoading.svelte';

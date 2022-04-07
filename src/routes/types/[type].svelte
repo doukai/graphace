@@ -18,7 +18,7 @@
 
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import type { __Type } from '$lib/__Type';
+	import type { __Type } from '$lib/types/__Type';
 	import TypeTable from '@components/graphql/introspection/TypeTable.svelte';
 	import SectionHead from '@components/ui/section/SectionHead.svelte';
 	import SectionLoading from '@components/ui/section/SectionLoading.svelte';

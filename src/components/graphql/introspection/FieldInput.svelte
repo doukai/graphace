@@ -4,7 +4,7 @@
 	import NumberInput from '@components/ui/input/NumberInput.svelte';
 	import Toggle from '@components/ui/input/Toggle.svelte';
 	import EnumSelect from './EnumSelect.svelte';
-	import type { __Field } from '$lib/__Field';
+	import type { __Field } from '$lib/types/__Field';
 	export let __field: __Field;
 	export let value: any;
 	const manager = new TypeManager();

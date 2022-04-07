@@ -3,12 +3,12 @@
 	import { gql } from 'graphql-request';
 	import { client } from '$lib/GraphqlClient';
 	import { TypeManager } from '$lib/TypeManager';
-	import { __TypeKind } from '$lib/__TypeKind';
-	import type { __Type } from '$lib/__Type';
-	import type { Connection } from '$lib/Connection';
+	import { __TypeKind } from '$lib/types/__TypeKind';
+	import type { __Type } from '$lib/types/__Type';
+	import type { Connection } from '$lib/types/Connection';
 	import Table from '@components/ui/table/Table.svelte';
 	import TableLoading from '@components/ui/table/TableLoading.svelte';
-	import Pagination from '@components/ui/page/Pagination.svelte';
+	import Pagination from '@components/ui/connection/Pagination.svelte';
 
 	export let __type: __Type;
 	export let queryValue: string = null;

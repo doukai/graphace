@@ -6,7 +6,7 @@
 	import TypeMenu from '@components/graphql/introspection/TypeMenu.svelte';
 	import NavBar from '@components/ui/NavBar.svelte';
 	import { isOpen } from '$lib/stores/Menu';
-	import type { __Type } from '$lib/__Type';
+	import type { __Type } from '$lib/types/__Type';
 
 	onMount(() => {
 		themeChange(false);

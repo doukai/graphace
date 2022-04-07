@@ -1,6 +1,6 @@
 import { client } from '$lib/GraphqlClient'
 import { gql } from 'graphql-request'
-import type { __Type } from '$lib/__Type';
+import type { __Type } from '$lib/types/__Type';
 import type { RequestHandler } from '@sveltejs/kit'
 
 type Data = { __typeList: Array<__Type> };

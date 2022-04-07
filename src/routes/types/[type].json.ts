@@ -2,7 +2,7 @@ import type { RequestHandler } from '@sveltejs/kit'
 import { gql } from 'graphql-request'
 import { client } from '$lib/GraphqlClient'
 import { TypeManager } from '$lib/TypeManager';
-import type { __Type } from '$lib/__Type';
+import type { __Type } from '$lib/types/__Type';
 
 type Params = { type: string };
 type Data = { __type: __Type };
