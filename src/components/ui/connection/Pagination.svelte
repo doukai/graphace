@@ -6,7 +6,8 @@
 	export let onPageChange: Function;
 	export let onSizeChange: Function;
 
-	let pageCount = (totalCount - 1) / pageSize + 1;
+	let pageCount: number =
+		totalCount % pageSize == 0 ? ~~(totalCount / pageSize) : ~~(totalCount / pageSize) + 1;
 </script>
 
 <div class="navbar bg-base-100 shadow-xl rounded-box">
@@ -26,7 +27,9 @@
 			</label>
 		</div>
 	</div>
+	<div class="navbar-center" />
 	<div class="navbar-end">
+		<p class="mr-4">{totalCount} results</p>
 		<div class="btn-group">
 			<button
 				class="btn {pageNumber - 1 ? '' : 'btn-disabled'}"
