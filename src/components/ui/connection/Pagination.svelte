@@ -1,13 +1,12 @@
 <script lang="ts">
 	export let pageSizeOptions: number[] = [10, 20, 30];
 	export let pageSize: number = 10;
-	export let onPrevious: Function;
-	export let onNext: Function;
+	export let pageNumber: number = 1;
+	export let totalCount: number = 0;
+	export let onPageChange: Function;
 	export let onSizeChange: Function;
-	export let hasNextPage: boolean = false;
-	export let hasPreviousPage: boolean = false;
-	export let startCursor: string;
-	export let endCursor: string;
+
+	let pageCount = (totalCount - 1) / pageSize + 1;
 </script>
 
 <div class="navbar bg-base-100 shadow-xl rounded-box">
@@ -28,22 +27,63 @@
 		</div>
 	</div>
 	<div class="navbar-end">
-		<div class="btn-group grid grid-cols-2">
+		<div class="btn-group">
 			<button
-				class="btn btn-outline {hasPreviousPage ? '' : 'btn-disabled'}"
+				class="btn {pageNumber - 1 ? '' : 'btn-disabled'}"
 				on:click={() => {
-					onPrevious(pageSize, startCursor);
+					onPageChange(pageSize, pageNumber - 1);
 				}}
 			>
-				Previous
+				«
 			</button>
+			{#if pageNumber - 2 > 0}
+				<button
+					class="btn"
+					on:click={() => {
+						onPageChange(pageSize, pageNumber - 2);
+					}}
+				>
+					{pageNumber - 2}
+				</button>
+			{/if}
+			{#if pageNumber - 1 > 0}
+				<button
+					class="btn"
+					on:click={() => {
+						onPageChange(pageSize, pageNumber - 1);
+					}}
+				>
+					{pageNumber - 1}
+				</button>
+			{/if}
+			<button class="btn btn-active">{pageNumber}</button>
+			{#if pageNumber + 1 <= pageCount}
+				<button
+					class="btn"
+					on:click={() => {
+						onPageChange(pageSize, pageNumber + 1);
+					}}
+				>
+					{pageNumber + 1}
+				</button>
+			{/if}
+			{#if pageNumber + 2 <= pageCount}
+				<button
+					class="btn"
+					on:click={() => {
+						onPageChange(pageSize, pageNumber + 2);
+					}}
+				>
+					{pageNumber + 2}
+				</button>
+			{/if}
 			<button
-				class="btn btn-outline {hasNextPage ? '' : 'btn-disabled'}"
+				class="btn {pageNumber + 1 <= pageCount ? '' : 'btn-disabled'}"
 				on:click={() => {
-					onNext(pageSize, endCursor);
+					onPageChange(pageSize, pageNumber + 1);
 				}}
 			>
-				Next
+				»
 			</button>
 		</div>
 	</div>

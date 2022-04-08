@@ -17,10 +17,18 @@
 	const manager: TypeManager = new TypeManager();
 	const fields = manager.getSingleTypeFiledList(__type);
 	const idFieldName = manager.getIdFieldName(__type);
+	let pageNumber: number = 1;
 	let pageSize: number = 10;
-	let fetchConnection = queryType(__type, pageSize, null, null);
+	let fetchConnection = queryType({ __type: __type, pageSize: pageSize });
 
-	async function queryType(__type: __Type, pageSize: number, after: string, before: string) {
+	interface QueryParams {
+		__type: __Type;
+		pageSize: number;
+		after?: string;
+		before?: string;
+		offset?: number;
+	}
+	async function queryType({ __type, pageSize, after, before, offset }: QueryParams) {
 		const variables = queryValue ? '($queryValue: String)' : '';
 		const whereArguments = queryValue ? manager.getAllSingleTypeFiledQueryArguments(__type) : '';
 		let pageArguments = '';
@@ -28,6 +36,8 @@
 			pageArguments = `after: "${after}" first: ${pageSize}`;
 		} else if (before) {
 			pageArguments = `before: "${before}" last: ${pageSize}`;
+		} else if (offset) {
+			pageArguments = `offset: ${offset} first: ${pageSize}`;
 		} else {
 			pageArguments = `first: ${pageSize}`;
 		}
@@ -40,17 +50,11 @@
 		const graphql = gql`
         query ${variables}{
             connection: ${queryTypeConnectionFieldName}${queryArguments}{
+				totalCount
 				edges {
-					cursor
 					node {
 						${selections}
 					}
-				}
-				pageInfo {
-					hasNextPage
-					hasPreviousPage
-					startCursor
-					endCursor
 				}
             }
         }
@@ -61,15 +65,24 @@
 
 	const onNext = (selectedPageSize: number, after: string) => {
 		pageSize = selectedPageSize;
-		fetchConnection = queryType(__type, pageSize, after, null);
+		fetchConnection = queryType({ __type: __type, pageSize: pageSize, after: after });
 	};
 	const onPrevious = (selectedPageSize: number, before: string) => {
 		pageSize = selectedPageSize;
-		fetchConnection = queryType(__type, pageSize, null, before);
+		fetchConnection = queryType({ __type: __type, pageSize: pageSize, before: before });
+	};
+	const onPageChange = (selectedPageSize: number, selectedPageNumber: number) => {
+		pageSize = selectedPageSize;
+		pageNumber = selectedPageNumber;
+		fetchConnection = queryType({
+			__type: __type,
+			pageSize: pageSize,
+			offset: (pageNumber - 1) * pageSize
+		});
 	};
 	const onSizeChange = (selectedPageSize: number) => {
 		pageSize = selectedPageSize;
-		fetchConnection = queryType(__type, pageSize, null, null);
+		fetchConnection = queryType({ __type: __type, pageSize: pageSize });
 	};
 </script>
 
@@ -108,13 +121,10 @@
 	</Table>
 	<div class="divider" />
 	<Pagination
-		{onNext}
-		{onPrevious}
+		{onPageChange}
 		{onSizeChange}
+		{pageNumber}
 		{pageSize}
-		hasNextPage={response.connection.pageInfo.hasNextPage}
-		hasPreviousPage={response.connection.pageInfo.hasPreviousPage}
-		startCursor={response.connection.pageInfo.startCursor}
-		endCursor={response.connection.pageInfo.endCursor}
+		totalCount={response.connection.totalCount}
 	/>
 {/await}
