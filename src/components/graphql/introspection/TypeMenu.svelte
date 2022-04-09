@@ -21,7 +21,7 @@
 {#await fetchTypeList}
 	<ul class="menu w-56 p-2 rounded-box">
 		<div class="animate-pulse space-y-1">
-			{#each { length: 24 } as _, i} <div class="py-5 bg-base-100 rounded" /> {/each}
+			{#each { length: 24 } as _, i} <div class="py-4 bg-base-100 rounded" /> {/each}
 		</div>
 	</ul>
 {:then response}

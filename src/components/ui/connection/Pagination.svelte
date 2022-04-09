@@ -28,8 +28,8 @@
 		</div>
 	</div>
 	<div class="navbar-center" />
-	<div class="navbar-end">
-		<p class="mr-4">{totalCount} results</p>
+
+	<div class="navbar-end lg:hidden">
 		<div class="btn-group">
 			<button
 				class="btn {pageNumber - 1 ? '' : 'btn-disabled'}"
@@ -39,6 +39,49 @@
 			>
 				«
 			</button>
+			<button class="btn">Page {pageNumber}</button>
+			<button
+				class="btn {pageNumber + 1 <= pageCount ? '' : 'btn-disabled'}"
+				on:click={() => {
+					onPageChange(pageSize, pageNumber + 1);
+				}}
+			>
+				»
+			</button>
+		</div>
+	</div>
+
+	<div class="navbar-end hidden lg:flex">
+		<p class="mr-4 hidden xl:flex">{totalCount} results</p>
+		<div class="btn-group">
+			<button
+				class="btn {pageNumber - 1 ? '' : 'btn-disabled'}"
+				on:click={() => {
+					onPageChange(pageSize, pageNumber - 1);
+				}}
+			>
+				«
+			</button>
+			{#if pageNumber === pageCount}
+				<button
+					class="btn"
+					on:click={() => {
+						onPageChange(pageSize, pageNumber - 4);
+					}}
+				>
+					{pageNumber - 4}
+				</button>
+			{/if}
+			{#if pageNumber >= pageCount - 1}
+				<button
+					class="btn"
+					on:click={() => {
+						onPageChange(pageSize, pageNumber - 3);
+					}}
+				>
+					{pageNumber - 3}
+				</button>
+			{/if}
 			{#if pageNumber - 2 > 0}
 				<button
 					class="btn"
@@ -78,6 +121,26 @@
 					}}
 				>
 					{pageNumber + 2}
+				</button>
+			{/if}
+			{#if pageNumber <= 2}
+				<button
+					class="btn"
+					on:click={() => {
+						onPageChange(pageSize, pageNumber + 3);
+					}}
+				>
+					{pageNumber + 3}
+				</button>
+			{/if}
+			{#if pageNumber === 1}
+				<button
+					class="btn"
+					on:click={() => {
+						onPageChange(pageSize, pageNumber + 4);
+					}}
+				>
+					{pageNumber + 4}
 				</button>
 			{/if}
 			<button

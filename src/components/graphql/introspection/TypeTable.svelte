@@ -21,6 +21,10 @@
 	let pageSize: number = 10;
 	let fetchConnection = queryType({ __type: __type, pageSize: pageSize });
 
+	$: if (queryValue != null) {
+		fetchConnection = queryType({ __type: __type, pageSize: pageSize });
+	}
+
 	interface QueryParams {
 		__type: __Type;
 		pageSize: number;
@@ -28,6 +32,7 @@
 		before?: string;
 		offset?: number;
 	}
+
 	async function queryType({ __type, pageSize, after, before, offset }: QueryParams) {
 		const variables = queryValue ? '($queryValue: String)' : '';
 		const whereArguments = queryValue ? manager.getAllSingleTypeFiledQueryArguments(__type) : '';
@@ -63,15 +68,17 @@
 		return await client.request<Data>(graphql, { queryValue });
 	}
 
-	const onNext = (selectedPageSize: number, after: string) => {
+	const onNext = (selectedPageSize: number, after: string): void => {
 		pageSize = selectedPageSize;
 		fetchConnection = queryType({ __type: __type, pageSize: pageSize, after: after });
 	};
-	const onPrevious = (selectedPageSize: number, before: string) => {
+
+	const onPrevious = (selectedPageSize: number, before: string): void => {
 		pageSize = selectedPageSize;
 		fetchConnection = queryType({ __type: __type, pageSize: pageSize, before: before });
 	};
-	const onPageChange = (selectedPageSize: number, selectedPageNumber: number) => {
+
+	const onPageChange = (selectedPageSize: number, selectedPageNumber: number): void => {
 		pageSize = selectedPageSize;
 		pageNumber = selectedPageNumber;
 		fetchConnection = queryType({
@@ -80,7 +87,8 @@
 			offset: (pageNumber - 1) * pageSize
 		});
 	};
-	const onSizeChange = (selectedPageSize: number) => {
+
+	const onSizeChange = (selectedPageSize: number): void => {
 		pageSize = selectedPageSize;
 		fetchConnection = queryType({ __type: __type, pageSize: pageSize });
 	};
