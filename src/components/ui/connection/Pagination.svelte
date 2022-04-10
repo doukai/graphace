@@ -62,7 +62,7 @@
 			>
 				«
 			</button>
-			{#if pageNumber === pageCount}
+			{#if totalCount >= 5 && pageNumber === pageCount}
 				<button
 					class="btn"
 					on:click={() => {
@@ -72,7 +72,7 @@
 					{pageNumber - 4}
 				</button>
 			{/if}
-			{#if pageNumber >= pageCount - 1}
+			{#if totalCount >= 4 && pageNumber >= pageCount - 1}
 				<button
 					class="btn"
 					on:click={() => {
@@ -102,7 +102,9 @@
 					{pageNumber - 1}
 				</button>
 			{/if}
-			<button class="btn btn-active">{pageNumber}</button>
+			{#if totalCount > 0}
+				<button class="btn btn-active">{pageNumber}</button>
+			{/if}
 			{#if pageNumber + 1 <= pageCount}
 				<button
 					class="btn"
@@ -123,7 +125,7 @@
 					{pageNumber + 2}
 				</button>
 			{/if}
-			{#if pageNumber <= 2}
+			{#if totalCount >= 4 && pageNumber <= 2}
 				<button
 					class="btn"
 					on:click={() => {
@@ -133,7 +135,7 @@
 					{pageNumber + 3}
 				</button>
 			{/if}
-			{#if pageNumber === 1}
+			{#if totalCount >= 5 && pageNumber === 1}
 				<button
 					class="btn"
 					on:click={() => {

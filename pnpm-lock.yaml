@@ -24,13 +24,17 @@ specifiers:
   svelte-preprocess: ^4.10.1
   tailwindcss: ^3.0.23
   theme-change: ^2.0.2
+  tippy.js: ^6.3.7
   tslib: ^2.3.1
   typescript: ~4.5.4
+
+dependencies:
+  tippy.js: 6.3.7
 
 devDependencies:
   '@iconify/svelte': 2.1.2
   '@sveltejs/adapter-auto': 1.0.0-next.34
-  '@sveltejs/kit': 1.0.0-next.307_svelte@3.46.4
+  '@sveltejs/kit': 1.0.0-next.310_svelte@3.46.4
   '@tailwindcss/typography': 0.5.2_tailwindcss@3.0.23
   '@types/lodash': 4.14.178
   '@typescript-eslint/eslint-plugin': 5.12.0_39008ab451aed7e12174fadc21405fee
@@ -141,6 +145,10 @@ packages:
       fastq: 1.13.0
     dev: true
 
+  /@popperjs/core/2.11.5:
+    resolution: {integrity: sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==}
+    dev: false
+
   /@rollup/pluginutils/4.1.2:
     resolution: {integrity: sha512-ROn4qvkxP9SyPeHaf7uQC/GPFY6L/OWy9+bd9AwcjOAWQwxRscoEyAUD8qCY5o5iL4jqQwoLk2kaTKJPb/HwzQ==}
     engines: {node: '>= 8.0.0'}
@@ -178,8 +186,8 @@ packages:
       esbuild: 0.14.30
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.307_svelte@3.46.4:
-    resolution: {integrity: sha512-dVxSuP0YyGL6/4VVhjLxxj4hHlVscrXJttvsffGnFOUJ1JtrJ496xoxhxB7iSVpYdTMXocjA9w54ZIC59m0J7A==}
+  /@sveltejs/kit/1.0.0-next.310_svelte@3.46.4:
+    resolution: {integrity: sha512-pTyMyaoyHS+V5cQZIQMfQXmLkhw1VaRwT9avOSgwDc0QBpnNw2LdzwoPYsUr96ca5B6cfT3SMUNolxErTNHmPQ==}
     engines: {node: '>=14.13'}
     hasBin: true
     peerDependencies:
@@ -2127,6 +2135,12 @@ packages:
       globalyzer: 0.1.0
       globrex: 0.1.2
     dev: true
+
+  /tippy.js/6.3.7:
+    resolution: {integrity: sha512-E1d3oP2emgJ9dRQZdf3Kkn0qJgI6ZLpyS5z6ZkY1DF3kaQaBsGZsndEpHwx+eC+tYM41HaSNvNtLx8tU57FzTQ==}
+    dependencies:
+      '@popperjs/core': 2.11.5
+    dev: false
 
   /to-regex-range/5.0.1:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}

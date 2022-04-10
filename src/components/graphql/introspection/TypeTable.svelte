@@ -9,6 +9,7 @@
 	import Table from '@components/ui/table/Table.svelte';
 	import TableLoading from '@components/ui/table/TableLoading.svelte';
 	import Pagination from '@components/ui/connection/Pagination.svelte';
+	import { tippy } from '$lib/tippy';
 
 	export let __type: __Type;
 	export let queryValue: string = null;
@@ -101,7 +102,16 @@
 		<thead>
 			<tr>
 				{#each fields.map((__field) => __field.name) as name}
-					<td>{name}</td>
+					<td>
+						<span
+							use:tippy={{
+								content: 'Test',
+								trigger: 'click'
+							}}
+						>
+							{name}
+						</span>
+					</td>
 				{/each}
 				<td />
 			</tr>
