@@ -1,7 +1,5 @@
 import runTippy from 'tippy.js';
 import type { Props } from 'tippy.js';
-import 'tippy.js/dist/tippy.css';
-import 'tippy.js/themes/light.css'
 
 /**
  * An interface of [Tippy.js Props](https://atomiks.github.io/tippyjs/v6/html-content/)
