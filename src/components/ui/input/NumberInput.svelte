@@ -1,7 +1,8 @@
 <script lang="ts">
 	export let name: string;
-	export let value: any;
+	export let value: number | null;
 	export let placeholder: string = '';
+	export let className: string = '';
 </script>
 
-<input type="number" {name} {placeholder} class="input input-bordered w-full max-w-xs" bind:value />
+<input type="number" {name} {placeholder} class="input input-bordered {className}" bind:value />

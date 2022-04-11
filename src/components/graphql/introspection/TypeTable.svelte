@@ -10,21 +10,30 @@
 	import TableLoading from '@components/ui/table/TableLoading.svelte';
 	import Pagination from '@components/ui/connection/Pagination.svelte';
 	import FieldTh from './FieldTh.svelte';
+	import { __FieldFilter } from '$lib/types/__FieldFilter';
+	import type { __Field } from '$lib/types/__Field';
 
 	export let __type: __Type;
 	export let queryValue: string = null;
 
 	type Data = { connection: Connection };
 	const manager: TypeManager = new TypeManager();
-	const fields = manager.getSingleTypeFiledList(__type);
-	const idFieldName = manager.getIdFieldName(__type);
+	const fields: Array<__Field> = manager.getSingleTypeFiledList(__type);
+	const fieldFilters: Array<__FieldFilter> = manager
+		.getSingleTypeFiledList(__type)
+		.map((__field) => new __FieldFilter(__field));
+	const idFieldName: string = manager.getIdFieldName(__type);
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
-	let fetchConnection = queryType({ __type: __type, pageSize: pageSize });
+	let fetchConnection: Promise<Data> = queryType({ __type: __type, pageSize: pageSize });
 
 	$: if (queryValue != null) {
-		fetchConnection = queryType({ __type: __type, pageSize: pageSize });
+		research();
 	}
+
+	const research = () => {
+		fetchConnection = queryType({ __type: __type, pageSize: pageSize });
+	};
 
 	interface QueryParams {
 		__type: __Type;
@@ -35,9 +44,11 @@
 	}
 
 	async function queryType({ __type, pageSize, after, before, offset }: QueryParams) {
-		const variables = queryValue ? '($queryValue: String)' : '';
-		const whereArguments = queryValue ? manager.getAllSingleTypeFiledQueryArguments(__type) : '';
-		let pageArguments = '';
+		const variables: string = queryValue ? '($queryValue: String)' : '';
+		const whereArguments: string = queryValue
+			? manager.getAllSingleTypeFiledQueryArguments(__type)
+			: '';
+		let pageArguments: string = '';
 		if (after) {
 			pageArguments = `after: "${after}" first: ${pageSize}`;
 		} else if (before) {
@@ -47,15 +58,46 @@
 		} else {
 			pageArguments = `first: ${pageSize}`;
 		}
+
+		const filters: Array<string> = fieldFilters
+			.filter((__fieldFilter) => __fieldFilter.val != null)
+			.map(
+				(__fieldFilter) =>
+					`${__fieldFilter.__field.name}: {opr:${__fieldFilter.opr} val:${
+						manager.getFieldTypeName(__fieldFilter.__field.type) === 'ID' ||
+						manager.getFieldTypeName(__fieldFilter.__field.type) === 'String'
+							? '"' + __fieldFilter.val + '"'
+							: __fieldFilter.val
+					}}`
+			);
+
+		const sorts: Array<string> = fieldFilters
+			.filter((__fieldFilter) => __fieldFilter.sort != null)
+			.map((__fieldFilter) => `${__fieldFilter.__field.name}: ${__fieldFilter.sort}`);
+
 		let queryArguments = '';
-		if (whereArguments || pageArguments) {
-			queryArguments = `(${whereArguments} ${pageArguments})`;
+
+		if (whereArguments) {
+			queryArguments += ` ${whereArguments}`;
 		}
+
+		if (pageArguments) {
+			queryArguments += ` ${pageArguments}`;
+		}
+
+		if (filters.length > 0) {
+			queryArguments += ` ${filters.join(' ')}`;
+		}
+
+		if (sorts.length > 0) {
+			queryArguments += ` orderBy: {${sorts.join(' ')}}`;
+		}
+
 		const queryTypeConnectionFieldName = manager.getQueryTypeConnectionFieldName(__type);
 		const selections = fields.map((field) => field.name).join(' ');
 		const graphql = gql`
         query ${variables}{
-            connection: ${queryTypeConnectionFieldName}${queryArguments}{
+            connection: ${queryTypeConnectionFieldName}(${queryArguments}){
 				totalCount
 				edges {
 					node {
@@ -101,8 +143,8 @@
 	<Table>
 		<thead>
 			<tr>
-				{#each fields as __field}
-					<FieldTh {__field} />
+				{#each fieldFilters as __fieldFilter}
+					<FieldTh bind:value={__fieldFilter} {research} />
 				{/each}
 				<td />
 			</tr>

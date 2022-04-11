@@ -3,8 +3,10 @@
 	import { client } from '$lib/GraphqlClient';
 	import type { __Type } from '$lib/types/__Type';
 	import Select from '@components/ui/input/Select.svelte';
-	export let value: any;
+	export let name: string;
+	export let value: string | number | boolean | null;
 	export let enumName: string;
+	export let className: string = '';
 
 	const graphql = gql`
 		query ($enumName: ID) {
@@ -26,7 +28,7 @@
 {#await queryData}
 	<div class="animate-pulse max-w-lg w-full sm:max-w-xs rounded-md" />
 {:then response}
-	<Select bind:value>
+	<Select {name} {className} bind:value>
 		{#each response.__type.enumValues as enumValue}
 			<option value={enumValue.name}>{enumValue.name}</option>
 		{/each}
