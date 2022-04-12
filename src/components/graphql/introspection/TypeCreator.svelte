@@ -12,16 +12,16 @@
 	import FieldInput from './FieldInput.svelte';
 	export let __type: __Type;
 
-	const manager = new TypeManager();
-	const selections = manager.fieldsToSelections(__type);
+	const manager: TypeManager = new TypeManager();
+	const selections: string = manager.fieldsToSelections(__type);
 
-	let data = manager.createTypeObject(__type);
+	let data: object = manager.createTypeObject(__type);
 
-	const mutationTypeFieldName = manager.getMutationTypeFieldName(__type);
-	const mutationVariables = manager.fieldsToMutationVariables(__type);
-	const mutationArguments = manager.fieldsToMutationArguments(__type);
+	const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
+	const mutationVariables: string = manager.fieldsToMutationVariables(__type);
+	const mutationArguments: string = manager.fieldsToMutationArguments(__type);
 
-	const mutation = gql`
+	const mutation: string = gql`
 		mutation (${mutationVariables}) {
 			data: ${mutationTypeFieldName} (${mutationArguments}) {
 				${selections}
@@ -29,10 +29,7 @@
 		}	
 	`;
 
-	client.request(mutation, data);
-
-	const save = () => {
-		debugger;
+	const save = (): void => {
 		client.request(mutation, data).then((res) => {
 			data = res.data;
 		});

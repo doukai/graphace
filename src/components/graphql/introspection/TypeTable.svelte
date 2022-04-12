@@ -12,6 +12,7 @@
 	import FieldTh from './FieldTh.svelte';
 	import { __FieldFilter } from '$lib/types/__FieldFilter';
 	import type { __Field } from '$lib/types/__Field';
+	import FieldTd from './FieldTd.svelte';
 
 	export let __type: __Type;
 	export let queryValue: string = null;
@@ -43,7 +44,13 @@
 		offset?: number;
 	}
 
-	async function queryType({ __type, pageSize, after, before, offset }: QueryParams) {
+	async function queryType({
+		__type,
+		pageSize,
+		after,
+		before,
+		offset
+	}: QueryParams): Promise<Data> {
 		const variables: string = queryValue ? '($queryValue: String)' : '';
 		const whereArguments: string = queryValue
 			? manager.getAllSingleTypeFiledQueryArguments(__type)
@@ -75,7 +82,7 @@
 			.filter((__fieldFilter) => __fieldFilter.sort != null)
 			.map((__fieldFilter) => `${__fieldFilter.__field.name}: ${__fieldFilter.sort}`);
 
-		let queryArguments = '';
+		let queryArguments: string = '';
 
 		if (whereArguments) {
 			queryArguments += ` ${whereArguments}`;
@@ -93,9 +100,9 @@
 			queryArguments += ` orderBy: {${sorts.join(' ')}}`;
 		}
 
-		const queryTypeConnectionFieldName = manager.getQueryTypeConnectionFieldName(__type);
-		const selections = fields.map((field) => field.name).join(' ');
-		const graphql = gql`
+		const queryTypeConnectionFieldName: string = manager.getQueryTypeConnectionFieldName(__type);
+		const selections: string = fields.map((field) => field.name).join(' ');
+		const graphql: string = gql`
         query ${variables}{
             connection: ${queryTypeConnectionFieldName}(${queryArguments}){
 				totalCount
@@ -109,6 +116,25 @@
         `;
 
 		return await client.request<Data>(graphql, { queryValue });
+	}
+
+	async function mutationField(data: object) {
+		const selections: string = manager.fieldsToSelections(__type);
+		const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
+		const mutationVariables: string = manager.fieldsToMutationVariables(__type);
+		const mutationArguments: string = manager.fieldsToMutationArguments(__type);
+
+		const mutation: string = gql`
+			mutation (${mutationVariables}) {
+				data: ${mutationTypeFieldName} (${mutationArguments}) {
+					${selections}
+				}
+			}	
+		`;
+
+		client.request(mutation, data).then((res) => {
+			data = res.data;
+		});
 	}
 
 	const onNext = (selectedPageSize: number, after: string): void => {
@@ -152,8 +178,8 @@
 		<tbody>
 			{#each manager.getListFromConnection(response.connection) as data}
 				<tr class="hover">
-					{#each fields.map((__field) => __field.name) as name}
-						<td>{data[name] ? data[name] : ''}</td>
+					{#each fields as __field}
+						<FieldTd {__field} bind:value={data} {mutationField} />
 					{/each}
 					<td>
 						<button

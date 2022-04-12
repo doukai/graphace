@@ -62,26 +62,6 @@
 			>
 				«
 			</button>
-			{#if totalCount >= 5 && pageNumber === pageCount}
-				<button
-					class="btn"
-					on:click={() => {
-						onPageChange(pageSize, pageNumber - 4);
-					}}
-				>
-					{pageNumber - 4}
-				</button>
-			{/if}
-			{#if totalCount >= 4 && pageNumber >= pageCount - 1}
-				<button
-					class="btn"
-					on:click={() => {
-						onPageChange(pageSize, pageNumber - 3);
-					}}
-				>
-					{pageNumber - 3}
-				</button>
-			{/if}
 			{#if pageNumber - 2 > 0}
 				<button
 					class="btn"
@@ -123,26 +103,6 @@
 					}}
 				>
 					{pageNumber + 2}
-				</button>
-			{/if}
-			{#if totalCount >= 4 && pageNumber <= 2}
-				<button
-					class="btn"
-					on:click={() => {
-						onPageChange(pageSize, pageNumber + 3);
-					}}
-				>
-					{pageNumber + 3}
-				</button>
-			{/if}
-			{#if totalCount >= 5 && pageNumber === 1}
-				<button
-					class="btn"
-					on:click={() => {
-						onPageChange(pageSize, pageNumber + 4);
-					}}
-				>
-					{pageNumber + 4}
 				</button>
 			{/if}
 			<button

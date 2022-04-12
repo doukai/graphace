@@ -14,12 +14,12 @@
 	export let id: string;
 	export let __type: __Type;
 
-	const manager = new TypeManager();
-	const queryTypeFieldName = manager.getQueryTypeFieldName(__type);
-	const idFieldName = manager.getIdFieldName(__type);
-	const selections = manager.fieldsToSelections(__type);
+	const manager: TypeManager = new TypeManager();
+	const queryTypeFieldName: string = manager.getQueryTypeFieldName(__type);
+	const idFieldName: string = manager.getIdFieldName(__type);
+	const selections: string = manager.fieldsToSelections(__type);
 
-	const graphql = gql`
+	const graphql: string = gql`
 		query ($id: ID) {
 			data: ${queryTypeFieldName} (${idFieldName}: {val: $id}){
 				${selections}
@@ -27,19 +27,19 @@
 		}
 	`;
 
-	type Response = { data: any };
-	const queryData = client.request<Response>(graphql, { id });
+	type Response = { data: object };
+	const queryData: Promise<Response> = client.request<Response>(graphql, { id });
 
-	let data: any;
+	let data: object;
 	queryData.then((res) => {
 		data = res.data;
 	});
 
-	const mutationTypeFieldName = manager.getMutationTypeFieldName(__type);
-	const mutationVariables = manager.fieldsToMutationVariables(__type);
-	const mutationArguments = manager.fieldsToMutationArguments(__type);
+	const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
+	const mutationVariables: string = manager.fieldsToMutationVariables(__type);
+	const mutationArguments: string = manager.fieldsToMutationArguments(__type);
 
-	const mutation = gql`
+	const mutation: string = gql`
 		mutation (${mutationVariables}) {
 			data: ${mutationTypeFieldName} (${mutationArguments}) {
 				${selections}
@@ -47,9 +47,7 @@
 		}	
 	`;
 
-	client.request(mutation, data);
-
-	const save = () => {
+	const save = (): void => {
 		client.request(mutation, data).then((res) => {
 			data = res.data;
 		});
