@@ -53,9 +53,7 @@
 				</div>
 			</div>
 		{:else}
-			<div class="mt-3">
-				<FieldInput __field={value.__field} placeholder="Filter.." bind:value={val} />
-			</div>
+			<FieldInput __field={value.__field} placeholder="Filter.." bind:value={val} />
 		{/if}
 		<select class="select select-bordered ml-1" bind:value={sort}>
 			<option value={null} selected>No Sort</option>

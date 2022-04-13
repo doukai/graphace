@@ -53,7 +53,7 @@
 		</button>
 	</div>
 	<a
-		class="link group inline-flex"
+		class="group link inline-flex"
 		href={null}
 		use:tippy={{
 			content: content,
@@ -68,7 +68,18 @@
 		{#if value[__field.name]}
 			{value[__field.name]}
 		{:else}
-			<span class="badge badge-ghost">new</span>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="h-5 w-5"
+				viewBox="0 0 20 20"
+				fill="currentColor"
+			>
+				<path
+					fill-rule="evenodd"
+					d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z"
+					clip-rule="evenodd"
+				/>
+			</svg>
 		{/if}
 	</a>
 </td>

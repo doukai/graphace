@@ -7,7 +7,7 @@ import type { __Type } from '$lib/types/__Type';
 type Params = { type: string };
 type Data = { __type: __Type };
 type Output = { __type: __Type };
-const manager = new TypeManager();
+const manager: TypeManager = new TypeManager();
 
 export const get: RequestHandler<Params, Output> = async ({ params }) => {
     const typeName = manager.urlToTypeName(params.type)
