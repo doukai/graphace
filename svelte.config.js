@@ -13,12 +13,8 @@ const config = {
 		vite: {
 			resolve: {
 				alias: {
-					// these are the aliases and paths to them
 					'@components': path.resolve('./src/components')
 				}
-			},
-			optimizeDeps: {
-				exclude: ['@urql/svelte']
 			}
 		}
 	}

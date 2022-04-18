@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
 	import type { Load } from '@sveltejs/kit';
 	import { TypeManager } from '$lib/TypeManager';
-	const manager = new TypeManager();
+	const manager: TypeManager = new TypeManager();
 	export const load: Load = async ({ fetch, params }) => {
 		const { type } = params;
 		const res = await fetch(`/types/${manager.urlToTypeName(type)}.json`);
