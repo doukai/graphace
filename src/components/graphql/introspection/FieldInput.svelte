@@ -9,8 +9,8 @@
 	export let value: string | number | boolean | null;
 	export let className: string = '';
 	export let placeholder: string = '';
-	const manager = new TypeManager();
-	const fieldTypeName = manager.getFieldTypeName(__field.type);
+	const manager: TypeManager = new TypeManager();
+	const fieldTypeName: string = manager.getFieldTypeName(__field.type);
 </script>
 
 {#if fieldTypeName === 'Int' || fieldTypeName === 'Float'}

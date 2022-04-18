@@ -13,6 +13,7 @@
 	export let __type: __Type;
 
 	const manager: TypeManager = new TypeManager();
+	const idFieldName: string = manager.getIdFieldName(__type);
 	const selections: string = manager.fieldsToSelections(__type);
 
 	let data: object = manager.createTypeObject(__type);
@@ -31,7 +32,7 @@
 
 	const save = (): void => {
 		client.request(mutation, data).then((res) => {
-			data = res.data;
+			goto(`/types/${manager.typeNameToUrl(__type.name)}/${res.data[idFieldName]}`);
 		});
 	};
 </script>

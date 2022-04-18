@@ -8,7 +8,7 @@
 	export let enumName: string;
 	export let className: string = '';
 
-	const graphql = gql`
+	const graphql: string = gql`
 		query ($enumName: ID) {
 			__type(name: { val: $enumName }) {
 				name
@@ -22,7 +22,7 @@
 	`;
 
 	type Response = { __type: __Type };
-	const queryData = client.request<Response>(graphql, { enumName });
+	const queryData: Promise<Response> = client.request<Response>(graphql, { enumName });
 </script>
 
 {#await queryData}

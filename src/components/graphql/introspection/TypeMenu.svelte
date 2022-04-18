@@ -5,8 +5,8 @@
 	import type { __Type } from '$lib/types/__Type';
 	import { TypeManager } from '$lib/TypeManager';
 
-	const manager = new TypeManager();
-	let fetchTypeList = getTypeList();
+	const manager: TypeManager = new TypeManager();
+	let fetchTypeList: Promise<any> = getTypeList();
 
 	async function getTypeList() {
 		const res = await fetch(`/introspection/typeList.json`);

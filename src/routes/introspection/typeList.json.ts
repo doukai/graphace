@@ -7,7 +7,7 @@ type Data = { __typeList: Array<__Type> };
 type Output = { __typeList: Array<__Type> };
 
 export const get: RequestHandler<null, Output> = async () => {
-    const query = gql`
+    const query: string = gql`
         query {
             __typeList(kind: { val: OBJECT }) {
                 name
