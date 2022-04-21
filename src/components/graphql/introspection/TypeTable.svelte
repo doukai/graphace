@@ -9,13 +9,21 @@
 	import Table from '@components/ui/table/Table.svelte';
 	import TableLoading from '@components/ui/table/TableLoading.svelte';
 	import Pagination from '@components/ui/connection/Pagination.svelte';
+	import Modal from '@components/ui/modal/Modal.svelte';
+	import ModalContent from '@components/ui/modal/ModalContent.svelte';
+	import ModalActions from '@components/ui/modal/ModalActions.svelte';
 	import FieldTh from './FieldTh.svelte';
 	import { __FieldFilter } from '$lib/types/__FieldFilter';
 	import type { __Field } from '$lib/types/__Field';
 	import FieldTd from './FieldTd.svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { PencilAlt, Trash } from '@steeze-ui/heroicons';
 
 	export let __type: __Type;
 	export let queryValue: string = null;
+
+	let deleteModelOpen: boolean = false;
+	let deleteRowId: string = null;
 
 	const manager: TypeManager = new TypeManager();
 	const fields: Array<__Field> = manager.getSingleTypeFiledList(__type);
@@ -139,20 +147,20 @@
 		});
 	}
 
-	async function deleteRow(data: object) {
+	async function deleteRow() {
 		const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
 		const idFieldName: string = manager.getIdFieldName(__type);
 
 		const mutation: string = gql`
-			mutation {
-				data: ${mutationTypeFieldName} (isDeprecated: true) {
+			mutation ($id: string){
+				data: ${mutationTypeFieldName} (${idFieldName}: $id isDeprecated: true) {
 					${idFieldName}
 				}
 			}	
 		`;
 
-		client.request<{ data: object }>(mutation, data).then((res) => {
-			data = res.data;
+		client.request<{ data: object }>(mutation, { deleteRowId }).then((res) => {
+			research();
 		});
 	}
 
@@ -188,6 +196,11 @@
 	<Table>
 		<thead>
 			<tr>
+				<th>
+					<label>
+						<input type="checkbox" class="checkbox" />
+					</label>
+				</th>
 				{#each fieldFilters as __fieldFilter}
 					<FieldTh bind:value={__fieldFilter} {research} />
 				{/each}
@@ -197,18 +210,33 @@
 		<tbody>
 			{#each manager.getListFromConnection(response.connection) as data}
 				<tr class="hover">
+					<th>
+						<label>
+							<input type="checkbox" class="checkbox" />
+						</label>
+					</th>
 					{#each fields as __field}
 						<FieldTd {__field} bind:value={data} {mutationField} />
 					{/each}
 					<td>
 						<button
-							class="btn btn-ghost btn-xs"
+							class="btn btn-square btn-ghost btn-xs"
 							on:click={(e) => {
 								e.preventDefault();
 								goto(`/types/${manager.typeNameToUrl(__type.name)}/${data[idFieldName]}`);
 							}}
 						>
-							Edit
+							<Icon src={PencilAlt} solid />
+						</button>
+						<button
+							class="btn btn-square btn-ghost btn-xs"
+							on:click={(e) => {
+								e.preventDefault();
+								deleteModelOpen = true;
+								deleteRowId = data[idFieldName];
+							}}
+						>
+							<Icon src={Trash} solid />
 						</button>
 					</td>
 				</tr>
@@ -224,3 +252,11 @@
 		totalCount={response.connection.totalCount}
 	/>
 {/await}
+
+<Modal isModalOpen={deleteModelOpen} title="delete">
+	<ModalContent>Delete row?</ModalContent>
+	<ModalActions>
+		<button class="btn" on:click={() => (deleteModelOpen = false)}>Cancel</button>
+		<button class="btn btn-outline btn-error" on:click={() => deleteRow()}>Delete</button>
+	</ModalActions>
+</Modal>
