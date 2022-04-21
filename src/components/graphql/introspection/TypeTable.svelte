@@ -17,7 +17,6 @@
 	export let __type: __Type;
 	export let queryValue: string = null;
 
-	type Data = { connection: Connection };
 	const manager: TypeManager = new TypeManager();
 	const fields: Array<__Field> = manager.getSingleTypeFiledList(__type);
 	const fieldFilters: Array<__FieldFilter> = manager
@@ -26,7 +25,10 @@
 	const idFieldName: string = manager.getIdFieldName(__type);
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
-	let fetchConnection: Promise<Data> = queryType({ __type: __type, pageSize: pageSize });
+	let fetchConnection: Promise<{ connection: Connection }> = queryType({
+		__type: __type,
+		pageSize: pageSize
+	});
 
 	$: if (queryValue != null) {
 		research();
@@ -36,13 +38,13 @@
 		fetchConnection = queryType({ __type: __type, pageSize: pageSize });
 	};
 
-	interface QueryParams {
+	type QueryParams = {
 		__type: __Type;
 		pageSize: number;
 		after?: string;
 		before?: string;
 		offset?: number;
-	}
+	};
 
 	async function queryType({
 		__type,
@@ -50,7 +52,7 @@
 		after,
 		before,
 		offset
-	}: QueryParams): Promise<Data> {
+	}: QueryParams): Promise<{ connection: Connection }> {
 		const variables: string = queryValue ? '($queryValue: String)' : '';
 		const whereArguments: string = queryValue
 			? manager.getAllSingleTypeFiledQueryArguments(__type)
@@ -115,7 +117,7 @@
         }
         `;
 
-		return await client.request<Data>(graphql, { queryValue });
+		return await client.request<{ connection: Connection }>(graphql, { queryValue });
 	}
 
 	async function mutationField(data: object) {
@@ -132,7 +134,24 @@
 			}	
 		`;
 
-		client.request(mutation, data).then((res) => {
+		client.request<{ data: object }>(mutation, data).then((res) => {
+			data = res.data;
+		});
+	}
+
+	async function deleteRow(data: object) {
+		const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
+		const idFieldName: string = manager.getIdFieldName(__type);
+
+		const mutation: string = gql`
+			mutation {
+				data: ${mutationTypeFieldName} (isDeprecated: true) {
+					${idFieldName}
+				}
+			}	
+		`;
+
+		client.request<{ data: object }>(mutation, data).then((res) => {
 			data = res.data;
 		});
 	}
