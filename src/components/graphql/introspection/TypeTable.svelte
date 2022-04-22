@@ -114,7 +114,7 @@
 		const selections: string = fields.map((field) => field.name).join(' ');
 		const graphql: string = gql`
         query ${variables}{
-            connection: ${queryTypeConnectionFieldName}(${queryArguments}){
+            connection: ${queryTypeConnectionFieldName} (${queryArguments}){
 				totalCount
 				edges {
 					node {
@@ -128,23 +128,29 @@
 		return await client.request<{ connection: Connection }>(graphql, { queryValue });
 	}
 
-	async function mutationField(data: object) {
+	async function mutationField(
+		id: string,
+		__field: __Field,
+		value: string | number | boolean | null
+	) {
 		const selections: string = manager.fieldsToSelections(__type);
 		const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
-		const mutationVariables: string = manager.fieldsToMutationVariables(__type);
-		const mutationArguments: string = manager.fieldsToMutationArguments(__type);
+		const idFieldName = manager.getIdFieldName(__type);
+		const fieldTypeName = manager.getFieldTypeName(__field.type);
 
 		const mutation: string = gql`
-			mutation (${mutationVariables}) {
-				data: ${mutationTypeFieldName} (${mutationArguments}) {
+			mutation ($${idFieldName}: string $${__field.name}: ${fieldTypeName}) {
+				data: ${mutationTypeFieldName} (${idFieldName}: $${idFieldName} ${__field.name}: $${__field.name}) @update {
 					${selections}
 				}
 			}	
 		`;
 
-		client.request<{ data: object }>(mutation, data).then((res) => {
-			data = res.data;
-		});
+		const variables: object = {};
+		variables[idFieldName] = id;
+		variables[__field.name] = value;
+
+		client.request<{ data: object }>(mutation, variables).then((res) => {});
 	}
 
 	async function deleteRow() {
@@ -153,13 +159,17 @@
 
 		const mutation: string = gql`
 			mutation ($id: string){
-				data: ${mutationTypeFieldName} (${idFieldName}: $id isDeprecated: true) {
+				data: ${mutationTypeFieldName} (${idFieldName}: $id isDeprecated: true) @update {
 					${idFieldName}
 				}
 			}	
 		`;
 
-		client.request<{ data: object }>(mutation, { deleteRowId }).then((res) => {
+		const variables: object = {};
+		variables[idFieldName] = deleteRowId;
+
+		client.request<{ data: object }>(mutation, variables).then((res) => {
+			deleteModelOpen = false;
 			research();
 		});
 	}
@@ -216,7 +226,12 @@
 						</label>
 					</th>
 					{#each fields as __field}
-						<FieldTd {__field} bind:value={data} {mutationField} />
+						<FieldTd
+							id={data[idFieldName]}
+							{__field}
+							bind:value={data[__field.name]}
+							{mutationField}
+						/>
 					{/each}
 					<td>
 						<button

@@ -3,26 +3,25 @@
 	import type { __Field } from '$lib/types/__Field';
 	import type { __FieldFilter } from '$lib/types/__FieldFilter';
 	import FieldInput from './FieldInput.svelte';
+	export let id: string;
 	export let __field: __Field;
-	export let value: object;
+	export let value: string | number | boolean | null;
 	export let mutationField: Function;
 	let content: HTMLElement;
-	let mutationValue: string | number | boolean | null = value[__field.name];
 
 	let mutation = (): void => {
-		value[__field.name] = mutationValue;
-		mutationField(value);
+		mutationField(id, __field, value);
 	};
 
 	let clean = (): void => {
-		value[__field.name] = null;
-		mutationField(value);
+		value = null;
+		mutationField(id, __field, value);
 	};
 </script>
 
 <td>
 	<div class="flex" bind:this={content}>
-		<FieldInput {__field} placeholder={__field.name} bind:value={mutationValue} />
+		<FieldInput {__field} placeholder={__field.name} bind:value />
 		<button class="btn btn-square btn-primary ml-1" on:click={() => mutation()}>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -65,8 +64,8 @@
 			maxWidth: 'none'
 		}}
 	>
-		{#if value[__field.name]}
-			{value[__field.name]}
+		{#if value}
+			{value}
 		{:else}
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
