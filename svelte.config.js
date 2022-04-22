@@ -13,6 +13,8 @@ const config = {
 		vite: {
 			resolve: {
 				alias: {
+					$i18n: path.resolve('./src/i18n'),
+					$lib: path.resolve('./src/lib'),
 					'@components': path.resolve('./src/components')
 				}
 			}
