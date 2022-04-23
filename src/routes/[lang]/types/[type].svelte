@@ -2,30 +2,25 @@
 	import type { Load } from '@sveltejs/kit';
 	import { TypeManager } from '$lib/TypeManager';
 	const manager: TypeManager = new TypeManager();
-	export const load: Load = async ({ fetch, params }) => {
+	export const load: Load = async ({ params }) => {
 		const { type } = params;
-		const res = await fetch(`/types/${manager.urlToTypeName(type)}.json`);
-		if (res.ok) {
-			const fetchType = res.json();
-			return {
-				props: { fetchType }
-			};
-		} else {
-			throw new Error(res.statusText);
-		}
+		return {
+			props: { typeName: manager.urlToTypeName(type) }
+		};
 	};
 </script>
 
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import type { __Type } from '$lib/types/__Type';
-	import TypeTable from '@components/graphql/introspection/TypeTable.svelte';
-	import SectionHead from '@components/ui/section/SectionHead.svelte';
-	import SectionLoading from '@components/ui/section/SectionLoading.svelte';
-	import SearchInput from '@components/ui/search/SearchInput.svelte';
+	import { getType } from '$lib/graphql/Introspection';
+	import TypeTable from '$lib/components/graphql/introspection/TypeTable.svelte';
+	import SectionHead from '$lib/components/ui/section/SectionHead.svelte';
+	import SectionLoading from '$lib/components/ui/section/SectionLoading.svelte';
+	import SearchInput from '$lib/components/ui/search/SearchInput.svelte';
+	export let typeName: string;
 
-	type Data = { __type: __Type };
-	export let fetchType: Promise<Data>;
+	$: fetchType = getType(typeName);
 
 	let queryValue: string = null;
 	let search = (value: string) => {
@@ -42,7 +37,7 @@
 			class="ml-3 btn"
 			on:click={(e) => {
 				e.preventDefault();
-				goto(`/types/${response.__type.name}/create`);
+				goto(`./${response.__type.name}/create`);
 			}}
 		>
 			Create

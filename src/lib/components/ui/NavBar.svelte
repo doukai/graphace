@@ -1,6 +1,8 @@
 <script>
 	import { isOpen } from '$lib/stores/Menu';
-	import Icon from '@iconify/svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { ColorSwatch } from '@steeze-ui/heroicons';
+	import LocaleSelect from '$lib/components/ui/select/LocaleSelect.svelte';
 </script>
 
 <div class="navbar sticky top-0 z-10 bg-base-100">
@@ -23,8 +25,11 @@
 	<div class="navbar-center" />
 	<div class="navbar-end">
 		<div class="form-control">
-			<label class="input-group input-group-lg">
-				<span><Icon icon="icon-park-outline:theme" /></span>
+			<LocaleSelect />
+		</div>
+		<div class="form-control ml-3">
+			<label class="input-group">
+				<span><Icon src={ColorSwatch} solid class="h-6 w-6" /></span>
 				<select class="select select-bordered" data-choose-theme>
 					<option value="light">Light</option>
 					<option value="dark">Dark</option>

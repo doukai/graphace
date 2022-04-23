@@ -6,8 +6,8 @@ export type BaseTranslation = BaseTranslationType
 export type BaseLocale = 'en'
 
 export type Locales =
-	| 'de'
 	| 'en'
+	| 'zh'
 
 export type Translation = RootTranslation
 
@@ -15,17 +15,17 @@ export type Translations = RootTranslation
 
 type RootTranslation = {
 	/**
-	 * Hi {name}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n
-	 * @param {string} name
+	 * Welcome to Svelte Fall Summit {year}
+	 * @param {number} year
 	 */
-	HI: RequiredParams<'name'>
+	HI: RequiredParams<'year'>
 }
 
 export type TranslationFunctions = {
 	/**
-	 * Hi {name}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n
+	 * Welcome to Svelte Fall Summit {year}
 	 */
-	HI: (arg: { name: string }) => LocalizedString
+	HI: (arg: { year: number }) => LocalizedString
 }
 
 export type Formatters = {}

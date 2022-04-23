@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { gql } from 'graphql-request';
-	import { client } from '$lib/GraphqlClient';
+	import { client } from '$lib/graphql/GraphqlClient';
 	import { TypeManager } from '$lib/TypeManager';
 	import type { __Type } from '$lib/types/__Type';
 	import { __TypeKind } from '$lib/types/__TypeKind';
-	import Form from '@components/ui/form/Form.svelte';
-	import FormLoading from '@components/ui/form/FormLoading.svelte';
-	import FormItems from '@components/ui/form/FormItems.svelte';
-	import FormItem from '@components/ui/form/FormItem.svelte';
-	import FormButtons from '@components/ui/form/FormButtons.svelte';
+	import Form from '$lib/components/ui/form/Form.svelte';
+	import FormLoading from '$lib/components/ui/form/FormLoading.svelte';
+	import FormItems from '$lib/components/ui/form/FormItems.svelte';
+	import FormItem from '$lib/components/ui/form/FormItem.svelte';
+	import FormButtons from '$lib/components/ui/form/FormButtons.svelte';
 	import FieldInput from './FieldInput.svelte';
 	export let id: string;
 	export let __type: __Type;
@@ -70,7 +70,7 @@
 				class="ml-3 btn"
 				on:click={(e) => {
 					e.preventDefault();
-					goto(`/types/${manager.typeNameToUrl(__type.name)}`);
+					goto(`../${manager.typeNameToUrl(__type.name)}`);
 				}}
 			>
 				Cancel

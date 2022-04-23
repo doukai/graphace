@@ -1,17 +1,17 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { gql } from 'graphql-request';
-	import { client } from '$lib/GraphqlClient';
+	import { client } from '$lib/graphql/GraphqlClient';
 	import { TypeManager } from '$lib/TypeManager';
 	import { __TypeKind } from '$lib/types/__TypeKind';
 	import type { __Type } from '$lib/types/__Type';
 	import type { Connection } from '$lib/types/Connection';
-	import Table from '@components/ui/table/Table.svelte';
-	import TableLoading from '@components/ui/table/TableLoading.svelte';
-	import Pagination from '@components/ui/connection/Pagination.svelte';
-	import Modal from '@components/ui/modal/Modal.svelte';
-	import ModalContent from '@components/ui/modal/ModalContent.svelte';
-	import ModalActions from '@components/ui/modal/ModalActions.svelte';
+	import Table from '$lib/components/ui/table/Table.svelte';
+	import TableLoading from '$lib/components/ui/table/TableLoading.svelte';
+	import Pagination from '$lib/components/ui/connection/Pagination.svelte';
+	import Modal from '$lib/components/ui/modal/Modal.svelte';
+	import ModalContent from '$lib/components/ui/modal/ModalContent.svelte';
+	import ModalActions from '$lib/components/ui/modal/ModalActions.svelte';
 	import FieldTh from './FieldTh.svelte';
 	import { __FieldFilter } from '$lib/types/__FieldFilter';
 	import type { __Field } from '$lib/types/__Field';
@@ -238,7 +238,7 @@
 							class="btn btn-square btn-ghost btn-xs"
 							on:click={(e) => {
 								e.preventDefault();
-								goto(`/types/${manager.typeNameToUrl(__type.name)}/${data[idFieldName]}`);
+								goto(`./${manager.typeNameToUrl(__type.name)}/${data[idFieldName]}`);
 							}}
 						>
 							<Icon src={PencilAlt} solid />

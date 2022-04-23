@@ -1,13 +1,57 @@
+<script context="module" lang="ts">
+	import type { Load } from '@sveltejs/kit';
+	import type { Locales } from '$i18n/i18n-types';
+	import { replaceLocaleInUrl } from '$lib/utils';
+	import { baseLocale, locales } from '$i18n/i18n-util';
+	import { loadLocaleAsync } from '$i18n/i18n-util.async';
+
+	type LoadParams = {
+		lang?: Locales;
+	};
+
+	export const load: Load<LoadParams> = async ({ url, session, params }) => {
+		// fallback needed because of https://github.com/sveltejs/kit/issues/3647
+		const lang = params.lang || (url.pathname.split('/')[1] as Locales);
+
+		// redirect to preferred language if user comes from page root
+		if (!lang) {
+			return {
+				status: 302,
+				redirect: `/${session.locale}`
+			};
+		}
+
+		// redirect to base locale if language is not present
+		if (!locales.includes(lang)) {
+			return {
+				status: 302,
+				redirect: replaceLocaleInUrl(url.pathname, baseLocale)
+			};
+		}
+
+		// delete session locale since we don't need it to be sent to the client
+		delete session.locale;
+
+		await loadLocaleAsync(lang);
+
+		return { props: { locale: lang } };
+	};
+</script>
+
 <script lang="ts">
 	import '../app.css';
 	import 'tippy.js/dist/svg-arrow.css';
 	import { onMount } from 'svelte';
 	import { themeChange } from 'theme-change';
-	import SideBar from '@components/ui/SideBar.svelte';
-	import TypeMenu from '@components/graphql/introspection/TypeMenu.svelte';
-	import NavBar from '@components/ui/NavBar.svelte';
+	import SideBar from '$lib/components/ui/SideBar.svelte';
+	import TypeMenu from '$lib/components/graphql/introspection/TypeMenu.svelte';
+	import NavBar from '$lib/components/ui/NavBar.svelte';
 	import { isOpen } from '$lib/stores/Menu';
 	import type { __Type } from '$lib/types/__Type';
+	import { setLocale } from '$i18n/i18n-svelte';
+
+	export let locale: Locales;
+	setLocale(locale);
 
 	onMount(() => {
 		themeChange(false);

@@ -2,20 +2,13 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
+	import { getTypeList } from '$lib/graphql/Introspection';
 	import type { __Type } from '$lib/types/__Type';
 	import { TypeManager } from '$lib/TypeManager';
+	import { locale } from '$i18n/i18n-svelte';
 
 	const manager: TypeManager = new TypeManager();
-	let fetchTypeList: Promise<any> = getTypeList();
-
-	async function getTypeList() {
-		const res = await fetch(`/introspection/typeList.json`);
-		if (res.ok) {
-			return res.json();
-		} else {
-			throw new Error(res.statusText);
-		}
-	}
+	let fetchTypeList = getTypeList();
 </script>
 
 {#await fetchTypeList}
@@ -29,12 +22,14 @@
 		{#each response.__typeList as __type}
 			<li>
 				<a
-					href="/types/{manager.typeNameToUrl(__type.name)}"
+					href={null}
 					on:click={(e) => {
 						e.preventDefault();
-						goto('/types/' + manager.typeNameToUrl(__type.name));
+						goto(`/${$locale}/types/${manager.typeNameToUrl(__type.name)}`);
 					}}
-					class={$page.url.pathname.startsWith('/types/' + manager.typeNameToUrl(__type.name))
+					class={$page.url.pathname.startsWith(
+						`/${$locale}/types/${manager.typeNameToUrl(__type.name)}`
+					)
 						? 'active'
 						: ''}
 				>
