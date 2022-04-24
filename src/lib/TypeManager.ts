@@ -145,11 +145,11 @@ export class TypeManager {
 
     public getListFromConnection(connection: Connection): Array<object> {
         return connection.edges.map(edge => edge.node);
-    };
+    }
 
     public getPageInfoFromConnection(connection: Connection): PageInfo {
         return connection.pageInfo;
-    };
+    }
 
     public typeNameToUrl(typeName: string): string {
         if (typeName.startsWith("__")) {

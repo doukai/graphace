@@ -129,26 +129,24 @@
 	}
 
 	async function mutationField(
-		id: string,
-		__field: __Field,
-		value: string | number | boolean | null
+		event: CustomEvent<{ id: string; __field: __Field; value: string | number | boolean | null }>
 	) {
 		const selections: string = manager.fieldsToSelections(__type);
 		const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
 		const idFieldName = manager.getIdFieldName(__type);
-		const fieldTypeName = manager.getFieldTypeName(__field.type);
+		const fieldTypeName = manager.getFieldTypeName(event.detail.__field.type);
 
 		const mutation: string = gql`
-			mutation ($${idFieldName}: string $${__field.name}: ${fieldTypeName}) {
-				data: ${mutationTypeFieldName} (${idFieldName}: $${idFieldName} ${__field.name}: $${__field.name}) @update {
+			mutation ($${idFieldName}: String $${event.detail.__field.name}: ${fieldTypeName}) {
+				data: ${mutationTypeFieldName} (${idFieldName}: $${idFieldName} ${event.detail.__field.name}: $${event.detail.__field.name}) @update {
 					${selections}
 				}
 			}	
 		`;
 
 		const variables: object = {};
-		variables[idFieldName] = id;
-		variables[__field.name] = value;
+		variables[idFieldName] = event.detail.id;
+		variables[event.detail.__field.name] = event.detail.value;
 
 		client.request<{ data: object }>(mutation, variables).then((res) => {});
 	}
@@ -158,7 +156,7 @@
 		const idFieldName: string = manager.getIdFieldName(__type);
 
 		const mutation: string = gql`
-			mutation ($id: string){
+			mutation ($id: String){
 				data: ${mutationTypeFieldName} (${idFieldName}: $id isDeprecated: true) @update {
 					${idFieldName}
 				}
@@ -230,7 +228,7 @@
 							id={data[idFieldName]}
 							{__field}
 							bind:value={data[__field.name]}
-							{mutationField}
+							on:submit={mutationField}
 						/>
 					{/each}
 					<td>
