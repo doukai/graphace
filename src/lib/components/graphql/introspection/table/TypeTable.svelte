@@ -12,9 +12,9 @@
 	import Modal from '$lib/components/ui/modal/Modal.svelte';
 	import ModalContent from '$lib/components/ui/modal/ModalContent.svelte';
 	import ModalActions from '$lib/components/ui/modal/ModalActions.svelte';
-	import FieldTh from './FieldTh.svelte';
 	import { __FieldFilter } from '$lib/types/__FieldFilter';
 	import type { __Field } from '$lib/types/__Field';
+	import FieldTh from './FieldTh.svelte';
 	import FieldTd from './FieldTd.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilAlt, Trash } from '@steeze-ui/heroicons';

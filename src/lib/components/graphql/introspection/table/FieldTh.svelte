@@ -5,7 +5,7 @@
 	import { Sort } from '$lib/types/Sort';
 	import type { __Field } from '$lib/types/__Field';
 	import type { __FieldFilter } from '$lib/types/__FieldFilter';
-	import FieldInput from './FieldInput.svelte';
+	import FieldInput from '$lib/components/graphql/introspection/FieldInput.svelte';
 	export let value: __FieldFilter;
 	export let research: Function;
 	let content: HTMLElement;

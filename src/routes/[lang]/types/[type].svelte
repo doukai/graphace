@@ -14,7 +14,7 @@
 	import { goto } from '$app/navigation';
 	import type { __Type } from '$lib/types/__Type';
 	import { getType } from '$lib/graphql/Introspection';
-	import TypeTable from '$lib/components/graphql/introspection/TypeTable.svelte';
+	import TypeTable from '$lib/components/graphql/introspection/table/TypeTable.svelte';
 	import SectionHead from '$lib/components/ui/section/SectionHead.svelte';
 	import SectionLoading from '$lib/components/ui/section/SectionLoading.svelte';
 	import SearchInput from '$lib/components/ui/search/SearchInput.svelte';

@@ -7,7 +7,7 @@
 	import { replaceLocaleInUrl } from '$lib/utils';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Translate } from '@steeze-ui/heroicons';
-	import LOCALE_NAME from '$i18n/i18n-svelte';
+	import LL from '$i18n/i18n-svelte';
 
 	let value: Locales = $locale;
 
@@ -47,7 +47,7 @@
 		<span><Icon src={Translate} solid class="h-6 w-6" /></span>
 		<select class="select select-bordered" bind:value on:change={() => switchLocale(value)}>
 			{#each locales as locale}
-				<option value={locale}>{locale}</option>
+				<option value={locale}>{$LL.localeName[locale]()}</option>
 			{/each}
 		</select>
 	</label>

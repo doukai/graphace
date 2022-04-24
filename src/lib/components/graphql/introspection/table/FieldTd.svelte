@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { tippy } from '$lib/tippy';
-	import type { __Field } from '$lib/types/__Field';
-	import type { __FieldFilter } from '$lib/types/__FieldFilter';
-	import FieldInput from './FieldInput.svelte';
+	import type { __Field, __FieldFilter } from '$lib/types';
+	import FieldInput from '$lib/components/graphql/introspection/FieldInput.svelte';
 	export let id: string;
 	export let __field: __Field;
 	export let value: string | number | boolean | null;

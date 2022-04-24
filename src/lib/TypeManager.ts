@@ -1,8 +1,5 @@
 import * as _ from "lodash";
-import type { Connection } from "./types/Connection";
-import type { PageInfo } from "./types/PageInfo";
-import type { __Field } from "./types/__Field";
-import type { __Type } from "./types/__Type";
+import type { Connection, PageInfo, __Field, __Type } from "./types";
 import { __TypeKind } from "./types/__TypeKind";
 
 const aggregateSuffix: string[] = ["Count", "Sum", "Avg", "Max", "Min"];

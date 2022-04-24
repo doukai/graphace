@@ -40,15 +40,17 @@
 
 <script lang="ts">
 	import '../app.css';
-	import 'tippy.js/dist/svg-arrow.css';
 	import { onMount } from 'svelte';
 	import { themeChange } from 'theme-change';
 	import SideBar from '$lib/components/ui/SideBar.svelte';
 	import TypeMenu from '$lib/components/graphql/introspection/TypeMenu.svelte';
-	import NavBar from '$lib/components/ui/NavBar.svelte';
+	import { NavBar, NavBarStart, NavBarEnd } from '$lib/components/ui/navbar';
 	import { isOpen } from '$lib/stores/Menu';
 	import type { __Type } from '$lib/types/__Type';
 	import { setLocale } from '$i18n/i18n-svelte';
+	import { LocaleSelect, ThemeSelect } from '$lib/components/ui/select';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Menu } from '@steeze-ui/heroicons';
 
 	export let locale: Locales;
 	setLocale(locale);
@@ -65,7 +67,20 @@
 		</SideBar>
 	</div>
 	<div class={$isOpen ? 'md:pl-64 flex flex-col' : 'flex flex-col'}>
-		<NavBar />
+		<NavBar>
+			<NavBarStart>
+				<button
+					class="btn btn-square btn-ghost"
+					on:click={(e) => isOpen.update((isOpen) => !isOpen)}
+				>
+					<Icon src={Menu} solid class="h-6 w-6" />
+				</button>
+			</NavBarStart>
+			<NavBarEnd>
+				<LocaleSelect />
+				<ThemeSelect />
+			</NavBarEnd>
+		</NavBar>
 		<main class="flex-1">
 			<div class="py-6">
 				<div class="overflow-hidden max-w-full mx-auto px-4 sm:px-6 md:px-8">

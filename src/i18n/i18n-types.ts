@@ -14,18 +14,46 @@ export type Translation = RootTranslation
 export type Translations = RootTranslation
 
 type RootTranslation = {
+	localeName: {
+		/**
+		 * English
+		 */
+		en: string
+		/**
+		 * Chinese
+		 */
+		zh: string
+	}
 	/**
 	 * Welcome to Svelte Fall Summit {year}
 	 * @param {number} year
 	 */
 	HI: RequiredParams<'year'>
+	components: {
+		ui: {
+		}
+	}
 }
 
 export type TranslationFunctions = {
+	localeName: {
+		/**
+		 * English
+		 */
+		en: () => LocalizedString
+		/**
+		 * Chinese
+		 */
+		zh: () => LocalizedString
+	}
 	/**
 	 * Welcome to Svelte Fall Summit {year}
 	 */
 	HI: (arg: { year: number }) => LocalizedString
+	components: {
+		ui: {
+		}
+	}
 }
 
 export type Formatters = {}
