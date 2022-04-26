@@ -5,6 +5,7 @@
 	import FieldInput from '$lib/components/graphql/introspection/FieldInput.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, X, Minus } from '@steeze-ui/heroicons';
+	import LL from '$i18n/i18n-svelte';
 	export let id: string;
 	export let __field: __Field;
 	export let value: string | number | boolean | null;
@@ -33,12 +34,16 @@
 <td>
 	<div class="flex" bind:this={content}>
 		<FieldInput {__field} placeholder={__field.name} bind:value />
-		<button class="btn btn-square btn-primary ml-1" on:click={() => mutation()}>
-			<Icon src={Check} solid class="h-5 w-5" />
-		</button>
-		<button class="btn btn-square btn-primary ml-1" on:click={() => clean()}>
-			<Icon src={X} solid class="h-5 w-5" />
-		</button>
+		<div class="tooltip" data-tip={$LL.components.ui.table.td.save()}>
+			<button class="btn btn-square btn-primary ml-1" on:click={() => mutation()}>
+				<Icon src={Check} solid class="h-5 w-5" />
+			</button>
+		</div>
+		<div class="tooltip" data-tip={$LL.components.ui.table.td.clear()}>
+			<button class="btn btn-square btn-primary ml-1" on:click={() => clean()}>
+				<Icon src={X} solid class="h-5 w-5" />
+			</button>
+		</div>
 	</div>
 	<a
 		class="group link inline-flex"

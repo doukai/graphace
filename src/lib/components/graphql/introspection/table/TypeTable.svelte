@@ -3,21 +3,15 @@
 	import { gql } from 'graphql-request';
 	import { client } from '$lib/graphql/GraphqlClient';
 	import { TypeManager } from '$lib/TypeManager';
-	import { __TypeKind } from '$lib/types/__TypeKind';
-	import type { __Type } from '$lib/types/__Type';
-	import type { Connection } from '$lib/types/Connection';
-	import Table from '$lib/components/ui/table/Table.svelte';
-	import TableLoading from '$lib/components/ui/table/TableLoading.svelte';
+	import type { __Type, __Field, Connection } from '$lib/types';
+	import { __FieldFilter, __TypeKind } from '$lib/types';
+	import { Table, TableLoading } from '$lib/components/ui/table';
 	import Pagination from '$lib/components/ui/connection/Pagination.svelte';
-	import Modal from '$lib/components/ui/modal/Modal.svelte';
-	import ModalContent from '$lib/components/ui/modal/ModalContent.svelte';
-	import ModalActions from '$lib/components/ui/modal/ModalActions.svelte';
-	import { __FieldFilter } from '$lib/types/__FieldFilter';
-	import type { __Field } from '$lib/types/__Field';
-	import FieldTh from './FieldTh.svelte';
-	import FieldTd from './FieldTd.svelte';
+	import { Modal, ModalContent, ModalActions } from '$lib/components/ui/modal';
+	import { FieldTh, FieldTd } from './';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilAlt, Trash } from '@steeze-ui/heroicons';
+	import LL from '$i18n/i18n-svelte';
 
 	export let __type: __Type;
 	export let queryValue: string = null;
@@ -210,7 +204,7 @@
 					</label>
 				</th>
 				{#each fieldFilters as __fieldFilter}
-					<FieldTh bind:value={__fieldFilter} {research} />
+					<FieldTh bind:value={__fieldFilter} on:filter={research} />
 				{/each}
 				<td />
 			</tr>
@@ -232,25 +226,29 @@
 						/>
 					{/each}
 					<td>
-						<button
-							class="btn btn-square btn-ghost btn-xs"
-							on:click={(e) => {
-								e.preventDefault();
-								goto(`./${manager.typeNameToUrl(__type.name)}/${data[idFieldName]}`);
-							}}
-						>
-							<Icon src={PencilAlt} solid />
-						</button>
-						<button
-							class="btn btn-square btn-ghost btn-xs"
-							on:click={(e) => {
-								e.preventDefault();
-								deleteModelOpen = true;
-								deleteRowId = data[idFieldName];
-							}}
-						>
-							<Icon src={Trash} solid />
-						</button>
+						<div class="tooltip" data-tip={$LL.components.ui.table.editBtn()}>
+							<button
+								class="btn btn-square btn-ghost btn-xs"
+								on:click={(e) => {
+									e.preventDefault();
+									goto(`./${manager.typeNameToUrl(__type.name)}/${data[idFieldName]}`);
+								}}
+							>
+								<Icon src={PencilAlt} solid />
+							</button>
+						</div>
+						<div class="tooltip" data-tip={$LL.components.ui.table.deleteBtn()}>
+							<button
+								class="btn btn-square btn-ghost btn-xs"
+								on:click={(e) => {
+									e.preventDefault();
+									deleteModelOpen = true;
+									deleteRowId = data[idFieldName];
+								}}
+							>
+								<Icon src={Trash} solid />
+							</button>
+						</div>
 					</td>
 				</tr>
 			{/each}
@@ -266,10 +264,13 @@
 	/>
 {/await}
 
-<Modal isModalOpen={deleteModelOpen} title="delete">
-	<ModalContent>Delete row?</ModalContent>
+<Modal isModalOpen={deleteModelOpen} title={$LL.components.ui.table.deleteModalTitle()}>
 	<ModalActions>
-		<button class="btn" on:click={() => (deleteModelOpen = false)}>Cancel</button>
-		<button class="btn btn-outline btn-error" on:click={() => deleteRow()}>Delete</button>
+		<button class="btn" on:click={() => (deleteModelOpen = false)}>
+			{$LL.components.ui.table.cancelBtn()}
+		</button>
+		<button class="btn btn-outline btn-error" on:click={() => deleteRow()}>
+			{$LL.components.ui.table.deleteBtn()}
+		</button>
 	</ModalActions>
 </Modal>

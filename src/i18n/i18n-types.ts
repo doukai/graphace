@@ -31,6 +31,108 @@ type RootTranslation = {
 	HI: RequiredParams<'year'>
 	components: {
 		ui: {
+			table: {
+				/**
+				 * Delete row?
+				 */
+				deleteModalTitle: string
+				/**
+				 * Edit
+				 */
+				editBtn: string
+				/**
+				 * Delete
+				 */
+				deleteBtn: string
+				/**
+				 * Cancel
+				 */
+				cancelBtn: string
+				th: {
+					/**
+					 * filter
+					 */
+					filter: string
+					/**
+					 * cancel
+					 */
+					cancel: string
+					/**
+					 * No Sort
+					 */
+					noSort: string
+					/**
+					 * ASC
+					 */
+					asc: string
+					/**
+					 * DESC
+					 */
+					desc: string
+					/**
+					 * Equals
+					 */
+					eq: string
+					/**
+					 * Not Equals
+					 */
+					neq: string
+					/**
+					 * Like
+					 */
+					lk: string
+					/**
+					 * Not Like
+					 */
+					nlk: string
+					/**
+					 * Greater Than
+					 */
+					gt: string
+					/**
+					 * Greater Equals
+					 */
+					gte: string
+					/**
+					 * Less Than
+					 */
+					lt: string
+					/**
+					 * Less Equals
+					 */
+					lte: string
+					/**
+					 * Is Null
+					 */
+					nil: string
+					/**
+					 * Not Null
+					 */
+					nnil: string
+					/**
+					 * In
+					 */
+					'in': string
+					/**
+					 * Not In
+					 */
+					nin: string
+					/**
+					 * Filter..
+					 */
+					filterPlaceholder: string
+				}
+				td: {
+					/**
+					 * save
+					 */
+					save: string
+					/**
+					 * clear
+					 */
+					clear: string
+				}
+			}
 		}
 	}
 }
@@ -52,6 +154,108 @@ export type TranslationFunctions = {
 	HI: (arg: { year: number }) => LocalizedString
 	components: {
 		ui: {
+			table: {
+				/**
+				 * Delete row?
+				 */
+				deleteModalTitle: () => LocalizedString
+				/**
+				 * Edit
+				 */
+				editBtn: () => LocalizedString
+				/**
+				 * Delete
+				 */
+				deleteBtn: () => LocalizedString
+				/**
+				 * Cancel
+				 */
+				cancelBtn: () => LocalizedString
+				th: {
+					/**
+					 * filter
+					 */
+					filter: () => LocalizedString
+					/**
+					 * cancel
+					 */
+					cancel: () => LocalizedString
+					/**
+					 * No Sort
+					 */
+					noSort: () => LocalizedString
+					/**
+					 * ASC
+					 */
+					asc: () => LocalizedString
+					/**
+					 * DESC
+					 */
+					desc: () => LocalizedString
+					/**
+					 * Equals
+					 */
+					eq: () => LocalizedString
+					/**
+					 * Not Equals
+					 */
+					neq: () => LocalizedString
+					/**
+					 * Like
+					 */
+					lk: () => LocalizedString
+					/**
+					 * Not Like
+					 */
+					nlk: () => LocalizedString
+					/**
+					 * Greater Than
+					 */
+					gt: () => LocalizedString
+					/**
+					 * Greater Equals
+					 */
+					gte: () => LocalizedString
+					/**
+					 * Less Than
+					 */
+					lt: () => LocalizedString
+					/**
+					 * Less Equals
+					 */
+					lte: () => LocalizedString
+					/**
+					 * Is Null
+					 */
+					nil: () => LocalizedString
+					/**
+					 * Not Null
+					 */
+					nnil: () => LocalizedString
+					/**
+					 * In
+					 */
+					'in': () => LocalizedString
+					/**
+					 * Not In
+					 */
+					nin: () => LocalizedString
+					/**
+					 * Filter..
+					 */
+					filterPlaceholder: () => LocalizedString
+				}
+				td: {
+					/**
+					 * save
+					 */
+					save: () => LocalizedString
+					/**
+					 * clear
+					 */
+					clear: () => LocalizedString
+				}
+			}
 		}
 	}
 }
