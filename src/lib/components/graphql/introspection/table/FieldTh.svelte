@@ -41,22 +41,22 @@
 			<div class="form-control">
 				<div class="input-group">
 					<select class="select select-bordered" bind:value={opr}>
-						<option value="EQ" selected>{$LL.components.ui.table.th.eq()}</option>
-						<option value="NEQ">{$LL.components.ui.table.th.neq()}</option>
-						<option value="LK">{$LL.components.ui.table.th.lk()}</option>
-						<option value="NLK">{$LL.components.ui.table.th.nlk()}</option>
-						<option value="GT">{$LL.components.ui.table.th.gt()}</option>
-						<option value="GTE">{$LL.components.ui.table.th.gte()}</option>
-						<option value="LT">{$LL.components.ui.table.th.lt()}</option>
-						<option value="LTE">{$LL.components.ui.table.th.lte()}</option>
-						<option value="NIL">{$LL.components.ui.table.th.nil()}</option>
-						<option value="NNIL">{$LL.components.ui.table.th.nnil()}</option>
-						<option value="IN">{$LL.components.ui.table.th.in()}</option>
-						<option value="NIN">{$LL.components.ui.table.th.nin()}</option>
+						<option value="EQ" selected>{$LL.components.graphql.table.th.eq()}</option>
+						<option value="NEQ">{$LL.components.graphql.table.th.neq()}</option>
+						<option value="LK">{$LL.components.graphql.table.th.lk()}</option>
+						<option value="NLK">{$LL.components.graphql.table.th.nlk()}</option>
+						<option value="GT">{$LL.components.graphql.table.th.gt()}</option>
+						<option value="GTE">{$LL.components.graphql.table.th.gte()}</option>
+						<option value="LT">{$LL.components.graphql.table.th.lt()}</option>
+						<option value="LTE">{$LL.components.graphql.table.th.lte()}</option>
+						<option value="NIL">{$LL.components.graphql.table.th.nil()}</option>
+						<option value="NNIL">{$LL.components.graphql.table.th.nnil()}</option>
+						<option value="IN">{$LL.components.graphql.table.th.in()}</option>
+						<option value="NIN">{$LL.components.graphql.table.th.nin()}</option>
 					</select>
 					<FieldInput
 						__field={value.__field}
-						placeholder={$LL.components.ui.table.th.filterPlaceholder()}
+						placeholder={$LL.components.graphql.table.th.filterPlaceholder()}
 						bind:value={val}
 					/>
 				</div>
@@ -64,21 +64,21 @@
 		{:else}
 			<FieldInput
 				__field={value.__field}
-				placeholder={$LL.components.ui.table.th.filterPlaceholder()}
+				placeholder={$LL.components.graphql.table.th.filterPlaceholder()}
 				bind:value={val}
 			/>
 		{/if}
 		<select class="select select-bordered ml-1" bind:value={sort}>
-			<option value={null} selected>{$LL.components.ui.table.th.noSort()}</option>
-			<option value="ASC">{$LL.components.ui.table.th.asc()}</option>
-			<option value="DESC">{$LL.components.ui.table.th.desc()}</option>
+			<option value={null} selected>{$LL.components.graphql.table.th.noSort()}</option>
+			<option value="ASC">{$LL.components.graphql.table.th.asc()}</option>
+			<option value="DESC">{$LL.components.graphql.table.th.desc()}</option>
 		</select>
-		<div class="tooltip" data-tip={$LL.components.ui.table.th.filter()}>
+		<div class="tooltip" data-tip={$LL.components.graphql.table.th.filter()}>
 			<button class="btn btn-square btn-primary ml-1" on:click={() => filter()}>
 				<Icon src={Check} solid class="h-5 w-5" />
 			</button>
 		</div>
-		<div class="tooltip" data-tip={$LL.components.ui.table.th.cancel()}>
+		<div class="tooltip" data-tip={$LL.components.graphql.table.th.cancel()}>
 			<button class="btn btn-square btn-primary ml-1" on:click={() => clear()}>
 				<Icon src={X} solid class="h-5 w-5" />
 			</button>

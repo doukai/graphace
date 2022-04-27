@@ -1,10 +1,21 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+	import LL from '$i18n/i18n-svelte';
 	export let pageSizeOptions: number[] = [10, 20, 30];
 	export let pageSize: number = 10;
 	export let pageNumber: number = 1;
 	export let totalCount: number = 0;
-	export let onPageChange: Function;
-	export let onSizeChange: Function;
+	const dispatch = createEventDispatcher<{
+		pageChange: { selectedPageSize: number; selectedPageNumber: number };
+		sizeChange: { selectedPageSize: number };
+	}>();
+
+	const onPageChange = (pageSize: number, pageNumber: number): void => {
+		dispatch('pageChange', {
+			selectedPageSize: pageSize,
+			selectedPageNumber: pageNumber
+		});
+	};
 
 	let pageCount: number =
 		totalCount % pageSize == 0 ? ~~(totalCount / pageSize) : ~~(totalCount / pageSize) + 1;
@@ -14,11 +25,15 @@
 	<div class="navbar-start">
 		<div class="form-control">
 			<label class="input-group input-group-lg">
-				<span>size</span>
+				<span>{$LL.components.ui.pagination.size()}</span>
 				<select
 					class="select select-bordered"
 					bind:value={pageSize}
-					on:change={() => onSizeChange(pageSize)}
+					on:change={() => {
+						dispatch('sizeChange', {
+							selectedPageSize: pageSize
+						});
+					}}
 				>
 					{#each pageSizeOptions as pageSizeOption}
 						<option value={pageSizeOption}>{pageSizeOption}</option>
@@ -39,7 +54,7 @@
 			>
 				«
 			</button>
-			<button class="btn">Page {pageNumber}</button>
+			<button class="btn">{$LL.components.ui.pagination.current({ current: pageNumber })}</button>
 			<button
 				class="btn {pageNumber + 1 <= pageCount ? '' : 'btn-disabled'}"
 				on:click={() => {
@@ -52,7 +67,7 @@
 	</div>
 
 	<div class="navbar-end hidden lg:flex">
-		<p class="mr-4 hidden xl:flex">{totalCount} results</p>
+		<p class="mr-4 hidden xl:flex">{$LL.components.ui.pagination.total({ total: totalCount })}</p>
 		<div class="btn-group">
 			<button
 				class="btn {pageNumber - 1 ? '' : 'btn-disabled'}"

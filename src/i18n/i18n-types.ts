@@ -14,6 +14,11 @@ export type Translation = RootTranslation
 export type Translations = RootTranslation
 
 type RootTranslation = {
+	/**
+	 * Welcome to Svelte Fall Summit {year}
+	 * @param {number} year
+	 */
+	HI: RequiredParams<'year'>
 	localeName: {
 		/**
 		 * English
@@ -24,13 +29,98 @@ type RootTranslation = {
 		 */
 		zh: string
 	}
-	/**
-	 * Welcome to Svelte Fall Summit {year}
-	 * @param {number} year
-	 */
-	HI: RequiredParams<'year'>
+	message: {
+		/**
+		 * Save success
+		 */
+		saveSuccess: string
+		/**
+		 * Create Success
+		 */
+		createSuccess: string
+		/**
+		 * Delete Success
+		 */
+		deleteSuccess: string
+		/**
+		 * Request failed
+		 */
+		requestFailed: string
+		/**
+		 * Save failed
+		 */
+		saveFailed: string
+		/**
+		 * Create failed
+		 */
+		createFailed: string
+		/**
+		 * Delete failed
+		 */
+		deleteFailed: string
+	}
 	components: {
 		ui: {
+			cursor: {
+				/**
+				 * size
+				 */
+				size: string
+				/**
+				 * Previous
+				 */
+				previous: string
+				/**
+				 * Next
+				 */
+				next: string
+			}
+			pagination: {
+				/**
+				 * size
+				 */
+				size: string
+				/**
+				 * {total} results
+				 * @param {number} total
+				 */
+				total: RequiredParams<'total'>
+				/**
+				 * Page {current}
+				 * @param {number} current
+				 */
+				current: RequiredParams<'current'>
+				/**
+				 * Previous
+				 */
+				previous: string
+				/**
+				 * Next
+				 */
+				next: string
+			}
+			searchInput: {
+				/**
+				 * Search
+				 */
+				placeholder: string
+			}
+		}
+		graphql: {
+			editor: {
+				/**
+				 * Save
+				 */
+				saveBtn: string
+				/**
+				 * Delete
+				 */
+				deleteBtn: string
+				/**
+				 * Back
+				 */
+				backBtn: string
+			}
 			table: {
 				/**
 				 * Delete row?
@@ -134,10 +224,22 @@ type RootTranslation = {
 				}
 			}
 		}
+		routers: {
+			type: {
+				/**
+				 * Create
+				 */
+				create: string
+			}
+		}
 	}
 }
 
 export type TranslationFunctions = {
+	/**
+	 * Welcome to Svelte Fall Summit {year}
+	 */
+	HI: (arg: { year: number }) => LocalizedString
 	localeName: {
 		/**
 		 * English
@@ -148,12 +250,96 @@ export type TranslationFunctions = {
 		 */
 		zh: () => LocalizedString
 	}
-	/**
-	 * Welcome to Svelte Fall Summit {year}
-	 */
-	HI: (arg: { year: number }) => LocalizedString
+	message: {
+		/**
+		 * Save success
+		 */
+		saveSuccess: () => LocalizedString
+		/**
+		 * Create Success
+		 */
+		createSuccess: () => LocalizedString
+		/**
+		 * Delete Success
+		 */
+		deleteSuccess: () => LocalizedString
+		/**
+		 * Request failed
+		 */
+		requestFailed: () => LocalizedString
+		/**
+		 * Save failed
+		 */
+		saveFailed: () => LocalizedString
+		/**
+		 * Create failed
+		 */
+		createFailed: () => LocalizedString
+		/**
+		 * Delete failed
+		 */
+		deleteFailed: () => LocalizedString
+	}
 	components: {
 		ui: {
+			cursor: {
+				/**
+				 * size
+				 */
+				size: () => LocalizedString
+				/**
+				 * Previous
+				 */
+				previous: () => LocalizedString
+				/**
+				 * Next
+				 */
+				next: () => LocalizedString
+			}
+			pagination: {
+				/**
+				 * size
+				 */
+				size: () => LocalizedString
+				/**
+				 * {total} results
+				 */
+				total: (arg: { total: number }) => LocalizedString
+				/**
+				 * Page {current}
+				 */
+				current: (arg: { current: number }) => LocalizedString
+				/**
+				 * Previous
+				 */
+				previous: () => LocalizedString
+				/**
+				 * Next
+				 */
+				next: () => LocalizedString
+			}
+			searchInput: {
+				/**
+				 * Search
+				 */
+				placeholder: () => LocalizedString
+			}
+		}
+		graphql: {
+			editor: {
+				/**
+				 * Save
+				 */
+				saveBtn: () => LocalizedString
+				/**
+				 * Delete
+				 */
+				deleteBtn: () => LocalizedString
+				/**
+				 * Back
+				 */
+				backBtn: () => LocalizedString
+			}
 			table: {
 				/**
 				 * Delete row?
@@ -255,6 +441,14 @@ export type TranslationFunctions = {
 					 */
 					clear: () => LocalizedString
 				}
+			}
+		}
+		routers: {
+			type: {
+				/**
+				 * Create
+				 */
+				create: () => LocalizedString
 			}
 		}
 	}

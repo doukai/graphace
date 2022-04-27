@@ -39,6 +39,9 @@ export async function getType(typeName: string) {
                                 }
                             }
                         }
+                        enumValues{
+                            name
+                        }
                     }
                     description
                 }

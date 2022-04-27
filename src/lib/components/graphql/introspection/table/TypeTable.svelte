@@ -7,10 +7,11 @@
 	import { __FieldFilter, __TypeKind } from '$lib/types';
 	import { Table, TableLoading } from '$lib/components/ui/table';
 	import Pagination from '$lib/components/ui/connection/Pagination.svelte';
-	import { Modal, ModalContent, ModalActions } from '$lib/components/ui/modal';
+	import { Modal, ModalActions } from '$lib/components/ui/modal';
 	import { FieldTh, FieldTd } from './';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilAlt, Trash } from '@steeze-ui/heroicons';
+	import { notifications } from '$lib/stores/Notifications';
 	import LL from '$i18n/i18n-svelte';
 
 	export let __type: __Type;
@@ -142,7 +143,16 @@
 		variables[idFieldName] = event.detail.id;
 		variables[event.detail.__field.name] = event.detail.value;
 
-		client.request<{ data: object }>(mutation, variables).then((res) => {});
+		client
+			.request<{ data: object }>(mutation, variables)
+			.then((res) => {
+				deleteModelOpen = false;
+				notifications.success($LL.message.saveSuccess());
+				research();
+			})
+			.catch((error) => {
+				notifications.error($LL.message.saveFailed());
+			});
 	}
 
 	async function deleteRow() {
@@ -160,25 +170,37 @@
 		const variables: object = {};
 		variables[idFieldName] = deleteRowId;
 
-		client.request<{ data: object }>(mutation, variables).then((res) => {
-			deleteModelOpen = false;
-			research();
-		});
+		client
+			.request<{ data: object }>(mutation, variables)
+			.then((res) => {
+				deleteModelOpen = false;
+				notifications.success($LL.message.deleteSuccess());
+				research();
+			})
+			.catch((error) => {
+				notifications.error($LL.message.deleteFailed());
+			});
 	}
 
-	const onNext = (selectedPageSize: number, after: string): void => {
-		pageSize = selectedPageSize;
-		fetchConnection = queryType({ __type: __type, pageSize: pageSize, after: after });
+	const onNext = (event: CustomEvent<{ selectedPageSize: number; after: string }>): void => {
+		pageSize = event.detail.selectedPageSize;
+		fetchConnection = queryType({ __type: __type, pageSize: pageSize, after: event.detail.after });
 	};
 
-	const onPrevious = (selectedPageSize: number, before: string): void => {
-		pageSize = selectedPageSize;
-		fetchConnection = queryType({ __type: __type, pageSize: pageSize, before: before });
+	const onPrevious = (event: CustomEvent<{ selectedPageSize: number; before: string }>): void => {
+		pageSize = event.detail.selectedPageSize;
+		fetchConnection = queryType({
+			__type: __type,
+			pageSize: pageSize,
+			before: event.detail.before
+		});
 	};
 
-	const onPageChange = (selectedPageSize: number, selectedPageNumber: number): void => {
-		pageSize = selectedPageSize;
-		pageNumber = selectedPageNumber;
+	const onPageChange = (
+		event: CustomEvent<{ selectedPageSize: number; selectedPageNumber: number }>
+	): void => {
+		pageSize = event.detail.selectedPageSize;
+		pageNumber = event.detail.selectedPageNumber;
 		fetchConnection = queryType({
 			__type: __type,
 			pageSize: pageSize,
@@ -186,8 +208,8 @@
 		});
 	};
 
-	const onSizeChange = (selectedPageSize: number): void => {
-		pageSize = selectedPageSize;
+	const onSizeChange = (event: CustomEvent<{ selectedPageSize: number }>): void => {
+		pageSize = event.detail.selectedPageSize;
 		fetchConnection = queryType({ __type: __type, pageSize: pageSize });
 	};
 </script>
@@ -198,7 +220,7 @@
 	<Table>
 		<thead>
 			<tr>
-				<th>
+				<th class="z-10">
 					<label>
 						<input type="checkbox" class="checkbox" />
 					</label>
@@ -212,7 +234,7 @@
 		<tbody>
 			{#each manager.getListFromConnection(response.connection) as data}
 				<tr class="hover">
-					<th>
+					<th class="z-10">
 						<label>
 							<input type="checkbox" class="checkbox" />
 						</label>
@@ -226,7 +248,7 @@
 						/>
 					{/each}
 					<td>
-						<div class="tooltip" data-tip={$LL.components.ui.table.editBtn()}>
+						<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
 							<button
 								class="btn btn-square btn-ghost btn-xs"
 								on:click={(e) => {
@@ -237,7 +259,7 @@
 								<Icon src={PencilAlt} solid />
 							</button>
 						</div>
-						<div class="tooltip" data-tip={$LL.components.ui.table.deleteBtn()}>
+						<div class="tooltip" data-tip={$LL.components.graphql.table.deleteBtn()}>
 							<button
 								class="btn btn-square btn-ghost btn-xs"
 								on:click={(e) => {
@@ -256,21 +278,23 @@
 	</Table>
 	<div class="divider" />
 	<Pagination
-		{onPageChange}
-		{onSizeChange}
 		{pageNumber}
 		{pageSize}
 		totalCount={response.connection.totalCount}
+		on:pageChange={onPageChange}
+		on:sizeChange={onSizeChange}
 	/>
+{:catch error}
+	{notifications.error($LL.message.requestFailed())}
 {/await}
 
-<Modal isModalOpen={deleteModelOpen} title={$LL.components.ui.table.deleteModalTitle()}>
+<Modal isModalOpen={deleteModelOpen} title={$LL.components.graphql.table.deleteModalTitle()}>
 	<ModalActions>
 		<button class="btn" on:click={() => (deleteModelOpen = false)}>
-			{$LL.components.ui.table.cancelBtn()}
+			{$LL.components.graphql.table.cancelBtn()}
 		</button>
 		<button class="btn btn-outline btn-error" on:click={() => deleteRow()}>
-			{$LL.components.ui.table.deleteBtn()}
+			{$LL.components.graphql.table.deleteBtn()}
 		</button>
 	</ModalActions>
 </Modal>

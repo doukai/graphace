@@ -1,24 +1,32 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+	import LL from '$i18n/i18n-svelte';
 	export let pageSizeOptions: number[] = [10, 20, 30];
 	export let pageSize: number = 10;
-	export let onPrevious: Function;
-	export let onNext: Function;
-	export let onSizeChange: Function;
 	export let hasNextPage: boolean = false;
 	export let hasPreviousPage: boolean = false;
 	export let startCursor: string;
 	export let endCursor: string;
+	const dispatch = createEventDispatcher<{
+		previous: { selectedPageSize: number; before: string };
+		next: { selectedPageSize: number; after: string };
+		sizeChange: { selectedPageSize: number };
+	}>();
 </script>
 
 <div class="navbar bg-base-100 shadow-xl rounded-box">
 	<div class="navbar-start">
 		<div class="form-control">
 			<label class="input-group input-group-lg">
-				<span>size</span>
+				<span>{$LL.components.ui.cursor.size()}</span>
 				<select
 					class="select select-bordered"
 					bind:value={pageSize}
-					on:change={() => onSizeChange(pageSize)}
+					on:change={() => {
+						dispatch('sizeChange', {
+							selectedPageSize: pageSize
+						});
+					}}
 				>
 					{#each pageSizeOptions as pageSizeOption}
 						<option value={pageSizeOption}>{pageSizeOption}</option>
@@ -32,18 +40,24 @@
 			<button
 				class="btn btn-outline {hasPreviousPage ? '' : 'btn-disabled'}"
 				on:click={() => {
-					onPrevious(pageSize, startCursor);
+					dispatch('previous', {
+						selectedPageSize: pageSize,
+						before: startCursor
+					});
 				}}
 			>
-				Previous
+				{$LL.components.ui.cursor.previous()}
 			</button>
 			<button
 				class="btn btn-outline {hasNextPage ? '' : 'btn-disabled'}"
 				on:click={() => {
-					onNext(pageSize, endCursor);
+					dispatch('next', {
+						selectedPageSize: pageSize,
+						after: endCursor
+					});
 				}}
 			>
-				Next
+				{$LL.components.ui.cursor.next()}
 			</button>
 		</div>
 	</div>

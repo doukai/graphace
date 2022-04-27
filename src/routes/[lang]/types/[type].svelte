@@ -15,16 +15,16 @@
 	import type { __Type } from '$lib/types/__Type';
 	import { getType } from '$lib/graphql/Introspection';
 	import TypeTable from '$lib/components/graphql/introspection/table/TypeTable.svelte';
-	import SectionHead from '$lib/components/ui/section/SectionHead.svelte';
-	import SectionLoading from '$lib/components/ui/section/SectionLoading.svelte';
+	import { SectionHead, SectionLoading } from '$lib/components/ui/section';
 	import SearchInput from '$lib/components/ui/search/SearchInput.svelte';
+	import LL from '$i18n/i18n-svelte';
 	export let typeName: string;
 
 	$: fetchType = getType(typeName);
 
 	let queryValue: string = null;
-	let search = (value: string) => {
-		queryValue = value;
+	let search = (event: CustomEvent<{ value: string }>) => {
+		queryValue = event.detail.value;
 	};
 </script>
 
@@ -32,15 +32,15 @@
 	<SectionLoading />
 {:then response}
 	<SectionHead title={response.__type.name}>
-		<SearchInput onClick={search} />
+		<SearchInput on:search={search} />
 		<button
-			class="ml-3 btn"
+			class="btn"
 			on:click={(e) => {
 				e.preventDefault();
 				goto(`./${response.__type.name}/create`);
 			}}
 		>
-			Create
+			{$LL.components.routers.type.create()}
 		</button>
 	</SectionHead>
 	<div class="divider" />

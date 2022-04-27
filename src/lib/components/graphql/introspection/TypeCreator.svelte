@@ -5,11 +5,10 @@
 	import { TypeManager } from '$lib/TypeManager';
 	import type { __Type } from '$lib/types/__Type';
 	import { __TypeKind } from '$lib/types/__TypeKind';
-	import Form from '$lib/components/ui/form/Form.svelte';
-	import FormItems from '$lib/components/ui/form/FormItems.svelte';
-	import FormItem from '$lib/components/ui/form/FormItem.svelte';
-	import FormButtons from '$lib/components/ui/form/FormButtons.svelte';
+	import { Form, FormItems, FormItem, FormButtons } from '$lib/components/ui/form';
 	import FieldInput from './FieldInput.svelte';
+	import { notifications } from '$lib/stores/Notifications';
+	import LL from '$i18n/i18n-svelte';
 	export let __type: __Type;
 
 	const manager: TypeManager = new TypeManager();
@@ -18,22 +17,28 @@
 
 	let data: object = manager.createTypeObject(__type);
 
-	const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
-	const mutationVariables: string = manager.fieldsToMutationVariables(__type);
-	const mutationArguments: string = manager.fieldsToMutationArguments(__type);
-
-	const mutation: string = gql`
-		mutation (${mutationVariables}) {
-			data: ${mutationTypeFieldName} (${mutationArguments}) {
-				${selections}
-			}
-		}	
-	`;
-
 	const save = (): void => {
-		client.request(mutation, data).then((res) => {
-			goto(`../${manager.typeNameToUrl(__type.name)}/${res.data[idFieldName]}`);
-		});
+		const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
+		const mutationVariables: string = manager.fieldsToMutationVariables(__type);
+		const mutationArguments: string = manager.fieldsToMutationArguments(__type);
+
+		const mutation: string = gql`
+			mutation (${mutationVariables}) {
+				data: ${mutationTypeFieldName} (${mutationArguments}) {
+					${selections}
+				}
+			}	
+		`;
+
+		client
+			.request(mutation, data)
+			.then((res) => {
+				notifications.success($LL.message.saveSuccess());
+				goto(`../${manager.typeNameToUrl(__type.name)}/${res.data[idFieldName]}`);
+			})
+			.catch((error) => {
+				notifications.error($LL.message.saveFailed());
+			});
 	};
 </script>
 
@@ -47,22 +52,22 @@
 	</FormItems>
 	<FormButtons>
 		<button
-			class="ml-3 btn"
+			class="btn"
 			on:click={(e) => {
 				e.preventDefault();
 				goto(`../${manager.typeNameToUrl(__type.name)}`);
 			}}
 		>
-			Cancel
+			{$LL.components.graphql.editor.backBtn()}
 		</button>
 		<button
-			class="ml-3 btn"
+			class="btn"
 			on:click={(e) => {
 				e.preventDefault();
 				save();
 			}}
 		>
-			Save
+			{$LL.components.graphql.editor.saveBtn()}
 		</button>
 	</FormButtons>
 </Form>

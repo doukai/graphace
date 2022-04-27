@@ -34,12 +34,12 @@
 <td>
 	<div class="flex" bind:this={content}>
 		<FieldInput {__field} placeholder={__field.name} bind:value />
-		<div class="tooltip" data-tip={$LL.components.ui.table.td.save()}>
+		<div class="tooltip" data-tip={$LL.components.graphql.table.td.save()}>
 			<button class="btn btn-square btn-primary ml-1" on:click={() => mutation()}>
 				<Icon src={Check} solid class="h-5 w-5" />
 			</button>
 		</div>
-		<div class="tooltip" data-tip={$LL.components.ui.table.td.clear()}>
+		<div class="tooltip" data-tip={$LL.components.graphql.table.td.clear()}>
 			<button class="btn btn-square btn-primary ml-1" on:click={() => clean()}>
 				<Icon src={X} solid class="h-5 w-5" />
 			</button>

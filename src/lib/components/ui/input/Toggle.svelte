@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let name: string;
-	export let value: boolean | null;
+	export let value: string | number | boolean | null;
 	export let className: string = '';
 </script>
 

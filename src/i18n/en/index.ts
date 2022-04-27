@@ -1,10 +1,41 @@
 import type { BaseTranslation } from '../i18n-types'
 
 const en: BaseTranslation = {
-	localeName: { en: "English", zh: "Chinese" },
 	HI: "Welcome to Svelte Fall Summit {year:number}",
+	localeName: { en: "English", zh: "Chinese" },
+	message: {
+		saveSuccess: "Save success",
+		createSuccess: "Create Success",
+		deleteSuccess: "Delete Success",
+		requestFailed: "Request failed",
+		saveFailed: "Save failed",
+		createFailed: "Create failed",
+		deleteFailed: "Delete failed",
+	},
 	components: {
 		ui: {
+			cursor: {
+				size: "size",
+				previous: "Previous",
+				next: "Next"
+			},
+			pagination: {
+				size: "size",
+				total: "{total:number} results",
+				current: "Page {current:number}",
+				previous: "Previous",
+				next: "Next"
+			},
+			searchInput: {
+				placeholder: "Search"
+			}
+		},
+		graphql: {
+			editor: {
+				saveBtn: "Save",
+				deleteBtn: "Delete",
+				backBtn: "Back",
+			},
 			table: {
 				deleteModalTitle: "Delete row?",
 				editBtn: "Edit",
@@ -34,6 +65,11 @@ const en: BaseTranslation = {
 					save: "save",
 					clear: "clear"
 				}
+			}
+		},
+		routers: {
+			type: {
+				create: "Create"
 			}
 		}
 	}
