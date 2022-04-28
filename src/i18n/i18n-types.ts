@@ -60,6 +60,16 @@ type RootTranslation = {
 		deleteFailed: string
 	}
 	components: {
+		messageBox: {
+			/**
+			 * Cancel
+			 */
+			cancel: string
+			/**
+			 * Confirm
+			 */
+			confirm: string
+		}
 		ui: {
 			cursor: {
 				/**
@@ -281,6 +291,16 @@ export type TranslationFunctions = {
 		deleteFailed: () => LocalizedString
 	}
 	components: {
+		messageBox: {
+			/**
+			 * Cancel
+			 */
+			cancel: () => LocalizedString
+			/**
+			 * Confirm
+			 */
+			confirm: () => LocalizedString
+		}
 		ui: {
 			cursor: {
 				/**

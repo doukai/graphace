@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import type { Connection, PageInfo, __Field, __Type } from "./types";
+import type { Connection, PageInfo, __EnumValue, __Field, __Type } from "./types";
 import { __TypeKind } from "./types/__TypeKind";
 
 const aggregateSuffix: string[] = ["Count", "Sum", "Avg", "Max", "Min"];
@@ -41,6 +41,16 @@ export class TypeManager {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public getFieldTypeEnumValues(__type: __Type): __EnumValue[] {
+        if (__type.kind === __TypeKind.NON_NULL) {
+            return this.getFieldTypeEnumValues(__type.ofType);
+        } else if (__type.kind === __TypeKind.LIST) {
+            return this.getFieldTypeEnumValues(__type.ofType);
+        } else {
+            return __type.enumValues;
         }
     }
 

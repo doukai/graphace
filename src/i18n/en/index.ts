@@ -13,6 +13,10 @@ const en: BaseTranslation = {
 		deleteFailed: "Delete failed",
 	},
 	components: {
+		messageBox: {
+			cancel: "Cancel",
+			confirm: "Confirm"
+		},
 		ui: {
 			cursor: {
 				size: "size",

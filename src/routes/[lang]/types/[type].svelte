@@ -26,6 +26,10 @@
 	let search = (event: CustomEvent<{ value: string }>) => {
 		queryValue = event.detail.value;
 	};
+
+	let selectChange = (event: CustomEvent<{ selectedIdList: string[] }>) => {
+		// alert(JSON.stringify(event.detail.selectedIdList));
+	};
 </script>
 
 {#await fetchType}
@@ -44,5 +48,5 @@
 		</button>
 	</SectionHead>
 	<div class="divider" />
-	<TypeTable __type={response.__type} {queryValue} />
+	<TypeTable __type={response.__type} {queryValue} on:selectChange={selectChange} />
 {/await}

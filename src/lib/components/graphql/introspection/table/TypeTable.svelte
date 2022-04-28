@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { gql } from 'graphql-request';
 	import { client } from '$lib/graphql/GraphqlClient';
@@ -7,18 +8,31 @@
 	import { __FieldFilter, __TypeKind } from '$lib/types';
 	import { Table, TableLoading } from '$lib/components/ui/table';
 	import Pagination from '$lib/components/ui/connection/Pagination.svelte';
-	import { Modal, ModalActions } from '$lib/components/ui/modal';
 	import { FieldTh, FieldTd } from './';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilAlt, Trash } from '@steeze-ui/heroicons';
 	import { notifications } from '$lib/stores/Notifications';
+	import { messageBox } from '$lib/stores/MessageBox';
 	import LL from '$i18n/i18n-svelte';
 
 	export let __type: __Type;
 	export let queryValue: string = null;
 
-	let deleteModelOpen: boolean = false;
+	const dispatch = createEventDispatcher<{
+		selectChange: { selectedIdList: string[] };
+	}>();
+
 	let deleteRowId: string = null;
+	let selectedRows: object = {};
+	let selectAll: boolean;
+	let pageNumber: number = 1;
+	let pageSize: number = 10;
+
+	$: dispatch('selectChange', {
+		selectedIdList: Object.keys(selectedRows)
+			.filter((id) => selectedRows[id])
+			.map((id) => id)
+	});
 
 	const manager: TypeManager = new TypeManager();
 	const fields: Array<__Field> = manager.getSingleTypeFiledList(__type);
@@ -26,12 +40,23 @@
 		.getSingleTypeFiledList(__type)
 		.map((__field) => new __FieldFilter(__field));
 	const idFieldName: string = manager.getIdFieldName(__type);
-	let pageNumber: number = 1;
-	let pageSize: number = 10;
+
+	const afterQueryType = (fetchConnection: Promise<{ connection: Connection }>): void => {
+		fetchConnection.then((response) => {
+			selectedRows = {};
+			selectAll = false;
+			manager
+				.getListFromConnection(response.connection)
+				.forEach((data) => (selectedRows[data[idFieldName]] = false));
+		});
+	};
+
 	let fetchConnection: Promise<{ connection: Connection }> = queryType({
 		__type: __type,
 		pageSize: pageSize
 	});
+
+	afterQueryType(fetchConnection);
 
 	$: if (queryValue != null) {
 		research();
@@ -39,6 +64,7 @@
 
 	const research = () => {
 		fetchConnection = queryType({ __type: __type, pageSize: pageSize });
+		afterQueryType(fetchConnection);
 	};
 
 	type QueryParams = {
@@ -146,7 +172,6 @@
 		client
 			.request<{ data: object }>(mutation, variables)
 			.then((res) => {
-				deleteModelOpen = false;
 				notifications.success($LL.message.saveSuccess());
 				research();
 			})
@@ -173,7 +198,6 @@
 		client
 			.request<{ data: object }>(mutation, variables)
 			.then((res) => {
-				deleteModelOpen = false;
 				notifications.success($LL.message.deleteSuccess());
 				research();
 			})
@@ -185,6 +209,7 @@
 	const onNext = (event: CustomEvent<{ selectedPageSize: number; after: string }>): void => {
 		pageSize = event.detail.selectedPageSize;
 		fetchConnection = queryType({ __type: __type, pageSize: pageSize, after: event.detail.after });
+		afterQueryType(fetchConnection);
 	};
 
 	const onPrevious = (event: CustomEvent<{ selectedPageSize: number; before: string }>): void => {
@@ -194,6 +219,7 @@
 			pageSize: pageSize,
 			before: event.detail.before
 		});
+		afterQueryType(fetchConnection);
 	};
 
 	const onPageChange = (
@@ -206,11 +232,13 @@
 			pageSize: pageSize,
 			offset: (pageNumber - 1) * pageSize
 		});
+		afterQueryType(fetchConnection);
 	};
 
 	const onSizeChange = (event: CustomEvent<{ selectedPageSize: number }>): void => {
 		pageSize = event.detail.selectedPageSize;
 		fetchConnection = queryType({ __type: __type, pageSize: pageSize });
+		afterQueryType(fetchConnection);
 	};
 </script>
 
@@ -222,7 +250,14 @@
 			<tr>
 				<th class="z-10">
 					<label>
-						<input type="checkbox" class="checkbox" />
+						<input
+							type="checkbox"
+							class="checkbox"
+							bind:checked={selectAll}
+							on:change={() => {
+								Object.keys(selectedRows).forEach((id) => (selectedRows[id] = selectAll));
+							}}
+						/>
 					</label>
 				</th>
 				{#each fieldFilters as __fieldFilter}
@@ -236,7 +271,11 @@
 				<tr class="hover">
 					<th class="z-10">
 						<label>
-							<input type="checkbox" class="checkbox" />
+							<input
+								type="checkbox"
+								class="checkbox"
+								bind:checked={selectedRows[data[idFieldName]]}
+							/>
 						</label>
 					</th>
 					{#each fields as __field}
@@ -264,8 +303,16 @@
 								class="btn btn-square btn-ghost btn-xs"
 								on:click={(e) => {
 									e.preventDefault();
-									deleteModelOpen = true;
 									deleteRowId = data[idFieldName];
+									messageBox.open({
+										title: $LL.components.graphql.table.deleteModalTitle(),
+										buttonName: $LL.components.graphql.table.deleteBtn(),
+										buttonType: 'error',
+										confirm: () => {
+											deleteRow();
+											return true;
+										}
+									});
 								}}
 							>
 								<Icon src={Trash} solid />
@@ -287,14 +334,3 @@
 {:catch error}
 	{notifications.error($LL.message.requestFailed())}
 {/await}
-
-<Modal isModalOpen={deleteModelOpen} title={$LL.components.graphql.table.deleteModalTitle()}>
-	<ModalActions>
-		<button class="btn" on:click={() => (deleteModelOpen = false)}>
-			{$LL.components.graphql.table.cancelBtn()}
-		</button>
-		<button class="btn btn-outline btn-error" on:click={() => deleteRow()}>
-			{$LL.components.graphql.table.deleteBtn()}
-		</button>
-	</ModalActions>
-</Modal>

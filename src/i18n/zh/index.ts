@@ -13,6 +13,10 @@ const zh: Translation = {
 		deleteFailed: "删除失败",
 	},
 	components: {
+		messageBox: {
+			cancel: "取消",
+			confirm: "确认"
+		},
 		ui: {
 			cursor: {
 				size: "条数",

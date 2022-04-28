@@ -46,6 +46,7 @@
 	import TypeMenu from '$lib/components/graphql/introspection/TypeMenu.svelte';
 	import { NavBar, NavBarStart, NavBarEnd } from '$lib/components/ui/navbar';
 	import Toast from '$lib/components/ui/Toast.svelte';
+	import MessageBox from '$lib/components/ui/MessageBox.svelte';
 	import { isOpen } from '$lib/stores/Menu';
 	import type { __Type } from '$lib/types/__Type';
 	import { setLocale } from '$i18n/i18n-svelte';
@@ -89,6 +90,7 @@
 				</div>
 			</div>
 			<Toast />
+			<MessageBox />
 		</main>
 	</div>
 </div>

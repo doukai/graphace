@@ -20,5 +20,10 @@
 {:else if fieldTypeName === 'Boolean'}
 	<Toggle name={__field.name} bind:value />
 {:else if manager.fieldIsEnum(__field.type)}
-	<EnumSelect name={__field.name} {className} __enumValues={__field.type.enumValues} bind:value />
+	<EnumSelect
+		name={__field.name}
+		{className}
+		__enumValues={manager.getFieldTypeEnumValues(__field.type)}
+		bind:value
+	/>
 {/if}

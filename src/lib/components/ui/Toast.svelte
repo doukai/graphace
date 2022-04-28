@@ -6,16 +6,10 @@
 	import { InformationCircle, CheckCircle, Exclamation, XCircle } from '@steeze-ui/heroicons';
 
 	const alertClassName = (alertType: string) => {
-		if (alertType === 'default') {
+		if (alertType) {
+			return `alert-${alertType}`;
+		} else {
 			return '';
-		} else if (alertType === 'info') {
-			return 'alert-info';
-		} else if (alertType === 'success') {
-			return 'alert-success';
-		} else if (alertType === 'warning') {
-			return 'alert-warning';
-		} else if (alertType === 'error') {
-			return 'alert-error';
 		}
 	};
 </script>

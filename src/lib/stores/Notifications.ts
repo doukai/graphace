@@ -20,9 +20,9 @@ function createNotificationStore() {
         set($notificationsStore);
         if ($notificationsStore.length > 0) {
             const timer = setTimeout(() => {
-                notificationsStore.update(state => {
-                    state.shift();
-                    return state;
+                notificationsStore.update(notifications => {
+                    notifications.shift();
+                    return notifications;
                 })
             }, $notificationsStore[0].timeout)
             return () => {
@@ -36,7 +36,7 @@ function createNotificationStore() {
     return {
         subscribe,
         send,
-        default: (msg: string, timeout = 3000) => send(msg, "default", timeout),
+        default: (msg: string, timeout = 3000) => send(msg, null, timeout),
         info: (msg: string, timeout = 3000) => send(msg, "info", timeout),
         success: (msg: string, timeout = 3000) => send(msg, "success", timeout),
         warning: (msg: string, timeout = 3000) => send(msg, "warning", timeout),

@@ -36,7 +36,16 @@ export async function getType(typeName: string) {
                                 ofType {
                                     name
                                     kind
+                                    enumValues{
+                                        name
+                                    }
                                 }
+                                enumValues{
+                                    name
+                                }
+                            }
+                            enumValues{
+                                name
                             }
                         }
                         enumValues{
