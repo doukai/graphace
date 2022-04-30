@@ -39,9 +39,9 @@ type RootTranslation = {
 		 */
 		createSuccess: string
 		/**
-		 * Delete Success
+		 * Remove Success
 		 */
-		deleteSuccess: string
+		removeSuccess: string
 		/**
 		 * Request failed
 		 */
@@ -55,9 +55,9 @@ type RootTranslation = {
 		 */
 		createFailed: string
 		/**
-		 * Delete failed
+		 * Remove failed
 		 */
-		deleteFailed: string
+		removeFailed: string
 	}
 	components: {
 		messageBox: {
@@ -123,9 +123,9 @@ type RootTranslation = {
 				 */
 				saveBtn: string
 				/**
-				 * Delete
+				 * Remove
 				 */
-				deleteBtn: string
+				removeBtn: string
 				/**
 				 * Back
 				 */
@@ -133,17 +133,17 @@ type RootTranslation = {
 			}
 			table: {
 				/**
-				 * Delete row?
+				 * Remove row?
 				 */
-				deleteModalTitle: string
+				removeModalTitle: string
 				/**
 				 * Edit
 				 */
 				editBtn: string
 				/**
-				 * Delete
+				 * Remove
 				 */
-				deleteBtn: string
+				removeBtn: string
 				/**
 				 * Cancel
 				 */
@@ -270,9 +270,9 @@ export type TranslationFunctions = {
 		 */
 		createSuccess: () => LocalizedString
 		/**
-		 * Delete Success
+		 * Remove Success
 		 */
-		deleteSuccess: () => LocalizedString
+		removeSuccess: () => LocalizedString
 		/**
 		 * Request failed
 		 */
@@ -286,9 +286,9 @@ export type TranslationFunctions = {
 		 */
 		createFailed: () => LocalizedString
 		/**
-		 * Delete failed
+		 * Remove failed
 		 */
-		deleteFailed: () => LocalizedString
+		removeFailed: () => LocalizedString
 	}
 	components: {
 		messageBox: {
@@ -352,9 +352,9 @@ export type TranslationFunctions = {
 				 */
 				saveBtn: () => LocalizedString
 				/**
-				 * Delete
+				 * Remove
 				 */
-				deleteBtn: () => LocalizedString
+				removeBtn: () => LocalizedString
 				/**
 				 * Back
 				 */
@@ -362,17 +362,17 @@ export type TranslationFunctions = {
 			}
 			table: {
 				/**
-				 * Delete row?
+				 * Remove row?
 				 */
-				deleteModalTitle: () => LocalizedString
+				removeModalTitle: () => LocalizedString
 				/**
 				 * Edit
 				 */
 				editBtn: () => LocalizedString
 				/**
-				 * Delete
+				 * Remove
 				 */
-				deleteBtn: () => LocalizedString
+				removeBtn: () => LocalizedString
 				/**
 				 * Cancel
 				 */

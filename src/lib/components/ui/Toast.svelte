@@ -6,8 +6,14 @@
 	import { InformationCircle, CheckCircle, Exclamation, XCircle } from '@steeze-ui/heroicons';
 
 	const alertClassName = (alertType: string) => {
-		if (alertType) {
-			return `alert-${alertType}`;
+		if (alertType === 'info') {
+			return 'alert-info';
+		} else if (alertType === 'success') {
+			return 'alert-success';
+		} else if (alertType === 'warning') {
+			return 'alert-warning';
+		} else if (alertType === 'error') {
+			return 'alert-error';
 		} else {
 			return '';
 		}
@@ -20,9 +26,7 @@
 			<div animate:flip transition:fly={{ y: 30 }}>
 				<div class="alert {alertClassName(notification.type)} shadow-lg">
 					<div>
-						{#if notification.type === 'default'}
-							<Icon src={InformationCircle} solid class="h-5 w-5" />
-						{:else if notification.type === 'info'}
+						{#if notification.type === 'info'}
 							<Icon src={InformationCircle} solid class="h-5 w-5" />
 						{:else if notification.type === 'success'}
 							<Icon src={CheckCircle} solid class="h-5 w-5" />
@@ -30,6 +34,8 @@
 							<Icon src={Exclamation} solid class="h-5 w-5" />
 						{:else if notification.type === 'error'}
 							<Icon src={XCircle} solid class="h-5 w-5" />
+						{:else}
+							<Icon src={InformationCircle} solid class="h-5 w-5" />
 						{/if}
 						<span>{notification.message}</span>
 					</div>

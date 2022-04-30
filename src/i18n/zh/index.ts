@@ -6,11 +6,11 @@ const zh: Translation = {
 	message: {
 		saveSuccess: "保存成功",
 		createSuccess: "创建成功",
-		deleteSuccess: "删除成功",
+		removeSuccess: "删除成功",
 		requestFailed: "请求失败",
 		saveFailed: "保存失败",
 		createFailed: "创建失败",
-		deleteFailed: "删除失败",
+		removeFailed: "删除失败",
 	},
 	components: {
 		messageBox: {
@@ -37,13 +37,13 @@ const zh: Translation = {
 		graphql: {
 			editor: {
 				saveBtn: "保存",
-				deleteBtn: "删除",
+				removeBtn: "删除",
 				backBtn: "返回",
 			},
 			table: {
-				deleteModalTitle: "确认删除?",
+				removeModalTitle: "确认删除?",
 				editBtn: "编辑",
-				deleteBtn: "删除",
+				removeBtn: "删除",
 				cancelBtn: "取消",
 				th: {
 					filter: "过滤",

@@ -2,12 +2,13 @@ import { Operator } from "./Operator";
 import type { Sort } from "./Sort";
 import type { __Field } from "./__Field";
 
-export class __FieldFilter {
+export type __FieldFilter = {
     __field: __Field;
-    opr: Operator = Operator.EQ;
-    val: string | number | boolean | null = null;
-    sort: Sort = null;
-    constructor(__field: __Field) {
-        this.__field = __field;
-    }
+    opr: Operator;
+    val: string | number | boolean | null;
+    sort: Sort;
+}
+
+export const createFilter = (__field: __Field) => {
+    return { __field, opr: Operator.EQ, val: null, sort: null };
 }

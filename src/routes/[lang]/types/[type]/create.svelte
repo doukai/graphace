@@ -20,11 +20,11 @@
 	import FormLoading from '$lib/components/ui/form/FormLoading.svelte';
 	export let typeName: string;
 
-	let fetchType = getType(typeName);
+	let typePromise = getType(typeName);
 </script>
 
 <Section>
-	{#await fetchType}
+	{#await typePromise}
 		<FormLoading />
 	{:then response}
 		<TypeCreator __type={response.__type} />

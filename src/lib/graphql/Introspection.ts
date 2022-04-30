@@ -1,8 +1,8 @@
 import { client } from '$lib/graphql/GraphqlClient';
 import { gql } from 'graphql-request';
-import type { __Type } from '$lib/types/__Type';
+import type { __Type } from '$lib/types';
 
-export async function getTypeList() {
+export async function getTypeList(): Promise<{ __typeList: Array<__Type>; }> {
     const query: string = gql`
         query {
             __typeList(kind: { val: OBJECT }) {
@@ -15,7 +15,7 @@ export async function getTypeList() {
     return await client.request<{ __typeList: Array<__Type> }>(query);
 }
 
-export async function getType(typeName: string) {
+export async function getType(typeName: string): Promise<{ __type: __Type; }> {
     const query: string = gql`
         query ($typeName: String) {
             __type(name: { val: $typeName }) {

@@ -22,11 +22,11 @@
 	export let typeName: string;
 	export let id: string;
 
-	let fetchType = getType(typeName);
+	let typePromise = getType(typeName);
 </script>
 
 <Section>
-	{#await fetchType}
+	{#await typePromise}
 		<FormLoading />
 	{:then response}
 		<TypeEditor __type={response.__type} {id} />

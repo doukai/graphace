@@ -6,11 +6,11 @@ const en: BaseTranslation = {
 	message: {
 		saveSuccess: "Save success",
 		createSuccess: "Create Success",
-		deleteSuccess: "Delete Success",
+		removeSuccess: "Remove Success",
 		requestFailed: "Request failed",
 		saveFailed: "Save failed",
 		createFailed: "Create failed",
-		deleteFailed: "Delete failed",
+		removeFailed: "Remove failed",
 	},
 	components: {
 		messageBox: {
@@ -37,13 +37,13 @@ const en: BaseTranslation = {
 		graphql: {
 			editor: {
 				saveBtn: "Save",
-				deleteBtn: "Delete",
+				removeBtn: "Remove",
 				backBtn: "Back",
 			},
 			table: {
-				deleteModalTitle: "Delete row?",
+				removeModalTitle: "Remove row?",
 				editBtn: "Edit",
-				deleteBtn: "Delete",
+				removeBtn: "Remove",
 				cancelBtn: "Cancel",
 				th: {
 					filter: "filter",

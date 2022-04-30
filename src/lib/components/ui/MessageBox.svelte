@@ -3,9 +3,9 @@
 	import { messageBox } from '$lib/stores/MessageBox';
 	import LL from '$i18n/i18n-svelte';
 
-	const buttonClassName = (alertType: string) => {
-		if (alertType) {
-			return `btn-${alertType}`;
+	const buttonClassName = (buttonType: string) => {
+		if (buttonType) {
+			return `btn-${buttonType}`;
 		} else {
 			return '';
 		}

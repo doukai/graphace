@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { gql } from 'graphql-request';
-	import { client } from '$lib/graphql/GraphqlClient';
+	import { mutationType } from '$lib/graphql/Type';
 	import { TypeManager } from '$lib/TypeManager';
 	import type { __Type } from '$lib/types/__Type';
 	import { __TypeKind } from '$lib/types/__TypeKind';
@@ -13,28 +12,14 @@
 
 	const manager: TypeManager = new TypeManager();
 	const idFieldName: string = manager.getIdFieldName(__type);
-	const selections: string = manager.fieldsToSelections(__type);
 
 	let data: object = manager.createTypeObject(__type);
 
 	const save = (): void => {
-		const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
-		const mutationVariables: string = manager.fieldsToMutationVariables(__type);
-		const mutationArguments: string = manager.fieldsToMutationArguments(__type);
-
-		const mutation: string = gql`
-			mutation (${mutationVariables}) {
-				data: ${mutationTypeFieldName} (${mutationArguments}) {
-					${selections}
-				}
-			}	
-		`;
-
-		client
-			.request(mutation, data)
-			.then((res) => {
+		mutationType(__type, data)
+			.then((response) => {
 				notifications.success($LL.message.saveSuccess());
-				goto(`../${manager.typeNameToUrl(__type.name)}/${res.data[idFieldName]}`);
+				goto(`../${manager.typeNameToUrl(__type.name)}/${response.data[idFieldName]}`);
 			})
 			.catch((error) => {
 				notifications.error($LL.message.saveFailed());

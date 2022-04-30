@@ -1,58 +1,29 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { gql } from 'graphql-request';
-	import { client } from '$lib/graphql/GraphqlClient';
+	import { queryType, mutationType, removeType } from '$lib/graphql/Type';
 	import { TypeManager } from '$lib/TypeManager';
 	import type { __Type } from '$lib/types/__Type';
 	import { __TypeKind } from '$lib/types/__TypeKind';
 	import { Form, FormLoading, FormItems, FormItem, FormButtons } from '$lib/components/ui/form';
 	import FieldInput from './FieldInput.svelte';
-	import { Modal, ModalActions } from '$lib/components/ui/modal';
+	import { messageBox } from '$lib/stores/MessageBox';
 	import { notifications } from '$lib/stores/Notifications';
 	import LL from '$i18n/i18n-svelte';
 	export let id: string;
 	export let __type: __Type;
 
-	let deleteModelOpen: boolean = false;
-
 	const manager: TypeManager = new TypeManager();
-	const queryTypeFieldName: string = manager.getQueryTypeFieldName(__type);
-	const idFieldName: string = manager.getIdFieldName(__type);
-	const selections: string = manager.fieldsToSelections(__type);
-
-	const graphql: string = gql`
-		query ($id: ID) {
-			data: ${queryTypeFieldName} (${idFieldName}: {val: $id}){
-				${selections}
-			}
-		}
-	`;
-
-	type Response = { data: object };
-	const queryData: Promise<Response> = client.request<Response>(graphql, { id });
+	const queryPromise: Promise<{ data: object }> = queryType(__type, id);
 
 	let data: object;
-	queryData.then((res) => {
+	queryPromise.then((res) => {
 		data = res.data;
 	});
 
 	const save = (): void => {
-		const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
-		const mutationVariables: string = manager.fieldsToMutationVariables(__type);
-		const mutationArguments: string = manager.fieldsToMutationArguments(__type);
-
-		const mutation: string = gql`
-			mutation (${mutationVariables}) {
-				data: ${mutationTypeFieldName} (${mutationArguments}) {
-					${selections}
-				}
-			}	
-		`;
-
-		client
-			.request(mutation, data)
-			.then((res) => {
-				data = res.data;
+		mutationType(__type, data)
+			.then((response) => {
+				data = response.data;
 				notifications.success($LL.message.saveSuccess());
 			})
 			.catch((error) => {
@@ -61,30 +32,18 @@
 	};
 
 	const remove = (): void => {
-		const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
-		const idFieldName: string = manager.getIdFieldName(__type);
-
-		const mutation: string = gql`
-			mutation ($id: String){
-				data: ${mutationTypeFieldName} (${idFieldName}: $id isDeprecated: true) @update {
-					${idFieldName}
-				}
-			}	
-		`;
-
-		client
-			.request<{ data: object }>(mutation, { id })
-			.then((res) => {
-				notifications.success($LL.message.deleteSuccess());
+		removeType(__type, id)
+			.then((response) => {
+				notifications.success($LL.message.removeSuccess());
 				goto(`../${manager.typeNameToUrl(__type.name)}`);
 			})
 			.catch((error) => {
-				notifications.error($LL.message.deleteFailed());
+				notifications.error($LL.message.removeFailed());
 			});
 	};
 </script>
 
-{#await queryData}
+{#await queryPromise}
 	<FormLoading />
 {:then response}
 	<Form>
@@ -118,24 +77,21 @@
 				class="btn btn-outline btn-error"
 				on:click={(e) => {
 					e.preventDefault();
-					deleteModelOpen = true;
+					messageBox.open({
+						title: $LL.components.graphql.table.removeModalTitle(),
+						buttonName: $LL.components.graphql.table.removeBtn(),
+						buttonType: 'error',
+						confirm: () => {
+							remove();
+							return true;
+						}
+					});
 				}}
 			>
-				{$LL.components.graphql.editor.deleteBtn()}
+				{$LL.components.graphql.editor.removeBtn()}
 			</button>
 		</FormButtons>
 	</Form>
 {:catch error}
 	{notifications.error($LL.message.requestFailed())}
 {/await}
-
-<Modal isModalOpen={deleteModelOpen} title={$LL.components.graphql.table.deleteModalTitle()}>
-	<ModalActions>
-		<button class="btn" on:click={() => (deleteModelOpen = false)}>
-			{$LL.components.graphql.table.cancelBtn()}
-		</button>
-		<button class="btn btn-outline btn-error" on:click={() => remove()}>
-			{$LL.components.graphql.table.deleteBtn()}
-		</button>
-	</ModalActions>
-</Modal>
