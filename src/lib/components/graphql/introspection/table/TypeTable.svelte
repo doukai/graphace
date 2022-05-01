@@ -21,23 +21,23 @@
 	import LL from '$i18n/i18n-svelte';
 
 	export let __type: __Type;
-	export let queryValue: string;
 	export let pageSize: number = 10;
-	export const refresh = ({
-		__type,
-		pageSize = 10,
-		after = null,
-		before = null,
-		offset = 0,
-		queryValue = null
-	}: QueryParams): void => {
+
+	export const refresh = (params?: QueryParams): void => {
+		let { queryValue, after, before, offset } = params || {
+			queryValue: null,
+			after: null,
+			before: null,
+			offset: 0
+		};
 		connectionPromise = queryTypeConnection({
 			__type,
+			queryValue,
+			fieldFilters,
 			pageSize,
 			after,
 			before,
-			offset,
-			queryValue
+			offset
 		});
 		connectionPromise.then((response) => {
 			selectedRows = {};
@@ -71,7 +71,7 @@
 
 	let connectionPromise: Promise<{ connection: Connection }>;
 
-	refresh({ __type, pageSize });
+	refresh();
 
 	async function saveField(
 		event: CustomEvent<{ id: string; __field: __Field; value: string | number | boolean | null }>
@@ -79,7 +79,7 @@
 		mutationField(__type, event.detail.id, event.detail.__field, event.detail.value)
 			.then((response) => {
 				notifications.success($LL.message.saveSuccess());
-				refresh({ __type, pageSize });
+				refresh();
 			})
 			.catch((error) => {
 				notifications.error($LL.message.saveFailed());
@@ -90,7 +90,7 @@
 		removeType(__type, id)
 			.then((response) => {
 				notifications.success($LL.message.removeSuccess());
-				refresh({ __type, pageSize });
+				refresh();
 			})
 			.catch((error) => {
 				notifications.error($LL.message.removeFailed());
@@ -99,22 +99,12 @@
 
 	const onNext = (event: CustomEvent<{ selectedPageSize: number; after: string }>): void => {
 		pageSize = event.detail.selectedPageSize;
-		refresh({
-			__type,
-			queryValue,
-			pageSize,
-			after: event.detail.after
-		});
+		refresh({ after: event.detail.after });
 	};
 
 	const onPrevious = (event: CustomEvent<{ selectedPageSize: number; before: string }>): void => {
 		pageSize = event.detail.selectedPageSize;
-		refresh({
-			__type,
-			queryValue,
-			pageSize,
-			before: event.detail.before
-		});
+		refresh({ before: event.detail.before });
 	};
 
 	const onPageChange = (
@@ -122,17 +112,12 @@
 	): void => {
 		pageSize = event.detail.selectedPageSize;
 		pageNumber = event.detail.selectedPageNumber;
-		refresh({
-			__type,
-			queryValue,
-			pageSize,
-			offset: (pageNumber - 1) * pageSize
-		});
+		refresh({ offset: (pageNumber - 1) * pageSize });
 	};
 
 	const onSizeChange = (event: CustomEvent<{ selectedPageSize: number }>): void => {
 		pageSize = event.detail.selectedPageSize;
-		refresh({ __type, queryValue, pageSize });
+		refresh();
 	};
 </script>
 
@@ -155,10 +140,7 @@
 					</label>
 				</th>
 				{#each fieldFilters as __fieldFilter}
-					<FieldTh
-						bind:value={__fieldFilter}
-						on:filter={() => refresh({ __type, queryValue, pageSize })}
-					/>
+					<FieldTh bind:value={__fieldFilter} on:filter={() => refresh()} />
 				{/each}
 				<td />
 			</tr>

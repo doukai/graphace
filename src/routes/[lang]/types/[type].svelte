@@ -27,11 +27,12 @@
 	export let typeName: string;
 
 	$: typePromise = getType(typeName);
-	let refresh: (params: QueryParams) => void;
+	let refresh: (params?: QueryParams) => void;
 
 	let queryValue: string = null;
 	let search = (event: CustomEvent<{ value: string }>) => {
 		queryValue = event.detail.value;
+		refresh({ queryValue });
 	};
 
 	let showDeleteButton = false;
@@ -50,7 +51,7 @@
 		removeTypes(__type, idList)
 			.then((response) => {
 				notifications.success($LL.message.removeSuccess());
-				refresh({ __type });
+				refresh();
 			})
 			.catch((error) => {
 				notifications.error($LL.message.removeFailed());
@@ -95,5 +96,5 @@
 		</button>
 	</SectionHead>
 	<div class="divider" />
-	<TypeTable __type={response.__type} {queryValue} on:selectChange={selectChange} bind:refresh />
+	<TypeTable __type={response.__type} on:selectChange={selectChange} bind:refresh />
 {/await}

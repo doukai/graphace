@@ -3,7 +3,6 @@ import { gql } from 'graphql-request';
 import type { __Type } from '$lib/types/__Type';
 import { TypeManager } from '$lib/TypeManager';
 import type { __FieldFilter, Connection, __Field } from '$lib/types';
-import { createFilter } from '$lib/types/__FieldFilter';
 
 const manager: TypeManager = new TypeManager();
 
@@ -24,26 +23,25 @@ export async function queryType(__type: __Type, id: string): Promise<{ data: obj
 };
 
 export type QueryParams = {
-    __type: __Type;
+    __type?: __Type;
+    queryValue?: string;
+    fieldFilters?: Array<__FieldFilter>;
     pageSize?: number;
     after?: string;
     before?: string;
     offset?: number;
-    queryValue?: string;
 };
 
 export async function queryTypeConnection({
     __type,
+    queryValue = null,
+    fieldFilters = [],
     pageSize = 10,
     after = null,
     before = null,
     offset = 0,
-    queryValue = null,
 }: QueryParams): Promise<{ connection: Connection }> {
     const fields: Array<__Field> = manager.getSingleTypeFiledList(__type);
-    const fieldFilters: Array<__FieldFilter> = manager
-        .getSingleTypeFiledList(__type)
-        .map((__field) => createFilter(__field));
     const variables: string = queryValue ? '($queryValue: String)' : '';
     const whereArguments: string = queryValue
         ? manager.getAllSingleTypeFiledQueryArguments(__type)
