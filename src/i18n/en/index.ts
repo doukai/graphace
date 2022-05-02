@@ -5,8 +5,8 @@ const en: BaseTranslation = {
 	localeName: { en: "English", zh: "Chinese" },
 	message: {
 		saveSuccess: "Save success",
-		createSuccess: "Create Success",
-		removeSuccess: "Remove Success",
+		createSuccess: "Create success",
+		removeSuccess: "Remove success",
 		requestFailed: "Request failed",
 		saveFailed: "Save failed",
 		createFailed: "Create failed",
@@ -32,6 +32,10 @@ const en: BaseTranslation = {
 			},
 			searchInput: {
 				placeholder: "Search"
+			},
+			inputList: {
+				add: "Add",
+				remove: "Remove"
 			}
 		},
 		graphql: {

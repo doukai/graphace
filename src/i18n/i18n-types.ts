@@ -35,11 +35,11 @@ type RootTranslation = {
 		 */
 		saveSuccess: string
 		/**
-		 * Create Success
+		 * Create success
 		 */
 		createSuccess: string
 		/**
-		 * Remove Success
+		 * Remove success
 		 */
 		removeSuccess: string
 		/**
@@ -114,6 +114,16 @@ type RootTranslation = {
 				 * Search
 				 */
 				placeholder: string
+			}
+			inputList: {
+				/**
+				 * Add
+				 */
+				add: string
+				/**
+				 * Remove
+				 */
+				remove: string
 			}
 		}
 		graphql: {
@@ -266,11 +276,11 @@ export type TranslationFunctions = {
 		 */
 		saveSuccess: () => LocalizedString
 		/**
-		 * Create Success
+		 * Create success
 		 */
 		createSuccess: () => LocalizedString
 		/**
-		 * Remove Success
+		 * Remove success
 		 */
 		removeSuccess: () => LocalizedString
 		/**
@@ -343,6 +353,16 @@ export type TranslationFunctions = {
 				 * Search
 				 */
 				placeholder: () => LocalizedString
+			}
+			inputList: {
+				/**
+				 * Add
+				 */
+				add: () => LocalizedString
+				/**
+				 * Remove
+				 */
+				remove: () => LocalizedString
 			}
 		}
 		graphql: {

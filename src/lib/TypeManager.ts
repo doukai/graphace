@@ -3,6 +3,7 @@ import type { Connection, PageInfo, __EnumValue, __Field, __Type } from "./types
 import { __TypeKind } from "./types/__TypeKind";
 
 const aggregateSuffix: string[] = ["Count", "Sum", "Avg", "Max", "Min"];
+const metaField: string[] = ["version", "isDeprecated", "__typename"];
 
 export class TypeManager {
 
@@ -56,11 +57,7 @@ export class TypeManager {
 
     public getSingleTypeFiledList(__type: __Type): __Field[] {
         return __type.fields
-            .filter(
-                (field) =>
-                    !this.fieldIsList(field.type) &&
-                    this.getFieldType(field.type) !== __TypeKind.OBJECT
-            )
+            .filter((field) => this.getFieldType(field.type) !== __TypeKind.OBJECT)
             .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)));
     }
 
@@ -115,10 +112,7 @@ export class TypeManager {
 
     public fieldsToMutationVariables(__type: __Type): string {
         return __type.fields
-            .filter(
-                (field) =>
-                    !this.fieldIsList(field.type) && this.getFieldType(field.type) !== __TypeKind.OBJECT
-            )
+            .filter((field) => this.getFieldType(field.type) !== __TypeKind.OBJECT)
             .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)))
             .map(field => `$${field.name}: ${this.fieldTypeToArgumentType(field.type)}`)
             .join(",");
@@ -126,10 +120,7 @@ export class TypeManager {
 
     public fieldsToMutationArguments(__type: __Type): string {
         return __type.fields
-            .filter(
-                (field) =>
-                    !this.fieldIsList(field.type) && this.getFieldType(field.type) !== __TypeKind.OBJECT
-            )
+            .filter((field) => this.getFieldType(field.type) !== __TypeKind.OBJECT)
             .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)))
             .map(field => `${field.name}: $${field.name}`)
             .join(",");
@@ -137,10 +128,7 @@ export class TypeManager {
 
     public fieldsToSelections(__type: __Type): string {
         return __type.fields
-            .filter(
-                (field) =>
-                    !this.fieldIsList(field.type) && this.getFieldType(field.type) !== __TypeKind.OBJECT
-            )
+            .filter((field) => this.getFieldType(field.type) !== __TypeKind.OBJECT)
             .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)))
             .map((field) => field.name)
             .join(' ');

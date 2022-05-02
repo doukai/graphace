@@ -79,7 +79,6 @@
 		mutationField(__type, event.detail.id, event.detail.__field, event.detail.value)
 			.then((response) => {
 				notifications.success($LL.message.saveSuccess());
-				refresh();
 			})
 			.catch((error) => {
 				notifications.error($LL.message.saveFailed());

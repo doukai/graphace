@@ -32,6 +32,10 @@ const zh: Translation = {
 			},
 			searchInput: {
 				placeholder: "搜索内容"
+			},
+			inputList: {
+				add: "添加",
+				remove: "删除"
 			}
 		},
 		graphql: {
