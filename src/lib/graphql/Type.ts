@@ -108,10 +108,10 @@ export async function queryTypeConnection({
     return await client.request<{ connection: Connection }>(query, { queryValue });
 }
 
-export async function mutationType(__type: __Type, data: object): Promise<{ data: object; }> {
+export async function mutationType(__type: __Type, data: object, isCreate = false): Promise<{ data: object; }> {
     const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
-    const mutationVariables: string = manager.fieldsToMutationVariables(__type);
-    const mutationArguments: string = manager.fieldsToMutationArguments(__type);
+    const mutationVariables: string = isCreate ? manager.fieldsToCreateMutationVariables(__type) : manager.fieldsToMutationVariables(__type);
+    const mutationArguments: string = isCreate ? manager.fieldsToCreateMutationArguments(__type) : manager.fieldsToMutationArguments(__type);
     const selections: string = manager.fieldsToSelections(__type);
 
     const mutation: string = gql`
@@ -129,7 +129,7 @@ export async function mutationField(__type: __Type, id: string, __field: __Field
     const selections: string = manager.fieldsToSelections(__type);
     const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
     const idFieldName = manager.getIdFieldName(__type);
-    const fieldTypeName = manager.getFieldTypeName(__field.type);
+    const fieldTypeName = manager.fieldTypeToArgumentType(__field.type);
 
     const mutation: string = gql`
         mutation ($${idFieldName}: String $${__field.name}: ${fieldTypeName}) {

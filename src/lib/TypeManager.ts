@@ -118,9 +118,27 @@ export class TypeManager {
             .join(",");
     }
 
+    public fieldsToCreateMutationVariables(__type: __Type): string {
+        return __type.fields
+            .filter((field) => this.getFieldType(field.type) !== __TypeKind.OBJECT)
+            .filter((field) => field.name !== this.getIdFieldName(__type))
+            .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)))
+            .map(field => `$${field.name}: ${this.fieldTypeToArgumentType(field.type)}`)
+            .join(",");
+    }
+
     public fieldsToMutationArguments(__type: __Type): string {
         return __type.fields
             .filter((field) => this.getFieldType(field.type) !== __TypeKind.OBJECT)
+            .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)))
+            .map(field => `${field.name}: $${field.name}`)
+            .join(",");
+    }
+
+    public fieldsToCreateMutationArguments(__type: __Type): string {
+        return __type.fields
+            .filter((field) => this.getFieldType(field.type) !== __TypeKind.OBJECT)
+            .filter((field) => field.name !== this.getIdFieldName(__type))
             .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)))
             .map(field => `${field.name}: $${field.name}`)
             .join(",");
@@ -134,7 +152,7 @@ export class TypeManager {
             .join(' ');
     }
 
-    private fieldTypeToArgumentType(__type: __Type): string {
+    public fieldTypeToArgumentType(__type: __Type): string {
         if (this.getFieldType(__type) === __TypeKind.OBJECT) {
             const fieldTypeName = this.getFieldTypeName(__type);
             return __type.name.replace(fieldTypeName, fieldTypeName + 'Input');

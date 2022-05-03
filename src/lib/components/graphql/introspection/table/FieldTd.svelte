@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { tippy } from '$lib/tippy';
+	import { TypeManager } from '$lib/TypeManager';
 	import type { __Field, __FieldFilter } from '$lib/types';
 	import FieldInput from '$lib/components/graphql/introspection/FieldInput.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, X, Minus } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
+	import { append } from 'svelte/internal';
 	export let id: string;
 	export let __field: __Field;
 	export let value: string | number | boolean | null;
@@ -13,6 +15,8 @@
 	const dispatch = createEventDispatcher<{
 		submit: { id: string; __field: __Field; value: string | number | boolean | null };
 	}>();
+
+	const manager: TypeManager = new TypeManager();
 
 	let mutation = (): void => {
 		dispatch('submit', {
@@ -31,31 +35,33 @@
 	};
 </script>
 
-<td>
-	<div class="flex" bind:this={content}>
-		<FieldInput {__field} placeholder={__field.name} bind:value />
-		<div class="tooltip" data-tip={$LL.components.graphql.table.td.save()}>
-			<button class="btn btn-square btn-primary ml-1" on:click={() => mutation()}>
-				<Icon src={Check} solid class="h-5 w-5" />
-			</button>
-		</div>
-		<div class="tooltip" data-tip={$LL.components.graphql.table.td.clear()}>
-			<button class="btn btn-square btn-primary ml-1" on:click={() => clean()}>
-				<Icon src={X} solid class="h-5 w-5" />
-			</button>
-		</div>
+<div class="flex items-center space-x-1" bind:this={content}>
+	<FieldInput {__field} placeholder={__field.name} bind:value />
+	<div class="tooltip" data-tip={$LL.components.graphql.table.td.save()}>
+		<button class="btn btn-square btn-primary" on:click={() => mutation()}>
+			<Icon src={Check} solid class="h-5 w-5" />
+		</button>
 	</div>
+	<div class="tooltip" data-tip={$LL.components.graphql.table.td.clear()}>
+		<button class="btn btn-square btn-primary" on:click={() => clean()}>
+			<Icon src={X} solid class="h-5 w-5" />
+		</button>
+	</div>
+</div>
+
+<td>
 	<a
 		class="group link inline-flex"
 		href={null}
 		use:tippy={{
-			content: content,
+			content,
 			interactive: true,
 			arrow: true,
 			trigger: 'click',
 			interactiveBorder: 30,
 			theme: 'daisy',
-			maxWidth: 'none'
+			maxWidth: 'none',
+			appendTo: () => document.body
 		}}
 	>
 		{#if value}

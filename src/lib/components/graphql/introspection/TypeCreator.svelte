@@ -16,7 +16,7 @@
 	let data: object = manager.createTypeObject(__type);
 
 	const save = (): void => {
-		mutationType(__type, data)
+		mutationType(__type, data, true)
 			.then((response) => {
 				notifications.success($LL.message.saveSuccess());
 				goto(`../${manager.typeNameToUrl(__type.name)}/${response.data[idFieldName]}`);
