@@ -12,7 +12,11 @@
 	export let value: any;
 	let content: HTMLElement;
 	const dispatch = createEventDispatcher<{
-		submit: { id: string; __field: __Field; value: string | number | boolean | null };
+		submit: {
+			id: string;
+			__field: __Field;
+			value: string | number | boolean | string[] | number[] | boolean[];
+		};
 	}>();
 
 	const manager: TypeManager = new TypeManager();

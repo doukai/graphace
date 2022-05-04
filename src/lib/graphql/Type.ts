@@ -118,7 +118,7 @@ export async function mutationType(__type: __Type, data: object, isCreate = fals
     return await client.request<{ data: object }>(mutation, data);
 };
 
-export async function mutationField(__type: __Type, id: string, __field: __Field, value: string | number | boolean | null): Promise<{ data: object; }> {
+export async function mutationField(__type: __Type, id: string, __field: __Field, value: string | number | boolean | string[] | number[] | boolean[]): Promise<{ data: object; }> {
     const selections: string = manager.fieldsToSelections(__type);
     const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
     const idFieldName = manager.getIdFieldName(__type);

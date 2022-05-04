@@ -74,7 +74,11 @@
 	refresh();
 
 	async function saveField(
-		event: CustomEvent<{ id: string; __field: __Field; value: string | number | boolean | null }>
+		event: CustomEvent<{
+			id: string;
+			__field: __Field;
+			value: string | number | boolean | string[] | number[] | boolean[];
+		}>
 	) {
 		mutationField(__type, event.detail.id, event.detail.__field, event.detail.value)
 			.then((response) => {
