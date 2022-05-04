@@ -3,7 +3,7 @@ import type { Connection, PageInfo, __EnumValue, __Field, __Type } from "./types
 import { __TypeKind } from "./types/__TypeKind";
 
 const aggregateSuffix: string[] = ["Count", "Sum", "Avg", "Max", "Min"];
-const metaField: string[] = ["version", "isDeprecated", "__typename"];
+const metaFieldList: string[] = ["version", "isDeprecated", "__typename"];
 
 export class TypeManager {
 
@@ -58,7 +58,8 @@ export class TypeManager {
     public getSingleTypeFiledList(__type: __Type): __Field[] {
         return __type.fields
             .filter((field) => this.getFieldType(field.type) !== __TypeKind.OBJECT)
-            .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)));
+            .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)))
+            .filter((field) => !metaFieldList.some(metaField => field.name === metaField));
     }
 
     public getAllSingleTypeFiledQueryArguments(__type: __Type): string {
