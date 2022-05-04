@@ -6,7 +6,7 @@
 <input
 	{name}
 	type="checkbox"
-	class="toggle mt-3"
+	class="toggle m-3"
 	checked={value}
 	on:click={(e) => {
 		value = !value;

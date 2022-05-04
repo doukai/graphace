@@ -7,10 +7,9 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, X, Minus } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
-	import { append } from 'svelte/internal';
 	export let id: string;
 	export let __field: __Field;
-	export let value: string | number | boolean | null;
+	export let value: any;
 	let content: HTMLElement;
 	const dispatch = createEventDispatcher<{
 		submit: { id: string; __field: __Field; value: string | number | boolean | null };
@@ -27,15 +26,20 @@
 	};
 
 	let clean = (): void => {
+		if (manager.fieldIsList(__field.type)) {
+			value = [];
+		} else {
+			value = null;
+		}
 		dispatch('submit', {
 			id,
 			__field,
-			value: null
+			value
 		});
 	};
 </script>
 
-<div class="flex items-center space-x-1" bind:this={content}>
+<div class="flex items-end space-x-1" bind:this={content}>
 	<FieldInput {__field} placeholder={__field.name} bind:value />
 	<div class="tooltip" data-tip={$LL.components.graphql.table.td.save()}>
 		<button class="btn btn-square btn-primary" on:click={() => mutation()}>
@@ -43,7 +47,7 @@
 		</button>
 	</div>
 	<div class="tooltip" data-tip={$LL.components.graphql.table.td.clear()}>
-		<button class="btn btn-square btn-primary" on:click={() => clean()}>
+		<button class="btn btn-square btn-outline btn-error" on:click={() => clean()}>
 			<Icon src={X} solid class="h-5 w-5" />
 		</button>
 	</div>
@@ -64,7 +68,17 @@
 			appendTo: () => document.body
 		}}
 	>
-		{#if value}
+		{#if manager.fieldIsList(__field.type)}
+			{#if value && value.length > 0}
+				{#if value && value.length > 3}
+					{value.slice(0, 3).join(',').concat('...')}
+				{:else}
+					{value.join(',')}
+				{/if}
+			{:else}
+				<Icon src={Minus} solid class="h-5 w-5" />
+			{/if}
+		{:else if value}
 			{value}
 		{:else}
 			<Icon src={Minus} solid class="h-5 w-5" />

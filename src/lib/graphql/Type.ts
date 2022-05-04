@@ -59,14 +59,7 @@ export async function queryTypeConnection({
 
     const filters: Array<string> = fieldFilters
         .filter((__fieldFilter) => __fieldFilter.val != null)
-        .map(
-            (__fieldFilter) =>
-                `${__fieldFilter.__field.name}: {opr:${__fieldFilter.opr} val:${manager.getFieldTypeName(__fieldFilter.__field.type) === 'ID' ||
-                    manager.getFieldTypeName(__fieldFilter.__field.type) === 'String'
-                    ? '"' + __fieldFilter.val + '"'
-                    : __fieldFilter.val
-                }}`
-        );
+        .map((__fieldFilter) => `${__fieldFilter.__field.name}: {opr:${__fieldFilter.opr} val:${JSON.stringify(__fieldFilter.val)}}`);
 
     const sorts: Array<string> = fieldFilters
         .filter((__fieldFilter) => __fieldFilter.sort != null)

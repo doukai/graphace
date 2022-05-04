@@ -15,4 +15,6 @@ export enum Operator {
     NNIL = "NNIL",
     IN = "IN",
     NIN = "NIN",
+    BT = "BT",
+    NBT = "NBT",
 }

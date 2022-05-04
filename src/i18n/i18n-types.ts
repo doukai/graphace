@@ -228,6 +228,14 @@ type RootTranslation = {
 					 */
 					nin: string
 					/**
+					 * Between
+					 */
+					bt: string
+					/**
+					 * Not Between
+					 */
+					nbt: string
+					/**
 					 * Filter..
 					 */
 					filterPlaceholder: string
@@ -466,6 +474,14 @@ export type TranslationFunctions = {
 					 * Not In
 					 */
 					nin: () => LocalizedString
+					/**
+					 * Between
+					 */
+					bt: () => LocalizedString
+					/**
+					 * Not Between
+					 */
+					nbt: () => LocalizedString
 					/**
 					 * Filter..
 					 */

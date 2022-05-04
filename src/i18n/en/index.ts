@@ -67,6 +67,8 @@ const en: BaseTranslation = {
 					nnil: "Not Null",
 					in: "In",
 					nin: "Not In",
+					bt: "Between",
+					nbt: "Not Between",
 					filterPlaceholder: "Filter..",
 				},
 				td: {

@@ -67,6 +67,8 @@ const zh: Translation = {
 					nnil: "不为空",
 					in: "属于",
 					nin: "不属于",
+					bt: "介于...之间",
+					nbt: "介于...之外",
 					filterPlaceholder: "过滤内容..",
 				},
 				td: {
