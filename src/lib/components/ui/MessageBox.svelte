@@ -12,32 +12,34 @@
 	};
 </script>
 
-<Modal isModalOpen={$messageBox.isOpen} title={$messageBox.title}>
-	{#if $messageBox.content}
-		<ModalContent>
-			{$messageBox.content}
-		</ModalContent>
-	{/if}
-	<ModalActions>
-		<button
-			class="btn"
-			on:click={() => {
-				if ($messageBox.cancel()) {
-					messageBox.close();
-				}
-			}}
-		>
-			{$LL.components.messageBox.cancel()}
-		</button>
-		<button
-			class="btn btn-outline {buttonClassName($messageBox.buttonType)}"
-			on:click={() => {
-				if ($messageBox.confirm()) {
-					messageBox.close();
-				}
-			}}
-		>
-			{$messageBox.buttonName || $LL.components.messageBox.confirm()}
-		</button>
-	</ModalActions>
-</Modal>
+{#each $messageBox as modal (modal.id)}
+	<Modal isModalOpen={true} title={modal.title}>
+		{#if modal.content}
+			<ModalContent>
+				{modal.content}
+			</ModalContent>
+		{/if}
+		<ModalActions>
+			<button
+				class="btn"
+				on:click={() => {
+					if (modal.cancel()) {
+						messageBox.close();
+					}
+				}}
+			>
+				{$LL.components.messageBox.cancel()}
+			</button>
+			<button
+				class="btn btn-outline {buttonClassName(modal.buttonType)}"
+				on:click={() => {
+					if (modal.confirm()) {
+						messageBox.close();
+					}
+				}}
+			>
+				{modal.buttonName || $LL.components.messageBox.confirm()}
+			</button>
+		</ModalActions>
+	</Modal>
+{/each}

@@ -1,7 +1,6 @@
 import { writable } from "svelte/store";
 
 type MessageBox = {
-    isOpen?: boolean;
     id?: string;
     title?: string;
     content?: string;
@@ -12,11 +11,12 @@ type MessageBox = {
 }
 
 function createMessageBoxStore() {
-    const messageBoxStore = writable<MessageBox>();
-    send({ isOpen: false });
+    const messageBoxStore = writable<MessageBox[]>([]);
 
-    function send({ isOpen, title = null, content = null, buttonName = null, buttonType = null, cancel = () => true, confirm = () => true }: MessageBox) {
-        messageBoxStore.update(() => { return { isOpen, id: id(), title, content, buttonName, buttonType, cancel, confirm } })
+    function send({ title = null, content = null, buttonName = null, buttonType = null, cancel = () => true, confirm = () => true }: MessageBox) {
+        messageBoxStore.update(messageBox => {
+            return [...messageBox, { id: id(), title, content, buttonName, buttonType, cancel, confirm }];
+        })
     };
 
     const { subscribe } = messageBoxStore;
@@ -24,8 +24,13 @@ function createMessageBoxStore() {
     return {
         subscribe,
         send,
-        open: ({ title, content, buttonName, buttonType, cancel, confirm }: MessageBox) => send({ isOpen: true, title, content, buttonName, buttonType, cancel, confirm }),
-        close: () => send({ isOpen: false }),
+        open: ({ title, content, buttonName, buttonType, cancel, confirm }: MessageBox) => send({ title, content, buttonName, buttonType, cancel, confirm }),
+        close: () => {
+            messageBoxStore.update(messageBox => {
+                messageBox.pop();
+                return messageBox;
+            })
+        },
     };
 }
 
