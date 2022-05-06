@@ -56,10 +56,21 @@ export class TypeManager {
     }
 
     public getSingleTypeFiledList(__type: __Type): __Field[] {
+        return this.getScalarFiledList(__type)
+            .filter((field) => !this.fieldIsList(field.type));
+    }
+
+    public getScalarFiledList(__type: __Type): __Field[] {
         return __type.fields
             .filter((field) => this.getFieldType(field.type) !== __TypeKind.OBJECT)
             .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)))
             .filter((field) => !metaFieldList.some(metaField => field.name === metaField));
+    }
+
+    public getMapObjectFiled(__type: __Type, __field: __Field): __Field {
+        return __type.fields
+            .filter((field) => this.getFieldType(field.type) !== __TypeKind.OBJECT)
+            .find((field) => field.from === __field.name);
     }
 
     public getAllSingleTypeFiledQueryArguments(__type: __Type): string {

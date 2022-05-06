@@ -41,7 +41,7 @@ export async function queryTypeConnection({
     before = null,
     offset = 0,
 }: QueryParams): Promise<{ connection: Connection }> {
-    const fields: Array<__Field> = manager.getSingleTypeFiledList(__type);
+    const fields: Array<__Field> = manager.getScalarFiledList(__type);
     const variables: string = queryValue ? '($queryValue: String)' : '';
     const whereArguments: string = queryValue
         ? manager.getAllSingleTypeFiledQueryArguments(__type)

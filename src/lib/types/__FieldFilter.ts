@@ -12,3 +12,7 @@ export type __FieldFilter = {
 export const createFilter = (__field: __Field) => {
     return { __field, opr: Operator.EQ, val: null, sort: null };
 }
+
+export const addFilter = (__field: __Field, opr: Operator, val: string | number | boolean | string[] | number[] | boolean[]) => {
+    return { __field, opr, val, sort: null };
+}

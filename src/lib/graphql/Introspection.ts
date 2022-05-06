@@ -53,6 +53,11 @@ export async function getType(typeName: string): Promise<{ __type: __Type; }> {
                         }
                     }
                     description
+                    from
+                    to
+                    withType
+                    withFrom
+                    withTo
                 }
             }
         }

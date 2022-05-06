@@ -29,7 +29,7 @@
 
 <Form>
 	<FormItems title={__type.name}>
-		{#each manager.getSingleTypeFiledList(__type) as __field}
+		{#each manager.getScalarFiledList(__type) as __field}
 			<FormItem label={__field.name} forName={__field.name}>
 				<FieldInput className="w-full max-w-xs" {__field} bind:value={data[__field.name]} />
 			</FormItem>

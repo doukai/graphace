@@ -63,9 +63,9 @@
 	});
 
 	const manager: TypeManager = new TypeManager();
-	const fields: Array<__Field> = manager.getSingleTypeFiledList(__type);
+	const fields: Array<__Field> = manager.getScalarFiledList(__type);
 	const fieldFilters: Array<__FieldFilter> = manager
-		.getSingleTypeFiledList(__type)
+		.getScalarFiledList(__type)
 		.map((__field) => createFilter(__field));
 	const idFieldName: string = manager.getIdFieldName(__type);
 
