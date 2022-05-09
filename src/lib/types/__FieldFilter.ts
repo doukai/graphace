@@ -9,10 +9,10 @@ export type __FieldFilter = {
     sort: Sort;
 }
 
-export const createFilter = (__field: __Field) => {
+export const createFilter = (__field: __Field): __FieldFilter => {
     return { __field, opr: Operator.EQ, val: null, sort: null };
 }
 
-export const addFilter = (__field: __Field, opr: Operator, val: string | number | boolean | string[] | number[] | boolean[]) => {
+export const addFilter = (__field: __Field, opr: Operator, val: string | number | boolean | string[] | number[] | boolean[]): __FieldFilter => {
     return { __field, opr, val, sort: null };
 }

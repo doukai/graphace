@@ -19,6 +19,8 @@
 	import Section from '$lib/components/ui/section/Section.svelte';
 	import TypeEditor from '$lib/components/graphql/introspection/TypeEditor.svelte';
 	import FormLoading from '$lib/components/ui/form/FormLoading.svelte';
+	import { notifications } from '$lib/stores/Notifications';
+	import LL from '$i18n/i18n-svelte';
 	export let typeName: string;
 	export let id: string;
 
@@ -30,5 +32,7 @@
 		<FormLoading />
 	{:then response}
 		<TypeEditor __type={response.__type} {id} />
+	{:catch error}
+		{notifications.error($LL.message.requestFailed())}
 	{/await}
 </Section>

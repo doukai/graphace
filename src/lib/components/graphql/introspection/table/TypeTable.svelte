@@ -19,6 +19,7 @@
 	import { notifications } from '$lib/stores/Notifications';
 	import { messageBox } from '$lib/stores/MessageBox';
 	import LL from '$i18n/i18n-svelte';
+	import ObjectFieldTd from './ObjectFieldTd.svelte';
 
 	export let __type: __Type;
 	export let pageSize: number = 10;
@@ -63,9 +64,9 @@
 	});
 
 	const manager: TypeManager = new TypeManager();
-	const fields: Array<__Field> = manager.getScalarFiledList(__type);
+	const fields: Array<__Field> = manager.getFiledList(__type);
 	const fieldFilters: Array<__FieldFilter> = manager
-		.getScalarFiledList(__type)
+		.getFiledList(__type)
 		.map((__field) => createFilter(__field));
 	const idFieldName: string = manager.getIdFieldName(__type);
 
@@ -161,12 +162,16 @@
 						</label>
 					</th>
 					{#each fields as __field}
-						<FieldTd
-							id={data[idFieldName]}
-							{__field}
-							bind:value={data[__field.name]}
-							on:submit={saveField}
-						/>
+						{#if manager.getFieldTypeKind(__field.type) === __TypeKind.OBJECT}
+							<ObjectFieldTd {__type} id={data[idFieldName]} {__field} bind:value={data} />
+						{:else}
+							<FieldTd
+								id={data[idFieldName]}
+								{__field}
+								bind:value={data[__field.name]}
+								on:submit={saveField}
+							/>
+						{/if}
 					{/each}
 					<td>
 						<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>

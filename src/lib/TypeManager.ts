@@ -7,11 +7,21 @@ const metaFieldList: string[] = ["version", "isDeprecated", "__typename"];
 
 export class TypeManager {
 
-    public getFieldType(__type: __Type): __TypeKind {
+    public getFieldType(__type: __Type): __Type {
         if (__type.kind === __TypeKind.NON_NULL) {
             return this.getFieldType(__type.ofType);
         } else if (__type.kind === __TypeKind.LIST) {
             return this.getFieldType(__type.ofType);
+        } else {
+            return __type;
+        }
+    }
+
+    public getFieldTypeKind(__type: __Type): __TypeKind {
+        if (__type.kind === __TypeKind.NON_NULL) {
+            return this.getFieldTypeKind(__type.ofType);
+        } else if (__type.kind === __TypeKind.LIST) {
+            return this.getFieldTypeKind(__type.ofType);
         } else {
             return __type.kind;
         }
@@ -38,7 +48,7 @@ export class TypeManager {
     }
 
     public fieldIsEnum(__type: __Type): boolean {
-        if (this.getFieldType(__type) === __TypeKind.ENUM) {
+        if (this.getFieldTypeKind(__type) === __TypeKind.ENUM) {
             return true;
         } else {
             return false;
@@ -55,22 +65,20 @@ export class TypeManager {
         }
     }
 
-    public getSingleTypeFiledList(__type: __Type): __Field[] {
-        return this.getScalarFiledList(__type)
-            .filter((field) => !this.fieldIsList(field.type));
-    }
-
-    public getScalarFiledList(__type: __Type): __Field[] {
+    public getFiledList(__type: __Type): __Field[] {
         return __type.fields
-            .filter((field) => this.getFieldType(field.type) !== __TypeKind.OBJECT)
             .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)))
             .filter((field) => !metaFieldList.some(metaField => field.name === metaField));
     }
 
-    public getMapObjectFiled(__type: __Type, __field: __Field): __Field {
-        return __type.fields
-            .filter((field) => this.getFieldType(field.type) !== __TypeKind.OBJECT)
-            .find((field) => field.from === __field.name);
+    public getScalarFiledList(__type: __Type): __Field[] {
+        return this.getFiledList(__type)
+            .filter((field) => this.getFieldTypeKind(field.type) !== __TypeKind.OBJECT);
+    }
+
+    public getSingleTypeFiledList(__type: __Type): __Field[] {
+        return this.getScalarFiledList(__type)
+            .filter((field) => !this.fieldIsList(field.type));
     }
 
     public getAllSingleTypeFiledQueryArguments(__type: __Type): string {
@@ -82,7 +90,7 @@ export class TypeManager {
 
     public createTypeObject(__type: __Type): object {
         const typeObject: object = {};
-        __type.fields.forEach(field => typeObject[field.name] = null);
+        this.getScalarFiledList(__type).forEach(field => typeObject[field.name] = null);
         return typeObject;
     }
 
@@ -123,16 +131,14 @@ export class TypeManager {
     }
 
     public fieldsToMutationVariables(__type: __Type): string {
-        return __type.fields
-            .filter((field) => this.getFieldType(field.type) !== __TypeKind.OBJECT)
+        return this.getScalarFiledList(__type)
             .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)))
             .map(field => `$${field.name}: ${this.fieldTypeToArgumentType(field.type)}`)
             .join(",");
     }
 
     public fieldsToCreateMutationVariables(__type: __Type): string {
-        return __type.fields
-            .filter((field) => this.getFieldType(field.type) !== __TypeKind.OBJECT)
+        return this.getScalarFiledList(__type)
             .filter((field) => field.name !== this.getIdFieldName(__type))
             .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)))
             .map(field => `$${field.name}: ${this.fieldTypeToArgumentType(field.type)}`)
@@ -140,16 +146,14 @@ export class TypeManager {
     }
 
     public fieldsToMutationArguments(__type: __Type): string {
-        return __type.fields
-            .filter((field) => this.getFieldType(field.type) !== __TypeKind.OBJECT)
+        return this.getScalarFiledList(__type)
             .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)))
             .map(field => `${field.name}: $${field.name}`)
             .join(",");
     }
 
     public fieldsToCreateMutationArguments(__type: __Type): string {
-        return __type.fields
-            .filter((field) => this.getFieldType(field.type) !== __TypeKind.OBJECT)
+        return this.getScalarFiledList(__type)
             .filter((field) => field.name !== this.getIdFieldName(__type))
             .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)))
             .map(field => `${field.name}: $${field.name}`)
@@ -157,15 +161,14 @@ export class TypeManager {
     }
 
     public fieldsToSelections(__type: __Type): string {
-        return __type.fields
-            .filter((field) => this.getFieldType(field.type) !== __TypeKind.OBJECT)
+        return this.getScalarFiledList(__type)
             .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)))
             .map((field) => field.name)
             .join(' ');
     }
 
     public fieldTypeToArgumentType(__type: __Type): string {
-        if (this.getFieldType(__type) === __TypeKind.OBJECT) {
+        if (this.getFieldTypeKind(__type) === __TypeKind.OBJECT) {
             const fieldTypeName = this.getFieldTypeName(__type);
             return __type.name.replace(fieldTypeName, fieldTypeName + 'Input');
         } else {

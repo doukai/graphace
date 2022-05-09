@@ -140,6 +140,11 @@ type RootTranslation = {
 				 * Back
 				 */
 				backBtn: string
+				/**
+				 * Create a new {name}
+				 * @param {string} name
+				 */
+				createType: RequiredParams<'name'>
 			}
 			table: {
 				/**
@@ -387,6 +392,10 @@ export type TranslationFunctions = {
 				 * Back
 				 */
 				backBtn: () => LocalizedString
+				/**
+				 * Create a new {name}
+				 */
+				createType: (arg: { name: string }) => LocalizedString
 			}
 			table: {
 				/**

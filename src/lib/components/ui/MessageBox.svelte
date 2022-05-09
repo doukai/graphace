@@ -15,9 +15,9 @@
 {#each $messageBox as modal (modal.id)}
 	<Modal isModalOpen={true} title={modal.title}>
 		{#if modal.content}
-			<ModalContent>
+			<p class="py-4">
 				{modal.content}
-			</ModalContent>
+			</p>
 		{/if}
 		<ModalActions>
 			<button

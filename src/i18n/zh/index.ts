@@ -43,6 +43,7 @@ const zh: Translation = {
 				saveBtn: "保存",
 				removeBtn: "删除",
 				backBtn: "返回",
+				createType: "创建 {name}",
 			},
 			table: {
 				removeModalTitle: "确认删除?",

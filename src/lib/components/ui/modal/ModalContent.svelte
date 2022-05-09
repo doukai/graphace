@@ -1,3 +1,3 @@
-<p class="py-4">
-    <slot />
-</p>
+<div class="overflow-y-auto max-h-96">
+	<slot />
+</div>

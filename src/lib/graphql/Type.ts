@@ -6,7 +6,7 @@ import type { __FieldFilter, Connection, __Field } from '$lib/types';
 
 const manager: TypeManager = new TypeManager();
 
-export async function queryType(__type: __Type, id: string): Promise<{ data: object; }> {
+export async function queryType(__type: __Type, id: string): Promise<{ data: object }> {
     const queryTypeFieldName: string = manager.getQueryTypeFieldName(__type);
     const idFieldName: string = manager.getIdFieldName(__type);
     const selections: string = manager.fieldsToSelections(__type);
@@ -39,7 +39,7 @@ export async function queryTypeConnection({
     pageSize = 10,
     after = null,
     before = null,
-    offset = 0,
+    offset = 0
 }: QueryParams): Promise<{ connection: Connection }> {
     const fields: Array<__Field> = manager.getScalarFiledList(__type);
     const variables: string = queryValue ? '($queryValue: String)' : '';
@@ -101,7 +101,38 @@ export async function queryTypeConnection({
     return await client.request<{ connection: Connection }>(query, { queryValue });
 }
 
-export async function mutationType(__type: __Type, data: object, isCreate = false): Promise<{ data: object; }> {
+export type QueryMapParams = {
+    __parentType: __Type;
+    __type: __Type;
+    id: string;
+    __field: __Field
+};
+
+export async function querySubType({
+    __parentType,
+    __type,
+    id,
+    __field
+}: QueryMapParams): Promise<{ data: object }> {
+    const queryTypeFieldName: string = manager.getQueryTypeFieldName(__parentType);
+    const idFieldName: string = manager.getIdFieldName(__parentType);
+    const subSelections: string = manager.fieldsToSelections(__type);
+
+    const graphql: string = gql`
+		query ($id: ID) {
+			data: ${queryTypeFieldName} (${idFieldName}: {val: $id}){
+				${__field.from}
+                ${__field.name} {
+                    ${subSelections}
+                }
+			}
+		}
+	`;
+
+    return await client.request<{ data: object }>(graphql, { id })
+}
+
+export async function mutationType(__type: __Type, data: object, isCreate = false): Promise<{ data: object }> {
     const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
     const mutationVariables: string = isCreate ? manager.fieldsToCreateMutationVariables(__type) : manager.fieldsToMutationVariables(__type);
     const mutationArguments: string = isCreate ? manager.fieldsToCreateMutationArguments(__type) : manager.fieldsToMutationArguments(__type);
@@ -119,10 +150,10 @@ export async function mutationType(__type: __Type, data: object, isCreate = fals
 };
 
 export async function mutationField(__type: __Type, id: string, __field: __Field, value: string | number | boolean | string[] | number[] | boolean[]): Promise<{ data: object; }> {
-    const selections: string = manager.fieldsToSelections(__type);
     const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
     const idFieldName = manager.getIdFieldName(__type);
     const fieldTypeName = manager.fieldTypeToArgumentType(__field.type);
+    const selections: string = manager.fieldsToSelections(__type);
 
     const mutation: string = gql`
         mutation ($${idFieldName}: String $${__field.name}: ${fieldTypeName}) {
@@ -139,7 +170,58 @@ export async function mutationField(__type: __Type, id: string, __field: __Field
     return await client.request<{ data: object }>(mutation, variables);
 }
 
-export async function removeType(__type: __Type, id: string): Promise<{ count: number; }> {
+export async function mutationObjectField(__parentType: __Type, __type: __Type, id: string, __field: __Field, value: object): Promise<{ data: object; }> {
+    const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__parentType);
+    const idFieldName = manager.getIdFieldName(__parentType);
+    const subSelections: string = manager.fieldsToSelections(__type);
+
+    const mutation: string = gql`
+        mutation ($${idFieldName}: String $${__field.name}: ${__type.name}) {
+            data: ${mutationTypeFieldName} (${idFieldName}: $${idFieldName} ${__field.name}: $${__field.name}) @update {
+				${__field.from}
+                ${__field.name} {
+                    ${subSelections}
+                }
+            }
+        }	
+    `;
+
+    const variables: object = {};
+    variables[idFieldName] = id;
+    variables[__field.name] = value;
+
+    return await client.request<{ data: object }>(mutation, variables);
+}
+
+export async function removeObjectField(__parentType: __Type, __type: __Type, id: string, __field: __Field, value: object): Promise<{ data: object; }> {
+    const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__parentType);
+    const mutationSubTypeFieldName: string = manager.getMutationTypeFieldName(__type);
+    const idFieldName = manager.getIdFieldName(__parentType);
+    const subIdFieldName = manager.getIdFieldName(__type);
+    const subSelections: string = manager.fieldsToSelections(__type);
+
+    const mutation: string = gql`
+        mutation ($${idFieldName}: String subId: String ) {
+            data: ${mutationTypeFieldName} (${idFieldName}: $${idFieldName} ${__field.from}: null) @update {
+				${__field.from}
+                ${__field.name} {
+                    ${subSelections}
+                }
+            }
+            count: ${mutationSubTypeFieldName} (${subIdFieldName}: $subId isDeprecated: true) @update {
+                ${subIdFieldName}Count
+            }
+        }	
+    `;
+
+    const variables: object = {};
+    variables[idFieldName] = id;
+    variables["subId"] = value[subIdFieldName];
+
+    return await client.request<{ data: object }>(mutation, variables);
+}
+
+export async function removeType(__type: __Type, id: string): Promise<{ count: number }> {
     const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
     const idFieldName: string = manager.getIdFieldName(__type);
 
@@ -154,7 +236,7 @@ export async function removeType(__type: __Type, id: string): Promise<{ count: n
     return await client.request<{ count: number }>(mutation, { id });
 }
 
-export async function removeTypes(__type: __Type, idList: string[]): Promise<{ count: number; }> {
+export async function removeTypes(__type: __Type, idList: string[]): Promise<{ count: number }> {
     const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
     const idFieldName: string = manager.getIdFieldName(__type);
 
