@@ -44,6 +44,8 @@ const zh: Translation = {
 				removeBtn: "删除",
 				backBtn: "返回",
 				createType: "创建 {name}",
+				newType: "新建 {name}",
+				bindType: "绑定 {name}",
 			},
 			table: {
 				removeModalTitle: "确认删除?",

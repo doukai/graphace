@@ -7,6 +7,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Eye, Minus } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
+	import ListTypeEditorModal from '../ListTypeEditorModal.svelte';
 	export let __type: __Type;
 	export let id: string;
 	export let __field: __Field;
@@ -22,7 +23,7 @@
 		class="group link inline-flex"
 		href={null}
 		on:click={(e) => {
-			typePromise = getType(manager.getFieldType(__field.type).name);
+			typePromise = getType(manager.getFieldTypeName(__field.type));
 			isModalOpen = true;
 		}}
 	>
@@ -32,19 +33,29 @@
 			<Icon src={Minus} solid class="h-5 w-5" />
 		{/if}
 	</a>
+	{#if isModalOpen}
+		{#await typePromise then response}
+			{#if manager.fieldIsList(__field.type)}
+				<ListTypeEditorModal
+					{isModalOpen}
+					__parentType={__type}
+					__type={response.__type}
+					{id}
+					{__field}
+					bind:value
+				/>
+			{:else}
+				<TypeEditorModal
+					{isModalOpen}
+					__parentType={__type}
+					__type={response.__type}
+					{id}
+					{__field}
+					bind:value
+				/>
+			{/if}
+		{:catch error}
+			{notifications.error($LL.message.requestFailed())}
+		{/await}
+	{/if}
 </td>
-
-{#if isModalOpen}
-	{#await typePromise then response}
-		<TypeEditorModal
-			{isModalOpen}
-			__parentType={__type}
-			__type={response.__type}
-			{id}
-			{__field}
-			bind:value
-		/>
-	{:catch error}
-		{notifications.error($LL.message.requestFailed())}
-	{/await}
-{/if}

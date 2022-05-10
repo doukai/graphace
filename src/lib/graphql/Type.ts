@@ -132,6 +132,30 @@ export async function querySubType({
     return await client.request<{ data: object }>(graphql, { id })
 }
 
+export async function querySubTypeConnection({
+    __parentType,
+    __type,
+    id,
+    __field
+}: QueryMapParams): Promise<{ connection: Connection }> {
+    const queryTypeFieldName: string = manager.getQueryTypeFieldName(__parentType);
+    const idFieldName: string = manager.getIdFieldName(__parentType);
+    const subSelections: string = manager.fieldsToSelections(__type);
+
+    const graphql: string = gql`
+		query ($id: ID) {
+			connection: ${queryTypeFieldName} (${idFieldName}: {val: $id}){
+				${__field.from}
+                ${__field.name} {
+                    ${subSelections}
+                }
+			}
+		}
+	`;
+
+    return await client.request<{ connection: Connection }>(graphql, { id })
+}
+
 export async function mutationType(__type: __Type, data: object, isCreate = false): Promise<{ data: object }> {
     const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
     const mutationVariables: string = isCreate ? manager.fieldsToCreateMutationVariables(__type) : manager.fieldsToMutationVariables(__type);
@@ -176,7 +200,7 @@ export async function mutationObjectField(__parentType: __Type, __type: __Type, 
     const subSelections: string = manager.fieldsToSelections(__type);
 
     const mutation: string = gql`
-        mutation ($${idFieldName}: String $${__field.name}: ${__type.name}) {
+        mutation ($${idFieldName}: String $${__field.name}: ${manager.fieldTypeToArgumentType(__field.type)}) {
             data: ${mutationTypeFieldName} (${idFieldName}: $${idFieldName} ${__field.name}: $${__field.name}) @update {
 				${__field.from}
                 ${__field.name} {
@@ -201,7 +225,7 @@ export async function removeObjectField(__parentType: __Type, __type: __Type, id
     const subSelections: string = manager.fieldsToSelections(__type);
 
     const mutation: string = gql`
-        mutation ($${idFieldName}: String subId: String ) {
+        mutation ($${idFieldName}: String $subId: String ) {
             data: ${mutationTypeFieldName} (${idFieldName}: $${idFieldName} ${__field.from}: null) @update {
 				${__field.from}
                 ${__field.name} {

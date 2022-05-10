@@ -6,6 +6,7 @@
 	import type { __Type } from '$lib/types/__Type';
 	import { TypeManager } from '$lib/TypeManager';
 	import { locale } from '$i18n/i18n-svelte';
+	import { filter } from 'lodash';
 
 	const manager: TypeManager = new TypeManager();
 	let fetchTypeList = getTypeList();
@@ -19,7 +20,7 @@
 	</ul>
 {:then response}
 	<ul class="menu w-56 p-2 rounded-box">
-		{#each response.__typeList as __type}
+		{#each response.__typeList.filter((__type) => !manager.isContainerType(__type)) as __type}
 			<li>
 				<a
 					href={null}

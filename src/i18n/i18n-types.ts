@@ -145,6 +145,16 @@ type RootTranslation = {
 				 * @param {string} name
 				 */
 				createType: RequiredParams<'name'>
+				/**
+				 * New {name}
+				 * @param {string} name
+				 */
+				newType: RequiredParams<'name'>
+				/**
+				 * Bind {name}
+				 * @param {string} name
+				 */
+				bindType: RequiredParams<'name'>
 			}
 			table: {
 				/**
@@ -396,6 +406,14 @@ export type TranslationFunctions = {
 				 * Create a new {name}
 				 */
 				createType: (arg: { name: string }) => LocalizedString
+				/**
+				 * New {name}
+				 */
+				newType: (arg: { name: string }) => LocalizedString
+				/**
+				 * Bind {name}
+				 */
+				bindType: (arg: { name: string }) => LocalizedString
 			}
 			table: {
 				/**

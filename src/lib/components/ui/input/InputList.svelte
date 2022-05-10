@@ -7,10 +7,6 @@
 	export let placeholder: string = '';
 	export let className: string = '';
 
-	if (!value) {
-		value = [];
-	}
-
 	const addItem = (index: number) => {
 		if (!value) {
 			value = [];
@@ -24,7 +20,7 @@
 </script>
 
 <div class="space-y-5">
-	{#each value as item, index}
+	{#each value || [] as item, index}
 		<div class="flex space-x-1">
 			<input
 				type="text"
@@ -58,7 +54,7 @@
 		</div>
 	{/each}
 </div>
-{#if value.length === 0}
+{#if (value || []).length === 0}
 	<div class="tooltip" data-tip={$LL.components.ui.inputList.add()}>
 		<button
 			class="btn btn-square btn-outline"

@@ -44,6 +44,8 @@ const en: BaseTranslation = {
 				removeBtn: "Remove",
 				backBtn: "Back",
 				createType: "Create a new {name:string}",
+				newType: "New {name:string}",
+				bindType: "Bind {name:string}",
 			},
 			table: {
 				removeModalTitle: "Remove row?",
