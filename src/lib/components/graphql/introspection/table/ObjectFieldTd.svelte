@@ -52,6 +52,7 @@
 					{id}
 					{__field}
 					bind:value
+					on:search
 				/>
 			{/if}
 		{:catch error}

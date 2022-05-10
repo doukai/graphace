@@ -12,6 +12,7 @@
 	import { __TypeKind } from '$lib/types';
 	import { createFilter } from '$lib/types/__FieldFilter';
 	import { Table, TableLoading } from '$lib/components/ui/table';
+	import TypeTableModal from '$lib/components/graphql/introspection/table/TypeTableModal.svelte';
 	import Pagination from '$lib/components/ui/connection/Pagination.svelte';
 	import { FieldTh, FieldTd } from './';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -52,6 +53,12 @@
 	const dispatch = createEventDispatcher<{
 		selectChange: { selectedIdList: string[] };
 	}>();
+
+	let isTableModalOpen: boolean = false;
+
+	const searchType = (): void => {
+		isTableModalOpen = true;
+	};
 
 	let selectedRows: object = {};
 	let selectAll: boolean;
@@ -163,7 +170,13 @@
 					</th>
 					{#each fields as __field}
 						{#if manager.getFieldTypeKind(__field.type) === __TypeKind.OBJECT}
-							<ObjectFieldTd {__type} id={data[idFieldName]} {__field} bind:value={data} />
+							<ObjectFieldTd
+								{__type}
+								id={data[idFieldName]}
+								{__field}
+								bind:value={data}
+								on:search={searchType}
+							/>
 						{:else}
 							<FieldTd
 								id={data[idFieldName]}
@@ -220,3 +233,7 @@
 {:catch error}
 	{notifications.error($LL.message.requestFailed())}
 {/await}
+
+{#if isTableModalOpen}
+	<TypeTableModal isModalOpen={isTableModalOpen} typeName={__type.name} />
+{/if}

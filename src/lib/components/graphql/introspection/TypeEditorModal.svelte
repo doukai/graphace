@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import { querySubType, mutationObjectField, removeObjectField } from '$lib/graphql/Type';
 	import { TypeManager } from '$lib/TypeManager';
 	import type { __Type, __FieldFilter, __Field } from '$lib/types';
@@ -15,6 +16,9 @@
 	export let id: string;
 	export let __field: __Field;
 	export let value: object;
+	const dispatch = createEventDispatcher<{
+		search: {};
+	}>();
 
 	const manager: TypeManager = new TypeManager();
 
@@ -108,7 +112,7 @@
 							type="button"
 							class="relative block w-full border-2 bg-base-100 border-dashed rounded-lg p-6 text-center hover:bg-base-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-base-300"
 							on:click={(e) => {
-								create();
+								dispatch('search', {});
 							}}
 						>
 							<Icon src={DocumentSearch} class="mx-auto h-12 w-12" />
