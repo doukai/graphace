@@ -22,7 +22,7 @@
 	import { notifications } from '$lib/stores/Notifications';
 	import { messageBox } from '$lib/stores/MessageBox';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Trash } from '@steeze-ui/heroicons';
+	import { PencilAlt, Trash } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	export let typeName: string;
 
@@ -96,5 +96,42 @@
 		</button>
 	</SectionHead>
 	<div class="divider" />
-	<TypeTable __type={response.__type} on:selectChange={selectChange} bind:refresh />
+	<TypeTable
+		__type={response.__type}
+		on:selectChange={selectChange}
+		bind:refresh
+		let:id
+		let:removeRow
+	>
+		<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
+			<button
+				class="btn btn-square btn-ghost btn-xs"
+				on:click={(e) => {
+					e.preventDefault();
+					goto(`./${manager.typeNameToUrl(typeName)}/${id}`);
+				}}
+			>
+				<Icon src={PencilAlt} solid />
+			</button>
+		</div>
+		<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>
+			<button
+				class="btn btn-square btn-ghost btn-xs"
+				on:click={(e) => {
+					e.preventDefault();
+					messageBox.open({
+						title: $LL.components.graphql.table.removeModalTitle(),
+						buttonName: $LL.components.graphql.table.removeBtn(),
+						buttonType: 'error',
+						confirm: () => {
+							removeRow(id);
+							return true;
+						}
+					});
+				}}
+			>
+				<Icon src={Trash} solid />
+			</button>
+		</div>
+	</TypeTable>
 {/await}

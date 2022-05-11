@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { goto } from '$app/navigation';
 	import {
 		queryTypeConnection,
 		mutationField,
@@ -15,10 +14,7 @@
 	import TypeTableModal from '$lib/components/graphql/introspection/table/TypeTableModal.svelte';
 	import Pagination from '$lib/components/ui/connection/Pagination.svelte';
 	import { FieldTh, FieldTd } from './';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { PencilAlt, Trash } from '@steeze-ui/heroicons';
 	import { notifications } from '$lib/stores/Notifications';
-	import { messageBox } from '$lib/stores/MessageBox';
 	import LL from '$i18n/i18n-svelte';
 	import ObjectFieldTd from './ObjectFieldTd.svelte';
 
@@ -187,36 +183,7 @@
 						{/if}
 					{/each}
 					<td>
-						<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
-							<button
-								class="btn btn-square btn-ghost btn-xs"
-								on:click={(e) => {
-									e.preventDefault();
-									goto(`./${manager.typeNameToUrl(__type.name)}/${data[idFieldName]}`);
-								}}
-							>
-								<Icon src={PencilAlt} solid />
-							</button>
-						</div>
-						<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>
-							<button
-								class="btn btn-square btn-ghost btn-xs"
-								on:click={(e) => {
-									e.preventDefault();
-									messageBox.open({
-										title: $LL.components.graphql.table.removeModalTitle(),
-										buttonName: $LL.components.graphql.table.removeBtn(),
-										buttonType: 'error',
-										confirm: () => {
-											removeRow(data[idFieldName]);
-											return true;
-										}
-									});
-								}}
-							>
-								<Icon src={Trash} solid />
-							</button>
-						</div>
+						<slot id={data[idFieldName]} {data} {removeRow} />
 					</td>
 				</tr>
 			{/each}
@@ -235,8 +202,5 @@
 {/await}
 
 {#if isTableModalOpen}
-	<TypeTableModal
-		isModalOpen={isTableModalOpen}
-		typeName={__type.name}
-	/>
+	<TypeTableModal bind:isModalOpen={isTableModalOpen} typeName={__type.name} />
 {/if}
