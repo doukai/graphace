@@ -25,6 +25,7 @@
 	import TypeTable from './TypeTable.svelte';
 	export let isModalOpen = false;
 	export let typeName: string;
+	export let className: string = '';
 	$: typePromise = getType(typeName);
 	let idList: string[] = [];
 
@@ -36,7 +37,7 @@
 	};
 </script>
 
-<Modal {isModalOpen} title={typeName}>
+<Modal {isModalOpen} title={typeName} {className}>
 	{#await typePromise}
 		<TableLoading />
 	{:then response}

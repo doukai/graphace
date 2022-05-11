@@ -235,5 +235,8 @@
 {/await}
 
 {#if isTableModalOpen}
-	<TypeTableModal isModalOpen={isTableModalOpen} typeName={__type.name} />
+	<TypeTableModal
+		isModalOpen={isTableModalOpen}
+		typeName={__type.name}
+	/>
 {/if}
