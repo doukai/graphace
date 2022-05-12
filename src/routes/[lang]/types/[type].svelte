@@ -17,6 +17,7 @@
 	import type { QueryParams } from '$lib/graphql/Type';
 	import { removeTypes } from '$lib/graphql/Type';
 	import TypeTable from '$lib/components/graphql/introspection/table/TypeTable.svelte';
+	import TypeEditorModals from '$lib/components/graphql/introspection/TypeEditorModals.svelte';
 	import { SectionHead, SectionLoading } from '$lib/components/ui/section';
 	import SearchInput from '$lib/components/ui/search/SearchInput.svelte';
 	import { notifications } from '$lib/stores/Notifications';
@@ -135,3 +136,5 @@
 		</div>
 	</TypeTable>
 {/await}
+
+<TypeEditorModals />

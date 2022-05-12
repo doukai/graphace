@@ -1,6 +1,3 @@
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
 	import { writable } from 'svelte/store';
 	import { createEventDispatcher } from 'svelte';
@@ -14,12 +11,12 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { DocumentAdd, DocumentSearch } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
-	export let isModalOpen = false;
 	export let __parentType: __Type;
 	export let __type: __Type;
 	export let id: string;
 	export let __field: __Field;
 	export let value: object;
+	export let isModalOpen = false;
 
 	const { subscribe, set, update } = writable(0);
 

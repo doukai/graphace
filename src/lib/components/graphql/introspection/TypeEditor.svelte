@@ -16,8 +16,8 @@
 	const queryPromise: Promise<{ data: object }> = queryType(__type, id);
 
 	let data: object;
-	queryPromise.then((res) => {
-		data = res.data;
+	queryPromise.then((response) => {
+		data = response.data;
 	});
 
 	const save = (): void => {

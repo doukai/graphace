@@ -189,7 +189,7 @@
 					{#each fields as __field}
 						{#if manager.getFieldTypeKind(__field.type) === __TypeKind.OBJECT}
 							<ObjectFieldTd
-								{__type}
+								__parentType={__type}
 								id={data[idFieldName]}
 								{__field}
 								bind:value={data}
