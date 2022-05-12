@@ -46,6 +46,7 @@
   },
   "type": "module",
   "dependencies": {
+    "nanoid": "^3.3.4",
     "typesafe-i18n": "5.3.6"
   }
 }

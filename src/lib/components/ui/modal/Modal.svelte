@@ -2,13 +2,18 @@
 	export let isModalOpen: boolean = false;
 	export let title: string;
 	export let className: string = '';
+
+	let modal: HTMLDivElement;
+	$: if (isModalOpen) {
+		if (modal) {
+			document.body.appendChild(modal);
+		}
+	}
 </script>
 
-<div class="modal" class:modal-open={isModalOpen}>
-	<div class="card bg-base-100 {className}">
-		<div class="card-body">
-			<h2 class="card-title">{title}</h2>
-			<slot />
-		</div>
+<div class="modal" class:modal-open={isModalOpen} bind:this={modal}>
+	<div class="modal-box {className}">
+		<h2 class="font-bold text-lg">{title}</h2>
+		<slot />
 	</div>
 </div>

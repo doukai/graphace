@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import { getType } from '$lib/graphql/Introspection';
 	import {
 		queryTypeConnection,
 		mutationField,
@@ -12,6 +13,8 @@
 	import { createFilter } from '$lib/types/__FieldFilter';
 	import { Table, TableLoading } from '$lib/components/ui/table';
 	import TypeTableModal from '$lib/components/graphql/introspection/table/TypeTableModal.svelte';
+	import TypeEditorModal from '$lib/components/graphql/introspection/TypeEditorModal.svelte';
+	import ListTypeEditorModal from '$lib/components/graphql/introspection/ListTypeEditorModal.svelte';
 	import Pagination from '$lib/components/ui/connection/Pagination.svelte';
 	import { FieldTh, FieldTd } from './';
 	import { notifications } from '$lib/stores/Notifications';
@@ -49,12 +52,6 @@
 	const dispatch = createEventDispatcher<{
 		selectChange: { selectedIdList: string[] };
 	}>();
-
-	let isTableModalOpen: boolean = false;
-
-	const searchType = (): void => {
-		isTableModalOpen = true;
-	};
 
 	let selectedRows: object = {};
 	let selectAll: boolean;
@@ -126,6 +123,31 @@
 		pageSize = event.detail.selectedPageSize;
 		refresh();
 	};
+
+	let isTableModalOpen: boolean = false;
+	const searchType = (): void => {
+		isTableModalOpen = true;
+	};
+
+	let isTypeEditorModalOpen: boolean = false;
+	let typePromise: Promise<{ __type: __Type }>;
+	let __field: __Field;
+	let id: string;
+	let value: object;
+	async function editTypeField(
+		event: CustomEvent<{
+			id: string;
+			__field: __Field;
+			value: object;
+			change: (value: object) => void;
+		}>
+	) {
+		id = event.detail.id;
+		__field = event.detail.__field;
+		value = event.detail.value;
+		typePromise = getType(manager.getFieldTypeName(__field.type));
+		isTypeEditorModalOpen = true;
+	}
 </script>
 
 {#await connectionPromise}
@@ -171,7 +193,7 @@
 								id={data[idFieldName]}
 								{__field}
 								bind:value={data}
-								on:search={searchType}
+								on:editTypeField={editTypeField}
 							/>
 						{:else}
 							<FieldTd
@@ -203,4 +225,31 @@
 
 {#if isTableModalOpen}
 	<TypeTableModal bind:isModalOpen={isTableModalOpen} typeName={__type.name} />
+{/if}
+
+{#if isTypeEditorModalOpen}
+	{#await typePromise then response}
+		{#if manager.fieldIsList(__field.type)}
+			<ListTypeEditorModal
+				isModalOpen={isTypeEditorModalOpen}
+				__parentType={__type}
+				__type={response.__type}
+				{id}
+				{__field}
+				bind:value
+			/>
+		{:else}
+			<TypeEditorModal
+				isModalOpen={isTypeEditorModalOpen}
+				__parentType={__type}
+				__type={response.__type}
+				{id}
+				{__field}
+				bind:value
+				on:search={searchType}
+			/>
+		{/if}
+	{:catch error}
+		{notifications.error($LL.message.requestFailed())}
+	{/await}
 {/if}

@@ -1,3 +1,3 @@
-<div class="card-actions justify-end">
+<div class="modal-action">
 	<slot />
 </div>

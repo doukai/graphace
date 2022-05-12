@@ -1,4 +1,8 @@
+<script lang="ts" context="module">
+</script>
+
 <script lang="ts">
+	import { writable } from 'svelte/store';
 	import { createEventDispatcher } from 'svelte';
 	import { querySubType, mutationObjectField, removeObjectField } from '$lib/graphql/Type';
 	import { TypeManager } from '$lib/TypeManager';
@@ -16,8 +20,22 @@
 	export let id: string;
 	export let __field: __Field;
 	export let value: object;
+
+	const { subscribe, set, update } = writable(0);
+
+	let a = {
+		subscribe,
+		increment: () => update((n) => n + 1),
+		decrement: () => update((n) => n - 1),
+		reset: () => set(0)
+	};
+
 	const dispatch = createEventDispatcher<{
 		search: {};
+		change: {
+			id: string;
+			value: object;
+		};
 	}>();
 
 	const manager: TypeManager = new TypeManager();

@@ -8,7 +8,6 @@
 	import LL from '$i18n/i18n-svelte';
 	export let isModalOpen = false;
 	export let typeName: string;
-	export let className: string = '';
 	$: typePromise = getType(typeName);
 	let idList: string[] = [];
 
@@ -20,9 +19,9 @@
 	};
 </script>
 
-<Modal {isModalOpen} title={typeName} {className}>
+<Modal {isModalOpen} title={typeName} className="max-w-6xl">
 	<ModalContent>
-		<div class="bg-base-300 p-3 rounded-box">
+		<div class="bg-base-300 p-2 rounded-box">
 			{#await typePromise}
 				<TableLoading />
 			{:then response}
