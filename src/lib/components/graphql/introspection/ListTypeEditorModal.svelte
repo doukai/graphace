@@ -1,13 +1,15 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import { querySubType, mutationObjectField, removeObjectField } from '$lib/graphql/Type';
 	import { TypeManager } from '$lib/TypeManager';
 	import type { __Type, __FieldFilter, __Field } from '$lib/types';
 	import { __TypeKind } from '$lib/types/__TypeKind';
 	import { Modal, ModalContent, ModalActions } from '$lib/components/ui/modal';
+	import { typeTableModals } from '$lib/components/graphql/introspection/table/TypeTableModals.svelte';
 	import FieldInput from './FieldInput.svelte';
-	import { notifications } from '$lib/stores/Notifications';
+	import { notifications } from '$lib/components/ui/Notifications.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { PlusCircle } from '@steeze-ui/heroicons';
+	import { DocumentAdd, DocumentSearch } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	export let isModalOpen = false;
 	export let __parentType: __Type;
@@ -15,6 +17,16 @@
 	export let id: string;
 	export let __field: __Field;
 	export let value: object;
+
+	const dispatch = createEventDispatcher<{
+		search: {};
+		change: {
+			id: string;
+			__field: __Field;
+			value: object;
+		};
+		cancel: {};
+	}>();
 
 	const manager: TypeManager = new TypeManager();
 
@@ -44,8 +56,7 @@
 	const save = (): void => {
 		mutationObjectField(__parentType, __type, id, __field, value[__field.name])
 			.then((response) => {
-				value[__field.name] = response.data[__field.name];
-				value[__field.from] = response.data[__field.from];
+				dispatch('change', { id, __field, value: response.data });
 				notifications.success($LL.message.saveSuccess());
 			})
 			.catch((error) => {
@@ -56,13 +67,29 @@
 	const remove = (): void => {
 		removeObjectField(__parentType, __type, id, __field, value[__field.name])
 			.then((response) => {
-				value[__field.name] = response.data[__field.name];
-				value[__field.from] = response.data[__field.from];
+				dispatch('change', { id, __field, value: response.data });
 				notifications.success($LL.message.saveSuccess());
 			})
 			.catch((error) => {
 				notifications.error($LL.message.saveFailed());
 			});
+	};
+
+	const search = () => {
+		const modalId = typeTableModals.create({
+			__type,
+			multiple: true,
+			select: (event) => {
+				if (!value[__field.name]) {
+					value[__field.name] = [];
+				}
+				value[__field.name] = [...value[__field.name], ...event.detail.selectedDataList];
+				typeTableModals.remove(modalId);
+			},
+			cancel: () => {
+				typeTableModals.remove(modalId);
+			}
+		});
 	};
 </script>
 
@@ -120,9 +147,21 @@
 						createItem();
 					}}
 				>
-					<Icon src={PlusCircle} class="mx-auto h-12 w-12" />
+					<Icon src={DocumentAdd} class="mx-auto h-12 w-12" />
 					<span class="mt-2 block text-sm font-medium">
 						{$LL.components.graphql.editor.createType({ name: __type.name })}
+					</span>
+				</button>
+				<button
+					type="button"
+					class="relative block w-full border-2 bg-base-100 border-dashed rounded-lg p-6 text-center hover:bg-base-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-base-300"
+					on:click={(e) => {
+						search();
+					}}
+				>
+					<Icon src={DocumentSearch} class="mx-auto h-12 w-12" />
+					<span class="mt-2 block text-sm font-medium">
+						{$LL.components.graphql.editor.bindType({ name: __type.name })}
 					</span>
 				</button>
 			{:catch error}
@@ -135,13 +174,13 @@
 			class="btn"
 			on:click={(e) => {
 				e.preventDefault();
-				isModalOpen = false;
+				dispatch('cancel');
 			}}
 		>
 			{$LL.components.graphql.editor.backBtn()}
 		</button>
 		<button
-			class="btn"
+			class="btn btn-primary"
 			on:click={(e) => {
 				e.preventDefault();
 				save();

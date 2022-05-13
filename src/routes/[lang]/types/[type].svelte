@@ -18,10 +18,12 @@
 	import { removeTypes } from '$lib/graphql/Type';
 	import TypeTable from '$lib/components/graphql/introspection/table/TypeTable.svelte';
 	import TypeEditorModals from '$lib/components/graphql/introspection/TypeEditorModals.svelte';
+	import ListTypeEditorModals from '$lib/components/graphql/introspection/ListTypeEditorModals.svelte';
+	import TypeTableModals from '$lib/components/graphql/introspection/table/TypeTableModals.svelte';
 	import { SectionHead, SectionLoading } from '$lib/components/ui/section';
 	import SearchInput from '$lib/components/ui/search/SearchInput.svelte';
-	import { notifications } from '$lib/stores/Notifications';
-	import { messageBox } from '$lib/stores/MessageBox';
+	import { notifications } from '$lib/components/ui/Notifications.svelte';
+	import { messageBoxs } from '$lib/components/ui/MessageBoxs.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilAlt, Trash } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
@@ -71,7 +73,7 @@
 					class="btn btn-error btn-outline btn-square"
 					on:click={(e) => {
 						e.preventDefault();
-						messageBox.open({
+						messageBoxs.open({
 							title: $LL.components.graphql.table.removeModalTitle(),
 							buttonName: $LL.components.graphql.table.removeBtn(),
 							buttonType: 'error',
@@ -120,7 +122,7 @@
 				class="btn btn-square btn-ghost btn-xs"
 				on:click={(e) => {
 					e.preventDefault();
-					messageBox.open({
+					messageBoxs.open({
 						title: $LL.components.graphql.table.removeModalTitle(),
 						buttonName: $LL.components.graphql.table.removeBtn(),
 						buttonType: 'error',
@@ -138,3 +140,5 @@
 {/await}
 
 <TypeEditorModals />
+<ListTypeEditorModals />
+<TypeTableModals />

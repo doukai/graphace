@@ -6,7 +6,7 @@
 	import { __TypeKind } from '$lib/types/__TypeKind';
 	import { Form, FormItems, FormItem, FormButtons } from '$lib/components/ui/form';
 	import FieldInput from './FieldInput.svelte';
-	import { notifications } from '$lib/stores/Notifications';
+	import { notifications } from '$lib/components/ui/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
 	export let __type: __Type;
 

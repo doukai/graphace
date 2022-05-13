@@ -1,9 +1,11 @@
 <script context="module" lang="ts">
+	import { writable } from 'svelte/store';
 	import type { Load } from '@sveltejs/kit';
 	import type { Locales } from '$i18n/i18n-types';
 	import { replaceLocaleInUrl } from '$lib/utils';
 	import { baseLocale, locales } from '$i18n/i18n-util';
 	import { loadLocaleAsync } from '$i18n/i18n-util.async';
+	export const isMenuOpen = writable(true);
 
 	type LoadParams = {
 		lang?: Locales;
@@ -45,9 +47,8 @@
 	import SideBar from '$lib/components/ui/SideBar.svelte';
 	import TypeMenu from '$lib/components/graphql/introspection/TypeMenu.svelte';
 	import { NavBar, NavBarStart, NavBarEnd } from '$lib/components/ui/navbar';
-	import Toast from '$lib/components/ui/Toast.svelte';
-	import MessageBox from '$lib/components/ui/MessageBox.svelte';
-	import { isOpen } from '$lib/stores/Menu';
+	import Notifications from '$lib/components/ui/Notifications.svelte';
+	import MessageBoxs from '$lib/components/ui/MessageBoxs.svelte';
 	import type { __Type } from '$lib/types/__Type';
 	import { setLocale } from '$i18n/i18n-svelte';
 	import { LocaleSelect, ThemeSelect } from '$lib/components/ui/select';
@@ -63,17 +64,17 @@
 </script>
 
 <div>
-	<div class={$isOpen ? 'hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0' : 'hidden'}>
+	<div class={$isMenuOpen ? 'hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0' : 'hidden'}>
 		<SideBar>
 			<TypeMenu />
 		</SideBar>
 	</div>
-	<div class={$isOpen ? 'md:pl-64 flex flex-col' : 'flex flex-col'}>
+	<div class={$isMenuOpen ? 'md:pl-64 flex flex-col' : 'flex flex-col'}>
 		<NavBar>
 			<NavBarStart>
 				<button
 					class="btn btn-square btn-ghost"
-					on:click={(e) => isOpen.update((isOpen) => !isOpen)}
+					on:click={(e) => isMenuOpen.update((isOpen) => !isOpen)}
 				>
 					<Icon src={Menu} solid class="h-6 w-6" />
 				</button>
@@ -89,8 +90,8 @@
 					<slot />
 				</div>
 			</div>
-			<Toast />
-			<MessageBox />
+			<MessageBoxs />
+			<Notifications />
 		</main>
 	</div>
 </div>

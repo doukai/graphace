@@ -1,32 +1,32 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import type { __Type, __Field, __FieldFilter } from '$lib/types';
-	import { getType } from '$lib/graphql/Introspection';
 	import { __TypeKind } from '$lib/types';
-	import { TableLoading } from '$lib/components/ui/table';
 	import { Modal, ModalContent, ModalActions } from '$lib/components/ui/modal';
 	import TypeTable from './TypeTable.svelte';
 	import LL from '$i18n/i18n-svelte';
+	export let __type: __Type;
+	export let multiple: boolean = false;
 	export let isModalOpen = false;
-	export let typeName: string;
-	$: typePromise = getType(typeName);
-	let idList: string[] = [];
 
-	const selectChange = (event: CustomEvent<{ selectedIdList: string[] }>) => {
-		idList = event.detail.selectedIdList;
-		if (event.detail.selectedIdList.length > 0) {
-		} else {
-		}
+	const dispatch = createEventDispatcher<{
+		select: {
+			selectedDataList: object[];
+		};
+		cancel: {};
+	}>();
+
+	let dataList: object[] = [];
+
+	const selectChange = (event: CustomEvent<{ selectedDataList: object[] }>) => {
+		dataList = event.detail.selectedDataList;
 	};
 </script>
 
-<Modal {isModalOpen} title={typeName} className="max-w-6xl">
+<Modal {isModalOpen} title={__type.name} className="max-w-6xl">
 	<ModalContent>
 		<div class="bg-base-300 p-2 rounded-box">
-			{#await typePromise}
-				<TableLoading />
-			{:then response}
-				<TypeTable __type={response.__type} on:selectChange={selectChange} />
-			{/await}
+			<TypeTable {__type} on:selectChange={selectChange} />
 		</div>
 	</ModalContent>
 	<ModalActions>
@@ -34,10 +34,21 @@
 			class="btn"
 			on:click={(e) => {
 				e.preventDefault();
-				isModalOpen = false;
+				dispatch('cancel');
 			}}
 		>
 			{$LL.components.graphql.editor.backBtn()}
 		</button>
+		{#if (multiple && dataList.length > 0) || dataList.length === 1}
+			<button
+				class="btn btn-primary"
+				on:click={(e) => {
+					e.preventDefault();
+					dispatch('select', { selectedDataList: dataList });
+				}}
+			>
+				{$LL.components.graphql.editor.selectBtn()}
+			</button>
+		{/if}
 	</ModalActions>
 </Modal>

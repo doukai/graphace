@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { getType } from '$lib/graphql/Introspection';
 	import {
 		queryTypeConnection,
 		mutationField,
@@ -12,12 +11,9 @@
 	import { __TypeKind } from '$lib/types';
 	import { createFilter } from '$lib/types/__FieldFilter';
 	import { Table, TableLoading } from '$lib/components/ui/table';
-	import TypeTableModal from '$lib/components/graphql/introspection/table/TypeTableModal.svelte';
-	import TypeEditorModal from '$lib/components/graphql/introspection/TypeEditorModal.svelte';
-	import ListTypeEditorModal from '$lib/components/graphql/introspection/ListTypeEditorModal.svelte';
 	import Pagination from '$lib/components/ui/connection/Pagination.svelte';
 	import { FieldTh, FieldTd } from './';
-	import { notifications } from '$lib/stores/Notifications';
+	import { notifications } from '$lib/components/ui/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
 	import ObjectFieldTd from './ObjectFieldTd.svelte';
 
@@ -41,6 +37,7 @@
 			offset
 		});
 		connectionPromise.then((response) => {
+			dataList = manager.getListFromConnection(response.connection);
 			selectedRows = {};
 			selectAll = false;
 			manager
@@ -49,18 +46,22 @@
 		});
 	};
 
-	const dispatch = createEventDispatcher<{
-		selectChange: { selectedIdList: string[] };
-	}>();
-
+	let dataList: object[] = [];
 	let selectedRows: object = {};
 	let selectAll: boolean;
 	let pageNumber: number = 1;
 
+	const dispatch = createEventDispatcher<{
+		selectChange: { selectedIdList: string[]; selectedDataList: object[] };
+	}>();
+
 	$: dispatch('selectChange', {
 		selectedIdList: Object.keys(selectedRows)
 			.filter((id) => selectedRows[id])
-			.map((id) => id)
+			.map((id) => id),
+		selectedDataList: Object.keys(selectedRows)
+			.filter((id) => selectedRows[id])
+			.map((id) => dataList.find((data) => data[idFieldName] === id))
 	});
 
 	const manager: TypeManager = new TypeManager();
@@ -123,31 +124,6 @@
 		pageSize = event.detail.selectedPageSize;
 		refresh();
 	};
-
-	let isTableModalOpen: boolean = false;
-	const searchType = (): void => {
-		isTableModalOpen = true;
-	};
-
-	let isTypeEditorModalOpen: boolean = false;
-	let typePromise: Promise<{ __type: __Type }>;
-	let __field: __Field;
-	let id: string;
-	let value: object;
-	async function editTypeField(
-		event: CustomEvent<{
-			id: string;
-			__field: __Field;
-			value: object;
-			change: (value: object) => void;
-		}>
-	) {
-		id = event.detail.id;
-		__field = event.detail.__field;
-		value = event.detail.value;
-		typePromise = getType(manager.getFieldTypeName(__field.type));
-		isTypeEditorModalOpen = true;
-	}
 </script>
 
 {#await connectionPromise}
@@ -175,7 +151,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each manager.getListFromConnection(response.connection) as data}
+			{#each dataList as data}
 				<tr class="hover">
 					<th class="z-10">
 						<label>
@@ -190,10 +166,9 @@
 						{#if manager.getFieldTypeKind(__field.type) === __TypeKind.OBJECT}
 							<ObjectFieldTd
 								__parentType={__type}
-								id={data[idFieldName]}
 								{__field}
+								id={data[idFieldName]}
 								bind:value={data}
-								on:editTypeField={editTypeField}
 							/>
 						{:else}
 							<FieldTd
@@ -222,34 +197,3 @@
 {:catch error}
 	{notifications.error($LL.message.requestFailed())}
 {/await}
-
-{#if isTableModalOpen}
-	<TypeTableModal bind:isModalOpen={isTableModalOpen} typeName={__type.name} />
-{/if}
-
-{#if isTypeEditorModalOpen}
-	{#await typePromise then response}
-		{#if manager.fieldIsList(__field.type)}
-			<ListTypeEditorModal
-				isModalOpen={isTypeEditorModalOpen}
-				__parentType={__type}
-				__type={response.__type}
-				{id}
-				{__field}
-				bind:value
-			/>
-		{:else}
-			<TypeEditorModal
-				isModalOpen={isTypeEditorModalOpen}
-				__parentType={__type}
-				__type={response.__type}
-				{id}
-				{__field}
-				bind:value
-				on:search={searchType}
-			/>
-		{/if}
-	{:catch error}
-		{notifications.error($LL.message.requestFailed())}
-	{/await}
-{/if}

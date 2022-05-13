@@ -14,13 +14,44 @@
 		__field: __Field;
 		value: object;
 		isModalOpen?: boolean;
+		change: (
+			event: CustomEvent<{
+				id: string;
+				__field: __Field;
+				value: object;
+			}>
+		) => void;
+		cancel: () => void;
 	};
 
 	const typeEditorModalStore = writable<TypeEditorModalComponent[]>([]);
 
-	function create(props: TypeEditorModalProp) {
-		typeEditorModalStore.update((component) => {
-			return [...component, { id: nanoid(), props }];
+	function create(props: TypeEditorModalProp, open = true): string {
+		const id = nanoid();
+		props.isModalOpen = open;
+		typeEditorModalStore.update((components) => {
+			return [...components, { id, props }];
+		});
+		return id;
+	}
+
+	function open(id: string) {
+		typeEditorModalStore.update((components) => {
+			components.find((component) => component.id !== id).props.isModalOpen = true;
+			return components;
+		});
+	}
+
+	function close(id: string) {
+		typeEditorModalStore.update((components) => {
+			components.find((component) => component.id !== id).props.isModalOpen = false;
+			return components;
+		});
+	}
+
+	function remove(id: string) {
+		typeEditorModalStore.update((components) => {
+			return components.filter((component) => component.id !== id);
 		});
 	}
 
@@ -30,15 +61,9 @@
 		return {
 			subscribe,
 			create,
-			open: (props: TypeEditorModalProp) =>
-				create({
-					__parentType: props.__parentType,
-					__type: props.__type,
-					id: props.id,
-					__field: props.__field,
-					value: props.value,
-					isModalOpen: true
-				})
+			open,
+			close,
+			remove
 		};
 	}
 	export const typeEditorModals = createTypeEditorModalStore();
@@ -57,5 +82,7 @@
 		__field={typeEditorModal.props.__field}
 		value={typeEditorModal.props.value}
 		isModalOpen={typeEditorModal.props.isModalOpen}
+		on:change={typeEditorModal.props.change}
+		on:cancel={typeEditorModal.props.cancel}
 	/>
 {/each}

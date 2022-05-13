@@ -41,6 +41,7 @@ const en: BaseTranslation = {
 		graphql: {
 			editor: {
 				saveBtn: "Save",
+				selectBtn: "Select",
 				removeBtn: "Remove",
 				backBtn: "Back",
 				createType: "Create a new {name:string}",

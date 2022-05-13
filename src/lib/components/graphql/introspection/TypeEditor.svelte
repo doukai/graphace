@@ -6,8 +6,8 @@
 	import { __TypeKind } from '$lib/types/__TypeKind';
 	import { Form, FormLoading, FormItems, FormItem, FormButtons } from '$lib/components/ui/form';
 	import FieldInput from './FieldInput.svelte';
-	import { messageBox } from '$lib/stores/MessageBox';
-	import { notifications } from '$lib/stores/Notifications';
+	import { messageBoxs } from '$lib/components/ui/MessageBoxs.svelte';
+	import { notifications } from '$lib/components/ui/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
 	export let id: string;
 	export let __type: __Type;
@@ -77,7 +77,7 @@
 				class="btn btn-outline btn-error"
 				on:click={(e) => {
 					e.preventDefault();
-					messageBox.open({
+					messageBoxs.open({
 						title: $LL.components.graphql.table.removeModalTitle(),
 						buttonName: $LL.components.graphql.table.removeBtn(),
 						buttonType: 'error',

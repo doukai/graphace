@@ -41,6 +41,7 @@ const zh: Translation = {
 		graphql: {
 			editor: {
 				saveBtn: "保存",
+				selectBtn: "选择",
 				removeBtn: "删除",
 				backBtn: "返回",
 				createType: "创建 {name}",

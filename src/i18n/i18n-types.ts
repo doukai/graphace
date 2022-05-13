@@ -133,6 +133,10 @@ type RootTranslation = {
 				 */
 				saveBtn: string
 				/**
+				 * Select
+				 */
+				selectBtn: string
+				/**
 				 * Remove
 				 */
 				removeBtn: string
@@ -394,6 +398,10 @@ export type TranslationFunctions = {
 				 * Save
 				 */
 				saveBtn: () => LocalizedString
+				/**
+				 * Select
+				 */
+				selectBtn: () => LocalizedString
 				/**
 				 * Remove
 				 */
