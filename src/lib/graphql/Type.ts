@@ -219,28 +219,22 @@ export async function mutationObjectField(__parentType: __Type, __type: __Type, 
 
 export async function removeObjectField(__parentType: __Type, __type: __Type, id: string, __field: __Field, value: object): Promise<{ data: object; }> {
     const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__parentType);
-    const mutationSubTypeFieldName: string = manager.getMutationTypeFieldName(__type);
     const idFieldName = manager.getIdFieldName(__parentType);
-    const subIdFieldName = manager.getIdFieldName(__type);
     const subSelections: string = manager.fieldsToSelections(__type);
 
     const mutation: string = gql`
-        mutation ($${idFieldName}: String $subId: String ) {
-            data: ${mutationTypeFieldName} (${idFieldName}: $${idFieldName} ${__field.from}: null) @update {
+        mutation ($${idFieldName}: String) {
+            data: ${mutationTypeFieldName} (${idFieldName}: $${idFieldName} ${__field.name}: null) @update {
 				${__field.from}
                 ${__field.name} {
                     ${subSelections}
                 }
-            }
-            count: ${mutationSubTypeFieldName} (${subIdFieldName}: $subId isDeprecated: true) @update {
-                ${subIdFieldName}Count
             }
         }	
     `;
 
     const variables: object = {};
     variables[idFieldName] = id;
-    variables["subId"] = value[subIdFieldName];
 
     return await client.request<{ data: object }>(mutation, variables);
 }

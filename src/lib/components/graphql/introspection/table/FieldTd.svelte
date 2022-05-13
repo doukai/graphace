@@ -22,6 +22,9 @@
 	const manager: TypeManager = new TypeManager();
 
 	let mutation = (): void => {
+		if (manager.fieldIsList(__field.type)) {
+			value = value.filter((item) => item);
+		}
 		dispatch('submit', {
 			id,
 			__field,
@@ -43,7 +46,7 @@
 	};
 </script>
 
-<div class="flex items-end space-x-1" bind:this={content}>
+<div class="flex items-start space-x-1" bind:this={content}>
 	<FieldInput {__field} placeholder={__field.name} bind:value />
 	<div class="tooltip" data-tip={$LL.components.graphql.table.td.save()}>
 		<button class="btn btn-square btn-primary" on:click={() => mutation()}>
@@ -63,6 +66,7 @@
 		href={null}
 		use:tippy={{
 			content,
+			placement: 'bottom',
 			interactive: true,
 			arrow: true,
 			trigger: 'click',
@@ -75,9 +79,13 @@
 		{#if manager.fieldIsList(__field.type)}
 			{#if value && value.length > 0}
 				{#if value && value.length > 3}
-					{value.slice(0, 3).join(',').concat('...')}
+					{value
+						.filter((item) => item)
+						.slice(0, 3)
+						.join(',')
+						.concat('...')}
 				{:else}
-					{value.join(',')}
+					{value.filter((item) => item).join(',')}
 				{/if}
 			{:else}
 				<Icon src={Minus} solid class="h-5 w-5" />
