@@ -29,6 +29,7 @@
 	}>();
 
 	const manager: TypeManager = new TypeManager();
+	const idFieldName: string = manager.getIdFieldName(__type);
 
 	if (!value[__field.name]) {
 		value[__field.name] = [];
@@ -51,6 +52,13 @@
 			value[__field.name] = [];
 		}
 		value[__field.name] = [...value[__field.name], manager.createTypeObject(__type)];
+	};
+
+	const removeItem = (index: number): void => {
+		value[__field.name] = [
+			...value[__field.name].slice(0, index),
+			...value[__field.name].slice(index + 1)
+		];
 	};
 
 	const save = (): void => {
@@ -83,7 +91,13 @@
 				if (!value[__field.name]) {
 					value[__field.name] = [];
 				}
-				value[__field.name] = [...value[__field.name], ...event.detail.selectedDataList];
+				value[__field.name] = [
+					...value[__field.name],
+					...event.detail.selectedDataList.filter(
+						(selectedData) =>
+							!value[__field.name].some((data) => data[idFieldName] === selectedData[idFieldName])
+					)
+				];
 				typeTableModals.remove(modalId);
 			},
 			cancel: () => {
@@ -102,7 +116,7 @@
 					<div class="divider" />
 				{/each}
 			{:then response}
-				{#each value[__field.name] || [] as data}
+				{#each value[__field.name] || [] as data, i}
 					<div
 						tabindex="0"
 						class="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box"
@@ -135,6 +149,15 @@
 										</div>
 										<div class="divider" />
 									{/each}
+									<button
+										class="btn btn-block btn-outline btn-error"
+										on:click={(e) => {
+											e.preventDefault();
+											removeItem(i);
+										}}
+									>
+										{$LL.components.graphql.editor.removeBtn()}
+									</button>
 								</div>
 							</form>
 						</div>
@@ -188,14 +211,16 @@
 		>
 			{$LL.components.graphql.editor.saveBtn()}
 		</button>
-		<button
-			class="btn btn-outline btn-error"
-			on:click={(e) => {
-				e.preventDefault();
-				remove();
-			}}
-		>
-			{$LL.components.graphql.editor.removeBtn()}
-		</button>
+		{#if value[__field.name] && value[__field.name].length > 0}
+			<button
+				class="btn btn-outline btn-error"
+				on:click={(e) => {
+					e.preventDefault();
+					remove();
+				}}
+			>
+				{$LL.components.graphql.editor.removeBtn()}
+			</button>
+		{/if}
 	</ModalActions>
 </Modal>

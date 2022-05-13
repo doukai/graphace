@@ -11,7 +11,6 @@
 	import { __TypeKind } from '$lib/types';
 	import { createFilter } from '$lib/types/__FieldFilter';
 	import { Table, TableLoading } from '$lib/components/ui/table';
-	import Pagination from '$lib/components/ui/connection/Pagination.svelte';
 	import { FieldTh, FieldTd } from './';
 	import { notifications } from '$lib/components/ui/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
@@ -19,6 +18,7 @@
 
 	export let __type: __Type;
 	export let pageSize: number = 10;
+	export let className = '';
 
 	export const refresh = (params?: QueryParams): void => {
 		let { queryValue, after, before, offset } = params || {
@@ -129,7 +129,7 @@
 {#await connectionPromise}
 	<TableLoading />
 {:then response}
-	<Table>
+	<Table {className}>
 		<thead>
 			<tr>
 				<th class="z-10">
@@ -180,19 +180,22 @@
 						{/if}
 					{/each}
 					<td>
-						<slot id={data[idFieldName]} {data} {removeRow} />
+						<slot name="row" id={data[idFieldName]} {data} {removeRow} />
 					</td>
 				</tr>
 			{/each}
 		</tbody>
 	</Table>
 	<div class="divider" />
-	<Pagination
+	<slot
+		name="page"
 		{pageNumber}
 		{pageSize}
 		totalCount={response.connection.totalCount}
-		on:pageChange={onPageChange}
-		on:sizeChange={onSizeChange}
+		{onPageChange}
+		{onSizeChange}
+		{onPrevious}
+		{onNext}
 	/>
 {:catch error}
 	{notifications.error($LL.message.requestFailed())}

@@ -5,6 +5,7 @@
 	import { Modal, ModalContent, ModalActions } from '$lib/components/ui/modal';
 	import TypeTable from './TypeTable.svelte';
 	import LL from '$i18n/i18n-svelte';
+	import { Pagination } from '$lib/components/ui/connection';
 	export let __type: __Type;
 	export let multiple: boolean = false;
 	export let isModalOpen = false;
@@ -26,7 +27,24 @@
 <Modal {isModalOpen} title={__type.name} className="max-w-6xl">
 	<ModalContent>
 		<div class="bg-base-300 p-2 rounded-box">
-			<TypeTable {__type} on:selectChange={selectChange} />
+			<TypeTable {__type} on:selectChange={selectChange} className="table-compact">
+				<div
+					slot="page"
+					let:pageNumber
+					let:pageSize
+					let:totalCount
+					let:onPageChange
+					let:onSizeChange
+				>
+					<Pagination
+						{pageNumber}
+						{pageSize}
+						{totalCount}
+						on:pageChange={onPageChange}
+						on:sizeChange={onSizeChange}
+					/>
+				</div>
+			</TypeTable>
 		</div>
 	</ModalContent>
 	<ModalActions>

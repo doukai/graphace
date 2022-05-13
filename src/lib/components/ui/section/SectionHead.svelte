@@ -3,10 +3,10 @@
 </script>
 
 <div class="navbar bg-base-100 shadow-xl rounded-box">
-	<div class="navbar-start">
-		<a class="btn btn-ghost hidden sm:flex normal-case text-xl" href={null} on:click>{title}</a>
+	<div class="hidden md:flex md:navbar-start">
+		<a class="btn btn-ghost normal-case text-xl" href={null} on:click>{title}</a>
 	</div>
-	<div class="navbar-end space-x-3">
+	<div class="flex md:navbar-end space-x-1">
 		<slot />
 	</div>
 </div>

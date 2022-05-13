@@ -1,3 +1,3 @@
-<div class="overflow-y-auto max-h-96">
+<div class="p-2">
 	<slot />
 </div>

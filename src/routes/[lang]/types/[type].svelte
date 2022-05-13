@@ -25,8 +25,9 @@
 	import { notifications } from '$lib/components/ui/Notifications.svelte';
 	import { messageBoxs } from '$lib/components/ui/MessageBoxs.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { PencilAlt, Trash } from '@steeze-ui/heroicons';
+	import { Plus, PencilAlt, Trash } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
+	import { Pagination } from '$lib/components/ui/connection';
 	export let typeName: string;
 
 	$: typePromise = getType(typeName);
@@ -89,7 +90,16 @@
 			</div>
 		{/if}
 		<button
-			class="btn"
+			class="btn btn-square md:hidden"
+			on:click={(e) => {
+				e.preventDefault();
+				goto(`./${response.__type.name}/create`);
+			}}
+		>
+			<Icon src={Plus} class="h-6 w-6" solid />
+		</button>
+		<button
+			class="hidden md:btn"
 			on:click={(e) => {
 				e.preventDefault();
 				goto(`./${response.__type.name}/create`);
@@ -99,42 +109,47 @@
 		</button>
 	</SectionHead>
 	<div class="divider" />
-	<TypeTable
-		__type={response.__type}
-		on:selectChange={selectChange}
-		bind:refresh
-		let:id
-		let:removeRow
-	>
-		<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
-			<button
-				class="btn btn-square btn-ghost btn-xs"
-				on:click={(e) => {
-					e.preventDefault();
-					goto(`./${manager.typeNameToUrl(typeName)}/${id}`);
-				}}
-			>
-				<Icon src={PencilAlt} solid />
-			</button>
+	<TypeTable __type={response.__type} on:selectChange={selectChange} bind:refresh>
+		<div slot="row" let:id let:removeRow>
+			<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
+				<button
+					class="btn btn-square btn-ghost btn-xs"
+					on:click={(e) => {
+						e.preventDefault();
+						goto(`./${manager.typeNameToUrl(typeName)}/${id}`);
+					}}
+				>
+					<Icon src={PencilAlt} solid />
+				</button>
+			</div>
+			<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>
+				<button
+					class="btn btn-square btn-ghost btn-xs"
+					on:click={(e) => {
+						e.preventDefault();
+						messageBoxs.open({
+							title: $LL.components.graphql.table.removeModalTitle(),
+							buttonName: $LL.components.graphql.table.removeBtn(),
+							buttonType: 'error',
+							confirm: () => {
+								removeRow(id);
+								return true;
+							}
+						});
+					}}
+				>
+					<Icon src={Trash} solid />
+				</button>
+			</div>
 		</div>
-		<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>
-			<button
-				class="btn btn-square btn-ghost btn-xs"
-				on:click={(e) => {
-					e.preventDefault();
-					messageBoxs.open({
-						title: $LL.components.graphql.table.removeModalTitle(),
-						buttonName: $LL.components.graphql.table.removeBtn(),
-						buttonType: 'error',
-						confirm: () => {
-							removeRow(id);
-							return true;
-						}
-					});
-				}}
-			>
-				<Icon src={Trash} solid />
-			</button>
+		<div slot="page" let:pageNumber let:pageSize let:totalCount let:onPageChange let:onSizeChange>
+			<Pagination
+				{pageNumber}
+				{pageSize}
+				{totalCount}
+				on:pageChange={onPageChange}
+				on:sizeChange={onSizeChange}
+			/>
 		</div>
 	</TypeTable>
 {/await}
