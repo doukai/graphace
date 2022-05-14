@@ -1,3 +1,3 @@
-<div class="navbar-end space-x-3">
+<div class="navbar-end">
 	<slot />
 </div>

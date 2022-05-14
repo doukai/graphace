@@ -3,7 +3,7 @@
 	import { ColorSwatch } from '@steeze-ui/heroicons';
 </script>
 
-<div class="form-control ml-3">
+<div class="form-control">
 	<label class="input-group">
 		<span><Icon src={ColorSwatch} solid class="h-6 w-6" /></span>
 		<select class="select select-bordered" data-choose-theme>

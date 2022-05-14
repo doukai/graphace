@@ -23,7 +23,7 @@
 
 <div class="navbar bg-base-100 shadow-xl rounded-box">
 	<div class="navbar-start">
-		<div class="form-control">
+		<div class="hidden sm:form-control">
 			<label class="input-group input-group-lg">
 				<span>{$LL.components.ui.pagination.size()}</span>
 				<select
@@ -42,10 +42,9 @@
 			</label>
 		</div>
 	</div>
-	<div class="navbar-center" />
 
-	<div class="navbar-end lg:hidden">
-		<div class="btn-group">
+	<div class="navbar-center">
+		<div class="btn-group sm:hidden">
 			<button
 				class="btn {pageNumber - 1 ? '' : 'btn-disabled'}"
 				on:click={() => {
@@ -66,9 +65,9 @@
 		</div>
 	</div>
 
-	<div class="navbar-end hidden lg:flex">
-		<p class="mr-4 hidden xl:flex">{$LL.components.ui.pagination.total({ total: totalCount })}</p>
-		<div class="btn-group">
+	<div class="navbar-end">
+		<p class="mr-4 hidden md:flex">{$LL.components.ui.pagination.total({ total: totalCount })}</p>
+		<div class="hidden sm:btn-group">
 			<button
 				class="btn {pageNumber - 1 ? '' : 'btn-disabled'}"
 				on:click={() => {

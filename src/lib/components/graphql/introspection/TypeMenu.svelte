@@ -13,31 +13,27 @@
 </script>
 
 {#await fetchTypeList}
-	<ul class="menu w-56 p-2 rounded-box">
-		<div class="animate-pulse space-y-1">
-			{#each { length: 24 } as _, i} <div class="py-4 bg-base-100 rounded" /> {/each}
-		</div>
-	</ul>
+	<div class="animate-pulse space-y-1">
+		{#each { length: 24 } as _, i} <div class="py-4 bg-base-100 rounded" /> {/each}
+	</div>
 {:then response}
-	<ul class="menu w-56 p-2 rounded-box">
-		{#each response.__typeList.filter((__type) => !manager.isContainerType(__type)) as __type}
-			<li>
-				<a
-					href={null}
-					on:click={(e) => {
-						e.preventDefault();
-						goto(`/${$locale}/types/${manager.typeNameToUrl(__type.name)}`);
-					}}
-					class={$page.url.pathname.startsWith(
-						`/${$locale}/types/${manager.typeNameToUrl(__type.name)}`
-					)
-						? 'active'
-						: ''}
-				>
-					<Icon icon="file-icons:graphql" />
-					{__type.name}
-				</a>
-			</li>
-		{/each}
-	</ul>
+	{#each response.__typeList.filter((__type) => !manager.isContainerType(__type)) as __type}
+		<li>
+			<a
+				href={null}
+				on:click={(e) => {
+					e.preventDefault();
+					goto(`/${$locale}/types/${manager.typeNameToUrl(__type.name)}`);
+				}}
+				class={$page.url.pathname.startsWith(
+					`/${$locale}/types/${manager.typeNameToUrl(__type.name)}`
+				)
+					? 'active'
+					: ''}
+			>
+				<Icon icon="file-icons:graphql" />
+				{__type.name}
+			</a>
+		</li>
+	{/each}
 {/await}

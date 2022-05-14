@@ -16,7 +16,7 @@
 
 <div class="navbar bg-base-100 shadow-xl rounded-box">
 	<div class="navbar-start">
-		<div class="form-control">
+		<div class="hidden sm:form-control">
 			<label class="input-group input-group-lg">
 				<span>{$LL.components.ui.cursor.size()}</span>
 				<select
@@ -35,7 +35,8 @@
 			</label>
 		</div>
 	</div>
-	<div class="navbar-end">
+	<div class="hidden sm:navbar-center" />
+	<div class="navbar-center sm:navbar-end">
 		<div class="btn-group grid grid-cols-2">
 			<button
 				class="btn btn-outline {hasPreviousPage ? '' : 'btn-disabled'}"
@@ -61,4 +62,5 @@
 			</button>
 		</div>
 	</div>
+	<div class="navbar-end sm:hidden" />
 </div>
