@@ -15,7 +15,7 @@
 	import type { __Field, __FieldFilter, __Type } from '$lib/types';
 	import { Operator } from '$lib/types';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Check, X, Filter, SortAscending, SortDescending } from '@steeze-ui/heroicons';
+	import { Check, X, Filter } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	export let __field: __Field;
 	export let value: __FieldFilter;
@@ -40,15 +40,23 @@
 			.forEach((__field) => (value.val[__field.name] = { opr: Operator.EQ, val: null }));
 	});
 
-	let filter = (): void => {
+	const filter = (): void => {
 		dispatch('filter');
 	};
 
-	let clear = (): void => {
+	const clear = (): void => {
 		manager
 			.getScalarFiledList(__type)
 			.forEach((__field) => (value.val[__field.name] = { opr: Operator.EQ, val: null }));
 		dispatch('filter');
+	};
+
+	const oprChange = (__field: __Field, opr: Operator): void => {
+		if (opr === 'IN' || opr === 'NIN' || opr === 'BT' || opr === 'NBT') {
+			value.val[__field.name].val = [];
+		} else {
+			value.val[__field.name].val = null;
+		}
 	};
 </script>
 
@@ -63,7 +71,11 @@
 					<Toggle name={value.__field.name} bind:value={value.val[__field.name].val} />
 					<div />
 				{:else}
-					<select class="select select-bordered" bind:value={value.val[__field.name].opr}>
+					<select
+						class="select select-bordered"
+						bind:value={value.val[__field.name].opr}
+						on:change={() => oprChange(__field, value.val[__field.name].opr)}
+					>
 						<option value="EQ" selected>{$LL.components.graphql.table.th.eq()}</option>
 						<option value="NEQ">{$LL.components.graphql.table.th.neq()}</option>
 						<option value="LK">{$LL.components.graphql.table.th.lk()}</option>
@@ -143,6 +155,9 @@
 	<a
 		class="link group inline-flex"
 		href={null}
+		on:click={(e) => {
+			e.preventDefault();
+		}}
 		use:tippy={{
 			content,
 			placement: 'bottom',

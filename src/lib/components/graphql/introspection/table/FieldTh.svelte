@@ -28,18 +28,26 @@
 	const manager = new TypeManager();
 	const fieldTypeName = manager.getFieldTypeName(value.__field.type);
 
-	let filter = (): void => {
+	const filter = (): void => {
 		value.opr = opr;
 		value.val = val;
 		value.sort = sort;
 		dispatch('filter');
 	};
 
-	let clear = (): void => {
+	const clear = (): void => {
 		value.opr = Operator.EQ;
 		value.val = null;
 		value.sort = null;
 		dispatch('filter');
+	};
+
+	const oprChange = (__field: __Field, opr: Operator): void => {
+		if (opr === 'IN' || opr === 'NIN' || opr === 'BT' || opr === 'NBT') {
+			val.val = [];
+		} else {
+			val.val = null;
+		}
 	};
 </script>
 
@@ -47,7 +55,11 @@
 	{#if fieldTypeName === 'Boolean'}
 		<Toggle name={value.__field.name} bind:value={val} />
 	{:else}
-		<select class="select select-bordered" bind:value={opr}>
+		<select
+			class="select select-bordered"
+			bind:value={opr}
+			on:change={() => oprChange(value.__field, opr)}
+		>
 			<option value="EQ" selected>{$LL.components.graphql.table.th.eq()}</option>
 			<option value="NEQ">{$LL.components.graphql.table.th.neq()}</option>
 			<option value="LK">{$LL.components.graphql.table.th.lk()}</option>
