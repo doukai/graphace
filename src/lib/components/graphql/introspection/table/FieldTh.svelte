@@ -108,18 +108,18 @@
 			{/if}
 		{/if}
 	{/if}
-	<select class="select select-bordered ml-1" bind:value={sort}>
+	<select class="select select-bordered" bind:value={sort}>
 		<option value={null} selected>{$LL.components.graphql.table.th.noSort()}</option>
 		<option value="ASC">{$LL.components.graphql.table.th.asc()}</option>
 		<option value="DESC">{$LL.components.graphql.table.th.desc()}</option>
 	</select>
 	<div class="tooltip" data-tip={$LL.components.graphql.table.th.filter()}>
-		<button class="btn btn-square btn-primary ml-1" on:click={() => filter()}>
+		<button class="btn btn-square btn-primary" on:click={() => filter()}>
 			<Icon src={Check} solid class="h-5 w-5" />
 		</button>
 	</div>
 	<div class="tooltip" data-tip={$LL.components.graphql.table.th.cancel()}>
-		<button class="btn btn-square btn-outline btn-error ml-1" on:click={() => clear()}>
+		<button class="btn btn-square btn-outline btn-error" on:click={() => clear()}>
 			<Icon src={X} solid class="h-5 w-5" />
 		</button>
 	</div>

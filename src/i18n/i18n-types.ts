@@ -271,13 +271,17 @@ type RootTranslation = {
 				}
 			}
 		}
-		routers: {
-			type: {
-				/**
-				 * Create
-				 */
-				create: string
-			}
+	}
+	routers: {
+		type: {
+			/**
+			 * Create
+			 */
+			create: string
+			/**
+			 * Remove
+			 */
+			remove: string
 		}
 	}
 }
@@ -534,13 +538,17 @@ export type TranslationFunctions = {
 				}
 			}
 		}
-		routers: {
-			type: {
-				/**
-				 * Create
-				 */
-				create: () => LocalizedString
-			}
+	}
+	routers: {
+		type: {
+			/**
+			 * Create
+			 */
+			create: () => LocalizedString
+			/**
+			 * Remove
+			 */
+			remove: () => LocalizedString
 		}
 	}
 }

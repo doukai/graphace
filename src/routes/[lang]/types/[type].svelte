@@ -69,7 +69,7 @@
 	<SectionHead title={response.__type.name}>
 		<SearchInput on:search={search} />
 		{#if showDeleteButton}
-			<div class="tooltip tooltip-bottom" data-tip={$LL.components.graphql.table.removeBtn()}>
+			<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.remove()}>
 				<button
 					class="btn btn-error btn-outline btn-square"
 					on:click={(e) => {
@@ -89,15 +89,17 @@
 				</button>
 			</div>
 		{/if}
-		<button
-			class="btn btn-square md:hidden"
-			on:click={(e) => {
-				e.preventDefault();
-				goto(`./${response.__type.name}/create`);
-			}}
-		>
-			<Icon src={Plus} class="h-6 w-6" solid />
-		</button>
+		<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.remove()}>
+			<button
+				class="btn btn-square md:hidden"
+				on:click={(e) => {
+					e.preventDefault();
+					goto(`./${response.__type.name}/create`);
+				}}
+			>
+				<Icon src={Plus} class="h-6 w-6" solid />
+			</button>
+		</div>
 		<button
 			class="hidden md:btn"
 			on:click={(e) => {
@@ -105,7 +107,7 @@
 				goto(`./${response.__type.name}/create`);
 			}}
 		>
-			{$LL.components.routers.type.create()}
+			{$LL.routers.type.create()}
 		</button>
 	</SectionHead>
 	<div class="divider" />

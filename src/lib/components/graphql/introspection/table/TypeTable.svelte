@@ -11,10 +11,9 @@
 	import { __TypeKind } from '$lib/types';
 	import { createFilter } from '$lib/types/__FieldFilter';
 	import { Table, TableLoading } from '$lib/components/ui/table';
-	import { FieldTh, FieldTd } from './';
+	import { FieldTh, FieldTd, ObjectFieldTh, ObjectFieldTd } from './';
 	import { notifications } from '$lib/components/ui/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
-	import ObjectFieldTd from './ObjectFieldTd.svelte';
 
 	export let __type: __Type;
 	export let pageSize: number = 10;
@@ -145,7 +144,15 @@
 					</label>
 				</th>
 				{#each fieldFilters as __fieldFilter}
-					<FieldTh bind:value={__fieldFilter} on:filter={() => refresh()} />
+					{#if manager.getFieldTypeKind(__fieldFilter.__field.type) === __TypeKind.OBJECT}
+						<ObjectFieldTh
+							__field={__fieldFilter.__field}
+							bind:value={__fieldFilter}
+							on:filter={() => refresh()}
+						/>
+					{:else}
+						<FieldTh bind:value={__fieldFilter} on:filter={() => refresh()} />
+					{/if}
 				{/each}
 				<td />
 			</tr>

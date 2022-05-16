@@ -80,11 +80,12 @@ const zh: Translation = {
 					clear: "清除"
 				}
 			}
-		},
-		routers: {
-			type: {
-				create: "新建"
-			}
+		}
+	},
+	routers: {
+		type: {
+			create: "新建",
+			remove: "删除"
 		}
 	}
 }

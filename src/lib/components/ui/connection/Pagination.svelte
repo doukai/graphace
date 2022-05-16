@@ -66,8 +66,10 @@
 	</div>
 
 	<div class="navbar-end">
-		<p class="mr-4 hidden md:flex">{$LL.components.ui.pagination.total({ total: totalCount })}</p>
-		<div class="hidden sm:btn-group">
+		<p class="hidden sm:flex mr-4">
+			{$LL.components.ui.pagination.total({ total: totalCount })}
+		</p>
+		<div class="hidden sm:flex btn-group">
 			<button
 				class="btn {pageNumber - 1 ? '' : 'btn-disabled'}"
 				on:click={() => {

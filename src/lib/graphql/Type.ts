@@ -2,7 +2,7 @@ import { client } from '$lib/graphql/GraphqlClient';
 import { gql } from 'graphql-request';
 import type { __Type } from '$lib/types/__Type';
 import { TypeManager } from '$lib/TypeManager';
-import type { __FieldFilter, Connection, __Field } from '$lib/types';
+import { type __FieldFilter, type Connection, type __Field, __TypeKind } from '$lib/types';
 
 const manager: TypeManager = new TypeManager();
 
@@ -59,7 +59,18 @@ export async function queryTypeConnection({
 
     const filters: Array<string> = fieldFilters
         .filter((__fieldFilter) => __fieldFilter.val != null)
-        .map((__fieldFilter) => `${__fieldFilter.__field.name}: {opr:${__fieldFilter.opr} val:${JSON.stringify(__fieldFilter.val)}}`);
+        .map((__fieldFilter) => {
+            if (manager.getFieldTypeKind(__fieldFilter.__field.type) === __TypeKind.OBJECT) {
+                if (Object.keys(__fieldFilter.val).filter(key => __fieldFilter.val[key].val).length > 0) {
+                    return `${__fieldFilter.__field.name}: {${Object.keys(__fieldFilter.val).filter(key => __fieldFilter.val[key].val)
+                        .map(key => `${key}: {opr:${__fieldFilter.val[key].opr} val:${JSON.stringify(__fieldFilter.val[key].val)}}`).join(" ")}}`
+                } else {
+                    return "";
+                }
+            } else {
+                return `${__fieldFilter.__field.name}: {opr:${__fieldFilter.opr} val:${JSON.stringify(__fieldFilter.val)}}`
+            }
+        });
 
     const sorts: Array<string> = fieldFilters
         .filter((__fieldFilter) => __fieldFilter.sort != null)

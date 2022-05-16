@@ -53,17 +53,17 @@
 			</div>
 		</div>
 	{/each}
+	{#if (value || []).length === 0}
+		<div class="tooltip" data-tip={$LL.components.ui.inputList.add()}>
+			<button
+				class="btn btn-square btn-outline"
+				on:click={(e) => {
+					e.preventDefault();
+					addItem(0);
+				}}
+			>
+				<Icon src={Plus} solid class="h-5 w-5" />
+			</button>
+		</div>
+	{/if}
 </div>
-{#if (value || []).length === 0}
-	<div class="tooltip" data-tip={$LL.components.ui.inputList.add()}>
-		<button
-			class="btn btn-square btn-outline"
-			on:click={(e) => {
-				e.preventDefault();
-				addItem(0);
-			}}
-		>
-			<Icon src={Plus} solid class="h-5 w-5" />
-		</button>
-	</div>
-{/if}

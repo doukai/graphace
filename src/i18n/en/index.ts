@@ -80,11 +80,12 @@ const en: BaseTranslation = {
 					clear: "clear"
 				}
 			}
-		},
-		routers: {
-			type: {
-				create: "Create"
-			}
+		}
+	},
+	routers: {
+		type: {
+			create: "Create",
+			remove: "Remove"
 		}
 	}
 }
