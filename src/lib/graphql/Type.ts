@@ -228,7 +228,7 @@ export async function mutationObjectField(__parentType: __Type, __type: __Type, 
     return await client.request<{ data: object }>(mutation, variables);
 }
 
-export async function removeObjectField(__parentType: __Type, __type: __Type, id: string, __field: __Field, value: object): Promise<{ data: object; }> {
+export async function removeObjectField(__parentType: __Type, __type: __Type, id: string, __field: __Field): Promise<{ data: object; }> {
     const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__parentType);
     const idFieldName = manager.getIdFieldName(__parentType);
     const subSelections: string = manager.fieldsToSelections(__type);
