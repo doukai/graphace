@@ -88,7 +88,7 @@
 
 <Modal {isModalOpen} title={__field.name}>
 	<ModalContent>
-		<div class="py-4 px-4 sm:px-6 lg:px-8">
+		<div class="py-4 px-0 sm:px-6 lg:px-8">
 			{#await queryPromise}
 				{#each { length: 6 } as _}
 					<div class="animate-pulse bg-base-200 px-12 py-12 sm:mt-px sm:pt-2 rounded" />

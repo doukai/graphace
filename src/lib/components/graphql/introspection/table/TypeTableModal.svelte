@@ -26,7 +26,7 @@
 
 <Modal {isModalOpen} title={__type.name} className="max-w-6xl">
 	<ModalContent>
-		<div class="bg-base-300 p-2 rounded-box">
+		<div class="bg-base-300 p-1 sm:p-2 rounded-box">
 			<TypeTable {__type} on:selectChange={selectChange} className="table-compact">
 				<div
 					slot="page"
