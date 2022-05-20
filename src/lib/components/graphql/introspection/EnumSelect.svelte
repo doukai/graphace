@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { __Type, __EnumValue } from '$lib/types';
+	import type { __EnumValue } from '$lib/types';
 	import { Select, CheckboxGroup } from '$lib/components/ui/input';
 	export let name: string;
 	export let value: any;

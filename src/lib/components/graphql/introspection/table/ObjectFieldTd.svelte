@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { typeEditorModals } from '$lib/components/graphql/introspection/TypeEditorModals.svelte';
-	import { listTypeEditorModals } from '$lib/components/graphql/introspection/ListTypeEditorModals.svelte';
+	import { typeEditorModals, listTypeEditorModals } from '$lib/components/graphql/introspection';
 	import { TypeManager } from '$lib/TypeManager';
 	import { getType } from '$lib/graphql/Introspection';
-	import type { __Type, __Field, __FieldFilter } from '$lib/types';
+	import type { __Type, __Field } from '$lib/types';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Link } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';

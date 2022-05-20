@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { tippy } from '$lib/tippy';
 	import { TypeManager } from '$lib/TypeManager';
-	import type { __Field, __FieldFilter } from '$lib/types';
+	import type { __Field } from '$lib/types';
 	import FieldInput from '$lib/components/graphql/introspection/FieldInput.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, X, Minus } from '@steeze-ui/heroicons';

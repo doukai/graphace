@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { __Type, __Field, __FieldFilter } from '$lib/types';
-	import { __TypeKind } from '$lib/types';
+	import type { __Type, __Field } from '$lib/types';
 	import { Modal, ModalContent, ModalActions } from '$lib/components/ui/modal';
 	import TypeTable from './TypeTable.svelte';
 	import LL from '$i18n/i18n-svelte';

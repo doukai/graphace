@@ -9,7 +9,7 @@
 		ToggleList
 	} from '$lib/components/ui/input';
 	import EnumSelect from './EnumSelect.svelte';
-	import type { __Field } from '$lib/types/__Field';
+	import type { __Field } from '$lib/types';
 	export let __field: __Field;
 	export let value: any;
 	export let className: string = '';

@@ -1,8 +1,7 @@
 import { client } from '$lib/graphql/GraphqlClient';
 import { gql } from 'graphql-request';
-import type { __Type } from '$lib/types/__Type';
 import { TypeManager } from '$lib/TypeManager';
-import { type __FieldFilter, type Connection, type __Field, __TypeKind } from '$lib/types';
+import { type __FieldFilter, type Connection, type __Field, type __Type, __TypeKind } from '$lib/types';
 
 const manager: TypeManager = new TypeManager();
 
@@ -167,10 +166,10 @@ export async function querySubTypeConnection({
     return await client.request<{ connection: Connection }>(graphql, { id })
 }
 
-export async function mutationType(__type: __Type, data: object, isCreate = false): Promise<{ data: object }> {
+export async function mutationType(__type: __Type, data: object): Promise<{ data: object }> {
     const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
-    const mutationVariables: string = isCreate ? manager.fieldsToCreateMutationVariables(__type) : manager.fieldsToMutationVariables(__type);
-    const mutationArguments: string = isCreate ? manager.fieldsToCreateMutationArguments(__type) : manager.fieldsToMutationArguments(__type);
+    const mutationVariables: string = manager.fieldsToMutationVariables(__type);
+    const mutationArguments: string = manager.fieldsToMutationArguments(__type);
     const selections: string = manager.fieldsToSelections(__type);
 
     const mutation: string = gql`

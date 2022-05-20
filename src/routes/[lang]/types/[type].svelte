@@ -12,14 +12,11 @@
 
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import type { __Type } from '$lib/types/__Type';
+	import type { __Type } from '$lib/types';
 	import { getType } from '$lib/graphql/Introspection';
-	import type { QueryParams } from '$lib/graphql/Type';
-	import { removeTypes } from '$lib/graphql/Type';
-	import TypeTable from '$lib/components/graphql/introspection/table/TypeTable.svelte';
-	import TypeEditorModals from '$lib/components/graphql/introspection/TypeEditorModals.svelte';
-	import ListTypeEditorModals from '$lib/components/graphql/introspection/ListTypeEditorModals.svelte';
-	import TypeTableModals from '$lib/components/graphql/introspection/table/TypeTableModals.svelte';
+	import { type QueryParams, removeTypes } from '$lib/graphql/Type';
+	import { TypeTable, TypeTableModals } from '$lib/components/graphql/introspection/table';
+	import { TypeEditorModals, ListTypeEditorModals } from '$lib/components/graphql/introspection';
 	import { SectionHead, SectionLoading } from '$lib/components/ui/section';
 	import SearchInput from '$lib/components/ui/search/SearchInput.svelte';
 	import { notifications } from '$lib/components/ui/Notifications.svelte';

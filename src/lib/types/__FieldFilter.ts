@@ -1,8 +1,5 @@
-import { Operator } from "./Operator";
-import type { Sort } from "./Sort";
-import type { __Field } from "./__Field";
+import { type Sort, type __Field, __TypeKind, Operator } from "./";
 import { TypeManager } from '$lib/TypeManager';
-import { __TypeKind } from "./__TypeKind";
 
 const manager = new TypeManager();
 

@@ -2,12 +2,13 @@
 	import { goto } from '$app/navigation';
 	import { queryType, mutationType, removeType } from '$lib/graphql/Type';
 	import { TypeManager } from '$lib/TypeManager';
-	import type { __Type } from '$lib/types/__Type';
-	import { __TypeKind } from '$lib/types/__TypeKind';
+	import { type __Type, __TypeKind } from '$lib/types';
 	import { Form, FormLoading, FormItems, FormItem, FormButtons } from '$lib/components/ui/form';
 	import FieldInput from './FieldInput.svelte';
 	import { messageBoxs } from '$lib/components/ui/MessageBoxs.svelte';
 	import { notifications } from '$lib/components/ui/Notifications.svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Link } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	export let id: string;
 	export let __type: __Type;
@@ -48,9 +49,22 @@
 {:then response}
 	<Form>
 		<FormItems title={__type.name}>
-			{#each manager.getScalarFiledList(__type) as __field}
+			{#each manager.getFiledList(__type) as __field}
 				<FormItem label={__field.name} forName={__field.name}>
-					<FieldInput className="w-full max-w-xs" {__field} bind:value={data[__field.name]} />
+					{#if manager.getFieldTypeKind(__field.type) === __TypeKind.OBJECT}
+						<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
+							<button
+								class="btn btn-square btn-outline"
+								on:click={(e) => {
+									e.preventDefault();
+								}}
+							>
+								<Icon src={Link} solid class="h-5 w-5" />
+							</button>
+						</div>
+					{:else}
+						<FieldInput className="w-full max-w-xs" {__field} bind:value={data[__field.name]} />
+					{/if}
 				</FormItem>
 			{/each}
 		</FormItems>

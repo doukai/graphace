@@ -1,4 +1,4 @@
-import type { __Type } from "./__Type";
+import type { __Type } from "./";
 
 export type __Field = {
     name: string;

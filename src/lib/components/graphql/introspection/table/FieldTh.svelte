@@ -11,8 +11,7 @@
 		Select,
 		CheckboxGroup
 	} from '$lib/components/ui/input';
-	import type { __Field, __FieldFilter } from '$lib/types';
-	import { Operator, Sort } from '$lib/types';
+	import { type __Field, type __FieldFilter, Operator, Sort } from '$lib/types';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, X, Filter, SortAscending, SortDescending } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';

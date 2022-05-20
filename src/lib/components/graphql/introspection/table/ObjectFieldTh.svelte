@@ -12,8 +12,7 @@
 		Select,
 		CheckboxGroup
 	} from '$lib/components/ui/input';
-	import type { __Field, __FieldFilter, __Type } from '$lib/types';
-	import { Operator } from '$lib/types';
+	import { type __Field, type __FieldFilter, type __Type, Operator } from '$lib/types';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, X, Filter } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';

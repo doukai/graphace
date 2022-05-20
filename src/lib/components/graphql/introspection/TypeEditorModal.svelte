@@ -2,8 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { querySubType, mutationObjectField, removeObjectField } from '$lib/graphql/Type';
 	import { TypeManager } from '$lib/TypeManager';
-	import type { __Type, __FieldFilter, __Field } from '$lib/types';
-	import { __TypeKind } from '$lib/types/__TypeKind';
+	import type { __Type, __Field } from '$lib/types';
 	import { Modal, ModalContent, ModalActions } from '$lib/components/ui/modal';
 	import { typeTableModals } from '$lib/components/graphql/introspection/table/TypeTableModals.svelte';
 	import FieldInput from './FieldInput.svelte';
@@ -58,7 +57,7 @@
 	};
 
 	const remove = (): void => {
-		removeObjectField(__parentType, __type, id, __field, value[__field.name])
+		removeObjectField(__parentType, __type, id, __field)
 			.then((response) => {
 				dispatch('change', { id, __field, value: response.data });
 				notifications.success($LL.message.saveSuccess());

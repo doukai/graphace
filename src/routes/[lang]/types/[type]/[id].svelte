@@ -15,7 +15,7 @@
 
 <script lang="ts">
 	import { getType } from '$lib/graphql/Introspection';
-	import type { __Type } from '$lib/types/__Type';
+	import type { __Type } from '$lib/types';
 	import Section from '$lib/components/ui/section/Section.svelte';
 	import TypeEditor from '$lib/components/graphql/introspection/TypeEditor.svelte';
 	import FormLoading from '$lib/components/ui/form/FormLoading.svelte';

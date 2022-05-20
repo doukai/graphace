@@ -2,8 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { mutationType } from '$lib/graphql/Type';
 	import { TypeManager } from '$lib/TypeManager';
-	import type { __Type } from '$lib/types/__Type';
-	import { __TypeKind } from '$lib/types/__TypeKind';
+	import type { __Type } from '$lib/types';
 	import { Form, FormItems, FormItem, FormButtons } from '$lib/components/ui/form';
 	import FieldInput from './FieldInput.svelte';
 	import { notifications } from '$lib/components/ui/Notifications.svelte';
@@ -16,7 +15,7 @@
 	let data: object = manager.createTypeObject(__type);
 
 	const save = (): void => {
-		mutationType(__type, data, true)
+		mutationType(__type, data)
 			.then((response) => {
 				notifications.success($LL.message.saveSuccess());
 				goto(`../${manager.typeNameToUrl(__type.name)}/${response.data[idFieldName]}`);

@@ -49,7 +49,6 @@
 	import { NavBar, NavBarStart, NavBarEnd } from '$lib/components/ui/navbar';
 	import Notifications from '$lib/components/ui/Notifications.svelte';
 	import MessageBoxs from '$lib/components/ui/MessageBoxs.svelte';
-	import type { __Type } from '$lib/types/__Type';
 	import { setLocale } from '$i18n/i18n-svelte';
 	import { LocaleSelect, ThemeSelect } from '$lib/components/ui/select';
 	import { Icon } from '@steeze-ui/svelte-icon';

@@ -7,9 +7,14 @@
 		type QueryParams
 	} from '$lib/graphql/Type';
 	import { TypeManager } from '$lib/TypeManager';
-	import type { __Type, __Field, __FieldFilter, Connection } from '$lib/types';
-	import { __TypeKind } from '$lib/types';
-	import { createFilter } from '$lib/types/__FieldFilter';
+	import {
+		type __Type,
+		type __Field,
+		type __FieldFilter,
+		type Connection,
+		__TypeKind,
+		createFilter
+	} from '$lib/types';
 	import { Table, TableLoading } from '$lib/components/ui/table';
 	import { FieldTh, FieldTd, ObjectFieldTh, ObjectFieldTd } from './';
 	import { notifications } from '$lib/components/ui/Notifications.svelte';

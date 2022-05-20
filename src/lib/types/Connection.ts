@@ -1,5 +1,4 @@
-import type { Edge } from "./Edge";
-import type { PageInfo } from "./PageInfo";
+import type { Edge, PageInfo } from "./";
 
 export type Connection = {
     totalCount: number

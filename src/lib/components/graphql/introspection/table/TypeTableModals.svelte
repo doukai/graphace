@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
 	import { nanoid } from 'nanoid';
 	import { writable } from 'svelte/store';
-	import type { __Type, __Field } from '$lib/types';
+	import type { __Type } from '$lib/types';
 	type TypeTableModalComponent = {
 		id: string;
 		props: TypeTableModalProp;

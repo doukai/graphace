@@ -3,10 +3,9 @@
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
 	import { getTypeList } from '$lib/graphql/Introspection';
-	import type { __Type } from '$lib/types/__Type';
+	import type { __Type } from '$lib/types';
 	import { TypeManager } from '$lib/TypeManager';
 	import { locale } from '$i18n/i18n-svelte';
-	import { filter } from 'lodash';
 
 	const manager: TypeManager = new TypeManager();
 	let fetchTypeList = getTypeList();

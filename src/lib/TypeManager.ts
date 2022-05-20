@@ -145,24 +145,8 @@ export class TypeManager {
             .join(",");
     }
 
-    public fieldsToCreateMutationVariables(__type: __Type): string {
-        return this.getScalarFiledList(__type)
-            .filter((field) => field.name !== this.getIdFieldName(__type))
-            .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)))
-            .map(field => `$${field.name}: ${this.fieldTypeToArgumentType(field.type)}`)
-            .join(",");
-    }
-
     public fieldsToMutationArguments(__type: __Type): string {
         return this.getScalarFiledList(__type)
-            .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)))
-            .map(field => `${field.name}: $${field.name}`)
-            .join(",");
-    }
-
-    public fieldsToCreateMutationArguments(__type: __Type): string {
-        return this.getScalarFiledList(__type)
-            .filter((field) => field.name !== this.getIdFieldName(__type))
             .filter((field) => !aggregateSuffix.some(suffix => field.name.endsWith(suffix)))
             .map(field => `${field.name}: $${field.name}`)
             .join(",");
