@@ -2,8 +2,9 @@
 	import { createEventDispatcher } from 'svelte';
 	import { querySubType, mutationObjectField, removeObjectField } from '$lib/graphql/Type';
 	import { TypeManager } from '$lib/TypeManager';
-	import type { __Type, __Field } from '$lib/types';
+	import { type __Type, type __Field, __TypeKind } from '$lib/types';
 	import { Modal, ModalContent, ModalActions } from '$lib/components/ui/modal';
+	import { ObjectEditButton } from '$lib/components/graphql/introspection';
 	import { typeTableModals } from '$lib/components/graphql/introspection/table/TypeTableModals.svelte';
 	import FieldInput from './FieldInput.svelte';
 	import { notifications } from '$lib/components/ui/Notifications.svelte';
@@ -138,11 +139,22 @@
 													{__subField.name}
 												</label>
 												<div class="mt-1 sm:mt-0 sm:col-span-2">
-													<FieldInput
-														className="w-full max-w-xs"
-														__field={__subField}
-														bind:value={data[__subField.name]}
-													/>
+													{#if manager.getFieldTypeKind(__subField.type) === __TypeKind.OBJECT}
+														<ObjectEditButton
+															__parentType={__type}
+															__field={__subField}
+															id={value[__field.name][idFieldName]}
+															bind:value={value[__field.name]}
+															className="btn-outline"
+															disabled={!value[__field.name][idFieldName]}
+														/>
+													{:else}
+														<FieldInput
+															className="w-full max-w-xs"
+															__field={__subField}
+															bind:value={value[__field.name][__subField.name]}
+														/>
+													{/if}
 												</div>
 											</div>
 										</div>

@@ -19,6 +19,8 @@
 	import Section from '$lib/components/ui/section/Section.svelte';
 	import TypeEditor from '$lib/components/graphql/introspection/TypeEditor.svelte';
 	import FormLoading from '$lib/components/ui/form/FormLoading.svelte';
+	import { TypeTableModals } from '$lib/components/graphql/introspection/table';
+	import { TypeEditorModals, ListTypeEditorModals } from '$lib/components/graphql/introspection';
 	import { notifications } from '$lib/components/ui/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
 	export let typeName: string;
@@ -36,3 +38,7 @@
 		{notifications.error($LL.message.requestFailed())}
 	{/await}
 </Section>
+
+<TypeEditorModals />
+<ListTypeEditorModals />
+<TypeTableModals />
