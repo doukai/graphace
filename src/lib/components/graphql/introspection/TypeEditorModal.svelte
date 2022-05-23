@@ -89,7 +89,7 @@
 
 <Modal {isModalOpen} title={__field.name}>
 	<ModalContent>
-		<div class="py-4 px-0 sm:px-6 lg:px-8">
+		<div class="py-4 px-0 sm:px-6 lg:px-8 space-y-4">
 			{#await queryPromise}
 				{#each { length: 6 } as _}
 					<div class="animate-pulse bg-base-200 px-12 py-12 sm:mt-px sm:pt-2 rounded" />
@@ -130,33 +130,31 @@
 						</div>
 					</form>
 				{:else}
-					<div class="space-y-6 sm:space-y-5">
-						<button
-							type="button"
-							class="relative block w-full border-2 bg-base-100 border-dashed rounded-lg p-6 text-center hover:bg-base-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-base-300"
-							on:click={(e) => {
-								create();
-							}}
-						>
-							<Icon src={DocumentAdd} class="mx-auto h-12 w-12" />
-							<span class="mt-2 block text-sm font-medium">
-								{$LL.components.graphql.editor.createType({ name: __type.name })}
-							</span>
-						</button>
-						<button
-							type="button"
-							class="relative block w-full border-2 bg-base-100 border-dashed rounded-lg p-6 text-center hover:bg-base-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-base-300"
-							on:click={(e) => {
-								search();
-							}}
-						>
-							<Icon src={DocumentSearch} class="mx-auto h-12 w-12" />
-							<span class="mt-2 block text-sm font-medium">
-								{$LL.components.graphql.editor.bindType({ name: __type.name })}
-							</span>
-						</button>
-					</div>
+					<button
+						type="button"
+						class="relative block w-full border-2 bg-base-100 border-dashed rounded-lg p-6 text-center hover:bg-base-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-base-300"
+						on:click={(e) => {
+							create();
+						}}
+					>
+						<Icon src={DocumentAdd} class="mx-auto h-12 w-12" />
+						<span class="mt-2 block text-sm font-medium">
+							{$LL.components.graphql.editor.createType({ name: __type.name })}
+						</span>
+					</button>
 				{/if}
+				<button
+					type="button"
+					class="relative block w-full border-2 bg-base-100 border-dashed rounded-lg p-6 text-center hover:bg-base-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-base-300"
+					on:click={(e) => {
+						search();
+					}}
+				>
+					<Icon src={DocumentSearch} class="mx-auto h-12 w-12" />
+					<span class="mt-2 block text-sm font-medium">
+						{$LL.components.graphql.editor.bindType({ name: __type.name })}
+					</span>
+				</button>
 			{:catch error}
 				{notifications.error($LL.message.requestFailed())}
 			{/await}
