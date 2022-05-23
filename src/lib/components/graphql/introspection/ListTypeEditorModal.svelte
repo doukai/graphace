@@ -129,7 +129,7 @@
 						<div class="collapse-content">
 							<form>
 								<div class="space-y-6 sm:space-y-5">
-									{#each manager.getScalarFiledList(__type) as __subField}
+									{#each manager.getFiledList(__type) as __subField}
 										<div class="mt-6 sm:mt-5 space-y-6 sm:space-y-5">
 											<div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
 												<label
@@ -143,16 +143,16 @@
 														<ObjectEditButton
 															__parentType={__type}
 															__field={__subField}
-															id={value[__field.name][idFieldName]}
-															bind:value={value[__field.name]}
+															id={data[idFieldName]}
+															bind:value={data}
 															className="btn-outline"
-															disabled={!value[__field.name][idFieldName]}
+															disabled={!data[idFieldName]}
 														/>
 													{:else}
 														<FieldInput
 															className="w-full max-w-xs"
 															__field={__subField}
-															bind:value={value[__field.name][__subField.name]}
+															bind:value={data[__subField.name]}
 														/>
 													{/if}
 												</div>
