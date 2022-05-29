@@ -1,11 +1,10 @@
 <script context="module" lang="ts">
-	import { writable } from 'svelte/store';
 	import type { Load } from '@sveltejs/kit';
 	import type { Locales } from '$i18n/i18n-types';
 	import { replaceLocaleInUrl } from '$lib/utils';
 	import { baseLocale, locales } from '$i18n/i18n-util';
 	import { loadLocaleAsync } from '$i18n/i18n-util.async';
-	export const isMenuOpen = writable(true);
+	import { isMenuOpen } from '$lib/stores';
 
 	type LoadParams = {
 		lang?: Locales;

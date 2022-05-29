@@ -2,18 +2,21 @@
 	import { goto } from '$app/navigation';
 	import { queryType, mutationType, removeType } from '$lib/graphql/Type';
 	import { TypeManager } from '$lib/TypeManager';
-	import { type __Type, __TypeKind } from '$lib/types';
+	import { type __Type, type Error, __TypeKind } from '$lib/types';
 	import { Form, FormLoading, FormItems, FormItem, FormButtons } from '$lib/components/ui/form';
 	import { ObjectEditButton } from '$lib/components/graphql/introspection';
 	import FieldInput from './FieldInput.svelte';
 	import { messageBoxs } from '$lib/components/ui/MessageBoxs.svelte';
 	import { notifications } from '$lib/components/ui/Notifications.svelte';
+	import { validate } from '$lib/schema/JsonSchema';
 	import LL from '$i18n/i18n-svelte';
+	import { locale } from '$i18n/i18n-svelte';
 	export let id: string;
 	export let __type: __Type;
 
 	const manager: TypeManager = new TypeManager();
 	const queryPromise: Promise<{ data: object }> = queryType(__type, id);
+	let errors: Record<string, Error> = {};
 
 	let data: object;
 	queryPromise.then((response) => {
@@ -21,13 +24,20 @@
 	});
 
 	const save = (): void => {
-		mutationType(__type, data)
-			.then((response) => {
-				data = response.data;
-				notifications.success($LL.message.saveSuccess());
+		validate(__type.name, data, $locale)
+			.then((data) => {
+				mutationType(__type, data)
+					.then((response) => {
+						data = response.data;
+						notifications.success($LL.message.saveSuccess());
+					})
+					.catch((error) => {
+						notifications.error($LL.message.saveFailed());
+					});
 			})
-			.catch((error) => {
-				notifications.error($LL.message.saveFailed());
+			.catch((validErrors) => {
+				debugger
+				errors = validErrors;
 			});
 	};
 
@@ -59,7 +69,12 @@
 							className="btn-outline"
 						/>
 					{:else}
-						<FieldInput className="w-full max-w-xs" {__field} bind:value={data[__field.name]} />
+						<FieldInput
+							className="w-full max-w-xs"
+							{__field}
+							bind:value={data[__field.name]}
+							error={errors[__field.name]}
+						/>
 					{/if}
 				</FormItem>
 			{/each}

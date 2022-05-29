@@ -9,9 +9,10 @@
 		ToggleList
 	} from '$lib/components/ui/input';
 	import EnumSelect from './EnumSelect.svelte';
-	import type { __Field } from '$lib/types';
+	import type { __Field, Error } from '$lib/types';
 	export let __field: __Field;
 	export let value: any;
+	export let error: Error;
 	export let className: string = '';
 	export let placeholder: string = '';
 	const manager: TypeManager = new TypeManager();
@@ -32,12 +33,13 @@
 			{className}
 			__enumValues={manager.getFieldTypeEnumValues(__field.type)}
 			bind:value
+			{error}
 		/>
 	{/if}
 {:else if fieldTypeName === 'Int' || fieldTypeName === 'Float'}
 	<NumberInput {placeholder} {className} name={__field.name} bind:value />
 {:else if fieldTypeName === 'ID' || fieldTypeName === 'String'}
-	<Input {placeholder} {className} name={__field.name} bind:value />
+	<Input {placeholder} {className} name={__field.name} bind:value {error} />
 {:else if fieldTypeName === 'Boolean'}
 	<Toggle name={__field.name} bind:value />
 {:else if manager.fieldIsEnum(__field.type)}
@@ -46,5 +48,6 @@
 		{className}
 		__enumValues={manager.getFieldTypeEnumValues(__field.type)}
 		bind:value
+		{error}
 	/>
 {/if}
