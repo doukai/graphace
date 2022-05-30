@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Error } from '$lib/types';
+	import { nanoid } from 'nanoid';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus, PlusSm, MinusSm } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
@@ -6,6 +8,8 @@
 	export let value: string[];
 	export let placeholder: string = '';
 	export let className: string = '';
+	export let error: Error;
+	const id = nanoid();
 
 	const addItem = (index: number) => {
 		if (!value) {
@@ -19,16 +23,28 @@
 	};
 </script>
 
-<div class="space-y-5">
+<div {id} class="{error ? 'border-2 border-error p-1 rounded-md' : ''} space-y-5">
 	{#each value || [] as item, index}
 		<div class="flex space-x-1">
-			<input
-				type="text"
-				{name}
-				{placeholder}
-				class="input input-bordered {className}"
-				bind:value={item}
-			/>
+			<div class="form-control w-full max-w-xs">
+				<input
+					id={id + index}
+					type="number"
+					{name}
+					{placeholder}
+					class="input input-bordered {error && error.iterms && error.iterms[index]
+						? 'input-error'
+						: ''} {className}"
+					bind:value={item}
+				/>
+				{#if error && error.iterms && error.iterms[index]}
+					<label for={id + index} class="label">
+						<span class="label-text-alt">
+							<p class="text-error">{error.iterms[index].message}</p>
+						</span>
+					</label>
+				{/if}
+			</div>
 			<div class="tooltip" data-tip={$LL.components.ui.inputList.add()}>
 				<button
 					class="mt-3 btn btn-xs btn-square btn-outline"
@@ -67,3 +83,8 @@
 		</div>
 	{/if}
 </div>
+{#if error && error.message}
+	<label for={id} class="label">
+		<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+	</label>
+{/if}

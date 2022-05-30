@@ -33,11 +33,25 @@ export async function validate(uri: string, data: object, locale: Locales = "en"
                             message: error.message,
                             params: error.params
                         })
-                    } else {
-                        (errors[error.instancePath.substring(1)] = {
-                            message: error.message,
-                            params: error.params
-                        })
+                    } else if (error.instancePath) {
+                        debugger
+                        const path = error.instancePath.split("/");
+                        if (!errors[path[1]]) {
+                            errors[path[1]] = {};
+                        }
+                        if (path.length === 2) {
+                            errors[path[1]].message = error.message;
+                            errors[path[1]].params = error.params;
+                        } else if (path.length === 3) {
+                            if (!errors[path[1]].iterms) {
+                                errors[path[1]].iterms = {};
+                            }
+                            if (!errors[path[1]].iterms[path[2]]) {
+                                errors[path[1]].iterms[path[2]] = {};
+                            }
+                            errors[path[1]].iterms[path[2]].message = error.message;
+                            errors[path[1]].iterms[path[2]].params = error.params;
+                        }
                     }
                 }
             );
@@ -51,6 +65,16 @@ export async function validate(uri: string, data: object, locale: Locales = "en"
 
 function buildValidData(data: object): object {
     const validData = {};
-    Object.keys(data).forEach((key) => { if (data[key]) { validData[key] = data[key] } });
+    Object.keys(data).forEach((key) => {
+        if (Array.isArray(data[key])) {
+            if (data[key] && data[key].length > 0) {
+                validData[key] = data[key]
+            }
+        } else {
+            if (data[key]) {
+                validData[key] = data[key]
+            }
+        }
+    });
     return validData;
 }

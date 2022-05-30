@@ -9,8 +9,9 @@ import ListTypeEditorModals from "./ListTypeEditorModals.svelte";
 import { listTypeEditorModals } from "./ListTypeEditorModals.svelte";
 import FieldInput from "./FieldInput.svelte";
 import EnumSelect from "./EnumSelect.svelte";
+import EnumCheckboxGroup from "./EnumCheckboxGroup.svelte";
 import ObjectEditButton from "./ObjectEditButton.svelte";
 
 export {
-    TypeMenu, TypeCreator, TypeEditor, TypeEditorModal, TypeEditorModals, typeEditorModals, ListTypeEditorModal, ListTypeEditorModals, listTypeEditorModals, FieldInput, EnumSelect, ObjectEditButton
+    TypeMenu, TypeCreator, TypeEditor, TypeEditorModal, TypeEditorModals, typeEditorModals, ListTypeEditorModal, ListTypeEditorModals, listTypeEditorModals, FieldInput, EnumSelect, EnumCheckboxGroup, ObjectEditButton
 }

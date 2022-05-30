@@ -17,6 +17,7 @@
 	const manager: TypeManager = new TypeManager();
 	const queryPromise: Promise<{ data: object }> = queryType(__type, id);
 	let errors: Record<string, Error> = {};
+	let inputs: Record<string, HTMLInputElement> = {};
 
 	let data: object;
 	queryPromise.then((response) => {
@@ -36,7 +37,6 @@
 					});
 			})
 			.catch((validErrors) => {
-				debugger
 				errors = validErrors;
 			});
 	};
