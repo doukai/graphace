@@ -5,7 +5,7 @@
 	export let value: any;
 	export let __enumValues: __EnumValue[];
 	export let className: string = '';
-	export let error: Error;
+	export let error: Error = null;
 </script>
 
 <Select {name} {className} bind:value {error}>

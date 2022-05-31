@@ -3,7 +3,7 @@
 	import { CheckboxGroup } from '$lib/components/ui/input';
 	export let value: any;
 	export let __enumValues: __EnumValue[];
-	export let error: Error;
+	export let error: Error = null;
 </script>
 
 <CheckboxGroup
@@ -11,4 +11,5 @@
 	checkboxs={__enumValues.map((enumValue) => {
 		return { name: enumValue.name, value: enumValue.name };
 	})}
+	{error}
 />

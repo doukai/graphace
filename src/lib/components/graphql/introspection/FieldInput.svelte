@@ -12,7 +12,7 @@
 	import type { __Field, Error } from '$lib/types';
 	export let __field: __Field;
 	export let value: any;
-	export let error: Error;
+	export let error: Error = null;
 	export let className: string = '';
 	export let placeholder: string = '';
 	const manager: TypeManager = new TypeManager();
@@ -21,11 +21,11 @@
 
 {#if manager.fieldIsList(__field.type)}
 	{#if fieldTypeName === 'Int' || fieldTypeName === 'Float'}
-		<NumberInputList {placeholder} {className} name={__field.name} bind:value />
+		<NumberInputList {placeholder} {className} name={__field.name} bind:value {error} />
 	{:else if fieldTypeName === 'ID' || fieldTypeName === 'String'}
 		<InputList {placeholder} {className} name={__field.name} bind:value {error} />
 	{:else if fieldTypeName === 'Boolean'}
-		<ToggleList name={__field.name} bind:value />
+		<ToggleList name={__field.name} bind:value {error} />
 	{:else if manager.fieldIsEnum(__field.type)}
 		<EnumCheckboxGroup
 			__enumValues={manager.getFieldTypeEnumValues(__field.type)}

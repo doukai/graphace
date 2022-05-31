@@ -183,26 +183,22 @@ export async function mutationType(__type: __Type, data: object): Promise<{ data
     return await client.request<{ data: object }>(mutation, data);
 };
 
-export async function mutationField(__type: __Type, id: string, __field: __Field, value: string | number | boolean | string[] | number[] | boolean[]): Promise<{ data: object; }> {
+export async function mutationSubType(__type: __Type, __field: __Field, data: object): Promise<{ data: object }> {
     const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
-    const idFieldName = manager.getIdFieldName(__type);
-    const fieldTypeName = manager.fieldTypeToArgumentType(__field.type);
+    const mutationVariables: string = manager.fieldsToMutationVariables(__type);
+    const mutationArguments: string = manager.fieldsToMutationArguments(__type);
     const selections: string = manager.fieldsToSelections(__type);
 
     const mutation: string = gql`
-        mutation ($${idFieldName}: String $${__field.name}: ${fieldTypeName}) {
-            data: ${mutationTypeFieldName} (${idFieldName}: $${idFieldName} ${__field.name}: $${__field.name}) @update {
+        mutation (${mutationVariables} $${__field.name}: ${manager.fieldTypeToArgumentType(__field.type)}) {
+            data: ${mutationTypeFieldName} (${mutationArguments} ${__field.name}: $${__field.name}) {
                 ${selections}
             }
         }	
     `;
 
-    const variables: object = {};
-    variables[idFieldName] = id;
-    variables[__field.name] = value;
-
-    return await client.request<{ data: object }>(mutation, variables);
-}
+    return await client.request<{ data: object }>(mutation, data);
+};
 
 export async function mutationObjectField(__parentType: __Type, __type: __Type, id: string, __field: __Field, value: object): Promise<{ data: object; }> {
     const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__parentType);

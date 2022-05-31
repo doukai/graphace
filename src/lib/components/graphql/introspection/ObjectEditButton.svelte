@@ -30,8 +30,7 @@
 						__field,
 						value,
 						change: (event) => {
-							value[__field.name] = event.detail.value[__field.name];
-							value[__field.from] = event.detail.value[__field.from];
+							value = event.detail.value;
 							listTypeEditorModals.remove(modalId);
 						},
 						cancel: () => {
@@ -46,8 +45,7 @@
 						__field,
 						value,
 						change: (event) => {
-							value[__field.name] = event.detail.value[__field.name];
-							value[__field.from] = event.detail.value[__field.from];
+							value = event.detail.value;
 							typeEditorModals.remove(modalId);
 						},
 						cancel: () => {

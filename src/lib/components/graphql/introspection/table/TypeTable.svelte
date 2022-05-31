@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import {
 		queryTypeConnection,
-		mutationField,
+		mutationType,
 		removeType,
 		type QueryParams
 	} from '$lib/graphql/Type';
@@ -18,7 +18,9 @@
 	import { Table, TableLoading } from '$lib/components/ui/table';
 	import { FieldTh, FieldTd, ObjectFieldTh, ObjectFieldTd } from './';
 	import { notifications } from '$lib/components/ui/Notifications.svelte';
+	import { validate } from '$lib/schema/JsonSchema';
 	import LL from '$i18n/i18n-svelte';
+	import { locale } from '$i18n/i18n-svelte';
 
 	export let __type: __Type;
 	export let pageSize: number = 10;
@@ -83,15 +85,24 @@
 		event: CustomEvent<{
 			id: string;
 			__field: __Field;
-			value: string | number | boolean | string[] | number[] | boolean[];
+			resolve: (value: any) => void;
+			reject: (error: Error) => void;
 		}>
 	) {
-		mutationField(__type, event.detail.id, event.detail.__field, event.detail.value)
-			.then((response) => {
-				notifications.success($LL.message.saveSuccess());
+		const data = dataList.find((data) => data[idFieldName] === event.detail.id);
+		validate(__type.name, data, $locale)
+			.then((data) => {
+				mutationType(__type, data)
+					.then((response) => {
+						event.detail.resolve(response.data[event.detail.__field.name]);
+						notifications.success($LL.message.saveSuccess());
+					})
+					.catch((error) => {
+						notifications.error($LL.message.saveFailed());
+					});
 			})
-			.catch((error) => {
-				notifications.error($LL.message.saveFailed());
+			.catch((validErrors) => {
+				event.detail.reject(validErrors[event.detail.__field.name]);
 			});
 	}
 
@@ -187,7 +198,7 @@
 								id={data[idFieldName]}
 								{__field}
 								bind:value={data[__field.name]}
-								on:submit={saveField}
+								on:save={saveField}
 							/>
 						{/if}
 					{/each}

@@ -17,7 +17,6 @@
 	const manager: TypeManager = new TypeManager();
 	const queryPromise: Promise<{ data: object }> = queryType(__type, id);
 	let errors: Record<string, Error> = {};
-	let inputs: Record<string, HTMLInputElement> = {};
 
 	let data: object;
 	queryPromise.then((response) => {
@@ -27,6 +26,7 @@
 	const save = (): void => {
 		validate(__type.name, data, $locale)
 			.then((data) => {
+				errors = {};
 				mutationType(__type, data)
 					.then((response) => {
 						data = response.data;

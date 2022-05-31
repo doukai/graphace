@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { querySubType, mutationObjectField, removeObjectField } from '$lib/graphql/Type';
+	import { querySubType, mutationSubType } from '$lib/graphql/Type';
 	import { TypeManager } from '$lib/TypeManager';
-	import { type __Type, type __Field, __TypeKind } from '$lib/types';
+	import { type __Type, type __Field, type Error, __TypeKind } from '$lib/types';
 	import { Modal, ModalContent, ModalActions } from '$lib/components/ui/modal';
 	import { ObjectEditButton } from '$lib/components/graphql/introspection';
 	import { typeTableModals } from '$lib/components/graphql/introspection/table/TypeTableModals.svelte';
@@ -10,7 +10,9 @@
 	import { notifications } from '$lib/components/ui/Notifications.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { DocumentAdd, DocumentSearch } from '@steeze-ui/heroicons';
+	import { validate } from '$lib/schema/JsonSchema';
 	import LL from '$i18n/i18n-svelte';
+	import { locale } from '$i18n/i18n-svelte';
 	export let __parentType: __Type;
 	export let __type: __Type;
 	export let id: string;
@@ -37,10 +39,10 @@
 		id,
 		__field
 	});
+	let errors: Record<string, Error> = {};
 
 	queryPromise.then((response) => {
 		value[__field.name] = response.data[__field.name];
-		value[__field.from] = response.data[__field.from];
 	});
 
 	const create = (): void => {
@@ -48,18 +50,26 @@
 	};
 
 	const save = (): void => {
-		mutationObjectField(__parentType, __type, id, __field, value[__field.name])
-			.then((response) => {
-				dispatch('change', { id, __field, value: response.data });
-				notifications.success($LL.message.saveSuccess());
+		validate(__type.name, value[__field.name], $locale)
+			.then((data) => {
+				errors = {};
+				mutationSubType(__parentType, __field, value)
+					.then((response) => {
+						dispatch('change', { id, __field, value: response.data });
+						notifications.success($LL.message.saveSuccess());
+					})
+					.catch((error) => {
+						notifications.error($LL.message.saveFailed());
+					});
 			})
-			.catch((error) => {
-				notifications.error($LL.message.saveFailed());
+			.catch((validErrors) => {
+				errors = validErrors;
 			});
 	};
 
 	const remove = (): void => {
-		removeObjectField(__parentType, __type, id, __field)
+		value[__field.name] = null;
+		mutationSubType(__parentType, __field, value)
 			.then((response) => {
 				dispatch('change', { id, __field, value: response.data });
 				notifications.success($LL.message.saveSuccess());
@@ -120,6 +130,7 @@
 													className="w-full max-w-xs"
 													__field={__subField}
 													bind:value={value[__field.name][__subField.name]}
+													error={errors[__subField.name]}
 												/>
 											{/if}
 										</div>

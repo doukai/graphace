@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { tippy } from '$lib/tippy';
 	import { TypeManager } from '$lib/TypeManager';
-	import type { __Field } from '$lib/types';
+	import type { __Field, __Type, Error } from '$lib/types';
 	import FieldInput from '$lib/components/graphql/introspection/FieldInput.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, X, Minus } from '@steeze-ui/heroicons';
@@ -12,23 +12,31 @@
 	export let value: any;
 	let content: HTMLElement;
 	const dispatch = createEventDispatcher<{
-		submit: {
+		save: {
 			id: string;
 			__field: __Field;
-			value: string | number | boolean | string[] | number[] | boolean[];
+			resolve: (value: any) => void;
+			reject: (error: Error) => void;
 		};
 	}>();
 
 	const manager: TypeManager = new TypeManager();
+	let error: Error = null;
 
 	let mutation = (): void => {
 		if (manager.fieldIsList(__field.type)) {
 			value = value.filter((item) => item);
 		}
-		dispatch('submit', {
+		dispatch('save', {
 			id,
 			__field,
-			value
+			resolve: (savedValue) => {
+				error = null;
+				value = savedValue;
+			},
+			reject: (validError) => {
+				error = validError;
+			}
 		});
 	};
 
@@ -38,16 +46,22 @@
 		} else {
 			value = null;
 		}
-		dispatch('submit', {
+		dispatch('save', {
 			id,
 			__field,
-			value
+			resolve: (savedValue) => {
+				error = null;
+				value = savedValue;
+			},
+			reject: (validError) => {
+				error = validError;
+			}
 		});
 	};
 </script>
 
 <div class="flex items-start space-x-1" bind:this={content}>
-	<FieldInput {__field} placeholder={__field.name} bind:value />
+	<FieldInput {__field} placeholder={__field.name} bind:value {error} />
 	<div class="tooltip" data-tip={$LL.components.graphql.table.td.save()}>
 		<button class="btn btn-square btn-primary" on:click={() => mutation()}>
 			<Icon src={Check} solid class="h-5 w-5" />

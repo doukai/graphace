@@ -20,10 +20,10 @@ export async function validate(uri: string, data: object, locale: Locales = "en"
 
     return new Promise((resolve: (data: object) => void, reject: (errors: Record<string, Error>) => void) => {
         const valid = validate(buildValidData(data));
+        const errors: Record<string, Error> = {};
 
         if (!valid) {
             localize[locale](validate.errors);
-            const errors: Record<string, Error> = {};
 
             console.log(JSON.stringify(validate.errors));
             validate.errors.forEach(
@@ -34,7 +34,6 @@ export async function validate(uri: string, data: object, locale: Locales = "en"
                             params: error.params
                         })
                     } else if (error.instancePath) {
-                        debugger
                         const path = error.instancePath.split("/");
                         if (!errors[path[1]]) {
                             errors[path[1]] = {};
