@@ -50,7 +50,7 @@
 	};
 
 	const save = (): void => {
-		validate(__type.name, value[__field.name], $locale)
+		validate(__parentType.name, value, $locale)
 			.then((data) => {
 				errors = {};
 				mutationSubType(__parentType, __field, value)
@@ -63,7 +63,9 @@
 					});
 			})
 			.catch((validErrors) => {
-				errors = validErrors;
+				if (validErrors[__field.name]) {
+					errors = validErrors[__field.name].iterms;
+				}
 			});
 	};
 

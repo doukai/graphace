@@ -200,51 +200,6 @@ export async function mutationSubType(__type: __Type, __field: __Field, data: ob
     return await client.request<{ data: object }>(mutation, data);
 };
 
-export async function mutationObjectField(__parentType: __Type, __type: __Type, id: string, __field: __Field, value: object): Promise<{ data: object; }> {
-    const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__parentType);
-    const idFieldName = manager.getIdFieldName(__parentType);
-    const subSelections: string = manager.fieldsToSelections(__type);
-
-    const mutation: string = gql`
-        mutation ($${idFieldName}: String $${__field.name}: ${manager.fieldTypeToArgumentType(__field.type)}) {
-            data: ${mutationTypeFieldName} (${idFieldName}: $${idFieldName} ${__field.name}: $${__field.name}) @update {
-				${__field.from}
-                ${__field.name} {
-                    ${subSelections}
-                }
-            }
-        }	
-    `;
-
-    const variables: object = {};
-    variables[idFieldName] = id;
-    variables[__field.name] = value;
-
-    return await client.request<{ data: object }>(mutation, variables);
-}
-
-export async function removeObjectField(__parentType: __Type, __type: __Type, id: string, __field: __Field): Promise<{ data: object; }> {
-    const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__parentType);
-    const idFieldName = manager.getIdFieldName(__parentType);
-    const subSelections: string = manager.fieldsToSelections(__type);
-
-    const mutation: string = gql`
-        mutation ($${idFieldName}: String) {
-            data: ${mutationTypeFieldName} (${idFieldName}: $${idFieldName} ${__field.name}: null) @update {
-				${__field.from}
-                ${__field.name} {
-                    ${subSelections}
-                }
-            }
-        }	
-    `;
-
-    const variables: object = {};
-    variables[idFieldName] = id;
-
-    return await client.request<{ data: object }>(mutation, variables);
-}
-
 export async function removeType(__type: __Type, id: string): Promise<{ count: number }> {
     const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
     const idFieldName: string = manager.getIdFieldName(__type);

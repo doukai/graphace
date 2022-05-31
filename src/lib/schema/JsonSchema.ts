@@ -17,9 +17,10 @@ export async function validate(uri: string, data: object, locale: Locales = "en"
         const schema = await loadSchema(uri);
         validate = await ajv.compileAsync(schema);
     }
+    removeEmpty(data);
 
     return new Promise((resolve: (data: object) => void, reject: (errors: Record<string, Error>) => void) => {
-        const valid = validate(buildValidData(data));
+        const valid = validate(data);
         const errors: Record<string, Error> = {};
 
         if (!valid) {
@@ -29,10 +30,37 @@ export async function validate(uri: string, data: object, locale: Locales = "en"
             validate.errors.forEach(
                 (error) => {
                     if (error.keyword === "required") {
-                        (errors[error.params.missingProperty] = {
-                            message: error.message,
-                            params: error.params
-                        })
+                        if (error.instancePath) {
+                            const path = error.instancePath.split("/");
+                            if (!errors[path[1]]) {
+                                errors[path[1]] = {};
+                            }
+                            if (path.length === 2) {
+                                if (!errors[path[1]].iterms) {
+                                    errors[path[1]].iterms = {};
+                                }
+                                errors[path[1]].iterms[error.params.missingProperty] = {
+                                    message: error.message,
+                                    params: error.params
+                                }
+                            } else if (path.length === 3) {
+                                if (!errors[path[1]].iterms) {
+                                    errors[path[1]].iterms = {};
+                                }
+                                if (!errors[path[1]].iterms[path[2]]) {
+                                    errors[path[1]].iterms[path[2]] = {};
+                                }
+                                errors[path[1]].iterms[path[2]][error.params.missingProperty] = {
+                                    message: error.message,
+                                    params: error.params
+                                }
+                            }
+                        } else {
+                            errors[error.params.missingProperty] = {
+                                message: error.message,
+                                params: error.params
+                            }
+                        }
                     } else if (error.instancePath) {
                         const path = error.instancePath.split("/");
                         if (!errors[path[1]]) {
@@ -50,6 +78,18 @@ export async function validate(uri: string, data: object, locale: Locales = "en"
                             }
                             errors[path[1]].iterms[path[2]].message = error.message;
                             errors[path[1]].iterms[path[2]].params = error.params;
+                        } else if (path.length === 4) {
+                            if (!errors[path[1]].iterms) {
+                                errors[path[1]].iterms = {};
+                            }
+                            if (!errors[path[1]].iterms[path[2]]) {
+                                errors[path[1]].iterms[path[2]] = {};
+                            }
+                            if (!errors[path[1]].iterms[path[2]][path[3]]) {
+                                errors[path[1]].iterms[path[2]][path[3]] = {};
+                            }
+                            errors[path[1]].iterms[path[2]][path[3]].message = error.message;
+                            errors[path[1]].iterms[path[2]][path[3]].params = error.params;
                         }
                     }
                 }
@@ -62,18 +102,22 @@ export async function validate(uri: string, data: object, locale: Locales = "en"
     });
 }
 
-function buildValidData(data: object): object {
-    const validData = {};
+function removeEmpty(data: object): void {
     Object.keys(data).forEach((key) => {
         if (Array.isArray(data[key])) {
-            if (data[key] && data[key].length > 0) {
-                validData[key] = data[key]
+            if (!data[key] || data[key].length === 0) {
+                delete data[key];
+            } else {
+                data[key].forEach(item => removeEmpty(item));
             }
         } else {
-            if (data[key]) {
-                validData[key] = data[key]
+            if (!data[key]) {
+                delete data[key];
+            } else {
+                if (typeof data[key] === 'object') {
+                    removeEmpty(data[key]);
+                }
             }
         }
     });
-    return validData;
 }
