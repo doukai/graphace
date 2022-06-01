@@ -1,5 +1,5 @@
 export type Error = {
     message?: string;
-    params?: unknown;
+    schemaPath?: string;
     iterms?: Record<string, Error>
 }

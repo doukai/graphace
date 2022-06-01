@@ -41,7 +41,7 @@ export async function validate(uri: string, data: object, locale: Locales = "en"
                                 }
                                 errors[path[1]].iterms[error.params.missingProperty] = {
                                     message: error.message,
-                                    params: error.params
+                                    schemaPath: error.schemaPath
                                 }
                             } else if (path.length === 3) {
                                 if (!errors[path[1]].iterms) {
@@ -52,13 +52,13 @@ export async function validate(uri: string, data: object, locale: Locales = "en"
                                 }
                                 errors[path[1]].iterms[path[2]][error.params.missingProperty] = {
                                     message: error.message,
-                                    params: error.params
+                                    schemaPath: error.schemaPath
                                 }
                             }
                         } else {
                             errors[error.params.missingProperty] = {
                                 message: error.message,
-                                params: error.params
+                                schemaPath: error.schemaPath
                             }
                         }
                     } else if (error.instancePath) {
@@ -67,8 +67,10 @@ export async function validate(uri: string, data: object, locale: Locales = "en"
                             errors[path[1]] = {};
                         }
                         if (path.length === 2) {
-                            errors[path[1]].message = error.message;
-                            errors[path[1]].params = error.params;
+                            errors[path[1]] = {
+                                message: error.message,
+                                schemaPath: error.schemaPath
+                            }
                         } else if (path.length === 3) {
                             if (!errors[path[1]].iterms) {
                                 errors[path[1]].iterms = {};
@@ -76,8 +78,10 @@ export async function validate(uri: string, data: object, locale: Locales = "en"
                             if (!errors[path[1]].iterms[path[2]]) {
                                 errors[path[1]].iterms[path[2]] = {};
                             }
-                            errors[path[1]].iterms[path[2]].message = error.message;
-                            errors[path[1]].iterms[path[2]].params = error.params;
+                            errors[path[1]].iterms[path[2]] = {
+                                message: error.message,
+                                schemaPath: error.schemaPath
+                            }
                         } else if (path.length === 4) {
                             if (!errors[path[1]].iterms) {
                                 errors[path[1]].iterms = {};
@@ -88,8 +92,10 @@ export async function validate(uri: string, data: object, locale: Locales = "en"
                             if (!errors[path[1]].iterms[path[2]][path[3]]) {
                                 errors[path[1]].iterms[path[2]][path[3]] = {};
                             }
-                            errors[path[1]].iterms[path[2]][path[3]].message = error.message;
-                            errors[path[1]].iterms[path[2]][path[3]].params = error.params;
+                            errors[path[1]].iterms[path[2]][path[3]] = {
+                                message: error.message,
+                                schemaPath: error.schemaPath
+                            }
                         }
                     }
                 }
@@ -108,7 +114,14 @@ function removeEmpty(data: object): void {
             if (!data[key] || data[key].length === 0) {
                 delete data[key];
             } else {
-                data[key].forEach(item => removeEmpty(item));
+                data[key] = data[key].filter((item: object) => item);
+                if (data[key].length === 0) {
+                    delete data[key];
+                } else {
+                    data[key].forEach((item: object) => {
+                        removeEmpty(item);
+                    });
+                }
             }
         } else {
             if (!data[key]) {
