@@ -1,11 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import {
-		queryTypeConnection,
-		mutationType,
-		removeType,
-		type QueryParams
-	} from '$lib/graphql/Type';
+	import { queryTypeConnection, updateType, removeType, type QueryParams } from '$lib/graphql/Type';
 	import { TypeManager } from '$lib/TypeManager';
 	import {
 		type __Type,
@@ -92,7 +87,7 @@
 		const data = dataList.find((data) => data[idFieldName] === event.detail.id);
 		validate(__type.name, data, $locale)
 			.then((data) => {
-				mutationType(__type, data)
+				updateType(__type, data, event.detail.__field)
 					.then((response) => {
 						event.detail.resolve(response.data[event.detail.__field.name]);
 						notifications.success($LL.message.saveSuccess());

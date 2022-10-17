@@ -25,7 +25,7 @@
 
 	let mutation = (): void => {
 		if (manager.fieldIsList(__field.type)) {
-			value = value.filter((item) => item);
+			value = value.filter((item: any) => item);
 		}
 		dispatch('save', {
 			id,
