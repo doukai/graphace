@@ -189,8 +189,8 @@ export async function updateType(__type: __Type, data: object, __field: __Field)
     const selections: string = manager.fieldsToSelections(__type);
 
     const mutation: string = gql`
-        mutation ($${idFieldName} : String, $${__field.name} : ${manager.fieldTypeToArgumentType(__field)}) {
-            data: ${mutationTypeFieldName} (${idFieldName}: $${idFieldName} ${__field.name}: $${__field.name}) {
+        mutation ($${idFieldName} : String, $${__field.name} : ${manager.fieldTypeToArgumentType(__field.type)}) {
+            data: ${mutationTypeFieldName} (${idFieldName}: $${idFieldName} ${__field.name}: $${__field.name}) @update {
                 ${selections}
             }
         }	
