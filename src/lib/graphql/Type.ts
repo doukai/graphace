@@ -183,14 +183,14 @@ export async function mutationType(__type: __Type, data: object): Promise<{ data
     return await client.request<{ data: object }>(mutation, data);
 };
 
-export async function updateType(__type: __Type, data: object, __field: __Field): Promise<{ data: object }> {
+export async function updateType(__type: __Type, data: object, ...__fields: [__Field]): Promise<{ data: object }> {
     const idFieldName: string = manager.getIdFieldName(__type);
     const mutationTypeFieldName: string = manager.getMutationTypeFieldName(__type);
     const selections: string = manager.fieldsToSelections(__type);
 
     const mutation: string = gql`
-        mutation ($${idFieldName} : String, $${__field.name} : ${manager.fieldTypeToArgumentType(__field.type)}) {
-            data: ${mutationTypeFieldName} (${idFieldName}: $${idFieldName} ${__field.name}: $${__field.name}) @update {
+        mutation ($${idFieldName} : String, ${__fields.map(__field => '$' + __field.name + ': ' + manager.fieldTypeToArgumentType(__field.type))}) {
+            data: ${mutationTypeFieldName} (${idFieldName}: $${idFieldName} ${__fields.map(__field => __field.name + ': $' + __field.name)}) @update {
                 ${selections}
             }
         }	
