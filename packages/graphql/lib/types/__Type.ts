@@ -1,4 +1,4 @@
-import type { __EnumValue, __Field, __TypeKind } from "./";
+import type { __EnumValue, __Field, __TypeKind } from "../../";
 
 export type __Type = {
     name: string;

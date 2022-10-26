@@ -1,6 +1,6 @@
 import * as _ from "lodash";
-import type { Connection, PageInfo, __EnumValue, __Field, __Type } from "./types";
-import { __TypeKind } from "./types/__TypeKind";
+import type { Connection, PageInfo, __EnumValue, __Field, __Type } from "../";
+import { __TypeKind } from "../";
 
 const aggregateSuffix: string[] = ["Count", "Sum", "Avg", "Max", "Min", "Aggregate"];
 const metaFieldList: string[] = ["version", "isDeprecated", "__typename"];
@@ -84,7 +84,7 @@ export class TypeManager {
             .filter((field) => !this.fieldIsList(field.type));
     }
 
-    public getNameFiled(__type: __Type): __Field {
+    public getNameFiled(__type: __Type): __Field | undefined {
         return this.getScalarFiledList(__type).find((field) => field.name === "name") ||
             this.getScalarFiledList(__type).find((field) => field.name === this.getIdFieldName(__type));
     }
@@ -102,8 +102,12 @@ export class TypeManager {
         return typeObject;
     }
 
-    public getIdFieldName(__type: __Type): string {
-        return __type.fields.find(field => this.getFieldTypeName(field.type) === "ID").name;
+    public getIdFieldName(__type: __Type): string | undefined {
+        const idField = __type.fields.find(field => this.getFieldTypeName(field.type) === "ID");
+        if (idField) {
+            return idField.name;
+        }
+        return undefined;
     }
 
     public getQueryTypeListFieldName(__type: __Type): string {
