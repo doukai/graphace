@@ -1,4 +1,4 @@
-import type { Error } from '@packages/graphql';
+import type { Error } from '../../';
 import Ajv from 'ajv';
 import addFormats from "ajv-formats"
 import localize from 'ajv-i18n';
