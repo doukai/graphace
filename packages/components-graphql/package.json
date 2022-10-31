@@ -3,11 +3,17 @@
 	"version": "0.0.1",
 	"type": "module",
 	"main": "index.ts",
-	"svelte": "index.ts",
-	"devDependencies": {
+	"dependencies": {
+		"@packages/common": "workspace:^0.0.1",
 		"@packages/components": "workspace:^0.0.1",
-		"@packages/graphql": "workspace:^0.0.1",
-		"tippy.js": "^6.3.7"
+		"@packages/graphql": "workspace:^0.0.1"
 	},
-	"dependencies": {}
+	"devDependencies": {
+		"nanoid": "^3.3.4",
+		"svelte": "^3.47.0",
+		"typesafe-i18n": "5.3.6",
+		"@iconify/svelte": "^2.2.1",
+		"@steeze-ui/heroicons": "^1.1.1",
+		"@steeze-ui/svelte-icon": "^1.3.1"
+	}
 }
