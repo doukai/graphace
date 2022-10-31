@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	import type { Load } from '@sveltejs/kit';
-	import { TypeManager } from '$lib/TypeManager';
+	import { TypeManager } from '@packages/graphql/TypeManager';
 	const manager = new TypeManager();
 	export const load: Load = async ({ params }) => {
 		const { type } = params;
@@ -13,11 +13,11 @@
 </script>
 
 <script lang="ts">
-	import { getType } from '$lib/graphql/Introspection';
-	import type { __Type } from '$lib/types';
-	import Section from '$lib/components/ui/section/Section.svelte';
-	import TypeCreator from '$lib/components/graphql/introspection/TypeCreator.svelte';
-	import FormLoading from '$lib/components/ui/form/FormLoading.svelte';
+	import { getType } from '@packages/graphql/request/Introspection';
+	import type { __Type } from '@packages/graphql/types';
+	import Section from '@packages/components/section/Section.svelte';
+	import TypeCreator from '@packages/components-graphql/introspection/TypeCreator.svelte';
+	import FormLoading from '@packages/components/form/FormLoading.svelte';
 	export let typeName: string;
 
 	let typePromise = getType(typeName);

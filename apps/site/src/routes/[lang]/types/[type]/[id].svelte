@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	import type { Load } from '@sveltejs/kit';
-	import { TypeManager } from '$lib/TypeManager';
+	import { TypeManager } from '@packages/graphql/TypeManager';
 	const manager: TypeManager = new TypeManager();
 	export const load: Load = async ({ params }) => {
 		const { type, id } = params;
@@ -14,15 +14,18 @@
 </script>
 
 <script lang="ts">
-	import { getType } from '$lib/graphql/Introspection';
-	import type { __Type } from '$lib/types';
-	import Section from '$lib/components/ui/section/Section.svelte';
-	import TypeEditor from '$lib/components/graphql/introspection/TypeEditor.svelte';
-	import FormLoading from '$lib/components/ui/form/FormLoading.svelte';
-	import { TypeTableModals } from '$lib/components/graphql/introspection/table';
-	import { TypeEditorModals, ListTypeEditorModals } from '$lib/components/graphql/introspection';
-	import { notifications } from '$lib/components/ui/Notifications.svelte';
-	import LL from '$i18n/i18n-svelte';
+	import { getType } from '@packages/graphql/request/Introspection';
+	import type { __Type } from '@packages/graphql/types';
+	import Section from '@packages/components/section/Section.svelte';
+	import TypeEditor from '@packages/components-graphql/introspection/TypeEditor.svelte';
+	import FormLoading from '@packages/components/form/FormLoading.svelte';
+	import { TypeTableModals } from '@packages/components-graphql/introspection/table';
+	import {
+		TypeEditorModals,
+		ListTypeEditorModals
+	} from '@packages/components-graphql/introspection';
+	import { notifications } from '@packages/components/Notifications.svelte';
+	import LL from '../../../../i18n/i18n-svelte';
 	export let typeName: string;
 	export let id: string;
 

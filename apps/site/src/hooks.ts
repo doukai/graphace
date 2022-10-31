@@ -1,4 +1,4 @@
-import { detectLocale } from '$i18n/i18n-util'
+import { detectLocale } from './i18n/i18n-util'
 import type { GetSession, Handle } from '@sveltejs/kit'
 import type { RequestEvent } from '@sveltejs/kit/types/private'
 import { initAcceptLanguageHeaderDetector } from 'typesafe-i18n/detectors'

@@ -1,10 +1,10 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
-	import type { Locales } from '$i18n/i18n-types';
-	import { replaceLocaleInUrl } from '$lib/utils';
-	import { baseLocale, locales } from '$i18n/i18n-util';
-	import { loadLocaleAsync } from '$i18n/i18n-util.async';
-	import { isMenuOpen } from '$lib/stores';
+	import type { Locales } from '../i18n/i18n-types';
+	import { replaceLocaleInUrl } from '../lib/utils';
+	import { baseLocale, locales } from '../i18n/i18n-util';
+	import { loadLocaleAsync } from '../i18n/i18n-util.async';
+	import { isMenuOpen } from '../lib/stores';
 
 	type LoadParams = {
 		lang?: Locales;

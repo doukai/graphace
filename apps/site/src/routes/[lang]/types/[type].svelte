@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	import type { Load } from '@sveltejs/kit';
-	import { TypeManager } from '$lib/TypeManager';
+	import { TypeManager } from '@packages/graphql/TypeManager';
 	const manager: TypeManager = new TypeManager();
 	export const load: Load = async ({ params }) => {
 		const { type } = params;
@@ -12,19 +12,22 @@
 
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import type { __Type } from '$lib/types';
-	import { getType } from '$lib/graphql/Introspection';
-	import { type QueryParams, removeTypes } from '$lib/graphql/Type';
-	import { TypeTable, TypeTableModals } from '$lib/components/graphql/introspection/table';
-	import { TypeEditorModals, ListTypeEditorModals } from '$lib/components/graphql/introspection';
-	import { SectionHead, SectionLoading } from '$lib/components/ui/section';
-	import SearchInput from '$lib/components/ui/search/SearchInput.svelte';
-	import { notifications } from '$lib/components/ui/Notifications.svelte';
-	import { messageBoxs } from '$lib/components/ui/MessageBoxs.svelte';
+	import type { __Type } from '@packages/graphql/types';
+	import { getType } from '@packages/graphql/request/Introspection';
+	import { type QueryParams, removeTypes } from '@packages/graphql/request/Type';
+	import { TypeTable, TypeTableModals } from '@packages/components-graphql/introspection/table';
+	import {
+		TypeEditorModals,
+		ListTypeEditorModals
+	} from '@packages/components-graphql/introspection';
+	import { SectionHead, SectionLoading } from '@packages/components/section';
+	import SearchInput from '@packages/components/search/SearchInput.svelte';
+	import { notifications } from '@packages/components/Notifications.svelte';
+	import { messageBoxs } from '@packages/components/MessageBoxs.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus, PencilAlt, Trash } from '@steeze-ui/heroicons';
-	import LL from '$i18n/i18n-svelte';
-	import { Pagination } from '$lib/components/ui/connection';
+	import LL from '../../../i18n/i18n-svelte';
+	import { Pagination } from '@packages/components/connection';
 	export let typeName: string;
 
 	$: typePromise = getType(typeName);

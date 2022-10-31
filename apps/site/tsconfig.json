@@ -32,14 +32,11 @@
 		"allowJs": true,
 		"checkJs": true,
 		"paths": {
-			"$i18n/*": [
-				"src/i18n/*"
+			"$root": [
+				"../../"
 			],
-			"$lib": [
-				"src/lib"
-			],
-			"$lib/*": [
-				"src/lib/*"
+			"$site": [
+				"../../apps/site/src"
 			]
 		}
 	},
