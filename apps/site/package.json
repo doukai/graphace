@@ -44,7 +44,8 @@
     "tippy.js": "^6.3.7",
     "tslib": "^2.4.0",
     "typescript": "~4.6.3",
-    "typesafe-i18n": "5.3.6"
+    "typesafe-i18n": "5.3.6",
+    "vite": "^3.1.0"
   },
   "dependencies": {
     "@packages/components": "workspace:^0.0.1",
