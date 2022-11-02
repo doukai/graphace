@@ -1,6 +1,5 @@
 import adapter from '@sveltejs/adapter-auto';
 import preprocess from 'svelte-preprocess';
-import path from 'path'
 import { resolve } from 'path';
 
 
@@ -18,17 +17,6 @@ const config = {
 
 			// App (main)
 			$site: resolve('../../apps/site/src'),
-		},
-		vite: {
-			resolve: {
-				alias: {
-					// Root
-					$root: path.resolve('../../'),
-
-					// App (main)
-					$site: path.resolve('../../apps/site/src'),
-				}
-			}
 		}
 	}
 };

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import LL from "../i18n/i18n-svelte";
+	import LL from '../i18n/i18n-svelte';
 	export let pageSizeOptions: number[] = [10, 20, 30];
 	export let pageSize: number = 10;
 	export let pageNumber: number = 1;

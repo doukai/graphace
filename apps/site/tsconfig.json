@@ -41,9 +41,13 @@
 		}
 	},
 	"include": [
-		"src/**/*.d.ts",
-		"src/**/*.js",
-		"src/**/*.ts",
-		"src/**/*.svelte"
+		"$root/apps/**/*.d.ts",
+		"$root/apps/**/*.js",
+		"$root/apps/**/*.ts",
+		"$root/apps/**/*.svelte",
+		"$root/packages/**/*.d.ts",
+		"$root/packages/**/*.js",
+		"$root/packages/**/*.ts",
+		"$root/packages/**/*.svelte"
 	]
 }

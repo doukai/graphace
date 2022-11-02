@@ -1,10 +1,10 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
 	import type { Locales } from '../i18n/i18n-types';
-	import { replaceLocaleInUrl } from '../lib/utils';
+	import { replaceLocaleInUrl } from '../components/utils';
 	import { baseLocale, locales } from '../i18n/i18n-util';
 	import { loadLocaleAsync } from '../i18n/i18n-util.async';
-	import { isMenuOpen } from '../lib/stores';
+	import { isMenuOpen } from '../components/stores';
 
 	type LoadParams = {
 		lang?: Locales;
@@ -43,13 +43,13 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import { themeChange } from 'theme-change';
-	import SideBar from '$lib/components/ui/SideBar.svelte';
-	import TypeMenu from '$lib/components/graphql/introspection/TypeMenu.svelte';
-	import { NavBar, NavBarStart, NavBarEnd } from '$lib/components/ui/navbar';
-	import Notifications from '$lib/components/ui/Notifications.svelte';
-	import MessageBoxs from '$lib/components/ui/MessageBoxs.svelte';
-	import { setLocale } from '$i18n/i18n-svelte';
-	import { LocaleSelect, ThemeSelect } from '$lib/components/ui/select';
+	import SideBar from '@packages/components/SideBar.svelte';
+	import TypeMenu from '@packages/components-graphql/introspection/TypeMenu.svelte';
+	import { NavBar, NavBarStart, NavBarEnd } from '@packages/components/navbar';
+	import Notifications from '@packages/components/Notifications.svelte';
+	import MessageBoxs from '@packages/components/MessageBoxs.svelte';
+	import { setLocale } from '../i18n/i18n-svelte';
+	import { LocaleSelect, ThemeSelect } from '../components/select';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Menu, Adjustments } from '@steeze-ui/heroicons';
 

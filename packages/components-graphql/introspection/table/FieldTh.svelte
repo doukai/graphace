@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { tippy } from "@packages/components/tippy";
+	import { tippy } from '@packages/components/tippy';
 	import { TypeManager } from '@packages/graphql/TypeManager';
 	import {
 		Input,

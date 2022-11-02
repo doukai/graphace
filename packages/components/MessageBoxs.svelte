@@ -58,8 +58,8 @@
 </script>
 
 <script lang="ts">
-	import { Modal, ModalContent, ModalActions } from '$lib/components/ui/modal';
-	import LL from '$i18n/i18n-svelte';
+	import { Modal, ModalContent, ModalActions } from './modal';
+	import LL from './i18n/i18n-svelte';
 
 	const buttonClassName = (buttonType: string) => {
 		if (buttonType) {
