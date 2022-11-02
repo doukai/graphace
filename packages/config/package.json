@@ -1,0 +1,51 @@
+{
+	"name": "@packages/config",
+	"version": "0.0.1",
+	"description": "",
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"svelte": "./dist/index.js",
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs"
+		},
+		"./postcssConfig": {
+			"import": "./dist/postcss.config.cjs",
+			"require": "./dist/postcss.config.cjs"
+		},
+		"./tailwindConfig": {
+			"import": "./dist/tailwind.config.cjs",
+			"require": "./dist/tailwind.config.cjs"
+		},
+		"./eslintConfig": {
+			"import": "./dist/.eslintrc.cjs",
+			"require": "./dist/.eslintrc.cjs"
+		},
+		"./svelteConfig": {
+			"import": "./dist/svelte.config.js"
+		},
+		"./viteConfig": {
+			"import": "./dist/vite.config.js"
+		}
+	},
+	"type": "module",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "next",
+		"@sveltejs/kit": "next",
+		"@tailwindcss/typography": "^0.5.2",
+		"@typescript-eslint/eslint-plugin": "^5.20.0",
+		"@typescript-eslint/parser": "^5.20.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-svelte3": "^3.4.1",
+		"autoprefixer": "^10.4.4",
+		"postcss": "^8.4.12",
+		"tailwindcss": "^3.0.24",
+		"vite": "^3.1.0"
+	},
+	"dependencies": {}
+}
