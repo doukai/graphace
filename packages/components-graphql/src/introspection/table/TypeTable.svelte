@@ -16,7 +16,7 @@
 		createFilter
 	} from '@packages/graphql/types';
 	import { Table, TableLoading } from '@packages/components/table';
-	import { FieldTh, FieldTd, ObjectFieldTh, ObjectFieldTd } from './';
+	import { FieldTh, FieldTd, ObjectFieldTh, ObjectFieldTd } from '.';
 	import { notifications } from '@packages/components/Notifications.svelte';
 	import { validate } from '@packages/graphql/schema/JsonSchema';
 	import LL from '../../i18n/i18n-svelte';

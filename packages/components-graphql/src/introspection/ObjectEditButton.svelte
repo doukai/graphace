@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { typeEditorModals, listTypeEditorModals } from './';
+	import { typeEditorModals, listTypeEditorModals } from '.';
 	import { TypeManager } from '@packages/graphql/TypeManager';
 	import { getType } from '@packages/graphql/request/Introspection';
 	import type { __Type, __Field } from '@packages/graphql/types';

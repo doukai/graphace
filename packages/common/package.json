@@ -1,7 +1,11 @@
 {
 	"name": "@packages/common",
 	"version": "0.0.1",
-	"type": "module",
+	"main": "dist/index",
+	"types": "dist/index",
+	"files": [
+		"dist"
+	],
 	"dependencies": {},
 	"devDependencies": {}
 }

@@ -8,7 +8,7 @@
 		Toggle,
 		ToggleList
 	} from '@packages/components/input';
-	import { EnumSelect, EnumCheckboxGroup } from './';
+	import { EnumSelect, EnumCheckboxGroup } from '.';
 	import type { __Field } from '@packages/graphql/types';
 	import type { Error } from '@packages/common/types';
 	export let __field: __Field;

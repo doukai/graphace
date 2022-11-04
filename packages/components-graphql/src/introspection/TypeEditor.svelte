@@ -5,7 +5,7 @@
 	import { type __Type, __TypeKind } from '@packages/graphql/types';
 	import type { Error } from '@packages/common/types';
 	import { Form, FormLoading, FormItems, FormItem, FormButtons } from '@packages/components/form';
-	import { ObjectEditButton } from './';
+	import { ObjectEditButton } from '.';
 	import FieldInput from './FieldInput.svelte';
 	import { messageBoxs } from '@packages/components/MessageBoxs.svelte';
 	import { notifications } from '@packages/components/Notifications.svelte';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ObjectEditButton } from '../';
+	import { ObjectEditButton } from '..';
 	import type { __Type, __Field } from '@packages/graphql/types';
 	export let __parentType: __Type;
 	export let __field: __Field;

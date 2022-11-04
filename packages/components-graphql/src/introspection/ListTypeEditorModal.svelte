@@ -5,7 +5,7 @@
 	import { type __Type, type __Field, __TypeKind } from '@packages/graphql/types';
 	import type { Error } from '@packages/common/types';
 	import { Modal, ModalContent, ModalActions } from '@packages/components/modal';
-	import { ObjectEditButton } from './';
+	import { ObjectEditButton } from '.';
 	import { typeTableModals } from './table/TypeTableModals.svelte';
 	import FieldInput from './FieldInput.svelte';
 	import { notifications } from '@packages/components/Notifications.svelte';
