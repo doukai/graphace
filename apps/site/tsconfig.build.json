@@ -1,0 +1,16 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"rootDir": "./src",
+		"outDir": "./dist",
+		"paths": {
+			"src": ["./src"]
+		}
+	},
+	"include": ["./src"],
+	"references": [
+		{ "path": "../../packages/common/tsconfig.build.json" },
+		{ "path": "../../packages/components-graphql/tsconfig.build.json" },
+		{ "path": "../../packages/graphql/tsconfig.build.json" }
+	]
+}

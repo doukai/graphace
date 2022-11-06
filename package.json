@@ -8,7 +8,8 @@
     "packages/**"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "pnpm run --parallel --filter {apps} dev",
+    "build": "pnpm run --parallel --filter {apps} build"
   },
   "keywords": [],
   "author": "",

@@ -3,10 +3,7 @@
 	"compilerOptions": {
 		"moduleResolution": "node",
 		"module": "es2020",
-		"lib": [
-			"es2020",
-			"DOM"
-		],
+		"lib": ["es2020", "DOM"],
 		"target": "es2020",
 		/**
 			svelte-preprocess cannot figure out whether you have a value or a type, so tell TypeScript
@@ -32,22 +29,15 @@
 		"allowJs": true,
 		"checkJs": true,
 		"paths": {
-			"$root": [
-				"../../"
-			],
-			"$site": [
-				"../../apps/site/src"
-			]
+			"src": ["./src"],
+			"@graphace/*": ["graphace/*/src"]
 		}
 	},
-	"include": [
-		"$root/apps/**/*.d.ts",
-		"$root/apps/**/*.js",
-		"$root/apps/**/*.ts",
-		"$root/apps/**/*.svelte",
-		"$root/packages/**/*.d.ts",
-		"$root/packages/**/*.js",
-		"$root/packages/**/*.ts",
-		"$root/packages/**/*.svelte"
+	"include": ["./src"],
+	"exclude": ["node_modules", "dist"],
+	"references": [
+		{ "path": "../../packages/common" },
+		{ "path": "../../packages/components-graphql" },
+		{ "path": "../../packages/graphql" }
 	]
 }

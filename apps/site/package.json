@@ -1,5 +1,5 @@
 {
-  "name": "graphace",
+  "name": "@graphace/site",
   "version": "0.0.1",
   "type": "module",
   "scripts": {
@@ -23,8 +23,9 @@
     "tslib": "^2.4.0"
   },
   "dependencies": {
-    "@packages/components": "workspace:*",
-    "@packages/components-graphql": "workspace:*",
-    "@packages/graphql": "workspace:*"
+    "@graphace/components": "workspace:*",
+    "@graphace/components-graphql": "workspace:*",
+    "@graphace/graphql": "workspace:*",
+    "@graphace/config": "workspace:*"
   }
 }

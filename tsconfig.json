@@ -3,9 +3,7 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"paths": {
-			"@packages/*": [
-				"packages/*/src"
-			]
-		},
+			"@graphace/*": ["graphace/*/src"]
+		}
 	}
 }

@@ -1,7 +1,18 @@
 {
-	"name": "@packages/components",
+	"name": "@graphace/components",
 	"version": "0.0.1",
-	"type": "module",
+	"main": "dist/index",
+	"types": "dist/index",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "pnpm run clean && pnpm run compile",
+		"clean": "rimraf -rf ./dist",
+		"compile": "tsc -p tsconfig.build.json",
+		"prepublishOnly": "pnpm run build",
+		"typesafe-i18n": "typesafe-i18n"
+	},
 	"devDependencies": {
 		"@iconify/svelte": "^2.2.1",
 		"@steeze-ui/heroicons": "^1.1.1",
@@ -10,6 +21,6 @@
 		"tippy.js": "^6.3.7"
 	},
 	"dependencies": {
-		"@packages/common": "workspace:*"
+		"@graphace/common": "workspace:*"
 	}
 }

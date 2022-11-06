@@ -1,5 +1,5 @@
 {
-	"name": "@packages/config",
+	"name": "@graphace/config",
 	"version": "0.0.1",
 	"description": "",
 	"main": "./dist/index.js",
