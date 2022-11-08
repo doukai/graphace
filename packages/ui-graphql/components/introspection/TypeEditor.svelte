@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { goto } from '$app/navigation';
+  import { createEventDispatcher } from 'svelte';
   import { queryType, mutationType, removeType } from '@graphace/graphql/request/Type';
   import { TypeManager } from '@graphace/graphql/types/TypeManager';
   import { type __Type, __TypeKind } from '@graphace/graphql/types';
@@ -20,6 +20,10 @@
   import { locale } from '../../i18n/i18n-svelte';
   export let id: string;
   export let __type: __Type;
+
+  const dispatch = createEventDispatcher<{
+    back: {};
+  }>();
 
   const manager: TypeManager = new TypeManager();
   const queryPromise: Promise<{ data: object }> = queryType(__type, id);
@@ -52,7 +56,7 @@
     removeType(__type, id)
       .then((response) => {
         notifications.success($LL.message.removeSuccess());
-        goto(`../${manager.typeNameToUrl(__type.name)}`);
+        dispatch('back');
       })
       .catch((error) => {
         notifications.error($LL.message.removeFailed());
@@ -91,7 +95,7 @@
         class="btn"
         on:click="{(e) => {
           e.preventDefault();
-          goto(`../${manager.typeNameToUrl(__type.name)}`);
+          dispatch('back');
         }}"
       >
         {$LL.components.graphql.editor.backBtn()}

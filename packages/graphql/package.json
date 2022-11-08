@@ -10,16 +10,16 @@
     "format": "prettier --write --ignore-path=../../.prettierignore ."
   },
   "devDependencies": {
-    "eslint-config-custom": "workspace:*",
-    "graphql": "^16.3.0",
-    "graphql-request": "^4.2.0",
-    "lodash": "^4.17.21",
     "@types/lodash": "^4.14.182",
     "ajv": "^8.11.0",
     "ajv-formats": "^2.1.1",
-    "ajv-i18n": "^4.2.0"
+    "ajv-i18n": "^4.2.0",
+    "eslint-config-custom": "workspace:*",
+    "graphql": "^16.3.0",
+    "lodash": "^4.17.21"
   },
   "dependencies": {
-    "@graphace/commons": "workspace:*"
+    "@graphace/commons": "workspace:*",
+    "graphql-request": "4.3.0"
   }
 }

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { goto } from '$app/navigation';
+  import { createEventDispatcher } from 'svelte';
   import { mutationType } from '@graphace/graphql/request/Type';
   import { TypeManager } from '@graphace/graphql/types/TypeManager';
   import type { __Type } from '@graphace/graphql/types';
@@ -11,6 +11,10 @@
   import LL from '../../i18n/i18n-svelte';
   import { locale } from '../../i18n/i18n-svelte';
   export let __type: __Type;
+
+  const dispatch = createEventDispatcher<{
+    back: {};
+  }>();
 
   const manager: TypeManager = new TypeManager();
   const idFieldName: string = manager.getIdFieldName(__type);
@@ -25,7 +29,7 @@
         mutationType(__type, data)
           .then((response) => {
             notifications.success($LL.message.saveSuccess());
-            goto(`../${manager.typeNameToUrl(__type.name)}/${response.data[idFieldName]}`);
+            dispatch('back');
           })
           .catch((error) => {
             notifications.error($LL.message.saveFailed());
@@ -55,7 +59,7 @@
       class="btn"
       on:click="{(e) => {
         e.preventDefault();
-        goto(`../${manager.typeNameToUrl(__type.name)}`);
+        dispatch('back');
       }}"
     >
       {$LL.components.graphql.editor.backBtn()}
