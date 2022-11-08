@@ -1,0 +1,15 @@
+{
+  "name": "@graphace/commons",
+  "version": "0.0.1",
+  "description": "graphace commons module",
+  "type": "module",
+  "module": "index.ts",
+  "license": "MIT",
+  "scripts": {
+    "lint": "prettier --check --ignore-path=../../.prettierignore . && eslint \".\"",
+    "format": "prettier --write --ignore-path=../../.prettierignore ."
+  },
+  "devDependencies": {
+    "eslint-config-custom": "workspace:*"
+  }
+}
