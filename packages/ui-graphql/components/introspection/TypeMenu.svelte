@@ -1,17 +1,17 @@
 <script lang="ts">
-  import { goto } from '$app/navigation';
-  import { page } from '$app/stores';
+  // import { goto } from '$app/navigation';
+  // import { page } from '$app/stores';
   import Icon from '@iconify/svelte';
-  import { getTypeList } from '@graphace/graphql/request/Introspection';
+  // import { getTypeList } from '@graphace/graphql/request/Introspection';
   import type { __Type } from '@graphace/graphql/types';
   import { TypeManager } from '@graphace/graphql/types/TypeManager';
   import { locale } from '../../i18n/i18n-svelte';
 
   const manager: TypeManager = new TypeManager();
-  let fetchTypeList = getTypeList();
+  // let fetchTypeList = getTypeList();
 </script>
 
-{#await fetchTypeList}
+<!-- {#await fetchTypeList}
   <div class="animate-pulse space-y-1">
     {#each { length: 24 } as _, i}
       <div class="py-4 bg-base-100 rounded"></div>
@@ -37,4 +37,4 @@
       </a>
     </li>
   {/each}
-{/await}
+{/await} -->

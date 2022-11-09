@@ -15,11 +15,9 @@
     "ajv-formats": "^2.1.1",
     "ajv-i18n": "^4.2.0",
     "eslint-config-custom": "workspace:*",
-    "graphql": "^16.3.0",
     "lodash": "^4.17.21"
   },
   "dependencies": {
-    "@graphace/commons": "workspace:*",
-    "graphql-request": "4.3.0"
+    "@graphace/commons": "workspace:*"
   }
 }

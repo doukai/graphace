@@ -5,13 +5,13 @@ type Locales = import('./i18n/i18n-types').Locales
 // See https://kit.svelte.dev/docs/typescript
 // for information about these interfaces
 declare namespace App {
-	interface Locals { }
-
-	interface Platform { }
-
-	interface Session {
+	interface Locals {
 		locale: Locales
 	}
 
-	interface Stuff { }
+	interface PageData {
+	}
+
+	interface Platform {
+	}
 }
