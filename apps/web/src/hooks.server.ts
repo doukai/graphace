@@ -4,7 +4,6 @@ import type { RequestEvent } from '@sveltejs/kit/types'
 import { initAcceptLanguageHeaderDetector } from 'typesafe-i18n/detectors'
 
 export const handle: Handle = async ({ event, resolve }) => {
-	console.log('init hook');
 	// detect the preferred language the user has configured in his browser
 	// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Language
 	const headers = getHeaders(event);
@@ -26,6 +25,5 @@ export const handle: Handle = async ({ event, resolve }) => {
 const getHeaders = (event: RequestEvent) => {
 	const headers: Record<string, string> = {};
 	event.request.headers.forEach((value: string, key: string | number) => headers[key] = value);
-
 	return headers;
 }

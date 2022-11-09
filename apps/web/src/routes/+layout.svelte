@@ -53,7 +53,7 @@
 							</label>
 						</NavBarStart>
 						<NavBarEnd>
-							<!-- <LocaleSelect /> -->
+							<LocaleSelect />
 							<label for="right-drawer" class="ml-1 btn btn-square btn-ghost drawer-button">
 								<Icon src={Adjustments} solid class="h-6 w-6" />
 							</label>
