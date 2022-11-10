@@ -1,0 +1,6 @@
+query ObjectList {
+	__typeList(kind: { val: OBJECT }) {
+		name
+		description
+	}
+}

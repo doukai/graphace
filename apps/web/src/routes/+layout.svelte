@@ -7,8 +7,8 @@
 	import { onMount } from 'svelte';
 	import { themeChange } from 'theme-change';
 	import SideBar from '@graphace/ui/components/SideBar.svelte';
-	import TypeMenu from '@graphace/ui-graphql/components/introspection/TypeMenu.svelte';
-	import { NavBar, NavBarStart, NavBarEnd } from '@graphace/ui/components/navbar';
+	import TypeMenu from '~/components/menu/TypeMenu.svelte';
+	import { NavBar, NavBarStart, NavBarCenter, NavBarEnd } from '@graphace/ui/components/navbar';
 	import Notifications from '@graphace/ui/components/Notifications.svelte';
 	import MessageBoxs from '@graphace/ui/components/MessageBoxs.svelte';
 	import { setLocale } from '../i18n/i18n-svelte';
@@ -52,6 +52,7 @@
 								<Icon src={Menu} solid class="h-6 w-6" />
 							</label>
 						</NavBarStart>
+						<NavBarCenter />
 						<NavBarEnd>
 							<LocaleSelect />
 							<label for="right-drawer" class="ml-1 btn btn-square btn-ghost drawer-button">
