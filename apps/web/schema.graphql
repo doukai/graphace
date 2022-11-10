@@ -278,6 +278,8 @@ input Property {
 }
 
 type QueryType implements Meta {
+  __schema(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, mutationTypeName: StringExpression, queryTypeName: StringExpression, realmId: StringExpression, subscriptionTypeName: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): __Schema
+  __type(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, ofTypeName: StringExpression, realmId: StringExpression, schemaId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): __Type
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -1097,4 +1099,169 @@ input ValidationInput {
   properties: [Property]
   then: ValidationInput
   uniqueItems: Boolean
+}
+
+type __DirectiveConnection {
+  edges: [__DirectiveEdge]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type __DirectiveEdge {
+  cursor: ID
+  node: __Directive
+}
+
+type __DirectiveLocations implements Meta {
+  createGroupId: String
+  createTime: Timestamp
+  createUserId: String
+  directiveLocation: __DirectiveLocation!
+  directiveName: String!
+  directiveNameCount: Int
+  directiveNameMax: String
+  directiveNameMin: String
+  id: ID
+  idCount: Int
+  idMax: ID
+  idMin: ID
+  isDeprecated: Boolean
+  realmId: String
+  updateTime: Timestamp
+  updateUserId: String
+  version: Int
+}
+
+type __DirectiveLocationsConnection {
+  edges: [__DirectiveLocationsEdge]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type __DirectiveLocationsEdge {
+  cursor: ID
+  node: __DirectiveLocations
+}
+
+type __EnumValueConnection {
+  edges: [__EnumValueEdge]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type __EnumValueEdge {
+  cursor: ID
+  node: __EnumValue
+}
+
+type __FieldConnection {
+  edges: [__FieldEdge]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type __FieldEdge {
+  cursor: ID
+  node: __Field
+}
+
+type __InputValueConnection {
+  edges: [__InputValueEdge]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type __InputValueEdge {
+  cursor: ID
+  node: __InputValue
+}
+
+type __SchemaConnection {
+  edges: [__SchemaEdge]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type __SchemaEdge {
+  cursor: ID
+  node: __Schema
+}
+
+type __TypeConnection {
+  edges: [__TypeEdge]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type __TypeEdge {
+  cursor: ID
+  node: __Type
+}
+
+type __TypeInterfaces implements Meta {
+  createGroupId: String
+  createTime: Timestamp
+  createUserId: String
+  id: ID
+  idCount: Int
+  idMax: ID
+  idMin: ID
+  interfaceName: String!
+  interfaceNameCount: Int
+  interfaceNameMax: String
+  interfaceNameMin: String
+  isDeprecated: Boolean
+  realmId: String
+  typeName: String!
+  typeNameCount: Int
+  typeNameMax: String
+  typeNameMin: String
+  updateTime: Timestamp
+  updateUserId: String
+  version: Int
+}
+
+type __TypeInterfacesConnection {
+  edges: [__TypeInterfacesEdge]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type __TypeInterfacesEdge {
+  cursor: ID
+  node: __TypeInterfaces
+}
+
+type __TypePossibleTypes implements Meta {
+  createGroupId: String
+  createTime: Timestamp
+  createUserId: String
+  id: ID
+  idCount: Int
+  idMax: ID
+  idMin: ID
+  isDeprecated: Boolean
+  possibleTypeName: String!
+  possibleTypeNameCount: Int
+  possibleTypeNameMax: String
+  possibleTypeNameMin: String
+  realmId: String
+  typeName: String!
+  typeNameCount: Int
+  typeNameMax: String
+  typeNameMin: String
+  updateTime: Timestamp
+  updateUserId: String
+  version: Int
+}
+
+type __TypePossibleTypesConnection {
+  edges: [__TypePossibleTypesEdge]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type __TypePossibleTypesEdge {
+  cursor: ID
+  node: __TypePossibleTypes
 }

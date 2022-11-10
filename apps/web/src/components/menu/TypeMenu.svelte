@@ -1,24 +1,24 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { graphql } from '$houdini';
+	// import { graphql } from '$houdini';
 	import Icon from '@iconify/svelte';
 	import type { __Type } from '@graphace/graphql/types';
 	import { TypeManager } from '@graphace/graphql/types/TypeManager';
 	import { locale } from '~/i18n/i18n-svelte';
 
 	const manager: TypeManager = new TypeManager();
-	const objectList = graphql`
-		query ObjectList {
-			__typeList(kind: { val: OBJECT }) {
-				name
-				description
-			}
-		}
-	`;
+	// const objectList = graphql`
+	// 	query ObjectList {
+	// 		__type(kind: { val: OBJECT }) {
+	// 			name
+	// 			description
+	// 		}
+	// 	}
+	// `;
 </script>
 
-{#if $objectList.isFetching}
+<!-- {#if $objectList.isFetching}
 	<div class="animate-pulse space-y-1">
 		{#each { length: 24 } as _, i}
 			<div class="py-4 bg-base-100 rounded" />
@@ -44,4 +44,4 @@
 			</a>
 		</li>
 	{/each}
-{/if}
+{/if} -->
