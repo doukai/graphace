@@ -181,7 +181,7 @@ export class TypeManager {
     }
 
     public typeNameToUrl(typeName: string): string {
-        if (typeName.startsWith("__")) {
+        if (typeName.substring(0, 2) === "__") {
             return "__" + _.kebabCase(typeName.replace("__", ""));
         } else {
             return _.kebabCase(typeName);
@@ -189,7 +189,7 @@ export class TypeManager {
     }
 
     public urlToTypeName(typeName: string): string {
-        if (typeName.startsWith("__")) {
+        if (typeName.substring(0, 2) === "__") {
             return "__" + _.camelCase(typeName.replace("__", ""));
         } else {
             return _.camelCase(typeName);
