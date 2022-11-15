@@ -22,7 +22,7 @@
 
 	export let data: PageData;
 
-	const schema = __schema as __Schema;
+	const schema = __schema as unknown as __Schema;
 
 	const manager: TypeManager = new TypeManager();
 	const __type: __Type | undefined = schema.types.find(
