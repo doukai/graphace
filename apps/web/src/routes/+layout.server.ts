@@ -1,9 +1,9 @@
 import type { LayoutServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
-import type { Locales } from '../i18n/i18n-types';
+import type { Locales } from '~/i18n/i18n-types';
 import { replaceLocaleInUrl } from '../components/utils';
-import { baseLocale, locales } from '../i18n/i18n-util';
-import { loadLocaleAsync } from '../i18n/i18n-util.async';
+import { baseLocale, locales } from '~/i18n/i18n-util';
+import { loadLocaleAsync } from '~/i18n/i18n-util.async';
 
 export const load: LayoutServerLoad = async ({ url, locals, params }) => {
     // fallback needed because of https://github.com/sveltejs/kit/issues/3647

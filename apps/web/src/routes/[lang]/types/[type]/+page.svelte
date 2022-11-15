@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import type { __Type } from '@graphace/graphql/types';
-	import { getType } from '@graphace/graphql/request/Introspection';
-	import { type QueryParams, removeTypes } from '@graphace/graphql/request/Type';
+	import type { __Type, __Schema } from '@graphace/graphql/types';
+	import { __schema } from '~/gql/generated/introspection.json';
+	import { TypeManager } from '@graphace/graphql/types/TypeManager';
+	import type { QueryParams } from '@graphace/graphql/request/Type';
 	import { TypeTable, TypeTableModals } from '@graphace/ui-graphql/components/introspection/table';
 	import {
 		TypeEditorModals,
@@ -17,19 +18,24 @@
 	import LL from '~/i18n/i18n-svelte';
 	import { Pagination } from '@graphace/ui/components/connection';
 	import { graphql } from '$houdini';
+	import type { PageData } from './$types';
 
-    export let data: PageData;
+	export let data: PageData;
 
-    $: ({ getType } = data)
+	const schema = __schema as __Schema;
 
-	// $: typePromise = getType(typeName);
+	const manager: TypeManager = new TypeManager();
+	const __type: __Type | undefined = schema.types.find(
+		(type: __Type) => type.name === data.typeName
+	);
+
 	let refresh: (params?: QueryParams) => void;
 
-	let queryValue: string = null;
-	let search = (event: CustomEvent<{ value: string }>) => {
-		queryValue = event.detail.value;
-		refresh({ queryValue });
-	};
+	// let queryValue: string = null;
+	// let search = (event: CustomEvent<{ value: string }>) => {
+	// 	queryValue = event.detail.value;
+	// 	refresh({ queryValue });
+	// };
 
 	let showDeleteButton = false;
 	let idList: string[] = [];
@@ -44,22 +50,20 @@
 	};
 
 	const removeRows = (__type: __Type) => {
-		removeTypes(__type, idList)
-			.then((response) => {
-				notifications.success($LL.message.removeSuccess());
-				refresh();
-			})
-			.catch((error) => {
-				notifications.error($LL.message.removeFailed());
-			});
+		// removeTypes(__type, idList)
+		// 	.then((response) => {
+		// 		notifications.success($LL.message.removeSuccess());
+		// 		refresh();
+		// 	})
+		// 	.catch((error) => {
+		// 		notifications.error($LL.message.removeFailed());
+		// 	});
 	};
 </script>
 
-{#if $getType.isFetching}
-	<SectionLoading />
-    {:else}
-	<SectionHead title={$getType.data.__type.name}>
-		<SearchInput on:search={search} />
+{#if __type}
+	<SectionHead title={__type.name || ''}>
+		<!-- <SearchInput on:search={search} /> -->
 		{#if showDeleteButton}
 			<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.remove()}>
 				<button
@@ -71,7 +75,7 @@
 							buttonName: $LL.components.graphql.table.removeBtn(),
 							buttonType: 'error',
 							confirm: () => {
-								removeRows($getType.data.__type);
+								removeRows(__type);
 								return true;
 							}
 						});
@@ -86,7 +90,7 @@
 				class="btn btn-square md:hidden"
 				on:click={(e) => {
 					e.preventDefault();
-					goto(`./${$getType.data.__type.name}/create`);
+					goto(`./${__type.name}/create`);
 				}}
 			>
 				<Icon src={Plus} class="h-6 w-6" solid />
@@ -96,21 +100,21 @@
 			class="hidden md:btn"
 			on:click={(e) => {
 				e.preventDefault();
-				goto(`./${$getType.data.__type.name}/create`);
+				goto(`./${__type.name}/create`);
 			}}
 		>
 			{$LL.routers.type.create()}
 		</button>
 	</SectionHead>
 	<div class="divider" />
-	<TypeTable __type={$getType.data.__type} on:selectChange={selectChange} bind:refresh>
+	<TypeTable {__type} on:selectChange={selectChange} bind:refresh>
 		<div slot="row" let:id let:removeRow>
 			<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
 				<button
 					class="btn btn-square btn-ghost btn-xs"
 					on:click={(e) => {
 						e.preventDefault();
-						goto(`./${manager.typeNameToUrl(typeName)}/${id}`);
+						goto(`./${manager.typeNameToUrl(data.typeName)}/${id}`);
 					}}
 				>
 					<Icon src={PencilAlt} solid />
@@ -146,7 +150,9 @@
 			/>
 		</div>
 	</TypeTable>
-    {/if}
+{:else}
+	<SectionLoading />
+{/if}
 
 <TypeEditorModals />
 <ListTypeEditorModals />

@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
-	import { setLocale, locale } from '../../i18n/i18n-svelte';
-	import type { Locales } from '../../i18n/i18n-types';
-	import { locales } from '../../i18n/i18n-util';
-	import { loadLocaleAsync } from '../../i18n/i18n-util.async';
+	import { setLocale, locale } from '~/i18n/i18n-svelte';
+	import type { Locales } from '~/i18n/i18n-types';
+	import { locales } from '~/i18n/i18n-util';
+	import { loadLocaleAsync } from '~/i18n/i18n-util.async';
 	import { replaceLocaleInUrl } from '../utils';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Translate } from '@steeze-ui/heroicons';
-	import LL from '../../i18n/i18n-svelte';
+	import LL from '~/i18n/i18n-svelte';
 
 	let value: Locales = $locale;
 

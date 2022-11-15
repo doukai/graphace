@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "graphace commons module",
   "type": "module",
-  "module": "index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "license": "MIT",
   "scripts": {
     "lint": "prettier --check --ignore-path=../../.prettierignore . && eslint \".\"",

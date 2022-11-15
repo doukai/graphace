@@ -6,8 +6,8 @@ export type BaseTranslation = BaseTranslationType
 export type BaseLocale = 'en'
 
 export type Locales =
-	| 'de'
 	| 'en'
+	| 'zh'
 
 export type Translation = RootTranslation
 
@@ -15,17 +15,542 @@ export type Translations = RootTranslation
 
 type RootTranslation = {
 	/**
-	 * Hi {name}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n
-	 * @param {string} name
+	 * Welcome to Svelte Fall Summit {year}
+	 * @param {number} year
 	 */
-	HI: RequiredParams<'name'>
+	HI: RequiredParams<'year'>
+	localeName: {
+		/**
+		 * English
+		 */
+		en: string
+		/**
+		 * Chinese
+		 */
+		zh: string
+	}
+	message: {
+		/**
+		 * Save success
+		 */
+		saveSuccess: string
+		/**
+		 * Create success
+		 */
+		createSuccess: string
+		/**
+		 * Remove success
+		 */
+		removeSuccess: string
+		/**
+		 * Request failed
+		 */
+		requestFailed: string
+		/**
+		 * Save failed
+		 */
+		saveFailed: string
+		/**
+		 * Create failed
+		 */
+		createFailed: string
+		/**
+		 * Remove failed
+		 */
+		removeFailed: string
+	}
+	components: {
+		messageBox: {
+			/**
+			 * Cancel
+			 */
+			cancel: string
+			/**
+			 * Confirm
+			 */
+			confirm: string
+		}
+		ui: {
+			cursor: {
+				/**
+				 * size
+				 */
+				size: string
+				/**
+				 * Previous
+				 */
+				previous: string
+				/**
+				 * Next
+				 */
+				next: string
+			}
+			pagination: {
+				/**
+				 * size
+				 */
+				size: string
+				/**
+				 * {total} results
+				 * @param {number} total
+				 */
+				total: RequiredParams<'total'>
+				/**
+				 * Page {current}
+				 * @param {number} current
+				 */
+				current: RequiredParams<'current'>
+				/**
+				 * Previous
+				 */
+				previous: string
+				/**
+				 * Next
+				 */
+				next: string
+			}
+			searchInput: {
+				/**
+				 * Search
+				 */
+				placeholder: string
+			}
+			inputList: {
+				/**
+				 * Add
+				 */
+				add: string
+				/**
+				 * Remove
+				 */
+				remove: string
+			}
+		}
+		graphql: {
+			editor: {
+				/**
+				 * Save
+				 */
+				saveBtn: string
+				/**
+				 * Select
+				 */
+				selectBtn: string
+				/**
+				 * Remove
+				 */
+				removeBtn: string
+				/**
+				 * Back
+				 */
+				backBtn: string
+				/**
+				 * Create a new {name}
+				 * @param {string} name
+				 */
+				createType: RequiredParams<'name'>
+				/**
+				 * New {name}
+				 * @param {string} name
+				 */
+				newType: RequiredParams<'name'>
+				/**
+				 * Bind {name}
+				 * @param {string} name
+				 */
+				bindType: RequiredParams<'name'>
+			}
+			table: {
+				/**
+				 * Remove row?
+				 */
+				removeModalTitle: string
+				/**
+				 * Edit
+				 */
+				editBtn: string
+				/**
+				 * Remove
+				 */
+				removeBtn: string
+				/**
+				 * Cancel
+				 */
+				cancelBtn: string
+				th: {
+					/**
+					 * filter
+					 */
+					filter: string
+					/**
+					 * cancel
+					 */
+					cancel: string
+					/**
+					 * No Sort
+					 */
+					noSort: string
+					/**
+					 * ASC
+					 */
+					asc: string
+					/**
+					 * DESC
+					 */
+					desc: string
+					/**
+					 * Equals
+					 */
+					eq: string
+					/**
+					 * Not Equals
+					 */
+					neq: string
+					/**
+					 * Like
+					 */
+					lk: string
+					/**
+					 * Not Like
+					 */
+					nlk: string
+					/**
+					 * Greater Than
+					 */
+					gt: string
+					/**
+					 * Greater Equals
+					 */
+					gte: string
+					/**
+					 * Less Than
+					 */
+					lt: string
+					/**
+					 * Less Equals
+					 */
+					lte: string
+					/**
+					 * Is Null
+					 */
+					nil: string
+					/**
+					 * Not Null
+					 */
+					nnil: string
+					/**
+					 * In
+					 */
+					'in': string
+					/**
+					 * Not In
+					 */
+					nin: string
+					/**
+					 * Between
+					 */
+					bt: string
+					/**
+					 * Not Between
+					 */
+					nbt: string
+					/**
+					 * Filter..
+					 */
+					filterPlaceholder: string
+				}
+				td: {
+					/**
+					 * save
+					 */
+					save: string
+					/**
+					 * clear
+					 */
+					clear: string
+				}
+			}
+		}
+	}
+	routers: {
+		type: {
+			/**
+			 * Create
+			 */
+			create: string
+			/**
+			 * Remove
+			 */
+			remove: string
+		}
+	}
 }
 
 export type TranslationFunctions = {
 	/**
-	 * Hi {name}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n
+	 * Welcome to Svelte Fall Summit {year}
 	 */
-	HI: (arg: { name: string }) => LocalizedString
+	HI: (arg: { year: number }) => LocalizedString
+	localeName: {
+		/**
+		 * English
+		 */
+		en: () => LocalizedString
+		/**
+		 * Chinese
+		 */
+		zh: () => LocalizedString
+	}
+	message: {
+		/**
+		 * Save success
+		 */
+		saveSuccess: () => LocalizedString
+		/**
+		 * Create success
+		 */
+		createSuccess: () => LocalizedString
+		/**
+		 * Remove success
+		 */
+		removeSuccess: () => LocalizedString
+		/**
+		 * Request failed
+		 */
+		requestFailed: () => LocalizedString
+		/**
+		 * Save failed
+		 */
+		saveFailed: () => LocalizedString
+		/**
+		 * Create failed
+		 */
+		createFailed: () => LocalizedString
+		/**
+		 * Remove failed
+		 */
+		removeFailed: () => LocalizedString
+	}
+	components: {
+		messageBox: {
+			/**
+			 * Cancel
+			 */
+			cancel: () => LocalizedString
+			/**
+			 * Confirm
+			 */
+			confirm: () => LocalizedString
+		}
+		ui: {
+			cursor: {
+				/**
+				 * size
+				 */
+				size: () => LocalizedString
+				/**
+				 * Previous
+				 */
+				previous: () => LocalizedString
+				/**
+				 * Next
+				 */
+				next: () => LocalizedString
+			}
+			pagination: {
+				/**
+				 * size
+				 */
+				size: () => LocalizedString
+				/**
+				 * {total} results
+				 */
+				total: (arg: { total: number }) => LocalizedString
+				/**
+				 * Page {current}
+				 */
+				current: (arg: { current: number }) => LocalizedString
+				/**
+				 * Previous
+				 */
+				previous: () => LocalizedString
+				/**
+				 * Next
+				 */
+				next: () => LocalizedString
+			}
+			searchInput: {
+				/**
+				 * Search
+				 */
+				placeholder: () => LocalizedString
+			}
+			inputList: {
+				/**
+				 * Add
+				 */
+				add: () => LocalizedString
+				/**
+				 * Remove
+				 */
+				remove: () => LocalizedString
+			}
+		}
+		graphql: {
+			editor: {
+				/**
+				 * Save
+				 */
+				saveBtn: () => LocalizedString
+				/**
+				 * Select
+				 */
+				selectBtn: () => LocalizedString
+				/**
+				 * Remove
+				 */
+				removeBtn: () => LocalizedString
+				/**
+				 * Back
+				 */
+				backBtn: () => LocalizedString
+				/**
+				 * Create a new {name}
+				 */
+				createType: (arg: { name: string }) => LocalizedString
+				/**
+				 * New {name}
+				 */
+				newType: (arg: { name: string }) => LocalizedString
+				/**
+				 * Bind {name}
+				 */
+				bindType: (arg: { name: string }) => LocalizedString
+			}
+			table: {
+				/**
+				 * Remove row?
+				 */
+				removeModalTitle: () => LocalizedString
+				/**
+				 * Edit
+				 */
+				editBtn: () => LocalizedString
+				/**
+				 * Remove
+				 */
+				removeBtn: () => LocalizedString
+				/**
+				 * Cancel
+				 */
+				cancelBtn: () => LocalizedString
+				th: {
+					/**
+					 * filter
+					 */
+					filter: () => LocalizedString
+					/**
+					 * cancel
+					 */
+					cancel: () => LocalizedString
+					/**
+					 * No Sort
+					 */
+					noSort: () => LocalizedString
+					/**
+					 * ASC
+					 */
+					asc: () => LocalizedString
+					/**
+					 * DESC
+					 */
+					desc: () => LocalizedString
+					/**
+					 * Equals
+					 */
+					eq: () => LocalizedString
+					/**
+					 * Not Equals
+					 */
+					neq: () => LocalizedString
+					/**
+					 * Like
+					 */
+					lk: () => LocalizedString
+					/**
+					 * Not Like
+					 */
+					nlk: () => LocalizedString
+					/**
+					 * Greater Than
+					 */
+					gt: () => LocalizedString
+					/**
+					 * Greater Equals
+					 */
+					gte: () => LocalizedString
+					/**
+					 * Less Than
+					 */
+					lt: () => LocalizedString
+					/**
+					 * Less Equals
+					 */
+					lte: () => LocalizedString
+					/**
+					 * Is Null
+					 */
+					nil: () => LocalizedString
+					/**
+					 * Not Null
+					 */
+					nnil: () => LocalizedString
+					/**
+					 * In
+					 */
+					'in': () => LocalizedString
+					/**
+					 * Not In
+					 */
+					nin: () => LocalizedString
+					/**
+					 * Between
+					 */
+					bt: () => LocalizedString
+					/**
+					 * Not Between
+					 */
+					nbt: () => LocalizedString
+					/**
+					 * Filter..
+					 */
+					filterPlaceholder: () => LocalizedString
+				}
+				td: {
+					/**
+					 * save
+					 */
+					save: () => LocalizedString
+					/**
+					 * clear
+					 */
+					clear: () => LocalizedString
+				}
+			}
+		}
+	}
+	routers: {
+		type: {
+			/**
+			 * Create
+			 */
+			create: () => LocalizedString
+			/**
+			 * Remove
+			 */
+			remove: () => LocalizedString
+		}
+	}
 }
 
 export type Formatters = {}

@@ -11,7 +11,7 @@
 	import { NavBar, NavBarStart, NavBarCenter, NavBarEnd } from '@graphace/ui/components/navbar';
 	import Notifications from '@graphace/ui/components/Notifications.svelte';
 	import MessageBoxs from '@graphace/ui/components/MessageBoxs.svelte';
-	import { setLocale } from '../i18n/i18n-svelte';
+	import { setLocale } from '~/i18n/i18n-svelte';
 	import { LocaleSelect, ThemeSelect } from '../components/select';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Menu, Adjustments } from '@steeze-ui/heroicons';
