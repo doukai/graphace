@@ -1,9 +1,11 @@
 schema: 'http://localhost:8080/graphql'
 overwrite: true
 generates:
-  ./src/gql/generated/schema.ts:
-    plugins:
-      - typescript
-  ./src/gql/generated/introspection.json:
-    plugins:
-      - introspection
+  # ./src/gql/generated/schema.ts:
+  #   plugins:
+  #     - typescript
+  # ./src/gql/generated/introspection.json:
+  #   plugins:
+  #     - introspection
+  ./src/gql/generated/schema.gql:
+    - graphace-codegen

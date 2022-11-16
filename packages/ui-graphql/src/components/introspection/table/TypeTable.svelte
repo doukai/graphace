@@ -46,19 +46,17 @@
 			dataList = manager.getListFromConnection(response.connection);
 			selectedRows = {};
 			selectAll = false;
-			manager
-				.getListFromConnection(response.connection)
-				.forEach((data) => (selectedRows[data[idFieldName]] = false));
+			dataList.forEach((data) => (selectedRows[data.get(idFieldName)] = false));
 		});
 	};
 
-	let dataList: object[] = [];
-	let selectedRows: object = {};
+	let dataList: Record<string, any>[] = [];
+	let selectedRows: Record<string, boolean> = {};
 	let selectAll: boolean;
 	let pageNumber: number = 1;
 
 	const dispatch = createEventDispatcher<{
-		selectChange: { selectedIdList: string[]; selectedDataList: object[] };
+		selectChange: { selectedIdList: string[]; selectedDataList: Record<string, any>[] };
 	}>();
 
 	$: dispatch('selectChange', {
@@ -67,7 +65,7 @@
 			.map((id) => id),
 		selectedDataList: Object.keys(selectedRows)
 			.filter((id) => selectedRows[id])
-			.map((id) => dataList.find((data) => data[idFieldName] === id))
+			.flatMap((id) => dataList.filter((data) => data.get(idFieldName) === id))
 	});
 
 	const manager: TypeManager = new TypeManager();
@@ -89,21 +87,23 @@
 			reject: (error: Error) => void;
 		}>
 	) {
-		const data = dataList.find((data) => data[idFieldName] === event.detail.id);
-		validate(__type.name, data, $locale)
-			.then((data) => {
-				updateType(__type, data, event.detail.__field)
-					.then((response) => {
-						event.detail.resolve(response.data[event.detail.__field.name]);
-						notifications.success($LL.message.saveSuccess());
-					})
-					.catch((error) => {
-						notifications.error($LL.message.saveFailed());
-					});
-			})
-			.catch((validErrors) => {
-				event.detail.reject(validErrors[event.detail.__field.name]);
-			});
+		const data = dataList.find((data) => data.get(idFieldName) === event.detail.id);
+		if (data && __type.name) {
+			validate(__type.name, data, $locale)
+				.then((data) => {
+					updateType(__type, data, event.detail.__field)
+						.then((response) => {
+							event.detail.resolve(response.data[event.detail.__field.name]);
+							notifications.success($LL.message.saveSuccess());
+						})
+						.catch((error) => {
+							notifications.error($LL.message.saveFailed());
+						});
+				})
+				.catch((validErrors) => {
+					event.detail.reject(validErrors[event.detail.__field.name]);
+				});
+		}
 	}
 
 	async function removeRow(id: string) {

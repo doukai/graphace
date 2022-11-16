@@ -96,15 +96,15 @@ export class TypeManager {
             .concat(" cond: OR");
     }
 
-    public createTypeObject(__type: __Type): object {
-        const typeObject: object = {};
+    public createTypeObject(__type: __Type): Record<string, any> {
+        const typeObject: Record<string, any> = {};
         Object.keys(typeObject).push(...this.getScalarFiledList(__type).filter(field => field).map(field => field.name));
         return typeObject;
     }
 
-    public getIdFieldName(__type: __Type): string | undefined {
+    public getIdFieldName(__type: __Type): string {
         const idField = _.find(__type.fields, field => this.getFieldTypeName(field.type) === "ID");
-        return idField ? idField.name : undefined;
+        return idField ? idField.name : "id";
 
     }
 
@@ -185,7 +185,7 @@ export class TypeManager {
         return undefined;
     }
 
-    public getListFromConnection(connection: Connection): Array<object> {
+    public getListFromConnection(connection: Connection): Array<Record<string, any>> {
         return connection.edges.map(edge => edge.node);
     }
 

@@ -15,6 +15,7 @@
 			"./$houdini/types"
 		],
 		"outDir": "./dist",
+		"preserveValueImports": false,
 		// "baseUrl": ".",
 		// "paths": {
 		// 	"~/*": [

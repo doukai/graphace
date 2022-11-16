@@ -31,85 +31,85 @@ export type QueryParams = {
     offset?: number;
 };
 
-// export async function queryTypeConnection({
-//     __type,
-//     queryValue = null,
-//     fieldFilters = [],
-//     pageSize = 10,
-//     after = null,
-//     before = null,
-//     offset = 0
-// }: QueryParams): Promise<{ connection: Connection }> {
-//     const fields: Array<__Field> = manager.getScalarFiledList(__type);
-//     const variables: string = queryValue ? '($queryValue: String)' : '';
-//     const whereArguments: string = queryValue
-//         ? manager.getAllSingleTypeFiledQueryArguments(__type)
-//         : '';
-//     let pageArguments = '';
-//     if (after) {
-//         pageArguments = `after: "${after}" first: ${pageSize}`;
-//     } else if (before) {
-//         pageArguments = `before: "${before}" last: ${pageSize}`;
-//     } else if (offset) {
-//         pageArguments = `offset: ${offset} first: ${pageSize}`;
-//     } else {
-//         pageArguments = `first: ${pageSize}`;
-//     }
+export async function queryTypeConnection({
+    __type,
+    queryValue = undefined,
+    fieldFilters = [],
+    pageSize = 10,
+    after = undefined,
+    before = undefined,
+    offset = 0
+}: QueryParams): Promise<{ connection: Connection }> {
+    const fields: Array<__Field> = manager.getScalarFiledList(__type);
+    const variables: string = queryValue ? '($queryValue: String)' : '';
+    const whereArguments: string = queryValue
+        ? manager.getAllSingleTypeFiledQueryArguments(__type)
+        : '';
+    let pageArguments = '';
+    if (after) {
+        pageArguments = `after: "${after}" first: ${pageSize}`;
+    } else if (before) {
+        pageArguments = `before: "${before}" last: ${pageSize}`;
+    } else if (offset) {
+        pageArguments = `offset: ${offset} first: ${pageSize}`;
+    } else {
+        pageArguments = `first: ${pageSize}`;
+    }
 
-//     const filters: Array<string> = fieldFilters
-//         .filter((__fieldFilter) => __fieldFilter.val != null)
-//         .map((__fieldFilter) => {
-//             if (manager.getFieldTypeKind(__fieldFilter.__field.type) === __TypeKind.OBJECT) {
-//                 if (Object.keys(__fieldFilter.val).filter(key => __fieldFilter.val[key].val).length > 0) {
-//                     return `${__fieldFilter.__field.name}: {${Object.keys(__fieldFilter.val).filter(key => __fieldFilter.val[key].val)
-//                         .map(key => `${key}: {opr:${__fieldFilter.val[key].opr} val:${JSON.stringify(__fieldFilter.val[key].val)}}`).join(" ")}}`
-//                 } else {
-//                     return "";
-//                 }
-//             } else {
-//                 return `${__fieldFilter.__field.name}: {opr:${__fieldFilter.opr} val:${JSON.stringify(__fieldFilter.val)}}`
-//             }
-//         });
+    const filters: Array<string> = fieldFilters
+        .filter((__fieldFilter) => __fieldFilter.val != null)
+        .map((__fieldFilter) => {
+            if (manager.getFieldTypeKind(__fieldFilter.__field.type) === __TypeKind.OBJECT) {
+                if (Object.keys(__fieldFilter.val).filter(key => __fieldFilter.val[key].val).length > 0) {
+                    return `${__fieldFilter.__field.name}: {${Object.keys(__fieldFilter.val).filter(key => __fieldFilter.val[key].val)
+                        .map(key => `${key}: {opr:${__fieldFilter.val[key].opr} val:${JSON.stringify(__fieldFilter.val[key].val)}}`).join(" ")}}`
+                } else {
+                    return "";
+                }
+            } else {
+                return `${__fieldFilter.__field.name}: {opr:${__fieldFilter.opr} val:${JSON.stringify(__fieldFilter.val)}}`
+            }
+        });
 
-//     const sorts: Array<string> = fieldFilters
-//         .filter((__fieldFilter) => __fieldFilter.sort != null)
-//         .map((__fieldFilter) => `${__fieldFilter.__field.name}: ${__fieldFilter.sort}`);
+    const sorts: Array<string> = fieldFilters
+        .filter((__fieldFilter) => __fieldFilter.sort != null)
+        .map((__fieldFilter) => `${__fieldFilter.__field.name}: ${__fieldFilter.sort}`);
 
-//     let queryArguments = '';
+    let queryArguments = '';
 
-//     if (whereArguments) {
-//         queryArguments += ` ${whereArguments}`;
-//     }
+    if (whereArguments) {
+        queryArguments += ` ${whereArguments}`;
+    }
 
-//     if (pageArguments) {
-//         queryArguments += ` ${pageArguments}`;
-//     }
+    if (pageArguments) {
+        queryArguments += ` ${pageArguments}`;
+    }
 
-//     if (filters.length > 0) {
-//         queryArguments += ` ${filters.join(' ')}`;
-//     }
+    if (filters.length > 0) {
+        queryArguments += ` ${filters.join(' ')}`;
+    }
 
-//     if (sorts.length > 0) {
-//         queryArguments += ` orderBy: {${sorts.join(' ')}}`;
-//     }
+    if (sorts.length > 0) {
+        queryArguments += ` orderBy: {${sorts.join(' ')}}`;
+    }
 
-//     const queryTypeConnectionFieldName: string = manager.getQueryTypeConnectionFieldName(__type);
-//     const selections: string = fields.map((field) => field.name).join(' ');
-//     const query: string = gql`
-//     query ${variables}{
-//         connection: ${queryTypeConnectionFieldName} (${queryArguments}){
-//             totalCount
-//             edges {
-//                 node {
-//                     ${selections}
-//                 }
-//             }
-//         }
-//     }
-//     `;
+    const queryTypeConnectionFieldName: string = manager.getQueryTypeConnectionFieldName(__type);
+    const selections: string = fields.map((field) => field.name).join(' ');
+    const query: string = gql`
+    query ${variables}{
+        connection: ${queryTypeConnectionFieldName} (${queryArguments}){
+            totalCount
+            edges {
+                node {
+                    ${selections}
+                }
+            }
+        }
+    }
+    `;
 
-//     return await client.request<{ connection: Connection }>(query, { queryValue });
-// }
+    return await client.request<{ connection: Connection }>(query, { queryValue });
+}
 
 // export type QueryMapParams = {
 //     __parentType: __Type;
