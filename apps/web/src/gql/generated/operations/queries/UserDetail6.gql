@@ -1,0 +1,3 @@
+query QueryUserDetail6($user: UserInput) {
+    userDetail6(user: $user) 
+}

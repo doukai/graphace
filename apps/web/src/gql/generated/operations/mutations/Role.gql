@@ -1,0 +1,15 @@
+mutation MutationRole($createGroupId: String, $createTime: Timestamp, $createUserId: String, $id: ID, $isDeprecated: Boolean, $name: String!, $realmId: String, $type: [RoleType]!, $updateTime: Timestamp, $updateUserId: String, $users: [UserInput!], $version: Int, $where: RoleExpression) {
+    role(createGroupId: $createGroupId, createTime: $createTime, createUserId: $createUserId, id: $id, isDeprecated: $isDeprecated, name: $name, realmId: $realmId, type: $type, updateTime: $updateTime, updateUserId: $updateUserId, users: $users, version: $version, where: $where) {
+        createGroupId
+		createTime
+		createUserId
+		id
+		isDeprecated
+		name
+		realmId
+		type
+		updateTime
+		updateUserId
+		version
+    }
+}

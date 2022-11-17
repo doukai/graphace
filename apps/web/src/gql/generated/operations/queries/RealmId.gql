@@ -1,0 +1,3 @@
+query QueryRealmId {
+    realmId 
+}

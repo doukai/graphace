@@ -1,0 +1,24 @@
+query QueryUserByOrg2($organization: OrganizationInput) {
+    userByOrg2(organization: $organization) {
+        age
+		createGroupId
+		createTime
+		createUserId
+		disable
+		id
+		isDeprecated
+		login
+		name
+		organizationId
+		password
+		phones
+		realmId
+		sex
+		test1
+		test2
+		updateTime
+		updateUserId
+		userDetail2
+		version
+    }
+}

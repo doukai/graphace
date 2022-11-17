@@ -1,0 +1,3 @@
+query QueryOrgLevel($organization: OrganizationInput) {
+    orgLevel(organization: $organization) 
+}

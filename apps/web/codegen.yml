@@ -1,24 +1,13 @@
 schema: 'http://localhost:8080/graphql'
-documents: './src/gql/generated/opertion.graphql'
 overwrite: true
 generates:
   ./src/gql/generated/schema.ts:
     plugins:
       - typescript
-  # ./src/gql/generated/schema.graphql:
-  #   plugins:
-  #     - schema-ast
-  # ./src/gql/generated/introspection.json:
-  #   plugins:
-  #     - introspection
-  # ./src/gql/generated/opertion.graphql:
-  #   plugins:
-  #     - graphace-codegen
-  ./src/gql/generated/:
-    preset: 'near-operation-file'
-    presetConfig:
-      extension: '.generated.tsx'
-      baseTypesPath: 'schema.ts'
+  ./src/gql/generated/introspection.json:
     plugins:
-      - typescript-operations
-      - typescript-react-apollo
+      - introspection
+  ./src/gql/generated/operations/:
+    preset: 'graphace-codegen-preset'
+    plugins:
+      - graphace-codegen
