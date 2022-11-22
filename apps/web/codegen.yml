@@ -8,6 +8,6 @@ generates:
     plugins:
       - introspection
   ./src/gql/generated/operations/:
-    preset: 'graphace-codegen-preset'
+    preset: graphace-codegen-preset
     plugins:
       - graphace-codegen

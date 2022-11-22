@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import {
-		queryTypeConnection,
-		updateType,
-		removeType,
-		type QueryParams
-	} from '@graphace/graphql/request/Type';
+	// import {
+	// 	queryTypeConnection,
+	// 	updateType,
+	// 	removeType,
+	// 	type QueryParams
+	// } from '@graphace/graphql/request/Type';
 	import { TypeManager } from '@graphace/graphql/types/TypeManager';
 	import {
 		type __Type,
@@ -21,6 +21,7 @@
 	import { validate } from '@graphace/graphql/schema/JsonSchema';
 	import LL from '~/i18n/i18n-svelte';
 	import { locale } from '~/i18n/i18n-svelte';
+	import { GQL_QueryUserConnection, GQL_MutationUser } from '$houdini';
 
 	export let __type: __Type;
 	export let pageSize: number = 10;
@@ -49,6 +50,8 @@
 			dataList.forEach((data) => (selectedRows[data.get(idFieldName)] = false));
 		});
 	};
+
+	GQL_QueryUserConnection.queryTypeConnection()
 
 	let dataList: Record<string, any>[] = [];
 	let selectedRows: Record<string, boolean> = {};
