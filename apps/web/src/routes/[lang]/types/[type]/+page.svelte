@@ -19,6 +19,7 @@
 	import { Pagination } from '@graphace/ui/components/connection';
 	import { graphql } from '$houdini';
 	import type { PageData } from './$types';
+	import { GQL_QueryUserConnection, GQL_MutationUser } from '$houdini';
 
 	export let data: PageData;
 
