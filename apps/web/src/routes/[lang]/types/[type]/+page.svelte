@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import type { __Type, __Schema } from '@graphace/graphql/types';
+	import { createEventDispatcher } from 'svelte';
+	import type { __Type, __Schema, QueryParams } from '@graphace/graphql/types';
 	import { __schema } from '~/gql/generated/introspection.json';
 	import { TypeManager } from '@graphace/graphql/types/TypeManager';
-	import type { QueryParams } from '@graphace/graphql/request/Type';
 	import { TypeTable, TypeTableModals } from '@graphace/ui-graphql/components/introspection/table';
 	import {
 		TypeEditorModals,
@@ -20,6 +20,7 @@
 	import { graphql } from '$houdini';
 	import type { PageData } from './$types';
 	import { GQL_QueryUserConnection, GQL_MutationUser } from '$houdini';
+	import { before } from 'node:test';
 
 	export let data: PageData;
 
@@ -32,6 +33,12 @@
 
 	let refresh: (params?: QueryParams) => void;
 
+	GQL_QueryUserConnection.fetch({ variables: { before: '1', first: 10 } });
+
+	const dispatch = createEventDispatcher<{
+		query: QueryParams;
+	}>();
+
 	// let queryValue: string = null;
 	// let search = (event: CustomEvent<{ value: string }>) => {
 	// 	queryValue = event.detail.value;
@@ -40,6 +47,17 @@
 
 	let showDeleteButton = false;
 	let idList: string[] = [];
+
+	const query = (event: CustomEvent<QueryParams>) => {
+		let variables = {
+			pageSize: event.detail.pageSize,
+			after: event.detail.after,
+			before: event.detail.before,
+			offset: event.detail.offset
+		};
+
+		GQL_QueryUserConnection.fetch({ variables });
+	};
 
 	const selectChange = (event: CustomEvent<{ selectedIdList: string[] }>) => {
 		idList = event.detail.selectedIdList;

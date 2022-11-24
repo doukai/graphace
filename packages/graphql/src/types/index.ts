@@ -12,7 +12,8 @@ import { __TypeKind } from "./__TypeKind";
 import { __DirectiveLocation } from "./__DirectiveLocation";
 import { Operator } from "./Operator";
 import { Sort } from "./Sort";
+import type { QueryParams } from "./QueryParams";
 
 export {
-    __Schema, __Type, __Directive, __Field, __InputValue, __FieldFilter, createFilter, __EnumValue, Connection, Edge, PageInfo, __TypeKind, __DirectiveLocation, Operator, Sort
+    __Schema, __Type, __Directive, __Field, __InputValue, __FieldFilter, createFilter, __EnumValue, Connection, Edge, PageInfo, __TypeKind, __DirectiveLocation, Operator, Sort, QueryParams
 }
