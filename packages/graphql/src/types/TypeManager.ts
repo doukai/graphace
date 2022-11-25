@@ -79,6 +79,12 @@ export class TypeManager {
             .filter((field) => this.getFieldTypeKind(field.type) !== __TypeKind.OBJECT);
     }
 
+    public getScalarWithoutAggregateFiledList(__type: __Type): __Field[] {
+        return this.getFiledList(__type)
+            .filter((field) => !aggregateSuffix.some(suffix => _.endsWith(field.name, suffix)))
+            .filter((field) => this.getFieldTypeKind(field.type) !== __TypeKind.OBJECT);
+    }
+
     public getSingleTypeFiledList(__type: __Type): __Field[] {
         return this.getScalarFiledList(__type)
             .filter((field) => !this.fieldIsList(field.type));

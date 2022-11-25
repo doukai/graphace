@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
-	import type { __Type, __Schema, QueryParams } from '@graphace/graphql/types';
+	import { __Type, __Schema, QueryParams, Sort } from '@graphace/graphql/types';
 	import { __schema } from '~/gql/generated/introspection.json';
 	import { TypeManager } from '@graphace/graphql/types/TypeManager';
 	import { TypeTable, TypeTableModals } from '@graphace/ui-graphql/components/introspection/table';
@@ -17,7 +17,7 @@
 	import { Plus, PencilAlt, Trash } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
 	import { Pagination } from '@graphace/ui/components/connection';
-	import { graphql } from '$houdini';
+	import { graphql, QueryUserConnection$input, UserOrderBy } from '$houdini';
 	import type { PageData } from './$types';
 	import { GQL_QueryUserConnection, GQL_MutationUser } from '$houdini';
 	import { before } from 'node:test';
@@ -49,12 +49,36 @@
 	let idList: string[] = [];
 
 	const query = (event: CustomEvent<QueryParams>) => {
-		let variables = {
-			pageSize: event.detail.pageSize,
-			after: event.detail.after,
-			before: event.detail.before,
-			offset: event.detail.offset
-		};
+		let variables: QueryUserConnection$input = Object.assign(
+			{},
+			...(event.detail.fieldFilters?.map((filter) => ({
+				[filter.__field.name]: { val: filter.val, opr: filter.opr }
+			})) || [])
+		);
+
+		if (event.detail.after) {
+			variables.after = event.detail.after;
+			variables.first = event.detail.pageSize;
+		} else if (event.detail.before) {
+			variables.before = event.detail.before;
+			variables.last = event.detail.pageSize;
+		} else if (event.detail.offset) {
+			variables.offset = event.detail.offset;
+			variables.first = event.detail.pageSize;
+		} else {
+			variables.first = event.detail.pageSize;
+		}
+
+		let userOrderBy: UserOrderBy = Object.assign(
+			{},
+			...(event.detail.fieldFilters?.map((filter) => ({
+				[filter.__field.name]: filter.sort
+			})) || [])
+		);
+
+		if (Object.keys(userOrderBy).length > 0) {
+			variables.orderBy = userOrderBy;
+		}
 
 		GQL_QueryUserConnection.fetch({ variables });
 	};

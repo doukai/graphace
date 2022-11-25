@@ -6,7 +6,7 @@ const manager = new TypeManager();
 export type __FieldFilter = {
     __field: __Field;
     opr?: Operator;
-    val: string | number | boolean | string[] | number[] | boolean[] | object;
+    val: any;
     sort?: Sort;
 }
 
