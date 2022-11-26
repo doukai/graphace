@@ -1,17 +1,18 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import {
-		queryTypeConnection,
-		updateType,
-		removeType,
-		type QueryParams
-	} from '@graphace/graphql/request/Type';
+	// import {
+	// 	queryTypeConnection,
+	// 	updateType,
+	// 	removeType,
+	// 	type QueryParams
+	// } from '@graphace/graphql/request/Type';
 	import { TypeManager } from '@graphace/graphql/types/TypeManager';
 	import {
 		type __Type,
 		type __Field,
 		type __FieldFilter,
 		type Connection,
+		type QueryParams,
 		__TypeKind,
 		createFilter
 	} from '@graphace/graphql/types';
@@ -26,38 +27,19 @@
 	export let pageSize: number = 10;
 	export let className = '';
 
+	const dispatch = createEventDispatcher<{
+		query: QueryParams;
+		selectChange: { selectedIdList: string[]; selectedDataList: Record<string, any>[] };
+	}>();
+
 	export const refresh = (params?: QueryParams): void => {
-		let { queryValue, after, before, offset } = params || {
-			queryValue: null,
-			after: null,
-			before: null,
-			offset: 0
-		};
-		connectionPromise = queryTypeConnection({
-			__type,
-			queryValue,
-			fieldFilters,
-			pageSize,
-			after,
-			before,
-			offset
-		});
-		connectionPromise.then((response) => {
-			dataList = manager.getListFromConnection(response.connection);
-			selectedRows = {};
-			selectAll = false;
-			dataList.forEach((data) => (selectedRows[data.get(idFieldName)] = false));
-		});
+		dispatch('query', params);
 	};
 
 	let dataList: Record<string, any>[] = [];
 	let selectedRows: Record<string, boolean> = {};
 	let selectAll: boolean;
 	let pageNumber: number = 1;
-
-	const dispatch = createEventDispatcher<{
-		selectChange: { selectedIdList: string[]; selectedDataList: Record<string, any>[] };
-	}>();
 
 	$: dispatch('selectChange', {
 		selectedIdList: Object.keys(selectedRows)
@@ -75,10 +57,6 @@
 		.map((__field) => createFilter(__field));
 	const idFieldName: string = manager.getIdFieldName(__type);
 
-	let connectionPromise: Promise<{ connection: Connection }>;
-
-	refresh();
-
 	async function saveField(
 		event: CustomEvent<{
 			id: string;
@@ -87,44 +65,44 @@
 			reject: (error: Error) => void;
 		}>
 	) {
-		const data = dataList.find((data) => data.get(idFieldName) === event.detail.id);
-		if (data && __type.name) {
-			validate(__type.name, data, $locale)
-				.then((data) => {
-					updateType(__type, data, event.detail.__field)
-						.then((response) => {
-							event.detail.resolve(response.data[event.detail.__field.name]);
-							notifications.success($LL.message.saveSuccess());
-						})
-						.catch((error) => {
-							notifications.error($LL.message.saveFailed());
-						});
-				})
-				.catch((validErrors) => {
-					event.detail.reject(validErrors[event.detail.__field.name]);
-				});
-		}
+		// const data = dataList.find((data) => data.get(idFieldName) === event.detail.id);
+		// if (data && __type.name) {
+		// 	validate(__type.name, data, $locale)
+		// 		.then((data) => {
+		// 			updateType(__type, data, event.detail.__field)
+		// 				.then((response) => {
+		// 					event.detail.resolve(response.data[event.detail.__field.name]);
+		// 					notifications.success($LL.message.saveSuccess());
+		// 				})
+		// 				.catch((error) => {
+		// 					notifications.error($LL.message.saveFailed());
+		// 				});
+		// 		})
+		// 		.catch((validErrors) => {
+		// 			event.detail.reject(validErrors[event.detail.__field.name]);
+		// 		});
+		// }
 	}
 
 	async function removeRow(id: string) {
-		removeType(__type, id)
-			.then((response) => {
-				notifications.success($LL.message.removeSuccess());
-				refresh();
-			})
-			.catch((error) => {
-				notifications.error($LL.message.removeFailed());
-			});
+		// removeType(__type, id)
+		// 	.then((response) => {
+		// 		notifications.success($LL.message.removeSuccess());
+		// 		refresh();
+		// 	})
+		// 	.catch((error) => {
+		// 		notifications.error($LL.message.removeFailed());
+		// 	});
 	}
 
 	const onNext = (event: CustomEvent<{ selectedPageSize: number; after: string }>): void => {
 		pageSize = event.detail.selectedPageSize;
-		refresh({ after: event.detail.after });
+		// refresh({ after: event.detail.after });
 	};
 
 	const onPrevious = (event: CustomEvent<{ selectedPageSize: number; before: string }>): void => {
 		pageSize = event.detail.selectedPageSize;
-		refresh({ before: event.detail.before });
+		// refresh({ before: event.detail.before });
 	};
 
 	const onPageChange = (
@@ -132,12 +110,12 @@
 	): void => {
 		pageSize = event.detail.selectedPageSize;
 		pageNumber = event.detail.selectedPageNumber;
-		refresh({ offset: (pageNumber - 1) * pageSize });
+		// refresh({ offset: (pageNumber - 1) * pageSize });
 	};
 
 	const onSizeChange = (event: CustomEvent<{ selectedPageSize: number }>): void => {
 		pageSize = event.detail.selectedPageSize;
-		refresh();
+		// refresh();
 	};
 </script>
 

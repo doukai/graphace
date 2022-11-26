@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { createEventDispatcher } from 'svelte';
-	import { __Type, __Schema, QueryParams, Sort } from '@graphace/graphql/types';
+	import type { __Type, __Schema, QueryParams } from '@graphace/graphql/types';
 	import { __schema } from '~/gql/generated/introspection.json';
 	import { TypeManager } from '@graphace/graphql/types/TypeManager';
 	import { TypeTable, TypeTableModals } from '@graphace/ui-graphql/components/introspection/table';
@@ -17,10 +16,15 @@
 	import { Plus, PencilAlt, Trash } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
 	import { Pagination } from '@graphace/ui/components/connection';
-	import { graphql, QueryUserConnection$input, UserOrderBy } from '$houdini';
+	import {
+		Conditional,
+		GQL_QueryUserConnection,
+		GQL_MutationUser,
+		QueryUserConnection$input,
+		UserOrderBy
+	} from '$houdini';
 	import type { PageData } from './$types';
-	import { GQL_QueryUserConnection, GQL_MutationUser } from '$houdini';
-	import { before } from 'node:test';
+	import { TableLoading } from '@graphace/ui/components/table';
 
 	export let data: PageData;
 
@@ -33,20 +37,9 @@
 
 	let refresh: (params?: QueryParams) => void;
 
-	GQL_QueryUserConnection.fetch({ variables: { before: '1', first: 10 } });
-
-	const dispatch = createEventDispatcher<{
-		query: QueryParams;
-	}>();
-
-	// let queryValue: string = null;
-	// let search = (event: CustomEvent<{ value: string }>) => {
-	// 	queryValue = event.detail.value;
-	// 	refresh({ queryValue });
-	// };
-
 	let showDeleteButton = false;
 	let idList: string[] = [];
+	let queryResult = GQL_QueryUserConnection;
 
 	const query = (event: CustomEvent<QueryParams>) => {
 		let variables: QueryUserConnection$input = Object.assign(
@@ -80,7 +73,14 @@
 			variables.orderBy = userOrderBy;
 		}
 
-		GQL_QueryUserConnection.fetch({ variables });
+		if (event.detail.queryValue) {
+			variables.cond = Conditional.OR;
+			variables.login = { val: event.detail.queryValue };
+			variables.name = { val: event.detail.queryValue };
+			variables.phones = { val: event.detail.queryValue };
+		}
+
+		queryResult.fetch({ variables });
 	};
 
 	const selectChange = (event: CustomEvent<{ selectedIdList: string[] }>) => {
@@ -150,49 +150,53 @@
 		</button>
 	</SectionHead>
 	<div class="divider" />
-	<TypeTable {__type} on:selectChange={selectChange} bind:refresh>
-		<div slot="row" let:id let:removeRow>
-			<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
-				<button
-					class="btn btn-square btn-ghost btn-xs"
-					on:click={(e) => {
-						e.preventDefault();
-						goto(`./${manager.typeNameToUrl(data.typeName)}/${id}`);
-					}}
-				>
-					<Icon src={PencilAlt} solid />
-				</button>
+	{#if $queryResult.isFetching}
+		<TableLoading />
+	{:else}
+		<TypeTable {__type} on:selectChange={selectChange} on:query={query} bind:refresh>
+			<div slot="row" let:id let:removeRow>
+				<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
+					<button
+						class="btn btn-square btn-ghost btn-xs"
+						on:click={(e) => {
+							e.preventDefault();
+							goto(`./${manager.typeNameToUrl(data.typeName)}/${id}`);
+						}}
+					>
+						<Icon src={PencilAlt} solid />
+					</button>
+				</div>
+				<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>
+					<button
+						class="btn btn-square btn-ghost btn-xs"
+						on:click={(e) => {
+							e.preventDefault();
+							messageBoxs.open({
+								title: $LL.components.graphql.table.removeModalTitle(),
+								buttonName: $LL.components.graphql.table.removeBtn(),
+								buttonType: 'error',
+								confirm: () => {
+									removeRow(id);
+									return true;
+								}
+							});
+						}}
+					>
+						<Icon src={Trash} solid />
+					</button>
+				</div>
 			</div>
-			<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>
-				<button
-					class="btn btn-square btn-ghost btn-xs"
-					on:click={(e) => {
-						e.preventDefault();
-						messageBoxs.open({
-							title: $LL.components.graphql.table.removeModalTitle(),
-							buttonName: $LL.components.graphql.table.removeBtn(),
-							buttonType: 'error',
-							confirm: () => {
-								removeRow(id);
-								return true;
-							}
-						});
-					}}
-				>
-					<Icon src={Trash} solid />
-				</button>
+			<div slot="page" let:pageNumber let:pageSize let:totalCount let:onPageChange let:onSizeChange>
+				<Pagination
+					{pageNumber}
+					{pageSize}
+					{totalCount}
+					on:pageChange={onPageChange}
+					on:sizeChange={onSizeChange}
+				/>
 			</div>
-		</div>
-		<div slot="page" let:pageNumber let:pageSize let:totalCount let:onPageChange let:onSizeChange>
-			<Pagination
-				{pageNumber}
-				{pageSize}
-				{totalCount}
-				on:pageChange={onPageChange}
-				on:sizeChange={onSizeChange}
-			/>
-		</div>
-	</TypeTable>
+		</TypeTable>
+	{/if}
 {:else}
 	<SectionLoading />
 {/if}
