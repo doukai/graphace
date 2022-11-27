@@ -153,7 +153,12 @@
 	{#if $queryResult.isFetching}
 		<TableLoading />
 	{:else}
-		<TypeTable {__type} on:selectChange={selectChange} on:query={query} bind:refresh>
+		<TypeTable
+			{__type}
+			on:selectChange={selectChange}
+			on:query={query}
+			bind:value={$queryResult.data.connection}
+		>
 			<div slot="row" let:id let:removeRow>
 				<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
 					<button

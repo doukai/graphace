@@ -23,14 +23,10 @@
 	import LL from '~/i18n/i18n-svelte';
 	import { locale } from '~/i18n/i18n-svelte';
 
+	export let value: Connection;
 	export let __type: __Type;
 	export let pageSize: number = 10;
 	export let className = '';
-
-	const dispatch = createEventDispatcher<{
-		query: QueryParams;
-		selectChange: { selectedIdList: string[]; selectedDataList: Record<string, any>[] };
-	}>();
 
 	export const refresh = (params?: QueryParams): void => {
 		dispatch('query', params);
@@ -40,6 +36,11 @@
 	let selectedRows: Record<string, boolean> = {};
 	let selectAll: boolean;
 	let pageNumber: number = 1;
+
+	const dispatch = createEventDispatcher<{
+		query: QueryParams;
+		selectChange: { selectedIdList: string[]; selectedDataList: Record<string, any>[] };
+	}>();
 
 	$: dispatch('selectChange', {
 		selectedIdList: Object.keys(selectedRows)
@@ -119,85 +120,79 @@
 	};
 </script>
 
-{#await connectionPromise}
-	<TableLoading />
-{:then response}
-	<Table {className}>
-		<thead>
-			<tr>
+<Table {className}>
+	<thead>
+		<tr>
+			<th class="z-10">
+				<label>
+					<input
+						type="checkbox"
+						class="checkbox"
+						bind:checked={selectAll}
+						on:change={() => {
+							Object.keys(selectedRows).forEach((id) => (selectedRows[id] = selectAll));
+						}}
+					/>
+				</label>
+			</th>
+			{#each fieldFilters as __fieldFilter}
+				{#if manager.getFieldTypeKind(__fieldFilter.__field.type) === __TypeKind.OBJECT}
+					<ObjectFieldTh
+						__field={__fieldFilter.__field}
+						bind:value={__fieldFilter}
+						on:filter={() => refresh()}
+					/>
+				{:else}
+					<FieldTh bind:value={__fieldFilter} on:filter={() => refresh()} />
+				{/if}
+			{/each}
+			<td />
+		</tr>
+	</thead>
+	<tbody>
+		{#each dataList as data}
+			<tr class="hover">
 				<th class="z-10">
 					<label>
 						<input
 							type="checkbox"
 							class="checkbox"
-							bind:checked={selectAll}
-							on:change={() => {
-								Object.keys(selectedRows).forEach((id) => (selectedRows[id] = selectAll));
-							}}
+							bind:checked={selectedRows[data[idFieldName]]}
 						/>
 					</label>
 				</th>
-				{#each fieldFilters as __fieldFilter}
-					{#if manager.getFieldTypeKind(__fieldFilter.__field.type) === __TypeKind.OBJECT}
-						<ObjectFieldTh
-							__field={__fieldFilter.__field}
-							bind:value={__fieldFilter}
-							on:filter={() => refresh()}
+				{#each fields as __field}
+					{#if manager.getFieldTypeKind(__field.type) === __TypeKind.OBJECT}
+						<ObjectFieldTd
+							__parentType={__type}
+							{__field}
+							id={data[idFieldName]}
+							bind:value={data}
 						/>
 					{:else}
-						<FieldTh bind:value={__fieldFilter} on:filter={() => refresh()} />
+						<FieldTd
+							id={data[idFieldName]}
+							{__field}
+							bind:value={data[__field.name]}
+							on:save={saveField}
+						/>
 					{/if}
 				{/each}
-				<td />
+				<td>
+					<slot name="row" id={data[idFieldName]} {data} {removeRow} />
+				</td>
 			</tr>
-		</thead>
-		<tbody>
-			{#each dataList as data}
-				<tr class="hover">
-					<th class="z-10">
-						<label>
-							<input
-								type="checkbox"
-								class="checkbox"
-								bind:checked={selectedRows[data[idFieldName]]}
-							/>
-						</label>
-					</th>
-					{#each fields as __field}
-						{#if manager.getFieldTypeKind(__field.type) === __TypeKind.OBJECT}
-							<ObjectFieldTd
-								__parentType={__type}
-								{__field}
-								id={data[idFieldName]}
-								bind:value={data}
-							/>
-						{:else}
-							<FieldTd
-								id={data[idFieldName]}
-								{__field}
-								bind:value={data[__field.name]}
-								on:save={saveField}
-							/>
-						{/if}
-					{/each}
-					<td>
-						<slot name="row" id={data[idFieldName]} {data} {removeRow} />
-					</td>
-				</tr>
-			{/each}
-		</tbody>
-	</Table>
-	<div class="divider" />
-	<slot
-		name="page"
-		{pageNumber}
-		{pageSize}
-		totalCount={response.connection.totalCount}
-		{onPageChange}
-		{onSizeChange}
-		{onPrevious}
-		{onNext}
-	/>
-{:catch error}
-	{notifications.error($LL.message.requestFailed())}
-{/await}
+		{/each}
+	</tbody>
+</Table>
+<div class="divider" />
+<slot
+	name="page"
+	{pageNumber}
+	{pageSize}
+	totalCount={value.totalCount}
+	{onPageChange}
+	{onSizeChange}
+	{onPrevious}
+	{onNext}
+/>
