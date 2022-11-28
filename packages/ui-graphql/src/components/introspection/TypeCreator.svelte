@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { mutationType } from '@graphace/graphql/request/Type';
+	// import { mutationType } from '@graphace/graphql/request/Type';
 	import { TypeManager } from '@graphace/graphql/types/TypeManager';
 	import type { __Type } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
@@ -26,14 +26,14 @@
 		validate(__type.name, data, $locale)
 			.then((data) => {
 				errors = {};
-				mutationType(__type, data)
-					.then((response) => {
-						notifications.success($LL.message.saveSuccess());
-						dispatch('back');
-					})
-					.catch((error) => {
-						notifications.error($LL.message.saveFailed());
-					});
+				// mutationType(__type, data)
+				// 	.then((response) => {
+				// 		notifications.success($LL.message.saveSuccess());
+				// 		dispatch('back');
+				// 	})
+				// 	.catch((error) => {
+				// 		notifications.error($LL.message.saveFailed());
+				// 	});
 			})
 			.catch((validErrors) => {
 				errors = validErrors;

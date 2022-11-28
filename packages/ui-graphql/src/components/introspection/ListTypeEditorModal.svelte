@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { querySubType, mutationSubType } from '@graphace/graphql/request/Type';
+	// import { querySubType, mutationSubType } from '@graphace/graphql/request/Type';
 	import { TypeManager } from '@graphace/graphql/types/TypeManager';
 	import { type __Type, type __Field, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
@@ -38,12 +38,12 @@
 		value[__field.name] = [];
 	}
 
-	let queryPromise: Promise<{ data: object }> = querySubType({
-		__parentType,
-		__type,
-		id,
-		__field
-	});
+	// let queryPromise: Promise<{ data: object }> = querySubType({
+	// 	__parentType,
+	// 	__type,
+	// 	id,
+	// 	__field
+	// });
 	let errors: Record<string, Error> = {};
 
 	queryPromise.then((response) => {
@@ -68,14 +68,14 @@
 		validate(__parentType.name, value, $locale)
 			.then((data) => {
 				errors = {};
-				mutationSubType(__parentType, __field, value)
-					.then((response) => {
-						dispatch('change', { id, __field, value: response.data });
-						notifications.success($LL.message.saveSuccess());
-					})
-					.catch((error) => {
-						notifications.error($LL.message.saveFailed());
-					});
+				// mutationSubType(__parentType, __field, value)
+				// 	.then((response) => {
+				// 		dispatch('change', { id, __field, value: response.data });
+				// 		notifications.success($LL.message.saveSuccess());
+				// 	})
+				// 	.catch((error) => {
+				// 		notifications.error($LL.message.saveFailed());
+				// 	});
 			})
 			.catch((validErrors) => {
 				if (validErrors[__field.name]) {
@@ -86,14 +86,14 @@
 
 	const remove = (): void => {
 		value[__field.name] = null;
-		mutationSubType(__parentType, __field, value)
-			.then((response) => {
-				dispatch('change', { id, __field, value: response.data });
-				notifications.success($LL.message.saveSuccess());
-			})
-			.catch((error) => {
-				notifications.error($LL.message.saveFailed());
-			});
+		// mutationSubType(__parentType, __field, value)
+		// 	.then((response) => {
+		// 		dispatch('change', { id, __field, value: response.data });
+		// 		notifications.success($LL.message.saveSuccess());
+		// 	})
+		// 	.catch((error) => {
+		// 		notifications.error($LL.message.saveFailed());
+		// 	});
 	};
 
 	const search = () => {

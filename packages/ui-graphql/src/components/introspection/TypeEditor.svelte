@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { queryType, mutationType, removeType } from '@graphace/graphql/request/Type';
+	// import { queryType, mutationType, removeType } from '@graphace/graphql/request/Type';
 	import { TypeManager } from '@graphace/graphql/types/TypeManager';
 	import { type __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
@@ -26,26 +26,26 @@
 	}>();
 
 	const manager: TypeManager = new TypeManager();
-	const queryPromise: Promise<{ data: object }> = queryType(__type, id);
+	// const queryPromise: Promise<{ data: object }> = queryType(__type, id);
 	let errors: Record<string, Error> = {};
 
 	let data: object;
-	queryPromise.then((response) => {
-		data = response.data;
-	});
+	// queryPromise.then((response) => {
+	// 	data = response.data;
+	// });
 
 	const save = (): void => {
 		validate(__type.name, data, $locale)
 			.then((data) => {
 				errors = {};
-				mutationType(__type, data)
-					.then((response) => {
-						data = response.data;
-						notifications.success($LL.message.saveSuccess());
-					})
-					.catch((error) => {
-						notifications.error($LL.message.saveFailed());
-					});
+				// mutationType(__type, data)
+				// 	.then((response) => {
+				// 		data = response.data;
+				// 		notifications.success($LL.message.saveSuccess());
+				// 	})
+				// 	.catch((error) => {
+				// 		notifications.error($LL.message.saveFailed());
+				// 	});
 			})
 			.catch((validErrors) => {
 				errors = validErrors;
@@ -53,18 +53,18 @@
 	};
 
 	const remove = (): void => {
-		removeType(__type, id)
-			.then((response) => {
-				notifications.success($LL.message.removeSuccess());
-				dispatch('back');
-			})
-			.catch((error) => {
-				notifications.error($LL.message.removeFailed());
-			});
+		// removeType(__type, id)
+		// 	.then((response) => {
+		// 		notifications.success($LL.message.removeSuccess());
+		// 		dispatch('back');
+		// 	})
+		// 	.catch((error) => {
+		// 		notifications.error($LL.message.removeFailed());
+		// 	});
 	};
 </script>
 
-{#await queryPromise}
+<!-- {#await queryPromise}
 	<FormLoading />
 {:then response}
 	<Form>
@@ -130,4 +130,4 @@
 	</Form>
 {:catch error}
 	{notifications.error($LL.message.requestFailed())}
-{/await}
+{/await} -->

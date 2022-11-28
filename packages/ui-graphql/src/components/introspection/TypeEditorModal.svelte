@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { querySubType, mutationSubType } from '@graphace/graphql/request/Type';
+	// import { querySubType, mutationSubType } from '@graphace/graphql/request/Type';
 	import { TypeManager } from '@graphace/graphql/types/TypeManager';
 	import { type __Type, type __Field, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
@@ -34,12 +34,12 @@
 	const manager: TypeManager = new TypeManager();
 	const idFieldName: string = manager.getIdFieldName(__type);
 
-	let queryPromise: Promise<{ data: object }> = querySubType({
-		__parentType,
-		__type,
-		id,
-		__field
-	});
+	// let queryPromise: Promise<{ data: object }> = querySubType({
+	// 	__parentType,
+	// 	__type,
+	// 	id,
+	// 	__field
+	// });
 	let errors: Record<string, Error> = {};
 
 	queryPromise.then((response) => {
@@ -54,14 +54,14 @@
 		validate(__parentType.name, value, $locale)
 			.then((data) => {
 				errors = {};
-				mutationSubType(__parentType, __field, value)
-					.then((response) => {
-						dispatch('change', { id, __field, value: response.data });
-						notifications.success($LL.message.saveSuccess());
-					})
-					.catch((error) => {
-						notifications.error($LL.message.saveFailed());
-					});
+				// mutationSubType(__parentType, __field, value)
+				// 	.then((response) => {
+				// 		dispatch('change', { id, __field, value: response.data });
+				// 		notifications.success($LL.message.saveSuccess());
+				// 	})
+				// 	.catch((error) => {
+				// 		notifications.error($LL.message.saveFailed());
+				// 	});
 			})
 			.catch((validErrors) => {
 				if (validErrors[__field.name]) {
@@ -72,14 +72,14 @@
 
 	const remove = (): void => {
 		value[__field.name] = null;
-		mutationSubType(__parentType, __field, value)
-			.then((response) => {
-				dispatch('change', { id, __field, value: response.data });
-				notifications.success($LL.message.saveSuccess());
-			})
-			.catch((error) => {
-				notifications.error($LL.message.saveFailed());
-			});
+		// mutationSubType(__parentType, __field, value)
+		// 	.then((response) => {
+		// 		dispatch('change', { id, __field, value: response.data });
+		// 		notifications.success($LL.message.saveSuccess());
+		// 	})
+		// 	.catch((error) => {
+		// 		notifications.error($LL.message.saveFailed());
+		// 	});
 	};
 
 	const search = () => {
@@ -103,7 +103,7 @@
 <Modal {isModalOpen} title={__field.name}>
 	<ModalContent>
 		<div class="py-4 px-0 sm:px-6 lg:px-8 space-y-4">
-			{#await queryPromise}
+			<!-- {#await queryPromise}
 				{#each { length: 6 } as _}
 					<div class="animate-pulse bg-base-200 px-12 py-12 sm:mt-px sm:pt-2 rounded" />
 					<div class="divider" />
@@ -171,7 +171,7 @@
 				</button>
 			{:catch error}
 				{notifications.error($LL.message.requestFailed())}
-			{/await}
+			{/await} -->
 		</div>
 	</ModalContent>
 	<ModalActions>

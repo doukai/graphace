@@ -1,18 +1,12 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	// import {
-	// 	queryTypeConnection,
-	// 	updateType,
-	// 	removeType,
-	// 	type QueryParams
-	// } from '@graphace/graphql/request/Type';
 	import { TypeManager } from '@graphace/graphql/types/TypeManager';
 	import {
 		type __Type,
 		type __Field,
 		type __FieldFilter,
-		type Connection,
 		type QueryParams,
+		type Connection,
 		__TypeKind,
 		createFilter
 	} from '@graphace/graphql/types';
@@ -23,19 +17,16 @@
 	import LL from '~/i18n/i18n-svelte';
 	import { locale } from '~/i18n/i18n-svelte';
 
-	export let value: Connection;
+	export let value: any;
 	export let __type: __Type;
 	export let pageSize: number = 10;
 	export let className = '';
 
-	export const refresh = (params?: QueryParams): void => {
-		dispatch('query', params);
-	};
-
-	let dataList: Record<string, any>[] = [];
 	let selectedRows: Record<string, boolean> = {};
 	let selectAll: boolean;
 	let pageNumber: number = 1;
+	$: connection = value.connection as Connection;
+	$: dataList = manager.getListFromConnection(connection);
 
 	const dispatch = createEventDispatcher<{
 		query: QueryParams;
@@ -98,12 +89,12 @@
 
 	const onNext = (event: CustomEvent<{ selectedPageSize: number; after: string }>): void => {
 		pageSize = event.detail.selectedPageSize;
-		// refresh({ after: event.detail.after });
+		dispatch('query', { after: event.detail.after });
 	};
 
 	const onPrevious = (event: CustomEvent<{ selectedPageSize: number; before: string }>): void => {
 		pageSize = event.detail.selectedPageSize;
-		// refresh({ before: event.detail.before });
+		dispatch('query', { after: event.detail.before });
 	};
 
 	const onPageChange = (
@@ -111,12 +102,12 @@
 	): void => {
 		pageSize = event.detail.selectedPageSize;
 		pageNumber = event.detail.selectedPageNumber;
-		// refresh({ offset: (pageNumber - 1) * pageSize });
+		dispatch('query', { offset: (pageNumber - 1) * pageSize });
 	};
 
 	const onSizeChange = (event: CustomEvent<{ selectedPageSize: number }>): void => {
 		pageSize = event.detail.selectedPageSize;
-		// refresh();
+		dispatch('query', {});
 	};
 </script>
 
@@ -140,10 +131,10 @@
 					<ObjectFieldTh
 						__field={__fieldFilter.__field}
 						bind:value={__fieldFilter}
-						on:filter={() => refresh()}
+						on:filter={() => dispatch('query', {})}
 					/>
 				{:else}
-					<FieldTh bind:value={__fieldFilter} on:filter={() => refresh()} />
+					<FieldTh bind:value={__fieldFilter} on:filter={() => dispatch('query', {})} />
 				{/if}
 			{/each}
 			<td />
@@ -190,7 +181,7 @@
 	name="page"
 	{pageNumber}
 	{pageSize}
-	totalCount={value.totalCount}
+	totalCount={connection.totalCount}
 	{onPageChange}
 	{onSizeChange}
 	{onPrevious}

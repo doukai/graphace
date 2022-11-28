@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { tippy } from '@graphace/ui/components/tippy';
 	import { TypeManager } from '@graphace/graphql/types/TypeManager';
-	import { getType } from '@graphace/graphql/request/Introspection';
+	// import { getType } from '@graphace/graphql/request/Introspection';
 	import {
 		Input,
 		NumberInput,
@@ -26,18 +26,18 @@
 	const manager = new TypeManager();
 	let __type: __Type;
 	let fieldTypeName = manager.getFieldTypeName(__field.type);
-	let queryType = getType(fieldTypeName);
+	// let queryType = getType(fieldTypeName);
 
-	queryType.then((response) => {
-		__type = response.__type;
-		if (!value.val) {
-			value.val = {};
-		}
-		manager
-			.getScalarFiledList(__type)
-			.filter((__field) => !value.val[__field.name])
-			.forEach((__field) => (value.val[__field.name] = { opr: Operator.EQ, val: null }));
-	});
+	// queryType.then((response) => {
+	// 	__type = response.__type;
+	// 	if (!value.val) {
+	// 		value.val = {};
+	// 	}
+	// 	manager
+	// 		.getScalarFiledList(__type)
+	// 		.filter((__field) => !value.val[__field.name])
+	// 		.forEach((__field) => (value.val[__field.name] = { opr: Operator.EQ, val: null }));
+	// });
 
 	const filter = (): void => {
 		dispatch('filter');
@@ -61,7 +61,7 @@
 
 <div class="flex items-start space-x-1" bind:this={content}>
 	<div class="grid grid-cols-3 gap-x-1 gap-y-3">
-		{#await queryType then response}
+		<!-- {#await queryType then response}
 			{#each manager.getScalarFiledList(__type) as __field}
 				<label for={__field.name} class="block text-sm font-medium mt-2 pt-2 text-center">
 					{__field.name}
@@ -136,7 +136,7 @@
 					{/if}
 				{/if}
 			{/each}
-		{/await}
+		{/await} -->
 	</div>
 	<div class="tooltip" data-tip={$LL.components.graphql.table.th.filter()}>
 		<button class="btn btn-square btn-primary" on:click={() => filter()}>
