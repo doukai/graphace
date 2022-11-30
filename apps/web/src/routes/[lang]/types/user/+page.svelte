@@ -20,6 +20,7 @@
 	import { TableLoading } from '@graphace/ui/components/table';
 	import {
 		Conditional,
+		// GQL_QueryUserConnection,
 		QueryUserConnection$input,
 		QueryUserConnectionStore,
 		UserOrderBy
@@ -27,85 +28,87 @@
 
 	export let data: PageData;
 	$: ({ QueryUserConnection } = data);
+	// $: GQL_QueryUserConnection = data.QueryUserConnection as QueryUserConnectionStore;
+	$: console.log(JSON.stringify($QueryUserConnection.data.userConnection));
 
-	// const schema = __schema as unknown as __Schema;
+	const schema = __schema as unknown as __Schema;
 
-	// const manager: TypeManager = new TypeManager();
-	// const __type: __Type | undefined = schema.types.find((type: __Type) => type.name === 'User');
+	const manager: TypeManager = new TypeManager();
+	const __type: __Type | undefined = schema.types.find((type: __Type) => type.name === 'User');
 
-	// // let refresh: (params?: QueryParams) => void;
+	// let refresh: (params?: QueryParams) => void;
 
-	// let showDeleteButton = false;
-	// let idList: string[] = [];
+	let showDeleteButton = false;
+	let idList: string[] = [];
 
-	// const query = (event: CustomEvent<QueryParams>) => {
-	// 	let variables: QueryUserConnection$input = Object.assign(
-	// 		{},
-	// 		...(event.detail.fieldFilters?.map((filter) => ({
-	// 			[filter.__field.name]: { val: filter.val, opr: filter.opr }
-	// 		})) || [])
-	// 	);
+	const query = (event: CustomEvent<QueryParams>) => {
+		let variables: QueryUserConnection$input = Object.assign(
+			{},
+			...(event.detail.fieldFilters?.map((filter) => ({
+				[filter.__field.name]: { val: filter.val, opr: filter.opr }
+			})) || [])
+		);
 
-	// 	if (event.detail.after) {
-	// 		variables.after = event.detail.after;
-	// 		variables.first = event.detail.pageSize;
-	// 	} else if (event.detail.before) {
-	// 		variables.before = event.detail.before;
-	// 		variables.last = event.detail.pageSize;
-	// 	} else if (event.detail.offset) {
-	// 		variables.offset = event.detail.offset;
-	// 		variables.first = event.detail.pageSize;
-	// 	} else {
-	// 		variables.first = event.detail.pageSize;
-	// 	}
+		if (event.detail.after) {
+			variables.after = event.detail.after;
+			variables.first = event.detail.pageSize;
+		} else if (event.detail.before) {
+			variables.before = event.detail.before;
+			variables.last = event.detail.pageSize;
+		} else if (event.detail.offset) {
+			variables.offset = event.detail.offset;
+			variables.first = event.detail.pageSize;
+		} else {
+			variables.first = event.detail.pageSize;
+		}
 
-	// 	let userOrderBy: UserOrderBy = Object.assign(
-	// 		{},
-	// 		...(event.detail.fieldFilters?.map((filter) => ({
-	// 			[filter.__field.name]: filter.sort
-	// 		})) || [])
-	// 	);
+		let userOrderBy: UserOrderBy = Object.assign(
+			{},
+			...(event.detail.fieldFilters?.map((filter) => ({
+				[filter.__field.name]: filter.sort
+			})) || [])
+		);
 
-	// 	if (Object.keys(userOrderBy).length > 0) {
-	// 		variables.orderBy = userOrderBy;
-	// 	}
+		if (Object.keys(userOrderBy).length > 0) {
+			variables.orderBy = userOrderBy;
+		}
 
-	// 	if (event.detail.queryValue) {
-	// 		variables.cond = Conditional.OR;
-	// 		variables.login = { val: event.detail.queryValue };
-	// 		variables.name = { val: event.detail.queryValue };
-	// 		variables.phones = { val: event.detail.queryValue };
-	// 	}
+		if (event.detail.queryValue) {
+			variables.cond = Conditional.OR;
+			variables.login = { val: event.detail.queryValue };
+			variables.name = { val: event.detail.queryValue };
+			variables.phones = { val: event.detail.queryValue };
+		}
 
-	// 	// queryUserConnectionStore.fetch({ variables });
-	// };
+		// QueryUserConnection.fetch({ variables });
+	};
 
-	// const selectChange = (event: CustomEvent<{ selectedIdList: string[] }>) => {
-	// 	idList = event.detail.selectedIdList;
-	// 	if (event.detail.selectedIdList.length > 0) {
-	// 		showDeleteButton = true;
-	// 	} else {
-	// 		showDeleteButton = false;
-	// 	}
-	// };
+	const selectChange = (event: CustomEvent<{ selectedIdList: string[] }>) => {
+		idList = event.detail.selectedIdList;
+		if (event.detail.selectedIdList.length > 0) {
+			showDeleteButton = true;
+		} else {
+			showDeleteButton = false;
+		}
+	};
 
-	// const removeRows = (__type: __Type) => {
-	// 	// removeTypes(__type, idList)
-	// 	// 	.then((response) => {
-	// 	// 		notifications.success($LL.message.removeSuccess());
-	// 	// 		refresh();
-	// 	// 	})
-	// 	// 	.catch((error) => {
-	// 	// 		notifications.error($LL.message.removeFailed());
-	// 	// 	});
-	// };
-	// queryUserConnectionStore.fetch({ variables: { first: 10 } });
+	const removeRows = (__type: __Type) => {
+		// removeTypes(__type, idList)
+		// 	.then((response) => {
+		// 		notifications.success($LL.message.removeSuccess());
+		// 		refresh();
+		// 	})
+		// 	.catch((error) => {
+		// 		notifications.error($LL.message.removeFailed());
+		// 	});
+	};
+	// QueryUserConnection.fetch({ variables: { first: 10 } });
 </script>
 
-<!-- {#if __type}
-	<SectionHead title={__type.name || ''}> -->
-<!-- <SearchInput on:search={search} /> -->
-<!-- {#if showDeleteButton}
+{#if __type}
+	<SectionHead title={__type.name || ''}>
+		<!-- <SearchInput on:search={search} /> -->
+		{#if showDeleteButton}
 			<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.remove()}>
 				<button
 					class="btn btn-error btn-outline btn-square"
@@ -148,15 +151,15 @@
 		</button>
 	</SectionHead>
 	<div class="divider" />
-	{#if $queryUserConnectionStore.isFetching}
+	{#if $QueryUserConnection.isFetching}
 		<TableLoading />
 	{:else}
-		{#if $queryUserConnectionStore.data}
+		{#if $QueryUserConnection.data}
 			<TypeTable
 				{__type}
 				on:selectChange={selectChange}
 				on:query={query}
-				bind:value={$queryUserConnectionStore.data}
+				bind:value={$QueryUserConnection.data.userConnection}
 			>
 				<div slot="row" let:id let:removeRow>
 					<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
@@ -210,13 +213,13 @@
 		{:else}
 			{notifications.warning($LL.message.requestFailed())}
 		{/if}
-		{#if $queryUserConnectionStore.errors}
+		{#if $QueryUserConnection.errors}
 			{notifications.error($LL.message.requestFailed())}
 		{/if}
 	{/if}
 {:else}
 	<SectionLoading />
-{/if} -->
+{/if}
 
 <!-- <TypeEditorModals />
 <ListTypeEditorModals />

@@ -1,3 +1,3 @@
 query QueryRealmId {
-    realmId 
+    realmId @skipNullArguments(if: true) 
 }

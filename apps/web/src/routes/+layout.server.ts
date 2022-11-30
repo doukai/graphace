@@ -11,15 +11,15 @@ export const load: LayoutServerLoad = async ({ url, locals, params }) => {
 
     // redirect to preferred language if user comes from page root
     if (!lang) {
-        // throw redirect(302, `/${locals.locale}`);
+        throw redirect(302, `/${locals.locale}`);
     }
 
     // redirect to base locale if language is not present
     if (!locales.includes(lang)) {
-        // throw redirect(302, replaceLocaleInUrl(url.pathname, baseLocale));
+        throw redirect(302, replaceLocaleInUrl(url.pathname, baseLocale));
     }
 
-    // await loadLocaleAsync(lang);
+    await loadLocaleAsync(lang);
 
     return { props: { locale: lang } };
 };

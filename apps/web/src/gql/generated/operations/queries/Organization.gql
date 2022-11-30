@@ -1,5 +1,5 @@
 query QueryOrganization($above: OrganizationExpression, $aboveId: IntExpression, $cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $id: StringExpression, $includeDeprecated: Boolean, $name: StringExpression, $realmId: StringExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $users: UserExpression, $version: IntExpression) {
-    organization(above: $above, aboveId: $aboveId, cond: $cond, createGroupId: $createGroupId, createTime: $createTime, createUserId: $createUserId, id: $id, includeDeprecated: $includeDeprecated, name: $name, realmId: $realmId, updateTime: $updateTime, updateUserId: $updateUserId, users: $users, version: $version) {
+    organization(above: $above, aboveId: $aboveId, cond: $cond, createGroupId: $createGroupId, createTime: $createTime, createUserId: $createUserId, id: $id, includeDeprecated: $includeDeprecated, name: $name, realmId: $realmId, updateTime: $updateTime, updateUserId: $updateUserId, users: $users, version: $version) @skipNullArguments(if: true) {
         aboveId
 		createGroupId
 		createTime

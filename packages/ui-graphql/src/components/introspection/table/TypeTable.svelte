@@ -17,7 +17,7 @@
 	import LL from '~/i18n/i18n-svelte';
 	import { locale } from '~/i18n/i18n-svelte';
 
-	export let value: any;
+	export let value: Connection;
 	export let __type: __Type;
 	export let pageSize: number = 10;
 	export let className = '';
@@ -25,8 +25,7 @@
 	let selectedRows: Record<string, boolean> = {};
 	let selectAll: boolean;
 	let pageNumber: number = 1;
-	$: connection = value.connection as Connection;
-	$: dataList = manager.getListFromConnection(connection);
+	$: dataList = manager.getListFromConnection(value);
 
 	const dispatch = createEventDispatcher<{
 		query: QueryParams;
@@ -181,7 +180,7 @@
 	name="page"
 	{pageNumber}
 	{pageSize}
-	totalCount={connection.totalCount}
+	totalCount={value.totalCount}
 	{onPageChange}
 	{onSizeChange}
 	{onPrevious}

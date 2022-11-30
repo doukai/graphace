@@ -1,3 +1,3 @@
 mutation MutationCreateTime {
-    createTime 
+    createTime @skipNullArguments(if: true) 
 }

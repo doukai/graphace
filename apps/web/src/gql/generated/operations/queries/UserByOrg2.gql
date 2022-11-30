@@ -1,5 +1,5 @@
 query QueryUserByOrg2($organization: OrganizationInput) {
-    userByOrg2(organization: $organization) {
+    userByOrg2(organization: $organization) @skipNullArguments(if: true) {
         age
 		createGroupId
 		createTime

@@ -16,6 +16,7 @@
 	import { Check, X, Filter, SortAscending, SortDescending } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
 	export let value: __FieldFilter;
+	console.log('bbb:' + JSON.stringify(value));
 	let content: HTMLElement;
 	const dispatch = createEventDispatcher<{
 		filter: {};
@@ -111,11 +112,11 @@
 					})}
 				/>
 			{:else}
-				<Select name={value.__field.name} bind:value={val}>
+				<!-- <Select name={value.__field.name} bind:value={val}>
 					{#each manager.getFieldTypeEnumValues(value.__field.type) as enumValue}
 						<option value={enumValue.name}>{enumValue.name}</option>
 					{/each}
-				</Select>
+				</Select> -->
 			{/if}
 		{/if}
 	{/if}

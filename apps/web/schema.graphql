@@ -29,6 +29,8 @@ directive @permitAll on OBJECT
 
 directive @rolesAllowed(roles: [String]) on OBJECT
 
+directive @skipNullArguments(if: Boolean!) on FIELD
+
 directive @table(engine: String) on OBJECT
 
 directive @update on FIELD
