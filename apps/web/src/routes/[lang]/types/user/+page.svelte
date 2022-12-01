@@ -1,14 +1,31 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import type { __Type, __Schema, QueryParams, Connection } from '@graphace/graphql/types';
+	import {
+		__Type,
+		__Schema,
+		QueryParams,
+		Connection,
+		__Field,
+		__FieldFilter,
+		createFilter,
+		__TypeKind
+	} from '@graphace/graphql/types';
 	import { __schema } from '~/gql/generated/introspection.json';
 	import { TypeManager } from '@graphace/graphql/types/TypeManager';
-	import { TypeTable, TypeTableModals } from '@graphace/ui-graphql/components/introspection/table';
+	import {
+		TypeTable,
+		TypeTableModals,
+		FieldTh,
+		FieldTd,
+		ObjectFieldTh,
+		ObjectFieldTd
+	} from '@graphace/ui-graphql/components/introspection/table';
 	import {
 		TypeEditorModals,
 		ListTypeEditorModals
 	} from '@graphace/ui-graphql/components/introspection';
 	import { SectionHead, SectionLoading } from '@graphace/ui/components/section';
+	import { Table, TableLoading } from '@graphace/ui/components/table';
 	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
@@ -17,7 +34,6 @@
 	import LL from '~/i18n/i18n-svelte';
 	import { Pagination } from '@graphace/ui/components/connection';
 	import type { PageData } from './$houdini';
-	import { TableLoading } from '@graphace/ui/components/table';
 	import {
 		Conditional,
 		// GQL_QueryUserConnection,
@@ -28,24 +44,37 @@
 
 	export let data: PageData;
 	$: QueryUserConnection = data.QueryUserConnection as QueryUserConnectionStore;
+	$: connection = $QueryUserConnection.data?.userConnection as unknown as Connection;
+	$: dataList = manager.getListFromConnection(connection);
 
 	const schema = __schema as unknown as __Schema;
 
 	const manager: TypeManager = new TypeManager();
 	const __type: __Type | undefined = schema.types.find((type: __Type) => type.name === 'User');
+	if (!__type) {
+		throw Error();
+	}
+	const fields: Array<__Field> = manager.getFiledList(__type);
+	let fieldFilters: Array<__FieldFilter> = manager
+		.getFiledList(__type)
+		.map((__field) => createFilter(__field));
+	const idFieldName: string = manager.getIdFieldName(__type);
 
 	// let refresh: (params?: QueryParams) => void;
 
 	let showDeleteButton = false;
 	let idList: string[] = [];
-	$: connection = $QueryUserConnection.data?.userConnection as unknown as Connection;
 	let variables: QueryUserConnection$input = {};
+	let selectedRows: Record<string, boolean> = {};
+	let selectAll: boolean;
+	let pageNumber: number = 1;
+	let pageSize: number = 10;
 
-	const query = (event: CustomEvent<QueryParams>) => {
-		if (event.detail.fieldFilters && event.detail.fieldFilters.length > 0) {
+	const query = (queryParams: QueryParams) => {
+		if (fieldFilters && fieldFilters.length > 0) {
 			variables = Object.assign(
 				{},
-				...(event.detail.fieldFilters
+				...(fieldFilters
 					?.filter((filter) => filter.val !== undefined)
 					.map((filter) => ({
 						[filter.__field.name]: { val: filter.val, opr: filter.opr }
@@ -54,7 +83,7 @@
 
 			let userOrderBy: UserOrderBy = Object.assign(
 				{},
-				...(event.detail.fieldFilters
+				...(fieldFilters
 					?.filter((filter) => filter !== undefined)
 					.map((filter) => ({
 						[filter.__field.name]: filter.sort
@@ -68,27 +97,26 @@
 			}
 		}
 
-		if (event.detail.after) {
-			variables.after = event.detail.after;
-			variables.first = event.detail.pageSize;
-		} else if (event.detail.before) {
-			variables.before = event.detail.before;
-			variables.last = event.detail.pageSize;
-		} else if (event.detail.offset) {
-			variables.offset = event.detail.offset;
-			variables.first = event.detail.pageSize;
+		if (queryParams.after) {
+			variables.after = queryParams.after;
+			variables.first = queryParams.pageSize;
+		} else if (queryParams.before) {
+			variables.before = queryParams.before;
+			variables.last = queryParams.pageSize;
+		} else if (queryParams.offset) {
+			variables.offset = queryParams.offset;
+			variables.first = queryParams.pageSize;
 		} else {
-			variables.first = event.detail.pageSize;
+			variables.first = queryParams.pageSize;
 		}
 
-		if (event.detail.queryValue) {
+		if (queryParams.queryValue) {
 			variables.cond = Conditional.OR;
-			variables.login = { val: event.detail.queryValue };
-			variables.name = { val: event.detail.queryValue };
-			variables.phones = { val: event.detail.queryValue };
+			variables.login = { val: queryParams.queryValue };
+			variables.name = { val: queryParams.queryValue };
+			variables.phones = { val: queryParams.queryValue };
 		}
 
-		alert(JSON.stringify(variables));
 		QueryUserConnection.fetch({ variables });
 	};
 
@@ -100,6 +128,44 @@
 			showDeleteButton = false;
 		}
 	};
+
+	async function saveField(
+		event: CustomEvent<{
+			id: string;
+			__field: __Field;
+			resolve: (value: any) => void;
+			reject: (error: Error) => void;
+		}>
+	) {
+		// const data = dataList.find((data) => data.get(idFieldName) === event.detail.id);
+		// if (data && __type.name) {
+		// 	validate(__type.name, data, $locale)
+		// 		.then((data) => {
+		// 			updateType(__type, data, event.detail.__field)
+		// 				.then((response) => {
+		// 					event.detail.resolve(response.data[event.detail.__field.name]);
+		// 					notifications.success($LL.message.saveSuccess());
+		// 				})
+		// 				.catch((error) => {
+		// 					notifications.error($LL.message.saveFailed());
+		// 				});
+		// 		})
+		// 		.catch((validErrors) => {
+		// 			event.detail.reject(validErrors[event.detail.__field.name]);
+		// 		});
+		// }
+	}
+
+	async function removeRow(id: string) {
+		// removeType(__type, id)
+		// 	.then((response) => {
+		// 		notifications.success($LL.message.removeSuccess());
+		// 		refresh();
+		// 	})
+		// 	.catch((error) => {
+		// 		notifications.error($LL.message.removeFailed());
+		// 	});
+	}
 
 	const removeRows = (__type: __Type) => {
 		// removeTypes(__type, idList)
@@ -164,56 +230,79 @@
 		<TableLoading />
 	{:else}
 		{#if $QueryUserConnection.data}
-			<TypeTable {__type} on:selectChange={selectChange} on:query={query} bind:value={connection}>
-				<div slot="row" let:id let:removeRow>
-					<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
-						<button
-							class="btn btn-square btn-ghost btn-xs"
-							on:click={(e) => {
-								e.preventDefault();
-								goto(`./user/${id}`);
-							}}
-						>
-							<Icon src={PencilAlt} solid />
-						</button>
-					</div>
-					<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>
-						<button
-							class="btn btn-square btn-ghost btn-xs"
-							on:click={(e) => {
-								e.preventDefault();
-								messageBoxs.open({
-									title: $LL.components.graphql.table.removeModalTitle(),
-									buttonName: $LL.components.graphql.table.removeBtn(),
-									buttonType: 'error',
-									confirm: () => {
-										removeRow(id);
-										return true;
-									}
-								});
-							}}
-						>
-							<Icon src={Trash} solid />
-						</button>
-					</div>
-				</div>
-				<div
-					slot="page"
-					let:pageNumber
-					let:pageSize
-					let:totalCount
-					let:onPageChange
-					let:onSizeChange
-				>
-					<Pagination
-						{pageNumber}
-						{pageSize}
-						{totalCount}
-						on:pageChange={onPageChange}
-						on:sizeChange={onSizeChange}
-					/>
-				</div>
-			</TypeTable>
+			<Table>
+				<thead>
+					<tr>
+						<th class="z-10">
+							<label>
+								<input
+									type="checkbox"
+									class="checkbox"
+									bind:checked={selectAll}
+									on:change={() => {
+										Object.keys(selectedRows).forEach((id) => (selectedRows[id] = selectAll));
+									}}
+								/>
+							</label>
+						</th>
+						{#each fieldFilters as __fieldFilter}
+							{#if manager.getFieldTypeKind(__fieldFilter.__field.type) === __TypeKind.OBJECT}
+								<ObjectFieldTh
+									__field={__fieldFilter.__field}
+									bind:value={__fieldFilter}
+									on:filter={() => query({})}
+								/>
+							{:else}
+								<FieldTh bind:value={__fieldFilter} on:filter={() => query({ fieldFilters })} />
+							{/if}
+						{/each}
+						<td />
+					</tr>
+				</thead>
+				<tbody>
+					{#each dataList as data}
+						<tr class="hover">
+							<th class="z-10">
+								<label>
+									<input
+										type="checkbox"
+										class="checkbox"
+										bind:checked={selectedRows[data[idFieldName]]}
+									/>
+								</label>
+							</th>
+							{#each fields as __field}
+								{#if manager.getFieldTypeKind(__field.type) === __TypeKind.OBJECT}
+									<ObjectFieldTd
+										__parentType={__type}
+										{__field}
+										id={data[idFieldName]}
+										bind:value={data}
+									/>
+								{:else}
+									<FieldTd
+										id={data[idFieldName]}
+										{__field}
+										bind:value={data[__field.name]}
+										on:save={saveField}
+									/>
+								{/if}
+							{/each}
+							<td>
+								<slot name="row" id={data[idFieldName]} {data} {removeRow} />
+							</td>
+						</tr>
+					{/each}
+				</tbody>
+			</Table>
+			<div class="divider" />
+			<Pagination
+				{pageNumber}
+				{pageSize}
+				totalCount={connection.totalCount}
+				on:pageChange={onPageChange}
+				on:sizeChange={onSizeChange}
+			/>
 		{:else}
 			{notifications.warning($LL.message.requestFailed())}
 		{/if}
