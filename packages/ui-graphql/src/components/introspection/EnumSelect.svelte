@@ -10,7 +10,7 @@
 </script>
 
 <Select {name} {className} bind:value {error}>
-	{#each __enumValues as enumValue}
+	<!-- {#each __enumValues as enumValue}
 		<option value={enumValue.name}>{enumValue.name}</option>
-	{/each}
+	{/each} -->
 </Select>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import type { __Type, __Schema, QueryParams } from '@graphace/graphql/types';
+	import type { __Type, __Schema, QueryParams, Connection } from '@graphace/graphql/types';
 	import { __schema } from '~/gql/generated/introspection.json';
 	import { TypeManager } from '@graphace/graphql/types/TypeManager';
 	import { TypeTable, TypeTableModals } from '@graphace/ui-graphql/components/introspection/table';
@@ -27,9 +27,7 @@
 	} from '$houdini';
 
 	export let data: PageData;
-	$: ({ QueryUserConnection } = data);
-	// $: GQL_QueryUserConnection = data.QueryUserConnection as QueryUserConnectionStore;
-	$: console.log(JSON.stringify($QueryUserConnection.data.userConnection));
+	$: QueryUserConnection = data.QueryUserConnection as QueryUserConnectionStore;
 
 	const schema = __schema as unknown as __Schema;
 
@@ -40,14 +38,35 @@
 
 	let showDeleteButton = false;
 	let idList: string[] = [];
+	$: connection = $QueryUserConnection.data?.userConnection as unknown as Connection;
+	let variables: QueryUserConnection$input = {};
 
 	const query = (event: CustomEvent<QueryParams>) => {
-		let variables: QueryUserConnection$input = Object.assign(
-			{},
-			...(event.detail.fieldFilters?.map((filter) => ({
-				[filter.__field.name]: { val: filter.val, opr: filter.opr }
-			})) || [])
-		);
+		if (event.detail.fieldFilters && event.detail.fieldFilters.length > 0) {
+			variables = Object.assign(
+				{},
+				...(event.detail.fieldFilters
+					?.filter((filter) => filter.val !== undefined)
+					.map((filter) => ({
+						[filter.__field.name]: { val: filter.val, opr: filter.opr }
+					})) || [])
+			);
+
+			let userOrderBy: UserOrderBy = Object.assign(
+				{},
+				...(event.detail.fieldFilters
+					?.filter((filter) => filter !== undefined)
+					.map((filter) => ({
+						[filter.__field.name]: filter.sort
+					})) || [])
+			);
+
+			if (Object.keys(userOrderBy).length > 0) {
+				variables.orderBy = userOrderBy;
+			} else {
+				variables.orderBy = undefined;
+			}
+		}
 
 		if (event.detail.after) {
 			variables.after = event.detail.after;
@@ -62,17 +81,6 @@
 			variables.first = event.detail.pageSize;
 		}
 
-		let userOrderBy: UserOrderBy = Object.assign(
-			{},
-			...(event.detail.fieldFilters?.map((filter) => ({
-				[filter.__field.name]: filter.sort
-			})) || [])
-		);
-
-		if (Object.keys(userOrderBy).length > 0) {
-			variables.orderBy = userOrderBy;
-		}
-
 		if (event.detail.queryValue) {
 			variables.cond = Conditional.OR;
 			variables.login = { val: event.detail.queryValue };
@@ -80,7 +88,8 @@
 			variables.phones = { val: event.detail.queryValue };
 		}
 
-		// QueryUserConnection.fetch({ variables });
+		alert(JSON.stringify(variables));
+		QueryUserConnection.fetch({ variables });
 	};
 
 	const selectChange = (event: CustomEvent<{ selectedIdList: string[] }>) => {
@@ -155,12 +164,7 @@
 		<TableLoading />
 	{:else}
 		{#if $QueryUserConnection.data}
-			<TypeTable
-				{__type}
-				on:selectChange={selectChange}
-				on:query={query}
-				bind:value={$QueryUserConnection.data.userConnection}
-			>
+			<TypeTable {__type} on:selectChange={selectChange} on:query={query} bind:value={connection}>
 				<div slot="row" let:id let:removeRow>
 					<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
 						<button

@@ -16,50 +16,46 @@
 	import { Check, X, Filter, SortAscending, SortDescending } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
 	export let value: __FieldFilter;
-	console.log('bbb:' + JSON.stringify(value));
 	let content: HTMLElement;
 	const dispatch = createEventDispatcher<{
 		filter: {};
 	}>();
 
-	let opr: Operator = value.opr;
-	let val: any = value.val;
-	let sort: Sort = value.sort;
+	// let opr: Operator | undefined = value.opr;
+	// let val: any = value.val;
+	// let sort: Sort | undefined = value.sort;
 	const manager = new TypeManager();
 	const fieldTypeName = manager.getFieldTypeName(value.__field.type);
 
 	const filter = (): void => {
-		value.opr = opr;
-		value.val = val;
-		value.sort = sort;
 		dispatch('filter');
 	};
 
 	const clear = (): void => {
+		if (value.opr === 'IN' || value.opr === 'NIN' || value.opr === 'BT' || value.opr === 'NBT') {
+			value.val = [];
+		} else {
+			value.val = undefined;
+		}
 		value.opr = Operator.EQ;
-		value.val = null;
-		value.sort = null;
+		value.sort = undefined;
 		dispatch('filter');
 	};
 
-	const oprChange = (__field: __Field, opr: Operator): void => {
+	const oprChange = (__field: __Field, opr: Operator | undefined): void => {
 		if (opr === 'IN' || opr === 'NIN' || opr === 'BT' || opr === 'NBT') {
-			val.val = [];
+			value.val = [];
 		} else {
-			val.val = null;
+			value.val = undefined;
 		}
 	};
 </script>
 
 <div class="flex items-start space-x-1" bind:this={content}>
 	{#if fieldTypeName === 'Boolean'}
-		<Toggle name={value.__field.name} bind:value={val} />
+		<Toggle name={value.__field.name} bind:value={value.val} />
 	{:else}
-		<select
-			class="select select-bordered"
-			bind:value={opr}
-			on:change={() => oprChange(value.__field, opr)}
-		>
+		<select class="select select-bordered" bind:value={value.opr}>
 			<option value="EQ" selected>{$LL.components.graphql.table.th.eq()}</option>
 			<option value="NEQ">{$LL.components.graphql.table.th.neq()}</option>
 			<option value="LK">{$LL.components.graphql.table.th.lk()}</option>
@@ -76,41 +72,41 @@
 			<option value="NBT">{$LL.components.graphql.table.th.nbt()}</option>
 		</select>
 		{#if fieldTypeName === 'Int' || fieldTypeName === 'Float'}
-			{#if opr === 'IN' || opr === 'NIN' || opr === 'BT' || opr === 'NBT'}
+			{#if value.opr === 'IN' || value.opr === 'NIN' || value.opr === 'BT' || value.opr === 'NBT'}
 				<NumberInputList
 					placeholder={$LL.components.graphql.table.th.filterPlaceholder()}
 					name={value.__field.name}
-					bind:value={val}
+					bind:value={value.val}
 				/>
 			{:else}
 				<NumberInput
 					placeholder={$LL.components.graphql.table.th.filterPlaceholder()}
 					name={value.__field.name}
-					bind:value={val}
+					bind:value={value.val}
 				/>
 			{/if}
 		{:else if fieldTypeName === 'ID' || fieldTypeName === 'String'}
-			{#if opr === 'IN' || opr === 'NIN' || opr === 'BT' || opr === 'NBT'}
+			{#if value.opr === 'IN' || value.opr === 'NIN' || value.opr === 'BT' || value.opr === 'NBT'}
 				<InputList
 					placeholder={$LL.components.graphql.table.th.filterPlaceholder()}
 					name={value.__field.name}
-					bind:value={val}
+					bind:value={value.val}
 				/>
 			{:else}
 				<Input
 					placeholder={$LL.components.graphql.table.th.filterPlaceholder()}
 					name={value.__field.name}
-					bind:value={val}
+					bind:value={value.val}
 				/>
 			{/if}
 		{:else if manager.fieldIsEnum(value.__field.type)}
-			{#if opr === 'IN' || opr === 'NIN' || opr === 'BT' || opr === 'NBT'}
-				<CheckboxGroup
-					bind:value={val}
+			{#if value.opr === 'IN' || value.opr === 'NIN' || value.opr === 'BT' || value.opr === 'NBT'}
+				<!-- <CheckboxGroup
+					bind:value={value.val}
 					checkboxs={manager.getFieldTypeEnumValues(value.__field.type).map((enumValue) => {
 						return { name: enumValue.name, value: enumValue.name };
 					})}
-				/>
+				/> -->
 			{:else}
 				<!-- <Select name={value.__field.name} bind:value={val}>
 					{#each manager.getFieldTypeEnumValues(value.__field.type) as enumValue}
@@ -120,13 +116,13 @@
 			{/if}
 		{/if}
 	{/if}
-	<select class="select select-bordered" bind:value={sort}>
-		<option value={null} selected>{$LL.components.graphql.table.th.noSort()}</option>
+	<select class="select select-bordered" bind:value={value.sort}>
+		<option value={undefined} selected>{$LL.components.graphql.table.th.noSort()}</option>
 		<option value="ASC">{$LL.components.graphql.table.th.asc()}</option>
 		<option value="DESC">{$LL.components.graphql.table.th.desc()}</option>
 	</select>
 	<div class="tooltip" data-tip={$LL.components.graphql.table.th.filter()}>
-		<button class="btn btn-square btn-primary" on:click={() => filter()}>
+		<button class="btn btn-square btn-primary" on:click={() => dispatch('filter')}>
 			<Icon src={Check} solid class="h-5 w-5" />
 		</button>
 	</div>

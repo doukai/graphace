@@ -17,7 +17,9 @@
 	import LL from '~/i18n/i18n-svelte';
 	import { locale } from '~/i18n/i18n-svelte';
 
-	export let value: Connection;
+	export let queryStore: any;
+	// export let value: Connection;
+	$: connection = $queryStore.data?.userConnection as unknown as Connection;
 	export let __type: __Type;
 	export let pageSize: number = 10;
 	export let className = '';
@@ -25,7 +27,7 @@
 	let selectedRows: Record<string, boolean> = {};
 	let selectAll: boolean;
 	let pageNumber: number = 1;
-	$: dataList = manager.getListFromConnection(value);
+	$: dataList = manager.getListFromConnection(connection);
 
 	const dispatch = createEventDispatcher<{
 		query: QueryParams;
@@ -43,7 +45,7 @@
 
 	const manager: TypeManager = new TypeManager();
 	const fields: Array<__Field> = manager.getFiledList(__type);
-	const fieldFilters: Array<__FieldFilter> = manager
+	let fieldFilters: Array<__FieldFilter> = manager
 		.getFiledList(__type)
 		.map((__field) => createFilter(__field));
 	const idFieldName: string = manager.getIdFieldName(__type);
@@ -133,7 +135,10 @@
 						on:filter={() => dispatch('query', {})}
 					/>
 				{:else}
-					<FieldTh bind:value={__fieldFilter} on:filter={() => dispatch('query', {})} />
+					<FieldTh
+						bind:value={__fieldFilter}
+						on:filter={() => dispatch('query', { fieldFilters })}
+					/>
 				{/if}
 			{/each}
 			<td />
@@ -180,7 +185,7 @@
 	name="page"
 	{pageNumber}
 	{pageSize}
-	totalCount={value.totalCount}
+	totalCount={connection.totalCount}
 	{onPageChange}
 	{onSizeChange}
 	{onPrevious}
