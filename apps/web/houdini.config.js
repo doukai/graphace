@@ -20,7 +20,8 @@ const config = {
 				return date.getTime()
 			}
 		}
-	}
+	},
+	defaultCachePolicy: 'NetworkOnly'
 };
 
 export default config;

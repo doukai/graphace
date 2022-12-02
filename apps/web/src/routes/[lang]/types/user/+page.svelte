@@ -64,36 +64,45 @@
 
 	let showDeleteButton = false;
 	let idList: string[] = [];
-	let variables: QueryUserConnection$input = {};
 	let selectedRows: Record<string, boolean> = {};
 	let selectAll: boolean;
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
 
 	const query = (queryParams: QueryParams) => {
-		if (fieldFilters && fieldFilters.length > 0) {
-			variables = Object.assign(
-				{},
-				...(fieldFilters
-					?.filter((filter) => filter.val !== undefined)
-					.map((filter) => ({
-						[filter.__field.name]: { val: filter.val, opr: filter.opr }
+		debugger;
+		let variables: QueryUserConnection$input = {};
+		if (queryParams.queryValue) {
+			variables.cond = Conditional.OR;
+			variables.login = { val: queryParams.queryValue };
+			variables.name = { val: queryParams.queryValue };
+			variables.phones = { val: queryParams.queryValue };
+		} else {
+			if (fieldFilters && fieldFilters.length > 0) {
+				variables = Object.assign(
+					{},
+					...(fieldFilters.map((filter) => ({
+						[filter.__field.name]:
+							filter.val === undefined ? undefined : { val: filter.val, opr: filter.opr }
 					})) || [])
-			);
+				);
 
-			let userOrderBy: UserOrderBy = Object.assign(
-				{},
-				...(fieldFilters
-					?.filter((filter) => filter !== undefined)
-					.map((filter) => ({
-						[filter.__field.name]: filter.sort
-					})) || [])
-			);
+				let userOrderBy: UserOrderBy = Object.assign(
+					{},
+					...(fieldFilters
+						?.filter((filter) => filter !== undefined)
+						.map((filter) => ({
+							[filter.__field.name]: filter.sort
+						})) || [])
+				);
 
-			if (Object.keys(userOrderBy).length > 0) {
-				variables.orderBy = userOrderBy;
+				// if (Object.keys(userOrderBy).length > 0) {
+				// 	variables.orderBy = userOrderBy;
+				// } else {
+				// 	delete variables.orderBy;
+				// }
 			} else {
-				variables.orderBy = undefined;
+				variables = {};
 			}
 		}
 
@@ -110,12 +119,7 @@
 			variables.first = queryParams.pageSize;
 		}
 
-		if (queryParams.queryValue) {
-			variables.cond = Conditional.OR;
-			variables.login = { val: queryParams.queryValue };
-			variables.name = { val: queryParams.queryValue };
-			variables.phones = { val: queryParams.queryValue };
-		}
+		alert(JSON.stringify(variables));
 
 		QueryUserConnection.fetch({ variables });
 	};
@@ -226,39 +230,39 @@
 		</button>
 	</SectionHead>
 	<div class="divider" />
-	{#if $QueryUserConnection.isFetching}
-		<TableLoading />
-	{:else}
-		{#if $QueryUserConnection.data}
-			<Table>
-				<thead>
-					<tr>
-						<th class="z-10">
-							<label>
-								<input
-									type="checkbox"
-									class="checkbox"
-									bind:checked={selectAll}
-									on:change={() => {
-										Object.keys(selectedRows).forEach((id) => (selectedRows[id] = selectAll));
-									}}
-								/>
-							</label>
-						</th>
-						{#each fieldFilters as __fieldFilter}
-							{#if manager.getFieldTypeKind(__fieldFilter.__field.type) === __TypeKind.OBJECT}
-								<ObjectFieldTh
-									__field={__fieldFilter.__field}
-									bind:value={__fieldFilter}
-									on:filter={() => query({})}
-								/>
-							{:else}
-								<FieldTh bind:value={__fieldFilter} on:filter={() => query({ fieldFilters })} />
-							{/if}
-						{/each}
-						<td />
-					</tr>
-				</thead>
+	{#if $QueryUserConnection.data}
+		<Table>
+			<thead>
+				<tr>
+					<th class="z-10">
+						<label>
+							<input
+								type="checkbox"
+								class="checkbox"
+								bind:checked={selectAll}
+								on:change={() => {
+									Object.keys(selectedRows).forEach((id) => (selectedRows[id] = selectAll));
+								}}
+							/>
+						</label>
+					</th>
+					{#each fieldFilters as __fieldFilter}
+						{#if manager.getFieldTypeKind(__fieldFilter.__field.type) === __TypeKind.OBJECT}
+							<ObjectFieldTh
+								__field={__fieldFilter.__field}
+								bind:value={__fieldFilter}
+								on:filter={() => query({})}
+							/>
+						{:else}
+							<FieldTh bind:value={__fieldFilter} on:filter={() => query({ fieldFilters })} />
+						{/if}
+					{/each}
+					<td />
+				</tr>
+			</thead>
+			{#if $QueryUserConnection.isFetching}
+				<TableLoading />
+			{:else}
 				<tbody>
 					{#each dataList as data}
 						<tr class="hover">
@@ -294,21 +298,21 @@
 						</tr>
 					{/each}
 				</tbody>
-			</Table>
-			<div class="divider" />
-			<Pagination
-				{pageNumber}
-				{pageSize}
-				totalCount={connection.totalCount}
-				on:pageChange={onPageChange}
-				on:sizeChange={onSizeChange}
-			/>
-		{:else}
-			{notifications.warning($LL.message.requestFailed())}
-		{/if}
-		{#if $QueryUserConnection.errors}
-			{notifications.error($LL.message.requestFailed())}
-		{/if}
+			{/if}
+		</Table>
+		<div class="divider" />
+		<Pagination
+			{pageNumber}
+			{pageSize}
+			totalCount={connection.totalCount}
+			on:pageChange={() => query({ offset: (pageNumber - 1) * pageSize })}
+			on:sizeChange={() => query({})}
+		/>
+	{:else}
+		{notifications.warning($LL.message.requestFailed())}
+	{/if}
+	{#if $QueryUserConnection.errors}
+		{notifications.error($LL.message.requestFailed())}
 	{/if}
 {:else}
 	<SectionLoading />
