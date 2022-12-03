@@ -70,7 +70,6 @@
 	let pageSize: number = 10;
 
 	const query = (queryParams: QueryParams) => {
-		debugger;
 		let variables: QueryUserConnection$input = {};
 		if (queryParams.queryValue) {
 			variables.cond = Conditional.OR;
@@ -90,17 +89,17 @@
 				let userOrderBy: UserOrderBy = Object.assign(
 					{},
 					...(fieldFilters
-						?.filter((filter) => filter !== undefined)
+						?.filter((filter) => filter !== undefined && filter.sort !== undefined)
 						.map((filter) => ({
 							[filter.__field.name]: filter.sort
 						})) || [])
 				);
 
-				// if (Object.keys(userOrderBy).length > 0) {
-				// 	variables.orderBy = userOrderBy;
-				// } else {
-				// 	delete variables.orderBy;
-				// }
+				if (Object.keys(userOrderBy).length > 0) {
+					variables.orderBy = userOrderBy;
+				} else {
+					variables.orderBy = undefined;
+				}
 			} else {
 				variables = {};
 			}
