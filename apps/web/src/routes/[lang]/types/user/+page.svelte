@@ -36,7 +36,6 @@
 	import type { PageData } from './$houdini';
 	import {
 		Conditional,
-		// GQL_QueryUserConnection,
 		QueryUserConnection$input,
 		QueryUserConnectionStore,
 		UserOrderBy
