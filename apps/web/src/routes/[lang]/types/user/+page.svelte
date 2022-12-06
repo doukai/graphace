@@ -33,13 +33,14 @@
 	import { Plus, PencilAlt, Trash } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
 	import { Pagination } from '@graphace/ui/components/connection';
-	import type { PageData } from './$houdini';
 	import {
 		Conditional,
+		Operator,
 		QueryUserConnection$input,
 		QueryUserConnectionStore,
 		UserOrderBy
 	} from '$houdini';
+	import type { PageData } from './$houdini';
 
 	export let data: PageData;
 	$: QueryUserConnection = data.QueryUserConnection as QueryUserConnectionStore;
@@ -65,16 +66,20 @@
 	let idList: string[] = [];
 	let selectedRows: Record<string, boolean> = {};
 	let selectAll: boolean;
+	let queryValue: string | undefined;
+	let after: string | undefined;
+	let before: string | undefined;
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
+	$: offset = (pageNumber - 1) * pageSize;
 
-	const query = (queryParams: QueryParams) => {
+	const query = () => {
 		let variables: QueryUserConnection$input = {};
-		if (queryParams.queryValue) {
+		if (queryValue) {
 			variables.cond = Conditional.OR;
-			variables.login = { val: queryParams.queryValue };
-			variables.name = { val: queryParams.queryValue };
-			variables.phones = { val: queryParams.queryValue };
+			variables.login = { opr: Operator.LK, val: `%${queryValue}%` };
+			variables.name = { opr: Operator.LK, val: `%${queryValue}%` };
+			variables.phones = { opr: Operator.LK, val: `%${queryValue}%` };
 		} else {
 			if (fieldFilters && fieldFilters.length > 0) {
 				variables = Object.assign(
@@ -104,17 +109,17 @@
 			}
 		}
 
-		if (queryParams.after) {
-			variables.after = queryParams.after;
-			variables.first = queryParams.pageSize;
-		} else if (queryParams.before) {
-			variables.before = queryParams.before;
-			variables.last = queryParams.pageSize;
-		} else if (queryParams.offset) {
-			variables.offset = queryParams.offset;
-			variables.first = queryParams.pageSize;
+		if (after) {
+			variables.after = after;
+			variables.first = pageSize;
+		} else if (before) {
+			variables.before = before;
+			variables.last = pageSize;
+		} else if (offset) {
+			variables.offset = offset;
+			variables.first = pageSize;
 		} else {
-			variables.first = queryParams.pageSize;
+			variables.first = pageSize;
 		}
 
 		alert(JSON.stringify(variables));
@@ -184,7 +189,7 @@
 
 {#if __type}
 	<SectionHead title={__type.name || ''}>
-		<!-- <SearchInput on:search={search} /> -->
+		<SearchInput bind:value={queryValue} on:search={query} />
 		{#if showDeleteButton}
 			<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.remove()}>
 				<button
@@ -249,10 +254,10 @@
 							<ObjectFieldTh
 								__field={__fieldFilter.__field}
 								bind:value={__fieldFilter}
-								on:filter={() => query({})}
+								on:filter={query}
 							/>
 						{:else}
-							<FieldTh bind:value={__fieldFilter} on:filter={() => query({ fieldFilters })} />
+							<FieldTh bind:value={__fieldFilter} on:filter={query} />
 						{/if}
 					{/each}
 					<td />
@@ -300,11 +305,11 @@
 		</Table>
 		<div class="divider" />
 		<Pagination
-			{pageNumber}
-			{pageSize}
+			bind:pageNumber
+			bind:pageSize
 			totalCount={connection.totalCount}
-			on:pageChange={() => query({ offset: (pageNumber - 1) * pageSize })}
-			on:sizeChange={() => query({})}
+			on:pageChange={query}
+			on:sizeChange={query}
 		/>
 	{:else}
 		{notifications.warning($LL.message.requestFailed())}

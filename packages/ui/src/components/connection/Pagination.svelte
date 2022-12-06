@@ -6,18 +6,11 @@
 	export let pageNumber: number = 1;
 	export let totalCount: number = 0;
 	const dispatch = createEventDispatcher<{
-		pageChange: { selectedPageSize: number; selectedPageNumber: number };
-		sizeChange: { selectedPageSize: number };
+		pageChange: {};
+		sizeChange: {};
 	}>();
 
-	const onPageChange = (pageSize: number, pageNumber: number): void => {
-		dispatch('pageChange', {
-			selectedPageSize: pageSize,
-			selectedPageNumber: pageNumber
-		});
-	};
-
-	let pageCount: number =
+	$: pageCount =
 		totalCount % pageSize == 0 ? ~~(totalCount / pageSize) : ~~(totalCount / pageSize) + 1;
 </script>
 
@@ -30,9 +23,7 @@
 					class="select select-bordered"
 					bind:value={pageSize}
 					on:change={() => {
-						dispatch('sizeChange', {
-							selectedPageSize: pageSize
-						});
+						dispatch('sizeChange');
 					}}
 				>
 					{#each pageSizeOptions as pageSizeOption}
@@ -48,7 +39,8 @@
 			<button
 				class="btn {pageNumber - 1 ? '' : 'btn-disabled'}"
 				on:click={() => {
-					onPageChange(pageSize, pageNumber - 1);
+					pageNumber = pageNumber - 1;
+					dispatch('pageChange');
 				}}
 			>
 				«
@@ -57,7 +49,8 @@
 			<button
 				class="btn {pageNumber + 1 <= pageCount ? '' : 'btn-disabled'}"
 				on:click={() => {
-					onPageChange(pageSize, pageNumber + 1);
+					pageNumber = pageNumber + 1;
+					dispatch('pageChange');
 				}}
 			>
 				»
@@ -73,7 +66,8 @@
 			<button
 				class="btn {pageNumber - 1 ? '' : 'btn-disabled'}"
 				on:click={() => {
-					onPageChange(pageSize, pageNumber - 1);
+					pageNumber = pageNumber - 1;
+					dispatch('pageChange');
 				}}
 			>
 				«
@@ -82,7 +76,8 @@
 				<button
 					class="btn"
 					on:click={() => {
-						onPageChange(pageSize, pageNumber - 2);
+						pageNumber = pageNumber - 2;
+						dispatch('pageChange');
 					}}
 				>
 					{pageNumber - 2}
@@ -92,7 +87,8 @@
 				<button
 					class="btn"
 					on:click={() => {
-						onPageChange(pageSize, pageNumber - 1);
+						pageNumber = pageNumber - 1;
+						dispatch('pageChange');
 					}}
 				>
 					{pageNumber - 1}
@@ -105,7 +101,8 @@
 				<button
 					class="btn"
 					on:click={() => {
-						onPageChange(pageSize, pageNumber + 1);
+						pageNumber = pageNumber + 1;
+						dispatch('pageChange');
 					}}
 				>
 					{pageNumber + 1}
@@ -115,7 +112,8 @@
 				<button
 					class="btn"
 					on:click={() => {
-						onPageChange(pageSize, pageNumber + 2);
+						pageNumber = pageNumber + 2;
+						dispatch('pageChange');
 					}}
 				>
 					{pageNumber + 2}
@@ -124,7 +122,8 @@
 			<button
 				class="btn {pageNumber + 1 <= pageCount ? '' : 'btn-disabled'}"
 				on:click={() => {
-					onPageChange(pageSize, pageNumber + 1);
+					pageNumber = pageNumber + 1;
+					dispatch('pageChange');
 				}}
 			>
 				»

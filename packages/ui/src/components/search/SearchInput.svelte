@@ -4,14 +4,10 @@
 	import { Search } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
 	export let name: string = '';
-	let value: string;
+	export let value: string | undefined;
 	const dispatch = createEventDispatcher<{
-		search: { value: string };
+		search: {};
 	}>();
-
-	let search = (): void => {
-		dispatch('search', { value });
-	};
 </script>
 
 <div class="form-control">
@@ -23,7 +19,7 @@
 			placeholder={$LL.components.ui.searchInput.placeholder()}
 			bind:value
 		/>
-		<button class="btn btn-square" on:click={() => search()}>
+		<button class="btn btn-square" on:click={() => dispatch('search')}>
 			<Icon src={Search} class="h-6 w-6" solid />
 		</button>
 	</div>
