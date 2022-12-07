@@ -54,6 +54,7 @@
 	if (!__type) {
 		throw Error();
 	}
+	$: typeName = __type.name || '';
 	const fields: Array<__Field> = manager.getFiledList(__type);
 	let fieldFilters: Array<__FieldFilter> = manager
 		.getFiledList(__type)
@@ -188,7 +189,7 @@
 </script>
 
 {#if __type}
-	<SectionHead title={__type.name || ''}>
+	<SectionHead title={typeName}>
 		<SearchInput bind:value={queryValue} on:search={query} />
 		{#if showDeleteButton}
 			<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.remove()}>
@@ -216,7 +217,7 @@
 				class="btn btn-square md:hidden"
 				on:click={(e) => {
 					e.preventDefault();
-					goto(`./${__type.name}/create`);
+					goto(`./${typeName}/create`);
 				}}
 			>
 				<Icon src={Plus} class="h-6 w-6" solid />
@@ -226,7 +227,7 @@
 			class="hidden md:btn"
 			on:click={(e) => {
 				e.preventDefault();
-				goto(`./${__type.name}/create`);
+				goto(`./${typeName}/create`);
 			}}
 		>
 			{$LL.routers.type.create()}
@@ -296,7 +297,36 @@
 								{/if}
 							{/each}
 							<td>
-								<slot name="row" id={data[idFieldName]} {data} {removeRow} />
+								<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
+									<button
+										class="btn btn-square btn-ghost btn-xs"
+										on:click={(e) => {
+											e.preventDefault();
+											goto(`./${manager.typeNameToUrl(typeName)}/${data[idFieldName]}`);
+										}}
+									>
+										<Icon src={PencilAlt} solid />
+									</button>
+								</div>
+								<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>
+									<button
+										class="btn btn-square btn-ghost btn-xs"
+										on:click={(e) => {
+											e.preventDefault();
+											messageBoxs.open({
+												title: $LL.components.graphql.table.removeModalTitle(),
+												buttonName: $LL.components.graphql.table.removeBtn(),
+												buttonType: 'error',
+												confirm: () => {
+													removeRow(data[idFieldName]);
+													return true;
+												}
+											});
+										}}
+									>
+										<Icon src={Trash} solid />
+									</button>
+								</div>
 							</td>
 						</tr>
 					{/each}

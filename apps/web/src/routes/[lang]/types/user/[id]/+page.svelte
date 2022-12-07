@@ -27,9 +27,9 @@
 	} from '$houdini';
 	import type { PageData } from './$houdini';
 
-	export let pageData: PageData;
-	$: QueryUser = pageData.QueryUser as QueryUserStore;
-	$: data = $QueryUser.data;
+	export let data: PageData;
+	$: QueryUser = data.QueryUser as QueryUserStore;
+	$: user = ($QueryUser.data?.user as Record<string, any>) || {};
 
 	const dispatch = createEventDispatcher<{
 		back: {};
@@ -79,24 +79,24 @@
 	};
 </script>
 
-{#if __type && data}
+{#if __type && user}
 	<Form>
 		<FormItems title={__type.name || ''}>
 			{#each manager.getFiledList(__type) as __field}
 				<FormItem label={__field.name} forName={__field.name}>
 					{#if manager.getFieldTypeKind(__field.type) === __TypeKind.OBJECT}
-						<ObjectEditButton
+						<!-- <ObjectEditButton
 							__parentType={__type}
 							{__field}
 							id={pageData.id}
 							bind:value={data}
 							className="btn-outline"
-						/>
+						/> -->
 					{:else}
 						<FieldInput
 							className="w-full max-w-xs"
 							{__field}
-							bind:value={data[__field.name]}
+							bind:value={user[__field.name]}
 							error={errors[__field.name]}
 						/>
 					{/if}

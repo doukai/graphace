@@ -1,5 +1,5 @@
 import type { LoadEvent } from '@sveltejs/kit';
-import type { LayoutLoad } from '.svelte-kit/types/src/routes/$types';
+import type { LayoutLoad } from '$types';
 import { load_QueryUserConnection } from '$houdini';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
