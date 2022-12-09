@@ -22,9 +22,11 @@
 		Conditional,
 		Operator,
 		QueryUser$input,
-		QueryUserStore,
-		GQL_MutationUser
+		QueryUser$result,
+		MutationUser$input,
+		QueryUserStore
 	} from '$houdini';
+	import { GQL_MutationUser } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -50,21 +52,17 @@
 	// });
 
 	const save = (): void => {
-		// validate(__type.name, data, $locale)
-		// 	.then((data) => {
-		// 		errors = {};
-		// 		// mutationType(__type, data)
-		// 		// 	.then((response) => {
-		// 		// 		data = response.data;
-		// 		// 		notifications.success($LL.message.saveSuccess());
-		// 		// 	})
-		// 		// 	.catch((error) => {
-		// 		// 		notifications.error($LL.message.saveFailed());
-		// 		// 	});
-		// 	})
-		// 	.catch((validErrors) => {
-		// 		errors = validErrors;
-		// 	});
+		validate('User', data, $locale)
+			.then((data) => {
+				errors = {};
+				GQL_MutationUser.mutate({ name: 'null', login: 'login', password: '' }).then((result) => {
+					user = result as Record<string, any>;
+					notifications.success($LL.message.saveSuccess());
+				});
+			})
+			.catch((validErrors) => {
+				errors = validErrors;
+			});
 	};
 
 	const remove = (): void => {
