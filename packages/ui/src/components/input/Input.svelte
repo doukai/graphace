@@ -5,8 +5,8 @@
 	export let value: string;
 	export let placeholder: string = '';
 	export let className: string = '';
-	export let error: Error = null;
-	const id = nanoid();
+	export let error: Error;
+	export let id: string = nanoid();
 </script>
 
 <div class="form-control w-full max-w-xs">

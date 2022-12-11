@@ -11,6 +11,14 @@
 		FormItem,
 		FormButtons
 	} from '@graphace/ui/components/form';
+	import {
+		Input,
+		NumberInput,
+		InputList,
+		NumberInputList,
+		Toggle,
+		ToggleList
+	} from '@graphace/ui/components/input';
 	import { __schema } from '~/gql/generated/introspection.json';
 	import { FieldInput, ObjectEditButton } from '@graphace/ui-graphql/components/introspection';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
@@ -31,7 +39,7 @@
 
 	export let data: PageData;
 	$: QueryUser = data.QueryUser as QueryUserStore;
-	$: user = ($QueryUser.data?.user as Record<string, any>) || {};
+	$: user = ($QueryUser.data?.user as MutationUser$input) || {};
 
 	const dispatch = createEventDispatcher<{
 		back: {};
@@ -52,11 +60,12 @@
 	// });
 
 	const save = (): void => {
-		validate('User', data, $locale)
+		validate('User', user as Record<string, any>, $locale)
 			.then((data) => {
+				alert(JSON.stringify(data));
 				errors = {};
-				GQL_MutationUser.mutate({ name: 'null', login: 'login', password: '' }).then((result) => {
-					user = result as Record<string, any>;
+				GQL_MutationUser.mutate(user).then((result) => {
+					user = result?.user as MutationUser$input;
 					notifications.success($LL.message.saveSuccess());
 				});
 			})
@@ -80,26 +89,15 @@
 {#if __type && user}
 	<Form>
 		<FormItems title={__type.name || ''}>
-			{#each manager.getFiledList(__type) as __field}
-				<FormItem label={__field.name} forName={__field.name}>
-					{#if manager.getFieldTypeKind(__field.type) === __TypeKind.OBJECT}
-						<!-- <ObjectEditButton
-							__parentType={__type}
-							{__field}
-							id={pageData.id}
-							bind:value={data}
-							className="btn-outline"
-						/> -->
-					{:else}
-						<FieldInput
-							className="w-full max-w-xs"
-							{__field}
-							bind:value={user[__field.name]}
-							error={errors[__field.name]}
-						/>
-					{/if}
-				</FormItem>
-			{/each}
+			<FormItem label={'name'} let:id>
+				<Input name={'name'} {id} bind:value={user.name} error={errors.name} />
+			</FormItem>
+			<FormItem label={'login'} let:id>
+				<Input name={'login'} {id} bind:value={user.login} error={errors.login} />
+			</FormItem>
+			<FormItem label={'password'} let:id>
+				<Input name={'password'} {id} bind:value={user.password} error={errors.password} />
+			</FormItem>
 		</FormItems>
 		<FormButtons>
 			<button

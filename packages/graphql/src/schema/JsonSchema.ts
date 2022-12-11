@@ -42,7 +42,7 @@ export async function validate(uri: string, data: Record<string, any>, locale: L
         const schema = await loadSchema(uri);
         validate = await ajv.compileAsync(schema);
     }
-    removeEmpty(data);
+    // removeEmpty(data);
 
     return new Promise((resolve: (data: Record<string, any>) => void, reject: (errors: Record<string, Error>) => void) => {
         const errors: Record<string, Error> = {};
@@ -50,7 +50,6 @@ export async function validate(uri: string, data: Record<string, any>, locale: L
             const valid = validate(data);
             if (!valid) {
                 localize[locale](validate.errors);
-                console.error(JSON.stringify(validate.errors));
                 if (validate.errors) {
                     validate.errors.forEach(
                         (error) => {
@@ -122,6 +121,7 @@ export async function validate(uri: string, data: Record<string, any>, locale: L
 }
 
 function removeEmpty(data: Record<string, any>): void {
+    console.log('aaaaaaaaaaa------'+JSON.stringify(data));
     Object.keys(data).forEach((key) => {
         if (Array.isArray(data[key])) {
             if (!data[key] || data[key].length === 0) {
@@ -146,4 +146,5 @@ function removeEmpty(data: Record<string, any>): void {
             }
         }
     });
+    console.log('vvvvvvvvvvvvvv------'+JSON.stringify(data));
 }
