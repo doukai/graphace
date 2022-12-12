@@ -17,7 +17,7 @@ const config = {
 			},
 			// turn the value into something the API can use
 			marshal(date) {
-				return date.getTime()
+				return date ? date.toLocaleString() : date
 			}
 		}
 	},

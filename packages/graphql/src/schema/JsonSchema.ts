@@ -36,15 +36,17 @@ async function loadSchema(uri: string) {
     return res.json();
 }
 
-export async function validate(uri: string, data: Record<string, any>, locale: Language = "en") {
+export async function validate(uri: string, data: object, locale: Language = "en") {
     let validate = ajv.getSchema(uri);
     if (!validate) {
         const schema = await loadSchema(uri);
         validate = await ajv.compileAsync(schema);
     }
-    // removeEmpty(data);
+    data = removeEmpty(data);
+    alert(JSON.stringify(data));
 
-    return new Promise((resolve: (data: Record<string, any>) => void, reject: (errors: Record<string, Error>) => void) => {
+    return new Promise((resolve: (data: object) => void, reject: (errors: Record<string, Error>) => void) => {
+        alert(Object.keys(data));
         const errors: Record<string, Error> = {};
         if (validate) {
             const valid = validate(data);
@@ -120,31 +122,10 @@ export async function validate(uri: string, data: Record<string, any>, locale: L
     });
 }
 
-function removeEmpty(data: Record<string, any>): void {
-    console.log('aaaaaaaaaaa------'+JSON.stringify(data));
-    Object.keys(data).forEach((key) => {
-        if (Array.isArray(data[key])) {
-            if (!data[key] || data[key].length === 0) {
-                data.delete(key);
-            } else {
-                data.set(key, data[key].filter((item: Record<string, any>) => item));
-                if (data[key].length === 0) {
-                    data.delete(key);
-                } else {
-                    data[key].forEach((item: Record<string, any>) => {
-                        removeEmpty(item);
-                    });
-                }
-            }
-        } else {
-            if (!data[key]) {
-                data.delete(key);
-            } else {
-                if (typeof data[key] === 'object') {
-                    removeEmpty(data[key]);
-                }
-            }
-        }
-    });
-    console.log('vvvvvvvvvvvvvv------'+JSON.stringify(data));
+function removeEmpty(data: object): object {
+    return Object.fromEntries(
+        Object.entries(data)
+            .filter(([_, v]) => Array.isArray(v) ? v !== null && v.length > 0 : v !== null)
+            .map(([k, v]) => [k, v === Object(v) ? removeEmpty(v) : v])
+    );
 }

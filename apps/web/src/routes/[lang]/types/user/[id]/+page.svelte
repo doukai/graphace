@@ -60,7 +60,8 @@
 	// });
 
 	const save = (): void => {
-		validate('User', user as Record<string, any>, $locale)
+		alert(JSON.stringify(user));
+		validate('User', user, $locale)
 			.then((data) => {
 				alert(JSON.stringify(data));
 				errors = {};
