@@ -5,17 +5,17 @@
 	import { Plus, PlusSm, MinusSm } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
 	export let name: string;
-	export let value: string[];
+	export let value: (string | null | undefined)[];
 	export let placeholder: string = '';
 	export let className: string = '';
-	export let error: Error = null;
+	export let error: Error | undefined = undefined;
 	const id = nanoid();
 
 	const addItem = (index: number) => {
 		if (!value) {
 			value = [];
 		}
-		value = [...value.slice(0, index + 1), null, ...value.slice(index + 1)];
+		value = [...value.slice(0, index + 1), undefined, ...value.slice(index + 1)];
 	};
 
 	const removeItem = (index: number) => {

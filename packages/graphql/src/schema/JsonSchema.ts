@@ -42,14 +42,12 @@ export async function validate(uri: string, data: object, locale: Language = "en
         const schema = await loadSchema(uri);
         validate = await ajv.compileAsync(schema);
     }
-    data = removeEmpty(data);
-    alert(JSON.stringify(data));
 
     return new Promise((resolve: (data: object) => void, reject: (errors: Record<string, Error>) => void) => {
-        alert(Object.keys(data));
         const errors: Record<string, Error> = {};
         if (validate) {
-            const valid = validate(data);
+            const validateData = removeEmpty(data);
+            const valid = validate(validateData);
             if (!valid) {
                 localize[locale](validate.errors);
                 if (validate.errors) {
@@ -115,8 +113,9 @@ export async function validate(uri: string, data: object, locale: Language = "en
                 console.log(ajv.errorsText(validate.errors, { separator: '\n' }));
                 reject(errors);
             } else {
-                resolve(data);
+                resolve(validateData);
             }
+        } else {
             reject(errors);
         }
     });
@@ -126,6 +125,14 @@ function removeEmpty(data: object): object {
     return Object.fromEntries(
         Object.entries(data)
             .filter(([_, v]) => Array.isArray(v) ? v !== null && v.length > 0 : v !== null)
-            .map(([k, v]) => [k, v === Object(v) ? removeEmpty(v) : v])
+            .map(([k, v]) => {
+                if (Array.isArray(v)) {
+                    return v.map(item => removeEmpty(item));
+                } else if (typeof v === 'object') {
+                    removeEmpty(v);
+                } else {
+                    return v;
+                }
+            })
     );
 }

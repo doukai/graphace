@@ -45,7 +45,7 @@
 	export let data: PageData;
 	$: QueryUserConnection = data.QueryUserConnection as QueryUserConnectionStore;
 	$: connection = $QueryUserConnection.data?.userConnection as unknown as Connection;
-	$: dataList = manager.getListFromConnection(connection);
+	$: dataList = connection ? manager.getListFromConnection(connection) : [];
 
 	const schema = __schema as unknown as __Schema;
 
@@ -61,13 +61,12 @@
 		.map((__field) => createFilter(__field));
 	const idFieldName: string = manager.getIdFieldName(__type);
 
-	// let refresh: (params?: QueryParams) => void;
-
 	let showDeleteButton = false;
 	let idList: string[] = [];
 	let selectedRows: Record<string, boolean> = {};
 	let selectAll: boolean;
 	let queryValue: string | undefined;
+	let variables: QueryUserConnection$input = {};
 	let after: string | undefined;
 	let before: string | undefined;
 	let pageNumber: number = 1;
@@ -75,7 +74,6 @@
 	$: offset = (pageNumber - 1) * pageSize;
 
 	const query = () => {
-		let variables: QueryUserConnection$input = {};
 		if (queryValue) {
 			variables.cond = Conditional.OR;
 			variables.login = { opr: Operator.LK, val: `%${queryValue}%` };
@@ -250,17 +248,7 @@
 							/>
 						</label>
 					</th>
-					{#each fieldFilters as __fieldFilter}
-						{#if manager.getFieldTypeKind(__fieldFilter.__field.type) === __TypeKind.OBJECT}
-							<ObjectFieldTh
-								__field={__fieldFilter.__field}
-								bind:value={__fieldFilter}
-								on:filter={query}
-							/>
-						{:else}
-							<FieldTh bind:value={__fieldFilter} on:filter={query} />
-						{/if}
-					{/each}
+					<FieldTh bind:value={variables.name} on:filter={query} />
 					<td />
 				</tr>
 			</thead>

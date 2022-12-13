@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	// import { queryType, mutationType, removeType } from '@graphace/graphql/request/Type';
-	import { TypeManager } from '@graphace/graphql/types/TypeManager';
-	import { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
+	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
+	import { TypeManager } from '@graphace/graphql/types/TypeManager';
 	import {
 		Form,
 		FormLoading,
@@ -36,60 +35,55 @@
 	} from '$houdini';
 	import { GQL_MutationUser } from '$houdini';
 	import type { PageData } from './$houdini';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 	$: QueryUser = data.QueryUser as QueryUserStore;
-	$: user = ($QueryUser.data?.user as MutationUser$input) || {};
-
-	const dispatch = createEventDispatcher<{
-		back: {};
-	}>();
-
+	$: user = $QueryUser.data?.user as MutationUser$input | null | undefined;
 	const manager: TypeManager = new TypeManager();
 
-	const schema = __schema as unknown as __Schema;
-	const __type: __Type | undefined = schema.types.find((type: __Type) => type.name === 'User');
-	if (!__type) {
-		throw Error();
-	}
-	// const queryPromise: Promise<{ data: object }> = queryType(__type, id);
 	let errors: Record<string, Error> = {};
 
-	// queryPromise.then((response) => {
-	// 	data = response.data;
-	// });
-
 	const save = (): void => {
-		alert(JSON.stringify(user));
-		validate('User', user, $locale)
-			.then((data) => {
-				alert(JSON.stringify(data));
-				errors = {};
-				GQL_MutationUser.mutate(user).then((result) => {
-					user = result?.user as MutationUser$input;
-					notifications.success($LL.message.saveSuccess());
+		if (user) {
+			validate('User', user, $locale)
+				.then((data) => {
+					errors = {};
+					if (user) {
+						GQL_MutationUser.mutate(user)
+							.then((result) => {
+								user = result?.user as MutationUser$input;
+								notifications.success($LL.message.saveSuccess());
+							})
+							.catch((error) => {
+								notifications.error($LL.message.saveFailed());
+							});
+					}
+				})
+				.catch((validErrors) => {
+					errors = validErrors;
 				});
-			})
-			.catch((validErrors) => {
-				errors = validErrors;
-			});
+		}
 	};
 
 	const remove = (): void => {
-		// removeType(__type, id)
-		// 	.then((response) => {
-		// 		notifications.success($LL.message.removeSuccess());
-		// 		dispatch('back');
-		// 	})
-		// 	.catch((error) => {
-		// 		notifications.error($LL.message.removeFailed());
-		// 	});
+		if (user) {
+			user.isDeprecated = true;
+			GQL_MutationUser.mutate(user)
+				.then((result) => {
+					notifications.success($LL.message.removeSuccess());
+				})
+				.catch((error) => {
+					console.error(error);
+					notifications.error($LL.message.removeFailed());
+				});
+		}
 	};
 </script>
 
-{#if __type && user}
+{#if user}
 	<Form>
-		<FormItems title={__type.name || ''}>
+		<FormItems title={'User'}>
 			<FormItem label={'name'} let:id>
 				<Input name={'name'} {id} bind:value={user.name} error={errors.name} />
 			</FormItem>
@@ -105,7 +99,7 @@
 				class="btn"
 				on:click={(e) => {
 					e.preventDefault();
-					dispatch('back');
+					goto(`../${manager.typeNameToUrl('User')}`);
 				}}
 			>
 				{$LL.components.graphql.editor.backBtn()}

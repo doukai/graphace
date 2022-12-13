@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { tippy } from '@graphace/ui/components/tippy';
-	import { TypeManager } from '@graphace/graphql/types/TypeManager';
 	import {
 		Input,
 		NumberInput,
@@ -16,20 +15,12 @@
 	import { Check, X, Filter, SortAscending, SortDescending } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
 	export let value: __FieldFilter;
+	export let fieldTypeName: string;
+
 	let content: HTMLElement;
 	const dispatch = createEventDispatcher<{
 		filter: {};
 	}>();
-
-	// let opr: Operator | undefined = value.opr;
-	// let val: any = value.val;
-	// let sort: Sort | undefined = value.sort;
-	const manager = new TypeManager();
-	const fieldTypeName = manager.getFieldTypeName(value.__field.type);
-
-	const filter = (): void => {
-		dispatch('filter');
-	};
 
 	const clear = (): void => {
 		if (value.opr === 'IN' || value.opr === 'NIN' || value.opr === 'BT' || value.opr === 'NBT') {
@@ -55,7 +46,11 @@
 	{#if fieldTypeName === 'Boolean'}
 		<Toggle name={value.__field.name} bind:value={value.val} />
 	{:else}
-		<select class="select select-bordered" bind:value={value.opr}>
+		<select
+			class="select select-bordered"
+			bind:value={value.opr}
+			on:change={() => oprChange(value.__field, value.opr)}
+		>
 			<option value="EQ" selected>{$LL.components.graphql.table.th.eq()}</option>
 			<option value="NEQ">{$LL.components.graphql.table.th.neq()}</option>
 			<option value="LK">{$LL.components.graphql.table.th.lk()}</option>
@@ -98,21 +93,6 @@
 					name={value.__field.name}
 					bind:value={value.val}
 				/>
-			{/if}
-		{:else if manager.fieldIsEnum(value.__field.type)}
-			{#if value.opr === 'IN' || value.opr === 'NIN' || value.opr === 'BT' || value.opr === 'NBT'}
-				<!-- <CheckboxGroup
-					bind:value={value.val}
-					checkboxs={manager.getFieldTypeEnumValues(value.__field.type).map((enumValue) => {
-						return { name: enumValue.name, value: enumValue.name };
-					})}
-				/> -->
-			{:else}
-				<!-- <Select name={value.__field.name} bind:value={val}>
-					{#each manager.getFieldTypeEnumValues(value.__field.type) as enumValue}
-						<option value={enumValue.name}>{enumValue.name}</option>
-					{/each}
-				</Select> -->
 			{/if}
 		{/if}
 	{/if}
