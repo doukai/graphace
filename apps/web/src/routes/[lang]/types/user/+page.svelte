@@ -3,22 +3,18 @@
 	import {
 		__Type,
 		__Schema,
-		QueryParams,
 		Connection,
 		__Field,
 		__FieldFilter,
-		createFilter,
-		__TypeKind
+		__TypeKind,
+		StringFilter
 	} from '@graphace/graphql/types';
 	import { __schema } from '~/gql/generated/introspection.json';
 	import { TypeManager } from '@graphace/graphql/types/TypeManager';
 	import {
-		TypeTable,
-		TypeTableModals,
-		FieldTh,
-		FieldTd,
-		ObjectFieldTh,
-		ObjectFieldTd
+		StringTh,
+		ObjectFieldTd,
+		FieldTd
 	} from '@graphace/ui-graphql/components/introspection/table';
 	import {
 		TypeEditorModals,
@@ -56,9 +52,7 @@
 	}
 	$: typeName = __type.name || '';
 	const fields: Array<__Field> = manager.getFiledList(__type);
-	let fieldFilters: Array<__FieldFilter> = manager
-		.getFiledList(__type)
-		.map((__field) => createFilter(__field));
+	let fieldFilters: { name: StringFilter } = { name: {} };
 	const idFieldName: string = manager.getIdFieldName(__type);
 
 	let showDeleteButton = false;
@@ -80,21 +74,20 @@
 			variables.name = { opr: Operator.LK, val: `%${queryValue}%` };
 			variables.phones = { opr: Operator.LK, val: `%${queryValue}%` };
 		} else {
-			if (fieldFilters && fieldFilters.length > 0) {
+			if (fieldFilters && Object.keys(fieldFilters).length > 0) {
 				variables = Object.assign(
 					{},
-					...(fieldFilters.map((filter) => ({
-						[filter.__field.name]:
-							filter.val === undefined ? undefined : { val: filter.val, opr: filter.opr }
+					...(Object.entries(fieldFilters).map(([name, filter]) => ({
+						[name]: filter.val === undefined ? undefined : { val: filter.val, opr: filter.opr }
 					})) || [])
 				);
 
 				let userOrderBy: UserOrderBy = Object.assign(
 					{},
-					...(fieldFilters
-						?.filter((filter) => filter !== undefined && filter.sort !== undefined)
-						.map((filter) => ({
-							[filter.__field.name]: filter.sort
+					...(Object.entries(fieldFilters)
+						.filter(([_, filter]) => filter !== undefined && filter.sort !== undefined)
+						.map(([name, filter]) => ({
+							[name]: filter.sort
 						})) || [])
 				);
 
@@ -120,8 +113,6 @@
 		} else {
 			variables.first = pageSize;
 		}
-
-		alert(JSON.stringify(variables));
 
 		QueryUserConnection.fetch({ variables });
 	};
@@ -248,7 +239,7 @@
 							/>
 						</label>
 					</th>
-					<FieldTh bind:value={variables.name} on:filter={query} />
+					<StringTh name={'name'} bind:value={fieldFilters.name} on:filter={query} />
 					<td />
 				</tr>
 			</thead>

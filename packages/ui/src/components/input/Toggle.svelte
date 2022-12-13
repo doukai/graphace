@@ -2,8 +2,8 @@
 	import type { Error } from '@graphace/commons/types';
 	import { nanoid } from 'nanoid';
 	export let name: string;
-	export let value: boolean;
-	export let error: Error = null;
+	export let value: boolean | null | undefined;
+	export let error: Error | undefined = undefined;
 	const id = nanoid();
 </script>
 

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { tippy } from '@graphace/ui/components/tippy';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Check, X, Filter, SortAscending, SortDescending } from '@steeze-ui/heroicons';
 	import {
 		Input,
 		NumberInput,
@@ -11,9 +13,8 @@
 		CheckboxGroup
 	} from '@graphace/ui/components/input';
 	import { type __Field, type __FieldFilter, Operator, Sort } from '@graphace/graphql/types';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Check, X, Filter, SortAscending, SortDescending } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
+	
 	export let value: __FieldFilter;
 	export let fieldTypeName: string;
 

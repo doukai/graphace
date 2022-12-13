@@ -4,6 +4,7 @@ import type { __Directive } from "./__Directive";
 import type { __Field } from "./__Field";
 import type { __InputValue } from "./__InputValue";
 import { type __FieldFilter, createFilter } from "./__FieldFilter";
+import type { StringFilter } from "./StringFilter";
 import type { __EnumValue } from "./__EnumValue";
 import type { Connection } from "./Connection";
 import type { Edge } from "./Edge";
@@ -15,5 +16,5 @@ import { Sort } from "./Sort";
 import type { QueryParams } from "./QueryParams";
 
 export {
-    __Schema, __Type, __Directive, __Field, __InputValue, __FieldFilter, createFilter, __EnumValue, Connection, Edge, PageInfo, __TypeKind, __DirectiveLocation, Operator, Sort, QueryParams
+    __Schema, __Type, __Directive, __Field, __InputValue, __FieldFilter, StringFilter, createFilter, __EnumValue, Connection, Edge, PageInfo, __TypeKind, __DirectiveLocation, Operator, Sort, QueryParams
 }

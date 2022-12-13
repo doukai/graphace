@@ -125,7 +125,7 @@ function removeEmpty(data: object): object {
     return Object.fromEntries(
         Object.entries(data)
             .filter(([_, v]) => Array.isArray(v) ? v !== null && v.length > 0 : v !== null)
-            .map(([k, v]) => {
+            .map(([_, v]) => {
                 if (Array.isArray(v)) {
                     return v.map(item => removeEmpty(item));
                 } else if (typeof v === 'object') {
