@@ -6,8 +6,7 @@
 		Connection,
 		__Field,
 		__FieldFilter,
-		__TypeKind,
-		StringFilter
+		__TypeKind
 	} from '@graphace/graphql/types';
 	import { __schema } from '~/gql/generated/introspection.json';
 	import { TypeManager } from '@graphace/graphql/types/TypeManager';
@@ -37,11 +36,11 @@
 		UserOrderBy
 	} from '$houdini';
 	import type { PageData } from './$houdini';
+	import { connect } from 'http2';
 
 	export let data: PageData;
 	$: QueryUserConnection = data.QueryUserConnection as QueryUserConnectionStore;
-	$: connection = $QueryUserConnection.data?.userConnection as unknown as Connection;
-	$: dataList = connection ? manager.getListFromConnection(connection) : [];
+	$: connection = $QueryUserConnection.data?.userConnection;
 
 	const schema = __schema as unknown as __Schema;
 
@@ -52,7 +51,6 @@
 	}
 	$: typeName = __type.name || '';
 	const fields: Array<__Field> = manager.getFiledList(__type);
-	let fieldFilters: { name: StringFilter } = { name: {} };
 	const idFieldName: string = manager.getIdFieldName(__type);
 
 	let showDeleteButton = false;
@@ -61,6 +59,7 @@
 	let selectAll: boolean;
 	let queryValue: string | undefined;
 	let variables: QueryUserConnection$input = {};
+	let orderBy: UserOrderBy = {};
 	let after: string | undefined;
 	let before: string | undefined;
 	let pageNumber: number = 1;
@@ -69,35 +68,16 @@
 
 	const query = () => {
 		if (queryValue) {
+			variables = {};
 			variables.cond = Conditional.OR;
 			variables.login = { opr: Operator.LK, val: `%${queryValue}%` };
 			variables.name = { opr: Operator.LK, val: `%${queryValue}%` };
 			variables.phones = { opr: Operator.LK, val: `%${queryValue}%` };
 		} else {
-			if (fieldFilters && Object.keys(fieldFilters).length > 0) {
-				variables = Object.assign(
-					{},
-					...(Object.entries(fieldFilters).map(([name, filter]) => ({
-						[name]: filter.val === undefined ? undefined : { val: filter.val, opr: filter.opr }
-					})) || [])
-				);
-
-				let userOrderBy: UserOrderBy = Object.assign(
-					{},
-					...(Object.entries(fieldFilters)
-						.filter(([_, filter]) => filter !== undefined && filter.sort !== undefined)
-						.map(([name, filter]) => ({
-							[name]: filter.sort
-						})) || [])
-				);
-
-				if (Object.keys(userOrderBy).length > 0) {
-					variables.orderBy = userOrderBy;
-				} else {
-					variables.orderBy = undefined;
-				}
+			if (Object.keys(orderBy).length > 0) {
+				variables.orderBy = orderBy;
 			} else {
-				variables = {};
+				variables.orderBy = undefined;
 			}
 		}
 
@@ -223,106 +203,107 @@
 		</button>
 	</SectionHead>
 	<div class="divider" />
-	{#if $QueryUserConnection.data}
-		<Table>
-			<thead>
-				<tr>
-					<th class="z-10">
-						<label>
-							<input
-								type="checkbox"
-								class="checkbox"
-								bind:checked={selectAll}
-								on:change={() => {
-									Object.keys(selectedRows).forEach((id) => (selectedRows[id] = selectAll));
-								}}
-							/>
-						</label>
-					</th>
-					<StringTh name={'name'} bind:value={fieldFilters.name} on:filter={query} />
-					<td />
-				</tr>
-			</thead>
-			{#if $QueryUserConnection.isFetching}
-				<TableLoading />
-			{:else}
-				<tbody>
-					{#each dataList as data}
-						<tr class="hover">
-							<th class="z-10">
-								<label>
-									<input
-										type="checkbox"
-										class="checkbox"
-										bind:checked={selectedRows[data[idFieldName]]}
-									/>
-								</label>
-							</th>
-							{#each fields as __field}
-								{#if manager.getFieldTypeKind(__field.type) === __TypeKind.OBJECT}
-									<ObjectFieldTd
-										__parentType={__type}
-										{__field}
-										id={data[idFieldName]}
-										bind:value={data}
-									/>
-								{:else}
-									<FieldTd
-										id={data[idFieldName]}
-										{__field}
-										bind:value={data[__field.name]}
-										on:save={saveField}
-									/>
-								{/if}
-							{/each}
-							<td>
-								<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
-									<button
-										class="btn btn-square btn-ghost btn-xs"
-										on:click={(e) => {
-											e.preventDefault();
-											goto(`./${manager.typeNameToUrl(typeName)}/${data[idFieldName]}`);
-										}}
-									>
-										<Icon src={PencilAlt} solid />
-									</button>
-								</div>
-								<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>
-									<button
-										class="btn btn-square btn-ghost btn-xs"
-										on:click={(e) => {
-											e.preventDefault();
-											messageBoxs.open({
-												title: $LL.components.graphql.table.removeModalTitle(),
-												buttonName: $LL.components.graphql.table.removeBtn(),
-												buttonType: 'error',
-												confirm: () => {
-													removeRow(data[idFieldName]);
-													return true;
-												}
-											});
-										}}
-									>
-										<Icon src={Trash} solid />
-									</button>
-								</div>
-							</td>
-						</tr>
-					{/each}
-				</tbody>
-			{/if}
-		</Table>
-		<div class="divider" />
-		<Pagination
-			bind:pageNumber
-			bind:pageSize
-			totalCount={connection.totalCount}
-			on:pageChange={query}
-			on:sizeChange={query}
-		/>
-	{:else}
-		{notifications.warning($LL.message.requestFailed())}
-	{/if}
+	<Table>
+		<thead>
+			<tr>
+				<th class="z-10">
+					<label>
+						<input
+							type="checkbox"
+							class="checkbox"
+							bind:checked={selectAll}
+							on:change={() => {
+								Object.keys(selectedRows).forEach((id) => (selectedRows[id] = selectAll));
+							}}
+						/>
+					</label>
+				</th>
+				<StringTh
+					name={'name'}
+					bind:expression={variables.name}
+					bind:sort={orderBy.name}
+					on:filter={query}
+				/>
+				<StringTh
+					name={'login'}
+					bind:expression={variables.login}
+					bind:sort={orderBy.login}
+					on:filter={query}
+				/>
+				<StringTh
+					name={'password'}
+					bind:expression={variables.password}
+					bind:sort={orderBy.password}
+					on:filter={query}
+				/>
+			</tr>
+		</thead>
+		{#if $QueryUserConnection.isFetching}
+			<TableLoading />
+		{:else if $QueryUserConnection.data?.userConnection}
+			<tbody>
+				{#each $QueryUserConnection.data?.userConnection.edges || [] as edge}
+					<tr class="hover">
+						<th class="z-10">
+							<label>
+								<input
+									type="checkbox"
+									class="checkbox"
+									bind:checked={selectedRows[data[idFieldName]]}
+								/>
+							</label>
+						</th>
+						<FieldTd
+							id={data[idFieldName]}
+							{__field}
+							bind:value={data[__field.name]}
+							on:save={saveField}
+						/>
+						<td>
+							<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
+								<button
+									class="btn btn-square btn-ghost btn-xs"
+									on:click={(e) => {
+										e.preventDefault();
+										goto(`./${manager.typeNameToUrl(typeName)}/${data[idFieldName]}`);
+									}}
+								>
+									<Icon src={PencilAlt} solid />
+								</button>
+							</div>
+							<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>
+								<button
+									class="btn btn-square btn-ghost btn-xs"
+									on:click={(e) => {
+										e.preventDefault();
+										messageBoxs.open({
+											title: $LL.components.graphql.table.removeModalTitle(),
+											buttonName: $LL.components.graphql.table.removeBtn(),
+											buttonType: 'error',
+											confirm: () => {
+												removeRow(data[idFieldName]);
+												return true;
+											}
+										});
+									}}
+								>
+									<Icon src={Trash} solid />
+								</button>
+							</div>
+						</td>
+					</tr>
+				{/each}
+			</tbody>
+		{/if}
+	</Table>
+	<div class="divider" />
+	<Pagination
+		bind:pageNumber
+		bind:pageSize
+		totalCount={connection.totalCount}
+		on:pageChange={query}
+		on:sizeChange={query}
+	/>
 	{#if $QueryUserConnection.errors}
 		{notifications.error($LL.message.requestFailed())}
 	{/if}
