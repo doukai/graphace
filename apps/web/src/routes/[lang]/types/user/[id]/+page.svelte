@@ -99,7 +99,7 @@
 				class="btn"
 				on:click={(e) => {
 					e.preventDefault();
-					goto(`../${manager.typeNameToUrl('User')}`);
+					goto('../user');
 				}}
 			>
 				{$LL.components.graphql.editor.backBtn()}

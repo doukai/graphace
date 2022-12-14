@@ -1,4 +1,4 @@
-query QueryRole($cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $id: StringExpression, $includeDeprecated: Boolean, $name: StringExpression, $realmId: StringExpression, $type: RoleTypeExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $users: UserExpression, $version: IntExpression) {
+query QueryRole(Conditional, StringExpression, StringExpression, StringExpression, StringExpression, Boolean, StringExpression, StringExpression, RoleTypeExpression, StringExpression, StringExpression, UserExpression, IntExpression) {
     role(cond: $cond, createGroupId: $createGroupId, createTime: $createTime, createUserId: $createUserId, id: $id, includeDeprecated: $includeDeprecated, name: $name, realmId: $realmId, type: $type, updateTime: $updateTime, updateUserId: $updateUserId, users: $users, version: $version) @skipNullArguments(if: true) {
         createGroupId
 		createTime

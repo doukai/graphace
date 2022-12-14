@@ -1,4 +1,4 @@
-query QueryParent2($organization: OrganizationInput) {
+query QueryParent2(OrganizationInput) {
     parent2(organization: $organization) @skipNullArguments(if: true) {
         aboveId
 		createGroupId

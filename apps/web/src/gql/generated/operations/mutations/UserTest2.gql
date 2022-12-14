@@ -1,4 +1,4 @@
-mutation MutationUserTest2($createGroupId: String, $createTime: Timestamp, $createUserId: String, $id: ID, $isDeprecated: Boolean, $realmId: String, $test2: Boolean, $updateTime: Timestamp, $updateUserId: String, $userId: Int, $version: Int, $where: UserTest2Expression) {
+mutation MutationUserTest2(String, Timestamp, String, ID, Boolean, String, Boolean, Timestamp, String, Int, Int, UserTest2Expression) {
     userTest2(createGroupId: $createGroupId, createTime: $createTime, createUserId: $createUserId, id: $id, isDeprecated: $isDeprecated, realmId: $realmId, test2: $test2, updateTime: $updateTime, updateUserId: $updateUserId, userId: $userId, version: $version, where: $where) @skipNullArguments(if: true) {
         createGroupId
 		createTime

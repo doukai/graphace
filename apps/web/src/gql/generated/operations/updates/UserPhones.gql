@@ -1,0 +1,15 @@
+mutation UpdateUserPhones(String, Timestamp, String, ID, Boolean, String, String, Timestamp, String, Int, Int, UserPhonesExpression) {
+    userPhones(createGroupId: $createGroupId, createTime: $createTime, createUserId: $createUserId, id: $id, isDeprecated: $isDeprecated, phone: $phone, realmId: $realmId, updateTime: $updateTime, updateUserId: $updateUserId, userId: $userId, version: $version, where: $where) @update {
+        createGroupId
+		createTime
+		createUserId
+		id
+		isDeprecated
+		phone
+		realmId
+		updateTime
+		updateUserId
+		userId
+		version
+    }
+}

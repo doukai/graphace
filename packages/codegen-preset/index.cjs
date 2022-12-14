@@ -17,6 +17,7 @@ exports.preset = {
                     config: {
                         ...options.config,
                         operationType: 'query',
+                        mutationType: null,
                         fieldName: field.name
                     },
                     schema: options.schema,
@@ -35,6 +36,27 @@ exports.preset = {
                             config: {
                                 ...options.config,
                                 operationType: 'mutation',
+                                mutationType: 'merge',
+                                fieldName: field.name
+                            },
+                            schema: options.schema,
+                            schemaAst: options.schemaAst,
+                            skipDocumentsValidation: true,
+                        };
+                    })
+            ).concat(
+                Object.keys(mutationFields)
+                    .map(key => mutationFields[key])
+                    .map(field => {
+                        return {
+                            filename: options.baseOutputDir + 'updates/' + field.name.charAt(0).toUpperCase() + field.name.slice(1) + '.gql',
+                            documents: options.documents,
+                            plugins: options.plugins,
+                            pluginMap: options.pluginMap,
+                            config: {
+                                ...options.config,
+                                operationType: 'mutation',
+                                mutationType: 'update',
                                 fieldName: field.name
                             },
                             schema: options.schema,

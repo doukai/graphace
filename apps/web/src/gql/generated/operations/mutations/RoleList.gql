@@ -1,4 +1,4 @@
-mutation MutationRoleList($createGroupId: String, $createTime: Timestamp, $createUserId: String, $id: ID, $isDeprecated: Boolean, $list: [RoleInput], $name: String!, $realmId: String, $type: [RoleType]!, $updateTime: Timestamp, $updateUserId: String, $users: [UserInput!], $version: Int, $where: RoleExpression) {
+mutation MutationRoleList(String, Timestamp, String, ID, Boolean, [RoleInput], String!, String, [RoleType]!, Timestamp, String, [UserInput!], Int, RoleExpression) {
     roleList(createGroupId: $createGroupId, createTime: $createTime, createUserId: $createUserId, id: $id, isDeprecated: $isDeprecated, list: $list, name: $name, realmId: $realmId, type: $type, updateTime: $updateTime, updateUserId: $updateUserId, users: $users, version: $version, where: $where) @skipNullArguments(if: true) {
         createGroupId
 		createTime

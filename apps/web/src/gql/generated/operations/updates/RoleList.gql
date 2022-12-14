@@ -1,0 +1,15 @@
+mutation UpdateRoleList(String, Timestamp, String, ID, Boolean, [RoleInput], String!, String, [RoleType]!, Timestamp, String, [UserInput!], Int, RoleExpression) {
+    roleList(createGroupId: $createGroupId, createTime: $createTime, createUserId: $createUserId, id: $id, isDeprecated: $isDeprecated, list: $list, name: $name, realmId: $realmId, type: $type, updateTime: $updateTime, updateUserId: $updateUserId, users: $users, version: $version, where: $where) @update {
+        createGroupId
+		createTime
+		createUserId
+		id
+		isDeprecated
+		name
+		realmId
+		type
+		updateTime
+		updateUserId
+		version
+    }
+}
