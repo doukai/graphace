@@ -8,10 +8,13 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, X, Minus } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
+
 	export let id: string;
 	export let value: string | (string | null | undefined)[] | null | undefined;
 	export let name: string;
+	export let error: Error | undefined = undefined;
 	export let placeholder: string = '';
+
 	let content: HTMLElement;
 	const dispatch = createEventDispatcher<{
 		save: {
@@ -23,7 +26,6 @@
 	}>();
 
 	const manager: TypeManager = new TypeManager();
-	let error: Error | undefined = undefined;
 
 	let mutation = (): void => {
 		if (manager.fieldIsList(__field.type)) {

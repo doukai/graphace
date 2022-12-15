@@ -8,7 +8,7 @@ const plugin = async (schema, _documents, pluginConfig) => {
         .map(key => operationFields[key])
         .find(field => field.name === pluginConfig.fieldName);
 
-    return `${pluginConfig.operationType} ${pluginConfig.operationType === 'query' ? 'Query' : pluginConfig.mutationType === 'update' ? 'Update' : 'Mutation'}${field.name.charAt(0).toUpperCase() + field.name.slice(1)}${field.args && field.args.length > 0 ? '(' + field.args.map(arg => '$' + arg.name + ': ' + pluginConfig.mutationType === 'update' ? arg.type.slice(0, -1) : arg.type).join(', ') + ')' : ''} {
+    return `${pluginConfig.operationType} ${pluginConfig.operationType === 'query' ? 'Query' : pluginConfig.mutationType === 'update' ? 'Update' : 'Mutation'}${field.name.charAt(0).toUpperCase() + field.name.slice(1)}${field.args && field.args.length > 0 ? '(' + field.args.map(arg => '$' + arg.name + ': ' + arg.type).join(', ') + ')' : ''} {
     ${field.name}${field.args && field.args.length > 0 ? '(' + field.args.map(arg => arg.name + ': $' + arg.name).join(', ') + ')' : ''} ${pluginConfig.mutationType === 'update' ? '@update' : '@skipNullArguments(if: true)'} ${getSelections(field)}
 }
 `;
@@ -52,4 +52,5 @@ const getFieldType = (type) => {
     }
     return type;
 }
+
 exports.plugin = plugin;

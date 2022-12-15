@@ -1,3 +1,0 @@
-query QueryUserDetail(UserInput) {
-    userDetail(user: $user) @skipNullArguments(if: true) 
-}

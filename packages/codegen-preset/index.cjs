@@ -10,14 +10,13 @@ exports.preset = {
             .map(key => queryFields[key])
             .map(field => {
                 return {
-                    filename: options.baseOutputDir + 'queries/' + field.name.charAt(0).toUpperCase() + field.name.slice(1) + '.gql',
+                    filename: options.baseOutputDir + 'queries/Query' + field.name.charAt(0).toUpperCase() + field.name.slice(1) + '.gql',
                     documents: options.documents,
                     plugins: options.plugins,
                     pluginMap: options.pluginMap,
                     config: {
                         ...options.config,
                         operationType: 'query',
-                        mutationType: null,
                         fieldName: field.name
                     },
                     schema: options.schema,
@@ -29,7 +28,7 @@ exports.preset = {
                     .map(key => mutationFields[key])
                     .map(field => {
                         return {
-                            filename: options.baseOutputDir + 'mutations/' + field.name.charAt(0).toUpperCase() + field.name.slice(1) + '.gql',
+                            filename: options.baseOutputDir + 'mutations/Mutation' + field.name.charAt(0).toUpperCase() + field.name.slice(1) + '.gql',
                             documents: options.documents,
                             plugins: options.plugins,
                             pluginMap: options.pluginMap,
@@ -49,7 +48,7 @@ exports.preset = {
                     .map(key => mutationFields[key])
                     .map(field => {
                         return {
-                            filename: options.baseOutputDir + 'updates/' + field.name.charAt(0).toUpperCase() + field.name.slice(1) + '.gql',
+                            filename: options.baseOutputDir + 'mutations/Update' + field.name.charAt(0).toUpperCase() + field.name.slice(1) + '.gql',
                             documents: options.documents,
                             plugins: options.plugins,
                             pluginMap: options.pluginMap,

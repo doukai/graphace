@@ -1,3 +1,0 @@
-query QueryOrgLevel(OrganizationInput) {
-    orgLevel(organization: $organization) @skipNullArguments(if: true) 
-}

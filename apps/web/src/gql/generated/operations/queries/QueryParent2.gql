@@ -1,0 +1,17 @@
+query QueryParent2($organization: OrganizationInput) {
+    parent2(organization: $organization) @skipNullArguments(if: true) {
+        aboveId
+		createGroupId
+		createTime
+		createUserId
+		id
+		isDeprecated
+		name
+		orgLevel3
+		realmId
+		roleDisable
+		updateTime
+		updateUserId
+		version
+    }
+}
