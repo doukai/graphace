@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { __schema } from '~/gql/generated/introspection.json';
-	import { TypeManager } from '@graphace/graphql/types/TypeManager';
 	import { StringTh, StringTd } from '@graphace/ui-graphql/components/introspection/table';
 	import { SectionHead, SectionLoading } from '@graphace/ui/components/section';
 	import { Table, TableLoading } from '@graphace/ui/components/table';
@@ -35,10 +34,7 @@
 	$: totalCount = $QueryUserConnection.data?.userConnection?.totalCount || 0;
 	let errors: Record<string, Record<string, Error>> = {};
 
-	const manager: TypeManager = new TypeManager();
-
 	let showDeleteButton = false;
-	let idList: string[] = [];
 	let queryValue: string | undefined;
 	let variables: QueryUserConnection$input = {};
 	let orderBy: UserOrderBy = {};
@@ -56,6 +52,12 @@
 	$: selectedDataList = Object.keys(selectedRows)
 		.filter((id) => selectedRows[id])
 		.map((id) => nodes.find((node) => node?.id === id));
+
+	$: if (selectedIdList.length > 0) {
+		showDeleteButton = true;
+	} else {
+		showDeleteButton = false;
+	}
 
 	let selectAll: boolean;
 
@@ -88,15 +90,6 @@
 		}
 
 		QueryUserConnection.fetch({ variables });
-	};
-
-	const selectChange = (event: CustomEvent<{ selectedIdList: string[] }>) => {
-		idList = event.detail.selectedIdList;
-		if (event.detail.selectedIdList.length > 0) {
-			showDeleteButton = true;
-		} else {
-			showDeleteButton = false;
-		}
 	};
 
 	async function updateField(node: UpdateUser$input | null | undefined) {
@@ -147,7 +140,6 @@
 				notifications.error($LL.message.removeFailed());
 			});
 	};
-	// QueryUserConnection.fetch({ variables: { first: 10 } });
 </script>
 
 <SectionHead title="User">
@@ -243,24 +235,21 @@
 							</label>
 						</th>
 						<StringTd
-							id={node.id}
 							name="name"
 							bind:value={node.name}
 							on:save={() => updateField({ id: node?.id, name: node?.name })}
 							error={errors[node.id]?.name}
 						/>
 						<StringTd
-							id={node.id}
 							name="login"
 							bind:value={node.login}
-							on:save={() => updateField({ id: node?.id, name: node?.login })}
+							on:save={() => updateField({ id: node?.id, login: node?.login })}
 							error={errors[node.id]?.login}
 						/>
 						<StringTd
-							id={node.id}
 							name="password"
 							bind:value={node.password}
-							on:save={() => updateField({ id: node?.id, name: node?.password })}
+							on:save={() => updateField({ id: node?.id, password: node?.password })}
 							error={errors[node.id]?.password}
 						/>
 						<td>

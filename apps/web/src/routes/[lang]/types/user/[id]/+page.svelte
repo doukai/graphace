@@ -40,7 +40,6 @@
 	export let data: PageData;
 	$: QueryUser = data.QueryUser as QueryUserStore;
 	$: user = $QueryUser.data?.user as MutationUser$input | null | undefined;
-	const manager: TypeManager = new TypeManager();
 
 	let errors: Record<string, Error> = {};
 
@@ -56,6 +55,7 @@
 								notifications.success($LL.message.saveSuccess());
 							})
 							.catch((error) => {
+								console.error(error);
 								notifications.error($LL.message.saveFailed());
 							});
 					}
