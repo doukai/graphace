@@ -9,7 +9,7 @@
 	export let placeholder: string = '';
 	export let className: string = '';
 	export let error: Error | undefined = undefined;
-	const id = nanoid();
+	export let id: string = nanoid();
 
 	const addItem = (index: number) => {
 		if (!value) {

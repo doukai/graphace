@@ -2,11 +2,11 @@
 	import type { Error } from '@graphace/commons/types';
 	import { nanoid } from 'nanoid';
 	export let name: string;
-	export let value: number;
+	export let value: number | null | undefined;
 	export let placeholder: string = '';
 	export let className: string = '';
-	export let error: Error = null;
-	const id = nanoid();
+	export let error: Error | undefined = undefined;
+	export let id: string = nanoid();
 </script>
 
 <div class="form-control w-full max-w-xs">

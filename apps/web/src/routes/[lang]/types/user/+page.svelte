@@ -220,6 +220,7 @@
 				bind:sort={orderBy.password}
 				on:filter={query}
 			/>
+			<td />
 		</tr>
 	</thead>
 	{#if $QueryUserConnection.isFetching}

@@ -4,7 +4,7 @@
 	export let name: string;
 	export let value: boolean | null | undefined;
 	export let error: Error | undefined = undefined;
-	const id = nanoid();
+	export let id: string = nanoid();
 </script>
 
 <div class="form-control">

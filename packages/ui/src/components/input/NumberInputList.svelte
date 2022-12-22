@@ -5,21 +5,23 @@
 	import { Plus, PlusSm, MinusSm } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
 	export let name: string;
-	export let value: number[];
+	export let value: (number | null | undefined)[] | null | undefined;
 	export let placeholder: string = '';
 	export let className: string = '';
-	export let error: Error = null;
-	const id = nanoid();
+	export let error: Error | undefined = undefined;
+	export let id: string = nanoid();
 
 	const addItem = (index: number) => {
 		if (!value) {
 			value = [];
 		}
-		value = [...value.slice(0, index + 1), null, ...value.slice(index + 1)];
+		value = [...value.slice(0, index + 1), undefined, ...value.slice(index + 1)];
 	};
 
 	const removeItem = (index: number) => {
-		value = [...value.slice(0, index), ...value.slice(index + 1)];
+		if (value) {
+			value = [...value.slice(0, index), ...value.slice(index + 1)];
+		}
 	};
 </script>
 
