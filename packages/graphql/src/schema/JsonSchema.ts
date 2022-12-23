@@ -110,7 +110,7 @@ export async function validate(uri: string, data: object, locale: Language = "en
                         }
                     );
                 }
-                console.log(ajv.errorsText(validate.errors, { separator: '\n' }));
+                console.error(ajv.errorsText(validate.errors, { separator: '\n' }));
                 reject(errors);
             } else {
                 resolve(validateData);
