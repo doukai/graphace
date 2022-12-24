@@ -1,3 +1,3 @@
 mutation UpdateCreateUserId {
-    createUserId @update 
+    createUserId @update @skipNullArguments(if: true) 
 }

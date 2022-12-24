@@ -1,3 +1,3 @@
 query QueryVersion {
-    version @skipNullArguments(if: true) 
+    version  @skipNullArguments(if: true) 
 }

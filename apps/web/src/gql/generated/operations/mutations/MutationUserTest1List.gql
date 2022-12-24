@@ -1,5 +1,5 @@
 mutation MutationUserTest1List($createGroupId: String, $createTime: Timestamp, $createUserId: String, $id: ID, $isDeprecated: Boolean, $list: [UserTest1Input], $realmId: String, $test1: Int, $updateTime: Timestamp, $updateUserId: String, $userId: Int, $version: Int, $where: UserTest1Expression) {
-    userTest1List(createGroupId: $createGroupId, createTime: $createTime, createUserId: $createUserId, id: $id, isDeprecated: $isDeprecated, list: $list, realmId: $realmId, test1: $test1, updateTime: $updateTime, updateUserId: $updateUserId, userId: $userId, version: $version, where: $where) @skipNullArguments(if: true) {
+    userTest1List(createGroupId: $createGroupId, createTime: $createTime, createUserId: $createUserId, id: $id, isDeprecated: $isDeprecated, list: $list, realmId: $realmId, test1: $test1, updateTime: $updateTime, updateUserId: $updateUserId, userId: $userId, version: $version, where: $where)  @skipNullArguments(if: true) {
         createGroupId
 		createTime
 		createUserId

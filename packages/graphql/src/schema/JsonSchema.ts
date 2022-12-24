@@ -36,6 +36,10 @@ async function loadSchema(uri: string) {
     return res.json();
 }
 
+export async function validateUpdate(uri: string, data: object, locale: Language = "en") {
+    return validate(uri.concat("Update"), data, locale);
+}
+
 export async function validate(uri: string, data: object, locale: Language = "en") {
     let validate = ajv.getSchema(uri);
     if (!validate) {

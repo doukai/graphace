@@ -125,17 +125,17 @@ type MutationType implements Meta {
   createTime: Timestamp
   createUserId: String
   isDeprecated: Boolean
-  organization(above: OrganizationInput, aboveId: Int, createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, name: String, realmId: String, updateTime: Timestamp, updateUserId: String, users: [UserInput!], version: Int, where: OrganizationExpression): Organization
-  organizationList(above: OrganizationInput, aboveId: Int, createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, list: [OrganizationInput], name: String, realmId: String, updateTime: Timestamp, updateUserId: String, users: [UserInput!], version: Int, where: OrganizationExpression): [Organization]
+  organization(above: OrganizationInput, aboveId: Int, createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, name: String, realmId: String, updateTime: Timestamp, updateUserId: String, users: [UserInput], version: Int, where: OrganizationExpression): Organization
+  organizationList(above: OrganizationInput, aboveId: Int, createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, list: [OrganizationInput], name: String, realmId: String, updateTime: Timestamp, updateUserId: String, users: [UserInput], version: Int, where: OrganizationExpression): [Organization]
   realmId: String
-  role(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, name: String, realmId: String, type: [RoleType], updateTime: Timestamp, updateUserId: String, users: [UserInput!], version: Int, where: RoleExpression): Role
-  roleList(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, list: [RoleInput], name: String, realmId: String, type: [RoleType], updateTime: Timestamp, updateUserId: String, users: [UserInput!], version: Int, where: RoleExpression): [Role]
+  role(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, name: String, realmId: String, type: [RoleType], updateTime: Timestamp, updateUserId: String, users: [UserInput], version: Int, where: RoleExpression): Role
+  roleList(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, list: [RoleInput], name: String, realmId: String, type: [RoleType], updateTime: Timestamp, updateUserId: String, users: [UserInput], version: Int, where: RoleExpression): [Role]
   roleRoleType(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, realmId: String, roleId: Int, type: RoleType, updateTime: Timestamp, updateUserId: String, version: Int, where: RoleRoleTypeExpression): RoleRoleType
   roleRoleTypeList(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, list: [RoleRoleTypeInput], realmId: String, roleId: Int, type: RoleType, updateTime: Timestamp, updateUserId: String, version: Int, where: RoleRoleTypeExpression): [RoleRoleType]
   updateTime: Timestamp
   updateUserId: String
-  user(age: Int, createGroupId: String, createTime: Timestamp, createUserId: String, disable: Boolean, id: ID, isDeprecated: Boolean, login: String, name: String, organization: OrganizationInput, organizationId: Int, password: String, phones: [String!], realmId: String, roles: [RoleInput!], sex: Sex, test1: [Int!], test2: [Boolean!], updateTime: Timestamp, updateUserId: String, userProfile: UserProfileInput, version: Int, where: UserExpression): User
-  userList(age: Int, createGroupId: String, createTime: Timestamp, createUserId: String, disable: Boolean, id: ID, isDeprecated: Boolean, list: [UserInput], login: String, name: String, organization: OrganizationInput, organizationId: Int, password: String, phones: [String!], realmId: String, roles: [RoleInput!], sex: Sex, test1: [Int!], test2: [Boolean!], updateTime: Timestamp, updateUserId: String, userProfile: UserProfileInput, version: Int, where: UserExpression): [User]
+  user(age: Int, createGroupId: String, createTime: Timestamp, createUserId: String, disable: Boolean, id: ID, isDeprecated: Boolean, login: String, name: String, organization: OrganizationInput, organizationId: Int, password: String, phones: [String], realmId: String, roles: [RoleInput], sex: Sex, test1: [Int], test2: [Boolean], updateTime: Timestamp, updateUserId: String, userProfile: UserProfileInput, version: Int, where: UserExpression): User
+  userList(age: Int, createGroupId: String, createTime: Timestamp, createUserId: String, disable: Boolean, id: ID, isDeprecated: Boolean, list: [UserInput], login: String, name: String, organization: OrganizationInput, organizationId: Int, password: String, phones: [String], realmId: String, roles: [RoleInput], sex: Sex, test1: [Int], test2: [Boolean], updateTime: Timestamp, updateUserId: String, userProfile: UserProfileInput, version: Int, where: UserExpression): [User]
   userPhones(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, phone: String, realmId: String, updateTime: Timestamp, updateUserId: String, userId: Int, version: Int, where: UserPhonesExpression): UserPhones
   userPhonesList(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, list: [UserPhonesInput], phone: String, realmId: String, updateTime: Timestamp, updateUserId: String, userId: Int, version: Int, where: UserPhonesExpression): [UserPhones]
   userProfile(address: String, createGroupId: String, createTime: Timestamp, createUserId: String, email: String, id: ID, isDeprecated: Boolean, qq: String, realmId: String, updateTime: Timestamp, updateUserId: String, user: UserInput, userId: String, version: Int, where: UserProfileExpression): UserProfile
@@ -248,7 +248,7 @@ input OrganizationInput {
   realmId: String
   updateTime: Timestamp
   updateUserId: String
-  users: [UserInput!]
+  users: [UserInput]
   version: Int
 }
 
@@ -387,7 +387,7 @@ input RoleInput {
   type: [RoleType]
   updateTime: Timestamp
   updateUserId: String
-  users: [UserInput!]
+  users: [UserInput]
   version: Int
 }
 
@@ -626,12 +626,12 @@ input UserInput {
   organization: OrganizationInput
   organizationId: Int
   password: String
-  phones: [String!]
+  phones: [String]
   realmId: String
-  roles: [RoleInput!]
+  roles: [RoleInput]
   sex: Sex
-  test1: [Int!]
-  test2: [Boolean!]
+  test1: [Int]
+  test2: [Boolean]
   updateTime: Timestamp
   updateUserId: String
   userProfile: UserProfileInput

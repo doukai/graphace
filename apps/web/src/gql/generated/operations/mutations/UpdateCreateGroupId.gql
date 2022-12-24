@@ -1,3 +1,3 @@
 mutation UpdateCreateGroupId {
-    createGroupId @update 
+    createGroupId @update @skipNullArguments(if: true) 
 }

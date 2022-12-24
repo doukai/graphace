@@ -21,7 +21,7 @@
 		GQL_UpdateUser,
 		UpdateUser$input
 	} from '$houdini';
-	import { validate } from '@graphace/graphql/schema/JsonSchema';
+	import { validateUpdate } from '@graphace/graphql/schema/JsonSchema';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -95,7 +95,7 @@
 	async function updateField(node: UpdateUser$input | null | undefined) {
 		if (node && node.id) {
 			errors[node.id] = {};
-			validate('User', node, $locale)
+			validateUpdate('User', node, $locale)
 				.then((data) => {
 					if (node) {
 						GQL_UpdateUser.mutate(node)

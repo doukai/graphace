@@ -136,7 +136,7 @@ export type MutationTypeOrganizationArgs = {
   realmId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   updateUserId?: InputMaybe<Scalars['String']>;
-  users?: InputMaybe<Array<UserInput>>;
+  users?: InputMaybe<Array<InputMaybe<UserInput>>>;
   version?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<OrganizationExpression>;
 };
@@ -155,7 +155,7 @@ export type MutationTypeOrganizationListArgs = {
   realmId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   updateUserId?: InputMaybe<Scalars['String']>;
-  users?: InputMaybe<Array<UserInput>>;
+  users?: InputMaybe<Array<InputMaybe<UserInput>>>;
   version?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<OrganizationExpression>;
 };
@@ -172,7 +172,7 @@ export type MutationTypeRoleArgs = {
   type?: InputMaybe<Array<InputMaybe<RoleType>>>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   updateUserId?: InputMaybe<Scalars['String']>;
-  users?: InputMaybe<Array<UserInput>>;
+  users?: InputMaybe<Array<InputMaybe<UserInput>>>;
   version?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<RoleExpression>;
 };
@@ -190,7 +190,7 @@ export type MutationTypeRoleListArgs = {
   type?: InputMaybe<Array<InputMaybe<RoleType>>>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   updateUserId?: InputMaybe<Scalars['String']>;
-  users?: InputMaybe<Array<UserInput>>;
+  users?: InputMaybe<Array<InputMaybe<UserInput>>>;
   version?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<RoleExpression>;
 };
@@ -242,12 +242,12 @@ export type MutationTypeUserArgs = {
   organization?: InputMaybe<OrganizationInput>;
   organizationId?: InputMaybe<Scalars['Int']>;
   password?: InputMaybe<Scalars['String']>;
-  phones?: InputMaybe<Array<Scalars['String']>>;
+  phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   realmId?: InputMaybe<Scalars['String']>;
-  roles?: InputMaybe<Array<RoleInput>>;
+  roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
   sex?: InputMaybe<Sex>;
-  test1?: InputMaybe<Array<Scalars['Int']>>;
-  test2?: InputMaybe<Array<Scalars['Boolean']>>;
+  test1?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  test2?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   updateUserId?: InputMaybe<Scalars['String']>;
   userProfile?: InputMaybe<UserProfileInput>;
@@ -270,12 +270,12 @@ export type MutationTypeUserListArgs = {
   organization?: InputMaybe<OrganizationInput>;
   organizationId?: InputMaybe<Scalars['Int']>;
   password?: InputMaybe<Scalars['String']>;
-  phones?: InputMaybe<Array<Scalars['String']>>;
+  phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   realmId?: InputMaybe<Scalars['String']>;
-  roles?: InputMaybe<Array<RoleInput>>;
+  roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
   sex?: InputMaybe<Sex>;
-  test1?: InputMaybe<Array<Scalars['Int']>>;
-  test2?: InputMaybe<Array<Scalars['Boolean']>>;
+  test1?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  test2?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   updateUserId?: InputMaybe<Scalars['String']>;
   userProfile?: InputMaybe<UserProfileInput>;
@@ -641,7 +641,7 @@ export type OrganizationInput = {
   realmId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   updateUserId?: InputMaybe<Scalars['String']>;
-  users?: InputMaybe<Array<UserInput>>;
+  users?: InputMaybe<Array<InputMaybe<UserInput>>>;
   version?: InputMaybe<Scalars['Int']>;
 };
 
@@ -1543,7 +1543,7 @@ export type RoleInput = {
   type?: InputMaybe<Array<InputMaybe<RoleType>>>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   updateUserId?: InputMaybe<Scalars['String']>;
-  users?: InputMaybe<Array<UserInput>>;
+  users?: InputMaybe<Array<InputMaybe<UserInput>>>;
   version?: InputMaybe<Scalars['Int']>;
 };
 
@@ -1873,12 +1873,12 @@ export type UserInput = {
   organization?: InputMaybe<OrganizationInput>;
   organizationId?: InputMaybe<Scalars['Int']>;
   password?: InputMaybe<Scalars['String']>;
-  phones?: InputMaybe<Array<Scalars['String']>>;
+  phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   realmId?: InputMaybe<Scalars['String']>;
-  roles?: InputMaybe<Array<RoleInput>>;
+  roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
   sex?: InputMaybe<Sex>;
-  test1?: InputMaybe<Array<Scalars['Int']>>;
-  test2?: InputMaybe<Array<Scalars['Boolean']>>;
+  test1?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  test2?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   updateUserId?: InputMaybe<Scalars['String']>;
   userProfile?: InputMaybe<UserProfileInput>;
