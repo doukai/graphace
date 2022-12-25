@@ -83,15 +83,15 @@
 
 {#if user}
 	<Form>
-		<FormItems title={'User'}>
-			<FormItem label={'name'} let:id>
-				<Input name={'name'} {id} bind:value={user.name} error={errors.name} />
+		<FormItems title="User">
+			<FormItem label="name" let:id>
+				<Input name="name" {id} bind:value={user.name} error={errors.name} />
 			</FormItem>
-			<FormItem label={'login'} let:id>
-				<Input name={'login'} {id} bind:value={user.login} error={errors.login} />
+			<FormItem label="login" let:id>
+				<Input name="login" {id} bind:value={user.login} error={errors.login} />
 			</FormItem>
-			<FormItem label={'password'} let:id>
-				<Input name={'password'} {id} bind:value={user.password} error={errors.password} />
+			<FormItem label="password" let:id>
+				<Input name="password" {id} bind:value={user.password} error={errors.password} />
 			</FormItem>
 		</FormItems>
 		<FormButtons>
