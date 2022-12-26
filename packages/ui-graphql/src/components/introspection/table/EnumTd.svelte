@@ -40,7 +40,7 @@
 	{#if Array.isArray(value)}
 		<CheckboxGroup bind:value {error} let:group>
 			{#each enums as item}
-				<Checkbox name={item.name} value={item.value} {group} />
+				<Checkbox name={item.name} value={item.value} {group} description={item.description} />
 			{/each}
 		</CheckboxGroup>
 	{:else}
