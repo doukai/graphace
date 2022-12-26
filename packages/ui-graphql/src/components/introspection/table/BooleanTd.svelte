@@ -1,68 +1,45 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { tippy } from '@graphace/ui/components/tippy';
-	import { TypeManager } from '@graphace/graphql/types/TypeManager';
 	import type { __Field, __Type } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import FieldInput from '../FieldInput.svelte';
+	import { Toggle, ToggleList } from '@graphace/ui/components/input';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, X, Minus } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
-	export let id: string;
-	export let __field: __Field;
-	export let value: any;
+
+	export let value: boolean | (boolean | null | undefined)[] | null | undefined;
+	export let name: string;
+	export let error: Error | undefined = undefined;
+
 	let content: HTMLElement;
 	const dispatch = createEventDispatcher<{
-		save: {
-			id: string;
-			__field: __Field;
-			resolve: (value: any) => void;
-			reject: (error: Error) => void;
-		};
+		save: {};
 	}>();
 
-	const manager: TypeManager = new TypeManager();
-	let error: Error = null;
-
 	let mutation = (): void => {
-		if (manager.fieldIsList(__field.type)) {
-			value = value.filter((item: any) => item);
+		if (Array.isArray(value)) {
+			value = value.filter((item) => item);
 		}
-		dispatch('save', {
-			id,
-			__field,
-			resolve: (savedValue) => {
-				error = null;
-				value = savedValue;
-			},
-			reject: (validError) => {
-				error = validError;
-			}
-		});
+		dispatch('save');
 	};
 
 	let clean = (): void => {
-		if (manager.fieldIsList(__field.type)) {
+		if (Array.isArray(value)) {
 			value = [];
 		} else {
 			value = null;
 		}
-		dispatch('save', {
-			id,
-			__field,
-			resolve: (savedValue) => {
-				error = null;
-				value = savedValue;
-			},
-			reject: (validError) => {
-				error = validError;
-			}
-		});
+		dispatch('save');
 	};
 </script>
 
 <div class="flex items-start space-x-1" bind:this={content}>
-	<FieldInput {__field} placeholder={__field.name} bind:value {error} />
+	{#if Array.isArray(value)}
+		<ToggleList {name} bind:value {error} />
+	{:else}
+		<Toggle {name} bind:value {error} />
+	{/if}
 	<div class="tooltip" data-tip={$LL.components.graphql.table.td.save()}>
 		<button class="btn btn-square btn-primary" on:click={() => mutation()}>
 			<Icon src={Check} solid class="h-5 w-5" />
@@ -91,7 +68,7 @@
 			appendTo: () => document.body
 		}}
 	>
-		{#if manager.fieldIsList(__field.type)}
+		{#if Array.isArray(value)}
 			{#if value && value.length > 0}
 				{#if value && value.length > 3}
 					{value

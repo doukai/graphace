@@ -3,15 +3,15 @@
 	import { tippy } from '@graphace/ui/components/tippy';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, X, Filter, SortAscending, SortDescending } from '@steeze-ui/heroicons';
-	import { Input, InputList } from '@graphace/ui/components/input';
-	import { type StringExpression, Operator, Sort } from '@graphace/graphql/types';
+	import { NumberInput, NumberInputList } from '@graphace/ui/components/input';
+	import { type NumberExpression, Operator, Sort } from '@graphace/graphql/types';
 	import LL from '~/i18n/i18n-svelte';
 
 	export let name: string;
-	export let expression: StringExpression | null | undefined;
+	export let expression: NumberExpression | null | undefined;
 	export let sort: Sort | null | undefined;
 
-	let _expression: StringExpression = { opr: Operator.EQ, val: undefined, in: [] };
+	let _expression: NumberExpression = { opr: Operator.EQ, val: undefined, in: [] };
 	let _sort: Sort | undefined = undefined;
 
 	let content: HTMLElement;
@@ -63,13 +63,13 @@
 		<option value="NBT">{$LL.components.graphql.table.th.nbt()}</option>
 	</select>
 	{#if _expression.opr === 'IN' || _expression.opr === 'NIN' || _expression.opr === 'BT' || _expression.opr === 'NBT'}
-		<InputList
+		<NumberInputList
 			placeholder={$LL.components.graphql.table.th.filterPlaceholder()}
 			{name}
 			bind:value={_expression.in}
 		/>
 	{:else}
-		<Input
+		<NumberInput
 			placeholder={$LL.components.graphql.table.th.filterPlaceholder()}
 			{name}
 			bind:value={_expression.val}

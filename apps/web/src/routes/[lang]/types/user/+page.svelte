@@ -44,22 +44,18 @@
 	let pageSize: number = 10;
 	$: offset = (pageNumber - 1) * pageSize;
 
+	let selectAll: boolean;
 	let selectedRows: Record<string, boolean> = {};
+
 	$: selectedIdList = Object.keys(selectedRows)
 		.filter((id) => selectedRows[id])
 		.map((id) => id);
-
-	$: selectedDataList = Object.keys(selectedRows)
-		.filter((id) => selectedRows[id])
-		.map((id) => nodes.find((node) => node?.id === id));
 
 	$: if (selectedIdList.length > 0) {
 		showDeleteButton = true;
 	} else {
 		showDeleteButton = false;
 	}
-
-	let selectAll: boolean;
 
 	const query = () => {
 		if (queryValue) {
@@ -119,11 +115,12 @@
 	async function removeRow(id: string) {
 		GQL_UpdateUser.mutate({ id: id, isDeprecated: true })
 			.then(() => {
-				notifications.success($LL.message.saveSuccess());
+				notifications.success($LL.message.removeSuccess());
+				query();
 			})
 			.catch((error) => {
 				console.error(error);
-				notifications.error($LL.message.saveFailed());
+				notifications.error($LL.message.requestFailed());
 			});
 	}
 
@@ -134,6 +131,7 @@
 		})
 			.then(() => {
 				notifications.success($LL.message.removeSuccess());
+				query();
 			})
 			.catch((error) => {
 				console.error(error);
@@ -170,7 +168,7 @@
 			class="btn btn-square md:hidden"
 			on:click={(e) => {
 				e.preventDefault();
-				goto('./user/create');
+				goto('./user/+');
 			}}
 		>
 			<Icon src={Plus} class="h-6 w-6" solid />
@@ -180,7 +178,7 @@
 		class="hidden md:btn"
 		on:click={(e) => {
 			e.preventDefault();
-			goto('./user/create');
+			goto('./user/+');
 		}}
 	>
 		{$LL.routers.type.create()}
@@ -197,7 +195,11 @@
 						class="checkbox"
 						bind:checked={selectAll}
 						on:change={() => {
-							Object.keys(selectedRows).forEach((id) => (selectedRows[id] = selectAll));
+							nodes.forEach((node) => {
+								if (node?.id) {
+									selectedRows[node.id] = selectAll;
+								}
+							});
 						}}
 					/>
 				</label>
@@ -215,7 +217,7 @@
 				on:filter={query}
 			/>
 			<StringTh
-				name={'password'}
+				name="password"
 				bind:expression={variables.password}
 				bind:sort={orderBy.password}
 				on:filter={query}

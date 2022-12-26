@@ -3,15 +3,15 @@
 	import { tippy } from '@graphace/ui/components/tippy';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, X, Filter, SortAscending, SortDescending } from '@steeze-ui/heroicons';
-	import { Input, InputList } from '@graphace/ui/components/input';
-	import { type StringExpression, Operator, Sort } from '@graphace/graphql/types';
+	import { Toggle, ToggleList } from '@graphace/ui/components/input';
+	import { type BooleanExpression, Operator, Sort } from '@graphace/graphql/types';
 	import LL from '~/i18n/i18n-svelte';
 
 	export let name: string;
-	export let expression: StringExpression | null | undefined;
+	export let expression: BooleanExpression | null | undefined;
 	export let sort: Sort | null | undefined;
 
-	let _expression: StringExpression = { opr: Operator.EQ, val: undefined, in: [] };
+	let _expression: BooleanExpression = { opr: Operator.EQ, val: undefined, in: [] };
 	let _sort: Sort | undefined = undefined;
 
 	let content: HTMLElement;
@@ -63,17 +63,9 @@
 		<option value="NBT">{$LL.components.graphql.table.th.nbt()}</option>
 	</select>
 	{#if _expression.opr === 'IN' || _expression.opr === 'NIN' || _expression.opr === 'BT' || _expression.opr === 'NBT'}
-		<InputList
-			placeholder={$LL.components.graphql.table.th.filterPlaceholder()}
-			{name}
-			bind:value={_expression.in}
-		/>
+		<ToggleList {name} bind:value={_expression.in} />
 	{:else}
-		<Input
-			placeholder={$LL.components.graphql.table.th.filterPlaceholder()}
-			{name}
-			bind:value={_expression.val}
-		/>
+		<Toggle {name} bind:value={_expression.val} />
 	{/if}
 	<select class="select select-bordered" bind:value={sort}>
 		<option value={undefined} selected>{$LL.components.graphql.table.th.noSort()}</option>
