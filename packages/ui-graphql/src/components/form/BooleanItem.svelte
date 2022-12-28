@@ -1,19 +1,18 @@
 <script lang="ts">
 	import type { Error } from '@graphace/commons/types';
 	import { FormItem } from '@graphace/ui/components/form';
-	import { Input, InputList } from '@graphace/ui/components/input';
+	import { Toggle, ToggleList } from '@graphace/ui/components/input';
 
-	export let value: string | (string | null | undefined)[] | null | undefined;
+	export let value: boolean | (boolean | null | undefined)[] | null | undefined;
 	export let name: string;
 	export let label: string;
 	export let error: Error | undefined = undefined;
-	export let placeholder: string = '';
 </script>
 
 <FormItem {label} let:id>
 	{#if Array.isArray(value)}
-		<InputList {placeholder} {id} {name} bind:value {error} />
+		<ToggleList {id} {name} bind:value {error} />
 	{:else}
-		<Input {placeholder} {id} {name} bind:value {error} />
+		<Toggle {id} {name} bind:value {error} />
 	{/if}
 </FormItem>

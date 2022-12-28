@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { __schema } from '~/gql/generated/introspection.json';
-	import { StringTh, StringTd } from '@graphace/ui-graphql/components/introspection/table';
+	import { StringTh, StringTd } from '@graphace/ui-graphql/components/table';
 	import { SectionHead, SectionLoading } from '@graphace/ui/components/section';
 	import { Table, TableLoading } from '@graphace/ui/components/table';
 	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';

@@ -2,7 +2,6 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { TypeManager } from '@graphace/graphql/types/TypeManager';
 	import {
 		Form,
 		FormLoading,
@@ -10,6 +9,7 @@
 		FormItem,
 		FormButtons
 	} from '@graphace/ui/components/form';
+	import { StringItem, NumberItem } from '@graphace/ui-graphql/components/form';
 	import {
 		Input,
 		NumberInput,
@@ -83,15 +83,14 @@
 {#if user}
 	<Form>
 		<FormItems title="User">
-			<FormItem label="name" let:id>
-				<Input name="name" {id} bind:value={user.name} error={errors.name} />
-			</FormItem>
-			<FormItem label="login" let:id>
-				<Input name="login" {id} bind:value={user.login} error={errors.login} />
-			</FormItem>
-			<FormItem label="password" let:id>
-				<Input name="password" {id} bind:value={user.password} error={errors.password} />
-			</FormItem>
+			<StringItem label="name" name="name" bind:value={user.name} error={errors.name} />
+			<StringItem label="login" name="login" bind:value={user.login} error={errors.login} />
+			<StringItem
+				label="password"
+				name="password"
+				bind:value={user.password}
+				error={errors.password}
+			/>
 		</FormItems>
 		<FormButtons>
 			<button
