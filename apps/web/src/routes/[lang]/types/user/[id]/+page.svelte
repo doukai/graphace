@@ -19,7 +19,6 @@
 		ToggleList
 	} from '@graphace/ui/components/input';
 	import { __schema } from '~/gql/generated/introspection.json';
-	import { FieldInput, ObjectEditButton } from '@graphace/ui-graphql/components/introspection';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { validate } from '@graphace/graphql/schema/JsonSchema';

@@ -1,4 +1,4 @@
-<tbody class="animate-pulse w-full">
+<tbody class="animate-pulse">
 	<tr>
 		<td>
 			<div class="py-4" />
