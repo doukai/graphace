@@ -76,7 +76,7 @@ importers:
       '@tailwindcss/typography': 0.5.8_tailwindcss@3.2.4
       '@types/node': 18.11.9
       ajv: 8.11.2
-      ajv-formats: 2.1.1_ajv@8.11.2
+      ajv-formats: 2.1.1
       ajv-i18n: 4.2.0_ajv@8.11.2
       autoprefixer: 10.4.13_postcss@8.4.19
       concurrently: 7.5.0
@@ -86,14 +86,14 @@ importers:
       graphace-codegen-preset: link:../../packages/codegen-preset
       graphql: 16.6.0
       houdini: 0.17.9
-      houdini-svelte: 0.17.9_graphql@16.6.0+vite@3.2.4
+      houdini-svelte: 0.17.9_vite@3.2.4
       lodash: 4.17.21
       postcss: 8.4.19
       postcss-load-config: 3.1.4_v776zzvn44o7tpgzieipaairwm
       svelte: 3.53.1
       svelte-check: 2.9.2_reyjccueawnk254y3yqaaxtb5e
       svelte-preprocess: 4.10.7_fk6yiouxkoeuwmuc7fxd2g6ie4
-      tailwindcss: 3.2.4_v776zzvn44o7tpgzieipaairwm
+      tailwindcss: 3.2.4_ts-node@10.9.1
       theme-change: 2.2.0
       ts-node: 10.9.1_wup25etrarvlqkprac7h35hj7u
       tslib: 2.4.1
@@ -1786,7 +1786,7 @@ packages:
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 3.2.4_v776zzvn44o7tpgzieipaairwm
+      tailwindcss: 3.2.4_ts-node@10.9.1
     dev: true
 
   /@tootallnate/once/2.0.0:
@@ -2123,6 +2123,15 @@ packages:
     dependencies:
       clean-stack: 2.2.0
       indent-string: 4.0.0
+    dev: true
+
+  /ajv-formats/2.1.1:
+    resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
+    peerDependenciesMeta:
+      ajv:
+        optional: true
+    dependencies:
+      ajv: 8.11.2
     dev: true
 
   /ajv-formats/2.1.1_ajv@8.11.2:
@@ -2746,7 +2755,7 @@ packages:
       css-selector-tokenizer: 0.8.0
       postcss: 8.4.19
       postcss-js: 4.0.0_postcss@8.4.19
-      tailwindcss: 3.2.4_v776zzvn44o7tpgzieipaairwm
+      tailwindcss: 3.2.4_ts-node@10.9.1
     transitivePeerDependencies:
       - ts-node
     dev: true
@@ -3671,16 +3680,14 @@ packages:
       tslib: 2.4.1
     dev: true
 
-  /houdini-svelte/0.17.9_graphql@16.6.0+vite@3.2.4:
+  /houdini-svelte/0.17.9_vite@3.2.4:
     resolution: {integrity: sha512-zRMUiiIkLLM8PD0VCqYf3PgP3lBfgfS5BDfNQ47E+FAql8eGgTi52LMjf2SWQNMjmkVx6sGnfV/zoT3ik4Dk4w==}
-    peerDependencies:
-      graphql: ^14.0.0 || ^15.0.0
     dependencies:
       '@kitql/helper': 0.5.0
       '@sveltejs/kit': 1.0.0-next.547_svelte@3.53.1+vite@3.2.4
       ast-types: 0.15.2
       estree-walker: 3.0.1
-      graphql: 16.6.0
+      graphql: 15.8.0
       houdini: 0.17.9
       minimatch: 5.1.0
       recast: 0.21.5
@@ -5231,12 +5238,10 @@ packages:
       tslib: 2.4.1
     dev: true
 
-  /tailwindcss/3.2.4_v776zzvn44o7tpgzieipaairwm:
+  /tailwindcss/3.2.4_ts-node@10.9.1:
     resolution: {integrity: sha512-AhwtHCKMtR71JgeYDaswmZXhPcW9iuI9Sp2LvZPo9upDZ7231ZJ7eA9RaURbhpXGVlrjX4cFNlB4ieTetEb7hQ==}
     engines: {node: '>=12.13.0'}
     hasBin: true
-    peerDependencies:
-      postcss: ^8.0.9
     dependencies:
       arg: 5.0.2
       chokidar: 3.5.3

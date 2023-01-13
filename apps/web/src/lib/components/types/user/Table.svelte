@@ -12,7 +12,13 @@
 	import LL from '~/i18n/i18n-svelte';
 	import { locale } from '~/i18n/i18n-svelte';
 	import { Pagination } from '@graphace/ui/components/connection';
-	import { Conditional, Operator, User, UserOrderBy } from '~/gql/generated/schema';
+	import {
+		Conditional,
+		Operator,
+		User,
+		UserOrderBy,
+		QueryTypeUserListArgs
+	} from '~/gql/generated/schema';
 	import {
 		QueryUserConnection$input,
 		GQL_UpdateUser,
@@ -29,7 +35,7 @@
 
 	let showDeleteButton = false;
 	let queryValue: string | undefined;
-	let variables: QueryUserConnection$input = {};
+	let variables: QueryTypeUserListArgs = {};
 	let orderBy: UserOrderBy = {};
 	let after: string | undefined;
 	let before: string | undefined;

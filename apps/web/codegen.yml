@@ -7,7 +7,9 @@ generates:
   ./src/gql/generated/schema.ts:
     plugins:
       - typescript
-      - typescript-operations
+    config:
+      namingConvention: 
+        enumValues: change-case-all#upperCase
   # ./src/gql/generated/introspection.json:
   #   plugins:
   #     - introspection
