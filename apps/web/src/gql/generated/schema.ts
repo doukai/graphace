@@ -2388,3 +2388,1587 @@ export type ValidationInput = {
   then?: InputMaybe<ValidationInput>;
   uniqueItems?: InputMaybe<Scalars['Boolean']>;
 };
+
+export type MutationCreateGroupIdMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MutationCreateGroupIdMutation = { __typename?: 'MutationType', createGroupId?: string | null };
+
+export type MutationCreateTimeMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MutationCreateTimeMutation = { __typename?: 'MutationType', createTime?: any | null };
+
+export type MutationCreateUserIdMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MutationCreateUserIdMutation = { __typename?: 'MutationType', createUserId?: string | null };
+
+export type MutationIsDeprecatedMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MutationIsDeprecatedMutation = { __typename?: 'MutationType', isDeprecated?: boolean | null };
+
+export type MutationOrganizationMutationVariables = Exact<{
+  above?: InputMaybe<OrganizationInput>;
+  aboveId?: InputMaybe<Scalars['Int']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  users?: InputMaybe<Array<InputMaybe<UserInput>> | InputMaybe<UserInput>>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<OrganizationExpression>;
+}>;
+
+
+export type MutationOrganizationMutation = { __typename?: 'MutationType', organization?: { __typename?: 'Organization', aboveId?: number | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, name: string, orgLevel3?: Array<number | null> | null, realmId?: string | null, roleDisable?: Array<boolean | null> | null, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null };
+
+export type MutationOrganizationListMutationVariables = Exact<{
+  above?: InputMaybe<OrganizationInput>;
+  aboveId?: InputMaybe<Scalars['Int']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  list?: InputMaybe<Array<InputMaybe<OrganizationInput>> | InputMaybe<OrganizationInput>>;
+  name?: InputMaybe<Scalars['String']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  users?: InputMaybe<Array<InputMaybe<UserInput>> | InputMaybe<UserInput>>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<OrganizationExpression>;
+}>;
+
+
+export type MutationOrganizationListMutation = { __typename?: 'MutationType', organizationList?: Array<{ __typename?: 'Organization', aboveId?: number | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, name: string, orgLevel3?: Array<number | null> | null, realmId?: string | null, roleDisable?: Array<boolean | null> | null, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null> | null };
+
+export type MutationRealmIdMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MutationRealmIdMutation = { __typename?: 'MutationType', realmId?: string | null };
+
+export type MutationRoleMutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Array<InputMaybe<RoleType>> | InputMaybe<RoleType>>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  users?: InputMaybe<Array<InputMaybe<UserInput>> | InputMaybe<UserInput>>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<RoleExpression>;
+}>;
+
+
+export type MutationRoleMutation = { __typename?: 'MutationType', role?: { __typename?: 'Role', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, name: string, realmId?: string | null, type: Array<RoleType | null>, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null };
+
+export type MutationRoleListMutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  list?: InputMaybe<Array<InputMaybe<RoleInput>> | InputMaybe<RoleInput>>;
+  name?: InputMaybe<Scalars['String']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Array<InputMaybe<RoleType>> | InputMaybe<RoleType>>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  users?: InputMaybe<Array<InputMaybe<UserInput>> | InputMaybe<UserInput>>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<RoleExpression>;
+}>;
+
+
+export type MutationRoleListMutation = { __typename?: 'MutationType', roleList?: Array<{ __typename?: 'Role', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, name: string, realmId?: string | null, type: Array<RoleType | null>, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null> | null };
+
+export type MutationRoleRoleTypeMutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  roleId?: InputMaybe<Scalars['Int']>;
+  type?: InputMaybe<RoleType>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<RoleRoleTypeExpression>;
+}>;
+
+
+export type MutationRoleRoleTypeMutation = { __typename?: 'MutationType', roleRoleType?: { __typename?: 'RoleRoleType', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, roleId?: number | null, type?: RoleType | null, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null };
+
+export type MutationRoleRoleTypeListMutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  list?: InputMaybe<Array<InputMaybe<RoleRoleTypeInput>> | InputMaybe<RoleRoleTypeInput>>;
+  realmId?: InputMaybe<Scalars['String']>;
+  roleId?: InputMaybe<Scalars['Int']>;
+  type?: InputMaybe<RoleType>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<RoleRoleTypeExpression>;
+}>;
+
+
+export type MutationRoleRoleTypeListMutation = { __typename?: 'MutationType', roleRoleTypeList?: Array<{ __typename?: 'RoleRoleType', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, roleId?: number | null, type?: RoleType | null, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null> | null };
+
+export type MutationUpdateTimeMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MutationUpdateTimeMutation = { __typename?: 'MutationType', updateTime?: any | null };
+
+export type MutationUpdateUserIdMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MutationUpdateUserIdMutation = { __typename?: 'MutationType', updateUserId?: string | null };
+
+export type MutationUserMutationVariables = Exact<{
+  age?: InputMaybe<Scalars['Int']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  disable?: InputMaybe<Scalars['Boolean']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  login?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  organization?: InputMaybe<OrganizationInput>;
+  organizationId?: InputMaybe<Scalars['Int']>;
+  password?: InputMaybe<Scalars['String']>;
+  phones?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
+  realmId?: InputMaybe<Scalars['String']>;
+  roles?: InputMaybe<Array<InputMaybe<RoleInput>> | InputMaybe<RoleInput>>;
+  sex?: InputMaybe<Sex>;
+  test1?: InputMaybe<Array<InputMaybe<Scalars['Int']>> | InputMaybe<Scalars['Int']>>;
+  test2?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>> | InputMaybe<Scalars['Boolean']>>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  userProfile?: InputMaybe<UserProfileInput>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserExpression>;
+}>;
+
+
+export type MutationUserMutation = { __typename?: 'MutationType', user?: { __typename?: 'User', age?: number | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, disable?: boolean | null, id?: string | null, isDeprecated?: boolean | null, login: string, name: string, organizationId?: number | null, password: string, phones?: Array<string> | null, realmId?: string | null, sex?: Sex | null, test1?: Array<number> | null, test2?: Array<boolean> | null, updateTime?: any | null, updateUserId?: string | null, userDetail2?: string | null, version?: number | null } | null };
+
+export type MutationUserListMutationVariables = Exact<{
+  age?: InputMaybe<Scalars['Int']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  disable?: InputMaybe<Scalars['Boolean']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  list?: InputMaybe<Array<InputMaybe<UserInput>> | InputMaybe<UserInput>>;
+  login?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  organization?: InputMaybe<OrganizationInput>;
+  organizationId?: InputMaybe<Scalars['Int']>;
+  password?: InputMaybe<Scalars['String']>;
+  phones?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
+  realmId?: InputMaybe<Scalars['String']>;
+  roles?: InputMaybe<Array<InputMaybe<RoleInput>> | InputMaybe<RoleInput>>;
+  sex?: InputMaybe<Sex>;
+  test1?: InputMaybe<Array<InputMaybe<Scalars['Int']>> | InputMaybe<Scalars['Int']>>;
+  test2?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>> | InputMaybe<Scalars['Boolean']>>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  userProfile?: InputMaybe<UserProfileInput>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserExpression>;
+}>;
+
+
+export type MutationUserListMutation = { __typename?: 'MutationType', userList?: Array<{ __typename?: 'User', age?: number | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, disable?: boolean | null, id?: string | null, isDeprecated?: boolean | null, login: string, name: string, organizationId?: number | null, password: string, phones?: Array<string> | null, realmId?: string | null, sex?: Sex | null, test1?: Array<number> | null, test2?: Array<boolean> | null, updateTime?: any | null, updateUserId?: string | null, userDetail2?: string | null, version?: number | null } | null> | null };
+
+export type MutationUserPhonesMutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  phone?: InputMaybe<Scalars['String']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['Int']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserPhonesExpression>;
+}>;
+
+
+export type MutationUserPhonesMutation = { __typename?: 'MutationType', userPhones?: { __typename?: 'UserPhones', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, phone?: string | null, realmId?: string | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null };
+
+export type MutationUserPhonesListMutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  list?: InputMaybe<Array<InputMaybe<UserPhonesInput>> | InputMaybe<UserPhonesInput>>;
+  phone?: InputMaybe<Scalars['String']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['Int']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserPhonesExpression>;
+}>;
+
+
+export type MutationUserPhonesListMutation = { __typename?: 'MutationType', userPhonesList?: Array<{ __typename?: 'UserPhones', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, phone?: string | null, realmId?: string | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null> | null };
+
+export type MutationUserProfileMutationVariables = Exact<{
+  address?: InputMaybe<Scalars['String']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  qq?: InputMaybe<Scalars['String']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  userId?: InputMaybe<Scalars['String']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserProfileExpression>;
+}>;
+
+
+export type MutationUserProfileMutation = { __typename?: 'MutationType', userProfile?: { __typename?: 'UserProfile', address?: string | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, email?: string | null, id?: string | null, isDeprecated?: boolean | null, qq?: string | null, realmId?: string | null, updateTime?: any | null, updateUserId?: string | null, userId?: string | null, version?: number | null } | null };
+
+export type MutationUserProfileListMutationVariables = Exact<{
+  address?: InputMaybe<Scalars['String']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  list?: InputMaybe<Array<InputMaybe<UserProfileInput>> | InputMaybe<UserProfileInput>>;
+  qq?: InputMaybe<Scalars['String']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  userId?: InputMaybe<Scalars['String']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserProfileExpression>;
+}>;
+
+
+export type MutationUserProfileListMutation = { __typename?: 'MutationType', userProfileList?: Array<{ __typename?: 'UserProfile', address?: string | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, email?: string | null, id?: string | null, isDeprecated?: boolean | null, qq?: string | null, realmId?: string | null, updateTime?: any | null, updateUserId?: string | null, userId?: string | null, version?: number | null } | null> | null };
+
+export type MutationUserRoleMutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  roleId?: InputMaybe<Scalars['Int']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['Int']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserRoleExpression>;
+}>;
+
+
+export type MutationUserRoleMutation = { __typename?: 'MutationType', userRole?: { __typename?: 'UserRole', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, roleId?: number | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null };
+
+export type MutationUserRoleListMutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  list?: InputMaybe<Array<InputMaybe<UserRoleInput>> | InputMaybe<UserRoleInput>>;
+  realmId?: InputMaybe<Scalars['String']>;
+  roleId?: InputMaybe<Scalars['Int']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['Int']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserRoleExpression>;
+}>;
+
+
+export type MutationUserRoleListMutation = { __typename?: 'MutationType', userRoleList?: Array<{ __typename?: 'UserRole', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, roleId?: number | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null> | null };
+
+export type MutationUserTest1MutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  test1?: InputMaybe<Scalars['Int']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['Int']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserTest1Expression>;
+}>;
+
+
+export type MutationUserTest1Mutation = { __typename?: 'MutationType', userTest1?: { __typename?: 'UserTest1', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, test1?: number | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null };
+
+export type MutationUserTest1ListMutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  list?: InputMaybe<Array<InputMaybe<UserTest1Input>> | InputMaybe<UserTest1Input>>;
+  realmId?: InputMaybe<Scalars['String']>;
+  test1?: InputMaybe<Scalars['Int']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['Int']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserTest1Expression>;
+}>;
+
+
+export type MutationUserTest1ListMutation = { __typename?: 'MutationType', userTest1List?: Array<{ __typename?: 'UserTest1', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, test1?: number | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null> | null };
+
+export type MutationUserTest2MutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  test2?: InputMaybe<Scalars['Boolean']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['Int']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserTest2Expression>;
+}>;
+
+
+export type MutationUserTest2Mutation = { __typename?: 'MutationType', userTest2?: { __typename?: 'UserTest2', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, test2?: boolean | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null };
+
+export type MutationUserTest2ListMutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  list?: InputMaybe<Array<InputMaybe<UserTest2Input>> | InputMaybe<UserTest2Input>>;
+  realmId?: InputMaybe<Scalars['String']>;
+  test2?: InputMaybe<Scalars['Boolean']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['Int']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserTest2Expression>;
+}>;
+
+
+export type MutationUserTest2ListMutation = { __typename?: 'MutationType', userTest2List?: Array<{ __typename?: 'UserTest2', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, test2?: boolean | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null> | null };
+
+export type MutationVersionMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MutationVersionMutation = { __typename?: 'MutationType', version?: number | null };
+
+export type UpdateCreateGroupIdMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UpdateCreateGroupIdMutation = { __typename?: 'MutationType', createGroupId?: string | null };
+
+export type UpdateCreateTimeMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UpdateCreateTimeMutation = { __typename?: 'MutationType', createTime?: any | null };
+
+export type UpdateCreateUserIdMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UpdateCreateUserIdMutation = { __typename?: 'MutationType', createUserId?: string | null };
+
+export type UpdateIsDeprecatedMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UpdateIsDeprecatedMutation = { __typename?: 'MutationType', isDeprecated?: boolean | null };
+
+export type UpdateOrganizationMutationVariables = Exact<{
+  above?: InputMaybe<OrganizationInput>;
+  aboveId?: InputMaybe<Scalars['Int']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  users?: InputMaybe<Array<InputMaybe<UserInput>> | InputMaybe<UserInput>>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<OrganizationExpression>;
+}>;
+
+
+export type UpdateOrganizationMutation = { __typename?: 'MutationType', organization?: { __typename?: 'Organization', aboveId?: number | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, name: string, orgLevel3?: Array<number | null> | null, realmId?: string | null, roleDisable?: Array<boolean | null> | null, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null };
+
+export type UpdateOrganizationListMutationVariables = Exact<{
+  above?: InputMaybe<OrganizationInput>;
+  aboveId?: InputMaybe<Scalars['Int']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  list?: InputMaybe<Array<InputMaybe<OrganizationInput>> | InputMaybe<OrganizationInput>>;
+  name?: InputMaybe<Scalars['String']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  users?: InputMaybe<Array<InputMaybe<UserInput>> | InputMaybe<UserInput>>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<OrganizationExpression>;
+}>;
+
+
+export type UpdateOrganizationListMutation = { __typename?: 'MutationType', organizationList?: Array<{ __typename?: 'Organization', aboveId?: number | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, name: string, orgLevel3?: Array<number | null> | null, realmId?: string | null, roleDisable?: Array<boolean | null> | null, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null> | null };
+
+export type UpdateRealmIdMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UpdateRealmIdMutation = { __typename?: 'MutationType', realmId?: string | null };
+
+export type UpdateRoleMutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Array<InputMaybe<RoleType>> | InputMaybe<RoleType>>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  users?: InputMaybe<Array<InputMaybe<UserInput>> | InputMaybe<UserInput>>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<RoleExpression>;
+}>;
+
+
+export type UpdateRoleMutation = { __typename?: 'MutationType', role?: { __typename?: 'Role', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, name: string, realmId?: string | null, type: Array<RoleType | null>, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null };
+
+export type UpdateRoleListMutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  list?: InputMaybe<Array<InputMaybe<RoleInput>> | InputMaybe<RoleInput>>;
+  name?: InputMaybe<Scalars['String']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Array<InputMaybe<RoleType>> | InputMaybe<RoleType>>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  users?: InputMaybe<Array<InputMaybe<UserInput>> | InputMaybe<UserInput>>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<RoleExpression>;
+}>;
+
+
+export type UpdateRoleListMutation = { __typename?: 'MutationType', roleList?: Array<{ __typename?: 'Role', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, name: string, realmId?: string | null, type: Array<RoleType | null>, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null> | null };
+
+export type UpdateRoleRoleTypeMutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  roleId?: InputMaybe<Scalars['Int']>;
+  type?: InputMaybe<RoleType>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<RoleRoleTypeExpression>;
+}>;
+
+
+export type UpdateRoleRoleTypeMutation = { __typename?: 'MutationType', roleRoleType?: { __typename?: 'RoleRoleType', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, roleId?: number | null, type?: RoleType | null, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null };
+
+export type UpdateRoleRoleTypeListMutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  list?: InputMaybe<Array<InputMaybe<RoleRoleTypeInput>> | InputMaybe<RoleRoleTypeInput>>;
+  realmId?: InputMaybe<Scalars['String']>;
+  roleId?: InputMaybe<Scalars['Int']>;
+  type?: InputMaybe<RoleType>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<RoleRoleTypeExpression>;
+}>;
+
+
+export type UpdateRoleRoleTypeListMutation = { __typename?: 'MutationType', roleRoleTypeList?: Array<{ __typename?: 'RoleRoleType', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, roleId?: number | null, type?: RoleType | null, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null> | null };
+
+export type UpdateUpdateTimeMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UpdateUpdateTimeMutation = { __typename?: 'MutationType', updateTime?: any | null };
+
+export type UpdateUpdateUserIdMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UpdateUpdateUserIdMutation = { __typename?: 'MutationType', updateUserId?: string | null };
+
+export type UpdateUserMutationVariables = Exact<{
+  age?: InputMaybe<Scalars['Int']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  disable?: InputMaybe<Scalars['Boolean']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  login?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  organization?: InputMaybe<OrganizationInput>;
+  organizationId?: InputMaybe<Scalars['Int']>;
+  password?: InputMaybe<Scalars['String']>;
+  phones?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
+  realmId?: InputMaybe<Scalars['String']>;
+  roles?: InputMaybe<Array<InputMaybe<RoleInput>> | InputMaybe<RoleInput>>;
+  sex?: InputMaybe<Sex>;
+  test1?: InputMaybe<Array<InputMaybe<Scalars['Int']>> | InputMaybe<Scalars['Int']>>;
+  test2?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>> | InputMaybe<Scalars['Boolean']>>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  userProfile?: InputMaybe<UserProfileInput>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserExpression>;
+}>;
+
+
+export type UpdateUserMutation = { __typename?: 'MutationType', user?: { __typename?: 'User', age?: number | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, disable?: boolean | null, id?: string | null, isDeprecated?: boolean | null, login: string, name: string, organizationId?: number | null, password: string, phones?: Array<string> | null, realmId?: string | null, sex?: Sex | null, test1?: Array<number> | null, test2?: Array<boolean> | null, updateTime?: any | null, updateUserId?: string | null, userDetail2?: string | null, version?: number | null } | null };
+
+export type UpdateUserListMutationVariables = Exact<{
+  age?: InputMaybe<Scalars['Int']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  disable?: InputMaybe<Scalars['Boolean']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  list?: InputMaybe<Array<InputMaybe<UserInput>> | InputMaybe<UserInput>>;
+  login?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  organization?: InputMaybe<OrganizationInput>;
+  organizationId?: InputMaybe<Scalars['Int']>;
+  password?: InputMaybe<Scalars['String']>;
+  phones?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
+  realmId?: InputMaybe<Scalars['String']>;
+  roles?: InputMaybe<Array<InputMaybe<RoleInput>> | InputMaybe<RoleInput>>;
+  sex?: InputMaybe<Sex>;
+  test1?: InputMaybe<Array<InputMaybe<Scalars['Int']>> | InputMaybe<Scalars['Int']>>;
+  test2?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>> | InputMaybe<Scalars['Boolean']>>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  userProfile?: InputMaybe<UserProfileInput>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserExpression>;
+}>;
+
+
+export type UpdateUserListMutation = { __typename?: 'MutationType', userList?: Array<{ __typename?: 'User', age?: number | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, disable?: boolean | null, id?: string | null, isDeprecated?: boolean | null, login: string, name: string, organizationId?: number | null, password: string, phones?: Array<string> | null, realmId?: string | null, sex?: Sex | null, test1?: Array<number> | null, test2?: Array<boolean> | null, updateTime?: any | null, updateUserId?: string | null, userDetail2?: string | null, version?: number | null } | null> | null };
+
+export type UpdateUserPhonesMutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  phone?: InputMaybe<Scalars['String']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['Int']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserPhonesExpression>;
+}>;
+
+
+export type UpdateUserPhonesMutation = { __typename?: 'MutationType', userPhones?: { __typename?: 'UserPhones', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, phone?: string | null, realmId?: string | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null };
+
+export type UpdateUserPhonesListMutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  list?: InputMaybe<Array<InputMaybe<UserPhonesInput>> | InputMaybe<UserPhonesInput>>;
+  phone?: InputMaybe<Scalars['String']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['Int']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserPhonesExpression>;
+}>;
+
+
+export type UpdateUserPhonesListMutation = { __typename?: 'MutationType', userPhonesList?: Array<{ __typename?: 'UserPhones', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, phone?: string | null, realmId?: string | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null> | null };
+
+export type UpdateUserProfileMutationVariables = Exact<{
+  address?: InputMaybe<Scalars['String']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  qq?: InputMaybe<Scalars['String']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  userId?: InputMaybe<Scalars['String']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserProfileExpression>;
+}>;
+
+
+export type UpdateUserProfileMutation = { __typename?: 'MutationType', userProfile?: { __typename?: 'UserProfile', address?: string | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, email?: string | null, id?: string | null, isDeprecated?: boolean | null, qq?: string | null, realmId?: string | null, updateTime?: any | null, updateUserId?: string | null, userId?: string | null, version?: number | null } | null };
+
+export type UpdateUserProfileListMutationVariables = Exact<{
+  address?: InputMaybe<Scalars['String']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  list?: InputMaybe<Array<InputMaybe<UserProfileInput>> | InputMaybe<UserProfileInput>>;
+  qq?: InputMaybe<Scalars['String']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  userId?: InputMaybe<Scalars['String']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserProfileExpression>;
+}>;
+
+
+export type UpdateUserProfileListMutation = { __typename?: 'MutationType', userProfileList?: Array<{ __typename?: 'UserProfile', address?: string | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, email?: string | null, id?: string | null, isDeprecated?: boolean | null, qq?: string | null, realmId?: string | null, updateTime?: any | null, updateUserId?: string | null, userId?: string | null, version?: number | null } | null> | null };
+
+export type UpdateUserRoleMutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  roleId?: InputMaybe<Scalars['Int']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['Int']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserRoleExpression>;
+}>;
+
+
+export type UpdateUserRoleMutation = { __typename?: 'MutationType', userRole?: { __typename?: 'UserRole', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, roleId?: number | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null };
+
+export type UpdateUserRoleListMutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  list?: InputMaybe<Array<InputMaybe<UserRoleInput>> | InputMaybe<UserRoleInput>>;
+  realmId?: InputMaybe<Scalars['String']>;
+  roleId?: InputMaybe<Scalars['Int']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['Int']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserRoleExpression>;
+}>;
+
+
+export type UpdateUserRoleListMutation = { __typename?: 'MutationType', userRoleList?: Array<{ __typename?: 'UserRole', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, roleId?: number | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null> | null };
+
+export type UpdateUserTest1MutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  test1?: InputMaybe<Scalars['Int']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['Int']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserTest1Expression>;
+}>;
+
+
+export type UpdateUserTest1Mutation = { __typename?: 'MutationType', userTest1?: { __typename?: 'UserTest1', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, test1?: number | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null };
+
+export type UpdateUserTest1ListMutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  list?: InputMaybe<Array<InputMaybe<UserTest1Input>> | InputMaybe<UserTest1Input>>;
+  realmId?: InputMaybe<Scalars['String']>;
+  test1?: InputMaybe<Scalars['Int']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['Int']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserTest1Expression>;
+}>;
+
+
+export type UpdateUserTest1ListMutation = { __typename?: 'MutationType', userTest1List?: Array<{ __typename?: 'UserTest1', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, test1?: number | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null> | null };
+
+export type UpdateUserTest2MutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  realmId?: InputMaybe<Scalars['String']>;
+  test2?: InputMaybe<Scalars['Boolean']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['Int']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserTest2Expression>;
+}>;
+
+
+export type UpdateUserTest2Mutation = { __typename?: 'MutationType', userTest2?: { __typename?: 'UserTest2', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, test2?: boolean | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null };
+
+export type UpdateUserTest2ListMutationVariables = Exact<{
+  createGroupId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  list?: InputMaybe<Array<InputMaybe<UserTest2Input>> | InputMaybe<UserTest2Input>>;
+  realmId?: InputMaybe<Scalars['String']>;
+  test2?: InputMaybe<Scalars['Boolean']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['Int']>;
+  version?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserTest2Expression>;
+}>;
+
+
+export type UpdateUserTest2ListMutation = { __typename?: 'MutationType', userTest2List?: Array<{ __typename?: 'UserTest2', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, test2?: boolean | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null> | null };
+
+export type UpdateVersionMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UpdateVersionMutation = { __typename?: 'MutationType', version?: number | null };
+
+export type QueryCreateGroupIdQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type QueryCreateGroupIdQuery = { __typename?: 'QueryType', createGroupId?: string | null };
+
+export type QueryCreateTimeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type QueryCreateTimeQuery = { __typename?: 'QueryType', createTime?: any | null };
+
+export type QueryCreateUserIdQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type QueryCreateUserIdQuery = { __typename?: 'QueryType', createUserId?: string | null };
+
+export type QueryFindRole2QueryVariables = Exact<{
+  disable?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type QueryFindRole2Query = { __typename?: 'QueryType', findRole2?: Array<{ __typename?: 'Role', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, name: string, realmId?: string | null, type: Array<RoleType | null>, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null> | null };
+
+export type QueryIsDeprecatedQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type QueryIsDeprecatedQuery = { __typename?: 'QueryType', isDeprecated?: boolean | null };
+
+export type QueryOrgLevelQueryVariables = Exact<{
+  organization?: InputMaybe<OrganizationInput>;
+}>;
+
+
+export type QueryOrgLevelQuery = { __typename?: 'QueryType', orgLevel?: number | null };
+
+export type QueryOrgLevel5QueryVariables = Exact<{
+  organization?: InputMaybe<OrganizationInput>;
+}>;
+
+
+export type QueryOrgLevel5Query = { __typename?: 'QueryType', orgLevel5?: Array<number | null> | null };
+
+export type QueryOrganizationQueryVariables = Exact<{
+  above?: InputMaybe<OrganizationExpression>;
+  aboveId?: InputMaybe<IntExpression>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<StringExpression>;
+  realmId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  users?: InputMaybe<UserExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryOrganizationQuery = { __typename?: 'QueryType', organization?: { __typename?: 'Organization', aboveId?: number | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, name: string, orgLevel3?: Array<number | null> | null, realmId?: string | null, roleDisable?: Array<boolean | null> | null, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null };
+
+export type QueryOrganizationConnectionQueryVariables = Exact<{
+  above?: InputMaybe<OrganizationExpression>;
+  aboveId?: InputMaybe<IntExpression>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  exs?: InputMaybe<Array<InputMaybe<OrganizationExpression>> | InputMaybe<OrganizationExpression>>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  name?: InputMaybe<StringExpression>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<OrganizationOrderBy>;
+  realmId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  users?: InputMaybe<UserExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryOrganizationConnectionQuery = { __typename?: 'QueryType', organizationConnection?: { __typename?: 'OrganizationConnection', totalCount?: number | null, edges?: Array<{ __typename?: 'OrganizationEdge', node?: { __typename?: 'Organization', aboveId?: number | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, name: string, orgLevel3?: Array<number | null> | null, realmId?: string | null, roleDisable?: Array<boolean | null> | null, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null } | null> | null } | null };
+
+export type QueryOrganizationListQueryVariables = Exact<{
+  above?: InputMaybe<OrganizationExpression>;
+  aboveId?: InputMaybe<IntExpression>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  name?: InputMaybe<StringExpression>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<OrganizationOrderBy>;
+  realmId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  users?: InputMaybe<UserExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryOrganizationListQuery = { __typename?: 'QueryType', organizationList?: Array<{ __typename?: 'Organization', aboveId?: number | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, name: string, orgLevel3?: Array<number | null> | null, realmId?: string | null, roleDisable?: Array<boolean | null> | null, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null> | null };
+
+export type QueryParent2QueryVariables = Exact<{
+  organization?: InputMaybe<OrganizationInput>;
+}>;
+
+
+export type QueryParent2Query = { __typename?: 'QueryType', parent2?: { __typename?: 'Organization', aboveId?: number | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, name: string, orgLevel3?: Array<number | null> | null, realmId?: string | null, roleDisable?: Array<boolean | null> | null, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null };
+
+export type QueryRealmIdQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type QueryRealmIdQuery = { __typename?: 'QueryType', realmId?: string | null };
+
+export type QueryRoleQueryVariables = Exact<{
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<StringExpression>;
+  realmId?: InputMaybe<StringExpression>;
+  type?: InputMaybe<RoleTypeExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  users?: InputMaybe<UserExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryRoleQuery = { __typename?: 'QueryType', role?: { __typename?: 'Role', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, name: string, realmId?: string | null, type: Array<RoleType | null>, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null };
+
+export type QueryRoleConnectionQueryVariables = Exact<{
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  exs?: InputMaybe<Array<InputMaybe<RoleExpression>> | InputMaybe<RoleExpression>>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  name?: InputMaybe<StringExpression>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleOrderBy>;
+  realmId?: InputMaybe<StringExpression>;
+  type?: InputMaybe<RoleTypeExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  users?: InputMaybe<UserExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryRoleConnectionQuery = { __typename?: 'QueryType', roleConnection?: { __typename?: 'RoleConnection', totalCount?: number | null, edges?: Array<{ __typename?: 'RoleEdge', node?: { __typename?: 'Role', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, name: string, realmId?: string | null, type: Array<RoleType | null>, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null } | null> | null } | null };
+
+export type QueryRoleDisable2QueryVariables = Exact<{
+  organization?: InputMaybe<OrganizationInput>;
+}>;
+
+
+export type QueryRoleDisable2Query = { __typename?: 'QueryType', roleDisable2?: Array<boolean | null> | null };
+
+export type QueryRoleListQueryVariables = Exact<{
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  name?: InputMaybe<StringExpression>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleOrderBy>;
+  realmId?: InputMaybe<StringExpression>;
+  type?: InputMaybe<RoleTypeExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  users?: InputMaybe<UserExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryRoleListQuery = { __typename?: 'QueryType', roleList?: Array<{ __typename?: 'Role', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, name: string, realmId?: string | null, type: Array<RoleType | null>, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null> | null };
+
+export type QueryRoleRoleTypeQueryVariables = Exact<{
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  realmId?: InputMaybe<StringExpression>;
+  roleId?: InputMaybe<IntExpression>;
+  type?: InputMaybe<RoleTypeExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryRoleRoleTypeQuery = { __typename?: 'QueryType', roleRoleType?: { __typename?: 'RoleRoleType', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, roleId?: number | null, type?: RoleType | null, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null };
+
+export type QueryRoleRoleTypeConnectionQueryVariables = Exact<{
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  exs?: InputMaybe<Array<InputMaybe<RoleRoleTypeExpression>> | InputMaybe<RoleRoleTypeExpression>>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleRoleTypeOrderBy>;
+  realmId?: InputMaybe<StringExpression>;
+  roleId?: InputMaybe<IntExpression>;
+  type?: InputMaybe<RoleTypeExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryRoleRoleTypeConnectionQuery = { __typename?: 'QueryType', roleRoleTypeConnection?: { __typename?: 'RoleRoleTypeConnection', totalCount?: number | null, edges?: Array<{ __typename?: 'RoleRoleTypeEdge', node?: { __typename?: 'RoleRoleType', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, roleId?: number | null, type?: RoleType | null, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null } | null> | null } | null };
+
+export type QueryRoleRoleTypeListQueryVariables = Exact<{
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleRoleTypeOrderBy>;
+  realmId?: InputMaybe<StringExpression>;
+  roleId?: InputMaybe<IntExpression>;
+  type?: InputMaybe<RoleTypeExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryRoleRoleTypeListQuery = { __typename?: 'QueryType', roleRoleTypeList?: Array<{ __typename?: 'RoleRoleType', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, roleId?: number | null, type?: RoleType | null, updateTime?: any | null, updateUserId?: string | null, version?: number | null } | null> | null };
+
+export type QueryUpdateTimeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type QueryUpdateTimeQuery = { __typename?: 'QueryType', updateTime?: any | null };
+
+export type QueryUpdateUserIdQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type QueryUpdateUserIdQuery = { __typename?: 'QueryType', updateUserId?: string | null };
+
+export type QueryUserQueryVariables = Exact<{
+  age?: InputMaybe<IntExpression>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  disable?: InputMaybe<BooleanExpression>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  login?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  organization?: InputMaybe<OrganizationExpression>;
+  organizationId?: InputMaybe<IntExpression>;
+  password?: InputMaybe<StringExpression>;
+  phones?: InputMaybe<StringExpression>;
+  realmId?: InputMaybe<StringExpression>;
+  roles?: InputMaybe<RoleExpression>;
+  sex?: InputMaybe<SexExpression>;
+  test1?: InputMaybe<IntExpression>;
+  test2?: InputMaybe<BooleanExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  userProfile?: InputMaybe<UserProfileExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryUserQuery = { __typename?: 'QueryType', user?: { __typename?: 'User', age?: number | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, disable?: boolean | null, id?: string | null, isDeprecated?: boolean | null, login: string, name: string, organizationId?: number | null, password: string, phones?: Array<string> | null, realmId?: string | null, sex?: Sex | null, test1?: Array<number> | null, test2?: Array<boolean> | null, updateTime?: any | null, updateUserId?: string | null, userDetail2?: string | null, version?: number | null } | null };
+
+export type QueryUserByOrg2QueryVariables = Exact<{
+  organization?: InputMaybe<OrganizationInput>;
+}>;
+
+
+export type QueryUserByOrg2Query = { __typename?: 'QueryType', userByOrg2?: Array<{ __typename?: 'User', age?: number | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, disable?: boolean | null, id?: string | null, isDeprecated?: boolean | null, login: string, name: string, organizationId?: number | null, password: string, phones?: Array<string> | null, realmId?: string | null, sex?: Sex | null, test1?: Array<number> | null, test2?: Array<boolean> | null, updateTime?: any | null, updateUserId?: string | null, userDetail2?: string | null, version?: number | null } | null> | null };
+
+export type QueryUserConnectionQueryVariables = Exact<{
+  after?: InputMaybe<Scalars['ID']>;
+  age?: InputMaybe<IntExpression>;
+  before?: InputMaybe<Scalars['ID']>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  disable?: InputMaybe<BooleanExpression>;
+  exs?: InputMaybe<Array<InputMaybe<UserExpression>> | InputMaybe<UserExpression>>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  login?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserOrderBy>;
+  organization?: InputMaybe<OrganizationExpression>;
+  organizationId?: InputMaybe<IntExpression>;
+  password?: InputMaybe<StringExpression>;
+  phones?: InputMaybe<StringExpression>;
+  realmId?: InputMaybe<StringExpression>;
+  roles?: InputMaybe<RoleExpression>;
+  sex?: InputMaybe<SexExpression>;
+  test1?: InputMaybe<IntExpression>;
+  test2?: InputMaybe<BooleanExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  userProfile?: InputMaybe<UserProfileExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryUserConnectionQuery = { __typename?: 'QueryType', userConnection?: { __typename?: 'UserConnection', totalCount?: number | null, edges?: Array<{ __typename?: 'UserEdge', node?: { __typename?: 'User', age?: number | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, disable?: boolean | null, id?: string | null, isDeprecated?: boolean | null, login: string, name: string, organizationId?: number | null, password: string, phones?: Array<string> | null, realmId?: string | null, sex?: Sex | null, test1?: Array<number> | null, test2?: Array<boolean> | null, updateTime?: any | null, updateUserId?: string | null, userDetail2?: string | null, version?: number | null } | null } | null> | null } | null };
+
+export type QueryUserDetailQueryVariables = Exact<{
+  user?: InputMaybe<UserInput>;
+}>;
+
+
+export type QueryUserDetailQuery = { __typename?: 'QueryType', userDetail?: string | null };
+
+export type QueryUserDetail6QueryVariables = Exact<{
+  user?: InputMaybe<UserInput>;
+}>;
+
+
+export type QueryUserDetail6Query = { __typename?: 'QueryType', userDetail6?: Array<string | null> | null };
+
+export type QueryUserListQueryVariables = Exact<{
+  after?: InputMaybe<Scalars['ID']>;
+  age?: InputMaybe<IntExpression>;
+  before?: InputMaybe<Scalars['ID']>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  disable?: InputMaybe<BooleanExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  login?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserOrderBy>;
+  organization?: InputMaybe<OrganizationExpression>;
+  organizationId?: InputMaybe<IntExpression>;
+  password?: InputMaybe<StringExpression>;
+  phones?: InputMaybe<StringExpression>;
+  realmId?: InputMaybe<StringExpression>;
+  roles?: InputMaybe<RoleExpression>;
+  sex?: InputMaybe<SexExpression>;
+  test1?: InputMaybe<IntExpression>;
+  test2?: InputMaybe<BooleanExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  userProfile?: InputMaybe<UserProfileExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryUserListQuery = { __typename?: 'QueryType', userList?: Array<{ __typename?: 'User', age?: number | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, disable?: boolean | null, id?: string | null, isDeprecated?: boolean | null, login: string, name: string, organizationId?: number | null, password: string, phones?: Array<string> | null, realmId?: string | null, sex?: Sex | null, test1?: Array<number> | null, test2?: Array<boolean> | null, updateTime?: any | null, updateUserId?: string | null, userDetail2?: string | null, version?: number | null } | null> | null };
+
+export type QueryUserPhonesQueryVariables = Exact<{
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  phone?: InputMaybe<StringExpression>;
+  realmId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  userId?: InputMaybe<IntExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryUserPhonesQuery = { __typename?: 'QueryType', userPhones?: { __typename?: 'UserPhones', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, phone?: string | null, realmId?: string | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null };
+
+export type QueryUserPhonesConnectionQueryVariables = Exact<{
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  exs?: InputMaybe<Array<InputMaybe<UserPhonesExpression>> | InputMaybe<UserPhonesExpression>>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserPhonesOrderBy>;
+  phone?: InputMaybe<StringExpression>;
+  realmId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  userId?: InputMaybe<IntExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryUserPhonesConnectionQuery = { __typename?: 'QueryType', userPhonesConnection?: { __typename?: 'UserPhonesConnection', totalCount?: number | null, edges?: Array<{ __typename?: 'UserPhonesEdge', node?: { __typename?: 'UserPhones', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, phone?: string | null, realmId?: string | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null } | null> | null } | null };
+
+export type QueryUserPhonesListQueryVariables = Exact<{
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserPhonesOrderBy>;
+  phone?: InputMaybe<StringExpression>;
+  realmId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  userId?: InputMaybe<IntExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryUserPhonesListQuery = { __typename?: 'QueryType', userPhonesList?: Array<{ __typename?: 'UserPhones', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, phone?: string | null, realmId?: string | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null> | null };
+
+export type QueryUserProfileQueryVariables = Exact<{
+  address?: InputMaybe<StringExpression>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  email?: InputMaybe<StringExpression>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  qq?: InputMaybe<StringExpression>;
+  realmId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  userId?: InputMaybe<StringExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryUserProfileQuery = { __typename?: 'QueryType', userProfile?: { __typename?: 'UserProfile', address?: string | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, email?: string | null, id?: string | null, isDeprecated?: boolean | null, qq?: string | null, realmId?: string | null, updateTime?: any | null, updateUserId?: string | null, userId?: string | null, version?: number | null } | null };
+
+export type QueryUserProfileConnectionQueryVariables = Exact<{
+  address?: InputMaybe<StringExpression>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  email?: InputMaybe<StringExpression>;
+  exs?: InputMaybe<Array<InputMaybe<UserProfileExpression>> | InputMaybe<UserProfileExpression>>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserProfileOrderBy>;
+  qq?: InputMaybe<StringExpression>;
+  realmId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  userId?: InputMaybe<StringExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryUserProfileConnectionQuery = { __typename?: 'QueryType', userProfileConnection?: { __typename?: 'UserProfileConnection', totalCount?: number | null, edges?: Array<{ __typename?: 'UserProfileEdge', node?: { __typename?: 'UserProfile', address?: string | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, email?: string | null, id?: string | null, isDeprecated?: boolean | null, qq?: string | null, realmId?: string | null, updateTime?: any | null, updateUserId?: string | null, userId?: string | null, version?: number | null } | null } | null> | null } | null };
+
+export type QueryUserProfileListQueryVariables = Exact<{
+  address?: InputMaybe<StringExpression>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  email?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserProfileOrderBy>;
+  qq?: InputMaybe<StringExpression>;
+  realmId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  userId?: InputMaybe<StringExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryUserProfileListQuery = { __typename?: 'QueryType', userProfileList?: Array<{ __typename?: 'UserProfile', address?: string | null, createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, email?: string | null, id?: string | null, isDeprecated?: boolean | null, qq?: string | null, realmId?: string | null, updateTime?: any | null, updateUserId?: string | null, userId?: string | null, version?: number | null } | null> | null };
+
+export type QueryUserRoleQueryVariables = Exact<{
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  realmId?: InputMaybe<StringExpression>;
+  roleId?: InputMaybe<IntExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  userId?: InputMaybe<IntExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryUserRoleQuery = { __typename?: 'QueryType', userRole?: { __typename?: 'UserRole', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, roleId?: number | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null };
+
+export type QueryUserRoleConnectionQueryVariables = Exact<{
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  exs?: InputMaybe<Array<InputMaybe<UserRoleExpression>> | InputMaybe<UserRoleExpression>>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserRoleOrderBy>;
+  realmId?: InputMaybe<StringExpression>;
+  roleId?: InputMaybe<IntExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  userId?: InputMaybe<IntExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryUserRoleConnectionQuery = { __typename?: 'QueryType', userRoleConnection?: { __typename?: 'UserRoleConnection', totalCount?: number | null, edges?: Array<{ __typename?: 'UserRoleEdge', node?: { __typename?: 'UserRole', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, roleId?: number | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null } | null> | null } | null };
+
+export type QueryUserRoleListQueryVariables = Exact<{
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserRoleOrderBy>;
+  realmId?: InputMaybe<StringExpression>;
+  roleId?: InputMaybe<IntExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  userId?: InputMaybe<IntExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryUserRoleListQuery = { __typename?: 'QueryType', userRoleList?: Array<{ __typename?: 'UserRole', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, roleId?: number | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null> | null };
+
+export type QueryUserTest1QueryVariables = Exact<{
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  realmId?: InputMaybe<StringExpression>;
+  test1?: InputMaybe<IntExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  userId?: InputMaybe<IntExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryUserTest1Query = { __typename?: 'QueryType', userTest1?: { __typename?: 'UserTest1', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, test1?: number | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null };
+
+export type QueryUserTest1ConnectionQueryVariables = Exact<{
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  exs?: InputMaybe<Array<InputMaybe<UserTest1Expression>> | InputMaybe<UserTest1Expression>>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserTest1OrderBy>;
+  realmId?: InputMaybe<StringExpression>;
+  test1?: InputMaybe<IntExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  userId?: InputMaybe<IntExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryUserTest1ConnectionQuery = { __typename?: 'QueryType', userTest1Connection?: { __typename?: 'UserTest1Connection', totalCount?: number | null, edges?: Array<{ __typename?: 'UserTest1Edge', node?: { __typename?: 'UserTest1', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, test1?: number | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null } | null> | null } | null };
+
+export type QueryUserTest1ListQueryVariables = Exact<{
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserTest1OrderBy>;
+  realmId?: InputMaybe<StringExpression>;
+  test1?: InputMaybe<IntExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  userId?: InputMaybe<IntExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryUserTest1ListQuery = { __typename?: 'QueryType', userTest1List?: Array<{ __typename?: 'UserTest1', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, test1?: number | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null> | null };
+
+export type QueryUserTest2QueryVariables = Exact<{
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  realmId?: InputMaybe<StringExpression>;
+  test2?: InputMaybe<BooleanExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  userId?: InputMaybe<IntExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryUserTest2Query = { __typename?: 'QueryType', userTest2?: { __typename?: 'UserTest2', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, test2?: boolean | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null };
+
+export type QueryUserTest2ConnectionQueryVariables = Exact<{
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  exs?: InputMaybe<Array<InputMaybe<UserTest2Expression>> | InputMaybe<UserTest2Expression>>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserTest2OrderBy>;
+  realmId?: InputMaybe<StringExpression>;
+  test2?: InputMaybe<BooleanExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  userId?: InputMaybe<IntExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryUserTest2ConnectionQuery = { __typename?: 'QueryType', userTest2Connection?: { __typename?: 'UserTest2Connection', totalCount?: number | null, edges?: Array<{ __typename?: 'UserTest2Edge', node?: { __typename?: 'UserTest2', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, test2?: boolean | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null } | null> | null } | null };
+
+export type QueryUserTest2ListQueryVariables = Exact<{
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  cond?: InputMaybe<Conditional>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  id?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserTest2OrderBy>;
+  realmId?: InputMaybe<StringExpression>;
+  test2?: InputMaybe<BooleanExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  userId?: InputMaybe<IntExpression>;
+  version?: InputMaybe<IntExpression>;
+}>;
+
+
+export type QueryUserTest2ListQuery = { __typename?: 'QueryType', userTest2List?: Array<{ __typename?: 'UserTest2', createGroupId?: string | null, createTime?: any | null, createUserId?: string | null, id?: string | null, isDeprecated?: boolean | null, realmId?: string | null, test2?: boolean | null, updateTime?: any | null, updateUserId?: string | null, userId?: number | null, version?: number | null } | null> | null };
+
+export type QueryVersionQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type QueryVersionQuery = { __typename?: 'QueryType', version?: number | null };

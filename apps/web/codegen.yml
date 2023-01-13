@@ -1,13 +1,17 @@
 schema: 'http://localhost:8080/graphql'
+documents:
+  - 'src/**/*.gql'
+  - 'src/**/*.graphql'
 overwrite: true
 generates:
   ./src/gql/generated/schema.ts:
     plugins:
       - typescript
-  ./src/gql/generated/introspection.json:
-    plugins:
-      - introspection
-  ./src/gql/generated/operations/:
-    preset: graphace-codegen-preset
-    plugins:
-      - graphace-codegen
+      - typescript-operations
+  # ./src/gql/generated/introspection.json:
+  #   plugins:
+  #     - introspection
+  # ./src/gql/generated/operations/:
+  #   preset: graphace-codegen-preset
+  #   plugins:
+  #     - graphace-codegen
