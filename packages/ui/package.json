@@ -14,13 +14,13 @@
   },
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
-    "svelte": "^3.46.0",
+		"svelte": "^3.54.0",
     "@iconify/svelte": "^2.2.1",
     "@steeze-ui/heroicons": "^1.1.1",
     "@steeze-ui/svelte-icon": "^1.3.1",
     "nanoid": "^3.3.4",
     "tippy.js": "^6.3.7",
-    "typescript": "^4.7.4",
+		"typescript": "^4.9.3",
     "typesafe-i18n": "5.3.6"
   },
   "dependencies": {
