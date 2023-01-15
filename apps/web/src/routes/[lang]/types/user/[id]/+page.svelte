@@ -1,135 +1,30 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import UserForm from '~/lib/components/types/user/UserForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import {
-		Form,
-		FormLoading,
-		FormItems,
-		FormItem,
-		FormButtons
-	} from '@graphace/ui/components/form';
-	import { StringItem, NumberItem } from '@graphace/ui-graphql/components/form';
-	import {
-		Input,
-		NumberInput,
-		InputList,
-		NumberInputList,
-		Toggle,
-		ToggleList
-	} from '@graphace/ui/components/input';
-	import { __schema } from '~/gql/generated/introspection.json';
-	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
-	import { notifications } from '@graphace/ui/components/Notifications.svelte';
-	import { validate } from '@graphace/graphql/schema/JsonSchema';
-	import LL from '~/i18n/i18n-svelte';
-	import { locale } from '~/i18n/i18n-svelte';
-	import type {
-		Conditional,
-		Operator,
-		QueryUser$input,
-		QueryUser$result,
-		MutationUser$input,
-		QueryUserStore
-	} from '$houdini';
+	import type { QueryUserStore } from '$houdini';
 	import { GQL_MutationUser } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { goto } from '$app/navigation';
+	import type { MutationTypeUserArgs, User } from '~/gql/generated/schema';
 
 	export let data: PageData;
 	$: QueryUser = data.QueryUser as QueryUserStore;
-	$: user = $QueryUser.data?.user as MutationUser$input | null | undefined;
 
-	let errors: Record<string, Error> = {};
-
-	const save = (): void => {
-		if (user) {
-			validate('User', user, $locale)
-				.then((data) => {
-					errors = {};
-					if (user) {
-						GQL_MutationUser.mutate(user)
-							.then((result) => {
-								user = result?.user as MutationUser$input;
-								notifications.success($LL.message.saveSuccess());
-							})
-							.catch((error) => {
-								console.error(error);
-								notifications.error($LL.message.saveFailed());
-							});
-					}
-				})
-				.catch((validErrors) => {
-					errors = validErrors;
-				});
-		}
-	};
-
-	const remove = (): void => {
-		if (user) {
-			user.isDeprecated = true;
-			GQL_MutationUser.mutate(user)
-				.then((result) => {
-					notifications.success($LL.message.removeSuccess());
-				})
-				.catch((error) => {
-					console.error(error);
-					notifications.error($LL.message.removeFailed());
-				});
-		}
+	const mutation = (
+		event: CustomEvent<{
+			args: MutationTypeUserArgs;
+			then: (data: User | null | undefined) => void;
+			catch: (error: Error) => void;
+		}>
+	) => {
+		GQL_MutationUser.mutate(event.detail.args)
+			.then((result) => {
+				event.detail.then(result?.user);
+			})
+			.catch((error) => {
+				event.detail.catch(error);
+			});
 	};
 </script>
 
-{#if user}
-	<Form>
-		<FormItems title="User">
-			<StringItem label="name" name="name" bind:value={user.name} error={errors.name} />
-			<StringItem label="login" name="login" bind:value={user.login} error={errors.login} />
-			<StringItem
-				label="password"
-				name="password"
-				bind:value={user.password}
-				error={errors.password}
-			/>
-		</FormItems>
-		<FormButtons>
-			<button
-				class="btn"
-				on:click={(e) => {
-					e.preventDefault();
-					goto('../user');
-				}}
-			>
-				{$LL.components.graphql.editor.backBtn()}
-			</button>
-			<button
-				class="btn"
-				on:click={(e) => {
-					e.preventDefault();
-					save();
-				}}
-			>
-				{$LL.components.graphql.editor.saveBtn()}
-			</button>
-			<button
-				class="btn btn-outline btn-error"
-				on:click={(e) => {
-					e.preventDefault();
-					messageBoxs.open({
-						title: $LL.components.graphql.table.removeModalTitle(),
-						buttonName: $LL.components.graphql.table.removeBtn(),
-						buttonType: 'error',
-						confirm: () => {
-							remove();
-							return true;
-						}
-					});
-				}}
-			>
-				{$LL.components.graphql.editor.removeBtn()}
-			</button>
-		</FormButtons>
-	</Form>
-{:else}
-	<FormLoading />
-{/if}
+<UserForm node={$QueryUser.data?.user} isFetching={$QueryUser.isFetching} on:mutation={mutation} />

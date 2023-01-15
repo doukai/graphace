@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Table from '~/lib/components/types/user/Table.svelte';
+	import UserTable from '~/lib/components/types/user/UserTable.svelte';
 	import type { User, QueryTypeUserListArgs, MutationTypeUserArgs } from '~/gql/generated/schema';
 	import { QueryUserConnectionStore, GQL_UpdateUser } from '$houdini';
 	import type { PageData } from './$houdini';
@@ -40,7 +40,7 @@
 	};
 </script>
 
-<Table
+<UserTable
 	nodes={$QueryUserConnection.data?.userConnection?.edges?.map((edge) => edge?.node)}
 	totalCount={$QueryUserConnection.data?.userConnection?.totalCount || 0}
 	isFetching={$QueryUserConnection.isFetching}
