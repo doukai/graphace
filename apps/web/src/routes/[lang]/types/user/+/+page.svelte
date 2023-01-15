@@ -5,8 +5,8 @@
 	import { GQL_MutationUser } from '$houdini';
 	import type { MutationTypeUserArgs, User } from '~/gql/generated/schema';
 
-	let node: User = {};
-	
+	let node: MutationTypeUserArgs = {};
+
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeUserArgs;
