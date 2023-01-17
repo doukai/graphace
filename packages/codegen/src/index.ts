@@ -1,35 +1,27 @@
 import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
-import { TypeScriptPluginConfig } from './config.js';
+import type { TypeScriptPluginConfig } from './config.js';
 import type { GraphQLSchema } from 'graphql';
+import { Liquid } from 'liquidjs'
+
+const engine = new Liquid({
+    root: __dirname,
+    extname: '.liquid'
+})
 
 export const plugin: PluginFunction<TypeScriptPluginConfig, Types.ComplexPluginOutput> = (
     schema: GraphQLSchema,
     documents: Types.DocumentFile[],
     config: TypeScriptPluginConfig
 ) => {
-    const { schema: _schema, ast } = transformSchemaAST(schema, config);
+    const operationFields = schema.getQueryType()?.getFields();
+    if (operationFields) {
+        const field = Object.keys(operationFields)
+            .map(key => operationFields[key])
+            .find(field => field.name === config.fieldName);
 
-    const visitor = new TsVisitor(_schema, config);
-
-    const visitorResult = oldVisit(ast, { leave: visitor });
-    const introspectionDefinitions = includeIntrospectionTypesDefinitions(_schema, documents, config);
-    const scalars = visitor.scalarsDefinition;
-    const directiveArgumentAndInputFieldMappings = visitor.directiveArgumentAndInputFieldMappingsDefinition;
-
-    return {
-        prepend: [
-            ...visitor.getEnumsImports(),
-            ...visitor.getDirectiveArgumentAndInputFieldMappingsImports(),
-            ...visitor.getScalarsImports(),
-            ...visitor.getWrapperDefinitions(),
-        ].filter(Boolean),
-        content: [
-            scalars,
-            directiveArgumentAndInputFieldMappings,
-            ...visitorResult.definitions,
-            ...introspectionDefinitions,
-        ]
-            .filter(Boolean)
-            .join('\n'),
-    };
+        return {
+            content: engine.renderFileSync('query', field),
+        };
+    }
+    throw new Error();
 };
