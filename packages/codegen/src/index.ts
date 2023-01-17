@@ -23,5 +23,5 @@ export const plugin: PluginFunction<TypeScriptPluginConfig, Types.ComplexPluginO
             content: engine.renderFileSync('query', field),
         };
     }
-    throw new Error();
+    throw new Error(`${config.fieldName} not exist in QueryType`);
 };

@@ -2,7 +2,12 @@
   "name": "graphace-codegen",
   "version": "0.0.1",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "build": "microbundle"
+  },
+  "devDependencies": {
+    "microbundle": "^0.15.1"
+  },
   "dependencies": {
     "@graphql-codegen/plugin-helpers": "^3.1.2",
     "@graphql-codegen/schema-ast": "^2.6.1",
@@ -13,32 +18,14 @@
     "tslib": "~2.4.0",
     "typescript": "^4.9.3"
   },
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "source": "src/index.ts",
   "exports": {
-    ".": {
-      "require": {
-        "types": "./dist/typings/index.d.cts",
-        "default": "./dist/cjs/index.js"
-      },
-      "import": {
-        "types": "./dist/typings/index.d.ts",
-        "default": "./dist/esm/index.js"
-      },
-      "default": {
-        "types": "./dist/typings/index.d.ts",
-        "default": "./dist/esm/index.js"
-      }
-    },
-    "./package.json": "./package.json"
+    "require": "./dist/index.cjs",
+    "default": "./dist/index.modern.js"
   },
-  "typings": "dist/typings/index.d.ts",
-  "typescript": {
-    "definition": "dist/typings/index.d.ts"
-  },
-  "publishConfig": {
-    "directory": "dist",
-    "access": "public"
-  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.module.js",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/index.umd.js",
   "type": "module"
 }
