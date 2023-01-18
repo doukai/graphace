@@ -1,1 +1,7 @@
-query QueryRoleroletype
+query Query$roleRoleType($cond: Conditional $createGroupId: StringExpression $createTime: StringExpression $createUserId: StringExpression $id: StringExpression $includeDeprecated: Boolean $realmId: StringExpression $roleId: IntExpression $type: RoleTypeExpression $updateTime: StringExpression $updateUserId: StringExpression $version: IntExpression) {
+  roleRoleType($cond: $cond $createGroupId: $createGroupId $createTime: $createTime $createUserId: $createUserId $id: $id $includeDeprecated: $includeDeprecated $realmId: $realmId $roleId: $roleId $type: $type $updateTime: $updateTime $updateUserId: $updateUserId $version: $version) @skipNullArguments(if: true) {
+    
+    
+    
+  }
+}

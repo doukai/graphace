@@ -1,1 +1,7 @@
-query QueryUserdetail
+query Query$userDetail($user: UserInput) {
+  userDetail($user: $user) @skipNullArguments(if: true) {
+    
+    
+    
+  }
+}

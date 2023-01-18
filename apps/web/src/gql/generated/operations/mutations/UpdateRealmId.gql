@@ -1,1 +1,7 @@
-query QueryRealmid
+query Query$realmId {
+  realmId @skipNullArguments(if: true) {
+    
+    
+    
+  }
+}

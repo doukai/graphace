@@ -1,1 +1,7 @@
-query QueryOrglevel5
+query Query$orgLevel5($organization: OrganizationInput) {
+  orgLevel5($organization: $organization) @skipNullArguments(if: true) {
+    
+    
+    
+  }
+}

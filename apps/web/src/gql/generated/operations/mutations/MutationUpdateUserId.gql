@@ -1,1 +1,7 @@
-query QueryUpdateuserid
+query Query$updateUserId {
+  updateUserId @skipNullArguments(if: true) {
+    
+    
+    
+  }
+}

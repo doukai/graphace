@@ -1,1 +1,7 @@
-query QueryParent2
+query Query$parent2($organization: OrganizationInput) {
+  parent2($organization: $organization) @skipNullArguments(if: true) {
+    
+    
+    
+  }
+}
