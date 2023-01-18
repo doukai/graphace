@@ -1,3 +1,1 @@
-mutation UpdateVersion {
-    version @update @skipNullArguments(if: true) 
-}
+query QueryVersion

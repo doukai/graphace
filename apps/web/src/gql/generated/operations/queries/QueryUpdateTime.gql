@@ -1,3 +1,1 @@
-query QueryUpdateTime {
-    updateTime  @skipNullArguments(if: true) 
-}
+query QueryUpdatetime

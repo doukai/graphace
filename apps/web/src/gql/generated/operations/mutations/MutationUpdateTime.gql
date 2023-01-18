@@ -1,3 +1,1 @@
-mutation MutationUpdateTime {
-    updateTime  @skipNullArguments(if: true) 
-}
+query QueryUpdatetime

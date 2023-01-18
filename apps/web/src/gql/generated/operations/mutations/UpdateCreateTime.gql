@@ -1,3 +1,1 @@
-mutation UpdateCreateTime {
-    createTime @update @skipNullArguments(if: true) 
-}
+query QueryCreatetime

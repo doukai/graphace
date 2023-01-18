@@ -1,3 +1,1 @@
-query QueryCreateUserId {
-    createUserId  @skipNullArguments(if: true) 
-}
+query QueryCreateuserid

@@ -1,15 +1,1 @@
-query QueryUserPhones($cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $id: StringExpression, $includeDeprecated: Boolean, $phone: StringExpression, $realmId: StringExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userId: IntExpression, $version: IntExpression) {
-    userPhones(cond: $cond, createGroupId: $createGroupId, createTime: $createTime, createUserId: $createUserId, id: $id, includeDeprecated: $includeDeprecated, phone: $phone, realmId: $realmId, updateTime: $updateTime, updateUserId: $updateUserId, userId: $userId, version: $version)  @skipNullArguments(if: true) {
-        createGroupId
-		createTime
-		createUserId
-		id
-		isDeprecated
-		phone
-		realmId
-		updateTime
-		updateUserId
-		userId
-		version
-    }
-}
+query QueryUserphones

@@ -4,7 +4,7 @@ import type { GraphQLSchema } from 'graphql';
 import { Liquid } from 'liquidjs'
 
 const engine = new Liquid({
-    root: __dirname,
+    root: `${__dirname}/../templates`,
     extname: '.liquid'
 })
 

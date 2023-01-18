@@ -1,3 +1,1 @@
-mutation MutationCreateGroupId {
-    createGroupId  @skipNullArguments(if: true) 
-}
+query QueryCreategroupid

@@ -1,3 +1,1 @@
-query QueryIsDeprecated {
-    isDeprecated  @skipNullArguments(if: true) 
-}
+query QueryIsdeprecated

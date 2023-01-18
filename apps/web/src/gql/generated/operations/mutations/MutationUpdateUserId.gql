@@ -1,3 +1,1 @@
-mutation MutationUpdateUserId {
-    updateUserId  @skipNullArguments(if: true) 
-}
+query QueryUpdateuserid

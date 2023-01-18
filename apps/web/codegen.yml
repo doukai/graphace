@@ -13,7 +13,7 @@ generates:
   # ./src/gql/generated/introspection.json:
   #   plugins:
   #     - introspection
-  # ./src/gql/generated/operations/:
-  #   preset: graphace-codegen-preset
-  #   plugins:
-  #     - graphace-codegen
+  ./src/gql/generated/operations/:
+    preset: graphace-codegen-preset
+    plugins:
+      - graphace-codegen

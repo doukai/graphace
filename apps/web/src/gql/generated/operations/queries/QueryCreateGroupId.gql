@@ -1,3 +1,1 @@
-query QueryCreateGroupId {
-    createGroupId  @skipNullArguments(if: true) 
-}
+query QueryCreategroupid
