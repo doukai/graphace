@@ -1,0 +1,3 @@
+mutation Mutation$updateUserId$update {
+  updateUserId @update @skipNullArguments(if: true)
+}

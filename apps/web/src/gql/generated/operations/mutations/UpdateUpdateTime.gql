@@ -1,3 +1,0 @@
-query Query$updateTime {
-  updateTime @skipNullArguments(if: true)
-}

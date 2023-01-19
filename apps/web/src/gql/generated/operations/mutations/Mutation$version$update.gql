@@ -1,0 +1,3 @@
+mutation Mutation$version$update {
+  version @update @skipNullArguments(if: true)
+}

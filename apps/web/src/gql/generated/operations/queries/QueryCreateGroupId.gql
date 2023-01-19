@@ -1,3 +1,0 @@
-query Query$createGroupId {
-  createGroupId @skipNullArguments(if: true)
-}

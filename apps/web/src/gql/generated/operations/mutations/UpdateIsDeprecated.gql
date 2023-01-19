@@ -1,3 +1,0 @@
-query Query$isDeprecated {
-  isDeprecated @skipNullArguments(if: true)
-}

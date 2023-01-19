@@ -1,0 +1,3 @@
+mutation Mutation$createTime {
+  createTime @skipNullArguments(if: true)
+}

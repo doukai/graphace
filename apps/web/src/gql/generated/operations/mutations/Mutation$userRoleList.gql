@@ -1,0 +1,15 @@
+mutation Mutation$userRoleList($createGroupId: String $createTime: Timestamp $createUserId: String $id: ID $isDeprecated: Boolean $list: [UserRoleInput] $realmId: String $roleId: Int $updateTime: Timestamp $updateUserId: String $userId: Int $version: Int $where: UserRoleExpression) {
+  userRoleList(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId id: $id isDeprecated: $isDeprecated list: $list realmId: $realmId roleId: $roleId updateTime: $updateTime updateUserId: $updateUserId userId: $userId version: $version where: $where) @skipNullArguments(if: true) {
+    createGroupId
+    createTime
+    createUserId
+    id
+    isDeprecated
+    realmId
+    roleId
+    updateTime
+    updateUserId
+    userId
+    version
+  }
+}

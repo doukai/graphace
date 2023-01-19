@@ -1,0 +1,3 @@
+mutation Mutation$updateTime$update {
+  updateTime @update @skipNullArguments(if: true)
+}

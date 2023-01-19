@@ -2,10 +2,24 @@
   "name": "graphace-codegen-preset",
   "version": "0.0.1",
   "license": "MIT",
-  "main": "index.cjs",
-  "scripts": {},
+  "scripts": {
+    "build": "microbundle"
+  },
+  "devDependencies": {
+    "microbundle": "^0.15.1"
+  },
   "dependencies": {
-    "@graphql-codegen/plugin-helpers": "^1.17.8",
-    "graphql": "^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0"
-  }
+    "@graphql-codegen/plugin-helpers": "^3.1.2",
+    "graphql": "16.6.0"
+  },
+  "source": "src/index.ts",
+  "exports": {
+    "require": "./dist/index.cjs",
+    "default": "./dist/index.modern.js"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.module.js",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/index.umd.js",
+  "type": "module"
 }

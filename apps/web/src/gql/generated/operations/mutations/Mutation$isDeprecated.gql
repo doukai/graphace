@@ -1,0 +1,3 @@
+mutation Mutation$isDeprecated {
+  isDeprecated @skipNullArguments(if: true)
+}
