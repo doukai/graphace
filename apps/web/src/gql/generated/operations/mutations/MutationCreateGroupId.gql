@@ -1,7 +1,3 @@
 query Query$createGroupId {
-  createGroupId @skipNullArguments(if: true) {
-    
-    
-    
-  }
+  createGroupId @skipNullArguments(if: true)
 }

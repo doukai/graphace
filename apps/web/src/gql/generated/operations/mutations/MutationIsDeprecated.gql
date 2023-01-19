@@ -1,7 +1,3 @@
 query Query$isDeprecated {
-  isDeprecated @skipNullArguments(if: true) {
-    
-    
-    
-  }
+  isDeprecated @skipNullArguments(if: true)
 }

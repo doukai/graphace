@@ -1,7 +1,15 @@
 query Query$findRole2($disable: Boolean $name: String $type: Int) {
-  findRole2($disable: $disable $name: $name $type: $type) @skipNullArguments(if: true) {
-    
-    
-    
-  }
+  findRole2(disable: $disable name: $name type: $type) @skipNullArguments(if: true) {
+    createGroupId
+    createTime
+    createUserId
+    id
+    isDeprecated
+    name
+    realmId
+    type
+    updateTime
+    updateUserId
+    version
+    }
 }

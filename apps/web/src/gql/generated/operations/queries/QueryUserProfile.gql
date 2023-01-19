@@ -1,7 +1,17 @@
 query Query$userProfile($address: StringExpression $cond: Conditional $createGroupId: StringExpression $createTime: StringExpression $createUserId: StringExpression $email: StringExpression $id: StringExpression $includeDeprecated: Boolean $qq: StringExpression $realmId: StringExpression $updateTime: StringExpression $updateUserId: StringExpression $user: UserExpression $userId: StringExpression $version: IntExpression) {
-  userProfile($address: $address $cond: $cond $createGroupId: $createGroupId $createTime: $createTime $createUserId: $createUserId $email: $email $id: $id $includeDeprecated: $includeDeprecated $qq: $qq $realmId: $realmId $updateTime: $updateTime $updateUserId: $updateUserId $user: $user $userId: $userId $version: $version) @skipNullArguments(if: true) {
-    
-    
-    
-  }
+  userProfile(address: $address cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId email: $email id: $id includeDeprecated: $includeDeprecated qq: $qq realmId: $realmId updateTime: $updateTime updateUserId: $updateUserId user: $user userId: $userId version: $version) @skipNullArguments(if: true) {
+    address
+    createGroupId
+    createTime
+    createUserId
+    email
+    id
+    isDeprecated
+    qq
+    realmId
+    updateTime
+    updateUserId
+    userId
+    version
+    }
 }

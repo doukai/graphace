@@ -1,7 +1,21 @@
 query Query$organizationConnection($above: OrganizationExpression $aboveId: IntExpression $after: ID $before: ID $cond: Conditional $createGroupId: StringExpression $createTime: StringExpression $createUserId: StringExpression $exs: [OrganizationExpression] $first: Int $groupBy: [String!] $id: StringExpression $includeDeprecated: Boolean $last: Int $name: StringExpression $offset: Int $orderBy: OrganizationOrderBy $realmId: StringExpression $updateTime: StringExpression $updateUserId: StringExpression $users: UserExpression $version: IntExpression) {
-  organizationConnection($above: $above $aboveId: $aboveId $after: $after $before: $before $cond: $cond $createGroupId: $createGroupId $createTime: $createTime $createUserId: $createUserId $exs: $exs $first: $first $groupBy: $groupBy $id: $id $includeDeprecated: $includeDeprecated $last: $last $name: $name $offset: $offset $orderBy: $orderBy $realmId: $realmId $updateTime: $updateTime $updateUserId: $updateUserId $users: $users $version: $version) @skipNullArguments(if: true) {
-    
-    
-    
-  }
+  organizationConnection(above: $above aboveId: $aboveId after: $after before: $before cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId exs: $exs first: $first groupBy: $groupBy id: $id includeDeprecated: $includeDeprecated last: $last name: $name offset: $offset orderBy: $orderBy realmId: $realmId updateTime: $updateTime updateUserId: $updateUserId users: $users version: $version) @skipNullArguments(if: true)
+    totalCount
+    edges {
+        node {
+          aboveId
+          createGroupId
+          createTime
+          createUserId
+          id
+          isDeprecated
+          name
+          orgLevel3
+          realmId
+          roleDisable
+          updateTime
+          updateUserId
+          version
+          }
+    }
 }

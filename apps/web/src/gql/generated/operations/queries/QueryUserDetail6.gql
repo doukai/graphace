@@ -1,7 +1,3 @@
 query Query$userDetail6($user: UserInput) {
-  userDetail6($user: $user) @skipNullArguments(if: true) {
-    
-    
-    
-  }
+  userDetail6(user: $user) @skipNullArguments(if: true)
 }

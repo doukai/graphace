@@ -1,7 +1,3 @@
 query Query$realmId {
-  realmId @skipNullArguments(if: true) {
-    
-    
-    
-  }
+  realmId @skipNullArguments(if: true)
 }

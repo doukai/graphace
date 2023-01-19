@@ -1,7 +1,3 @@
 query Query$createUserId {
-  createUserId @skipNullArguments(if: true) {
-    
-    
-    
-  }
+  createUserId @skipNullArguments(if: true)
 }

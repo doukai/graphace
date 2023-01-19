@@ -1,7 +1,3 @@
 query Query$version {
-  version @skipNullArguments(if: true) {
-    
-    
-    
-  }
+  version @skipNullArguments(if: true)
 }

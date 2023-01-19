@@ -1,7 +1,3 @@
 query Query$createTime {
-  createTime @skipNullArguments(if: true) {
-    
-    
-    
-  }
+  createTime @skipNullArguments(if: true)
 }

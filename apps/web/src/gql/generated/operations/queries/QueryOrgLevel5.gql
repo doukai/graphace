@@ -1,7 +1,3 @@
 query Query$orgLevel5($organization: OrganizationInput) {
-  orgLevel5($organization: $organization) @skipNullArguments(if: true) {
-    
-    
-    
-  }
+  orgLevel5(organization: $organization) @skipNullArguments(if: true)
 }

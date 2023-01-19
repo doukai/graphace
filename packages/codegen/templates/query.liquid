@@ -1,18 +1,22 @@
 query Query${{ name }}{% if args and args.length > 0 %}({% for arg in args %}${{ arg.name }}: {{ arg.type }}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %} {
-  {{ name }}{% if args and args.length > 0 %}({% for arg in args %}${{ arg.name }}: ${{ arg.name }}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %} @skipNullArguments(if: true) {
-    {% if isConnection == ture %}
+  {{ name }}{% if args and args.length > 0 %}({% for arg in args %}{{ arg.name }}: ${{ arg.name }}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %} @skipNullArguments(if: true)
+    {%- if isConnection %}
     totalCount
     edges {
-        node {
-          {% for field in fields %}
-          {{ field.name }}
-          {% endfor %}
+        node
+          {%- if fields %} {
+          {% for field in fields -%}
+            {{ field.name }}
+          {% endfor -%}
         }
+          {%- endif %}
     }
-    {% else %}
-    {% for field in fields %}
-    {{ field.name }}
-    {% endfor %}
-    {% endif %}
+    {%- else -%}
+    {%- if fields %} {
+    {% for field in fields -%}
+      {{ field.name }}
+    {% endfor -%}
   }
+    {%- endif %}
+    {%- endif %}
 }
