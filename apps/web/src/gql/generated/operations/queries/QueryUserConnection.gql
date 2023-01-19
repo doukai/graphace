@@ -23,6 +23,6 @@ query Query$userConnection($after: ID $age: IntExpression $before: ID $cond: Con
           updateUserId
           userDetail2
           version
-          }
+        }
     }
 }

@@ -20,5 +20,5 @@ query Query$userByOrg2($organization: OrganizationInput) {
     updateUserId
     userDetail2
     version
-    }
+  }
 }

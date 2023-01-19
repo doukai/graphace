@@ -14,6 +14,6 @@ query Query$userTest2Connection($after: ID $before: ID $cond: Conditional $creat
           updateUserId
           userId
           version
-          }
+        }
     }
 }

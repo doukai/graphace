@@ -11,5 +11,5 @@ query Query$userRoleList($after: ID $before: ID $cond: Conditional $createGroupI
     updateUserId
     userId
     version
-    }
+  }
 }

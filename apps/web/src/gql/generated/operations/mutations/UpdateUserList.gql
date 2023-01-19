@@ -20,5 +20,5 @@ query Query$userList($after: ID $age: IntExpression $before: ID $cond: Condition
     updateUserId
     userDetail2
     version
-    }
+  }
 }

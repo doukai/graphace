@@ -13,5 +13,5 @@ query Query$userProfileList($address: StringExpression $after: ID $before: ID $c
     updateUserId
     userId
     version
-    }
+  }
 }

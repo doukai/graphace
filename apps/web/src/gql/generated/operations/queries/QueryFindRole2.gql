@@ -11,5 +11,5 @@ query Query$findRole2($disable: Boolean $name: String $type: Int) {
     updateTime
     updateUserId
     version
-    }
+  }
 }

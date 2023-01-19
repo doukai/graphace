@@ -20,5 +20,5 @@ query Query$user($age: IntExpression $cond: Conditional $createGroupId: StringEx
     updateUserId
     userDetail2
     version
-    }
+  }
 }

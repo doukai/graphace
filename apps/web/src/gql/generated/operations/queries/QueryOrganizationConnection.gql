@@ -16,6 +16,6 @@ query Query$organizationConnection($above: OrganizationExpression $aboveId: IntE
           updateTime
           updateUserId
           version
-          }
+        }
     }
 }

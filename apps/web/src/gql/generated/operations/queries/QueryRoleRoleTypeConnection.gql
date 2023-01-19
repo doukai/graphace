@@ -14,6 +14,6 @@ query Query$roleRoleTypeConnection($after: ID $before: ID $cond: Conditional $cr
           updateTime
           updateUserId
           version
-          }
+        }
     }
 }

@@ -13,5 +13,5 @@ query Query$organization($above: OrganizationExpression $aboveId: IntExpression 
     updateTime
     updateUserId
     version
-    }
+  }
 }

@@ -11,5 +11,5 @@ query Query$userPhones($cond: Conditional $createGroupId: StringExpression $crea
     updateUserId
     userId
     version
-    }
+  }
 }

@@ -16,6 +16,6 @@ query Query$userProfileConnection($address: StringExpression $after: ID $before:
           updateUserId
           userId
           version
-          }
+        }
     }
 }

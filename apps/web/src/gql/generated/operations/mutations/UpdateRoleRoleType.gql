@@ -11,5 +11,5 @@ query Query$roleRoleType($cond: Conditional $createGroupId: StringExpression $cr
     updateTime
     updateUserId
     version
-    }
+  }
 }

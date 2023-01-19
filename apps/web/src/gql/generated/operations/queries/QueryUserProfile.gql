@@ -13,5 +13,5 @@ query Query$userProfile($address: StringExpression $cond: Conditional $createGro
     updateUserId
     userId
     version
-    }
+  }
 }

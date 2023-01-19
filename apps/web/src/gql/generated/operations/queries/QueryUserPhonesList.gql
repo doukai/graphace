@@ -11,5 +11,5 @@ query Query$userPhonesList($after: ID $before: ID $cond: Conditional $createGrou
     updateUserId
     userId
     version
-    }
+  }
 }

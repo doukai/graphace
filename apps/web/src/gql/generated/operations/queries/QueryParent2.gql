@@ -13,5 +13,5 @@ query Query$parent2($organization: OrganizationInput) {
     updateTime
     updateUserId
     version
-    }
+  }
 }

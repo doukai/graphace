@@ -11,5 +11,5 @@ query Query$userTest1($cond: Conditional $createGroupId: StringExpression $creat
     updateUserId
     userId
     version
-    }
+  }
 }

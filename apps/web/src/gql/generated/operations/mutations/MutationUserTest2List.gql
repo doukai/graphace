@@ -11,5 +11,5 @@ query Query$userTest2List($after: ID $before: ID $cond: Conditional $createGroup
     updateUserId
     userId
     version
-    }
+  }
 }
