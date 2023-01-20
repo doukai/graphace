@@ -1,3 +1,0 @@
-query Query$roleDisable2($organization: OrganizationInput $skipNullArguments: Boolean) {
-  roleDisable2(organization: $organization) @skipNullArguments(if: $skipNullArguments)
-}

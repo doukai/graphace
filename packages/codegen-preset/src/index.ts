@@ -9,7 +9,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         const queryList = Object.values(queryFields)
             .map(field => {
                 return {
-                    filename: `${options.baseOutputDir}queries/Query$${field.name}.gql`,
+                    filename: `${options.baseOutputDir}queries/Query_${field.name}.gql`,
                     documents: options.documents,
                     plugins: options.plugins,
                     pluginMap: options.pluginMap,
@@ -29,7 +29,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         const mutationList = Object.values(mutationFields)
             .map(field => {
                 return {
-                    filename: `${options.baseOutputDir}mutations/Mutation$${field.name}.gql`,
+                    filename: `${options.baseOutputDir}mutations/Mutation_${field.name}.gql`,
                     documents: options.documents,
                     plugins: options.plugins,
                     pluginMap: options.pluginMap,
@@ -49,7 +49,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         const mutationUpdateList = Object.values(mutationFields)
             .map(field => {
                 return {
-                    filename: `${options.baseOutputDir}mutations/Mutation$${field.name}$update.gql`,
+                    filename: `${options.baseOutputDir}mutations/Mutation_${field.name}_update.gql`,
                     documents: options.documents,
                     plugins: options.plugins,
                     pluginMap: options.pluginMap,

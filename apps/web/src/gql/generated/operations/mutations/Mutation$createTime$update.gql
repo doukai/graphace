@@ -1,3 +1,0 @@
-mutation Mutation$createTime$update {
-  createTime @update
-}

@@ -1,4 +1,4 @@
-mutation Mutation${{ name }}{% if update %}$update{% endif %}{% if args and args.length > 0 %}({% for arg in args %}${{ arg.name }}: {{ arg.type }}{% if forloop.last == false %} {% endif %}{% endfor %} $skipNullArguments: Boolean){% endif %} {
+mutation Mutation_{{ name }}{% if update %}_update{% endif %}{% if args and args.length > 0 %}({% for arg in args %}${{ arg.name }}: {{ arg.type }}{% if forloop.last == false %} {% endif %}{% endfor %} $skipNullArguments: Boolean = false){% endif %} {
   {{ name }}{% if args and args.length > 0 %}({% for arg in args %}{{ arg.name }}: ${{ arg.name }}{% if forloop.last == false %} {% endif %}{% endfor %}) @skipNullArguments(if: $skipNullArguments){% endif %}{% if update %} @update{% endif %}
     {%- if fields %} {
     {%- for field in fields %}

@@ -1,11 +1,11 @@
 <script lang="ts">
 	import UserTable from '~/lib/components/types/user/UserTable.svelte';
 	import type { User, QueryTypeUserListArgs, MutationTypeUserArgs } from '~/gql/generated/schema';
-	import { QueryUserConnectionStore, GQL_UpdateUser } from '$houdini';
+	import { Query_userConnectionStore, GQL_Mutation_user_update } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: QueryUserConnection = data.QueryUserConnection as QueryUserConnectionStore;
+	$: QueryUserConnection = data.QueryUserConnection as Query_userConnectionStore;
 
 	const fetch = (
 		event: CustomEvent<{
@@ -30,7 +30,7 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		GQL_UpdateUser.mutate(event.detail.args)
+		GQL_Mutation_user_update.mutate(event.detail.args)
 			.then((result) => {
 				event.detail.then(result?.user);
 			})

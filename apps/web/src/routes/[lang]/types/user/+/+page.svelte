@@ -2,7 +2,7 @@
 	import UserForm from '~/lib/components/types/user/UserForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { GQL_MutationUser } from '$houdini';
+	import { GQL_Mutation_user } from '$houdini';
 	import type { MutationTypeUserArgs, User } from '~/gql/generated/schema';
 
 	let node: MutationTypeUserArgs = {};
@@ -14,7 +14,7 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		GQL_MutationUser.mutate(event.detail.args)
+		GQL_Mutation_user.mutate(event.detail.args)
 			.then((result) => {
 				event.detail.then(result?.user);
 			})
