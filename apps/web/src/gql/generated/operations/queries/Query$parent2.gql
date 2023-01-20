@@ -1,5 +1,5 @@
-query Query$parent2($organization: OrganizationInput) {
-  parent2(organization: $organization) @skipNullArguments(if: true) {
+query Query$parent2($organization: OrganizationInput $skipNullArguments: Boolean) {
+  parent2(organization: $organization) @skipNullArguments(if: $skipNullArguments) {
     aboveId
     createGroupId
     createTime

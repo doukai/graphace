@@ -1,5 +1,5 @@
-query Query$userRole($cond: Conditional $createGroupId: StringExpression $createTime: StringExpression $createUserId: StringExpression $id: StringExpression $includeDeprecated: Boolean $realmId: StringExpression $roleId: IntExpression $updateTime: StringExpression $updateUserId: StringExpression $userId: IntExpression $version: IntExpression) {
-  userRole(cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId id: $id includeDeprecated: $includeDeprecated realmId: $realmId roleId: $roleId updateTime: $updateTime updateUserId: $updateUserId userId: $userId version: $version) @skipNullArguments(if: true) {
+query Query$userRole($cond: Conditional $createGroupId: StringExpression $createTime: StringExpression $createUserId: StringExpression $id: StringExpression $includeDeprecated: Boolean $realmId: StringExpression $roleId: IntExpression $updateTime: StringExpression $updateUserId: StringExpression $userId: IntExpression $version: IntExpression $skipNullArguments: Boolean) {
+  userRole(cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId id: $id includeDeprecated: $includeDeprecated realmId: $realmId roleId: $roleId updateTime: $updateTime updateUserId: $updateUserId userId: $userId version: $version) @skipNullArguments(if: $skipNullArguments) {
     createGroupId
     createTime
     createUserId

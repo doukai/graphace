@@ -1,5 +1,5 @@
-mutation Mutation$userPhones$update($createGroupId: String $createTime: Timestamp $createUserId: String $id: ID $isDeprecated: Boolean $phone: String $realmId: String $updateTime: Timestamp $updateUserId: String $userId: Int $version: Int $where: UserPhonesExpression) {
-  userPhones(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId id: $id isDeprecated: $isDeprecated phone: $phone realmId: $realmId updateTime: $updateTime updateUserId: $updateUserId userId: $userId version: $version where: $where) @update @skipNullArguments(if: true) {
+mutation Mutation$userPhones$update($createGroupId: String $createTime: Timestamp $createUserId: String $id: ID $isDeprecated: Boolean $phone: String $realmId: String $updateTime: Timestamp $updateUserId: String $userId: Int $version: Int $where: UserPhonesExpression $skipNullArguments: Boolean) {
+  userPhones(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId id: $id isDeprecated: $isDeprecated phone: $phone realmId: $realmId updateTime: $updateTime updateUserId: $updateUserId userId: $userId version: $version where: $where) @skipNullArguments(if: $skipNullArguments) @update {
     createGroupId
     createTime
     createUserId

@@ -1,3 +1,3 @@
-query Query$orgLevel($organization: OrganizationInput) {
-  orgLevel(organization: $organization) @skipNullArguments(if: true)
+query Query$orgLevel($organization: OrganizationInput $skipNullArguments: Boolean) {
+  orgLevel(organization: $organization) @skipNullArguments(if: $skipNullArguments)
 }
