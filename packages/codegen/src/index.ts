@@ -1,6 +1,6 @@
 import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
-import { isListType, isNonNullType, isObjectType, type GraphQLField, type GraphQLOutputType, type GraphQLSchema } from 'graphql';
+import { assertScalarType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLField, type GraphQLOutputType, type GraphQLSchema } from 'graphql';
 import { Liquid } from 'liquidjs'
 
 const aggregateSuffix = ["Count", "Sum", "Avg", "Max", "Min", "Aggregate"];
@@ -43,6 +43,19 @@ const getScalarFields = (field?: GraphQLField<any, any, any>): GraphQLField<any,
                     .filter(field => !isAggregate(field.name));
             }
         }
+    }
+    return undefined;
+}
+
+const getScalarNames = (type: GraphQLOutputType): string[] | undefined => {
+    if (isObjectType(type) || isInputObjectType(type)) {
+        return [
+            ...new Set(Object.values(type.getFields())
+                .map(field => getFieldType(field.type))
+                .filter(type => isScalarType(type))
+                .map(type => assertScalarType(type))
+                .map(type => type.name))
+        ];
     }
     return undefined;
 }
