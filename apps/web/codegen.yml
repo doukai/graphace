@@ -5,12 +5,12 @@ generates:
     plugins:
       - typescript
     config:
-      namingConvention: 
+      namingConvention:
         enumValues: change-case-all#upperCase
   # ./src/gql/generated/introspection.json:
   #   plugins:
   #     - introspection
-  ./src/gql/generated/operations/:
+  ./src:
     preset: graphace-codegen-preset
     plugins:
       - graphace-codegen

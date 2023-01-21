@@ -1,0 +1,3 @@
+mutation Mutation_updateUserId_update {
+  updateUserId @update
+}

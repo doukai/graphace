@@ -104,6 +104,7 @@ importers:
       '@graphql-codegen/plugin-helpers': ^3.1.2
       '@graphql-codegen/schema-ast': ^2.6.1
       '@graphql-codegen/visitor-plugin-common': 2.13.7
+      change-case: ^4.1.2
       graphql: 16.6.0
       liquidjs: ^10.4.0
       microbundle: ^0.15.1
@@ -111,6 +112,7 @@ importers:
       '@graphql-codegen/plugin-helpers': 3.1.2_graphql@16.6.0
       '@graphql-codegen/schema-ast': 2.6.1_graphql@16.6.0
       '@graphql-codegen/visitor-plugin-common': 2.13.7_graphql@16.6.0
+      change-case: 4.1.2
       graphql: 16.6.0
       liquidjs: 10.4.0
     devDependencies:
@@ -119,10 +121,12 @@ importers:
   packages/codegen-preset:
     specifiers:
       '@graphql-codegen/plugin-helpers': ^3.1.2
+      change-case: ^4.1.2
       graphql: 16.6.0
       microbundle: ^0.15.1
     dependencies:
       '@graphql-codegen/plugin-helpers': 3.1.2_graphql@16.6.0
+      change-case: 4.1.2
       graphql: 16.6.0
     devDependencies:
       microbundle: 0.15.1

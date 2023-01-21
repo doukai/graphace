@@ -5,4 +5,5 @@ export interface GraphacePluginConfig extends RawTypesConfig {
   template: Template;
   query?: { fieldName: string }
   mutation?: { fieldName: string, update?: boolean }
+  typeTable?: { name: string }
 }

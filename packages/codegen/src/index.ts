@@ -1,7 +1,8 @@
 import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
-import { assertScalarType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLField, type GraphQLOutputType, type GraphQLSchema } from 'graphql';
-import { Liquid } from 'liquidjs'
+import { assertScalarType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType, type GraphQLSchema } from 'graphql';
+import { Liquid } from 'liquidjs';
+import * as changeCase from "change-case";
 
 const aggregateSuffix = ["Count", "Sum", "Avg", "Max", "Min", "Aggregate"];
 const connectionSuffix = "Connection";
@@ -10,6 +11,19 @@ const engine = new Liquid({
     root: `${__dirname}/../templates`,
     extname: '.liquid'
 })
+
+engine.registerFilter('camelCase', (v: string) => changeCase.camelCase(v));
+engine.registerFilter('capitalCase', (v: string) => changeCase.capitalCase(v));
+engine.registerFilter('constantCase', (v: string) => changeCase.constantCase(v));
+engine.registerFilter('dotCase', (v: string) => changeCase.dotCase(v));
+engine.registerFilter('headerCase', (v: string) => changeCase.headerCase(v));
+engine.registerFilter('noCase', (v: string) => changeCase.noCase(v));
+engine.registerFilter('paramCase', (v: string) => changeCase.paramCase(v));
+engine.registerFilter('pascalCase', (v: string) => changeCase.pascalCase(v));
+engine.registerFilter('pathCase', (v: string) => changeCase.pathCase(v));
+engine.registerFilter('sentenceCase', (v: string) => changeCase.sentenceCase(v));
+engine.registerFilter('snakeCase', (v: string) => changeCase.snakeCase(v));
+
 
 const isConnection = (fieldName?: string): boolean => { return fieldName?.slice(-connectionSuffix.length) === connectionSuffix };
 const isAggregate = (fieldName?: string): boolean => { return aggregateSuffix.some(suffix => fieldName?.slice(-suffix.length) === suffix) };
@@ -47,20 +61,19 @@ const getScalarFields = (field?: GraphQLField<any, any, any>): GraphQLField<any,
     return undefined;
 }
 
-const getScalarNames = (type: GraphQLOutputType): string[] | undefined => {
+const getScalarNames = (type: GraphQLNamedType): string[] | undefined => {
     if (isObjectType(type) || isInputObjectType(type)) {
-        return [
-            ...new Set(Object.values(type.getFields())
-                .map(field => getFieldType(field.type))
-                .filter(type => isScalarType(type))
-                .map(type => assertScalarType(type))
-                .map(type => type.name))
-        ];
+        const scalarNames = Object.values(type.getFields())
+            .map(field => getFieldType(field.type))
+            .filter(type => isScalarType(type))
+            .map(type => assertScalarType(type))
+            .map(type => type.name);
+        return scalarNames.filter((scalar, index) => scalarNames.indexOf(scalar) == index);
     }
     return undefined;
 }
 
-export type Template = "query" | "mutation";
+export type Template = "query" | "mutation" | "typeTable";
 type Render = (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => Types.ComplexPluginOutput
 
 const renders: Record<Template, Render> = {
@@ -93,6 +106,19 @@ const renders: Record<Template, Render> = {
 
         }
         throw new Error(`${config.mutation?.fieldName} not exist in MutationType`);
+    },
+    typeTable: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.typeTable?.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type) {
+                return {
+                    content: engine.renderFileSync(config.template, { name: type?.name, scalars: getScalarNames(type) }),
+                };
+
+            }
+        }
+        throw new Error(`${typeName} not exist`);
     }
 }
 

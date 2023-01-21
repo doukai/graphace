@@ -1,0 +1,3 @@
+mutation Mutation_version_update {
+  version @update
+}
