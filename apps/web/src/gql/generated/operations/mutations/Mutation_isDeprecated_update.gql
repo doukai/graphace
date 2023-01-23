@@ -1,3 +1,0 @@
-mutation Mutation_isDeprecated_update {
-  isDeprecated @update
-}

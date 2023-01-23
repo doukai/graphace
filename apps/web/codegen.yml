@@ -1,15 +1,12 @@
 schema: 'http://localhost:8080/graphql'
 overwrite: true
 generates:
-  ./src/gql/generated/schema.ts:
+  ./src/lib/types/schema.ts:
     plugins:
       - typescript
     config:
       namingConvention:
         enumValues: change-case-all#upperCase
-  # ./src/gql/generated/introspection.json:
-  #   plugins:
-  #     - introspection
   ./src:
     preset: graphace-codegen-preset
     plugins:

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
-	import { {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql/components/table';
+	import { StringTh, StringTd, TimestampTh, TimestampTd, BooleanTh, BooleanTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
 	import { SectionHead } from '@graphace/ui/components/section';
 	import { Table, TableLoading } from '@graphace/ui/components/table';
 	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
@@ -16,25 +16,25 @@
 	import {
 		Conditional,
 		Operator,
-		{{ name }},
-		{{ name }}OrderBy,
-		QueryType{{ name }}ListArgs,
-		MutationType{{ name }}Args
+		QueryType,
+		QueryTypeOrderBy,
+		QueryTypeQueryTypeListArgs,
+		MutationTypeQueryTypeArgs
 	} from '~/gql/generated/schema';
 
-	export let nodes: ({{ name }} | null | undefined)[] | null | undefined;
+	export let nodes: (QueryType | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;
 	export let isFetching: boolean;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
-			args: QueryType{{ name }}ListArgs;
-			then: (data: ({{ name }} | null | undefined)[] | null | undefined) => void;
+			args: QueryTypeQueryTypeListArgs;
+			then: (data: (QueryType | null | undefined)[] | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
 		mutation: {
-			args: MutationType{{ name }}Args;
-			then: (data: {{ name }} | null | undefined) => void;
+			args: MutationTypeQueryTypeArgs;
+			then: (data: QueryType | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
 	}>();
@@ -43,8 +43,8 @@
 
 	let showDeleteButton = false;
 	let searchValue: string | undefined;
-	let args: QueryType{{ name }}ListArgs = {};
-	let orderBy: {{ name }}OrderBy = {};
+	let args: QueryTypeQueryTypeListArgs = {};
+	let orderBy: QueryTypeOrderBy = {};
 	let after: string | undefined;
 	let before: string | undefined;
 	let pageNumber: number = 1;
@@ -95,15 +95,14 @@
 
 	const search = () => {
 		if (searchValue) {
-			let args: QueryType{{ name }}ListArgs = {};
+			let args: QueryTypeQueryTypeListArgs = {};
 			args.cond = Conditional.OR;
-			{%- if fields %}
-			{%- for field in fields %}
-			{%- if field.isScalarType and field.fieldType.name == 'String' %}
-			args.{{ field.fieldName }} = { opr: Operator.LK, val: `%${searchValue}%` };
-			{%- endif %}
-			{%- endfor %}
-			{%- endif %}
+			args.createGroupId = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.createUserId = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.realmId = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.updateUserId = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.userDetail = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.userDetail6 = { opr: Operator.LK, val: `%${searchValue}%` };
 			if (after) {
 				args.after = after;
 				args.first = pageSize;
@@ -127,10 +126,10 @@
 		}
 	};
 
-	async function updateField(args: MutationType{{ name }}Args | null | undefined) {
-		if (args && args.{{ idName }}) {
-			errors[args.{{ idName }}] = {};
-			validateUpdate('{{ name }}', args, $locale)
+	async function updateField(args: MutationTypeQueryTypeArgs | null | undefined) {
+		if (args && args.) {
+			errors[args.] = {};
+			validateUpdate('QueryType', args, $locale)
 				.then((data) => {
 					if (args) {
 						dispatch('mutation', {
@@ -146,8 +145,8 @@
 					}
 				})
 				.catch((validErrors) => {
-					if (args.{{ idName }}) {
-						errors[args.{{ idName }}] = validErrors;
+					if (args.) {
+						errors[args.] = validErrors;
 					}
 				});
 		}
@@ -185,7 +184,7 @@
 	};
 </script>
 
-<SectionHead title="{{ name }}">
+<SectionHead title="QueryType">
 	<SearchInput bind:value={searchValue} on:search={search} />
 	{#if showDeleteButton}
 		<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.remove()}>
@@ -213,7 +212,7 @@
 			class="btn btn-square md:hidden"
 			on:click={(e) => {
 				e.preventDefault();
-				goto('./{{ name | paramCase }}/+');
+				goto('./query-type/+');
 			} }
 		>
 			<Icon src={Plus} class="h-6 w-6" solid />
@@ -223,7 +222,7 @@
 		class="hidden md:btn"
 		on:click={(e) => {
 			e.preventDefault();
-			goto('./{{ name | paramCase }}/+');
+			goto('./query-type/+');
 		}}
 	>
 		{$LL.routers.type.create()}
@@ -242,8 +241,8 @@
 						on:change={() => {
 							if (nodes && nodes.length > 0) {
 								nodes.forEach((node) => {
-									if (node?.{{ idName }}) {
-										selectedRows[node.{{ idName }}] = selectAll;
+									if (node?.) {
+										selectedRows[node.] = selectAll;
 									}
 								});
 							}
@@ -251,18 +250,84 @@
 					/>
 				</label>
 			</th>
-			{%- if fields %}
-			{%- for field in fields %}
-			{%- if field.isScalarType or field.isEnumType %}
-			<{{ field.fieldType.name }}Th
-				name="{{ field.fieldName }}"
-				bind:expression={args.{{ field.fieldName }}}
-				bind:sort={orderBy.{{ field.fieldName }}}
+			<StringTh
+				name="createGroupId"
+				bind:expression={args.createGroupId}
+				bind:sort={orderBy.createGroupId}
 				on:filter={query}
 			/>
-			{%- endif %}
-			{%- endfor %}
-			{%- endif %}
+			<TimestampTh
+				name="createTime"
+				bind:expression={args.createTime}
+				bind:sort={orderBy.createTime}
+				on:filter={query}
+			/>
+			<StringTh
+				name="createUserId"
+				bind:expression={args.createUserId}
+				bind:sort={orderBy.createUserId}
+				on:filter={query}
+			/>
+			<BooleanTh
+				name="isDeprecated"
+				bind:expression={args.isDeprecated}
+				bind:sort={orderBy.isDeprecated}
+				on:filter={query}
+			/>
+			<IntTh
+				name="orgLevel"
+				bind:expression={args.orgLevel}
+				bind:sort={orderBy.orgLevel}
+				on:filter={query}
+			/>
+			<IntTh
+				name="orgLevel5"
+				bind:expression={args.orgLevel5}
+				bind:sort={orderBy.orgLevel5}
+				on:filter={query}
+			/>
+			<StringTh
+				name="realmId"
+				bind:expression={args.realmId}
+				bind:sort={orderBy.realmId}
+				on:filter={query}
+			/>
+			<BooleanTh
+				name="roleDisable2"
+				bind:expression={args.roleDisable2}
+				bind:sort={orderBy.roleDisable2}
+				on:filter={query}
+			/>
+			<TimestampTh
+				name="updateTime"
+				bind:expression={args.updateTime}
+				bind:sort={orderBy.updateTime}
+				on:filter={query}
+			/>
+			<StringTh
+				name="updateUserId"
+				bind:expression={args.updateUserId}
+				bind:sort={orderBy.updateUserId}
+				on:filter={query}
+			/>
+			<StringTh
+				name="userDetail"
+				bind:expression={args.userDetail}
+				bind:sort={orderBy.userDetail}
+				on:filter={query}
+			/>
+			<StringTh
+				name="userDetail6"
+				bind:expression={args.userDetail6}
+				bind:sort={orderBy.userDetail6}
+				on:filter={query}
+			/>
+			<IntTh
+				name="version"
+				bind:expression={args.version}
+				bind:sort={orderBy.version}
+				on:filter={query}
+			/>
 			<td />
 		</tr>
 	</thead>
@@ -272,25 +337,91 @@
 		<tbody>
 			{#if nodes && nodes.length > 0}
 				{#each nodes as node}
-					{#if node && node.{{ idName }}}
+					{#if node && node.}
 						<tr class="hover">
 							<th class="z-10">
 								<label>
-									<input type="checkbox" class="checkbox" bind:checked={selectedRows[node.{{ idName }}]} />
+									<input type="checkbox" class="checkbox" bind:checked={selectedRows[node.]} />
 								</label>
 							</th>
-							{%- if fields %}
-							{%- for field in fields %}
-							{%- if field.isScalarType or field.isEnumType %}
-							<{{ field.fieldType.name }}Td
-								name="{{ field.fieldName }}"
-								bind:value={node.{{ field.fieldName }}}
-								on:save={() => updateField({ {{ idName }}: node?.{{ idName }}, {{ field.fieldName }}: node?.{{ field.fieldName }} })}
-								error={errors[node.{{ idName }}]?.{{ field.fieldName }}}
+							<StringTd
+								name="createGroupId"
+								bind:value={node.createGroupId}
+								on:save={() => updateField({ : node?., createGroupId: node?.createGroupId })}
+								error={errors[node.]?.createGroupId}
 							/>
-							{%- endif %}
-							{%- endfor %}
-							{%- endif %}
+							<TimestampTd
+								name="createTime"
+								bind:value={node.createTime}
+								on:save={() => updateField({ : node?., createTime: node?.createTime })}
+								error={errors[node.]?.createTime}
+							/>
+							<StringTd
+								name="createUserId"
+								bind:value={node.createUserId}
+								on:save={() => updateField({ : node?., createUserId: node?.createUserId })}
+								error={errors[node.]?.createUserId}
+							/>
+							<BooleanTd
+								name="isDeprecated"
+								bind:value={node.isDeprecated}
+								on:save={() => updateField({ : node?., isDeprecated: node?.isDeprecated })}
+								error={errors[node.]?.isDeprecated}
+							/>
+							<IntTd
+								name="orgLevel"
+								bind:value={node.orgLevel}
+								on:save={() => updateField({ : node?., orgLevel: node?.orgLevel })}
+								error={errors[node.]?.orgLevel}
+							/>
+							<IntTd
+								name="orgLevel5"
+								bind:value={node.orgLevel5}
+								on:save={() => updateField({ : node?., orgLevel5: node?.orgLevel5 })}
+								error={errors[node.]?.orgLevel5}
+							/>
+							<StringTd
+								name="realmId"
+								bind:value={node.realmId}
+								on:save={() => updateField({ : node?., realmId: node?.realmId })}
+								error={errors[node.]?.realmId}
+							/>
+							<BooleanTd
+								name="roleDisable2"
+								bind:value={node.roleDisable2}
+								on:save={() => updateField({ : node?., roleDisable2: node?.roleDisable2 })}
+								error={errors[node.]?.roleDisable2}
+							/>
+							<TimestampTd
+								name="updateTime"
+								bind:value={node.updateTime}
+								on:save={() => updateField({ : node?., updateTime: node?.updateTime })}
+								error={errors[node.]?.updateTime}
+							/>
+							<StringTd
+								name="updateUserId"
+								bind:value={node.updateUserId}
+								on:save={() => updateField({ : node?., updateUserId: node?.updateUserId })}
+								error={errors[node.]?.updateUserId}
+							/>
+							<StringTd
+								name="userDetail"
+								bind:value={node.userDetail}
+								on:save={() => updateField({ : node?., userDetail: node?.userDetail })}
+								error={errors[node.]?.userDetail}
+							/>
+							<StringTd
+								name="userDetail6"
+								bind:value={node.userDetail6}
+								on:save={() => updateField({ : node?., userDetail6: node?.userDetail6 })}
+								error={errors[node.]?.userDetail6}
+							/>
+							<IntTd
+								name="version"
+								bind:value={node.version}
+								on:save={() => updateField({ : node?., version: node?.version })}
+								error={errors[node.]?.version}
+							/>
 							<td>
 								<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
 									<button
@@ -298,7 +429,7 @@
 										on:click={(e) => {
 											e.preventDefault();
 											if (node) {
-												goto(`./{{ name | paramCase }}/${node.{{ idName }}}`);
+												goto(`./query-type/${node.}`);
 											}
 										}}
 									>
@@ -315,8 +446,8 @@
 												buttonName: $LL.components.graphql.table.removeBtn(),
 												buttonType: 'error',
 												confirm: () => {
-													if (node?.{{ idName }}) {
-														removeRow(node.{{ idName }});
+													if (node?.) {
+														removeRow(node.);
 													}
 													return true;
 												}

@@ -1,0 +1,49 @@
+<script lang="ts">
+	import {{ name }}Table from '~/{{ tablePath }}/{{ name | paramCase }}/{{ name }}Table.svelte';
+	import type { {{ name }}, QueryType{{ name }}ListArgs, MutationType{{ name }}Args } from '~/{{ schemaTypesPath }}';
+	import { Query{{ name }}ConnectionStore, GQL_Mutation{{ name }} } from '$houdini';
+	import type { PageData } from './$houdini';
+
+	export let data: PageData;
+	$: Query{{ name }}Connection = data.Query{{ name }}Connection as Query{{ name }}ConnectionStore;
+
+	const fetch = (
+		event: CustomEvent<{
+			args: QueryType{{ name }}ListArgs;
+			then: (data: ({{ name }} | null | undefined)[] | null | undefined) => void;
+			catch: (error: Error) => void;
+		}>
+	) => {
+		Query{{ name }}Connection.fetch({ variables: event.detail.args })
+			.then((result) => {
+				event.detail.then(result.data?.{{ name | camelCase }}Connection?.edges?.map((edge) => edge?.node));
+			})
+			.catch((error) => {
+				event.detail.catch(error);
+			});
+	};
+
+	const mutation = (
+		event: CustomEvent<{
+			args: MutationType{{ name }}Args;
+			then: (data: {{ name }} | null | undefined) => void;
+			catch: (error: Error) => void;
+		}>
+	) => {
+		GQL_Mutation{{ name }}.mutate(event.detail.args)
+			.then((result) => {
+				event.detail.then(result?.{{ name | camelCase }});
+			})
+			.catch((error) => {
+				event.detail.catch(error);
+			});
+	};
+</script>
+
+<{{ name }}Table
+	nodes={$Query{{ name }}Connection.data?.{{ name | camelCase }}Connection?.edges?.map((edge) => edge?.node)}
+	totalCount={$Query{{ name }}Connection.data?.{{ name | camelCase }}Connection?.totalCount || 0}
+	isFetching={$Query{{ name }}Connection.isFetching}
+	on:fetch={fetch}
+	on:mutation={mutation}
+/>

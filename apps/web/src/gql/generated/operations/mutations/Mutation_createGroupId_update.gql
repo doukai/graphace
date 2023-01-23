@@ -1,3 +1,0 @@
-mutation Mutation_createGroupId_update {
-  createGroupId @update
-}

@@ -1,3 +1,0 @@
-mutation Mutation_createTime {
-  createTime
-}

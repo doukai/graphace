@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
-	import { {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql/components/table';
+	import { StringTh, StringTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
 	import { SectionHead } from '@graphace/ui/components/section';
 	import { Table, TableLoading } from '@graphace/ui/components/table';
 	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
@@ -16,25 +16,25 @@
 	import {
 		Conditional,
 		Operator,
-		{{ name }},
-		{{ name }}OrderBy,
-		QueryType{{ name }}ListArgs,
-		MutationType{{ name }}Args
+		PageInfo,
+		PageInfoOrderBy,
+		QueryTypePageInfoListArgs,
+		MutationTypePageInfoArgs
 	} from '~/gql/generated/schema';
 
-	export let nodes: ({{ name }} | null | undefined)[] | null | undefined;
+	export let nodes: (PageInfo | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;
 	export let isFetching: boolean;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
-			args: QueryType{{ name }}ListArgs;
-			then: (data: ({{ name }} | null | undefined)[] | null | undefined) => void;
+			args: QueryTypePageInfoListArgs;
+			then: (data: (PageInfo | null | undefined)[] | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
 		mutation: {
-			args: MutationType{{ name }}Args;
-			then: (data: {{ name }} | null | undefined) => void;
+			args: MutationTypePageInfoArgs;
+			then: (data: PageInfo | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
 	}>();
@@ -43,8 +43,8 @@
 
 	let showDeleteButton = false;
 	let searchValue: string | undefined;
-	let args: QueryType{{ name }}ListArgs = {};
-	let orderBy: {{ name }}OrderBy = {};
+	let args: QueryTypePageInfoListArgs = {};
+	let orderBy: PageInfoOrderBy = {};
 	let after: string | undefined;
 	let before: string | undefined;
 	let pageNumber: number = 1;
@@ -95,15 +95,10 @@
 
 	const search = () => {
 		if (searchValue) {
-			let args: QueryType{{ name }}ListArgs = {};
+			let args: QueryTypePageInfoListArgs = {};
 			args.cond = Conditional.OR;
-			{%- if fields %}
-			{%- for field in fields %}
-			{%- if field.isScalarType and field.fieldType.name == 'String' %}
-			args.{{ field.fieldName }} = { opr: Operator.LK, val: `%${searchValue}%` };
-			{%- endif %}
-			{%- endfor %}
-			{%- endif %}
+			args.endCursor = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.startCursor = { opr: Operator.LK, val: `%${searchValue}%` };
 			if (after) {
 				args.after = after;
 				args.first = pageSize;
@@ -127,10 +122,10 @@
 		}
 	};
 
-	async function updateField(args: MutationType{{ name }}Args | null | undefined) {
-		if (args && args.{{ idName }}) {
-			errors[args.{{ idName }}] = {};
-			validateUpdate('{{ name }}', args, $locale)
+	async function updateField(args: MutationTypePageInfoArgs | null | undefined) {
+		if (args && args.) {
+			errors[args.] = {};
+			validateUpdate('PageInfo', args, $locale)
 				.then((data) => {
 					if (args) {
 						dispatch('mutation', {
@@ -146,8 +141,8 @@
 					}
 				})
 				.catch((validErrors) => {
-					if (args.{{ idName }}) {
-						errors[args.{{ idName }}] = validErrors;
+					if (args.) {
+						errors[args.] = validErrors;
 					}
 				});
 		}
@@ -185,7 +180,7 @@
 	};
 </script>
 
-<SectionHead title="{{ name }}">
+<SectionHead title="PageInfo">
 	<SearchInput bind:value={searchValue} on:search={search} />
 	{#if showDeleteButton}
 		<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.remove()}>
@@ -213,7 +208,7 @@
 			class="btn btn-square md:hidden"
 			on:click={(e) => {
 				e.preventDefault();
-				goto('./{{ name | paramCase }}/+');
+				goto('./page-info/+');
 			} }
 		>
 			<Icon src={Plus} class="h-6 w-6" solid />
@@ -223,7 +218,7 @@
 		class="hidden md:btn"
 		on:click={(e) => {
 			e.preventDefault();
-			goto('./{{ name | paramCase }}/+');
+			goto('./page-info/+');
 		}}
 	>
 		{$LL.routers.type.create()}
@@ -242,8 +237,8 @@
 						on:change={() => {
 							if (nodes && nodes.length > 0) {
 								nodes.forEach((node) => {
-									if (node?.{{ idName }}) {
-										selectedRows[node.{{ idName }}] = selectAll;
+									if (node?.) {
+										selectedRows[node.] = selectAll;
 									}
 								});
 							}
@@ -251,18 +246,30 @@
 					/>
 				</label>
 			</th>
-			{%- if fields %}
-			{%- for field in fields %}
-			{%- if field.isScalarType or field.isEnumType %}
-			<{{ field.fieldType.name }}Th
-				name="{{ field.fieldName }}"
-				bind:expression={args.{{ field.fieldName }}}
-				bind:sort={orderBy.{{ field.fieldName }}}
+			<StringTh
+				name="endCursor"
+				bind:expression={args.endCursor}
+				bind:sort={orderBy.endCursor}
 				on:filter={query}
 			/>
-			{%- endif %}
-			{%- endfor %}
-			{%- endif %}
+			<BooleanTh
+				name="hasNextPage"
+				bind:expression={args.hasNextPage}
+				bind:sort={orderBy.hasNextPage}
+				on:filter={query}
+			/>
+			<BooleanTh
+				name="hasPreviousPage"
+				bind:expression={args.hasPreviousPage}
+				bind:sort={orderBy.hasPreviousPage}
+				on:filter={query}
+			/>
+			<StringTh
+				name="startCursor"
+				bind:expression={args.startCursor}
+				bind:sort={orderBy.startCursor}
+				on:filter={query}
+			/>
 			<td />
 		</tr>
 	</thead>
@@ -272,25 +279,37 @@
 		<tbody>
 			{#if nodes && nodes.length > 0}
 				{#each nodes as node}
-					{#if node && node.{{ idName }}}
+					{#if node && node.}
 						<tr class="hover">
 							<th class="z-10">
 								<label>
-									<input type="checkbox" class="checkbox" bind:checked={selectedRows[node.{{ idName }}]} />
+									<input type="checkbox" class="checkbox" bind:checked={selectedRows[node.]} />
 								</label>
 							</th>
-							{%- if fields %}
-							{%- for field in fields %}
-							{%- if field.isScalarType or field.isEnumType %}
-							<{{ field.fieldType.name }}Td
-								name="{{ field.fieldName }}"
-								bind:value={node.{{ field.fieldName }}}
-								on:save={() => updateField({ {{ idName }}: node?.{{ idName }}, {{ field.fieldName }}: node?.{{ field.fieldName }} })}
-								error={errors[node.{{ idName }}]?.{{ field.fieldName }}}
+							<StringTd
+								name="endCursor"
+								bind:value={node.endCursor}
+								on:save={() => updateField({ : node?., endCursor: node?.endCursor })}
+								error={errors[node.]?.endCursor}
 							/>
-							{%- endif %}
-							{%- endfor %}
-							{%- endif %}
+							<BooleanTd
+								name="hasNextPage"
+								bind:value={node.hasNextPage}
+								on:save={() => updateField({ : node?., hasNextPage: node?.hasNextPage })}
+								error={errors[node.]?.hasNextPage}
+							/>
+							<BooleanTd
+								name="hasPreviousPage"
+								bind:value={node.hasPreviousPage}
+								on:save={() => updateField({ : node?., hasPreviousPage: node?.hasPreviousPage })}
+								error={errors[node.]?.hasPreviousPage}
+							/>
+							<StringTd
+								name="startCursor"
+								bind:value={node.startCursor}
+								on:save={() => updateField({ : node?., startCursor: node?.startCursor })}
+								error={errors[node.]?.startCursor}
+							/>
 							<td>
 								<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
 									<button
@@ -298,7 +317,7 @@
 										on:click={(e) => {
 											e.preventDefault();
 											if (node) {
-												goto(`./{{ name | paramCase }}/${node.{{ idName }}}`);
+												goto(`./page-info/${node.}`);
 											}
 										}}
 									>
@@ -315,8 +334,8 @@
 												buttonName: $LL.components.graphql.table.removeBtn(),
 												buttonType: 'error',
 												confirm: () => {
-													if (node?.{{ idName }}) {
-														removeRow(node.{{ idName }});
+													if (node?.) {
+														removeRow(node.);
 													}
 													return true;
 												}

@@ -6,6 +6,7 @@ import * as changeCase from "change-case";
 
 const aggregateSuffix = ["Count", "Sum", "Avg", "Max", "Min", "Aggregate"];
 const connectionSuffix = "Connection";
+const edgeSuffix = "Edge";
 
 const engine = new Liquid({
     root: `${__dirname}/../templates`,
@@ -26,6 +27,7 @@ engine.registerFilter('snakeCase', (v: string) => changeCase.snakeCase(v));
 
 
 const isConnection = (fieldName?: string): boolean => { return fieldName?.slice(-connectionSuffix.length) === connectionSuffix };
+const isEdge = (fieldName?: string): boolean => { return fieldName?.slice(-edgeSuffix.length) === edgeSuffix };
 const isAggregate = (fieldName?: string): boolean => { return aggregateSuffix.some(suffix => fieldName?.slice(-suffix.length) === suffix) };
 
 const getFieldType = (type: GraphQLOutputType): GraphQLOutputType => {
@@ -76,25 +78,30 @@ const getScalarNames = (type: GraphQLNamedType): string[] | undefined => {
 const getIDFieldName = (type: GraphQLOutputType): string | undefined => {
     if (isObjectType(type) || isInputObjectType(type)) {
         const idField = Object.values(type.getFields())
-            .map(field => getFieldType(field.type))
-            .filter(type => isScalarType(type))
-            .map(type => assertScalarType(type))
-            .find(type => type.name === 'ID');
+            .filter(field => isScalarType(getFieldType(field.type)))
+            .find(field => assertScalarType(getFieldType(field.type)).name === 'ID')
         return idField?.name;
     }
     return undefined;
 }
 
-const getFields = (type: GraphQLNamedType): { fieldName: string, fieldType: GraphQLOutputType, fieldTypeIDName: string | undefined, isScalarType: boolean, isEnumType: boolean }[] | undefined => {
+const getFields = (type: GraphQLNamedType): { fieldName: string, fieldType: GraphQLOutputType, isScalarType: boolean, isEnumType: boolean }[] | undefined => {
     if (isObjectType(type) || isInputObjectType(type)) {
         return Object.values(type.getFields())
             .filter(field => !isAggregate(field.name))
-            .map(field => { return { fieldName: field.name, fieldType: getFieldType(field.type), fieldTypeIDName: getIDFieldName(getFieldType(field.type)), isScalarType: isScalarType(getFieldType(field.type)), isEnumType: isEnumType(getFieldType(field.type)) } })
+            .map(field => {
+                return {
+                    fieldName: field.name,
+                    fieldType: getFieldType(field.type),
+                    isScalarType: isScalarType(getFieldType(field.type)),
+                    isEnumType: isEnumType(getFieldType(field.type))
+                }
+            })
     }
     return undefined;
 }
 
-export type Template = "query" | "mutation" | "typeTable";
+export type Template = "query" | "mutation" | "typeTable" | 'typeForm' | 'pageSvelte' | 'pageTs' | 'pageEditSvelte' | 'pageEditTs' | 'pageCreateSvelte' | 'pageCreateTs';
 type Render = (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => Types.ComplexPluginOutput
 
 const renders: Record<Template, Render> = {
@@ -132,11 +139,94 @@ const renders: Record<Template, Render> = {
         const typeName = config.typeTable?.name;
         if (typeName) {
             const type = schema.getType(typeName);
-            if (type) {
+            if (type && isObjectType(type)) {
                 return {
-                    content: engine.renderFileSync(config.template, { name: type?.name, scalars: getScalarNames(type), fields: getFields(type) }),
+                    content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), fields: getFields(type) }),
                 };
-
+            }
+        }
+        throw new Error(`${typeName} not exist`);
+    },
+    typeForm: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.typeForm?.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                return {
+                    content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), fields: getFields(type) }),
+                };
+            }
+        }
+        throw new Error(`${typeName} not exist`);
+    },
+    pageSvelte: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.pageSvelte?.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                return {
+                    content: engine.renderFileSync(config.template, { name: type?.name, tablePath: `${config.pageSvelte?.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema' }),
+                };
+            }
+        }
+        throw new Error(`${typeName} not exist`);
+    },
+    pageTs: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.pageTs?.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                return {
+                    content: engine.renderFileSync(config.template, { name: type?.name }),
+                };
+            }
+        }
+        throw new Error(`${typeName} not exist`);
+    },
+    pageEditSvelte: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.pageEditSvelte?.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                return {
+                    content: engine.renderFileSync(config.template, { name: type?.name, formPath: `${config.pageEditSvelte?.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema' }),
+                };
+            }
+        }
+        throw new Error(`${typeName} not exist`);
+    },
+    pageEditTs: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.pageEditTs?.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                return {
+                    content: engine.renderFileSync(config.template, { name: type?.name }),
+                };
+            }
+        }
+        throw new Error(`${typeName} not exist`);
+    },
+    pageCreateSvelte: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.pageCreateSvelte?.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                return {
+                    content: engine.renderFileSync(config.template, { name: type?.name, formPath: `${config.pageCreateSvelte?.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema' }),
+                };
+            }
+        }
+        throw new Error(`${typeName} not exist`);
+    },
+    pageCreateTs: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.pageCreateTs?.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                return {
+                    content: engine.renderFileSync(config.template, { name: type?.name }),
+                };
             }
         }
         throw new Error(`${typeName} not exist`);
