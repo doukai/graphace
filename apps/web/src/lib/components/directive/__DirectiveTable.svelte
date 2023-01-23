@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
-	import { StringTh, StringTd,BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
+	import { StringTh, StringTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
 	import { SectionHead } from '@graphace/ui/components/section';
 	import { Table, TableLoading } from '@graphace/ui/components/table';
 	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
@@ -68,9 +68,8 @@
 		if (queryValue) {
 			args = {};
 			args.cond = Conditional.OR;
-			args.login = { opr: Operator.LK, val: `%${queryValue}%` };
 			args.name = { opr: Operator.LK, val: `%${queryValue}%` };
-			args.phones = { opr: Operator.LK, val: `%${queryValue}%` };
+			args.description = { opr: Operator.LK, val: `%${queryValue}%` };
 		} else {
 			if (Object.keys(orderBy).length > 0) {
 				args.orderBy = orderBy;
@@ -232,15 +231,21 @@
 				on:filter={query}
 			/>
 			<StringTh
-				name="login"
-				bind:expression={args.login}
-				bind:sort={orderBy.login}
+				name="description"
+				bind:expression={args.description}
+				bind:sort={orderBy.description}
 				on:filter={query}
 			/>
-			<StringTh
-				name="password"
-				bind:expression={args.password}
-				bind:sort={orderBy.password}
+			<BooleanTh
+				name="isRepeatable"
+				bind:expression={args.isRepeatable}
+				bind:sort={orderBy.isRepeatable}
+				on:filter={query}
+			/>
+			<__DirectiveLocationTh
+				name="locations"
+				bind:expression={args.locations}
+				bind:sort={orderBy.locations}
 				on:filter={query}
 			/>
 			<td />
@@ -262,20 +267,26 @@
 							<StringTd
 								name="name"
 								bind:value={node.name}
-								on:save={() => updateField({ id: node?.id, name: node?.name })}
-								error={errors[node.id]?.name}
+								on:save={() => updateField({ : node?., name: node?.name })}
+								error={errors[node.]?.name}
 							/>
 							<StringTd
-								name="login"
-								bind:value={node.login}
-								on:save={() => updateField({ id: node?.id, login: node?.login })}
-								error={errors[node.id]?.login}
+								name="description"
+								bind:value={node.description}
+								on:save={() => updateField({ : node?., description: node?.description })}
+								error={errors[node.]?.description}
 							/>
-							<StringTd
-								name="password"
-								bind:value={node.password}
-								on:save={() => updateField({ id: node?.id, password: node?.password })}
-								error={errors[node.id]?.password}
+							<BooleanTd
+								name="isRepeatable"
+								bind:value={node.isRepeatable}
+								on:save={() => updateField({ : node?., isRepeatable: node?.isRepeatable })}
+								error={errors[node.]?.isRepeatable}
+							/>
+							<__DirectiveLocationTd
+								name="locations"
+								bind:value={node.locations}
+								on:save={() => updateField({ : node?., locations: node?.locations })}
+								error={errors[node.]?.locations}
 							/>
 							<td>
 								<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>

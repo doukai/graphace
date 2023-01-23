@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
-	import { StringTh, StringTd,TimestampTh, TimestampTd,BooleanTh, BooleanTd,IntTh, IntTd } from '@graphace/ui-graphql/components/table';
+	import { StringTh, StringTd, TimestampTh, TimestampTd, BooleanTh, BooleanTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
 	import { SectionHead } from '@graphace/ui/components/section';
 	import { Table, TableLoading } from '@graphace/ui/components/table';
 	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
@@ -68,9 +68,10 @@
 		if (queryValue) {
 			args = {};
 			args.cond = Conditional.OR;
-			args.login = { opr: Operator.LK, val: `%${queryValue}%` };
-			args.name = { opr: Operator.LK, val: `%${queryValue}%` };
-			args.phones = { opr: Operator.LK, val: `%${queryValue}%` };
+			args.createGroupId = { opr: Operator.LK, val: `%${queryValue}%` };
+			args.createUserId = { opr: Operator.LK, val: `%${queryValue}%` };
+			args.realmId = { opr: Operator.LK, val: `%${queryValue}%` };
+			args.updateUserId = { opr: Operator.LK, val: `%${queryValue}%` };
 		} else {
 			if (Object.keys(orderBy).length > 0) {
 				args.orderBy = orderBy;
@@ -226,21 +227,51 @@
 				</label>
 			</th>
 			<StringTh
-				name="name"
-				bind:expression={args.name}
-				bind:sort={orderBy.name}
+				name="createGroupId"
+				bind:expression={args.createGroupId}
+				bind:sort={orderBy.createGroupId}
+				on:filter={query}
+			/>
+			<TimestampTh
+				name="createTime"
+				bind:expression={args.createTime}
+				bind:sort={orderBy.createTime}
 				on:filter={query}
 			/>
 			<StringTh
-				name="login"
-				bind:expression={args.login}
-				bind:sort={orderBy.login}
+				name="createUserId"
+				bind:expression={args.createUserId}
+				bind:sort={orderBy.createUserId}
+				on:filter={query}
+			/>
+			<BooleanTh
+				name="isDeprecated"
+				bind:expression={args.isDeprecated}
+				bind:sort={orderBy.isDeprecated}
 				on:filter={query}
 			/>
 			<StringTh
-				name="password"
-				bind:expression={args.password}
-				bind:sort={orderBy.password}
+				name="realmId"
+				bind:expression={args.realmId}
+				bind:sort={orderBy.realmId}
+				on:filter={query}
+			/>
+			<TimestampTh
+				name="updateTime"
+				bind:expression={args.updateTime}
+				bind:sort={orderBy.updateTime}
+				on:filter={query}
+			/>
+			<StringTh
+				name="updateUserId"
+				bind:expression={args.updateUserId}
+				bind:sort={orderBy.updateUserId}
+				on:filter={query}
+			/>
+			<IntTh
+				name="version"
+				bind:expression={args.version}
+				bind:sort={orderBy.version}
 				on:filter={query}
 			/>
 			<td />
@@ -260,22 +291,52 @@
 								</label>
 							</th>
 							<StringTd
-								name="name"
-								bind:value={node.name}
-								on:save={() => updateField({ id: node?.id, name: node?.name })}
-								error={errors[node.id]?.name}
+								name="createGroupId"
+								bind:value={node.createGroupId}
+								on:save={() => updateField({ : node?., createGroupId: node?.createGroupId })}
+								error={errors[node.]?.createGroupId}
+							/>
+							<TimestampTd
+								name="createTime"
+								bind:value={node.createTime}
+								on:save={() => updateField({ : node?., createTime: node?.createTime })}
+								error={errors[node.]?.createTime}
 							/>
 							<StringTd
-								name="login"
-								bind:value={node.login}
-								on:save={() => updateField({ id: node?.id, login: node?.login })}
-								error={errors[node.id]?.login}
+								name="createUserId"
+								bind:value={node.createUserId}
+								on:save={() => updateField({ : node?., createUserId: node?.createUserId })}
+								error={errors[node.]?.createUserId}
+							/>
+							<BooleanTd
+								name="isDeprecated"
+								bind:value={node.isDeprecated}
+								on:save={() => updateField({ : node?., isDeprecated: node?.isDeprecated })}
+								error={errors[node.]?.isDeprecated}
 							/>
 							<StringTd
-								name="password"
-								bind:value={node.password}
-								on:save={() => updateField({ id: node?.id, password: node?.password })}
-								error={errors[node.id]?.password}
+								name="realmId"
+								bind:value={node.realmId}
+								on:save={() => updateField({ : node?., realmId: node?.realmId })}
+								error={errors[node.]?.realmId}
+							/>
+							<TimestampTd
+								name="updateTime"
+								bind:value={node.updateTime}
+								on:save={() => updateField({ : node?., updateTime: node?.updateTime })}
+								error={errors[node.]?.updateTime}
+							/>
+							<StringTd
+								name="updateUserId"
+								bind:value={node.updateUserId}
+								on:save={() => updateField({ : node?., updateUserId: node?.updateUserId })}
+								error={errors[node.]?.updateUserId}
+							/>
+							<IntTd
+								name="version"
+								bind:value={node.version}
+								on:save={() => updateField({ : node?., version: node?.version })}
+								error={errors[node.]?.version}
 							/>
 							<td>
 								<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>

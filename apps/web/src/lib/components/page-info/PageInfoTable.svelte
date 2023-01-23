@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
-	import { StringTh, StringTd,BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
+	import { StringTh, StringTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
 	import { SectionHead } from '@graphace/ui/components/section';
 	import { Table, TableLoading } from '@graphace/ui/components/table';
 	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
@@ -68,9 +68,8 @@
 		if (queryValue) {
 			args = {};
 			args.cond = Conditional.OR;
-			args.login = { opr: Operator.LK, val: `%${queryValue}%` };
-			args.name = { opr: Operator.LK, val: `%${queryValue}%` };
-			args.phones = { opr: Operator.LK, val: `%${queryValue}%` };
+			args.endCursor = { opr: Operator.LK, val: `%${queryValue}%` };
+			args.startCursor = { opr: Operator.LK, val: `%${queryValue}%` };
 		} else {
 			if (Object.keys(orderBy).length > 0) {
 				args.orderBy = orderBy;
@@ -226,21 +225,27 @@
 				</label>
 			</th>
 			<StringTh
-				name="name"
-				bind:expression={args.name}
-				bind:sort={orderBy.name}
+				name="endCursor"
+				bind:expression={args.endCursor}
+				bind:sort={orderBy.endCursor}
+				on:filter={query}
+			/>
+			<BooleanTh
+				name="hasNextPage"
+				bind:expression={args.hasNextPage}
+				bind:sort={orderBy.hasNextPage}
+				on:filter={query}
+			/>
+			<BooleanTh
+				name="hasPreviousPage"
+				bind:expression={args.hasPreviousPage}
+				bind:sort={orderBy.hasPreviousPage}
 				on:filter={query}
 			/>
 			<StringTh
-				name="login"
-				bind:expression={args.login}
-				bind:sort={orderBy.login}
-				on:filter={query}
-			/>
-			<StringTh
-				name="password"
-				bind:expression={args.password}
-				bind:sort={orderBy.password}
+				name="startCursor"
+				bind:expression={args.startCursor}
+				bind:sort={orderBy.startCursor}
 				on:filter={query}
 			/>
 			<td />
@@ -260,22 +265,28 @@
 								</label>
 							</th>
 							<StringTd
-								name="name"
-								bind:value={node.name}
-								on:save={() => updateField({ id: node?.id, name: node?.name })}
-								error={errors[node.id]?.name}
+								name="endCursor"
+								bind:value={node.endCursor}
+								on:save={() => updateField({ : node?., endCursor: node?.endCursor })}
+								error={errors[node.]?.endCursor}
+							/>
+							<BooleanTd
+								name="hasNextPage"
+								bind:value={node.hasNextPage}
+								on:save={() => updateField({ : node?., hasNextPage: node?.hasNextPage })}
+								error={errors[node.]?.hasNextPage}
+							/>
+							<BooleanTd
+								name="hasPreviousPage"
+								bind:value={node.hasPreviousPage}
+								on:save={() => updateField({ : node?., hasPreviousPage: node?.hasPreviousPage })}
+								error={errors[node.]?.hasPreviousPage}
 							/>
 							<StringTd
-								name="login"
-								bind:value={node.login}
-								on:save={() => updateField({ id: node?.id, login: node?.login })}
-								error={errors[node.id]?.login}
-							/>
-							<StringTd
-								name="password"
-								bind:value={node.password}
-								on:save={() => updateField({ id: node?.id, password: node?.password })}
-								error={errors[node.id]?.password}
+								name="startCursor"
+								bind:value={node.startCursor}
+								on:save={() => updateField({ : node?., startCursor: node?.startCursor })}
+								error={errors[node.]?.startCursor}
 							/>
 							<td>
 								<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>

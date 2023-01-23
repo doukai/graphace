@@ -1,6 +1,6 @@
 import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
-import { assertScalarType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType, type GraphQLSchema } from 'graphql';
+import { assertScalarType, isEnumType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType, type GraphQLSchema } from 'graphql';
 import { Liquid } from 'liquidjs';
 import * as changeCase from "change-case";
 
@@ -73,6 +73,27 @@ const getScalarNames = (type: GraphQLNamedType): string[] | undefined => {
     return undefined;
 }
 
+const getIDFieldName = (type: GraphQLOutputType): string | undefined => {
+    if (isObjectType(type) || isInputObjectType(type)) {
+        const idField = Object.values(type.getFields())
+            .map(field => getFieldType(field.type))
+            .filter(type => isScalarType(type))
+            .map(type => assertScalarType(type))
+            .find(type => type.name === 'ID');
+        return idField?.name;
+    }
+    return undefined;
+}
+
+const getFields = (type: GraphQLNamedType): { fieldName: string, fieldType: GraphQLOutputType, fieldTypeIDName: string | undefined, isScalarType: boolean, isEnumType: boolean }[] | undefined => {
+    if (isObjectType(type) || isInputObjectType(type)) {
+        return Object.values(type.getFields())
+            .filter(field => !isAggregate(field.name))
+            .map(field => { return { fieldName: field.name, fieldType: getFieldType(field.type), fieldTypeIDName: getIDFieldName(getFieldType(field.type)), isScalarType: isScalarType(getFieldType(field.type)), isEnumType: isEnumType(getFieldType(field.type)) } })
+    }
+    return undefined;
+}
+
 export type Template = "query" | "mutation" | "typeTable";
 type Render = (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => Types.ComplexPluginOutput
 
@@ -113,7 +134,7 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type) {
                 return {
-                    content: engine.renderFileSync(config.template, { name: type?.name, scalars: getScalarNames(type) }),
+                    content: engine.renderFileSync(config.template, { name: type?.name, scalars: getScalarNames(type), fields: getFields(type) }),
                 };
 
             }

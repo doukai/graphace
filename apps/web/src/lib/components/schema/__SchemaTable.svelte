@@ -68,9 +68,7 @@
 		if (queryValue) {
 			args = {};
 			args.cond = Conditional.OR;
-			args.login = { opr: Operator.LK, val: `%${queryValue}%` };
-			args.name = { opr: Operator.LK, val: `%${queryValue}%` };
-			args.phones = { opr: Operator.LK, val: `%${queryValue}%` };
+			args.description = { opr: Operator.LK, val: `%${queryValue}%` };
 		} else {
 			if (Object.keys(orderBy).length > 0) {
 				args.orderBy = orderBy;
@@ -226,21 +224,9 @@
 				</label>
 			</th>
 			<StringTh
-				name="name"
-				bind:expression={args.name}
-				bind:sort={orderBy.name}
-				on:filter={query}
-			/>
-			<StringTh
-				name="login"
-				bind:expression={args.login}
-				bind:sort={orderBy.login}
-				on:filter={query}
-			/>
-			<StringTh
-				name="password"
-				bind:expression={args.password}
-				bind:sort={orderBy.password}
+				name="description"
+				bind:expression={args.description}
+				bind:sort={orderBy.description}
 				on:filter={query}
 			/>
 			<td />
@@ -260,22 +246,10 @@
 								</label>
 							</th>
 							<StringTd
-								name="name"
-								bind:value={node.name}
-								on:save={() => updateField({ id: node?.id, name: node?.name })}
-								error={errors[node.id]?.name}
-							/>
-							<StringTd
-								name="login"
-								bind:value={node.login}
-								on:save={() => updateField({ id: node?.id, login: node?.login })}
-								error={errors[node.id]?.login}
-							/>
-							<StringTd
-								name="password"
-								bind:value={node.password}
-								on:save={() => updateField({ id: node?.id, password: node?.password })}
-								error={errors[node.id]?.password}
+								name="description"
+								bind:value={node.description}
+								on:save={() => updateField({ : node?., description: node?.description })}
+								error={errors[node.]?.description}
 							/>
 							<td>
 								<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>

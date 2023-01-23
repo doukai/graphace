@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
-	import { StringTh, StringTd,BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
+	import { StringTh, StringTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
 	import { SectionHead } from '@graphace/ui/components/section';
 	import { Table, TableLoading } from '@graphace/ui/components/table';
 	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
@@ -68,9 +68,10 @@
 		if (queryValue) {
 			args = {};
 			args.cond = Conditional.OR;
-			args.login = { opr: Operator.LK, val: `%${queryValue}%` };
 			args.name = { opr: Operator.LK, val: `%${queryValue}%` };
-			args.phones = { opr: Operator.LK, val: `%${queryValue}%` };
+			args.description = { opr: Operator.LK, val: `%${queryValue}%` };
+			args.defaultValue = { opr: Operator.LK, val: `%${queryValue}%` };
+			args.deprecationReason = { opr: Operator.LK, val: `%${queryValue}%` };
 		} else {
 			if (Object.keys(orderBy).length > 0) {
 				args.orderBy = orderBy;
@@ -232,15 +233,27 @@
 				on:filter={query}
 			/>
 			<StringTh
-				name="login"
-				bind:expression={args.login}
-				bind:sort={orderBy.login}
+				name="description"
+				bind:expression={args.description}
+				bind:sort={orderBy.description}
 				on:filter={query}
 			/>
 			<StringTh
-				name="password"
-				bind:expression={args.password}
-				bind:sort={orderBy.password}
+				name="defaultValue"
+				bind:expression={args.defaultValue}
+				bind:sort={orderBy.defaultValue}
+				on:filter={query}
+			/>
+			<BooleanTh
+				name="isDeprecated"
+				bind:expression={args.isDeprecated}
+				bind:sort={orderBy.isDeprecated}
+				on:filter={query}
+			/>
+			<StringTh
+				name="deprecationReason"
+				bind:expression={args.deprecationReason}
+				bind:sort={orderBy.deprecationReason}
 				on:filter={query}
 			/>
 			<td />
@@ -262,20 +275,32 @@
 							<StringTd
 								name="name"
 								bind:value={node.name}
-								on:save={() => updateField({ id: node?.id, name: node?.name })}
-								error={errors[node.id]?.name}
+								on:save={() => updateField({ : node?., name: node?.name })}
+								error={errors[node.]?.name}
 							/>
 							<StringTd
-								name="login"
-								bind:value={node.login}
-								on:save={() => updateField({ id: node?.id, login: node?.login })}
-								error={errors[node.id]?.login}
+								name="description"
+								bind:value={node.description}
+								on:save={() => updateField({ : node?., description: node?.description })}
+								error={errors[node.]?.description}
 							/>
 							<StringTd
-								name="password"
-								bind:value={node.password}
-								on:save={() => updateField({ id: node?.id, password: node?.password })}
-								error={errors[node.id]?.password}
+								name="defaultValue"
+								bind:value={node.defaultValue}
+								on:save={() => updateField({ : node?., defaultValue: node?.defaultValue })}
+								error={errors[node.]?.defaultValue}
+							/>
+							<BooleanTd
+								name="isDeprecated"
+								bind:value={node.isDeprecated}
+								on:save={() => updateField({ : node?., isDeprecated: node?.isDeprecated })}
+								error={errors[node.]?.isDeprecated}
+							/>
+							<StringTd
+								name="deprecationReason"
+								bind:value={node.deprecationReason}
+								on:save={() => updateField({ : node?., deprecationReason: node?.deprecationReason })}
+								error={errors[node.]?.deprecationReason}
 							/>
 							<td>
 								<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>

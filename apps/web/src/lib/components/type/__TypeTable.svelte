@@ -68,9 +68,9 @@
 		if (queryValue) {
 			args = {};
 			args.cond = Conditional.OR;
-			args.login = { opr: Operator.LK, val: `%${queryValue}%` };
 			args.name = { opr: Operator.LK, val: `%${queryValue}%` };
-			args.phones = { opr: Operator.LK, val: `%${queryValue}%` };
+			args.description = { opr: Operator.LK, val: `%${queryValue}%` };
+			args.specifiedByURL = { opr: Operator.LK, val: `%${queryValue}%` };
 		} else {
 			if (Object.keys(orderBy).length > 0) {
 				args.orderBy = orderBy;
@@ -225,6 +225,12 @@
 					/>
 				</label>
 			</th>
+			<__TypeKindTh
+				name="kind"
+				bind:expression={args.kind}
+				bind:sort={orderBy.kind}
+				on:filter={query}
+			/>
 			<StringTh
 				name="name"
 				bind:expression={args.name}
@@ -232,15 +238,15 @@
 				on:filter={query}
 			/>
 			<StringTh
-				name="login"
-				bind:expression={args.login}
-				bind:sort={orderBy.login}
+				name="description"
+				bind:expression={args.description}
+				bind:sort={orderBy.description}
 				on:filter={query}
 			/>
 			<StringTh
-				name="password"
-				bind:expression={args.password}
-				bind:sort={orderBy.password}
+				name="specifiedByURL"
+				bind:expression={args.specifiedByURL}
+				bind:sort={orderBy.specifiedByURL}
 				on:filter={query}
 			/>
 			<td />
@@ -259,23 +265,29 @@
 									<input type="checkbox" class="checkbox" bind:checked={selectedRows[node.id]} />
 								</label>
 							</th>
+							<__TypeKindTd
+								name="kind"
+								bind:value={node.kind}
+								on:save={() => updateField({ : node?., kind: node?.kind })}
+								error={errors[node.]?.kind}
+							/>
 							<StringTd
 								name="name"
 								bind:value={node.name}
-								on:save={() => updateField({ id: node?.id, name: node?.name })}
-								error={errors[node.id]?.name}
+								on:save={() => updateField({ : node?., name: node?.name })}
+								error={errors[node.]?.name}
 							/>
 							<StringTd
-								name="login"
-								bind:value={node.login}
-								on:save={() => updateField({ id: node?.id, login: node?.login })}
-								error={errors[node.id]?.login}
+								name="description"
+								bind:value={node.description}
+								on:save={() => updateField({ : node?., description: node?.description })}
+								error={errors[node.]?.description}
 							/>
 							<StringTd
-								name="password"
-								bind:value={node.password}
-								on:save={() => updateField({ id: node?.id, password: node?.password })}
-								error={errors[node.id]?.password}
+								name="specifiedByURL"
+								bind:value={node.specifiedByURL}
+								on:save={() => updateField({ : node?., specifiedByURL: node?.specifiedByURL })}
+								error={errors[node.]?.specifiedByURL}
 							/>
 							<td>
 								<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
