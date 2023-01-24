@@ -10,7 +10,7 @@
 	import { validate } from '@graphace/graphql/schema/JsonSchema';
 	import LL from '~/i18n/i18n-svelte';
 	import { locale } from '~/i18n/i18n-svelte';
-	import type { PageInfo, MutationTypePageInfoArgs } from '~/gql/generated/schema';
+	import type { PageInfo, MutationTypePageInfoArgs } from '~/lib/types/schema';
 
 	export let node: MutationTypePageInfoArgs | null | undefined;
 	export let isFetching: boolean = false;

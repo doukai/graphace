@@ -20,7 +20,7 @@
 		UserTest2OrderBy,
 		QueryTypeUserTest2ListArgs,
 		MutationTypeUserTest2Args
-	} from '~/gql/generated/schema';
+	} from '~/lib/types/schema';
 
 	export let nodes: (UserTest2 | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;

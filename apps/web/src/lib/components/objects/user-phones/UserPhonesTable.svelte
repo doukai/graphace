@@ -20,7 +20,7 @@
 		UserPhonesOrderBy,
 		QueryTypeUserPhonesListArgs,
 		MutationTypeUserPhonesArgs
-	} from '~/gql/generated/schema';
+	} from '~/lib/types/schema';
 
 	export let nodes: (UserPhones | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;

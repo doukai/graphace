@@ -20,7 +20,7 @@
 		MutationTypeOrderBy,
 		QueryTypeMutationTypeListArgs,
 		MutationTypeMutationTypeArgs
-	} from '~/gql/generated/schema';
+	} from '~/lib/types/schema';
 
 	export let nodes: (MutationType | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;

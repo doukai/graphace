@@ -10,7 +10,7 @@
 	import { validate } from '@graphace/graphql/schema/JsonSchema';
 	import LL from '~/i18n/i18n-svelte';
 	import { locale } from '~/i18n/i18n-svelte';
-	import type { UserTest1, MutationTypeUserTest1Args } from '~/gql/generated/schema';
+	import type { UserTest1, MutationTypeUserTest1Args } from '~/lib/types/schema';
 
 	export let node: MutationTypeUserTest1Args | null | undefined;
 	export let isFetching: boolean = false;

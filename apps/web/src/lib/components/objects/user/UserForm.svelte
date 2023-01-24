@@ -5,12 +5,13 @@
 	import type { Error } from '@graphace/commons/types';
 	import { Form, FormLoading, FormItems, FormButtons } from '@graphace/ui/components/form';
 	import { IntItem, StringItem, TimestampItem, BooleanItem, IDItem } from '@graphace/ui-graphql/components/form';
+	import SexItem from '~/lib/components/enums/sex/SexItem.svelte';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { validate } from '@graphace/graphql/schema/JsonSchema';
 	import LL from '~/i18n/i18n-svelte';
 	import { locale } from '~/i18n/i18n-svelte';
-	import type { User, MutationTypeUserArgs } from '~/gql/generated/schema';
+	import type { User, MutationTypeUserArgs } from '~/lib/types/schema';
 
 	export let node: MutationTypeUserArgs | null | undefined;
 	export let isFetching: boolean = false;

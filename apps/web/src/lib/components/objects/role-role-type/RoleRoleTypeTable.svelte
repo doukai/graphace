@@ -2,6 +2,8 @@
 	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
 	import { StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, IntTh, IntTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
+	import RoleTypeTh from '~/lib/components/enums/role-type/RoleTypeTh.svelte';
+	import RoleTypeTd from '~/lib/components/enums/role-type/RoleTypeTd.svelte';
 	import { SectionHead } from '@graphace/ui/components/section';
 	import { Table, TableLoading } from '@graphace/ui/components/table';
 	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
@@ -20,7 +22,7 @@
 		RoleRoleTypeOrderBy,
 		QueryTypeRoleRoleTypeListArgs,
 		MutationTypeRoleRoleTypeArgs
-	} from '~/gql/generated/schema';
+	} from '~/lib/types/schema';
 
 	export let nodes: (RoleRoleType | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;

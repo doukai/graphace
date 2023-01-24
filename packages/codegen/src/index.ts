@@ -1,6 +1,6 @@
 import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
-import { assertScalarType, isEnumType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType, type GraphQLSchema } from 'graphql';
+import { assertEnumType, assertScalarType, isEnumType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLEnumValue, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType, type GraphQLSchema } from 'graphql';
 import { Liquid } from 'liquidjs';
 import * as changeCase from "change-case";
 
@@ -70,7 +70,19 @@ const getScalarNames = (type: GraphQLNamedType): string[] | undefined => {
             .filter(type => isScalarType(type))
             .map(type => assertScalarType(type))
             .map(type => type.name);
-        return scalarNames.filter((scalar, index) => scalarNames.indexOf(scalar) == index);
+        return scalarNames.filter((scalarName, index) => scalarNames.indexOf(scalarName) == index);
+    }
+    return undefined;
+}
+
+const getEnumNames = (type: GraphQLNamedType): string[] | undefined => {
+    if (isObjectType(type) || isInputObjectType(type)) {
+        const enumNames = Object.values(type.getFields())
+            .map(field => getFieldType(field.type))
+            .filter(type => isEnumType(type))
+            .map(type => assertEnumType(type))
+            .map(type => type.name);
+        return enumNames.filter((enumName, index) => enumNames.indexOf(enumName) == index);
     }
     return undefined;
 }
@@ -101,7 +113,26 @@ const getFields = (type: GraphQLNamedType): { fieldName: string, fieldType: Grap
     return undefined;
 }
 
-export type Template = "query" | "mutation" | "typeTable" | 'typeForm' | 'pageSvelte' | 'pageTs' | 'pageEditSvelte' | 'pageEditTs' | 'pageCreateSvelte' | 'pageCreateTs';
+const getEnumValues = (type: GraphQLNamedType): GraphQLEnumValue[] | undefined => {
+    if (isEnumType(type)) {
+        return Object.values(type.getValues());
+    }
+    return undefined;
+}
+
+export type Template = "query" |
+    "mutation" |
+    "typeTable" |
+    'typeForm' |
+    'pageSvelte' |
+    'pageTs' |
+    'pageEditSvelte' |
+    'pageEditTs' |
+    'pageCreateSvelte' |
+    'pageCreateTs' |
+    'enumTh' |
+    'enumTd' |
+    'enumItem';
 type Render = (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => Types.ComplexPluginOutput
 
 const renders: Record<Template, Render> = {
@@ -141,7 +172,7 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), fields: getFields(type) }),
+                    content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(type), schemaTypesPath: config.schemaTypesPath || 'lib/types/schema', enumsPath: `${config.typeTable?.componentsPath}/enums` }),
                 };
             }
         }
@@ -153,7 +184,7 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), fields: getFields(type) }),
+                    content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(type), schemaTypesPath: config.schemaTypesPath || 'lib/types/schema', enumsPath: `${config.typeForm?.componentsPath}/enums` }),
                 };
             }
         }
@@ -230,7 +261,43 @@ const renders: Record<Template, Render> = {
             }
         }
         throw new Error(`${typeName} not exist`);
-    }
+    },
+    enumTh: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.enumTh?.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isEnumType(type)) {
+                return {
+                    content: engine.renderFileSync(config.template, { name: type?.name, enumValues: getEnumValues(type) }),
+                };
+            }
+        }
+        throw new Error(`${typeName} not exist`);
+    },
+    enumTd: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.enumTd?.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isEnumType(type)) {
+                return {
+                    content: engine.renderFileSync(config.template, { name: type?.name, enumValues: getEnumValues(type) }),
+                };
+            }
+        }
+        throw new Error(`${typeName} not exist`);
+    },
+    enumItem: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.enumItem?.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isEnumType(type)) {
+                return {
+                    content: engine.renderFileSync(config.template, { name: type?.name, enumValues: getEnumValues(type) }),
+                };
+            }
+        }
+        throw new Error(`${typeName} not exist`);
+    },
 }
 
 export const plugin: PluginFunction<GraphacePluginConfig, Types.ComplexPluginOutput> = (

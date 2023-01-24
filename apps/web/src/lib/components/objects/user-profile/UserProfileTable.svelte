@@ -20,7 +20,7 @@
 		UserProfileOrderBy,
 		QueryTypeUserProfileListArgs,
 		MutationTypeUserProfileArgs
-	} from '~/gql/generated/schema';
+	} from '~/lib/types/schema';
 
 	export let nodes: (UserProfile | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;

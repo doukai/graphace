@@ -5,12 +5,15 @@
 	import type { Error } from '@graphace/commons/types';
 	import { Form, FormLoading, FormItems, FormButtons } from '@graphace/ui/components/form';
 	import { {% for scalar in scalars %}{{ scalar }}Item{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql/components/form';
+	{%- for enum in enums %}
+	import {{ enum }}Item from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Item.svelte';
+	{%- endfor %}
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { validate } from '@graphace/graphql/schema/JsonSchema';
 	import LL from '~/i18n/i18n-svelte';
 	import { locale } from '~/i18n/i18n-svelte';
-	import type { {{ name }}, MutationType{{ name }}Args } from '~/gql/generated/schema';
+	import type { {{ name }}, MutationType{{ name }}Args } from '~/{{ schemaTypesPath }}';
 
 	export let node: MutationType{{ name }}Args | null | undefined;
 	export let isFetching: boolean = false;

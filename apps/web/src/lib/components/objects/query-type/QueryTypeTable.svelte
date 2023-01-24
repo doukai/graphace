@@ -20,7 +20,7 @@
 		QueryTypeOrderBy,
 		QueryTypeQueryTypeListArgs,
 		MutationTypeQueryTypeArgs
-	} from '~/gql/generated/schema';
+	} from '~/lib/types/schema';
 
 	export let nodes: (QueryType | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;

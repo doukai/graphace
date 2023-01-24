@@ -2,6 +2,8 @@
 	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
 	import { IntTh, IntTd, StringTh, StringTd, TimestampTh, TimestampTd, BooleanTh, BooleanTd, IDTh, IDTd } from '@graphace/ui-graphql/components/table';
+	import SexTh from '~/lib/components/enums/sex/SexTh.svelte';
+	import SexTd from '~/lib/components/enums/sex/SexTd.svelte';
 	import { SectionHead } from '@graphace/ui/components/section';
 	import { Table, TableLoading } from '@graphace/ui/components/table';
 	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
@@ -20,7 +22,7 @@
 		UserOrderBy,
 		QueryTypeUserListArgs,
 		MutationTypeUserArgs
-	} from '~/gql/generated/schema';
+	} from '~/lib/types/schema';
 
 	export let nodes: (User | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;

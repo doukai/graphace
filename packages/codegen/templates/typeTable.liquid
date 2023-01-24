@@ -2,6 +2,10 @@
 	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
 	import { {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql/components/table';
+	{%- for enum in enums %}
+	import {{ enum }}Th from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Th.svelte';
+	import {{ enum }}Td from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Td.svelte';
+	{%- endfor %}
 	import { SectionHead } from '@graphace/ui/components/section';
 	import { Table, TableLoading } from '@graphace/ui/components/table';
 	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
@@ -20,7 +24,7 @@
 		{{ name }}OrderBy,
 		QueryType{{ name }}ListArgs,
 		MutationType{{ name }}Args
-	} from '~/gql/generated/schema';
+	} from '~/{{ schemaTypesPath }}';
 
 	export let nodes: ({{ name }} | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;

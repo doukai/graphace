@@ -1,5 +1,5 @@
 import type { Types } from "@graphql-codegen/plugin-helpers";
-import { isObjectType } from "graphql";
+import { isEnumType, isObjectType } from "graphql";
 import type { GraphacePresetConfig } from "./config";
 import * as changeCase from "change-case";
 
@@ -20,6 +20,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             .filter(type => !isEdge(type.name))
             .filter(type => !isIntrospection(type.name))
             .filter(type => isObjectType(type));
+        const enumTypes = Object.values(options.schemaAst?.getTypeMap() || {})
+            .filter(type => !isIntrospection(type.name))
+            .filter(type => isEnumType(type));
 
         const queryList = Object.values(queryFields)
             .map(field => {
@@ -93,7 +96,8 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         ...options.config,
                         template: 'typeTable',
                         typeTable: {
-                            name: type.name
+                            name: type.name,
+                            componentsPath: options.presetConfig.componentsPath || 'lib/components'
                         }
                     },
                     schema: options.schema,
@@ -113,7 +117,8 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         ...options.config,
                         template: 'typeForm',
                         typeForm: {
-                            name: type.name
+                            name: type.name,
+                            componentsPath: options.presetConfig.componentsPath || 'lib/components'
                         }
                     },
                     schema: options.schema,
@@ -245,6 +250,81 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 };
             }) || [];
 
-        return [...queryList, ...mutationList, ...mutationUpdateList, ...typeTableList, ...typeFormList, ...pageSvelteList, ...pageTsList, ...pageEditSvelteList, ...pageEditTsList, ...pageCreateSvelteList, ...pageCreateTsList];
+        const enumThList = enumTypes
+            .map(type => {
+                return {
+                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/components'}/enums/${changeCase.paramCase(type.name)}/${type.name}Th.svelte`,
+                    documents: options.documents,
+                    plugins: options.plugins,
+                    pluginMap: options.pluginMap,
+                    config: {
+                        ...options.config,
+                        template: 'enumTh',
+                        enumTh: {
+                            name: type.name
+                        }
+                    },
+                    schema: options.schema,
+                    schemaAst: options.schemaAst,
+                    skipDocumentsValidation: true,
+                };
+            }) || [];
+
+        const enumTdList = enumTypes
+            .map(type => {
+                return {
+                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/components'}/enums/${changeCase.paramCase(type.name)}/${type.name}Td.svelte`,
+                    documents: options.documents,
+                    plugins: options.plugins,
+                    pluginMap: options.pluginMap,
+                    config: {
+                        ...options.config,
+                        template: 'enumTd',
+                        enumTd: {
+                            name: type.name
+                        }
+                    },
+                    schema: options.schema,
+                    schemaAst: options.schemaAst,
+                    skipDocumentsValidation: true,
+                };
+            }) || [];
+
+        const enumItemList = enumTypes
+            .map(type => {
+                return {
+                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/components'}/enums/${changeCase.paramCase(type.name)}/${type.name}Item.svelte`,
+                    documents: options.documents,
+                    plugins: options.plugins,
+                    pluginMap: options.pluginMap,
+                    config: {
+                        ...options.config,
+                        template: 'enumItem',
+                        enumItem: {
+                            name: type.name
+                        }
+                    },
+                    schema: options.schema,
+                    schemaAst: options.schemaAst,
+                    skipDocumentsValidation: true,
+                };
+            }) || [];
+
+        return [
+            ...queryList,
+            ...mutationList,
+            ...mutationUpdateList,
+            ...typeTableList,
+            ...typeFormList,
+            ...pageSvelteList,
+            ...pageTsList,
+            ...pageEditSvelteList,
+            ...pageEditTsList,
+            ...pageCreateSvelteList,
+            ...pageCreateTsList,
+            ...enumThList,
+            ...enumTdList,
+            ...enumItemList
+        ];
     },
 };
