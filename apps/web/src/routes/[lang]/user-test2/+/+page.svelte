@@ -1,5 +1,5 @@
 <script lang="ts">
-	import UserTest2Form from '~/lib/components/objects/user-test2/UserTest2Form.svelte';
+	import UserTest2CreateForm from '~/lib/components/objects/user-test2/UserTest2CreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import { GQL_MutationUserTest2 } from '$houdini';
@@ -24,4 +24,4 @@
 	};
 </script>
 
-<UserTest2Form {node} on:mutation={mutation} />
+<UserTest2CreateForm {node} on:mutation={mutation} />

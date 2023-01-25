@@ -3,7 +3,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { Form, FormLoading, FormItems, FormButtons } from '@graphace/ui/components/form';
+	import { Form, FormLoading, FormItems, FormItem, FormButtons } from '@graphace/ui/components/form';
 	import { StringItem, TimestampItem, BooleanItem, IntItem } from '@graphace/ui-graphql/components/form';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
@@ -12,7 +12,7 @@
 	import { locale } from '~/i18n/i18n-svelte';
 	import type { MutationType, MutationTypeMutationTypeArgs } from '~/lib/types/schema';
 
-	export let node: MutationTypeMutationTypeArgs | null | undefined;
+	export let node: MutationType | null | undefined;
 	export let isFetching: boolean = false;
 
 	const dispatch = createEventDispatcher<{
@@ -69,14 +69,14 @@
 {#if !isFetching && node}
 	<Form>
 		<FormItems title="MutationType">
-			<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} error={errors.createGroupId} />
-			<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} error={errors.createTime} />
-			<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} error={errors.createUserId} />
-			<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} error={errors.isDeprecated} />
-			<StringItem label="realmId" name="realmId" bind:value={node.realmId} error={errors.realmId} />
-			<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} error={errors.updateTime} />
-			<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
-			<IntItem label="version" name="version" bind:value={node.version} error={errors.version} />
+			<FormItem label="createGroupId">{node.createGroupId}</FormItem>
+			<FormItem label="createTime">{node.createTime}</FormItem>
+			<FormItem label="createUserId">{node.createUserId}</FormItem>
+			<FormItem label="isDeprecated">{node.isDeprecated}</FormItem>
+			<FormItem label="realmId">{node.realmId}</FormItem>
+			<FormItem label="updateTime">{node.updateTime}</FormItem>
+			<FormItem label="updateUserId">{node.updateUserId}</FormItem>
+			<FormItem label="version">{node.version}</FormItem>
 		</FormItems>
 		<FormButtons>
 			<button

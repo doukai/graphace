@@ -1,5 +1,5 @@
 <script lang="ts">
-	import RoleRoleTypeForm from '~/lib/components/objects/role-role-type/RoleRoleTypeForm.svelte';
+	import RoleRoleTypeCreateForm from '~/lib/components/objects/role-role-type/RoleRoleTypeCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import { GQL_MutationRoleRoleType } from '$houdini';
@@ -24,4 +24,4 @@
 	};
 </script>
 
-<RoleRoleTypeForm {node} on:mutation={mutation} />
+<RoleRoleTypeCreateForm {node} on:mutation={mutation} />

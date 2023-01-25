@@ -97,10 +97,6 @@
 		if (searchValue) {
 			let args: QueryTypeMutationTypeListArgs = {};
 			args.cond = Conditional.OR;
-			args.createGroupId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.createUserId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.realmId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.updateUserId = { opr: Operator.LK, val: `%${searchValue}%` };
 			if (after) {
 				args.after = after;
 				args.first = pageSize;
@@ -248,55 +244,15 @@
 					/>
 				</label>
 			</th>
-			<StringTh
-				name="createGroupId"
-				bind:expression={args.createGroupId}
-				bind:sort={orderBy.createGroupId}
-				on:filter={query}
-			/>
-			<TimestampTh
-				name="createTime"
-				bind:expression={args.createTime}
-				bind:sort={orderBy.createTime}
-				on:filter={query}
-			/>
-			<StringTh
-				name="createUserId"
-				bind:expression={args.createUserId}
-				bind:sort={orderBy.createUserId}
-				on:filter={query}
-			/>
-			<BooleanTh
-				name="isDeprecated"
-				bind:expression={args.isDeprecated}
-				bind:sort={orderBy.isDeprecated}
-				on:filter={query}
-			/>
-			<StringTh
-				name="realmId"
-				bind:expression={args.realmId}
-				bind:sort={orderBy.realmId}
-				on:filter={query}
-			/>
-			<TimestampTh
-				name="updateTime"
-				bind:expression={args.updateTime}
-				bind:sort={orderBy.updateTime}
-				on:filter={query}
-			/>
-			<StringTh
-				name="updateUserId"
-				bind:expression={args.updateUserId}
-				bind:sort={orderBy.updateUserId}
-				on:filter={query}
-			/>
-			<IntTh
-				name="version"
-				bind:expression={args.version}
-				bind:sort={orderBy.version}
-				on:filter={query}
-			/>
-			<td />
+			<th>createGroupId</th>
+			<th>createTime</th>
+			<th>createUserId</th>
+			<th>isDeprecated</th>
+			<th>realmId</th>
+			<th>updateTime</th>
+			<th>updateUserId</th>
+			<th>version</th>
+			<th />
 		</tr>
 	</thead>
 	{#if isFetching}
@@ -312,54 +268,14 @@
 									<input type="checkbox" class="checkbox" bind:checked={selectedRows[node.]} />
 								</label>
 							</th>
-							<StringTd
-								name="createGroupId"
-								bind:value={node.createGroupId}
-								on:save={() => updateField({ : node?., createGroupId: node?.createGroupId })}
-								error={errors[node.]?.createGroupId}
-							/>
-							<TimestampTd
-								name="createTime"
-								bind:value={node.createTime}
-								on:save={() => updateField({ : node?., createTime: node?.createTime })}
-								error={errors[node.]?.createTime}
-							/>
-							<StringTd
-								name="createUserId"
-								bind:value={node.createUserId}
-								on:save={() => updateField({ : node?., createUserId: node?.createUserId })}
-								error={errors[node.]?.createUserId}
-							/>
-							<BooleanTd
-								name="isDeprecated"
-								bind:value={node.isDeprecated}
-								on:save={() => updateField({ : node?., isDeprecated: node?.isDeprecated })}
-								error={errors[node.]?.isDeprecated}
-							/>
-							<StringTd
-								name="realmId"
-								bind:value={node.realmId}
-								on:save={() => updateField({ : node?., realmId: node?.realmId })}
-								error={errors[node.]?.realmId}
-							/>
-							<TimestampTd
-								name="updateTime"
-								bind:value={node.updateTime}
-								on:save={() => updateField({ : node?., updateTime: node?.updateTime })}
-								error={errors[node.]?.updateTime}
-							/>
-							<StringTd
-								name="updateUserId"
-								bind:value={node.updateUserId}
-								on:save={() => updateField({ : node?., updateUserId: node?.updateUserId })}
-								error={errors[node.]?.updateUserId}
-							/>
-							<IntTd
-								name="version"
-								bind:value={node.version}
-								on:save={() => updateField({ : node?., version: node?.version })}
-								error={errors[node.]?.version}
-							/>
+							<td>{node.createGroupId}</td>
+							<td>{node.createTime}</td>
+							<td>{node.createUserId}</td>
+							<td>{node.isDeprecated}</td>
+							<td>{node.realmId}</td>
+							<td>{node.updateTime}</td>
+							<td>{node.updateUserId}</td>
+							<td>{node.version}</td>
 							<td>
 								<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
 									<button

@@ -4,7 +4,7 @@
 
 	export let name: string;
 	export let expression: StringExpression | null | undefined;
-	export let sort: Sort | null | undefined;
+	export let sort: Sort | null | undefined = undefined;
 </script>
 
 <StringTh {name} {expression} {sort} />

@@ -3,23 +3,22 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { Form, FormLoading, FormItems, FormItem, FormButtons } from '@graphace/ui/components/form';
-	import { StringItem, TimestampItem, IDItem, IntItem, BooleanItem } from '@graphace/ui-graphql/components/form';
-	import RoleTypeItem from '~/lib/components/enums/role-type/RoleTypeItem.svelte';
+	import { Form, FormLoading, FormItems, FormButtons } from '@graphace/ui/components/form';
+	import { IntItem, StringItem, TimestampItem, IDItem, BooleanItem } from '@graphace/ui-graphql/components/form';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { validate } from '@graphace/graphql/schema/JsonSchema';
 	import LL from '~/i18n/i18n-svelte';
 	import { locale } from '~/i18n/i18n-svelte';
-	import type { Role, MutationTypeRoleArgs } from '~/lib/types/schema';
+	import type { Organization, MutationTypeOrganizationArgs } from '~/lib/types/schema';
 
-	export let node: Role | null | undefined;
+	export let node: MutationTypeOrganizationArgs | null | undefined;
 	export let isFetching: boolean = false;
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
-			args: MutationTypeRoleArgs;
-			then: (data: Role | null | undefined) => void;
+			args: MutationTypeOrganizationArgs;
+			then: (data: Organization | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
 	}>();
@@ -28,7 +27,7 @@
 
 	const save = (): void => {
 		if (node) {
-			validate('Role', node, $locale)
+			validate('Organization', node, $locale)
 				.then((data) => {
 					errors = {};
 					if (node) {
@@ -69,7 +68,8 @@
 
 {#if !isFetching && node}
 	<Form>
-		<FormItems title="Role">
+		<FormItems title="Organization">
+			<IntItem label="aboveId" name="aboveId" bind:value={node.aboveId} error={errors.aboveId} />
 			<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} error={errors.createGroupId} />
 			<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} error={errors.createTime} />
 			<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} error={errors.createUserId} />
@@ -77,7 +77,6 @@
 			<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} error={errors.isDeprecated} />
 			<StringItem label="name" name="name" bind:value={node.name} error={errors.name} />
 			<StringItem label="realmId" name="realmId" bind:value={node.realmId} error={errors.realmId} />
-			<RoleTypeItem label="type" name="type" bind:value={node.type} error={errors.type} />
 			<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} error={errors.updateTime} />
 			<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
 			<IntItem label="version" name="version" bind:value={node.version} error={errors.version} />
@@ -87,7 +86,7 @@
 				class="btn"
 				on:click={(e) => {
 					e.preventDefault();
-					goto('../role');
+					goto('../organization');
 				}}
 			>
 				{$LL.components.graphql.editor.backBtn()}

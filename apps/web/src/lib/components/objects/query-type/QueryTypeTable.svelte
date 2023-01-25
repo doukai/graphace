@@ -97,12 +97,6 @@
 		if (searchValue) {
 			let args: QueryTypeQueryTypeListArgs = {};
 			args.cond = Conditional.OR;
-			args.createGroupId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.createUserId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.realmId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.updateUserId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.userDetail = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.userDetail6 = { opr: Operator.LK, val: `%${searchValue}%` };
 			if (after) {
 				args.after = after;
 				args.first = pageSize;
@@ -250,85 +244,20 @@
 					/>
 				</label>
 			</th>
-			<StringTh
-				name="createGroupId"
-				bind:expression={args.createGroupId}
-				bind:sort={orderBy.createGroupId}
-				on:filter={query}
-			/>
-			<TimestampTh
-				name="createTime"
-				bind:expression={args.createTime}
-				bind:sort={orderBy.createTime}
-				on:filter={query}
-			/>
-			<StringTh
-				name="createUserId"
-				bind:expression={args.createUserId}
-				bind:sort={orderBy.createUserId}
-				on:filter={query}
-			/>
-			<BooleanTh
-				name="isDeprecated"
-				bind:expression={args.isDeprecated}
-				bind:sort={orderBy.isDeprecated}
-				on:filter={query}
-			/>
-			<IntTh
-				name="orgLevel"
-				bind:expression={args.orgLevel}
-				bind:sort={orderBy.orgLevel}
-				on:filter={query}
-			/>
-			<IntTh
-				name="orgLevel5"
-				bind:expression={args.orgLevel5}
-				bind:sort={orderBy.orgLevel5}
-				on:filter={query}
-			/>
-			<StringTh
-				name="realmId"
-				bind:expression={args.realmId}
-				bind:sort={orderBy.realmId}
-				on:filter={query}
-			/>
-			<BooleanTh
-				name="roleDisable2"
-				bind:expression={args.roleDisable2}
-				bind:sort={orderBy.roleDisable2}
-				on:filter={query}
-			/>
-			<TimestampTh
-				name="updateTime"
-				bind:expression={args.updateTime}
-				bind:sort={orderBy.updateTime}
-				on:filter={query}
-			/>
-			<StringTh
-				name="updateUserId"
-				bind:expression={args.updateUserId}
-				bind:sort={orderBy.updateUserId}
-				on:filter={query}
-			/>
-			<StringTh
-				name="userDetail"
-				bind:expression={args.userDetail}
-				bind:sort={orderBy.userDetail}
-				on:filter={query}
-			/>
-			<StringTh
-				name="userDetail6"
-				bind:expression={args.userDetail6}
-				bind:sort={orderBy.userDetail6}
-				on:filter={query}
-			/>
-			<IntTh
-				name="version"
-				bind:expression={args.version}
-				bind:sort={orderBy.version}
-				on:filter={query}
-			/>
-			<td />
+			<th>createGroupId</th>
+			<th>createTime</th>
+			<th>createUserId</th>
+			<th>isDeprecated</th>
+			<th>orgLevel</th>
+			<th>orgLevel5</th>
+			<th>realmId</th>
+			<th>roleDisable2</th>
+			<th>updateTime</th>
+			<th>updateUserId</th>
+			<th>userDetail</th>
+			<th>userDetail6</th>
+			<th>version</th>
+			<th />
 		</tr>
 	</thead>
 	{#if isFetching}
@@ -344,84 +273,19 @@
 									<input type="checkbox" class="checkbox" bind:checked={selectedRows[node.]} />
 								</label>
 							</th>
-							<StringTd
-								name="createGroupId"
-								bind:value={node.createGroupId}
-								on:save={() => updateField({ : node?., createGroupId: node?.createGroupId })}
-								error={errors[node.]?.createGroupId}
-							/>
-							<TimestampTd
-								name="createTime"
-								bind:value={node.createTime}
-								on:save={() => updateField({ : node?., createTime: node?.createTime })}
-								error={errors[node.]?.createTime}
-							/>
-							<StringTd
-								name="createUserId"
-								bind:value={node.createUserId}
-								on:save={() => updateField({ : node?., createUserId: node?.createUserId })}
-								error={errors[node.]?.createUserId}
-							/>
-							<BooleanTd
-								name="isDeprecated"
-								bind:value={node.isDeprecated}
-								on:save={() => updateField({ : node?., isDeprecated: node?.isDeprecated })}
-								error={errors[node.]?.isDeprecated}
-							/>
-							<IntTd
-								name="orgLevel"
-								bind:value={node.orgLevel}
-								on:save={() => updateField({ : node?., orgLevel: node?.orgLevel })}
-								error={errors[node.]?.orgLevel}
-							/>
-							<IntTd
-								name="orgLevel5"
-								bind:value={node.orgLevel5}
-								on:save={() => updateField({ : node?., orgLevel5: node?.orgLevel5 })}
-								error={errors[node.]?.orgLevel5}
-							/>
-							<StringTd
-								name="realmId"
-								bind:value={node.realmId}
-								on:save={() => updateField({ : node?., realmId: node?.realmId })}
-								error={errors[node.]?.realmId}
-							/>
-							<BooleanTd
-								name="roleDisable2"
-								bind:value={node.roleDisable2}
-								on:save={() => updateField({ : node?., roleDisable2: node?.roleDisable2 })}
-								error={errors[node.]?.roleDisable2}
-							/>
-							<TimestampTd
-								name="updateTime"
-								bind:value={node.updateTime}
-								on:save={() => updateField({ : node?., updateTime: node?.updateTime })}
-								error={errors[node.]?.updateTime}
-							/>
-							<StringTd
-								name="updateUserId"
-								bind:value={node.updateUserId}
-								on:save={() => updateField({ : node?., updateUserId: node?.updateUserId })}
-								error={errors[node.]?.updateUserId}
-							/>
-							<StringTd
-								name="userDetail"
-								bind:value={node.userDetail}
-								on:save={() => updateField({ : node?., userDetail: node?.userDetail })}
-								error={errors[node.]?.userDetail}
-							/>
-							<StringTd
-								name="userDetail6"
-								bind:value={node.userDetail6}
-								on:save={() => updateField({ : node?., userDetail6: node?.userDetail6 })}
-								error={errors[node.]?.userDetail6}
-							/>
-							<IntTd
-								name="version"
-								bind:value={node.version}
-								on:save={() => updateField({ : node?., version: node?.version })}
-								error={errors[node.]?.version}
-							/>
+							<td>{node.createGroupId}</td>
+							<td>{node.createTime}</td>
+							<td>{node.createUserId}</td>
+							<td>{node.isDeprecated}</td>
+							<td>{node.orgLevel}</td>
+							<td>{node.orgLevel5}</td>
+							<td>{node.realmId}</td>
+							<td>{node.roleDisable2}</td>
+							<td>{node.updateTime}</td>
+							<td>{node.updateUserId}</td>
+							<td>{node.userDetail}</td>
+							<td>{node.userDetail6}</td>
+							<td>{node.version}</td>
 							<td>
 								<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
 									<button

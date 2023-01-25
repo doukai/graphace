@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {{ name }}Form from '~/{{ formPath }}/{{ name | paramCase }}/{{ name }}Form.svelte';
+	import {{ name }}CreateForm from '~/{{ formPath }}/{{ name | paramCase }}/{{ name }}CreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import { GQL_Mutation{{ name }} } from '$houdini';
@@ -24,4 +24,4 @@
 	};
 </script>
 
-<{{ name }}Form {node} on:mutation={mutation} />
+<{{ name }}CreateForm {node} on:mutation={mutation} />

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PageInfoForm from '~/lib/components/objects/page-info/PageInfoForm.svelte';
+	import PageInfoCreateForm from '~/lib/components/objects/page-info/PageInfoCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import { GQL_MutationPageInfo } from '$houdini';
@@ -24,4 +24,4 @@
 	};
 </script>
 
-<PageInfoForm {node} on:mutation={mutation} />
+<PageInfoCreateForm {node} on:mutation={mutation} />

@@ -274,12 +274,7 @@
 				bind:sort={orderBy.id}
 				on:filter={query}
 			/>
-			<BooleanTh
-				name="isDeprecated"
-				bind:expression={args.isDeprecated}
-				bind:sort={orderBy.isDeprecated}
-				on:filter={query}
-			/>
+			<th>isDeprecated</th>
 			<StringTh
 				name="realmId"
 				bind:expression={args.realmId}
@@ -316,7 +311,7 @@
 				bind:sort={orderBy.version}
 				on:filter={query}
 			/>
-			<td />
+			<th />
 		</tr>
 	</thead>
 	{#if isFetching}
@@ -350,12 +345,7 @@
 								on:save={() => updateField({ id: node?.id, createUserId: node?.createUserId })}
 								error={errors[node.id]?.createUserId}
 							/>
-							<IDTd
-								name="id"
-								bind:value={node.id}
-								on:save={() => updateField({ id: node?.id, id: node?.id })}
-								error={errors[node.id]?.id}
-							/>
+							<td>{node.id}</td>
 							<BooleanTd
 								name="isDeprecated"
 								bind:value={node.isDeprecated}

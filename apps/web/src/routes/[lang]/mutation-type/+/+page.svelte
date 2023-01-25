@@ -1,5 +1,5 @@
 <script lang="ts">
-	import MutationTypeForm from '~/lib/components/objects/mutation-type/MutationTypeForm.svelte';
+	import MutationTypeCreateForm from '~/lib/components/objects/mutation-type/MutationTypeCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import { GQL_MutationMutationType } from '$houdini';
@@ -24,4 +24,4 @@
 	};
 </script>
 
-<MutationTypeForm {node} on:mutation={mutation} />
+<MutationTypeCreateForm {node} on:mutation={mutation} />

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import UserProfileForm from '~/lib/components/objects/user-profile/UserProfileForm.svelte';
+	import UserProfileCreateForm from '~/lib/components/objects/user-profile/UserProfileCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import { GQL_MutationUserProfile } from '$houdini';
@@ -24,4 +24,4 @@
 	};
 </script>
 
-<UserProfileForm {node} on:mutation={mutation} />
+<UserProfileCreateForm {node} on:mutation={mutation} />

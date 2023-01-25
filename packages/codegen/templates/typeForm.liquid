@@ -3,7 +3,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { Form, FormLoading, FormItems, FormButtons } from '@graphace/ui/components/form';
+	import { Form, FormLoading, FormItems, FormItem, FormButtons } from '@graphace/ui/components/form';
 	import { {% for scalar in scalars %}{{ scalar }}Item{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql/components/form';
 	{%- for enum in enums %}
 	import {{ enum }}Item from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Item.svelte';
@@ -15,7 +15,7 @@
 	import { locale } from '~/i18n/i18n-svelte';
 	import type { {{ name }}, MutationType{{ name }}Args } from '~/{{ schemaTypesPath }}';
 
-	export let node: MutationType{{ name }}Args | null | undefined;
+	export let node: {{ name }} | null | undefined;
 	export let isFetching: boolean = false;
 
 	const dispatch = createEventDispatcher<{
@@ -75,7 +75,11 @@
 			{%- if fields %}
 			{%- for field in fields %}
 			{%- if field.isScalarType or field.isEnumType %}
+			{%- if field.inMutationArgs %}
 			<{{ field.fieldType.name }}Item label="{{ field.fieldName }}" name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}} error={errors.{{ field.fieldName }}} />
+			{%- else %}
+			<FormItem label="{{ field.fieldName }}">{node.{{ field.fieldName }}}</FormItem>
+			{%- endif %}
 			{%- endif %}
 			{%- endfor %}
 			{%- endif %}

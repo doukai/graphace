@@ -97,8 +97,6 @@
 		if (searchValue) {
 			let args: QueryTypePageInfoListArgs = {};
 			args.cond = Conditional.OR;
-			args.endCursor = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.startCursor = { opr: Operator.LK, val: `%${searchValue}%` };
 			if (after) {
 				args.after = after;
 				args.first = pageSize;
@@ -246,31 +244,11 @@
 					/>
 				</label>
 			</th>
-			<StringTh
-				name="endCursor"
-				bind:expression={args.endCursor}
-				bind:sort={orderBy.endCursor}
-				on:filter={query}
-			/>
-			<BooleanTh
-				name="hasNextPage"
-				bind:expression={args.hasNextPage}
-				bind:sort={orderBy.hasNextPage}
-				on:filter={query}
-			/>
-			<BooleanTh
-				name="hasPreviousPage"
-				bind:expression={args.hasPreviousPage}
-				bind:sort={orderBy.hasPreviousPage}
-				on:filter={query}
-			/>
-			<StringTh
-				name="startCursor"
-				bind:expression={args.startCursor}
-				bind:sort={orderBy.startCursor}
-				on:filter={query}
-			/>
-			<td />
+			<th>endCursor</th>
+			<th>hasNextPage</th>
+			<th>hasPreviousPage</th>
+			<th>startCursor</th>
+			<th />
 		</tr>
 	</thead>
 	{#if isFetching}
@@ -286,30 +264,10 @@
 									<input type="checkbox" class="checkbox" bind:checked={selectedRows[node.]} />
 								</label>
 							</th>
-							<StringTd
-								name="endCursor"
-								bind:value={node.endCursor}
-								on:save={() => updateField({ : node?., endCursor: node?.endCursor })}
-								error={errors[node.]?.endCursor}
-							/>
-							<BooleanTd
-								name="hasNextPage"
-								bind:value={node.hasNextPage}
-								on:save={() => updateField({ : node?., hasNextPage: node?.hasNextPage })}
-								error={errors[node.]?.hasNextPage}
-							/>
-							<BooleanTd
-								name="hasPreviousPage"
-								bind:value={node.hasPreviousPage}
-								on:save={() => updateField({ : node?., hasPreviousPage: node?.hasPreviousPage })}
-								error={errors[node.]?.hasPreviousPage}
-							/>
-							<StringTd
-								name="startCursor"
-								bind:value={node.startCursor}
-								on:save={() => updateField({ : node?., startCursor: node?.startCursor })}
-								error={errors[node.]?.startCursor}
-							/>
+							<td>{node.endCursor}</td>
+							<td>{node.hasNextPage}</td>
+							<td>{node.hasPreviousPage}</td>
+							<td>{node.startCursor}</td>
 							<td>
 								<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
 									<button

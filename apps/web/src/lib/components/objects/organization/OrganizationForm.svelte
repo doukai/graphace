@@ -3,7 +3,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { Form, FormLoading, FormItems, FormButtons } from '@graphace/ui/components/form';
+	import { Form, FormLoading, FormItems, FormItem, FormButtons } from '@graphace/ui/components/form';
 	import { IntItem, StringItem, TimestampItem, IDItem, BooleanItem } from '@graphace/ui-graphql/components/form';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
@@ -12,7 +12,7 @@
 	import { locale } from '~/i18n/i18n-svelte';
 	import type { Organization, MutationTypeOrganizationArgs } from '~/lib/types/schema';
 
-	export let node: MutationTypeOrganizationArgs | null | undefined;
+	export let node: Organization | null | undefined;
 	export let isFetching: boolean = false;
 
 	const dispatch = createEventDispatcher<{
@@ -76,9 +76,9 @@
 			<IDItem label="id" name="id" bind:value={node.id} error={errors.id} />
 			<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} error={errors.isDeprecated} />
 			<StringItem label="name" name="name" bind:value={node.name} error={errors.name} />
-			<IntItem label="orgLevel3" name="orgLevel3" bind:value={node.orgLevel3} error={errors.orgLevel3} />
+			<FormItem label="orgLevel3">{node.orgLevel3}</FormItem>
 			<StringItem label="realmId" name="realmId" bind:value={node.realmId} error={errors.realmId} />
-			<BooleanItem label="roleDisable" name="roleDisable" bind:value={node.roleDisable} error={errors.roleDisable} />
+			<FormItem label="roleDisable">{node.roleDisable}</FormItem>
 			<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} error={errors.updateTime} />
 			<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
 			<IntItem label="version" name="version" bind:value={node.version} error={errors.version} />

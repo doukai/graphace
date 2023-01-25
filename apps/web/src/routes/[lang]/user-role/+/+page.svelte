@@ -1,5 +1,5 @@
 <script lang="ts">
-	import UserRoleForm from '~/lib/components/objects/user-role/UserRoleForm.svelte';
+	import UserRoleCreateForm from '~/lib/components/objects/user-role/UserRoleCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import { GQL_MutationUserRole } from '$houdini';
@@ -24,4 +24,4 @@
 	};
 </script>
 
-<UserRoleForm {node} on:mutation={mutation} />
+<UserRoleCreateForm {node} on:mutation={mutation} />

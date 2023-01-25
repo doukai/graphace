@@ -1,5 +1,5 @@
 <script lang="ts">
-	import UserPhonesForm from '~/lib/components/objects/user-phones/UserPhonesForm.svelte';
+	import UserPhonesCreateForm from '~/lib/components/objects/user-phones/UserPhonesCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import { GQL_MutationUserPhones } from '$houdini';
@@ -24,4 +24,4 @@
 	};
 </script>
 
-<UserPhonesForm {node} on:mutation={mutation} />
+<UserPhonesCreateForm {node} on:mutation={mutation} />

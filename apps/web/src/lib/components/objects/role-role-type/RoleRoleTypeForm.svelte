@@ -3,7 +3,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { Form, FormLoading, FormItems, FormButtons } from '@graphace/ui/components/form';
+	import { Form, FormLoading, FormItems, FormItem, FormButtons } from '@graphace/ui/components/form';
 	import { StringItem, TimestampItem, IDItem, IntItem, BooleanItem } from '@graphace/ui-graphql/components/form';
 	import RoleTypeItem from '~/lib/components/enums/role-type/RoleTypeItem.svelte';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
@@ -13,7 +13,7 @@
 	import { locale } from '~/i18n/i18n-svelte';
 	import type { RoleRoleType, MutationTypeRoleRoleTypeArgs } from '~/lib/types/schema';
 
-	export let node: MutationTypeRoleRoleTypeArgs | null | undefined;
+	export let node: RoleRoleType | null | undefined;
 	export let isFetching: boolean = false;
 
 	const dispatch = createEventDispatcher<{

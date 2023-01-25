@@ -1,5 +1,5 @@
 <script lang="ts">
-	import OrganizationForm from '~/lib/components/objects/organization/OrganizationForm.svelte';
+	import OrganizationCreateForm from '~/lib/components/objects/organization/OrganizationCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import { GQL_MutationOrganization } from '$houdini';
@@ -24,4 +24,4 @@
 	};
 </script>
 
-<OrganizationForm {node} on:mutation={mutation} />
+<OrganizationCreateForm {node} on:mutation={mutation} />

@@ -3,7 +3,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { Form, FormLoading, FormItems, FormButtons } from '@graphace/ui/components/form';
+	import { Form, FormLoading, FormItems, FormItem, FormButtons } from '@graphace/ui/components/form';
 	import { IntItem, StringItem, TimestampItem, BooleanItem, IDItem } from '@graphace/ui-graphql/components/form';
 	import SexItem from '~/lib/components/enums/sex/SexItem.svelte';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
@@ -13,7 +13,7 @@
 	import { locale } from '~/i18n/i18n-svelte';
 	import type { User, MutationTypeUserArgs } from '~/lib/types/schema';
 
-	export let node: MutationTypeUserArgs | null | undefined;
+	export let node: User | null | undefined;
 	export let isFetching: boolean = false;
 
 	const dispatch = createEventDispatcher<{
@@ -88,7 +88,7 @@
 			<BooleanItem label="test2" name="test2" bind:value={node.test2} error={errors.test2} />
 			<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} error={errors.updateTime} />
 			<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
-			<StringItem label="userDetail2" name="userDetail2" bind:value={node.userDetail2} error={errors.userDetail2} />
+			<FormItem label="userDetail2">{node.userDetail2}</FormItem>
 			<IntItem label="version" name="version" bind:value={node.version} error={errors.version} />
 		</FormItems>
 		<FormButtons>

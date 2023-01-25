@@ -8,6 +8,7 @@ export interface GraphacePluginConfig extends RawTypesConfig {
   mutation?: { fieldName: string, update?: boolean };
   typeTable?: { name: string, componentsPath?: string };
   typeForm?: { name: string, componentsPath?: string };
+  typeCreateForm?: { name: string, componentsPath?: string };
   pageSvelte?: { name: string, componentsPath?: string };
   pageTs?: { name: string };
   pageEditSvelte?: { name: string, componentsPath?: string };

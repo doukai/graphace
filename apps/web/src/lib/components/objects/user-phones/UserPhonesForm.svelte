@@ -3,7 +3,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { Form, FormLoading, FormItems, FormButtons } from '@graphace/ui/components/form';
+	import { Form, FormLoading, FormItems, FormItem, FormButtons } from '@graphace/ui/components/form';
 	import { StringItem, TimestampItem, IDItem, IntItem, BooleanItem } from '@graphace/ui-graphql/components/form';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
@@ -12,7 +12,7 @@
 	import { locale } from '~/i18n/i18n-svelte';
 	import type { UserPhones, MutationTypeUserPhonesArgs } from '~/lib/types/schema';
 
-	export let node: MutationTypeUserPhonesArgs | null | undefined;
+	export let node: UserPhones | null | undefined;
 	export let isFetching: boolean = false;
 
 	const dispatch = createEventDispatcher<{

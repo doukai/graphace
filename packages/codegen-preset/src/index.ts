@@ -127,6 +127,27 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 };
             }) || [];
 
+        const typeCreateFormList = objectTypes
+            .map(type => {
+                return {
+                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/components'}/objects/${changeCase.paramCase(type.name)}/${type.name}CreateForm.svelte`,
+                    documents: options.documents,
+                    plugins: options.plugins,
+                    pluginMap: options.pluginMap,
+                    config: {
+                        ...options.config,
+                        template: 'typeCreateForm',
+                        typeCreateForm: {
+                            name: type.name,
+                            componentsPath: options.presetConfig.componentsPath || 'lib/components'
+                        }
+                    },
+                    schema: options.schema,
+                    schemaAst: options.schemaAst,
+                    skipDocumentsValidation: true,
+                };
+            }) || [];
+
         const pageSvelteList = objectTypes
             .map(type => {
                 return {
@@ -316,6 +337,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             ...mutationUpdateList,
             ...typeTableList,
             ...typeFormList,
+            ...typeCreateFormList,
             ...pageSvelteList,
             ...pageTsList,
             ...pageEditSvelteList,

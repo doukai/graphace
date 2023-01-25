@@ -9,7 +9,7 @@
 
 	export let name: string;
 	export let expression: NumberExpression | null | undefined;
-	export let sort: Sort | null | undefined;
+	export let sort: Sort | null | undefined = undefined;
 
 	let _expression: NumberExpression = { opr: Operator.EQ, val: undefined, in: [] };
 	let _sort: Sort | undefined = undefined;

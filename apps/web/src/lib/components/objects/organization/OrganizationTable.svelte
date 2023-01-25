@@ -279,36 +279,21 @@
 				bind:sort={orderBy.id}
 				on:filter={query}
 			/>
-			<BooleanTh
-				name="isDeprecated"
-				bind:expression={args.isDeprecated}
-				bind:sort={orderBy.isDeprecated}
-				on:filter={query}
-			/>
+			<th>isDeprecated</th>
 			<StringTh
 				name="name"
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
 				on:filter={query}
 			/>
-			<IntTh
-				name="orgLevel3"
-				bind:expression={args.orgLevel3}
-				bind:sort={orderBy.orgLevel3}
-				on:filter={query}
-			/>
+			<th>orgLevel3</th>
 			<StringTh
 				name="realmId"
 				bind:expression={args.realmId}
 				bind:sort={orderBy.realmId}
 				on:filter={query}
 			/>
-			<BooleanTh
-				name="roleDisable"
-				bind:expression={args.roleDisable}
-				bind:sort={orderBy.roleDisable}
-				on:filter={query}
-			/>
+			<th>roleDisable</th>
 			<TimestampTh
 				name="updateTime"
 				bind:expression={args.updateTime}
@@ -327,7 +312,7 @@
 				bind:sort={orderBy.version}
 				on:filter={query}
 			/>
-			<td />
+			<th />
 		</tr>
 	</thead>
 	{#if isFetching}
@@ -367,12 +352,7 @@
 								on:save={() => updateField({ id: node?.id, createUserId: node?.createUserId })}
 								error={errors[node.id]?.createUserId}
 							/>
-							<IDTd
-								name="id"
-								bind:value={node.id}
-								on:save={() => updateField({ id: node?.id, id: node?.id })}
-								error={errors[node.id]?.id}
-							/>
+							<td>{node.id}</td>
 							<BooleanTd
 								name="isDeprecated"
 								bind:value={node.isDeprecated}
@@ -385,24 +365,14 @@
 								on:save={() => updateField({ id: node?.id, name: node?.name })}
 								error={errors[node.id]?.name}
 							/>
-							<IntTd
-								name="orgLevel3"
-								bind:value={node.orgLevel3}
-								on:save={() => updateField({ id: node?.id, orgLevel3: node?.orgLevel3 })}
-								error={errors[node.id]?.orgLevel3}
-							/>
+							<td>{node.orgLevel3}</td>
 							<StringTd
 								name="realmId"
 								bind:value={node.realmId}
 								on:save={() => updateField({ id: node?.id, realmId: node?.realmId })}
 								error={errors[node.id]?.realmId}
 							/>
-							<BooleanTd
-								name="roleDisable"
-								bind:value={node.roleDisable}
-								on:save={() => updateField({ id: node?.id, roleDisable: node?.roleDisable })}
-								error={errors[node.id]?.roleDisable}
-							/>
+							<td>{node.roleDisable}</td>
 							<TimestampTd
 								name="updateTime"
 								bind:value={node.updateTime}

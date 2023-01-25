@@ -3,7 +3,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { Form, FormLoading, FormItems, FormButtons } from '@graphace/ui/components/form';
+	import { Form, FormLoading, FormItems, FormItem, FormButtons } from '@graphace/ui/components/form';
 	import { StringItem, BooleanItem } from '@graphace/ui-graphql/components/form';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
@@ -12,7 +12,7 @@
 	import { locale } from '~/i18n/i18n-svelte';
 	import type { PageInfo, MutationTypePageInfoArgs } from '~/lib/types/schema';
 
-	export let node: MutationTypePageInfoArgs | null | undefined;
+	export let node: PageInfo | null | undefined;
 	export let isFetching: boolean = false;
 
 	const dispatch = createEventDispatcher<{
@@ -69,10 +69,10 @@
 {#if !isFetching && node}
 	<Form>
 		<FormItems title="PageInfo">
-			<StringItem label="endCursor" name="endCursor" bind:value={node.endCursor} error={errors.endCursor} />
-			<BooleanItem label="hasNextPage" name="hasNextPage" bind:value={node.hasNextPage} error={errors.hasNextPage} />
-			<BooleanItem label="hasPreviousPage" name="hasPreviousPage" bind:value={node.hasPreviousPage} error={errors.hasPreviousPage} />
-			<StringItem label="startCursor" name="startCursor" bind:value={node.startCursor} error={errors.startCursor} />
+			<FormItem label="endCursor">{node.endCursor}</FormItem>
+			<FormItem label="hasNextPage">{node.hasNextPage}</FormItem>
+			<FormItem label="hasPreviousPage">{node.hasPreviousPage}</FormItem>
+			<FormItem label="startCursor">{node.startCursor}</FormItem>
 		</FormItems>
 		<FormButtons>
 			<button

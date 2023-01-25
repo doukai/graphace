@@ -107,7 +107,6 @@
 			args.phones = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.realmId = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.updateUserId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.userDetail2 = { opr: Operator.LK, val: `%${searchValue}%` };
 			if (after) {
 				args.after = after;
 				args.first = pageSize;
@@ -291,12 +290,7 @@
 				bind:sort={orderBy.id}
 				on:filter={query}
 			/>
-			<BooleanTh
-				name="isDeprecated"
-				bind:expression={args.isDeprecated}
-				bind:sort={orderBy.isDeprecated}
-				on:filter={query}
-			/>
+			<th>isDeprecated</th>
 			<StringTh
 				name="login"
 				bind:expression={args.login}
@@ -324,7 +318,6 @@
 			<StringTh
 				name="phones"
 				bind:expression={args.phones}
-				bind:sort={orderBy.phones}
 				on:filter={query}
 			/>
 			<StringTh
@@ -342,13 +335,11 @@
 			<IntTh
 				name="test1"
 				bind:expression={args.test1}
-				bind:sort={orderBy.test1}
 				on:filter={query}
 			/>
 			<BooleanTh
 				name="test2"
 				bind:expression={args.test2}
-				bind:sort={orderBy.test2}
 				on:filter={query}
 			/>
 			<TimestampTh
@@ -363,19 +354,14 @@
 				bind:sort={orderBy.updateUserId}
 				on:filter={query}
 			/>
-			<StringTh
-				name="userDetail2"
-				bind:expression={args.userDetail2}
-				bind:sort={orderBy.userDetail2}
-				on:filter={query}
-			/>
+			<th>userDetail2</th>
 			<IntTh
 				name="version"
 				bind:expression={args.version}
 				bind:sort={orderBy.version}
 				on:filter={query}
 			/>
-			<td />
+			<th />
 		</tr>
 	</thead>
 	{#if isFetching}
@@ -421,12 +407,7 @@
 								on:save={() => updateField({ id: node?.id, disable: node?.disable })}
 								error={errors[node.id]?.disable}
 							/>
-							<IDTd
-								name="id"
-								bind:value={node.id}
-								on:save={() => updateField({ id: node?.id, id: node?.id })}
-								error={errors[node.id]?.id}
-							/>
+							<td>{node.id}</td>
 							<BooleanTd
 								name="isDeprecated"
 								bind:value={node.isDeprecated}
@@ -499,12 +480,7 @@
 								on:save={() => updateField({ id: node?.id, updateUserId: node?.updateUserId })}
 								error={errors[node.id]?.updateUserId}
 							/>
-							<StringTd
-								name="userDetail2"
-								bind:value={node.userDetail2}
-								on:save={() => updateField({ id: node?.id, userDetail2: node?.userDetail2 })}
-								error={errors[node.id]?.userDetail2}
-							/>
+							<td>{node.userDetail2}</td>
 							<IntTd
 								name="version"
 								bind:value={node.version}

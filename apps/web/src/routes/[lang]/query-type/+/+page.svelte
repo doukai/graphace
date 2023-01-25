@@ -1,5 +1,5 @@
 <script lang="ts">
-	import QueryTypeForm from '~/lib/components/objects/query-type/QueryTypeForm.svelte';
+	import QueryTypeCreateForm from '~/lib/components/objects/query-type/QueryTypeCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import { GQL_MutationQueryType } from '$houdini';
@@ -24,4 +24,4 @@
 	};
 </script>
 
-<QueryTypeForm {node} on:mutation={mutation} />
+<QueryTypeCreateForm {node} on:mutation={mutation} />

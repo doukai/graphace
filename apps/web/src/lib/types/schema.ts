@@ -1634,6 +1634,7 @@ export type RoleRoleTypeOrderBy = {
   isDeprecated?: InputMaybe<Sort>;
   realmId?: InputMaybe<Sort>;
   roleId?: InputMaybe<Sort>;
+  type?: InputMaybe<Sort>;
   updateTime?: InputMaybe<Sort>;
   updateUserId?: InputMaybe<Sort>;
   version?: InputMaybe<Sort>;
@@ -1898,6 +1899,7 @@ export type UserOrderBy = {
   organizationId?: InputMaybe<Sort>;
   password?: InputMaybe<Sort>;
   realmId?: InputMaybe<Sort>;
+  sex?: InputMaybe<Sort>;
   updateTime?: InputMaybe<Sort>;
   updateUserId?: InputMaybe<Sort>;
   version?: InputMaybe<Sort>;
