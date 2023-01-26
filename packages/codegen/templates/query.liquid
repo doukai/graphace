@@ -1,4 +1,4 @@
-query Query_{{ name }}{% if args and args.length > 0 %}({% for arg in args %}${{ arg.name }}: {{ arg.type }}{% if forloop.last == false %} {% endif %}{% endfor %} $skipNullArguments: Boolean = false){% endif %} {
+query Query_{{ name }}{% if args and args.length > 0 %}({% for arg in args %}${{ arg.name }}: {{ arg.type }}{% if forloop.last == false %} {% endif %}{% endfor %} $skipNullArguments: Boolean = true){% endif %} {
   {{ name }}{% if args and args.length > 0 %}({% for arg in args %}{{ arg.name }}: ${{ arg.name }}{% if forloop.last == false %} {% endif %}{% endfor %}) @skipNullArguments(if: $skipNullArguments){% endif %}
     {%- if isConnection %} {
     totalCount

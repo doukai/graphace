@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { __Field, __Type } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import NumberTd from './NumberTd.svelte';
 

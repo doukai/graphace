@@ -1,4 +1,4 @@
-query Query_userByOrg2($organization: OrganizationInput $skipNullArguments: Boolean = false) {
+query Query_userByOrg2($organization: OrganizationInput $skipNullArguments: Boolean = true) {
   userByOrg2(organization: $organization) @skipNullArguments(if: $skipNullArguments) {
     age
     createGroupId

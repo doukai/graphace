@@ -13,17 +13,18 @@
     "typesafe-i18n": "typesafe-i18n"
   },
   "devDependencies": {
-    "eslint-config-custom": "workspace:*",
-		"svelte": "^3.54.0",
     "@iconify/svelte": "^2.2.1",
     "@steeze-ui/heroicons": "^1.1.1",
     "@steeze-ui/svelte-icon": "^1.3.1",
+    "eslint-config-custom": "workspace:*",
     "nanoid": "^3.3.4",
+    "svelte": "^3.54.0",
     "tippy.js": "^6.3.7",
-		"typescript": "^4.9.3",
-    "typesafe-i18n": "5.3.6"
+    "typesafe-i18n": "5.3.6",
+    "typescript": "^4.9.3"
   },
   "dependencies": {
-    "@graphace/commons": "workspace:*"
+    "@graphace/commons": "workspace:*",
+    "date-fns": "^2.29.3"
   }
 }

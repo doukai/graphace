@@ -4,6 +4,6 @@ import { load_Query_userConnection } from '$houdini';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     return {
-        ...(await load_Query_userConnection({ event }))
+        ...(await load_Query_userConnection({ event, variables: { first: 10 } }))
     };
 }

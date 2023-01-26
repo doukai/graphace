@@ -4,6 +4,6 @@ import { load_Query_{{ name | camelCase }}Connection } from '$houdini';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     return {
-        ...(await load_Query_{{ name | camelCase }}Connection({ event }))
+        ...(await load_Query_{{ name | camelCase }}Connection({ event, variables: { first: 10 } }))
     };
 }

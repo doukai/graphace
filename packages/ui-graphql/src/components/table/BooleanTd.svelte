@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { tippy } from '@graphace/ui/components/tippy';
-	import type { __Field, __Type } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import { Toggle, ToggleList } from '@graphace/ui/components/input';
 	import { Icon } from '@steeze-ui/svelte-icon';

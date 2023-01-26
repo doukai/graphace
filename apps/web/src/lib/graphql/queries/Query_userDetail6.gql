@@ -1,3 +1,3 @@
-query Query_userDetail6($user: UserInput $skipNullArguments: Boolean = false) {
+query Query_userDetail6($user: UserInput $skipNullArguments: Boolean = true) {
   userDetail6(user: $user) @skipNullArguments(if: $skipNullArguments)
 }

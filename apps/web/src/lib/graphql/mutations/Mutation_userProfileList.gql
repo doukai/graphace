@@ -1,4 +1,4 @@
-mutation Mutation_userProfileList($address: String $createGroupId: String $createTime: Timestamp $createUserId: String $email: String $id: ID $isDeprecated: Boolean $list: [UserProfileInput] $qq: String $realmId: String $updateTime: Timestamp $updateUserId: String $user: UserInput $userId: String $version: Int $where: UserProfileExpression $skipNullArguments: Boolean = false) {
+mutation Mutation_userProfileList($address: String $createGroupId: String $createTime: Timestamp $createUserId: String $email: String $id: ID $isDeprecated: Boolean $list: [UserProfileInput] $qq: String $realmId: String $updateTime: Timestamp $updateUserId: String $user: UserInput $userId: String $version: Int $where: UserProfileExpression $skipNullArguments: Boolean = true) {
   userProfileList(address: $address createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId email: $email id: $id isDeprecated: $isDeprecated list: $list qq: $qq realmId: $realmId updateTime: $updateTime updateUserId: $updateUserId user: $user userId: $userId version: $version where: $where) @skipNullArguments(if: $skipNullArguments) {
     address
     createGroupId
