@@ -1,11 +1,12 @@
 <script lang="ts">
 	import UserTable from '~/lib/components/objects/user/UserTable.svelte';
 	import type { User, QueryTypeUserListArgs, MutationTypeUserArgs } from '~/lib/types/schema';
-	import { QueryUserConnectionStore, GQL_MutationUser } from '$houdini';
+	import { Query_userConnectionStore, Mutation_user_updateStore } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: QueryUserConnection = data.QueryUserConnection as QueryUserConnectionStore;
+	$: Query_userConnection = data.Query_userConnection as Query_userConnectionStore;
+	const Mutation_user_update = new Mutation_user_updateStore();
 
 	const fetch = (
 		event: CustomEvent<{
@@ -14,7 +15,7 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		QueryUserConnection.fetch({ variables: event.detail.args })
+		Query_userConnection.fetch({ variables: event.detail.args })
 			.then((result) => {
 				event.detail.then(result.data?.userConnection?.edges?.map((edge) => edge?.node));
 			})
@@ -30,7 +31,7 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		GQL_MutationUser.mutate(event.detail.args)
+		Mutation_user_update.mutate(event.detail.args)
 			.then((result) => {
 				event.detail.then(result?.user);
 			})
@@ -41,9 +42,9 @@
 </script>
 
 <UserTable
-	nodes={$QueryUserConnection.data?.userConnection?.edges?.map((edge) => edge?.node)}
-	totalCount={$QueryUserConnection.data?.userConnection?.totalCount || 0}
-	isFetching={$QueryUserConnection.isFetching}
+	nodes={$Query_userConnection.data?.userConnection?.edges?.map((edge) => edge?.node)}
+	totalCount={$Query_userConnection.data?.userConnection?.totalCount || 0}
+	isFetching={$Query_userConnection.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
 />

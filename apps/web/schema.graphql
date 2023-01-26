@@ -475,6 +475,7 @@ input RoleRoleTypeOrderBy {
   isDeprecated: Sort
   realmId: Sort
   roleId: Sort
+  type: Sort
   updateTime: Sort
   updateUserId: Sort
   version: Sort
@@ -651,6 +652,7 @@ input UserOrderBy {
   organizationId: Sort
   password: Sort
   realmId: Sort
+  sex: Sort
   updateTime: Sort
   updateUserId: Sort
   version: Sort

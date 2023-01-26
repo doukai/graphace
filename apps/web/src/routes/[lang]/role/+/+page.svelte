@@ -2,9 +2,10 @@
 	import RoleCreateForm from '~/lib/components/objects/role/RoleCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { GQL_MutationRole } from '$houdini';
+	import { Mutation_roleStore } from '$houdini';
 	import type { MutationTypeRoleArgs, Role } from '~/lib/types/schema';
 
+	const Mutation_role = new Mutation_roleStore();
 	let node: MutationTypeRoleArgs = {};
 
 	const mutation = (
@@ -14,7 +15,7 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		GQL_MutationRole.mutate(event.detail.args)
+		Mutation_role.mutate(event.detail.args)
 			.then((result) => {
 				event.detail.then(result?.role);
 			})

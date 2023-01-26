@@ -1,12 +1,17 @@
 import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
-import { assertEnumType, assertScalarType, isEnumType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLEnumValue, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType, type GraphQLSchema } from 'graphql';
+import { assertEnumType, assertObjectType, assertScalarType, isEnumType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLEnumValue, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType, type GraphQLSchema } from 'graphql';
 import { Liquid } from 'liquidjs';
 import * as changeCase from "change-case";
 
 const aggregateSuffix = ["Count", "Sum", "Avg", "Max", "Min", "Aggregate"];
+const queryTypeName = "QueryType";
+const mutationTypeName = "MutationType";
 const connectionSuffix = "Connection";
 const edgeSuffix = "Edge";
+const pageInfoName = "PageInfo";
+const introspectionPrefix = "__";
+const innerEnum = ["Operator", "Conditional", "Sort", "Function"];
 
 const engine = new Liquid({
     root: `${__dirname}/../templates`,
@@ -25,10 +30,13 @@ engine.registerFilter('pathCase', (v: string) => changeCase.pathCase(v));
 engine.registerFilter('sentenceCase', (v: string) => changeCase.sentenceCase(v));
 engine.registerFilter('snakeCase', (v: string) => changeCase.snakeCase(v));
 
-
-const isConnection = (fieldName?: string): boolean => { return fieldName?.slice(-connectionSuffix.length) === connectionSuffix };
-const isEdge = (fieldName?: string): boolean => { return fieldName?.slice(-edgeSuffix.length) === edgeSuffix };
-const isAggregate = (fieldName?: string): boolean => { return aggregateSuffix.some(suffix => fieldName?.slice(-suffix.length) === suffix) };
+const isOperationType = (name?: string): boolean => { return [queryTypeName, mutationTypeName].some(typeName => name === typeName) };
+const isAggregate = (name?: string): boolean => { return aggregateSuffix.some(suffix => name?.slice(-suffix.length) === suffix) };
+const isConnection = (name?: string): boolean => { return name?.slice(-connectionSuffix.length) === connectionSuffix };
+const isEdge = (name?: string): boolean => { return name?.slice(-edgeSuffix.length) === edgeSuffix };
+const isPageInfo = (name?: string): boolean => { return name === pageInfoName };
+const isIntrospection = (name?: string): boolean | undefined => { return name?.startsWith(introspectionPrefix) };
+const isInnerEnum = (name?: string): boolean => { return innerEnum.some(enumName => name === enumName) };
 
 const getFieldType = (type: GraphQLOutputType): GraphQLOutputType => {
     if (isListType(type) || isNonNullType(type)) {
@@ -66,6 +74,8 @@ const getScalarFields = (field?: GraphQLField<any, any, any>): GraphQLField<any,
 const getScalarNames = (type: GraphQLNamedType): string[] | undefined => {
     if (isObjectType(type) || isInputObjectType(type)) {
         const scalarNames = Object.values(type.getFields())
+            .filter(field => !isAggregate(field.name))
+            .filter(field => !isIntrospection(field.name))
             .map(field => getFieldType(field.type))
             .filter(type => isScalarType(type))
             .map(type => assertScalarType(type))
@@ -78,6 +88,7 @@ const getScalarNames = (type: GraphQLNamedType): string[] | undefined => {
 const getEnumNames = (type: GraphQLNamedType): string[] | undefined => {
     if (isObjectType(type) || isInputObjectType(type)) {
         const enumNames = Object.values(type.getFields())
+            .filter(field => !isInnerEnum(field.name))
             .map(field => getFieldType(field.type))
             .filter(type => isEnumType(type))
             .map(type => assertEnumType(type))
@@ -101,6 +112,7 @@ const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): { fieldName: 
     if (isObjectType(type) || isInputObjectType(type)) {
         return Object.values(type.getFields())
             .filter(field => !isAggregate(field.name))
+            .filter(field => !isIntrospection(field.name))
             .map(field => {
                 return {
                     fieldName: field.name,
@@ -140,8 +152,9 @@ const getEnumValues = (type: GraphQLNamedType): GraphQLEnumValue[] | undefined =
     return undefined;
 }
 
-export type Template = "query" |
-    "mutation" |
+export type Template = 'query' |
+    'mutation' |
+    'typeMenu' |
     "typeTable" |
     'typeForm' |
     'typeCreateForm' |
@@ -187,6 +200,22 @@ const renders: Record<Template, Render> = {
 
         }
         throw new Error(`${config.mutation?.fieldName} not exist in MutationType`);
+    },
+    typeMenu: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        return {
+            content: engine.renderFileSync(config.template,
+                {
+                    objects: Object.values(schema.getTypeMap())
+                        .filter(type => isObjectType(type))
+                        .filter(type => !isOperationType(type.name))
+                        .filter(type => !isConnection(type.name))
+                        .filter(type => !isEdge(type.name))
+                        .filter(type => !isPageInfo(type.name))
+                        .filter(type => !isIntrospection(type.name))
+                        .map(type => assertObjectType(type))
+                }
+            ),
+        };
     },
     typeTable: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.typeTable?.name;

@@ -2,13 +2,13 @@
 	import RoleRoleTypeForm from '~/lib/components/objects/role-role-type/RoleRoleTypeForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import type { QueryRoleRoleTypeStore } from '$houdini';
-	import { GQL_MutationRoleRoleType } from '$houdini';
+	import { Query_roleRoleTypeStore, Mutation_roleRoleTypeStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { MutationTypeRoleRoleTypeArgs, RoleRoleType } from '~/lib/types/schema';
 
 	export let data: PageData;
-	$: QueryRoleRoleType = data.QueryRoleRoleType as QueryRoleRoleTypeStore;
+	$: Query_roleRoleType = data.Query_roleRoleType as Query_roleRoleTypeStore;
+	const Mutation_roleRoleType = new Mutation_roleRoleTypeStore();
 
 	const mutation = (
 		event: CustomEvent<{
@@ -17,7 +17,7 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		GQL_MutationRoleRoleType.mutate(event.detail.args)
+		Mutation_roleRoleType.mutate(event.detail.args)
 			.then((result) => {
 				event.detail.then(result?.roleRoleType);
 			})
@@ -27,4 +27,4 @@
 	};
 </script>
 
-<RoleRoleTypeForm node={$QueryRoleRoleType.data?.roleRoleType} isFetching={$QueryRoleRoleType.isFetching} on:mutation={mutation} />
+<RoleRoleTypeForm node={$Query_roleRoleType.data?.roleRoleType} isFetching={$Query_roleRoleType.fetching} on:mutation={mutation} />

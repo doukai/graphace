@@ -2,13 +2,13 @@
 	import UserPhonesForm from '~/lib/components/objects/user-phones/UserPhonesForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import type { QueryUserPhonesStore } from '$houdini';
-	import { GQL_MutationUserPhones } from '$houdini';
+	import { Query_userPhonesStore, Mutation_userPhonesStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { MutationTypeUserPhonesArgs, UserPhones } from '~/lib/types/schema';
 
 	export let data: PageData;
-	$: QueryUserPhones = data.QueryUserPhones as QueryUserPhonesStore;
+	$: Query_userPhones = data.Query_userPhones as Query_userPhonesStore;
+	const Mutation_userPhones = new Mutation_userPhonesStore();
 
 	const mutation = (
 		event: CustomEvent<{
@@ -17,7 +17,7 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		GQL_MutationUserPhones.mutate(event.detail.args)
+		Mutation_userPhones.mutate(event.detail.args)
 			.then((result) => {
 				event.detail.then(result?.userPhones);
 			})
@@ -27,4 +27,4 @@
 	};
 </script>
 
-<UserPhonesForm node={$QueryUserPhones.data?.userPhones} isFetching={$QueryUserPhones.isFetching} on:mutation={mutation} />
+<UserPhonesForm node={$Query_userPhones.data?.userPhones} isFetching={$Query_userPhones.fetching} on:mutation={mutation} />

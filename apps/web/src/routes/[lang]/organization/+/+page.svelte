@@ -2,9 +2,10 @@
 	import OrganizationCreateForm from '~/lib/components/objects/organization/OrganizationCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { GQL_MutationOrganization } from '$houdini';
+	import { Mutation_organizationStore } from '$houdini';
 	import type { MutationTypeOrganizationArgs, Organization } from '~/lib/types/schema';
 
+	const Mutation_organization = new Mutation_organizationStore();
 	let node: MutationTypeOrganizationArgs = {};
 
 	const mutation = (
@@ -14,7 +15,7 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		GQL_MutationOrganization.mutate(event.detail.args)
+		Mutation_organization.mutate(event.detail.args)
 			.then((result) => {
 				event.detail.then(result?.organization);
 			})

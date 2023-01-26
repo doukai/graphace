@@ -2,9 +2,10 @@
 	import {{ name }}CreateForm from '~/{{ formPath }}/{{ name | paramCase }}/{{ name }}CreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { GQL_Mutation{{ name }} } from '$houdini';
+	import { Mutation_{{ name | camelCase }}Store } from '$houdini';
 	import type { MutationType{{ name }}Args, {{ name }} } from '~/{{ schemaTypesPath }}';
 
+	const Mutation_{{ name | camelCase }} = new Mutation_{{ name | camelCase }}Store();
 	let node: MutationType{{ name }}Args = {};
 
 	const mutation = (
@@ -14,7 +15,7 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		GQL_Mutation{{ name }}.mutate(event.detail.args)
+		Mutation_{{ name | camelCase }}.mutate(event.detail.args)
 			.then((result) => {
 				event.detail.then(result?.{{ name | camelCase }});
 			})

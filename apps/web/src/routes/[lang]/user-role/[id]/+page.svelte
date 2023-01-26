@@ -2,13 +2,13 @@
 	import UserRoleForm from '~/lib/components/objects/user-role/UserRoleForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import type { QueryUserRoleStore } from '$houdini';
-	import { GQL_MutationUserRole } from '$houdini';
+	import { Query_userRoleStore, Mutation_userRoleStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { MutationTypeUserRoleArgs, UserRole } from '~/lib/types/schema';
 
 	export let data: PageData;
-	$: QueryUserRole = data.QueryUserRole as QueryUserRoleStore;
+	$: Query_userRole = data.Query_userRole as Query_userRoleStore;
+	const Mutation_userRole = new Mutation_userRoleStore();
 
 	const mutation = (
 		event: CustomEvent<{
@@ -17,7 +17,7 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		GQL_MutationUserRole.mutate(event.detail.args)
+		Mutation_userRole.mutate(event.detail.args)
 			.then((result) => {
 				event.detail.then(result?.userRole);
 			})
@@ -27,4 +27,4 @@
 	};
 </script>
 
-<UserRoleForm node={$QueryUserRole.data?.userRole} isFetching={$QueryUserRole.isFetching} on:mutation={mutation} />
+<UserRoleForm node={$Query_userRole.data?.userRole} isFetching={$Query_userRole.fetching} on:mutation={mutation} />

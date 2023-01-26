@@ -1,9 +1,9 @@
 import type { LoadEvent } from '@sveltejs/kit';
-import type { LayoutLoad } from '.svelte-kit/types/src/routes/$types';
-import { load_QueryUser } from '$houdini';
+import type { LayoutLoad } from '$types';
+import { load_Query_user } from '$houdini';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     return {
-        ...(await load_QueryUser({ event, variables: { id: { val: event.params.id } } }))
+        ...(await load_Query_user({ event, variables: { id: { val: event.params.id } } }))
     };
 }

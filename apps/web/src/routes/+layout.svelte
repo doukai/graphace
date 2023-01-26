@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-	import { isMenuOpen } from '../components/stores';
+	import { isMenuOpen } from '~/lib/stores';
 </script>
 
 <script lang="ts">
@@ -7,12 +7,12 @@
 	import { onMount } from 'svelte';
 	import { themeChange } from 'theme-change';
 	import SideBar from '@graphace/ui/components/SideBar.svelte';
-	import TypeMenu from '~/components/menu/TypeMenu.svelte';
+	import TypeMenu from '~/lib/components/menu/TypeMenu.svelte';
 	import { NavBar, NavBarStart, NavBarCenter, NavBarEnd } from '@graphace/ui/components/navbar';
 	import Notifications from '@graphace/ui/components/Notifications.svelte';
 	import MessageBoxs from '@graphace/ui/components/MessageBoxs.svelte';
 	import { setLocale } from '~/i18n/i18n-svelte';
-	import { LocaleSelect, ThemeSelect } from '../components/select';
+	import { LocaleSelect, ThemeSelect } from '~/lib/components/select';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Menu, Adjustments } from '@steeze-ui/heroicons';
 

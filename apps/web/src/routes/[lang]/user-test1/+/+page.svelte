@@ -2,9 +2,10 @@
 	import UserTest1CreateForm from '~/lib/components/objects/user-test1/UserTest1CreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { GQL_MutationUserTest1 } from '$houdini';
+	import { Mutation_userTest1Store } from '$houdini';
 	import type { MutationTypeUserTest1Args, UserTest1 } from '~/lib/types/schema';
 
+	const Mutation_userTest1 = new Mutation_userTest1Store();
 	let node: MutationTypeUserTest1Args = {};
 
 	const mutation = (
@@ -14,7 +15,7 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		GQL_MutationUserTest1.mutate(event.detail.args)
+		Mutation_userTest1.mutate(event.detail.args)
 			.then((result) => {
 				event.detail.then(result?.userTest1);
 			})

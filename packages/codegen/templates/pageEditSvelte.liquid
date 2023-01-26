@@ -2,13 +2,13 @@
 	import {{ name }}Form from '~/{{ formPath }}/{{ name | paramCase }}/{{ name }}Form.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import type { Query{{ name }}Store } from '$houdini';
-	import { GQL_Mutation{{ name }} } from '$houdini';
+	import { Query_{{ name | camelCase }}Store, Mutation_{{ name | camelCase }}Store } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { MutationType{{ name }}Args, {{ name }} } from '~/{{ schemaTypesPath }}';
 
 	export let data: PageData;
-	$: Query{{ name }} = data.Query{{ name }} as Query{{ name }}Store;
+	$: Query_{{ name | camelCase }} = data.Query_{{ name | camelCase }} as Query_{{ name | camelCase }}Store;
+	const Mutation_{{ name | camelCase }} = new Mutation_{{ name | camelCase }}Store();
 
 	const mutation = (
 		event: CustomEvent<{
@@ -17,7 +17,7 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		GQL_Mutation{{ name }}.mutate(event.detail.args)
+		Mutation_{{ name | camelCase }}.mutate(event.detail.args)
 			.then((result) => {
 				event.detail.then(result?.{{ name | camelCase }});
 			})
@@ -27,4 +27,4 @@
 	};
 </script>
 
-<{{ name }}Form node={$Query{{ name }}.data?.{{ name | camelCase }}} isFetching={$Query{{ name }}.isFetching} on:mutation={mutation} />
+<{{ name }}Form node={$Query_{{ name | camelCase }}.data?.{{ name | camelCase }}} isFetching={$Query_{{ name| camelCase }}.fetching} on:mutation={mutation} />

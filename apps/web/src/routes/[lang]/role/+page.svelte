@@ -1,11 +1,12 @@
 <script lang="ts">
 	import RoleTable from '~/lib/components/objects/role/RoleTable.svelte';
 	import type { Role, QueryTypeRoleListArgs, MutationTypeRoleArgs } from '~/lib/types/schema';
-	import { QueryRoleConnectionStore, GQL_MutationRole } from '$houdini';
+	import { Query_roleConnectionStore, Mutation_role_updateStore } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: QueryRoleConnection = data.QueryRoleConnection as QueryRoleConnectionStore;
+	$: Query_roleConnection = data.Query_roleConnection as Query_roleConnectionStore;
+	const Mutation_role_update = new Mutation_role_updateStore();
 
 	const fetch = (
 		event: CustomEvent<{
@@ -14,7 +15,7 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		QueryRoleConnection.fetch({ variables: event.detail.args })
+		Query_roleConnection.fetch({ variables: event.detail.args })
 			.then((result) => {
 				event.detail.then(result.data?.roleConnection?.edges?.map((edge) => edge?.node));
 			})
@@ -30,7 +31,7 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		GQL_MutationRole.mutate(event.detail.args)
+		Mutation_role_update.mutate(event.detail.args)
 			.then((result) => {
 				event.detail.then(result?.role);
 			})
@@ -41,9 +42,9 @@
 </script>
 
 <RoleTable
-	nodes={$QueryRoleConnection.data?.roleConnection?.edges?.map((edge) => edge?.node)}
-	totalCount={$QueryRoleConnection.data?.roleConnection?.totalCount || 0}
-	isFetching={$QueryRoleConnection.isFetching}
+	nodes={$Query_roleConnection.data?.roleConnection?.edges?.map((edge) => edge?.node)}
+	totalCount={$Query_roleConnection.data?.roleConnection?.totalCount || 0}
+	isFetching={$Query_roleConnection.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
 />

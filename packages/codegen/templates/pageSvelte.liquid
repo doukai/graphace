@@ -1,11 +1,12 @@
 <script lang="ts">
 	import {{ name }}Table from '~/{{ tablePath }}/{{ name | paramCase }}/{{ name }}Table.svelte';
 	import type { {{ name }}, QueryType{{ name }}ListArgs, MutationType{{ name }}Args } from '~/{{ schemaTypesPath }}';
-	import { Query{{ name }}ConnectionStore, GQL_Mutation{{ name }} } from '$houdini';
+	import { Query_{{ name | camelCase }}ConnectionStore, Mutation_{{ name | camelCase }}_updateStore } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: Query{{ name }}Connection = data.Query{{ name }}Connection as Query{{ name }}ConnectionStore;
+	$: Query_{{ name | camelCase }}Connection = data.Query_{{ name | camelCase }}Connection as Query_{{ name | camelCase }}ConnectionStore;
+	const Mutation_{{ name | camelCase }}_update = new Mutation_{{ name | camelCase }}_updateStore();
 
 	const fetch = (
 		event: CustomEvent<{
@@ -14,7 +15,7 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Query{{ name }}Connection.fetch({ variables: event.detail.args })
+		Query_{{ name | camelCase }}Connection.fetch({ variables: event.detail.args })
 			.then((result) => {
 				event.detail.then(result.data?.{{ name | camelCase }}Connection?.edges?.map((edge) => edge?.node));
 			})
@@ -30,7 +31,7 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		GQL_Mutation{{ name }}.mutate(event.detail.args)
+		Mutation_{{ name | camelCase }}_update.mutate(event.detail.args)
 			.then((result) => {
 				event.detail.then(result?.{{ name | camelCase }});
 			})
@@ -41,9 +42,9 @@
 </script>
 
 <{{ name }}Table
-	nodes={$Query{{ name }}Connection.data?.{{ name | camelCase }}Connection?.edges?.map((edge) => edge?.node)}
-	totalCount={$Query{{ name }}Connection.data?.{{ name | camelCase }}Connection?.totalCount || 0}
-	isFetching={$Query{{ name }}Connection.isFetching}
+	nodes={$Query_{{ name | camelCase }}Connection.data?.{{ name | camelCase }}Connection?.edges?.map((edge) => edge?.node)}
+	totalCount={$Query_{{ name | camelCase }}Connection.data?.{{ name | camelCase }}Connection?.totalCount || 0}
+	isFetching={$Query_{{ name | camelCase }}Connection.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
 />

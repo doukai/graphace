@@ -3,25 +3,35 @@ import { isEnumType, isObjectType } from "graphql";
 import type { GraphacePresetConfig } from "./config";
 import * as changeCase from "change-case";
 
+const queryTypeName = "QueryType";
+const mutationTypeName = "MutationType";
 const connectionSuffix = "Connection";
 const edgeSuffix = "Edge";
+const pageInfoName = "PageInfo";
 const introspectionPrefix = "__";
+const innerEnum = ["Operator", "Conditional", "Sort", "Function"];
 
-const isConnection = (fieldName?: string): boolean => { return fieldName?.slice(-connectionSuffix.length) === connectionSuffix };
-const isEdge = (fieldName?: string): boolean => { return fieldName?.slice(-edgeSuffix.length) === edgeSuffix };
-const isIntrospection = (fieldName?: string): boolean | undefined => { return fieldName?.startsWith(introspectionPrefix) };
+const isOperationType = (name?: string): boolean => { return [queryTypeName, mutationTypeName].some(typeName => name === typeName) };
+const isConnection = (name?: string): boolean => { return name?.slice(-connectionSuffix.length) === connectionSuffix };
+const isEdge = (name?: string): boolean => { return name?.slice(-edgeSuffix.length) === edgeSuffix };
+const isPageInfo = (name?: string): boolean => { return name === pageInfoName };
+const isIntrospection = (name?: string): boolean | undefined => { return name?.startsWith(introspectionPrefix) };
+const isInnerEnum = (name?: string): boolean => { return innerEnum.some(enumName => name === enumName) };
 
 export const preset: Types.OutputPreset<GraphacePresetConfig> = {
     buildGeneratesSection: options => {
         const queryFields = options.schemaAst?.getQueryType()?.getFields() || [];
         const mutationFields = options.schemaAst?.getMutationType()?.getFields() || [];
         const objectTypes = Object.values(options.schemaAst?.getTypeMap() || {})
+            .filter(type => !isOperationType(type.name))
             .filter(type => !isConnection(type.name))
             .filter(type => !isEdge(type.name))
+            .filter(type => !isPageInfo(type.name))
             .filter(type => !isIntrospection(type.name))
             .filter(type => isObjectType(type));
         const enumTypes = Object.values(options.schemaAst?.getTypeMap() || {})
             .filter(type => !isIntrospection(type.name))
+            .filter(type => !isInnerEnum(type.name))
             .filter(type => isEnumType(type));
 
         const queryList = Object.values(queryFields)
@@ -84,6 +94,20 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                     skipDocumentsValidation: true,
                 };
             }) || [];
+
+        const typeMenu = {
+            filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/components'}/menu/TypeMenu.svelte`,
+            documents: options.documents,
+            plugins: options.plugins,
+            pluginMap: options.pluginMap,
+            config: {
+                ...options.config,
+                template: 'typeMenu',
+            },
+            schema: options.schema,
+            schemaAst: options.schemaAst,
+            skipDocumentsValidation: true,
+        };
 
         const typeTableList = objectTypes
             .map(type => {
@@ -335,6 +359,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             ...queryList,
             ...mutationList,
             ...mutationUpdateList,
+            typeMenu,
             ...typeTableList,
             ...typeFormList,
             ...typeCreateFormList,

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
-	import { StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, IntTh, IntTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
+	import { StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, BooleanTh, BooleanTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
 	import RoleTypeTh from '~/lib/components/enums/role-type/RoleTypeTh.svelte';
 	import RoleTypeTd from '~/lib/components/enums/role-type/RoleTypeTd.svelte';
 	import { SectionHead } from '@graphace/ui/components/section';

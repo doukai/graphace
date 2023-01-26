@@ -1,0 +1,28 @@
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+	import Icon from '@iconify/svelte';
+	import { locale } from '~/i18n/i18n-svelte';
+</script>
+
+{%- if objects %}
+{%- for object in objects %}
+	<li>
+		<a
+			href={null}
+			on:click={(e) => {
+				e.preventDefault();
+				goto(`/${$locale}/{{ object.name | paramCase }}`);
+			}}
+			class={$page.url.pathname.startsWith(
+				`/${$locale}/{{ object.name | paramCase }}`
+			)
+				? 'active'
+				: ''}
+		>
+			<Icon icon="file-icons:graphql" />
+			{{ object.name }}
+		</a>
+	</li>
+{%- endfor %}
+{%- endif %}

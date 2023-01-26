@@ -2,13 +2,13 @@
 	import UserTest1Form from '~/lib/components/objects/user-test1/UserTest1Form.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import type { QueryUserTest1Store } from '$houdini';
-	import { GQL_MutationUserTest1 } from '$houdini';
+	import { Query_userTest1Store, Mutation_userTest1Store } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { MutationTypeUserTest1Args, UserTest1 } from '~/lib/types/schema';
 
 	export let data: PageData;
-	$: QueryUserTest1 = data.QueryUserTest1 as QueryUserTest1Store;
+	$: Query_userTest1 = data.Query_userTest1 as Query_userTest1Store;
+	const Mutation_userTest1 = new Mutation_userTest1Store();
 
 	const mutation = (
 		event: CustomEvent<{
@@ -17,7 +17,7 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		GQL_MutationUserTest1.mutate(event.detail.args)
+		Mutation_userTest1.mutate(event.detail.args)
 			.then((result) => {
 				event.detail.then(result?.userTest1);
 			})
@@ -27,4 +27,4 @@
 	};
 </script>
 
-<UserTest1Form node={$QueryUserTest1.data?.userTest1} isFetching={$QueryUserTest1.isFetching} on:mutation={mutation} />
+<UserTest1Form node={$Query_userTest1.data?.userTest1} isFetching={$Query_userTest1.fetching} on:mutation={mutation} />
