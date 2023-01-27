@@ -98,8 +98,8 @@
 	};
 
 	const search = () => {
+		let args: QueryType{{ name }}ListArgs = {};
 		if (searchValue) {
-			let args: QueryType{{ name }}ListArgs = {};
 			args.cond = Conditional.OR;
 			{%- if fields %}
 			{%- for field in fields %}
@@ -108,27 +108,37 @@
 			{%- endif %}
 			{%- endfor %}
 			{%- endif %}
-			if (after) {
-				args.after = after;
-				args.first = pageSize;
-			} else if (before) {
-				args.before = before;
-				args.last = pageSize;
-			} else if (offset) {
-				args.offset = offset;
-				args.first = pageSize;
-			} else {
-				args.first = pageSize;
-			}
-
-			dispatch('fetch', {
-				args,
-				then: (data) => {},
-				catch: (error) => {
-					notifications.error($LL.message.requestFailed());
-				}
-			});
+		} else {
+			args.cond = undefined;
+			{%- if fields %}
+			{%- for field in fields %}
+			{%- if field.isScalarType and field.inQueryArgs and field.fieldType.name == 'String' %}
+			args.{{ field.fieldName }} = undefined;
+			{%- endif %}
+			{%- endfor %}
+			{%- endif %}
 		}
+		
+		if (after) {
+			args.after = after;
+			args.first = pageSize;
+		} else if (before) {
+			args.before = before;
+			args.last = pageSize;
+		} else if (offset) {
+			args.offset = offset;
+			args.first = pageSize;
+		} else {
+			args.first = pageSize;
+		}
+
+		dispatch('fetch', {
+			args,
+			then: (data) => {},
+			catch: (error) => {
+				notifications.error($LL.message.requestFailed());
+			}
+		});
 	};
 
 	async function updateField(args: MutationType{{ name }}Args | null | undefined) {
@@ -277,7 +287,7 @@
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading />
+		<TableLoading rows={pageSize} cols={% raw %}{{% endraw %}{{cols}}}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}

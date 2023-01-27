@@ -38,7 +38,7 @@ const isPageInfo = (name?: string): boolean => { return name === pageInfoName };
 const isIntrospection = (name?: string): boolean | undefined => { return name?.startsWith(introspectionPrefix) };
 const isInnerEnum = (name?: string): boolean => { return innerEnum.some(enumName => name === enumName) };
 
-const getFieldType = (type: GraphQLOutputType): GraphQLOutputType => {
+const getFieldType = (type: GraphQLOutputType): GraphQLNamedType => {
     if (isListType(type) || isNonNullType(type)) {
         return getFieldType(type.ofType);
     }
@@ -108,7 +108,7 @@ const getIDFieldName = (type: GraphQLOutputType): string | undefined => {
     return undefined;
 }
 
-const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): { fieldName: string, fieldType: GraphQLOutputType, isScalarType: boolean, isEnumType: boolean, inQueryArgs: boolean, inMutationArgs: boolean }[] | undefined => {
+const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): { fieldName: string, fieldType: GraphQLNamedType, isScalarType: boolean, isEnumType: boolean, inQueryArgs: boolean, inMutationArgs: boolean }[] | undefined => {
     if (isObjectType(type) || isInputObjectType(type)) {
         return Object.values(type.getFields())
             .filter(field => !isAggregate(field.name))
@@ -124,7 +124,7 @@ const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): { fieldName: 
                     inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),
                     inMutationArgs: fieldInMutationArgs(schema, type.name, field.name)
                 }
-            })
+            });
     }
     return undefined;
 }
@@ -132,7 +132,7 @@ const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): { fieldName: 
 const fieldInQueryArgs = (schema: GraphQLSchema, typeName: string, fieldName: string): boolean => {
     const operationField = schema.getQueryType()?.getFields()[changeCase.camelCase(typeName)];
     if (operationField) {
-        return operationField.args?.some(arg => arg.name === fieldName)
+        return operationField.args?.some(arg => arg.name === fieldName);
     }
     return false;
 }
@@ -140,7 +140,7 @@ const fieldInQueryArgs = (schema: GraphQLSchema, typeName: string, fieldName: st
 const fieldInMutationArgs = (schema: GraphQLSchema, typeName: string, fieldName: string): boolean => {
     const operationField = schema.getMutationType()?.getFields()[changeCase.camelCase(typeName)];
     if (operationField) {
-        return operationField.args?.some(arg => arg.name === fieldName)
+        return operationField.args?.some(arg => arg.name === fieldName);
     }
     return false;
 }
@@ -223,7 +223,7 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type), schemaTypesPath: config.schemaTypesPath || 'lib/types/schema', enumsPath: `${config.typeTable?.componentsPath}/enums` }),
+                    content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type), cols: getFields(schema, type)?.filter(field => field.isScalarType || field.isEnumType).length, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema', enumsPath: `${config.typeTable?.componentsPath}/enums` }),
                 };
             }
         }

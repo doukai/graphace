@@ -15,4 +15,4 @@
 	];
 </script>
 
-<EnumItem {value} {enums} {name} {label} {error} {placeholder} />
+<EnumItem bind:value {enums} {name} {label} {error} {placeholder} />

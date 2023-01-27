@@ -14,4 +14,4 @@
 	];
 </script>
 
-<EnumTd {value} {enums} {name} {error} {placeholder} />
+<EnumTd bind:value {enums} {name} {error} {placeholder} />

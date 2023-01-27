@@ -3,9 +3,11 @@ import type { Template } from '.';
 
 export interface GraphacePluginConfig extends RawTypesConfig {
   template: Template;
-  query?: { fieldName: string };
   schemaTypesPath?: string;
+  query?: { fieldName: string };
+  queryObjectField?: { fieldName: string, objectFieldnName: string };
   mutation?: { fieldName: string, update?: boolean };
+  mutationObjectField?: { fieldName: string, objectFieldnName: string, update?: boolean };
   typeTable?: { name: string, componentsPath?: string };
   typeForm?: { name: string, componentsPath?: string };
   typeCreateForm?: { name: string, componentsPath?: string };

@@ -1,5 +1,5 @@
 import type { Types } from "@graphql-codegen/plugin-helpers";
-import { isEnumType, isObjectType } from "graphql";
+import { GraphQLSchema, isEnumType, isListType, isNonNullType, isObjectType, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType } from "graphql";
 import type { GraphacePresetConfig } from "./config";
 import * as changeCase from "change-case";
 
@@ -17,6 +17,25 @@ const isEdge = (name?: string): boolean => { return name?.slice(-edgeSuffix.leng
 const isPageInfo = (name?: string): boolean => { return name === pageInfoName };
 const isIntrospection = (name?: string): boolean | undefined => { return name?.startsWith(introspectionPrefix) };
 const isInnerEnum = (name?: string): boolean => { return innerEnum.some(enumName => name === enumName) };
+
+const getFieldType = (type: GraphQLOutputType): GraphQLNamedType => {
+    if (isListType(type) || isNonNullType(type)) {
+        return getFieldType(type.ofType);
+    }
+    return type;
+}
+
+const getObjectFields = (schema: GraphQLSchema | undefined, type: GraphQLNamedType): GraphQLField<any, any, any>[] | undefined => {
+    if (isObjectType(type)) {
+        return Object.values(type.getFields())
+            .filter(field => isObjectType(getFieldType(field.type)))
+            .filter(field => !isConnection(getFieldType(field.type).name))
+            .filter(field => !isEdge(getFieldType(field.type).name))
+            .filter(field => !isPageInfo(getFieldType(field.type).name))
+            .filter(field => !isIntrospection(getFieldType(field.type).name))
+    }
+    return undefined;
+}
 
 export const preset: Types.OutputPreset<GraphacePresetConfig> = {
     buildGeneratesSection: options => {
@@ -54,6 +73,28 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 };
             }) || [];
 
+        const queryObjectFieldList = Object.values(queryFields)
+            .flatMap(field => getObjectFields(options.schemaAst, getFieldType(field.type))?.map(objectField => { return { fieldName: field.name, objectFieldnName: objectField.name } }))
+            .map(objectField => {
+                return {
+                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/graphql'}/queries/Query_${objectField?.fieldName}_${objectField?.objectFieldnName}.gql`,
+                    documents: options.documents,
+                    plugins: options.plugins,
+                    pluginMap: options.pluginMap,
+                    config: {
+                        ...options.config,
+                        template: 'queryObjectField',
+                        queryObjectField: {
+                            fieldName: objectField?.fieldName,
+                            objectFieldnName: objectField?.objectFieldnName
+                        }
+                    },
+                    schema: options.schema,
+                    schemaAst: options.schemaAst,
+                    skipDocumentsValidation: true,
+                };
+            }) || [];
+
         const mutationList = Object.values(mutationFields)
             .map(field => {
                 return {
@@ -74,6 +115,28 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 };
             }) || [];
 
+        const mutationObjectFieldList = Object.values(mutationFields)
+            .flatMap(field => getObjectFields(options.schemaAst, getFieldType(field.type))?.map(objectField => { return { fieldName: field.name, objectFieldnName: objectField.name } }))
+            .map(objectField => {
+                return {
+                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/graphql'}/mutations/Mutation_${objectField?.fieldName}_${objectField?.objectFieldnName}.gql`,
+                    documents: options.documents,
+                    plugins: options.plugins,
+                    pluginMap: options.pluginMap,
+                    config: {
+                        ...options.config,
+                        template: 'mutationObjectField',
+                        mutationObjectField: {
+                            fieldName: objectField?.fieldName,
+                            objectFieldnName: objectField?.objectFieldnName
+                        }
+                    },
+                    schema: options.schema,
+                    schemaAst: options.schemaAst,
+                    skipDocumentsValidation: true,
+                };
+            }) || [];
+
         const mutationUpdateList = Object.values(mutationFields)
             .map(field => {
                 return {
@@ -86,6 +149,29 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         template: 'mutation',
                         mutation: {
                             fieldName: field.name,
+                            update: true
+                        }
+                    },
+                    schema: options.schema,
+                    schemaAst: options.schemaAst,
+                    skipDocumentsValidation: true,
+                };
+            }) || [];
+
+        const mutationObjectFieldUpdateList = Object.values(mutationFields)
+            .flatMap(field => getObjectFields(options.schemaAst, getFieldType(field.type))?.map(objectField => { return { fieldName: field.name, objectFieldnName: objectField.name } }))
+            .map(objectField => {
+                return {
+                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/graphql'}/mutations/Mutation_${objectField?.fieldName}_${objectField?.objectFieldnName}_update.gql`,
+                    documents: options.documents,
+                    plugins: options.plugins,
+                    pluginMap: options.pluginMap,
+                    config: {
+                        ...options.config,
+                        template: 'mutationObjectField',
+                        mutationObjectField: {
+                            fieldName: objectField?.fieldName,
+                            objectFieldnName: objectField?.objectFieldnName,
                             update: true
                         }
                     },
@@ -357,8 +443,11 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         return [
             ...queryList,
+            ...queryObjectFieldList,
             ...mutationList,
+            ...mutationObjectFieldList,
             ...mutationUpdateList,
+            ...mutationObjectFieldUpdateList,
             typeMenu,
             ...typeTableList,
             ...typeFormList,

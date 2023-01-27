@@ -13,4 +13,4 @@
 	];
 </script>
 
-<EnumTh {name} {enums} {expression} {sort} />
+<EnumTh {name} {enums} bind:expression bind:sort />

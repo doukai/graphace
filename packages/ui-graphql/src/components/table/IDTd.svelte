@@ -8,4 +8,4 @@
 	export let placeholder: string = '';
 </script>
 
-<StringTd {value} {name} {error} {placeholder} />
+<StringTd bind:value {name} {error} {placeholder} on:save />

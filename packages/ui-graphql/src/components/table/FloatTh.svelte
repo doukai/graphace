@@ -7,4 +7,4 @@
 	export let sort: Sort | null | undefined = undefined;
 </script>
 
-<NumberTh {name} {expression} {sort} />
+<NumberTh {name} bind:expression bind:sort on:filter />

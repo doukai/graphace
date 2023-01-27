@@ -9,4 +9,4 @@
 	export let placeholder: string = '';
 </script>
 
-<StringItem {value} {name} {label} {error} {placeholder} />
+<StringItem bind:value {name} {label} {error} {placeholder} />

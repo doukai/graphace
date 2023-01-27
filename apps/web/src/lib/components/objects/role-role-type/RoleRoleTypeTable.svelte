@@ -96,34 +96,41 @@
 	};
 
 	const search = () => {
+		let args: QueryTypeRoleRoleTypeListArgs = {};
 		if (searchValue) {
-			let args: QueryTypeRoleRoleTypeListArgs = {};
 			args.cond = Conditional.OR;
 			args.createGroupId = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.createUserId = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.realmId = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.updateUserId = { opr: Operator.LK, val: `%${searchValue}%` };
-			if (after) {
-				args.after = after;
-				args.first = pageSize;
-			} else if (before) {
-				args.before = before;
-				args.last = pageSize;
-			} else if (offset) {
-				args.offset = offset;
-				args.first = pageSize;
-			} else {
-				args.first = pageSize;
-			}
-
-			dispatch('fetch', {
-				args,
-				then: (data) => {},
-				catch: (error) => {
-					notifications.error($LL.message.requestFailed());
-				}
-			});
+		} else {
+			args.cond = undefined;
+			args.createGroupId = undefined;
+			args.createUserId = undefined;
+			args.realmId = undefined;
+			args.updateUserId = undefined;
 		}
+		
+		if (after) {
+			args.after = after;
+			args.first = pageSize;
+		} else if (before) {
+			args.before = before;
+			args.last = pageSize;
+		} else if (offset) {
+			args.offset = offset;
+			args.first = pageSize;
+		} else {
+			args.first = pageSize;
+		}
+
+		dispatch('fetch', {
+			args,
+			then: (data) => {},
+			catch: (error) => {
+				notifications.error($LL.message.requestFailed());
+			}
+		});
 	};
 
 	async function updateField(args: MutationTypeRoleRoleTypeArgs | null | undefined) {
@@ -315,7 +322,7 @@
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading />
+		<TableLoading rows={pageSize} cols={11}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
