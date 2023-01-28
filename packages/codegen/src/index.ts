@@ -81,14 +81,15 @@ const getSubField = (field: GraphQLField<any, any, any>, subFieldName: string | 
     return undefined;
 }
 
-const hasConnection = (field: GraphQLField<any, any, any>, subFieldName: string | undefined): boolean => {
+const getConnectionField = (field: GraphQLField<any, any, any>, subFieldName: string | undefined): GraphQLField<any, any, any> | undefined => {
     if (field.type && subFieldName) {
+        const connectionFieldName = `${subFieldName}Connection`;
         const fieldType = getFieldType(field.type);
-        if (isObjectType(fieldType)) {
-            return Object.keys(fieldType.getFields()).includes(`${subFieldName}Connection`);
+        if (isObjectType(fieldType) && Object.keys(fieldType.getFields()).includes(connectionFieldName)) {
+            return fieldType.getFields()[connectionFieldName];
         }
     }
-    return false;
+    return undefined;
 }
 
 const getScalarNames = (type: GraphQLNamedType): string[] | undefined => {
@@ -204,7 +205,7 @@ const renders: Record<Template, Render> = {
                     objectField = {
                         name: subField?.name,
                         isListType: isListType(subField?.type),
-                        hasConnection: hasConnection(field, subField?.name),
+                        connectionField: getConnectionField(field, subField?.name),
                         fields: getScalarFields(subField),
                     }
                 }
@@ -230,7 +231,7 @@ const renders: Record<Template, Render> = {
                     objectField = {
                         name: subField?.name,
                         isListType: isListType(subField?.type),
-                        hasConnection: hasConnection(field, subField?.name),
+                        connectionField: getConnectionField(field, subField?.name),
                         fields: getScalarFields(subField),
                     }
                 }

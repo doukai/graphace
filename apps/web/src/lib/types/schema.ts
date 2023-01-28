@@ -601,7 +601,7 @@ export type OrganizationUsersConnectionArgs = {
 export type OrganizationConnection = {
   __typename?: 'OrganizationConnection';
   edges?: Maybe<Array<Maybe<OrganizationEdge>>>;
-  pageInfo: PageInfo;
+  pageInfo?: Maybe<PageInfo>;
   totalCount?: Maybe<Scalars['Int']>;
 };
 
@@ -1505,7 +1505,7 @@ export type RoleUsersConnectionArgs = {
 export type RoleConnection = {
   __typename?: 'RoleConnection';
   edges?: Maybe<Array<Maybe<RoleEdge>>>;
-  pageInfo: PageInfo;
+  pageInfo?: Maybe<PageInfo>;
   totalCount?: Maybe<Scalars['Int']>;
 };
 
@@ -1586,7 +1586,7 @@ export type RoleRoleType = Meta & {
 export type RoleRoleTypeConnection = {
   __typename?: 'RoleRoleTypeConnection';
   edges?: Maybe<Array<Maybe<RoleRoleTypeEdge>>>;
-  pageInfo: PageInfo;
+  pageInfo?: Maybe<PageInfo>;
   totalCount?: Maybe<Scalars['Int']>;
 };
 
@@ -1824,7 +1824,7 @@ export type UserUserProfileArgs = {
 export type UserConnection = {
   __typename?: 'UserConnection';
   edges?: Maybe<Array<Maybe<UserEdge>>>;
-  pageInfo: PageInfo;
+  pageInfo?: Maybe<PageInfo>;
   totalCount?: Maybe<Scalars['Int']>;
 };
 
@@ -1934,7 +1934,7 @@ export type UserPhones = Meta & {
 export type UserPhonesConnection = {
   __typename?: 'UserPhonesConnection';
   edges?: Maybe<Array<Maybe<UserPhonesEdge>>>;
-  pageInfo: PageInfo;
+  pageInfo?: Maybe<PageInfo>;
   totalCount?: Maybe<Scalars['Int']>;
 };
 
@@ -2050,7 +2050,7 @@ export type UserProfileUserArgs = {
 export type UserProfileConnection = {
   __typename?: 'UserProfileConnection';
   edges?: Maybe<Array<Maybe<UserProfileEdge>>>;
-  pageInfo: PageInfo;
+  pageInfo?: Maybe<PageInfo>;
   totalCount?: Maybe<Scalars['Int']>;
 };
 
@@ -2143,7 +2143,7 @@ export type UserRole = Meta & {
 export type UserRoleConnection = {
   __typename?: 'UserRoleConnection';
   edges?: Maybe<Array<Maybe<UserRoleEdge>>>;
-  pageInfo: PageInfo;
+  pageInfo?: Maybe<PageInfo>;
   totalCount?: Maybe<Scalars['Int']>;
 };
 
@@ -2228,7 +2228,7 @@ export type UserTest1 = Meta & {
 export type UserTest1Connection = {
   __typename?: 'UserTest1Connection';
   edges?: Maybe<Array<Maybe<UserTest1Edge>>>;
-  pageInfo: PageInfo;
+  pageInfo?: Maybe<PageInfo>;
   totalCount?: Maybe<Scalars['Int']>;
 };
 
@@ -2308,7 +2308,7 @@ export type UserTest2 = Meta & {
 export type UserTest2Connection = {
   __typename?: 'UserTest2Connection';
   edges?: Maybe<Array<Maybe<UserTest2Edge>>>;
-  pageInfo: PageInfo;
+  pageInfo?: Maybe<PageInfo>;
   totalCount?: Maybe<Scalars['Int']>;
 };
 

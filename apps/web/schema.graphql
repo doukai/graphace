@@ -209,7 +209,7 @@ type Organization implements Meta {
 
 type OrganizationConnection {
   edges: [OrganizationEdge]
-  pageInfo: PageInfo!
+  pageInfo: PageInfo
   totalCount: Int
 }
 
@@ -350,7 +350,7 @@ type Role implements Meta {
 
 type RoleConnection {
   edges: [RoleEdge]
-  pageInfo: PageInfo!
+  pageInfo: PageInfo
   totalCount: Int
 }
 
@@ -428,7 +428,7 @@ type RoleRoleType implements Meta {
 
 type RoleRoleTypeConnection {
   edges: [RoleRoleTypeEdge]
-  pageInfo: PageInfo!
+  pageInfo: PageInfo
   totalCount: Int
 }
 
@@ -578,7 +578,7 @@ type User implements Meta {
 
 type UserConnection {
   edges: [UserEdge]
-  pageInfo: PageInfo!
+  pageInfo: PageInfo
   totalCount: Int
 }
 
@@ -685,7 +685,7 @@ type UserPhones implements Meta {
 
 type UserPhonesConnection {
   edges: [UserPhonesEdge]
-  pageInfo: PageInfo!
+  pageInfo: PageInfo
   totalCount: Int
 }
 
@@ -772,7 +772,7 @@ type UserProfile implements Meta {
 
 type UserProfileConnection {
   edges: [UserProfileEdge]
-  pageInfo: PageInfo!
+  pageInfo: PageInfo
   totalCount: Int
 }
 
@@ -862,7 +862,7 @@ type UserRole implements Meta {
 
 type UserRoleConnection {
   edges: [UserRoleEdge]
-  pageInfo: PageInfo!
+  pageInfo: PageInfo
   totalCount: Int
 }
 
@@ -944,7 +944,7 @@ type UserTest1 implements Meta {
 
 type UserTest1Connection {
   edges: [UserTest1Edge]
-  pageInfo: PageInfo!
+  pageInfo: PageInfo
   totalCount: Int
 }
 
@@ -1021,7 +1021,7 @@ type UserTest2 implements Meta {
 
 type UserTest2Connection {
   edges: [UserTest2Edge]
-  pageInfo: PageInfo!
+  pageInfo: PageInfo
   totalCount: Int
 }
 

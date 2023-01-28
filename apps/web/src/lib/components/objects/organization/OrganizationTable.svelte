@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
+	import type { Error } from '@graphace/commons/types';
 	import { IntTh, IntTd, StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
 	import { SectionHead } from '@graphace/ui/components/section';
 	import { Table, TableLoading } from '@graphace/ui/components/table';
