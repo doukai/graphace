@@ -21,6 +21,7 @@
 	const dispatch = createEventDispatcher<{
 		mutation: {
 			args: MutationType{{ name }}Args;
+			update?: boolean;
 			then: (data: {{ name }} | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
@@ -57,6 +58,7 @@
 		if (node) {
 			dispatch('mutation', {
 				args: { id: node.id, isDeprecated: true },
+				update: true,
 				then: (data) => {
 					notifications.success($LL.message.removeSuccess());
 				},
@@ -69,9 +71,9 @@
 	};
 </script>
 
-{#if !isFetching && node}
-	<Form>
-		<FormItems title="{{ name }}">
+<Form>
+	<FormItems title="{{ name }}">
+		{#if !isFetching && node}
 			{%- if fields %}
 			{%- for field in fields %}
 			{%- if field.isScalarType or field.isEnumType %}
@@ -83,45 +85,47 @@
 			{%- endif %}
 			{%- endfor %}
 			{%- endif %}
-		</FormItems>
-		<FormButtons>
-			<button
-				class="btn"
-				on:click={(e) => {
-					e.preventDefault();
-					goto('../{{ name | paramCase }}');
-				}}
-			>
-				{$LL.components.graphql.editor.backBtn()}
-			</button>
-			<button
-				class="btn"
-				on:click={(e) => {
-					e.preventDefault();
-					save();
-				}}
-			>
-				{$LL.components.graphql.editor.saveBtn()}
-			</button>
-			<button
-				class="btn btn-outline btn-error"
-				on:click={(e) => {
-					e.preventDefault();
-					messageBoxs.open({
-						title: $LL.components.graphql.table.removeModalTitle(),
-						buttonName: $LL.components.graphql.table.removeBtn(),
-						buttonType: 'error',
-						confirm: () => {
-							remove();
-							return true;
-						}
-					});
-				}}
-			>
-				{$LL.components.graphql.editor.removeBtn()}
-			</button>
-		</FormButtons>
-	</Form>
-{:else}
-	<FormLoading />
-{/if}
+		{:else}
+			<FormLoading rows={% raw %}{{% endraw %}{{rows}}} />
+		{/if}
+	</FormItems>
+	<FormButtons>
+		<button
+			class="btn"
+			on:click={(e) => {
+				e.preventDefault();
+				goto('../{{ name | paramCase }}');
+			}}
+		>
+			{$LL.components.graphql.editor.backBtn()}
+		</button>
+		<button
+			class="btn"
+			disabled={isFetching}
+			on:click={(e) => {
+				e.preventDefault();
+				save();
+			}}
+		>
+			{$LL.components.graphql.editor.saveBtn()}
+		</button>
+		<button
+			class="btn btn-outline btn-error"
+			disabled={isFetching}
+			on:click={(e) => {
+				e.preventDefault();
+				messageBoxs.open({
+					title: $LL.components.graphql.table.removeModalTitle(),
+					buttonName: $LL.components.graphql.table.removeBtn(),
+					buttonType: 'error',
+					confirm: () => {
+						remove();
+						return true;
+					}
+				});
+			}}
+		>
+			{$LL.components.graphql.editor.removeBtn()}
+		</button>
+	</FormButtons>
+</Form>

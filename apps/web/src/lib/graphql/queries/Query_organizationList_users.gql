@@ -1,0 +1,44 @@
+query Query_organizationList_users($above: OrganizationExpression, $aboveId: IntExpression, $after: ID, $before: ID, $cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $first: Int, $groupBy: [String!], $id: StringExpression, $includeDeprecated: Boolean, $last: Int, $name: StringExpression, $offset: Int, $orderBy: OrganizationOrderBy, $realmId: StringExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $users: UserExpression, $version: IntExpression $skipNullArguments: Boolean = true) {
+  organizationList(above: $above aboveId: $aboveId after: $after before: $before cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId first: $first groupBy: $groupBy id: $id includeDeprecated: $includeDeprecated last: $last name: $name offset: $offset orderBy: $orderBy realmId: $realmId updateTime: $updateTime updateUserId: $updateUserId users: $users version: $version) @skipNullArguments(if: $skipNullArguments) {
+    aboveId
+    createGroupId
+    createTime
+    createUserId
+    id
+    isDeprecated
+    name
+    orgLevel3
+    realmId
+    roleDisable
+    updateTime
+    updateUserId
+    version
+    usersConnection {
+      totalCount
+      edges {
+        node {
+          age
+          createGroupId
+          createTime
+          createUserId
+          disable
+          id
+          isDeprecated
+          login
+          name
+          organizationId
+          password
+          phones
+          realmId
+          sex
+          test1
+          test2
+          updateTime
+          updateUserId
+          userDetail2
+          version
+        }
+      }
+    }
+  }
+}

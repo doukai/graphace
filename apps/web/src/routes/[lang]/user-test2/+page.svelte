@@ -1,12 +1,12 @@
 <script lang="ts">
 	import UserTest2Table from '~/lib/components/objects/user-test2/UserTest2Table.svelte';
 	import type { UserTest2, QueryTypeUserTest2ListArgs, MutationTypeUserTest2Args } from '~/lib/types/schema';
-	import { Query_userTest2ConnectionStore, Mutation_userTest2_updateStore } from '$houdini';
+	import { Query_userTest2ConnectionStore, Mutation_userTest2Store } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
 	$: Query_userTest2Connection = data.Query_userTest2Connection as Query_userTest2ConnectionStore;
-	const Mutation_userTest2_update = new Mutation_userTest2_updateStore();
+	const Mutation_userTest2 = new Mutation_userTest2Store();
 
 	const fetch = (
 		event: CustomEvent<{
@@ -27,11 +27,12 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeUserTest2Args;
+			update?: boolean;
 			then: (data: UserTest2 | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_userTest2_update.mutate(event.detail.args)
+		Mutation_userTest2.mutate({ ...event.detail.args, update: event.detail.update })
 			.then((result) => {
 				event.detail.then(result?.userTest2);
 			})

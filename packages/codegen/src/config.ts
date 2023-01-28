@@ -4,10 +4,8 @@ import type { Template } from '.';
 export interface GraphacePluginConfig extends RawTypesConfig {
   template: Template;
   schemaTypesPath?: string;
-  query?: { fieldName: string };
-  queryObjectField?: { fieldName: string, objectFieldnName: string };
-  mutation?: { fieldName: string, update?: boolean };
-  mutationObjectField?: { fieldName: string, objectFieldnName: string, update?: boolean };
+  query?: { fieldName: string, objectFieldName?: string };
+  mutation?: { fieldName: string, objectFieldName?: string };
   typeTable?: { name: string, componentsPath?: string };
   typeForm?: { name: string, componentsPath?: string };
   typeCreateForm?: { name: string, componentsPath?: string };

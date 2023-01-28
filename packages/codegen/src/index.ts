@@ -71,6 +71,26 @@ const getScalarFields = (field?: GraphQLField<any, any, any>): GraphQLField<any,
     return undefined;
 }
 
+const getSubField = (field: GraphQLField<any, any, any>, subFieldName: string | undefined): GraphQLField<any, any, any> | undefined => {
+    if (field.type && subFieldName) {
+        const fieldType = getFieldType(field.type);
+        if (isObjectType(fieldType)) {
+            return fieldType.getFields()[subFieldName];
+        }
+    }
+    return undefined;
+}
+
+const hasConnection = (field: GraphQLField<any, any, any>, subFieldName: string | undefined): boolean => {
+    if (field.type && subFieldName) {
+        const fieldType = getFieldType(field.type);
+        if (isObjectType(fieldType)) {
+            return Object.keys(fieldType.getFields()).includes(`${subFieldName}Connection`);
+        }
+    }
+    return false;
+}
+
 const getScalarNames = (type: GraphQLNamedType): string[] | undefined => {
     if (isObjectType(type) || isInputObjectType(type)) {
         const scalarNames = Object.values(type.getFields())
@@ -178,12 +198,23 @@ const renders: Record<Template, Render> = {
                 .map(key => operationFields[key])
                 .find(field => field.name === config.query?.fieldName);
             if (field) {
+                let objectField = undefined;
+                if (config.query?.objectFieldName) {
+                    const subField = getSubField(field, config.query.objectFieldName);
+                    objectField = {
+                        name: subField?.name,
+                        isListType: isListType(subField?.type),
+                        hasConnection: hasConnection(field, subField?.name),
+                        fields: getScalarFields(subField),
+                    }
+                }
                 return {
-                    content: engine.renderFileSync(config.template, { name: field?.name, args: field?.args, isConnection: isConnection(field.name), fields: getScalarFields(field) }),
+                    content: engine.renderFileSync(config.template, { name: field?.name, args: field?.args, isConnection: isConnection(field.name), fields: getScalarFields(field), objectField: objectField }),
                 };
             }
 
         }
+        console.error(JSON.stringify(config.query));
         throw new Error(`${config.query?.fieldName} not exist in QueryType`);
     },
     mutation: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
@@ -193,8 +224,18 @@ const renders: Record<Template, Render> = {
                 .map(key => operationFields[key])
                 .find(field => field.name === config.mutation?.fieldName);
             if (field) {
+                let objectField = undefined;
+                if (config.mutation?.objectFieldName) {
+                    const subField = getSubField(field, config.mutation.objectFieldName);
+                    objectField = {
+                        name: subField?.name,
+                        isListType: isListType(subField?.type),
+                        hasConnection: hasConnection(field, subField?.name),
+                        fields: getScalarFields(subField),
+                    }
+                }
                 return {
-                    content: engine.renderFileSync(config.template, { name: field?.name, args: field?.args, update: config.mutation?.update, fields: getScalarFields(field) }),
+                    content: engine.renderFileSync(config.template, { name: field?.name, args: field?.args, fields: getScalarFields(field), objectField: objectField }),
                 };
             }
 
@@ -235,7 +276,7 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type), schemaTypesPath: config.schemaTypesPath || 'lib/types/schema', enumsPath: `${config.typeForm?.componentsPath}/enums` }),
+                    content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type), rows: getFields(schema, type)?.filter(field => field.isScalarType || field.isEnumType).length, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema', enumsPath: `${config.typeForm?.componentsPath}/enums` }),
                 };
             }
         }

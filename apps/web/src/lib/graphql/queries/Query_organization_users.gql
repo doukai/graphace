@@ -1,0 +1,44 @@
+query Query_organization_users($above: OrganizationExpression, $aboveId: IntExpression, $cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $id: StringExpression, $includeDeprecated: Boolean, $name: StringExpression, $realmId: StringExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $users: UserExpression, $version: IntExpression $skipNullArguments: Boolean = true) {
+  organization(above: $above aboveId: $aboveId cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId id: $id includeDeprecated: $includeDeprecated name: $name realmId: $realmId updateTime: $updateTime updateUserId: $updateUserId users: $users version: $version) @skipNullArguments(if: $skipNullArguments) {
+    aboveId
+    createGroupId
+    createTime
+    createUserId
+    id
+    isDeprecated
+    name
+    orgLevel3
+    realmId
+    roleDisable
+    updateTime
+    updateUserId
+    version
+    usersConnection {
+      totalCount
+      edges {
+        node {
+          age
+          createGroupId
+          createTime
+          createUserId
+          disable
+          id
+          isDeprecated
+          login
+          name
+          organizationId
+          password
+          phones
+          realmId
+          sex
+          test1
+          test2
+          updateTime
+          updateUserId
+          userDetail2
+          version
+        }
+      }
+    }
+  }
+}

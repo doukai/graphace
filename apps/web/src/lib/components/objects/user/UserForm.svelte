@@ -19,6 +19,7 @@
 	const dispatch = createEventDispatcher<{
 		mutation: {
 			args: MutationTypeUserArgs;
+			update?: boolean;
 			then: (data: User | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
@@ -55,6 +56,7 @@
 		if (node) {
 			dispatch('mutation', {
 				args: { id: node.id, isDeprecated: true },
+				update: true,
 				then: (data) => {
 					notifications.success($LL.message.removeSuccess());
 				},
@@ -67,9 +69,9 @@
 	};
 </script>
 
-{#if !isFetching && node}
-	<Form>
-		<FormItems title="User">
+<Form>
+	<FormItems title="User">
+		{#if !isFetching && node}
 			<IntItem label="age" name="age" bind:value={node.age} error={errors.age} />
 			<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} error={errors.createGroupId} />
 			<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} error={errors.createTime} />
@@ -90,45 +92,47 @@
 			<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
 			<FormItem label="userDetail2">{node.userDetail2}</FormItem>
 			<IntItem label="version" name="version" bind:value={node.version} error={errors.version} />
-		</FormItems>
-		<FormButtons>
-			<button
-				class="btn"
-				on:click={(e) => {
-					e.preventDefault();
-					goto('../user');
-				}}
-			>
-				{$LL.components.graphql.editor.backBtn()}
-			</button>
-			<button
-				class="btn"
-				on:click={(e) => {
-					e.preventDefault();
-					save();
-				}}
-			>
-				{$LL.components.graphql.editor.saveBtn()}
-			</button>
-			<button
-				class="btn btn-outline btn-error"
-				on:click={(e) => {
-					e.preventDefault();
-					messageBoxs.open({
-						title: $LL.components.graphql.table.removeModalTitle(),
-						buttonName: $LL.components.graphql.table.removeBtn(),
-						buttonType: 'error',
-						confirm: () => {
-							remove();
-							return true;
-						}
-					});
-				}}
-			>
-				{$LL.components.graphql.editor.removeBtn()}
-			</button>
-		</FormButtons>
-	</Form>
-{:else}
-	<FormLoading />
-{/if}
+		{:else}
+			<FormLoading rows={20} />
+		{/if}
+	</FormItems>
+	<FormButtons>
+		<button
+			class="btn"
+			on:click={(e) => {
+				e.preventDefault();
+				goto('../user');
+			}}
+		>
+			{$LL.components.graphql.editor.backBtn()}
+		</button>
+		<button
+			class="btn"
+			disabled={isFetching}
+			on:click={(e) => {
+				e.preventDefault();
+				save();
+			}}
+		>
+			{$LL.components.graphql.editor.saveBtn()}
+		</button>
+		<button
+			class="btn btn-outline btn-error"
+			disabled={isFetching}
+			on:click={(e) => {
+				e.preventDefault();
+				messageBoxs.open({
+					title: $LL.components.graphql.table.removeModalTitle(),
+					buttonName: $LL.components.graphql.table.removeBtn(),
+					buttonType: 'error',
+					confirm: () => {
+						remove();
+						return true;
+					}
+				});
+			}}
+		>
+			{$LL.components.graphql.editor.removeBtn()}
+		</button>
+	</FormButtons>
+</Form>

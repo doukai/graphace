@@ -1,4 +1,4 @@
-query Query_findRole2($disable: Boolean $name: String $type: Int $skipNullArguments: Boolean = true) {
+query Query_findRole2($disable: Boolean, $name: String, $type: Int $skipNullArguments: Boolean = true) {
   findRole2(disable: $disable name: $name type: $type) @skipNullArguments(if: $skipNullArguments) {
     createGroupId
     createTime

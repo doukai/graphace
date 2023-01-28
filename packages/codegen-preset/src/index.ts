@@ -1,8 +1,9 @@
 import type { Types } from "@graphql-codegen/plugin-helpers";
-import { GraphQLSchema, isEnumType, isListType, isNonNullType, isObjectType, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType } from "graphql";
+import { isEnumType, isListType, isNonNullType, isObjectType, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType } from "graphql";
 import type { GraphacePresetConfig } from "./config";
 import * as changeCase from "change-case";
 
+const aggregateSuffix = ["Count", "Sum", "Avg", "Max", "Min", "Aggregate"];
 const queryTypeName = "QueryType";
 const mutationTypeName = "MutationType";
 const connectionSuffix = "Connection";
@@ -12,6 +13,7 @@ const introspectionPrefix = "__";
 const innerEnum = ["Operator", "Conditional", "Sort", "Function"];
 
 const isOperationType = (name?: string): boolean => { return [queryTypeName, mutationTypeName].some(typeName => name === typeName) };
+const isAggregate = (name?: string): boolean => { return aggregateSuffix.some(suffix => name?.slice(-suffix.length) === suffix) };
 const isConnection = (name?: string): boolean => { return name?.slice(-connectionSuffix.length) === connectionSuffix };
 const isEdge = (name?: string): boolean => { return name?.slice(-edgeSuffix.length) === edgeSuffix };
 const isPageInfo = (name?: string): boolean => { return name === pageInfoName };
@@ -25,12 +27,13 @@ const getFieldType = (type: GraphQLOutputType): GraphQLNamedType => {
     return type;
 }
 
-const getObjectFields = (schema: GraphQLSchema | undefined, type: GraphQLNamedType): GraphQLField<any, any, any>[] | undefined => {
+const getObjectFields = (type: GraphQLNamedType): GraphQLField<any, any, any>[] | undefined => {
     if (isObjectType(type)) {
         return Object.values(type.getFields())
             .filter(field => isObjectType(getFieldType(field.type)))
             .filter(field => !isConnection(getFieldType(field.type).name))
             .filter(field => !isEdge(getFieldType(field.type).name))
+            .filter(field => !isAggregate(field.name))
             .filter(field => !isPageInfo(getFieldType(field.type).name))
             .filter(field => !isIntrospection(getFieldType(field.type).name))
     }
@@ -74,19 +77,21 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             }) || [];
 
         const queryObjectFieldList = Object.values(queryFields)
-            .flatMap(field => getObjectFields(options.schemaAst, getFieldType(field.type))?.map(objectField => { return { fieldName: field.name, objectFieldnName: objectField.name } }))
+            .filter(field => !isListType(getFieldType(field.type)))
+            .filter(field => !isConnection(getFieldType(field.type).name))
+            .flatMap(field => getObjectFields(getFieldType(field.type))?.map(objectField => { return { fieldName: field.name, objectFieldName: objectField.name } }) || [])
             .map(objectField => {
                 return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/graphql'}/queries/Query_${objectField?.fieldName}_${objectField?.objectFieldnName}.gql`,
+                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/graphql'}/queries/Query_${objectField?.fieldName}_${objectField?.objectFieldName}.gql`,
                     documents: options.documents,
                     plugins: options.plugins,
                     pluginMap: options.pluginMap,
                     config: {
                         ...options.config,
-                        template: 'queryObjectField',
-                        queryObjectField: {
+                        template: 'query',
+                        query: {
                             fieldName: objectField?.fieldName,
-                            objectFieldnName: objectField?.objectFieldnName
+                            objectFieldName: objectField?.objectFieldName
                         }
                     },
                     schema: options.schema,
@@ -116,31 +121,11 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             }) || [];
 
         const mutationObjectFieldList = Object.values(mutationFields)
-            .flatMap(field => getObjectFields(options.schemaAst, getFieldType(field.type))?.map(objectField => { return { fieldName: field.name, objectFieldnName: objectField.name } }))
+            .filter(field => !isListType(getFieldType(field.type)))
+            .flatMap(field => getObjectFields(getFieldType(field.type) || [])?.map(objectField => { return { fieldName: field.name, objectFieldName: objectField.name } }) || [])
             .map(objectField => {
                 return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/graphql'}/mutations/Mutation_${objectField?.fieldName}_${objectField?.objectFieldnName}.gql`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'mutationObjectField',
-                        mutationObjectField: {
-                            fieldName: objectField?.fieldName,
-                            objectFieldnName: objectField?.objectFieldnName
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
-
-        const mutationUpdateList = Object.values(mutationFields)
-            .map(field => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/graphql'}/mutations/Mutation_${field.name}_update.gql`,
+                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/graphql'}/mutations/Mutation_${objectField?.fieldName}_${objectField?.objectFieldName}.gql`,
                     documents: options.documents,
                     plugins: options.plugins,
                     pluginMap: options.pluginMap,
@@ -148,31 +133,8 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         ...options.config,
                         template: 'mutation',
                         mutation: {
-                            fieldName: field.name,
-                            update: true
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
-
-        const mutationObjectFieldUpdateList = Object.values(mutationFields)
-            .flatMap(field => getObjectFields(options.schemaAst, getFieldType(field.type))?.map(objectField => { return { fieldName: field.name, objectFieldnName: objectField.name } }))
-            .map(objectField => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/graphql'}/mutations/Mutation_${objectField?.fieldName}_${objectField?.objectFieldnName}_update.gql`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'mutationObjectField',
-                        mutationObjectField: {
                             fieldName: objectField?.fieldName,
-                            objectFieldnName: objectField?.objectFieldnName,
-                            update: true
+                            objectFieldName: objectField?.objectFieldName
                         }
                     },
                     schema: options.schema,
@@ -446,8 +408,6 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             ...queryObjectFieldList,
             ...mutationList,
             ...mutationObjectFieldList,
-            ...mutationUpdateList,
-            ...mutationObjectFieldUpdateList,
             typeMenu,
             ...typeTableList,
             ...typeFormList,

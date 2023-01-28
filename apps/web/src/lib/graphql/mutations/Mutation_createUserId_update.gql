@@ -1,3 +1,0 @@
-mutation Mutation_createUserId_update {
-  createUserId @update
-}

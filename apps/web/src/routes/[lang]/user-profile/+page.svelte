@@ -1,12 +1,12 @@
 <script lang="ts">
 	import UserProfileTable from '~/lib/components/objects/user-profile/UserProfileTable.svelte';
 	import type { UserProfile, QueryTypeUserProfileListArgs, MutationTypeUserProfileArgs } from '~/lib/types/schema';
-	import { Query_userProfileConnectionStore, Mutation_userProfile_updateStore } from '$houdini';
+	import { Query_userProfileConnectionStore, Mutation_userProfileStore } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
 	$: Query_userProfileConnection = data.Query_userProfileConnection as Query_userProfileConnectionStore;
-	const Mutation_userProfile_update = new Mutation_userProfile_updateStore();
+	const Mutation_userProfile = new Mutation_userProfileStore();
 
 	const fetch = (
 		event: CustomEvent<{
@@ -27,11 +27,12 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeUserProfileArgs;
+			update?: boolean;
 			then: (data: UserProfile | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_userProfile_update.mutate(event.detail.args)
+		Mutation_userProfile.mutate({ ...event.detail.args, update: event.detail.update })
 			.then((result) => {
 				event.detail.then(result?.userProfile);
 			})

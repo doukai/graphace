@@ -34,6 +34,7 @@
 		};
 		mutation: {
 			args: MutationTypeUserProfileArgs;
+			update?: boolean;
 			then: (data: UserProfile | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
@@ -168,6 +169,7 @@
 	async function removeRow(id: string) {
 		dispatch('mutation', {
 			args: { id: id, isDeprecated: true },
+			update: true,
 			then: (data) => {
 				notifications.success($LL.message.removeSuccess());
 				query();
@@ -185,6 +187,7 @@
 				where: { id: { opr: Operator.IN, in: selectedIdList } },
 				isDeprecated: true
 			},
+			update: true,
 			then: (data) => {
 				notifications.success($LL.message.removeSuccess());
 				query();
@@ -340,7 +343,7 @@
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading rows={pageSize} cols={13}/>
+		<TableLoading rows={pageSize} cols={13 + 2}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}

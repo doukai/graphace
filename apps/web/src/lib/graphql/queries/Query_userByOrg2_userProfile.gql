@@ -1,0 +1,39 @@
+query Query_userByOrg2_userProfile($organization: OrganizationInput $skipNullArguments: Boolean = true) {
+  userByOrg2(organization: $organization) @skipNullArguments(if: $skipNullArguments) {
+    age
+    createGroupId
+    createTime
+    createUserId
+    disable
+    id
+    isDeprecated
+    login
+    name
+    organizationId
+    password
+    phones
+    realmId
+    sex
+    test1
+    test2
+    updateTime
+    updateUserId
+    userDetail2
+    version
+    userProfile {
+      address
+      createGroupId
+      createTime
+      createUserId
+      email
+      id
+      isDeprecated
+      qq
+      realmId
+      updateTime
+      updateUserId
+      userId
+      version
+    }
+  }
+}

@@ -1,12 +1,12 @@
 <script lang="ts">
 	import RoleRoleTypeTable from '~/lib/components/objects/role-role-type/RoleRoleTypeTable.svelte';
 	import type { RoleRoleType, QueryTypeRoleRoleTypeListArgs, MutationTypeRoleRoleTypeArgs } from '~/lib/types/schema';
-	import { Query_roleRoleTypeConnectionStore, Mutation_roleRoleType_updateStore } from '$houdini';
+	import { Query_roleRoleTypeConnectionStore, Mutation_roleRoleTypeStore } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
 	$: Query_roleRoleTypeConnection = data.Query_roleRoleTypeConnection as Query_roleRoleTypeConnectionStore;
-	const Mutation_roleRoleType_update = new Mutation_roleRoleType_updateStore();
+	const Mutation_roleRoleType = new Mutation_roleRoleTypeStore();
 
 	const fetch = (
 		event: CustomEvent<{
@@ -27,11 +27,12 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeRoleRoleTypeArgs;
+			update?: boolean;
 			then: (data: RoleRoleType | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_roleRoleType_update.mutate(event.detail.args)
+		Mutation_roleRoleType.mutate({ ...event.detail.args, update: event.detail.update })
 			.then((result) => {
 				event.detail.then(result?.roleRoleType);
 			})

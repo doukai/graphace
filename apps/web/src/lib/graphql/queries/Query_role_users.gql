@@ -1,0 +1,42 @@
+query Query_role_users($cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $id: StringExpression, $includeDeprecated: Boolean, $name: StringExpression, $realmId: StringExpression, $type: RoleTypeExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $users: UserExpression, $version: IntExpression $skipNullArguments: Boolean = true) {
+  role(cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId id: $id includeDeprecated: $includeDeprecated name: $name realmId: $realmId type: $type updateTime: $updateTime updateUserId: $updateUserId users: $users version: $version) @skipNullArguments(if: $skipNullArguments) {
+    createGroupId
+    createTime
+    createUserId
+    id
+    isDeprecated
+    name
+    realmId
+    type
+    updateTime
+    updateUserId
+    version
+    usersConnection {
+      totalCount
+      edges {
+        node {
+          age
+          createGroupId
+          createTime
+          createUserId
+          disable
+          id
+          isDeprecated
+          login
+          name
+          organizationId
+          password
+          phones
+          realmId
+          sex
+          test1
+          test2
+          updateTime
+          updateUserId
+          userDetail2
+          version
+        }
+      }
+    }
+  }
+}

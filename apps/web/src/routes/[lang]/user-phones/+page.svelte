@@ -1,12 +1,12 @@
 <script lang="ts">
 	import UserPhonesTable from '~/lib/components/objects/user-phones/UserPhonesTable.svelte';
 	import type { UserPhones, QueryTypeUserPhonesListArgs, MutationTypeUserPhonesArgs } from '~/lib/types/schema';
-	import { Query_userPhonesConnectionStore, Mutation_userPhones_updateStore } from '$houdini';
+	import { Query_userPhonesConnectionStore, Mutation_userPhonesStore } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
 	$: Query_userPhonesConnection = data.Query_userPhonesConnection as Query_userPhonesConnectionStore;
-	const Mutation_userPhones_update = new Mutation_userPhones_updateStore();
+	const Mutation_userPhones = new Mutation_userPhonesStore();
 
 	const fetch = (
 		event: CustomEvent<{
@@ -27,11 +27,12 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeUserPhonesArgs;
+			update?: boolean;
 			then: (data: UserPhones | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_userPhones_update.mutate(event.detail.args)
+		Mutation_userPhones.mutate({ ...event.detail.args, update: event.detail.update })
 			.then((result) => {
 				event.detail.then(result?.userPhones);
 			})

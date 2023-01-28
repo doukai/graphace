@@ -1,0 +1,39 @@
+query Query_userList_userProfile($after: ID, $age: IntExpression, $before: ID, $cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $disable: BooleanExpression, $first: Int, $groupBy: [String!], $id: StringExpression, $includeDeprecated: Boolean, $last: Int, $login: StringExpression, $name: StringExpression, $offset: Int, $orderBy: UserOrderBy, $organization: OrganizationExpression, $organizationId: IntExpression, $password: StringExpression, $phones: StringExpression, $realmId: StringExpression, $roles: RoleExpression, $sex: SexExpression, $test1: IntExpression, $test2: BooleanExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userProfile: UserProfileExpression, $version: IntExpression $skipNullArguments: Boolean = true) {
+  userList(after: $after age: $age before: $before cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable first: $first groupBy: $groupBy id: $id includeDeprecated: $includeDeprecated last: $last login: $login name: $name offset: $offset orderBy: $orderBy organization: $organization organizationId: $organizationId password: $password phones: $phones realmId: $realmId roles: $roles sex: $sex test1: $test1 test2: $test2 updateTime: $updateTime updateUserId: $updateUserId userProfile: $userProfile version: $version) @skipNullArguments(if: $skipNullArguments) {
+    age
+    createGroupId
+    createTime
+    createUserId
+    disable
+    id
+    isDeprecated
+    login
+    name
+    organizationId
+    password
+    phones
+    realmId
+    sex
+    test1
+    test2
+    updateTime
+    updateUserId
+    userDetail2
+    version
+    userProfile {
+      address
+      createGroupId
+      createTime
+      createUserId
+      email
+      id
+      isDeprecated
+      qq
+      realmId
+      updateTime
+      updateUserId
+      userId
+      version
+    }
+  }
+}

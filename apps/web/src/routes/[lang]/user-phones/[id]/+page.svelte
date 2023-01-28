@@ -13,11 +13,12 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeUserPhonesArgs;
+			update?: boolean;
 			then: (data: UserPhones | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_userPhones.mutate(event.detail.args)
+		Mutation_userPhones.mutate({ ...event.detail.args, update: event.detail.update })
 			.then((result) => {
 				event.detail.then(result?.userPhones);
 			})

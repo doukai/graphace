@@ -1,0 +1,42 @@
+mutation Mutation_roleList_users($createGroupId: String, $createTime: Timestamp, $createUserId: String, $id: ID, $isDeprecated: Boolean, $list: [RoleInput], $name: String, $realmId: String, $type: [RoleType], $updateTime: Timestamp, $updateUserId: String, $users: [UserInput], $version: Int, $where: RoleExpression $skipNullArguments: Boolean = true, $update: Boolean = false) {
+  roleList(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId id: $id isDeprecated: $isDeprecated list: $list name: $name realmId: $realmId type: $type updateTime: $updateTime updateUserId: $updateUserId users: $users version: $version where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) {
+    createGroupId
+    createTime
+    createUserId
+    id
+    isDeprecated
+    name
+    realmId
+    type
+    updateTime
+    updateUserId
+    version
+    usersConnection {
+      totalCount
+      edges {
+        node {
+          age
+          createGroupId
+          createTime
+          createUserId
+          disable
+          id
+          isDeprecated
+          login
+          name
+          organizationId
+          password
+          phones
+          realmId
+          sex
+          test1
+          test2
+          updateTime
+          updateUserId
+          userDetail2
+          version
+        }
+      }
+    }
+  }
+}

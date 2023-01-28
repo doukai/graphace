@@ -13,7 +13,7 @@ directive @cursor on FIELD_DEFINITION
 
 directive @dataType(decimals: Int, default: String, length: Int, type: String) on FIELD_DEFINITION
 
-directive @delete on FIELD
+directive @delete(if: Boolean!) on FIELD
 
 directive @denyAll on OBJECT
 
@@ -33,7 +33,7 @@ directive @skipNullArguments(if: Boolean!) on FIELD
 
 directive @table(engine: String) on OBJECT
 
-directive @update on FIELD
+directive @update(if: Boolean!) on FIELD
 
 directive @validation(allOf: [ValidationInput], anyOf: [ValidationInput], const: String, contentEncoding: String, contentMediaType: String, dependentRequired: [Property], else: ValidationInput, enum: [String], exclusiveMaximum: Float, exclusiveMinimum: Float, format: String, if: ValidationInput, items: ValidationInput, maxItems: Int, maxLength: Int, maximum: Float, minItems: Int, minLength: Int, minimum: Float, multipleOf: Float, not: ValidationInput, oneOf: [ValidationInput], pattern: String, properties: [Property], then: ValidationInput, uniqueItems: Boolean) on FIELD_DEFINITION
 

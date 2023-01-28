@@ -1,4 +1,4 @@
-query Query_{{ name }}{% if args and args.length > 0 %}({% for arg in args %}${{ arg.name }}: {{ arg.type }}{% if forloop.last == false %} {% endif %}{% endfor %} $skipNullArguments: Boolean = true){% endif %} {
+query Query_{{ name }}{% if objectField %}_{{ objectField.name }}{% endif %}{% if args and args.length > 0 %}({% for arg in args %}${{ arg.name }}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %} $skipNullArguments: Boolean = true){% endif %} {
   {{ name }}{% if args and args.length > 0 %}({% for arg in args %}{{ arg.name }}: ${{ arg.name }}{% if forloop.last == false %} {% endif %}{% endfor %}) @skipNullArguments(if: $skipNullArguments){% endif %}
     {%- if isConnection %} {
     totalCount
@@ -8,6 +8,26 @@ query Query_{{ name }}{% if args and args.length > 0 %}({% for arg in args %}${{
         {%- for field in fields %}
         {{ field.name }}
         {%- endfor %}
+        {%- if objectField %}
+        {%- if objectField.isListType and objectField.hasConnection %}
+        {{ objectField.name }}Connection {
+          totalCount
+          edges {
+            node {
+              {%- for field in objectField.fields %}
+              {{ field.name }}
+              {%- endfor %}
+            }
+          }
+        }
+        {%- else -%}
+        {{ objectField.name }} {
+          {%- for field in objectField.fields %}
+          {{ field.name }}
+          {%- endfor %}
+        }
+        {%- endif %}
+        {%- endif %}
       }
         {%- endif %}
     }
@@ -17,6 +37,26 @@ query Query_{{ name }}{% if args and args.length > 0 %}({% for arg in args %}${{
     {%- for field in fields %}
     {{ field.name }}
     {%- endfor %}
+    {%- if objectField %}
+    {%- if objectField.isListType and objectField.hasConnection %}
+    {{ objectField.name }}Connection {
+      totalCount
+      edges {
+        node {
+          {%- for field in objectField.fields %}
+          {{ field.name }}
+          {%- endfor %}
+        }
+      }
+    }
+    {%- else %}
+    {{ objectField.name }} {
+      {%- for field in objectField.fields %}
+      {{ field.name }}
+      {%- endfor %}
+    }
+    {%- endif %}
+    {%- endif %}
   }
     {%- endif %}
     {%- endif %}

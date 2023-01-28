@@ -1,12 +1,12 @@
 <script lang="ts">
 	import {{ name }}Table from '~/{{ tablePath }}/{{ name | paramCase }}/{{ name }}Table.svelte';
 	import type { {{ name }}, QueryType{{ name }}ListArgs, MutationType{{ name }}Args } from '~/{{ schemaTypesPath }}';
-	import { Query_{{ name | camelCase }}ConnectionStore, Mutation_{{ name | camelCase }}_updateStore } from '$houdini';
+	import { Query_{{ name | camelCase }}ConnectionStore, Mutation_{{ name | camelCase }}Store } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
 	$: Query_{{ name | camelCase }}Connection = data.Query_{{ name | camelCase }}Connection as Query_{{ name | camelCase }}ConnectionStore;
-	const Mutation_{{ name | camelCase }}_update = new Mutation_{{ name | camelCase }}_updateStore();
+	const Mutation_{{ name | camelCase }} = new Mutation_{{ name | camelCase }}Store();
 
 	const fetch = (
 		event: CustomEvent<{
@@ -27,11 +27,12 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationType{{ name }}Args;
+			update?: boolean;
 			then: (data: {{ name }} | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_{{ name | camelCase }}_update.mutate(event.detail.args)
+		Mutation_{{ name | camelCase }}.mutate({ ...event.detail.args, update: event.detail.update })
 			.then((result) => {
 				event.detail.then(result?.{{ name | camelCase }});
 			})

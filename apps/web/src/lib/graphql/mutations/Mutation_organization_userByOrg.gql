@@ -1,0 +1,39 @@
+mutation Mutation_organization_userByOrg($above: OrganizationInput, $aboveId: Int, $createGroupId: String, $createTime: Timestamp, $createUserId: String, $id: ID, $isDeprecated: Boolean, $name: String, $realmId: String, $updateTime: Timestamp, $updateUserId: String, $users: [UserInput], $version: Int, $where: OrganizationExpression $skipNullArguments: Boolean = true, $update: Boolean = false) {
+  organization(above: $above aboveId: $aboveId createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId id: $id isDeprecated: $isDeprecated name: $name realmId: $realmId updateTime: $updateTime updateUserId: $updateUserId users: $users version: $version where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) {
+    aboveId
+    createGroupId
+    createTime
+    createUserId
+    id
+    isDeprecated
+    name
+    orgLevel3
+    realmId
+    roleDisable
+    updateTime
+    updateUserId
+    version
+    userByOrg {
+      age
+      createGroupId
+      createTime
+      createUserId
+      disable
+      id
+      isDeprecated
+      login
+      name
+      organizationId
+      password
+      phones
+      realmId
+      sex
+      test1
+      test2
+      updateTime
+      updateUserId
+      userDetail2
+      version
+    }
+  }
+}
