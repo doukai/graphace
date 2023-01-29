@@ -1,5 +1,5 @@
-mutation Mutation_userProfile_user($address: String, $createGroupId: String, $createTime: Timestamp, $createUserId: String, $email: String, $id: ID, $isDeprecated: Boolean, $qq: String, $realmId: String, $updateTime: Timestamp, $updateUserId: String, $user: UserInput, $userId: String, $version: Int, $where: UserProfileExpression $skipNullArguments: Boolean = true, $update: Boolean = false) {
-  userProfile(address: $address createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId email: $email id: $id isDeprecated: $isDeprecated qq: $qq realmId: $realmId updateTime: $updateTime updateUserId: $updateUserId user: $user userId: $userId version: $version where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) {
+mutation Mutation_userProfile_user($userProfile_id: ID, $userProfile_user: UserInput, $age: IntExpression, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $disable: BooleanExpression, $id: StringExpression, $includeDeprecated: Boolean, $login: StringExpression, $name: StringExpression, $organization: OrganizationExpression, $organizationId: IntExpression, $password: StringExpression, $phones: StringExpression, $realmId: StringExpression, $roles: RoleExpression, $sex: SexExpression, $test1: IntExpression, $test2: BooleanExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userProfile: UserProfileExpression, $version: IntExpression, $skipNullArguments: Boolean = true, $update: Boolean = false) {
+  userProfile(id: $userProfile_id user: $userProfile_user) @skipNullArguments(if: $skipNullArguments) @update(if: $update) {
     address
     createGroupId
     createTime
@@ -13,7 +13,7 @@ mutation Mutation_userProfile_user($address: String, $createGroupId: String, $cr
     updateUserId
     userId
     version
-    user {
+    user(age: $age createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable id: $id includeDeprecated: $includeDeprecated login: $login name: $name organization: $organization organizationId: $organizationId password: $password phones: $phones realmId: $realmId roles: $roles sex: $sex test1: $test1 test2: $test2 updateTime: $updateTime updateUserId: $updateUserId userProfile: $userProfile version: $version) {
       age
       createGroupId
       createTime

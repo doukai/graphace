@@ -1,5 +1,5 @@
-query Query_role_users($cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $id: StringExpression, $includeDeprecated: Boolean, $name: StringExpression, $realmId: StringExpression, $type: RoleTypeExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $users: UserExpression, $version: IntExpression $skipNullArguments: Boolean = true) {
-  role(cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId id: $id includeDeprecated: $includeDeprecated name: $name realmId: $realmId type: $type updateTime: $updateTime updateUserId: $updateUserId users: $users version: $version) @skipNullArguments(if: $skipNullArguments) {
+query Query_role_users($role_id: StringExpression, $age: IntExpression, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $disable: BooleanExpression, $first: Int, $groupBy: [String!], $id: StringExpression, $includeDeprecated: Boolean, $last: Int, $login: StringExpression, $name: StringExpression, $offset: Int, $orderBy: UserOrderBy, $organization: OrganizationExpression, $organizationId: IntExpression, $password: StringExpression, $phones: StringExpression, $realmId: StringExpression, $roles: RoleExpression, $sex: SexExpression, $test1: IntExpression, $test2: BooleanExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userProfile: UserProfileExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
+  role(id: $role_id) @skipNullArguments(if: $skipNullArguments) {
     createGroupId
     createTime
     createUserId
@@ -11,7 +11,7 @@ query Query_role_users($cond: Conditional, $createGroupId: StringExpression, $cr
     updateTime
     updateUserId
     version
-    usersConnection {
+    usersConnection(age: $age createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable first: $first groupBy: $groupBy id: $id includeDeprecated: $includeDeprecated last: $last login: $login name: $name offset: $offset orderBy: $orderBy organization: $organization organizationId: $organizationId password: $password phones: $phones realmId: $realmId roles: $roles sex: $sex test1: $test1 test2: $test2 updateTime: $updateTime updateUserId: $updateUserId userProfile: $userProfile version: $version) {
       totalCount
       edges {
         node {

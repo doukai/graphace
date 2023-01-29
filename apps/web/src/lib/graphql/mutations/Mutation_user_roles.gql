@@ -1,5 +1,5 @@
-mutation Mutation_user_roles($age: Int, $createGroupId: String, $createTime: Timestamp, $createUserId: String, $disable: Boolean, $id: ID, $isDeprecated: Boolean, $login: String, $name: String, $organization: OrganizationInput, $organizationId: Int, $password: String, $phones: [String], $realmId: String, $roles: [RoleInput], $sex: Sex, $test1: [Int], $test2: [Boolean], $updateTime: Timestamp, $updateUserId: String, $userProfile: UserProfileInput, $version: Int, $where: UserExpression $skipNullArguments: Boolean = true, $update: Boolean = false) {
-  user(age: $age createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable id: $id isDeprecated: $isDeprecated login: $login name: $name organization: $organization organizationId: $organizationId password: $password phones: $phones realmId: $realmId roles: $roles sex: $sex test1: $test1 test2: $test2 updateTime: $updateTime updateUserId: $updateUserId userProfile: $userProfile version: $version where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) {
+mutation Mutation_user_roles($user_id: ID, $user_roles: [RoleInput], $first: Int, $groupBy: [String!], $id: StringExpression, $last: Int, $name: StringExpression, $offset: Int, $orderBy: RoleOrderBy, $type: RoleTypeExpression, $users: UserExpression, $skipNullArguments: Boolean = true, $update: Boolean = false) {
+  user(id: $user_id roles: $user_roles) @skipNullArguments(if: $skipNullArguments) @update(if: $update) {
     age
     createGroupId
     createTime
@@ -20,7 +20,7 @@ mutation Mutation_user_roles($age: Int, $createGroupId: String, $createTime: Tim
     updateUserId
     userDetail2
     version
-    rolesConnection {
+    rolesConnection(first: $first groupBy: $groupBy id: $id last: $last name: $name offset: $offset orderBy: $orderBy type: $type users: $users) {
       totalCount
       edges {
         node {

@@ -553,10 +553,15 @@ export type OrganizationUsersAggregateArgs = {
   createTime?: InputMaybe<StringExpression>;
   createUserId?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
   login?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserOrderBy>;
   organization?: InputMaybe<OrganizationExpression>;
   organizationId?: InputMaybe<IntExpression>;
   password?: InputMaybe<StringExpression>;
@@ -579,10 +584,15 @@ export type OrganizationUsersConnectionArgs = {
   createTime?: InputMaybe<StringExpression>;
   createUserId?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
   login?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserOrderBy>;
   organization?: InputMaybe<OrganizationExpression>;
   organizationId?: InputMaybe<IntExpression>;
   password?: InputMaybe<StringExpression>;
@@ -1457,10 +1467,15 @@ export type RoleUsersAggregateArgs = {
   createTime?: InputMaybe<StringExpression>;
   createUserId?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
   login?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserOrderBy>;
   organization?: InputMaybe<OrganizationExpression>;
   organizationId?: InputMaybe<IntExpression>;
   password?: InputMaybe<StringExpression>;
@@ -1483,10 +1498,15 @@ export type RoleUsersConnectionArgs = {
   createTime?: InputMaybe<StringExpression>;
   createUserId?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
   login?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserOrderBy>;
   organization?: InputMaybe<OrganizationExpression>;
   organizationId?: InputMaybe<IntExpression>;
   password?: InputMaybe<StringExpression>;
@@ -1771,16 +1791,26 @@ export type UserRolesArgs = {
 
 
 export type UserRolesAggregateArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
+  last?: InputMaybe<Scalars['Int']>;
   name?: InputMaybe<StringExpression>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleOrderBy>;
   type?: InputMaybe<RoleTypeExpression>;
   users?: InputMaybe<UserExpression>;
 };
 
 
 export type UserRolesConnectionArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
+  last?: InputMaybe<Scalars['Int']>;
   name?: InputMaybe<StringExpression>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleOrderBy>;
   type?: InputMaybe<RoleTypeExpression>;
   users?: InputMaybe<UserExpression>;
 };

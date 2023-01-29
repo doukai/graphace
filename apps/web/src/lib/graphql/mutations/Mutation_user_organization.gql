@@ -1,5 +1,5 @@
-mutation Mutation_user_organization($age: Int, $createGroupId: String, $createTime: Timestamp, $createUserId: String, $disable: Boolean, $id: ID, $isDeprecated: Boolean, $login: String, $name: String, $organization: OrganizationInput, $organizationId: Int, $password: String, $phones: [String], $realmId: String, $roles: [RoleInput], $sex: Sex, $test1: [Int], $test2: [Boolean], $updateTime: Timestamp, $updateUserId: String, $userProfile: UserProfileInput, $version: Int, $where: UserExpression $skipNullArguments: Boolean = true, $update: Boolean = false) {
-  user(age: $age createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable id: $id isDeprecated: $isDeprecated login: $login name: $name organization: $organization organizationId: $organizationId password: $password phones: $phones realmId: $realmId roles: $roles sex: $sex test1: $test1 test2: $test2 updateTime: $updateTime updateUserId: $updateUserId userProfile: $userProfile version: $version where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) {
+mutation Mutation_user_organization($user_id: ID, $user_organization: OrganizationInput, $above: OrganizationExpression, $aboveId: IntExpression, $id: StringExpression, $name: StringExpression, $users: UserExpression, $skipNullArguments: Boolean = true, $update: Boolean = false) {
+  user(id: $user_id organization: $user_organization) @skipNullArguments(if: $skipNullArguments) @update(if: $update) {
     age
     createGroupId
     createTime
@@ -20,7 +20,7 @@ mutation Mutation_user_organization($age: Int, $createGroupId: String, $createTi
     updateUserId
     userDetail2
     version
-    organization {
+    organization(above: $above aboveId: $aboveId id: $id name: $name users: $users) {
       aboveId
       createGroupId
       createTime

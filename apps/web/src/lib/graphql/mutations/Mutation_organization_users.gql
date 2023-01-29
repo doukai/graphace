@@ -1,5 +1,5 @@
-mutation Mutation_organization_users($above: OrganizationInput, $aboveId: Int, $createGroupId: String, $createTime: Timestamp, $createUserId: String, $id: ID, $isDeprecated: Boolean, $name: String, $realmId: String, $updateTime: Timestamp, $updateUserId: String, $users: [UserInput], $version: Int, $where: OrganizationExpression $skipNullArguments: Boolean = true, $update: Boolean = false) {
-  organization(above: $above aboveId: $aboveId createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId id: $id isDeprecated: $isDeprecated name: $name realmId: $realmId updateTime: $updateTime updateUserId: $updateUserId users: $users version: $version where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) {
+mutation Mutation_organization_users($organization_id: ID, $organization_users: [UserInput], $age: IntExpression, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $disable: BooleanExpression, $first: Int, $groupBy: [String!], $id: StringExpression, $includeDeprecated: Boolean, $last: Int, $login: StringExpression, $name: StringExpression, $offset: Int, $orderBy: UserOrderBy, $organization: OrganizationExpression, $organizationId: IntExpression, $password: StringExpression, $phones: StringExpression, $realmId: StringExpression, $roles: RoleExpression, $sex: SexExpression, $test1: IntExpression, $test2: BooleanExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userProfile: UserProfileExpression, $version: IntExpression, $skipNullArguments: Boolean = true, $update: Boolean = false) {
+  organization(id: $organization_id users: $organization_users) @skipNullArguments(if: $skipNullArguments) @update(if: $update) {
     aboveId
     createGroupId
     createTime
@@ -13,7 +13,7 @@ mutation Mutation_organization_users($above: OrganizationInput, $aboveId: Int, $
     updateTime
     updateUserId
     version
-    usersConnection {
+    usersConnection(age: $age createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable first: $first groupBy: $groupBy id: $id includeDeprecated: $includeDeprecated last: $last login: $login name: $name offset: $offset orderBy: $orderBy organization: $organization organizationId: $organizationId password: $password phones: $phones realmId: $realmId roles: $roles sex: $sex test1: $test1 test2: $test2 updateTime: $updateTime updateUserId: $updateUserId userProfile: $userProfile version: $version) {
       totalCount
       edges {
         node {

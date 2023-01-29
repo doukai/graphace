@@ -77,7 +77,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             }) || [];
 
         const queryObjectFieldList = Object.values(queryFields)
-            .filter(field => !isListType(getFieldType(field.type)))
+            .filter(field => !isListType(field.type))
             .filter(field => !isConnection(getFieldType(field.type).name))
             .flatMap(field => getObjectFields(getFieldType(field.type))?.map(objectField => { return { fieldName: field.name, objectFieldName: objectField.name } }) || [])
             .map(objectField => {
@@ -121,7 +121,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             }) || [];
 
         const mutationObjectFieldList = Object.values(mutationFields)
-            .filter(field => !isListType(getFieldType(field.type)))
+            .filter(field => !isListType(field.type))
             .flatMap(field => getObjectFields(getFieldType(field.type) || [])?.map(objectField => { return { fieldName: field.name, objectFieldName: objectField.name } }) || [])
             .map(objectField => {
                 return {

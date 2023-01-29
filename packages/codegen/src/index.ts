@@ -119,7 +119,7 @@ const getEnumNames = (type: GraphQLNamedType): string[] | undefined => {
     return undefined;
 }
 
-const getIDFieldName = (type: GraphQLOutputType): string | undefined => {
+const getIDFieldName = (type: GraphQLNamedType): string | undefined => {
     if (isObjectType(type) || isInputObjectType(type)) {
         const idField = Object.values(type.getFields())
             .filter(field => isScalarType(getFieldType(field.type)))
@@ -199,18 +199,21 @@ const renders: Record<Template, Render> = {
                 .map(key => operationFields[key])
                 .find(field => field.name === config.query?.fieldName);
             if (field) {
+                const idFieldName = getIDFieldName(getFieldType(field.type));
                 let objectField = undefined;
                 if (config.query?.objectFieldName) {
                     const subField = getSubField(field, config.query.objectFieldName);
                     objectField = {
                         name: subField?.name,
+                        args: subField?.args,
+                        parentArgs: field.args.filter(arg => arg.name === idFieldName).map(arg => { return { name: arg.name, alias: `${field.name}_${arg.name}`, type: arg.type } }),
                         isListType: isListType(subField?.type),
                         connectionField: getConnectionField(field, subField?.name),
                         fields: getScalarFields(subField),
                     }
                 }
                 return {
-                    content: engine.renderFileSync(config.template, { name: field?.name, args: field?.args, isConnection: isConnection(field.name), fields: getScalarFields(field), objectField: objectField }),
+                    content: engine.renderFileSync(config.template, { name: field.name, idName: idFieldName, args: field.args, fields: getScalarFields(field), objectField: objectField }),
                 };
             }
 
@@ -225,18 +228,21 @@ const renders: Record<Template, Render> = {
                 .map(key => operationFields[key])
                 .find(field => field.name === config.mutation?.fieldName);
             if (field) {
+                const idFieldName = getIDFieldName(getFieldType(field.type));
                 let objectField = undefined;
                 if (config.mutation?.objectFieldName) {
                     const subField = getSubField(field, config.mutation.objectFieldName);
                     objectField = {
                         name: subField?.name,
+                        args: subField?.args,
+                        parentArgs: field.args.filter(arg => arg.name === idFieldName).concat(field.args.filter(arg => arg.name === subField?.name)).map(arg => { return { name: arg.name, alias: `${field.name}_${arg.name}`, type: arg.type } }),
                         isListType: isListType(subField?.type),
                         connectionField: getConnectionField(field, subField?.name),
                         fields: getScalarFields(subField),
                     }
                 }
                 return {
-                    content: engine.renderFileSync(config.template, { name: field?.name, args: field?.args, fields: getScalarFields(field), objectField: objectField }),
+                    content: engine.renderFileSync(config.template, { name: field.name, idName: idFieldName, args: field.args, fields: getScalarFields(field), objectField: objectField }),
                 };
             }
 

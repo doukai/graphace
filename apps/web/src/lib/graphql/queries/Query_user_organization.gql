@@ -1,5 +1,5 @@
-query Query_user_organization($age: IntExpression, $cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $disable: BooleanExpression, $id: StringExpression, $includeDeprecated: Boolean, $login: StringExpression, $name: StringExpression, $organization: OrganizationExpression, $organizationId: IntExpression, $password: StringExpression, $phones: StringExpression, $realmId: StringExpression, $roles: RoleExpression, $sex: SexExpression, $test1: IntExpression, $test2: BooleanExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userProfile: UserProfileExpression, $version: IntExpression $skipNullArguments: Boolean = true) {
-  user(age: $age cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable id: $id includeDeprecated: $includeDeprecated login: $login name: $name organization: $organization organizationId: $organizationId password: $password phones: $phones realmId: $realmId roles: $roles sex: $sex test1: $test1 test2: $test2 updateTime: $updateTime updateUserId: $updateUserId userProfile: $userProfile version: $version) @skipNullArguments(if: $skipNullArguments) {
+query Query_user_organization($user_id: StringExpression, $above: OrganizationExpression, $aboveId: IntExpression, $id: StringExpression, $name: StringExpression, $users: UserExpression, $skipNullArguments: Boolean = true) {
+  user(id: $user_id) @skipNullArguments(if: $skipNullArguments) {
     age
     createGroupId
     createTime
@@ -20,7 +20,7 @@ query Query_user_organization($age: IntExpression, $cond: Conditional, $createGr
     updateUserId
     userDetail2
     version
-    organization {
+    organization(above: $above aboveId: $aboveId id: $id name: $name users: $users) {
       aboveId
       createGroupId
       createTime

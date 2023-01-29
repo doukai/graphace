@@ -1,5 +1,5 @@
-mutation Mutation_role_users($createGroupId: String, $createTime: Timestamp, $createUserId: String, $id: ID, $isDeprecated: Boolean, $name: String, $realmId: String, $type: [RoleType], $updateTime: Timestamp, $updateUserId: String, $users: [UserInput], $version: Int, $where: RoleExpression $skipNullArguments: Boolean = true, $update: Boolean = false) {
-  role(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId id: $id isDeprecated: $isDeprecated name: $name realmId: $realmId type: $type updateTime: $updateTime updateUserId: $updateUserId users: $users version: $version where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) {
+mutation Mutation_role_users($role_id: ID, $role_users: [UserInput], $age: IntExpression, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $disable: BooleanExpression, $first: Int, $groupBy: [String!], $id: StringExpression, $includeDeprecated: Boolean, $last: Int, $login: StringExpression, $name: StringExpression, $offset: Int, $orderBy: UserOrderBy, $organization: OrganizationExpression, $organizationId: IntExpression, $password: StringExpression, $phones: StringExpression, $realmId: StringExpression, $roles: RoleExpression, $sex: SexExpression, $test1: IntExpression, $test2: BooleanExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userProfile: UserProfileExpression, $version: IntExpression, $skipNullArguments: Boolean = true, $update: Boolean = false) {
+  role(id: $role_id users: $role_users) @skipNullArguments(if: $skipNullArguments) @update(if: $update) {
     createGroupId
     createTime
     createUserId
@@ -11,7 +11,7 @@ mutation Mutation_role_users($createGroupId: String, $createTime: Timestamp, $cr
     updateTime
     updateUserId
     version
-    usersConnection {
+    usersConnection(age: $age createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable first: $first groupBy: $groupBy id: $id includeDeprecated: $includeDeprecated last: $last login: $login name: $name offset: $offset orderBy: $orderBy organization: $organization organizationId: $organizationId password: $password phones: $phones realmId: $realmId roles: $roles sex: $sex test1: $test1 test2: $test2 updateTime: $updateTime updateUserId: $updateUserId userProfile: $userProfile version: $version) {
       totalCount
       edges {
         node {

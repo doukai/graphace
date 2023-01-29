@@ -1,5 +1,5 @@
-query Query_userProfile_user($address: StringExpression, $cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $email: StringExpression, $id: StringExpression, $includeDeprecated: Boolean, $qq: StringExpression, $realmId: StringExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $user: UserExpression, $userId: StringExpression, $version: IntExpression $skipNullArguments: Boolean = true) {
-  userProfile(address: $address cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId email: $email id: $id includeDeprecated: $includeDeprecated qq: $qq realmId: $realmId updateTime: $updateTime updateUserId: $updateUserId user: $user userId: $userId version: $version) @skipNullArguments(if: $skipNullArguments) {
+query Query_userProfile_user($userProfile_id: StringExpression, $age: IntExpression, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $disable: BooleanExpression, $id: StringExpression, $includeDeprecated: Boolean, $login: StringExpression, $name: StringExpression, $organization: OrganizationExpression, $organizationId: IntExpression, $password: StringExpression, $phones: StringExpression, $realmId: StringExpression, $roles: RoleExpression, $sex: SexExpression, $test1: IntExpression, $test2: BooleanExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userProfile: UserProfileExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
+  userProfile(id: $userProfile_id) @skipNullArguments(if: $skipNullArguments) {
     address
     createGroupId
     createTime
@@ -13,7 +13,7 @@ query Query_userProfile_user($address: StringExpression, $cond: Conditional, $cr
     updateUserId
     userId
     version
-    user {
+    user(age: $age createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable id: $id includeDeprecated: $includeDeprecated login: $login name: $name organization: $organization organizationId: $organizationId password: $password phones: $phones realmId: $realmId roles: $roles sex: $sex test1: $test1 test2: $test2 updateTime: $updateTime updateUserId: $updateUserId userProfile: $userProfile version: $version) {
       age
       createGroupId
       createTime
