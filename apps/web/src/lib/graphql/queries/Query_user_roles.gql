@@ -20,7 +20,7 @@ query Query_user_roles($user_id: StringExpression, $first: Int, $groupBy: [Strin
     updateUserId
     userDetail2
     version
-    rolesConnection(first: $first groupBy: $groupBy id: $id last: $last name: $name offset: $offset orderBy: $orderBy type: $type users: $users) {
+    rolesConnection(first: $first groupBy: $groupBy id: $id last: $last name: $name offset: $offset orderBy: $orderBy type: $type users: $users) @skipNullArguments(if: $skipNullArguments) {
       totalCount
       edges {
         node {

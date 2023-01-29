@@ -18,7 +18,7 @@ query Query_{{ name }}{% if objectField %}_{{ objectField.name }}{% endif %}
   {%- endif %} {
   {{ name }}
     {%- if objectField %}
-    {%- if objectField.parentArgs.length > 0 %}({% for arg in objectField.parentArgs %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %}{% if objectField.args.length > 0 or objectField.parentArgs.length > 0 or objectField.connectionField.args.length > 0 %} @skipNullArguments(if: $skipNullArguments){% endif %}
+    {%- if objectField.parentArgs and objectField.parentArgs.length > 0 %}({% for arg in objectField.parentArgs %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %}{% if objectField.parentArgs and objectField.parentArgs.length > 0 %} @skipNullArguments(if: $skipNullArguments){% endif %}
     {%- else %}
     {%- if args and args.length > 0 %}({% for arg in args %}{{ arg.name }}: ${{ arg.name }}{% if forloop.last == false %} {% endif %}{% endfor %}){%- if args and args.length > 0 %} @skipNullArguments(if: $skipNullArguments){% endif %}{% endif %}
     {%- endif %}
@@ -64,7 +64,7 @@ query Query_{{ name }}{% if objectField %}_{{ objectField.name }}{% endif %}
     {{ objectField.name }}Connection 
     {%- if objectField.connectionField.args and objectField.connectionField.args.length > 0 -%}
     ({% for arg in objectField.connectionField.args %}{{ arg.name }}: ${{ arg.name }}{% if forloop.last == false %} {% endif %}{% endfor %})
-    {%- endif %} {
+    {%- endif %}{% if objectField.connectionField.args and objectField.connectionField.args.length > 0 %} @skipNullArguments(if: $skipNullArguments){% endif %} {
       totalCount
       edges {
         node {
@@ -78,7 +78,7 @@ query Query_{{ name }}{% if objectField %}_{{ objectField.name }}{% endif %}
     {{ objectField.name }} 
     {%- if objectField.args and objectField.args.length > 0 -%}
     ({% for arg in objectField.args %}{{ arg.name }}: ${{ arg.name }}{% if forloop.last == false %} {% endif %}{% endfor %})
-    {%- endif %} {
+    {%- endif %}{% if objectField.args and objectField.args.length > 0 %} @skipNullArguments(if: $skipNullArguments){% endif %} {
       {%- for field in objectField.fields %}
       {{ field.name }}
       {%- endfor %}

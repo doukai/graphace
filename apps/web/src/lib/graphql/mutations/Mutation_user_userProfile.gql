@@ -20,7 +20,7 @@ mutation Mutation_user_userProfile($user_id: ID, $user_userProfile: UserProfileI
     updateUserId
     userDetail2
     version
-    userProfile(address: $address email: $email id: $id qq: $qq user: $user userId: $userId) {
+    userProfile(address: $address email: $email id: $id qq: $qq user: $user userId: $userId) @skipNullArguments(if: $skipNullArguments) @update(if: $update) {
       address
       createGroupId
       createTime

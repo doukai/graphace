@@ -213,7 +213,7 @@ const renders: Record<Template, Render> = {
                     }
                 }
                 return {
-                    content: engine.renderFileSync(config.template, { name: field.name, idName: idFieldName, args: field.args, fields: getScalarFields(field), objectField: objectField }),
+                    content: engine.renderFileSync(config.template, { name: field.name, idName: idFieldName, args: field.args, isConnection: isConnection(field.name), fields: getScalarFields(field), objectField: objectField }),
                 };
             }
 

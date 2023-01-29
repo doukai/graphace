@@ -20,7 +20,7 @@ query Query_user_organization($user_id: StringExpression, $above: OrganizationEx
     updateUserId
     userDetail2
     version
-    organization(above: $above aboveId: $aboveId id: $id name: $name users: $users) {
+    organization(above: $above aboveId: $aboveId id: $id name: $name users: $users) @skipNullArguments(if: $skipNullArguments) {
       aboveId
       createGroupId
       createTime

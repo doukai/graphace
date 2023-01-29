@@ -13,7 +13,7 @@ query Query_userProfile_user($userProfile_id: StringExpression, $age: IntExpress
     updateUserId
     userId
     version
-    user(age: $age createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable id: $id includeDeprecated: $includeDeprecated login: $login name: $name organization: $organization organizationId: $organizationId password: $password phones: $phones realmId: $realmId roles: $roles sex: $sex test1: $test1 test2: $test2 updateTime: $updateTime updateUserId: $updateUserId userProfile: $userProfile version: $version) {
+    user(age: $age createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable id: $id includeDeprecated: $includeDeprecated login: $login name: $name organization: $organization organizationId: $organizationId password: $password phones: $phones realmId: $realmId roles: $roles sex: $sex test1: $test1 test2: $test2 updateTime: $updateTime updateUserId: $updateUserId userProfile: $userProfile version: $version) @skipNullArguments(if: $skipNullArguments) {
       age
       createGroupId
       createTime

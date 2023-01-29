@@ -20,7 +20,7 @@ query Query_user_userProfile($user_id: StringExpression, $address: StringExpress
     updateUserId
     userDetail2
     version
-    userProfile(address: $address email: $email id: $id qq: $qq user: $user userId: $userId) {
+    userProfile(address: $address email: $email id: $id qq: $qq user: $user userId: $userId) @skipNullArguments(if: $skipNullArguments) {
       address
       createGroupId
       createTime

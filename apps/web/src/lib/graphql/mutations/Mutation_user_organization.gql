@@ -20,7 +20,7 @@ mutation Mutation_user_organization($user_id: ID, $user_organization: Organizati
     updateUserId
     userDetail2
     version
-    organization(above: $above aboveId: $aboveId id: $id name: $name users: $users) {
+    organization(above: $above aboveId: $aboveId id: $id name: $name users: $users) @skipNullArguments(if: $skipNullArguments) @update(if: $update) {
       aboveId
       createGroupId
       createTime

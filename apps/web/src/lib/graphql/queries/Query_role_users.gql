@@ -11,7 +11,7 @@ query Query_role_users($role_id: StringExpression, $age: IntExpression, $createG
     updateTime
     updateUserId
     version
-    usersConnection(age: $age createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable first: $first groupBy: $groupBy id: $id includeDeprecated: $includeDeprecated last: $last login: $login name: $name offset: $offset orderBy: $orderBy organization: $organization organizationId: $organizationId password: $password phones: $phones realmId: $realmId roles: $roles sex: $sex test1: $test1 test2: $test2 updateTime: $updateTime updateUserId: $updateUserId userProfile: $userProfile version: $version) {
+    usersConnection(age: $age createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable first: $first groupBy: $groupBy id: $id includeDeprecated: $includeDeprecated last: $last login: $login name: $name offset: $offset orderBy: $orderBy organization: $organization organizationId: $organizationId password: $password phones: $phones realmId: $realmId roles: $roles sex: $sex test1: $test1 test2: $test2 updateTime: $updateTime updateUserId: $updateUserId userProfile: $userProfile version: $version) @skipNullArguments(if: $skipNullArguments) {
       totalCount
       edges {
         node {
