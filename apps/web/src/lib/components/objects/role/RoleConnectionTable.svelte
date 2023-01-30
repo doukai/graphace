@@ -2,7 +2,9 @@
 	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
 	import type { Error } from '@graphace/commons/types';
-	import { IntTh, IntTd, StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
+	import { StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, BooleanTh, BooleanTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
+	import RoleTypeTh from '~/lib/components/enums/role-type/RoleTypeTh.svelte';
+	import RoleTypeTd from '~/lib/components/enums/role-type/RoleTypeTd.svelte';
 	import { SectionHead } from '@graphace/ui/components/section';
 	import { Table, TableLoading } from '@graphace/ui/components/table';
 	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
@@ -13,28 +15,30 @@
 	import LL from '~/i18n/i18n-svelte';
 	import { locale } from '~/i18n/i18n-svelte';
 	import { validateUpdate } from '@graphace/graphql/schema/JsonSchema';
+	import { Pagination } from '@graphace/ui/components/connection';
 	import {
 		Conditional,
 		Operator,
-		Organization,
-		OrganizationOrderBy,
-		QueryTypeOrganizationListArgs,
-		MutationTypeOrganizationArgs
+		Role,
+		RoleOrderBy,
+		QueryTypeRoleConnectionArgs,
+		MutationTypeRoleArgs
 	} from '~/lib/types/schema';
 
-	export let nodes: (Organization | null | undefined)[] | null | undefined;
+	export let nodes: (Role | null | undefined)[] | null | undefined;
+	export let totalCount: number = 0;
 	export let isFetching: boolean;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
-			args: QueryTypeOrganizationListArgs;
-			then: (data: (Organization | null | undefined)[] | null | undefined) => void;
+			args: QueryTypeRoleConnectionArgs;
+			then: (data: (Role | null | undefined)[] | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
 		mutation: {
-			args: MutationTypeOrganizationArgs;
+			args: MutationTypeRoleArgs;
 			update?: boolean;
-			then: (data: Organization | null | undefined) => void;
+			then: (data: Role | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
 	}>();
@@ -43,8 +47,13 @@
 
 	let showDeleteButton = false;
 	let searchValue: string | undefined;
-	let args: QueryTypeOrganizationListArgs = {};
-	let orderBy: OrganizationOrderBy = {};
+	let args: QueryTypeRoleConnectionArgs = {};
+	let orderBy: RoleOrderBy = {};
+	let after: string | undefined;
+	let before: string | undefined;
+	let pageNumber: number = 1;
+	let pageSize: number = 10;
+	$: offset = (pageNumber - 1) * pageSize;
 
 	let selectAll: boolean;
 	let selectedRows: Record<string, boolean> = {};
@@ -66,6 +75,19 @@
 			args.orderBy = undefined;
 		}
 
+		if (after) {
+			args.after = after;
+			args.first = pageSize;
+		} else if (before) {
+			args.before = before;
+			args.last = pageSize;
+		} else if (offset) {
+			args.offset = offset;
+			args.first = pageSize;
+		} else {
+			args.first = pageSize;
+		}
+
 		dispatch('fetch', {
 			args,
 			then: (data) => {},
@@ -76,7 +98,7 @@
 	};
 
 	const search = () => {
-		let args: QueryTypeOrganizationListArgs = {};
+		let args: QueryTypeRoleConnectionArgs = {};
 		if (searchValue) {
 			args.cond = Conditional.OR;
 			args.createGroupId = { opr: Operator.LK, val: `%${searchValue}%` };
@@ -92,6 +114,19 @@
 			args.realmId = undefined;
 			args.updateUserId = undefined;
 		}
+		
+		if (after) {
+			args.after = after;
+			args.first = pageSize;
+		} else if (before) {
+			args.before = before;
+			args.last = pageSize;
+		} else if (offset) {
+			args.offset = offset;
+			args.first = pageSize;
+		} else {
+			args.first = pageSize;
+		}
 
 		dispatch('fetch', {
 			args,
@@ -102,10 +137,10 @@
 		});
 	};
 
-	async function updateField(args: MutationTypeOrganizationArgs | null | undefined) {
+	async function updateField(args: MutationTypeRoleArgs | null | undefined) {
 		if (args && args.id) {
 			errors[args.id] = {};
-			validateUpdate('Organization', args, $locale)
+			validateUpdate('Role', args, $locale)
 				.then((data) => {
 					if (args) {
 						dispatch('mutation', {
@@ -162,7 +197,7 @@
 	};
 </script>
 
-<SectionHead title="Organization">
+<SectionHead title="Role">
 	<SearchInput bind:value={searchValue} on:search={search} />
 	{#if showDeleteButton}
 		<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.remove()}>
@@ -190,7 +225,7 @@
 			class="btn btn-square md:hidden"
 			on:click={(e) => {
 				e.preventDefault();
-				goto('./organization/+');
+				goto('./role/+');
 			} }
 		>
 			<Icon src={Plus} class="h-6 w-6" solid />
@@ -200,7 +235,7 @@
 		class="hidden md:btn"
 		on:click={(e) => {
 			e.preventDefault();
-			goto('./organization/+');
+			goto('./role/+');
 		}}
 	>
 		{$LL.routers.type.create()}
@@ -228,12 +263,6 @@
 					/>
 				</label>
 			</th>
-			<IntTh
-				name="aboveId"
-				bind:expression={args.aboveId}
-				bind:sort={orderBy.aboveId}
-				on:filter={query}
-			/>
 			<StringTh
 				name="createGroupId"
 				bind:expression={args.createGroupId}
@@ -265,14 +294,18 @@
 				bind:sort={orderBy.name}
 				on:filter={query}
 			/>
-			<th>orgLevel3</th>
 			<StringTh
 				name="realmId"
 				bind:expression={args.realmId}
 				bind:sort={orderBy.realmId}
 				on:filter={query}
 			/>
-			<th>roleDisable</th>
+			<RoleTypeTh
+				name="type"
+				bind:expression={args.type}
+				bind:sort={orderBy.type}
+				on:filter={query}
+			/>
 			<TimestampTh
 				name="updateTime"
 				bind:expression={args.updateTime}
@@ -295,7 +328,7 @@
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading rows={10} cols={13 + 2}/>
+		<TableLoading rows={pageSize} cols={11 + 2}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
@@ -307,12 +340,6 @@
 									<input type="checkbox" class="checkbox" bind:checked={selectedRows[node.id]} />
 								</label>
 							</th>
-							<IntTd
-								name="aboveId"
-								bind:value={node.aboveId}
-								on:save={() => updateField({ id: node?.id, aboveId: node?.aboveId })}
-								error={errors[node.id]?.aboveId}
-							/>
 							<StringTd
 								name="createGroupId"
 								bind:value={node.createGroupId}
@@ -344,14 +371,18 @@
 								on:save={() => updateField({ id: node?.id, name: node?.name })}
 								error={errors[node.id]?.name}
 							/>
-							<td>{node.orgLevel3}</td>
 							<StringTd
 								name="realmId"
 								bind:value={node.realmId}
 								on:save={() => updateField({ id: node?.id, realmId: node?.realmId })}
 								error={errors[node.id]?.realmId}
 							/>
-							<td>{node.roleDisable}</td>
+							<RoleTypeTd
+								name="type"
+								bind:value={node.type}
+								on:save={() => updateField({ id: node?.id, type: node?.type })}
+								error={errors[node.id]?.type}
+							/>
 							<TimestampTd
 								name="updateTime"
 								bind:value={node.updateTime}
@@ -377,7 +408,7 @@
 										on:click={(e) => {
 											e.preventDefault();
 											if (node) {
-												goto(`./organization/${node.id}`);
+												goto(`./role/${node.id}`);
 											}
 										}}
 									>
@@ -413,3 +444,11 @@
 		</tbody>
 	{/if}
 </Table>
+<div class="divider" />
+<Pagination
+	bind:pageNumber
+	bind:pageSize
+	{totalCount}
+	on:pageChange={query}
+	on:sizeChange={query}
+/>

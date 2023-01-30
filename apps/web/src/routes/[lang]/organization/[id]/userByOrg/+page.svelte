@@ -22,7 +22,7 @@
 			variables: { organization_id: { val: organization?.id }, ...event.detail.args }
 		})
 			.then((result) => {
-				event.detail.then(result.data?.organization?.userByOrgConnection?.edges?.map((edge) => edge?.node));
+				event.detail.then(result.data?.organization?.userByOrg);
 			})
 			.catch((error) => {
 				event.detail.catch(error);
@@ -46,10 +46,8 @@
 			});
 	};
 </script>
-
 <UserTable
-	nodes={$Query_organization_userByOrg.data?.organization?.userByOrgConnection?.edges?.map((edge) => edge?.node)}
-	totalCount={$Query_organization_userByOrg.data?.organization?.userByOrgConnection?.totalCount || 0}
+	nodes={$Query_organization_userByOrg.data?.organization?.userByOrg}
 	isFetching={$Query_organization_userByOrg.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}

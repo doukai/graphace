@@ -1,8 +1,8 @@
 <script lang="ts">
-	import RoleTable from '~/lib/components/objects/role/RoleTable.svelte';
+	import RoleConnectionTable from '~/lib/components/objects/role/RoleConnectionTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import type { MutationTypeRoleArgs, QueryTypeRoleListArgs, Role } from '~/lib/types/schema';
+	import type { MutationTypeRoleArgs, QueryTypeRoleConnectionArgs, Role } from '~/lib/types/schema';
 	import { Query_user_rolesStore, Mutation_roleStore } from '$houdini';
 	import type { PageData } from './$houdini';
 
@@ -13,7 +13,7 @@
 
 	const fetch = (
 		event: CustomEvent<{
-			args: QueryTypeRoleListArgs;
+			args: QueryTypeRoleConnectionArgs;
 			then: (data: (Role | null | undefined)[] | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
@@ -46,8 +46,7 @@
 			});
 	};
 </script>
-
-<RoleTable
+<RoleConnectionTable
 	nodes={$Query_user_roles.data?.user?.rolesConnection?.edges?.map((edge) => edge?.node)}
 	totalCount={$Query_user_roles.data?.user?.rolesConnection?.totalCount || 0}
 	isFetching={$Query_user_roles.fetching}

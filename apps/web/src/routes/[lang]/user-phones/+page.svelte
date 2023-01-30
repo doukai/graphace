@@ -1,11 +1,11 @@
 <script lang="ts">
 	import UserPhonesTable from '~/lib/components/objects/user-phones/UserPhonesTable.svelte';
-	import type { UserPhones, QueryTypeUserPhonesListArgs, MutationTypeUserPhonesArgs } from '~/lib/types/schema';
-	import { Query_userPhonesConnectionStore, Mutation_userPhonesStore } from '$houdini';
+	import type { UserPhones, UserPhonesListArgs, MutationTypeUserPhonesArgs } from '~/lib/types/schema';
+	import { Query_userPhonesListStore, Mutation_userPhonesStore } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: Query_userPhonesConnection = data.Query_userPhonesConnection as Query_userPhonesConnectionStore;
+	$: Query_userPhonesList = data.Query_userPhonesList as Query_userPhonesListStore;
 	const Mutation_userPhones = new Mutation_userPhonesStore();
 
 	const fetch = (
@@ -15,9 +15,9 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Query_userPhonesConnection.fetch({ variables: event.detail.args })
+		Query_userPhonesList.fetch({ variables: event.detail.args })
 			.then((result) => {
-				event.detail.then(result.data?.userPhonesConnection?.edges?.map((edge) => edge?.node));
+				event.detail.then(result.data?.userPhonesList;
 			})
 			.catch((error) => {
 				event.detail.catch(error);
@@ -41,11 +41,9 @@
 			});
 	};
 </script>
-
 <UserPhonesTable
-	nodes={$Query_userPhonesConnection.data?.userPhonesConnection?.edges?.map((edge) => edge?.node)}
-	totalCount={$Query_userPhonesConnection.data?.userPhonesConnection?.totalCount || 0}
-	isFetching={$Query_userPhonesConnection.fetching}
+	nodes={$Query_userPhonesList.data?.userPhones}
+	isFetching={$Query_userPhonesList.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
 />

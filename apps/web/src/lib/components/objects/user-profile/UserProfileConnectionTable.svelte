@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
 	import type { Error } from '@graphace/commons/types';
-	import { IntTh, IntTd, StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
+	import { StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, BooleanTh, BooleanTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
 	import { SectionHead } from '@graphace/ui/components/section';
 	import { Table, TableLoading } from '@graphace/ui/components/table';
 	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
@@ -13,28 +13,30 @@
 	import LL from '~/i18n/i18n-svelte';
 	import { locale } from '~/i18n/i18n-svelte';
 	import { validateUpdate } from '@graphace/graphql/schema/JsonSchema';
+	import { Pagination } from '@graphace/ui/components/connection';
 	import {
 		Conditional,
 		Operator,
-		Organization,
-		OrganizationOrderBy,
-		QueryTypeOrganizationListArgs,
-		MutationTypeOrganizationArgs
+		UserProfile,
+		UserProfileOrderBy,
+		QueryTypeUserProfileConnectionArgs,
+		MutationTypeUserProfileArgs
 	} from '~/lib/types/schema';
 
-	export let nodes: (Organization | null | undefined)[] | null | undefined;
+	export let nodes: (UserProfile | null | undefined)[] | null | undefined;
+	export let totalCount: number = 0;
 	export let isFetching: boolean;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
-			args: QueryTypeOrganizationListArgs;
-			then: (data: (Organization | null | undefined)[] | null | undefined) => void;
+			args: QueryTypeUserProfileConnectionArgs;
+			then: (data: (UserProfile | null | undefined)[] | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
 		mutation: {
-			args: MutationTypeOrganizationArgs;
+			args: MutationTypeUserProfileArgs;
 			update?: boolean;
-			then: (data: Organization | null | undefined) => void;
+			then: (data: UserProfile | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
 	}>();
@@ -43,8 +45,13 @@
 
 	let showDeleteButton = false;
 	let searchValue: string | undefined;
-	let args: QueryTypeOrganizationListArgs = {};
-	let orderBy: OrganizationOrderBy = {};
+	let args: QueryTypeUserProfileConnectionArgs = {};
+	let orderBy: UserProfileOrderBy = {};
+	let after: string | undefined;
+	let before: string | undefined;
+	let pageNumber: number = 1;
+	let pageSize: number = 10;
+	$: offset = (pageNumber - 1) * pageSize;
 
 	let selectAll: boolean;
 	let selectedRows: Record<string, boolean> = {};
@@ -66,31 +73,17 @@
 			args.orderBy = undefined;
 		}
 
-		dispatch('fetch', {
-			args,
-			then: (data) => {},
-			catch: (error) => {
-				notifications.error($LL.message.requestFailed());
-			}
-		});
-	};
-
-	const search = () => {
-		let args: QueryTypeOrganizationListArgs = {};
-		if (searchValue) {
-			args.cond = Conditional.OR;
-			args.createGroupId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.createUserId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.name = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.realmId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.updateUserId = { opr: Operator.LK, val: `%${searchValue}%` };
+		if (after) {
+			args.after = after;
+			args.first = pageSize;
+		} else if (before) {
+			args.before = before;
+			args.last = pageSize;
+		} else if (offset) {
+			args.offset = offset;
+			args.first = pageSize;
 		} else {
-			args.cond = undefined;
-			args.createGroupId = undefined;
-			args.createUserId = undefined;
-			args.name = undefined;
-			args.realmId = undefined;
-			args.updateUserId = undefined;
+			args.first = pageSize;
 		}
 
 		dispatch('fetch', {
@@ -102,10 +95,56 @@
 		});
 	};
 
-	async function updateField(args: MutationTypeOrganizationArgs | null | undefined) {
+	const search = () => {
+		let args: QueryTypeUserProfileConnectionArgs = {};
+		if (searchValue) {
+			args.cond = Conditional.OR;
+			args.address = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.createGroupId = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.createUserId = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.email = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.qq = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.realmId = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.updateUserId = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.userId = { opr: Operator.LK, val: `%${searchValue}%` };
+		} else {
+			args.cond = undefined;
+			args.address = undefined;
+			args.createGroupId = undefined;
+			args.createUserId = undefined;
+			args.email = undefined;
+			args.qq = undefined;
+			args.realmId = undefined;
+			args.updateUserId = undefined;
+			args.userId = undefined;
+		}
+		
+		if (after) {
+			args.after = after;
+			args.first = pageSize;
+		} else if (before) {
+			args.before = before;
+			args.last = pageSize;
+		} else if (offset) {
+			args.offset = offset;
+			args.first = pageSize;
+		} else {
+			args.first = pageSize;
+		}
+
+		dispatch('fetch', {
+			args,
+			then: (data) => {},
+			catch: (error) => {
+				notifications.error($LL.message.requestFailed());
+			}
+		});
+	};
+
+	async function updateField(args: MutationTypeUserProfileArgs | null | undefined) {
 		if (args && args.id) {
 			errors[args.id] = {};
-			validateUpdate('Organization', args, $locale)
+			validateUpdate('UserProfile', args, $locale)
 				.then((data) => {
 					if (args) {
 						dispatch('mutation', {
@@ -162,7 +201,7 @@
 	};
 </script>
 
-<SectionHead title="Organization">
+<SectionHead title="UserProfile">
 	<SearchInput bind:value={searchValue} on:search={search} />
 	{#if showDeleteButton}
 		<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.remove()}>
@@ -190,7 +229,7 @@
 			class="btn btn-square md:hidden"
 			on:click={(e) => {
 				e.preventDefault();
-				goto('./organization/+');
+				goto('./user-profile/+');
 			} }
 		>
 			<Icon src={Plus} class="h-6 w-6" solid />
@@ -200,7 +239,7 @@
 		class="hidden md:btn"
 		on:click={(e) => {
 			e.preventDefault();
-			goto('./organization/+');
+			goto('./user-profile/+');
 		}}
 	>
 		{$LL.routers.type.create()}
@@ -228,10 +267,10 @@
 					/>
 				</label>
 			</th>
-			<IntTh
-				name="aboveId"
-				bind:expression={args.aboveId}
-				bind:sort={orderBy.aboveId}
+			<StringTh
+				name="address"
+				bind:expression={args.address}
+				bind:sort={orderBy.address}
 				on:filter={query}
 			/>
 			<StringTh
@@ -252,6 +291,12 @@
 				bind:sort={orderBy.createUserId}
 				on:filter={query}
 			/>
+			<StringTh
+				name="email"
+				bind:expression={args.email}
+				bind:sort={orderBy.email}
+				on:filter={query}
+			/>
 			<IDTh
 				name="id"
 				bind:expression={args.id}
@@ -260,19 +305,17 @@
 			/>
 			<th>isDeprecated</th>
 			<StringTh
-				name="name"
-				bind:expression={args.name}
-				bind:sort={orderBy.name}
+				name="qq"
+				bind:expression={args.qq}
+				bind:sort={orderBy.qq}
 				on:filter={query}
 			/>
-			<th>orgLevel3</th>
 			<StringTh
 				name="realmId"
 				bind:expression={args.realmId}
 				bind:sort={orderBy.realmId}
 				on:filter={query}
 			/>
-			<th>roleDisable</th>
 			<TimestampTh
 				name="updateTime"
 				bind:expression={args.updateTime}
@@ -285,6 +328,12 @@
 				bind:sort={orderBy.updateUserId}
 				on:filter={query}
 			/>
+			<StringTh
+				name="userId"
+				bind:expression={args.userId}
+				bind:sort={orderBy.userId}
+				on:filter={query}
+			/>
 			<IntTh
 				name="version"
 				bind:expression={args.version}
@@ -295,7 +344,7 @@
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading rows={10} cols={13 + 2}/>
+		<TableLoading rows={pageSize} cols={13 + 2}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
@@ -307,11 +356,11 @@
 									<input type="checkbox" class="checkbox" bind:checked={selectedRows[node.id]} />
 								</label>
 							</th>
-							<IntTd
-								name="aboveId"
-								bind:value={node.aboveId}
-								on:save={() => updateField({ id: node?.id, aboveId: node?.aboveId })}
-								error={errors[node.id]?.aboveId}
+							<StringTd
+								name="address"
+								bind:value={node.address}
+								on:save={() => updateField({ id: node?.id, address: node?.address })}
+								error={errors[node.id]?.address}
 							/>
 							<StringTd
 								name="createGroupId"
@@ -331,6 +380,12 @@
 								on:save={() => updateField({ id: node?.id, createUserId: node?.createUserId })}
 								error={errors[node.id]?.createUserId}
 							/>
+							<StringTd
+								name="email"
+								bind:value={node.email}
+								on:save={() => updateField({ id: node?.id, email: node?.email })}
+								error={errors[node.id]?.email}
+							/>
 							<td>{node.id}</td>
 							<BooleanTd
 								name="isDeprecated"
@@ -339,19 +394,17 @@
 								error={errors[node.id]?.isDeprecated}
 							/>
 							<StringTd
-								name="name"
-								bind:value={node.name}
-								on:save={() => updateField({ id: node?.id, name: node?.name })}
-								error={errors[node.id]?.name}
+								name="qq"
+								bind:value={node.qq}
+								on:save={() => updateField({ id: node?.id, qq: node?.qq })}
+								error={errors[node.id]?.qq}
 							/>
-							<td>{node.orgLevel3}</td>
 							<StringTd
 								name="realmId"
 								bind:value={node.realmId}
 								on:save={() => updateField({ id: node?.id, realmId: node?.realmId })}
 								error={errors[node.id]?.realmId}
 							/>
-							<td>{node.roleDisable}</td>
 							<TimestampTd
 								name="updateTime"
 								bind:value={node.updateTime}
@@ -363,6 +416,12 @@
 								bind:value={node.updateUserId}
 								on:save={() => updateField({ id: node?.id, updateUserId: node?.updateUserId })}
 								error={errors[node.id]?.updateUserId}
+							/>
+							<StringTd
+								name="userId"
+								bind:value={node.userId}
+								on:save={() => updateField({ id: node?.id, userId: node?.userId })}
+								error={errors[node.id]?.userId}
 							/>
 							<IntTd
 								name="version"
@@ -377,7 +436,7 @@
 										on:click={(e) => {
 											e.preventDefault();
 											if (node) {
-												goto(`./organization/${node.id}`);
+												goto(`./user-profile/${node.id}`);
 											}
 										}}
 									>
@@ -413,3 +472,11 @@
 		</tbody>
 	{/if}
 </Table>
+<div class="divider" />
+<Pagination
+	bind:pageNumber
+	bind:pageSize
+	{totalCount}
+	on:pageChange={query}
+	on:sizeChange={query}
+/>

@@ -183,6 +183,7 @@ export type Template = 'query' |
     'mutation' |
     'typeMenu' |
     "typeTable" |
+    "typeConnectionTable" |
     'typeForm' |
     'typeCreateForm' |
     'pageSvelte' |
@@ -289,6 +290,18 @@ const renders: Record<Template, Render> = {
         }
         throw new Error(`${typeName} not exist`);
     },
+    typeConnectionTable: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.typeConnectionTable?.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                return {
+                    content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type), cols: getFields(schema, type)?.filter(field => field.isScalarType || field.isEnumType).length, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema', enumsPath: `${config.typeConnectionTable?.componentsPath}/enums` }),
+                };
+            }
+        }
+        throw new Error(`${typeName} not exist`);
+    },
     typeForm: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.typeForm?.name;
         if (typeName) {
@@ -307,7 +320,7 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type), schemaTypesPath: config.schemaTypesPath || 'lib/types/schema', enumsPath: `${config.typeCreateForm?.componentsPath}/enums` }),
+                    content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type), rows: getFields(schema, type)?.filter(field => field.isScalarType || field.isEnumType).length, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema', enumsPath: `${config.typeCreateForm?.componentsPath}/enums` }),
                 };
             }
         }

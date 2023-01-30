@@ -1,23 +1,43 @@
 <script lang="ts">
+	{%- if connectionField %}
+	import {{ name }}ConnectionTable from '~/{{ tablePath }}/{{ name | paramCase }}/{{ name }}ConnectionTable.svelte';
+	{%- else %}
 	import {{ name }}Table from '~/{{ tablePath }}/{{ name | paramCase }}/{{ name }}Table.svelte';
-	import type { {{ name }}, QueryType{{ name }}ListArgs, MutationType{{ name }}Args } from '~/{{ schemaTypesPath }}';
-	import { Query_{{ name | camelCase }}ConnectionStore, Mutation_{{ name | camelCase }}Store } from '$houdini';
+	{%- endif %}
+	import type { {{ name }}, {% if connectionField %}QueryType{{ name }}ConnectionArgs{% else %}{{ name }}ListArgs{% endif %}, MutationType{{ name }}Args } from '~/{{ schemaTypesPath }}';
+	import { {% if connectionField %}Query_{{ name | camelCase }}ConnectionStore{% else %}Query_{{ name | camelCase }}ListStore{% endif %}, Mutation_{{ name | camelCase }}Store } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
+	{%- if connectionField %}
 	$: Query_{{ name | camelCase }}Connection = data.Query_{{ name | camelCase }}Connection as Query_{{ name | camelCase }}ConnectionStore;
+	{%- else %}
+	$: Query_{{ name | camelCase }}List = data.Query_{{ name | camelCase }}List as Query_{{ name | camelCase }}ListStore;
+	{%- endif %}
 	const Mutation_{{ name | camelCase }} = new Mutation_{{ name | camelCase }}Store();
 
 	const fetch = (
 		event: CustomEvent<{
+			{%- if connectionField %}
+			args: QueryType{{ name }}ConnectionArgs;
+			{%- else %}
 			args: QueryType{{ name }}ListArgs;
+			{%- endif %}
 			then: (data: ({{ name }} | null | undefined)[] | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
+		{%- if connectionField %}
 		Query_{{ name | camelCase }}Connection.fetch({ variables: event.detail.args })
+		{%- else %}
+		Query_{{ name | camelCase }}List.fetch({ variables: event.detail.args })
+		{%- endif %}
 			.then((result) => {
+			{%- if connectionField %}
 				event.detail.then(result.data?.{{ name | camelCase }}Connection?.edges?.map((edge) => edge?.node));
+			{%- else %}
+				event.detail.then(result.data?.{{ name | camelCase }}List;
+			{%- endif %}
 			})
 			.catch((error) => {
 				event.detail.catch(error);
@@ -42,10 +62,19 @@
 	};
 </script>
 
-<{{ name }}Table
+{%- if connectionField %}
+<{{ name }}ConnectionTable
 	nodes={$Query_{{ name | camelCase }}Connection.data?.{{ name | camelCase }}Connection?.edges?.map((edge) => edge?.node)}
 	totalCount={$Query_{{ name | camelCase }}Connection.data?.{{ name | camelCase }}Connection?.totalCount || 0}
 	isFetching={$Query_{{ name | camelCase }}Connection.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
 />
+{%- else %}
+<{{ name }}Table
+	nodes={$Query_{{ name | camelCase }}List.data?.{{ name | camelCase }}}
+	isFetching={$Query_{{ name | camelCase }}List.fetching}
+	on:fetch={fetch}
+	on:mutation={mutation}
+/>
+{%- endif %}

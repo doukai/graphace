@@ -13,21 +13,23 @@
 	import LL from '~/i18n/i18n-svelte';
 	import { locale } from '~/i18n/i18n-svelte';
 	import { validateUpdate } from '@graphace/graphql/schema/JsonSchema';
+	import { Pagination } from '@graphace/ui/components/connection';
 	import {
 		Conditional,
 		Operator,
 		Organization,
 		OrganizationOrderBy,
-		QueryTypeOrganizationListArgs,
+		QueryTypeOrganizationConnectionArgs,
 		MutationTypeOrganizationArgs
 	} from '~/lib/types/schema';
 
 	export let nodes: (Organization | null | undefined)[] | null | undefined;
+	export let totalCount: number = 0;
 	export let isFetching: boolean;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
-			args: QueryTypeOrganizationListArgs;
+			args: QueryTypeOrganizationConnectionArgs;
 			then: (data: (Organization | null | undefined)[] | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
@@ -43,8 +45,13 @@
 
 	let showDeleteButton = false;
 	let searchValue: string | undefined;
-	let args: QueryTypeOrganizationListArgs = {};
+	let args: QueryTypeOrganizationConnectionArgs = {};
 	let orderBy: OrganizationOrderBy = {};
+	let after: string | undefined;
+	let before: string | undefined;
+	let pageNumber: number = 1;
+	let pageSize: number = 10;
+	$: offset = (pageNumber - 1) * pageSize;
 
 	let selectAll: boolean;
 	let selectedRows: Record<string, boolean> = {};
@@ -66,6 +73,19 @@
 			args.orderBy = undefined;
 		}
 
+		if (after) {
+			args.after = after;
+			args.first = pageSize;
+		} else if (before) {
+			args.before = before;
+			args.last = pageSize;
+		} else if (offset) {
+			args.offset = offset;
+			args.first = pageSize;
+		} else {
+			args.first = pageSize;
+		}
+
 		dispatch('fetch', {
 			args,
 			then: (data) => {},
@@ -76,7 +96,7 @@
 	};
 
 	const search = () => {
-		let args: QueryTypeOrganizationListArgs = {};
+		let args: QueryTypeOrganizationConnectionArgs = {};
 		if (searchValue) {
 			args.cond = Conditional.OR;
 			args.createGroupId = { opr: Operator.LK, val: `%${searchValue}%` };
@@ -91,6 +111,19 @@
 			args.name = undefined;
 			args.realmId = undefined;
 			args.updateUserId = undefined;
+		}
+		
+		if (after) {
+			args.after = after;
+			args.first = pageSize;
+		} else if (before) {
+			args.before = before;
+			args.last = pageSize;
+		} else if (offset) {
+			args.offset = offset;
+			args.first = pageSize;
+		} else {
+			args.first = pageSize;
 		}
 
 		dispatch('fetch', {
@@ -295,7 +328,7 @@
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading rows={10} cols={13 + 2}/>
+		<TableLoading rows={pageSize} cols={13 + 2}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
@@ -413,3 +446,11 @@
 		</tbody>
 	{/if}
 </Table>
+<div class="divider" />
+<Pagination
+	bind:pageNumber
+	bind:pageSize
+	{totalCount}
+	on:pageChange={query}
+	on:sizeChange={query}
+/>

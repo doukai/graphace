@@ -1,8 +1,8 @@
 <script lang="ts">
-	import UserTable from '~/lib/components/objects/user/UserTable.svelte';
+	import UserConnectionTable from '~/lib/components/objects/user/UserConnectionTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import type { MutationTypeUserArgs, QueryTypeUserListArgs, User } from '~/lib/types/schema';
+	import type { MutationTypeUserArgs, QueryTypeUserConnectionArgs, User } from '~/lib/types/schema';
 	import { Query_organization_usersStore, Mutation_userStore } from '$houdini';
 	import type { PageData } from './$houdini';
 
@@ -13,7 +13,7 @@
 
 	const fetch = (
 		event: CustomEvent<{
-			args: QueryTypeUserListArgs;
+			args: QueryTypeUserConnectionArgs;
 			then: (data: (User | null | undefined)[] | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
@@ -46,8 +46,7 @@
 			});
 	};
 </script>
-
-<UserTable
+<UserConnectionTable
 	nodes={$Query_organization_users.data?.organization?.usersConnection?.edges?.map((edge) => edge?.node)}
 	totalCount={$Query_organization_users.data?.organization?.usersConnection?.totalCount || 0}
 	isFetching={$Query_organization_users.fetching}

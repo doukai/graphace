@@ -15,7 +15,6 @@
 	import LL from '~/i18n/i18n-svelte';
 	import { locale } from '~/i18n/i18n-svelte';
 	import { validateUpdate } from '@graphace/graphql/schema/JsonSchema';
-	import { Pagination } from '@graphace/ui/components/connection';
 	import {
 		Conditional,
 		Operator,
@@ -26,7 +25,6 @@
 	} from '~/lib/types/schema';
 
 	export let nodes: (User | null | undefined)[] | null | undefined;
-	export let totalCount: number = 0;
 	export let isFetching: boolean;
 
 	const dispatch = createEventDispatcher<{
@@ -49,11 +47,6 @@
 	let searchValue: string | undefined;
 	let args: QueryTypeUserListArgs = {};
 	let orderBy: UserOrderBy = {};
-	let after: string | undefined;
-	let before: string | undefined;
-	let pageNumber: number = 1;
-	let pageSize: number = 10;
-	$: offset = (pageNumber - 1) * pageSize;
 
 	let selectAll: boolean;
 	let selectedRows: Record<string, boolean> = {};
@@ -73,19 +66,6 @@
 			args.orderBy = orderBy;
 		} else {
 			args.orderBy = undefined;
-		}
-
-		if (after) {
-			args.after = after;
-			args.first = pageSize;
-		} else if (before) {
-			args.before = before;
-			args.last = pageSize;
-		} else if (offset) {
-			args.offset = offset;
-			args.first = pageSize;
-		} else {
-			args.first = pageSize;
 		}
 
 		dispatch('fetch', {
@@ -119,19 +99,6 @@
 			args.phones = undefined;
 			args.realmId = undefined;
 			args.updateUserId = undefined;
-		}
-		
-		if (after) {
-			args.after = after;
-			args.first = pageSize;
-		} else if (before) {
-			args.before = before;
-			args.last = pageSize;
-		} else if (offset) {
-			args.offset = offset;
-			args.first = pageSize;
-		} else {
-			args.first = pageSize;
 		}
 
 		dispatch('fetch', {
@@ -380,7 +347,7 @@
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading rows={pageSize} cols={20 + 2}/>
+		<TableLoading rows={10} cols={20 + 2}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
@@ -545,11 +512,3 @@
 		</tbody>
 	{/if}
 </Table>
-<div class="divider" />
-<Pagination
-	bind:pageNumber
-	bind:pageSize
-	{totalCount}
-	on:pageChange={query}
-	on:sizeChange={query}
-/>

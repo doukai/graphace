@@ -2,7 +2,9 @@
 	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
 	import type { Error } from '@graphace/commons/types';
-	import { IntTh, IntTd, StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
+	import { IntTh, IntTd, StringTh, StringTd, TimestampTh, TimestampTd, BooleanTh, BooleanTd, IDTh, IDTd } from '@graphace/ui-graphql/components/table';
+	import SexTh from '~/lib/components/enums/sex/SexTh.svelte';
+	import SexTd from '~/lib/components/enums/sex/SexTd.svelte';
 	import { SectionHead } from '@graphace/ui/components/section';
 	import { Table, TableLoading } from '@graphace/ui/components/table';
 	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
@@ -13,28 +15,30 @@
 	import LL from '~/i18n/i18n-svelte';
 	import { locale } from '~/i18n/i18n-svelte';
 	import { validateUpdate } from '@graphace/graphql/schema/JsonSchema';
+	import { Pagination } from '@graphace/ui/components/connection';
 	import {
 		Conditional,
 		Operator,
-		Organization,
-		OrganizationOrderBy,
-		QueryTypeOrganizationListArgs,
-		MutationTypeOrganizationArgs
+		User,
+		UserOrderBy,
+		QueryTypeUserListArgs,
+		MutationTypeUserArgs
 	} from '~/lib/types/schema';
 
-	export let nodes: (Organization | null | undefined)[] | null | undefined;
+	export let nodes: (User | null | undefined)[] | null | undefined;
+	export let totalCount: number = 0;
 	export let isFetching: boolean;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
-			args: QueryTypeOrganizationListArgs;
-			then: (data: (Organization | null | undefined)[] | null | undefined) => void;
+			args: QueryTypeUserListArgs;
+			then: (data: (User | null | undefined)[] | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
 		mutation: {
-			args: MutationTypeOrganizationArgs;
+			args: MutationTypeUserArgs;
 			update?: boolean;
-			then: (data: Organization | null | undefined) => void;
+			then: (data: User | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
 	}>();
@@ -43,8 +47,13 @@
 
 	let showDeleteButton = false;
 	let searchValue: string | undefined;
-	let args: QueryTypeOrganizationListArgs = {};
-	let orderBy: OrganizationOrderBy = {};
+	let args: QueryTypeUserListArgs = {};
+	let orderBy: UserOrderBy = {};
+	let after: string | undefined;
+	let before: string | undefined;
+	let pageNumber: number = 1;
+	let pageSize: number = 10;
+	$: offset = (pageNumber - 1) * pageSize;
 
 	let selectAll: boolean;
 	let selectedRows: Record<string, boolean> = {};
@@ -66,31 +75,17 @@
 			args.orderBy = undefined;
 		}
 
-		dispatch('fetch', {
-			args,
-			then: (data) => {},
-			catch: (error) => {
-				notifications.error($LL.message.requestFailed());
-			}
-		});
-	};
-
-	const search = () => {
-		let args: QueryTypeOrganizationListArgs = {};
-		if (searchValue) {
-			args.cond = Conditional.OR;
-			args.createGroupId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.createUserId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.name = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.realmId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.updateUserId = { opr: Operator.LK, val: `%${searchValue}%` };
+		if (after) {
+			args.after = after;
+			args.first = pageSize;
+		} else if (before) {
+			args.before = before;
+			args.last = pageSize;
+		} else if (offset) {
+			args.offset = offset;
+			args.first = pageSize;
 		} else {
-			args.cond = undefined;
-			args.createGroupId = undefined;
-			args.createUserId = undefined;
-			args.name = undefined;
-			args.realmId = undefined;
-			args.updateUserId = undefined;
+			args.first = pageSize;
 		}
 
 		dispatch('fetch', {
@@ -102,10 +97,56 @@
 		});
 	};
 
-	async function updateField(args: MutationTypeOrganizationArgs | null | undefined) {
+	const search = () => {
+		let args: QueryTypeUserListArgs = {};
+		if (searchValue) {
+			args.cond = Conditional.OR;
+			args.createGroupId = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.createUserId = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.login = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.name = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.password = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.phones = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.realmId = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.updateUserId = { opr: Operator.LK, val: `%${searchValue}%` };
+		} else {
+			args.cond = undefined;
+			args.createGroupId = undefined;
+			args.createUserId = undefined;
+			args.login = undefined;
+			args.name = undefined;
+			args.password = undefined;
+			args.phones = undefined;
+			args.realmId = undefined;
+			args.updateUserId = undefined;
+		}
+		
+		if (after) {
+			args.after = after;
+			args.first = pageSize;
+		} else if (before) {
+			args.before = before;
+			args.last = pageSize;
+		} else if (offset) {
+			args.offset = offset;
+			args.first = pageSize;
+		} else {
+			args.first = pageSize;
+		}
+
+		dispatch('fetch', {
+			args,
+			then: (data) => {},
+			catch: (error) => {
+				notifications.error($LL.message.requestFailed());
+			}
+		});
+	};
+
+	async function updateField(args: MutationTypeUserArgs | null | undefined) {
 		if (args && args.id) {
 			errors[args.id] = {};
-			validateUpdate('Organization', args, $locale)
+			validateUpdate('User', args, $locale)
 				.then((data) => {
 					if (args) {
 						dispatch('mutation', {
@@ -162,7 +203,7 @@
 	};
 </script>
 
-<SectionHead title="Organization">
+<SectionHead title="User">
 	<SearchInput bind:value={searchValue} on:search={search} />
 	{#if showDeleteButton}
 		<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.remove()}>
@@ -190,7 +231,7 @@
 			class="btn btn-square md:hidden"
 			on:click={(e) => {
 				e.preventDefault();
-				goto('./organization/+');
+				goto('./user/+');
 			} }
 		>
 			<Icon src={Plus} class="h-6 w-6" solid />
@@ -200,7 +241,7 @@
 		class="hidden md:btn"
 		on:click={(e) => {
 			e.preventDefault();
-			goto('./organization/+');
+			goto('./user/+');
 		}}
 	>
 		{$LL.routers.type.create()}
@@ -229,9 +270,9 @@
 				</label>
 			</th>
 			<IntTh
-				name="aboveId"
-				bind:expression={args.aboveId}
-				bind:sort={orderBy.aboveId}
+				name="age"
+				bind:expression={args.age}
+				bind:sort={orderBy.age}
 				on:filter={query}
 			/>
 			<StringTh
@@ -252,6 +293,12 @@
 				bind:sort={orderBy.createUserId}
 				on:filter={query}
 			/>
+			<BooleanTh
+				name="disable"
+				bind:expression={args.disable}
+				bind:sort={orderBy.disable}
+				on:filter={query}
+			/>
 			<IDTh
 				name="id"
 				bind:expression={args.id}
@@ -260,19 +307,56 @@
 			/>
 			<th>isDeprecated</th>
 			<StringTh
+				name="login"
+				bind:expression={args.login}
+				bind:sort={orderBy.login}
+				on:filter={query}
+			/>
+			<StringTh
 				name="name"
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
 				on:filter={query}
 			/>
-			<th>orgLevel3</th>
+			<IntTh
+				name="organizationId"
+				bind:expression={args.organizationId}
+				bind:sort={orderBy.organizationId}
+				on:filter={query}
+			/>
+			<StringTh
+				name="password"
+				bind:expression={args.password}
+				bind:sort={orderBy.password}
+				on:filter={query}
+			/>
+			<StringTh
+				name="phones"
+				bind:expression={args.phones}
+				on:filter={query}
+			/>
 			<StringTh
 				name="realmId"
 				bind:expression={args.realmId}
 				bind:sort={orderBy.realmId}
 				on:filter={query}
 			/>
-			<th>roleDisable</th>
+			<SexTh
+				name="sex"
+				bind:expression={args.sex}
+				bind:sort={orderBy.sex}
+				on:filter={query}
+			/>
+			<IntTh
+				name="test1"
+				bind:expression={args.test1}
+				on:filter={query}
+			/>
+			<BooleanTh
+				name="test2"
+				bind:expression={args.test2}
+				on:filter={query}
+			/>
 			<TimestampTh
 				name="updateTime"
 				bind:expression={args.updateTime}
@@ -285,6 +369,7 @@
 				bind:sort={orderBy.updateUserId}
 				on:filter={query}
 			/>
+			<th>userDetail2</th>
 			<IntTh
 				name="version"
 				bind:expression={args.version}
@@ -295,7 +380,7 @@
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading rows={10} cols={13 + 2}/>
+		<TableLoading rows={pageSize} cols={20 + 2}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
@@ -308,10 +393,10 @@
 								</label>
 							</th>
 							<IntTd
-								name="aboveId"
-								bind:value={node.aboveId}
-								on:save={() => updateField({ id: node?.id, aboveId: node?.aboveId })}
-								error={errors[node.id]?.aboveId}
+								name="age"
+								bind:value={node.age}
+								on:save={() => updateField({ id: node?.id, age: node?.age })}
+								error={errors[node.id]?.age}
 							/>
 							<StringTd
 								name="createGroupId"
@@ -331,6 +416,12 @@
 								on:save={() => updateField({ id: node?.id, createUserId: node?.createUserId })}
 								error={errors[node.id]?.createUserId}
 							/>
+							<BooleanTd
+								name="disable"
+								bind:value={node.disable}
+								on:save={() => updateField({ id: node?.id, disable: node?.disable })}
+								error={errors[node.id]?.disable}
+							/>
 							<td>{node.id}</td>
 							<BooleanTd
 								name="isDeprecated"
@@ -339,19 +430,59 @@
 								error={errors[node.id]?.isDeprecated}
 							/>
 							<StringTd
+								name="login"
+								bind:value={node.login}
+								on:save={() => updateField({ id: node?.id, login: node?.login })}
+								error={errors[node.id]?.login}
+							/>
+							<StringTd
 								name="name"
 								bind:value={node.name}
 								on:save={() => updateField({ id: node?.id, name: node?.name })}
 								error={errors[node.id]?.name}
 							/>
-							<td>{node.orgLevel3}</td>
+							<IntTd
+								name="organizationId"
+								bind:value={node.organizationId}
+								on:save={() => updateField({ id: node?.id, organizationId: node?.organizationId })}
+								error={errors[node.id]?.organizationId}
+							/>
+							<StringTd
+								name="password"
+								bind:value={node.password}
+								on:save={() => updateField({ id: node?.id, password: node?.password })}
+								error={errors[node.id]?.password}
+							/>
+							<StringTd
+								name="phones"
+								bind:value={node.phones}
+								on:save={() => updateField({ id: node?.id, phones: node?.phones })}
+								error={errors[node.id]?.phones}
+							/>
 							<StringTd
 								name="realmId"
 								bind:value={node.realmId}
 								on:save={() => updateField({ id: node?.id, realmId: node?.realmId })}
 								error={errors[node.id]?.realmId}
 							/>
-							<td>{node.roleDisable}</td>
+							<SexTd
+								name="sex"
+								bind:value={node.sex}
+								on:save={() => updateField({ id: node?.id, sex: node?.sex })}
+								error={errors[node.id]?.sex}
+							/>
+							<IntTd
+								name="test1"
+								bind:value={node.test1}
+								on:save={() => updateField({ id: node?.id, test1: node?.test1 })}
+								error={errors[node.id]?.test1}
+							/>
+							<BooleanTd
+								name="test2"
+								bind:value={node.test2}
+								on:save={() => updateField({ id: node?.id, test2: node?.test2 })}
+								error={errors[node.id]?.test2}
+							/>
 							<TimestampTd
 								name="updateTime"
 								bind:value={node.updateTime}
@@ -364,6 +495,7 @@
 								on:save={() => updateField({ id: node?.id, updateUserId: node?.updateUserId })}
 								error={errors[node.id]?.updateUserId}
 							/>
+							<td>{node.userDetail2}</td>
 							<IntTd
 								name="version"
 								bind:value={node.version}
@@ -377,7 +509,7 @@
 										on:click={(e) => {
 											e.preventDefault();
 											if (node) {
-												goto(`./organization/${node.id}`);
+												goto(`./user/${node.id}`);
 											}
 										}}
 									>
@@ -413,3 +545,11 @@
 		</tbody>
 	{/if}
 </Table>
+<div class="divider" />
+<Pagination
+	bind:pageNumber
+	bind:pageSize
+	{totalCount}
+	on:pageChange={query}
+	on:sizeChange={query}
+/>

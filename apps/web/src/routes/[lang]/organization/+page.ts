@@ -1,9 +1,9 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
-import { load_Query_organizationConnection } from '$houdini';
+import { load_Query_organizationList from '$houdini';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     return {
-        ...(await load_Query_organizationConnection({ event, variables: { first: 10 } }))
+        ...(await load_Query_organizationList({ event }))
     };
 }

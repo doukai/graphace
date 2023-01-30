@@ -1,11 +1,11 @@
 <script lang="ts">
 	import UserTable from '~/lib/components/objects/user/UserTable.svelte';
-	import type { User, QueryTypeUserListArgs, MutationTypeUserArgs } from '~/lib/types/schema';
-	import { Query_userConnectionStore, Mutation_userStore } from '$houdini';
+	import type { User, UserListArgs, MutationTypeUserArgs } from '~/lib/types/schema';
+	import { Query_userListStore, Mutation_userStore } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: Query_userConnection = data.Query_userConnection as Query_userConnectionStore;
+	$: Query_userList = data.Query_userList as Query_userListStore;
 	const Mutation_user = new Mutation_userStore();
 
 	const fetch = (
@@ -15,9 +15,9 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Query_userConnection.fetch({ variables: event.detail.args })
+		Query_userList.fetch({ variables: event.detail.args })
 			.then((result) => {
-				event.detail.then(result.data?.userConnection?.edges?.map((edge) => edge?.node));
+				event.detail.then(result.data?.userList;
 			})
 			.catch((error) => {
 				event.detail.catch(error);
@@ -41,11 +41,9 @@
 			});
 	};
 </script>
-
 <UserTable
-	nodes={$Query_userConnection.data?.userConnection?.edges?.map((edge) => edge?.node)}
-	totalCount={$Query_userConnection.data?.userConnection?.totalCount || 0}
-	isFetching={$Query_userConnection.fetching}
+	nodes={$Query_userList.data?.user}
+	isFetching={$Query_userList.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
 />

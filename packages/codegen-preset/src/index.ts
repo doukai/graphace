@@ -179,6 +179,27 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 };
             }) || [];
 
+        const typeConnectionTableList = objectTypes
+            .map(type => {
+                return {
+                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/components'}/objects/${changeCase.paramCase(type.name)}/${type.name}ConnectionTable.svelte`,
+                    documents: options.documents,
+                    plugins: options.plugins,
+                    pluginMap: options.pluginMap,
+                    config: {
+                        ...options.config,
+                        template: 'typeConnectionTable',
+                        typeConnectionTable: {
+                            name: type.name,
+                            componentsPath: options.presetConfig.componentsPath || 'lib/components'
+                        }
+                    },
+                    schema: options.schema,
+                    schemaAst: options.schemaAst,
+                    skipDocumentsValidation: true,
+                };
+            }) || [];
+
         const typeFormList = objectTypes
             .map(type => {
                 return {
@@ -541,6 +562,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             ...mutationObjectFieldList,
             typeMenu,
             ...typeTableList,
+            ...typeConnectionTableList,
             ...typeFormList,
             ...typeCreateFormList,
             ...pageSvelteList,

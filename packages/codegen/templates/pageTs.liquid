@@ -1,9 +1,9 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
-import { load_Query_{{ name | camelCase }}Connection } from '$houdini';
+import { {% if connectionField %}load_Query_{{ name | camelCase }}Connection{% else %}load_Query_{{ name | camelCase }}List{% endif %} from '$houdini';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     return {
-        ...(await load_Query_{{ name | camelCase }}Connection({ event, variables: { first: 10 } }))
+        ...(await {% if connectionField %}load_Query_{{ name | camelCase }}Connection({ event, variables: { first: 10 } })){% else %}load_Query_{{ name | camelCase }}List{% endif %}({ event }))
     };
 }

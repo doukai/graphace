@@ -129,5 +129,5 @@
 		</FormButtons>
 	</Form>
 {:else}
-	<FormLoading />
+	<FormLoading rows={20} />
 {/if}

@@ -1,11 +1,11 @@
 <script lang="ts">
 	import OrganizationTable from '~/lib/components/objects/organization/OrganizationTable.svelte';
-	import type { Organization, QueryTypeOrganizationListArgs, MutationTypeOrganizationArgs } from '~/lib/types/schema';
-	import { Query_organizationConnectionStore, Mutation_organizationStore } from '$houdini';
+	import type { Organization, OrganizationListArgs, MutationTypeOrganizationArgs } from '~/lib/types/schema';
+	import { Query_organizationListStore, Mutation_organizationStore } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: Query_organizationConnection = data.Query_organizationConnection as Query_organizationConnectionStore;
+	$: Query_organizationList = data.Query_organizationList as Query_organizationListStore;
 	const Mutation_organization = new Mutation_organizationStore();
 
 	const fetch = (
@@ -15,9 +15,9 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Query_organizationConnection.fetch({ variables: event.detail.args })
+		Query_organizationList.fetch({ variables: event.detail.args })
 			.then((result) => {
-				event.detail.then(result.data?.organizationConnection?.edges?.map((edge) => edge?.node));
+				event.detail.then(result.data?.organizationList;
 			})
 			.catch((error) => {
 				event.detail.catch(error);
@@ -41,11 +41,9 @@
 			});
 	};
 </script>
-
 <OrganizationTable
-	nodes={$Query_organizationConnection.data?.organizationConnection?.edges?.map((edge) => edge?.node)}
-	totalCount={$Query_organizationConnection.data?.organizationConnection?.totalCount || 0}
-	isFetching={$Query_organizationConnection.fetching}
+	nodes={$Query_organizationList.data?.organization}
+	isFetching={$Query_organizationList.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
 />

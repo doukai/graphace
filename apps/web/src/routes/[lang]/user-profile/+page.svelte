@@ -1,11 +1,11 @@
 <script lang="ts">
 	import UserProfileTable from '~/lib/components/objects/user-profile/UserProfileTable.svelte';
-	import type { UserProfile, QueryTypeUserProfileListArgs, MutationTypeUserProfileArgs } from '~/lib/types/schema';
-	import { Query_userProfileConnectionStore, Mutation_userProfileStore } from '$houdini';
+	import type { UserProfile, UserProfileListArgs, MutationTypeUserProfileArgs } from '~/lib/types/schema';
+	import { Query_userProfileListStore, Mutation_userProfileStore } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: Query_userProfileConnection = data.Query_userProfileConnection as Query_userProfileConnectionStore;
+	$: Query_userProfileList = data.Query_userProfileList as Query_userProfileListStore;
 	const Mutation_userProfile = new Mutation_userProfileStore();
 
 	const fetch = (
@@ -15,9 +15,9 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Query_userProfileConnection.fetch({ variables: event.detail.args })
+		Query_userProfileList.fetch({ variables: event.detail.args })
 			.then((result) => {
-				event.detail.then(result.data?.userProfileConnection?.edges?.map((edge) => edge?.node));
+				event.detail.then(result.data?.userProfileList;
 			})
 			.catch((error) => {
 				event.detail.catch(error);
@@ -41,11 +41,9 @@
 			});
 	};
 </script>
-
 <UserProfileTable
-	nodes={$Query_userProfileConnection.data?.userProfileConnection?.edges?.map((edge) => edge?.node)}
-	totalCount={$Query_userProfileConnection.data?.userProfileConnection?.totalCount || 0}
-	isFetching={$Query_userProfileConnection.fetching}
+	nodes={$Query_userProfileList.data?.userProfile}
+	isFetching={$Query_userProfileList.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
 />
