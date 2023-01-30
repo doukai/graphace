@@ -1,0 +1,35 @@
+<script lang="ts">
+	import {{ objectFieldTypeName }}Form from '~/lib/components/objects/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}Form.svelte';
+	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
+	import type { Error } from '@graphace/commons/types';
+	import type { MutationType{{ objectFieldTypeName }}Args, {{ objectFieldTypeName }} } from '~/lib/types/schema';
+	import { Query_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ objectFieldTypeName | camelCase }}Store } from '$houdini';
+	import type { PageData } from './$houdini';
+
+	export let data: PageData;
+	$: Query_{{ name | camelCase }}_{{ objectFieldName }} = data.Query_{{ name | camelCase }}_{{ objectFieldName }} as Query_{{ name | camelCase }}_{{ objectFieldName }}Store;
+	const Mutation_{{ objectFieldTypeName | camelCase }} = new Mutation_{{ objectFieldTypeName | camelCase }}Store();
+
+	const mutation = (
+		event: CustomEvent<{
+			args: MutationType{{ objectFieldTypeName }}Args;
+			update?: boolean;
+			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
+			catch: (error: Error) => void;
+		}>
+	) => {
+		Mutation_{{ objectFieldTypeName | camelCase }}.mutate({ ...event.detail.args, update: event.detail.update })
+			.then((result) => {
+				event.detail.then(result?.{{ objectFieldTypeName | camelCase }});
+			})
+			.catch((error) => {
+				event.detail.catch(error);
+			});
+	};
+</script>
+
+<{{ objectFieldTypeName }}Form
+	node={$Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }}?.{{ objectFieldName }}}
+	isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
+	on:mutation={mutation}
+/>

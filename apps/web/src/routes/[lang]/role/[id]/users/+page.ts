@@ -1,9 +1,9 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
-import { load_QueryMutationTypeConnection } from '$houdini';
+import { load_Query_role_users } from '$houdini';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     return {
-        ...(await load_QueryMutationTypeConnection({ event }))
+        ...(await load_Query_role_users({ event, variables: { role_id: { val: event.params.id }, first: 10 } }))
     };
 }

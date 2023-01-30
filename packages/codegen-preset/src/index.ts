@@ -1,5 +1,5 @@
 import type { Types } from "@graphql-codegen/plugin-helpers";
-import { isEnumType, isListType, isNonNullType, isObjectType, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType } from "graphql";
+import { assertObjectType, isEnumType, isListType, isNonNullType, isObjectType, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType } from "graphql";
 import type { GraphacePresetConfig } from "./config";
 import * as changeCase from "change-case";
 
@@ -49,6 +49,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             .filter(type => !isConnection(type.name))
             .filter(type => !isEdge(type.name))
             .filter(type => !isPageInfo(type.name))
+            .filter(type => !isAggregate(type.name))
             .filter(type => !isIntrospection(type.name))
             .filter(type => isObjectType(type));
         const enumTypes = Object.values(options.schemaAst?.getTypeMap() || {})
@@ -302,6 +303,136 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 };
             }) || [];
 
+        const pageEditObjectFieldSvelteList = objectTypes
+            .map(type => assertObjectType(type))
+            .flatMap(type =>
+                Object.values(type.getFields())
+                    .filter(field => isObjectType(getFieldType(field.type)))
+                    .filter(field => !isConnection(getFieldType(field.type).name))
+                    .filter(field => !isEdge(getFieldType(field.type).name))
+                    .filter(field => !isPageInfo(getFieldType(field.type).name))
+                    .filter(field => !isAggregate(field.name))
+                    .filter(field => !isIntrospection(getFieldType(field.type).name))
+                    .filter(field => !isListType(field.type))
+                    .map(field => { return { ofType: type, field: field } }))
+            .map(objectField => {
+                return {
+                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(objectField.ofType.name)}/[id]/${objectField.field.name}/+page.svelte`,
+                    documents: options.documents,
+                    plugins: options.plugins,
+                    pluginMap: options.pluginMap,
+                    config: {
+                        ...options.config,
+                        template: 'pageEditObjectFieldSvelte',
+                        pageEditObjectFieldSvelte: {
+                            name: objectField.ofType.name,
+                            objectFieldName: objectField?.field.name,
+                            componentsPath: options.presetConfig.componentsPath || 'lib/components'
+                        }
+                    },
+                    schema: options.schema,
+                    schemaAst: options.schemaAst,
+                    skipDocumentsValidation: true,
+                };
+            }) || [];
+
+        const pageEditObjectFieldTsList = objectTypes
+            .map(type => assertObjectType(type))
+            .flatMap(type =>
+                Object.values(type.getFields())
+                    .filter(field => isObjectType(getFieldType(field.type)))
+                    .filter(field => !isConnection(getFieldType(field.type).name))
+                    .filter(field => !isEdge(getFieldType(field.type).name))
+                    .filter(field => !isPageInfo(getFieldType(field.type).name))
+                    .filter(field => !isAggregate(field.name))
+                    .filter(field => !isIntrospection(getFieldType(field.type).name))
+                    .filter(field => !isListType(field.type))
+                    .map(field => { return { ofType: type, field: field } }))
+            .map(objectField => {
+                return {
+                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(objectField.ofType.name)}/[id]/${objectField.field.name}/+page.ts`,
+                    documents: options.documents,
+                    plugins: options.plugins,
+                    pluginMap: options.pluginMap,
+                    config: {
+                        ...options.config,
+                        template: 'pageEditObjectFieldTs',
+                        pageEditObjectFieldTs: {
+                            name: objectField.ofType.name,
+                            objectFieldName: objectField?.field.name,
+                        }
+                    },
+                    schema: options.schema,
+                    schemaAst: options.schemaAst,
+                    skipDocumentsValidation: true,
+                };
+            }) || [];
+
+        const pageEditObjectListFieldSvelteList = objectTypes
+            .map(type => assertObjectType(type))
+            .flatMap(type =>
+                Object.values(type.getFields())
+                    .filter(field => isObjectType(getFieldType(field.type)))
+                    .filter(field => !isConnection(getFieldType(field.type).name))
+                    .filter(field => !isEdge(getFieldType(field.type).name))
+                    .filter(field => !isPageInfo(getFieldType(field.type).name))
+                    .filter(field => !isAggregate(field.name))
+                    .filter(field => !isIntrospection(getFieldType(field.type).name))
+                    .filter(field => isListType(field.type))
+                    .map(field => { return { ofType: type, field: field } }))
+            .map(objectField => {
+                return {
+                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(objectField.ofType.name)}/[id]/${objectField.field.name}/+page.svelte`,
+                    documents: options.documents,
+                    plugins: options.plugins,
+                    pluginMap: options.pluginMap,
+                    config: {
+                        ...options.config,
+                        template: 'pageEditObjectListFieldSvelte',
+                        pageEditObjectListFieldSvelte: {
+                            name: objectField.ofType.name,
+                            objectFieldName: objectField?.field.name,
+                            componentsPath: options.presetConfig.componentsPath || 'lib/components'
+                        }
+                    },
+                    schema: options.schema,
+                    schemaAst: options.schemaAst,
+                    skipDocumentsValidation: true,
+                };
+            }) || [];
+
+        const pageEditObjectListFieldTsList = objectTypes
+            .map(type => assertObjectType(type))
+            .flatMap(type =>
+                Object.values(type.getFields())
+                    .filter(field => isObjectType(getFieldType(field.type)))
+                    .filter(field => !isConnection(getFieldType(field.type).name))
+                    .filter(field => !isEdge(getFieldType(field.type).name))
+                    .filter(field => !isPageInfo(getFieldType(field.type).name))
+                    .filter(field => !isAggregate(field.name))
+                    .filter(field => !isIntrospection(getFieldType(field.type).name))
+                    .filter(field => isListType(field.type))
+                    .map(field => { return { ofType: type, field: field } }))
+            .map(objectField => {
+                return {
+                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(objectField.ofType.name)}/[id]/${objectField.field.name}/+page.ts`,
+                    documents: options.documents,
+                    plugins: options.plugins,
+                    pluginMap: options.pluginMap,
+                    config: {
+                        ...options.config,
+                        template: 'pageEditObjectListFieldTs',
+                        pageEditObjectListFieldTs: {
+                            name: objectField.ofType.name,
+                            objectFieldName: objectField?.field.name,
+                        }
+                    },
+                    schema: options.schema,
+                    schemaAst: options.schemaAst,
+                    skipDocumentsValidation: true,
+                };
+            }) || [];
+
         const pageCreateSvelteList = objectTypes
             .map(type => {
                 return {
@@ -416,6 +547,10 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             ...pageTsList,
             ...pageEditSvelteList,
             ...pageEditTsList,
+            ...pageEditObjectFieldSvelteList,
+            ...pageEditObjectFieldTsList,
+            ...pageEditObjectListFieldSvelteList,
+            ...pageEditObjectListFieldTsList,
             ...pageCreateSvelteList,
             ...pageCreateTsList,
             ...enumThList,

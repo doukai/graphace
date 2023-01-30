@@ -81,12 +81,18 @@ const getSubField = (field: GraphQLField<any, any, any>, subFieldName: string | 
     return undefined;
 }
 
-const getConnectionField = (field: GraphQLField<any, any, any>, subFieldName: string | undefined): GraphQLField<any, any, any> | undefined => {
-    if (field.type && subFieldName) {
-        const connectionFieldName = `${subFieldName}Connection`;
-        const fieldType = getFieldType(field.type);
-        if (isObjectType(fieldType) && Object.keys(fieldType.getFields()).includes(connectionFieldName)) {
-            return fieldType.getFields()[connectionFieldName];
+const getField = (type: GraphQLNamedType, fieldName: string | undefined): GraphQLField<any, any, any> | undefined => {
+    if (isObjectType(type) && fieldName) {
+        return type.getFields()[fieldName];
+    }
+    return undefined;
+}
+
+const getConnectionField = (type: GraphQLNamedType | null | undefined, fieldName: string | undefined): GraphQLField<any, any, any> | undefined => {
+    if (type && fieldName) {
+        const connectionFieldName = `${fieldName}Connection`;
+        if (isObjectType(type)) {
+            return type.getFields()[connectionFieldName];
         }
     }
     return undefined;
@@ -183,6 +189,10 @@ export type Template = 'query' |
     'pageTs' |
     'pageEditSvelte' |
     'pageEditTs' |
+    'pageEditObjectFieldSvelte' |
+    'pageEditObjectFieldTs' |
+    'pageEditObjectListFieldSvelte' |
+    'pageEditObjectListFieldTs' |
     'pageCreateSvelte' |
     'pageCreateTs' |
     'enumTh' |
@@ -199,7 +209,8 @@ const renders: Record<Template, Render> = {
                 .map(key => operationFields[key])
                 .find(field => field.name === config.query?.fieldName);
             if (field) {
-                const idFieldName = getIDFieldName(getFieldType(field.type));
+                const fieldType = getFieldType(field.type);
+                const idFieldName = getIDFieldName(fieldType);
                 let objectField = undefined;
                 if (config.query?.objectFieldName) {
                     const subField = getSubField(field, config.query.objectFieldName);
@@ -208,7 +219,7 @@ const renders: Record<Template, Render> = {
                         args: subField?.args,
                         parentArgs: field.args.filter(arg => arg.name === idFieldName).map(arg => { return { name: arg.name, alias: `${field.name}_${arg.name}`, type: arg.type } }),
                         isListType: isListType(subField?.type),
-                        connectionField: getConnectionField(field, subField?.name),
+                        connectionField: getConnectionField(fieldType, subField?.name),
                         fields: getScalarFields(subField),
                     }
                 }
@@ -228,7 +239,8 @@ const renders: Record<Template, Render> = {
                 .map(key => operationFields[key])
                 .find(field => field.name === config.mutation?.fieldName);
             if (field) {
-                const idFieldName = getIDFieldName(getFieldType(field.type));
+                const fieldType = getFieldType(field.type);
+                const idFieldName = getIDFieldName(fieldType);
                 let objectField = undefined;
                 if (config.mutation?.objectFieldName) {
                     const subField = getSubField(field, config.mutation.objectFieldName);
@@ -237,7 +249,7 @@ const renders: Record<Template, Render> = {
                         args: subField?.args,
                         parentArgs: field.args.filter(arg => arg.name === idFieldName).concat(field.args.filter(arg => arg.name === subField?.name)).map(arg => { return { name: arg.name, alias: `${field.name}_${arg.name}`, type: arg.type } }),
                         isListType: isListType(subField?.type),
-                        connectionField: getConnectionField(field, subField?.name),
+                        connectionField: getConnectionField(fieldType, subField?.name),
                         fields: getScalarFields(subField),
                     }
                 }
@@ -305,9 +317,10 @@ const renders: Record<Template, Render> = {
         const typeName = config.pageSvelte?.name;
         if (typeName) {
             const type = schema.getType(typeName);
+            const connectionField = getConnectionField(schema.getQueryType(), `${changeCase.camelCase(typeName)}List`);
             if (type && isObjectType(type)) {
                 return {
-                    content: engine.renderFileSync(config.template, { name: type?.name, tablePath: `${config.pageSvelte?.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema' }),
+                    content: engine.renderFileSync(config.template, { name: type?.name, connectionField: connectionField, tablePath: `${config.pageSvelte?.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema' }),
                 };
             }
         }
@@ -317,9 +330,10 @@ const renders: Record<Template, Render> = {
         const typeName = config.pageTs?.name;
         if (typeName) {
             const type = schema.getType(typeName);
+            const connectionField = getConnectionField(schema.getQueryType(), `${changeCase.camelCase(typeName)}List`);
             if (type && isObjectType(type)) {
                 return {
-                    content: engine.renderFileSync(config.template, { name: type?.name }),
+                    content: engine.renderFileSync(config.template, { name: type?.name, connectionField: connectionField }),
                 };
             }
         }
@@ -345,6 +359,72 @@ const renders: Record<Template, Render> = {
                 return {
                     content: engine.renderFileSync(config.template, { name: type?.name }),
                 };
+            }
+        }
+        throw new Error(`${typeName} not exist`);
+    },
+    pageEditObjectFieldSvelte: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.pageEditObjectFieldSvelte?.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                const objectField = getField(type, config.pageEditObjectFieldSvelte?.objectFieldName);
+                if (objectField?.type) {
+                    const objectFieldType = getFieldType(objectField.type);
+                    return {
+                        content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, formPath: `${config.pageEditObjectFieldSvelte?.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema' }),
+                    };
+                }
+            }
+        }
+        throw new Error(`${typeName} not exist`);
+    },
+    pageEditObjectFieldTs: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.pageEditObjectFieldTs?.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                const objectField = getField(type, config.pageEditObjectFieldTs?.objectFieldName);
+                if (objectField?.type) {
+                    const objectFieldType = getFieldType(objectField.type);
+                    return {
+                        content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name }),
+                    };
+                }
+            }
+        }
+        throw new Error(`${typeName} not exist`);
+    },
+    pageEditObjectListFieldSvelte: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.pageEditObjectListFieldSvelte?.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                const objectField = getField(type, config.pageEditObjectListFieldSvelte?.objectFieldName);
+                if (objectField?.type) {
+                    const objectFieldType = getFieldType(objectField.type);
+                    const connectionField = getConnectionField(type, objectField.name);
+                    return {
+                        content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, connectionField: connectionField, formPath: `${config.pageEditObjectListFieldSvelte?.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema' }),
+                    };
+                }
+            }
+        }
+        throw new Error(`${typeName} not exist`);
+    },
+    pageEditObjectListFieldTs: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.pageEditObjectListFieldTs?.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                const objectField = getField(type, config.pageEditObjectListFieldTs?.objectFieldName);
+                if (objectField?.type) {
+                    const objectFieldType = getFieldType(objectField.type);
+                    const connectionField = getConnectionField(type, objectField.name);
+                    return {
+                        content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, connectionField: connectionField }),
+                    };
+                }
             }
         }
         throw new Error(`${typeName} not exist`);

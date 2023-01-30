@@ -1,0 +1,56 @@
+<script lang="ts">
+	import {{ objectFieldTypeName }}Table from '~/lib/components/objects/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}Table.svelte';
+	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
+	import type { Error } from '@graphace/commons/types';
+	import type { MutationType{{ objectFieldTypeName }}Args, QueryType{{ objectFieldTypeName }}ListArgs, {{ objectFieldTypeName }} } from '~/lib/types/schema';
+	import { Query_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ objectFieldTypeName | camelCase }}Store } from '$houdini';
+	import type { PageData } from './$houdini';
+
+	export let data: PageData;
+	$: Query_{{ name | camelCase }}_{{ objectFieldName }} = data.Query_{{ name | camelCase }}_{{ objectFieldName }} as Query_{{ name | camelCase }}_{{ objectFieldName }}Store;
+	$: {{ name | camelCase }} = $Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }};
+	const Mutation_{{ objectFieldTypeName | camelCase }} = new Mutation_{{ objectFieldTypeName | camelCase }}Store();
+
+	const fetch = (
+		event: CustomEvent<{
+			args: QueryType{{ objectFieldTypeName }}ListArgs;
+			then: (data: ({{ objectFieldTypeName }} | null | undefined)[] | null | undefined) => void;
+			catch: (error: Error) => void;
+		}>
+	) => {
+		Query_{{ name | camelCase }}_{{ objectFieldName }}.fetch({
+			variables: { {{ name | camelCase }}_id: { val: {{ name | camelCase }}?.{{ idName }} }, ...event.detail.args }
+		})
+			.then((result) => {
+				event.detail.then(result.data?.{{ name | camelCase }}?.{{ objectFieldName }}Connection?.edges?.map((edge) => edge?.node));
+			})
+			.catch((error) => {
+				event.detail.catch(error);
+			});
+	};
+
+	const mutation = (
+		event: CustomEvent<{
+			args: MutationType{{ objectFieldTypeName }}Args;
+			update?: boolean;
+			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
+			catch: (error: Error) => void;
+		}>
+	) => {
+		Mutation_{{ objectFieldTypeName | camelCase }}.mutate({ ...event.detail.args, update: event.detail.update })
+			.then((result) => {
+				event.detail.then(result?.{{ objectFieldTypeName | camelCase }});
+			})
+			.catch((error) => {
+				event.detail.catch(error);
+			});
+	};
+</script>
+
+<{{ objectFieldTypeName }}Table
+	nodes={$Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }}?.{{ objectFieldName }}Connection?.edges?.map((edge) => edge?.node)}
+	totalCount={$Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }}?.{{ objectFieldName }}Connection?.totalCount || 0}
+	isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
+	on:fetch={fetch}
+	on:mutation={mutation}
+/>

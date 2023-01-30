@@ -2,9 +2,9 @@
 	import RoleTable from '~/lib/components/objects/role/RoleTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
+	import type { MutationTypeRoleArgs, QueryTypeRoleListArgs, Role } from '~/lib/types/schema';
 	import { Query_user_rolesStore, Mutation_roleStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import type { MutationTypeRoleArgs, QueryTypeUserConnectionArgs, Role } from '~/lib/types/schema';
 
 	export let data: PageData;
 	$: Query_user_roles = data.Query_user_roles as Query_user_rolesStore;
@@ -13,7 +13,7 @@
 
 	const fetch = (
 		event: CustomEvent<{
-			args: QueryTypeUserConnectionArgs;
+			args: QueryTypeRoleListArgs;
 			then: (data: (Role | null | undefined)[] | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
