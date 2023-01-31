@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
 	import type { Error } from '@graphace/commons/types';
-	import { IntTh, IntTd, StringTh, StringTd, TimestampTh, TimestampTd, BooleanTh, BooleanTd, IDTh, IDTd } from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, IntTh, IntTd, StringTh, StringTd, TimestampTh, TimestampTd, BooleanTh, BooleanTd, IDTh, IDTd } from '@graphace/ui-graphql/components/table';
 	import SexTh from '~/lib/components/enums/sex/SexTh.svelte';
 	import SexTd from '~/lib/components/enums/sex/SexTd.svelte';
 	import { SectionHead } from '@graphace/ui/components/section';
@@ -41,6 +40,8 @@
 			then: (data: User | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
+		edit: { id: string };
+		create: {};
 	}>();
 
 	let errors: Record<string, Record<string, Error>> = {};
@@ -231,7 +232,7 @@
 			class="btn btn-square md:hidden"
 			on:click={(e) => {
 				e.preventDefault();
-				goto('./user/+');
+				dispatch('create');
 			} }
 		>
 			<Icon src={Plus} class="h-6 w-6" solid />
@@ -241,7 +242,7 @@
 		class="hidden md:btn"
 		on:click={(e) => {
 			e.preventDefault();
-			goto('./user/+');
+			dispatch('create');
 		}}
 	>
 		{$LL.routers.type.create()}
@@ -318,6 +319,7 @@
 				bind:sort={orderBy.name}
 				on:filter={query}
 			/>
+			<th>organization</th>
 			<IntTh
 				name="organizationId"
 				bind:expression={args.organizationId}
@@ -341,6 +343,8 @@
 				bind:sort={orderBy.realmId}
 				on:filter={query}
 			/>
+			<th>roles</th>
+			<th>rolesConnection</th>
 			<SexTh
 				name="sex"
 				bind:expression={args.sex}
@@ -370,6 +374,7 @@
 				on:filter={query}
 			/>
 			<th>userDetail2</th>
+			<th>userProfile</th>
 			<IntTh
 				name="version"
 				bind:expression={args.version}
@@ -441,6 +446,7 @@
 								on:save={() => updateField({ id: node?.id, name: node?.name })}
 								error={errors[node.id]?.name}
 							/>
+							<ObjectTd path={`${node.id}/organization`} on:gotoField />
 							<IntTd
 								name="organizationId"
 								bind:value={node.organizationId}
@@ -465,6 +471,8 @@
 								on:save={() => updateField({ id: node?.id, realmId: node?.realmId })}
 								error={errors[node.id]?.realmId}
 							/>
+							<ObjectTd path={`${node.id}/roles`} on:gotoField />
+							<ObjectTd path={`${node.id}/roles-connection`} on:gotoField />
 							<SexTd
 								name="sex"
 								bind:value={node.sex}
@@ -496,6 +504,7 @@
 								error={errors[node.id]?.updateUserId}
 							/>
 							<td>{node.userDetail2}</td>
+							<ObjectTd path={`${node.id}/user-profile`} on:gotoField />
 							<IntTd
 								name="version"
 								bind:value={node.version}
@@ -508,8 +517,8 @@
 										class="btn btn-square btn-ghost btn-xs"
 										on:click={(e) => {
 											e.preventDefault();
-											if (node) {
-												goto(`./user/${node.id}`);
+											if (node && node.id) {
+												dispatch('edit', { id: node.id });
 											}
 										}}
 									>

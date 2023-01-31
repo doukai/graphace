@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
 	import type { Error } from '@graphace/commons/types';
 	import { StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, BooleanTh, BooleanTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
@@ -37,6 +36,8 @@
 			then: (data: UserProfile | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
+		edit: { id: string };
+		create: {};
 	}>();
 
 	let errors: Record<string, Record<string, Error>> = {};
@@ -196,7 +197,7 @@
 			class="btn btn-square md:hidden"
 			on:click={(e) => {
 				e.preventDefault();
-				goto('./user-profile/+');
+				dispatch('create');
 			} }
 		>
 			<Icon src={Plus} class="h-6 w-6" solid />
@@ -206,7 +207,7 @@
 		class="hidden md:btn"
 		on:click={(e) => {
 			e.preventDefault();
-			goto('./user-profile/+');
+			dispatch('create');
 		}}
 	>
 		{$LL.routers.type.create()}
@@ -295,6 +296,7 @@
 				bind:sort={orderBy.updateUserId}
 				on:filter={query}
 			/>
+			<th>user</th>
 			<StringTh
 				name="userId"
 				bind:expression={args.userId}
@@ -384,6 +386,7 @@
 								on:save={() => updateField({ id: node?.id, updateUserId: node?.updateUserId })}
 								error={errors[node.id]?.updateUserId}
 							/>
+							<ObjectTd path={`${node.id}/user`} on:gotoField />
 							<StringTd
 								name="userId"
 								bind:value={node.userId}
@@ -402,8 +405,8 @@
 										class="btn btn-square btn-ghost btn-xs"
 										on:click={(e) => {
 											e.preventDefault();
-											if (node) {
-												goto(`./user-profile/${node.id}`);
+											if (node && node.id) {
+												dispatch('edit', { id: node.id });
 											}
 										}}
 									>

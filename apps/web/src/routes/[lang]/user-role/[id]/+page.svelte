@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto, afterNavigate } from '$app/navigation';
+	import { base } from '$app/paths'
 	import UserRoleForm from '~/lib/components/objects/user-role/UserRoleForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
@@ -9,6 +11,11 @@
 	export let data: PageData;
 	$: Query_userRole = data.Query_userRole as Query_userRoleStore;
 	const Mutation_userRole = new Mutation_userRoleStore();
+
+	let previousPage: string = base;
+	afterNavigate(({ from }) => {
+		previousPage = from?.url.pathname || previousPage;
+	});
 
 	const mutation = (
 		event: CustomEvent<{
@@ -26,6 +33,10 @@
 				event.detail.catch(error);
 			});
 	};
+
+	const back = (event: CustomEvent<{}>) => {
+		goto(previousPage);
+	};
 </script>
 
-<UserRoleForm node={$Query_userRole.data?.userRole} isFetching={$Query_userRole.fetching} on:mutation={mutation} />
+<UserRoleForm node={$Query_userRole.data?.userRole} isFetching={$Query_userRole.fetching} on:mutation={mutation} on:back={back} />

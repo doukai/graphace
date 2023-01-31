@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
 	import type { Error } from '@graphace/commons/types';
 	import { IntTh, IntTd, StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
@@ -37,6 +36,8 @@
 			then: (data: Organization | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
+		edit: { id: string };
+		create: {};
 	}>();
 
 	let errors: Record<string, Record<string, Error>> = {};
@@ -190,7 +191,7 @@
 			class="btn btn-square md:hidden"
 			on:click={(e) => {
 				e.preventDefault();
-				goto('./organization/+');
+				dispatch('create');
 			} }
 		>
 			<Icon src={Plus} class="h-6 w-6" solid />
@@ -200,7 +201,7 @@
 		class="hidden md:btn"
 		on:click={(e) => {
 			e.preventDefault();
-			goto('./organization/+');
+			dispatch('create');
 		}}
 	>
 		{$LL.routers.type.create()}
@@ -285,6 +286,9 @@
 				bind:sort={orderBy.updateUserId}
 				on:filter={query}
 			/>
+			<th>userByOrg</th>
+			<th>users</th>
+			<th>usersConnection</th>
 			<IntTh
 				name="version"
 				bind:expression={args.version}
@@ -364,6 +368,9 @@
 								on:save={() => updateField({ id: node?.id, updateUserId: node?.updateUserId })}
 								error={errors[node.id]?.updateUserId}
 							/>
+							<ObjectTd path={`${node.id}/user-by-org`} on:gotoField />
+							<ObjectTd path={`${node.id}/users`} on:gotoField />
+							<ObjectTd path={`${node.id}/users-connection`} on:gotoField />
 							<IntTd
 								name="version"
 								bind:value={node.version}
@@ -376,8 +383,8 @@
 										class="btn btn-square btn-ghost btn-xs"
 										on:click={(e) => {
 											e.preventDefault();
-											if (node) {
-												goto(`./organization/${node.id}`);
+											if (node && node.id) {
+												dispatch('edit', { id: node.id });
 											}
 										}}
 									>

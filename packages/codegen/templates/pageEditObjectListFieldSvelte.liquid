@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	{%- if connectionField %}
 	import {{ objectFieldTypeName }}ConnectionTable from '~/lib/components/objects/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}ConnectionTable.svelte';
 	{%- else %}
@@ -57,6 +58,22 @@
 				event.detail.catch(error);
 			});
 	};
+
+	const edit = (
+		event: CustomEvent<{
+			id: string;
+		}>
+	) => {
+		goto(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.id}`);
+	};
+
+	const create = (event: CustomEvent<{}>) => {
+		goto(`../../{{ objectFieldTypeName | paramCase }}/+`);
+	};
+
+	const gotoField = (event: CustomEvent<{ path: string }>) => {
+		goto(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.path}`);
+	};
 </script>
 {%- if connectionField %}
 <{{ objectFieldTypeName }}ConnectionTable
@@ -65,6 +82,9 @@
 	isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
+	on:edit={edit}
+	on:create={create}
+	on:gotoField={gotoField}
 />
 {%- else %}
 <{{ objectFieldTypeName }}Table
@@ -72,5 +92,8 @@
 	isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
+	on:edit={edit}
+	on:create={create}
+	on:gotoField={gotoField}
 />
 {%- endif %}

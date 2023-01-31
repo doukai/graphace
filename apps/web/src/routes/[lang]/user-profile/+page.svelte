@@ -1,23 +1,24 @@
 <script lang="ts">
-	import UserProfileTable from '~/lib/components/objects/user-profile/UserProfileTable.svelte';
-	import type { UserProfile, UserProfileListArgs, MutationTypeUserProfileArgs } from '~/lib/types/schema';
-	import { Query_userProfileListStore, Mutation_userProfileStore } from '$houdini';
+	import { goto } from '$app/navigation';
+	import UserProfileConnectionTable from '~/lib/components/objects/user-profile/UserProfileConnectionTable.svelte';
+	import type { UserProfile, QueryTypeUserProfileConnectionArgs, MutationTypeUserProfileArgs } from '~/lib/types/schema';
+	import { Query_userProfileConnectionStore, Mutation_userProfileStore } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: Query_userProfileList = data.Query_userProfileList as Query_userProfileListStore;
+	$: Query_userProfileConnection = data.Query_userProfileConnection as Query_userProfileConnectionStore;
 	const Mutation_userProfile = new Mutation_userProfileStore();
 
 	const fetch = (
 		event: CustomEvent<{
-			args: QueryTypeUserProfileListArgs;
+			args: QueryTypeUserProfileConnectionArgs;
 			then: (data: (UserProfile | null | undefined)[] | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Query_userProfileList.fetch({ variables: event.detail.args })
+		Query_userProfileConnection.fetch({ variables: event.detail.args })
 			.then((result) => {
-				event.detail.then(result.data?.userProfileList;
+				event.detail.then(result.data?.userProfileConnection?.edges?.map((edge) => edge?.node));
 			})
 			.catch((error) => {
 				event.detail.catch(error);
@@ -40,10 +41,30 @@
 				event.detail.catch(error);
 			});
 	};
+
+	const edit = (
+		event: CustomEvent<{
+			id: string;
+		}>
+	) => {
+		goto(`./user-profile/${event.detail.id}`);
+	};
+
+	const create = (event: CustomEvent<{}>) => {
+		goto(`./user-profile/+`);
+	};
+
+	const gotoField = (event: CustomEvent<{ path: string }>) => {
+		goto(`./user-profile/${event.detail.path}`);
+	};
 </script>
-<UserProfileTable
-	nodes={$Query_userProfileList.data?.userProfile}
-	isFetching={$Query_userProfileList.fetching}
+<UserProfileConnectionTable
+	nodes={$Query_userProfileConnection.data?.userProfileConnection?.edges?.map((edge) => edge?.node)}
+	totalCount={$Query_userProfileConnection.data?.userProfileConnection?.totalCount || 0}
+	isFetching={$Query_userProfileConnection.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
+	on:edit={edit}
+	on:create={create}
+	on:gotoField={gotoField}
 />

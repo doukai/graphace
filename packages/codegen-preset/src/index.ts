@@ -338,7 +338,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                     .map(field => { return { ofType: type, field: field } }))
             .map(objectField => {
                 return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(objectField.ofType.name)}/[id]/${objectField.field.name}/+page.svelte`,
+                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(objectField.ofType.name)}/[id]/${changeCase.paramCase(objectField.field.name)}/+page.svelte`,
                     documents: options.documents,
                     plugins: options.plugins,
                     pluginMap: options.pluginMap,
@@ -371,7 +371,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                     .map(field => { return { ofType: type, field: field } }))
             .map(objectField => {
                 return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(objectField.ofType.name)}/[id]/${objectField.field.name}/+page.ts`,
+                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(objectField.ofType.name)}/[id]/${changeCase.paramCase(objectField.field.name)}/+page.ts`,
                     documents: options.documents,
                     plugins: options.plugins,
                     pluginMap: options.pluginMap,
@@ -403,7 +403,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                     .map(field => { return { ofType: type, field: field } }))
             .map(objectField => {
                 return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(objectField.ofType.name)}/[id]/${objectField.field.name}/+page.svelte`,
+                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(objectField.ofType.name)}/[id]/${changeCase.paramCase(objectField.field.name)}/+page.svelte`,
                     documents: options.documents,
                     plugins: options.plugins,
                     pluginMap: options.pluginMap,
@@ -436,7 +436,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                     .map(field => { return { ofType: type, field: field } }))
             .map(objectField => {
                 return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(objectField.ofType.name)}/[id]/${objectField.field.name}/+page.ts`,
+                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(objectField.ofType.name)}/[id]/${changeCase.paramCase(objectField.field.name)}/+page.ts`,
                     documents: options.documents,
                     plugins: options.plugins,
                     pluginMap: options.pluginMap,

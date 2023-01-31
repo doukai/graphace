@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
 	import type { Error } from '@graphace/commons/types';
-	import { StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, BooleanTh, BooleanTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, BooleanTh, BooleanTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
 	import { SectionHead } from '@graphace/ui/components/section';
 	import { Table, TableLoading } from '@graphace/ui/components/table';
 	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
@@ -39,6 +38,8 @@
 			then: (data: UserRole | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
+		edit: { id: string };
+		create: {};
 	}>();
 
 	let errors: Record<string, Record<string, Error>> = {};
@@ -221,7 +222,7 @@
 			class="btn btn-square md:hidden"
 			on:click={(e) => {
 				e.preventDefault();
-				goto('./user-role/+');
+				dispatch('create');
 			} }
 		>
 			<Icon src={Plus} class="h-6 w-6" solid />
@@ -231,7 +232,7 @@
 		class="hidden md:btn"
 		on:click={(e) => {
 			e.preventDefault();
-			goto('./user-role/+');
+			dispatch('create');
 		}}
 	>
 		{$LL.routers.type.create()}
@@ -403,8 +404,8 @@
 										class="btn btn-square btn-ghost btn-xs"
 										on:click={(e) => {
 											e.preventDefault();
-											if (node) {
-												goto(`./user-role/${node.id}`);
+											if (node && node.id) {
+												dispatch('edit', { id: node.id });
 											}
 										}}
 									>

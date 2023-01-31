@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto, afterNavigate } from '$app/navigation';
+	import { base } from '$app/paths'
 	import UserPhonesForm from '~/lib/components/objects/user-phones/UserPhonesForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
@@ -9,6 +11,11 @@
 	export let data: PageData;
 	$: Query_userPhones = data.Query_userPhones as Query_userPhonesStore;
 	const Mutation_userPhones = new Mutation_userPhonesStore();
+
+	let previousPage: string = base;
+	afterNavigate(({ from }) => {
+		previousPage = from?.url.pathname || previousPage;
+	});
 
 	const mutation = (
 		event: CustomEvent<{
@@ -26,6 +33,10 @@
 				event.detail.catch(error);
 			});
 	};
+
+	const back = (event: CustomEvent<{}>) => {
+		goto(previousPage);
+	};
 </script>
 
-<UserPhonesForm node={$Query_userPhones.data?.userPhones} isFetching={$Query_userPhones.fetching} on:mutation={mutation} />
+<UserPhonesForm node={$Query_userPhones.data?.userPhones} isFetching={$Query_userPhones.fetching} on:mutation={mutation} on:back={back} />

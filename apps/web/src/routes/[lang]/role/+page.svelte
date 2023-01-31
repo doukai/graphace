@@ -1,23 +1,24 @@
 <script lang="ts">
-	import RoleTable from '~/lib/components/objects/role/RoleTable.svelte';
-	import type { Role, RoleListArgs, MutationTypeRoleArgs } from '~/lib/types/schema';
-	import { Query_roleListStore, Mutation_roleStore } from '$houdini';
+	import { goto } from '$app/navigation';
+	import RoleConnectionTable from '~/lib/components/objects/role/RoleConnectionTable.svelte';
+	import type { Role, QueryTypeRoleConnectionArgs, MutationTypeRoleArgs } from '~/lib/types/schema';
+	import { Query_roleConnectionStore, Mutation_roleStore } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: Query_roleList = data.Query_roleList as Query_roleListStore;
+	$: Query_roleConnection = data.Query_roleConnection as Query_roleConnectionStore;
 	const Mutation_role = new Mutation_roleStore();
 
 	const fetch = (
 		event: CustomEvent<{
-			args: QueryTypeRoleListArgs;
+			args: QueryTypeRoleConnectionArgs;
 			then: (data: (Role | null | undefined)[] | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Query_roleList.fetch({ variables: event.detail.args })
+		Query_roleConnection.fetch({ variables: event.detail.args })
 			.then((result) => {
-				event.detail.then(result.data?.roleList;
+				event.detail.then(result.data?.roleConnection?.edges?.map((edge) => edge?.node));
 			})
 			.catch((error) => {
 				event.detail.catch(error);
@@ -40,10 +41,30 @@
 				event.detail.catch(error);
 			});
 	};
+
+	const edit = (
+		event: CustomEvent<{
+			id: string;
+		}>
+	) => {
+		goto(`./role/${event.detail.id}`);
+	};
+
+	const create = (event: CustomEvent<{}>) => {
+		goto(`./role/+`);
+	};
+
+	const gotoField = (event: CustomEvent<{ path: string }>) => {
+		goto(`./role/${event.detail.path}`);
+	};
 </script>
-<RoleTable
-	nodes={$Query_roleList.data?.role}
-	isFetching={$Query_roleList.fetching}
+<RoleConnectionTable
+	nodes={$Query_roleConnection.data?.roleConnection?.edges?.map((edge) => edge?.node)}
+	totalCount={$Query_roleConnection.data?.roleConnection?.totalCount || 0}
+	isFetching={$Query_roleConnection.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
+	on:edit={edit}
+	on:create={create}
+	on:gotoField={gotoField}
 />

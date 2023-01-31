@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto, afterNavigate } from '$app/navigation';
+	import { base } from '$app/paths'
 	import UserCreateForm from '~/lib/components/objects/user/UserCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
@@ -7,6 +9,11 @@
 
 	const Mutation_user = new Mutation_userStore();
 	let node: MutationTypeUserArgs = {};
+
+	let previousPage: string = base;
+	afterNavigate(({ from }) => {
+		previousPage = from?.url.pathname || previousPage;
+	});
 
 	const mutation = (
 		event: CustomEvent<{
@@ -23,6 +30,10 @@
 				event.detail.catch(error);
 			});
 	};
+
+	const back = (event: CustomEvent<{}>) => {
+		goto(previousPage);
+	};
 </script>
 
-<UserCreateForm {node} on:mutation={mutation} />
+<UserCreateForm {node} on:mutation={mutation} on:back={back} />

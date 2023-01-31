@@ -1,23 +1,24 @@
 <script lang="ts">
-	import UserRoleTable from '~/lib/components/objects/user-role/UserRoleTable.svelte';
-	import type { UserRole, UserRoleListArgs, MutationTypeUserRoleArgs } from '~/lib/types/schema';
-	import { Query_userRoleListStore, Mutation_userRoleStore } from '$houdini';
+	import { goto } from '$app/navigation';
+	import UserRoleConnectionTable from '~/lib/components/objects/user-role/UserRoleConnectionTable.svelte';
+	import type { UserRole, QueryTypeUserRoleConnectionArgs, MutationTypeUserRoleArgs } from '~/lib/types/schema';
+	import { Query_userRoleConnectionStore, Mutation_userRoleStore } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: Query_userRoleList = data.Query_userRoleList as Query_userRoleListStore;
+	$: Query_userRoleConnection = data.Query_userRoleConnection as Query_userRoleConnectionStore;
 	const Mutation_userRole = new Mutation_userRoleStore();
 
 	const fetch = (
 		event: CustomEvent<{
-			args: QueryTypeUserRoleListArgs;
+			args: QueryTypeUserRoleConnectionArgs;
 			then: (data: (UserRole | null | undefined)[] | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Query_userRoleList.fetch({ variables: event.detail.args })
+		Query_userRoleConnection.fetch({ variables: event.detail.args })
 			.then((result) => {
-				event.detail.then(result.data?.userRoleList;
+				event.detail.then(result.data?.userRoleConnection?.edges?.map((edge) => edge?.node));
 			})
 			.catch((error) => {
 				event.detail.catch(error);
@@ -40,10 +41,30 @@
 				event.detail.catch(error);
 			});
 	};
+
+	const edit = (
+		event: CustomEvent<{
+			id: string;
+		}>
+	) => {
+		goto(`./user-role/${event.detail.id}`);
+	};
+
+	const create = (event: CustomEvent<{}>) => {
+		goto(`./user-role/+`);
+	};
+
+	const gotoField = (event: CustomEvent<{ path: string }>) => {
+		goto(`./user-role/${event.detail.path}`);
+	};
 </script>
-<UserRoleTable
-	nodes={$Query_userRoleList.data?.userRole}
-	isFetching={$Query_userRoleList.fetching}
+<UserRoleConnectionTable
+	nodes={$Query_userRoleConnection.data?.userRoleConnection?.edges?.map((edge) => edge?.node)}
+	totalCount={$Query_userRoleConnection.data?.userRoleConnection?.totalCount || 0}
+	isFetching={$Query_userRoleConnection.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
+	on:edit={edit}
+	on:create={create}
+	on:gotoField={gotoField}
 />

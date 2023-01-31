@@ -11,11 +11,7 @@
 				e.preventDefault();
 				goto(`/${$locale}/organization`);
 			}}
-			class={$page.url.pathname.startsWith(
-				`/${$locale}/organization`
-			)
-				? 'active'
-				: ''}
+			class={$page.url.pathname === `/${$locale}/organization` || $page.url.pathname.startsWith(`/${$locale}/organization/`) ? 'active' : ''}
 		>
 			<Icon icon="file-icons:graphql" />
 			Organization
@@ -28,11 +24,7 @@
 				e.preventDefault();
 				goto(`/${$locale}/role`);
 			}}
-			class={$page.url.pathname.startsWith(
-				`/${$locale}/role`
-			)
-				? 'active'
-				: ''}
+			class={$page.url.pathname === `/${$locale}/role` || $page.url.pathname.startsWith(`/${$locale}/role/`) ? 'active' : ''}
 		>
 			<Icon icon="file-icons:graphql" />
 			Role
@@ -45,11 +37,7 @@
 				e.preventDefault();
 				goto(`/${$locale}/role-role-type`);
 			}}
-			class={$page.url.pathname.startsWith(
-				`/${$locale}/role-role-type`
-			)
-				? 'active'
-				: ''}
+			class={$page.url.pathname === `/${$locale}/role-role-type` || $page.url.pathname.startsWith(`/${$locale}/role-role-type/`) ? 'active' : ''}
 		>
 			<Icon icon="file-icons:graphql" />
 			RoleRoleType
@@ -62,11 +50,7 @@
 				e.preventDefault();
 				goto(`/${$locale}/user`);
 			}}
-			class={$page.url.pathname.startsWith(
-				`/${$locale}/user`
-			)
-				? 'active'
-				: ''}
+			class={$page.url.pathname === `/${$locale}/user` || $page.url.pathname.startsWith(`/${$locale}/user/`) ? 'active' : ''}
 		>
 			<Icon icon="file-icons:graphql" />
 			User
@@ -79,11 +63,7 @@
 				e.preventDefault();
 				goto(`/${$locale}/user-phones`);
 			}}
-			class={$page.url.pathname.startsWith(
-				`/${$locale}/user-phones`
-			)
-				? 'active'
-				: ''}
+			class={$page.url.pathname === `/${$locale}/user-phones` || $page.url.pathname.startsWith(`/${$locale}/user-phones/`) ? 'active' : ''}
 		>
 			<Icon icon="file-icons:graphql" />
 			UserPhones
@@ -96,11 +76,7 @@
 				e.preventDefault();
 				goto(`/${$locale}/user-profile`);
 			}}
-			class={$page.url.pathname.startsWith(
-				`/${$locale}/user-profile`
-			)
-				? 'active'
-				: ''}
+			class={$page.url.pathname === `/${$locale}/user-profile` || $page.url.pathname.startsWith(`/${$locale}/user-profile/`) ? 'active' : ''}
 		>
 			<Icon icon="file-icons:graphql" />
 			UserProfile
@@ -113,11 +89,7 @@
 				e.preventDefault();
 				goto(`/${$locale}/user-role`);
 			}}
-			class={$page.url.pathname.startsWith(
-				`/${$locale}/user-role`
-			)
-				? 'active'
-				: ''}
+			class={$page.url.pathname === `/${$locale}/user-role` || $page.url.pathname.startsWith(`/${$locale}/user-role/`) ? 'active' : ''}
 		>
 			<Icon icon="file-icons:graphql" />
 			UserRole
@@ -130,11 +102,7 @@
 				e.preventDefault();
 				goto(`/${$locale}/user-test1`);
 			}}
-			class={$page.url.pathname.startsWith(
-				`/${$locale}/user-test1`
-			)
-				? 'active'
-				: ''}
+			class={$page.url.pathname === `/${$locale}/user-test1` || $page.url.pathname.startsWith(`/${$locale}/user-test1/`) ? 'active' : ''}
 		>
 			<Icon icon="file-icons:graphql" />
 			UserTest1
@@ -147,11 +115,7 @@
 				e.preventDefault();
 				goto(`/${$locale}/user-test2`);
 			}}
-			class={$page.url.pathname.startsWith(
-				`/${$locale}/user-test2`
-			)
-				? 'active'
-				: ''}
+			class={$page.url.pathname === `/${$locale}/user-test2` || $page.url.pathname.startsWith(`/${$locale}/user-test2/`) ? 'active' : ''}
 		>
 			<Icon icon="file-icons:graphql" />
 			UserTest2

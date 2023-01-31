@@ -1,23 +1,24 @@
 <script lang="ts">
-	import UserTest1Table from '~/lib/components/objects/user-test1/UserTest1Table.svelte';
-	import type { UserTest1, UserTest1ListArgs, MutationTypeUserTest1Args } from '~/lib/types/schema';
-	import { Query_userTest1ListStore, Mutation_userTest1Store } from '$houdini';
+	import { goto } from '$app/navigation';
+	import UserTest1ConnectionTable from '~/lib/components/objects/user-test1/UserTest1ConnectionTable.svelte';
+	import type { UserTest1, QueryTypeUserTest1ConnectionArgs, MutationTypeUserTest1Args } from '~/lib/types/schema';
+	import { Query_userTest1ConnectionStore, Mutation_userTest1Store } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: Query_userTest1List = data.Query_userTest1List as Query_userTest1ListStore;
+	$: Query_userTest1Connection = data.Query_userTest1Connection as Query_userTest1ConnectionStore;
 	const Mutation_userTest1 = new Mutation_userTest1Store();
 
 	const fetch = (
 		event: CustomEvent<{
-			args: QueryTypeUserTest1ListArgs;
+			args: QueryTypeUserTest1ConnectionArgs;
 			then: (data: (UserTest1 | null | undefined)[] | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Query_userTest1List.fetch({ variables: event.detail.args })
+		Query_userTest1Connection.fetch({ variables: event.detail.args })
 			.then((result) => {
-				event.detail.then(result.data?.userTest1List;
+				event.detail.then(result.data?.userTest1Connection?.edges?.map((edge) => edge?.node));
 			})
 			.catch((error) => {
 				event.detail.catch(error);
@@ -40,10 +41,30 @@
 				event.detail.catch(error);
 			});
 	};
+
+	const edit = (
+		event: CustomEvent<{
+			id: string;
+		}>
+	) => {
+		goto(`./user-test1/${event.detail.id}`);
+	};
+
+	const create = (event: CustomEvent<{}>) => {
+		goto(`./user-test1/+`);
+	};
+
+	const gotoField = (event: CustomEvent<{ path: string }>) => {
+		goto(`./user-test1/${event.detail.path}`);
+	};
 </script>
-<UserTest1Table
-	nodes={$Query_userTest1List.data?.userTest1}
-	isFetching={$Query_userTest1List.fetching}
+<UserTest1ConnectionTable
+	nodes={$Query_userTest1Connection.data?.userTest1Connection?.edges?.map((edge) => edge?.node)}
+	totalCount={$Query_userTest1Connection.data?.userTest1Connection?.totalCount || 0}
+	isFetching={$Query_userTest1Connection.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
+	on:edit={edit}
+	on:create={create}
+	on:gotoField={gotoField}
 />

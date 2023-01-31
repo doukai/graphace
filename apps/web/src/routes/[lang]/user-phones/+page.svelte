@@ -1,23 +1,24 @@
 <script lang="ts">
-	import UserPhonesTable from '~/lib/components/objects/user-phones/UserPhonesTable.svelte';
-	import type { UserPhones, UserPhonesListArgs, MutationTypeUserPhonesArgs } from '~/lib/types/schema';
-	import { Query_userPhonesListStore, Mutation_userPhonesStore } from '$houdini';
+	import { goto } from '$app/navigation';
+	import UserPhonesConnectionTable from '~/lib/components/objects/user-phones/UserPhonesConnectionTable.svelte';
+	import type { UserPhones, QueryTypeUserPhonesConnectionArgs, MutationTypeUserPhonesArgs } from '~/lib/types/schema';
+	import { Query_userPhonesConnectionStore, Mutation_userPhonesStore } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: Query_userPhonesList = data.Query_userPhonesList as Query_userPhonesListStore;
+	$: Query_userPhonesConnection = data.Query_userPhonesConnection as Query_userPhonesConnectionStore;
 	const Mutation_userPhones = new Mutation_userPhonesStore();
 
 	const fetch = (
 		event: CustomEvent<{
-			args: QueryTypeUserPhonesListArgs;
+			args: QueryTypeUserPhonesConnectionArgs;
 			then: (data: (UserPhones | null | undefined)[] | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Query_userPhonesList.fetch({ variables: event.detail.args })
+		Query_userPhonesConnection.fetch({ variables: event.detail.args })
 			.then((result) => {
-				event.detail.then(result.data?.userPhonesList;
+				event.detail.then(result.data?.userPhonesConnection?.edges?.map((edge) => edge?.node));
 			})
 			.catch((error) => {
 				event.detail.catch(error);
@@ -40,10 +41,30 @@
 				event.detail.catch(error);
 			});
 	};
+
+	const edit = (
+		event: CustomEvent<{
+			id: string;
+		}>
+	) => {
+		goto(`./user-phones/${event.detail.id}`);
+	};
+
+	const create = (event: CustomEvent<{}>) => {
+		goto(`./user-phones/+`);
+	};
+
+	const gotoField = (event: CustomEvent<{ path: string }>) => {
+		goto(`./user-phones/${event.detail.path}`);
+	};
 </script>
-<UserPhonesTable
-	nodes={$Query_userPhonesList.data?.userPhones}
-	isFetching={$Query_userPhonesList.fetching}
+<UserPhonesConnectionTable
+	nodes={$Query_userPhonesConnection.data?.userPhonesConnection?.edges?.map((edge) => edge?.node)}
+	totalCount={$Query_userPhonesConnection.data?.userPhonesConnection?.totalCount || 0}
+	isFetching={$Query_userPhonesConnection.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
+	on:edit={edit}
+	on:create={create}
+	on:gotoField={gotoField}
 />

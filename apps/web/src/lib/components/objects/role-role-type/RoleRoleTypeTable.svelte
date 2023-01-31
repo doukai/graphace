@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
 	import type { Error } from '@graphace/commons/types';
 	import { StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, BooleanTh, BooleanTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
@@ -39,6 +38,8 @@
 			then: (data: RoleRoleType | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
+		edit: { id: string };
+		create: {};
 	}>();
 
 	let errors: Record<string, Record<string, Error>> = {};
@@ -190,7 +191,7 @@
 			class="btn btn-square md:hidden"
 			on:click={(e) => {
 				e.preventDefault();
-				goto('./role-role-type/+');
+				dispatch('create');
 			} }
 		>
 			<Icon src={Plus} class="h-6 w-6" solid />
@@ -200,7 +201,7 @@
 		class="hidden md:btn"
 		on:click={(e) => {
 			e.preventDefault();
-			goto('./role-role-type/+');
+			dispatch('create');
 		}}
 	>
 		{$LL.routers.type.create()}
@@ -372,8 +373,8 @@
 										class="btn btn-square btn-ghost btn-xs"
 										on:click={(e) => {
 											e.preventDefault();
-											if (node) {
-												goto(`./role-role-type/${node.id}`);
+											if (node && node.id) {
+												dispatch('edit', { id: node.id });
 											}
 										}}
 									>

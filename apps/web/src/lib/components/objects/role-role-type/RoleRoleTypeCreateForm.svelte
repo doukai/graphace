@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
@@ -22,6 +21,7 @@
 			then: (data: RoleRoleType | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
+		back: {};
 	}>();
 
 	let errors: Record<string, Error> = {};
@@ -87,7 +87,7 @@
 				class="btn"
 				on:click={(e) => {
 					e.preventDefault();
-					goto('../role-role-type');
+					dispatch('back');
 				}}
 			>
 				{$LL.components.graphql.editor.backBtn()}

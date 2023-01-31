@@ -330,7 +330,7 @@ const renders: Record<Template, Render> = {
         const typeName = config.pageSvelte?.name;
         if (typeName) {
             const type = schema.getType(typeName);
-            const connectionField = getConnectionField(schema.getQueryType(), `${changeCase.camelCase(typeName)}List`);
+            const connectionField = getConnectionField(schema.getQueryType(), changeCase.camelCase(typeName));
             if (type && isObjectType(type)) {
                 return {
                     content: engine.renderFileSync(config.template, { name: type?.name, connectionField: connectionField, tablePath: `${config.pageSvelte?.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema' }),
@@ -343,7 +343,7 @@ const renders: Record<Template, Render> = {
         const typeName = config.pageTs?.name;
         if (typeName) {
             const type = schema.getType(typeName);
-            const connectionField = getConnectionField(schema.getQueryType(), `${changeCase.camelCase(typeName)}List`);
+            const connectionField = getConnectionField(schema.getQueryType(), changeCase.camelCase(typeName));
             if (type && isObjectType(type)) {
                 return {
                     content: engine.renderFileSync(config.template, { name: type?.name, connectionField: connectionField }),

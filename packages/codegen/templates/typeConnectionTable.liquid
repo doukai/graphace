@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
 	import type { Error } from '@graphace/commons/types';
-	import { {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql/components/table';
 	{%- for enum in enums %}
 	import {{ enum }}Th from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Th.svelte';
 	import {{ enum }}Td from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Td.svelte';
@@ -43,6 +42,8 @@
 			then: (data: {{ name }} | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
+		edit: { id: string };
+		create: {};
 	}>();
 
 	let errors: Record<string, Record<string, Error>> = {};
@@ -231,7 +232,7 @@
 			class="btn btn-square md:hidden"
 			on:click={(e) => {
 				e.preventDefault();
-				goto('./{{ name | paramCase }}/+');
+				dispatch('create');
 			} }
 		>
 			<Icon src={Plus} class="h-6 w-6" solid />
@@ -241,7 +242,7 @@
 		class="hidden md:btn"
 		on:click={(e) => {
 			e.preventDefault();
-			goto('./{{ name | paramCase }}/+');
+			dispatch('create');
 		}}
 	>
 		{$LL.routers.type.create()}
@@ -284,6 +285,8 @@
 			{%- else %}
 			<th>{{ field.fieldName }}</th>
 			{%- endif %}
+			{%- else %}
+			<th>{{ field.fieldName }}</th>
 			{%- endif %}
 			{%- endfor %}
 			{%- endif %}
@@ -316,6 +319,8 @@
 							{%- else %}
 							<td>{node.{{ field.fieldName }}}</td>
 							{%- endif %}
+							{%- else %}
+							<ObjectTd path={`${node.id}/{{ field.fieldName | paramCase }}`} on:gotoField />
 							{%- endif %}
 							{%- endfor %}
 							{%- endif %}
@@ -325,8 +330,8 @@
 										class="btn btn-square btn-ghost btn-xs"
 										on:click={(e) => {
 											e.preventDefault();
-											if (node) {
-												goto(`./{{ name | paramCase }}/${node.{{ idName }}}`);
+											if (node && node.{{ idName }}) {
+												dispatch('edit', { id: node.{{ idName }} });
 											}
 										}}
 									>

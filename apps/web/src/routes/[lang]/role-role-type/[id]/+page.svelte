@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto, afterNavigate } from '$app/navigation';
+	import { base } from '$app/paths'
 	import RoleRoleTypeForm from '~/lib/components/objects/role-role-type/RoleRoleTypeForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
@@ -9,6 +11,11 @@
 	export let data: PageData;
 	$: Query_roleRoleType = data.Query_roleRoleType as Query_roleRoleTypeStore;
 	const Mutation_roleRoleType = new Mutation_roleRoleTypeStore();
+
+	let previousPage: string = base;
+	afterNavigate(({ from }) => {
+		previousPage = from?.url.pathname || previousPage;
+	});
 
 	const mutation = (
 		event: CustomEvent<{
@@ -26,6 +33,10 @@
 				event.detail.catch(error);
 			});
 	};
+
+	const back = (event: CustomEvent<{}>) => {
+		goto(previousPage);
+	};
 </script>
 
-<RoleRoleTypeForm node={$Query_roleRoleType.data?.roleRoleType} isFetching={$Query_roleRoleType.fetching} on:mutation={mutation} />
+<RoleRoleTypeForm node={$Query_roleRoleType.data?.roleRoleType} isFetching={$Query_roleRoleType.fetching} on:mutation={mutation} on:back={back} />

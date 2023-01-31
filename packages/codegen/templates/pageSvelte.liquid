@@ -1,10 +1,11 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	{%- if connectionField %}
 	import {{ name }}ConnectionTable from '~/{{ tablePath }}/{{ name | paramCase }}/{{ name }}ConnectionTable.svelte';
 	{%- else %}
 	import {{ name }}Table from '~/{{ tablePath }}/{{ name | paramCase }}/{{ name }}Table.svelte';
 	{%- endif %}
-	import type { {{ name }}, {% if connectionField %}QueryType{{ name }}ConnectionArgs{% else %}{{ name }}ListArgs{% endif %}, MutationType{{ name }}Args } from '~/{{ schemaTypesPath }}';
+	import type { {{ name }}, {% if connectionField %}QueryType{{ name }}ConnectionArgs{% else %}QueryType{{ name }}ListArgs{% endif %}, MutationType{{ name }}Args } from '~/{{ schemaTypesPath }}';
 	import { {% if connectionField %}Query_{{ name | camelCase }}ConnectionStore{% else %}Query_{{ name | camelCase }}ListStore{% endif %}, Mutation_{{ name | camelCase }}Store } from '$houdini';
 	import type { PageData } from './$houdini';
 
@@ -36,7 +37,7 @@
 			{%- if connectionField %}
 				event.detail.then(result.data?.{{ name | camelCase }}Connection?.edges?.map((edge) => edge?.node));
 			{%- else %}
-				event.detail.then(result.data?.{{ name | camelCase }}List;
+				event.detail.then(result.data?.{{ name | camelCase }}List);
 			{%- endif %}
 			})
 			.catch((error) => {
@@ -60,6 +61,22 @@
 				event.detail.catch(error);
 			});
 	};
+
+	const edit = (
+		event: CustomEvent<{
+			id: string;
+		}>
+	) => {
+		goto(`./{{ name | paramCase }}/${event.detail.id}`);
+	};
+
+	const create = (event: CustomEvent<{}>) => {
+		goto(`./{{ name | paramCase }}/+`);
+	};
+
+	const gotoField = (event: CustomEvent<{ path: string }>) => {
+		goto(`./{{ name | paramCase }}/${event.detail.path}`);
+	};
 </script>
 
 {%- if connectionField %}
@@ -69,12 +86,18 @@
 	isFetching={$Query_{{ name | camelCase }}Connection.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
+	on:edit={edit}
+	on:create={create}
+	on:gotoField={gotoField}
 />
 {%- else %}
 <{{ name }}Table
-	nodes={$Query_{{ name | camelCase }}List.data?.{{ name | camelCase }}}
+	nodes={$Query_{{ name | camelCase }}List.data?.{{ name | camelCase }}List}
 	isFetching={$Query_{{ name | camelCase }}List.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
+	on:edit={edit}
+	on:create={create}
+	on:gotoField={gotoField}
 />
 {%- endif %}

@@ -14,11 +14,7 @@
 				e.preventDefault();
 				goto(`/${$locale}/{{ object.name | paramCase }}`);
 			}}
-			class={$page.url.pathname.startsWith(
-				`/${$locale}/{{ object.name | paramCase }}`
-			)
-				? 'active'
-				: ''}
+			class={$page.url.pathname === `/${$locale}/{{ object.name | paramCase }}` || $page.url.pathname.startsWith(`/${$locale}/{{ object.name | paramCase }}/`) ? 'active' : ''}
 		>
 			<Icon icon="file-icons:graphql" />
 			{{ object.name }}
