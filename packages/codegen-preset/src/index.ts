@@ -389,6 +389,72 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 };
             }) || [];
 
+
+        const pageEditObjectFieldCreateSvelteList = objectTypes
+            .map(type => assertObjectType(type))
+            .flatMap(type =>
+                Object.values(type.getFields())
+                    .filter(field => isObjectType(getFieldType(field.type)))
+                    .filter(field => !isConnection(getFieldType(field.type).name))
+                    .filter(field => !isEdge(getFieldType(field.type).name))
+                    .filter(field => !isPageInfo(getFieldType(field.type).name))
+                    .filter(field => !isAggregate(field.name))
+                    .filter(field => !isIntrospection(getFieldType(field.type).name))
+                    .filter(field => !isListType(field.type))
+                    .map(field => { return { ofType: type, field: field } }))
+            .map(objectField => {
+                return {
+                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(objectField.ofType.name)}/+/${changeCase.paramCase(objectField.field.name)}/+page.svelte`,
+                    documents: options.documents,
+                    plugins: options.plugins,
+                    pluginMap: options.pluginMap,
+                    config: {
+                        ...options.config,
+                        template: 'pageEditObjectFieldCreateSvelte',
+                        pageEditObjectFieldCreateSvelte: {
+                            name: objectField.ofType.name,
+                            objectFieldName: objectField?.field.name,
+                            componentsPath: options.presetConfig.componentsPath || 'lib/components'
+                        }
+                    },
+                    schema: options.schema,
+                    schemaAst: options.schemaAst,
+                    skipDocumentsValidation: true,
+                };
+            }) || [];
+
+        const pageEditObjectFieldCreateTsList = objectTypes
+            .map(type => assertObjectType(type))
+            .flatMap(type =>
+                Object.values(type.getFields())
+                    .filter(field => isObjectType(getFieldType(field.type)))
+                    .filter(field => !isConnection(getFieldType(field.type).name))
+                    .filter(field => !isEdge(getFieldType(field.type).name))
+                    .filter(field => !isPageInfo(getFieldType(field.type).name))
+                    .filter(field => !isAggregate(field.name))
+                    .filter(field => !isIntrospection(getFieldType(field.type).name))
+                    .filter(field => !isListType(field.type))
+                    .map(field => { return { ofType: type, field: field } }))
+            .map(objectField => {
+                return {
+                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(objectField.ofType.name)}/+/${changeCase.paramCase(objectField.field.name)}/+page.ts`,
+                    documents: options.documents,
+                    plugins: options.plugins,
+                    pluginMap: options.pluginMap,
+                    config: {
+                        ...options.config,
+                        template: 'pageEditObjectFieldCreateTs',
+                        pageEditObjectFieldCreateTs: {
+                            name: objectField.ofType.name,
+                            objectFieldName: objectField?.field.name,
+                        }
+                    },
+                    schema: options.schema,
+                    schemaAst: options.schemaAst,
+                    skipDocumentsValidation: true,
+                };
+            }) || [];
+
         const pageEditObjectListFieldSvelteList = objectTypes
             .map(type => assertObjectType(type))
             .flatMap(type =>
@@ -571,6 +637,8 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             ...pageEditTsList,
             ...pageEditObjectFieldSvelteList,
             ...pageEditObjectFieldTsList,
+            ...pageEditObjectFieldCreateSvelteList,
+            ...pageEditObjectFieldCreateTsList,
             ...pageEditObjectListFieldSvelteList,
             ...pageEditObjectListFieldTsList,
             ...pageCreateSvelteList,

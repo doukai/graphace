@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto, afterNavigate } from '$app/navigation';
 	import { base } from '$app/paths';
-	import { page } from '$app/stores';
 	import UserForm from '~/lib/components/objects/user/UserForm.svelte';
 	import UserCreateForm from '~/lib/components/objects/user/UserCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
@@ -21,17 +20,6 @@
 		previousPage = from?.url.pathname || previousPage;
 	});
 
-	const pageArgs: MutationTypeUserArgs = {};
-	if ($page.params.organization) {
-		pageArgs.organization = JSON.parse($page.params.organization);
-	}
-	if ($page.params.roles) {
-		pageArgs.roles = JSON.parse($page.params.roles);
-	}
-	if ($page.params.userProfile) {
-		pageArgs.userProfile = JSON.parse($page.params.userProfile);
-	}
-
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeUserArgs;
@@ -40,22 +28,17 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		if (userProfile?.id) {
-			Mutation_userProfile_user.mutate({
-				userProfile_id: userProfile?.id,
-				userProfile_user: { ...pageArgs, ...event.detail.args },
-				update: event.detail.update
+		Mutation_userProfile_user.mutate({
+			userProfile_id: userProfile?.id,
+			userProfile_user: event.detail.args,
+			update: event.detail.update
+		})
+			.then((result) => {
+				event.detail.then(result?.userProfile?.user);
 			})
-				.then((result) => {
-					event.detail.then(result?.userProfile?.user);
-				})
-				.catch((error) => {
-					event.detail.catch(error);
-				});
-		} else {
-			$page.params = { user: JSON.stringify(event.detail.args) };
-			goto(previousPage);
-		}
+			.catch((error) => {
+				event.detail.catch(error);
+			});
 	};
 
 	const back = (event: CustomEvent<{}>) => {

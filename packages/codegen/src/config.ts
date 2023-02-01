@@ -16,6 +16,8 @@ export interface GraphacePluginConfig extends RawTypesConfig {
   pageEditTs?: { name: string };
   pageEditObjectFieldSvelte?: { name: string, objectFieldName: string, componentsPath?: string };
   pageEditObjectFieldTs?: { name: string, objectFieldName: string };
+  pageEditObjectFieldCreateSvelte?: { name: string, objectFieldName: string, componentsPath?: string };
+  pageEditObjectFieldCreateTs?: { name: string, objectFieldName: string };
   pageEditObjectListFieldSvelte?: { name: string, objectFieldName: string, componentsPath?: string };
   pageEditObjectListFieldTs?: { name: string, objectFieldName: string };
   pageCreateSvelte?: { name: string, componentsPath?: string };

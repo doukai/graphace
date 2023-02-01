@@ -1,0 +1,43 @@
+<script lang="ts">
+	import { goto, afterNavigate } from '$app/navigation';
+	import { base } from '$app/paths';
+	import { page } from '$app/stores';
+	import {{ objectFieldTypeName }}CreateForm from '~/lib/components/objects/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
+	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
+	import type { Error } from '@graphace/commons/types';
+	import type {
+		MutationType{{ name }}Args,
+		MutationType{{ objectFieldTypeName }}Args,
+		{{ objectFieldTypeName }}
+	} from '~/lib/types/schema';
+	import type { PageData } from './$houdini';
+
+	export let data: PageData;
+	$: parentNode = data.parentNode as MutationType{{ name }}Args;
+	$: node = data.node as MutationType{{ objectFieldTypeName }}Args;
+
+	let previousPage: string = base;
+	afterNavigate(({ from }) => {
+		previousPage = from?.url.pathname || previousPage;
+	});
+
+	const mutation = (
+		event: CustomEvent<{
+			args: MutationType{{ objectFieldTypeName }}Args;
+			update?: boolean;
+			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
+			catch: (error: Error) => void;
+		}>
+	) => {
+		parentNode.{{ objectFieldName }} = event.detail.args;
+		$page.params = { node: JSON.stringify(parentNode) };
+		goto(previousPage);
+	};
+
+	const back = (event: CustomEvent<{}>) => {
+		$page.params = { node: JSON.stringify(parentNode) };
+		goto(previousPage);
+	};
+</script>
+
+<{{ objectFieldTypeName }}CreateForm {node} on:mutation={mutation} on:back={back} />

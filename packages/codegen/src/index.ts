@@ -193,6 +193,8 @@ export type Template = 'query' |
     'pageEditTs' |
     'pageEditObjectFieldSvelte' |
     'pageEditObjectFieldTs' |
+    'pageEditObjectFieldCreateSvelte' |
+    'pageEditObjectFieldCreateTs' |
     'pageEditObjectListFieldSvelte' |
     'pageEditObjectListFieldTs' |
     'pageCreateSvelte' |
@@ -399,6 +401,38 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 const objectField = getField(type, config.pageEditObjectFieldTs?.objectFieldName);
+                if (objectField?.type) {
+                    const objectFieldType = getFieldType(objectField.type);
+                    return {
+                        content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name }),
+                    };
+                }
+            }
+        }
+        throw new Error(`${typeName} not exist`);
+    },
+    pageEditObjectFieldCreateSvelte: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.pageEditObjectFieldCreateSvelte?.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                const objectField = getField(type, config.pageEditObjectFieldCreateSvelte?.objectFieldName);
+                if (objectField?.type) {
+                    const objectFieldType = getFieldType(objectField.type);
+                    return {
+                        content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), formPath: `${config.pageEditObjectFieldCreateSvelte?.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema' }),
+                    };
+                }
+            }
+        }
+        throw new Error(`${typeName} not exist`);
+    },
+    pageEditObjectFieldCreateTs: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.pageEditObjectFieldCreateTs?.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                const objectField = getField(type, config.pageEditObjectFieldCreateTs?.objectFieldName);
                 if (objectField?.type) {
                     const objectFieldType = getFieldType(objectField.type);
                     return {
