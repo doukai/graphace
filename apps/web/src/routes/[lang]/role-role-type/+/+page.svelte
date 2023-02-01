@@ -8,7 +8,6 @@
 	import type { MutationTypeRoleRoleTypeArgs, RoleRoleType } from '~/lib/types/schema';
 
 	const Mutation_roleRoleType = new Mutation_roleRoleTypeStore();
-	let node: MutationTypeRoleRoleTypeArgs = {};
 
 	let previousPage: string = base;
 	afterNavigate(({ from }) => {
@@ -36,4 +35,4 @@
 	};
 </script>
 
-<RoleRoleTypeCreateForm {node} on:mutation={mutation} on:back={back} />
+<RoleRoleTypeCreateForm on:mutation={mutation} on:back={back} />

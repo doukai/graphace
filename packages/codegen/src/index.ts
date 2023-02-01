@@ -146,6 +146,7 @@ const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): { fieldName: 
                     fieldType: getFieldType(field.type),
                     isScalarType: isScalarType(getFieldType(field.type)),
                     isEnumType: isEnumType(getFieldType(field.type)),
+                    isObjectType: isObjectType(getFieldType(field.type)),
                     isNonNullType: isNonNullType(field.type),
                     isListType: isListType(field.type),
                     inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),
@@ -385,7 +386,7 @@ const renders: Record<Template, Render> = {
                 if (objectField?.type) {
                     const objectFieldType = getFieldType(objectField.type);
                     return {
-                        content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, formPath: `${config.pageEditObjectFieldSvelte?.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema' }),
+                        content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), formPath: `${config.pageEditObjectFieldSvelte?.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema' }),
                     };
                 }
             }
@@ -418,7 +419,7 @@ const renders: Record<Template, Render> = {
                     const objectFieldType = getFieldType(objectField.type);
                     const connectionField = getConnectionField(type, objectField.name);
                     return {
-                        content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, connectionField: connectionField, formPath: `${config.pageEditObjectListFieldSvelte?.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema' }),
+                        content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), connectionField: connectionField, formPath: `${config.pageEditObjectListFieldSvelte?.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema' }),
                     };
                 }
             }

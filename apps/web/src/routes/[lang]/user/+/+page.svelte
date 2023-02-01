@@ -8,7 +8,6 @@
 	import type { MutationTypeUserArgs, User } from '~/lib/types/schema';
 
 	const Mutation_user = new Mutation_userStore();
-	let node: MutationTypeUserArgs = {};
 
 	let previousPage: string = base;
 	afterNavigate(({ from }) => {
@@ -36,4 +35,4 @@
 	};
 </script>
 
-<UserCreateForm {node} on:mutation={mutation} on:back={back} />
+<UserCreateForm on:mutation={mutation} on:back={back} />

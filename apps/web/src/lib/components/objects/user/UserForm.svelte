@@ -71,29 +71,31 @@
 
 <Form>
 	<FormItems title="User">
-		{#if !isFetching && node}
-			<IntItem label="age" name="age" bind:value={node.age} error={errors.age} />
-			<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} error={errors.createGroupId} />
-			<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} error={errors.createTime} />
-			<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} error={errors.createUserId} />
-			<BooleanItem label="disable" name="disable" bind:value={node.disable} error={errors.disable} />
-			<IDItem label="id" name="id" bind:value={node.id} error={errors.id} />
-			<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} error={errors.isDeprecated} />
-			<StringItem label="login" name="login" bind:value={node.login} error={errors.login} />
-			<StringItem label="name" name="name" bind:value={node.name} error={errors.name} />
-			<IntItem label="organizationId" name="organizationId" bind:value={node.organizationId} error={errors.organizationId} />
-			<StringItem label="password" name="password" bind:value={node.password} error={errors.password} />
-			<StringItem label="phones" name="phones" bind:value={node.phones} error={errors.phones} />
-			<StringItem label="realmId" name="realmId" bind:value={node.realmId} error={errors.realmId} />
-			<SexItem label="sex" name="sex" bind:value={node.sex} error={errors.sex} />
-			<IntItem label="test1" name="test1" bind:value={node.test1} error={errors.test1} />
-			<BooleanItem label="test2" name="test2" bind:value={node.test2} error={errors.test2} />
-			<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} error={errors.updateTime} />
-			<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
-			<FormItem label="userDetail2">{node.userDetail2}</FormItem>
-			<IntItem label="version" name="version" bind:value={node.version} error={errors.version} />
-		{:else}
+		{#if isFetching}
 			<FormLoading rows={20} />
+		{:else}
+			{#if node}
+				<IntItem label="age" name="age" bind:value={node.age} error={errors.age} />
+				<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} error={errors.createGroupId} />
+				<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} error={errors.createTime} />
+				<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} error={errors.createUserId} />
+				<BooleanItem label="disable" name="disable" bind:value={node.disable} error={errors.disable} />
+				<IDItem label="id" name="id" bind:value={node.id} error={errors.id} />
+				<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} error={errors.isDeprecated} />
+				<StringItem label="login" name="login" bind:value={node.login} error={errors.login} />
+				<StringItem label="name" name="name" bind:value={node.name} error={errors.name} />
+				<IntItem label="organizationId" name="organizationId" bind:value={node.organizationId} error={errors.organizationId} />
+				<StringItem label="password" name="password" bind:value={node.password} error={errors.password} />
+				<StringItem label="phones" name="phones" bind:value={node.phones} error={errors.phones} />
+				<StringItem label="realmId" name="realmId" bind:value={node.realmId} error={errors.realmId} />
+				<SexItem label="sex" name="sex" bind:value={node.sex} error={errors.sex} />
+				<IntItem label="test1" name="test1" bind:value={node.test1} error={errors.test1} />
+				<BooleanItem label="test2" name="test2" bind:value={node.test2} error={errors.test2} />
+				<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} error={errors.updateTime} />
+				<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
+				<FormItem label="userDetail2">{node.userDetail2}</FormItem>
+				<IntItem label="version" name="version" bind:value={node.version} error={errors.version} />
+			{/if}
 		{/if}
 	</FormItems>
 	<FormButtons>

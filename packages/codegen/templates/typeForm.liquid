@@ -73,20 +73,22 @@
 
 <Form>
 	<FormItems title="{{ name }}">
-		{#if !isFetching && node}
-			{%- if fields %}
-			{%- for field in fields %}
-			{%- if field.isScalarType or field.isEnumType %}
-			{%- if field.inMutationArgs %}
-			<{{ field.fieldType.name }}Item label="{{ field.fieldName }}" name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}} error={errors.{{ field.fieldName }}} />
-			{%- else %}
-			<FormItem label="{{ field.fieldName }}">{node.{{ field.fieldName }}}</FormItem>
-			{%- endif %}
-			{%- endif %}
-			{%- endfor %}
-			{%- endif %}
-		{:else}
+		{#if isFetching}
 			<FormLoading rows={% raw %}{{% endraw %}{{rows}}} />
+		{:else}
+			{#if node}
+				{%- if fields %}
+				{%- for field in fields %}
+				{%- if field.isScalarType or field.isEnumType %}
+				{%- if field.inMutationArgs %}
+				<{{ field.fieldType.name }}Item label="{{ field.fieldName }}" name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}} error={errors.{{ field.fieldName }}} />
+				{%- else %}
+				<FormItem label="{{ field.fieldName }}">{node.{{ field.fieldName }}}</FormItem>
+				{%- endif %}
+				{%- endif %}
+				{%- endfor %}
+				{%- endif %}
+			{/if}
 		{/if}
 	</FormItems>
 	<FormButtons>

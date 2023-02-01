@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { Form, FormLoading, FormItems, FormButtons } from '@graphace/ui/components/form';
+	import { Form, FormItems, FormButtons } from '@graphace/ui/components/form';
 	import { {% for scalar in scalars %}{{ scalar }}Item{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql/components/form';
 	{%- for enum in enums %}
 	import {{ enum }}Item from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Item.svelte';
@@ -14,8 +14,7 @@
 	import { locale } from '~/i18n/i18n-svelte';
 	import type { {{ name }}, MutationType{{ name }}Args } from '~/{{ schemaTypesPath }}';
 
-	export let node: MutationType{{ name }}Args | null | undefined;
-	export let isFetching: boolean = false;
+	export let node: MutationType{{ name }}Args = {};
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
@@ -37,7 +36,6 @@
 						dispatch('mutation', {
 							args: node,
 							then: (data) => {
-								node = data;
 								notifications.success($LL.message.saveSuccess());
 							},
 							catch: (error) => {
@@ -69,57 +67,53 @@
 	};
 </script>
 
-{#if !isFetching && node}
-	<Form>
-		<FormItems title="{{ name }}">
-			{%- if fields %}
-			{%- for field in fields %}
-			{%- if field.isScalarType or field.isEnumType %}
-			{%- if field.inMutationArgs %}
-			<{{ field.fieldType.name }}Item label="{{ field.fieldName }}" name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}} error={errors.{{ field.fieldName }}} />
-			{%- endif %}
-			{%- endif %}
-			{%- endfor %}
-			{%- endif %}
-		</FormItems>
-		<FormButtons>
-			<button
-				class="btn"
-				on:click={(e) => {
-					e.preventDefault();
-					dispatch('back');
-				}}
-			>
-				{$LL.components.graphql.editor.backBtn()}
-			</button>
-			<button
-				class="btn"
-				on:click={(e) => {
-					e.preventDefault();
-					save();
-				}}
-			>
-				{$LL.components.graphql.editor.saveBtn()}
-			</button>
-			<button
-				class="btn btn-outline btn-error"
-				on:click={(e) => {
-					e.preventDefault();
-					messageBoxs.open({
-						title: $LL.components.graphql.table.removeModalTitle(),
-						buttonName: $LL.components.graphql.table.removeBtn(),
-						buttonType: 'error',
-						confirm: () => {
-							remove();
-							return true;
-						}
-					});
-				}}
-			>
-				{$LL.components.graphql.editor.removeBtn()}
-			</button>
-		</FormButtons>
-	</Form>
-{:else}
-	<FormLoading rows={% raw %}{{% endraw %}{{rows}}} />
-{/if}
+<Form>
+	<FormItems title="{{ name }}">
+		{%- if fields %}
+		{%- for field in fields %}
+		{%- if field.isScalarType or field.isEnumType %}
+		{%- if field.inMutationArgs %}
+		<{{ field.fieldType.name }}Item label="{{ field.fieldName }}" name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}} error={errors.{{ field.fieldName }}} />
+		{%- endif %}
+		{%- endif %}
+		{%- endfor %}
+		{%- endif %}
+	</FormItems>
+	<FormButtons>
+		<button
+			class="btn"
+			on:click={(e) => {
+				e.preventDefault();
+				dispatch('back');
+			}}
+		>
+			{$LL.components.graphql.editor.backBtn()}
+		</button>
+		<button
+			class="btn"
+			on:click={(e) => {
+				e.preventDefault();
+				save();
+			}}
+		>
+			{$LL.components.graphql.editor.saveBtn()}
+		</button>
+		<button
+			class="btn btn-outline btn-error"
+			on:click={(e) => {
+				e.preventDefault();
+				messageBoxs.open({
+					title: $LL.components.graphql.table.removeModalTitle(),
+					buttonName: $LL.components.graphql.table.removeBtn(),
+					buttonType: 'error',
+					confirm: () => {
+						remove();
+						return true;
+					}
+				});
+			}}
+		>
+			{$LL.components.graphql.editor.removeBtn()}
+		</button>
+	</FormButtons>
+</Form>

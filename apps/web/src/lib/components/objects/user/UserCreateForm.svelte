@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { Form, FormLoading, FormItems, FormButtons } from '@graphace/ui/components/form';
+	import { Form, FormItems, FormButtons } from '@graphace/ui/components/form';
 	import { IntItem, StringItem, TimestampItem, BooleanItem, IDItem } from '@graphace/ui-graphql/components/form';
 	import SexItem from '~/lib/components/enums/sex/SexItem.svelte';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
@@ -12,8 +12,7 @@
 	import { locale } from '~/i18n/i18n-svelte';
 	import type { User, MutationTypeUserArgs } from '~/lib/types/schema';
 
-	export let node: MutationTypeUserArgs | null | undefined;
-	export let isFetching: boolean = false;
+	export let node: MutationTypeUserArgs = {};
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
@@ -35,7 +34,6 @@
 						dispatch('mutation', {
 							args: node,
 							then: (data) => {
-								node = data;
 								notifications.success($LL.message.saveSuccess());
 							},
 							catch: (error) => {
@@ -67,67 +65,63 @@
 	};
 </script>
 
-{#if !isFetching && node}
-	<Form>
-		<FormItems title="User">
-			<IntItem label="age" name="age" bind:value={node.age} error={errors.age} />
-			<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} error={errors.createGroupId} />
-			<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} error={errors.createTime} />
-			<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} error={errors.createUserId} />
-			<BooleanItem label="disable" name="disable" bind:value={node.disable} error={errors.disable} />
-			<IDItem label="id" name="id" bind:value={node.id} error={errors.id} />
-			<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} error={errors.isDeprecated} />
-			<StringItem label="login" name="login" bind:value={node.login} error={errors.login} />
-			<StringItem label="name" name="name" bind:value={node.name} error={errors.name} />
-			<IntItem label="organizationId" name="organizationId" bind:value={node.organizationId} error={errors.organizationId} />
-			<StringItem label="password" name="password" bind:value={node.password} error={errors.password} />
-			<StringItem label="phones" name="phones" bind:value={node.phones} error={errors.phones} />
-			<StringItem label="realmId" name="realmId" bind:value={node.realmId} error={errors.realmId} />
-			<SexItem label="sex" name="sex" bind:value={node.sex} error={errors.sex} />
-			<IntItem label="test1" name="test1" bind:value={node.test1} error={errors.test1} />
-			<BooleanItem label="test2" name="test2" bind:value={node.test2} error={errors.test2} />
-			<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} error={errors.updateTime} />
-			<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
-			<IntItem label="version" name="version" bind:value={node.version} error={errors.version} />
-		</FormItems>
-		<FormButtons>
-			<button
-				class="btn"
-				on:click={(e) => {
-					e.preventDefault();
-					dispatch('back');
-				}}
-			>
-				{$LL.components.graphql.editor.backBtn()}
-			</button>
-			<button
-				class="btn"
-				on:click={(e) => {
-					e.preventDefault();
-					save();
-				}}
-			>
-				{$LL.components.graphql.editor.saveBtn()}
-			</button>
-			<button
-				class="btn btn-outline btn-error"
-				on:click={(e) => {
-					e.preventDefault();
-					messageBoxs.open({
-						title: $LL.components.graphql.table.removeModalTitle(),
-						buttonName: $LL.components.graphql.table.removeBtn(),
-						buttonType: 'error',
-						confirm: () => {
-							remove();
-							return true;
-						}
-					});
-				}}
-			>
-				{$LL.components.graphql.editor.removeBtn()}
-			</button>
-		</FormButtons>
-	</Form>
-{:else}
-	<FormLoading rows={20} />
-{/if}
+<Form>
+	<FormItems title="User">
+		<IntItem label="age" name="age" bind:value={node.age} error={errors.age} />
+		<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} error={errors.createGroupId} />
+		<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} error={errors.createTime} />
+		<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} error={errors.createUserId} />
+		<BooleanItem label="disable" name="disable" bind:value={node.disable} error={errors.disable} />
+		<IDItem label="id" name="id" bind:value={node.id} error={errors.id} />
+		<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} error={errors.isDeprecated} />
+		<StringItem label="login" name="login" bind:value={node.login} error={errors.login} />
+		<StringItem label="name" name="name" bind:value={node.name} error={errors.name} />
+		<IntItem label="organizationId" name="organizationId" bind:value={node.organizationId} error={errors.organizationId} />
+		<StringItem label="password" name="password" bind:value={node.password} error={errors.password} />
+		<StringItem label="phones" name="phones" bind:value={node.phones} error={errors.phones} />
+		<StringItem label="realmId" name="realmId" bind:value={node.realmId} error={errors.realmId} />
+		<SexItem label="sex" name="sex" bind:value={node.sex} error={errors.sex} />
+		<IntItem label="test1" name="test1" bind:value={node.test1} error={errors.test1} />
+		<BooleanItem label="test2" name="test2" bind:value={node.test2} error={errors.test2} />
+		<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} error={errors.updateTime} />
+		<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
+		<IntItem label="version" name="version" bind:value={node.version} error={errors.version} />
+	</FormItems>
+	<FormButtons>
+		<button
+			class="btn"
+			on:click={(e) => {
+				e.preventDefault();
+				dispatch('back');
+			}}
+		>
+			{$LL.components.graphql.editor.backBtn()}
+		</button>
+		<button
+			class="btn"
+			on:click={(e) => {
+				e.preventDefault();
+				save();
+			}}
+		>
+			{$LL.components.graphql.editor.saveBtn()}
+		</button>
+		<button
+			class="btn btn-outline btn-error"
+			on:click={(e) => {
+				e.preventDefault();
+				messageBoxs.open({
+					title: $LL.components.graphql.table.removeModalTitle(),
+					buttonName: $LL.components.graphql.table.removeBtn(),
+					buttonType: 'error',
+					confirm: () => {
+						remove();
+						return true;
+					}
+				});
+			}}
+		>
+			{$LL.components.graphql.editor.removeBtn()}
+		</button>
+	</FormButtons>
+</Form>

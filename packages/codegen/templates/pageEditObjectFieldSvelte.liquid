@@ -1,14 +1,38 @@
 <script lang="ts">
+	import { goto, afterNavigate } from '$app/navigation';
+	import { base } from '$app/paths';
+	import { page } from '$app/stores';
 	import {{ objectFieldTypeName }}Form from '~/lib/components/objects/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}Form.svelte';
+	import {{ objectFieldTypeName }}CreateForm from '~/lib/components/objects/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import type { MutationType{{ objectFieldTypeName }}Args, {{ objectFieldTypeName }} } from '~/lib/types/schema';
-	import { Query_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ objectFieldTypeName | camelCase }}Store } from '$houdini';
+	import { Query_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store } from '$houdini';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
 	$: Query_{{ name | camelCase }}_{{ objectFieldName }} = data.Query_{{ name | camelCase }}_{{ objectFieldName }} as Query_{{ name | camelCase }}_{{ objectFieldName }}Store;
-	const Mutation_{{ objectFieldTypeName | camelCase }} = new Mutation_{{ objectFieldTypeName | camelCase }}Store();
+	$: {{ name | camelCase }} = $Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }};
+	$: {{ objectFieldName }} = {{ name | camelCase }}?.{{ objectFieldName }};
+	const Mutation_{{ name | camelCase }}_{{ objectFieldName }} = new Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store();
+
+	let previousPage: string = base;
+	afterNavigate(({ from }) => {
+		previousPage = from?.url.pathname || previousPage;
+	});
+
+	const pageArgs: MutationType{{ objectFieldTypeName }}Args = {};
+	{%- if objectFieldTypeFields %}
+	{%- for field in objectFieldTypeFields %}
+	{%- if field.isObjectType %}
+	{%- if field.inMutationArgs and field.fieldName != idName %}
+	if ($page.params.{{ field.fieldName }}) {
+		pageArgs.{{ field.fieldName }} = JSON.parse($page.params.{{ field.fieldName }});
+	}
+	{%- endif %}
+	{%- endif %}
+	{%- endfor %}
+	{%- endif %}
 
 	const mutation = (
 		event: CustomEvent<{
@@ -18,18 +42,36 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_{{ objectFieldTypeName | camelCase }}.mutate({ ...event.detail.args, update: event.detail.update })
-			.then((result) => {
-				event.detail.then(result?.{{ objectFieldTypeName | camelCase }});
+		if ({{ name | camelCase }}?.{{ idName }}) {
+			Mutation_{{ name | camelCase }}_{{ objectFieldName }}.mutate({
+				{{ name | camelCase }}_{{ idName }}: {{ name | camelCase }}?.{{ idName }},
+				{{ name | camelCase }}_{{ objectFieldName }}: { ...pageArgs, ...event.detail.args },
+				update: event.detail.update
 			})
-			.catch((error) => {
-				event.detail.catch(error);
-			});
+				.then((result) => {
+					event.detail.then(result?.{{ name | camelCase }}?.{{ objectFieldName }});
+				})
+				.catch((error) => {
+					event.detail.catch(error);
+				});
+		} else {
+			$page.params = { {{ objectFieldName }}: JSON.stringify(event.detail.args) };
+			goto(previousPage);
+		}
+	};
+
+	const back = (event: CustomEvent<{}>) => {
+		goto(previousPage);
 	};
 </script>
 
-<{{ objectFieldTypeName }}Form
-	node={$Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }}?.{{ objectFieldName }}}
-	isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
-	on:mutation={mutation}
-/>
+{#if {{ objectFieldName }}}
+	<{{ objectFieldTypeName }}Form
+		node={$Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }}?.{{ objectFieldName }}}
+		isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
+		on:mutation={mutation}
+		on:back={back}
+	/>
+{:else}
+	<{{ objectFieldTypeName }}CreateForm on:mutation={mutation} on:back={back} />
+{/if}

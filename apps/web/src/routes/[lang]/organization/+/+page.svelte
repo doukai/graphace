@@ -8,7 +8,6 @@
 	import type { MutationTypeOrganizationArgs, Organization } from '~/lib/types/schema';
 
 	const Mutation_organization = new Mutation_organizationStore();
-	let node: MutationTypeOrganizationArgs = {};
 
 	let previousPage: string = base;
 	afterNavigate(({ from }) => {
@@ -36,4 +35,4 @@
 	};
 </script>
 
-<OrganizationCreateForm {node} on:mutation={mutation} on:back={back} />
+<OrganizationCreateForm on:mutation={mutation} on:back={back} />

@@ -8,7 +8,6 @@
 	import type { MutationType{{ name }}Args, {{ name }} } from '~/{{ schemaTypesPath }}';
 
 	const Mutation_{{ name | camelCase }} = new Mutation_{{ name | camelCase }}Store();
-	let node: MutationType{{ name }}Args = {};
 
 	let previousPage: string = base;
 	afterNavigate(({ from }) => {
@@ -36,4 +35,4 @@
 	};
 </script>
 
-<{{ name }}CreateForm {node} on:mutation={mutation} on:back={back} />
+<{{ name }}CreateForm on:mutation={mutation} on:back={back} />
