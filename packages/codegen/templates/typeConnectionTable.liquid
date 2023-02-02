@@ -320,7 +320,7 @@
 							<td>{node.{{ field.fieldName }}}</td>
 							{%- endif %}
 							{%- else %}
-							<ObjectTd path={`${node.id}/{{ field.fieldName | paramCase }}`} on:gotoField />
+							<ObjectTd path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} on:gotoField />
 							{%- endif %}
 							{%- endfor %}
 							{%- endif %}

@@ -8,11 +8,11 @@ import type {
 export const load: LayoutLoad = async (event: LoadEvent) => {
     let parentNode: MutationTypeUserProfileArgs = {};
     let node: MutationTypeUserArgs = {};
-    if (event.params.parentNode) {
-        parentNode = JSON.parse(event.params.parentNode);
+    if (event.url.searchParams.has('parentNode')) {
+        parentNode = JSON.parse(event.url.searchParams.get('parentNode') || '');
     }
-    if (event.params.node) {
-        node = JSON.parse(event.params.node);
+    if (event.url.searchParams.has('node')) {
+        node = JSON.parse(event.url.searchParams.get('node') || '');
     }
     return { parentNode, node };
 }

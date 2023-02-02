@@ -44,6 +44,10 @@
 	const back = (event: CustomEvent<{}>) => {
 		goto(previousPage);
 	};
+
+	const gotoField = (event: CustomEvent<{ path: string }>) => {
+		goto(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.path}`);
+	};
 </script>
 
 {#if {{ objectFieldName }}}
@@ -52,7 +56,8 @@
 		isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
 		on:mutation={mutation}
 		on:back={back}
+		on:gotoField={gotoField}
 	/>
 {:else}
-	<{{ objectFieldTypeName }}CreateForm on:mutation={mutation} on:back={back} />
+	<{{ objectFieldTypeName }}CreateForm on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
 {/if}

@@ -3,7 +3,7 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import { Form, FormItems, FormButtons } from '@graphace/ui/components/form';
-	import { {% for scalar in scalars %}{{ scalar }}Item{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql/components/form';
+	import { {% for scalar in scalars %}{{ scalar }}Item, {% endfor %}ObjectItem } from '@graphace/ui-graphql/components/form';
 	{%- for enum in enums %}
 	import {{ enum }}Item from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Item.svelte';
 	{%- endfor %}
@@ -54,7 +54,7 @@
 	const remove = (): void => {
 		if (node) {
 			dispatch('mutation', {
-				args: { id: node.id, isDeprecated: true },
+				args: { id: node.{{ idName }}, isDeprecated: true },
 				then: (data) => {
 					notifications.success($LL.message.removeSuccess());
 				},
@@ -75,6 +75,8 @@
 		{%- if field.inMutationArgs %}
 		<{{ field.fieldType.name }}Item label="{{ field.fieldName }}" name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}} error={errors.{{ field.fieldName }}} />
 		{%- endif %}
+		{%- else %}
+		<ObjectItem path={`+/{{ field.fieldName | paramCase }}`} label="{{ field.fieldName }}" error={errors.{{ field.fieldName }}} on:gotoField />
 		{%- endif %}
 		{%- endfor %}
 		{%- endif %}

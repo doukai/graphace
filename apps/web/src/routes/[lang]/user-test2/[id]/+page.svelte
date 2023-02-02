@@ -37,6 +37,16 @@
 	const back = (event: CustomEvent<{}>) => {
 		goto(previousPage);
 	};
+
+	const gotoField = (event: CustomEvent<{ path: string }>) => {
+		goto(`./${event.detail.path}`);
+	};
 </script>
 
-<UserTest2Form node={$Query_userTest2.data?.userTest2} isFetching={$Query_userTest2.fetching} on:mutation={mutation} on:back={back} />
+<UserTest2Form
+	node={$Query_userTest2.data?.userTest2}
+	isFetching={$Query_userTest2.fetching}
+	on:mutation={mutation}
+	on:back={back}
+	on:gotoField={gotoField}
+/>

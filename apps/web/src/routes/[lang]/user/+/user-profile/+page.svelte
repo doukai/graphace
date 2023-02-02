@@ -30,14 +30,22 @@
 		}>
 	) => {
 		parentNode.userProfile = event.detail.args;
-		$page.params = { node: JSON.stringify(parentNode) };
-		goto(previousPage);
+		const url = new URL(previousPage, $page.url.href);
+		url.searchParams.set('node', JSON.stringify(parentNode));
+		goto(url);
 	};
 
 	const back = (event: CustomEvent<{}>) => {
-		$page.params = { node: JSON.stringify(parentNode) };
-		goto(previousPage);
+		const url = new URL(previousPage, $page.url.href);
+		url.searchParams.set('node', JSON.stringify(parentNode));
+		goto(url);
+	};
+
+	const gotoField = (event: CustomEvent<{ path: string }>) => {
+		const url = new URL(`../../user-profile/${event.detail.path}`, $page.url.href);
+		url.searchParams.set('parentNode', JSON.stringify(node));
+		goto(url);
 	};
 </script>
 
-<UserProfileCreateForm {node} on:mutation={mutation} on:back={back} />
+<UserProfileCreateForm bind:node on:mutation={mutation} on:back={back} on:gotoField={gotoField} />

@@ -1,18 +1,11 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
-import type {
-    MutationTypeUserArgs,
-    MutationTypeOrganizationArgs,
-} from '~/lib/types/schema';
+import type { MutationTypeOrganizationArgs } from '~/lib/types/schema';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    let parentNode: MutationTypeUserArgs = {};
     let node: MutationTypeOrganizationArgs = {};
-    if (event.url.searchParams.has('parentNode')) {
-        parentNode = JSON.parse(event.url.searchParams.get('parentNode') || '');
-    }
     if (event.url.searchParams.has('node')) {
         node = JSON.parse(event.url.searchParams.get('node') || '');
     }
-    return { parentNode, node };
+    return { node };
 }

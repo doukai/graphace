@@ -3,7 +3,7 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import { Form, FormLoading, FormItems, FormItem, FormButtons } from '@graphace/ui/components/form';
-	import { StringItem, TimestampItem, IDItem, BooleanItem, IntItem } from '@graphace/ui-graphql/components/form';
+	import { StringItem, TimestampItem, IDItem, BooleanItem, IntItem, ObjectItem } from '@graphace/ui-graphql/components/form';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { validate } from '@graphace/graphql/schema/JsonSchema';

@@ -3,7 +3,7 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import { Form, FormItems, FormButtons } from '@graphace/ui/components/form';
-	import { IntItem, StringItem, TimestampItem, IDItem, BooleanItem } from '@graphace/ui-graphql/components/form';
+	import { IntItem, StringItem, TimestampItem, IDItem, BooleanItem, ObjectItem } from '@graphace/ui-graphql/components/form';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { validate } from '@graphace/graphql/schema/JsonSchema';
@@ -76,6 +76,9 @@
 		<StringItem label="realmId" name="realmId" bind:value={node.realmId} error={errors.realmId} />
 		<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} error={errors.updateTime} />
 		<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
+		<ObjectItem path={`+/user-by-org`} label="userByOrg" error={errors.userByOrg} on:gotoField />
+		<ObjectItem path={`+/users`} label="users" error={errors.users} on:gotoField />
+		<ObjectItem path={`+/users-connection`} label="usersConnection" error={errors.usersConnection} on:gotoField />
 		<IntItem label="version" name="version" bind:value={node.version} error={errors.version} />
 	</FormItems>
 	<FormButtons>

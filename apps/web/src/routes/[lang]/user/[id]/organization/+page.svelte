@@ -44,6 +44,10 @@
 	const back = (event: CustomEvent<{}>) => {
 		goto(previousPage);
 	};
+
+	const gotoField = (event: CustomEvent<{ path: string }>) => {
+		goto(`../../organization/${event.detail.path}`);
+	};
 </script>
 
 {#if organization}
@@ -52,7 +56,8 @@
 		isFetching={$Query_user_organization.fetching}
 		on:mutation={mutation}
 		on:back={back}
+		on:gotoField={gotoField}
 	/>
 {:else}
-	<OrganizationCreateForm on:mutation={mutation} on:back={back} />
+	<OrganizationCreateForm on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
 {/if}

@@ -44,6 +44,10 @@
 	const back = (event: CustomEvent<{}>) => {
 		goto(previousPage);
 	};
+
+	const gotoField = (event: CustomEvent<{ path: string }>) => {
+		goto(`../../user-profile/${event.detail.path}`);
+	};
 </script>
 
 {#if userProfile}
@@ -52,7 +56,8 @@
 		isFetching={$Query_user_userProfile.fetching}
 		on:mutation={mutation}
 		on:back={back}
+		on:gotoField={gotoField}
 	/>
 {:else}
-	<UserProfileCreateForm on:mutation={mutation} on:back={back} />
+	<UserProfileCreateForm on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
 {/if}

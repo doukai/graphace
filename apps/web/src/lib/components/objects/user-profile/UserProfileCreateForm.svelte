@@ -3,7 +3,7 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import { Form, FormItems, FormButtons } from '@graphace/ui/components/form';
-	import { StringItem, TimestampItem, IDItem, BooleanItem, IntItem } from '@graphace/ui-graphql/components/form';
+	import { StringItem, TimestampItem, IDItem, BooleanItem, IntItem, ObjectItem } from '@graphace/ui-graphql/components/form';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { validate } from '@graphace/graphql/schema/JsonSchema';
@@ -77,6 +77,7 @@
 		<StringItem label="realmId" name="realmId" bind:value={node.realmId} error={errors.realmId} />
 		<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} error={errors.updateTime} />
 		<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
+		<ObjectItem path={`+/user`} label="user" error={errors.user} on:gotoField />
 		<StringItem label="userId" name="userId" bind:value={node.userId} error={errors.userId} />
 		<IntItem label="version" name="version" bind:value={node.version} error={errors.version} />
 	</FormItems>

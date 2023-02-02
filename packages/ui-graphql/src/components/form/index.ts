@@ -9,7 +9,8 @@ import DateTimeItem from "./DateTimeItem.svelte";
 import TimestampItem from "./TimestampItem.svelte";
 import DateItem from "./DateItem.svelte";
 import TimeItem from "./TimeItem.svelte";
+import ObjectItem from "./ObjectItem.svelte";
 
 export {
-    StringItem, NumberItem, BooleanItem, EnumItem, IDItem, IntItem, FloatItem, DateTimeItem, TimestampItem, DateItem, TimeItem
+    StringItem, NumberItem, BooleanItem, EnumItem, IDItem, IntItem, FloatItem, DateTimeItem, TimestampItem, DateItem, TimeItem, ObjectItem
 }

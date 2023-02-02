@@ -37,6 +37,16 @@
 	const back = (event: CustomEvent<{}>) => {
 		goto(previousPage);
 	};
+
+	const gotoField = (event: CustomEvent<{ path: string }>) => {
+		goto(`./${event.detail.path}`);
+	};
 </script>
 
-<OrganizationForm node={$Query_organization.data?.organization} isFetching={$Query_organization.fetching} on:mutation={mutation} on:back={back} />
+<OrganizationForm
+	node={$Query_organization.data?.organization}
+	isFetching={$Query_organization.fetching}
+	on:mutation={mutation}
+	on:back={back}
+	on:gotoField={gotoField}
+/>

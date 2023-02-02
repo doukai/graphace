@@ -3,7 +3,7 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import { Form, FormItems, FormButtons } from '@graphace/ui/components/form';
-	import { StringItem, TimestampItem, IDItem, BooleanItem, IntItem } from '@graphace/ui-graphql/components/form';
+	import { StringItem, TimestampItem, IDItem, BooleanItem, IntItem, ObjectItem } from '@graphace/ui-graphql/components/form';
 	import RoleTypeItem from '~/lib/components/enums/role-type/RoleTypeItem.svelte';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
@@ -77,6 +77,8 @@
 		<RoleTypeItem label="type" name="type" bind:value={node.type} error={errors.type} />
 		<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} error={errors.updateTime} />
 		<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
+		<ObjectItem path={`+/users`} label="users" error={errors.users} on:gotoField />
+		<ObjectItem path={`+/users-connection`} label="usersConnection" error={errors.usersConnection} on:gotoField />
 		<IntItem label="version" name="version" bind:value={node.version} error={errors.version} />
 	</FormItems>
 	<FormButtons>

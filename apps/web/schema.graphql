@@ -3,6 +3,8 @@ schema {
   mutation: MutationType
 }
 
+directive @appendToList(arguments: [String]) on FIELD
+
 directive @column(autoIncrement: Boolean, default: String) on FIELD_DEFINITION
 
 directive @connection(agg: String, field: String) on FIELD_DEFINITION

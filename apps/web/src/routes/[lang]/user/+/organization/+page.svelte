@@ -30,14 +30,22 @@
 		}>
 	) => {
 		parentNode.organization = event.detail.args;
-		$page.params = { node: JSON.stringify(parentNode) };
-		goto(previousPage);
+		const url = new URL(previousPage, $page.url.href);
+		url.searchParams.set('node', JSON.stringify(parentNode));
+		goto(url);
 	};
 
 	const back = (event: CustomEvent<{}>) => {
-		$page.params = { node: JSON.stringify(parentNode) };
-		goto(previousPage);
+		const url = new URL(previousPage, $page.url.href);
+		url.searchParams.set('node', JSON.stringify(parentNode));
+		goto(url);
+	};
+
+	const gotoField = (event: CustomEvent<{ path: string }>) => {
+		const url = new URL(`../../organization/${event.detail.path}`, $page.url.href);
+		url.searchParams.set('parentNode', JSON.stringify(node));
+		goto(url);
 	};
 </script>
 
-<OrganizationCreateForm {node} on:mutation={mutation} on:back={back} />
+<OrganizationCreateForm bind:node on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
