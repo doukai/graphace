@@ -5,9 +5,10 @@
 	import LL from '~/i18n/i18n-svelte';
 
 	export let path: string;
+	export let name: string;
 
 	const dispatch = createEventDispatcher<{
-		gotoField: { path: string };
+		gotoField: { path: string; name: string };
 	}>();
 </script>
 
@@ -17,7 +18,7 @@
 			class="btn btn-square btn-xs btn-ghost"
 			on:click={(e) => {
 				e.preventDefault();
-				dispatch('gotoField', { path: path });
+				dispatch('gotoField', { path, name });
 			}}
 		>
 			<Icon src={Link} solid class="h-5 w-5" />

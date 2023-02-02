@@ -368,9 +368,9 @@
 								on:save={() => updateField({ id: node?.id, updateUserId: node?.updateUserId })}
 								error={errors[node.id]?.updateUserId}
 							/>
-							<ObjectTd path={`${node.id}/user-by-org`} on:gotoField />
-							<ObjectTd path={`${node.id}/users`} on:gotoField />
-							<ObjectTd path={`${node.id}/users-connection`} on:gotoField />
+							<ObjectTd name="userByOrg" path={`${node.id}/user-by-org`} on:gotoField />
+							<ObjectTd name="users" path={`${node.id}/users`} on:gotoField />
+							<ObjectTd name="usersConnection" path={`${node.id}/users-connection`} on:gotoField />
 							<IntTd
 								name="version"
 								bind:value={node.version}

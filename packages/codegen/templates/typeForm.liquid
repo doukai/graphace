@@ -86,7 +86,7 @@
 				<FormItem label="{{ field.fieldName }}">{node.{{ field.fieldName }}}</FormItem>
 				{%- endif %}
 				{%- else %}
-				<ObjectItem path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} label="{{ field.fieldName }}" error={errors.{{ field.fieldName }}} on:gotoField />
+				<ObjectItem name="{{ field.fieldName }}" path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} label="{{ field.fieldName }}" error={errors.{{ field.fieldName }}} on:gotoField />
 				{%- endif %}
 				{%- endfor %}
 				{%- endif %}

@@ -45,7 +45,7 @@
 		goto(previousPage);
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string }>) => {
+	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
 		goto(`../../organization/${event.detail.path}`);
 	};
 </script>

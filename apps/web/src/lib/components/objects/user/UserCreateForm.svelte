@@ -76,19 +76,19 @@
 		<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} error={errors.isDeprecated} />
 		<StringItem label="login" name="login" bind:value={node.login} error={errors.login} />
 		<StringItem label="name" name="name" bind:value={node.name} error={errors.name} />
-		<ObjectItem path={`+/organization`} label="organization" error={errors.organization} on:gotoField />
+		<ObjectItem name="organization" path={`+/organization`} label="organization" error={errors.organization} on:gotoField />
 		<IntItem label="organizationId" name="organizationId" bind:value={node.organizationId} error={errors.organizationId} />
 		<StringItem label="password" name="password" bind:value={node.password} error={errors.password} />
 		<StringItem label="phones" name="phones" bind:value={node.phones} error={errors.phones} />
 		<StringItem label="realmId" name="realmId" bind:value={node.realmId} error={errors.realmId} />
-		<ObjectItem path={`+/roles`} label="roles" error={errors.roles} on:gotoField />
-		<ObjectItem path={`+/roles-connection`} label="rolesConnection" error={errors.rolesConnection} on:gotoField />
+		<ObjectItem name="roles" path={`+/roles`} label="roles" error={errors.roles} on:gotoField />
+		<ObjectItem name="rolesConnection" path={`+/roles-connection`} label="rolesConnection" error={errors.rolesConnection} on:gotoField />
 		<SexItem label="sex" name="sex" bind:value={node.sex} error={errors.sex} />
 		<IntItem label="test1" name="test1" bind:value={node.test1} error={errors.test1} />
 		<BooleanItem label="test2" name="test2" bind:value={node.test2} error={errors.test2} />
 		<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} error={errors.updateTime} />
 		<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
-		<ObjectItem path={`+/user-profile`} label="userProfile" error={errors.userProfile} on:gotoField />
+		<ObjectItem name="userProfile" path={`+/user-profile`} label="userProfile" error={errors.userProfile} on:gotoField />
 		<IntItem label="version" name="version" bind:value={node.version} error={errors.version} />
 	</FormItems>
 	<FormButtons>

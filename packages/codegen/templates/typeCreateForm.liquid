@@ -76,7 +76,7 @@
 		<{{ field.fieldType.name }}Item label="{{ field.fieldName }}" name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}} error={errors.{{ field.fieldName }}} />
 		{%- endif %}
 		{%- else %}
-		<ObjectItem path={`+/{{ field.fieldName | paramCase }}`} label="{{ field.fieldName }}" error={errors.{{ field.fieldName }}} on:gotoField />
+		<ObjectItem name="{{ field.fieldName }}" path={`+/{{ field.fieldName | paramCase }}`} label="{{ field.fieldName }}" error={errors.{{ field.fieldName }}} on:gotoField />
 		{%- endif %}
 		{%- endfor %}
 		{%- endif %}

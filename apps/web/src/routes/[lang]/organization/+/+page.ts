@@ -1,11 +1,9 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
 import type { MutationTypeOrganizationArgs } from '~/lib/types/schema';
+import { getNode } from '~/lib/utils'
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    let node: MutationTypeOrganizationArgs = {};
-    if (event.url.searchParams.has('node')) {
-        node = JSON.parse(event.url.searchParams.get('node') || '');
-    }
+    const node: MutationTypeOrganizationArgs = getNode(event.url);
     return { node };
 }

@@ -5,6 +5,10 @@
 	import RoleCreateForm from '~/lib/components/objects/role/RoleCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
+	import {
+		updateNodeParam,
+		getChildPathParam
+	} from '~/lib/utils';
 	import { Mutation_roleStore } from '$houdini';
 	import type { MutationTypeRoleArgs, Role } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
@@ -39,9 +43,10 @@
 		goto(previousPage);
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string }>) => {
+	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
 		const url = new URL(`./${event.detail.path}`, $page.url.href);
-		url.searchParams.set('parentNode', JSON.stringify(node));
+		url.searchParams.set('node', updateNodeParam($page.url, node));
+		url.searchParams.set('path', getChildPathParam($page.url, event.detail.name));
 		goto(url);
 	};
 </script>

@@ -86,9 +86,9 @@
 				<FormItem label="roleDisable">{node.roleDisable}</FormItem>
 				<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} error={errors.updateTime} />
 				<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
-				<ObjectItem path={`${node.id}/user-by-org`} label="userByOrg" error={errors.userByOrg} on:gotoField />
-				<ObjectItem path={`${node.id}/users`} label="users" error={errors.users} on:gotoField />
-				<ObjectItem path={`${node.id}/users-connection`} label="usersConnection" error={errors.usersConnection} on:gotoField />
+				<ObjectItem name="userByOrg" path={`${node.id}/user-by-org`} label="userByOrg" error={errors.userByOrg} on:gotoField />
+				<ObjectItem name="users" path={`${node.id}/users`} label="users" error={errors.users} on:gotoField />
+				<ObjectItem name="usersConnection" path={`${node.id}/users-connection`} label="usersConnection" error={errors.usersConnection} on:gotoField />
 				<IntItem label="version" name="version" bind:value={node.version} error={errors.version} />
 			{/if}
 		{/if}

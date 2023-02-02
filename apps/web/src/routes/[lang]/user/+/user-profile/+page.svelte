@@ -10,6 +10,12 @@
 		MutationTypeUserProfileArgs,
 		UserProfile
 	} from '~/lib/types/schema';
+	import {
+		getNodeParam,
+		updateNodeParam,
+		getParentPathParam,
+		getChildPathParam
+	} from '~/lib/utils';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -29,21 +35,23 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		parentNode.userProfile = event.detail.args;
 		const url = new URL(previousPage, $page.url.href);
-		url.searchParams.set('node', JSON.stringify(parentNode));
+		url.searchParams.set('node', updateNodeParam($page.url, event.detail.args));
+		url.searchParams.set('path', getParentPathParam($page.url));
 		goto(url);
 	};
 
 	const back = (event: CustomEvent<{}>) => {
 		const url = new URL(previousPage, $page.url.href);
-		url.searchParams.set('node', JSON.stringify(parentNode));
+		url.searchParams.set('node', getNodeParam($page.url));
+		url.searchParams.set('path', getParentPathParam($page.url));
 		goto(url);
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string }>) => {
+	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
 		const url = new URL(`../../user-profile/${event.detail.path}`, $page.url.href);
-		url.searchParams.set('parentNode', JSON.stringify(node));
+		url.searchParams.set('node', updateNodeParam($page.url, node));
+		url.searchParams.set('path', getChildPathParam($page.url, event.detail.name));
 		goto(url);
 	};
 </script>
