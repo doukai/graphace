@@ -35,6 +35,7 @@
 							args: node,
 							then: (data) => {
 								notifications.success($LL.message.saveSuccess());
+								dispatch('back');
 							},
 							catch: (error) => {
 								console.error(error);
@@ -55,6 +56,7 @@
 				args: { id: node.id, isDeprecated: true },
 				then: (data) => {
 					notifications.success($LL.message.removeSuccess());
+					dispatch('back');
 				},
 				catch: (error) => {
 					console.error(error);

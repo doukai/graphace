@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { ot, to } from '~/lib/stores/useNavigate';
 	import UserTest1ConnectionTable from '~/lib/components/objects/user-test1/UserTest1ConnectionTable.svelte';
 	import type { UserTest1, QueryTypeUserTest1ConnectionArgs, MutationTypeUserTest1Args } from '~/lib/types/schema';
 	import { Query_userTest1ConnectionStore, Mutation_userTest1Store } from '$houdini';
@@ -47,15 +47,15 @@
 			id: string;
 		}>
 	) => {
-		goto(`./user-test1/${event.detail.id}`);
+		to(`./user-test1/${event.detail.id}`);
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		goto(`./user-test1/+`);
+		to(`./user-test1/+`);
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string }>) => {
-		goto(`./user-test1/${event.detail.path}`);
+	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
+		to(`./user-test1/${event.detail.path}`);
 	};
 </script>
 <UserTest1ConnectionTable

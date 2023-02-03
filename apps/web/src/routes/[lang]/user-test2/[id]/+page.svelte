@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto, afterNavigate } from '$app/navigation';
+	import { ot, to } from '~/lib/stores/useNavigate';
 	import { base } from '$app/paths'
 	import UserTest2Form from '~/lib/components/objects/user-test2/UserTest2Form.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
@@ -11,11 +11,6 @@
 	export let data: PageData;
 	$: Query_userTest2 = data.Query_userTest2 as Query_userTest2Store;
 	const Mutation_userTest2 = new Mutation_userTest2Store();
-
-	let previousPage: string = base;
-	afterNavigate(({ from }) => {
-		previousPage = from?.url.pathname || previousPage;
-	});
 
 	const mutation = (
 		event: CustomEvent<{
@@ -35,11 +30,11 @@
 	};
 
 	const back = (event: CustomEvent<{}>) => {
-		goto(previousPage);
+		ot();
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
-		goto(`./${event.detail.path}`);
+		to(`./${event.detail.path}`);
 	};
 </script>
 

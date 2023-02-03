@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto, afterNavigate } from '$app/navigation';
+	import { ot, to } from '~/lib/stores/useNavigate';
 	import { base } from '$app/paths';
 	import OrganizationForm from '~/lib/components/objects/organization/OrganizationForm.svelte';
 	import OrganizationCreateForm from '~/lib/components/objects/organization/OrganizationCreateForm.svelte';
@@ -14,11 +14,6 @@
 	$: user = $Query_user_organization.data?.user;
 	$: organization = user?.organization;
 	const Mutation_user_organization = new Mutation_user_organizationStore();
-
-	let previousPage: string = base;
-	afterNavigate(({ from }) => {
-		previousPage = from?.url.pathname || previousPage;
-	});
 
 	const mutation = (
 		event: CustomEvent<{
@@ -42,11 +37,11 @@
 	};
 
 	const back = (event: CustomEvent<{}>) => {
-		goto(previousPage);
+		ot();
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
-		goto(`../../organization/${event.detail.path}`);
+		to(`../../organization/${event.detail.path}`);
 	};
 </script>
 

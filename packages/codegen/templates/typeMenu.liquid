@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { to } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
 	import { locale } from '~/i18n/i18n-svelte';
@@ -12,7 +12,7 @@
 			href={null}
 			on:click={(e) => {
 				e.preventDefault();
-				goto(`/${$locale}/{{ object.name | paramCase }}`);
+				to(`/${$locale}/{{ object.name | paramCase }}`);
 			}}
 			class={$page.url.pathname === `/${$locale}/{{ object.name | paramCase }}` || $page.url.pathname.startsWith(`/${$locale}/{{ object.name | paramCase }}/`) ? 'active' : ''}
 		>

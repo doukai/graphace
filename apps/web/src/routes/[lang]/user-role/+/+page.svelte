@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto, afterNavigate } from '$app/navigation';
+	import { ot, to } from '~/lib/stores/useNavigate';
 	import { base } from '$app/paths'
 	import { page } from '$app/stores';
 	import UserRoleCreateForm from '~/lib/components/objects/user-role/UserRoleCreateForm.svelte';
@@ -18,11 +18,6 @@
 
 	const Mutation_userRole = new Mutation_userRoleStore();
 
-	let previousPage: string = base;
-	afterNavigate(({ from }) => {
-		previousPage = from?.url.pathname || previousPage;
-	});
-
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeUserRoleArgs;
@@ -40,14 +35,14 @@
 	};
 
 	const back = (event: CustomEvent<{}>) => {
-		goto(previousPage);
+		ot();
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
-		const url = new URL(`./${event.detail.path}`, $page.url.href);
-		url.searchParams.set('node', updateNodeParam($page.url, node));
-		url.searchParams.set('path', getChildPathParam($page.url, event.detail.name));
-		goto(url);
+		to(`./${event.detail.path}`, {
+			node: updateNodeParam($page.url, node),
+			path: getChildPathParam($page.url, event.detail.name)
+		});
 	};
 </script>
 

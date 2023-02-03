@@ -37,18 +37,22 @@ export const updateNodeParam = (url: URL, node: any): string => {
 		root = JSON.parse(url.searchParams.get('node') || '{}');
 		if (url.searchParams.has('path')) {
 			path = JSON.parse(url.searchParams.get('path') || '[]');
-			_.set(root, path, JSON.parse(node));
 		}
 	}
-	return JSON.stringify(root);
+	if (path.length > 0) {
+		_.set(root, path, node);
+		return JSON.stringify(root);
+	} else {
+		return JSON.stringify(node);
+	}
 }
 
 export const getParentPathParam = (url: URL): string => {
 	let path: (string | number)[] = [];
 	if (url.searchParams.has('path')) {
 		path = JSON.parse(url.searchParams.get('path') || '[]');
-		path.pop();
 	}
+	path.pop();
 	return JSON.stringify(path);
 }
 
@@ -56,7 +60,7 @@ export const getChildPathParam = (url: URL, childName: string): string => {
 	let path: (string | number)[] = [];
 	if (url.searchParams.has('path')) {
 		path = JSON.parse(url.searchParams.get('path') || '[]');
-		path.push(childName);
 	}
+	path.push(childName);
 	return JSON.stringify(path);
 }

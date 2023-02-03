@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { to } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
 	import { locale } from '~/i18n/i18n-svelte';
@@ -9,7 +9,7 @@
 			href={null}
 			on:click={(e) => {
 				e.preventDefault();
-				goto(`/${$locale}/organization`);
+				to(`/${$locale}/organization`);
 			}}
 			class={$page.url.pathname === `/${$locale}/organization` || $page.url.pathname.startsWith(`/${$locale}/organization/`) ? 'active' : ''}
 		>
@@ -22,7 +22,7 @@
 			href={null}
 			on:click={(e) => {
 				e.preventDefault();
-				goto(`/${$locale}/role`);
+				to(`/${$locale}/role`);
 			}}
 			class={$page.url.pathname === `/${$locale}/role` || $page.url.pathname.startsWith(`/${$locale}/role/`) ? 'active' : ''}
 		>
@@ -35,7 +35,7 @@
 			href={null}
 			on:click={(e) => {
 				e.preventDefault();
-				goto(`/${$locale}/role-role-type`);
+				to(`/${$locale}/role-role-type`);
 			}}
 			class={$page.url.pathname === `/${$locale}/role-role-type` || $page.url.pathname.startsWith(`/${$locale}/role-role-type/`) ? 'active' : ''}
 		>
@@ -48,7 +48,7 @@
 			href={null}
 			on:click={(e) => {
 				e.preventDefault();
-				goto(`/${$locale}/user`);
+				to(`/${$locale}/user`);
 			}}
 			class={$page.url.pathname === `/${$locale}/user` || $page.url.pathname.startsWith(`/${$locale}/user/`) ? 'active' : ''}
 		>
@@ -61,7 +61,7 @@
 			href={null}
 			on:click={(e) => {
 				e.preventDefault();
-				goto(`/${$locale}/user-phones`);
+				to(`/${$locale}/user-phones`);
 			}}
 			class={$page.url.pathname === `/${$locale}/user-phones` || $page.url.pathname.startsWith(`/${$locale}/user-phones/`) ? 'active' : ''}
 		>
@@ -74,7 +74,7 @@
 			href={null}
 			on:click={(e) => {
 				e.preventDefault();
-				goto(`/${$locale}/user-profile`);
+				to(`/${$locale}/user-profile`);
 			}}
 			class={$page.url.pathname === `/${$locale}/user-profile` || $page.url.pathname.startsWith(`/${$locale}/user-profile/`) ? 'active' : ''}
 		>
@@ -87,7 +87,7 @@
 			href={null}
 			on:click={(e) => {
 				e.preventDefault();
-				goto(`/${$locale}/user-role`);
+				to(`/${$locale}/user-role`);
 			}}
 			class={$page.url.pathname === `/${$locale}/user-role` || $page.url.pathname.startsWith(`/${$locale}/user-role/`) ? 'active' : ''}
 		>
@@ -100,7 +100,7 @@
 			href={null}
 			on:click={(e) => {
 				e.preventDefault();
-				goto(`/${$locale}/user-test1`);
+				to(`/${$locale}/user-test1`);
 			}}
 			class={$page.url.pathname === `/${$locale}/user-test1` || $page.url.pathname.startsWith(`/${$locale}/user-test1/`) ? 'active' : ''}
 		>
@@ -113,7 +113,7 @@
 			href={null}
 			on:click={(e) => {
 				e.preventDefault();
-				goto(`/${$locale}/user-test2`);
+				to(`/${$locale}/user-test2`);
 			}}
 			class={$page.url.pathname === `/${$locale}/user-test2` || $page.url.pathname.startsWith(`/${$locale}/user-test2/`) ? 'active' : ''}
 		>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { ot, to } from '~/lib/stores/useNavigate';
 	import RoleConnectionTable from '~/lib/components/objects/role/RoleConnectionTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
@@ -52,15 +52,15 @@
 			id: string;
 		}>
 	) => {
-		goto(`../../role/${event.detail.id}`);
+		to(`../../role/${event.detail.id}`);
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		goto(`../../role/+`);
+		to(`../../role/+`);
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string }>) => {
-		goto(`../../role/${event.detail.path}`);
+	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
+		to(`../../role/${event.detail.path}`);
 	};
 </script>
 <RoleConnectionTable

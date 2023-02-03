@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto, afterNavigate } from '$app/navigation';
+	import { ot, to } from '~/lib/stores/useNavigate';
 	import { base } from '$app/paths';
 	import {{ objectFieldTypeName }}Form from '~/lib/components/objects/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}Form.svelte';
 	import {{ objectFieldTypeName }}CreateForm from '~/lib/components/objects/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
@@ -14,11 +14,6 @@
 	$: {{ name | camelCase }} = $Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }};
 	$: {{ objectFieldName }} = {{ name | camelCase }}?.{{ objectFieldName }};
 	const Mutation_{{ name | camelCase }}_{{ objectFieldName }} = new Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store();
-
-	let previousPage: string = base;
-	afterNavigate(({ from }) => {
-		previousPage = from?.url.pathname || previousPage;
-	});
 
 	const mutation = (
 		event: CustomEvent<{
@@ -42,11 +37,11 @@
 	};
 
 	const back = (event: CustomEvent<{}>) => {
-		goto(previousPage);
+		ot();
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
-		goto(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.path}`);
+		to(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.path}`);
 	};
 </script>
 

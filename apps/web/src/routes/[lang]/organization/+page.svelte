@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { ot, to } from '~/lib/stores/useNavigate';
 	import OrganizationConnectionTable from '~/lib/components/objects/organization/OrganizationConnectionTable.svelte';
 	import type { Organization, QueryTypeOrganizationConnectionArgs, MutationTypeOrganizationArgs } from '~/lib/types/schema';
 	import { Query_organizationConnectionStore, Mutation_organizationStore } from '$houdini';
@@ -47,15 +47,15 @@
 			id: string;
 		}>
 	) => {
-		goto(`./organization/${event.detail.id}`);
+		to(`./organization/${event.detail.id}`);
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		goto(`./organization/+`);
+		to(`./organization/+`);
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string }>) => {
-		goto(`./organization/${event.detail.path}`);
+	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
+		to(`./organization/${event.detail.path}`);
 	};
 </script>
 <OrganizationConnectionTable

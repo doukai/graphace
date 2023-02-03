@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { ot, to } from '~/lib/stores/useNavigate';
 	{%- if connectionField %}
 	import {{ objectFieldTypeName }}ConnectionTable from '~/lib/components/objects/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}ConnectionTable.svelte';
 	{%- else %}
@@ -64,15 +64,15 @@
 			id: string;
 		}>
 	) => {
-		goto(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.id}`);
+		to(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.id}`);
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		goto(`../../{{ objectFieldTypeName | paramCase }}/+`);
+		to(`../../{{ objectFieldTypeName | paramCase }}/+`);
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string }>) => {
-		goto(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.path}`);
+	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
+		to(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.path}`);
 	};
 </script>
 {%- if connectionField %}

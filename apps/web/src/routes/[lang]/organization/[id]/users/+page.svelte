@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { ot, to } from '~/lib/stores/useNavigate';
 	import UserConnectionTable from '~/lib/components/objects/user/UserConnectionTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
@@ -52,15 +52,15 @@
 			id: string;
 		}>
 	) => {
-		goto(`../../user/${event.detail.id}`);
+		to(`../../user/${event.detail.id}`);
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		goto(`../../user/+`);
+		to(`../../user/+`);
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string }>) => {
-		goto(`../../user/${event.detail.path}`);
+	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
+		to(`../../user/${event.detail.path}`);
 	};
 </script>
 <UserConnectionTable

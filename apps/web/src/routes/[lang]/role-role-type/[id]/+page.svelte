@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto, afterNavigate } from '$app/navigation';
+	import { ot, to } from '~/lib/stores/useNavigate';
 	import { base } from '$app/paths'
 	import RoleRoleTypeForm from '~/lib/components/objects/role-role-type/RoleRoleTypeForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
@@ -11,11 +11,6 @@
 	export let data: PageData;
 	$: Query_roleRoleType = data.Query_roleRoleType as Query_roleRoleTypeStore;
 	const Mutation_roleRoleType = new Mutation_roleRoleTypeStore();
-
-	let previousPage: string = base;
-	afterNavigate(({ from }) => {
-		previousPage = from?.url.pathname || previousPage;
-	});
 
 	const mutation = (
 		event: CustomEvent<{
@@ -35,11 +30,11 @@
 	};
 
 	const back = (event: CustomEvent<{}>) => {
-		goto(previousPage);
+		ot();
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
-		goto(`./${event.detail.path}`);
+		to(`./${event.detail.path}`);
 	};
 </script>
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { ot, to } from '~/lib/stores/useNavigate';
 	import RoleRoleTypeConnectionTable from '~/lib/components/objects/role-role-type/RoleRoleTypeConnectionTable.svelte';
 	import type { RoleRoleType, QueryTypeRoleRoleTypeConnectionArgs, MutationTypeRoleRoleTypeArgs } from '~/lib/types/schema';
 	import { Query_roleRoleTypeConnectionStore, Mutation_roleRoleTypeStore } from '$houdini';
@@ -47,15 +47,15 @@
 			id: string;
 		}>
 	) => {
-		goto(`./role-role-type/${event.detail.id}`);
+		to(`./role-role-type/${event.detail.id}`);
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		goto(`./role-role-type/+`);
+		to(`./role-role-type/+`);
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string }>) => {
-		goto(`./role-role-type/${event.detail.path}`);
+	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
+		to(`./role-role-type/${event.detail.path}`);
 	};
 </script>
 <RoleRoleTypeConnectionTable

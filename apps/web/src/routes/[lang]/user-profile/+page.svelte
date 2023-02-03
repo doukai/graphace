@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { ot, to } from '~/lib/stores/useNavigate';
 	import UserProfileConnectionTable from '~/lib/components/objects/user-profile/UserProfileConnectionTable.svelte';
 	import type { UserProfile, QueryTypeUserProfileConnectionArgs, MutationTypeUserProfileArgs } from '~/lib/types/schema';
 	import { Query_userProfileConnectionStore, Mutation_userProfileStore } from '$houdini';
@@ -47,15 +47,15 @@
 			id: string;
 		}>
 	) => {
-		goto(`./user-profile/${event.detail.id}`);
+		to(`./user-profile/${event.detail.id}`);
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		goto(`./user-profile/+`);
+		to(`./user-profile/+`);
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string }>) => {
-		goto(`./user-profile/${event.detail.path}`);
+	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
+		to(`./user-profile/${event.detail.path}`);
 	};
 </script>
 <UserProfileConnectionTable
