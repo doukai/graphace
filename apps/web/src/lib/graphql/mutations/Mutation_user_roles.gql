@@ -1,5 +1,5 @@
-mutation Mutation_user_roles($user_id: ID, $user_roles: [RoleInput], $first: Int, $groupBy: [String!], $id: StringExpression, $last: Int, $name: StringExpression, $offset: Int, $orderBy: RoleOrderBy, $type: RoleTypeExpression, $users: UserExpression, $skipNullArguments: Boolean = true, $update: Boolean = false) {
-  user(id: $user_id roles: $user_roles) @skipNullArguments(if: $skipNullArguments) @update(if: $update) {
+mutation Mutation_user_roles($user_id: ID, $user_roles: [RoleInput], $first: Int, $groupBy: [String!], $id: StringExpression, $last: Int, $name: StringExpression, $offset: Int, $orderBy: RoleOrderBy, $type: RoleTypeExpression, $users: UserExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+  user(id: $user_id roles: $user_roles) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     age
     createGroupId
     createTime
@@ -20,7 +20,7 @@ mutation Mutation_user_roles($user_id: ID, $user_roles: [RoleInput], $first: Int
     updateUserId
     userDetail2
     version
-    rolesConnection(first: $first groupBy: $groupBy id: $id last: $last name: $name offset: $offset orderBy: $orderBy type: $type users: $users) @skipNullArguments(if: $skipNullArguments) @update(if: $update) {
+    rolesConnection(first: $first groupBy: $groupBy id: $id last: $last name: $name offset: $offset orderBy: $orderBy type: $type users: $users) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
       totalCount
       edges {
         node {

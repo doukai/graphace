@@ -1,32 +1,33 @@
 <script lang="ts">
 	import { ot, to } from '~/lib/stores/useNavigate';
+	import { base } from '$app/paths'
 	import { page } from '$app/stores';
-	import {{ name }}CreateForm from '~/{{ formPath }}/{{ name | paramCase }}/{{ name }}CreateForm.svelte';
+	import RoleCreateForm from '~/lib/components/objects/role/RoleCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import {
 		updateNodeParam,
 		getChildPathParam
 	} from '~/lib/utils';
-	import { Mutation_{{ name | camelCase }}Store } from '$houdini';
-	import type { MutationType{{ name }}Args, {{ name }} } from '~/{{ schemaTypesPath }}';
+	import { Mutation_roleStore } from '$houdini';
+	import type { MutationTypeRoleArgs, Role } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: node = data.node as MutationType{{ name }}Args;
+	$: node = data.node as MutationTypeRoleArgs;
 
-	const Mutation_{{ name | camelCase }} = new Mutation_{{ name | camelCase }}Store();
+	const Mutation_role = new Mutation_roleStore();
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationType{{ name }}Args;
-			then: (data: {{ name }} | null | undefined) => void;
+			args: MutationTypeRoleArgs;
+			then: (data: Role | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_{{ name | camelCase }}.mutate(event.detail.args)
+		Mutation_role.mutate(event.detail.args)
 			.then((result) => {
-				event.detail.then(result?.{{ name | camelCase }});
+				event.detail.then(result?.role);
 			})
 			.catch((error) => {
 				event.detail.catch(error);
@@ -45,4 +46,4 @@
 	};
 </script>
 
-<{{ name }}CreateForm bind:node on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<RoleCreateForm bind:node on:mutation={mutation} on:back={back} on:gotoField={gotoField} />

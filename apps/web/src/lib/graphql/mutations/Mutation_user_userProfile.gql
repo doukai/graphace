@@ -1,5 +1,5 @@
-mutation Mutation_user_userProfile($user_id: ID, $user_userProfile: UserProfileInput, $address: StringExpression, $email: StringExpression, $id: StringExpression, $qq: StringExpression, $user: UserExpression, $userId: StringExpression, $skipNullArguments: Boolean = true, $update: Boolean = false) {
-  user(id: $user_id userProfile: $user_userProfile) @skipNullArguments(if: $skipNullArguments) @update(if: $update) {
+mutation Mutation_user_userProfile($user_id: ID, $user_userProfile: UserProfileInput, $address: StringExpression, $email: StringExpression, $id: StringExpression, $qq: StringExpression, $user: UserExpression, $userId: StringExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+  user(id: $user_id userProfile: $user_userProfile) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     age
     createGroupId
     createTime
@@ -20,7 +20,7 @@ mutation Mutation_user_userProfile($user_id: ID, $user_userProfile: UserProfileI
     updateUserId
     userDetail2
     version
-    userProfile(address: $address email: $email id: $id qq: $qq user: $user userId: $userId) @skipNullArguments(if: $skipNullArguments) @update(if: $update) {
+    userProfile(address: $address email: $email id: $id qq: $qq user: $user userId: $userId) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
       address
       createGroupId
       createTime

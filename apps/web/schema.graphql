@@ -3,8 +3,6 @@ schema {
   mutation: MutationType
 }
 
-directive @appendToList(arguments: [String]) on FIELD
-
 directive @column(autoIncrement: Boolean, default: String) on FIELD_DEFINITION
 
 directive @connection(agg: String, field: String) on FIELD_DEFINITION
@@ -26,6 +24,8 @@ directive @func(field: String, name: Function) on FIELD_DEFINITION
 directive @invoke(className: String, methodName: String, parameters: [InvokeParameter], returnClassName: String) on FIELD_DEFINITION
 
 directive @map(anchor: Boolean, from: String, to: String, with: MapWith) on FIELD_DEFINITION
+
+directive @mergeToList(arguments: [String]) on FIELD
 
 directive @permitAll on OBJECT
 

@@ -1,5 +1,5 @@
-mutation Mutation_organization_userByOrg($organization_id: ID, $skipNullArguments: Boolean = true, $update: Boolean = false) {
-  organization(id: $organization_id) @skipNullArguments(if: $skipNullArguments) @update(if: $update) {
+mutation Mutation_organization_userByOrg($organization_id: ID, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+  organization(id: $organization_id) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     aboveId
     createGroupId
     createTime
