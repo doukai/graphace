@@ -5,5 +5,5 @@ import { getNode } from '~/lib/utils'
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     const node: MutationTypeRoleArgs = getNode(event.url);
-    return { node };
+    return { userId: event.params.id, node };
 }
