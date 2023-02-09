@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { ot, to } from '~/lib/stores/useNavigate';
-	import { base } from '$app/paths'
 	import RoleRoleTypeForm from '~/lib/components/objects/role-role-type/RoleRoleTypeForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';

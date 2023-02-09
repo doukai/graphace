@@ -1,32 +1,32 @@
 <script lang="ts">
 	import { ot, to } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
-	import UserTest1CreateForm from '~/lib/components/objects/user-test1/UserTest1CreateForm.svelte';
+	import {{ name }}CreateForm from '~/{{ formPath }}/{{ name | paramCase }}/{{ name }}CreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import {
 		updateNodeParam,
 		getChildPathParam
 	} from '~/lib/utils';
-	import { Mutation_userTest1Store } from '$houdini';
-	import type { MutationTypeUserTest1Args, UserTest1 } from '~/lib/types/schema';
+	import { Mutation_{{ name | camelCase }}Store } from '$houdini';
+	import type { MutationType{{ name }}Args, {{ name }} } from '~/{{ schemaTypesPath }}';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: node = data.node as MutationTypeUserTest1Args;
+	$: node = data.node as MutationType{{ name }}Args;
 
-	const Mutation_userTest1 = new Mutation_userTest1Store();
+	const Mutation_{{ name | camelCase }} = new Mutation_{{ name | camelCase }}Store();
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeUserTest1Args;
-			then: (data: UserTest1 | null | undefined) => void;
+			args: MutationType{{ name }}Args;
+			then: (data: {{ name }} | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_userTest1.mutate(event.detail.args)
+		Mutation_{{ name | camelCase }}.mutate(event.detail.args)
 			.then((result) => {
-				event.detail.then(result?.userTest1);
+				event.detail.then(result?.{{ name | camelCase }});
 			})
 			.catch((error) => {
 				event.detail.catch(error);
@@ -45,4 +45,4 @@
 	};
 </script>
 
-<UserTest1CreateForm bind:node on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<{{ name }}CreateForm bind:node on:mutation={mutation} on:back={back} on:gotoField={gotoField} />

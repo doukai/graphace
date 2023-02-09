@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { ot, to } from '~/lib/stores/useNavigate';
-	import { base } from '$app/paths'
 	import UserTest2Form from '~/lib/components/objects/user-test2/UserTest2Form.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';

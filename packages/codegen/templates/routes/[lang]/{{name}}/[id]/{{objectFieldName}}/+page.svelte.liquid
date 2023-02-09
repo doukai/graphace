@@ -1,0 +1,57 @@
+<script lang="ts">
+	import { ot, to } from '~/lib/stores/useNavigate';
+	import {{ objectFieldTypeName }}Form from '~/lib/components/objects/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}Form.svelte';
+	import {{ objectFieldTypeName }}CreateForm from '~/lib/components/objects/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
+	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
+	import type { Error } from '@graphace/commons/types';
+	import type { MutationType{{ objectFieldTypeName }}Args, {{ objectFieldTypeName }} } from '~/lib/types/schema';
+	import { Query_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store } from '$houdini';
+	import type { PageData } from './$houdini';
+
+	export let data: PageData;
+	$: Query_{{ name | camelCase }}_{{ objectFieldName }} = data.Query_{{ name | camelCase }}_{{ objectFieldName }} as Query_{{ name | camelCase }}_{{ objectFieldName }}Store;
+	$: {{ name | camelCase }} = $Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }};
+	$: {{ objectFieldName }} = {{ name | camelCase }}?.{{ objectFieldName }};
+	const Mutation_{{ name | camelCase }}_{{ objectFieldName }} = new Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store();
+
+	const mutation = (
+		event: CustomEvent<{
+			args: MutationType{{ objectFieldTypeName }}Args;
+			update?: boolean;
+			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
+			catch: (error: Error) => void;
+		}>
+	) => {
+		Mutation_{{ name | camelCase }}_{{ objectFieldName }}.mutate({
+			{{ name | camelCase }}_{{ idName }}: {{ name | camelCase }}?.{{ idName }},
+			{{ name | camelCase }}_{{ objectFieldName }}: event.detail.args,
+			update: event.detail.update
+		})
+			.then((result) => {
+				event.detail.then(result?.{{ name | camelCase }}?.{{ objectFieldName }});
+			})
+			.catch((error) => {
+				event.detail.catch(error);
+			});
+	};
+
+	const back = (event: CustomEvent<{}>) => {
+		ot();
+	};
+
+	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
+		to(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.path}`);
+	};
+</script>
+
+{#if {{ objectFieldName }}}
+	<{{ objectFieldTypeName }}Form
+		node={$Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }}?.{{ objectFieldName }}}
+		isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
+		on:mutation={mutation}
+		on:back={back}
+		on:gotoField={gotoField}
+	/>
+{:else}
+	<{{ objectFieldTypeName }}CreateForm on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+{/if}

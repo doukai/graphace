@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { ot, to } from '~/lib/stores/useNavigate';
-	import { base } from '$app/paths';
 	import OrganizationForm from '~/lib/components/objects/organization/OrganizationForm.svelte';
 	import OrganizationCreateForm from '~/lib/components/objects/organization/OrganizationCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';

@@ -1,0 +1,99 @@
+<script lang="ts">
+	import { ot, to } from '~/lib/stores/useNavigate';
+	{%- if connectionField %}
+	import {{ objectFieldTypeName }}ConnectionTable from '~/lib/components/objects/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}ConnectionTable.svelte';
+	{%- else %}
+	import {{ objectFieldTypeName }}Table from '~/lib/components/objects/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}Table.svelte';
+	{%- endif %}
+	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
+	import type { Error } from '@graphace/commons/types';
+	import type { MutationType{{ objectFieldTypeName }}Args, {% if connectionField %}QueryType{{ objectFieldTypeName }}ConnectionArgs{% else %}QueryType{{ objectFieldTypeName }}ListArgs{% endif %}, {{ objectFieldTypeName }} } from '~/lib/types/schema';
+	import { Query_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ objectFieldTypeName | camelCase }}Store } from '$houdini';
+	import type { PageData } from './$houdini';
+
+	export let data: PageData;
+	$: Query_{{ name | camelCase }}_{{ objectFieldName }} = data.Query_{{ name | camelCase }}_{{ objectFieldName }} as Query_{{ name | camelCase }}_{{ objectFieldName }}Store;
+	$: {{ name | camelCase }} = $Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }};
+	const Mutation_{{ objectFieldTypeName | camelCase }} = new Mutation_{{ objectFieldTypeName | camelCase }}Store();
+
+	const fetch = (
+		event: CustomEvent<{
+			{%- if connectionField %}
+			args: QueryType{{ objectFieldTypeName }}ConnectionArgs;
+			{%- else %}
+			args: QueryType{{ objectFieldTypeName }}ListArgs;
+			{%- endif %}
+			then: (data: ({{ objectFieldTypeName }} | null | undefined)[] | null | undefined) => void;
+			catch: (error: Error) => void;
+		}>
+	) => {
+		Query_{{ name | camelCase }}_{{ objectFieldName }}.fetch({
+			variables: { {{ name | camelCase }}_id: { val: {{ name | camelCase }}?.{{ idName }} }, ...event.detail.args }
+		})
+			.then((result) => {
+				{%- if connectionField %}
+				event.detail.then(result.data?.{{ name | camelCase }}?.{{ objectFieldName }}Connection?.edges?.map((edge) => edge?.node));
+				{%- else %}
+				event.detail.then(result.data?.{{ name | camelCase }}?.{{ objectFieldName }});
+				{%- endif %}
+			})
+			.catch((error) => {
+				event.detail.catch(error);
+			});
+	};
+
+	const mutation = (
+		event: CustomEvent<{
+			args: MutationType{{ objectFieldTypeName }}Args;
+			update?: boolean;
+			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
+			catch: (error: Error) => void;
+		}>
+	) => {
+		Mutation_{{ objectFieldTypeName | camelCase }}.mutate({ ...event.detail.args, update: event.detail.update })
+			.then((result) => {
+				event.detail.then(result?.{{ objectFieldTypeName | camelCase }});
+			})
+			.catch((error) => {
+				event.detail.catch(error);
+			});
+	};
+
+	const edit = (
+		event: CustomEvent<{
+			id: string;
+		}>
+	) => {
+		to(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.id}`);
+	};
+
+	const create = (event: CustomEvent<{}>) => {
+		to(`../../{{ objectFieldTypeName | paramCase }}/+`);
+	};
+
+	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
+		to(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.path}`);
+	};
+</script>
+{%- if connectionField %}
+<{{ objectFieldTypeName }}ConnectionTable
+	nodes={$Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }}?.{{ objectFieldName }}Connection?.edges?.map((edge) => edge?.node)}
+	totalCount={$Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }}?.{{ objectFieldName }}Connection?.totalCount || 0}
+	isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
+	on:fetch={fetch}
+	on:mutation={mutation}
+	on:edit={edit}
+	on:create={create}
+	on:gotoField={gotoField}
+/>
+{%- else %}
+<{{ objectFieldTypeName }}Table
+	nodes={$Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }}?.{{ objectFieldName }}}
+	isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
+	on:fetch={fetch}
+	on:mutation={mutation}
+	on:edit={edit}
+	on:create={create}
+	on:gotoField={gotoField}
+/>
+{%- endif %}

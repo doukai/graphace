@@ -1,0 +1,46 @@
+<script lang="ts">
+	import { ot, to } from '~/lib/stores/useNavigate';
+	import {{ name }}Form from '~/{{ formPath }}/{{ name | paramCase }}/{{ name }}Form.svelte';
+	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
+	import type { Error } from '@graphace/commons/types';
+	import { Query_{{ name | camelCase }}Store, Mutation_{{ name | camelCase }}Store } from '$houdini';
+	import type { PageData } from './$houdini';
+	import type { MutationType{{ name }}Args, {{ name }} } from '~/{{ schemaTypesPath }}';
+
+	export let data: PageData;
+	$: Query_{{ name | camelCase }} = data.Query_{{ name | camelCase }} as Query_{{ name | camelCase }}Store;
+	const Mutation_{{ name | camelCase }} = new Mutation_{{ name | camelCase }}Store();
+
+	const mutation = (
+		event: CustomEvent<{
+			args: MutationType{{ name }}Args;
+			update?: boolean;
+			then: (data: {{ name }} | null | undefined) => void;
+			catch: (error: Error) => void;
+		}>
+	) => {
+		Mutation_{{ name | camelCase }}.mutate({ ...event.detail.args, update: event.detail.update })
+			.then((result) => {
+				event.detail.then(result?.{{ name | camelCase }});
+			})
+			.catch((error) => {
+				event.detail.catch(error);
+			});
+	};
+
+	const back = (event: CustomEvent<{}>) => {
+		ot();
+	};
+
+	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
+		to(`./${event.detail.path}`);
+	};
+</script>
+
+<{{ name }}Form
+	node={$Query_{{ name | camelCase }}.data?.{{ name | camelCase }}}
+	isFetching={$Query_{{ name| camelCase }}.fetching}
+	on:mutation={mutation}
+	on:back={back}
+	on:gotoField={gotoField}
+/>
