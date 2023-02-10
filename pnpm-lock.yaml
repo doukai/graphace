@@ -16,7 +16,7 @@ importers:
       prettier: 2.8.3
       prettier-plugin-svelte: 2.9.0_kdmmghgdi3ngrsq6otxkjilbry
       svelte: 3.55.1
-      turbo: 1.7.2
+      turbo: 1.7.4
 
   apps/web:
     specifiers:
@@ -76,7 +76,7 @@ importers:
       '@types/lodash': 4.14.191
       '@types/node': 18.11.18
       ajv: 8.12.0
-      ajv-formats: 2.1.1
+      ajv-formats: 2.1.1_ajv@8.12.0
       ajv-i18n: 4.2.0_ajv@8.12.0
       autoprefixer: 10.4.13_postcss@8.4.21
       concurrently: 7.6.0
@@ -86,14 +86,14 @@ importers:
       graphace-codegen-preset: link:../../packages/codegen-preset
       graphql: 16.6.0
       houdini: 0.20.3
-      houdini-svelte: 0.20.3_@types+node@18.11.18
+      houdini-svelte: 0.20.3_ykzowzmb7rcumunkscnbisnkom
       lodash: 4.17.21
       postcss: 8.4.21
       postcss-load-config: 3.1.4_aesdjsunmf4wiehhujt67my7tu
       svelte: 3.55.1
       svelte-check: 3.0.3_wvrm32gd33klg3jid3dvetj6va
       svelte-preprocess: 4.10.7_vpbvdbm6g2od7cpejpszygdnpe
-      tailwindcss: 3.2.4_ts-node@10.9.1
+      tailwindcss: 3.2.4_aesdjsunmf4wiehhujt67my7tu
       theme-change: 2.3.0
       ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
       tslib: 2.4.1
@@ -107,6 +107,7 @@ importers:
       '@graphql-codegen/schema-ast': ^2.6.1
       '@graphql-codegen/visitor-plugin-common': 2.13.7
       change-case: ^4.1.2
+      graphace-codegen-commons: workspace:*
       graphql: 16.6.0
       liquidjs: ^10.4.0
       microbundle: ^0.15.1
@@ -115,20 +116,38 @@ importers:
       '@graphql-codegen/schema-ast': 2.6.1_graphql@16.6.0
       '@graphql-codegen/visitor-plugin-common': 2.13.7_graphql@16.6.0
       change-case: 4.1.2
+      graphace-codegen-commons: link:../codegen-commons
       graphql: 16.6.0
+      liquidjs: 10.4.0
+    devDependencies:
+      microbundle: 0.15.1
+
+  packages/codegen-commons:
+    specifiers:
+      '@graphace/graphql': workspace:*
+      change-case: ^4.1.2
+      liquidjs: ^10.4.0
+      microbundle: ^0.15.1
+    dependencies:
+      '@graphace/graphql': link:../graphql
+      change-case: 4.1.2
       liquidjs: 10.4.0
     devDependencies:
       microbundle: 0.15.1
 
   packages/codegen-preset:
     specifiers:
+      '@graphace/graphql': workspace:*
       '@graphql-codegen/plugin-helpers': ^3.1.2
       change-case: ^4.1.2
+      graphace-codegen-commons: workspace:*
       graphql: 16.6.0
       microbundle: ^0.15.1
     dependencies:
+      '@graphace/graphql': link:../graphql
       '@graphql-codegen/plugin-helpers': 3.1.2_graphql@16.6.0
       change-case: 4.1.2
+      graphace-codegen-commons: link:../codegen-commons
       graphql: 16.6.0
     devDependencies:
       microbundle: 0.15.1
@@ -136,8 +155,10 @@ importers:
   packages/commons:
     specifiers:
       eslint-config-custom: workspace:*
+      microbundle: ^0.15.1
     devDependencies:
       eslint-config-custom: link:../eslint-config-custom
+      microbundle: 0.15.1
 
   packages/eslint-config-custom:
     specifiers:
@@ -167,16 +188,20 @@ importers:
       ajv-formats: ^2.1.1
       ajv-i18n: ^4.2.0
       eslint-config-custom: workspace:*
+      graphql: 16.6.0
       lodash: ^4.17.21
+      microbundle: ^0.15.1
     dependencies:
       '@graphace/commons': link:../commons
     devDependencies:
       '@types/lodash': 4.14.191
       ajv: 8.12.0
-      ajv-formats: 2.1.1
+      ajv-formats: 2.1.1_ajv@8.12.0
       ajv-i18n: 4.2.0_ajv@8.12.0
       eslint-config-custom: link:../eslint-config-custom
+      graphql: 16.6.0
       lodash: 4.17.21
+      microbundle: 0.15.1
 
   packages/ui:
     specifiers:
@@ -2575,7 +2600,7 @@ packages:
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 3.2.4_ts-node@10.9.1
+      tailwindcss: 3.2.4_aesdjsunmf4wiehhujt67my7tu
     dev: true
 
   /@tootallnate/once/2.0.0:
@@ -2900,8 +2925,10 @@ packages:
       indent-string: 4.0.0
     dev: true
 
-  /ajv-formats/2.1.1:
+  /ajv-formats/2.1.1_ajv@8.12.0:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
+    peerDependencies:
+      ajv: ^8.0.0
     peerDependenciesMeta:
       ajv:
         optional: true
@@ -3726,7 +3753,7 @@ packages:
       css-selector-tokenizer: 0.8.0
       postcss: 8.4.21
       postcss-js: 4.0.0_postcss@8.4.21
-      tailwindcss: 3.2.4_ts-node@10.9.1
+      tailwindcss: 3.2.4_aesdjsunmf4wiehhujt67my7tu
     transitivePeerDependencies:
       - ts-node
     dev: true
@@ -4716,14 +4743,16 @@ packages:
       capital-case: 1.0.4
       tslib: 2.4.1
 
-  /houdini-svelte/0.20.3_@types+node@18.11.18:
+  /houdini-svelte/0.20.3_ykzowzmb7rcumunkscnbisnkom:
     resolution: {integrity: sha512-dlrwW4pPTOUNhN1+qLfwkY1UU+isYHNfBev/zPQgIs6ECDm0C2CFFDf/iMiyQGfFMoTY+Sqjme61tWqZKwyE9Q==}
+    peerDependencies:
+      graphql: ^14.0.0 || ^15.0.0
     dependencies:
       '@kitql/helper': 0.5.0
       '@sveltejs/kit': 1.2.10_svelte@3.55.1+vite@4.0.4
       ast-types: 0.16.1
       estree-walker: 3.0.3
-      graphql: 15.8.0
+      graphql: 16.6.0
       houdini: 0.20.3
       recast: 0.23.1
       svelte: 3.55.1
@@ -7293,10 +7322,12 @@ packages:
     dependencies:
       tslib: 2.4.1
 
-  /tailwindcss/3.2.4_ts-node@10.9.1:
+  /tailwindcss/3.2.4_aesdjsunmf4wiehhujt67my7tu:
     resolution: {integrity: sha512-AhwtHCKMtR71JgeYDaswmZXhPcW9iuI9Sp2LvZPo9upDZ7231ZJ7eA9RaURbhpXGVlrjX4cFNlB4ieTetEb7hQ==}
     engines: {node: '>=12.13.0'}
     hasBin: true
+    peerDependencies:
+      postcss: ^8.0.9
     dependencies:
       arg: 5.0.2
       chokidar: 3.5.3
@@ -7447,65 +7478,65 @@ packages:
       typescript: 4.9.4
     dev: false
 
-  /turbo-darwin-64/1.7.2:
-    resolution: {integrity: sha512-Sml3WR8MSu80W+gS8SnoKNImcDOlIX7zlvezzds65mW11yGniIFfZ18aKWGOm92Nj2SvXCQ2+UmyGghbFaHNmQ==}
+  /turbo-darwin-64/1.7.4:
+    resolution: {integrity: sha512-ZyYrQlUl8K/mYN1e6R7bEhPPYjMakz0DYMaexkyD7TAijQtWmTSd4a+I7VknOYNEssnUZ/v41GU3gPV1JAzxxQ==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-darwin-arm64/1.7.2:
-    resolution: {integrity: sha512-JnlgGLScboUJGJxvmSsF+5xkImEDTMPg2FHzX4n8AMB9az9ZlPQAMtc+xu4p6Xp9eaykKiV2RG81YS3H0fxDLA==}
+  /turbo-darwin-arm64/1.7.4:
+    resolution: {integrity: sha512-CKIXg9uqp1a+Yeq/c4U0alPOqvwLUq5SBZf1PGYhGqJsfG0fRBtJfkUjHuBsuJIOGXg8rCmcGSWGIsIF6fqYuw==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-64/1.7.2:
-    resolution: {integrity: sha512-vbLJw6ovG+lpiPqxniscBjljKJ2jbsHuKp8uK4j/wqgp68wAVKeAZW77GGDAUgDb88XH6Kvhh2hcizL+iWduww==}
+  /turbo-linux-64/1.7.4:
+    resolution: {integrity: sha512-RIUl4RUFFyzD2T024vL7509Ygwcw+SEa8NOwPfaN6TtJHK7RZV/SBP3fLNVOptG9WRLnOWX3OvsLMbiOqDLLyA==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-arm64/1.7.2:
-    resolution: {integrity: sha512-zLnuS8WdHonKL74KqOopOH/leBOWumlVGF8/8hldbDPq0mwY+6myRR5/5LdveB51rkG4UJh/sQ94xV67tjBoyw==}
+  /turbo-linux-arm64/1.7.4:
+    resolution: {integrity: sha512-Bg65F0AjYYYxqE6RPf2H5TIGuA/EyWMeGOATHVSZOWAbYcnG3Ly03GZii8AHnUi7ntWBdjwvXf/QbOS1ayNB6A==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-64/1.7.2:
-    resolution: {integrity: sha512-oE5PMoXjmR09okvVzteFb6FjA6yo+nMsacsgKH2yLNq4sOrVo9tG98JkRurOv5+L6ZQ3yGXPxWHiqeH7hLkAVQ==}
+  /turbo-windows-64/1.7.4:
+    resolution: {integrity: sha512-rTaV50XZ2BRxRHOHqt1UsWfeDmYLbn8UKE6g2D2ED+uW+kmnTvR9s01nmlGWd2sAuWcRYQyQ2V+O09VfKPKcQw==}
     cpu: [x64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-arm64/1.7.2:
-    resolution: {integrity: sha512-mdTUJk23acRv5qxA/yEstYhM1VFenVE3FDrssxGRFq7S80smtCGK1xUd4BEDDzDlVXOqBohmM5jRh9516rcjPQ==}
+  /turbo-windows-arm64/1.7.4:
+    resolution: {integrity: sha512-h8sxdKPvHTnWUPtwnYszFMmSO0P/iUUwmYY9n7iYThA71zSao28UeZ0H0Gw75cY3MPjvkjn2C4EBAUGPjuZJLw==}
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo/1.7.2:
-    resolution: {integrity: sha512-YR/x3GZEx0C1RV6Yvuw/HB1Ixx3upM6ZTTa4WqKz9WtLWN8u2g+u2h5KpG5YtjCS3wl/8zVXgHf2WiMK6KIghg==}
+  /turbo/1.7.4:
+    resolution: {integrity: sha512-8RLedDoUL0kkVKWEZ/RMM70BvKLyDFen06QuKKhYC2XNOfNKqFDqzIdcY/vGick869bNIWalChoy4O07k0HLsA==}
     hasBin: true
     requiresBuild: true
     optionalDependencies:
-      turbo-darwin-64: 1.7.2
-      turbo-darwin-arm64: 1.7.2
-      turbo-linux-64: 1.7.2
-      turbo-linux-arm64: 1.7.2
-      turbo-windows-64: 1.7.2
-      turbo-windows-arm64: 1.7.2
+      turbo-darwin-64: 1.7.4
+      turbo-darwin-arm64: 1.7.4
+      turbo-linux-64: 1.7.4
+      turbo-linux-arm64: 1.7.4
+      turbo-windows-64: 1.7.4
+      turbo-windows-arm64: 1.7.4
     dev: true
 
   /type-check/0.4.0:

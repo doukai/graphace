@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "graphace-codegen-commons": [
+        "../codegen-commons/src/index"
+      ],
+      "graphace-codegen-commons/*": [
+        "../codegen-commons/src/*"
+      ],
+      "@graphace/graphql": [
+        "../../packages/graphql/src/index"
+      ],
+      "@graphace/graphql/*": [
+        "../../packages/graphql/src/*"
+      ]
+    }
+  },
+}

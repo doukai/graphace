@@ -9,6 +9,7 @@
     "microbundle": "^0.15.1"
   },
   "dependencies": {
+    "graphace-codegen-commons": "workspace:*",
     "@graphql-codegen/plugin-helpers": "^3.1.2",
     "@graphql-codegen/schema-ast": "^2.6.1",
     "@graphql-codegen/visitor-plugin-common": "2.13.7",

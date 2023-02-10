@@ -2,16 +2,14 @@
   "name": "@graphace/graphql",
   "version": "0.0.1",
   "description": "graphace graphql module",
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "license": "MIT",
   "scripts": {
     "lint": "prettier --check --ignore-path=../../.prettierignore . && eslint \".\"",
     "format": "prettier --write --ignore-path=../../.prettierignore ."
   },
   "devDependencies": {
+    "microbundle": "^0.15.1",
     "@types/lodash": "^4.14.182",
+    "graphql": "16.6.0",
     "ajv": "^8.11.0",
     "ajv-formats": "^2.1.1",
     "ajv-i18n": "^4.2.0",
@@ -20,5 +18,15 @@
   },
   "dependencies": {
     "@graphace/commons": "workspace:*"
-  }
+  },
+  "source": "src/index.ts",
+  "exports": {
+    "require": "./dist/index.cjs",
+    "default": "./dist/index.modern.js"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.module.js",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/index.umd.js",
+  "type": "module"
 }

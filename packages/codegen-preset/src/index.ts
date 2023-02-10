@@ -2,43 +2,12 @@ import type { Types } from "@graphql-codegen/plugin-helpers";
 import { assertObjectType, isEnumType, isListType, isNonNullType, isObjectType, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType } from "graphql";
 import type { GraphacePresetConfig } from "./config";
 import * as changeCase from "change-case";
+import { buildEngine } from 'graphace-codegen-commons'
+import { isOperationType, isAggregate, isConnection, isEdge, isPageInfo, isIntrospection, isInnerEnum, getFieldType, getObjectFields } from '@graphace/graphql/Introspection'
 
-const aggregateSuffix = ["Count", "Sum", "Avg", "Max", "Min", "Aggregate"];
-const queryTypeName = "QueryType";
-const mutationTypeName = "MutationType";
-const connectionSuffix = "Connection";
-const edgeSuffix = "Edge";
-const pageInfoName = "PageInfo";
-const introspectionPrefix = "__";
-const innerEnum = ["Operator", "Conditional", "Sort", "Function"];
-
-const isOperationType = (name?: string): boolean => { return [queryTypeName, mutationTypeName].some(typeName => name === typeName) };
-const isAggregate = (name?: string): boolean => { return aggregateSuffix.some(suffix => name?.slice(-suffix.length) === suffix) };
-const isConnection = (name?: string): boolean => { return name?.slice(-connectionSuffix.length) === connectionSuffix };
-const isEdge = (name?: string): boolean => { return name?.slice(-edgeSuffix.length) === edgeSuffix };
-const isPageInfo = (name?: string): boolean => { return name === pageInfoName };
-const isIntrospection = (name?: string): boolean | undefined => { return name?.startsWith(introspectionPrefix) };
-const isInnerEnum = (name?: string): boolean => { return innerEnum.some(enumName => name === enumName) };
-
-const getFieldType = (type: GraphQLOutputType): GraphQLNamedType => {
-    if (isListType(type) || isNonNullType(type)) {
-        return getFieldType(type.ofType);
-    }
-    return type;
-}
-
-const getObjectFields = (type: GraphQLNamedType): GraphQLField<any, any, any>[] | undefined => {
-    if (isObjectType(type)) {
-        return Object.values(type.getFields())
-            .filter(field => isObjectType(getFieldType(field.type)))
-            .filter(field => !isConnection(getFieldType(field.type).name))
-            .filter(field => !isEdge(getFieldType(field.type).name))
-            .filter(field => !isAggregate(field.name))
-            .filter(field => !isPageInfo(getFieldType(field.type).name))
-            .filter(field => !isIntrospection(getFieldType(field.type).name))
-    }
-    return undefined;
-}
+const _graphqlPath = 'src/lib/graphql';
+const _componentsPath = 'src/lib/components';
+const _routesPath = 'src/routes';
 
 export const preset: Types.OutputPreset<GraphacePresetConfig> = {
     buildGeneratesSection: options => {
@@ -123,7 +92,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         const mutationObjectFieldList = Object.values(mutationFields)
             .filter(field => !isListType(field.type))
-            .flatMap(field => getObjectFields(getFieldType(field.type) || [])?.map(objectField => { return { fieldName: field.name, objectFieldName: objectField.name } }) || [])
+            .flatMap(field => getObjectFields(getFieldType(field.type))?.map(objectField => { return { fieldName: field.name, objectFieldName: objectField.name } }) || [])
             .map(objectField => {
                 return {
                     filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/graphql'}/mutations/Mutation_${objectField?.fieldName}_${objectField?.objectFieldName}.gql`,

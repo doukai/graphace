@@ -1,5 +1,4 @@
-query Query_{{ name }}{% if objectField %}_{{ objectField.name }}{% endif %}
-  {%- if objectField %}
+query Query_{{ name }}_{{ objectField.name }}
   {%- if objectField.connectionField %}
   {%- assign connectionArgs = objectField.parentArgs | concat: objectField.connectionField.args %}
   {%- if connectionArgs.length > 0 -%}
@@ -11,17 +10,9 @@ query Query_{{ name }}{% if objectField %}_{{ objectField.name }}{% endif %}
   ({% for arg in objectFieldArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% else %}, $skipNullArguments: Boolean = true{% endif %}{% endfor %})
   {%- endif %}
   {%- endif %}
-  {%- else %}
-  {%- if args and args.length > 0 -%}
-  ({% for arg in args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %}, $skipNullArguments: Boolean = true)
-  {%- endif %}
   {%- endif %} {
   {{ name }}
-    {%- if objectField %}
     {%- if objectField.parentArgs and objectField.parentArgs.length > 0 %}({% for arg in objectField.parentArgs %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %}{% if objectField.parentArgs and objectField.parentArgs.length > 0 %} @skipNullArguments(if: $skipNullArguments){% endif %}
-    {%- else %}
-    {%- if args and args.length > 0 %}({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %}){%- if args and args.length > 0 %} @skipNullArguments(if: $skipNullArguments){% endif %}{% endif %}
-    {%- endif %}
     {%- if isConnection %} {
     totalCount
     edges {
@@ -30,7 +21,6 @@ query Query_{{ name }}{% if objectField %}_{{ objectField.name }}{% endif %}
         {%- for field in fields %}
         {{ field.name }}
         {%- endfor %}
-        {%- if objectField %}
         {%- if objectField.isListType and objectField.connectionField %}
         {{ objectField.name }}Connection {
           totalCount
@@ -51,7 +41,6 @@ query Query_{{ name }}{% if objectField %}_{{ objectField.name }}{% endif %}
         {%- endif %}
         {%- endif %}
       }
-        {%- endif %}
     }
   }
     {%- else %}
@@ -59,7 +48,6 @@ query Query_{{ name }}{% if objectField %}_{{ objectField.name }}{% endif %}
     {%- for field in fields %}
     {{ field.name }}
     {%- endfor %}
-    {%- if objectField %}
     {%- if objectField.isListType and objectField.connectionField %}
     {{ objectField.name }}Connection 
     {%- if objectField.connectionField.args and objectField.connectionField.args.length > 0 -%}
@@ -86,6 +74,5 @@ query Query_{{ name }}{% if objectField %}_{{ objectField.name }}{% endif %}
     {%- endif %}
     {%- endif %}
   }
-    {%- endif %}
     {%- endif %}
 }

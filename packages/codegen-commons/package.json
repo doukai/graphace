@@ -1,5 +1,5 @@
 {
-  "name": "graphace-codegen-preset",
+  "name": "graphace-codegen-commons",
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
@@ -10,10 +10,8 @@
   },
   "dependencies": {
     "@graphace/graphql": "workspace:*",
-    "graphace-codegen-commons": "workspace:*",
-    "@graphql-codegen/plugin-helpers": "^3.1.2",
-    "change-case": "^4.1.2",
-    "graphql": "16.6.0"
+    "liquidjs": "^10.4.0",
+    "change-case": "^4.1.2"
   },
   "source": "src/index.ts",
   "exports": {

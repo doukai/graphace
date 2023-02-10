@@ -2,15 +2,23 @@
   "name": "@graphace/commons",
   "version": "0.0.1",
   "description": "graphace commons module",
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "license": "MIT",
   "scripts": {
+    "build": "microbundle",
     "lint": "prettier --check --ignore-path=../../.prettierignore . && eslint \".\"",
     "format": "prettier --write --ignore-path=../../.prettierignore ."
   },
   "devDependencies": {
+    "microbundle": "^0.15.1",
     "eslint-config-custom": "workspace:*"
-  }
+  },
+  "source": "src/index.ts",
+  "exports": {
+    "require": "./dist/index.cjs",
+    "default": "./dist/index.modern.js"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.module.js",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/index.umd.js",
+  "type": "module"
 }
