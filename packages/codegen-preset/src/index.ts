@@ -1,9 +1,9 @@
 import type { Types } from "@graphql-codegen/plugin-helpers";
-import { assertObjectType, isEnumType, isListType, isNonNullType, isObjectType, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType } from "graphql";
+import { assertObjectType, isEnumType, isListType, isObjectType } from "graphql";
 import type { GraphacePresetConfig } from "./config";
 import * as changeCase from "change-case";
-import { buildEngine } from 'graphace-codegen-commons'
 import { isOperationType, isAggregate, isConnection, isEdge, isPageInfo, isIntrospection, isInnerEnum, getFieldType, getObjectFields } from '@graphace/graphql/Introspection'
+import { buildPath } from "./Builder";
 
 const _graphqlPath = 'src/lib/graphql';
 const _componentsPath = 'src/lib/components';
@@ -11,6 +11,12 @@ const _routesPath = 'src/routes';
 
 export const preset: Types.OutputPreset<GraphacePresetConfig> = {
     buildGeneratesSection: options => {
+        const generateOptions: Types.GenerateOptions[] = [];
+
+        const graphqlPath = `${options.baseOutputDir}/${options.presetConfig.graphqlPath || _graphqlPath}`;
+        const componentsPath = `${options.baseOutputDir}/${options.presetConfig.componentsPath || _componentsPath}`;
+        const routesPath = `${options.baseOutputDir}/${options.presetConfig.routesPath || _routesPath}`;
+
         const queryFields = options.schemaAst?.getQueryType()?.getFields() || [];
         const mutationFields = options.schemaAst?.getMutationType()?.getFields() || [];
         const objectTypes = Object.values(options.schemaAst?.getTypeMap() || {})
@@ -26,595 +32,618 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             .filter(type => !isInnerEnum(type.name))
             .filter(type => isEnumType(type));
 
-        const queryList = Object.values(queryFields)
-            .map(field => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/graphql'}/queries/Query_${field.name}.gql`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'query',
-                        query: {
-                            fieldName: field.name
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
+        generateOptions.push(
+            ...Object.values(queryFields)
+                .map(field => {
+                    const template = '{{graphqlPath}}/queries/Query_{{name}}.gql';
+                    const scope = { graphqlPath, name: field.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
+                            name: field.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
 
-        const queryObjectFieldList = Object.values(queryFields)
-            .filter(field => !isListType(field.type))
-            .filter(field => !isConnection(getFieldType(field.type).name))
-            .flatMap(field => getObjectFields(getFieldType(field.type))?.map(objectField => { return { fieldName: field.name, objectFieldName: objectField.name } }) || [])
-            .map(objectField => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/graphql'}/queries/Query_${objectField?.fieldName}_${objectField?.objectFieldName}.gql`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'query',
-                        query: {
-                            fieldName: objectField?.fieldName,
-                            objectFieldName: objectField?.objectFieldName
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
+        generateOptions.push(
+            ...Object.values(queryFields)
+                .filter(field => !isListType(field.type))
+                .filter(field => !isConnection(getFieldType(field.type).name))
+                .flatMap(field => getObjectFields(getFieldType(field.type))?.map(objectField => { return { name: field.name, objectFieldName: objectField.name } }) || [])
+                .map(objectField => {
+                    const { name, objectFieldName } = objectField;
+                    const template = '{{graphqlPath}}/queries/Query_{{name}}_{{objectFieldName}}.gql';
+                    const scope = { graphqlPath, name, objectFieldName };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
+                            name,
+                            objectFieldName
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
 
-        const mutationList = Object.values(mutationFields)
-            .map(field => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/graphql'}/mutations/Mutation_${field.name}.gql`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'mutation',
-                        mutation: {
-                            fieldName: field.name
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
+        generateOptions.push(
+            ...Object.values(mutationFields)
+                .map(field => {
+                    const template = '{{graphqlPath}}/mutations/Mutation_{{name}}.gql';
+                    const scope = { graphqlPath, name: field.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
+                            name: field.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
 
-        const mutationObjectFieldList = Object.values(mutationFields)
-            .filter(field => !isListType(field.type))
-            .flatMap(field => getObjectFields(getFieldType(field.type))?.map(objectField => { return { fieldName: field.name, objectFieldName: objectField.name } }) || [])
-            .map(objectField => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/graphql'}/mutations/Mutation_${objectField?.fieldName}_${objectField?.objectFieldName}.gql`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'mutation',
-                        mutation: {
-                            fieldName: objectField?.fieldName,
-                            objectFieldName: objectField?.objectFieldName
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
+        generateOptions.push(
+            ...Object.values(mutationFields)
+                .filter(field => !isListType(field.type))
+                .flatMap(field => getObjectFields(getFieldType(field.type))?.map(objectField => { return { name: field.name, objectFieldName: objectField.name } }) || [])
+                .map(objectField => {
+                    const { name, objectFieldName } = objectField;
+                    const template = '{{graphqlPath}}/mutations/Mutation_{{name}}_{{objectFieldName}}.gql';
+                    const scope = { graphqlPath, name, objectFieldName };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
+                            name,
+                            objectFieldName
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
 
-        const typeMenu = {
-            filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/components'}/menu/TypeMenu.svelte`,
-            documents: options.documents,
-            plugins: options.plugins,
-            pluginMap: options.pluginMap,
-            config: {
-                ...options.config,
-                template: 'typeMenu',
-            },
-            schema: options.schema,
-            schemaAst: options.schemaAst,
-            skipDocumentsValidation: true,
-        };
+        const template = '{{componentsPath}}/menu/ObjectsMenu.svelte';
+        const scope = { componentsPath };
+        generateOptions.push(
+            {
+                filename: buildPath(template, scope),
+                documents: options.documents,
+                plugins: options.plugins,
+                pluginMap: options.pluginMap,
+                config: {
+                    ...options.config.presetConfig,
+                    template,
+                },
+                schema: options.schema,
+                schemaAst: options.schemaAst,
+                skipDocumentsValidation: true,
+            }
+        );
 
-        const typeTableList = objectTypes
-            .map(type => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/components'}/objects/${changeCase.paramCase(type.name)}/${type.name}Table.svelte`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'typeTable',
-                        typeTable: {
-                            name: type.name,
-                            componentsPath: options.presetConfig.componentsPath || 'lib/components'
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
-
-        const typeConnectionTableList = objectTypes
-            .map(type => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/components'}/objects/${changeCase.paramCase(type.name)}/${type.name}ConnectionTable.svelte`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'typeConnectionTable',
-                        typeConnectionTable: {
-                            name: type.name,
-                            componentsPath: options.presetConfig.componentsPath || 'lib/components'
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
-
-        const typeFormList = objectTypes
-            .map(type => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/components'}/objects/${changeCase.paramCase(type.name)}/${type.name}Form.svelte`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'typeForm',
-                        typeForm: {
-                            name: type.name,
-                            componentsPath: options.presetConfig.componentsPath || 'lib/components'
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
-
-        const typeCreateFormList = objectTypes
-            .map(type => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/components'}/objects/${changeCase.paramCase(type.name)}/${type.name}CreateForm.svelte`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'typeCreateForm',
-                        typeCreateForm: {
-                            name: type.name,
-                            componentsPath: options.presetConfig.componentsPath || 'lib/components'
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
-
-        const pageSvelteList = objectTypes
-            .map(type => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(type.name)}/+page.svelte`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'pageSvelte',
-                        pageSvelte: {
-                            name: type.name,
-                            componentsPath: options.presetConfig.componentsPath || 'lib/components'
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
-
-        const pageTsList = objectTypes
-            .map(type => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(type.name)}/+page.ts`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'pageTs',
-                        pageTs: {
+        generateOptions.push(
+            ...objectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Table.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
                             name: type.name
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
 
-        const pageEditSvelteList = objectTypes
-            .map(type => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(type.name)}/[id]/+page.svelte`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'pageEditSvelte',
-                        pageEditSvelte: {
-                            name: type.name,
-                            componentsPath: options.presetConfig.componentsPath || 'lib/components'
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
-
-        const pageEditTsList = objectTypes
-            .map(type => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(type.name)}/[id]/+page.ts`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'pageEditTs',
-                        pageEditTs: {
+        generateOptions.push(
+            ...objectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}ConnectionTable.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
                             name: type.name
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
 
-        const pageEditObjectFieldSvelteList = objectTypes
-            .map(type => assertObjectType(type))
-            .flatMap(type =>
-                Object.values(type.getFields())
-                    .filter(field => isObjectType(getFieldType(field.type)))
-                    .filter(field => !isConnection(getFieldType(field.type).name))
-                    .filter(field => !isEdge(getFieldType(field.type).name))
-                    .filter(field => !isPageInfo(getFieldType(field.type).name))
-                    .filter(field => !isAggregate(field.name))
-                    .filter(field => !isIntrospection(getFieldType(field.type).name))
-                    .filter(field => !isListType(field.type))
-                    .map(field => { return { ofType: type, field: field } }))
-            .map(objectField => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(objectField.ofType.name)}/[id]/${changeCase.paramCase(objectField.field.name)}/+page.svelte`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'pageEditObjectFieldSvelte',
-                        pageEditObjectFieldSvelte: {
-                            name: objectField.ofType.name,
-                            objectFieldName: objectField?.field.name,
-                            componentsPath: options.presetConfig.componentsPath || 'lib/components'
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
-
-        const pageEditObjectFieldTsList = objectTypes
-            .map(type => assertObjectType(type))
-            .flatMap(type =>
-                Object.values(type.getFields())
-                    .filter(field => isObjectType(getFieldType(field.type)))
-                    .filter(field => !isConnection(getFieldType(field.type).name))
-                    .filter(field => !isEdge(getFieldType(field.type).name))
-                    .filter(field => !isPageInfo(getFieldType(field.type).name))
-                    .filter(field => !isAggregate(field.name))
-                    .filter(field => !isIntrospection(getFieldType(field.type).name))
-                    .filter(field => !isListType(field.type))
-                    .map(field => { return { ofType: type, field: field } }))
-            .map(objectField => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(objectField.ofType.name)}/[id]/${changeCase.paramCase(objectField.field.name)}/+page.ts`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'pageEditObjectFieldTs',
-                        pageEditObjectFieldTs: {
-                            name: objectField.ofType.name,
-                            objectFieldName: objectField?.field.name,
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
-
-
-        const pageEditObjectFieldCreateSvelteList = objectTypes
-            .map(type => assertObjectType(type))
-            .flatMap(type =>
-                Object.values(type.getFields())
-                    .filter(field => isObjectType(getFieldType(field.type)))
-                    .filter(field => !isConnection(getFieldType(field.type).name))
-                    .filter(field => !isEdge(getFieldType(field.type).name))
-                    .filter(field => !isPageInfo(getFieldType(field.type).name))
-                    .filter(field => !isAggregate(field.name))
-                    .filter(field => !isIntrospection(getFieldType(field.type).name))
-                    .filter(field => !isListType(field.type))
-                    .map(field => { return { ofType: type, field: field } }))
-            .map(objectField => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(objectField.ofType.name)}/+/${changeCase.paramCase(objectField.field.name)}/+page.svelte`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'pageEditObjectFieldCreateSvelte',
-                        pageEditObjectFieldCreateSvelte: {
-                            name: objectField.ofType.name,
-                            objectFieldName: objectField?.field.name,
-                            componentsPath: options.presetConfig.componentsPath || 'lib/components'
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
-
-        const pageEditObjectFieldCreateTsList = objectTypes
-            .map(type => assertObjectType(type))
-            .flatMap(type =>
-                Object.values(type.getFields())
-                    .filter(field => isObjectType(getFieldType(field.type)))
-                    .filter(field => !isConnection(getFieldType(field.type).name))
-                    .filter(field => !isEdge(getFieldType(field.type).name))
-                    .filter(field => !isPageInfo(getFieldType(field.type).name))
-                    .filter(field => !isAggregate(field.name))
-                    .filter(field => !isIntrospection(getFieldType(field.type).name))
-                    .filter(field => !isListType(field.type))
-                    .map(field => { return { ofType: type, field: field } }))
-            .map(objectField => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(objectField.ofType.name)}/+/${changeCase.paramCase(objectField.field.name)}/+page.ts`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'pageEditObjectFieldCreateTs',
-                        pageEditObjectFieldCreateTs: {
-                            name: objectField.ofType.name,
-                            objectFieldName: objectField?.field.name,
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
-
-        const pageEditObjectListFieldSvelteList = objectTypes
-            .map(type => assertObjectType(type))
-            .flatMap(type =>
-                Object.values(type.getFields())
-                    .filter(field => isObjectType(getFieldType(field.type)))
-                    .filter(field => !isConnection(getFieldType(field.type).name))
-                    .filter(field => !isEdge(getFieldType(field.type).name))
-                    .filter(field => !isPageInfo(getFieldType(field.type).name))
-                    .filter(field => !isAggregate(field.name))
-                    .filter(field => !isIntrospection(getFieldType(field.type).name))
-                    .filter(field => isListType(field.type))
-                    .map(field => { return { ofType: type, field: field } }))
-            .map(objectField => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(objectField.ofType.name)}/[id]/${changeCase.paramCase(objectField.field.name)}/+page.svelte`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'pageEditObjectListFieldSvelte',
-                        pageEditObjectListFieldSvelte: {
-                            name: objectField.ofType.name,
-                            objectFieldName: objectField?.field.name,
-                            componentsPath: options.presetConfig.componentsPath || 'lib/components'
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
-
-        const pageEditObjectListFieldTsList = objectTypes
-            .map(type => assertObjectType(type))
-            .flatMap(type =>
-                Object.values(type.getFields())
-                    .filter(field => isObjectType(getFieldType(field.type)))
-                    .filter(field => !isConnection(getFieldType(field.type).name))
-                    .filter(field => !isEdge(getFieldType(field.type).name))
-                    .filter(field => !isPageInfo(getFieldType(field.type).name))
-                    .filter(field => !isAggregate(field.name))
-                    .filter(field => !isIntrospection(getFieldType(field.type).name))
-                    .filter(field => isListType(field.type))
-                    .map(field => { return { ofType: type, field: field } }))
-            .map(objectField => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(objectField.ofType.name)}/[id]/${changeCase.paramCase(objectField.field.name)}/+page.ts`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'pageEditObjectListFieldTs',
-                        pageEditObjectListFieldTs: {
-                            name: objectField.ofType.name,
-                            objectFieldName: objectField?.field.name,
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
-
-        const pageCreateSvelteList = objectTypes
-            .map(type => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(type.name)}/+/+page.svelte`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'pageCreateSvelte',
-                        pageCreateSvelte: {
-                            name: type.name,
-                            componentsPath: options.presetConfig.componentsPath || 'lib/components'
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
-
-        const pageCreateTsList = objectTypes
-            .map(type => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.routesPath || 'routes'}/[lang]/${changeCase.paramCase(type.name)}/+/+page.ts`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'pageCreateTs',
-                        pageCreateTs: {
+        generateOptions.push(
+            ...objectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Form.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
                             name: type.name
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
 
-        const enumThList = enumTypes
-            .map(type => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/components'}/enums/${changeCase.paramCase(type.name)}/${type.name}Th.svelte`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'enumTh',
-                        enumTh: {
+        generateOptions.push(
+            ...objectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}CreateForm.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
                             name: type.name
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
 
-        const enumTdList = enumTypes
-            .map(type => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/components'}/enums/${changeCase.paramCase(type.name)}/${type.name}Td.svelte`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'enumTd',
-                        enumTd: {
+        generateOptions.push(
+            ...enumTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Item.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
                             name: type.name
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
 
-        const enumItemList = enumTypes
-            .map(type => {
-                return {
-                    filename: `${options.baseOutputDir}/${options.presetConfig.componentsPath || 'lib/components'}/enums/${changeCase.paramCase(type.name)}/${type.name}Item.svelte`,
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        ...options.config,
-                        template: 'enumItem',
-                        enumItem: {
+        generateOptions.push(
+            ...enumTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Th.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
                             name: type.name
-                        }
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                };
-            }) || [];
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
 
-        return [
-            ...queryList,
-            ...queryObjectFieldList,
-            ...mutationList,
-            ...mutationObjectFieldList,
-            typeMenu,
-            ...typeTableList,
-            ...typeConnectionTableList,
-            ...typeFormList,
-            ...typeCreateFormList,
-            ...pageSvelteList,
-            ...pageTsList,
-            ...pageEditSvelteList,
-            ...pageEditTsList,
-            ...pageEditObjectFieldSvelteList,
-            ...pageEditObjectFieldTsList,
-            ...pageEditObjectFieldCreateSvelteList,
-            ...pageEditObjectFieldCreateTsList,
-            ...pageEditObjectListFieldSvelteList,
-            ...pageEditObjectListFieldTsList,
-            ...pageCreateSvelteList,
-            ...pageCreateTsList,
-            ...enumThList,
-            ...enumTdList,
-            ...enumItemList
-        ];
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...enumTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...objectTypes
+                .map(type => {
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/+page.svelte';
+                    const scope = { routesPath, pathName: changeCase.paramCase(type.name) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...objectTypes
+                .map(type => {
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/+page.ts';
+                    const scope = { routesPath, pathName: changeCase.paramCase(type.name) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...objectTypes
+                .map(type => {
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/[id]/+page.svelte';
+                    const scope = { routesPath, pathName: changeCase.paramCase(type.name) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...objectTypes
+                .map(type => {
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/[id]/+page.ts';
+                    const scope = { routesPath, pathName: changeCase.paramCase(type.name) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...objectTypes
+                .map(type => assertObjectType(type))
+                .flatMap(type =>
+                    Object.values(type.getFields())
+                        .filter(field => isObjectType(getFieldType(field.type)))
+                        .filter(field => !isConnection(getFieldType(field.type).name))
+                        .filter(field => !isEdge(getFieldType(field.type).name))
+                        .filter(field => !isPageInfo(getFieldType(field.type).name))
+                        .filter(field => !isAggregate(field.name))
+                        .filter(field => !isIntrospection(getFieldType(field.type).name))
+                        .filter(field => !isListType(field.type))
+                        .map(field => { return { name: type.name, objectFieldName: field.name } }))
+                .map(objectField => {
+                    const { name, objectFieldName } = objectField;
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/+page.svelte';
+                    const scope = { routesPath, pathName: changeCase.paramCase(name), objectFieldPathName: changeCase.paramCase(objectFieldName) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
+                            name,
+                            objectFieldName
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...objectTypes
+                .map(type => assertObjectType(type))
+                .flatMap(type =>
+                    Object.values(type.getFields())
+                        .filter(field => isObjectType(getFieldType(field.type)))
+                        .filter(field => !isConnection(getFieldType(field.type).name))
+                        .filter(field => !isEdge(getFieldType(field.type).name))
+                        .filter(field => !isPageInfo(getFieldType(field.type).name))
+                        .filter(field => !isAggregate(field.name))
+                        .filter(field => !isIntrospection(getFieldType(field.type).name))
+                        .filter(field => !isListType(field.type))
+                        .map(field => { return { name: type.name, objectFieldName: field.name } }))
+                .map(objectField => {
+                    const { name, objectFieldName } = objectField;
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/+page.ts';
+                    const scope = { routesPath, pathName: changeCase.paramCase(name), objectFieldPathName: changeCase.paramCase(objectFieldName) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
+                            name,
+                            objectFieldName
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...objectTypes
+                .map(type => assertObjectType(type))
+                .flatMap(type =>
+                    Object.values(type.getFields())
+                        .filter(field => isObjectType(getFieldType(field.type)))
+                        .filter(field => !isConnection(getFieldType(field.type).name))
+                        .filter(field => !isEdge(getFieldType(field.type).name))
+                        .filter(field => !isPageInfo(getFieldType(field.type).name))
+                        .filter(field => !isAggregate(field.name))
+                        .filter(field => !isIntrospection(getFieldType(field.type).name))
+                        .filter(field => isListType(field.type))
+                        .map(field => { return { name: type.name, objectFieldName: field.name } }))
+                .map(objectField => {
+                    const { name, objectFieldName } = objectField;
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.svelte';
+                    const scope = { routesPath, pathName: changeCase.paramCase(name), objectListFieldPathName: changeCase.paramCase(objectFieldName) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
+                            name,
+                            objectFieldName
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...objectTypes
+                .map(type => assertObjectType(type))
+                .flatMap(type =>
+                    Object.values(type.getFields())
+                        .filter(field => isObjectType(getFieldType(field.type)))
+                        .filter(field => !isConnection(getFieldType(field.type).name))
+                        .filter(field => !isEdge(getFieldType(field.type).name))
+                        .filter(field => !isPageInfo(getFieldType(field.type).name))
+                        .filter(field => !isAggregate(field.name))
+                        .filter(field => !isIntrospection(getFieldType(field.type).name))
+                        .filter(field => isListType(field.type))
+                        .map(field => { return { name: type.name, objectFieldName: field.name } }))
+                .map(objectField => {
+                    const { name, objectFieldName } = objectField;
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.ts';
+                    const scope = { routesPath, pathName: changeCase.paramCase(name), objectListFieldPathName: changeCase.paramCase(objectFieldName) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
+                            name,
+                            objectFieldName
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...objectTypes
+                .map(type => {
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/_/+page.svelte';
+                    const scope = { routesPath, pathName: changeCase.paramCase(type.name) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...objectTypes
+                .map(type => {
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/_/+page.ts';
+                    const scope = { routesPath, pathName: changeCase.paramCase(type.name) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...objectTypes
+                .map(type => assertObjectType(type))
+                .flatMap(type =>
+                    Object.values(type.getFields())
+                        .filter(field => isObjectType(getFieldType(field.type)))
+                        .filter(field => !isConnection(getFieldType(field.type).name))
+                        .filter(field => !isEdge(getFieldType(field.type).name))
+                        .filter(field => !isPageInfo(getFieldType(field.type).name))
+                        .filter(field => !isAggregate(field.name))
+                        .filter(field => !isIntrospection(getFieldType(field.type).name))
+                        .filter(field => !isListType(field.type))
+                        .map(field => { return { name: type.name, objectFieldName: field.name } }))
+                .map(objectField => {
+                    const { name, objectFieldName } = objectField;
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/+page.svelte';
+                    const scope = { routesPath, pathName: changeCase.paramCase(name), objectFieldPathName: changeCase.paramCase(objectFieldName) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
+                            name,
+                            objectFieldName
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...objectTypes
+                .map(type => assertObjectType(type))
+                .flatMap(type =>
+                    Object.values(type.getFields())
+                        .filter(field => isObjectType(getFieldType(field.type)))
+                        .filter(field => !isConnection(getFieldType(field.type).name))
+                        .filter(field => !isEdge(getFieldType(field.type).name))
+                        .filter(field => !isPageInfo(getFieldType(field.type).name))
+                        .filter(field => !isAggregate(field.name))
+                        .filter(field => !isIntrospection(getFieldType(field.type).name))
+                        .filter(field => !isListType(field.type))
+                        .map(field => { return { name: type.name, objectFieldName: field.name } }))
+                .map(objectField => {
+                    const { name, objectFieldName } = objectField;
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/+page.ts';
+                    const scope = { routesPath, pathName: changeCase.paramCase(name), objectFieldPathName: changeCase.paramCase(objectFieldName) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            ...options.config.presetConfig,
+                            template,
+                            name,
+                            objectFieldName
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        return generateOptions;
     },
 };

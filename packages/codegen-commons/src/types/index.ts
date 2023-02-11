@@ -1,3 +1,3 @@
-import type { Templates } from "./Templates"
+import type { Template } from "./Template"
 
-export { Templates }
+export { Template }

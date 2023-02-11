@@ -1,7 +1,7 @@
 export interface GraphacePresetConfig {
-  
-  operationsPath?: string;
-  
+
+  graphqlPath?: string;
+
   componentsPath?: string;
 
   routesPath?: string;

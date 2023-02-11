@@ -3,26 +3,14 @@ import type { Template } from '.';
 
 export interface GraphacePluginConfig extends RawTypesConfig {
   template: Template;
-  schemaTypesPath?: string;
-  query?: { fieldName: string, objectFieldName?: string };
-  mutation?: { fieldName: string, objectFieldName?: string };
-  typeTable?: { name: string, componentsPath?: string };
-  typeConnectionTable?: { name: string, componentsPath?: string };
-  typeForm?: { name: string, componentsPath?: string };
-  typeCreateForm?: { name: string, componentsPath?: string };
-  pageSvelte?: { name: string, componentsPath?: string };
-  pageTs?: { name: string };
-  pageEditSvelte?: { name: string, componentsPath?: string };
-  pageEditTs?: { name: string };
-  pageEditObjectFieldSvelte?: { name: string, objectFieldName: string, componentsPath?: string };
-  pageEditObjectFieldTs?: { name: string, objectFieldName: string };
-  pageEditObjectFieldCreateSvelte?: { name: string, objectFieldName: string, componentsPath?: string };
-  pageEditObjectFieldCreateTs?: { name: string, objectFieldName: string };
-  pageEditObjectListFieldSvelte?: { name: string, objectFieldName: string, componentsPath?: string };
-  pageEditObjectListFieldTs?: { name: string, objectFieldName: string };
-  pageCreateSvelte?: { name: string, componentsPath?: string };
-  pageCreateTs?: { name: string };
-  enumTh?: { name: string };
-  enumTd?: { name: string };
-  enumItem?: { name: string };
+
+  graphqlPath?: string;
+
+  componentsPath?: string;
+
+  routesPath?: string;
+
+  name?: string;
+
+  objectFieldName?: string;
 }

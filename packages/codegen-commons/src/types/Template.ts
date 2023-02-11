@@ -1,0 +1,25 @@
+export type Template =
+    '{{graphqlPath}}/queries/Query_{{name}}.gql' |
+    '{{graphqlPath}}/queries/Query_{{name}}_{{objectFieldName}}.gql' |
+    '{{graphqlPath}}/mutations/Mutation_{{name}}.gql' |
+    '{{graphqlPath}}/mutations/Mutation_{{name}}_{{objectFieldName}}.gql' |
+    '{{componentsPath}}/menu/ObjectsMenu.svelte' |
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Form.svelte' |
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}CreateForm.svelte' |
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Table.svelte' |
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}ConnectionTable.svelte' |
+    '{{componentsPath}}/enums/{{pathName}}/{{name}}Item.svelte' |
+    '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte' |
+    '{{componentsPath}}/enums/{{pathName}}/{{name}}Th.svelte' |
+    '{{routesPath}}/[lang]/{{pathName}}/+page.svelte' |
+    '{{routesPath}}/[lang]/{{pathName}}/+page.ts' |
+    '{{routesPath}}/[lang]/{{pathName}}/[id]/+page.svelte' |
+    '{{routesPath}}/[lang]/{{pathName}}/[id]/+page.ts' |
+    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/+page.svelte' |
+    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/+page.ts' |
+    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.svelte' |
+    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.ts' |
+    '{{routesPath}}/[lang]/{{pathName}}/_/+page.svelte' |
+    '{{routesPath}}/[lang]/{{pathName}}/_/+page.ts' |
+    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/+page.svelte' |
+    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/+page.ts'
