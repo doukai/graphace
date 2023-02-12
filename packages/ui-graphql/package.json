@@ -5,7 +5,6 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "license": "MIT",
   "scripts": {
     "dev": "typesafe-i18n",
     "lint": "prettier --check --ignore-path=../../.prettierignore . && eslint \".\"",

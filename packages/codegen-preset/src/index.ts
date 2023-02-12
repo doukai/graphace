@@ -2,7 +2,7 @@ import type { Types } from "@graphql-codegen/plugin-helpers";
 import { assertObjectType, isEnumType, isListType, isObjectType } from "graphql";
 import type { GraphacePresetConfig } from "./config";
 import * as changeCase from "change-case";
-import { isOperationType, isAggregate, isConnection, isEdge, isPageInfo, isIntrospection, isInnerEnum, getFieldType, getObjectFields } from '@graphace/graphql/Introspection'
+import { isOperationType, isAggregate, isConnection, isEdge, isPageInfo, isIntrospection, isInnerEnum, getFieldType, getObjectFields } from 'graphace-codegen-commons/Introspection'
 import { buildPath } from "./Builder";
 
 const _graphqlPath = 'src/lib/graphql';
@@ -12,10 +12,19 @@ const _routesPath = 'src/routes';
 export const preset: Types.OutputPreset<GraphacePresetConfig> = {
     buildGeneratesSection: options => {
         const generateOptions: Types.GenerateOptions[] = [];
+        if (!options.presetConfig.graphqlPath) {
+            options.presetConfig.graphqlPath = _graphqlPath;
+        }
+        if (!options.presetConfig.componentsPath) {
+            options.presetConfig.componentsPath = _componentsPath;
+        }
+        if (!options.presetConfig.routesPath) {
+            options.presetConfig.routesPath = _routesPath;
+        }
 
-        const graphqlPath = `${options.baseOutputDir}/${options.presetConfig.graphqlPath || _graphqlPath}`;
-        const componentsPath = `${options.baseOutputDir}/${options.presetConfig.componentsPath || _componentsPath}`;
-        const routesPath = `${options.baseOutputDir}/${options.presetConfig.routesPath || _routesPath}`;
+        const graphqlPath = `${options.baseOutputDir}/${options.presetConfig.graphqlPath}`;
+        const componentsPath = `${options.baseOutputDir}/${options.presetConfig.componentsPath}`;
+        const routesPath = `${options.baseOutputDir}/${options.presetConfig.routesPath}`;
 
         const queryFields = options.schemaAst?.getQueryType()?.getFields() || [];
         const mutationFields = options.schemaAst?.getMutationType()?.getFields() || [];
@@ -643,7 +652,6 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                     };
                 })
         );
-
         return generateOptions;
     },
 };

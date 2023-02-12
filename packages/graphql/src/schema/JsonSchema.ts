@@ -120,7 +120,7 @@ export async function validate(uri: string, data: object, locale: Language = "en
                 resolve(validateData);
             }
         } else {
-            reject(errors);
+            throw new Error('validate undefined');
         }
     });
 }

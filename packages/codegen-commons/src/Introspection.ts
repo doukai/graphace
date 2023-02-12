@@ -1,3 +1,4 @@
+import * as changeCase from "change-case";
 import { assertEnumType, assertScalarType, isEnumType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLEnumValue, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType, type GraphQLSchema } from 'graphql';
 
 const aggregateSuffix = ["Count", "Sum", "Avg", "Max", "Min", "Aggregate"];

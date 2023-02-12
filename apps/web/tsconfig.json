@@ -9,31 +9,9 @@
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"strict": true,
-		"rootDirs": [
-			"./src",
-			"./.svelte-kit/types",
-			"./$houdini/types"
-		],
+		"rootDirs": ["./src", "./.svelte-kit/types", "./$houdini/types"],
 		"outDir": "./dist",
-		"preserveValueImports": false,
-		// "baseUrl": ".",
-		// "paths": {
-		// 	"~/*": [
-		// 		"./src/*"
-		// 	],
-		// 	"@graphace/commons/*": [
-		// 		"../../packages/commons/src/*"
-		// 	],
-		// 	"@graphace/graphql/*": [
-		// 		"../../packages/graphql/src/*"
-		// 	],
-		// 	"@graphace/ui/*": [
-		// 		"../../packages/ui/src/*"
-		// 	],
-		// 	"@graphace/ui-graphql/*": [
-		// 		"../../packages/ui-graphql/src/*"
-		// 	]
-		// }
+		"preserveValueImports": false
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	//

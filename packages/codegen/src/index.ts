@@ -1,223 +1,43 @@
 import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
-import { assertEnumType, assertObjectType, assertScalarType, isEnumType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLEnumValue, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType, type GraphQLSchema } from 'graphql';
-import { Liquid } from 'liquidjs';
 import * as changeCase from "change-case";
-
-const aggregateSuffix = ["Count", "Sum", "Avg", "Max", "Min", "Aggregate"];
-const queryTypeName = "QueryType";
-const mutationTypeName = "MutationType";
-const connectionSuffix = "Connection";
-const edgeSuffix = "Edge";
-const pageInfoName = "PageInfo";
-const introspectionPrefix = "__";
-const innerEnum = ["Operator", "Conditional", "Sort", "Function"];
-
-const engine = new Liquid({
-    root: `${__dirname}/../templates`,
-    extname: '.liquid'
-})
-
-engine.registerFilter('camelCase', (v: string) => changeCase.camelCase(v));
-engine.registerFilter('capitalCase', (v: string) => changeCase.capitalCase(v));
-engine.registerFilter('constantCase', (v: string) => changeCase.constantCase(v));
-engine.registerFilter('dotCase', (v: string) => changeCase.dotCase(v));
-engine.registerFilter('headerCase', (v: string) => changeCase.headerCase(v));
-engine.registerFilter('noCase', (v: string) => changeCase.noCase(v));
-engine.registerFilter('paramCase', (v: string) => changeCase.paramCase(v));
-engine.registerFilter('pascalCase', (v: string) => changeCase.pascalCase(v));
-engine.registerFilter('pathCase', (v: string) => changeCase.pathCase(v));
-engine.registerFilter('sentenceCase', (v: string) => changeCase.sentenceCase(v));
-engine.registerFilter('snakeCase', (v: string) => changeCase.snakeCase(v));
-
-const isOperationType = (name?: string): boolean => { return [queryTypeName, mutationTypeName].some(typeName => name === typeName) };
-const isAggregate = (name?: string): boolean => { return aggregateSuffix.some(suffix => name?.slice(-suffix.length) === suffix) };
-const isConnection = (name?: string): boolean => { return name?.slice(-connectionSuffix.length) === connectionSuffix };
-const isEdge = (name?: string): boolean => { return name?.slice(-edgeSuffix.length) === edgeSuffix };
-const isPageInfo = (name?: string): boolean => { return name === pageInfoName };
-const isIntrospection = (name?: string): boolean | undefined => { return name?.startsWith(introspectionPrefix) };
-const isInnerEnum = (name?: string): boolean => { return innerEnum.some(enumName => name === enumName) };
-
-const getFieldType = (type: GraphQLOutputType): GraphQLNamedType => {
-    if (isListType(type) || isNonNullType(type)) {
-        return getFieldType(type.ofType);
-    }
-    return type;
-}
-
-const getScalarFields = (field?: GraphQLField<any, any, any>): GraphQLField<any, any, any>[] | undefined => {
-    if (field?.type) {
-        const fieldType = getFieldType(field.type);
-        if (isConnection(field.name)) {
-            if (isObjectType(fieldType)) {
-                const edgesType = getFieldType(fieldType.getFields().edges.type);
-                if (isObjectType(edgesType)) {
-                    const nodeType = getFieldType(edgesType.getFields().node.type);
-                    if (isObjectType(nodeType)) {
-                        return Object.values(nodeType.getFields())
-                            .filter(field => !isObjectType(getFieldType(field.type)))
-                            .filter(field => !isAggregate(field.name));
-                    }
-                }
-            }
-        } else {
-            if (isObjectType(fieldType)) {
-                return Object.values(fieldType.getFields())
-                    .filter(field => !isObjectType(getFieldType(field.type)))
-                    .filter(field => !isAggregate(field.name));
-            }
-        }
-    }
-    return undefined;
-}
-
-const getSubField = (field: GraphQLField<any, any, any>, subFieldName: string | undefined): GraphQLField<any, any, any> | undefined => {
-    if (field.type && subFieldName) {
-        const fieldType = getFieldType(field.type);
-        if (isObjectType(fieldType)) {
-            return fieldType.getFields()[subFieldName];
-        }
-    }
-    return undefined;
-}
-
-const getField = (type: GraphQLNamedType, fieldName: string | undefined): GraphQLField<any, any, any> | undefined => {
-    if (isObjectType(type) && fieldName) {
-        return type.getFields()[fieldName];
-    }
-    return undefined;
-}
-
-const getConnectionField = (type: GraphQLNamedType | null | undefined, fieldName: string | undefined): GraphQLField<any, any, any> | undefined => {
-    if (type && fieldName) {
-        const connectionFieldName = `${fieldName}Connection`;
-        if (isObjectType(type)) {
-            return type.getFields()[connectionFieldName];
-        }
-    }
-    return undefined;
-}
-
-const getScalarNames = (type: GraphQLNamedType): string[] | undefined => {
-    if (isObjectType(type) || isInputObjectType(type)) {
-        const scalarNames = Object.values(type.getFields())
-            .filter(field => !isAggregate(field.name))
-            .filter(field => !isIntrospection(field.name))
-            .map(field => getFieldType(field.type))
-            .filter(type => isScalarType(type))
-            .map(type => assertScalarType(type))
-            .map(type => type.name);
-        return scalarNames.filter((scalarName, index) => scalarNames.indexOf(scalarName) == index);
-    }
-    return undefined;
-}
-
-const getEnumNames = (type: GraphQLNamedType): string[] | undefined => {
-    if (isObjectType(type) || isInputObjectType(type)) {
-        const enumNames = Object.values(type.getFields())
-            .filter(field => !isInnerEnum(field.name))
-            .map(field => getFieldType(field.type))
-            .filter(type => isEnumType(type))
-            .map(type => assertEnumType(type))
-            .map(type => type.name);
-        return enumNames.filter((enumName, index) => enumNames.indexOf(enumName) == index);
-    }
-    return undefined;
-}
-
-const getIDFieldName = (type: GraphQLNamedType): string | undefined => {
-    if (isObjectType(type) || isInputObjectType(type)) {
-        const idField = Object.values(type.getFields())
-            .filter(field => isScalarType(getFieldType(field.type)))
-            .find(field => assertScalarType(getFieldType(field.type)).name === 'ID')
-        return idField?.name;
-    }
-    return undefined;
-}
-
-const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): { fieldName: string, fieldType: GraphQLNamedType, isScalarType: boolean, isEnumType: boolean, inQueryArgs: boolean, inMutationArgs: boolean }[] | undefined => {
-    if (isObjectType(type) || isInputObjectType(type)) {
-        return Object.values(type.getFields())
-            .filter(field => !isAggregate(field.name))
-            .filter(field => !isIntrospection(field.name))
-            .map(field => {
-                return {
-                    fieldName: field.name,
-                    fieldType: getFieldType(field.type),
-                    isScalarType: isScalarType(getFieldType(field.type)),
-                    isEnumType: isEnumType(getFieldType(field.type)),
-                    isObjectType: isObjectType(getFieldType(field.type)),
-                    isNonNullType: isNonNullType(field.type),
-                    isListType: isListType(field.type),
-                    inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),
-                    inMutationArgs: fieldInMutationArgs(schema, type.name, field.name)
-                }
-            });
-    }
-    return undefined;
-}
-
-const fieldInQueryArgs = (schema: GraphQLSchema, typeName: string, fieldName: string): boolean => {
-    const operationField = schema.getQueryType()?.getFields()[changeCase.camelCase(typeName)];
-    if (operationField) {
-        return operationField.args?.some(arg => arg.name === fieldName);
-    }
-    return false;
-}
-
-const fieldInMutationArgs = (schema: GraphQLSchema, typeName: string, fieldName: string): boolean => {
-    const operationField = schema.getMutationType()?.getFields()[changeCase.camelCase(typeName)];
-    if (operationField) {
-        return operationField.args?.some(arg => arg.name === fieldName);
-    }
-    return false;
-}
-
-const getEnumValues = (type: GraphQLNamedType): GraphQLEnumValue[] | undefined => {
-    if (isEnumType(type)) {
-        return Object.values(type.getValues());
-    }
-    return undefined;
-}
-
-export type Template = 'query' |
-    'mutation' |
-    'typeMenu' |
-    "typeTable" |
-    "typeConnectionTable" |
-    'typeForm' |
-    'typeCreateForm' |
-    'pageSvelte' |
-    'pageTs' |
-    'pageEditSvelte' |
-    'pageEditTs' |
-    'pageEditObjectFieldSvelte' |
-    'pageEditObjectFieldTs' |
-    'pageEditObjectFieldCreateSvelte' |
-    'pageEditObjectFieldCreateTs' |
-    'pageEditObjectListFieldSvelte' |
-    'pageEditObjectListFieldTs' |
-    'pageCreateSvelte' |
-    'pageCreateTs' |
-    'enumTh' |
-    'enumTd' |
-    'enumItem';
+import { assertObjectType, isEnumType, isListType, isObjectType, type GraphQLSchema } from 'graphql';
+import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getScalarNames, getEnumNames, getEnumValues } from 'graphace-codegen-commons/Introspection';
+import type { Template } from 'graphace-codegen-commons/types';
+import { buildFileContent } from "./Builder";
 
 type Render = (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => Types.ComplexPluginOutput
 
 const renders: Record<Template, Render> = {
-    query: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{graphqlPath}}/queries/Query_{{name}}.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const operationFields = schema.getQueryType()?.getFields();
         if (operationFields) {
             const field = Object.keys(operationFields)
                 .map(key => operationFields[key])
-                .find(field => field.name === config.query?.fieldName);
+                .find(field => field.name === config.name);
+            if (field) {
+                const fieldType = getFieldType(field.type);
+                const idFieldName = getIDFieldName(fieldType);
+                return {
+                    content: buildFileContent(config.template, { name: field.name, idName: idFieldName, args: field.args, isConnection: isConnection(field.name), fields: getScalarFields(field) }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${config.name} not exist in QueryType`);
+    },
+    '{{graphqlPath}}/queries/Query_{{name}}_{{objectFieldName}}.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const operationFields = schema.getQueryType()?.getFields();
+        if (operationFields) {
+            const field = Object.keys(operationFields)
+                .map(key => operationFields[key])
+                .find(field => field.name === config.name);
             if (field) {
                 const fieldType = getFieldType(field.type);
                 const idFieldName = getIDFieldName(fieldType);
                 let objectField = undefined;
-                if (config.query?.objectFieldName) {
-                    const subField = getSubField(field, config.query.objectFieldName);
+                if (config.objectFieldName) {
+                    const subField = getSubField(field, config.objectFieldName);
                     objectField = {
                         name: subField?.name,
                         args: subField?.args,
@@ -228,26 +48,42 @@ const renders: Record<Template, Render> = {
                     }
                 }
                 return {
-                    content: engine.renderFileSync(config.template, { name: field.name, idName: idFieldName, args: field.args, isConnection: isConnection(field.name), fields: getScalarFields(field), objectField: objectField }),
+                    content: buildFileContent(config.template, { name: field.name, idName: idFieldName, args: field.args, isConnection: isConnection(field.name), fields: getScalarFields(field), objectField: objectField }),
                 };
             }
-
         }
-        console.error(JSON.stringify(config.query));
-        throw new Error(`${config.query?.fieldName} not exist in QueryType`);
+        console.error(config);
+        throw new Error(`${config.name} not exist in QueryType`);
     },
-    mutation: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{graphqlPath}}/mutations/Mutation_{{name}}.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const operationFields = schema.getMutationType()?.getFields();
         if (operationFields) {
             const field = Object.keys(operationFields)
                 .map(key => operationFields[key])
-                .find(field => field.name === config.mutation?.fieldName);
+                .find(field => field.name === config.name);
+            if (field) {
+                const fieldType = getFieldType(field.type);
+                const idFieldName = getIDFieldName(fieldType);
+                return {
+                    content: buildFileContent(config.template, { name: field.name, idName: idFieldName, args: field.args, fields: getScalarFields(field) }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${config.name} not exist in MutationType`);
+    },
+    '{{graphqlPath}}/mutations/Mutation_{{name}}_{{objectFieldName}}.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const operationFields = schema.getMutationType()?.getFields();
+        if (operationFields) {
+            const field = Object.keys(operationFields)
+                .map(key => operationFields[key])
+                .find(field => field.name === config.name);
             if (field) {
                 const fieldType = getFieldType(field.type);
                 const idFieldName = getIDFieldName(fieldType);
                 let objectField = undefined;
-                if (config.mutation?.objectFieldName) {
-                    const subField = getSubField(field, config.mutation.objectFieldName);
+                if (config.objectFieldName) {
+                    const subField = getSubField(field, config.objectFieldName);
                     objectField = {
                         name: subField?.name,
                         args: subField?.args,
@@ -258,16 +94,16 @@ const renders: Record<Template, Render> = {
                     }
                 }
                 return {
-                    content: engine.renderFileSync(config.template, { name: field.name, idName: idFieldName, args: field.args, fields: getScalarFields(field), objectField: objectField }),
+                    content: buildFileContent(config.template, { name: field.name, idName: idFieldName, args: field.args, fields: getScalarFields(field), objectField: objectField }),
                 };
             }
-
         }
-        throw new Error(`${config.mutation?.fieldName} not exist in MutationType`);
+        console.error(config);
+        throw new Error(`${config.name} not exist in MutationType`);
     },
-    typeMenu: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{componentsPath}}/menu/ObjectsMenu.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         return {
-            content: engine.renderFileSync(config.template,
+            content: buildFileContent(config.template,
                 {
                     objects: Object.values(schema.getTypeMap())
                         .filter(type => isObjectType(type))
@@ -281,268 +117,292 @@ const renders: Record<Template, Render> = {
             ),
         };
     },
-    typeTable: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.typeTable?.name;
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Form.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type), cols: getFields(schema, type)?.filter(field => field.isScalarType || field.isEnumType).length, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema', enumsPath: `${config.typeTable?.componentsPath}/enums` }),
+                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type), rows: getFields(schema, type)?.filter(field => field.isScalarType || field.isEnumType).length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
                 };
             }
         }
+        console.error(config);
         throw new Error(`${typeName} not exist`);
     },
-    typeConnectionTable: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.typeConnectionTable?.name;
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}CreateForm.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type), cols: getFields(schema, type)?.filter(field => field.isScalarType || field.isEnumType).length, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema', enumsPath: `${config.typeConnectionTable?.componentsPath}/enums` }),
+                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type), rows: getFields(schema, type)?.filter(field => field.isScalarType || field.isEnumType).length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
                 };
             }
         }
+        console.error(config);
         throw new Error(`${typeName} not exist`);
     },
-    typeForm: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.typeForm?.name;
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Table.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type), rows: getFields(schema, type)?.filter(field => field.isScalarType || field.isEnumType).length, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema', enumsPath: `${config.typeForm?.componentsPath}/enums` }),
+                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type), cols: getFields(schema, type)?.filter(field => field.isScalarType || field.isEnumType).length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
                 };
             }
         }
+        console.error(config);
         throw new Error(`${typeName} not exist`);
     },
-    typeCreateForm: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.typeCreateForm?.name;
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}ConnectionTable.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type), rows: getFields(schema, type)?.filter(field => field.isScalarType || field.isEnumType).length, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema', enumsPath: `${config.typeCreateForm?.componentsPath}/enums` }),
+                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type), cols: getFields(schema, type)?.filter(field => field.isScalarType || field.isEnumType).length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
                 };
             }
         }
+        console.error(config);
         throw new Error(`${typeName} not exist`);
     },
-    pageSvelte: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.pageSvelte?.name;
+    '{{componentsPath}}/enums/{{pathName}}/{{name}}Item.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isEnumType(type)) {
+                return {
+                    content: buildFileContent(config.template, { name: type?.name, enumValues: getEnumValues(type) }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} not exist`);
+    },
+    '{{componentsPath}}/enums/{{pathName}}/{{name}}Th.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isEnumType(type)) {
+                return {
+                    content: buildFileContent(config.template, { name: type?.name, enumValues: getEnumValues(type) }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} not exist`);
+    },
+    '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isEnumType(type)) {
+                return {
+                    content: buildFileContent(config.template, { name: type?.name, enumValues: getEnumValues(type) }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} not exist`);
+    },
+    '{{routesPath}}/[lang]/{{pathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
             const connectionField = getConnectionField(schema.getQueryType(), changeCase.camelCase(typeName));
             if (type && isObjectType(type)) {
                 return {
-                    content: engine.renderFileSync(config.template, { name: type?.name, connectionField: connectionField, tablePath: `${config.pageSvelte?.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema' }),
+                    content: buildFileContent(config.template, { name: type?.name, connectionField: connectionField, tablePath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
                 };
             }
         }
+        console.error(config);
         throw new Error(`${typeName} not exist`);
     },
-    pageTs: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.pageTs?.name;
+    '{{routesPath}}/[lang]/{{pathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
             const connectionField = getConnectionField(schema.getQueryType(), changeCase.camelCase(typeName));
             if (type && isObjectType(type)) {
                 return {
-                    content: engine.renderFileSync(config.template, { name: type?.name, connectionField: connectionField }),
+                    content: buildFileContent(config.template, { name: type?.name, connectionField: connectionField }),
                 };
             }
         }
+        console.error(config);
         throw new Error(`${typeName} not exist`);
     },
-    pageEditSvelte: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.pageEditSvelte?.name;
+    '{{routesPath}}/[lang]/{{pathName}}/[id]/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: engine.renderFileSync(config.template, { name: type?.name, formPath: `${config.pageEditSvelte?.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema' }),
+                    content: buildFileContent(config.template, { name: type?.name, formPath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
                 };
             }
         }
+        console.error(config);
         throw new Error(`${typeName} not exist`);
     },
-    pageEditTs: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.pageEditTs?.name;
+    '{{routesPath}}/[lang]/{{pathName}}/[id]/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: engine.renderFileSync(config.template, { name: type?.name }),
+                    content: buildFileContent(config.template, { name: type?.name }),
                 };
             }
         }
+        console.error(config);
         throw new Error(`${typeName} not exist`);
     },
-    pageEditObjectFieldSvelte: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.pageEditObjectFieldSvelte?.name;
+    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const objectField = getField(type, config.pageEditObjectFieldSvelte?.objectFieldName);
+                const objectField = getField(type, config.objectFieldName);
                 if (objectField?.type) {
                     const objectFieldType = getFieldType(objectField.type);
                     return {
-                        content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), formPath: `${config.pageEditObjectFieldSvelte?.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema' }),
+                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), formPath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
                     };
                 }
             }
         }
+        console.error(config);
         throw new Error(`${typeName} not exist`);
     },
-    pageEditObjectFieldTs: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.pageEditObjectFieldTs?.name;
+    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const objectField = getField(type, config.pageEditObjectFieldTs?.objectFieldName);
+                const objectField = getField(type, config.objectFieldName);
                 if (objectField?.type) {
                     const objectFieldType = getFieldType(objectField.type);
                     return {
-                        content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name }),
+                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name }),
                     };
                 }
             }
         }
+        console.error(config);
         throw new Error(`${typeName} not exist`);
     },
-    pageEditObjectFieldCreateSvelte: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.pageEditObjectFieldCreateSvelte?.name;
+    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const objectField = getField(type, config.pageEditObjectFieldCreateSvelte?.objectFieldName);
-                if (objectField?.type) {
-                    const objectFieldType = getFieldType(objectField.type);
-                    return {
-                        content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), formPath: `${config.pageEditObjectFieldCreateSvelte?.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema' }),
-                    };
-                }
-            }
-        }
-        throw new Error(`${typeName} not exist`);
-    },
-    pageEditObjectFieldCreateTs: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.pageEditObjectFieldCreateTs?.name;
-        if (typeName) {
-            const type = schema.getType(typeName);
-            if (type && isObjectType(type)) {
-                const objectField = getField(type, config.pageEditObjectFieldCreateTs?.objectFieldName);
-                if (objectField?.type) {
-                    const objectFieldType = getFieldType(objectField.type);
-                    return {
-                        content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name }),
-                    };
-                }
-            }
-        }
-        throw new Error(`${typeName} not exist`);
-    },
-    pageEditObjectListFieldSvelte: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.pageEditObjectListFieldSvelte?.name;
-        if (typeName) {
-            const type = schema.getType(typeName);
-            if (type && isObjectType(type)) {
-                const objectField = getField(type, config.pageEditObjectListFieldSvelte?.objectFieldName);
+                const objectField = getField(type, config.objectFieldName);
                 if (objectField?.type) {
                     const objectFieldType = getFieldType(objectField.type);
                     const connectionField = getConnectionField(type, objectField.name);
                     return {
-                        content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), connectionField: connectionField, formPath: `${config.pageEditObjectListFieldSvelte?.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema' }),
+                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), connectionField: connectionField, formPath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
                     };
                 }
             }
         }
+        console.error(config);
         throw new Error(`${typeName} not exist`);
     },
-    pageEditObjectListFieldTs: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.pageEditObjectListFieldTs?.name;
+    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const objectField = getField(type, config.pageEditObjectListFieldTs?.objectFieldName);
+                const objectField = getField(type, config.objectFieldName);
                 if (objectField?.type) {
                     const objectFieldType = getFieldType(objectField.type);
                     const connectionField = getConnectionField(type, objectField.name);
                     return {
-                        content: engine.renderFileSync(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, connectionField: connectionField }),
+                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, connectionField: connectionField }),
                     };
                 }
             }
         }
+        console.error(config);
         throw new Error(`${typeName} not exist`);
     },
-    pageCreateSvelte: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.pageCreateSvelte?.name;
+    '{{routesPath}}/[lang]/{{pathName}}/_/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: engine.renderFileSync(config.template, { name: type?.name, formPath: `${config.pageCreateSvelte?.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath || 'lib/types/schema' }),
+                    content: buildFileContent(config.template, { name: type?.name, formPath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
                 };
             }
         }
+        console.error(config);
         throw new Error(`${typeName} not exist`);
     },
-    pageCreateTs: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.pageCreateTs?.name;
+    '{{routesPath}}/[lang]/{{pathName}}/_/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: engine.renderFileSync(config.template, { name: type?.name }),
+                    content: buildFileContent(config.template, { name: type?.name }),
                 };
             }
         }
+        console.error(config);
         throw new Error(`${typeName} not exist`);
     },
-    enumTh: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.enumTh?.name;
+    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
-            if (type && isEnumType(type)) {
-                return {
-                    content: engine.renderFileSync(config.template, { name: type?.name, enumValues: getEnumValues(type) }),
-                };
+            if (type && isObjectType(type)) {
+                const objectField = getField(type, config.objectFieldName);
+                if (objectField?.type) {
+                    const objectFieldType = getFieldType(objectField.type);
+                    return {
+                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), formPath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
+                    };
+                }
             }
         }
+        console.error(config);
         throw new Error(`${typeName} not exist`);
     },
-    enumTd: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.enumTd?.name;
+    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
-            if (type && isEnumType(type)) {
-                return {
-                    content: engine.renderFileSync(config.template, { name: type?.name, enumValues: getEnumValues(type) }),
-                };
+            if (type && isObjectType(type)) {
+                const objectField = getField(type, config.objectFieldName);
+                if (objectField?.type) {
+                    const objectFieldType = getFieldType(objectField.type);
+                    return {
+                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name }),
+                    };
+                }
             }
         }
-        throw new Error(`${typeName} not exist`);
-    },
-    enumItem: (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.enumItem?.name;
-        if (typeName) {
-            const type = schema.getType(typeName);
-            if (type && isEnumType(type)) {
-                return {
-                    content: engine.renderFileSync(config.template, { name: type?.name, enumValues: getEnumValues(type) }),
-                };
-            }
-        }
+        console.error(config);
         throw new Error(`${typeName} not exist`);
     }
 }
+
+const _schemaTypesPath = 'lib/types/schema';
 
 export const plugin: PluginFunction<GraphacePluginConfig, Types.ComplexPluginOutput> = (
     schema: GraphQLSchema,
     documents: Types.DocumentFile[],
     config: GraphacePluginConfig
 ) => {
+    if (!config.schemaTypesPath) {
+        config.schemaTypesPath = _schemaTypesPath;
+    }
     return renders[config.template](schema, documents, config);
 };

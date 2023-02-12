@@ -3,6 +3,6 @@ import { buildEngine } from 'graphace-codegen-commons'
 
 const engine = buildEngine();
 
-export const buildPath = (template: Template, scope?: object): string => {
-    return engine.renderSync(engine.parse(template), scope);
+export const buildFileContent = (template: Template, scope?: object): string => {
+    return engine.renderFileSync(template, scope);
 }

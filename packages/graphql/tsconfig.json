@@ -1,18 +1,9 @@
 {
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "rootDirs": [
-      "./src"
-    ],
-    "outDir": "./dist",
-    "baseUrl": ".",
-    "paths": {
-      "~/*": [
-        "./src/*"
-      ],
-      "@graphace/commons/*": [
-        "../../packages/commons/src/*"
-      ]
-    }
-  },
+	"extends": "../../tsconfig.json",
+	"compilerOptions": {
+		"paths": {
+			"~/*": ["./src/*"],
+			"@graphace/commons/*": ["../../packages/commons/src/*"]
+		}
+	}
 }

@@ -9,8 +9,8 @@ export type Template =
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Table.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}ConnectionTable.svelte' |
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Item.svelte' |
-    '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte' |
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Th.svelte' |
+    '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte' |
     '{{routesPath}}/[lang]/{{pathName}}/+page.svelte' |
     '{{routesPath}}/[lang]/{{pathName}}/+page.ts' |
     '{{routesPath}}/[lang]/{{pathName}}/[id]/+page.svelte' |

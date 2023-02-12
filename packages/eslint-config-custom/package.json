@@ -2,7 +2,6 @@
   "name": "eslint-config-custom",
   "version": "0.0.1",
   "main": "index.js",
-  "license": "MIT",
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
@@ -12,8 +11,5 @@
     "eslint-config-turbo": "latest",
     "svelte": "^3.54.0",
     "typescript": "^4.9.3"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

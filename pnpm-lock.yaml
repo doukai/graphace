@@ -76,7 +76,7 @@ importers:
       '@types/lodash': 4.14.191
       '@types/node': 18.11.18
       ajv: 8.12.0
-      ajv-formats: 2.1.1_ajv@8.12.0
+      ajv-formats: 2.1.1
       ajv-i18n: 4.2.0_ajv@8.12.0
       autoprefixer: 10.4.13_postcss@8.4.21
       concurrently: 7.6.0
@@ -86,14 +86,14 @@ importers:
       graphace-codegen-preset: link:../../packages/codegen-preset
       graphql: 16.6.0
       houdini: 0.20.3
-      houdini-svelte: 0.20.3_ykzowzmb7rcumunkscnbisnkom
+      houdini-svelte: 0.20.3_@types+node@18.11.18
       lodash: 4.17.21
       postcss: 8.4.21
       postcss-load-config: 3.1.4_aesdjsunmf4wiehhujt67my7tu
       svelte: 3.55.1
       svelte-check: 3.0.3_wvrm32gd33klg3jid3dvetj6va
       svelte-preprocess: 4.10.7_vpbvdbm6g2od7cpejpszygdnpe
-      tailwindcss: 3.2.4_aesdjsunmf4wiehhujt67my7tu
+      tailwindcss: 3.2.4_ts-node@10.9.1
       theme-change: 2.3.0
       ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
       tslib: 2.4.1
@@ -109,7 +109,6 @@ importers:
       change-case: ^4.1.2
       graphace-codegen-commons: workspace:*
       graphql: 16.6.0
-      liquidjs: ^10.4.0
       microbundle: ^0.15.1
     dependencies:
       '@graphql-codegen/plugin-helpers': 3.1.2_graphql@16.6.0
@@ -118,33 +117,30 @@ importers:
       change-case: 4.1.2
       graphace-codegen-commons: link:../codegen-commons
       graphql: 16.6.0
-      liquidjs: 10.4.0
     devDependencies:
       microbundle: 0.15.1
 
   packages/codegen-commons:
     specifiers:
-      '@graphace/graphql': workspace:*
       change-case: ^4.1.2
+      graphql: 16.6.0
       liquidjs: ^10.4.0
       microbundle: ^0.15.1
     dependencies:
-      '@graphace/graphql': link:../graphql
       change-case: 4.1.2
+      graphql: 16.6.0
       liquidjs: 10.4.0
     devDependencies:
       microbundle: 0.15.1
 
   packages/codegen-preset:
     specifiers:
-      '@graphace/graphql': workspace:*
       '@graphql-codegen/plugin-helpers': ^3.1.2
       change-case: ^4.1.2
       graphace-codegen-commons: workspace:*
       graphql: 16.6.0
       microbundle: ^0.15.1
     dependencies:
-      '@graphace/graphql': link:../graphql
       '@graphql-codegen/plugin-helpers': 3.1.2_graphql@16.6.0
       change-case: 4.1.2
       graphace-codegen-commons: link:../codegen-commons
@@ -155,10 +151,8 @@ importers:
   packages/commons:
     specifiers:
       eslint-config-custom: workspace:*
-      microbundle: ^0.15.1
     devDependencies:
       eslint-config-custom: link:../eslint-config-custom
-      microbundle: 0.15.1
 
   packages/eslint-config-custom:
     specifiers:
@@ -188,20 +182,14 @@ importers:
       ajv-formats: ^2.1.1
       ajv-i18n: ^4.2.0
       eslint-config-custom: workspace:*
-      graphql: 16.6.0
-      lodash: ^4.17.21
-      microbundle: ^0.15.1
     dependencies:
       '@graphace/commons': link:../commons
     devDependencies:
       '@types/lodash': 4.14.191
       ajv: 8.12.0
-      ajv-formats: 2.1.1_ajv@8.12.0
+      ajv-formats: 2.1.1
       ajv-i18n: 4.2.0_ajv@8.12.0
       eslint-config-custom: link:../eslint-config-custom
-      graphql: 16.6.0
-      lodash: 4.17.21
-      microbundle: 0.15.1
 
   packages/ui:
     specifiers:
@@ -2600,7 +2588,7 @@ packages:
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 3.2.4_aesdjsunmf4wiehhujt67my7tu
+      tailwindcss: 3.2.4_ts-node@10.9.1
     dev: true
 
   /@tootallnate/once/2.0.0:
@@ -2925,10 +2913,8 @@ packages:
       indent-string: 4.0.0
     dev: true
 
-  /ajv-formats/2.1.1_ajv@8.12.0:
+  /ajv-formats/2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
-    peerDependencies:
-      ajv: ^8.0.0
     peerDependenciesMeta:
       ajv:
         optional: true
@@ -3753,7 +3739,7 @@ packages:
       css-selector-tokenizer: 0.8.0
       postcss: 8.4.21
       postcss-js: 4.0.0_postcss@8.4.21
-      tailwindcss: 3.2.4_aesdjsunmf4wiehhujt67my7tu
+      tailwindcss: 3.2.4_ts-node@10.9.1
     transitivePeerDependencies:
       - ts-node
     dev: true
@@ -4743,16 +4729,14 @@ packages:
       capital-case: 1.0.4
       tslib: 2.4.1
 
-  /houdini-svelte/0.20.3_ykzowzmb7rcumunkscnbisnkom:
+  /houdini-svelte/0.20.3_@types+node@18.11.18:
     resolution: {integrity: sha512-dlrwW4pPTOUNhN1+qLfwkY1UU+isYHNfBev/zPQgIs6ECDm0C2CFFDf/iMiyQGfFMoTY+Sqjme61tWqZKwyE9Q==}
-    peerDependencies:
-      graphql: ^14.0.0 || ^15.0.0
     dependencies:
       '@kitql/helper': 0.5.0
       '@sveltejs/kit': 1.2.10_svelte@3.55.1+vite@4.0.4
       ast-types: 0.16.1
       estree-walker: 3.0.3
-      graphql: 16.6.0
+      graphql: 15.8.0
       houdini: 0.20.3
       recast: 0.23.1
       svelte: 3.55.1
@@ -7322,12 +7306,10 @@ packages:
     dependencies:
       tslib: 2.4.1
 
-  /tailwindcss/3.2.4_aesdjsunmf4wiehhujt67my7tu:
+  /tailwindcss/3.2.4_ts-node@10.9.1:
     resolution: {integrity: sha512-AhwtHCKMtR71JgeYDaswmZXhPcW9iuI9Sp2LvZPo9upDZ7231ZJ7eA9RaURbhpXGVlrjX4cFNlB4ieTetEb7hQ==}
     engines: {node: '>=12.13.0'}
     hasBin: true
-    peerDependencies:
-      postcss: ^8.0.9
     dependencies:
       arg: 5.0.2
       chokidar: 3.5.3
