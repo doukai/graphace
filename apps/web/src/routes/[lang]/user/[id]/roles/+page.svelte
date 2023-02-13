@@ -56,7 +56,7 @@
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		to(`../../role/+`);
+		to(`../../role/_`);
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {

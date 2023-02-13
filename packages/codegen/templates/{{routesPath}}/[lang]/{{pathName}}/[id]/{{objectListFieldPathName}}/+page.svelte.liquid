@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { ot, to } from '~/lib/stores/useNavigate';
 	{%- if connectionField %}
-	import {{ objectFieldTypeName }}ConnectionTable from '~/lib/components/objects/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}ConnectionTable.svelte';
+	import {{ objectFieldTypeName }}ConnectionTable from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}ConnectionTable.svelte';
 	{%- else %}
-	import {{ objectFieldTypeName }}Table from '~/lib/components/objects/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}Table.svelte';
+	import {{ objectFieldTypeName }}Table from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}Table.svelte';
 	{%- endif %}
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import type { MutationType{{ objectFieldTypeName }}Args, {% if connectionField %}QueryType{{ objectFieldTypeName }}ConnectionArgs{% else %}QueryType{{ objectFieldTypeName }}ListArgs{% endif %}, {{ objectFieldTypeName }} } from '~/lib/types/schema';
+	import type { MutationType{{ objectFieldTypeName }}Args, {% if connectionField %}QueryType{{ objectFieldTypeName }}ConnectionArgs{% else %}QueryType{{ objectFieldTypeName }}ListArgs{% endif %}, {{ objectFieldTypeName }} } from '~/{{ schemaTypesPath }}';
 	import { Query_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ objectFieldTypeName | camelCase }}Store } from '$houdini';
 	import type { PageData } from './$houdini';
 
@@ -68,7 +68,7 @@
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		to(`../../{{ objectFieldTypeName | paramCase }}/+`);
+		to(`../../{{ objectFieldTypeName | paramCase }}/_`);
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {

@@ -1,5 +1,5 @@
 import type { RawTypesConfig } from '@graphql-codegen/visitor-plugin-common';
-import type { Template } from 'graphace-codegen-commons/types';
+import type { Template } from 'graphace-codegen-commons';
 
 export interface GraphacePluginConfig extends RawTypesConfig {
   template: Template;

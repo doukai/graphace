@@ -71,7 +71,7 @@
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		to(`./{{ name | paramCase }}/+`);
+		to(`./{{ name | paramCase }}/_`);
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {

@@ -1,8 +1,9 @@
-import type { Template } from 'graphace-codegen-commons/types'
-import { buildEngine } from 'graphace-codegen-commons'
+import { type Template, buildEngine } from 'graphace-codegen-commons'
 
-const engine = buildEngine();
+const engine = buildEngine({
+    root: `${__dirname}/../templates`
+});
 
 export const buildFileContent = (template: Template, scope?: object): string => {
-    return engine.renderFileSync(template, scope);
+    return engine.renderFileSync(`${template}.liquid`, scope);
 }

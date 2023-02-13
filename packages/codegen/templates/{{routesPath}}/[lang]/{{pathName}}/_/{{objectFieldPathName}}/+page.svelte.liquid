@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { ot, to } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
-	import {{ objectFieldTypeName }}CreateForm from '~/lib/components/objects/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
+	import {{ objectFieldTypeName }}CreateForm from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import type {
-		MutationType{{ name }}Args,
 		MutationType{{ objectFieldTypeName }}Args,
 		{{ objectFieldTypeName }}
-	} from '~/lib/types/schema';
+	} from '~/{{ schemaTypesPath }}';
 	import {
 		getNodeParam,
 		updateNodeParam,

@@ -1,3 +1,4 @@
 query Query_updateTime {
   updateTime
+  }
 }

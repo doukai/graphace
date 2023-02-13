@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { ot, to } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
-	import {{ objectFieldTypeName }}CreateForm from '~/lib/components/objects/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
+	import UserProfileCreateForm from '~/lib/components/objects/user-profile/UserProfileCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import type {
-		MutationType{{ name }}Args,
-		MutationType{{ objectFieldTypeName }}Args,
-		{{ objectFieldTypeName }}
+		MutationTypeUserProfileArgs,
+		UserProfile
 	} from '~/lib/types/schema';
 	import {
 		getNodeParam,
@@ -18,13 +17,13 @@
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: node = data.node as MutationType{{ objectFieldTypeName }}Args;
+	$: node = data.node as MutationTypeUserProfileArgs;
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationType{{ objectFieldTypeName }}Args;
+			args: MutationTypeUserProfileArgs;
 			update?: boolean;
-			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
+			then: (data: UserProfile | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
@@ -42,11 +41,11 @@
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
-		to(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.path}`, {
+		to(`../../user-profile/${event.detail.path}`, {
 			node: updateNodeParam($page.url, node),
 			path: getChildPathParam($page.url, event.detail.name)
 		});
 	};
 </script>
 
-<{{ objectFieldTypeName }}CreateForm bind:node on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<UserProfileCreateForm bind:node on:mutation={mutation} on:back={back} on:gotoField={gotoField} />

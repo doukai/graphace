@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { ot, to } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
-	import UserProfileCreateForm from '~/lib/components/objects/user-profile/UserProfileCreateForm.svelte';
+	import UserCreateForm from '~/lib/components/objects/user/UserCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import type {
 		MutationTypeUserArgs,
-		MutationTypeUserProfileArgs,
-		UserProfile
+		User
 	} from '~/lib/types/schema';
 	import {
 		getNodeParam,
@@ -18,13 +17,13 @@
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: node = data.node as MutationTypeUserProfileArgs;
+	$: node = data.node as MutationTypeUserArgs;
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeUserProfileArgs;
+			args: MutationTypeUserArgs;
 			update?: boolean;
-			then: (data: UserProfile | null | undefined) => void;
+			then: (data: User | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
@@ -42,11 +41,11 @@
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
-		to(`../../user-profile/${event.detail.path}`, {
+		to(`../../user/${event.detail.path}`, {
 			node: updateNodeParam($page.url, node),
 			path: getChildPathParam($page.url, event.detail.name)
 		});
 	};
 </script>
 
-<UserProfileCreateForm bind:node on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<UserCreateForm bind:node on:mutation={mutation} on:back={back} on:gotoField={gotoField} />

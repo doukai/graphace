@@ -5,7 +5,6 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import type {
-		MutationTypeUserArgs,
 		MutationTypeOrganizationArgs,
 		Organization
 	} from '~/lib/types/schema';

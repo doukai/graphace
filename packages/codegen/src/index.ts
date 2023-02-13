@@ -2,8 +2,8 @@ import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
 import * as changeCase from "change-case";
 import { assertObjectType, isEnumType, isListType, isObjectType, type GraphQLSchema } from 'graphql';
-import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getScalarNames, getEnumNames, getEnumValues } from 'graphace-codegen-commons/Introspection';
-import type { Template } from 'graphace-codegen-commons/types';
+import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getScalarNames, getEnumNames, getEnumValues } from 'graphace-codegen-commons';
+import type { Template } from 'graphace-codegen-commons';
 import { buildFileContent } from "./Builder";
 
 type Render = (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => Types.ComplexPluginOutput
@@ -24,7 +24,7 @@ const renders: Record<Template, Render> = {
             }
         }
         console.error(config);
-        throw new Error(`${config.name} not exist in QueryType`);
+        throw new Error(`${config.name} undefined`);
     },
     '{{graphqlPath}}/queries/Query_{{name}}_{{objectFieldName}}.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const operationFields = schema.getQueryType()?.getFields();
@@ -53,7 +53,7 @@ const renders: Record<Template, Render> = {
             }
         }
         console.error(config);
-        throw new Error(`${config.name} not exist in QueryType`);
+        throw new Error(`${config.name} undefined`);
     },
     '{{graphqlPath}}/mutations/Mutation_{{name}}.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const operationFields = schema.getMutationType()?.getFields();
@@ -70,7 +70,7 @@ const renders: Record<Template, Render> = {
             }
         }
         console.error(config);
-        throw new Error(`${config.name} not exist in MutationType`);
+        throw new Error(`${config.name} undefined`);
     },
     '{{graphqlPath}}/mutations/Mutation_{{name}}_{{objectFieldName}}.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const operationFields = schema.getMutationType()?.getFields();
@@ -99,7 +99,7 @@ const renders: Record<Template, Render> = {
             }
         }
         console.error(config);
-        throw new Error(`${config.name} not exist in MutationType`);
+        throw new Error(`${config.name} undefined`);
     },
     '{{componentsPath}}/menu/ObjectsMenu.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         return {
@@ -128,7 +128,7 @@ const renders: Record<Template, Render> = {
             }
         }
         console.error(config);
-        throw new Error(`${typeName} not exist`);
+        throw new Error(`${typeName} undefined`);
     },
     '{{componentsPath}}/objects/{{pathName}}/{{name}}CreateForm.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
@@ -141,7 +141,7 @@ const renders: Record<Template, Render> = {
             }
         }
         console.error(config);
-        throw new Error(`${typeName} not exist`);
+        throw new Error(`${typeName} undefined`);
     },
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Table.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
@@ -154,7 +154,7 @@ const renders: Record<Template, Render> = {
             }
         }
         console.error(config);
-        throw new Error(`${typeName} not exist`);
+        throw new Error(`${typeName} undefined`);
     },
     '{{componentsPath}}/objects/{{pathName}}/{{name}}ConnectionTable.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
@@ -167,7 +167,7 @@ const renders: Record<Template, Render> = {
             }
         }
         console.error(config);
-        throw new Error(`${typeName} not exist`);
+        throw new Error(`${typeName} undefined`);
     },
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Item.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
@@ -180,7 +180,7 @@ const renders: Record<Template, Render> = {
             }
         }
         console.error(config);
-        throw new Error(`${typeName} not exist`);
+        throw new Error(`${typeName} undefined`);
     },
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Th.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
@@ -193,7 +193,7 @@ const renders: Record<Template, Render> = {
             }
         }
         console.error(config);
-        throw new Error(`${typeName} not exist`);
+        throw new Error(`${typeName} undefined`);
     },
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
@@ -206,7 +206,7 @@ const renders: Record<Template, Render> = {
             }
         }
         console.error(config);
-        throw new Error(`${typeName} not exist`);
+        throw new Error(`${typeName} undefined`);
     },
     '{{routesPath}}/[lang]/{{pathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
@@ -220,7 +220,7 @@ const renders: Record<Template, Render> = {
             }
         }
         console.error(config);
-        throw new Error(`${typeName} not exist`);
+        throw new Error(`${typeName} undefined`);
     },
     '{{routesPath}}/[lang]/{{pathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
@@ -234,7 +234,7 @@ const renders: Record<Template, Render> = {
             }
         }
         console.error(config);
-        throw new Error(`${typeName} not exist`);
+        throw new Error(`${typeName} undefined`);
     },
     '{{routesPath}}/[lang]/{{pathName}}/[id]/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
@@ -247,7 +247,7 @@ const renders: Record<Template, Render> = {
             }
         }
         console.error(config);
-        throw new Error(`${typeName} not exist`);
+        throw new Error(`${typeName} undefined`);
     },
     '{{routesPath}}/[lang]/{{pathName}}/[id]/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
@@ -260,7 +260,7 @@ const renders: Record<Template, Render> = {
             }
         }
         console.error(config);
-        throw new Error(`${typeName} not exist`);
+        throw new Error(`${typeName} undefined`);
     },
     '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
@@ -277,7 +277,7 @@ const renders: Record<Template, Render> = {
             }
         }
         console.error(config);
-        throw new Error(`${typeName} not exist`);
+        throw new Error(`${typeName} undefined`);
     },
     '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
@@ -294,7 +294,7 @@ const renders: Record<Template, Render> = {
             }
         }
         console.error(config);
-        throw new Error(`${typeName} not exist`);
+        throw new Error(`${typeName} undefined`);
     },
     '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
@@ -306,13 +306,13 @@ const renders: Record<Template, Render> = {
                     const objectFieldType = getFieldType(objectField.type);
                     const connectionField = getConnectionField(type, objectField.name);
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), connectionField: connectionField, formPath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
+                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), connectionField: connectionField, tablePath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
                     };
                 }
             }
         }
         console.error(config);
-        throw new Error(`${typeName} not exist`);
+        throw new Error(`${typeName} undefined`);
     },
     '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
@@ -330,7 +330,43 @@ const renders: Record<Template, Render> = {
             }
         }
         console.error(config);
-        throw new Error(`${typeName} not exist`);
+        throw new Error(`${typeName} undefined`);
+    },
+    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                const objectField = getField(type, config.objectFieldName);
+                if (objectField?.type) {
+                    const objectFieldType = getFieldType(objectField.type);
+                    const connectionField = getConnectionField(type, objectField.name);
+                    return {
+                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), connectionField: connectionField, formPath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
+                    };
+                }
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
+    },
+    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                const objectField = getField(type, config.objectFieldName);
+                if (objectField?.type) {
+                    const objectFieldType = getFieldType(objectField.type);
+                    const connectionField = getConnectionField(type, objectField.name);
+                    return {
+                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, connectionField: connectionField, schemaTypesPath: config.schemaTypesPath }),
+                    };
+                }
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
     },
     '{{routesPath}}/[lang]/{{pathName}}/_/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
@@ -343,7 +379,7 @@ const renders: Record<Template, Render> = {
             }
         }
         console.error(config);
-        throw new Error(`${typeName} not exist`);
+        throw new Error(`${typeName} undefined`);
     },
     '{{routesPath}}/[lang]/{{pathName}}/_/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
@@ -351,12 +387,12 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: buildFileContent(config.template, { name: type?.name }),
+                    content: buildFileContent(config.template, { name: type?.name, schemaTypesPath: config.schemaTypesPath }),
                 };
             }
         }
         console.error(config);
-        throw new Error(`${typeName} not exist`);
+        throw new Error(`${typeName} undefined`);
     },
     '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
@@ -373,7 +409,7 @@ const renders: Record<Template, Render> = {
             }
         }
         console.error(config);
-        throw new Error(`${typeName} not exist`);
+        throw new Error(`${typeName} undefined`);
     },
     '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
@@ -384,13 +420,13 @@ const renders: Record<Template, Render> = {
                 if (objectField?.type) {
                     const objectFieldType = getFieldType(objectField.type);
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name }),
+                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, schemaTypesPath: config.schemaTypesPath }),
                     };
                 }
             }
         }
         console.error(config);
-        throw new Error(`${typeName} not exist`);
+        throw new Error(`${typeName} undefined`);
     }
 }
 

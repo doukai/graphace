@@ -1,9 +1,9 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
-import type { MutationType{{ objectFieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
+import type { MutationTypeUserArgs } from '~/lib/types/schema';
 import { getNode } from '~/lib/utils'
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    const node: MutationType{{ objectFieldTypeName }}Args = getNode(event.url);
-    return { node };
+    const node: MutationTypeUserArgs = getNode(event.url);
+    return { id: event.params.id, node };
 }

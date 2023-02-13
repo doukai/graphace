@@ -4,6 +4,6 @@ import { load_Query_roleRoleType } from '$houdini';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     return {
-        ...(await load_Query_roleRoleType({ event, variables: { id: { val: event.params.id } } }))
+        ...(await load_Query_roleRoleType({ event, variables: { : { val: event.params.id } } }))
     };
 }

@@ -7,7 +7,7 @@
 	import { onMount } from 'svelte';
 	import { themeChange } from 'theme-change';
 	import SideBar from '@graphace/ui/components/SideBar.svelte';
-	import TypeMenu from '~/lib/components/menu/TypeMenu.svelte';
+	import ObjectsMenu from '~/lib/components/menu/ObjectsMenu.svelte';
 	import { NavBar, NavBarStart, NavBarCenter, NavBarEnd } from '@graphace/ui/components/navbar';
 	import Notifications from '@graphace/ui/components/Notifications.svelte';
 	import MessageBoxs from '@graphace/ui/components/MessageBoxs.svelte';
@@ -36,7 +36,7 @@
 						: 'hidden'}
 				>
 					<SideBar>
-						<TypeMenu />
+						<ObjectsMenu />
 					</SideBar>
 				</div>
 				<div class={$isMenuOpen ? 'md:pl-64 flex flex-col' : 'flex flex-col'}>

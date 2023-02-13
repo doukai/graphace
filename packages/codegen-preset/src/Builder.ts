@@ -1,5 +1,4 @@
-import type { Template } from 'graphace-codegen-commons/types'
-import { buildEngine } from 'graphace-codegen-commons'
+import { type Template, buildEngine } from 'graphace-codegen-commons'
 
 const engine = buildEngine();
 

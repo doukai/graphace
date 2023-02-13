@@ -1,0 +1,50 @@
+<script lang="ts">
+	import { ot, to } from '~/lib/stores/useNavigate';
+	import { page } from '$app/stores';
+	import {{ objectFieldTypeName }}CreateForm from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
+	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
+	import type { Error } from '@graphace/commons/types';
+	import { updateNodeParam, getChildPathParam } from '~/lib/utils';
+	import { Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store } from '$houdini';
+	import type { MutationType{{ objectFieldTypeName }}Args, {{ objectFieldTypeName }} } from '~/{{ schemaTypesPath }}';
+	import type { PageData } from './$houdini';
+
+	export let data: PageData;
+	$: node = data.node as MutationType{{ objectFieldTypeName }}Args;
+	$: {{ idName }} = data.{{ idName }} as string;
+
+	const Mutation_{{ name | camelCase }}_{{ objectFieldName }} = new Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store();
+
+	const mutation = (
+		event: CustomEvent<{
+			args: MutationType{{ objectFieldTypeName }}Args;
+			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
+			catch: (error: Error) => void;
+		}>
+	) => {
+		Mutation_{{ name | camelCase }}_{{ objectFieldName }}.mutate({
+			{{ name | camelCase }}_id: {{ idName }},
+			{{ name | camelCase }}_{{ objectFieldName }}: [event.detail.args],
+			mergeToList: ['{{ objectFieldName }}']
+		})
+			.then((result) => {
+				event.detail.then(null);
+			})
+			.catch((error) => {
+				event.detail.catch(error);
+			});
+	};
+
+	const back = (event: CustomEvent<{}>) => {
+		ot();
+	};
+
+	const gotoField = (event: CustomEvent<{ path: string; name: string }>) => {
+		to(`../../../{{ objectFieldTypeName | paramCase }}/${event.detail.path}`, {
+			node: updateNodeParam($page.url, node),
+			path: getChildPathParam($page.url, event.detail.name)
+		});
+	};
+</script>
+
+<{{ objectFieldTypeName }}CreateForm bind:node on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
