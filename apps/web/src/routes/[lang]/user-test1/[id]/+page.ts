@@ -4,6 +4,6 @@ import { load_Query_userTest1 } from '$houdini';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     return {
-        ...(await load_Query_userTest1({ event, variables: { : { val: event.params.id } } }))
+        ...(await load_Query_userTest1({ event, variables: { id: { val: event.params.id } } }))
     };
 }

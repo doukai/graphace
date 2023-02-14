@@ -8,7 +8,7 @@
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Plus, PencilAlt, Trash } from '@steeze-ui/heroicons';
+	import { Plus, PencilAlt, Trash, ChevronLeft } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
 	import { locale } from '~/i18n/i18n-svelte';
 	import { validateUpdate } from '@graphace/graphql/schema/JsonSchema';
@@ -38,6 +38,7 @@
 		};
 		edit: { id: string };
 		create: {};
+		back: {};
 	}>();
 
 	let errors: Record<string, Record<string, Error>> = {};
@@ -186,13 +187,13 @@
 			</button>
 		</div>
 	{/if}
-	<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.remove()}>
+	<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.create()}>
 		<button
 			class="btn btn-square md:hidden"
 			on:click={(e) => {
 				e.preventDefault();
 				dispatch('create');
-			} }
+			}}
 		>
 			<Icon src={Plus} class="h-6 w-6" solid />
 		</button>
@@ -205,6 +206,26 @@
 		}}
 	>
 		{$LL.routers.type.create()}
+	</button>
+	<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.back()}>
+		<button
+			class="btn btn-square md:hidden"
+			on:click={(e) => {
+				e.preventDefault();
+				dispatch('back');
+			}}
+		>
+			<Icon src={ChevronLeft} class="h-6 w-6" solid />
+		</button>
+	</div>
+	<button
+		class="hidden md:btn"
+		on:click={(e) => {
+			e.preventDefault();
+			dispatch('back');
+		}}
+	>
+		{$LL.routers.type.back()}
 	</button>
 </SectionHead>
 <div class="divider" />

@@ -1,4 +1,3 @@
 mutation Mutation_updateTime {
   updateTime
-  }
 }

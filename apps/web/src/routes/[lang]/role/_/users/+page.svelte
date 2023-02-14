@@ -5,7 +5,9 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { MutationTypeUserArgs } from '~/lib/types/schema';
 	import {
+		getNodeParam,
 		updateNodeParam,
+		getParentPathParam,
 		getChildPathParam
 	} from '~/lib/utils';
 	import type { PageData } from './$houdini';
@@ -37,5 +39,18 @@
 			path: getChildPathParam($page.url, event.detail.name)
 		});
 	};
+
+	const back = (event: CustomEvent<{}>) => {
+		ot({
+			node: getNodeParam($page.url),
+			path: getParentPathParam($page.url)
+		});
+	};
 </script>
-<UserCreateTable {nodes} on:edit={edit} on:create={create} on:gotoField={gotoField} />
+<UserCreateTable
+	{nodes}
+	on:edit={edit}
+	on:create={create}
+	on:gotoField={gotoField}
+	on:back={back}
+/>

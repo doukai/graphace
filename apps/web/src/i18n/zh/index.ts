@@ -85,7 +85,8 @@ const zh: Translation = {
 	routers: {
 		type: {
 			create: "新建",
-			remove: "删除"
+			remove: "删除",
+			back: "返回"
 		}
 	}
 }

@@ -8,14 +8,14 @@ export const replaceLocaleInUrl = (path: string, locale: string): string => {
 
 export const getNode = <T>(url: URL): T | undefined => {
 	if (url.searchParams.has('node')) {
-		let root = JSON.parse(url.searchParams.get('node') || '{}');
+		const root = JSON.parse(url.searchParams.get('node') || '{}');
 		if (url.searchParams.has('path')) {
-			let path: (string | number)[] = JSON.parse(url.searchParams.get('path') || '[]');
+			const path: (string | number)[] = JSON.parse(url.searchParams.get('path') || '[]');
 			if (path.length > 0) {
 				return _.get(root, path);
 			}
 		}
-		return JSON.parse(root)
+		return root;
 	}
 }
 
@@ -26,9 +26,9 @@ export const getNodeParam = (url: URL): string | undefined => {
 export const updateNodeParam = <T>(url: URL, node: T): string => {
 	if (url.searchParams.has('node')) {
 		if (url.searchParams.has('path')) {
-			let path: (string | number)[] = JSON.parse(url.searchParams.get('path') || '[]');
+			const path: (string | number)[] = JSON.parse(url.searchParams.get('path') || '[]');
 			if (path.length > 0) {
-				let root = JSON.parse(url.searchParams.get('node') || '{}');
+				const root = JSON.parse(url.searchParams.get('node') || '{}');
 				_.set(root, path, node);
 				return JSON.stringify(root);
 			}

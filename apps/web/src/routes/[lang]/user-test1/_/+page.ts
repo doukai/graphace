@@ -4,6 +4,6 @@ import type { MutationTypeUserTest1Args } from '~/lib/types/schema';
 import { getNode } from '~/lib/utils'
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    const node: MutationTypeUserTest1Args = getNode(event.url);
+    const node: MutationTypeUserTest1Args = getNode(event.url) || {};
     return { node };
 }

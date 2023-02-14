@@ -85,7 +85,8 @@ const en: BaseTranslation = {
 	routers: {
 		type: {
 			create: "Create",
-			remove: "Remove"
+			remove: "Remove",
+			back: "Back"
 		}
 	}
 }

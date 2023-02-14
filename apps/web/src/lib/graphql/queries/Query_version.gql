@@ -1,4 +1,3 @@
 query Query_version {
   version
-  }
 }
