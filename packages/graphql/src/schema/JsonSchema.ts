@@ -119,9 +119,8 @@ export async function validate(uri: string, data: object, locale: Language = "en
             } else {
                 resolve(validateData);
             }
-        } else {
-            throw new Error('validate undefined');
         }
+        throw new Error('validate undefined');
     });
 }
 

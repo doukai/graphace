@@ -3,13 +3,19 @@ import { Writable, writable } from 'svelte/store';
 
 const history: Writable<URL[]> = writable([]);
 
-export function ot(params?: Record<string, string>) {
+export function ot(params?: Record<string, string | undefined>) {
     history.update(value => {
         value.pop();
         const backUrl = value[value.length - 1];
         if (backUrl) {
             if (params) {
-                Object.entries(params).forEach(param => backUrl?.searchParams.set(param[0], param[1]));
+                Object.entries(params).forEach(param => {
+                    if (param[1] === undefined) {
+                        backUrl?.searchParams.delete(param[0]);
+                    } else {
+                        backUrl?.searchParams.set(param[0], param[1]);
+                    }
+                });
             }
             goto(backUrl);
         }
@@ -17,7 +23,7 @@ export function ot(params?: Record<string, string>) {
     });
 }
 
-export function to(url: string | URL, params?: Record<string, string>) {
+export function to(url: string | URL, params?: Record<string, string | undefined>) {
     history.update(value => {
         let toUrl: URL;
         if (typeof url === "string") {
@@ -26,7 +32,13 @@ export function to(url: string | URL, params?: Record<string, string>) {
             toUrl = url;
         }
         if (params) {
-            Object.entries(params).forEach(param => toUrl.searchParams.set(param[0], param[1]));
+            Object.entries(params).forEach(param => {
+                if (param[1] === undefined) {
+                    toUrl?.searchParams.delete(param[0]);
+                } else {
+                    toUrl?.searchParams.set(param[0], param[1]);
+                }
+            });
         }
         value.push(toUrl);
         goto(toUrl);

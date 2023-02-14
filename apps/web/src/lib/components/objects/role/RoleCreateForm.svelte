@@ -79,8 +79,8 @@
 		<RoleTypeItem label="type" name="type" bind:value={node.type} error={errors.type} />
 		<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} error={errors.updateTime} />
 		<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
-		<ObjectItem name="users" path={`+/users`} label="users" error={errors.users} on:gotoField />
-		<ObjectItem name="usersConnection" path={`+/users-connection`} label="usersConnection" error={errors.usersConnection} on:gotoField />
+		<ObjectItem name="users" path={`_/users`} label="users" error={errors.users} on:gotoField />
+		<ObjectItem name="usersConnection" path={`_/users-connection`} label="usersConnection" error={errors.usersConnection} on:gotoField />
 		<IntItem label="version" name="version" bind:value={node.version} error={errors.version} />
 	</FormItems>
 	<FormButtons>

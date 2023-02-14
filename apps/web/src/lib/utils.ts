@@ -6,45 +6,35 @@ export const replaceLocaleInUrl = (path: string, locale: string): string => {
 	return `/${[locale, ...rest].join("/")}`;
 }
 
-export const getNode = (url: URL): any => {
-	let node = {};
-	let path: (string | number)[] = [];
+export const getNode = <T>(url: URL): T | undefined => {
 	if (url.searchParams.has('node')) {
-		let element = JSON.parse(url.searchParams.get('node') || '{}');
+		let root = JSON.parse(url.searchParams.get('node') || '{}');
 		if (url.searchParams.has('path')) {
-			path = JSON.parse(url.searchParams.get('path') || '[]');
-			path.forEach((value) => {
-				element = element[value];
-			});
+			let path: (string | number)[] = JSON.parse(url.searchParams.get('path') || '[]');
+			if (path.length > 0) {
+				return _.get(root, path);
+			}
 		}
-		node = element || {};
+		return JSON.parse(root)
 	}
-	return node;
 }
 
-export const getNodeParam = (url: URL): string => {
-	let root: any = {};
-	if (url.searchParams.has('node')) {
-		root = JSON.parse(url.searchParams.get('node') || '{}');
-	}
-	return JSON.stringify(root);
+export const getNodeParam = (url: URL): string | undefined => {
+	return url.searchParams.get('node') || undefined;
 }
 
-export const updateNodeParam = (url: URL, node: any): string => {
-	let root: any = {};
-	let path: (string | number)[] = [];
+export const updateNodeParam = <T>(url: URL, node: T): string => {
 	if (url.searchParams.has('node')) {
-		root = JSON.parse(url.searchParams.get('node') || '{}');
 		if (url.searchParams.has('path')) {
-			path = JSON.parse(url.searchParams.get('path') || '[]');
+			let path: (string | number)[] = JSON.parse(url.searchParams.get('path') || '[]');
+			if (path.length > 0) {
+				let root = JSON.parse(url.searchParams.get('node') || '{}');
+				_.set(root, path, node);
+				return JSON.stringify(root);
+			}
 		}
 	}
-	if (path.length > 0) {
-		_.set(root, path, node);
-		return JSON.stringify(root);
-	} else {
-		return JSON.stringify(node);
-	}
+	return JSON.stringify(node);
 }
 
 export const getParentPathParam = (url: URL): string => {
@@ -56,7 +46,7 @@ export const getParentPathParam = (url: URL): string => {
 	return JSON.stringify(path);
 }
 
-export const getChildPathParam = (url: URL, childName: string): string => {
+export const getChildPathParam = (url: URL, childName: string | number): string => {
 	let path: (string | number)[] = [];
 	if (url.searchParams.has('path')) {
 		path = JSON.parse(url.searchParams.get('path') || '[]');

@@ -8,6 +8,7 @@ export type Template =
     '{{componentsPath}}/objects/{{pathName}}/{{name}}CreateForm.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Table.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}ConnectionTable.svelte' |
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}CreateTable.svelte' |
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Item.svelte' |
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Th.svelte' |
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte' |
@@ -24,4 +25,6 @@ export type Template =
     '{{routesPath}}/[lang]/{{pathName}}/_/+page.svelte' |
     '{{routesPath}}/[lang]/{{pathName}}/_/+page.ts' |
     '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/+page.svelte' |
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/+page.ts'
+    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/+page.ts' |
+    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/+page.svelte' |
+    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/+page.ts' 

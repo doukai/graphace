@@ -207,6 +207,30 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         generateOptions.push(
             ...objectTypes
                 .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}CreateTable.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...objectTypes
+                .map(type => {
                     const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Form.svelte';
                     const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
                     return {
@@ -569,8 +593,6 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 })
         );
 
-
-
         generateOptions.push(
             ...objectTypes
                 .map(type => assertObjectType(type))
@@ -766,6 +788,81 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                     };
                 })
         );
+
+        generateOptions.push(
+            ...objectTypes
+                .map(type => assertObjectType(type))
+                .flatMap(type =>
+                    Object.values(type.getFields())
+                        .filter(field => isObjectType(getFieldType(field.type)))
+                        .filter(field => !isConnection(getFieldType(field.type).name))
+                        .filter(field => !isEdge(getFieldType(field.type).name))
+                        .filter(field => !isPageInfo(getFieldType(field.type).name))
+                        .filter(field => !isAggregate(field.name))
+                        .filter(field => !isIntrospection(getFieldType(field.type).name))
+                        .filter(field => isListType(field.type))
+                        .map(field => { return { name: type.name, objectFieldName: field.name } }))
+                .map(objectField => {
+                    const { name, objectFieldName } = objectField;
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/+page.svelte';
+                    const scope = { routesPath, pathName: changeCase.paramCase(name), objectListFieldPathName: changeCase.paramCase(objectFieldName) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            template,
+                            name,
+                            objectFieldName
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...objectTypes
+                .map(type => assertObjectType(type))
+                .flatMap(type =>
+                    Object.values(type.getFields())
+                        .filter(field => isObjectType(getFieldType(field.type)))
+                        .filter(field => !isConnection(getFieldType(field.type).name))
+                        .filter(field => !isEdge(getFieldType(field.type).name))
+                        .filter(field => !isPageInfo(getFieldType(field.type).name))
+                        .filter(field => !isAggregate(field.name))
+                        .filter(field => !isIntrospection(getFieldType(field.type).name))
+                        .filter(field => isListType(field.type))
+                        .map(field => { return { name: type.name, objectFieldName: field.name } }))
+                .map(objectField => {
+                    const { name, objectFieldName } = objectField;
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/+page.ts';
+                    const scope = { routesPath, pathName: changeCase.paramCase(name), objectListFieldPathName: changeCase.paramCase(objectFieldName) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            template,
+                            name,
+                            objectFieldName
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
         return generateOptions;
     },
 };
