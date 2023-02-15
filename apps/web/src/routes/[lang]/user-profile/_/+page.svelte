@@ -14,6 +14,7 @@
 
 	export let data: PageData;
 	$: node = data.node as MutationTypeUserProfileArgs;
+	$: errors = data.errors as Record<string, Error>;
 
 	const Mutation_userProfile = new Mutation_userProfileStore();
 
@@ -45,4 +46,4 @@
 	};
 </script>
 
-<UserProfileCreateForm bind:node on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<UserProfileCreateForm bind:node {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />

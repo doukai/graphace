@@ -50,8 +50,7 @@ export async function validate(uri: string, data: object, locale: Language = "en
     return new Promise((resolve: (data: object) => void, reject: (errors: Record<string, Error>) => void) => {
         const errors: Record<string, Error> = {};
         if (validate) {
-            const validateData = removeEmpty(data);
-            const valid = validate(validateData);
+            const valid = validate(data);
             if (!valid) {
                 localize[locale](validate.errors);
                 if (validate.errors) {
@@ -75,7 +74,7 @@ export async function validate(uri: string, data: object, locale: Language = "en
                 console.error(ajv.errorsText(validate.errors, { separator: '\n' }));
                 reject(errors);
             } else {
-                resolve(validateData);
+                resolve(data);
             }
         }
         throw new Error('validate undefined');
@@ -84,49 +83,38 @@ export async function validate(uri: string, data: object, locale: Language = "en
 
 function buildErrors(error: ErrorObject, path: string[], errors: Record<string, Error>): void {
     if (path.length === 1) {
-        if (error.keyword === "required") {
-            errors[path[0]] = {
-                ...errors[path[0]],
-                iterms: {
-                    ...errors[path[0]].iterms,
-                    [error.params.missingProperty]: {
-                        message: error.message,
-                        schemaPath: error.schemaPath
+        const property = path[0];
+        if (property) {
+            if (error.keyword === "required") {
+                errors[property] = {
+                    ...errors[property],
+                    iterms: {
+                        ...errors[property].iterms,
+                        [error.params.missingProperty]: {
+                            message: error.message,
+                            schemaPath: error.schemaPath
+                        }
                     }
+                };
+            } else {
+                errors[property] = {
+                    message: error.message,
+                    schemaPath: error.schemaPath
                 }
-            };
-        } else {
-            errors[path[0]] = {
-                message: error.message,
-                schemaPath: error.schemaPath
             }
         }
     } else {
-        const iterms: Record<string, Error> = {};
-        errors[path[0]] = {
-            ...errors[path[0]],
-            iterms: {
-                ...errors[path[0]].iterms,
-                iterms
-            }
-        };
-        path.shift();
-        buildErrors(error, path, iterms);
-    }
-}
-
-function removeEmpty(data: object): object {
-    return Object.fromEntries(
-        Object.entries(data)
-            .filter(([_, v]) => Array.isArray(v) ? v !== null && v.length > 0 : v !== null)
-            .map(([k, v]) => {
-                if (Array.isArray(v)) {
-                    return [k, v.map(item => removeEmpty(item))];
-                } else if (typeof v === 'object') {
-                    return [k, removeEmpty(v)];
-                } else {
-                    return [k, v];
+        const property = path.shift();
+        if (property) {
+            const iterms: Record<string, Error> = {};
+            buildErrors(error, path, iterms);
+            errors[property] = {
+                ...errors[property],
+                iterms: {
+                    ...errors[property].iterms,
+                    iterms
                 }
-            })
-    );
+            };
+        }
+    }
 }

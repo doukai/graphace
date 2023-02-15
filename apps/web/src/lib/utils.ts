@@ -1,4 +1,6 @@
 import * as _ from "lodash";
+import type { Error } from '@graphace/commons/types';
+
 // replaces the locale slug in a relative url
 // e.g. /en/blog/article-1 => /de/blog/article-1
 export const replaceLocaleInUrl = (path: string, locale: string): string => {
@@ -13,6 +15,19 @@ export const getNode = <T>(url: URL): T | undefined => {
 			const path: (string | number)[] = JSON.parse(url.searchParams.get('path') || '[]');
 			if (path.length > 0) {
 				return _.get(root, path);
+			}
+		}
+		return root;
+	}
+}
+
+export const getErrors = (url: URL): Record<string | number, Error> | undefined => {
+	if (url.searchParams.has('errors')) {
+		const root = JSON.parse(url.searchParams.get('errors') || '{}');
+		if (url.searchParams.has('path')) {
+			const path: (string | number)[] = JSON.parse(url.searchParams.get('path') || '[]');
+			if (path.length > 0) {
+				return _.get(root, path.map(item => ['items', item]).flatMap(items => items)).items;
 			}
 		}
 		return root;
@@ -35,6 +50,20 @@ export const updateNodeParam = <T>(url: URL, node: T): string => {
 		}
 	}
 	return JSON.stringify(node);
+}
+
+export const updateErrorsParam = (url: URL, errors: Record<string, Error>): string => {
+	if (url.searchParams.has('errors')) {
+		if (url.searchParams.has('path')) {
+			const path: (string | number)[] = JSON.parse(url.searchParams.get('path') || '[]');
+			if (path.length > 0) {
+				const root = JSON.parse(url.searchParams.get('errors') || '{}');
+				_.set(root, path.map(item => ['items', item]).flatMap(items => items), errors);
+				return JSON.stringify(root);
+			}
+		}
+	}
+	return JSON.stringify(errors);
 }
 
 export const getParentPathParam = (url: URL): string => {

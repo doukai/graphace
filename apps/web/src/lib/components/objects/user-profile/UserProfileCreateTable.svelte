@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import type { Error } from '@graphace/commons/types';
 	import { ObjectTd, StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, BooleanTh, BooleanTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
 	import { SectionHead } from '@graphace/ui/components/section';
 	import { Table } from '@graphace/ui/components/table';
@@ -10,6 +11,7 @@
 	import type { MutationTypeUserProfileArgs } from '~/lib/types/schema';
 
 	export let nodes: (MutationTypeUserProfileArgs | null | undefined)[] | null | undefined;
+	export let errors: Record<number, Error> = {};
 
 	const dispatch = createEventDispatcher<{
 		edit: { row: number };
@@ -177,80 +179,80 @@
 							name="address"
 							bind:value={node.address}
 							readonly
-							error={errors[node.id]?.address}
+							error={errors[row]?.iterms?.address}
 						/>
 						<StringTd
 							name="createGroupId"
 							bind:value={node.createGroupId}
 							readonly
-							error={errors[node.id]?.createGroupId}
+							error={errors[row]?.iterms?.createGroupId}
 						/>
 						<TimestampTd
 							name="createTime"
 							bind:value={node.createTime}
 							readonly
-							error={errors[node.id]?.createTime}
+							error={errors[row]?.iterms?.createTime}
 						/>
 						<StringTd
 							name="createUserId"
 							bind:value={node.createUserId}
 							readonly
-							error={errors[node.id]?.createUserId}
+							error={errors[row]?.iterms?.createUserId}
 						/>
 						<StringTd
 							name="email"
 							bind:value={node.email}
 							readonly
-							error={errors[node.id]?.email}
+							error={errors[row]?.iterms?.email}
 						/>
 						<IDTd
 							name="id"
 							bind:value={node.id}
 							readonly
-							error={errors[node.id]?.id}
+							error={errors[row]?.iterms?.id}
 						/>
 						<BooleanTd
 							name="isDeprecated"
 							bind:value={node.isDeprecated}
 							readonly
-							error={errors[node.id]?.isDeprecated}
+							error={errors[row]?.iterms?.isDeprecated}
 						/>
 						<StringTd
 							name="qq"
 							bind:value={node.qq}
 							readonly
-							error={errors[node.id]?.qq}
+							error={errors[row]?.iterms?.qq}
 						/>
 						<StringTd
 							name="realmId"
 							bind:value={node.realmId}
 							readonly
-							error={errors[node.id]?.realmId}
+							error={errors[row]?.iterms?.realmId}
 						/>
 						<TimestampTd
 							name="updateTime"
 							bind:value={node.updateTime}
 							readonly
-							error={errors[node.id]?.updateTime}
+							error={errors[row]?.iterms?.updateTime}
 						/>
 						<StringTd
 							name="updateUserId"
 							bind:value={node.updateUserId}
 							readonly
-							error={errors[node.id]?.updateUserId}
+							error={errors[row]?.iterms?.updateUserId}
 						/>
 						<ObjectTd name="user" path="_/user" on:gotoField />
 						<StringTd
 							name="userId"
 							bind:value={node.userId}
 							readonly
-							error={errors[node.id]?.userId}
+							error={errors[row]?.iterms?.userId}
 						/>
 						<IntTd
 							name="version"
 							bind:value={node.version}
 							readonly
-							error={errors[node.id]?.version}
+							error={errors[row]?.iterms?.version}
 						/>
 						<td>
 							<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>

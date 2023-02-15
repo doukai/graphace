@@ -18,6 +18,7 @@
 
 	export let data: PageData;
 	$: node = data.node as MutationTypeUserArgs;
+	$: errors = data.errors as Record<string, Error>;
 
 	const mutation = (
 		event: CustomEvent<{
@@ -48,4 +49,4 @@
 	};
 </script>
 
-<UserCreateForm bind:node on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<UserCreateForm bind:node {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />

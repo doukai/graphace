@@ -1,9 +1,11 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
+import type { Error } from '@graphace/commons/types';
 import type { MutationType{{ objectFieldTypeName }}Args } from '~/lib/types/schema';
-import { getNode } from '~/lib/utils'
+import { getNode, getErrors } from '~/lib/utils'
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     const nodes: MutationType{{ objectFieldTypeName }}Args[] = getNode(event.url) || [];
-    return { nodes };
+	const errors: Record<number, Error> = getErrors(event.url) || {};
+    return { nodes, errors };
 }

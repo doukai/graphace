@@ -14,6 +14,7 @@
 
 	export let data: PageData;
 	$: node = data.node as MutationTypeOrganizationArgs;
+	$: errors = data.errors as Record<string, Error>;
 
 	const Mutation_organization = new Mutation_organizationStore();
 
@@ -45,4 +46,4 @@
 	};
 </script>
 
-<OrganizationCreateForm bind:node on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<OrganizationCreateForm bind:node {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />

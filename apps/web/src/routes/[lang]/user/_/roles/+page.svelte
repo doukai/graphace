@@ -12,6 +12,7 @@
 
 	export let data: PageData;
 	$: nodes = data.nodes as (MutationTypeRoleArgs | null | undefined)[] || [];
+	$: errors = data.errors as Record<number, Error> || {};
 
 	const edit = (
 		event: CustomEvent<{
@@ -49,7 +50,8 @@
 	};
 </script>
 <RoleCreateTable
-	{nodes}
+	bind:nodes
+	{errors}
 	on:edit={edit}
 	on:create={create}
 	on:gotoField={gotoField}

@@ -14,6 +14,7 @@
 
 	export let data: PageData;
 	$: node = data.node as MutationTypeUserTest2Args;
+	$: errors = data.errors as Record<string, Error>;
 
 	const Mutation_userTest2 = new Mutation_userTest2Store();
 
@@ -45,4 +46,4 @@
 	};
 </script>
 
-<UserTest2CreateForm bind:node on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<UserTest2CreateForm bind:node {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />

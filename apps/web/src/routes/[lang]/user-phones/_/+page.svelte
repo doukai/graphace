@@ -14,6 +14,7 @@
 
 	export let data: PageData;
 	$: node = data.node as MutationTypeUserPhonesArgs;
+	$: errors = data.errors as Record<string, Error>;
 
 	const Mutation_userPhones = new Mutation_userPhonesStore();
 
@@ -45,4 +46,4 @@
 	};
 </script>
 
-<UserPhonesCreateForm bind:node on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<UserPhonesCreateForm bind:node {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />

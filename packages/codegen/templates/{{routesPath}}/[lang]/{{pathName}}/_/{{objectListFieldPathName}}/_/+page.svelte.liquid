@@ -15,6 +15,7 @@
 	export let data: PageData;
 	$: node = data.node as MutationType{{ objectFieldTypeName }}Args;
 	$: {{ idName }} = data.{{ idName }} as string;
+	$: errors = data.errors as Record<string, Error>;
 
 	const Mutation_{{ name | camelCase }}_{{ objectFieldName }} = new Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store();
 
@@ -42,4 +43,4 @@
 	};
 </script>
 
-<{{ objectFieldTypeName }}CreateForm bind:node on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<{{ objectFieldTypeName }}CreateForm bind:node {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />

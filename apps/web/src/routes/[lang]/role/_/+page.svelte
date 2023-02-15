@@ -14,6 +14,7 @@
 
 	export let data: PageData;
 	$: node = data.node as MutationTypeRoleArgs;
+	$: errors = data.errors as Record<string, Error>;
 
 	const Mutation_role = new Mutation_roleStore();
 
@@ -45,4 +46,4 @@
 	};
 </script>
 
-<RoleCreateForm bind:node on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<RoleCreateForm bind:node {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />

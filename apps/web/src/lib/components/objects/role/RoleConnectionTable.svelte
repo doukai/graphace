@@ -346,6 +346,7 @@
 			<RoleTypeTh
 				name="type"
 				bind:expression={args.type}
+				bind:sort={orderBy.type}
 				on:filter={query}
 			/>
 			<TimestampTh
@@ -429,7 +430,6 @@
 							<RoleTypeTd
 								name="type"
 								bind:value={node.type}
-								list
 								on:save={() => updateField({ id: node?.id, type: node?.type })}
 								error={errors[node.id]?.type}
 							/>
