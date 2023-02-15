@@ -4,6 +4,6 @@ import type { MutationTypeRoleArgs } from '~/lib/types/schema';
 import { getNode } from '~/lib/utils'
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    const node: MutationTypeRoleArgs = getNode(event.url);
-    return { id: event.params.id, node };
+    const node: MutationTypeRoleArgs = getNode(event.url) || {};
+    return { node };
 }

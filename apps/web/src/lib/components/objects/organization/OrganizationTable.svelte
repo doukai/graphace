@@ -38,6 +38,7 @@
 		};
 		edit: { id: string };
 		create: {};
+		save: { nodes: (Organization | null | undefined)[] | null | undefined };
 		back: {};
 	}>();
 
@@ -227,6 +228,26 @@
 	>
 		{$LL.routers.type.back()}
 	</button>
+	<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.save()}>
+		<button
+			class="btn btn-square md:hidden"
+			on:click={(e) => {
+				e.preventDefault();
+				dispatch('save', { nodes });
+			}}
+		>
+			<Icon src={ChevronLeft} class="h-6 w-6" solid />
+		</button>
+	</div>
+	<button
+		class="hidden md:btn"
+		on:click={(e) => {
+			e.preventDefault();
+			dispatch('save', { nodes });
+		}}
+	>
+		{$LL.routers.type.save()}
+	</button>
 </SectionHead>
 <div class="divider" />
 <Table>
@@ -356,7 +377,12 @@
 								on:save={() => updateField({ id: node?.id, createUserId: node?.createUserId })}
 								error={errors[node.id]?.createUserId}
 							/>
-							<td>{node.id}</td>
+							<IDTd
+								name="id"
+								bind:value={node.id}
+								readonly
+								error={errors[node.id]?.id}
+							/>
 							<BooleanTd
 								name="isDeprecated"
 								bind:value={node.isDeprecated}
@@ -369,14 +395,26 @@
 								on:save={() => updateField({ id: node?.id, name: node?.name })}
 								error={errors[node.id]?.name}
 							/>
-							<td>{node.orgLevel3}</td>
+							<IntTd
+								name="orgLevel3"
+								bind:value={node.orgLevel3}
+								list
+								readonly
+								error={errors[node.id]?.orgLevel3}
+							/>
 							<StringTd
 								name="realmId"
 								bind:value={node.realmId}
 								on:save={() => updateField({ id: node?.id, realmId: node?.realmId })}
 								error={errors[node.id]?.realmId}
 							/>
-							<td>{node.roleDisable}</td>
+							<BooleanTd
+								name="roleDisable"
+								bind:value={node.roleDisable}
+								list
+								readonly
+								error={errors[node.id]?.roleDisable}
+							/>
 							<TimestampTd
 								name="updateTime"
 								bind:value={node.updateTime}

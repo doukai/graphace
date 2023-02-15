@@ -1,5 +1,5 @@
 import type { Error } from '@graphace/commons/types';
-import Ajv from 'ajv';
+import Ajv, { type ErrorObject } from 'ajv';
 import addFormats from "ajv-formats"
 import localize from 'ajv-i18n';
 const SCHEMA_ENDPOINT = 'http://localhost:8080/schema';
@@ -57,57 +57,15 @@ export async function validate(uri: string, data: object, locale: Language = "en
                 if (validate.errors) {
                     validate.errors.forEach(
                         (error) => {
-                            if (error.keyword === "required") {
-                                if (error.instancePath) {
-                                    const path = error.instancePath.split("/");
-                                    if (path.length === 2) {
-                                        errors[path[1]].iterms = {
-                                            [error.params.missingProperty]: {
-                                                message: error.message,
-                                                schemaPath: error.schemaPath
-                                            }
-                                        }
-                                    } else if (path.length === 3) {
-                                        errors[path[1]].iterms = {
-                                            [path[2]]: {
-                                                [error.params.missingProperty]: {
-                                                    message: error.message,
-                                                    schemaPath: error.schemaPath
-                                                }
-                                            }
-                                        }
-                                    }
-                                } else {
+                            if (error.instancePath) {
+                                const path = error.instancePath.split("/");
+                                path.shift();
+                                buildErrors(error, path, errors);
+                            } else {
+                                if (error.keyword === "required") {
                                     errors[error.params.missingProperty] = {
                                         message: error.message,
                                         schemaPath: error.schemaPath
-                                    }
-                                }
-                            } else if (error.instancePath) {
-                                const path = error.instancePath.split("/");
-                                if (!errors[path[1]]) {
-                                    errors[path[1]] = {};
-                                }
-                                if (path.length === 2) {
-                                    errors[path[1]] = {
-                                        message: error.message,
-                                        schemaPath: error.schemaPath
-                                    }
-                                } else if (path.length === 3) {
-                                    errors[path[1]].iterms = {
-                                        [path[2]]: {
-                                            message: error.message,
-                                            schemaPath: error.schemaPath
-                                        }
-                                    }
-                                } else if (path.length === 4) {
-                                    errors[path[1]].iterms = {
-                                        [path[2]]: {
-                                            [path[3]]: {
-                                                message: error.message,
-                                                schemaPath: error.schemaPath
-                                            }
-                                        }
                                     }
                                 }
                             }
@@ -122,6 +80,39 @@ export async function validate(uri: string, data: object, locale: Language = "en
         }
         throw new Error('validate undefined');
     });
+}
+
+function buildErrors(error: ErrorObject, path: string[], errors: Record<string, Error>): void {
+    if (path.length === 1) {
+        if (error.keyword === "required") {
+            errors[path[0]] = {
+                ...errors[path[0]],
+                iterms: {
+                    ...errors[path[0]].iterms,
+                    [error.params.missingProperty]: {
+                        message: error.message,
+                        schemaPath: error.schemaPath
+                    }
+                }
+            };
+        } else {
+            errors[path[0]] = {
+                message: error.message,
+                schemaPath: error.schemaPath
+            }
+        }
+    } else {
+        const iterms: Record<string, Error> = {};
+        errors[path[0]] = {
+            ...errors[path[0]],
+            iterms: {
+                ...errors[path[0]].iterms,
+                iterms
+            }
+        };
+        path.shift();
+        buildErrors(error, path, iterms);
+    }
 }
 
 function removeEmpty(data: object): object {

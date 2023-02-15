@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { ObjectTd } from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, BooleanTh, BooleanTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
 	import { SectionHead } from '@graphace/ui/components/section';
 	import { Table } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
@@ -14,6 +14,7 @@
 	const dispatch = createEventDispatcher<{
 		edit: { row: number };
 		create: {};
+		save: { nodes: (MutationTypeUserRoleArgs | null | undefined)[] | null | undefined };
 		back: {};
 	}>();
 
@@ -104,6 +105,26 @@
 	>
 		{$LL.routers.type.back()}
 	</button>
+	<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.save()}>
+		<button
+			class="btn btn-square md:hidden"
+			on:click={(e) => {
+				e.preventDefault();
+				dispatch('save', { nodes });
+			}}
+		>
+			<Icon src={ChevronLeft} class="h-6 w-6" solid />
+		</button>
+	</div>
+	<button
+		class="hidden md:btn"
+		on:click={(e) => {
+			e.preventDefault();
+			dispatch('save', { nodes });
+		}}
+	>
+		{$LL.routers.type.save()}
+	</button>
 </SectionHead>
 <div class="divider" />
 <Table>
@@ -149,17 +170,72 @@
 								<input type="checkbox" class="checkbox" bind:checked={selectedRows[row]} />
 							</label>
 						</th>
-						<td>{node.createGroupId}</td>
-						<td>{node.createTime}</td>
-						<td>{node.createUserId}</td>
-						<td>{node.id}</td>
-						<td>{node.isDeprecated}</td>
-						<td>{node.realmId}</td>
-						<td>{node.roleId}</td>
-						<td>{node.updateTime}</td>
-						<td>{node.updateUserId}</td>
-						<td>{node.userId}</td>
-						<td>{node.version}</td>
+						<StringTd
+							name="createGroupId"
+							bind:value={node.createGroupId}
+							readonly
+							error={errors[node.id]?.createGroupId}
+						/>
+						<TimestampTd
+							name="createTime"
+							bind:value={node.createTime}
+							readonly
+							error={errors[node.id]?.createTime}
+						/>
+						<StringTd
+							name="createUserId"
+							bind:value={node.createUserId}
+							readonly
+							error={errors[node.id]?.createUserId}
+						/>
+						<IDTd
+							name="id"
+							bind:value={node.id}
+							readonly
+							error={errors[node.id]?.id}
+						/>
+						<BooleanTd
+							name="isDeprecated"
+							bind:value={node.isDeprecated}
+							readonly
+							error={errors[node.id]?.isDeprecated}
+						/>
+						<StringTd
+							name="realmId"
+							bind:value={node.realmId}
+							readonly
+							error={errors[node.id]?.realmId}
+						/>
+						<IntTd
+							name="roleId"
+							bind:value={node.roleId}
+							readonly
+							error={errors[node.id]?.roleId}
+						/>
+						<TimestampTd
+							name="updateTime"
+							bind:value={node.updateTime}
+							readonly
+							error={errors[node.id]?.updateTime}
+						/>
+						<StringTd
+							name="updateUserId"
+							bind:value={node.updateUserId}
+							readonly
+							error={errors[node.id]?.updateUserId}
+						/>
+						<IntTd
+							name="userId"
+							bind:value={node.userId}
+							readonly
+							error={errors[node.id]?.userId}
+						/>
+						<IntTd
+							name="version"
+							bind:value={node.version}
+							readonly
+							error={errors[node.id]?.version}
+						/>
 						<td>
 							<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
 								<button

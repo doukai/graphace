@@ -42,6 +42,7 @@
 		};
 		edit: { id: string };
 		create: {};
+		save: { nodes: (Role | null | undefined)[] | null | undefined };
 		back: {};
 	}>();
 
@@ -262,6 +263,26 @@
 	>
 		{$LL.routers.type.back()}
 	</button>
+	<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.save()}>
+		<button
+			class="btn btn-square md:hidden"
+			on:click={(e) => {
+				e.preventDefault();
+				dispatch('save', { nodes });
+			}}
+		>
+			<Icon src={ChevronLeft} class="h-6 w-6" solid />
+		</button>
+	</div>
+	<button
+		class="hidden md:btn"
+		on:click={(e) => {
+			e.preventDefault();
+			dispatch('save', { nodes });
+		}}
+	>
+		{$LL.routers.type.save()}
+	</button>
 </SectionHead>
 <div class="divider" />
 <Table>
@@ -325,7 +346,6 @@
 			<RoleTypeTh
 				name="type"
 				bind:expression={args.type}
-				bind:sort={orderBy.type}
 				on:filter={query}
 			/>
 			<TimestampTh
@@ -382,7 +402,12 @@
 								on:save={() => updateField({ id: node?.id, createUserId: node?.createUserId })}
 								error={errors[node.id]?.createUserId}
 							/>
-							<td>{node.id}</td>
+							<IDTd
+								name="id"
+								bind:value={node.id}
+								readonly
+								error={errors[node.id]?.id}
+							/>
 							<BooleanTd
 								name="isDeprecated"
 								bind:value={node.isDeprecated}
@@ -404,6 +429,7 @@
 							<RoleTypeTd
 								name="type"
 								bind:value={node.type}
+								list
 								on:save={() => updateField({ id: node?.id, type: node?.type })}
 								error={errors[node.id]?.type}
 							/>

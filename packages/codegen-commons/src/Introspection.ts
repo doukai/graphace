@@ -25,6 +25,13 @@ export const getFieldType = (type: GraphQLOutputType): GraphQLNamedType => {
     return type;
 }
 
+export const fieldTypeIsList = (type: GraphQLOutputType): boolean => {
+    if (isNonNullType(type)) {
+        return fieldTypeIsList(type.ofType);
+    }
+    return isListType(type);
+}
+
 export const getScalarFields = (field?: GraphQLField<any, any, any>): GraphQLField<any, any, any>[] | undefined => {
     if (field?.type) {
         const fieldType = getFieldType(field.type);
@@ -141,7 +148,7 @@ export const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): { fiel
                     isEnumType: isEnumType(getFieldType(field.type)),
                     isObjectType: isObjectType(getFieldType(field.type)),
                     isNonNullType: isNonNullType(field.type),
-                    isListType: isListType(field.type),
+                    isListType: fieldTypeIsList(field.type),
                     inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),
                     inMutationArgs: fieldInMutationArgs(schema, type.name, field.name)
                 }

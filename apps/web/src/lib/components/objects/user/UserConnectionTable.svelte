@@ -42,6 +42,7 @@
 		};
 		edit: { id: string };
 		create: {};
+		save: { nodes: (User | null | undefined)[] | null | undefined };
 		back: {};
 	}>();
 
@@ -268,6 +269,26 @@
 	>
 		{$LL.routers.type.back()}
 	</button>
+	<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.save()}>
+		<button
+			class="btn btn-square md:hidden"
+			on:click={(e) => {
+				e.preventDefault();
+				dispatch('save', { nodes });
+			}}
+		>
+			<Icon src={ChevronLeft} class="h-6 w-6" solid />
+		</button>
+	</div>
+	<button
+		class="hidden md:btn"
+		on:click={(e) => {
+			e.preventDefault();
+			dispatch('save', { nodes });
+		}}
+	>
+		{$LL.routers.type.save()}
+	</button>
 </SectionHead>
 <div class="divider" />
 <Table>
@@ -448,7 +469,12 @@
 								on:save={() => updateField({ id: node?.id, disable: node?.disable })}
 								error={errors[node.id]?.disable}
 							/>
-							<td>{node.id}</td>
+							<IDTd
+								name="id"
+								bind:value={node.id}
+								readonly
+								error={errors[node.id]?.id}
+							/>
 							<BooleanTd
 								name="isDeprecated"
 								bind:value={node.isDeprecated}
@@ -483,6 +509,7 @@
 							<StringTd
 								name="phones"
 								bind:value={node.phones}
+								list
 								on:save={() => updateField({ id: node?.id, phones: node?.phones })}
 								error={errors[node.id]?.phones}
 							/>
@@ -503,12 +530,14 @@
 							<IntTd
 								name="test1"
 								bind:value={node.test1}
+								list
 								on:save={() => updateField({ id: node?.id, test1: node?.test1 })}
 								error={errors[node.id]?.test1}
 							/>
 							<BooleanTd
 								name="test2"
 								bind:value={node.test2}
+								list
 								on:save={() => updateField({ id: node?.id, test2: node?.test2 })}
 								error={errors[node.id]?.test2}
 							/>
@@ -524,7 +553,12 @@
 								on:save={() => updateField({ id: node?.id, updateUserId: node?.updateUserId })}
 								error={errors[node.id]?.updateUserId}
 							/>
-							<td>{node.userDetail2}</td>
+							<StringTd
+								name="userDetail2"
+								bind:value={node.userDetail2}
+								readonly
+								error={errors[node.id]?.userDetail2}
+							/>
 							<ObjectTd name="userProfile" path={`${node.id}/user-profile`} on:gotoField />
 							<IntTd
 								name="version"

@@ -86,6 +86,7 @@ const en: BaseTranslation = {
 		type: {
 			create: "Create",
 			remove: "Remove",
+			save: "Save",
 			back: "Back"
 		}
 	}

@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { Form, FormLoading, FormItems, FormItem, FormButtons } from '@graphace/ui/components/form';
+	import { Form, FormLoading, FormItems, FormButtons } from '@graphace/ui/components/form';
 	import { StringItem, TimestampItem, IDItem, BooleanItem, IntItem, ObjectItem } from '@graphace/ui-graphql/components/form';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
@@ -76,17 +76,17 @@
 			<FormLoading rows={11} />
 		{:else}
 			{#if node}
-				<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} error={errors.createGroupId} />
-				<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} error={errors.createTime} />
-				<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} error={errors.createUserId} />
-				<IDItem label="id" name="id" bind:value={node.id} error={errors.id} />
-				<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} error={errors.isDeprecated} />
-				<StringItem label="realmId" name="realmId" bind:value={node.realmId} error={errors.realmId} />
-				<BooleanItem label="test2" name="test2" bind:value={node.test2} error={errors.test2} />
-				<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} error={errors.updateTime} />
-				<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
-				<IntItem label="userId" name="userId" bind:value={node.userId} error={errors.userId} />
-				<IntItem label="version" name="version" bind:value={node.version} error={errors.version} />
+				<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId}   error={errors.createGroupId} />
+				<TimestampItem label="createTime" name="createTime" bind:value={node.createTime}   error={errors.createTime} />
+				<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId}   error={errors.createUserId} />
+				<IDItem label="id" name="id" bind:value={node.id}   error={errors.id} />
+				<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated}   error={errors.isDeprecated} />
+				<StringItem label="realmId" name="realmId" bind:value={node.realmId}   error={errors.realmId} />
+				<BooleanItem label="test2" name="test2" bind:value={node.test2}   error={errors.test2} />
+				<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime}   error={errors.updateTime} />
+				<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId}   error={errors.updateUserId} />
+				<IntItem label="userId" name="userId" bind:value={node.userId}   error={errors.userId} />
+				<IntItem label="version" name="version" bind:value={node.version}   error={errors.version} />
 			{/if}
 		{/if}
 	</FormItems>

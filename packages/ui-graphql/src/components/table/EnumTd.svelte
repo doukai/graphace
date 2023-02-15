@@ -8,9 +8,12 @@
 	import LL from '~/i18n/i18n-svelte';
 
 	export let value: string | (string | null | undefined)[] | null | undefined;
+	export let list: boolean = false;
 	export let enums: { name: string; value: string | null | undefined; description?: string }[];
 	export let name: string;
 	export let error: Error | undefined = undefined;
+	export let readonly = false;
+	export let disabled = false;
 	export let placeholder: string = '';
 
 	let content: HTMLElement;
@@ -36,29 +39,38 @@
 </script>
 
 <div class="flex items-start space-x-1" bind:this={content}>
-	{#if Array.isArray(value)}
-		<CheckboxGroup bind:value {error} let:group>
+	{#if Array.isArray(value) || (list && (value === null || value === undefined))}
+		<CheckboxGroup bind:value {error} {readonly} {disabled} let:group let:readonly let:disabled>
 			{#each enums as item}
-				<Checkbox name={item.name} value={item.value} {group} description={item.description} />
+				<Checkbox
+					name={item.name}
+					value={item.value}
+					{group}
+					description={item.description}
+					{readonly}
+					{disabled}
+				/>
 			{/each}
 		</CheckboxGroup>
 	{:else}
-		<Select {name} bind:value {error} {placeholder}>
+		<Select {name} bind:value {error} {placeholder} {readonly} {disabled}>
 			{#each enums as item}
 				<option value={item.value}>{item.name}</option>
 			{/each}
 		</Select>
 	{/if}
-	<div class="tooltip" data-tip={$LL.components.graphql.table.td.save()}>
-		<button class="btn btn-square btn-primary" on:click={() => mutation()}>
-			<Icon src={Check} solid class="h-5 w-5" />
-		</button>
-	</div>
-	<div class="tooltip" data-tip={$LL.components.graphql.table.td.clear()}>
-		<button class="btn btn-square btn-outline btn-error" on:click={() => clean()}>
-			<Icon src={X} solid class="h-5 w-5" />
-		</button>
-	</div>
+	{#if !readonly && !disabled}
+		<div class="tooltip" data-tip={$LL.components.graphql.table.td.save()}>
+			<button class="btn btn-square btn-primary" on:click={() => mutation()}>
+				<Icon src={Check} solid class="h-5 w-5" />
+			</button>
+		</div>
+		<div class="tooltip" data-tip={$LL.components.graphql.table.td.clear()}>
+			<button class="btn btn-square btn-outline btn-error" on:click={() => clean()}>
+				<Icon src={X} solid class="h-5 w-5" />
+			</button>
+		</div>
+	{/if}
 </div>
 
 <td>
@@ -77,7 +89,7 @@
 			appendTo: () => document.body
 		}}
 	>
-		{#if Array.isArray(value)}
+		{#if Array.isArray(value) || (list && (value === null || value === undefined))}
 			{#if value && value.length > 0}
 				{#if value && value.length > 3}
 					{value

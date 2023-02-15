@@ -6,8 +6,10 @@
 	export let placeholder: string = '';
 	export let className: string = '';
 	export let error: Error | undefined = undefined;
+	export let readonly = false;
+	export let disabled = false;
 	export let id: string = nanoid();
-</script> 
+</script>
 
 <div class="form-control w-full max-w-xs">
 	<input
@@ -17,6 +19,8 @@
 		{placeholder}
 		class="input input-bordered {error ? 'input-error' : ''} {className}"
 		bind:value
+		{readonly}
+		{disabled}
 	/>
 	{#if error && error.message}
 		<label for={id} class="label">

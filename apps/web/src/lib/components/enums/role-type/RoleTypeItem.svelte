@@ -4,9 +4,12 @@
 	import { RoleType } from '~/lib/types/schema';
 
 	export let value: string | (string | null | undefined)[] | null | undefined;
+	export let list: boolean = false;
 	export let name: string;
 	export let label: string;
 	export let error: Error | undefined = undefined;
+	export let readonly = false;
+	export let disabled = false;
 	export let placeholder: string = '';
 
 	let enums = [
@@ -16,4 +19,4 @@
 	];
 </script>
 
-<EnumItem bind:value {enums} {name} {label} {error} {placeholder} />
+<EnumItem bind:value {list} {enums} {name} {label} {error} {readonly} {disabled} {placeholder} />

@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { Form, FormLoading, FormItems, FormItem, FormButtons } from '@graphace/ui/components/form';
+	import { Form, FormLoading, FormItems, FormButtons } from '@graphace/ui/components/form';
 	import { StringItem, TimestampItem, IDItem, BooleanItem, IntItem, ObjectItem } from '@graphace/ui-graphql/components/form';
 	import RoleTypeItem from '~/lib/components/enums/role-type/RoleTypeItem.svelte';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
@@ -77,19 +77,19 @@
 			<FormLoading rows={11} />
 		{:else}
 			{#if node}
-				<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} error={errors.createGroupId} />
-				<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} error={errors.createTime} />
-				<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} error={errors.createUserId} />
-				<IDItem label="id" name="id" bind:value={node.id} error={errors.id} />
-				<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} error={errors.isDeprecated} />
-				<StringItem label="name" name="name" bind:value={node.name} error={errors.name} />
-				<StringItem label="realmId" name="realmId" bind:value={node.realmId} error={errors.realmId} />
-				<RoleTypeItem label="type" name="type" bind:value={node.type} error={errors.type} />
-				<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} error={errors.updateTime} />
-				<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
+				<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId}   error={errors.createGroupId} />
+				<TimestampItem label="createTime" name="createTime" bind:value={node.createTime}   error={errors.createTime} />
+				<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId}   error={errors.createUserId} />
+				<IDItem label="id" name="id" bind:value={node.id}   error={errors.id} />
+				<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated}   error={errors.isDeprecated} />
+				<StringItem label="name" name="name" bind:value={node.name}   error={errors.name} />
+				<StringItem label="realmId" name="realmId" bind:value={node.realmId}   error={errors.realmId} />
+				<RoleTypeItem label="type" name="type" bind:value={node.type} list  error={errors.type} />
+				<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime}   error={errors.updateTime} />
+				<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId}   error={errors.updateUserId} />
 				<ObjectItem name="users" path={`${node.id}/users`} label="users" error={errors.users} on:gotoField />
 				<ObjectItem name="usersConnection" path={`${node.id}/users-connection`} label="usersConnection" error={errors.usersConnection} on:gotoField />
-				<IntItem label="version" name="version" bind:value={node.version} error={errors.version} />
+				<IntItem label="version" name="version" bind:value={node.version}   error={errors.version} />
 			{/if}
 		{/if}
 	</FormItems>

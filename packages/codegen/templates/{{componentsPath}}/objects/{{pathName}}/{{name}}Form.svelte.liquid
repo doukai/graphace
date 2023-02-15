@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { Form, FormLoading, FormItems, FormItem, FormButtons } from '@graphace/ui/components/form';
+	import { Form, FormLoading, FormItems, FormButtons } from '@graphace/ui/components/form';
 	import { {% for scalar in scalars %}{{ scalar }}Item, {% endfor %}ObjectItem } from '@graphace/ui-graphql/components/form';
 	{%- for enum in enums %}
 	import {{ enum }}Item from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Item.svelte';
@@ -82,11 +82,7 @@
 				{%- if fields %}
 				{%- for field in fields %}
 				{%- if field.isScalarType or field.isEnumType %}
-				{%- if field.inMutationArgs %}
-				<{{ field.fieldType.name }}Item label="{{ field.fieldName }}" name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}} error={errors.{{ field.fieldName }}} />
-				{%- else %}
-				<FormItem label="{{ field.fieldName }}">{node.{{ field.fieldName }}}</FormItem>
-				{%- endif %}
+				<{{ field.fieldType.name }}Item label="{{ field.fieldName }}" name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}} {% if field.isListType %}list{% endif %} {% if field.inMutationArgs == false %}readonly{% endif %} error={errors.{{ field.fieldName }}} />
 				{%- else %}
 				<ObjectItem name="{{ field.fieldName }}" path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} label="{{ field.fieldName }}" error={errors.{{ field.fieldName }}} on:gotoField />
 				{%- endif %}

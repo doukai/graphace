@@ -5,7 +5,7 @@
 
 	export let name: string;
 	export let expression: StringExpression | null | undefined;
-	export let sort: Sort | null | undefined;
+	export let sort: Sort | null | undefined = undefined;
 
 	let enums = [
 		{ name: Sex.FEMALE, value: Sex.FEMALE },

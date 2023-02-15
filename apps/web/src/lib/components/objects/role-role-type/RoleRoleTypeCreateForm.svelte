@@ -69,17 +69,17 @@
 
 <Form>
 	<FormItems title="RoleRoleType">
-		<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} error={errors.createGroupId} />
-		<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} error={errors.createTime} />
-		<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} error={errors.createUserId} />
-		<IDItem label="id" name="id" bind:value={node.id} error={errors.id} />
-		<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} error={errors.isDeprecated} />
-		<StringItem label="realmId" name="realmId" bind:value={node.realmId} error={errors.realmId} />
-		<IntItem label="roleId" name="roleId" bind:value={node.roleId} error={errors.roleId} />
-		<RoleTypeItem label="type" name="type" bind:value={node.type} error={errors.type} />
-		<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} error={errors.updateTime} />
-		<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
-		<IntItem label="version" name="version" bind:value={node.version} error={errors.version} />
+		<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId}  error={errors.createGroupId} />
+		<TimestampItem label="createTime" name="createTime" bind:value={node.createTime}  error={errors.createTime} />
+		<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId}  error={errors.createUserId} />
+		<IDItem label="id" name="id" bind:value={node.id}  error={errors.id} />
+		<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated}  error={errors.isDeprecated} />
+		<StringItem label="realmId" name="realmId" bind:value={node.realmId}  error={errors.realmId} />
+		<IntItem label="roleId" name="roleId" bind:value={node.roleId}  error={errors.roleId} />
+		<RoleTypeItem label="type" name="type" bind:value={node.type}  error={errors.type} />
+		<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime}  error={errors.updateTime} />
+		<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId}  error={errors.updateUserId} />
+		<IntItem label="version" name="version" bind:value={node.version}  error={errors.version} />
 	</FormItems>
 	<FormButtons>
 		<button

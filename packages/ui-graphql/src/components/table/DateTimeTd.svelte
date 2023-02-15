@@ -8,8 +8,11 @@
 	import LL from '~/i18n/i18n-svelte';
 
 	export let value: string | (string | null | undefined)[] | null | undefined;
+	export let list: boolean = false;
 	export let name: string;
 	export let error: Error | undefined = undefined;
+	export let readonly = false;
+	export let disabled = false;
 	export let placeholder: string = '';
 
 	let content: HTMLElement;
@@ -35,21 +38,23 @@
 </script>
 
 <div class="flex items-start space-x-1" bind:this={content}>
-	{#if Array.isArray(value)}
-		<DateTimeInputList {placeholder} {name} bind:value {error} />
+	{#if Array.isArray(value) || (list && (value === null || value === undefined))}
+		<DateTimeInputList {placeholder} {name} bind:value {error} {readonly} {disabled} />
 	{:else}
-		<DateTimeInput {placeholder} {name} bind:value {error} />
+		<DateTimeInput {placeholder} {name} bind:value {error} {readonly} {disabled} />
 	{/if}
-	<div class="tooltip" data-tip={$LL.components.graphql.table.td.save()}>
-		<button class="btn btn-square btn-primary" on:click={() => mutation()}>
-			<Icon src={Check} solid class="h-5 w-5" />
-		</button>
-	</div>
-	<div class="tooltip" data-tip={$LL.components.graphql.table.td.clear()}>
-		<button class="btn btn-square btn-outline btn-error" on:click={() => clean()}>
-			<Icon src={X} solid class="h-5 w-5" />
-		</button>
-	</div>
+	{#if !readonly && !disabled}
+		<div class="tooltip" data-tip={$LL.components.graphql.table.td.save()}>
+			<button class="btn btn-square btn-primary" on:click={() => mutation()}>
+				<Icon src={Check} solid class="h-5 w-5" />
+			</button>
+		</div>
+		<div class="tooltip" data-tip={$LL.components.graphql.table.td.clear()}>
+			<button class="btn btn-square btn-outline btn-error" on:click={() => clean()}>
+				<Icon src={X} solid class="h-5 w-5" />
+			</button>
+		</div>
+	{/if}
 </div>
 
 <td>
@@ -68,7 +73,7 @@
 			appendTo: () => document.body
 		}}
 	>
-		{#if Array.isArray(value)}
+		{#if Array.isArray(value) || (list && (value === null || value === undefined))}
 			{#if value && value.length > 0}
 				{#if value && value.length > 3}
 					{value

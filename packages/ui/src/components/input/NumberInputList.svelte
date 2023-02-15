@@ -9,6 +9,8 @@
 	export let placeholder: string = '';
 	export let className: string = '';
 	export let error: Error | undefined = undefined;
+	export let readonly = false;
+	export let disabled = false;
 	export let id: string = nanoid();
 
 	const addItem = (index: number) => {
@@ -42,6 +44,8 @@
 							? 'input-error'
 							: ''} {className}"
 						bind:value={item}
+						{readonly}
+						{disabled}
 					/>
 					{#if error && error.iterms && error.iterms[index]}
 						<label for={id + index} class="label">

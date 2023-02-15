@@ -6,19 +6,34 @@
 	export let placeholder: string = '';
 	export let className: string = '';
 	export let error: Error | undefined = undefined;
+	export let readonly = false;
+	export let disabled = false;
 	export let id: string = nanoid();
 </script>
 
 <div class="form-control w-full max-w-xs">
-	<select
-		{id}
-		{name}
-		{placeholder}
-		class="select select-bordered {error ? 'select-error' : ''} {className}"
-		bind:value
-	>
-		<slot />
-	</select>
+	{#if readonly}
+		<input
+			type="text"
+			{id}
+			{name}
+			{placeholder}
+			class="input input-bordered {error ? 'input-error' : ''} {className}"
+			bind:value
+			readonly
+		/>
+	{:else}
+		<select
+			{id}
+			{name}
+			{placeholder}
+			class="select select-bordered {error ? 'select-error' : ''} {className}"
+			bind:value
+			{disabled}
+		>
+			<slot />
+		</select>
+	{/if}
 	{#if error && error.message}
 		<label for={id} class="label">
 			<span class="label-text-alt"><p class="text-error">{error.message}</p></span>

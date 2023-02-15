@@ -44,6 +44,7 @@
 		};
 		edit: { id: string };
 		create: {};
+		save: { nodes: ({{ name }} | null | undefined)[] | null | undefined };
 		back: {};
 	}>();
 
@@ -268,6 +269,26 @@
 	>
 		{$LL.routers.type.back()}
 	</button>
+	<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.save()}>
+		<button
+			class="btn btn-square md:hidden"
+			on:click={(e) => {
+				e.preventDefault();
+				dispatch('save', { nodes });
+			}}
+		>
+			<Icon src={ChevronLeft} class="h-6 w-6" solid />
+		</button>
+	</div>
+	<button
+		class="hidden md:btn"
+		on:click={(e) => {
+			e.preventDefault();
+			dispatch('save', { nodes });
+		}}
+	>
+		{$LL.routers.type.save()}
+	</button>
 </SectionHead>
 <div class="divider" />
 <Table>
@@ -330,16 +351,19 @@
 							{%- if fields %}
 							{%- for field in fields %}
 							{%- if field.isScalarType or field.isEnumType %}
-							{%- if field.inMutationArgs and field.fieldName != idName %}
 							<{{ field.fieldType.name }}Td
 								name="{{ field.fieldName }}"
 								bind:value={node.{{ field.fieldName }}}
+								{%- if field.isListType %}
+								list
+								{%- endif %}
+								{%- if field.inMutationArgs and field.fieldName != idName %}
 								on:save={() => updateField({ {{ idName }}: node?.{{ idName }}, {{ field.fieldName }}: node?.{{ field.fieldName }} })}
+								{%- else %}
+								readonly
+								{%- endif %}
 								error={errors[node.{{ idName }}]?.{{ field.fieldName }}}
 							/>
-							{%- else %}
-							<td>{node.{{ field.fieldName }}}</td>
-							{%- endif %}
 							{%- else %}
 							<ObjectTd name="{{ field.fieldName }}" path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} on:gotoField />
 							{%- endif %}

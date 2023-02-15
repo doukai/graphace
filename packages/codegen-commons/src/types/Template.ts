@@ -27,4 +27,6 @@ export type Template =
     '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/+page.svelte' |
     '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/+page.ts' |
     '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/+page.svelte' |
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/+page.ts' 
+    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/+page.ts'  |
+    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/_/+page.svelte' |
+    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/_/+page.ts'

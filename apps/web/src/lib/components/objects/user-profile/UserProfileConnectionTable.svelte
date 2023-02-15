@@ -40,6 +40,7 @@
 		};
 		edit: { id: string };
 		create: {};
+		save: { nodes: (UserProfile | null | undefined)[] | null | undefined };
 		back: {};
 	}>();
 
@@ -266,6 +267,26 @@
 	>
 		{$LL.routers.type.back()}
 	</button>
+	<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.save()}>
+		<button
+			class="btn btn-square md:hidden"
+			on:click={(e) => {
+				e.preventDefault();
+				dispatch('save', { nodes });
+			}}
+		>
+			<Icon src={ChevronLeft} class="h-6 w-6" solid />
+		</button>
+	</div>
+	<button
+		class="hidden md:btn"
+		on:click={(e) => {
+			e.preventDefault();
+			dispatch('save', { nodes });
+		}}
+	>
+		{$LL.routers.type.save()}
+	</button>
 </SectionHead>
 <div class="divider" />
 <Table>
@@ -409,7 +430,12 @@
 								on:save={() => updateField({ id: node?.id, email: node?.email })}
 								error={errors[node.id]?.email}
 							/>
-							<td>{node.id}</td>
+							<IDTd
+								name="id"
+								bind:value={node.id}
+								readonly
+								error={errors[node.id]?.id}
+							/>
 							<BooleanTd
 								name="isDeprecated"
 								bind:value={node.isDeprecated}

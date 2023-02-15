@@ -4,9 +4,12 @@
 	import {{ objectFieldTypeName }}CreateForm from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { updateNodeParam, getChildPathParam } from '~/lib/utils';
 	import { Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store } from '$houdini';
 	import type { MutationType{{ objectFieldTypeName }}Args, {{ objectFieldTypeName }} } from '~/{{ schemaTypesPath }}';
+	import {
+		updateNodeParam,
+		getChildPathParam
+	} from '~/lib/utils';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -22,17 +25,9 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_{{ name | camelCase }}_{{ objectFieldName }}.mutate({
-			{{ name | camelCase }}_id: {{ idName }},
-			{{ name | camelCase }}_{{ objectFieldName }}: [event.detail.args],
-			mergeToList: ['{{ objectFieldName }}']
-		})
-			.then((result) => {
-				event.detail.then(null);
-			})
-			.catch((error) => {
-				event.detail.catch(error);
-			});
+		ot({
+			node: updateNodeParam($page.url, event.detail.args)
+		});
 	};
 
 	const back = (event: CustomEvent<{}>) => {

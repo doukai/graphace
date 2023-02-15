@@ -476,6 +476,42 @@ const renders: Record<Template, Render> = {
         }
         console.error(config);
         throw new Error(`${typeName} undefined`);
+    },
+    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/_/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                const objectField = getField(type, config.objectFieldName);
+                if (objectField?.type) {
+                    const objectFieldType = getFieldType(objectField.type);
+                    const connectionField = getConnectionField(type, objectField.name);
+                    return {
+                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), connectionField: connectionField, formPath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
+                    };
+                }
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
+    },
+    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/_/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                const objectField = getField(type, config.objectFieldName);
+                if (objectField?.type) {
+                    const objectFieldType = getFieldType(objectField.type);
+                    const connectionField = getConnectionField(type, objectField.name);
+                    return {
+                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, connectionField: connectionField, schemaTypesPath: config.schemaTypesPath }),
+                    };
+                }
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
     }
 }
 

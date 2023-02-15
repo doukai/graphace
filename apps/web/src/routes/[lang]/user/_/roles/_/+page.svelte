@@ -4,9 +4,12 @@
 	import RoleCreateForm from '~/lib/components/objects/role/RoleCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { updateNodeParam, getChildPathParam } from '~/lib/utils';
 	import { Mutation_user_rolesStore } from '$houdini';
 	import type { MutationTypeRoleArgs, Role } from '~/lib/types/schema';
+	import {
+		updateNodeParam,
+		getChildPathParam
+	} from '~/lib/utils';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -22,17 +25,9 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_user_roles.mutate({
-			user_id: id,
-			user_roles: [event.detail.args],
-			mergeToList: ['roles']
-		})
-			.then((result) => {
-				event.detail.then(null);
-			})
-			.catch((error) => {
-				event.detail.catch(error);
-			});
+		ot({
+			node: updateNodeParam($page.url, event.detail.args)
+		});
 	};
 
 	const back = (event: CustomEvent<{}>) => {

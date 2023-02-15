@@ -4,12 +4,14 @@
 	export let value: string | null | undefined;
 	export let group: (string | null | undefined)[] | null | undefined;
 	export let description: string | undefined = undefined;
+	export let readonly = false;
+	export let disabled = false;
 	export let id: string = nanoid();
 </script>
 
 <div class="relative flex items-start">
 	<div class="flex items-center h-5">
-		<input type="checkbox" {id} bind:group class="checkbox" {value} />
+		<input type="checkbox" {id} bind:group class="checkbox" {value} {readonly} {disabled} />
 	</div>
 	<div class="ml-3 text-sm">
 		<label for={id} class="font-medium">{name}</label>

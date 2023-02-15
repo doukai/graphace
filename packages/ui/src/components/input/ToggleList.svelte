@@ -7,6 +7,8 @@
 	export let name: string;
 	export let value: (boolean | null | undefined)[] | null | undefined;
 	export let error: Error | undefined = undefined;
+	export let readonly = false;
+	export let disabled = false;
 	export let id: string = nanoid();
 
 	const addItem = (index: number) => {
@@ -31,7 +33,15 @@
 		{#each value || [] as item, index}
 			<div class="flex space-x-1">
 				<div class="form-control w-full max-w-xs">
-					<input type="checkbox" id={id + index} {name} class="toggle mt-3" bind:checked={item} />
+					<input
+						type="checkbox"
+						id={id + index}
+						{name}
+						class="toggle mt-3"
+						bind:checked={item}
+						{readonly}
+						{disabled}
+					/>
 					{#if error && error.iterms && error.iterms[index]}
 						<label for={id + index} class="label">
 							<span class="label-text-alt">
