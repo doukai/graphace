@@ -1,22 +1,27 @@
 <script lang="ts">
 	import { nanoid } from 'nanoid';
 	export let name: string;
-	export let value: string | null | undefined;
-	export let group: (string | null | undefined)[] | null | undefined;
-	export let description: string | undefined = undefined;
+	export let value: string | null | undefined = undefined;
+	export let className: string = '';
+	export let error: Error | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
 	export let id: string = nanoid();
 </script>
 
-<div class="relative flex items-start">
-	<div class="flex items-center h-5">
-		<input type="checkbox" {id} bind:group class="checkbox" {value} {readonly} {disabled} />
-	</div>
-	<div class="ml-3 text-sm">
-		<label for={id} class="font-medium">{name}</label>
-		{#if description}
-			<p>{description}</p>
-		{/if}
-	</div>
+<div class="form-control w-full max-w-xs">
+	<input
+		type="checkbox"
+		{id}
+		{name}
+		class="checkbox {error ? 'checkbox-error' : ''} {className}"
+		bind:value
+		{readonly}
+		{disabled}
+	/>
+	{#if error && error.message}
+		<label for={id} class="label">
+			<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+		</label>
+	{/if}
 </div>

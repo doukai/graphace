@@ -36,7 +36,7 @@ async function loadSchema(uri: string) {
     return res.json();
 }
 
-export async function validate(uri: string, data: object, update: boolean = false, locale: Language = "en") {
+export async function validate(uri: string, data: object, update: boolean, locale: Language = "en") {
     let validate = ajv.getSchema(update ? uri.concat("Update") : uri);
     if (!validate) {
         const schema = await loadSchema(uri);
@@ -51,6 +51,7 @@ export async function validate(uri: string, data: object, update: boolean = fals
             if (!valid) {
                 localize[locale](validate.errors);
                 if (validate.errors) {
+                    alert(JSON.stringify(validate.errors))
                     validate.errors.forEach(
                         (error) => {
                             if (error.instancePath) {
@@ -68,6 +69,7 @@ export async function validate(uri: string, data: object, update: boolean = fals
                         }
                     );
                 }
+                alert(JSON.stringify(errors));
                 console.error(ajv.errorsText(validate.errors, { separator: '\n' }));
                 reject(errors);
             } else {
@@ -79,6 +81,8 @@ export async function validate(uri: string, data: object, update: boolean = fals
 }
 
 function buildErrors(error: ErrorObject, path: string[], errors: Record<string, Error>): void {
+    alert(JSON.stringify(path));
+    alert(JSON.stringify(errors));
     if (path.length === 1) {
         const property = path[0];
         if (property) {
@@ -100,11 +104,12 @@ function buildErrors(error: ErrorObject, path: string[], errors: Record<string, 
                 }
             }
         }
-    } else {
+    } else if (path.length > 1) {
         const property = path.shift();
         if (property) {
             const iterms: Record<string, Error> = {};
             buildErrors(error, path, iterms);
+            alert(JSON.stringify(iterms));
             errors[property] = {
                 ...errors[property],
                 iterms: {
@@ -112,6 +117,7 @@ function buildErrors(error: ErrorObject, path: string[], errors: Record<string, 
                     iterms
                 }
             };
+            alert(JSON.stringify(errors));
         }
     }
 }
@@ -123,7 +129,16 @@ function removeEmpty(data: object): object {
             .filter(([_, v]) => typeof v === 'object' ? v !== undefined && Object.keys(v).length > 0 : v !== undefined)
             .map(([k, v]) => {
                 if (Array.isArray(v)) {
-                    return [k, v.map(item => removeEmpty(item))];
+                    return [
+                        k,
+                        v.map(item => {
+                            if (typeof item === 'object') {
+                                return removeEmpty(item);
+                            } else {
+                                return item;
+                            }
+                        })
+                    ];
                 } else if (typeof v === 'object') {
                     return [k, removeEmpty(v)];
                 } else {

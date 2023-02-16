@@ -1,20 +1,43 @@
 <script lang="ts">
 	import type { Error } from '@graphace/commons/types';
 	import { nanoid } from 'nanoid';
-	export let value: (string | null | undefined)[] | null | undefined;
+	export let value: string | (string | null | undefined)[] | null | undefined;
 	export let error: Error | undefined = undefined;
+	export let items: { name: string; value: string | null | undefined; description?: string }[];
 	export let readonly = false;
 	export let disabled = false;
 	export let id: string = nanoid();
+
+	$: if (!value) {
+		value = [];
+	}
 </script>
 
 <div class="w-full">
-	<div
-		{id}
-		class="{error && error.message ? 'border-2 border-error p-1 rounded-xl' : ''} space-y-5"
-	>
+	<div class="{error && error.message ? 'border-2 border-error p-1 rounded-xl' : ''} space-y-5">
 		<div class="max-w-lg space-y-4">
-			<slot group={value || []} {readonly} {disabled} />
+			{#each items as item, row}
+				<div class="relative flex items-start">
+					<div class="flex items-center h-5">
+						<input
+							type="checkbox"
+							id={id + row}
+							value={item.value}
+							bind:group={value}
+							class="checkbox"
+							{readonly}
+							{disabled}
+						/>
+					</div>
+					<div class="ml-3 text-sm">
+						<label for={id + row} class="font-medium">{item.name}</label>
+						{#if item.description}
+							<p>{item.description}</p>
+						{/if}
+					</div>
+				</div>
+			{/each}
+			<slot {readonly} {disabled} />
 		</div>
 	</div>
 	{#if error && error.message}
