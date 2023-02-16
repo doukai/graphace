@@ -4,10 +4,7 @@
 	import OrganizationCreateForm from '~/lib/components/objects/organization/OrganizationCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import type {
-		MutationTypeOrganizationArgs,
-		Organization
-	} from '~/lib/types/schema';
+	import type { MutationTypeOrganizationArgs, Organization } from '~/lib/types/schema';
 	import {
 		getNodeParam,
 		updateNodeParam,
@@ -41,7 +38,7 @@
 		});
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
+	const gotoField = (event: CustomEvent<{ path: string; name: string }>) => {
 		to(`../../organization/${event.detail.path}`, {
 			node: updateNodeParam($page.url, node),
 			path: getChildPathParam($page.url, event.detail.name)
@@ -49,4 +46,10 @@
 	};
 </script>
 
-<OrganizationCreateForm bind:node {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<OrganizationCreateForm
+	bind:node
+	{errors}
+	on:mutation={mutation}
+	on:back={back}
+	on:gotoField={gotoField}
+/>

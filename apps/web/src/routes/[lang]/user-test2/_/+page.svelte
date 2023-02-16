@@ -11,26 +11,35 @@
 	import { Mutation_userTest2Store } from '$houdini';
 	import type { MutationTypeUserTest2Args, UserTest2 } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
+	import { validate } from '@graphace/graphql/schema/JsonSchema';
+	import { locale } from '~/i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: node = data.node as MutationTypeUserTest2Args;
-	$: errors = data.errors as Record<string, Error>;
+	$: errors = data.errors as Record<number, Error>;
 
 	const Mutation_userTest2 = new Mutation_userTest2Store();
 
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeUserTest2Args;
+			update?: boolean;
 			then: (data: UserTest2 | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_userTest2.mutate(event.detail.args)
-			.then((result) => {
-				event.detail.then(result?.userTest2);
+		validate('UserTest2', event.detail.args, event.detail.update, $locale)
+			.then((data) => {
+				Mutation_userTest2.mutate({ ...event.detail.args, update: event.detail.update })
+					.then((result) => {
+						event.detail.then(result?.userTest2);
+					})
+					.catch((error) => {
+						event.detail.catch(error);
+					});
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((validErrors) => {
+				errors = validErrors;
 			});
 	};
 

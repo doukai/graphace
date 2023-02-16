@@ -7,13 +7,12 @@
 	import SexItem from '~/lib/components/enums/sex/SexItem.svelte';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
-	import { validate } from '@graphace/graphql/schema/JsonSchema';
 	import LL from '~/i18n/i18n-svelte';
-	import { locale } from '~/i18n/i18n-svelte';
 	import type { User, MutationTypeUserArgs } from '~/lib/types/schema';
 
 	export let node: User | null | undefined;
 	export let isFetching: boolean = false;
+	export let errors: Record<string, Error> = {};
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
@@ -25,31 +24,21 @@
 		back: {};
 	}>();
 
-	let errors: Record<string, Error> = {};
-
 	const save = (): void => {
 		if (node) {
-			validate('User', node, $locale)
-				.then((data) => {
-					errors = {};
-					if (node) {
-						dispatch('mutation', {
-							args: node,
-							then: (data) => {
-								node = data;
-								notifications.success($LL.message.saveSuccess());
-								dispatch('back');
-							},
-							catch: (error) => {
-								console.error(error);
-								notifications.error($LL.message.saveFailed());
-							}
-						});
-					}
-				})
-				.catch((validErrors) => {
-					errors = validErrors;
-				});
+			dispatch('mutation', {
+				args: node,
+				update: true,
+				then: (data) => {
+					node = data;
+					notifications.success($LL.message.saveSuccess());
+					dispatch('back');
+				},
+				catch: (error) => {
+					console.error(error);
+					notifications.error($LL.message.saveFailed());
+				}
+			});
 		}
 	};
 
@@ -77,30 +66,30 @@
 			<FormLoading rows={20} />
 		{:else}
 			{#if node}
-				<IntItem label="age" name="age" bind:value={node.age}   error={errors.age} />
-				<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId}   error={errors.createGroupId} />
-				<TimestampItem label="createTime" name="createTime" bind:value={node.createTime}   error={errors.createTime} />
-				<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId}   error={errors.createUserId} />
-				<BooleanItem label="disable" name="disable" bind:value={node.disable}   error={errors.disable} />
-				<IDItem label="id" name="id" bind:value={node.id}   error={errors.id} />
-				<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated}   error={errors.isDeprecated} />
-				<StringItem label="login" name="login" bind:value={node.login}   error={errors.login} />
-				<StringItem label="name" name="name" bind:value={node.name}   error={errors.name} />
+				<IntItem label="age" name="age" bind:value={node.age} error={errors.age} />
+				<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} error={errors.createGroupId} />
+				<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} error={errors.createTime} />
+				<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} error={errors.createUserId} />
+				<BooleanItem label="disable" name="disable" bind:value={node.disable} error={errors.disable} />
+				<IDItem label="id" name="id" bind:value={node.id} error={errors.id} />
+				<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} error={errors.isDeprecated} />
+				<StringItem label="login" name="login" bind:value={node.login} error={errors.login} />
+				<StringItem label="name" name="name" bind:value={node.name} error={errors.name} />
 				<ObjectItem name="organization" path={`${node.id}/organization`} label="organization" error={errors.organization} on:gotoField />
-				<IntItem label="organizationId" name="organizationId" bind:value={node.organizationId}   error={errors.organizationId} />
-				<StringItem label="password" name="password" bind:value={node.password}   error={errors.password} />
-				<StringItem label="phones" name="phones" bind:value={node.phones} list  error={errors.phones} />
-				<StringItem label="realmId" name="realmId" bind:value={node.realmId}   error={errors.realmId} />
+				<IntItem label="organizationId" name="organizationId" bind:value={node.organizationId} error={errors.organizationId} />
+				<StringItem label="password" name="password" bind:value={node.password} error={errors.password} />
+				<StringItem label="phones" name="phones" bind:value={node.phones} list error={errors.phones} />
+				<StringItem label="realmId" name="realmId" bind:value={node.realmId} error={errors.realmId} />
 				<ObjectItem name="roles" path={`${node.id}/roles`} label="roles" error={errors.roles} on:gotoField />
 				<ObjectItem name="rolesConnection" path={`${node.id}/roles-connection`} label="rolesConnection" error={errors.rolesConnection} on:gotoField />
-				<SexItem label="sex" name="sex" bind:value={node.sex}   error={errors.sex} />
-				<IntItem label="test1" name="test1" bind:value={node.test1} list  error={errors.test1} />
-				<BooleanItem label="test2" name="test2" bind:value={node.test2} list  error={errors.test2} />
-				<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime}   error={errors.updateTime} />
-				<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId}   error={errors.updateUserId} />
-				<StringItem label="userDetail2" name="userDetail2" bind:value={node.userDetail2}  readonly error={errors.userDetail2} />
+				<SexItem label="sex" name="sex" bind:value={node.sex} error={errors.sex} />
+				<IntItem label="test1" name="test1" bind:value={node.test1} list error={errors.test1} />
+				<BooleanItem label="test2" name="test2" bind:value={node.test2} list error={errors.test2} />
+				<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} error={errors.updateTime} />
+				<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
+				<StringItem label="userDetail2" name="userDetail2" bind:value={node.userDetail2} readonly error={errors.userDetail2} />
 				<ObjectItem name="userProfile" path={`${node.id}/user-profile`} label="userProfile" error={errors.userProfile} on:gotoField />
-				<IntItem label="version" name="version" bind:value={node.version}   error={errors.version} />
+				<IntItem label="version" name="version" bind:value={node.version} error={errors.version} />
 			{/if}
 		{/if}
 	</FormItems>

@@ -6,11 +6,15 @@
 	import type { MutationTypeUserArgs, QueryTypeUserListArgs, User } from '~/lib/types/schema';
 	import { Query_organization_userByOrgStore, Mutation_userStore } from '$houdini';
 	import type { PageData } from './$houdini';
+	import { validate } from '@graphace/graphql/schema/JsonSchema';
+	import { locale } from '~/i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: Query_organization_userByOrg = data.Query_organization_userByOrg as Query_organization_userByOrgStore;
 	$: organization = $Query_organization_userByOrg.data?.organization;
+	$: nodes = $Query_organization_userByOrg.data?.organization?.userByOrg;
 	const Mutation_user = new Mutation_userStore();
+	let errors: Record<number, Error> = {};
 
 	const fetch = (
 		event: CustomEvent<{
@@ -38,12 +42,24 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_user.mutate({ ...event.detail.args, update: event.detail.update })
-			.then((result) => {
-				event.detail.then(result?.user);
+		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
+		validate('Organization', event.detail.args, event.detail.update, $locale)
+			.then((data) => {
+				if (row) {
+					errors[row].iterms = {};
+				}
+				Mutation_user.mutate({ ...event.detail.args, update: event.detail.update })
+					.then((result) => {
+						event.detail.then(result?.user);
+					})
+					.catch((error) => {
+						event.detail.catch(error);
+					});
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((validErrors) => {
+				if (row) {
+					errors[row].iterms = validErrors;
+				}
 			});
 	};
 
@@ -64,7 +80,8 @@
 	};
 </script>
 <UserTable
-	nodes={$Query_organization_userByOrg.data?.organization?.userByOrg}
+	bind:nodes
+	{errors}
 	isFetching={$Query_organization_userByOrg.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}

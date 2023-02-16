@@ -220,6 +220,7 @@
 						<RoleTypeTd
 							name="type"
 							bind:value={node.type}
+							list
 							readonly
 							error={errors[row]?.iterms?.type}
 						/>

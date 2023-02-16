@@ -36,12 +36,8 @@ async function loadSchema(uri: string) {
     return res.json();
 }
 
-export async function validateUpdate(uri: string, data: object, locale: Language = "en") {
-    return validate(uri.concat("Update"), data, locale);
-}
-
-export async function validate(uri: string, data: object, locale: Language = "en") {
-    let validate = ajv.getSchema(uri);
+export async function validate(uri: string, data: object, update: boolean = false, locale: Language = "en") {
+    let validate = ajv.getSchema(update ? uri.concat("Update") : uri);
     if (!validate) {
         const schema = await loadSchema(uri);
         validate = await ajv.compileAsync(schema);
@@ -50,7 +46,8 @@ export async function validate(uri: string, data: object, locale: Language = "en
     return new Promise((resolve: (data: object) => void, reject: (errors: Record<string, Error>) => void) => {
         const errors: Record<string, Error> = {};
         if (validate) {
-            const valid = validate(data);
+            const validateData = removeEmpty(data);
+            const valid = validate(validateData);
             if (!valid) {
                 localize[locale](validate.errors);
                 if (validate.errors) {
@@ -74,7 +71,7 @@ export async function validate(uri: string, data: object, locale: Language = "en
                 console.error(ajv.errorsText(validate.errors, { separator: '\n' }));
                 reject(errors);
             } else {
-                resolve(data);
+                resolve(validateData);
             }
         }
         throw new Error('validate undefined');
@@ -117,4 +114,21 @@ function buildErrors(error: ErrorObject, path: string[], errors: Record<string, 
             };
         }
     }
+}
+
+function removeEmpty(data: object): object {
+    return Object.fromEntries(
+        Object.entries(data)
+            .filter(([_, v]) => Array.isArray(v) ? v !== undefined && v.length > 0 : v !== undefined)
+            .filter(([_, v]) => typeof v === 'object' ? v !== undefined && Object.keys(v).length > 0 : v !== undefined)
+            .map(([k, v]) => {
+                if (Array.isArray(v)) {
+                    return [k, v.map(item => removeEmpty(item))];
+                } else if (typeof v === 'object') {
+                    return [k, removeEmpty(v)];
+                } else {
+                    return [k, v];
+                }
+            })
+    );
 }

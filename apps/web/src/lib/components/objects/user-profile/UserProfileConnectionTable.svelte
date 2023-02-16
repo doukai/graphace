@@ -10,8 +10,6 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus, PencilAlt, Trash, ChevronLeft } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
-	import { locale } from '~/i18n/i18n-svelte';
-	import { validateUpdate } from '@graphace/graphql/schema/JsonSchema';
 	import { Pagination } from '@graphace/ui/components/connection';
 	import {
 		Conditional,
@@ -25,6 +23,7 @@
 	export let nodes: (UserProfile | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;
 	export let isFetching: boolean;
+	export let errors: Record<number, Error> = {};
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -43,8 +42,6 @@
 		save: { nodes: (UserProfile | null | undefined)[] | null | undefined };
 		back: {};
 	}>();
-
-	let errors: Record<string, Record<string, Error>> = {};
 
 	let showDeleteButton = false;
 	let searchValue: string | undefined;
@@ -144,33 +141,22 @@
 		});
 	};
 
-	async function updateField(args: MutationTypeUserProfileArgs | null | undefined) {
-		if (args && args.id) {
-			errors[args.id] = {};
-			validateUpdate('UserProfile', args, $locale)
-				.then((data) => {
-					if (args) {
-						dispatch('mutation', {
-							args,
-							then: (data) => {
-								notifications.success($LL.message.saveSuccess());
-							},
-							catch: (error) => {
-								console.error(error);
-								notifications.error($LL.message.saveFailed());
-							}
-						});
-					}
-				})
-				.catch((validErrors) => {
-					if (args.id) {
-						errors[args.id] = validErrors;
-					}
-				});
+	const updateField = (args: MutationTypeUserProfileArgs | null | undefined) => {
+		if (args) {
+			dispatch('mutation', {
+				args,
+				then: (data) => {
+					notifications.success($LL.message.saveSuccess());
+				},
+				catch: (error) => {
+					console.error(error);
+					notifications.error($LL.message.saveFailed());
+				}
+			});
 		}
 	}
 
-	async function removeRow(id: string) {
+	const removeRow = (id: string) => {
 		dispatch('mutation', {
 			args: { id: id, isDeprecated: true },
 			update: true,
@@ -392,7 +378,7 @@
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
-				{#each nodes as node}
+				{#each nodes as node, row}
 					{#if node && node.id}
 						<tr class="hover">
 							<th class="z-10">
@@ -404,80 +390,80 @@
 								name="address"
 								bind:value={node.address}
 								on:save={() => updateField({ id: node?.id, address: node?.address })}
-								error={errors[node.id]?.address}
+								error={errors[row].iterms?.address}
 							/>
 							<StringTd
 								name="createGroupId"
 								bind:value={node.createGroupId}
 								on:save={() => updateField({ id: node?.id, createGroupId: node?.createGroupId })}
-								error={errors[node.id]?.createGroupId}
+								error={errors[row].iterms?.createGroupId}
 							/>
 							<TimestampTd
 								name="createTime"
 								bind:value={node.createTime}
 								on:save={() => updateField({ id: node?.id, createTime: node?.createTime })}
-								error={errors[node.id]?.createTime}
+								error={errors[row].iterms?.createTime}
 							/>
 							<StringTd
 								name="createUserId"
 								bind:value={node.createUserId}
 								on:save={() => updateField({ id: node?.id, createUserId: node?.createUserId })}
-								error={errors[node.id]?.createUserId}
+								error={errors[row].iterms?.createUserId}
 							/>
 							<StringTd
 								name="email"
 								bind:value={node.email}
 								on:save={() => updateField({ id: node?.id, email: node?.email })}
-								error={errors[node.id]?.email}
+								error={errors[row].iterms?.email}
 							/>
 							<IDTd
 								name="id"
 								bind:value={node.id}
 								readonly
-								error={errors[node.id]?.id}
+								error={errors[row].iterms?.id}
 							/>
 							<BooleanTd
 								name="isDeprecated"
 								bind:value={node.isDeprecated}
 								on:save={() => updateField({ id: node?.id, isDeprecated: node?.isDeprecated })}
-								error={errors[node.id]?.isDeprecated}
+								error={errors[row].iterms?.isDeprecated}
 							/>
 							<StringTd
 								name="qq"
 								bind:value={node.qq}
 								on:save={() => updateField({ id: node?.id, qq: node?.qq })}
-								error={errors[node.id]?.qq}
+								error={errors[row].iterms?.qq}
 							/>
 							<StringTd
 								name="realmId"
 								bind:value={node.realmId}
 								on:save={() => updateField({ id: node?.id, realmId: node?.realmId })}
-								error={errors[node.id]?.realmId}
+								error={errors[row].iterms?.realmId}
 							/>
 							<TimestampTd
 								name="updateTime"
 								bind:value={node.updateTime}
 								on:save={() => updateField({ id: node?.id, updateTime: node?.updateTime })}
-								error={errors[node.id]?.updateTime}
+								error={errors[row].iterms?.updateTime}
 							/>
 							<StringTd
 								name="updateUserId"
 								bind:value={node.updateUserId}
 								on:save={() => updateField({ id: node?.id, updateUserId: node?.updateUserId })}
-								error={errors[node.id]?.updateUserId}
+								error={errors[row].iterms?.updateUserId}
 							/>
 							<ObjectTd name="user" path={`${node.id}/user`} on:gotoField />
 							<StringTd
 								name="userId"
 								bind:value={node.userId}
 								on:save={() => updateField({ id: node?.id, userId: node?.userId })}
-								error={errors[node.id]?.userId}
+								error={errors[row].iterms?.userId}
 							/>
 							<IntTd
 								name="version"
 								bind:value={node.version}
 								on:save={() => updateField({ id: node?.id, version: node?.version })}
-								error={errors[node.id]?.version}
+								error={errors[row].iterms?.version}
 							/>
 							<td>
 								<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>

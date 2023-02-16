@@ -16,6 +16,7 @@
 	const dispatch = createEventDispatcher<{
 		mutation: {
 			args: MutationTypeRoleArgs;
+			update?: boolean;
 			then: (data: Role | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
@@ -66,7 +67,7 @@
 		<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} error={errors.isDeprecated} />
 		<StringItem label="name" name="name" bind:value={node.name} error={errors.name} />
 		<StringItem label="realmId" name="realmId" bind:value={node.realmId} error={errors.realmId} />
-		<RoleTypeItem label="type" name="type" bind:value={node.type} error={errors.type} />
+		<RoleTypeItem label="type" name="type" bind:value={node.type} list error={errors.type} />
 		<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} error={errors.updateTime} />
 		<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
 		<ObjectItem name="users" path="_/users" label="users" error={errors.users} on:gotoField />

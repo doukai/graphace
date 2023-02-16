@@ -8,6 +8,8 @@
 	import { Mutation_user_rolesStore } from '$houdini';
 	import type { MutationTypeRoleArgs, Role } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
+	import { validate } from '@graphace/graphql/schema/JsonSchema';
+	import { locale } from '~/i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: node = data.node as MutationTypeRoleArgs;
@@ -19,20 +21,29 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeRoleArgs;
+			update?: boolean;
 			then: (data: Role | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_user_roles.mutate({
-			user_id: id,
-			user_roles: [event.detail.args],
-			mergeToList: ['roles']
-		})
-			.then((result) => {
-				event.detail.then(null);
+		validate('Role', event.detail.args, true, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_user_roles.mutate({
+					user_id: id,
+					user_roles: [event.detail.args],
+					update: true,
+					mergeToList: ['roles']
+				})
+					.then((result) => {
+						event.detail.then(null);
+					})
+					.catch((error) => {
+						event.detail.catch(error);
+					});
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((validErrors) => {
+				errors = validErrors;
 			});
 	};
 

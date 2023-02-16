@@ -7,12 +7,15 @@
 	import type { MutationTypeUserArgs, User } from '~/lib/types/schema';
 	import { Query_userProfile_userStore, Mutation_userProfile_userStore } from '$houdini';
 	import type { PageData } from './$houdini';
+	import { validate } from '@graphace/graphql/schema/JsonSchema';
+	import { locale } from '~/i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: Query_userProfile_user = data.Query_userProfile_user as Query_userProfile_userStore;
 	$: userProfile = $Query_userProfile_user.data?.userProfile;
-	$: user = userProfile?.user;
+	$: node = userProfile?.user;
 	const Mutation_userProfile_user = new Mutation_userProfile_userStore();
+	let errors: Record<number, Error> = {};
 
 	const mutation = (
 		event: CustomEvent<{
@@ -22,16 +25,23 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_userProfile_user.mutate({
-			userProfile_id: userProfile?.id,
-			userProfile_user: event.detail.args,
-			update: event.detail.update
-		})
-			.then((result) => {
-				event.detail.then(result?.userProfile?.user);
+		validate('User', event.detail.args, event.detail.update, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_userProfile_user.mutate({
+					userProfile_id: userProfile?.id,
+					userProfile_user: event.detail.args,
+					update: event.detail.update
+				})
+					.then((result) => {
+						event.detail.then(result?.userProfile?.user);
+					})
+					.catch((error) => {
+						event.detail.catch(error);
+					});
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((validErrors) => {
+				errors = validErrors;
 			});
 	};
 
@@ -44,14 +54,15 @@
 	};
 </script>
 
-{#if user}
+{#if node}
 	<UserForm
-		node={$Query_userProfile_user.data?.userProfile?.user}
+		bind:node
+		{errors}
 		isFetching={$Query_userProfile_user.fetching}
 		on:mutation={mutation}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>
 {:else}
-	<UserCreateForm on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+	<UserCreateForm {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
 {/if}

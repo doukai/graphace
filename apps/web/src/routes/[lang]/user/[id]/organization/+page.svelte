@@ -7,12 +7,15 @@
 	import type { MutationTypeOrganizationArgs, Organization } from '~/lib/types/schema';
 	import { Query_user_organizationStore, Mutation_user_organizationStore } from '$houdini';
 	import type { PageData } from './$houdini';
+	import { validate } from '@graphace/graphql/schema/JsonSchema';
+	import { locale } from '~/i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: Query_user_organization = data.Query_user_organization as Query_user_organizationStore;
 	$: user = $Query_user_organization.data?.user;
-	$: organization = user?.organization;
+	$: node = user?.organization;
 	const Mutation_user_organization = new Mutation_user_organizationStore();
+	let errors: Record<number, Error> = {};
 
 	const mutation = (
 		event: CustomEvent<{
@@ -22,16 +25,23 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_user_organization.mutate({
-			user_id: user?.id,
-			user_organization: event.detail.args,
-			update: event.detail.update
-		})
-			.then((result) => {
-				event.detail.then(result?.user?.organization);
+		validate('Organization', event.detail.args, event.detail.update, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_user_organization.mutate({
+					user_id: user?.id,
+					user_organization: event.detail.args,
+					update: event.detail.update
+				})
+					.then((result) => {
+						event.detail.then(result?.user?.organization);
+					})
+					.catch((error) => {
+						event.detail.catch(error);
+					});
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((validErrors) => {
+				errors = validErrors;
 			});
 	};
 
@@ -44,14 +54,15 @@
 	};
 </script>
 
-{#if organization}
+{#if node}
 	<OrganizationForm
-		node={$Query_user_organization.data?.user?.organization}
+		bind:node
+		{errors}
 		isFetching={$Query_user_organization.fetching}
 		on:mutation={mutation}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>
 {:else}
-	<OrganizationCreateForm on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+	<OrganizationCreateForm {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
 {/if}

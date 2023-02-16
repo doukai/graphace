@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { ot, to } from '~/lib/stores/useNavigate';
+	import type { Error } from '@graphace/commons/types';
 	{%- if connectionField %}
 	import {{ name }}ConnectionTable from '~/{{ tablePath }}/{{ name | paramCase }}/{{ name }}ConnectionTable.svelte';
 	{%- else %}
@@ -8,14 +9,20 @@
 	import type { {{ name }}, {% if connectionField %}QueryType{{ name }}ConnectionArgs{% else %}QueryType{{ name }}ListArgs{% endif %}, MutationType{{ name }}Args } from '~/{{ schemaTypesPath }}';
 	import { {% if connectionField %}Query_{{ name | camelCase }}ConnectionStore{% else %}Query_{{ name | camelCase }}ListStore{% endif %}, Mutation_{{ name | camelCase }}Store } from '$houdini';
 	import type { PageData } from './$houdini';
+	import { validate } from '@graphace/graphql/schema/JsonSchema';
+	import { locale } from '~/i18n/i18n-svelte';
 
 	export let data: PageData;
 	{%- if connectionField %}
 	$: Query_{{ name | camelCase }}Connection = data.Query_{{ name | camelCase }}Connection as Query_{{ name | camelCase }}ConnectionStore;
+	$: nodes = $Query_{{ name | camelCase }}Connection.data?.{{ name | camelCase }}Connection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $Query_{{ name | camelCase }}Connection.data?.{{ name | camelCase }}Connection?.totalCount || 0;
 	{%- else %}
 	$: Query_{{ name | camelCase }}List = data.Query_{{ name | camelCase }}List as Query_{{ name | camelCase }}ListStore;
+	$: nodes = $Query_{{ name | camelCase }}List.data?.{{ name | camelCase }}List;
 	{%- endif %}
 	const Mutation_{{ name | camelCase }} = new Mutation_{{ name | camelCase }}Store();
+	let errors: Record<number, Error> = {};
 
 	const fetch = (
 		event: CustomEvent<{
@@ -53,12 +60,24 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_{{ name | camelCase }}.mutate({ ...event.detail.args, update: event.detail.update })
-			.then((result) => {
-				event.detail.then(result?.{{ name | camelCase }});
+		const row = nodes?.map((node) => node?.{{ idName }})?.indexOf(event.detail.args.{{ idName }});
+		validate('{{ name }}', event.detail.args, event.detail.update, $locale)
+			.then((data) => {
+				if (row) {
+					errors[row].iterms = {};
+				}
+				Mutation_{{ name | camelCase }}.mutate({ ...event.detail.args, update: event.detail.update })
+					.then((result) => {
+						event.detail.then(result?.{{ name | camelCase }});
+					})
+					.catch((error) => {
+						event.detail.catch(error);
+					});
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((validErrors) => {
+				if (row) {
+					errors[row].iterms = validErrors;
+				}
 			});
 	};
 
@@ -81,8 +100,9 @@
 
 {%- if connectionField %}
 <{{ name }}ConnectionTable
-	nodes={$Query_{{ name | camelCase }}Connection.data?.{{ name | camelCase }}Connection?.edges?.map((edge) => edge?.node)}
-	totalCount={$Query_{{ name | camelCase }}Connection.data?.{{ name | camelCase }}Connection?.totalCount || 0}
+	bind:nodes
+	{totalCount}
+	{errors}
 	isFetching={$Query_{{ name | camelCase }}Connection.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
@@ -91,8 +111,8 @@
 	on:gotoField={gotoField}
 />
 {%- else %}
-<{{ name }}Table
-	nodes={$Query_{{ name | camelCase }}List.data?.{{ name | camelCase }}List}
+	bind:nodes
+	{errors}
 	isFetching={$Query_{{ name | camelCase }}List.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}

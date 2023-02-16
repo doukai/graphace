@@ -11,26 +11,35 @@
 	import { Mutation_organizationStore } from '$houdini';
 	import type { MutationTypeOrganizationArgs, Organization } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
+	import { validate } from '@graphace/graphql/schema/JsonSchema';
+	import { locale } from '~/i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: node = data.node as MutationTypeOrganizationArgs;
-	$: errors = data.errors as Record<string, Error>;
+	$: errors = data.errors as Record<number, Error>;
 
 	const Mutation_organization = new Mutation_organizationStore();
 
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeOrganizationArgs;
+			update?: boolean;
 			then: (data: Organization | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_organization.mutate(event.detail.args)
-			.then((result) => {
-				event.detail.then(result?.organization);
+		validate('Organization', event.detail.args, event.detail.update, $locale)
+			.then((data) => {
+				Mutation_organization.mutate({ ...event.detail.args, update: event.detail.update })
+					.then((result) => {
+						event.detail.then(result?.organization);
+					})
+					.catch((error) => {
+						event.detail.catch(error);
+					});
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((validErrors) => {
+				errors = validErrors;
 			});
 	};
 

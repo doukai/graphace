@@ -387,7 +387,7 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, formPath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
+                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), formPath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
                 };
             }
         }
@@ -400,7 +400,7 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, schemaTypesPath: config.schemaTypesPath }),
+                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), schemaTypesPath: config.schemaTypesPath }),
                 };
             }
         }

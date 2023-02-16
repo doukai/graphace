@@ -7,12 +7,15 @@
 	import type { MutationType{{ objectFieldTypeName }}Args, {{ objectFieldTypeName }} } from '~/{{ schemaTypesPath }}';
 	import { Query_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store } from '$houdini';
 	import type { PageData } from './$houdini';
+	import { validate } from '@graphace/graphql/schema/JsonSchema';
+	import { locale } from '~/i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: Query_{{ name | camelCase }}_{{ objectFieldName }} = data.Query_{{ name | camelCase }}_{{ objectFieldName }} as Query_{{ name | camelCase }}_{{ objectFieldName }}Store;
 	$: {{ name | camelCase }} = $Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }};
-	$: {{ objectFieldName }} = {{ name | camelCase }}?.{{ objectFieldName }};
+	$: node = {{ name | camelCase }}?.{{ objectFieldName }};
 	const Mutation_{{ name | camelCase }}_{{ objectFieldName }} = new Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store();
+	let errors: Record<number, Error> = {};
 
 	const mutation = (
 		event: CustomEvent<{
@@ -22,16 +25,23 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_{{ name | camelCase }}_{{ objectFieldName }}.mutate({
-			{{ name | camelCase }}_{{ idName }}: {{ name | camelCase }}?.{{ idName }},
-			{{ name | camelCase }}_{{ objectFieldName }}: event.detail.args,
-			update: event.detail.update
-		})
-			.then((result) => {
-				event.detail.then(result?.{{ name | camelCase }}?.{{ objectFieldName }});
+		validate('{{ objectFieldTypeName }}', event.detail.args, event.detail.update, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_{{ name | camelCase }}_{{ objectFieldName }}.mutate({
+					{{ name | camelCase }}_{{ idName }}: {{ name | camelCase }}?.{{ idName }},
+					{{ name | camelCase }}_{{ objectFieldName }}: event.detail.args,
+					update: event.detail.update
+				})
+					.then((result) => {
+						event.detail.then(result?.{{ name | camelCase }}?.{{ objectFieldName }});
+					})
+					.catch((error) => {
+						event.detail.catch(error);
+					});
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((validErrors) => {
+				errors = validErrors;
 			});
 	};
 
@@ -44,14 +54,15 @@
 	};
 </script>
 
-{#if {{ objectFieldName }}}
+{#if node}
 	<{{ objectFieldTypeName }}Form
-		node={$Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }}?.{{ objectFieldName }}}
+		bind:node
+		{errors}
 		isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
 		on:mutation={mutation}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>
 {:else}
-	<{{ objectFieldTypeName }}CreateForm on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+	<{{ objectFieldTypeName }}CreateForm {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
 {/if}

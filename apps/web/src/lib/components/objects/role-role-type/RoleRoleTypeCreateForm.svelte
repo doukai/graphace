@@ -16,6 +16,7 @@
 	const dispatch = createEventDispatcher<{
 		mutation: {
 			args: MutationTypeRoleRoleTypeArgs;
+			update?: boolean;
 			then: (data: RoleRoleType | null | undefined) => void;
 			catch: (error: Error) => void;
 		};

@@ -14,8 +14,6 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus, PencilAlt, Trash, ChevronLeft } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
-	import { locale } from '~/i18n/i18n-svelte';
-	import { validateUpdate } from '@graphace/graphql/schema/JsonSchema';
 	import { Pagination } from '@graphace/ui/components/connection';
 	import {
 		Conditional,
@@ -29,6 +27,7 @@
 	export let nodes: ({{ name }} | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;
 	export let isFetching: boolean;
+	export let errors: Record<number, Error> = {};
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -47,8 +46,6 @@
 		save: { nodes: ({{ name }} | null | undefined)[] | null | undefined };
 		back: {};
 	}>();
-
-	let errors: Record<string, Record<string, Error>> = {};
 
 	let showDeleteButton = false;
 	let searchValue: string | undefined;
@@ -146,33 +143,22 @@
 		});
 	};
 
-	async function updateField(args: MutationType{{ name }}Args | null | undefined) {
-		if (args && args.{{ idName }}) {
-			errors[args.{{ idName }}] = {};
-			validateUpdate('{{ name }}', args, $locale)
-				.then((data) => {
-					if (args) {
-						dispatch('mutation', {
-							args,
-							then: (data) => {
-								notifications.success($LL.message.saveSuccess());
-							},
-							catch: (error) => {
-								console.error(error);
-								notifications.error($LL.message.saveFailed());
-							}
-						});
-					}
-				})
-				.catch((validErrors) => {
-					if (args.{{ idName }}) {
-						errors[args.{{ idName }}] = validErrors;
-					}
-				});
+	const updateField = (args: MutationType{{ name }}Args | null | undefined) => {
+		if (args) {
+			dispatch('mutation', {
+				args,
+				then: (data) => {
+					notifications.success($LL.message.saveSuccess());
+				},
+				catch: (error) => {
+					console.error(error);
+					notifications.error($LL.message.saveFailed());
+				}
+			});
 		}
 	}
 
-	async function removeRow(id: string) {
+	const removeRow = (id: string) => {
 		dispatch('mutation', {
 			args: { id: id, isDeprecated: true },
 			update: true,
@@ -340,7 +326,7 @@
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
-				{#each nodes as node}
+				{#each nodes as node, row}
 					{#if node && node.{{ idName }}}
 						<tr class="hover">
 							<th class="z-10">
@@ -362,7 +348,7 @@
 								{%- else %}
 								readonly
 								{%- endif %}
-								error={errors[node.{{ idName }}]?.{{ field.fieldName }}}
+								error={errors[row].iterms?.{{ field.fieldName }}}
 							/>
 							{%- else %}
 							<ObjectTd name="{{ field.fieldName }}" path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} on:gotoField />

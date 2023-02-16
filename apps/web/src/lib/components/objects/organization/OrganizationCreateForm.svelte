@@ -15,6 +15,7 @@
 	const dispatch = createEventDispatcher<{
 		mutation: {
 			args: MutationTypeOrganizationArgs;
+			update?: boolean;
 			then: (data: Organization | null | undefined) => void;
 			catch: (error: Error) => void;
 		};

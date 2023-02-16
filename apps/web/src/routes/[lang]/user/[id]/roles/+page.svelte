@@ -6,11 +6,16 @@
 	import type { MutationTypeRoleArgs, QueryTypeRoleConnectionArgs, Role } from '~/lib/types/schema';
 	import { Query_user_rolesStore, Mutation_roleStore } from '$houdini';
 	import type { PageData } from './$houdini';
+	import { validate } from '@graphace/graphql/schema/JsonSchema';
+	import { locale } from '~/i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: Query_user_roles = data.Query_user_roles as Query_user_rolesStore;
 	$: user = $Query_user_roles.data?.user;
+	$: nodes = $Query_user_roles.data?.user?.rolesConnection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $Query_user_roles.data?.user?.rolesConnection?.totalCount || 0;
 	const Mutation_role = new Mutation_roleStore();
+	let errors: Record<number, Error> = {};
 
 	const fetch = (
 		event: CustomEvent<{
@@ -38,12 +43,24 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_role.mutate({ ...event.detail.args, update: event.detail.update })
-			.then((result) => {
-				event.detail.then(result?.role);
+		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
+		validate('User', event.detail.args, event.detail.update, $locale)
+			.then((data) => {
+				if (row) {
+					errors[row].iterms = {};
+				}
+				Mutation_role.mutate({ ...event.detail.args, update: event.detail.update })
+					.then((result) => {
+						event.detail.then(result?.role);
+					})
+					.catch((error) => {
+						event.detail.catch(error);
+					});
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((validErrors) => {
+				if (row) {
+					errors[row].iterms = validErrors;
+				}
 			});
 	};
 
@@ -64,8 +81,9 @@
 	};
 </script>
 <RoleConnectionTable
-	nodes={$Query_user_roles.data?.user?.rolesConnection?.edges?.map((edge) => edge?.node)}
-	totalCount={$Query_user_roles.data?.user?.rolesConnection?.totalCount || 0}
+	bind:nodes
+	{totalCount}
+	{errors}
 	isFetching={$Query_user_roles.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}

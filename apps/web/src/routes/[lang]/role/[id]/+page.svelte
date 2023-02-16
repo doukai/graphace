@@ -6,10 +6,14 @@
 	import { Query_roleStore, Mutation_roleStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { MutationTypeRoleArgs, Role } from '~/lib/types/schema';
+	import { validate } from '@graphace/graphql/schema/JsonSchema';
+	import { locale } from '~/i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: Query_role = data.Query_role as Query_roleStore;
+	$: node = $Query_role.data?.role;
 	const Mutation_role = new Mutation_roleStore();
+	let errors: Record<string, Error> = {};
 
 	const mutation = (
 		event: CustomEvent<{
@@ -19,12 +23,19 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_role.mutate({ ...event.detail.args, update: event.detail.update })
-			.then((result) => {
-				event.detail.then(result?.role);
+		validate('Role', event.detail.args, event.detail.update, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_role.mutate({ ...event.detail.args, update: event.detail.update })
+					.then((result) => {
+						event.detail.then(result?.role);
+					})
+					.catch((error) => {
+						event.detail.catch(error);
+					});
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((validErrors) => {
+				errors = validErrors;
 			});
 	};
 
@@ -38,7 +49,8 @@
 </script>
 
 <RoleForm
-	node={$Query_role.data?.role}
+	bind:node
+	{errors}
 	isFetching={$Query_role.fetching}
 	on:mutation={mutation}
 	on:back={back}

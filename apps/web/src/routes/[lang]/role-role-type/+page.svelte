@@ -1,13 +1,19 @@
 <script lang="ts">
 	import { ot, to } from '~/lib/stores/useNavigate';
+	import type { Error } from '@graphace/commons/types';
 	import RoleRoleTypeConnectionTable from '~/lib/components/objects/role-role-type/RoleRoleTypeConnectionTable.svelte';
 	import type { RoleRoleType, QueryTypeRoleRoleTypeConnectionArgs, MutationTypeRoleRoleTypeArgs } from '~/lib/types/schema';
 	import { Query_roleRoleTypeConnectionStore, Mutation_roleRoleTypeStore } from '$houdini';
 	import type { PageData } from './$houdini';
+	import { validate } from '@graphace/graphql/schema/JsonSchema';
+	import { locale } from '~/i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: Query_roleRoleTypeConnection = data.Query_roleRoleTypeConnection as Query_roleRoleTypeConnectionStore;
+	$: nodes = $Query_roleRoleTypeConnection.data?.roleRoleTypeConnection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $Query_roleRoleTypeConnection.data?.roleRoleTypeConnection?.totalCount || 0;
 	const Mutation_roleRoleType = new Mutation_roleRoleTypeStore();
+	let errors: Record<number, Error> = {};
 
 	const fetch = (
 		event: CustomEvent<{
@@ -33,12 +39,24 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_roleRoleType.mutate({ ...event.detail.args, update: event.detail.update })
-			.then((result) => {
-				event.detail.then(result?.roleRoleType);
+		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
+		validate('RoleRoleType', event.detail.args, event.detail.update, $locale)
+			.then((data) => {
+				if (row) {
+					errors[row].iterms = {};
+				}
+				Mutation_roleRoleType.mutate({ ...event.detail.args, update: event.detail.update })
+					.then((result) => {
+						event.detail.then(result?.roleRoleType);
+					})
+					.catch((error) => {
+						event.detail.catch(error);
+					});
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((validErrors) => {
+				if (row) {
+					errors[row].iterms = validErrors;
+				}
 			});
 	};
 
@@ -59,8 +77,9 @@
 	};
 </script>
 <RoleRoleTypeConnectionTable
-	nodes={$Query_roleRoleTypeConnection.data?.roleRoleTypeConnection?.edges?.map((edge) => edge?.node)}
-	totalCount={$Query_roleRoleTypeConnection.data?.roleRoleTypeConnection?.totalCount || 0}
+	bind:nodes
+	{totalCount}
+	{errors}
 	isFetching={$Query_roleRoleTypeConnection.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}

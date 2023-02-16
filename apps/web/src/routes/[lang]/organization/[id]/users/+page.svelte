@@ -6,11 +6,16 @@
 	import type { MutationTypeUserArgs, QueryTypeUserConnectionArgs, User } from '~/lib/types/schema';
 	import { Query_organization_usersStore, Mutation_userStore } from '$houdini';
 	import type { PageData } from './$houdini';
+	import { validate } from '@graphace/graphql/schema/JsonSchema';
+	import { locale } from '~/i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: Query_organization_users = data.Query_organization_users as Query_organization_usersStore;
 	$: organization = $Query_organization_users.data?.organization;
+	$: nodes = $Query_organization_users.data?.organization?.usersConnection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $Query_organization_users.data?.organization?.usersConnection?.totalCount || 0;
 	const Mutation_user = new Mutation_userStore();
+	let errors: Record<number, Error> = {};
 
 	const fetch = (
 		event: CustomEvent<{
@@ -38,12 +43,24 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_user.mutate({ ...event.detail.args, update: event.detail.update })
-			.then((result) => {
-				event.detail.then(result?.user);
+		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
+		validate('Organization', event.detail.args, event.detail.update, $locale)
+			.then((data) => {
+				if (row) {
+					errors[row].iterms = {};
+				}
+				Mutation_user.mutate({ ...event.detail.args, update: event.detail.update })
+					.then((result) => {
+						event.detail.then(result?.user);
+					})
+					.catch((error) => {
+						event.detail.catch(error);
+					});
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((validErrors) => {
+				if (row) {
+					errors[row].iterms = validErrors;
+				}
 			});
 	};
 
@@ -64,8 +81,9 @@
 	};
 </script>
 <UserConnectionTable
-	nodes={$Query_organization_users.data?.organization?.usersConnection?.edges?.map((edge) => edge?.node)}
-	totalCount={$Query_organization_users.data?.organization?.usersConnection?.totalCount || 0}
+	bind:nodes
+	{totalCount}
+	{errors}
 	isFetching={$Query_organization_users.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}

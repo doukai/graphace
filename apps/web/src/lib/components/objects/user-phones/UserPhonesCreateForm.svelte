@@ -15,6 +15,7 @@
 	const dispatch = createEventDispatcher<{
 		mutation: {
 			args: MutationTypeUserPhonesArgs;
+			update?: boolean;
 			then: (data: UserPhones | null | undefined) => void;
 			catch: (error: Error) => void;
 		};

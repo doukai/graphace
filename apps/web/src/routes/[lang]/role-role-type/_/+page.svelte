@@ -11,26 +11,35 @@
 	import { Mutation_roleRoleTypeStore } from '$houdini';
 	import type { MutationTypeRoleRoleTypeArgs, RoleRoleType } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
+	import { validate } from '@graphace/graphql/schema/JsonSchema';
+	import { locale } from '~/i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: node = data.node as MutationTypeRoleRoleTypeArgs;
-	$: errors = data.errors as Record<string, Error>;
+	$: errors = data.errors as Record<number, Error>;
 
 	const Mutation_roleRoleType = new Mutation_roleRoleTypeStore();
 
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeRoleRoleTypeArgs;
+			update?: boolean;
 			then: (data: RoleRoleType | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_roleRoleType.mutate(event.detail.args)
-			.then((result) => {
-				event.detail.then(result?.roleRoleType);
+		validate('RoleRoleType', event.detail.args, event.detail.update, $locale)
+			.then((data) => {
+				Mutation_roleRoleType.mutate({ ...event.detail.args, update: event.detail.update })
+					.then((result) => {
+						event.detail.then(result?.roleRoleType);
+					})
+					.catch((error) => {
+						event.detail.catch(error);
+					});
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((validErrors) => {
+				errors = validErrors;
 			});
 	};
 

@@ -18,6 +18,7 @@
 	const dispatch = createEventDispatcher<{
 		mutation: {
 			args: MutationType{{ name }}Args;
+			update?: boolean;
 			then: (data: {{ name }} | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
@@ -65,7 +66,7 @@
 		{%- for field in fields %}
 		{%- if field.isScalarType or field.isEnumType %}
 		{%- if field.inMutationArgs %}
-		<{{ field.fieldType.name }}Item label="{{ field.fieldName }}" name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}}{% if field.isListType %}list{% endif %} error={errors.{{ field.fieldName }}} />
+		<{{ field.fieldType.name }}Item label="{{ field.fieldName }}" name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}}{% if field.isListType %} list{% endif %} error={errors.{{ field.fieldName }}} />
 		{%- endif %}
 		{%- else %}
 		<ObjectItem name="{{ field.fieldName }}" path="_/{{ field.fieldName | paramCase }}" label="{{ field.fieldName }}" error={errors.{{ field.fieldName }}} on:gotoField />

@@ -8,6 +8,8 @@
 	import { Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store } from '$houdini';
 	import type { MutationType{{ objectFieldTypeName }}Args, {{ objectFieldTypeName }} } from '~/{{ schemaTypesPath }}';
 	import type { PageData } from './$houdini';
+	import { validate } from '@graphace/graphql/schema/JsonSchema';
+	import { locale } from '~/i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: node = data.node as MutationType{{ objectFieldTypeName }}Args;
@@ -19,20 +21,29 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationType{{ objectFieldTypeName }}Args;
+			update?: boolean;
 			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_{{ name | camelCase }}_{{ objectFieldName }}.mutate({
-			{{ name | camelCase }}_id: {{ idName }},
-			{{ name | camelCase }}_{{ objectFieldName }}: [event.detail.args],
-			mergeToList: ['{{ objectFieldName }}']
-		})
-			.then((result) => {
-				event.detail.then(null);
+		validate('{{ objectFieldTypeName }}', event.detail.args, true, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_{{ name | camelCase }}_{{ objectFieldName }}.mutate({
+					{{ name | camelCase }}_id: {{ idName }},
+					{{ name | camelCase }}_{{ objectFieldName }}: [event.detail.args],
+					update: true,
+					mergeToList: ['{{ objectFieldName }}']
+				})
+					.then((result) => {
+						event.detail.then(null);
+					})
+					.catch((error) => {
+						event.detail.catch(error);
+					});
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((validErrors) => {
+				errors = validErrors;
 			});
 	};
 

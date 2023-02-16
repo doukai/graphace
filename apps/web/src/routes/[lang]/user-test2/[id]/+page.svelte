@@ -6,10 +6,14 @@
 	import { Query_userTest2Store, Mutation_userTest2Store } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { MutationTypeUserTest2Args, UserTest2 } from '~/lib/types/schema';
+	import { validate } from '@graphace/graphql/schema/JsonSchema';
+	import { locale } from '~/i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: Query_userTest2 = data.Query_userTest2 as Query_userTest2Store;
+	$: node = $Query_userTest2.data?.userTest2;
 	const Mutation_userTest2 = new Mutation_userTest2Store();
+	let errors: Record<string, Error> = {};
 
 	const mutation = (
 		event: CustomEvent<{
@@ -19,12 +23,19 @@
 			catch: (error: Error) => void;
 		}>
 	) => {
-		Mutation_userTest2.mutate({ ...event.detail.args, update: event.detail.update })
-			.then((result) => {
-				event.detail.then(result?.userTest2);
+		validate('UserTest2', event.detail.args, event.detail.update, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_userTest2.mutate({ ...event.detail.args, update: event.detail.update })
+					.then((result) => {
+						event.detail.then(result?.userTest2);
+					})
+					.catch((error) => {
+						event.detail.catch(error);
+					});
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((validErrors) => {
+				errors = validErrors;
 			});
 	};
 
@@ -38,7 +49,8 @@
 </script>
 
 <UserTest2Form
-	node={$Query_userTest2.data?.userTest2}
+	bind:node
+	{errors}
 	isFetching={$Query_userTest2.fetching}
 	on:mutation={mutation}
 	on:back={back}

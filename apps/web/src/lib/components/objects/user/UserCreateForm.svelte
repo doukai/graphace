@@ -16,6 +16,7 @@
 	const dispatch = createEventDispatcher<{
 		mutation: {
 			args: MutationTypeUserArgs;
+			update?: boolean;
 			then: (data: User | null | undefined) => void;
 			catch: (error: Error) => void;
 		};
@@ -71,13 +72,13 @@
 		<ObjectItem name="organization" path="_/organization" label="organization" error={errors.organization} on:gotoField />
 		<IntItem label="organizationId" name="organizationId" bind:value={node.organizationId} error={errors.organizationId} />
 		<StringItem label="password" name="password" bind:value={node.password} error={errors.password} />
-		<StringItem label="phones" name="phones" bind:value={node.phones}list error={errors.phones} />
+		<StringItem label="phones" name="phones" bind:value={node.phones} list error={errors.phones} />
 		<StringItem label="realmId" name="realmId" bind:value={node.realmId} error={errors.realmId} />
 		<ObjectItem name="roles" path="_/roles" label="roles" error={errors.roles} on:gotoField />
 		<ObjectItem name="rolesConnection" path="_/roles-connection" label="rolesConnection" error={errors.rolesConnection} on:gotoField />
 		<SexItem label="sex" name="sex" bind:value={node.sex} error={errors.sex} />
-		<IntItem label="test1" name="test1" bind:value={node.test1}list error={errors.test1} />
-		<BooleanItem label="test2" name="test2" bind:value={node.test2}list error={errors.test2} />
+		<IntItem label="test1" name="test1" bind:value={node.test1} list error={errors.test1} />
+		<BooleanItem label="test2" name="test2" bind:value={node.test2} list error={errors.test2} />
 		<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} error={errors.updateTime} />
 		<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} error={errors.updateUserId} />
 		<ObjectItem name="userProfile" path="_/user-profile" label="userProfile" error={errors.userProfile} on:gotoField />
