@@ -72,15 +72,20 @@
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		to(`../../user/_`);
+		to(`./userByOrg/_`);
 	};
-
+	
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
 		to(`../../user/${event.detail.path}`);
 	};
+
+	const back = (event: CustomEvent<{}>) => {
+		ot();
+	};
+
 </script>
 <UserTable
-	bind:nodes
+	{nodes}
 	{errors}
 	isFetching={$Query_organization_userByOrg.fetching}
 	on:fetch={fetch}
@@ -88,4 +93,5 @@
 	on:edit={edit}
 	on:create={create}
 	on:gotoField={gotoField}
+	on:back={back}
 />

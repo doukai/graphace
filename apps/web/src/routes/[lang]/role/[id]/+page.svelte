@@ -49,7 +49,7 @@
 </script>
 
 <RoleForm
-	bind:node
+	{node}
 	{errors}
 	isFetching={$Query_role.fetching}
 	on:mutation={mutation}

@@ -77,7 +77,7 @@
 	};
 </script>
 <OrganizationConnectionTable
-	bind:nodes
+	{nodes}
 	{totalCount}
 	{errors}
 	isFetching={$Query_organizationConnection.fetching}

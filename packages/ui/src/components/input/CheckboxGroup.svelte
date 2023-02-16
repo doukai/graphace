@@ -6,9 +6,6 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let id: string = nanoid();
-	if (!value) {
-		value = [];
-	}
 </script>
 
 <div class="w-full">
@@ -17,7 +14,7 @@
 		class="{error && error.message ? 'border-2 border-error p-1 rounded-xl' : ''} space-y-5"
 	>
 		<div class="max-w-lg space-y-4">
-			<slot group={value} {readonly} {disabled} />
+			<slot group={value || []} {readonly} {disabled} />
 		</div>
 	</div>
 	{#if error && error.message}

@@ -27,7 +27,7 @@ export const getErrors = (url: URL): Record<string | number, Error> | undefined 
 		if (url.searchParams.has('path')) {
 			const path: (string | number)[] = JSON.parse(url.searchParams.get('path') || '[]');
 			if (path.length > 0) {
-				return _.get(root, path.map(item => ['items', item]).flatMap(items => items)).items;
+				return _.get(root, path.map(item => ['items', item]).flatMap(items => items).concat('items'));
 			}
 		}
 		return root;
@@ -36,6 +36,10 @@ export const getErrors = (url: URL): Record<string | number, Error> | undefined 
 
 export const getNodeParam = (url: URL): string | undefined => {
 	return url.searchParams.get('node') || undefined;
+}
+
+export const getErrorsParam = (url: URL): string | undefined => {
+	return url.searchParams.get('errors') || undefined;
 }
 
 export const updateNodeParam = <T>(url: URL, node: T): string => {
@@ -52,13 +56,13 @@ export const updateNodeParam = <T>(url: URL, node: T): string => {
 	return JSON.stringify(node);
 }
 
-export const updateErrorsParam = (url: URL, errors: Record<string, Error>): string => {
+export const updateErrorsParam = (url: URL, errors: Record<string | number, Error>): string => {
 	if (url.searchParams.has('errors')) {
 		if (url.searchParams.has('path')) {
 			const path: (string | number)[] = JSON.parse(url.searchParams.get('path') || '[]');
 			if (path.length > 0) {
 				const root = JSON.parse(url.searchParams.get('errors') || '{}');
-				_.set(root, path.map(item => ['items', item]).flatMap(items => items), errors);
+				_.set(root, path.map(item => ['items', item]).flatMap(items => items).concat('items'), errors);
 				return JSON.stringify(root);
 			}
 		}

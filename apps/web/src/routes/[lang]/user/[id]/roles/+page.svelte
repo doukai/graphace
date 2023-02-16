@@ -73,15 +73,20 @@
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		to(`../../role/_`);
+		to(`./roles/_`);
 	};
-
+	
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
 		to(`../../role/${event.detail.path}`);
 	};
+
+	const back = (event: CustomEvent<{}>) => {
+		ot();
+	};
+
 </script>
 <RoleConnectionTable
-	bind:nodes
+	{nodes}
 	{totalCount}
 	{errors}
 	isFetching={$Query_user_roles.fetching}
@@ -90,4 +95,5 @@
 	on:edit={edit}
 	on:create={create}
 	on:gotoField={gotoField}
+	on:back={back}
 />

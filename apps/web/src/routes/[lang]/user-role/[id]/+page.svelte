@@ -49,7 +49,7 @@
 </script>
 
 <UserRoleForm
-	bind:node
+	{node}
 	{errors}
 	isFetching={$Query_userRole.fetching}
 	on:mutation={mutation}

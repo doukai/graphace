@@ -49,7 +49,7 @@
 </script>
 
 <OrganizationForm
-	bind:node
+	{node}
 	{errors}
 	isFetching={$Query_organization.fetching}
 	on:mutation={mutation}

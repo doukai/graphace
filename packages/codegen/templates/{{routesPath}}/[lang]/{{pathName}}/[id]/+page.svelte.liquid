@@ -49,7 +49,7 @@
 </script>
 
 <{{ name }}Form
-	bind:node
+	{node}
 	{errors}
 	isFetching={$Query_{{ name| camelCase }}.fetching}
 	on:mutation={mutation}

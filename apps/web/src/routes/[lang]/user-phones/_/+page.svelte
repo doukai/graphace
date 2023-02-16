@@ -4,10 +4,7 @@
 	import UserPhonesCreateForm from '~/lib/components/objects/user-phones/UserPhonesCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import {
-		updateNodeParam,
-		getChildPathParam
-	} from '~/lib/utils';
+	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam } from '~/lib/utils';
 	import { Mutation_userPhonesStore } from '$houdini';
 	import type { MutationTypeUserPhonesArgs, UserPhones } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
@@ -44,15 +41,19 @@
 	};
 
 	const back = (event: CustomEvent<{}>) => {
-		ot();
+		ot({
+			node: getNodeParam($page.url),
+			errors: getErrorsParam($page.url)
+		});
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
 		to(`./${event.detail.path}`, {
 			node: updateNodeParam($page.url, node),
+			errors: updateErrorsParam($page.url, errors),
 			path: getChildPathParam($page.url, event.detail.name)
 		});
 	};
 </script>
 
-<UserPhonesCreateForm bind:node {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<UserPhonesCreateForm {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />

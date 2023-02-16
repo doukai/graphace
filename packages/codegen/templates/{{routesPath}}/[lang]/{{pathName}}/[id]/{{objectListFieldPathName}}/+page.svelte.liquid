@@ -89,16 +89,21 @@
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		to(`../../{{ objectFieldTypeName | paramCase }}/_`);
+		to(`./{{ objectFieldName }}/_`);
 	};
-
+	
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
 		to(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.path}`);
 	};
+
+	const back = (event: CustomEvent<{}>) => {
+		ot();
+	};
+
 </script>
 {%- if connectionField %}
 <{{ objectFieldTypeName }}ConnectionTable
-	bind:nodes
+	{nodes}
 	{totalCount}
 	{errors}
 	isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
@@ -107,10 +112,11 @@
 	on:edit={edit}
 	on:create={create}
 	on:gotoField={gotoField}
+	on:back={back}
 />
 {%- else %}
 <{{ objectFieldTypeName }}Table
-	bind:nodes
+	{nodes}
 	{errors}
 	isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
 	on:fetch={fetch}
@@ -118,5 +124,6 @@
 	on:edit={edit}
 	on:create={create}
 	on:gotoField={gotoField}
+	on:back={back}
 />
 {%- endif %}

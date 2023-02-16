@@ -77,7 +77,7 @@
 	};
 </script>
 <UserProfileConnectionTable
-	bind:nodes
+	{nodes}
 	{totalCount}
 	{errors}
 	isFetching={$Query_userProfileConnection.fetching}

@@ -100,7 +100,7 @@
 
 {%- if connectionField %}
 <{{ name }}ConnectionTable
-	bind:nodes
+	{nodes}
 	{totalCount}
 	{errors}
 	isFetching={$Query_{{ name | camelCase }}Connection.fetching}
@@ -111,7 +111,7 @@
 	on:gotoField={gotoField}
 />
 {%- else %}
-	bind:nodes
+	{nodes}
 	{errors}
 	isFetching={$Query_{{ name | camelCase }}List.fetching}
 	on:fetch={fetch}

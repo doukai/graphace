@@ -4,7 +4,7 @@
 	import {{ objectFieldTypeName }}CreateForm from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { updateNodeParam, getChildPathParam } from '~/lib/utils';
+	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '~/lib/utils';
 	import { Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store } from '$houdini';
 	import type { MutationType{{ objectFieldTypeName }}Args, {{ objectFieldTypeName }} } from '~/{{ schemaTypesPath }}';
 	import type { PageData } from './$houdini';
@@ -54,9 +54,10 @@
 	const gotoField = (event: CustomEvent<{ path: string; name: string }>) => {
 		to(`../../../{{ objectFieldTypeName | paramCase }}/${event.detail.path}`, {
 			node: updateNodeParam($page.url, node),
+			errors: updateErrorsParam($page.url, errors),
 			path: getChildPathParam($page.url, event.detail.name)
 		});
 	};
 </script>
 
-<{{ objectFieldTypeName }}CreateForm bind:node {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<{{ objectFieldTypeName }}CreateForm {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />

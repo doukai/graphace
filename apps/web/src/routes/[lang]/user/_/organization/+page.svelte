@@ -4,13 +4,11 @@
 	import OrganizationCreateForm from '~/lib/components/objects/organization/OrganizationCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import type { MutationTypeOrganizationArgs, Organization } from '~/lib/types/schema';
-	import {
-		getNodeParam,
-		updateNodeParam,
-		getParentPathParam,
-		getChildPathParam
-	} from '~/lib/utils';
+	import type {
+		MutationTypeOrganizationArgs,
+		Organization
+	} from '~/lib/types/schema';
+	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam } from '~/lib/utils';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -27,29 +25,24 @@
 	) => {
 		ot({
 			node: updateNodeParam($page.url, event.detail.args),
-			path: getParentPathParam($page.url)
+			errors: updateErrorsParam($page.url, errors)
 		});
 	};
 
 	const back = (event: CustomEvent<{}>) => {
 		ot({
 			node: getNodeParam($page.url),
-			path: getParentPathParam($page.url)
+			errors: getErrorsParam($page.url)
 		});
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string; name: string }>) => {
+	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
 		to(`../../organization/${event.detail.path}`, {
 			node: updateNodeParam($page.url, node),
+			errors: updateErrorsParam($page.url, errors),
 			path: getChildPathParam($page.url, event.detail.name)
 		});
 	};
 </script>
 
-<OrganizationCreateForm
-	bind:node
-	{errors}
-	on:mutation={mutation}
-	on:back={back}
-	on:gotoField={gotoField}
-/>
+<OrganizationCreateForm {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />

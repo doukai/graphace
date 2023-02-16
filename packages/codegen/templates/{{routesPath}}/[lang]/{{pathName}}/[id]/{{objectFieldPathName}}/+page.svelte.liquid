@@ -56,7 +56,7 @@
 
 {#if node}
 	<{{ objectFieldTypeName }}Form
-		bind:node
+		{node}
 		{errors}
 		isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
 		on:mutation={mutation}

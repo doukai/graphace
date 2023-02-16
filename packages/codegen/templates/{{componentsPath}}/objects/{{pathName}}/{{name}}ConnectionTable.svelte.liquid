@@ -348,7 +348,7 @@
 								{%- else %}
 								readonly
 								{%- endif %}
-								error={errors[row].iterms?.{{ field.fieldName }}}
+								error={errors[row]?.iterms?.{{ field.fieldName }}}
 							/>
 							{%- else %}
 							<ObjectTd name="{{ field.fieldName }}" path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} on:gotoField />

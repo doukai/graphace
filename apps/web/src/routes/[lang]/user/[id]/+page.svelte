@@ -49,7 +49,7 @@
 </script>
 
 <UserForm
-	bind:node
+	{node}
 	{errors}
 	isFetching={$Query_user.fetching}
 	on:mutation={mutation}

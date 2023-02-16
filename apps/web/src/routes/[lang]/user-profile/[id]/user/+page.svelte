@@ -56,7 +56,7 @@
 
 {#if node}
 	<UserForm
-		bind:node
+		{node}
 		{errors}
 		isFetching={$Query_userProfile_user.fetching}
 		on:mutation={mutation}

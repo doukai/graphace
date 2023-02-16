@@ -77,7 +77,7 @@
 	};
 </script>
 <UserPhonesConnectionTable
-	bind:nodes
+	{nodes}
 	{totalCount}
 	{errors}
 	isFetching={$Query_userPhonesConnection.fetching}

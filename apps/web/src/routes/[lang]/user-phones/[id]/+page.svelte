@@ -49,7 +49,7 @@
 </script>
 
 <UserPhonesForm
-	bind:node
+	{node}
 	{errors}
 	isFetching={$Query_userPhones.fetching}
 	on:mutation={mutation}

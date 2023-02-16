@@ -5,10 +5,7 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
 	import type { MutationTypeUserArgs } from '~/lib/types/schema';
-	import {
-		updateNodeParam,
-		getChildPathParam
-	} from '~/lib/utils';
+	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam } from '~/lib/utils';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -22,13 +19,15 @@
 	) => {
 		to(`../../user/_`, {
 			node: updateNodeParam($page.url, nodes),
+			errors: updateErrorsParam($page.url, errors),
 			path: getChildPathParam($page.url, event.detail.row)
 		});
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		to(`../../user/_`, {
+		to(`./users/_`, {
 			node: updateNodeParam($page.url, nodes),
+			errors: updateErrorsParam($page.url, errors),
 			path: getChildPathParam($page.url, nodes.length)
 		});
 	};
@@ -36,22 +35,27 @@
 	const gotoField = (event: CustomEvent<{ path: string; name: string }>) => {
 		to(`../../user/${event.detail.path}`, {
 			node: updateNodeParam($page.url, nodes),
+			errors: updateErrorsParam($page.url, errors),
 			path: getChildPathParam($page.url, event.detail.name)
 		});
 	};
 
 	const save = (event: CustomEvent<{ nodes: (MutationTypeUserArgs | null | undefined)[] | null | undefined}> ) => {
 		ot({
-			node: updateNodeParam($page.url, event.detail.nodes)
+			node: updateNodeParam($page.url, event.detail.nodes),
+			errors: updateErrorsParam($page.url, errors)
 		});
 	};
 
 	const back = (event: CustomEvent<{}>) => {
-		ot();
+		ot({
+			node: getNodeParam($page.url),
+			errors: getErrorsParam($page.url)
+		});
 	};
 </script>
 <UserCreateTable
-	bind:nodes
+	{nodes}
 	{errors}
 	on:edit={edit}
 	on:create={create}

@@ -56,7 +56,7 @@
 
 {#if node}
 	<OrganizationForm
-		bind:node
+		{node}
 		{errors}
 		isFetching={$Query_user_organization.fetching}
 		on:mutation={mutation}

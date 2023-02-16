@@ -49,7 +49,7 @@
 </script>
 
 <UserProfileForm
-	bind:node
+	{node}
 	{errors}
 	isFetching={$Query_userProfile.fetching}
 	on:mutation={mutation}

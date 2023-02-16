@@ -77,7 +77,7 @@
 	};
 </script>
 <RoleRoleTypeConnectionTable
-	bind:nodes
+	{nodes}
 	{totalCount}
 	{errors}
 	isFetching={$Query_roleRoleTypeConnection.fetching}

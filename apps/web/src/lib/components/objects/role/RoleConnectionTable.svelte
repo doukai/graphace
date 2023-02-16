@@ -374,62 +374,62 @@
 								name="createGroupId"
 								bind:value={node.createGroupId}
 								on:save={() => updateField({ id: node?.id, createGroupId: node?.createGroupId })}
-								error={errors[row].iterms?.createGroupId}
+								error={errors[row]?.iterms?.createGroupId}
 							/>
 							<TimestampTd
 								name="createTime"
 								bind:value={node.createTime}
 								on:save={() => updateField({ id: node?.id, createTime: node?.createTime })}
-								error={errors[row].iterms?.createTime}
+								error={errors[row]?.iterms?.createTime}
 							/>
 							<StringTd
 								name="createUserId"
 								bind:value={node.createUserId}
 								on:save={() => updateField({ id: node?.id, createUserId: node?.createUserId })}
-								error={errors[row].iterms?.createUserId}
+								error={errors[row]?.iterms?.createUserId}
 							/>
 							<IDTd
 								name="id"
 								bind:value={node.id}
 								readonly
-								error={errors[row].iterms?.id}
+								error={errors[row]?.iterms?.id}
 							/>
 							<BooleanTd
 								name="isDeprecated"
 								bind:value={node.isDeprecated}
 								on:save={() => updateField({ id: node?.id, isDeprecated: node?.isDeprecated })}
-								error={errors[row].iterms?.isDeprecated}
+								error={errors[row]?.iterms?.isDeprecated}
 							/>
 							<StringTd
 								name="name"
 								bind:value={node.name}
 								on:save={() => updateField({ id: node?.id, name: node?.name })}
-								error={errors[row].iterms?.name}
+								error={errors[row]?.iterms?.name}
 							/>
 							<StringTd
 								name="realmId"
 								bind:value={node.realmId}
 								on:save={() => updateField({ id: node?.id, realmId: node?.realmId })}
-								error={errors[row].iterms?.realmId}
+								error={errors[row]?.iterms?.realmId}
 							/>
 							<RoleTypeTd
 								name="type"
 								bind:value={node.type}
 								list
 								on:save={() => updateField({ id: node?.id, type: node?.type })}
-								error={errors[row].iterms?.type}
+								error={errors[row]?.iterms?.type}
 							/>
 							<TimestampTd
 								name="updateTime"
 								bind:value={node.updateTime}
 								on:save={() => updateField({ id: node?.id, updateTime: node?.updateTime })}
-								error={errors[row].iterms?.updateTime}
+								error={errors[row]?.iterms?.updateTime}
 							/>
 							<StringTd
 								name="updateUserId"
 								bind:value={node.updateUserId}
 								on:save={() => updateField({ id: node?.id, updateUserId: node?.updateUserId })}
-								error={errors[row].iterms?.updateUserId}
+								error={errors[row]?.iterms?.updateUserId}
 							/>
 							<ObjectTd name="users" path={`${node.id}/users`} on:gotoField />
 							<ObjectTd name="usersConnection" path={`${node.id}/users-connection`} on:gotoField />
@@ -437,7 +437,7 @@
 								name="version"
 								bind:value={node.version}
 								on:save={() => updateField({ id: node?.id, version: node?.version })}
-								error={errors[row].iterms?.version}
+								error={errors[row]?.iterms?.version}
 							/>
 							<td>
 								<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>

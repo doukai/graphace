@@ -77,7 +77,7 @@
 	};
 </script>
 <UserTest1ConnectionTable
-	bind:nodes
+	{nodes}
 	{totalCount}
 	{errors}
 	isFetching={$Query_userTest1Connection.fetching}

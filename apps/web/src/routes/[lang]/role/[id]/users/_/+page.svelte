@@ -4,7 +4,7 @@
 	import UserCreateForm from '~/lib/components/objects/user/UserCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Error } from '@graphace/commons/types';
-	import { updateNodeParam, getChildPathParam } from '~/lib/utils';
+	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '~/lib/utils';
 	import { Mutation_role_usersStore } from '$houdini';
 	import type { MutationTypeUserArgs, User } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
@@ -54,9 +54,10 @@
 	const gotoField = (event: CustomEvent<{ path: string; name: string }>) => {
 		to(`../../../user/${event.detail.path}`, {
 			node: updateNodeParam($page.url, node),
+			errors: updateErrorsParam($page.url, errors),
 			path: getChildPathParam($page.url, event.detail.name)
 		});
 	};
 </script>
 
-<UserCreateForm bind:node {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<UserCreateForm {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />

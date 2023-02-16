@@ -8,12 +8,7 @@
 		MutationTypeUserProfileArgs,
 		UserProfile
 	} from '~/lib/types/schema';
-	import {
-		getNodeParam,
-		updateNodeParam,
-		getParentPathParam,
-		getChildPathParam
-	} from '~/lib/utils';
+	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam } from '~/lib/utils';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -30,23 +25,24 @@
 	) => {
 		ot({
 			node: updateNodeParam($page.url, event.detail.args),
-			path: getParentPathParam($page.url)
+			errors: updateErrorsParam($page.url, errors)
 		});
 	};
 
 	const back = (event: CustomEvent<{}>) => {
 		ot({
 			node: getNodeParam($page.url),
-			path: getParentPathParam($page.url)
+			errors: getErrorsParam($page.url)
 		});
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
 		to(`../../user-profile/${event.detail.path}`, {
 			node: updateNodeParam($page.url, node),
+			errors: updateErrorsParam($page.url, errors),
 			path: getChildPathParam($page.url, event.detail.name)
 		});
 	};
 </script>
 
-<UserProfileCreateForm bind:node {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<UserProfileCreateForm {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
