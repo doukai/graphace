@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import { FormItem } from '@graphace/ui/components/form';
 	import { NumberInput, NumberInputList } from '@graphace/ui/components/input';
 
@@ -7,7 +7,7 @@
 	export let list: boolean = false;
 	export let name: string;
 	export let label: string;
-	export let error: Error | undefined = undefined;
+	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
@@ -15,8 +15,8 @@
 
 <FormItem {label} let:id>
 	{#if Array.isArray(value) || (list && (value === null || value === undefined))}
-		<NumberInputList {placeholder} {id} {name} bind:value {error} {readonly} {disabled} />
+		<NumberInputList {placeholder} {id} {name} bind:value {errors} {readonly} {disabled} />
 	{:else}
-		<NumberInput {placeholder} {id} {name} bind:value {error} {readonly} {disabled} />
+		<NumberInput {placeholder} {id} {name} bind:value {errors} {readonly} {disabled} />
 	{/if}
 </FormItem>

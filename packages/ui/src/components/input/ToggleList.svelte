@@ -1,12 +1,12 @@
 <script lang="ts">
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import { nanoid } from 'nanoid';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus, PlusSm, MinusSm } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
 	export let name: string;
 	export let value: (boolean | null | undefined)[] | null | undefined;
-	export let error: Error | undefined = undefined;
+	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
 	export let id: string = nanoid();
@@ -26,10 +26,7 @@
 </script>
 
 <div class="w-full">
-	<div
-		{id}
-		class="{error && error.message ? 'border-2 border-error p-1 rounded-xl' : ''} space-y-5"
-	>
+	<div {id} class="{errors?.errors ? 'border-2 border-error p-1 rounded-xl' : ''} space-y-5">
 		{#each value || [] as item, index}
 			<div class="flex space-x-1">
 				<div class="form-control w-full max-w-xs">
@@ -42,10 +39,12 @@
 						{readonly}
 						{disabled}
 					/>
-					{#if error && error.iterms && error.iterms[index]}
+					{#if errors?.iterms}
 						<label for={id + index} class="label">
 							<span class="label-text-alt">
-								<p class="text-error">{error.iterms[index].message}</p>
+								{#each errors.iterms[index].errors || [] as error}
+									<p class="text-error">{error.message}</p>
+								{/each}
 							</span>
 						</label>
 					{/if}
@@ -88,9 +87,11 @@
 			</div>
 		{/if}
 	</div>
-	{#if error && error.message}
+	{#if errors?.errors}
 		<label for={id} class="label">
-			<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+			{#each errors.errors as error}
+				<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+			{/each}
 		</label>
 	{/if}
 </div>

@@ -2,7 +2,7 @@
 	import { ot, to } from '~/lib/stores/useNavigate';
 	import RoleConnectionTable from '~/lib/components/objects/role/RoleConnectionTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypeRoleArgs, QueryTypeRoleConnectionArgs, Role } from '~/lib/types/schema';
 	import { Query_user_rolesStore, Mutation_roleStore } from '$houdini';
 	import type { PageData } from './$houdini';
@@ -15,13 +15,13 @@
 	$: nodes = $Query_user_roles.data?.user?.rolesConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_user_roles.data?.user?.rolesConnection?.totalCount || 0;
 	const Mutation_role = new Mutation_roleStore();
-	let errors: Record<number, Error> = {};
+	let errors: Record<number, Errors> = {};
 
 	const fetch = (
 		event: CustomEvent<{
 			args: QueryTypeRoleConnectionArgs;
 			then: (data: (Role | null | undefined)[] | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		Query_user_roles.fetch({
@@ -30,8 +30,8 @@
 			.then((result) => {
 				event.detail.then(result.data?.user?.rolesConnection?.edges?.map((edge) => edge?.node));
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((errors) => {
+				event.detail.catch(errors);
 			});
 	};
 
@@ -40,7 +40,7 @@
 			args: MutationTypeRoleArgs;
 			update?: boolean;
 			then: (data: Role | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
@@ -53,8 +53,8 @@
 					.then((result) => {
 						event.detail.then(result?.role);
 					})
-					.catch((error) => {
-						event.detail.catch(error);
+					.catch((errors) => {
+						event.detail.catch(errors);
 					});
 			})
 			.catch((validErrors) => {

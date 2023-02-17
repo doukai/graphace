@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import {{ objectFieldTypeName }}CreateForm from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import type {
 		MutationType{{ objectFieldTypeName }}Args,
 		{{ objectFieldTypeName }}
@@ -13,14 +13,14 @@
 
 	export let data: PageData;
 	$: node = data.node as MutationType{{ objectFieldTypeName }}Args;
-	$: errors = data.errors as Record<string, Error>;
+	$: errors = data.errors as Record<string, Errors>;
 
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationType{{ objectFieldTypeName }}Args;
 			update?: boolean;
 			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		ot({

@@ -2,7 +2,7 @@
 	import { ot, to } from '~/lib/stores/useNavigate';
 	import UserPhonesForm from '~/lib/components/objects/user-phones/UserPhonesForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import { Query_userPhonesStore, Mutation_userPhonesStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { MutationTypeUserPhonesArgs, UserPhones } from '~/lib/types/schema';
@@ -13,14 +13,14 @@
 	$: Query_userPhones = data.Query_userPhones as Query_userPhonesStore;
 	$: node = $Query_userPhones.data?.userPhones;
 	const Mutation_userPhones = new Mutation_userPhonesStore();
-	let errors: Record<string, Error> = {};
+	let errors: Record<string, Errors> = {};
 
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeUserPhonesArgs;
 			update?: boolean;
 			then: (data: UserPhones | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		validate('UserPhones', event.detail.args, event.detail.update, $locale)
@@ -30,8 +30,8 @@
 					.then((result) => {
 						event.detail.then(result?.userPhones);
 					})
-					.catch((error) => {
-						event.detail.catch(error);
+					.catch((errors) => {
+						event.detail.catch(errors);
 					});
 			})
 			.catch((validErrors) => {

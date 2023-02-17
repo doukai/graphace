@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import {{ objectFieldTypeName }}CreateForm from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '~/lib/utils';
 	import { Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store } from '$houdini';
 	import type { MutationType{{ objectFieldTypeName }}Args, {{ objectFieldTypeName }} } from '~/{{ schemaTypesPath }}';
@@ -14,7 +14,7 @@
 	export let data: PageData;
 	$: node = data.node as MutationType{{ objectFieldTypeName }}Args;
 	$: {{ idName }} = data.{{ idName }} as string;
-	$: errors = data.errors as Record<string, Error>;
+	$: errors = data.errors as Record<string, Errors>;
 
 	const Mutation_{{ name | camelCase }}_{{ objectFieldName }} = new Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store();
 
@@ -23,7 +23,7 @@
 			args: MutationType{{ objectFieldTypeName }}Args;
 			update?: boolean;
 			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		validate('{{ objectFieldTypeName }}', event.detail.args, true, $locale)
@@ -38,8 +38,8 @@
 					.then((result) => {
 						event.detail.then(null);
 					})
-					.catch((error) => {
-						event.detail.catch(error);
+					.catch((errors) => {
+						event.detail.catch(errors);
 					});
 			})
 			.catch((validErrors) => {

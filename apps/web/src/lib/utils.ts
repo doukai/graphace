@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import type { Error } from '@graphace/commons/types';
+import type { Errors } from '@graphace/commons/types';
 
 // replaces the locale slug in a relative url
 // e.g. /en/blog/article-1 => /de/blog/article-1
@@ -21,7 +21,7 @@ export const getNode = <T>(url: URL): T | undefined => {
 	}
 }
 
-export const getErrors = (url: URL): Record<string | number, Error> | undefined => {
+export const getErrors = (url: URL): Record<string | number, Errors> | undefined => {
 	if (url.searchParams.has('errors')) {
 		const root = JSON.parse(url.searchParams.get('errors') || '{}');
 		if (url.searchParams.has('path')) {
@@ -56,7 +56,7 @@ export const updateNodeParam = <T>(url: URL, node: T): string => {
 	return JSON.stringify(node);
 }
 
-export const updateErrorsParam = (url: URL, errors: Record<string | number, Error>): string => {
+export const updateErrorsParam = (url: URL, errors: Record<string | number, Errors>): string => {
 	if (url.searchParams.has('errors')) {
 		if (url.searchParams.has('path')) {
 			const path: (string | number)[] = JSON.parse(url.searchParams.get('path') || '[]');

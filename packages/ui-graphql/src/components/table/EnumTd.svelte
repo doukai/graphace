@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { tippy } from '@graphace/ui/components/tippy';
-	import type { Error } from '@graphace/commons/types';
-	import { Checkbox, CheckboxGroup, Select } from '@graphace/ui/components/input';
+	import type { Errors } from '@graphace/commons/types';
+	import { CheckboxGroup, Select } from '@graphace/ui/components/input';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, X, Minus } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
@@ -11,7 +11,7 @@
 	export let list: boolean = false;
 	export let enums: { name: string; value: string | null | undefined; description?: string }[];
 	export let name: string;
-	export let error: Error | undefined = undefined;
+	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
@@ -40,20 +40,9 @@
 
 <div class="flex items-start space-x-1" bind:this={content}>
 	{#if Array.isArray(value) || (list && (value === null || value === undefined))}
-		<CheckboxGroup bind:value {error} {readonly} {disabled} let:group let:readonly let:disabled>
-			{#each enums as item}
-				<Checkbox
-					name={item.name}
-					value={item.value}
-					{group}
-					description={item.description}
-					{readonly}
-					{disabled}
-				/>
-			{/each}
-		</CheckboxGroup>
+		<CheckboxGroup bind:value items={enums} {errors} {readonly} {disabled} />
 	{:else}
-		<Select {name} bind:value {error} {placeholder} {readonly} {disabled}>
+		<Select {name} bind:value {errors} {placeholder} {readonly} {disabled}>
 			{#each enums as item}
 				<option value={item.value}>{item.name}</option>
 			{/each}

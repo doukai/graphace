@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import RoleCreateForm from '~/lib/components/objects/role/RoleCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '~/lib/utils';
 	import { Mutation_roleStore } from '$houdini';
 	import type { MutationTypeRoleArgs, Role } from '~/lib/types/schema';
@@ -13,7 +13,7 @@
 
 	export let data: PageData;
 	$: node = data.node as MutationTypeRoleArgs;
-	$: errors = data.errors as Record<number, Error>;
+	$: errors = data.errors as Record<number, Errors>;
 
 	const Mutation_role = new Mutation_roleStore();
 
@@ -22,7 +22,7 @@
 			args: MutationTypeRoleArgs;
 			update?: boolean;
 			then: (data: Role | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		validate('Role', event.detail.args, event.detail.update, $locale)
@@ -31,8 +31,8 @@
 					.then((result) => {
 						event.detail.then(result?.role);
 					})
-					.catch((error) => {
-						event.detail.catch(error);
+					.catch((errors) => {
+						event.detail.catch(errors);
 					});
 			})
 			.catch((validErrors) => {

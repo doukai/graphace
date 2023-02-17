@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import { ObjectTd, IntTh, IntTd, StringTh, StringTd, TimestampTh, TimestampTd, BooleanTh, BooleanTd, IDTh, IDTd } from '@graphace/ui-graphql/components/table';
 	import SexTh from '~/lib/components/enums/sex/SexTh.svelte';
 	import SexTd from '~/lib/components/enums/sex/SexTd.svelte';
@@ -23,19 +23,19 @@
 
 	export let nodes: (User | null | undefined)[] | null | undefined;
 	export let isFetching: boolean;
-	export let errors: Record<number, Error> = {};
+	export let errors: Record<number, Errors> = {};
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
 			args: QueryTypeUserListArgs;
 			then: (data: (User | null | undefined)[] | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		};
 		mutation: {
 			args: MutationTypeUserArgs;
 			update?: boolean;
 			then: (data: User | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		};
 		edit: { id: string };
 		create: {};
@@ -71,7 +71,8 @@
 		dispatch('fetch', {
 			args,
 			then: (data) => {},
-			catch: (error) => {
+			catch: (errors) => {
+				console.error(errors);
 				notifications.error($LL.message.requestFailed());
 			}
 		});
@@ -104,7 +105,8 @@
 		dispatch('fetch', {
 			args,
 			then: (data) => {},
-			catch: (error) => {
+			catch: (errors) => {
+				console.error(errors);
 				notifications.error($LL.message.requestFailed());
 			}
 		});
@@ -117,8 +119,8 @@
 				then: (data) => {
 					notifications.success($LL.message.saveSuccess());
 				},
-				catch: (error) => {
-					console.error(error);
+				catch: (errors) => {
+					console.error(errors);
 					notifications.error($LL.message.saveFailed());
 				}
 			});
@@ -133,8 +135,8 @@
 				notifications.success($LL.message.removeSuccess());
 				query();
 			},
-			catch: (error) => {
-				console.error(error);
+			catch: (errors) => {
+				console.error(errors);
 				notifications.error($LL.message.removeFailed());
 			}
 		});
@@ -151,8 +153,8 @@
 				notifications.success($LL.message.removeSuccess());
 				query();
 			},
-			catch: (error) => {
-				console.error(error);
+			catch: (errors) => {
+				console.error(errors);
 				notifications.error($LL.message.removeFailed());
 			}
 		});
@@ -396,81 +398,81 @@
 								name="age"
 								bind:value={node.age}
 								on:save={() => updateField({ id: node?.id, age: node?.age })}
-								error={errors[row]?.iterms?.age}
+								errors={errors[row]?.iterms?.age}
 							/>
 							<StringTd
 								name="createGroupId"
 								bind:value={node.createGroupId}
 								on:save={() => updateField({ id: node?.id, createGroupId: node?.createGroupId })}
-								error={errors[row]?.iterms?.createGroupId}
+								errors={errors[row]?.iterms?.createGroupId}
 							/>
 							<TimestampTd
 								name="createTime"
 								bind:value={node.createTime}
 								on:save={() => updateField({ id: node?.id, createTime: node?.createTime })}
-								error={errors[row]?.iterms?.createTime}
+								errors={errors[row]?.iterms?.createTime}
 							/>
 							<StringTd
 								name="createUserId"
 								bind:value={node.createUserId}
 								on:save={() => updateField({ id: node?.id, createUserId: node?.createUserId })}
-								error={errors[row]?.iterms?.createUserId}
+								errors={errors[row]?.iterms?.createUserId}
 							/>
 							<BooleanTd
 								name="disable"
 								bind:value={node.disable}
 								on:save={() => updateField({ id: node?.id, disable: node?.disable })}
-								error={errors[row]?.iterms?.disable}
+								errors={errors[row]?.iterms?.disable}
 							/>
 							<IDTd
 								name="id"
 								bind:value={node.id}
 								readonly
-								error={errors[row]?.iterms?.id}
+								errors={errors[row]?.iterms?.id}
 							/>
 							<BooleanTd
 								name="isDeprecated"
 								bind:value={node.isDeprecated}
 								on:save={() => updateField({ id: node?.id, isDeprecated: node?.isDeprecated })}
-								error={errors[row]?.iterms?.isDeprecated}
+								errors={errors[row]?.iterms?.isDeprecated}
 							/>
 							<StringTd
 								name="login"
 								bind:value={node.login}
 								on:save={() => updateField({ id: node?.id, login: node?.login })}
-								error={errors[row]?.iterms?.login}
+								errors={errors[row]?.iterms?.login}
 							/>
 							<StringTd
 								name="name"
 								bind:value={node.name}
 								on:save={() => updateField({ id: node?.id, name: node?.name })}
-								error={errors[row]?.iterms?.name}
+								errors={errors[row]?.iterms?.name}
 							/>
 							<ObjectTd name="organization" path={`${node.id}/organization`} on:gotoField />
 							<IntTd
 								name="organizationId"
 								bind:value={node.organizationId}
 								on:save={() => updateField({ id: node?.id, organizationId: node?.organizationId })}
-								error={errors[row]?.iterms?.organizationId}
+								errors={errors[row]?.iterms?.organizationId}
 							/>
 							<StringTd
 								name="password"
 								bind:value={node.password}
 								on:save={() => updateField({ id: node?.id, password: node?.password })}
-								error={errors[row]?.iterms?.password}
+								errors={errors[row]?.iterms?.password}
 							/>
 							<StringTd
 								name="phones"
 								bind:value={node.phones}
 								list
 								on:save={() => updateField({ id: node?.id, phones: node?.phones })}
-								error={errors[row]?.iterms?.phones}
+								errors={errors[row]?.iterms?.phones}
 							/>
 							<StringTd
 								name="realmId"
 								bind:value={node.realmId}
 								on:save={() => updateField({ id: node?.id, realmId: node?.realmId })}
-								error={errors[row]?.iterms?.realmId}
+								errors={errors[row]?.iterms?.realmId}
 							/>
 							<ObjectTd name="roles" path={`${node.id}/roles`} on:gotoField />
 							<ObjectTd name="rolesConnection" path={`${node.id}/roles-connection`} on:gotoField />
@@ -478,46 +480,46 @@
 								name="sex"
 								bind:value={node.sex}
 								on:save={() => updateField({ id: node?.id, sex: node?.sex })}
-								error={errors[row]?.iterms?.sex}
+								errors={errors[row]?.iterms?.sex}
 							/>
 							<IntTd
 								name="test1"
 								bind:value={node.test1}
 								list
 								on:save={() => updateField({ id: node?.id, test1: node?.test1 })}
-								error={errors[row]?.iterms?.test1}
+								errors={errors[row]?.iterms?.test1}
 							/>
 							<BooleanTd
 								name="test2"
 								bind:value={node.test2}
 								list
 								on:save={() => updateField({ id: node?.id, test2: node?.test2 })}
-								error={errors[row]?.iterms?.test2}
+								errors={errors[row]?.iterms?.test2}
 							/>
 							<TimestampTd
 								name="updateTime"
 								bind:value={node.updateTime}
 								on:save={() => updateField({ id: node?.id, updateTime: node?.updateTime })}
-								error={errors[row]?.iterms?.updateTime}
+								errors={errors[row]?.iterms?.updateTime}
 							/>
 							<StringTd
 								name="updateUserId"
 								bind:value={node.updateUserId}
 								on:save={() => updateField({ id: node?.id, updateUserId: node?.updateUserId })}
-								error={errors[row]?.iterms?.updateUserId}
+								errors={errors[row]?.iterms?.updateUserId}
 							/>
 							<StringTd
 								name="userDetail2"
 								bind:value={node.userDetail2}
 								readonly
-								error={errors[row]?.iterms?.userDetail2}
+								errors={errors[row]?.iterms?.userDetail2}
 							/>
 							<ObjectTd name="userProfile" path={`${node.id}/user-profile`} on:gotoField />
 							<IntTd
 								name="version"
 								bind:value={node.version}
 								on:save={() => updateField({ id: node?.id, version: node?.version })}
-								error={errors[row]?.iterms?.version}
+								errors={errors[row]?.iterms?.version}
 							/>
 							<td>
 								<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>

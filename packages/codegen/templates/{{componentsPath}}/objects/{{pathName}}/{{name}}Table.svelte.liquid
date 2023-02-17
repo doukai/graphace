@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import { ObjectTd, {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql/components/table';
 	{%- for enum in enums %}
 	import {{ enum }}Th from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Th.svelte';
@@ -25,19 +25,19 @@
 
 	export let nodes: ({{ name }} | null | undefined)[] | null | undefined;
 	export let isFetching: boolean;
-	export let errors: Record<number, Error> = {};
+	export let errors: Record<number, Errors> = {};
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
 			args: QueryType{{ name }}ListArgs;
 			then: (data: ({{ name }} | null | undefined)[] | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		};
 		mutation: {
 			args: MutationType{{ name }}Args;
 			update?: boolean;
 			then: (data: {{ name }} | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		};
 		edit: { id: string };
 		create: {};
@@ -73,7 +73,8 @@
 		dispatch('fetch', {
 			args,
 			then: (data) => {},
-			catch: (error) => {
+			catch: (errors) => {
+				console.error(errors);
 				notifications.error($LL.message.requestFailed());
 			}
 		});
@@ -104,7 +105,8 @@
 		dispatch('fetch', {
 			args,
 			then: (data) => {},
-			catch: (error) => {
+			catch: (errors) => {
+				console.error(errors);
 				notifications.error($LL.message.requestFailed());
 			}
 		});
@@ -117,8 +119,8 @@
 				then: (data) => {
 					notifications.success($LL.message.saveSuccess());
 				},
-				catch: (error) => {
-					console.error(error);
+				catch: (errors) => {
+					console.error(errors);
 					notifications.error($LL.message.saveFailed());
 				}
 			});
@@ -133,8 +135,8 @@
 				notifications.success($LL.message.removeSuccess());
 				query();
 			},
-			catch: (error) => {
-				console.error(error);
+			catch: (errors) => {
+				console.error(errors);
 				notifications.error($LL.message.removeFailed());
 			}
 		});
@@ -151,8 +153,8 @@
 				notifications.success($LL.message.removeSuccess());
 				query();
 			},
-			catch: (error) => {
-				console.error(error);
+			catch: (errors) => {
+				console.error(errors);
 				notifications.error($LL.message.removeFailed());
 			}
 		});
@@ -315,7 +317,7 @@
 								{%- else %}
 								readonly
 								{%- endif %}
-								error={errors[row]?.iterms?.{{ field.fieldName }}}
+								errors={errors[row]?.iterms?.{{ field.fieldName }}}
 							/>
 							{%- else %}
 							<ObjectTd name="{{ field.fieldName }}" path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} on:gotoField />

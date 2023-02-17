@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import { nanoid } from 'nanoid';
 	export let value: string | (string | null | undefined)[] | null | undefined;
-	export let error: Error | undefined = undefined;
+	export let errors: Errors | undefined = undefined;
 	export let items: { name: string; value: string | null | undefined; description?: string }[];
 	export let readonly = false;
 	export let disabled = false;
@@ -14,7 +14,7 @@
 </script>
 
 <div class="w-full">
-	<div class="{error && error.message ? 'border-2 border-error p-1 rounded-xl' : ''} space-y-5">
+	<div class="{errors?.errors ? 'border-2 border-error p-1 rounded-xl' : ''} space-y-5">
 		<div class="max-w-lg space-y-4">
 			{#each items as item, row}
 				<div class="relative flex items-start">
@@ -40,9 +40,11 @@
 			<slot {readonly} {disabled} />
 		</div>
 	</div>
-	{#if error && error.message}
+	{#if errors?.errors}
 		<label for={id} class="label">
-			<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+			{#each errors.errors as error}
+				<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+			{/each}
 		</label>
 	{/if}
 </div>

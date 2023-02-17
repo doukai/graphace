@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ot, to } from '~/lib/stores/useNavigate';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import RoleConnectionTable from '~/lib/components/objects/role/RoleConnectionTable.svelte';
 	import type { Role, QueryTypeRoleConnectionArgs, MutationTypeRoleArgs } from '~/lib/types/schema';
 	import { Query_roleConnectionStore, Mutation_roleStore } from '$houdini';
@@ -13,21 +13,21 @@
 	$: nodes = $Query_roleConnection.data?.roleConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_roleConnection.data?.roleConnection?.totalCount || 0;
 	const Mutation_role = new Mutation_roleStore();
-	let errors: Record<number, Error> = {};
+	let errors: Record<number, Errors> = {};
 
 	const fetch = (
 		event: CustomEvent<{
 			args: QueryTypeRoleConnectionArgs;
 			then: (data: (Role | null | undefined)[] | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		Query_roleConnection.fetch({ variables: event.detail.args })
 			.then((result) => {
 				event.detail.then(result.data?.roleConnection?.edges?.map((edge) => edge?.node));
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((errors) => {
+				event.detail.catch(errors);
 			});
 	};
 
@@ -36,7 +36,7 @@
 			args: MutationTypeRoleArgs;
 			update?: boolean;
 			then: (data: Role | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
@@ -49,8 +49,8 @@
 					.then((result) => {
 						event.detail.then(result?.role);
 					})
-					.catch((error) => {
-						event.detail.catch(error);
+					.catch((errors) => {
+						event.detail.catch(errors);
 					});
 			})
 			.catch((validErrors) => {

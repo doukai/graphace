@@ -1,3 +1,3 @@
-import type { Error } from "./Error"
+import type { Error, Errors } from "./Error"
 
-export { Error }
+export { Error, Errors }

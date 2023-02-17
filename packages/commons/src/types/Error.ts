@@ -1,5 +1,9 @@
 export type Error = {
     message?: string;
     schemaPath?: string;
-    iterms?: Record<string, Error>
+}
+
+export type Errors = {
+    errors?: Error[];
+    iterms?: Record<string, Errors>
 }

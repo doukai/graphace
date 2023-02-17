@@ -1,5 +1,5 @@
-import type { Error } from '@graphace/commons/types';
-import Ajv, { type ErrorObject } from 'ajv';
+import type { Error, Errors } from '@graphace/commons/types';
+import Ajv from 'ajv';
 import addFormats from "ajv-formats"
 import localize from 'ajv-i18n';
 const SCHEMA_ENDPOINT = 'http://localhost:8080/schema';
@@ -36,42 +36,41 @@ async function loadSchema(uri: string) {
     return res.json();
 }
 
-export async function validate(uri: string, data: object, update: boolean, locale: Language = "en") {
+export async function validate(uri: string, data: object, update: boolean | undefined, locale: Language = "en") {
     let validate = ajv.getSchema(update ? uri.concat("Update") : uri);
     if (!validate) {
         const schema = await loadSchema(uri);
         validate = await ajv.compileAsync(schema);
     }
 
-    return new Promise((resolve: (data: object) => void, reject: (errors: Record<string, Error>) => void) => {
-        const errors: Record<string, Error> = {};
+    return new Promise((resolve: (data: object) => void, reject: (errors: Record<string, Errors>) => void) => {
         if (validate) {
             const validateData = removeEmpty(data);
             const valid = validate(validateData);
             if (!valid) {
                 localize[locale](validate.errors);
                 if (validate.errors) {
-                    alert(JSON.stringify(validate.errors))
-                    validate.errors.forEach(
-                        (error) => {
-                            if (error.instancePath) {
-                                const path = error.instancePath.split("/");
-                                path.shift();
-                                buildErrors(error, path, errors);
-                            } else {
-                                if (error.keyword === "required") {
-                                    errors[error.params.missingProperty] = {
-                                        message: error.message,
-                                        schemaPath: error.schemaPath
-                                    }
-                                }
-                            }
+                    const instancePathErrors: Record<string, Error[]> = {};
+                    validate.errors.map(error => {
+                        if (error.keyword === "required") {
+                            error.instancePath += `/${error.params.missingProperty}`;
+                        }
+                        return error;
+                    }).reduce((errors, error) => {
+                        errors[error.instancePath] = [...errors[error.instancePath] || [], error];
+                        return errors;
+                    }, instancePathErrors);
+
+                    let errorsTree: Record<string, Errors> = {};
+                    Object.entries(instancePathErrors).forEach(
+                        ([instancePath, errors]) => {
+                            errorsTree = buildErrorsTree(instancePath.split('/').slice(1), errors, errorsTree);
                         }
                     );
+                    console.error(ajv.errorsText(validate.errors, { separator: '\n' }));
+                    reject(errorsTree);
                 }
-                alert(JSON.stringify(errors));
-                console.error(ajv.errorsText(validate.errors, { separator: '\n' }));
-                reject(errors);
+                throw new Error('validate errors undefined');
             } else {
                 resolve(validateData);
             }
@@ -80,46 +79,19 @@ export async function validate(uri: string, data: object, update: boolean, local
     });
 }
 
-function buildErrors(error: ErrorObject, path: string[], errors: Record<string, Error>): void {
-    alert(JSON.stringify(path));
-    alert(JSON.stringify(errors));
+function buildErrorsTree(path: string[], errors: Error[], errorsTree: Record<string, Errors>): Record<string, Errors> {
     if (path.length === 1) {
-        const property = path[0];
-        if (property) {
-            if (error.keyword === "required") {
-                errors[property] = {
-                    ...errors[property],
-                    iterms: {
-                        ...errors[property].iterms,
-                        [error.params.missingProperty]: {
-                            message: error.message,
-                            schemaPath: error.schemaPath
-                        }
-                    }
-                };
-            } else {
-                errors[property] = {
-                    message: error.message,
-                    schemaPath: error.schemaPath
-                }
-            }
-        }
+        errorsTree[path[0]] = {
+            errors: [...errorsTree[path[0]]?.errors || [], ...errors],
+            iterms: errorsTree[path[0]]?.iterms
+        };
     } else if (path.length > 1) {
-        const property = path.shift();
-        if (property) {
-            const iterms: Record<string, Error> = {};
-            buildErrors(error, path, iterms);
-            alert(JSON.stringify(iterms));
-            errors[property] = {
-                ...errors[property],
-                iterms: {
-                    ...errors[property].iterms,
-                    iterms
-                }
-            };
-            alert(JSON.stringify(errors));
-        }
+        errorsTree[path[0]] = {
+            errors: errorsTree[path[0]]?.errors,
+            iterms: { ...errorsTree[path[0]]?.iterms || {}, ...buildErrorsTree(path.slice(1), errors, errorsTree[path[0]]?.iterms || {}) }
+        };
     }
+    return errorsTree;
 }
 
 function removeEmpty(data: object): object {

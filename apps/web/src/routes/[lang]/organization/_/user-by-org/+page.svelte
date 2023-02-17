@@ -3,14 +3,14 @@
 	import { page } from '$app/stores';
 	import UserCreateTable from '~/lib/components/objects/user/UserCreateTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypeUserArgs } from '~/lib/types/schema';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam } from '~/lib/utils';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
 	$: nodes = data.nodes as (MutationTypeUserArgs | null | undefined)[];
-	$: errors = data.errors as Record<number, Error>;
+	$: errors = data.errors as Record<number, Errors>;
 
 	const edit = (
 		event: CustomEvent<{

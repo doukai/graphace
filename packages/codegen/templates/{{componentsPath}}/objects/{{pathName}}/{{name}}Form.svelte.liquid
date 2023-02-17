@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import { Form, FormLoading, FormItems, FormButtons } from '@graphace/ui/components/form';
 	import { {% for scalar in scalars %}{{ scalar }}Item, {% endfor %}ObjectItem } from '@graphace/ui-graphql/components/form';
 	{%- for enum in enums %}
@@ -14,14 +14,14 @@
 
 	export let node: {{ name }} | null | undefined;
 	export let isFetching: boolean = false;
-	export let errors: Record<string, Error> = {};
+	export let errors: Record<string, Errors> = {};
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
 			args: MutationType{{ name }}Args;
 			update?: boolean;
 			then: (data: {{ name }} | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		};
 		back: {};
 	}>();
@@ -36,8 +36,8 @@
 					notifications.success($LL.message.saveSuccess());
 					dispatch('back');
 				},
-				catch: (error) => {
-					console.error(error);
+				catch: (errors) => {
+					console.error(errors);
 					notifications.error($LL.message.saveFailed());
 				}
 			});
@@ -53,8 +53,8 @@
 					notifications.success($LL.message.removeSuccess());
 					dispatch('back');
 				},
-				catch: (error) => {
-					console.error(error);
+				catch: (errors) => {
+					console.error(errors);
 					notifications.error($LL.message.removeFailed());
 				}
 			});
@@ -71,9 +71,9 @@
 				{%- if fields %}
 				{%- for field in fields %}
 				{%- if field.isScalarType or field.isEnumType %}
-				<{{ field.fieldType.name }}Item label="{{ field.fieldName }}" name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}}{% if field.isListType %} list{% endif %}{% if field.inMutationArgs == false %} readonly{% endif %} error={errors.{{ field.fieldName }}} />
+				<{{ field.fieldType.name }}Item label="{{ field.fieldName }}" name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}}{% if field.isListType %} list{% endif %}{% if field.inMutationArgs == false %} readonly{% endif %} errors={errors.{{ field.fieldName }}} />
 				{%- else %}
-				<ObjectItem name="{{ field.fieldName }}" path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} label="{{ field.fieldName }}" error={errors.{{ field.fieldName }}} on:gotoField />
+				<ObjectItem name="{{ field.fieldName }}" path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} label="{{ field.fieldName }}" errors={errors.{{ field.fieldName }}} on:gotoField />
 				{%- endif %}
 				{%- endfor %}
 				{%- endif %}

@@ -3,7 +3,7 @@
 	import {{ objectFieldTypeName }}Form from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}Form.svelte';
 	import {{ objectFieldTypeName }}CreateForm from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import type { MutationType{{ objectFieldTypeName }}Args, {{ objectFieldTypeName }} } from '~/{{ schemaTypesPath }}';
 	import { Query_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store } from '$houdini';
 	import type { PageData } from './$houdini';
@@ -15,14 +15,14 @@
 	$: {{ name | camelCase }} = $Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }};
 	$: node = {{ name | camelCase }}?.{{ objectFieldName }};
 	const Mutation_{{ name | camelCase }}_{{ objectFieldName }} = new Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store();
-	let errors: Record<number, Error> = {};
+	let errors: Record<number, Errors> = {};
 
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationType{{ objectFieldTypeName }}Args;
 			update?: boolean;
 			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		validate('{{ objectFieldTypeName }}', event.detail.args, event.detail.update, $locale)
@@ -36,8 +36,8 @@
 					.then((result) => {
 						event.detail.then(result?.{{ name | camelCase }}?.{{ objectFieldName }});
 					})
-					.catch((error) => {
-						event.detail.catch(error);
+					.catch((errors) => {
+						event.detail.catch(errors);
 					});
 			})
 			.catch((validErrors) => {

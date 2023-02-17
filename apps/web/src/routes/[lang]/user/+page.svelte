@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ot, to } from '~/lib/stores/useNavigate';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import UserConnectionTable from '~/lib/components/objects/user/UserConnectionTable.svelte';
 	import type { User, QueryTypeUserConnectionArgs, MutationTypeUserArgs } from '~/lib/types/schema';
 	import { Query_userConnectionStore, Mutation_userStore } from '$houdini';
@@ -13,21 +13,21 @@
 	$: nodes = $Query_userConnection.data?.userConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_userConnection.data?.userConnection?.totalCount || 0;
 	const Mutation_user = new Mutation_userStore();
-	let errors: Record<number, Error> = {};
+	let errors: Record<number, Errors> = {};
 
 	const fetch = (
 		event: CustomEvent<{
 			args: QueryTypeUserConnectionArgs;
 			then: (data: (User | null | undefined)[] | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		Query_userConnection.fetch({ variables: event.detail.args })
 			.then((result) => {
 				event.detail.then(result.data?.userConnection?.edges?.map((edge) => edge?.node));
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((errors) => {
+				event.detail.catch(errors);
 			});
 	};
 
@@ -36,7 +36,7 @@
 			args: MutationTypeUserArgs;
 			update?: boolean;
 			then: (data: User | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
@@ -49,8 +49,8 @@
 					.then((result) => {
 						event.detail.then(result?.user);
 					})
-					.catch((error) => {
-						event.detail.catch(error);
+					.catch((errors) => {
+						event.detail.catch(errors);
 					});
 			})
 			.catch((validErrors) => {
@@ -72,10 +72,11 @@
 		to(`./user/_`);
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
+	const gotoField = (event: CustomEvent<{ path: string; name: string }>) => {
 		to(`./user/${event.detail.path}`);
 	};
 </script>
+
 <UserConnectionTable
 	{nodes}
 	{totalCount}

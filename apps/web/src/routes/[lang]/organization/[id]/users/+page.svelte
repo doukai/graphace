@@ -2,7 +2,7 @@
 	import { ot, to } from '~/lib/stores/useNavigate';
 	import UserConnectionTable from '~/lib/components/objects/user/UserConnectionTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypeUserArgs, QueryTypeUserConnectionArgs, User } from '~/lib/types/schema';
 	import { Query_organization_usersStore, Mutation_userStore } from '$houdini';
 	import type { PageData } from './$houdini';
@@ -15,13 +15,13 @@
 	$: nodes = $Query_organization_users.data?.organization?.usersConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_organization_users.data?.organization?.usersConnection?.totalCount || 0;
 	const Mutation_user = new Mutation_userStore();
-	let errors: Record<number, Error> = {};
+	let errors: Record<number, Errors> = {};
 
 	const fetch = (
 		event: CustomEvent<{
 			args: QueryTypeUserConnectionArgs;
 			then: (data: (User | null | undefined)[] | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		Query_organization_users.fetch({
@@ -30,8 +30,8 @@
 			.then((result) => {
 				event.detail.then(result.data?.organization?.usersConnection?.edges?.map((edge) => edge?.node));
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((errors) => {
+				event.detail.catch(errors);
 			});
 	};
 
@@ -40,7 +40,7 @@
 			args: MutationTypeUserArgs;
 			update?: boolean;
 			then: (data: User | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
@@ -53,8 +53,8 @@
 					.then((result) => {
 						event.detail.then(result?.user);
 					})
-					.catch((error) => {
-						event.detail.catch(error);
+					.catch((errors) => {
+						event.detail.catch(errors);
 					});
 			})
 			.catch((validErrors) => {

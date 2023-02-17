@@ -1,11 +1,11 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
-import type { Error } from '@graphace/commons/types';
+import type { Errors } from '@graphace/commons/types';
 import type { MutationTypeUserRoleArgs } from '~/lib/types/schema';
 import { getNode, getErrors } from '~/lib/utils'
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     const node: MutationTypeUserRoleArgs = getNode(event.url) || {};
-	const errors: Record<string, Error> = getErrors(event.url) || {};
+	const errors: Record<string, Errors> = getErrors(event.url) || {};
     return { node, errors };
 }

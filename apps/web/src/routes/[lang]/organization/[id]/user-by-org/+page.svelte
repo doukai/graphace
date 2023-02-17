@@ -2,7 +2,7 @@
 	import { ot, to } from '~/lib/stores/useNavigate';
 	import UserTable from '~/lib/components/objects/user/UserTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypeUserArgs, QueryTypeUserListArgs, User } from '~/lib/types/schema';
 	import { Query_organization_userByOrgStore, Mutation_userStore } from '$houdini';
 	import type { PageData } from './$houdini';
@@ -14,13 +14,13 @@
 	$: organization = $Query_organization_userByOrg.data?.organization;
 	$: nodes = $Query_organization_userByOrg.data?.organization?.userByOrg;
 	const Mutation_user = new Mutation_userStore();
-	let errors: Record<number, Error> = {};
+	let errors: Record<number, Errors> = {};
 
 	const fetch = (
 		event: CustomEvent<{
 			args: QueryTypeUserListArgs;
 			then: (data: (User | null | undefined)[] | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		Query_organization_userByOrg.fetch({
@@ -29,8 +29,8 @@
 			.then((result) => {
 				event.detail.then(result.data?.organization?.userByOrg);
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((errors) => {
+				event.detail.catch(errors);
 			});
 	};
 
@@ -39,7 +39,7 @@
 			args: MutationTypeUserArgs;
 			update?: boolean;
 			then: (data: User | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
@@ -52,8 +52,8 @@
 					.then((result) => {
 						event.detail.then(result?.user);
 					})
-					.catch((error) => {
-						event.detail.catch(error);
+					.catch((errors) => {
+						event.detail.catch(errors);
 					});
 			})
 			.catch((validErrors) => {

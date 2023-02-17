@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import OrganizationCreateForm from '~/lib/components/objects/organization/OrganizationCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import type {
 		MutationTypeOrganizationArgs,
 		Organization
@@ -13,14 +13,14 @@
 
 	export let data: PageData;
 	$: node = data.node as MutationTypeOrganizationArgs;
-	$: errors = data.errors as Record<string, Error>;
+	$: errors = data.errors as Record<string, Errors>;
 
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeOrganizationArgs;
 			update?: boolean;
 			then: (data: Organization | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		ot({

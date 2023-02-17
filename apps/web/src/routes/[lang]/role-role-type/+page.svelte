@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ot, to } from '~/lib/stores/useNavigate';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import RoleRoleTypeConnectionTable from '~/lib/components/objects/role-role-type/RoleRoleTypeConnectionTable.svelte';
 	import type { RoleRoleType, QueryTypeRoleRoleTypeConnectionArgs, MutationTypeRoleRoleTypeArgs } from '~/lib/types/schema';
 	import { Query_roleRoleTypeConnectionStore, Mutation_roleRoleTypeStore } from '$houdini';
@@ -13,21 +13,21 @@
 	$: nodes = $Query_roleRoleTypeConnection.data?.roleRoleTypeConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_roleRoleTypeConnection.data?.roleRoleTypeConnection?.totalCount || 0;
 	const Mutation_roleRoleType = new Mutation_roleRoleTypeStore();
-	let errors: Record<number, Error> = {};
+	let errors: Record<number, Errors> = {};
 
 	const fetch = (
 		event: CustomEvent<{
 			args: QueryTypeRoleRoleTypeConnectionArgs;
 			then: (data: (RoleRoleType | null | undefined)[] | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		Query_roleRoleTypeConnection.fetch({ variables: event.detail.args })
 			.then((result) => {
 				event.detail.then(result.data?.roleRoleTypeConnection?.edges?.map((edge) => edge?.node));
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((errors) => {
+				event.detail.catch(errors);
 			});
 	};
 
@@ -36,7 +36,7 @@
 			args: MutationTypeRoleRoleTypeArgs;
 			update?: boolean;
 			then: (data: RoleRoleType | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
@@ -49,8 +49,8 @@
 					.then((result) => {
 						event.detail.then(result?.roleRoleType);
 					})
-					.catch((error) => {
-						event.detail.catch(error);
+					.catch((errors) => {
+						event.detail.catch(errors);
 					});
 			})
 			.catch((validErrors) => {

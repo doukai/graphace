@@ -6,7 +6,7 @@
 	import {{ objectFieldTypeName }}Table from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}Table.svelte';
 	{%- endif %}
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import type { MutationType{{ objectFieldTypeName }}Args, {% if connectionField %}QueryType{{ objectFieldTypeName }}ConnectionArgs{% else %}QueryType{{ objectFieldTypeName }}ListArgs{% endif %}, {{ objectFieldTypeName }} } from '~/{{ schemaTypesPath }}';
 	import { Query_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ objectFieldTypeName | camelCase }}Store } from '$houdini';
 	import type { PageData } from './$houdini';
@@ -23,7 +23,7 @@
 	$: nodes = $Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }}?.{{ objectFieldName }};
 	{%- endif %}
 	const Mutation_{{ objectFieldTypeName | camelCase }} = new Mutation_{{ objectFieldTypeName | camelCase }}Store();
-	let errors: Record<number, Error> = {};
+	let errors: Record<number, Errors> = {};
 
 	const fetch = (
 		event: CustomEvent<{
@@ -33,7 +33,7 @@
 			args: QueryType{{ objectFieldTypeName }}ListArgs;
 			{%- endif %}
 			then: (data: ({{ objectFieldTypeName }} | null | undefined)[] | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		Query_{{ name | camelCase }}_{{ objectFieldName }}.fetch({
@@ -46,8 +46,8 @@
 				event.detail.then(result.data?.{{ name | camelCase }}?.{{ objectFieldName }});
 				{%- endif %}
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((errors) => {
+				event.detail.catch(errors);
 			});
 	};
 
@@ -56,7 +56,7 @@
 			args: MutationType{{ objectFieldTypeName }}Args;
 			update?: boolean;
 			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.{{ idName }})?.indexOf(event.detail.args.{{ idName }});
@@ -69,8 +69,8 @@
 					.then((result) => {
 						event.detail.then(result?.{{ objectFieldTypeName | camelCase }});
 					})
-					.catch((error) => {
-						event.detail.catch(error);
+					.catch((errors) => {
+						event.detail.catch(errors);
 					});
 			})
 			.catch((validErrors) => {

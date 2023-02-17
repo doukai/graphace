@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ot, to } from '~/lib/stores/useNavigate';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	{%- if connectionField %}
 	import {{ name }}ConnectionTable from '~/{{ tablePath }}/{{ name | paramCase }}/{{ name }}ConnectionTable.svelte';
 	{%- else %}
@@ -22,7 +22,7 @@
 	$: nodes = $Query_{{ name | camelCase }}List.data?.{{ name | camelCase }}List;
 	{%- endif %}
 	const Mutation_{{ name | camelCase }} = new Mutation_{{ name | camelCase }}Store();
-	let errors: Record<number, Error> = {};
+	let errors: Record<number, Errors> = {};
 
 	const fetch = (
 		event: CustomEvent<{
@@ -32,7 +32,7 @@
 			args: QueryType{{ name }}ListArgs;
 			{%- endif %}
 			then: (data: ({{ name }} | null | undefined)[] | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		{%- if connectionField %}
@@ -47,8 +47,8 @@
 				event.detail.then(result.data?.{{ name | camelCase }}List);
 			{%- endif %}
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((errors) => {
+				event.detail.catch(errors);
 			});
 	};
 
@@ -57,7 +57,7 @@
 			args: MutationType{{ name }}Args;
 			update?: boolean;
 			then: (data: {{ name }} | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.{{ idName }})?.indexOf(event.detail.args.{{ idName }});
@@ -70,8 +70,8 @@
 					.then((result) => {
 						event.detail.then(result?.{{ name | camelCase }});
 					})
-					.catch((error) => {
-						event.detail.catch(error);
+					.catch((errors) => {
+						event.detail.catch(errors);
 					});
 			})
 			.catch((validErrors) => {

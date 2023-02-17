@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import { EnumItem } from '@graphace/ui-graphql/components/form';
 	import { RoleType } from '~/lib/types/schema';
 
@@ -7,7 +7,7 @@
 	export let list: boolean = false;
 	export let name: string;
 	export let label: string;
-	export let error: Error | undefined = undefined;
+	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
@@ -19,4 +19,4 @@
 	];
 </script>
 
-<EnumItem bind:value {list} {enums} {name} {label} {error} {readonly} {disabled} {placeholder} />
+<EnumItem bind:value {list} {enums} {name} {label} {errors} {readonly} {disabled} {placeholder} />

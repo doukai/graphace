@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ot, to } from '~/lib/stores/useNavigate';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import UserTest2ConnectionTable from '~/lib/components/objects/user-test2/UserTest2ConnectionTable.svelte';
 	import type { UserTest2, QueryTypeUserTest2ConnectionArgs, MutationTypeUserTest2Args } from '~/lib/types/schema';
 	import { Query_userTest2ConnectionStore, Mutation_userTest2Store } from '$houdini';
@@ -13,21 +13,21 @@
 	$: nodes = $Query_userTest2Connection.data?.userTest2Connection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_userTest2Connection.data?.userTest2Connection?.totalCount || 0;
 	const Mutation_userTest2 = new Mutation_userTest2Store();
-	let errors: Record<number, Error> = {};
+	let errors: Record<number, Errors> = {};
 
 	const fetch = (
 		event: CustomEvent<{
 			args: QueryTypeUserTest2ConnectionArgs;
 			then: (data: (UserTest2 | null | undefined)[] | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		Query_userTest2Connection.fetch({ variables: event.detail.args })
 			.then((result) => {
 				event.detail.then(result.data?.userTest2Connection?.edges?.map((edge) => edge?.node));
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((errors) => {
+				event.detail.catch(errors);
 			});
 	};
 
@@ -36,7 +36,7 @@
 			args: MutationTypeUserTest2Args;
 			update?: boolean;
 			then: (data: UserTest2 | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
@@ -49,8 +49,8 @@
 					.then((result) => {
 						event.detail.then(result?.userTest2);
 					})
-					.catch((error) => {
-						event.detail.catch(error);
+					.catch((errors) => {
+						event.detail.catch(errors);
 					});
 			})
 			.catch((validErrors) => {

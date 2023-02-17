@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Link } from '@steeze-ui/heroicons';
 	import { FormItem } from '@graphace/ui/components/form';
@@ -9,7 +9,7 @@
 	export let path: string;
 	export let name: string;
 	export let label: string;
-	export let error: Error | undefined = undefined;
+	export let errors: Errors | undefined = undefined;
 
 	const dispatch = createEventDispatcher<{
 		gotoField: { path: string; name: string };
@@ -28,9 +28,11 @@
 			<Icon src={Link} solid class="h-5 w-5" />
 		</button>
 	</div>
-	{#if error && error.message}
+	{#if errors?.errors}
 		<label for={id} class="label">
-			<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+			{#each errors.errors as error}
+				<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+			{/each}
 		</label>
 	{/if}
 </FormItem>

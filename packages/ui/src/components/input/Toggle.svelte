@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import { nanoid } from 'nanoid';
 	export let name: string;
 	export let value: boolean | null | undefined;
-	export let error: Error | undefined = undefined;
+	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
 	export let id: string = nanoid();
@@ -19,9 +19,11 @@
 		{readonly}
 		{disabled}
 	/>
-	{#if error && error.message}
+	{#if errors?.errors}
 		<label for={id} class="label">
-			<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+			{#each errors.errors as error}
+				<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+			{/each}
 		</label>
 	{/if}
 </div>

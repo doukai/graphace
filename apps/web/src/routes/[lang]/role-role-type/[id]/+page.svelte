@@ -2,7 +2,7 @@
 	import { ot, to } from '~/lib/stores/useNavigate';
 	import RoleRoleTypeForm from '~/lib/components/objects/role-role-type/RoleRoleTypeForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import { Query_roleRoleTypeStore, Mutation_roleRoleTypeStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { MutationTypeRoleRoleTypeArgs, RoleRoleType } from '~/lib/types/schema';
@@ -13,14 +13,14 @@
 	$: Query_roleRoleType = data.Query_roleRoleType as Query_roleRoleTypeStore;
 	$: node = $Query_roleRoleType.data?.roleRoleType;
 	const Mutation_roleRoleType = new Mutation_roleRoleTypeStore();
-	let errors: Record<string, Error> = {};
+	let errors: Record<string, Errors> = {};
 
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeRoleRoleTypeArgs;
 			update?: boolean;
 			then: (data: RoleRoleType | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		validate('RoleRoleType', event.detail.args, event.detail.update, $locale)
@@ -30,8 +30,8 @@
 					.then((result) => {
 						event.detail.then(result?.roleRoleType);
 					})
-					.catch((error) => {
-						event.detail.catch(error);
+					.catch((errors) => {
+						event.detail.catch(errors);
 					});
 			})
 			.catch((validErrors) => {

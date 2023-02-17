@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import { FormItem } from '@graphace/ui/components/form';
 	import { Toggle, ToggleList } from '@graphace/ui/components/input';
 
@@ -9,13 +9,13 @@
 	export let label: string;
 	export let readonly = false;
 	export let disabled = false;
-	export let error: Error | undefined = undefined;
+	export let errors: Errors | undefined = undefined;
 </script>
 
 <FormItem {label} let:id>
 	{#if Array.isArray(value) || (list && (value === null || value === undefined))}
-		<ToggleList {id} {name} bind:value {error} {readonly} {disabled} />
+		<ToggleList {id} {name} bind:value {errors} {readonly} {disabled} />
 	{:else}
-		<Toggle {id} {name} bind:value {error} {readonly} {disabled} />
+		<Toggle {id} {name} bind:value {errors} {readonly} {disabled} />
 	{/if}
 </FormItem>

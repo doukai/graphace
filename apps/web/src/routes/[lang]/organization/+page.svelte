@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ot, to } from '~/lib/stores/useNavigate';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import OrganizationConnectionTable from '~/lib/components/objects/organization/OrganizationConnectionTable.svelte';
 	import type { Organization, QueryTypeOrganizationConnectionArgs, MutationTypeOrganizationArgs } from '~/lib/types/schema';
 	import { Query_organizationConnectionStore, Mutation_organizationStore } from '$houdini';
@@ -13,21 +13,21 @@
 	$: nodes = $Query_organizationConnection.data?.organizationConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_organizationConnection.data?.organizationConnection?.totalCount || 0;
 	const Mutation_organization = new Mutation_organizationStore();
-	let errors: Record<number, Error> = {};
+	let errors: Record<number, Errors> = {};
 
 	const fetch = (
 		event: CustomEvent<{
 			args: QueryTypeOrganizationConnectionArgs;
 			then: (data: (Organization | null | undefined)[] | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		Query_organizationConnection.fetch({ variables: event.detail.args })
 			.then((result) => {
 				event.detail.then(result.data?.organizationConnection?.edges?.map((edge) => edge?.node));
 			})
-			.catch((error) => {
-				event.detail.catch(error);
+			.catch((errors) => {
+				event.detail.catch(errors);
 			});
 	};
 
@@ -36,7 +36,7 @@
 			args: MutationTypeOrganizationArgs;
 			update?: boolean;
 			then: (data: Organization | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
@@ -49,8 +49,8 @@
 					.then((result) => {
 						event.detail.then(result?.organization);
 					})
-					.catch((error) => {
-						event.detail.catch(error);
+					.catch((errors) => {
+						event.detail.catch(errors);
 					});
 			})
 			.catch((validErrors) => {

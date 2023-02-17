@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import UserCreateForm from '~/lib/components/objects/user/UserCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Error } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons/types';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '~/lib/utils';
 	import { Mutation_organization_usersStore } from '$houdini';
 	import type { MutationTypeUserArgs, User } from '~/lib/types/schema';
@@ -14,7 +14,7 @@
 	export let data: PageData;
 	$: node = data.node as MutationTypeUserArgs;
 	$: id = data.id as string;
-	$: errors = data.errors as Record<string, Error>;
+	$: errors = data.errors as Record<string, Errors>;
 
 	const Mutation_organization_users = new Mutation_organization_usersStore();
 
@@ -23,7 +23,7 @@
 			args: MutationTypeUserArgs;
 			update?: boolean;
 			then: (data: User | null | undefined) => void;
-			catch: (error: Error) => void;
+			catch: (errors: Errors) => void;
 		}>
 	) => {
 		validate('User', event.detail.args, true, $locale)
@@ -38,8 +38,8 @@
 					.then((result) => {
 						event.detail.then(null);
 					})
-					.catch((error) => {
-						event.detail.catch(error);
+					.catch((errors) => {
+						event.detail.catch(errors);
 					});
 			})
 			.catch((validErrors) => {
