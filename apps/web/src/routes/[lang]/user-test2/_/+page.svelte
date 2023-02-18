@@ -4,7 +4,7 @@
 	import UserTest2CreateForm from '~/lib/components/objects/user-test2/UserTest2CreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
-	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '~/lib/utils';
+	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Mutation_userTest2Store } from '$houdini';
 	import type { MutationTypeUserTest2Args, UserTest2 } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';

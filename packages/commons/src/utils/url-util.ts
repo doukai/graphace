@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import type { Errors } from '@graphace/commons/types';
+import type { Errors } from '../types';
 
 // replaces the locale slug in a relative url
 // e.g. /en/blog/article-1 => /de/blog/article-1
@@ -27,7 +27,7 @@ export const getErrors = (url: URL): Record<string | number, Errors> | undefined
 		if (url.searchParams.has('path')) {
 			const path: (string | number)[] = JSON.parse(url.searchParams.get('path') || '[]');
 			if (path.length > 0) {
-				return _.get(root, path.map(item => ['items', item]).flatMap(items => items).concat('items'));
+				return _.get(root, path.map(item => [item, 'iterms']).flatMap(iterms => iterms));
 			}
 		}
 		return root;
@@ -42,13 +42,17 @@ export const getErrorsParam = (url: URL): string | undefined => {
 	return url.searchParams.get('errors') || undefined;
 }
 
-export const updateNodeParam = <T>(url: URL, node: T): string => {
+export const updateNodeParam = (url: URL, node: object | null | undefined): string => {
 	if (url.searchParams.has('node')) {
 		if (url.searchParams.has('path')) {
 			const path: (string | number)[] = JSON.parse(url.searchParams.get('path') || '[]');
 			if (path.length > 0) {
 				const root = JSON.parse(url.searchParams.get('node') || '{}');
-				_.set(root, path, node);
+				if (node === undefined || (node != null && Object.keys(node).length === 0)) {
+					_.unset(root, path);
+				} else {
+					_.set(root, path, node);
+				}
 				return JSON.stringify(root);
 			}
 		}
@@ -56,13 +60,17 @@ export const updateNodeParam = <T>(url: URL, node: T): string => {
 	return JSON.stringify(node);
 }
 
-export const updateErrorsParam = (url: URL, errors: Record<string | number, Errors>): string => {
+export const updateErrorsParam = (url: URL, errors: Record<string | number, Errors> | null | undefined): string => {
 	if (url.searchParams.has('errors')) {
 		if (url.searchParams.has('path')) {
 			const path: (string | number)[] = JSON.parse(url.searchParams.get('path') || '[]');
 			if (path.length > 0) {
 				const root = JSON.parse(url.searchParams.get('errors') || '{}');
-				_.set(root, path.map(item => ['items', item]).flatMap(items => items).concat('items'), errors);
+				if (errors === undefined || (errors != null && Object.keys(errors).length === 0)) {
+					_.unset(root, path.map(item => [item, 'iterms']).flatMap(iterms => iterms));
+				} else {
+					_.set(root, path.map(item => [item, 'iterms']).flatMap(iterms => iterms), errors);
+				}
 				return JSON.stringify(root);
 			}
 		}

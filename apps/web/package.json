@@ -16,6 +16,7 @@
     "typesafe-i18n": "typesafe-i18n"
   },
   "dependencies": {
+    "@graphace/commons": "workspace:*",
     "@graphace/graphql": "workspace:*",
     "@graphace/ui": "workspace:*",
     "@graphace/ui-graphql": "workspace:*"

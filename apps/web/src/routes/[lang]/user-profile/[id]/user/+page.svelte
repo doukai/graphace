@@ -6,7 +6,7 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypeUserArgs, User } from '~/lib/types/schema';
-	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '~/lib/utils';
+	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Query_userProfile_userStore, Mutation_userProfile_userStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/JsonSchema';

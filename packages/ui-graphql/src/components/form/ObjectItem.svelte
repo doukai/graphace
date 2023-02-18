@@ -17,16 +17,18 @@
 </script>
 
 <FormItem {label} let:id>
-	<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
-		<button
-			class="btn btn-square btn-outline"
-			on:click={(e) => {
-				e.preventDefault();
-				dispatch('gotoField', { path, name });
-			}}
-		>
-			<Icon src={Link} solid class="h-5 w-5" />
-		</button>
+	<div {id} class="{errors ? 'border-2 border-error p-1 rounded-xl' : ''} space-y-5">
+		<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
+			<button
+				class="btn btn-square btn-outline"
+				on:click={(e) => {
+					e.preventDefault();
+					dispatch('gotoField', { path, name });
+				}}
+			>
+				<Icon src={Link} solid class="h-5 w-5" />
+			</button>
+		</div>
 	</div>
 	{#if errors?.errors}
 		<label for={id} class="label">

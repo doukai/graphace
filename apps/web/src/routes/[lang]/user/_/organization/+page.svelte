@@ -8,7 +8,7 @@
 		MutationTypeOrganizationArgs,
 		Organization
 	} from '~/lib/types/schema';
-	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam } from '~/lib/utils';
+	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;

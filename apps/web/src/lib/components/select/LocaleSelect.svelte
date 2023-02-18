@@ -5,12 +5,12 @@
 	import type { Locales } from '~/i18n/i18n-types';
 	import { locales } from '~/i18n/i18n-util';
 	import { loadLocaleAsync } from '~/i18n/i18n-util.async';
-	import { replaceLocaleInUrl } from '~/lib/utils';
+	import { replaceLocaleInUrl } from '@graphace/commons/utils/url-util';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Translate } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
 
-	let value: Locales = $locale;
+	$: value = $locale as Locales;
 
 	const switchLocale = async (newLocale: Locales, updateHistoryState = true) => {
 		if (!newLocale || $locale === newLocale) return;

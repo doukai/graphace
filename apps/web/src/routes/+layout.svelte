@@ -1,7 +1,3 @@
-<script context="module" lang="ts">
-	import { isMenuOpen } from '~/lib/stores';
-</script>
-
 <script lang="ts">
 	import '../app.css';
 	import { onMount } from 'svelte';
@@ -11,12 +7,14 @@
 	import { NavBar, NavBarStart, NavBarCenter, NavBarEnd } from '@graphace/ui/components/navbar';
 	import Notifications from '@graphace/ui/components/Notifications.svelte';
 	import MessageBoxs from '@graphace/ui/components/MessageBoxs.svelte';
-	import { setLocale } from '~/i18n/i18n-svelte';
-	import { LocaleSelect, ThemeSelect } from '~/lib/components/select';
+	import { ThemeSelect } from '@graphace/ui/components/select';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Menu, Adjustments } from '@steeze-ui/heroicons';
+	import { LocaleSelect } from '~/lib/components/select';
+	import { setLocale } from '~/i18n/i18n-svelte';
 
 	export let locale: Locales;
+	let isMenuOpen = true;
 	setLocale(locale);
 
 	onMount(() => {
@@ -31,20 +29,18 @@
 			<input id="right-drawer" type="checkbox" class="drawer-toggle" />
 			<div class="drawer-content">
 				<div
-					class={$isMenuOpen
-						? 'hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0'
-						: 'hidden'}
+					class={isMenuOpen ? 'hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0' : 'hidden'}
 				>
 					<SideBar>
 						<ObjectsMenu />
 					</SideBar>
 				</div>
-				<div class={$isMenuOpen ? 'md:pl-64 flex flex-col' : 'flex flex-col'}>
+				<div class={isMenuOpen ? 'md:pl-64 flex flex-col' : 'flex flex-col'}>
 					<NavBar>
 						<NavBarStart>
 							<button
 								class="hidden md:btn md:btn-square md:btn-ghost"
-								on:click={(e) => isMenuOpen.update((isOpen) => !isOpen)}
+								on:click={(e) => (isMenuOpen = !isMenuOpen)}
 							>
 								<Icon src={Menu} solid class="h-6 w-6" />
 							</button>

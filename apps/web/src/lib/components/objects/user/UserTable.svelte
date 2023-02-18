@@ -448,7 +448,7 @@
 								on:save={() => updateField({ id: node?.id, name: node?.name })}
 								errors={errors[row]?.iterms?.name}
 							/>
-							<ObjectTd name="organization" path={`${node.id}/organization`} on:gotoField />
+							<ObjectTd name="organization" errors={errors[row]?.iterms?.organization} path={`${node.id}/organization`} on:gotoField />
 							<IntTd
 								name="organizationId"
 								bind:value={node.organizationId}
@@ -474,8 +474,8 @@
 								on:save={() => updateField({ id: node?.id, realmId: node?.realmId })}
 								errors={errors[row]?.iterms?.realmId}
 							/>
-							<ObjectTd name="roles" path={`${node.id}/roles`} on:gotoField />
-							<ObjectTd name="rolesConnection" path={`${node.id}/roles-connection`} on:gotoField />
+							<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path={`${node.id}/roles`} on:gotoField />
+							<ObjectTd name="rolesConnection" errors={errors[row]?.iterms?.rolesConnection} path={`${node.id}/roles-connection`} on:gotoField />
 							<SexTd
 								name="sex"
 								bind:value={node.sex}
@@ -514,7 +514,7 @@
 								readonly
 								errors={errors[row]?.iterms?.userDetail2}
 							/>
-							<ObjectTd name="userProfile" path={`${node.id}/user-profile`} on:gotoField />
+							<ObjectTd name="userProfile" errors={errors[row]?.iterms?.userProfile} path={`${node.id}/user-profile`} on:gotoField />
 							<IntTd
 								name="version"
 								bind:value={node.version}

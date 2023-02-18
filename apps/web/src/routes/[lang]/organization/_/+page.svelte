@@ -4,7 +4,7 @@
 	import OrganizationCreateForm from '~/lib/components/objects/organization/OrganizationCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
-	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '~/lib/utils';
+	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Mutation_organizationStore } from '$houdini';
 	import type { MutationTypeOrganizationArgs, Organization } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';

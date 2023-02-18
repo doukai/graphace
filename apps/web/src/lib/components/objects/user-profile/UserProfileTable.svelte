@@ -421,7 +421,7 @@
 								on:save={() => updateField({ id: node?.id, updateUserId: node?.updateUserId })}
 								errors={errors[row]?.iterms?.updateUserId}
 							/>
-							<ObjectTd name="user" path={`${node.id}/user`} on:gotoField />
+							<ObjectTd name="user" errors={errors[row]?.iterms?.user} path={`${node.id}/user`} on:gotoField />
 							<StringTd
 								name="userId"
 								bind:value={node.userId}

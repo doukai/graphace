@@ -233,7 +233,7 @@
 							readonly
 							errors={errors[row]?.iterms?.updateUserId}
 						/>
-						<ObjectTd name="users" path="_/users" on:gotoField />
+						<ObjectTd name="users" errors={errors[row]?.iterms?.users} path="_/users" on:gotoField />
 						<IntTd
 							name="version"
 							bind:value={node.version}

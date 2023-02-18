@@ -12,10 +12,14 @@ const config = {
     adapter: adapter(),
     alias: {
       '~': path.resolve('./src'),
-      "@graphace/commons": path.resolve('../../packages/commons/src'),
-      "@graphace/graphql": path.resolve('../../packages/graphql/src'),
-      "@graphace/ui": path.resolve('../../packages/ui/src'),
-      "@graphace/ui-graphql": path.resolve('../../packages/ui-graphql/src'),
+      "@graphace/commons": path.resolve('../../packages/commons/src/index'),
+      "@graphace/commons/*": path.resolve('../../packages/commons/src'),
+      "@graphace/graphql": path.resolve('../../packages/graphql/src/index'),
+      "@graphace/graphql/*": path.resolve('../../packages/graphql/src'),
+      "@graphace/ui": path.resolve('../../packages/ui/src/index'),
+      "@graphace/ui/*": path.resolve('../../packages/ui/src'),
+      "@graphace/ui-graphql": path.resolve('../../packages/ui-graphql/src/index'),
+      "@graphace/ui-graphql/*": path.resolve('../../packages/ui-graphql/src'),
       $houdini: path.resolve('.', '$houdini')
     }
   }

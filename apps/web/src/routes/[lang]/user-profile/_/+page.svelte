@@ -4,7 +4,7 @@
 	import UserProfileCreateForm from '~/lib/components/objects/user-profile/UserProfileCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
-	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '~/lib/utils';
+	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Mutation_userProfileStore } from '$houdini';
 	import type { MutationTypeUserProfileArgs, UserProfile } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';

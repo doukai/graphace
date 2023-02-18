@@ -239,7 +239,7 @@
 							readonly
 							errors={errors[row]?.iterms?.name}
 						/>
-						<ObjectTd name="organization" path="_/organization" on:gotoField />
+						<ObjectTd name="organization" errors={errors[row]?.iterms?.organization} path="_/organization" on:gotoField />
 						<IntTd
 							name="organizationId"
 							bind:value={node.organizationId}
@@ -265,7 +265,7 @@
 							readonly
 							errors={errors[row]?.iterms?.realmId}
 						/>
-						<ObjectTd name="roles" path="_/roles" on:gotoField />
+						<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
 						<SexTd
 							name="sex"
 							bind:value={node.sex}
@@ -298,7 +298,7 @@
 							readonly
 							errors={errors[row]?.iterms?.updateUserId}
 						/>
-						<ObjectTd name="userProfile" path="_/user-profile" on:gotoField />
+						<ObjectTd name="userProfile" errors={errors[row]?.iterms?.userProfile} path="_/user-profile" on:gotoField />
 						<IntTd
 							name="version"
 							bind:value={node.version}

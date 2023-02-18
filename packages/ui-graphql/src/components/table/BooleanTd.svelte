@@ -57,39 +57,41 @@
 </div>
 
 <td>
-	<a
-		class="group link inline-flex"
-		href={null}
-		use:tippy={{
-			content,
-			placement: 'bottom',
-			interactive: true,
-			arrow: true,
-			trigger: 'click',
-			interactiveBorder: 30,
-			theme: 'daisy',
-			maxWidth: 'none',
-			appendTo: () => document.body
-		}}
-	>
-		{#if Array.isArray(value) || (list && (value === null || value === undefined))}
-			{#if value && value.length > 0}
-				{#if value && value.length > 3}
-					{value
-						.filter((item) => item)
-						.slice(0, 3)
-						.join(',')
-						.concat('...')}
+	<div class={errors ? 'border-2 border-error rounded' : ''}>
+		<a
+			class="group link inline-flex"
+			href={null}
+			use:tippy={{
+				content,
+				placement: 'bottom',
+				interactive: true,
+				arrow: true,
+				trigger: 'click',
+				interactiveBorder: 30,
+				theme: 'daisy',
+				maxWidth: 'none',
+				appendTo: () => document.body
+			}}
+		>
+			{#if Array.isArray(value) || (list && (value === null || value === undefined))}
+				{#if value && value.length > 0}
+					{#if value && value.length > 3}
+						{value
+							.filter((item) => item)
+							.slice(0, 3)
+							.join(',')
+							.concat('...')}
+					{:else}
+						{value.filter((item) => item).join(',')}
+					{/if}
 				{:else}
-					{value.filter((item) => item).join(',')}
+					<Icon src={Minus} solid class="h-5 w-5" />
 				{/if}
+			{:else if value}
+				{value}
 			{:else}
 				<Icon src={Minus} solid class="h-5 w-5" />
 			{/if}
-		{:else if value}
-			{value}
-		{:else}
-			<Icon src={Minus} solid class="h-5 w-5" />
-		{/if}
-	</a>
+		</a>
+	</div>
 </td>

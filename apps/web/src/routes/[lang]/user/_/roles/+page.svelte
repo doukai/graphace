@@ -5,7 +5,7 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypeRoleArgs } from '~/lib/types/schema';
-	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam } from '~/lib/utils';
+	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -17,7 +17,7 @@
 			row: number;
 		}>
 	) => {
-		to(`../../role/_`, {
+		to(`./roles/_`, {
 			node: updateNodeParam($page.url, nodes),
 			errors: updateErrorsParam($page.url, errors),
 			path: getChildPathParam($page.url, event.detail.row)
