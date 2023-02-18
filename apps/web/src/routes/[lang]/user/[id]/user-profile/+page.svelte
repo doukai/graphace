@@ -1,16 +1,21 @@
 <script lang="ts">
 	import { ot, to } from '~/lib/stores/useNavigate';
+	import { page } from '$app/stores';
 	import UserProfileForm from '~/lib/components/objects/user-profile/UserProfileForm.svelte';
 	import UserProfileCreateForm from '~/lib/components/objects/user-profile/UserProfileCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypeUserProfileArgs, UserProfile } from '~/lib/types/schema';
+	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '~/lib/utils';
 	import { Query_user_userProfileStore, Mutation_user_userProfileStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/JsonSchema';
 	import { locale } from '~/i18n/i18n-svelte';
 
 	export let data: PageData;
+	$: createNode = data.node as MutationTypeUserProfileArgs;
+	$: createErrors = data.errors as Record<string, Errors>;
+
 	$: Query_user_userProfile = data.Query_user_userProfile as Query_user_userProfileStore;
 	$: user = $Query_user_userProfile.data?.user;
 	$: node = user?.userProfile;
@@ -50,7 +55,11 @@
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
-		to(`../../user-profile/${event.detail.path}`);
+		to(`../../user-profile/${event.detail.path}`, {
+			node: updateNodeParam($page.url, node),
+			errors: updateErrorsParam($page.url, errors),
+			path: getChildPathParam($page.url, event.detail.name)
+		});
 	};
 </script>
 
@@ -64,5 +73,11 @@
 		on:gotoField={gotoField}
 	/>
 {:else}
-	<UserProfileCreateForm {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+	<UserProfileCreateForm
+		node={createNode}
+		errors={createErrors}
+		on:mutation={mutation}
+		on:back={back}
+		on:gotoField={gotoField}
+	/>
 {/if}

@@ -301,7 +301,7 @@ const renders: Record<Template, Render> = {
                 if (objectField?.type) {
                     const objectFieldType = getFieldType(objectField.type);
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name }),
+                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, schemaTypesPath: config.schemaTypesPath }),
                     };
                 }
             }

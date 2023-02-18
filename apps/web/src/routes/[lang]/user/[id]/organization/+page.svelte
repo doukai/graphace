@@ -1,16 +1,21 @@
 <script lang="ts">
 	import { ot, to } from '~/lib/stores/useNavigate';
+	import { page } from '$app/stores';
 	import OrganizationForm from '~/lib/components/objects/organization/OrganizationForm.svelte';
 	import OrganizationCreateForm from '~/lib/components/objects/organization/OrganizationCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypeOrganizationArgs, Organization } from '~/lib/types/schema';
+	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '~/lib/utils';
 	import { Query_user_organizationStore, Mutation_user_organizationStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/JsonSchema';
 	import { locale } from '~/i18n/i18n-svelte';
 
 	export let data: PageData;
+	$: createNode = data.node as MutationTypeOrganizationArgs;
+	$: createErrors = data.errors as Record<string, Errors>;
+
 	$: Query_user_organization = data.Query_user_organization as Query_user_organizationStore;
 	$: user = $Query_user_organization.data?.user;
 	$: node = user?.organization;
@@ -50,7 +55,11 @@
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
-		to(`../../organization/${event.detail.path}`);
+		to(`../../organization/${event.detail.path}`, {
+			node: updateNodeParam($page.url, node),
+			errors: updateErrorsParam($page.url, errors),
+			path: getChildPathParam($page.url, event.detail.name)
+		});
 	};
 </script>
 
@@ -64,5 +73,11 @@
 		on:gotoField={gotoField}
 	/>
 {:else}
-	<OrganizationCreateForm {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+	<OrganizationCreateForm
+		node={createNode}
+		errors={createErrors}
+		on:mutation={mutation}
+		on:back={back}
+		on:gotoField={gotoField}
+	/>
 {/if}

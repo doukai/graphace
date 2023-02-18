@@ -72,11 +72,10 @@
 		to(`./user/_`);
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string; name: string }>) => {
+	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
 		to(`./user/${event.detail.path}`);
 	};
 </script>
-
 <UserConnectionTable
 	{nodes}
 	{totalCount}
