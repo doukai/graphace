@@ -37,7 +37,15 @@ async function loadSchema(uri: string) {
 }
 
 export async function validate(uri: string, data: object | object[], update: boolean | undefined, locale: Language = "en") {
-    let validate = ajv.getSchema(update ? uri.concat("Update") : uri);
+    if (Array.isArray(data) && update) {
+        uri += 'ListUpdate';
+    } else if (Array.isArray(data)) {
+        uri += 'List';
+    } else if (update) {
+        uri += "Update";
+    }
+    
+    let validate = ajv.getSchema(uri);
     if (!validate) {
         const schema = await loadSchema(uri);
         validate = await ajv.compileAsync(schema);
