@@ -36,11 +36,6 @@ async function loadSchema(uri: string) {
     return res.json();
 }
 
-
-export async function validateList(uri: string, dataList: object[], update: boolean | undefined, locale: Language = "en") {
-    return validate(uri.concat("List"), dataList, update, locale);
-}
-
 export async function validate(uri: string, data: object | object[], update: boolean | undefined, locale: Language = "en") {
     let validate = ajv.getSchema(update ? uri.concat("Update") : uri);
     if (!validate) {
