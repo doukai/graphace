@@ -36,6 +36,10 @@ async function loadSchema(uri: string) {
     return res.json();
 }
 
+export async function validateUpdate(uri: string, data: object | object[], locale: Language = "en") {
+    validate(uri, data, true, locale);
+}
+
 export async function validate(uri: string, data: object | object[], update: boolean | undefined, locale: Language = "en") {
     if (Array.isArray(data) && update) {
         uri += 'ListUpdate';
@@ -44,7 +48,7 @@ export async function validate(uri: string, data: object | object[], update: boo
     } else if (update) {
         uri += "Update";
     }
-    
+
     let validate = ajv.getSchema(uri);
     if (!validate) {
         const schema = await loadSchema(uri);
