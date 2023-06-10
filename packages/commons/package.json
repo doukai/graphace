@@ -10,8 +10,10 @@
     "format": "prettier --write --ignore-path=../../.prettierignore ."
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.182",
-    "lodash": "^4.17.21",
     "eslint-config-custom": "workspace:*"
+  },
+  "peerDependencies": {
+    "@types/lodash": "^4.14.182",
+    "lodash": "^4.17.21"
   }
 }

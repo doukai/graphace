@@ -10,13 +10,15 @@
     "format": "prettier --write --ignore-path=../../.prettierignore ."
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.182",
-    "ajv": "^8.11.0",
-    "ajv-formats": "^2.1.1",
-    "ajv-i18n": "^4.2.0",
     "eslint-config-custom": "workspace:*"
   },
   "dependencies": {
     "@graphace/commons": "workspace:*"
+  },
+  "peerDependencies": {
+    "@types/lodash": "^4.14.182",
+    "ajv": "^8.11.0",
+    "ajv-formats": "^2.1.1",
+    "ajv-i18n": "^4.2.0"
   }
 }
