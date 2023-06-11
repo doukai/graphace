@@ -13,7 +13,7 @@
     "eslint-config-custom": "workspace:*"
   },
   "peerDependencies": {
-    "@types/lodash": "^4.14.182",
+    "@types/lodash": "^4.14.195",
     "lodash": "^4.17.21"
   }
 }
