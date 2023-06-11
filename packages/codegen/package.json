@@ -8,12 +8,12 @@
     "microbundle": "^0.15.1"
   },
   "dependencies": {
+    "@graphql-codegen/plugin-helpers": "^4.2.0",
+    "@graphql-codegen/schema-ast": "^3.0.1",
+    "@graphql-codegen/visitor-plugin-common": "3.1.1",
+    "change-case": "^4.1.2",
     "graphace-codegen-commons": "workspace:*",
-    "@graphql-codegen/plugin-helpers": "^3.1.2",
-    "@graphql-codegen/schema-ast": "^2.6.1",
-    "@graphql-codegen/visitor-plugin-common": "2.13.7",
-    "graphql": "^16.6.0",
-    "change-case": "^4.1.2"
+    "graphql": "^16.6.0"
   },
   "source": "src/index.ts",
   "exports": {
