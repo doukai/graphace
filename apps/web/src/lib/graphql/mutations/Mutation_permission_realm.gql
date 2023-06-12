@@ -1,0 +1,30 @@
+mutation Mutation_permission_realm($permission_id: ID, $permission_realm: RealmInput, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $id: StringExpression, $includeDeprecated: Boolean, $name: StringExpression, $realmId: StringExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $version: IntExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+  permission(id: $permission_id realm: $permission_realm) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    createGroupId
+    createTime
+    createUserId
+    description
+    id
+    isDeprecated
+    level
+    name
+    ofTypeName
+    realmId
+    roleId
+    updateTime
+    updateUserId
+    version
+    realm(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId id: $id includeDeprecated: $includeDeprecated name: $name realmId: $realmId updateTime: $updateTime updateUserId: $updateUserId version: $version) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+      createGroupId
+      createTime
+      createUserId
+      id
+      isDeprecated
+      name
+      realmId
+      updateTime
+      updateUserId
+      version
+    }
+  }
+}

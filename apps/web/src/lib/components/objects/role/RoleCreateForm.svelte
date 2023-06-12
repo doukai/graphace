@@ -4,7 +4,6 @@
 	import type { Errors } from '@graphace/commons/types';
 	import { Form, FormItems, FormButtons } from '@graphace/ui/components/form';
 	import { StringItem, TimestampItem, IDItem, BooleanItem, IntItem, ObjectItem } from '@graphace/ui-graphql/components/form';
-	import RoleTypeItem from '~/lib/components/enums/role-type/RoleTypeItem.svelte';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '~/i18n/i18n-svelte';
@@ -60,16 +59,24 @@
 
 <Form>
 	<FormItems title="Role">
+		<ObjectItem name="compositesConnection" path="_/composites-connection" label="compositesConnection" errors={errors.compositesConnection} on:gotoField />
 		<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} errors={errors.createGroupId} />
 		<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} errors={errors.createTime} />
 		<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} errors={errors.createUserId} />
+		<StringItem label="description" name="description" bind:value={node.description} errors={errors.description} />
 		<IDItem label="id" name="id" bind:value={node.id} errors={errors.id} />
 		<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} errors={errors.isDeprecated} />
 		<StringItem label="name" name="name" bind:value={node.name} errors={errors.name} />
+		<ObjectItem name="permissions" path="_/permissions" label="permissions" errors={errors.permissions} on:gotoField />
+		<ObjectItem name="permissionsConnection" path="_/permissions-connection" label="permissionsConnection" errors={errors.permissionsConnection} on:gotoField />
+		<ObjectItem name="realm" path="_/realm" label="realm" errors={errors.realm} on:gotoField />
 		<StringItem label="realmId" name="realmId" bind:value={node.realmId} errors={errors.realmId} />
-		<RoleTypeItem label="type" name="type" bind:value={node.type} list errors={errors.type} />
+		<ObjectItem name="roleComposite" path="_/role-composite" label="roleComposite" errors={errors.roleComposite} on:gotoField />
+		<ObjectItem name="roleCompositeConnection" path="_/role-composite-connection" label="roleCompositeConnection" errors={errors.roleCompositeConnection} on:gotoField />
 		<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} errors={errors.updateTime} />
 		<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} errors={errors.updateUserId} />
+		<ObjectItem name="userRole" path="_/user-role" label="userRole" errors={errors.userRole} on:gotoField />
+		<ObjectItem name="userRoleConnection" path="_/user-role-connection" label="userRoleConnection" errors={errors.userRoleConnection} on:gotoField />
 		<ObjectItem name="users" path="_/users" label="users" errors={errors.users} on:gotoField />
 		<ObjectItem name="usersConnection" path="_/users-connection" label="usersConnection" errors={errors.usersConnection} on:gotoField />
 		<IntItem label="version" name="version" bind:value={node.version} errors={errors.version} />

@@ -1,0 +1,18 @@
+query Query_permissionList($after: ID, $before: ID, $cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $description: StringExpression, $first: Int, $groupBy: [String!], $id: StringExpression, $includeDeprecated: Boolean, $last: Int, $level: PermissionLevelExpression, $name: StringExpression, $ofTypeName: StringExpression, $offset: Int, $orderBy: PermissionOrderBy, $realm: RealmExpression, $realmId: StringExpression, $role: RoleExpression, $roleId: IntExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
+  permissionList(after: $after before: $before cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId description: $description first: $first groupBy: $groupBy id: $id includeDeprecated: $includeDeprecated last: $last level: $level name: $name ofTypeName: $ofTypeName offset: $offset orderBy: $orderBy realm: $realm realmId: $realmId role: $role roleId: $roleId updateTime: $updateTime updateUserId: $updateUserId version: $version) @skipNullArguments(if: $skipNullArguments) {
+    createGroupId
+    createTime
+    createUserId
+    description
+    id
+    isDeprecated
+    level
+    name
+    ofTypeName
+    realmId
+    roleId
+    updateTime
+    updateUserId
+    version
+  }
+}

@@ -1,24 +1,19 @@
-query Query_user($age: IntExpression, $cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $disable: BooleanExpression, $id: StringExpression, $includeDeprecated: Boolean, $login: StringExpression, $name: StringExpression, $organization: OrganizationExpression, $organizationId: IntExpression, $password: StringExpression, $phones: StringExpression, $realmId: StringExpression, $roles: RoleExpression, $sex: SexExpression, $test1: IntExpression, $test2: BooleanExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userProfile: UserProfileExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
-  user(age: $age cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable id: $id includeDeprecated: $includeDeprecated login: $login name: $name organization: $organization organizationId: $organizationId password: $password phones: $phones realmId: $realmId roles: $roles sex: $sex test1: $test1 test2: $test2 updateTime: $updateTime updateUserId: $updateUserId userProfile: $userProfile version: $version) @skipNullArguments(if: $skipNullArguments) {
-    age
+query Query_user($cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $disable: BooleanExpression, $email: StringExpression, $groups: GroupExpression, $id: StringExpression, $includeDeprecated: Boolean, $lastName: StringExpression, $login: StringExpression, $name: StringExpression, $password: StringExpression, $realm: RealmExpression, $realmId: StringExpression, $roles: RoleExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userGroup: UserGroupExpression, $userRole: UserRoleExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
+  user(cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable email: $email groups: $groups id: $id includeDeprecated: $includeDeprecated lastName: $lastName login: $login name: $name password: $password realm: $realm realmId: $realmId roles: $roles updateTime: $updateTime updateUserId: $updateUserId userGroup: $userGroup userRole: $userRole version: $version) @skipNullArguments(if: $skipNullArguments) {
     createGroupId
     createTime
     createUserId
     disable
+    email
     id
     isDeprecated
+    lastName
     login
     name
-    organizationId
     password
-    phones
     realmId
-    sex
-    test1
-    test2
     updateTime
     updateUserId
-    userDetail2
     version
   }
 }

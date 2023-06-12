@@ -1,0 +1,28 @@
+query Query_groupRole_from($groupRole_id: StringExpression, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $groupRole: GroupRoleExpression, $id: StringExpression, $includeDeprecated: Boolean, $name: StringExpression, $parent: GroupExpression, $parentId: IntExpression, $realm: RealmExpression, $realmId: StringExpression, $roles: RoleExpression, $subGroups: GroupExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userGroup: UserGroupExpression, $users: UserExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
+  groupRole(id: $groupRole_id) @skipNullArguments(if: $skipNullArguments) {
+    createGroupId
+    createTime
+    createUserId
+    groupId
+    id
+    isDeprecated
+    realmId
+    roleId
+    updateTime
+    updateUserId
+    version
+    from(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId groupRole: $groupRole id: $id includeDeprecated: $includeDeprecated name: $name parent: $parent parentId: $parentId realm: $realm realmId: $realmId roles: $roles subGroups: $subGroups updateTime: $updateTime updateUserId: $updateUserId userGroup: $userGroup users: $users version: $version) @skipNullArguments(if: $skipNullArguments) {
+      createGroupId
+      createTime
+      createUserId
+      id
+      isDeprecated
+      name
+      parentId
+      realmId
+      updateTime
+      updateUserId
+      version
+    }
+  }
+}

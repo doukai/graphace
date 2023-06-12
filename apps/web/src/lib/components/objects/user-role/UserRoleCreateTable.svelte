@@ -151,10 +151,12 @@
 			<th>createGroupId</th>
 			<th>createTime</th>
 			<th>createUserId</th>
+			<th>from</th>
 			<th>id</th>
 			<th>isDeprecated</th>
 			<th>realmId</th>
 			<th>roleId</th>
+			<th>to</th>
 			<th>updateTime</th>
 			<th>updateUserId</th>
 			<th>userId</th>
@@ -190,6 +192,7 @@
 							readonly
 							errors={errors[row]?.iterms?.createUserId}
 						/>
+						<ObjectTd name="from" errors={errors[row]?.iterms?.from} path="_/from" on:gotoField />
 						<IDTd
 							name="id"
 							bind:value={node.id}
@@ -214,6 +217,7 @@
 							readonly
 							errors={errors[row]?.iterms?.roleId}
 						/>
+						<ObjectTd name="to" errors={errors[row]?.iterms?.to} path="_/to" on:gotoField />
 						<TimestampTd
 							name="updateTime"
 							bind:value={node.updateTime}

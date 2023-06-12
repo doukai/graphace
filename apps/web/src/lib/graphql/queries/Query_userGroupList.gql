@@ -1,0 +1,15 @@
+query Query_userGroupList($after: ID, $before: ID, $cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $first: Int, $from: UserExpression, $groupBy: [String!], $groupId: IntExpression, $id: StringExpression, $includeDeprecated: Boolean, $last: Int, $offset: Int, $orderBy: UserGroupOrderBy, $realmId: StringExpression, $to: GroupExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userId: IntExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
+  userGroupList(after: $after before: $before cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId first: $first from: $from groupBy: $groupBy groupId: $groupId id: $id includeDeprecated: $includeDeprecated last: $last offset: $offset orderBy: $orderBy realmId: $realmId to: $to updateTime: $updateTime updateUserId: $updateUserId userId: $userId version: $version) @skipNullArguments(if: $skipNullArguments) {
+    createGroupId
+    createTime
+    createUserId
+    groupId
+    id
+    isDeprecated
+    realmId
+    updateTime
+    updateUserId
+    userId
+    version
+  }
+}

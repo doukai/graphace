@@ -15,113 +15,113 @@ export type Translations = RootTranslation
 
 type RootTranslation = {
 	/**
-	 * Welcome to Svelte Fall Summit {year}
+	 * W​e​l​c​o​m​e​ ​t​o​ ​S​v​e​l​t​e​ ​F​a​l​l​ ​S​u​m​m​i​t​ ​{​y​e​a​r​}
 	 * @param {number} year
 	 */
 	HI: RequiredParams<'year'>
 	localeName: {
 		/**
-		 * English
+		 * E​n​g​l​i​s​h
 		 */
 		en: string
 		/**
-		 * Chinese
+		 * C​h​i​n​e​s​e
 		 */
 		zh: string
 	}
 	message: {
 		/**
-		 * Save success
+		 * S​a​v​e​ ​s​u​c​c​e​s​s
 		 */
 		saveSuccess: string
 		/**
-		 * Create success
+		 * C​r​e​a​t​e​ ​s​u​c​c​e​s​s
 		 */
 		createSuccess: string
 		/**
-		 * Remove success
+		 * R​e​m​o​v​e​ ​s​u​c​c​e​s​s
 		 */
 		removeSuccess: string
 		/**
-		 * Request failed
+		 * R​e​q​u​e​s​t​ ​f​a​i​l​e​d
 		 */
 		requestFailed: string
 		/**
-		 * Save failed
+		 * S​a​v​e​ ​f​a​i​l​e​d
 		 */
 		saveFailed: string
 		/**
-		 * Create failed
+		 * C​r​e​a​t​e​ ​f​a​i​l​e​d
 		 */
 		createFailed: string
 		/**
-		 * Remove failed
+		 * R​e​m​o​v​e​ ​f​a​i​l​e​d
 		 */
 		removeFailed: string
 	}
 	components: {
 		messageBox: {
 			/**
-			 * Cancel
+			 * C​a​n​c​e​l
 			 */
 			cancel: string
 			/**
-			 * Confirm
+			 * C​o​n​f​i​r​m
 			 */
 			confirm: string
 		}
 		ui: {
 			cursor: {
 				/**
-				 * size
+				 * s​i​z​e
 				 */
 				size: string
 				/**
-				 * Previous
+				 * P​r​e​v​i​o​u​s
 				 */
 				previous: string
 				/**
-				 * Next
+				 * N​e​x​t
 				 */
 				next: string
 			}
 			pagination: {
 				/**
-				 * size
+				 * s​i​z​e
 				 */
 				size: string
 				/**
-				 * {total} results
+				 * {​t​o​t​a​l​}​ ​r​e​s​u​l​t​s
 				 * @param {number} total
 				 */
 				total: RequiredParams<'total'>
 				/**
-				 * Page {current}
+				 * P​a​g​e​ ​{​c​u​r​r​e​n​t​}
 				 * @param {number} current
 				 */
 				current: RequiredParams<'current'>
 				/**
-				 * Previous
+				 * P​r​e​v​i​o​u​s
 				 */
 				previous: string
 				/**
-				 * Next
+				 * N​e​x​t
 				 */
 				next: string
 			}
 			searchInput: {
 				/**
-				 * Search
+				 * S​e​a​r​c​h
 				 */
 				placeholder: string
 			}
 			inputList: {
 				/**
-				 * Add
+				 * A​d​d
 				 */
 				add: string
 				/**
-				 * Remove
+				 * R​e​m​o​v​e
 				 */
 				remove: string
 			}
@@ -129,143 +129,143 @@ type RootTranslation = {
 		graphql: {
 			editor: {
 				/**
-				 * Save
+				 * S​a​v​e
 				 */
 				saveBtn: string
 				/**
-				 * Select
+				 * S​e​l​e​c​t
 				 */
 				selectBtn: string
 				/**
-				 * Remove
+				 * R​e​m​o​v​e
 				 */
 				removeBtn: string
 				/**
-				 * Back
+				 * B​a​c​k
 				 */
 				backBtn: string
 				/**
-				 * Create a new {name}
+				 * C​r​e​a​t​e​ ​a​ ​n​e​w​ ​{​n​a​m​e​}
 				 * @param {string} name
 				 */
 				createType: RequiredParams<'name'>
 				/**
-				 * New {name}
+				 * N​e​w​ ​{​n​a​m​e​}
 				 * @param {string} name
 				 */
 				newType: RequiredParams<'name'>
 				/**
-				 * Bind {name}
+				 * B​i​n​d​ ​{​n​a​m​e​}
 				 * @param {string} name
 				 */
 				bindType: RequiredParams<'name'>
 			}
 			table: {
 				/**
-				 * Remove row?
+				 * R​e​m​o​v​e​ ​r​o​w​?
 				 */
 				removeModalTitle: string
 				/**
-				 * Edit
+				 * E​d​i​t
 				 */
 				editBtn: string
 				/**
-				 * Remove
+				 * R​e​m​o​v​e
 				 */
 				removeBtn: string
 				/**
-				 * Cancel
+				 * C​a​n​c​e​l
 				 */
 				cancelBtn: string
 				th: {
 					/**
-					 * filter
+					 * f​i​l​t​e​r
 					 */
 					filter: string
 					/**
-					 * cancel
+					 * c​a​n​c​e​l
 					 */
 					cancel: string
 					/**
-					 * No Sort
+					 * N​o​ ​S​o​r​t
 					 */
 					noSort: string
 					/**
-					 * ASC
+					 * A​S​C
 					 */
 					asc: string
 					/**
-					 * DESC
+					 * D​E​S​C
 					 */
 					desc: string
 					/**
-					 * Equals
+					 * E​q​u​a​l​s
 					 */
 					eq: string
 					/**
-					 * Not Equals
+					 * N​o​t​ ​E​q​u​a​l​s
 					 */
 					neq: string
 					/**
-					 * Like
+					 * L​i​k​e
 					 */
 					lk: string
 					/**
-					 * Not Like
+					 * N​o​t​ ​L​i​k​e
 					 */
 					nlk: string
 					/**
-					 * Greater Than
+					 * G​r​e​a​t​e​r​ ​T​h​a​n
 					 */
 					gt: string
 					/**
-					 * Greater Equals
+					 * G​r​e​a​t​e​r​ ​E​q​u​a​l​s
 					 */
 					gte: string
 					/**
-					 * Less Than
+					 * L​e​s​s​ ​T​h​a​n
 					 */
 					lt: string
 					/**
-					 * Less Equals
+					 * L​e​s​s​ ​E​q​u​a​l​s
 					 */
 					lte: string
 					/**
-					 * Is Null
+					 * I​s​ ​N​u​l​l
 					 */
 					nil: string
 					/**
-					 * Not Null
+					 * N​o​t​ ​N​u​l​l
 					 */
 					nnil: string
 					/**
-					 * In
+					 * I​n
 					 */
 					'in': string
 					/**
-					 * Not In
+					 * N​o​t​ ​I​n
 					 */
 					nin: string
 					/**
-					 * Between
+					 * B​e​t​w​e​e​n
 					 */
 					bt: string
 					/**
-					 * Not Between
+					 * N​o​t​ ​B​e​t​w​e​e​n
 					 */
 					nbt: string
 					/**
-					 * Filter..
+					 * F​i​l​t​e​r​.​.
 					 */
 					filterPlaceholder: string
 				}
 				td: {
 					/**
-					 * save
+					 * s​a​v​e
 					 */
 					save: string
 					/**
-					 * clear
+					 * c​l​e​a​r
 					 */
 					clear: string
 				}
@@ -275,11 +275,11 @@ type RootTranslation = {
 	routers: {
 		type: {
 			/**
-			 * Create
+			 * C​r​e​a​t​e
 			 */
 			create: string
 			/**
-			 * Remove
+			 * R​e​m​o​v​e
 			 */
 			remove: string
 		}

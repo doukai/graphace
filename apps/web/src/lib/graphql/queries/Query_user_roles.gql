@@ -1,37 +1,32 @@
-query Query_user_roles($user_id: StringExpression, $first: Int, $groupBy: [String!], $id: StringExpression, $last: Int, $name: StringExpression, $offset: Int, $orderBy: RoleOrderBy, $type: RoleTypeExpression, $users: UserExpression, $skipNullArguments: Boolean = true) {
+query Query_user_roles($user_id: StringExpression, $composites: RoleExpression, $description: StringExpression, $first: Int, $groupBy: [String!], $id: StringExpression, $last: Int, $name: StringExpression, $offset: Int, $orderBy: RoleOrderBy, $permissions: PermissionExpression, $realm: RealmExpression, $totalCount: IntExpression, $users: UserExpression, $skipNullArguments: Boolean = true) {
   user(id: $user_id) @skipNullArguments(if: $skipNullArguments) {
-    age
     createGroupId
     createTime
     createUserId
     disable
+    email
     id
     isDeprecated
+    lastName
     login
     name
-    organizationId
     password
-    phones
     realmId
-    sex
-    test1
-    test2
     updateTime
     updateUserId
-    userDetail2
     version
-    rolesConnection(first: $first groupBy: $groupBy id: $id last: $last name: $name offset: $offset orderBy: $orderBy type: $type users: $users) @skipNullArguments(if: $skipNullArguments) {
+    rolesConnection(composites: $composites description: $description first: $first groupBy: $groupBy id: $id last: $last name: $name offset: $offset orderBy: $orderBy permissions: $permissions realm: $realm totalCount: $totalCount users: $users) @skipNullArguments(if: $skipNullArguments) {
       totalCount
       edges {
         node {
           createGroupId
           createTime
           createUserId
+          description
           id
           isDeprecated
           name
           realmId
-          type
           updateTime
           updateUserId
           version

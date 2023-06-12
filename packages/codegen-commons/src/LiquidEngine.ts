@@ -1,5 +1,4 @@
-import { Liquid } from 'liquidjs';
-import type { LiquidOptions } from 'liquidjs/dist/liquid-options';
+import { Liquid, type LiquidOptions } from 'liquidjs';
 import * as changeCase from "change-case";
 
 export const buildEngine = (opts?: LiquidOptions): Liquid => {

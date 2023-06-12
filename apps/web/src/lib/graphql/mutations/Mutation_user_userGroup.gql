@@ -1,0 +1,37 @@
+mutation Mutation_user_userGroup($user_id: ID, $user_userGroup: [UserGroupInput], $first: Int, $from: UserExpression, $groupBy: [String!], $groupId: IntExpression, $id: StringExpression, $last: Int, $offset: Int, $orderBy: UserGroupOrderBy, $to: GroupExpression, $totalCount: IntExpression, $userId: IntExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+  user(id: $user_id userGroup: $user_userGroup) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    createGroupId
+    createTime
+    createUserId
+    disable
+    email
+    id
+    isDeprecated
+    lastName
+    login
+    name
+    password
+    realmId
+    updateTime
+    updateUserId
+    version
+    userGroupConnection(first: $first from: $from groupBy: $groupBy groupId: $groupId id: $id last: $last offset: $offset orderBy: $orderBy to: $to totalCount: $totalCount userId: $userId) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+      totalCount
+      edges {
+        node {
+          createGroupId
+          createTime
+          createUserId
+          groupId
+          id
+          isDeprecated
+          realmId
+          updateTime
+          updateUserId
+          userId
+          version
+        }
+      }
+    }
+  }
+}

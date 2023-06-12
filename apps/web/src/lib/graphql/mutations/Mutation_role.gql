@@ -1,13 +1,13 @@
-mutation Mutation_role($createGroupId: String, $createTime: Timestamp, $createUserId: String, $id: ID, $isDeprecated: Boolean, $name: String, $realmId: String, $type: [RoleType], $updateTime: Timestamp, $updateUserId: String, $users: [UserInput], $version: Int, $where: RoleExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
-  role(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId id: $id isDeprecated: $isDeprecated name: $name realmId: $realmId type: $type updateTime: $updateTime updateUserId: $updateUserId users: $users version: $version where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+mutation Mutation_role($composites: [RoleInput], $createGroupId: String, $createTime: Timestamp, $createUserId: String, $description: String, $id: ID, $isDeprecated: Boolean, $name: String, $permissions: [PermissionInput], $realm: RealmInput, $realmId: String, $roleComposite: [RoleCompositeInput], $updateTime: Timestamp, $updateUserId: String, $userRole: [UserRoleInput], $users: [UserInput], $version: Int, $where: RoleExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+  role(composites: $composites createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId description: $description id: $id isDeprecated: $isDeprecated name: $name permissions: $permissions realm: $realm realmId: $realmId roleComposite: $roleComposite updateTime: $updateTime updateUserId: $updateUserId userRole: $userRole users: $users version: $version where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     createGroupId
     createTime
     createUserId
+    description
     id
     isDeprecated
     name
     realmId
-    type
     updateTime
     updateUserId
     version

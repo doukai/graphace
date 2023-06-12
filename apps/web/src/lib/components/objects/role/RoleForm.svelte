@@ -4,7 +4,6 @@
 	import type { Errors } from '@graphace/commons/types';
 	import { Form, FormLoading, FormItems, FormButtons } from '@graphace/ui/components/form';
 	import { StringItem, TimestampItem, IDItem, BooleanItem, IntItem, ObjectItem } from '@graphace/ui-graphql/components/form';
-	import RoleTypeItem from '~/lib/components/enums/role-type/RoleTypeItem.svelte';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '~/i18n/i18n-svelte';
@@ -66,16 +65,24 @@
 			<FormLoading rows={11} />
 		{:else}
 			{#if node}
+				<ObjectItem name="compositesConnection" path={`${node.id}/composites-connection`} label="compositesConnection" errors={errors.compositesConnection} on:gotoField />
 				<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} errors={errors.createGroupId} />
 				<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} errors={errors.createTime} />
 				<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} errors={errors.createUserId} />
+				<StringItem label="description" name="description" bind:value={node.description} errors={errors.description} />
 				<IDItem label="id" name="id" bind:value={node.id} errors={errors.id} />
 				<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} errors={errors.isDeprecated} />
 				<StringItem label="name" name="name" bind:value={node.name} errors={errors.name} />
+				<ObjectItem name="permissions" path={`${node.id}/permissions`} label="permissions" errors={errors.permissions} on:gotoField />
+				<ObjectItem name="permissionsConnection" path={`${node.id}/permissions-connection`} label="permissionsConnection" errors={errors.permissionsConnection} on:gotoField />
+				<ObjectItem name="realm" path={`${node.id}/realm`} label="realm" errors={errors.realm} on:gotoField />
 				<StringItem label="realmId" name="realmId" bind:value={node.realmId} errors={errors.realmId} />
-				<RoleTypeItem label="type" name="type" bind:value={node.type} list errors={errors.type} />
+				<ObjectItem name="roleComposite" path={`${node.id}/role-composite`} label="roleComposite" errors={errors.roleComposite} on:gotoField />
+				<ObjectItem name="roleCompositeConnection" path={`${node.id}/role-composite-connection`} label="roleCompositeConnection" errors={errors.roleCompositeConnection} on:gotoField />
 				<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} errors={errors.updateTime} />
 				<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} errors={errors.updateUserId} />
+				<ObjectItem name="userRole" path={`${node.id}/user-role`} label="userRole" errors={errors.userRole} on:gotoField />
+				<ObjectItem name="userRoleConnection" path={`${node.id}/user-role-connection`} label="userRoleConnection" errors={errors.userRoleConnection} on:gotoField />
 				<ObjectItem name="users" path={`${node.id}/users`} label="users" errors={errors.users} on:gotoField />
 				<ObjectItem name="usersConnection" path={`${node.id}/users-connection`} label="usersConnection" errors={errors.usersConnection} on:gotoField />
 				<IntItem label="version" name="version" bind:value={node.version} errors={errors.version} />

@@ -1,0 +1,15 @@
+mutation Mutation_groupRole($createGroupId: String, $createTime: Timestamp, $createUserId: String, $from: GroupInput, $groupId: Int, $id: ID, $isDeprecated: Boolean, $realmId: String, $roleId: Int, $to: RoleInput, $updateTime: Timestamp, $updateUserId: String, $version: Int, $where: GroupRoleExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+  groupRole(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId from: $from groupId: $groupId id: $id isDeprecated: $isDeprecated realmId: $realmId roleId: $roleId to: $to updateTime: $updateTime updateUserId: $updateUserId version: $version where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    createGroupId
+    createTime
+    createUserId
+    groupId
+    id
+    isDeprecated
+    realmId
+    roleId
+    updateTime
+    updateUserId
+    version
+  }
+}

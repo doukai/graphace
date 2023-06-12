@@ -1,0 +1,37 @@
+query Query_user_userRole($user_id: StringExpression, $first: Int, $from: UserExpression, $groupBy: [String!], $id: StringExpression, $last: Int, $offset: Int, $orderBy: UserRoleOrderBy, $roleId: IntExpression, $to: RoleExpression, $totalCount: IntExpression, $userId: IntExpression, $skipNullArguments: Boolean = true) {
+  user(id: $user_id) @skipNullArguments(if: $skipNullArguments) {
+    createGroupId
+    createTime
+    createUserId
+    disable
+    email
+    id
+    isDeprecated
+    lastName
+    login
+    name
+    password
+    realmId
+    updateTime
+    updateUserId
+    version
+    userRoleConnection(first: $first from: $from groupBy: $groupBy id: $id last: $last offset: $offset orderBy: $orderBy roleId: $roleId to: $to totalCount: $totalCount userId: $userId) @skipNullArguments(if: $skipNullArguments) {
+      totalCount
+      edges {
+        node {
+          createGroupId
+          createTime
+          createUserId
+          id
+          isDeprecated
+          realmId
+          roleId
+          updateTime
+          updateUserId
+          userId
+          version
+        }
+      }
+    }
+  }
+}

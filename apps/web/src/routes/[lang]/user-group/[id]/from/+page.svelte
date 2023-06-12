@@ -1,0 +1,83 @@
+<script lang="ts">
+	import { ot, to } from '~/lib/stores/useNavigate';
+	import { page } from '$app/stores';
+	import UserForm from '~/lib/components/objects/user/UserForm.svelte';
+	import UserCreateForm from '~/lib/components/objects/user/UserCreateForm.svelte';
+	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
+	import type { Errors } from '@graphace/commons/types';
+	import type { MutationTypeUserArgs, User } from '~/lib/types/schema';
+	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
+	import { Query_userGroup_fromStore, Mutation_userGroup_fromStore } from '$houdini';
+	import type { PageData } from './$houdini';
+	import { validate } from '@graphace/graphql/schema/JsonSchema';
+	import { locale } from '~/i18n/i18n-svelte';
+
+	export let data: PageData;
+	$: createNode = data.node as MutationTypeUserArgs;
+	$: createErrors = data.errors as Record<string, Errors>;
+
+	$: Query_userGroup_from = data.Query_userGroup_from as Query_userGroup_fromStore;
+	$: userGroup = $Query_userGroup_from.data?.userGroup;
+	$: node = userGroup?.from;
+	const Mutation_userGroup_from = new Mutation_userGroup_fromStore();
+	let errors: Record<number, Errors> = {};
+
+	const mutation = (
+		event: CustomEvent<{
+			args: MutationTypeUserArgs;
+			update?: boolean;
+			then: (data: User | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		validate('User', event.detail.args, event.detail.update, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_userGroup_from.mutate({
+					userGroup_id: userGroup?.id,
+					userGroup_from: event.detail.args,
+					update: event.detail.update
+				})
+					.then((result) => {
+						event.detail.then(result?.userGroup?.from);
+					})
+					.catch((errors) => {
+						event.detail.catch(errors);
+					});
+			})
+			.catch((validErrors) => {
+				errors = validErrors;
+			});
+	};
+
+	const back = (event: CustomEvent<{}>) => {
+		ot();
+	};
+
+	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
+		to(`../../user/${event.detail.path}`, {
+			node: updateNodeParam($page.url, node),
+			errors: updateErrorsParam($page.url, errors),
+			path: getChildPathParam($page.url, event.detail.name)
+		});
+	};
+</script>
+
+{#if node}
+	<UserForm
+		{node}
+		{errors}
+		isFetching={$Query_userGroup_from.fetching}
+		on:mutation={mutation}
+		on:back={back}
+		on:gotoField={gotoField}
+	/>
+{:else}
+	<UserCreateForm
+		node={createNode}
+		errors={createErrors}
+		on:mutation={mutation}
+		on:back={back}
+		on:gotoField={gotoField}
+	/>
+{/if}

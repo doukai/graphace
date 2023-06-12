@@ -1,0 +1,28 @@
+query Query_roleComposite_to($roleComposite_id: StringExpression, $composites: RoleExpression, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $description: StringExpression, $id: StringExpression, $includeDeprecated: Boolean, $name: StringExpression, $permissions: PermissionExpression, $realm: RealmExpression, $realmId: StringExpression, $roleComposite: RoleCompositeExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userRole: UserRoleExpression, $users: UserExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
+  roleComposite(id: $roleComposite_id) @skipNullArguments(if: $skipNullArguments) {
+    compositeId
+    createGroupId
+    createTime
+    createUserId
+    id
+    isDeprecated
+    realmId
+    roleId
+    updateTime
+    updateUserId
+    version
+    to(composites: $composites createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId description: $description id: $id includeDeprecated: $includeDeprecated name: $name permissions: $permissions realm: $realm realmId: $realmId roleComposite: $roleComposite updateTime: $updateTime updateUserId: $updateUserId userRole: $userRole users: $users version: $version) @skipNullArguments(if: $skipNullArguments) {
+      createGroupId
+      createTime
+      createUserId
+      description
+      id
+      isDeprecated
+      name
+      realmId
+      updateTime
+      updateUserId
+      version
+    }
+  }
+}

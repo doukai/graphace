@@ -1,0 +1,37 @@
+query Query_group_users($group_id: StringExpression, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $disable: BooleanExpression, $email: StringExpression, $first: Int, $groupBy: [String!], $groups: GroupExpression, $id: StringExpression, $includeDeprecated: Boolean, $last: Int, $lastName: StringExpression, $login: StringExpression, $name: StringExpression, $offset: Int, $orderBy: UserOrderBy, $password: StringExpression, $realm: RealmExpression, $realmId: StringExpression, $roles: RoleExpression, $totalCount: IntExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userGroup: UserGroupExpression, $userRole: UserRoleExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
+  group(id: $group_id) @skipNullArguments(if: $skipNullArguments) {
+    createGroupId
+    createTime
+    createUserId
+    id
+    isDeprecated
+    name
+    parentId
+    realmId
+    updateTime
+    updateUserId
+    version
+    usersConnection(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable email: $email first: $first groupBy: $groupBy groups: $groups id: $id includeDeprecated: $includeDeprecated last: $last lastName: $lastName login: $login name: $name offset: $offset orderBy: $orderBy password: $password realm: $realm realmId: $realmId roles: $roles totalCount: $totalCount updateTime: $updateTime updateUserId: $updateUserId userGroup: $userGroup userRole: $userRole version: $version) @skipNullArguments(if: $skipNullArguments) {
+      totalCount
+      edges {
+        node {
+          createGroupId
+          createTime
+          createUserId
+          disable
+          email
+          id
+          isDeprecated
+          lastName
+          login
+          name
+          password
+          realmId
+          updateTime
+          updateUserId
+          version
+        }
+      }
+    }
+  }
+}

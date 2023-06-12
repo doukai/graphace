@@ -10,6 +10,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
+    "login": "turbo login",
     "clean": "npx npkill",
     "lint": "turbo run lint",
     "format": "prettier --write ."
@@ -20,10 +21,10 @@
     "prettier": "^2.8.8",
     "prettier-plugin-svelte": "^2.10.1",
     "svelte": "^3.59.1",
-    "turbo": "latest"
+    "turbo": "^1.10.3"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=16.0.0"
   },
-  "packageManager": "pnpm@7.16.1"
+  "packageManager": "pnpm@8.6.2"
 }

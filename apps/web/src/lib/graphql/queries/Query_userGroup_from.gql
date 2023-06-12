@@ -1,0 +1,32 @@
+query Query_userGroup_from($userGroup_id: StringExpression, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $disable: BooleanExpression, $email: StringExpression, $groups: GroupExpression, $id: StringExpression, $includeDeprecated: Boolean, $lastName: StringExpression, $login: StringExpression, $name: StringExpression, $password: StringExpression, $realm: RealmExpression, $realmId: StringExpression, $roles: RoleExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userGroup: UserGroupExpression, $userRole: UserRoleExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
+  userGroup(id: $userGroup_id) @skipNullArguments(if: $skipNullArguments) {
+    createGroupId
+    createTime
+    createUserId
+    groupId
+    id
+    isDeprecated
+    realmId
+    updateTime
+    updateUserId
+    userId
+    version
+    from(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable email: $email groups: $groups id: $id includeDeprecated: $includeDeprecated lastName: $lastName login: $login name: $name password: $password realm: $realm realmId: $realmId roles: $roles updateTime: $updateTime updateUserId: $updateUserId userGroup: $userGroup userRole: $userRole version: $version) @skipNullArguments(if: $skipNullArguments) {
+      createGroupId
+      createTime
+      createUserId
+      disable
+      email
+      id
+      isDeprecated
+      lastName
+      login
+      name
+      password
+      realmId
+      updateTime
+      updateUserId
+      version
+    }
+  }
+}

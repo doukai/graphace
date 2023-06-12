@@ -68,10 +68,12 @@
 				<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} errors={errors.createGroupId} />
 				<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} errors={errors.createTime} />
 				<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} errors={errors.createUserId} />
+				<ObjectItem name="from" path={`${node.id}/from`} label="from" errors={errors.from} on:gotoField />
 				<IDItem label="id" name="id" bind:value={node.id} errors={errors.id} />
 				<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} errors={errors.isDeprecated} />
 				<StringItem label="realmId" name="realmId" bind:value={node.realmId} errors={errors.realmId} />
 				<IntItem label="roleId" name="roleId" bind:value={node.roleId} errors={errors.roleId} />
+				<ObjectItem name="to" path={`${node.id}/to`} label="to" errors={errors.to} on:gotoField />
 				<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} errors={errors.updateTime} />
 				<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} errors={errors.updateUserId} />
 				<IntItem label="userId" name="userId" bind:value={node.userId} errors={errors.userId} />

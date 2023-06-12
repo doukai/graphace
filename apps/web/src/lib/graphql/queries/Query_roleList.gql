@@ -1,13 +1,13 @@
-query Query_roleList($after: ID, $before: ID, $cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $first: Int, $groupBy: [String!], $id: StringExpression, $includeDeprecated: Boolean, $last: Int, $name: StringExpression, $offset: Int, $orderBy: RoleOrderBy, $realmId: StringExpression, $type: RoleTypeExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $users: UserExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
-  roleList(after: $after before: $before cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId first: $first groupBy: $groupBy id: $id includeDeprecated: $includeDeprecated last: $last name: $name offset: $offset orderBy: $orderBy realmId: $realmId type: $type updateTime: $updateTime updateUserId: $updateUserId users: $users version: $version) @skipNullArguments(if: $skipNullArguments) {
+query Query_roleList($after: ID, $before: ID, $composites: RoleExpression, $cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $description: StringExpression, $first: Int, $groupBy: [String!], $id: StringExpression, $includeDeprecated: Boolean, $last: Int, $name: StringExpression, $offset: Int, $orderBy: RoleOrderBy, $permissions: PermissionExpression, $realm: RealmExpression, $realmId: StringExpression, $roleComposite: RoleCompositeExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userRole: UserRoleExpression, $users: UserExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
+  roleList(after: $after before: $before composites: $composites cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId description: $description first: $first groupBy: $groupBy id: $id includeDeprecated: $includeDeprecated last: $last name: $name offset: $offset orderBy: $orderBy permissions: $permissions realm: $realm realmId: $realmId roleComposite: $roleComposite updateTime: $updateTime updateUserId: $updateUserId userRole: $userRole users: $users version: $version) @skipNullArguments(if: $skipNullArguments) {
     createGroupId
     createTime
     createUserId
+    description
     id
     isDeprecated
     name
     realmId
-    type
     updateTime
     updateUserId
     version

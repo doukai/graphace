@@ -1,24 +1,19 @@
-mutation Mutation_user($age: Int, $createGroupId: String, $createTime: Timestamp, $createUserId: String, $disable: Boolean, $id: ID, $isDeprecated: Boolean, $login: String, $name: String, $organization: OrganizationInput, $organizationId: Int, $password: String, $phones: [String], $realmId: String, $roles: [RoleInput], $sex: Sex, $test1: [Int], $test2: [Boolean], $updateTime: Timestamp, $updateUserId: String, $userProfile: UserProfileInput, $version: Int, $where: UserExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
-  user(age: $age createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable id: $id isDeprecated: $isDeprecated login: $login name: $name organization: $organization organizationId: $organizationId password: $password phones: $phones realmId: $realmId roles: $roles sex: $sex test1: $test1 test2: $test2 updateTime: $updateTime updateUserId: $updateUserId userProfile: $userProfile version: $version where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
-    age
+mutation Mutation_user($createGroupId: String, $createTime: Timestamp, $createUserId: String, $disable: Boolean, $email: String, $groups: [GroupInput], $id: ID, $isDeprecated: Boolean, $lastName: String, $login: String, $name: String, $password: String, $realm: RealmInput, $realmId: String, $roles: [RoleInput], $updateTime: Timestamp, $updateUserId: String, $userGroup: [UserGroupInput], $userRole: [UserRoleInput], $version: Int, $where: UserExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+  user(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable email: $email groups: $groups id: $id isDeprecated: $isDeprecated lastName: $lastName login: $login name: $name password: $password realm: $realm realmId: $realmId roles: $roles updateTime: $updateTime updateUserId: $updateUserId userGroup: $userGroup userRole: $userRole version: $version where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     createGroupId
     createTime
     createUserId
     disable
+    email
     id
     isDeprecated
+    lastName
     login
     name
-    organizationId
     password
-    phones
     realmId
-    sex
-    test1
-    test2
     updateTime
     updateUserId
-    userDetail2
     version
   }
 }

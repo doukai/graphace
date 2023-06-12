@@ -9,13 +9,15 @@
 	import MessageBoxs from '@graphace/ui/components/MessageBoxs.svelte';
 	import { ThemeSelect } from '@graphace/ui/components/select';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Menu, Adjustments } from '@steeze-ui/heroicons';
+	import { Bars4, AdjustmentsVertical } from '@steeze-ui/heroicons';
 	import { LocaleSelect } from '~/lib/components/select';
 	import { setLocale } from '~/i18n/i18n-svelte';
+	import type { LayoutData } from './$types';
 
-	export let locale: Locales;
+	export let data: LayoutData;
+	// at the very top, set the locale before you access the store and before the actual rendering takes place
+	setLocale(data.locale);
 	let isMenuOpen = true;
-	setLocale(locale);
 
 	onMount(() => {
 		themeChange(false);
@@ -42,17 +44,17 @@
 								class="hidden md:btn md:btn-square md:btn-ghost"
 								on:click={(e) => (isMenuOpen = !isMenuOpen)}
 							>
-								<Icon src={Menu} solid class="h-6 w-6" />
+								<Icon src={Bars4} solid class="h-6 w-6" />
 							</button>
 							<label for="left-drawer" class="btn btn-square btn-ghost drawer-button md:hidden">
-								<Icon src={Menu} solid class="h-6 w-6" />
+								<Icon src={Bars4} solid class="h-6 w-6" />
 							</label>
 						</NavBarStart>
 						<NavBarCenter />
 						<NavBarEnd>
 							<LocaleSelect />
 							<label for="right-drawer" class="ml-1 btn btn-square btn-ghost drawer-button">
-								<Icon src={Adjustments} solid class="h-6 w-6" />
+								<Icon src={AdjustmentsVertical} solid class="h-6 w-6" />
 							</label>
 						</NavBarEnd>
 					</NavBar>

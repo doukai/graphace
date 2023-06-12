@@ -3,8 +3,7 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
 	import { Form, FormItems, FormButtons } from '@graphace/ui/components/form';
-	import { IntItem, StringItem, TimestampItem, BooleanItem, IDItem, ObjectItem } from '@graphace/ui-graphql/components/form';
-	import SexItem from '~/lib/components/enums/sex/SexItem.svelte';
+	import { StringItem, TimestampItem, BooleanItem, IDItem, IntItem, ObjectItem } from '@graphace/ui-graphql/components/form';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '~/i18n/i18n-svelte';
@@ -60,28 +59,29 @@
 
 <Form>
 	<FormItems title="User">
-		<IntItem label="age" name="age" bind:value={node.age} errors={errors.age} />
 		<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} errors={errors.createGroupId} />
 		<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} errors={errors.createTime} />
 		<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} errors={errors.createUserId} />
 		<BooleanItem label="disable" name="disable" bind:value={node.disable} errors={errors.disable} />
+		<StringItem label="email" name="email" bind:value={node.email} errors={errors.email} />
+		<ObjectItem name="groups" path="_/groups" label="groups" errors={errors.groups} on:gotoField />
+		<ObjectItem name="groupsConnection" path="_/groups-connection" label="groupsConnection" errors={errors.groupsConnection} on:gotoField />
 		<IDItem label="id" name="id" bind:value={node.id} errors={errors.id} />
 		<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} errors={errors.isDeprecated} />
+		<StringItem label="lastName" name="lastName" bind:value={node.lastName} errors={errors.lastName} />
 		<StringItem label="login" name="login" bind:value={node.login} errors={errors.login} />
 		<StringItem label="name" name="name" bind:value={node.name} errors={errors.name} />
-		<ObjectItem name="organization" path="_/organization" label="organization" errors={errors.organization} on:gotoField />
-		<IntItem label="organizationId" name="organizationId" bind:value={node.organizationId} errors={errors.organizationId} />
 		<StringItem label="password" name="password" bind:value={node.password} errors={errors.password} />
-		<StringItem label="phones" name="phones" bind:value={node.phones} list errors={errors.phones} />
+		<ObjectItem name="realm" path="_/realm" label="realm" errors={errors.realm} on:gotoField />
 		<StringItem label="realmId" name="realmId" bind:value={node.realmId} errors={errors.realmId} />
 		<ObjectItem name="roles" path="_/roles" label="roles" errors={errors.roles} on:gotoField />
 		<ObjectItem name="rolesConnection" path="_/roles-connection" label="rolesConnection" errors={errors.rolesConnection} on:gotoField />
-		<SexItem label="sex" name="sex" bind:value={node.sex} errors={errors.sex} />
-		<IntItem label="test1" name="test1" bind:value={node.test1} list errors={errors.test1} />
-		<BooleanItem label="test2" name="test2" bind:value={node.test2} list errors={errors.test2} />
 		<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} errors={errors.updateTime} />
 		<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} errors={errors.updateUserId} />
-		<ObjectItem name="userProfile" path="_/user-profile" label="userProfile" errors={errors.userProfile} on:gotoField />
+		<ObjectItem name="userGroup" path="_/user-group" label="userGroup" errors={errors.userGroup} on:gotoField />
+		<ObjectItem name="userGroupConnection" path="_/user-group-connection" label="userGroupConnection" errors={errors.userGroupConnection} on:gotoField />
+		<ObjectItem name="userRole" path="_/user-role" label="userRole" errors={errors.userRole} on:gotoField />
+		<ObjectItem name="userRoleConnection" path="_/user-role-connection" label="userRoleConnection" errors={errors.userRoleConnection} on:gotoField />
 		<IntItem label="version" name="version" bind:value={node.version} errors={errors.version} />
 	</FormItems>
 	<FormButtons>

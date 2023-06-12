@@ -2,8 +2,6 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
 	import { ObjectTd, StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, BooleanTh, BooleanTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
-	import RoleTypeTh from '~/lib/components/enums/role-type/RoleTypeTh.svelte';
-	import RoleTypeTd from '~/lib/components/enums/role-type/RoleTypeTd.svelte';
 	import { SectionHead } from '@graphace/ui/components/section';
 	import { Table } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
@@ -153,13 +151,17 @@
 			<th>createGroupId</th>
 			<th>createTime</th>
 			<th>createUserId</th>
+			<th>description</th>
 			<th>id</th>
 			<th>isDeprecated</th>
 			<th>name</th>
+			<th>permissions</th>
+			<th>realm</th>
 			<th>realmId</th>
-			<th>type</th>
+			<th>roleComposite</th>
 			<th>updateTime</th>
 			<th>updateUserId</th>
+			<th>userRole</th>
 			<th>users</th>
 			<th>version</th>
 			<th />
@@ -193,6 +195,12 @@
 							readonly
 							errors={errors[row]?.iterms?.createUserId}
 						/>
+						<StringTd
+							name="description"
+							bind:value={node.description}
+							readonly
+							errors={errors[row]?.iterms?.description}
+						/>
 						<IDTd
 							name="id"
 							bind:value={node.id}
@@ -211,19 +219,15 @@
 							readonly
 							errors={errors[row]?.iterms?.name}
 						/>
+						<ObjectTd name="permissions" errors={errors[row]?.iterms?.permissions} path="_/permissions" on:gotoField />
+						<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
 						<StringTd
 							name="realmId"
 							bind:value={node.realmId}
 							readonly
 							errors={errors[row]?.iterms?.realmId}
 						/>
-						<RoleTypeTd
-							name="type"
-							bind:value={node.type}
-							list
-							readonly
-							errors={errors[row]?.iterms?.type}
-						/>
+						<ObjectTd name="roleComposite" errors={errors[row]?.iterms?.roleComposite} path="_/role-composite" on:gotoField />
 						<TimestampTd
 							name="updateTime"
 							bind:value={node.updateTime}
@@ -236,6 +240,7 @@
 							readonly
 							errors={errors[row]?.iterms?.updateUserId}
 						/>
+						<ObjectTd name="userRole" errors={errors[row]?.iterms?.userRole} path="_/user-role" on:gotoField />
 						<ObjectTd name="users" errors={errors[row]?.iterms?.users} path="_/users" on:gotoField />
 						<IntTd
 							name="version"

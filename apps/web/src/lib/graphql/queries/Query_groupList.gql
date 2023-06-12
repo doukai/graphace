@@ -1,0 +1,15 @@
+query Query_groupList($after: ID, $before: ID, $cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $first: Int, $groupBy: [String!], $groupRole: GroupRoleExpression, $id: StringExpression, $includeDeprecated: Boolean, $last: Int, $name: StringExpression, $offset: Int, $orderBy: GroupOrderBy, $parent: GroupExpression, $parentId: IntExpression, $realm: RealmExpression, $realmId: StringExpression, $roles: RoleExpression, $subGroups: GroupExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userGroup: UserGroupExpression, $users: UserExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
+  groupList(after: $after before: $before cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId first: $first groupBy: $groupBy groupRole: $groupRole id: $id includeDeprecated: $includeDeprecated last: $last name: $name offset: $offset orderBy: $orderBy parent: $parent parentId: $parentId realm: $realm realmId: $realmId roles: $roles subGroups: $subGroups updateTime: $updateTime updateUserId: $updateUserId userGroup: $userGroup users: $users version: $version) @skipNullArguments(if: $skipNullArguments) {
+    createGroupId
+    createTime
+    createUserId
+    id
+    isDeprecated
+    name
+    parentId
+    realmId
+    updateTime
+    updateUserId
+    version
+  }
+}

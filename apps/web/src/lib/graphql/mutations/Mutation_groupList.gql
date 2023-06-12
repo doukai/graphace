@@ -1,0 +1,15 @@
+mutation Mutation_groupList($createGroupId: String, $createTime: Timestamp, $createUserId: String, $groupRole: [GroupRoleInput], $id: ID, $isDeprecated: Boolean, $list: [GroupInput], $name: String, $parent: GroupInput, $parentId: Int, $realm: RealmInput, $realmId: String, $roles: [RoleInput], $subGroups: [GroupInput], $updateTime: Timestamp, $updateUserId: String, $userGroup: [UserGroupInput], $users: [UserInput], $version: Int, $where: GroupExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+  groupList(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId groupRole: $groupRole id: $id isDeprecated: $isDeprecated list: $list name: $name parent: $parent parentId: $parentId realm: $realm realmId: $realmId roles: $roles subGroups: $subGroups updateTime: $updateTime updateUserId: $updateUserId userGroup: $userGroup users: $users version: $version where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    createGroupId
+    createTime
+    createUserId
+    id
+    isDeprecated
+    name
+    parentId
+    realmId
+    updateTime
+    updateUserId
+    version
+  }
+}

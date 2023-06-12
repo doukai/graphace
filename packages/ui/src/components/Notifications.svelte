@@ -60,7 +60,12 @@
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { InformationCircle, CheckCircle, Exclamation, XCircle } from '@steeze-ui/heroicons';
+	import {
+		InformationCircle,
+		CheckCircle,
+		ExclamationTriangle,
+		XCircle
+	} from '@steeze-ui/heroicons';
 
 	const alertClassName = (alertType: string) => {
 		if (alertType === 'info') {
@@ -88,7 +93,7 @@
 						{:else if notification.props.type === 'success'}
 							<Icon src={CheckCircle} solid class="h-5 w-5" />
 						{:else if notification.props.type === 'warning'}
-							<Icon src={Exclamation} solid class="h-5 w-5" />
+							<Icon src={ExclamationTriangle} solid class="h-5 w-5" />
 						{:else if notification.props.type === 'error'}
 							<Icon src={XCircle} solid class="h-5 w-5" />
 						{:else}

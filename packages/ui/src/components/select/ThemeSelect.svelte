@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { ColorSwatch } from '@steeze-ui/heroicons';
+	import { Swatch } from '@steeze-ui/heroicons';
 </script>
 
 <div class="form-control">
 	<label class="input-group">
-		<span><Icon src={ColorSwatch} solid class="h-6 w-6" /></span>
+		<span><Icon src={Swatch} solid class="h-6 w-6" /></span>
 		<select class="select select-bordered" data-choose-theme>
 			<option value="light">Light</option>
 			<option value="dark">Dark</option>

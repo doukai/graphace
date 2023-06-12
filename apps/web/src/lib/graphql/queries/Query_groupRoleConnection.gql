@@ -1,0 +1,20 @@
+query Query_groupRoleConnection($after: ID, $before: ID, $cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $exs: [GroupRoleExpression], $first: Int, $from: GroupExpression, $groupBy: [String!], $groupId: IntExpression, $id: StringExpression, $includeDeprecated: Boolean, $last: Int, $offset: Int, $orderBy: GroupRoleOrderBy, $realmId: StringExpression, $roleId: IntExpression, $to: RoleExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
+  groupRoleConnection(after: $after before: $before cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId exs: $exs first: $first from: $from groupBy: $groupBy groupId: $groupId id: $id includeDeprecated: $includeDeprecated last: $last offset: $offset orderBy: $orderBy realmId: $realmId roleId: $roleId to: $to updateTime: $updateTime updateUserId: $updateUserId version: $version) @skipNullArguments(if: $skipNullArguments) {
+    totalCount
+    edges {
+      node {
+        createGroupId
+        createTime
+        createUserId
+        groupId
+        id
+        isDeprecated
+        realmId
+        roleId
+        updateTime
+        updateUserId
+        version
+      }
+    }
+  }
+}

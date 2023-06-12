@@ -1,0 +1,14 @@
+mutation Mutation_realmList($createGroupId: String, $createTime: Timestamp, $createUserId: String, $id: ID, $isDeprecated: Boolean, $list: [RealmInput], $name: String, $realmId: String, $updateTime: Timestamp, $updateUserId: String, $version: Int, $where: RealmExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+  realmList(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId id: $id isDeprecated: $isDeprecated list: $list name: $name realmId: $realmId updateTime: $updateTime updateUserId: $updateUserId version: $version where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    createGroupId
+    createTime
+    createUserId
+    id
+    isDeprecated
+    name
+    realmId
+    updateTime
+    updateUserId
+    version
+  }
+}

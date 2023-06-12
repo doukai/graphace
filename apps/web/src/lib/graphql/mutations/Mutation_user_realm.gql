@@ -1,0 +1,31 @@
+mutation Mutation_user_realm($user_id: ID, $user_realm: RealmInput, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $id: StringExpression, $includeDeprecated: Boolean, $name: StringExpression, $realmId: StringExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $version: IntExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+  user(id: $user_id realm: $user_realm) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    createGroupId
+    createTime
+    createUserId
+    disable
+    email
+    id
+    isDeprecated
+    lastName
+    login
+    name
+    password
+    realmId
+    updateTime
+    updateUserId
+    version
+    realm(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId id: $id includeDeprecated: $includeDeprecated name: $name realmId: $realmId updateTime: $updateTime updateUserId: $updateUserId version: $version) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+      createGroupId
+      createTime
+      createUserId
+      id
+      isDeprecated
+      name
+      realmId
+      updateTime
+      updateUserId
+      version
+    }
+  }
+}

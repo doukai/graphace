@@ -1,0 +1,32 @@
+mutation Mutation_userRole_from($userRole_id: ID, $userRole_from: UserInput, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $disable: BooleanExpression, $email: StringExpression, $groups: GroupExpression, $id: StringExpression, $includeDeprecated: Boolean, $lastName: StringExpression, $login: StringExpression, $name: StringExpression, $password: StringExpression, $realm: RealmExpression, $realmId: StringExpression, $roles: RoleExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userGroup: UserGroupExpression, $userRole: UserRoleExpression, $version: IntExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+  userRole(id: $userRole_id from: $userRole_from) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    createGroupId
+    createTime
+    createUserId
+    id
+    isDeprecated
+    realmId
+    roleId
+    updateTime
+    updateUserId
+    userId
+    version
+    from(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable email: $email groups: $groups id: $id includeDeprecated: $includeDeprecated lastName: $lastName login: $login name: $name password: $password realm: $realm realmId: $realmId roles: $roles updateTime: $updateTime updateUserId: $updateUserId userGroup: $userGroup userRole: $userRole version: $version) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+      createGroupId
+      createTime
+      createUserId
+      disable
+      email
+      id
+      isDeprecated
+      lastName
+      login
+      name
+      password
+      realmId
+      updateTime
+      updateUserId
+      version
+    }
+  }
+}

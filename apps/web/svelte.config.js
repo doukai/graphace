@@ -20,6 +20,7 @@ const config = {
       "@graphace/ui/*": path.resolve('../../packages/ui/src'),
       "@graphace/ui-graphql": path.resolve('../../packages/ui-graphql/src/index'),
       "@graphace/ui-graphql/*": path.resolve('../../packages/ui-graphql/src'),
+			$i18n: 'src/i18n',
       $houdini: path.resolve('.', '$houdini')
     }
   }

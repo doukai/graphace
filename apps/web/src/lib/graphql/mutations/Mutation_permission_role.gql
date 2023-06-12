@@ -1,0 +1,31 @@
+mutation Mutation_permission_role($permission_id: ID, $permission_role: RoleInput, $composites: RoleExpression, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $description: StringExpression, $id: StringExpression, $includeDeprecated: Boolean, $name: StringExpression, $permissions: PermissionExpression, $realm: RealmExpression, $realmId: StringExpression, $roleComposite: RoleCompositeExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userRole: UserRoleExpression, $users: UserExpression, $version: IntExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+  permission(id: $permission_id role: $permission_role) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    createGroupId
+    createTime
+    createUserId
+    description
+    id
+    isDeprecated
+    level
+    name
+    ofTypeName
+    realmId
+    roleId
+    updateTime
+    updateUserId
+    version
+    role(composites: $composites createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId description: $description id: $id includeDeprecated: $includeDeprecated name: $name permissions: $permissions realm: $realm realmId: $realmId roleComposite: $roleComposite updateTime: $updateTime updateUserId: $updateUserId userRole: $userRole users: $users version: $version) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+      createGroupId
+      createTime
+      createUserId
+      description
+      id
+      isDeprecated
+      name
+      realmId
+      updateTime
+      updateUserId
+      version
+    }
+  }
+}

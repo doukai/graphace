@@ -1,0 +1,15 @@
+query Query_roleCompositeList($after: ID, $before: ID, $compositeId: IntExpression, $cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $first: Int, $from: RoleExpression, $groupBy: [String!], $id: StringExpression, $includeDeprecated: Boolean, $last: Int, $offset: Int, $orderBy: RoleCompositeOrderBy, $realmId: StringExpression, $roleId: IntExpression, $to: RoleExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
+  roleCompositeList(after: $after before: $before compositeId: $compositeId cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId first: $first from: $from groupBy: $groupBy id: $id includeDeprecated: $includeDeprecated last: $last offset: $offset orderBy: $orderBy realmId: $realmId roleId: $roleId to: $to updateTime: $updateTime updateUserId: $updateUserId version: $version) @skipNullArguments(if: $skipNullArguments) {
+    compositeId
+    createGroupId
+    createTime
+    createUserId
+    id
+    isDeprecated
+    realmId
+    roleId
+    updateTime
+    updateUserId
+    version
+  }
+}

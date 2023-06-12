@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import { ObjectTd, IntTh, IntTd, StringTh, StringTd, TimestampTh, TimestampTd, BooleanTh, BooleanTd, IDTh, IDTd } from '@graphace/ui-graphql/components/table';
-	import SexTh from '~/lib/components/enums/sex/SexTh.svelte';
-	import SexTd from '~/lib/components/enums/sex/SexTd.svelte';
+	import { ObjectTd, StringTh, StringTd, TimestampTh, TimestampTd, BooleanTh, BooleanTd, IDTh, IDTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
 	import { SectionHead } from '@graphace/ui/components/section';
 	import { Table, TableLoading } from '@graphace/ui/components/table';
 	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
@@ -84,20 +82,22 @@
 			args.cond = Conditional.OR;
 			args.createGroupId = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.createUserId = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.email = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.lastName = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.login = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.name = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.password = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.phones = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.realmId = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.updateUserId = { opr: Operator.LK, val: `%${searchValue}%` };
 		} else {
 			args.cond = undefined;
 			args.createGroupId = undefined;
 			args.createUserId = undefined;
+			args.email = undefined;
+			args.lastName = undefined;
 			args.login = undefined;
 			args.name = undefined;
 			args.password = undefined;
-			args.phones = undefined;
 			args.realmId = undefined;
 			args.updateUserId = undefined;
 		}
@@ -267,12 +267,6 @@
 					/>
 				</label>
 			</th>
-			<IntTh
-				name="age"
-				bind:expression={args.age}
-				bind:sort={orderBy.age}
-				on:filter={query}
-			/>
 			<StringTh
 				name="createGroupId"
 				bind:expression={args.createGroupId}
@@ -297,6 +291,14 @@
 				bind:sort={orderBy.disable}
 				on:filter={query}
 			/>
+			<StringTh
+				name="email"
+				bind:expression={args.email}
+				bind:sort={orderBy.email}
+				on:filter={query}
+			/>
+			<th>groups</th>
+			<th>groupsConnection</th>
 			<IDTh
 				name="id"
 				bind:expression={args.id}
@@ -304,6 +306,12 @@
 				on:filter={query}
 			/>
 			<th>isDeprecated</th>
+			<StringTh
+				name="lastName"
+				bind:expression={args.lastName}
+				bind:sort={orderBy.lastName}
+				on:filter={query}
+			/>
 			<StringTh
 				name="login"
 				bind:expression={args.login}
@@ -316,24 +324,13 @@
 				bind:sort={orderBy.name}
 				on:filter={query}
 			/>
-			<th>organization</th>
-			<IntTh
-				name="organizationId"
-				bind:expression={args.organizationId}
-				bind:sort={orderBy.organizationId}
-				on:filter={query}
-			/>
 			<StringTh
 				name="password"
 				bind:expression={args.password}
 				bind:sort={orderBy.password}
 				on:filter={query}
 			/>
-			<StringTh
-				name="phones"
-				bind:expression={args.phones}
-				on:filter={query}
-			/>
+			<th>realm</th>
 			<StringTh
 				name="realmId"
 				bind:expression={args.realmId}
@@ -342,22 +339,6 @@
 			/>
 			<th>roles</th>
 			<th>rolesConnection</th>
-			<SexTh
-				name="sex"
-				bind:expression={args.sex}
-				bind:sort={orderBy.sex}
-				on:filter={query}
-			/>
-			<IntTh
-				name="test1"
-				bind:expression={args.test1}
-				on:filter={query}
-			/>
-			<BooleanTh
-				name="test2"
-				bind:expression={args.test2}
-				on:filter={query}
-			/>
 			<TimestampTh
 				name="updateTime"
 				bind:expression={args.updateTime}
@@ -370,8 +351,10 @@
 				bind:sort={orderBy.updateUserId}
 				on:filter={query}
 			/>
-			<th>userDetail2</th>
-			<th>userProfile</th>
+			<th>userGroup</th>
+			<th>userGroupConnection</th>
+			<th>userRole</th>
+			<th>userRoleConnection</th>
 			<IntTh
 				name="version"
 				bind:expression={args.version}
@@ -382,7 +365,7 @@
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading rows={10} cols={20 + 2}/>
+		<TableLoading rows={10} cols={15 + 2}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
@@ -394,12 +377,6 @@
 									<input type="checkbox" class="checkbox" bind:checked={selectedRows[node.id]} />
 								</label>
 							</th>
-							<IntTd
-								name="age"
-								bind:value={node.age}
-								on:save={() => updateField({ id: node?.id, age: node?.age })}
-								errors={errors[row]?.iterms?.age}
-							/>
 							<StringTd
 								name="createGroupId"
 								bind:value={node.createGroupId}
@@ -424,6 +401,14 @@
 								on:save={() => updateField({ id: node?.id, disable: node?.disable })}
 								errors={errors[row]?.iterms?.disable}
 							/>
+							<StringTd
+								name="email"
+								bind:value={node.email}
+								on:save={() => updateField({ id: node?.id, email: node?.email })}
+								errors={errors[row]?.iterms?.email}
+							/>
+							<ObjectTd name="groups" errors={errors[row]?.iterms?.groups} path={`${node.id}/groups`} on:gotoField />
+							<ObjectTd name="groupsConnection" errors={errors[row]?.iterms?.groupsConnection} path={`${node.id}/groups-connection`} on:gotoField />
 							<IDTd
 								name="id"
 								bind:value={node.id}
@@ -437,6 +422,12 @@
 								errors={errors[row]?.iterms?.isDeprecated}
 							/>
 							<StringTd
+								name="lastName"
+								bind:value={node.lastName}
+								on:save={() => updateField({ id: node?.id, lastName: node?.lastName })}
+								errors={errors[row]?.iterms?.lastName}
+							/>
+							<StringTd
 								name="login"
 								bind:value={node.login}
 								on:save={() => updateField({ id: node?.id, login: node?.login })}
@@ -448,26 +439,13 @@
 								on:save={() => updateField({ id: node?.id, name: node?.name })}
 								errors={errors[row]?.iterms?.name}
 							/>
-							<ObjectTd name="organization" errors={errors[row]?.iterms?.organization} path={`${node.id}/organization`} on:gotoField />
-							<IntTd
-								name="organizationId"
-								bind:value={node.organizationId}
-								on:save={() => updateField({ id: node?.id, organizationId: node?.organizationId })}
-								errors={errors[row]?.iterms?.organizationId}
-							/>
 							<StringTd
 								name="password"
 								bind:value={node.password}
 								on:save={() => updateField({ id: node?.id, password: node?.password })}
 								errors={errors[row]?.iterms?.password}
 							/>
-							<StringTd
-								name="phones"
-								bind:value={node.phones}
-								list
-								on:save={() => updateField({ id: node?.id, phones: node?.phones })}
-								errors={errors[row]?.iterms?.phones}
-							/>
+							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
 							<StringTd
 								name="realmId"
 								bind:value={node.realmId}
@@ -476,26 +454,6 @@
 							/>
 							<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path={`${node.id}/roles`} on:gotoField />
 							<ObjectTd name="rolesConnection" errors={errors[row]?.iterms?.rolesConnection} path={`${node.id}/roles-connection`} on:gotoField />
-							<SexTd
-								name="sex"
-								bind:value={node.sex}
-								on:save={() => updateField({ id: node?.id, sex: node?.sex })}
-								errors={errors[row]?.iterms?.sex}
-							/>
-							<IntTd
-								name="test1"
-								bind:value={node.test1}
-								list
-								on:save={() => updateField({ id: node?.id, test1: node?.test1 })}
-								errors={errors[row]?.iterms?.test1}
-							/>
-							<BooleanTd
-								name="test2"
-								bind:value={node.test2}
-								list
-								on:save={() => updateField({ id: node?.id, test2: node?.test2 })}
-								errors={errors[row]?.iterms?.test2}
-							/>
 							<TimestampTd
 								name="updateTime"
 								bind:value={node.updateTime}
@@ -508,13 +466,10 @@
 								on:save={() => updateField({ id: node?.id, updateUserId: node?.updateUserId })}
 								errors={errors[row]?.iterms?.updateUserId}
 							/>
-							<StringTd
-								name="userDetail2"
-								bind:value={node.userDetail2}
-								readonly
-								errors={errors[row]?.iterms?.userDetail2}
-							/>
-							<ObjectTd name="userProfile" errors={errors[row]?.iterms?.userProfile} path={`${node.id}/user-profile`} on:gotoField />
+							<ObjectTd name="userGroup" errors={errors[row]?.iterms?.userGroup} path={`${node.id}/user-group`} on:gotoField />
+							<ObjectTd name="userGroupConnection" errors={errors[row]?.iterms?.userGroupConnection} path={`${node.id}/user-group-connection`} on:gotoField />
+							<ObjectTd name="userRole" errors={errors[row]?.iterms?.userRole} path={`${node.id}/user-role`} on:gotoField />
+							<ObjectTd name="userRoleConnection" errors={errors[row]?.iterms?.userRoleConnection} path={`${node.id}/user-role-connection`} on:gotoField />
 							<IntTd
 								name="version"
 								bind:value={node.version}

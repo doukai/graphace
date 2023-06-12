@@ -1,0 +1,37 @@
+mutation Mutation_user_userRole($user_id: ID, $user_userRole: [UserRoleInput], $first: Int, $from: UserExpression, $groupBy: [String!], $id: StringExpression, $last: Int, $offset: Int, $orderBy: UserRoleOrderBy, $roleId: IntExpression, $to: RoleExpression, $totalCount: IntExpression, $userId: IntExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+  user(id: $user_id userRole: $user_userRole) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    createGroupId
+    createTime
+    createUserId
+    disable
+    email
+    id
+    isDeprecated
+    lastName
+    login
+    name
+    password
+    realmId
+    updateTime
+    updateUserId
+    version
+    userRoleConnection(first: $first from: $from groupBy: $groupBy id: $id last: $last offset: $offset orderBy: $orderBy roleId: $roleId to: $to totalCount: $totalCount userId: $userId) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+      totalCount
+      edges {
+        node {
+          createGroupId
+          createTime
+          createUserId
+          id
+          isDeprecated
+          realmId
+          roleId
+          updateTime
+          updateUserId
+          userId
+          version
+        }
+      }
+    }
+  }
+}

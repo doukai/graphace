@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import { ObjectTd, IntTh, IntTd, StringTh, StringTd, TimestampTh, TimestampTd, BooleanTh, BooleanTd, IDTh, IDTd } from '@graphace/ui-graphql/components/table';
-	import SexTh from '~/lib/components/enums/sex/SexTh.svelte';
-	import SexTd from '~/lib/components/enums/sex/SexTd.svelte';
+	import { ObjectTd, StringTh, StringTd, TimestampTh, TimestampTd, BooleanTh, BooleanTd, IDTh, IDTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
 	import { SectionHead } from '@graphace/ui/components/section';
 	import { Table } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
@@ -150,27 +148,25 @@
 					/>
 				</label>
 			</th>
-			<th>age</th>
 			<th>createGroupId</th>
 			<th>createTime</th>
 			<th>createUserId</th>
 			<th>disable</th>
+			<th>email</th>
+			<th>groups</th>
 			<th>id</th>
 			<th>isDeprecated</th>
+			<th>lastName</th>
 			<th>login</th>
 			<th>name</th>
-			<th>organization</th>
-			<th>organizationId</th>
 			<th>password</th>
-			<th>phones</th>
+			<th>realm</th>
 			<th>realmId</th>
 			<th>roles</th>
-			<th>sex</th>
-			<th>test1</th>
-			<th>test2</th>
 			<th>updateTime</th>
 			<th>updateUserId</th>
-			<th>userProfile</th>
+			<th>userGroup</th>
+			<th>userRole</th>
 			<th>version</th>
 			<th />
 		</tr>
@@ -185,12 +181,6 @@
 								<input type="checkbox" class="checkbox" bind:checked={selectedRows[row]} />
 							</label>
 						</th>
-						<IntTd
-							name="age"
-							bind:value={node.age}
-							readonly
-							errors={errors[row]?.iterms?.age}
-						/>
 						<StringTd
 							name="createGroupId"
 							bind:value={node.createGroupId}
@@ -215,6 +205,13 @@
 							readonly
 							errors={errors[row]?.iterms?.disable}
 						/>
+						<StringTd
+							name="email"
+							bind:value={node.email}
+							readonly
+							errors={errors[row]?.iterms?.email}
+						/>
+						<ObjectTd name="groups" errors={errors[row]?.iterms?.groups} path="_/groups" on:gotoField />
 						<IDTd
 							name="id"
 							bind:value={node.id}
@@ -228,6 +225,12 @@
 							errors={errors[row]?.iterms?.isDeprecated}
 						/>
 						<StringTd
+							name="lastName"
+							bind:value={node.lastName}
+							readonly
+							errors={errors[row]?.iterms?.lastName}
+						/>
+						<StringTd
 							name="login"
 							bind:value={node.login}
 							readonly
@@ -239,26 +242,13 @@
 							readonly
 							errors={errors[row]?.iterms?.name}
 						/>
-						<ObjectTd name="organization" errors={errors[row]?.iterms?.organization} path="_/organization" on:gotoField />
-						<IntTd
-							name="organizationId"
-							bind:value={node.organizationId}
-							readonly
-							errors={errors[row]?.iterms?.organizationId}
-						/>
 						<StringTd
 							name="password"
 							bind:value={node.password}
 							readonly
 							errors={errors[row]?.iterms?.password}
 						/>
-						<StringTd
-							name="phones"
-							bind:value={node.phones}
-							list
-							readonly
-							errors={errors[row]?.iterms?.phones}
-						/>
+						<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
 						<StringTd
 							name="realmId"
 							bind:value={node.realmId}
@@ -266,26 +256,6 @@
 							errors={errors[row]?.iterms?.realmId}
 						/>
 						<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
-						<SexTd
-							name="sex"
-							bind:value={node.sex}
-							readonly
-							errors={errors[row]?.iterms?.sex}
-						/>
-						<IntTd
-							name="test1"
-							bind:value={node.test1}
-							list
-							readonly
-							errors={errors[row]?.iterms?.test1}
-						/>
-						<BooleanTd
-							name="test2"
-							bind:value={node.test2}
-							list
-							readonly
-							errors={errors[row]?.iterms?.test2}
-						/>
 						<TimestampTd
 							name="updateTime"
 							bind:value={node.updateTime}
@@ -298,7 +268,8 @@
 							readonly
 							errors={errors[row]?.iterms?.updateUserId}
 						/>
-						<ObjectTd name="userProfile" errors={errors[row]?.iterms?.userProfile} path="_/user-profile" on:gotoField />
+						<ObjectTd name="userGroup" errors={errors[row]?.iterms?.userGroup} path="_/user-group" on:gotoField />
+						<ObjectTd name="userRole" errors={errors[row]?.iterms?.userRole} path="_/user-role" on:gotoField />
 						<IntTd
 							name="version"
 							bind:value={node.version}

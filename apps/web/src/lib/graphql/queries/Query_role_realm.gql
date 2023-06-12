@@ -1,0 +1,27 @@
+query Query_role_realm($role_id: StringExpression, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $id: StringExpression, $includeDeprecated: Boolean, $name: StringExpression, $realmId: StringExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
+  role(id: $role_id) @skipNullArguments(if: $skipNullArguments) {
+    createGroupId
+    createTime
+    createUserId
+    description
+    id
+    isDeprecated
+    name
+    realmId
+    updateTime
+    updateUserId
+    version
+    realm(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId id: $id includeDeprecated: $includeDeprecated name: $name realmId: $realmId updateTime: $updateTime updateUserId: $updateUserId version: $version) @skipNullArguments(if: $skipNullArguments) {
+      createGroupId
+      createTime
+      createUserId
+      id
+      isDeprecated
+      name
+      realmId
+      updateTime
+      updateUserId
+      version
+    }
+  }
+}

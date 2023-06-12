@@ -2,8 +2,6 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
 	import { ObjectTd, StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, BooleanTh, BooleanTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
-	import RoleTypeTh from '~/lib/components/enums/role-type/RoleTypeTh.svelte';
-	import RoleTypeTd from '~/lib/components/enums/role-type/RoleTypeTd.svelte';
 	import { SectionHead } from '@graphace/ui/components/section';
 	import { Table, TableLoading } from '@graphace/ui/components/table';
 	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
@@ -84,6 +82,7 @@
 			args.cond = Conditional.OR;
 			args.createGroupId = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.createUserId = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.description = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.name = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.realmId = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.updateUserId = { opr: Operator.LK, val: `%${searchValue}%` };
@@ -91,6 +90,7 @@
 			args.cond = undefined;
 			args.createGroupId = undefined;
 			args.createUserId = undefined;
+			args.description = undefined;
 			args.name = undefined;
 			args.realmId = undefined;
 			args.updateUserId = undefined;
@@ -261,6 +261,7 @@
 					/>
 				</label>
 			</th>
+			<th>compositesConnection</th>
 			<StringTh
 				name="createGroupId"
 				bind:expression={args.createGroupId}
@@ -279,6 +280,12 @@
 				bind:sort={orderBy.createUserId}
 				on:filter={query}
 			/>
+			<StringTh
+				name="description"
+				bind:expression={args.description}
+				bind:sort={orderBy.description}
+				on:filter={query}
+			/>
 			<IDTh
 				name="id"
 				bind:expression={args.id}
@@ -292,17 +299,17 @@
 				bind:sort={orderBy.name}
 				on:filter={query}
 			/>
+			<th>permissions</th>
+			<th>permissionsConnection</th>
+			<th>realm</th>
 			<StringTh
 				name="realmId"
 				bind:expression={args.realmId}
 				bind:sort={orderBy.realmId}
 				on:filter={query}
 			/>
-			<RoleTypeTh
-				name="type"
-				bind:expression={args.type}
-				on:filter={query}
-			/>
+			<th>roleComposite</th>
+			<th>roleCompositeConnection</th>
 			<TimestampTh
 				name="updateTime"
 				bind:expression={args.updateTime}
@@ -315,6 +322,8 @@
 				bind:sort={orderBy.updateUserId}
 				on:filter={query}
 			/>
+			<th>userRole</th>
+			<th>userRoleConnection</th>
 			<th>users</th>
 			<th>usersConnection</th>
 			<IntTh
@@ -339,6 +348,7 @@
 									<input type="checkbox" class="checkbox" bind:checked={selectedRows[node.id]} />
 								</label>
 							</th>
+							<ObjectTd name="compositesConnection" errors={errors[row]?.iterms?.compositesConnection} path={`${node.id}/composites-connection`} on:gotoField />
 							<StringTd
 								name="createGroupId"
 								bind:value={node.createGroupId}
@@ -356,6 +366,12 @@
 								bind:value={node.createUserId}
 								on:save={() => updateField({ id: node?.id, createUserId: node?.createUserId })}
 								errors={errors[row]?.iterms?.createUserId}
+							/>
+							<StringTd
+								name="description"
+								bind:value={node.description}
+								on:save={() => updateField({ id: node?.id, description: node?.description })}
+								errors={errors[row]?.iterms?.description}
 							/>
 							<IDTd
 								name="id"
@@ -375,19 +391,17 @@
 								on:save={() => updateField({ id: node?.id, name: node?.name })}
 								errors={errors[row]?.iterms?.name}
 							/>
+							<ObjectTd name="permissions" errors={errors[row]?.iterms?.permissions} path={`${node.id}/permissions`} on:gotoField />
+							<ObjectTd name="permissionsConnection" errors={errors[row]?.iterms?.permissionsConnection} path={`${node.id}/permissions-connection`} on:gotoField />
+							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
 							<StringTd
 								name="realmId"
 								bind:value={node.realmId}
 								on:save={() => updateField({ id: node?.id, realmId: node?.realmId })}
 								errors={errors[row]?.iterms?.realmId}
 							/>
-							<RoleTypeTd
-								name="type"
-								bind:value={node.type}
-								list
-								on:save={() => updateField({ id: node?.id, type: node?.type })}
-								errors={errors[row]?.iterms?.type}
-							/>
+							<ObjectTd name="roleComposite" errors={errors[row]?.iterms?.roleComposite} path={`${node.id}/role-composite`} on:gotoField />
+							<ObjectTd name="roleCompositeConnection" errors={errors[row]?.iterms?.roleCompositeConnection} path={`${node.id}/role-composite-connection`} on:gotoField />
 							<TimestampTd
 								name="updateTime"
 								bind:value={node.updateTime}
@@ -400,6 +414,8 @@
 								on:save={() => updateField({ id: node?.id, updateUserId: node?.updateUserId })}
 								errors={errors[row]?.iterms?.updateUserId}
 							/>
+							<ObjectTd name="userRole" errors={errors[row]?.iterms?.userRole} path={`${node.id}/user-role`} on:gotoField />
+							<ObjectTd name="userRoleConnection" errors={errors[row]?.iterms?.userRoleConnection} path={`${node.id}/user-role-connection`} on:gotoField />
 							<ObjectTd name="users" errors={errors[row]?.iterms?.users} path={`${node.id}/users`} on:gotoField />
 							<ObjectTd name="usersConnection" errors={errors[row]?.iterms?.usersConnection} path={`${node.id}/users-connection`} on:gotoField />
 							<IntTd

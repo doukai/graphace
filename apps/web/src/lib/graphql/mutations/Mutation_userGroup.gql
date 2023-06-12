@@ -1,0 +1,15 @@
+mutation Mutation_userGroup($createGroupId: String, $createTime: Timestamp, $createUserId: String, $from: UserInput, $groupId: Int, $id: ID, $isDeprecated: Boolean, $realmId: String, $to: GroupInput, $updateTime: Timestamp, $updateUserId: String, $userId: Int, $version: Int, $where: UserGroupExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+  userGroup(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId from: $from groupId: $groupId id: $id isDeprecated: $isDeprecated realmId: $realmId to: $to updateTime: $updateTime updateUserId: $updateUserId userId: $userId version: $version where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    createGroupId
+    createTime
+    createUserId
+    groupId
+    id
+    isDeprecated
+    realmId
+    updateTime
+    updateUserId
+    userId
+    version
+  }
+}

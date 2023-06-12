@@ -1,0 +1,33 @@
+query Query_group_roles($group_id: StringExpression, $composites: RoleExpression, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $description: StringExpression, $first: Int, $groupBy: [String!], $id: StringExpression, $includeDeprecated: Boolean, $last: Int, $name: StringExpression, $offset: Int, $orderBy: RoleOrderBy, $permissions: PermissionExpression, $realm: RealmExpression, $realmId: StringExpression, $roleComposite: RoleCompositeExpression, $totalCount: IntExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userRole: UserRoleExpression, $users: UserExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
+  group(id: $group_id) @skipNullArguments(if: $skipNullArguments) {
+    createGroupId
+    createTime
+    createUserId
+    id
+    isDeprecated
+    name
+    parentId
+    realmId
+    updateTime
+    updateUserId
+    version
+    rolesConnection(composites: $composites createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId description: $description first: $first groupBy: $groupBy id: $id includeDeprecated: $includeDeprecated last: $last name: $name offset: $offset orderBy: $orderBy permissions: $permissions realm: $realm realmId: $realmId roleComposite: $roleComposite totalCount: $totalCount updateTime: $updateTime updateUserId: $updateUserId userRole: $userRole users: $users version: $version) @skipNullArguments(if: $skipNullArguments) {
+      totalCount
+      edges {
+        node {
+          createGroupId
+          createTime
+          createUserId
+          description
+          id
+          isDeprecated
+          name
+          realmId
+          updateTime
+          updateUserId
+          version
+        }
+      }
+    }
+  }
+}

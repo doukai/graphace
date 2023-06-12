@@ -9,12 +9,64 @@
 			href={null}
 			on:click={(e) => {
 				e.preventDefault();
-				to(`/${$locale}/organization`);
+				to(`/${$locale}/current-user`);
 			}}
-			class={$page.url.pathname === `/${$locale}/organization` || $page.url.pathname.startsWith(`/${$locale}/organization/`) ? 'active' : ''}
+			class={$page.url.pathname === `/${$locale}/current-user` || $page.url.pathname.startsWith(`/${$locale}/current-user/`) ? 'active' : ''}
 		>
 			<Icon icon="file-icons:graphql" />
-			Organization
+			CurrentUser
+		</a>
+	</li>
+	<li>
+		<a
+			href={null}
+			on:click={(e) => {
+				e.preventDefault();
+				to(`/${$locale}/group`);
+			}}
+			class={$page.url.pathname === `/${$locale}/group` || $page.url.pathname.startsWith(`/${$locale}/group/`) ? 'active' : ''}
+		>
+			<Icon icon="file-icons:graphql" />
+			Group
+		</a>
+	</li>
+	<li>
+		<a
+			href={null}
+			on:click={(e) => {
+				e.preventDefault();
+				to(`/${$locale}/group-role`);
+			}}
+			class={$page.url.pathname === `/${$locale}/group-role` || $page.url.pathname.startsWith(`/${$locale}/group-role/`) ? 'active' : ''}
+		>
+			<Icon icon="file-icons:graphql" />
+			GroupRole
+		</a>
+	</li>
+	<li>
+		<a
+			href={null}
+			on:click={(e) => {
+				e.preventDefault();
+				to(`/${$locale}/permission`);
+			}}
+			class={$page.url.pathname === `/${$locale}/permission` || $page.url.pathname.startsWith(`/${$locale}/permission/`) ? 'active' : ''}
+		>
+			<Icon icon="file-icons:graphql" />
+			Permission
+		</a>
+	</li>
+	<li>
+		<a
+			href={null}
+			on:click={(e) => {
+				e.preventDefault();
+				to(`/${$locale}/realm`);
+			}}
+			class={$page.url.pathname === `/${$locale}/realm` || $page.url.pathname.startsWith(`/${$locale}/realm/`) ? 'active' : ''}
+		>
+			<Icon icon="file-icons:graphql" />
+			Realm
 		</a>
 	</li>
 	<li>
@@ -35,12 +87,12 @@
 			href={null}
 			on:click={(e) => {
 				e.preventDefault();
-				to(`/${$locale}/role-role-type`);
+				to(`/${$locale}/role-composite`);
 			}}
-			class={$page.url.pathname === `/${$locale}/role-role-type` || $page.url.pathname.startsWith(`/${$locale}/role-role-type/`) ? 'active' : ''}
+			class={$page.url.pathname === `/${$locale}/role-composite` || $page.url.pathname.startsWith(`/${$locale}/role-composite/`) ? 'active' : ''}
 		>
 			<Icon icon="file-icons:graphql" />
-			RoleRoleType
+			RoleComposite
 		</a>
 	</li>
 	<li>
@@ -61,25 +113,12 @@
 			href={null}
 			on:click={(e) => {
 				e.preventDefault();
-				to(`/${$locale}/user-phones`);
+				to(`/${$locale}/user-group`);
 			}}
-			class={$page.url.pathname === `/${$locale}/user-phones` || $page.url.pathname.startsWith(`/${$locale}/user-phones/`) ? 'active' : ''}
+			class={$page.url.pathname === `/${$locale}/user-group` || $page.url.pathname.startsWith(`/${$locale}/user-group/`) ? 'active' : ''}
 		>
 			<Icon icon="file-icons:graphql" />
-			UserPhones
-		</a>
-	</li>
-	<li>
-		<a
-			href={null}
-			on:click={(e) => {
-				e.preventDefault();
-				to(`/${$locale}/user-profile`);
-			}}
-			class={$page.url.pathname === `/${$locale}/user-profile` || $page.url.pathname.startsWith(`/${$locale}/user-profile/`) ? 'active' : ''}
-		>
-			<Icon icon="file-icons:graphql" />
-			UserProfile
+			UserGroup
 		</a>
 	</li>
 	<li>
@@ -93,31 +132,5 @@
 		>
 			<Icon icon="file-icons:graphql" />
 			UserRole
-		</a>
-	</li>
-	<li>
-		<a
-			href={null}
-			on:click={(e) => {
-				e.preventDefault();
-				to(`/${$locale}/user-test1`);
-			}}
-			class={$page.url.pathname === `/${$locale}/user-test1` || $page.url.pathname.startsWith(`/${$locale}/user-test1/`) ? 'active' : ''}
-		>
-			<Icon icon="file-icons:graphql" />
-			UserTest1
-		</a>
-	</li>
-	<li>
-		<a
-			href={null}
-			on:click={(e) => {
-				e.preventDefault();
-				to(`/${$locale}/user-test2`);
-			}}
-			class={$page.url.pathname === `/${$locale}/user-test2` || $page.url.pathname.startsWith(`/${$locale}/user-test2/`) ? 'active' : ''}
-		>
-			<Icon icon="file-icons:graphql" />
-			UserTest2
 		</a>
 	</li>
