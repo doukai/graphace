@@ -9,7 +9,7 @@
 	</a>
 </div>
 <div class="flex-1 flex flex-col items-center overflow-y-auto">
-	<ul class="menu w-56 p-1">
+	<ul class="menu menu-lg w-56 p-1">
 		<slot />
 	</ul>
 </div>
