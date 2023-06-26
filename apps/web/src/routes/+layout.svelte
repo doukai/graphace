@@ -22,9 +22,47 @@
 	onMount(() => {
 		themeChange(false);
 	});
+
+	let navbarScrollPadding = '5rem';
+	function addScrollPaddingToNavbar(action) {
+		navbarScrollPadding = '5rem';
+		document.documentElement.style.scrollPaddingTop = '5rem';
+	}
+
+	function removeScrollPaddingFromNavbar(action) {
+		navbarScrollPadding = '0rem';
+		document.documentElement.style.scrollPaddingTop = '0rem';
+	}
 </script>
 
-<div class="drawer">
+<div class={`bg-base-100 drawer lg:drawer-open`}>
+	<input id="drawer" type="checkbox" class="drawer-toggle" />
+	<div class={`drawer-content`}>
+		<NavBar>
+			<ThemeSelect />
+			<LocaleSelect />
+		</NavBar>
+		<div class={`max-w-[100vw] px-6 pb-16 xl:pr-2`}>
+			<slot />
+		</div>
+	</div>
+	<div
+		class="drawer-side z-40"
+		style="scroll-behavior: smooth; scroll-padding-top: {navbarScrollPadding};"
+	>
+		<label for="drawer" class="drawer-overlay" aria-label="Close menu" />
+		<aside class="bg-base-100 w-80">
+			<SideBar>
+				<ObjectsMenu />
+			</SideBar>
+			<div
+				class="bg-base-100 pointer-events-none sticky bottom-0 flex h-40 [mask-image:linear-gradient(transparent,#000000)]"
+			/>
+		</aside>
+	</div>
+</div>
+
+<!-- <div class="drawer">
 	<input id="left-drawer" type="checkbox" class="drawer-toggle" />
 	<div class="drawer-content">
 		<div class="drawer drawer-end">
@@ -83,7 +121,7 @@
 			<ObjectsMenu />
 		</ul>
 	</div>
-</div>
+</div> -->
 
 <style>
 	:global(.tippy-box[data-theme='daisy']) {

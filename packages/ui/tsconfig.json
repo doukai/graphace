@@ -12,6 +12,9 @@
       ],
       "@graphace/commons/*": [
         "../../packages/commons/src/*"
+      ],
+      "$i18n/*": [
+        "./src/i18n/*"
       ]
     }
   },
