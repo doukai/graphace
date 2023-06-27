@@ -41,7 +41,6 @@
     "concurrently": "^8.2.0",
     "daisyui": "^3.0.25",
     "date-fns": "^2.30.0",
-    "emoji-unicode": "^2.0.1",
     "eslint-config-custom": "workspace:*",
     "graphace-codegen": "workspace:*",
     "graphace-codegen-preset": "workspace:*",
