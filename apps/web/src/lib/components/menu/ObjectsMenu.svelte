@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { to } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
-	import Icon from '@iconify/svelte';
+	import Iconify from '@iconify/svelte';
 	import { locale } from '~/i18n/i18n-svelte';
 </script>
 	<li>
@@ -13,7 +13,7 @@
 			}}
 			class={$page.url.pathname === `/${$locale}/current-user` || $page.url.pathname.startsWith(`/${$locale}/current-user/`) ? 'active' : ''}
 		>
-			<Icon icon="file-icons:graphql" />
+			<Iconify icon="file-icons:graphql" />
 			CurrentUser
 		</a>
 	</li>
@@ -26,7 +26,7 @@
 			}}
 			class={$page.url.pathname === `/${$locale}/group` || $page.url.pathname.startsWith(`/${$locale}/group/`) ? 'active' : ''}
 		>
-			<Icon icon="file-icons:graphql" />
+			<Iconify icon="file-icons:graphql" />
 			Group
 		</a>
 	</li>
@@ -39,7 +39,7 @@
 			}}
 			class={$page.url.pathname === `/${$locale}/group-role` || $page.url.pathname.startsWith(`/${$locale}/group-role/`) ? 'active' : ''}
 		>
-			<Icon icon="file-icons:graphql" />
+			<Iconify icon="file-icons:graphql" />
 			GroupRole
 		</a>
 	</li>
@@ -52,7 +52,7 @@
 			}}
 			class={$page.url.pathname === `/${$locale}/permission` || $page.url.pathname.startsWith(`/${$locale}/permission/`) ? 'active' : ''}
 		>
-			<Icon icon="file-icons:graphql" />
+			<Iconify icon="file-icons:graphql" />
 			Permission
 		</a>
 	</li>
@@ -65,7 +65,7 @@
 			}}
 			class={$page.url.pathname === `/${$locale}/realm` || $page.url.pathname.startsWith(`/${$locale}/realm/`) ? 'active' : ''}
 		>
-			<Icon icon="file-icons:graphql" />
+			<Iconify icon="file-icons:graphql" />
 			Realm
 		</a>
 	</li>
@@ -78,7 +78,7 @@
 			}}
 			class={$page.url.pathname === `/${$locale}/role` || $page.url.pathname.startsWith(`/${$locale}/role/`) ? 'active' : ''}
 		>
-			<Icon icon="file-icons:graphql" />
+			<Iconify icon="file-icons:graphql" />
 			Role
 		</a>
 	</li>
@@ -91,7 +91,7 @@
 			}}
 			class={$page.url.pathname === `/${$locale}/role-composite` || $page.url.pathname.startsWith(`/${$locale}/role-composite/`) ? 'active' : ''}
 		>
-			<Icon icon="file-icons:graphql" />
+			<Iconify icon="file-icons:graphql" />
 			RoleComposite
 		</a>
 	</li>
@@ -104,7 +104,7 @@
 			}}
 			class={$page.url.pathname === `/${$locale}/user` || $page.url.pathname.startsWith(`/${$locale}/user/`) ? 'active' : ''}
 		>
-			<Icon icon="file-icons:graphql" />
+			<Iconify icon="file-icons:graphql" />
 			User
 		</a>
 	</li>
@@ -117,7 +117,7 @@
 			}}
 			class={$page.url.pathname === `/${$locale}/user-group` || $page.url.pathname.startsWith(`/${$locale}/user-group/`) ? 'active' : ''}
 		>
-			<Icon icon="file-icons:graphql" />
+			<Iconify icon="file-icons:graphql" />
 			UserGroup
 		</a>
 	</li>
@@ -130,7 +130,7 @@
 			}}
 			class={$page.url.pathname === `/${$locale}/user-role` || $page.url.pathname.startsWith(`/${$locale}/user-role/`) ? 'active' : ''}
 		>
-			<Icon icon="file-icons:graphql" />
+			<Iconify icon="file-icons:graphql" />
 			UserRole
 		</a>
 	</li>
