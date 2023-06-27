@@ -5,7 +5,7 @@
 </script>
 
 <div
-	class="sticky top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 bg-base-100 text-base-content shadow-sm"
+	class="sticky top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 bg-base-100 text-base-content"
 >
 	<nav class="navbar w-full">
 		<div class="flex flex-1 md:gap-1 lg:gap-2">
@@ -35,9 +35,14 @@
 					</div>
 				</a>
 			</div>
-			<div class="flex-0">
-				<slot />
+			<div class="hidden w-full max-w-sm lg:flex">
+				<slot name="search" />
 			</div>
+		</div>
+		<div class="flex-0">
+			<slot name="option1" />
+			<slot name="option2" />
+			<slot name="option3" />
 		</div>
 	</nav>
 </div>

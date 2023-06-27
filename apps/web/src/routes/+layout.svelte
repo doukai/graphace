@@ -7,10 +7,10 @@
 	import { NavBar, NavBarStart, NavBarCenter, NavBarEnd } from '@graphace/ui/components/navbar';
 	import Notifications from '@graphace/ui/components/Notifications.svelte';
 	import MessageBoxs from '@graphace/ui/components/MessageBoxs.svelte';
-	import { ThemeSelect } from '@graphace/ui/components/select';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Bars4, AdjustmentsVertical } from '@steeze-ui/heroicons';
-	import { LocaleSelect } from '~/lib/components/select';
+	import { LocaleSelect, ThemeSelect } from '~/lib/components/select';
+	import { Search } from '~/lib/components/input';
 	import { setLocale } from '~/i18n/i18n-svelte';
 	import type { LayoutData } from './$types';
 
@@ -18,10 +18,6 @@
 	// at the very top, set the locale before you access the store and before the actual rendering takes place
 	setLocale(data.locale);
 	let isMenuOpen = true;
-
-	onMount(() => {
-		themeChange(false);
-	});
 
 	let navbarScrollPadding = '5rem';
 	function addScrollPaddingToNavbar(action) {
@@ -39,8 +35,9 @@
 	<input id="drawer" type="checkbox" class="drawer-toggle" />
 	<div class={`drawer-content`}>
 		<NavBar>
-			<ThemeSelect />
-			<LocaleSelect />
+			<Search {removeScrollPaddingFromNavbar} {addScrollPaddingToNavbar} slot="search" />
+			<ThemeSelect slot="option1" />
+			<LocaleSelect slot="option2" />
 		</NavBar>
 		<div class={`max-w-[100vw] px-6 pb-16 xl:pr-2`}>
 			<slot />

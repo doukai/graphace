@@ -8,10 +8,16 @@
 	import { loadLocaleAsync } from '$i18n/i18n-util.async';
 	import { replaceLocaleInUrl } from '@graphace/commons/utils/url-util';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Language } from '@steeze-ui/heroicons';
+	import Iconify from '@iconify/svelte';
+	import { Language, ChevronDown } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 
 	$: value = $locale as Locales;
+
+	const flags: Record<Locales, string> = {
+		en: 'twemoji:flag-united-kingdom',
+		zh: 'twemoji:flag-china'
+	};
 
 	const switchLocale = async (newLocale: Locales, updateHistoryState = true) => {
 		if (!newLocale || $locale === newLocale) return;
@@ -51,13 +57,25 @@
 
 <svelte:window on:popstate={handlePopStateEvent} />
 
-<div class="form-control">
-	<label class="input-group">
-		<span><Icon src={Language} solid class="h-6 w-6" /></span>
-		<select class="select select-bordered" bind:value on:change={() => switchLocale(value)}>
+<div title="Change Language" class="dropdown dropdown-end">
+	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+	<div tabindex="0" class="btn btn-ghost normal-case">
+		<Icon src={Language} class="h-5 w-5 stroke-current" />
+		<Icon src={ChevronDown} class="hidden h-2 w-2 fill-current opacity-60 sm:inline-block" />
+	</div>
+	<div
+		class="dropdown-content bg-base-200 text-base-content rounded-box top-px mt-16 w-56 overflow-y-auto shadow"
+	>
+		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+		<ul class="menu menu-sm gap-1" tabindex="0">
 			{#each locales as locale}
-				<option value={locale}>{$LL.localeName[locale]()}</option>
+				<li>
+					<button class:active={value == locale} on:click={() => switchLocale(locale)}>
+						<Iconify class="drop-shadow" icon={flags[locale]} />
+						{$LL.localeName[locale]()}
+					</button>
+				</li>
 			{/each}
-		</select>
-	</label>
+		</ul>
+	</div>
 </div>
