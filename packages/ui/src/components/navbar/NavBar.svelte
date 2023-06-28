@@ -31,7 +31,7 @@
 					<Iconify class="h-6 w-6 md:h-8 md:w-8" icon="logos:graphql" />
 					<div class="font-title inline-flex text-lg md:text-2xl">
 						<span class="lowercase">graph</span>
-						<span class="uppercase text-[#E535AB]">UI</span>
+						<span class="uppercase text-[#E535AB]">ACE</span>
 					</div>
 				</a>
 			</div>

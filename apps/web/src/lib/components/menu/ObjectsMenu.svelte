@@ -5,9 +5,8 @@
 	import { locale } from '~/i18n/i18n-svelte';
 </script>
 
-<li />
 <li class="menu-title flex flex-row gap-4">
-	<Iconify icon="file-icons:graphql" />
+	<span class="text-base-content"><Iconify class="w-5 h-5" icon="logos:graphql" /></span>
 	<span>Test</span>
 </li>
 <li>
