@@ -50,7 +50,8 @@
 		<label for="drawer" class="drawer-overlay" aria-label="Close menu" />
 		<aside class="bg-base-100 w-80">
 			<SideBar>
-				<ObjectsMenu />
+				<Search {removeScrollPaddingFromNavbar} {addScrollPaddingToNavbar} slot="search" />
+				<ObjectsMenu slot="items"/>
 			</SideBar>
 			<div
 				class="bg-base-100 pointer-events-none sticky bottom-0 flex h-40 [mask-image:linear-gradient(transparent,#000000)]"
