@@ -2,7 +2,7 @@
 	import type { Errors } from '@graphace/commons/types';
 	import { nanoid } from 'nanoid';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Plus, PlusSm, MinusSm } from '@steeze-ui/heroicons';
+	import { Plus, PlusSmall, MinusSmall } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
 	export let name: string;
 	export let value: (boolean | null | undefined)[] | null | undefined;
@@ -57,7 +57,7 @@
 							addItem(index);
 						}}
 					>
-						<Icon src={PlusSm} solid class="h-5 w-5" />
+						<Icon src={PlusSmall} class="h-5 w-5" />
 					</button>
 				</div>
 				<div class="tooltip" data-tip={$LL.components.ui.inputList.remove()}>
@@ -68,7 +68,7 @@
 							removeItem(index);
 						}}
 					>
-						<Icon src={MinusSm} solid class="h-5 w-5" />
+						<Icon src={MinusSmall} class="h-5 w-5" />
 					</button>
 				</div>
 			</div>
@@ -82,7 +82,7 @@
 						addItem(0);
 					}}
 				>
-					<Icon src={Plus} solid class="h-5 w-5" />
+					<Icon src={Plus} class="h-5 w-5" />
 				</button>
 			</div>
 		{/if}

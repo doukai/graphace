@@ -20,6 +20,7 @@ const renders: Record<Template, Render> = {
                         .filter(type => !isEdge(type.name))
                         .filter(type => !isPageInfo(type.name))
                         .filter(type => !isIntrospection(type.name))
+                        .filter(type => getIDFieldName(type))
                         .map(type => assertObjectType(type))
                 }
             ),

@@ -4,7 +4,7 @@
 	import type { Errors } from '@graphace/commons/types';
 	import { TimeInput, TimeInputList } from '@graphace/ui/components/input';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Check, X, Minus } from '@steeze-ui/heroicons';
+	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
 
 	export let value: string | (string | null | undefined)[] | null | undefined;
@@ -46,12 +46,12 @@
 	{#if !readonly && !disabled}
 		<div class="tooltip" data-tip={$LL.components.graphql.table.td.save()}>
 			<button class="btn btn-square btn-primary" on:click={() => mutation()}>
-				<Icon src={Check} solid class="h-5 w-5" />
+				<Icon src={Check} class="h-5 w-5" />
 			</button>
 		</div>
 		<div class="tooltip" data-tip={$LL.components.graphql.table.td.clear()}>
 			<button class="btn btn-square btn-outline btn-error" on:click={() => clean()}>
-				<Icon src={X} solid class="h-5 w-5" />
+				<Icon src={XMark} class="h-5 w-5" />
 			</button>
 		</div>
 	{/if}
@@ -86,12 +86,12 @@
 						{value.filter((item) => item).join(',')}
 					{/if}
 				{:else}
-					<Icon src={Minus} solid class="h-5 w-5" />
+					<Icon src={Minus} class="h-5 w-5" />
 				{/if}
 			{:else if value}
 				{value}
 			{:else}
-				<Icon src={Minus} solid class="h-5 w-5" />
+				<Icon src={Minus} class="h-5 w-5" />
 			{/if}
 		</a>
 	</div>

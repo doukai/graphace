@@ -28,7 +28,7 @@
 					for="drawer"
 					class="btn btn-square btn-ghost drawer-button lg:hidden"
 				>
-					<Icon src={Bars4} solid class="inline-block h-5 w-5 stroke-current md:h-6 md:w-6" />
+					<Icon src={Bars4} class="inline-block h-5 w-5 stroke-current md:h-6 md:w-6" />
 				</label>
 			</span>
 			<div class="flex items-center gap-2 lg:hidden">

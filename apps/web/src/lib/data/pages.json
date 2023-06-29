@@ -4,11 +4,6 @@
     "icon": "material-symbols:data-object",
     "items": [
 	{
-        "name": "CurrentUser",
-        "tags": "CurrentUser",
-        "href": "/current-user"
-	},
-	{
         "name": "Group",
         "tags": "Group",
         "href": "/group"
@@ -37,11 +32,6 @@
         "name": "RoleComposite",
         "tags": "RoleComposite",
         "href": "/role-composite"
-	},
-	{
-        "name": "SubscriptionType",
-        "tags": "SubscriptionType",
-        "href": "/subscription-type"
 	},
 	{
         "name": "User",

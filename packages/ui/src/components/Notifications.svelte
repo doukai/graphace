@@ -89,15 +89,15 @@
 				<div class="alert {alertClassName(notification.props.type)} shadow-lg">
 					<div>
 						{#if notification.props.type === 'info'}
-							<Icon src={InformationCircle} solid class="h-5 w-5" />
+							<Icon src={InformationCircle} class="h-5 w-5" />
 						{:else if notification.props.type === 'success'}
-							<Icon src={CheckCircle} solid class="h-5 w-5" />
+							<Icon src={CheckCircle} class="h-5 w-5" />
 						{:else if notification.props.type === 'warning'}
-							<Icon src={ExclamationTriangle} solid class="h-5 w-5" />
+							<Icon src={ExclamationTriangle} class="h-5 w-5" />
 						{:else if notification.props.type === 'error'}
-							<Icon src={XCircle} solid class="h-5 w-5" />
+							<Icon src={XCircle} class="h-5 w-5" />
 						{:else}
-							<Icon src={InformationCircle} solid class="h-5 w-5" />
+							<Icon src={InformationCircle} class="h-5 w-5" />
 						{/if}
 						<span>{notification.props.message}</span>
 					</div>

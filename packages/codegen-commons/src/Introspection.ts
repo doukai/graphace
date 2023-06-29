@@ -4,13 +4,14 @@ import { assertEnumType, assertScalarType, isEnumType, isInputObjectType, isList
 const aggregateSuffix = ["Count", "Sum", "Avg", "Max", "Min", "Aggregate"];
 const queryTypeName = "QueryType";
 const mutationTypeName = "MutationType";
+const subscriptionTypeName = "SubscriptionType";
 const connectionSuffix = "Connection";
 const edgeSuffix = "Edge";
 const pageInfoName = "PageInfo";
 const introspectionPrefix = "__";
 const innerEnum = ["Operator", "Conditional", "Sort", "Function"];
 
-export const isOperationType = (name?: string): boolean => { return [queryTypeName, mutationTypeName].some(typeName => name === typeName) };
+export const isOperationType = (name?: string): boolean => { return [queryTypeName, mutationTypeName, subscriptionTypeName].some(typeName => name === typeName) };
 export const isAggregate = (name?: string): boolean => { return aggregateSuffix.some(suffix => name?.slice(-suffix.length) === suffix) };
 export const isConnection = (name?: string): boolean => { return name?.slice(-connectionSuffix.length) === connectionSuffix };
 export const isEdge = (name?: string): boolean => { return name?.slice(-edgeSuffix.length) === edgeSuffix };

@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { tippy } from '@graphace/ui/components/tippy';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Check, X, Filter, SortAscending, SortDescending } from '@steeze-ui/heroicons';
+	import { Check, XMark, Funnel, BarsArrowDown, BarsArrowUp } from '@steeze-ui/heroicons';
 	import { TimeInput, TimeInputList } from '@graphace/ui/components/input';
 	import { type StringExpression, Operator, Sort } from '@graphace/graphql/types';
 	import LL from '~/i18n/i18n-svelte';
@@ -82,12 +82,12 @@
 	</select>
 	<div class="tooltip" data-tip={$LL.components.graphql.table.th.filter()}>
 		<button class="btn btn-square btn-primary" on:click={filter}>
-			<Icon src={Check} solid class="h-5 w-5" />
+			<Icon src={Check} class="h-5 w-5" />
 		</button>
 	</div>
 	<div class="tooltip" data-tip={$LL.components.graphql.table.th.cancel()}>
 		<button class="btn btn-square btn-outline btn-error" on:click={clear}>
-			<Icon src={X} solid class="h-5 w-5" />
+			<Icon src={XMark} class="h-5 w-5" />
 		</button>
 	</div>
 </div>
@@ -111,17 +111,17 @@
 		{name}
 		{#if expression?.val || (expression?.in && expression.in.length > 0)}
 			<span class="ml-1 flex-none">
-				<Icon src={Filter} solid class="h-5 w-5" />
+				<Icon src={Funnel} class="h-5 w-5" />
 			</span>
 		{/if}
 		{#if sort && sort === Sort.ASC}
 			<span class="ml-1 flex-none">
-				<Icon src={SortAscending} solid class="h-5 w-5" />
+				<Icon src={BarsArrowDown} class="h-5 w-5" />
 			</span>
 		{/if}
 		{#if sort && sort === Sort.DESC}
 			<span class="ml-1 flex-none">
-				<Icon src={SortDescending} solid class="h-5 w-5" />
+				<Icon src={BarsArrowUp} class="h-5 w-5" />
 			</span>
 		{/if}
 	</a>

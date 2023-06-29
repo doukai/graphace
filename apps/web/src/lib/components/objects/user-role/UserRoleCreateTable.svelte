@@ -6,7 +6,7 @@
 	import { Table } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Plus, PencilAlt, Trash, ChevronLeft } from '@steeze-ui/heroicons';
+	import { Plus, PencilSquare, Trash, ChevronLeft } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
 	import type { MutationTypeUserRoleArgs } from '~/lib/types/schema';
 
@@ -251,7 +251,7 @@
 										dispatch('edit', { row });
 									}}
 								>
-									<Icon src={PencilAlt} solid />
+									<Icon src={PencilSquare} solid />
 								</button>
 							</div>
 							<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>

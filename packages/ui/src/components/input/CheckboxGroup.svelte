@@ -3,7 +3,7 @@
 	import { nanoid } from 'nanoid';
 	export let value: string | (string | null | undefined)[] | null | undefined;
 	export let errors: Errors | undefined = undefined;
-	export let items: { name: string; value: string | null | undefined; description?: string }[];
+	export let items: { name: string; value: string | null | undefined; description?: string }[] = [];
 	export let readonly = false;
 	export let disabled = false;
 	export let id: string = nanoid();

@@ -2,7 +2,7 @@ import type { Types } from "@graphql-codegen/plugin-helpers";
 import { assertObjectType, isEnumType, isListType, isObjectType } from "graphql";
 import type { GraphacePresetConfig } from "./config";
 import * as changeCase from "change-case";
-import { isOperationType, isAggregate, isConnection, isEdge, isPageInfo, isIntrospection, isInnerEnum, getFieldType, getObjectFields } from 'graphace-codegen-commons'
+import { isOperationType, isAggregate, isConnection, isEdge, isPageInfo, isIntrospection, isInnerEnum, getFieldType, getObjectFields, getIDFieldName } from 'graphace-codegen-commons'
 import { buildPath } from "./Builder";
 
 const _graphqlPath = 'lib/graphql';
@@ -27,7 +27,8 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             .filter(type => !isPageInfo(type.name))
             .filter(type => !isAggregate(type.name))
             .filter(type => !isIntrospection(type.name))
-            .filter(type => isObjectType(type));
+            .filter(type => isObjectType(type))
+            .filter(type => getIDFieldName(type));
         const enumTypes = Object.values(options.schemaAst?.getTypeMap() || {})
             .filter(type => !isIntrospection(type.name))
             .filter(type => !isInnerEnum(type.name))
@@ -56,6 +57,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...Object.values(queryFields)
+                .filter(field => getIDFieldName(getFieldType(field.type)))
                 .map(field => {
                     const template = '{{graphqlPath}}/queries/Query_{{name}}.gql';
                     const scope = { graphqlPath, name: field.name };
@@ -82,6 +84,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             ...Object.values(queryFields)
                 .filter(field => !isListType(field.type))
                 .filter(field => !isConnection(getFieldType(field.type).name))
+                .filter(field => getIDFieldName(getFieldType(field.type)))
                 .flatMap(field => getObjectFields(getFieldType(field.type))?.map(objectField => { return { name: field.name, objectFieldName: objectField.name } }) || [])
                 .map(objectField => {
                     const { name, objectFieldName } = objectField;
@@ -109,6 +112,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...Object.values(mutationFields)
+                .filter(field => getIDFieldName(getFieldType(field.type)))
                 .map(field => {
                     const template = '{{graphqlPath}}/mutations/Mutation_{{name}}.gql';
                     const scope = { graphqlPath, name: field.name };
@@ -134,6 +138,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         generateOptions.push(
             ...Object.values(mutationFields)
                 .filter(field => !isListType(field.type))
+                .filter(field => getIDFieldName(getFieldType(field.type)))
                 .flatMap(field => getObjectFields(getFieldType(field.type))?.map(objectField => { return { name: field.name, objectFieldName: objectField.name } }) || [])
                 .map(objectField => {
                     const { name, objectFieldName } = objectField;

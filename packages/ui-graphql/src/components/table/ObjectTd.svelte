@@ -24,7 +24,7 @@
 					dispatch('gotoField', { path, name });
 				}}
 			>
-				<Icon src={Link} solid class="h-5 w-5" />
+				<Icon src={Link} class="h-5 w-5" />
 			</button>
 		</div>
 	</div>
