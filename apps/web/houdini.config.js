@@ -6,6 +6,9 @@ const config = {
 			client: './src/client.js'
 		}
 	},
+	watchSchema: {
+		url: 'http://localhost:8080/graphql',
+	},
 	scalars: {
 		// the name of the scalar we are configuring
 		Timestamp: {

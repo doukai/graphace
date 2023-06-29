@@ -57,7 +57,6 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...Object.values(queryFields)
-                .filter(field => getIDFieldName(getFieldType(field.type)))
                 .map(field => {
                     const template = '{{graphqlPath}}/queries/Query_{{name}}.gql';
                     const scope = { graphqlPath, name: field.name };
@@ -84,7 +83,6 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             ...Object.values(queryFields)
                 .filter(field => !isListType(field.type))
                 .filter(field => !isConnection(getFieldType(field.type).name))
-                .filter(field => getIDFieldName(getFieldType(field.type)))
                 .flatMap(field => getObjectFields(getFieldType(field.type))?.map(objectField => { return { name: field.name, objectFieldName: objectField.name } }) || [])
                 .map(objectField => {
                     const { name, objectFieldName } = objectField;
@@ -112,7 +110,6 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...Object.values(mutationFields)
-                .filter(field => getIDFieldName(getFieldType(field.type)))
                 .map(field => {
                     const template = '{{graphqlPath}}/mutations/Mutation_{{name}}.gql';
                     const scope = { graphqlPath, name: field.name };
@@ -138,7 +135,6 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         generateOptions.push(
             ...Object.values(mutationFields)
                 .filter(field => !isListType(field.type))
-                .filter(field => getIDFieldName(getFieldType(field.type)))
                 .flatMap(field => getObjectFields(getFieldType(field.type))?.map(objectField => { return { name: field.name, objectFieldName: objectField.name } }) || [])
                 .map(objectField => {
                     const { name, objectFieldName } = objectField;
