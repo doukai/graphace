@@ -8,6 +8,8 @@ export interface GraphacePluginConfig extends RawTypesConfig {
 
   componentsPath?: string;
 
+  dataPath?: string;
+
   routesPath?: string;
 
   schemaTypesPath?: string;

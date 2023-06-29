@@ -7,6 +7,7 @@ import { buildPath } from "./Builder";
 
 const _graphqlPath = 'lib/graphql';
 const _componentsPath = 'lib/components';
+const _dataPath = 'lib/data';
 const _routesPath = 'routes';
 
 export const preset: Types.OutputPreset<GraphacePresetConfig> = {
@@ -14,6 +15,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         const generateOptions: Types.GenerateOptions[] = [];
         const graphqlPath = `${options.baseOutputDir}/${options.presetConfig.graphqlPath || _graphqlPath}`;
         const componentsPath = `${options.baseOutputDir}/${options.presetConfig.componentsPath || _componentsPath}`;
+        const dataPath = `${options.baseOutputDir}/${options.presetConfig.dataPath || _dataPath}`;
         const routesPath = `${options.baseOutputDir}/${options.presetConfig.routesPath || _routesPath}`;
 
         const queryFields = options.schemaAst?.getQueryType()?.getFields() || [];
@@ -30,6 +32,27 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             .filter(type => !isIntrospection(type.name))
             .filter(type => !isInnerEnum(type.name))
             .filter(type => isEnumType(type));
+
+        const pagesTemplate = '{{dataPath}}/pages.json';
+        const pageScope = { dataPath };
+        generateOptions.push(
+            {
+                filename: buildPath(pagesTemplate, pageScope),
+                documents: options.documents,
+                plugins: options.plugins,
+                pluginMap: options.pluginMap,
+                config: {
+                    graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                    componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                    routesPath: options.presetConfig.graphqlPath || _routesPath,
+                    dataPath: options.presetConfig.dataPath || _dataPath,
+                    template: pagesTemplate,
+                },
+                schema: options.schema,
+                schemaAst: options.schemaAst,
+                skipDocumentsValidation: true,
+            }
+        );
 
         generateOptions.push(
             ...Object.values(queryFields)
@@ -134,26 +157,6 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         skipDocumentsValidation: true,
                     };
                 })
-        );
-
-        const template = '{{componentsPath}}/menu/ObjectsMenu.svelte';
-        const scope = { componentsPath };
-        generateOptions.push(
-            {
-                filename: buildPath(template, scope),
-                documents: options.documents,
-                plugins: options.plugins,
-                pluginMap: options.pluginMap,
-                config: {
-                    graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                    componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                    routesPath: options.presetConfig.graphqlPath || _routesPath,
-                    template,
-                },
-                schema: options.schema,
-                schemaAst: options.schemaAst,
-                skipDocumentsValidation: true,
-            }
         );
 
         generateOptions.push(

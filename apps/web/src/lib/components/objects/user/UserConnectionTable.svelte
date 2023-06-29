@@ -8,7 +8,7 @@
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Plus, Pencil, Trash, ChevronLeft } from '@steeze-ui/heroicons';
+	import { Plus, PencilAlt, Trash, ChevronLeft } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
 	import { Pagination } from '@graphace/ui/components/connection';
 	import {
@@ -520,7 +520,7 @@
 											}
 										}}
 									>
-										<Icon src={Pencil} solid />
+										<Icon src={PencilAlt} solid />
 									</button>
 								</div>
 								<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>

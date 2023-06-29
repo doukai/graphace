@@ -1,7 +1,11 @@
 module.exports = {
     content: ['./src/**/*.{html,js,svelte,ts}', '../../packages/**/src/**/*.{html,js,svelte,ts}'],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                title: ["Figtree", "Noto Sans JP", "Noto Sans", "sans-serif"],
+            }
+        },
     },
     plugins: [
         require('@tailwindcss/typography'),

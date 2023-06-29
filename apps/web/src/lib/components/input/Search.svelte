@@ -1,52 +1,56 @@
 <script lang="ts">
 	import { onMount, createEventDispatcher } from 'svelte';
-	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import Typeahead from 'svelte-typeahead';
-
+	import type TItem from 'svelte-typeahead';
 	import { getOS } from '@graphace/commons/utils/system-util';
+	import { locale } from '~/i18n/i18n-svelte';
+	import pages from '~/lib/data/pages.json';
+
+	export let addScrollPaddingToNavbar: () => void = () => {};
+	export let removeScrollPaddingFromNavbar: () => void = () => {};
 
 	const dispatch = createEventDispatcher();
 
-	let pages = [];
-	let searchIndex = [];
-	pages.forEach((group) => {
-		group.items.forEach((item) => {
-			searchIndex.push(item);
-		});
-	});
+	let searchIndex: any[] = pages.flatMap((page) => page.items);
 
-	let os: string | null;
+	let os: string;
 	onMount(() => {
-		os = getOS();
+		os = getOS() || '';
 	});
 
-	let seachboxEl;
-	function handleKeydown(e) {
+	let seachboxEl: HTMLLabelElement;
+	function handleKeydown(e: KeyboardEvent) {
 		if ((e.keyCode === 75 && e.metaKey) || (e.keyCode === 75 && e.ctrlKey)) {
 			e.preventDefault();
-			seachboxEl.querySelector('input[type=search]').focus();
-			dispatch('focus');
+			let searchInput: HTMLInputElement | null = seachboxEl.querySelector('input[type=search]');
+			if (searchInput) {
+				searchInput.focus();
+				dispatch('focus');
+			}
 		}
 	}
 
-	function onSelect({ detail }) {
-		goto(searchIndex[detail.originalIndex].href);
-		dispatch('search', detail);
+	function onSelect(
+		select: CustomEvent<{
+			searched: string;
+			selected: TItem;
+			selectedIndex: number;
+			original: TItem;
+			originalIndex: number;
+		}>
+	) {
+		goto('/' + $locale + searchIndex[select.detail.originalIndex].href);
+		dispatch('search', select.detail);
 	}
-
-	export let addScrollPaddingToNavbar;
-	export let removeScrollPaddingFromNavbar;
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
-<label class={`searchbox relative mx-3 w-full`} bind:this={seachboxEl}>
+<label class="searchbox relative mx-3 w-full" bind:this={seachboxEl}>
 	<svg
-		class={`pointer-events-none absolute z-10 my-3.5 ml-4 stroke-current opacity-60 ${
-			$page.url.pathname == '/' ? 'text-current' : 'text-base-content'
-		}`}
+		class="pointer-events-none absolute z-10 my-3.5 ml-4 stroke-current opacity-60 text-base-content"
 		width="16"
 		height="16"
 		xmlns="http://www.w3.org/2000/svg"
@@ -76,11 +80,7 @@
 			{searchIndex[result.index].name}
 		</div>
 	</Typeahead>
-	<div
-		class={`pointer-events-none absolute right-10 top-2.5 gap-1 opacity-50 ${
-			$page.url.pathname == '/' ? 'hidden' : 'hidden lg:flex'
-		}`}
-	>
+	<div class="pointer-events-none absolute right-10 top-2.5 gap-1 opacity-50 hidden lg:flex">
 		{#if ['macos'].includes(os)}
 			<kbd class="kbd kbd-sm">⌘</kbd>
 			<kbd class="kbd kbd-sm">K</kbd>

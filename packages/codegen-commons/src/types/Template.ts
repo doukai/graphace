@@ -1,9 +1,9 @@
 export type Template =
+    '{{dataPath}}/pages.json' |
     '{{graphqlPath}}/queries/Query_{{name}}.gql' |
     '{{graphqlPath}}/queries/Query_{{name}}_{{objectFieldName}}.gql' |
     '{{graphqlPath}}/mutations/Mutation_{{name}}.gql' |
     '{{graphqlPath}}/mutations/Mutation_{{name}}_{{objectFieldName}}.gql' |
-    '{{componentsPath}}/menu/ObjectsMenu.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Form.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}CreateForm.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Table.svelte' |
@@ -27,6 +27,6 @@ export type Template =
     '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/+page.svelte' |
     '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/+page.ts' |
     '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/+page.svelte' |
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/+page.ts'  |
+    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/+page.ts' |
     '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/_/+page.svelte' |
     '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/_/+page.ts'

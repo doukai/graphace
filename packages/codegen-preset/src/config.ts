@@ -4,5 +4,7 @@ export interface GraphacePresetConfig {
 
   componentsPath?: string;
 
+  dataPath?: string;
+
   routesPath?: string;
 }

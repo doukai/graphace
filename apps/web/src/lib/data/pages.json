@@ -1,0 +1,63 @@
+[
+  {
+    "name": "Objects",
+    "icon": "material-symbols:data-object",
+    "items": [
+	{
+        "name": "CurrentUser",
+        "tags": "CurrentUser",
+        "href": "/current-user"
+	},
+	{
+        "name": "Group",
+        "tags": "Group",
+        "href": "/group"
+	},
+	{
+        "name": "GroupRole",
+        "tags": "GroupRole",
+        "href": "/group-role"
+	},
+	{
+        "name": "Permission",
+        "tags": "Permission",
+        "href": "/permission"
+	},
+	{
+        "name": "Realm",
+        "tags": "Realm",
+        "href": "/realm"
+	},
+	{
+        "name": "Role",
+        "tags": "Role",
+        "href": "/role"
+	},
+	{
+        "name": "RoleComposite",
+        "tags": "RoleComposite",
+        "href": "/role-composite"
+	},
+	{
+        "name": "SubscriptionType",
+        "tags": "SubscriptionType",
+        "href": "/subscription-type"
+	},
+	{
+        "name": "User",
+        "tags": "User",
+        "href": "/user"
+	},
+	{
+        "name": "UserGroup",
+        "tags": "UserGroup",
+        "href": "/user-group"
+	},
+	{
+        "name": "UserRole",
+        "tags": "UserRole",
+        "href": "/user-role"
+	}
+    ]
+  }
+]

@@ -17,25 +17,53 @@
 	export let data: LayoutData;
 	// at the very top, set the locale before you access the store and before the actual rendering takes place
 	setLocale(data.locale);
-	let isMenuOpen = true;
+
+	let drawersidebar: HTMLDivElement;
+	let drawerSidebarScrollY = 0;
+	function parseSidebarScroll() {
+		drawerSidebarScrollY = drawersidebar.scrollTop;
+	}
+	onMount(() => {
+		parseSidebarScroll();
+		document.documentElement.style.scrollPaddingTop = '5rem';
+		document.documentElement.style.scrollBehavior = 'smooth';
+	});
+
+	let checked = false;
+	function closeDrawer() {
+		checked = false;
+	}
+
+	function openDrawer() {
+		checked = true;
+	}
 
 	let navbarScrollPadding = '5rem';
-	function addScrollPaddingToNavbar(action) {
+	function addScrollPaddingToNavbar() {
 		navbarScrollPadding = '5rem';
 		document.documentElement.style.scrollPaddingTop = '5rem';
 	}
 
-	function removeScrollPaddingFromNavbar(action) {
+	function removeScrollPaddingFromNavbar() {
 		navbarScrollPadding = '0rem';
 		document.documentElement.style.scrollPaddingTop = '0rem';
 	}
 </script>
 
+<svelte:head>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;900&family=Noto+Sans+JP:wght@300;900&family=Noto+Sans:wght@300;900&display=swap"
+		rel="stylesheet"
+	/>
+</svelte:head>
+
 <div class={`bg-base-100 drawer lg:drawer-open`}>
-	<input id="drawer" type="checkbox" class="drawer-toggle" />
+	<input id="drawer" type="checkbox" class="drawer-toggle" bind:checked />
 	<div class={`drawer-content`}>
 		<NavBar>
-			<Search {removeScrollPaddingFromNavbar} {addScrollPaddingToNavbar} slot="search" />
+			<Search {addScrollPaddingToNavbar} {removeScrollPaddingFromNavbar} slot="search" />
 			<ThemeSelect slot="option1" />
 			<LocaleSelect slot="option2" />
 		</NavBar>
@@ -46,12 +74,14 @@
 	<div
 		class="drawer-side z-40"
 		style="scroll-behavior: smooth; scroll-padding-top: {navbarScrollPadding};"
+		bind:this={drawersidebar}
+		on:scroll={parseSidebarScroll}
 	>
 		<label for="drawer" class="drawer-overlay" aria-label="Close menu" />
 		<aside class="bg-base-100 w-80">
-			<SideBar>
-				<Search {removeScrollPaddingFromNavbar} {addScrollPaddingToNavbar} slot="search" />
-				<ObjectsMenu slot="items"/>
+			<SideBar {drawerSidebarScrollY}>
+				<Search on:search={closeDrawer} on:focus={openDrawer} slot="search" />
+				<ObjectsMenu slot="items" />
 			</SideBar>
 			<div
 				class="bg-base-100 pointer-events-none sticky bottom-0 flex h-40 [mask-image:linear-gradient(transparent,#000000)]"

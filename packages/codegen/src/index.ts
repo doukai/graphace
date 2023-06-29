@@ -9,6 +9,22 @@ import { buildFileContent } from "./Builder";
 type Render = (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => Types.ComplexPluginOutput
 
 const renders: Record<Template, Render> = {
+    '{{dataPath}}/pages.json': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        return {
+            content: buildFileContent(config.template,
+                {
+                    objects: Object.values(schema.getTypeMap())
+                        .filter(type => isObjectType(type))
+                        .filter(type => !isOperationType(type.name))
+                        .filter(type => !isConnection(type.name))
+                        .filter(type => !isEdge(type.name))
+                        .filter(type => !isPageInfo(type.name))
+                        .filter(type => !isIntrospection(type.name))
+                        .map(type => assertObjectType(type))
+                }
+            ),
+        };
+    },
     '{{graphqlPath}}/queries/Query_{{name}}.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const operationFields = schema.getQueryType()?.getFields();
         if (operationFields) {
@@ -100,22 +116,6 @@ const renders: Record<Template, Render> = {
         }
         console.error(config);
         throw new Error(`${config.name} undefined`);
-    },
-    '{{componentsPath}}/menu/ObjectsMenu.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        return {
-            content: buildFileContent(config.template,
-                {
-                    objects: Object.values(schema.getTypeMap())
-                        .filter(type => isObjectType(type))
-                        .filter(type => !isOperationType(type.name))
-                        .filter(type => !isConnection(type.name))
-                        .filter(type => !isEdge(type.name))
-                        .filter(type => !isPageInfo(type.name))
-                        .filter(type => !isIntrospection(type.name))
-                        .map(type => assertObjectType(type))
-                }
-            ),
-        };
     },
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Form.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;

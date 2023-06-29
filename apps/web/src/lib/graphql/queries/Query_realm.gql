@@ -1,5 +1,5 @@
-query Query_realm($cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $id: StringExpression, $includeDeprecated: Boolean, $name: StringExpression, $realmId: StringExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
-  realm(cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId id: $id includeDeprecated: $includeDeprecated name: $name realmId: $realmId updateTime: $updateTime updateUserId: $updateUserId version: $version) @skipNullArguments(if: $skipNullArguments) {
+query Query_realm($cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $exs: [RealmExpression], $id: StringExpression, $includeDeprecated: Boolean, $name: StringExpression, $realmId: StringExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
+  realm(cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId exs: $exs id: $id includeDeprecated: $includeDeprecated name: $name realmId: $realmId updateTime: $updateTime updateUserId: $updateUserId version: $version) @skipNullArguments(if: $skipNullArguments) {
     createGroupId
     createTime
     createUserId

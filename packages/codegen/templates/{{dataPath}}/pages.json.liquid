@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Objects",
+    "icon": "material-symbols:data-object",
+    "items": [
+{%- if objects %}
+{%- for object in objects %}
+	{
+        "name": "{{ object.name }}",
+        "tags": "{{ object.name }}",
+        "href": "/{{ object.name | paramCase }}"
+	}{%- if forloop.last == false -%},{%- endif %}
+{%- endfor %}
+{%- endif %}
+    ]
+  }
+]

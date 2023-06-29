@@ -2,10 +2,20 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Bars4 } from '@steeze-ui/heroicons';
 	import Iconify from '@iconify/svelte';
+
+	let scrollY: number;
+	$: switchNavbarStyle = scrollY > 40 ? true : false;
 </script>
 
+<svelte:window bind:scrollY />
+
 <div
-	class="sticky top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 bg-base-100 text-base-content"
+	class={`
+		sticky top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 ${
+			switchNavbarStyle
+				? 'bg-base-100 text-base-content shadow-sm'
+				: 'bg-base-100 text-base-content'
+		}`}
 >
 	<nav class="navbar w-full">
 		<div class="flex flex-1 md:gap-1 lg:gap-2">
