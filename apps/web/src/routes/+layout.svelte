@@ -59,15 +59,15 @@
 	/>
 </svelte:head>
 
-<div class={`bg-base-100 drawer lg:drawer-open`}>
+<div class="bg-base-100 drawer lg:drawer-open">
 	<input id="drawer" type="checkbox" class="drawer-toggle" bind:checked />
-	<div class={`drawer-content`}>
+	<div class="drawer-content">
 		<NavBar>
 			<Search {addScrollPaddingToNavbar} {removeScrollPaddingFromNavbar} slot="search" />
 			<ThemeSelect slot="option1" />
 			<LocaleSelect slot="option2" />
 		</NavBar>
-		<div class={`max-w-[100vw] px-6 pb-16 xl:pr-2`}>
+		<div class="max-w-[100vw] px-6 pb-16 xl:pr-2">
 			<slot />
 		</div>
 	</div>
