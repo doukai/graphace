@@ -59,20 +59,32 @@
 	/>
 </svelte:head>
 
-<div class="bg-base-100 drawer lg:drawer-open">
+<div class="bg-base-100 drawer">
 	<input id="drawer" type="checkbox" class="drawer-toggle" bind:checked />
 	<div class="drawer-content">
-		<NavBar>
-			<Search {addScrollPaddingToNavbar} {removeScrollPaddingFromNavbar} slot="search" />
-			<ThemeSelect slot="option1" />
-			<LocaleSelect slot="option2" />
-		</NavBar>
-		<div class="max-w-[100vw] px-6 pb-16 xl:pr-2">
-			<slot />
+		<div class="hidden lg:flex lg:w-80 lg:flex-col lg:fixed lg:inset-y-0">
+			<SideBar {drawerSidebarScrollY}>
+				<Search on:search={closeDrawer} on:focus={openDrawer} slot="search" />
+				<ObjectsMenu slot="items" />
+			</SideBar>
+			<div
+				class="bg-base-100 pointer-events-none sticky bottom-0 flex h-40 [mask-image:linear-gradient(transparent,#000000)]"
+			/>
+		</div>
+
+		<div class="lg:pl-80 flex flex-col">
+			<NavBar>
+				<Search {addScrollPaddingToNavbar} {removeScrollPaddingFromNavbar} slot="search" />
+				<ThemeSelect slot="option1" />
+				<LocaleSelect slot="option2" />
+			</NavBar>
+			<div class="max-w-[100vw] px-6 pb-16 xl:pr-2">
+				<slot />
+			</div>
 		</div>
 	</div>
 	<div
-		class="drawer-side z-40"
+		class="drawer-side z-40 lg:hidden"
 		style="scroll-behavior: smooth; scroll-padding-top: {navbarScrollPadding};"
 		bind:this={drawersidebar}
 		on:scroll={parseSidebarScroll}
