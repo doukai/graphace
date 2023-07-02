@@ -3,7 +3,7 @@
 </script>
 
 <div class="shadow-xl overflow-x-auto">
-	<table class="table table-zebra {className} w-full">
+	<table class="table table-zebra {className}">
 		<slot />
 	</table>
 </div>
