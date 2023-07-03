@@ -67,7 +67,9 @@
 			<ThemeSelect slot="option1" />
 			<LocaleSelect slot="option2" />
 		</NavBar>
-		<main class="max-w-[100vw] lg:max-w-[calc(100vw-20rem)] lg:px-6 lg:pt-6 lg:pb-16 px-2 py-2 bg-base-200">
+		<main
+			class="max-w-[100vw] lg:max-w-[calc(100vw-20rem)] lg:px-6 lg:pt-6 lg:pb-16 px-2 py-2 bg-base-200"
+		>
 			<slot />
 			<MessageBoxs />
 			<Notifications />
@@ -153,20 +155,39 @@
 	</div>
 </div> -->
 
-<style>
-	:global(.tippy-box[data-theme='daisy']) {
+<style global>
+	code[class*='language-'],
+	pre[class*='language-'] {
+		background: unset;
+	}
+	.prose pre[class*='language-'] {
+		max-width: clamp(20rem, calc(100vw - 4rem), 80ch);
+		background-color: hsl(var(--n));
+		color: hsl(var(--nc));
+	}
+	@media (min-width: 1024px) {
+		.prose pre[class*='language-'] {
+			max-width: clamp(20rem, calc(100vw - 20rem - 4rem), 80ch);
+		}
+	}
+	@media (min-width: 1280px) {
+		.prose pre[class*='language-'] {
+			max-width: clamp(20rem, calc(100vw - 20rem - 4rem - 8rem), 80ch);
+		}
+	}
+	.tippy-box[data-theme='daisy'] {
 		@apply inline-block py-1 px-1 rounded-lg shadow-sm bg-base-100;
 	}
-	:global(.tippy-box[data-theme~='daisy'][data-placement^='top'] > .tippy-arrow) {
+	.tippy-box[data-theme~='daisy'][data-placement^='top'] > .tippy-arrow {
 		@apply -bottom-1.5 left-0 border-t-8 border-x-8 border-b-0 border-transparent border-t-base-100;
 	}
-	:global(.tippy-box[data-theme~='daisy'][data-placement^='bottom'] > .tippy-arrow) {
+	.tippy-box[data-theme~='daisy'][data-placement^='bottom'] > .tippy-arrow {
 		@apply -top-1.5 left-0 border-t-0 border-x-8 border-b-8 border-transparent border-b-base-100;
 	}
-	:global(.tippy-box[data-theme~='daisy'][data-placement^='left'] > .tippy-arrow) {
+	.tippy-box[data-theme~='daisy'][data-placement^='left'] > .tippy-arrow {
 		@apply -right-1.5 border-l-8 border-y-8 border-r-0 border-transparent border-l-base-100;
 	}
-	:global(.tippy-box[data-theme~='daisy'][data-placement^='right'] > .tippy-arrow) {
+	.tippy-box[data-theme~='daisy'][data-placement^='right'] > .tippy-arrow {
 		@apply -left-1.5 border-l-0 border-y-8 border-r-8 border-transparent border-r-base-100;
 	}
 </style>

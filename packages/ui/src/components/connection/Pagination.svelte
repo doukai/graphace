@@ -14,120 +14,112 @@
 		totalCount % pageSize == 0 ? ~~(totalCount / pageSize) : ~~(totalCount / pageSize) + 1;
 </script>
 
-<div class="navbar bg-base-100 shadow-xl rounded-box">
-	<div class="navbar-start">
-		<div class="hidden sm:form-control">
-			<label class="input-group input-group-lg">
-				<span>{$LL.components.ui.pagination.size()}</span>
-				<select
-					class="select select-bordered"
-					bind:value={pageSize}
-					on:change={() => {
-						dispatch('sizeChange');
-					}}
-				>
-					{#each pageSizeOptions as pageSizeOption}
-						<option value={pageSizeOption}>{pageSizeOption}</option>
-					{/each}
-				</select>
-			</label>
-		</div>
+<div class="flex">
+	<div class="hidden sm:flex w-full join">
+		<label class="btn join-item">{$LL.components.ui.pagination.size()}</label>
+		<select
+			class="select select-bordered join-item"
+			bind:value={pageSize}
+			on:change={() => {
+				dispatch('sizeChange');
+			}}
+		>
+			{#each pageSizeOptions as pageSizeOption}
+				<option value={pageSizeOption}>{pageSizeOption}</option>
+			{/each}
+		</select>
 	</div>
 
-	<div class="navbar-center">
-		<div class="btn-group sm:hidden">
+	<!-- <div class="btn-group sm:hidden">
+		<button
+			class="btn {pageNumber - 1 ? '' : 'btn-disabled'}"
+			on:click={() => {
+				pageNumber = pageNumber - 1;
+				dispatch('pageChange');
+			}}
+		>
+			«
+		</button>
+		<button class="btn">{$LL.components.ui.pagination.current({ current: pageNumber })}</button>
+		<button
+			class="btn {pageNumber + 1 <= pageCount ? '' : 'btn-disabled'}"
+			on:click={() => {
+				pageNumber = pageNumber + 1;
+				dispatch('pageChange');
+			}}
+		>
+			»
+		</button>
+	</div> -->
+
+	<div class="hidden sm:flex w-full mt-3">
+		<label for="">{$LL.components.ui.pagination.total({ total: totalCount })}</label>
+	</div>
+	<div class="hidden sm:flex join">
+		<button
+			class="btn {pageNumber - 1 ? '' : 'btn-disabled'} join-item"
+			on:click={() => {
+				pageNumber = pageNumber - 1;
+				dispatch('pageChange');
+			}}
+		>
+			«
+		</button>
+		{#if pageNumber - 2 > 0}
 			<button
-				class="btn {pageNumber - 1 ? '' : 'btn-disabled'}"
+				class="btn join-item"
+				on:click={() => {
+					pageNumber = pageNumber - 2;
+					dispatch('pageChange');
+				}}
+			>
+				{pageNumber - 2}
+			</button>
+		{/if}
+		{#if pageNumber - 1 > 0}
+			<button
+				class="btn join-item"
 				on:click={() => {
 					pageNumber = pageNumber - 1;
 					dispatch('pageChange');
 				}}
 			>
-				«
+				{pageNumber - 1}
 			</button>
-			<button class="btn">{$LL.components.ui.pagination.current({ current: pageNumber })}</button>
+		{/if}
+		{#if totalCount > 0}
+			<button class="btn btn-active join-item">{pageNumber}</button>
+		{/if}
+		{#if pageNumber + 1 <= pageCount}
 			<button
-				class="btn {pageNumber + 1 <= pageCount ? '' : 'btn-disabled'}"
+				class="btn join-item"
 				on:click={() => {
 					pageNumber = pageNumber + 1;
 					dispatch('pageChange');
 				}}
 			>
-				»
+				{pageNumber + 1}
 			</button>
-		</div>
-	</div>
-
-	<div class="navbar-end">
-		<p class="hidden sm:flex mr-4">
-			{$LL.components.ui.pagination.total({ total: totalCount })}
-		</p>
-		<div class="hidden sm:flex btn-group">
+		{/if}
+		{#if pageNumber + 2 <= pageCount}
 			<button
-				class="btn {pageNumber - 1 ? '' : 'btn-disabled'}"
+				class="btn join-item"
 				on:click={() => {
-					pageNumber = pageNumber - 1;
+					pageNumber = pageNumber + 2;
 					dispatch('pageChange');
 				}}
 			>
-				«
+				{pageNumber + 2}
 			</button>
-			{#if pageNumber - 2 > 0}
-				<button
-					class="btn"
-					on:click={() => {
-						pageNumber = pageNumber - 2;
-						dispatch('pageChange');
-					}}
-				>
-					{pageNumber - 2}
-				</button>
-			{/if}
-			{#if pageNumber - 1 > 0}
-				<button
-					class="btn"
-					on:click={() => {
-						pageNumber = pageNumber - 1;
-						dispatch('pageChange');
-					}}
-				>
-					{pageNumber - 1}
-				</button>
-			{/if}
-			{#if totalCount > 0}
-				<button class="btn btn-active">{pageNumber}</button>
-			{/if}
-			{#if pageNumber + 1 <= pageCount}
-				<button
-					class="btn"
-					on:click={() => {
-						pageNumber = pageNumber + 1;
-						dispatch('pageChange');
-					}}
-				>
-					{pageNumber + 1}
-				</button>
-			{/if}
-			{#if pageNumber + 2 <= pageCount}
-				<button
-					class="btn"
-					on:click={() => {
-						pageNumber = pageNumber + 2;
-						dispatch('pageChange');
-					}}
-				>
-					{pageNumber + 2}
-				</button>
-			{/if}
-			<button
-				class="btn {pageNumber + 1 <= pageCount ? '' : 'btn-disabled'}"
-				on:click={() => {
-					pageNumber = pageNumber + 1;
-					dispatch('pageChange');
-				}}
-			>
-				»
-			</button>
-		</div>
+		{/if}
+		<button
+			class="btn {pageNumber + 1 <= pageCount ? '' : 'btn-disabled'} join-item"
+			on:click={() => {
+				pageNumber = pageNumber + 1;
+				dispatch('pageChange');
+			}}
+		>
+			»
+		</button>
 	</div>
 </div>
