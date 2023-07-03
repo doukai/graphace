@@ -67,7 +67,7 @@
 			<ThemeSelect slot="option1" />
 			<LocaleSelect slot="option2" />
 		</NavBar>
-		<main class="max-w-[100vw] lg:max-w-[calc(100vw-20rem)] px-6 pt-6 pb-16 xl:pr-2 bg-base-200">
+		<main class="max-w-[100vw] lg:max-w-[calc(100vw-20rem)] lg:px-6 lg:pt-6 lg:pb-16 px-2 py-2 bg-base-200">
 			<slot />
 			<MessageBoxs />
 			<Notifications />

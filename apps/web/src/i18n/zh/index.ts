@@ -118,6 +118,7 @@ const zh: Translation = {
 	},
 	routers: {
 		type: {
+			search: "搜索",
 			create: "新建",
 			remove: "删除",
 			save: "保存",

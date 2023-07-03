@@ -84,6 +84,7 @@ const en: BaseTranslation = {
 	},
 	routers: {
 		type: {
+			search: "Search",
 			create: "Create",
 			remove: "Remove"
 		}

@@ -399,6 +399,10 @@ type RootTranslation = {
 	routers: {
 		type: {
 			/**
+			 * S​e​a​r​c​h
+			 */
+			search: string
+			/**
 			 * C​r​e​a​t​e
 			 */
 			create: string
@@ -797,6 +801,10 @@ export type TranslationFunctions = {
 	}
 	routers: {
 		type: {
+			/**
+			 * Search
+			 */
+			search: () => LocalizedString
 			/**
 			 * Create
 			 */

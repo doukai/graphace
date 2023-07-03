@@ -10,17 +10,15 @@
 	}>();
 </script>
 
-<div class="form-control">
-	<div class="input-group">
-		<input
-			type="text"
-			class="input input-bordered"
-			{name}
-			placeholder={$LL.components.ui.searchInput.placeholder()}
-			bind:value
-		/>
-		<button class="btn btn-square" on:click={() => dispatch('search')}>
-			<Icon src={MagnifyingGlass} class="h-6 w-6" />
-		</button>
-	</div>
+<div class="join">
+	<input
+		type="text"
+		class="input input-bordered join-item"
+		{name}
+		placeholder={$LL.components.ui.searchInput.placeholder()}
+		bind:value
+	/>
+	<button class="btn btn-square join-item" on:click={() => dispatch('search')}>
+		<Icon src={MagnifyingGlass} class="h-6 w-6" />
+	</button>
 </div>

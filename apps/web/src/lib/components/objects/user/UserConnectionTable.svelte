@@ -21,7 +21,7 @@
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Plus, PencilSquare, Trash, ChevronLeft } from '@steeze-ui/heroicons';
+	import { Plus, PencilSquare, Trash, ArrowUturnLeft, InboxArrowDown } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
 	import { Pagination } from '@graphace/ui/components/connection';
 	import {
@@ -208,12 +208,17 @@
 </script>
 
 <Card>
-	<div class="inline-block float-right">
-		<SearchInput bind:value={searchValue} on:search={search} />
+	<div class="flex">
+		<div class="hidden md:flex w-full">
+			<a class="btn btn-ghost normal-case text-xl" href={null} on:click>{'User'}</a>
+		</div>
+		<div class="w-full md:w-min">
+			<SearchInput bind:value={searchValue} on:search={search} />
+		</div>
 		{#if showDeleteButton}
 			<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.remove()}>
 				<button
-					class="btn btn-error btn-outline btn-square"
+					class="btn btn-error btn-outline btn-square md:hidden ml-1"
 					on:click={(e) => {
 						e.preventDefault();
 						messageBoxs.open({
@@ -230,10 +235,27 @@
 					<Icon src={Trash} class="h-6 w-6" solid />
 				</button>
 			</div>
+			<button
+				class="hidden md:flex btn btn-outline btn-error ml-1"
+				on:click={(e) => {
+					e.preventDefault();
+					messageBoxs.open({
+						title: $LL.components.graphql.table.removeModalTitle(),
+						buttonName: $LL.components.graphql.table.removeBtn(),
+						buttonType: 'error',
+						confirm: () => {
+							removeRows();
+							return true;
+						}
+					});
+				}}
+			>
+				{$LL.routers.type.remove()}
+			</button>
 		{/if}
 		<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.create()}>
 			<button
-				class="btn btn-square md:hidden"
+				class="btn btn-primary btn-square md:hidden ml-1"
 				on:click={(e) => {
 					e.preventDefault();
 					dispatch('create');
@@ -243,7 +265,7 @@
 			</button>
 		</div>
 		<button
-			class="hidden md:btn"
+			class="hidden md:flex btn btn-primary ml-1"
 			on:click={(e) => {
 				e.preventDefault();
 				dispatch('create');
@@ -251,45 +273,45 @@
 		>
 			{$LL.routers.type.create()}
 		</button>
-		<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.back()}>
-			<button
-				class="btn btn-square md:hidden"
-				on:click={(e) => {
-					e.preventDefault();
-					dispatch('back');
-				}}
-			>
-				<Icon src={ChevronLeft} class="h-6 w-6" solid />
-			</button>
-		</div>
-		<button
-			class="hidden md:btn"
-			on:click={(e) => {
-				e.preventDefault();
-				dispatch('back');
-			}}
-		>
-			{$LL.routers.type.back()}
-		</button>
 		<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.save()}>
 			<button
-				class="btn btn-square md:hidden"
+				class="btn btn-secondary btn-square md:hidden ml-1"
 				on:click={(e) => {
 					e.preventDefault();
 					dispatch('save', { nodes });
 				}}
 			>
-				<Icon src={ChevronLeft} class="h-6 w-6" solid />
+				<Icon src={InboxArrowDown} class="h-6 w-6" solid />
 			</button>
 		</div>
 		<button
-			class="hidden md:btn"
+			class="hidden md:flex btn btn-secondary ml-1"
 			on:click={(e) => {
 				e.preventDefault();
 				dispatch('save', { nodes });
 			}}
 		>
 			{$LL.routers.type.save()}
+		</button>
+		<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.back()}>
+			<button
+				class="btn btn-neutral btn-square md:hidden ml-1"
+				on:click={(e) => {
+					e.preventDefault();
+					dispatch('back');
+				}}
+			>
+				<Icon src={ArrowUturnLeft} class="h-6 w-6" solid />
+			</button>
+		</div>
+		<button
+			class="hidden md:flex btn btn-neutral ml-1"
+			on:click={(e) => {
+				e.preventDefault();
+				dispatch('back');
+			}}
+		>
+			{$LL.routers.type.back()}
 		</button>
 	</div>
 	<div class="divider" />
