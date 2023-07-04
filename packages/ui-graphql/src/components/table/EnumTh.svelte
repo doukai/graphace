@@ -97,7 +97,7 @@
 	</div>
 </div>
 
-<th>
+<td>
 	<a
 		class="link group inline-flex"
 		href={null}
@@ -130,4 +130,4 @@
 			</span>
 		{/if}
 	</a>
-</th>
+</td>

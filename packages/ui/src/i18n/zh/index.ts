@@ -86,7 +86,9 @@ const zh: Translation = {
 		type: {
 			search: "搜索",
 			create: "新建",
-			remove: "删除"
+			save: "保存",
+			remove: "删除",
+			back: "返回"
 		}
 	}
 }

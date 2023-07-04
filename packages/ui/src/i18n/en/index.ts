@@ -86,7 +86,9 @@ const en: BaseTranslation = {
 		type: {
 			search: "Search",
 			create: "Create",
-			remove: "Remove"
+			save: "Save",
+			remove: "Remove",
+			back: "Back"
 		}
 	}
 }

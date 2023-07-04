@@ -2,8 +2,8 @@
 	export let className = '';
 </script>
 
-<div class="shadow-xl overflow-x-auto">
-	<table class="table table-zebra {className}">
+<div class="overflow-x-auto">
+	<table class="table table-zebra table-pin-rows table-pin-cols {className}">
 		<slot />
 	</table>
 </div>

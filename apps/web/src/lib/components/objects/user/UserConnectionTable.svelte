@@ -318,7 +318,7 @@
 	<Table>
 		<thead>
 			<tr>
-				<th class="z-10">
+				<th>
 					<label>
 						<input
 							type="checkbox"
@@ -366,10 +366,10 @@
 					bind:sort={orderBy.email}
 					on:filter={query}
 				/>
-				<th>groups</th>
-				<th>groupsConnection</th>
+				<td>groups</td>
+				<td>groupsConnection</td>
 				<IDTh name="id" bind:expression={args.id} bind:sort={orderBy.id} on:filter={query} />
-				<th>isDeprecated</th>
+				<td>isDeprecated</td>
 				<StringTh
 					name="lastName"
 					bind:expression={args.lastName}
@@ -394,15 +394,15 @@
 					bind:sort={orderBy.password}
 					on:filter={query}
 				/>
-				<th>realm</th>
+				<td>realm</td>
 				<StringTh
 					name="realmId"
 					bind:expression={args.realmId}
 					bind:sort={orderBy.realmId}
 					on:filter={query}
 				/>
-				<th>roles</th>
-				<th>rolesConnection</th>
+				<td>roles</td>
+				<td>rolesConnection</td>
 				<TimestampTh
 					name="updateTime"
 					bind:expression={args.updateTime}
@@ -415,10 +415,10 @@
 					bind:sort={orderBy.updateUserId}
 					on:filter={query}
 				/>
-				<th>userGroup</th>
-				<th>userGroupConnection</th>
-				<th>userRole</th>
-				<th>userRoleConnection</th>
+				<td>userGroup</td>
+				<td>userGroupConnection</td>
+				<td>userRole</td>
+				<td>userRoleConnection</td>
 				<IntTh
 					name="version"
 					bind:expression={args.version}
@@ -580,42 +580,44 @@
 									on:save={() => updateField({ id: node?.id, version: node?.version })}
 									errors={errors[row]?.iterms?.version}
 								/>
-								<td>
-									<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
-										<button
-											class="btn btn-square btn-ghost btn-xs"
-											on:click={(e) => {
-												e.preventDefault();
-												if (node && node.id) {
-													dispatch('edit', { id: node.id });
-												}
-											}}
-										>
-											<Icon src={PencilSquare} solid />
-										</button>
-									</div>
-									<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>
-										<button
-											class="btn btn-square btn-ghost btn-xs"
-											on:click={(e) => {
-												e.preventDefault();
-												messageBoxs.open({
-													title: $LL.components.graphql.table.removeModalTitle(),
-													buttonName: $LL.components.graphql.table.removeBtn(),
-													buttonType: 'error',
-													confirm: () => {
-														if (node?.id) {
-															removeRow(node.id);
-														}
-														return true;
+								<th class="z-10">
+									<div class="flex">
+										<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
+											<button
+												class="btn btn-square btn-ghost btn-xs"
+												on:click={(e) => {
+													e.preventDefault();
+													if (node && node.id) {
+														dispatch('edit', { id: node.id });
 													}
-												});
-											}}
-										>
-											<Icon src={Trash} solid />
-										</button>
+												}}
+											>
+												<Icon src={PencilSquare} solid />
+											</button>
+										</div>
+										<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>
+											<button
+												class="btn btn-square btn-ghost btn-xs ml-1"
+												on:click={(e) => {
+													e.preventDefault();
+													messageBoxs.open({
+														title: $LL.components.graphql.table.removeModalTitle(),
+														buttonName: $LL.components.graphql.table.removeBtn(),
+														buttonType: 'error',
+														confirm: () => {
+															if (node?.id) {
+																removeRow(node.id);
+															}
+															return true;
+														}
+													});
+												}}
+											>
+												<Icon src={Trash} solid />
+											</button>
+										</div>
 									</div>
-								</td>
+								</th>
 							</tr>
 						{/if}
 					{/each}
