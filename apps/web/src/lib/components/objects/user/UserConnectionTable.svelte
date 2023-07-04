@@ -15,7 +15,7 @@
 		IntTd
 	} from '@graphace/ui-graphql/components/table';
 	import { SectionHead } from '@graphace/ui/components/section';
-	import { Card } from '@graphace/ui/components/card';
+	import { Card, CardTitle } from '@graphace/ui/components/card';
 	import { Table, TableLoading } from '@graphace/ui/components/table';
 	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
@@ -208,6 +208,25 @@
 </script>
 
 <Card>
+	<CardTitle
+		title="User"
+		{showDeleteButton}
+		on:create
+		on:save={() => dispatch('save', { nodes })}
+		on:removeRows={(e) => {
+			e.preventDefault();
+			messageBoxs.open({
+				title: $LL.components.graphql.table.removeModalTitle(),
+				buttonName: $LL.components.graphql.table.removeBtn(),
+				buttonType: 'error',
+				confirm: () => {
+					removeRows();
+					return true;
+				}
+			});
+		}}
+		on:back
+	/>
 	<div class="flex">
 		<div class="hidden md:flex w-full">
 			<a class="btn btn-ghost normal-case text-xl" href={null} on:click>{'User'}</a>
