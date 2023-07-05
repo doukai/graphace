@@ -1,6 +1,7 @@
 import Table from "./Table.svelte";
+import TableHead from "./TableHead.svelte";
 import TableLoading from "./TableLoading.svelte";
 
 export {
-    Table, TableLoading
+    Table, TableHead, TableLoading
 }

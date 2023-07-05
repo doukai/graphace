@@ -8,7 +8,7 @@
 		<tr>
 			{#each { length: cols } as _}
 				<td>
-					<div class="py-4" />
+					<div class="py-2" />
 				</td>
 			{/each}
 		</tr>

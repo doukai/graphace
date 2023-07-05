@@ -14,14 +14,12 @@
 		IntTh,
 		IntTd
 	} from '@graphace/ui-graphql/components/table';
-	import { SectionHead } from '@graphace/ui/components/section';
-	import { Card, CardTitle } from '@graphace/ui/components/card';
-	import { Table, TableLoading } from '@graphace/ui/components/table';
-	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
+	import { Card } from '@graphace/ui/components/card';
+	import { Table, TableHead, TableLoading } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Plus, PencilSquare, Trash, ArrowUturnLeft, InboxArrowDown } from '@steeze-ui/heroicons';
+	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
 	import { Pagination } from '@graphace/ui/components/connection';
 	import {
@@ -56,8 +54,7 @@
 		back: {};
 	}>();
 
-	let showDeleteButton = false;
-	let searchValue: string | undefined;
+	let showRemoveButton = false;
 	let args: QueryTypeUserConnectionArgs = {};
 	let orderBy: UserOrderBy = {};
 	let after: string | undefined;
@@ -74,9 +71,9 @@
 		.map((id) => id);
 
 	$: if (selectedIdList.length > 0) {
-		showDeleteButton = true;
+		showRemoveButton = true;
 	} else {
-		showDeleteButton = false;
+		showRemoveButton = false;
 	}
 
 	const query = () => {
@@ -109,7 +106,7 @@
 		});
 	};
 
-	const search = () => {
+	const search = (searchValue: string | undefined) => {
 		let args: QueryTypeUserConnectionArgs = {};
 		if (searchValue) {
 			args.cond = Conditional.OR;
@@ -208,13 +205,13 @@
 </script>
 
 <Card>
-	<CardTitle
+	<TableHead
 		title="User"
-		{showDeleteButton}
+		{showRemoveButton}
 		on:create
+		on:search={(e) => search(e.detail.value)}
 		on:save={() => dispatch('save', { nodes })}
-		on:removeRows={(e) => {
-			e.preventDefault();
+		on:removeRows={() => {
 			messageBoxs.open({
 				title: $LL.components.graphql.table.removeModalTitle(),
 				buttonName: $LL.components.graphql.table.removeBtn(),
@@ -227,112 +224,6 @@
 		}}
 		on:back
 	/>
-	<div class="flex">
-		<div class="hidden md:flex w-full">
-			<a class="btn btn-ghost normal-case text-xl" href={null} on:click>{'User'}</a>
-		</div>
-		<div class="w-full md:w-min">
-			<SearchInput bind:value={searchValue} on:search={search} />
-		</div>
-		{#if showDeleteButton}
-			<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.remove()}>
-				<button
-					class="btn btn-error btn-outline btn-square md:hidden ml-1"
-					on:click={(e) => {
-						e.preventDefault();
-						messageBoxs.open({
-							title: $LL.components.graphql.table.removeModalTitle(),
-							buttonName: $LL.components.graphql.table.removeBtn(),
-							buttonType: 'error',
-							confirm: () => {
-								removeRows();
-								return true;
-							}
-						});
-					}}
-				>
-					<Icon src={Trash} class="h-6 w-6" solid />
-				</button>
-			</div>
-			<button
-				class="hidden md:flex btn btn-outline btn-error ml-1"
-				on:click={(e) => {
-					e.preventDefault();
-					messageBoxs.open({
-						title: $LL.components.graphql.table.removeModalTitle(),
-						buttonName: $LL.components.graphql.table.removeBtn(),
-						buttonType: 'error',
-						confirm: () => {
-							removeRows();
-							return true;
-						}
-					});
-				}}
-			>
-				{$LL.routers.type.remove()}
-			</button>
-		{/if}
-		<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.create()}>
-			<button
-				class="btn btn-primary btn-square md:hidden ml-1"
-				on:click={(e) => {
-					e.preventDefault();
-					dispatch('create');
-				}}
-			>
-				<Icon src={Plus} class="h-6 w-6" solid />
-			</button>
-		</div>
-		<button
-			class="hidden md:flex btn btn-primary ml-1"
-			on:click={(e) => {
-				e.preventDefault();
-				dispatch('create');
-			}}
-		>
-			{$LL.routers.type.create()}
-		</button>
-		<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.save()}>
-			<button
-				class="btn btn-secondary btn-square md:hidden ml-1"
-				on:click={(e) => {
-					e.preventDefault();
-					dispatch('save', { nodes });
-				}}
-			>
-				<Icon src={InboxArrowDown} class="h-6 w-6" solid />
-			</button>
-		</div>
-		<button
-			class="hidden md:flex btn btn-secondary ml-1"
-			on:click={(e) => {
-				e.preventDefault();
-				dispatch('save', { nodes });
-			}}
-		>
-			{$LL.routers.type.save()}
-		</button>
-		<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.back()}>
-			<button
-				class="btn btn-neutral btn-square md:hidden ml-1"
-				on:click={(e) => {
-					e.preventDefault();
-					dispatch('back');
-				}}
-			>
-				<Icon src={ArrowUturnLeft} class="h-6 w-6" solid />
-			</button>
-		</div>
-		<button
-			class="hidden md:flex btn btn-neutral ml-1"
-			on:click={(e) => {
-				e.preventDefault();
-				dispatch('back');
-			}}
-		>
-			{$LL.routers.type.back()}
-		</button>
-	</div>
 	<div class="divider" />
 	<Table>
 		<thead>

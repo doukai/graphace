@@ -12,7 +12,7 @@
 
 <div class="join">
 	<input
-		type="text"
+		type="search"
 		class="input input-bordered join-item"
 		{name}
 		placeholder={$LL.components.ui.searchInput.placeholder()}
