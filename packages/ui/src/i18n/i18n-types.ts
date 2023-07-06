@@ -275,13 +275,25 @@ type RootTranslation = {
 	routers: {
 		type: {
 			/**
+			 * S​e​a​r​c​h
+			 */
+			search: string
+			/**
 			 * C​r​e​a​t​e
 			 */
 			create: string
 			/**
+			 * S​a​v​e
+			 */
+			save: string
+			/**
 			 * R​e​m​o​v​e
 			 */
 			remove: string
+			/**
+			 * B​a​c​k
+			 */
+			back: string
 		}
 	}
 }
@@ -542,13 +554,25 @@ export type TranslationFunctions = {
 	routers: {
 		type: {
 			/**
+			 * Search
+			 */
+			search: () => LocalizedString
+			/**
 			 * Create
 			 */
 			create: () => LocalizedString
 			/**
+			 * Save
+			 */
+			save: () => LocalizedString
+			/**
 			 * Remove
 			 */
 			remove: () => LocalizedString
+			/**
+			 * Back
+			 */
+			back: () => LocalizedString
 		}
 	}
 }
