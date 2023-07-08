@@ -10,7 +10,7 @@
 	export let id: string = nanoid();
 </script>
 
-<div class="form-control w-full max-w-xs">
+<div class="form-control w-full">
 	<input
 		type="checkbox"
 		{id}

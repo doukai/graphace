@@ -31,7 +31,7 @@
 	<div {id} class="{errors?.errors ? 'border-2 border-error p-1 rounded-xl' : ''} space-y-5">
 		{#each value || [] as item, index}
 			<div class="flex space-x-1">
-				<div class="form-control w-full max-w-xs">
+				<div class="form-control w-full">
 					<input
 						type="number"
 						id={id + index}

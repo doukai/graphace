@@ -2,8 +2,16 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
+	import { Card } from '@graphace/ui/components/card';
 	import { Form, FormLoading, FormItems, FormButtons } from '@graphace/ui/components/form';
-	import { StringItem, TimestampItem, BooleanItem, IDItem, IntItem, ObjectItem } from '@graphace/ui-graphql/components/form';
+	import {
+		StringItem,
+		TimestampItem,
+		BooleanItem,
+		IDItem,
+		IntItem,
+		ObjectItem
+	} from '@graphace/ui-graphql/components/form';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '~/i18n/i18n-svelte';
@@ -59,76 +67,180 @@
 	};
 </script>
 
-<Form>
-	<FormItems title="User">
-		{#if isFetching}
-			<FormLoading rows={15} />
-		{:else}
-			{#if node}
-				<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} errors={errors.createGroupId} />
-				<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} errors={errors.createTime} />
-				<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} errors={errors.createUserId} />
-				<BooleanItem label="disable" name="disable" bind:value={node.disable} errors={errors.disable} />
+<Card>
+	<Form>
+		<FormItems title="User">
+			{#if isFetching}
+				<FormLoading rows={15} />
+			{:else if node}
+				<StringItem
+					label="createGroupId"
+					name="createGroupId"
+					bind:value={node.createGroupId}
+					errors={errors.createGroupId}
+				/>
+				<TimestampItem
+					label="createTime"
+					name="createTime"
+					bind:value={node.createTime}
+					errors={errors.createTime}
+				/>
+				<StringItem
+					label="createUserId"
+					name="createUserId"
+					bind:value={node.createUserId}
+					errors={errors.createUserId}
+				/>
+				<BooleanItem
+					label="disable"
+					name="disable"
+					bind:value={node.disable}
+					errors={errors.disable}
+				/>
 				<StringItem label="email" name="email" bind:value={node.email} errors={errors.email} />
-				<ObjectItem name="groups" path={`${node.id}/groups`} label="groups" errors={errors.groups} on:gotoField />
-				<ObjectItem name="groupsConnection" path={`${node.id}/groups-connection`} label="groupsConnection" errors={errors.groupsConnection} on:gotoField />
+				<ObjectItem
+					name="groups"
+					path={`${node.id}/groups`}
+					label="groups"
+					errors={errors.groups}
+					on:gotoField
+				/>
+				<ObjectItem
+					name="groupsConnection"
+					path={`${node.id}/groups-connection`}
+					label="groupsConnection"
+					errors={errors.groupsConnection}
+					on:gotoField
+				/>
 				<IDItem label="id" name="id" bind:value={node.id} errors={errors.id} />
-				<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} errors={errors.isDeprecated} />
-				<StringItem label="lastName" name="lastName" bind:value={node.lastName} errors={errors.lastName} />
+				<BooleanItem
+					label="isDeprecated"
+					name="isDeprecated"
+					bind:value={node.isDeprecated}
+					errors={errors.isDeprecated}
+				/>
+				<StringItem
+					label="lastName"
+					name="lastName"
+					bind:value={node.lastName}
+					errors={errors.lastName}
+				/>
 				<StringItem label="login" name="login" bind:value={node.login} errors={errors.login} />
 				<StringItem label="name" name="name" bind:value={node.name} errors={errors.name} />
-				<StringItem label="password" name="password" bind:value={node.password} errors={errors.password} />
-				<ObjectItem name="realm" path={`${node.id}/realm`} label="realm" errors={errors.realm} on:gotoField />
-				<StringItem label="realmId" name="realmId" bind:value={node.realmId} errors={errors.realmId} />
-				<ObjectItem name="roles" path={`${node.id}/roles`} label="roles" errors={errors.roles} on:gotoField />
-				<ObjectItem name="rolesConnection" path={`${node.id}/roles-connection`} label="rolesConnection" errors={errors.rolesConnection} on:gotoField />
-				<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} errors={errors.updateTime} />
-				<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} errors={errors.updateUserId} />
-				<ObjectItem name="userGroup" path={`${node.id}/user-group`} label="userGroup" errors={errors.userGroup} on:gotoField />
-				<ObjectItem name="userGroupConnection" path={`${node.id}/user-group-connection`} label="userGroupConnection" errors={errors.userGroupConnection} on:gotoField />
-				<ObjectItem name="userRole" path={`${node.id}/user-role`} label="userRole" errors={errors.userRole} on:gotoField />
-				<ObjectItem name="userRoleConnection" path={`${node.id}/user-role-connection`} label="userRoleConnection" errors={errors.userRoleConnection} on:gotoField />
+				<StringItem
+					label="password"
+					name="password"
+					bind:value={node.password}
+					errors={errors.password}
+				/>
+				<ObjectItem
+					name="realm"
+					path={`${node.id}/realm`}
+					label="realm"
+					errors={errors.realm}
+					on:gotoField
+				/>
+				<StringItem
+					label="realmId"
+					name="realmId"
+					bind:value={node.realmId}
+					errors={errors.realmId}
+				/>
+				<ObjectItem
+					name="roles"
+					path={`${node.id}/roles`}
+					label="roles"
+					errors={errors.roles}
+					on:gotoField
+				/>
+				<ObjectItem
+					name="rolesConnection"
+					path={`${node.id}/roles-connection`}
+					label="rolesConnection"
+					errors={errors.rolesConnection}
+					on:gotoField
+				/>
+				<TimestampItem
+					label="updateTime"
+					name="updateTime"
+					bind:value={node.updateTime}
+					errors={errors.updateTime}
+				/>
+				<StringItem
+					label="updateUserId"
+					name="updateUserId"
+					bind:value={node.updateUserId}
+					errors={errors.updateUserId}
+				/>
+				<ObjectItem
+					name="userGroup"
+					path={`${node.id}/user-group`}
+					label="userGroup"
+					errors={errors.userGroup}
+					on:gotoField
+				/>
+				<ObjectItem
+					name="userGroupConnection"
+					path={`${node.id}/user-group-connection`}
+					label="userGroupConnection"
+					errors={errors.userGroupConnection}
+					on:gotoField
+				/>
+				<ObjectItem
+					name="userRole"
+					path={`${node.id}/user-role`}
+					label="userRole"
+					errors={errors.userRole}
+					on:gotoField
+				/>
+				<ObjectItem
+					name="userRoleConnection"
+					path={`${node.id}/user-role-connection`}
+					label="userRoleConnection"
+					errors={errors.userRoleConnection}
+					on:gotoField
+				/>
 				<IntItem label="version" name="version" bind:value={node.version} errors={errors.version} />
 			{/if}
-		{/if}
-	</FormItems>
-	<FormButtons>
-		<button
-			class="btn"
-			on:click={(e) => {
-				e.preventDefault();
-				dispatch('back');
-			}}
-		>
-			{$LL.components.graphql.editor.backBtn()}
-		</button>
-		<button
-			class="btn"
-			disabled={isFetching}
-			on:click={(e) => {
-				e.preventDefault();
-				save();
-			}}
-		>
-			{$LL.components.graphql.editor.saveBtn()}
-		</button>
-		<button
-			class="btn btn-outline btn-error"
-			disabled={isFetching}
-			on:click={(e) => {
-				e.preventDefault();
-				messageBoxs.open({
-					title: $LL.components.graphql.table.removeModalTitle(),
-					buttonName: $LL.components.graphql.table.removeBtn(),
-					buttonType: 'error',
-					confirm: () => {
-						remove();
-						return true;
-					}
-				});
-			}}
-		>
-			{$LL.components.graphql.editor.removeBtn()}
-		</button>
-	</FormButtons>
-</Form>
+		</FormItems>
+		<FormButtons>
+			<button
+				class="btn"
+				on:click={(e) => {
+					e.preventDefault();
+					dispatch('back');
+				}}
+			>
+				{$LL.components.graphql.editor.backBtn()}
+			</button>
+			<button
+				class="btn"
+				disabled={isFetching}
+				on:click={(e) => {
+					e.preventDefault();
+					save();
+				}}
+			>
+				{$LL.components.graphql.editor.saveBtn()}
+			</button>
+			<button
+				class="btn btn-outline btn-error"
+				disabled={isFetching}
+				on:click={(e) => {
+					e.preventDefault();
+					messageBoxs.open({
+						title: $LL.components.graphql.table.removeModalTitle(),
+						buttonName: $LL.components.graphql.table.removeBtn(),
+						buttonType: 'error',
+						confirm: () => {
+							remove();
+							return true;
+						}
+					});
+				}}
+			>
+				{$LL.components.graphql.editor.removeBtn()}
+			</button>
+		</FormButtons>
+	</Form>
+</Card>

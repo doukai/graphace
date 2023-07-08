@@ -1,3 +1,3 @@
-<div class="card w-full p-3 bg-base-100 shadow-xl">
+<div class="card w-full p-6 bg-base-100 shadow-xl">
 	<slot />
 </div>

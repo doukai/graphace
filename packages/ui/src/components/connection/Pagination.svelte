@@ -14,7 +14,7 @@
 		totalCount % pageSize == 0 ? ~~(totalCount / pageSize) : ~~(totalCount / pageSize) + 1;
 </script>
 
-<div class="hidden sm:flex justify-between">
+<div class="hidden md:flex justify-between">
 	<div class="join">
 		<button class="join-item btn">{$LL.components.ui.pagination.size()}</button>
 		<select
@@ -29,8 +29,10 @@
 			{/each}
 		</select>
 	</div>
-	<div class="mt-3">
-		<label for="">{$LL.components.ui.pagination.total({ total: totalCount })}</label>
+	<div class="flex items-center">
+		<span class="text-sm text-center font-semibold">
+			{$LL.components.ui.pagination.total({ total: totalCount })}
+		</span>
 	</div>
 	<div class="join">
 		<button
@@ -100,7 +102,7 @@
 		</button>
 	</div>
 </div>
-<div class="flex justify-center sm:hidden join">
+<div class="flex justify-center md:hidden join">
 	<button
 		class="join-item btn {pageNumber - 1 ? '' : 'btn-disabled'}"
 		on:click={() => {
