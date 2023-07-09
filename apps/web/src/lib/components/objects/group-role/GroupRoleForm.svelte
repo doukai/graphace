@@ -2,7 +2,8 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
-	import { Form, FormLoading, FormItems, FormButtons } from '@graphace/ui/components/form';
+	import { Card } from '@graphace/ui/components/card';
+	import { Form, FormLoading } from '@graphace/ui/components/form';
 	import { StringItem, TimestampItem, IntItem, IDItem, BooleanItem, ObjectItem } from '@graphace/ui-graphql/components/form';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
@@ -59,8 +60,23 @@
 	};
 </script>
 
-<Form>
-	<FormItems title="GroupRole">
+<Card>
+	<Form
+		title="GroupRole"
+		showRemoveButton={false}
+		on:save={save}
+		on:remove={() =>
+			messageBoxs.open({
+				title: $LL.components.graphql.table.removeModalTitle(),
+				buttonName: $LL.components.graphql.table.removeBtn(),
+				buttonType: 'error',
+				confirm: () => {
+					remove();
+					return true;
+				}
+			})}
+		on:back
+	>
 		{#if isFetching}
 			<FormLoading rows={11} />
 		{:else}
@@ -80,44 +96,5 @@
 				<IntItem label="version" name="version" bind:value={node.version} errors={errors.version} />
 			{/if}
 		{/if}
-	</FormItems>
-	<FormButtons>
-		<button
-			class="btn"
-			on:click={(e) => {
-				e.preventDefault();
-				dispatch('back');
-			}}
-		>
-			{$LL.components.graphql.editor.backBtn()}
-		</button>
-		<button
-			class="btn"
-			disabled={isFetching}
-			on:click={(e) => {
-				e.preventDefault();
-				save();
-			}}
-		>
-			{$LL.components.graphql.editor.saveBtn()}
-		</button>
-		<button
-			class="btn btn-outline btn-error"
-			disabled={isFetching}
-			on:click={(e) => {
-				e.preventDefault();
-				messageBoxs.open({
-					title: $LL.components.graphql.table.removeModalTitle(),
-					buttonName: $LL.components.graphql.table.removeBtn(),
-					buttonType: 'error',
-					confirm: () => {
-						remove();
-						return true;
-					}
-				});
-			}}
-		>
-			{$LL.components.graphql.editor.removeBtn()}
-		</button>
-	</FormButtons>
-</Form>
+	</Form>
+</Card>

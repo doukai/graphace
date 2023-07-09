@@ -1,19 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import {
-		ObjectTd,
-		StringTh,
-		StringTd,
-		TimestampTh,
-		TimestampTd,
-		BooleanTh,
-		BooleanTd,
-		IDTh,
-		IDTd,
-		IntTh,
-		IntTd
-	} from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, StringTh, StringTd, TimestampTh, TimestampTd, BooleanTh, BooleanTd, IDTh, IDTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
 	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableLoading } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
@@ -131,7 +119,7 @@
 			args.realmId = undefined;
 			args.updateUserId = undefined;
 		}
-
+		
 		if (after) {
 			args.after = after;
 			args.first = pageSize;
@@ -228,7 +216,7 @@
 	<Table>
 		<thead>
 			<tr>
-				<th>
+				<th class="z-10">
 					<label>
 						<input
 							type="checkbox"
@@ -278,7 +266,12 @@
 				/>
 				<td>groups</td>
 				<td>groupsConnection</td>
-				<IDTh name="id" bind:expression={args.id} bind:sort={orderBy.id} on:filter={query} />
+				<IDTh
+					name="id"
+					bind:expression={args.id}
+					bind:sort={orderBy.id}
+					on:filter={query}
+				/>
 				<td>isDeprecated</td>
 				<StringTh
 					name="lastName"
@@ -339,7 +332,7 @@
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={pageSize} cols={15 + 2} />
+			<TableLoading rows={pageSize} cols={15 + 2}/>
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
@@ -381,19 +374,14 @@
 									on:save={() => updateField({ id: node?.id, email: node?.email })}
 									errors={errors[row]?.iterms?.email}
 								/>
-								<ObjectTd
-									name="groups"
-									errors={errors[row]?.iterms?.groups}
-									path={`${node.id}/groups`}
-									on:gotoField
+								<ObjectTd name="groups" errors={errors[row]?.iterms?.groups} path={`${node.id}/groups`} on:gotoField />
+								<ObjectTd name="groupsConnection" errors={errors[row]?.iterms?.groupsConnection} path={`${node.id}/groups-connection`} on:gotoField />
+								<IDTd
+									name="id"
+									bind:value={node.id}
+									readonly
+									errors={errors[row]?.iterms?.id}
 								/>
-								<ObjectTd
-									name="groupsConnection"
-									errors={errors[row]?.iterms?.groupsConnection}
-									path={`${node.id}/groups-connection`}
-									on:gotoField
-								/>
-								<IDTd name="id" bind:value={node.id} readonly errors={errors[row]?.iterms?.id} />
 								<BooleanTd
 									name="isDeprecated"
 									bind:value={node.isDeprecated}
@@ -424,30 +412,15 @@
 									on:save={() => updateField({ id: node?.id, password: node?.password })}
 									errors={errors[row]?.iterms?.password}
 								/>
-								<ObjectTd
-									name="realm"
-									errors={errors[row]?.iterms?.realm}
-									path={`${node.id}/realm`}
-									on:gotoField
-								/>
+								<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
 								<StringTd
 									name="realmId"
 									bind:value={node.realmId}
 									on:save={() => updateField({ id: node?.id, realmId: node?.realmId })}
 									errors={errors[row]?.iterms?.realmId}
 								/>
-								<ObjectTd
-									name="roles"
-									errors={errors[row]?.iterms?.roles}
-									path={`${node.id}/roles`}
-									on:gotoField
-								/>
-								<ObjectTd
-									name="rolesConnection"
-									errors={errors[row]?.iterms?.rolesConnection}
-									path={`${node.id}/roles-connection`}
-									on:gotoField
-								/>
+								<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path={`${node.id}/roles`} on:gotoField />
+								<ObjectTd name="rolesConnection" errors={errors[row]?.iterms?.rolesConnection} path={`${node.id}/roles-connection`} on:gotoField />
 								<TimestampTd
 									name="updateTime"
 									bind:value={node.updateTime}
@@ -460,30 +433,10 @@
 									on:save={() => updateField({ id: node?.id, updateUserId: node?.updateUserId })}
 									errors={errors[row]?.iterms?.updateUserId}
 								/>
-								<ObjectTd
-									name="userGroup"
-									errors={errors[row]?.iterms?.userGroup}
-									path={`${node.id}/user-group`}
-									on:gotoField
-								/>
-								<ObjectTd
-									name="userGroupConnection"
-									errors={errors[row]?.iterms?.userGroupConnection}
-									path={`${node.id}/user-group-connection`}
-									on:gotoField
-								/>
-								<ObjectTd
-									name="userRole"
-									errors={errors[row]?.iterms?.userRole}
-									path={`${node.id}/user-role`}
-									on:gotoField
-								/>
-								<ObjectTd
-									name="userRoleConnection"
-									errors={errors[row]?.iterms?.userRoleConnection}
-									path={`${node.id}/user-role-connection`}
-									on:gotoField
-								/>
+								<ObjectTd name="userGroup" errors={errors[row]?.iterms?.userGroup} path={`${node.id}/user-group`} on:gotoField />
+								<ObjectTd name="userGroupConnection" errors={errors[row]?.iterms?.userGroupConnection} path={`${node.id}/user-group-connection`} on:gotoField />
+								<ObjectTd name="userRole" errors={errors[row]?.iterms?.userRole} path={`${node.id}/user-role`} on:gotoField />
+								<ObjectTd name="userRoleConnection" errors={errors[row]?.iterms?.userRoleConnection} path={`${node.id}/user-role-connection`} on:gotoField />
 								<IntTd
 									name="version"
 									bind:value={node.version}
@@ -491,7 +444,7 @@
 									errors={errors[row]?.iterms?.version}
 								/>
 								<th class="z-10">
-									<div class="flex">
+									<div class="flex space-x-1">
 										<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
 											<button
 												class="btn btn-square btn-ghost btn-xs"
@@ -507,7 +460,7 @@
 										</div>
 										<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>
 											<button
-												class="btn btn-square btn-ghost btn-xs ml-1"
+												class="btn btn-square btn-ghost btn-xs"
 												on:click={(e) => {
 													e.preventDefault();
 													messageBoxs.open({

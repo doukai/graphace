@@ -47,7 +47,7 @@
 				}
 				Mutation_user.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {
-						event.detail.then(result?.data?.user);
+						event.detail.then(result?.user);
 					})
 					.catch((errors) => {
 						event.detail.catch(errors);
