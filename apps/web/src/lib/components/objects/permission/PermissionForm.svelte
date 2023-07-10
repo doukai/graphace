@@ -64,7 +64,6 @@
 <Card>
 	<Form
 		title="Permission"
-		showRemoveButton={false}
 		on:save={save}
 		on:remove={() =>
 			messageBoxs.open({

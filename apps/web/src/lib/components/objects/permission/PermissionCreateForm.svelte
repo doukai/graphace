@@ -2,7 +2,8 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
-	import { Form, FormItems, FormButtons } from '@graphace/ui/components/form';
+	import { Card } from '@graphace/ui/components/card';
+	import { Form, FormLoading } from '@graphace/ui/components/form';
 	import { StringItem, TimestampItem, IDItem, BooleanItem, IntItem, ObjectItem } from '@graphace/ui-graphql/components/form';
 	import PermissionLevelItem from '~/lib/components/enums/permission-level/PermissionLevelItem.svelte';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
@@ -58,8 +59,23 @@
 	};
 </script>
 
-<Form>
-	<FormItems title="Permission">
+<Card>
+	<Form
+		title="Permission"
+		showRemoveButton={false}
+		on:save={save}
+		on:remove={() =>
+			messageBoxs.open({
+				title: $LL.components.graphql.table.removeModalTitle(),
+				buttonName: $LL.components.graphql.table.removeBtn(),
+				buttonType: 'error',
+				confirm: () => {
+					remove();
+					return true;
+				}
+			})}
+		on:back
+	>
 		<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} errors={errors.createGroupId} />
 		<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} errors={errors.createTime} />
 		<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} errors={errors.createUserId} />
@@ -76,42 +92,5 @@
 		<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} errors={errors.updateTime} />
 		<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} errors={errors.updateUserId} />
 		<IntItem label="version" name="version" bind:value={node.version} errors={errors.version} />
-	</FormItems>
-	<FormButtons>
-		<button
-			class="btn"
-			on:click={(e) => {
-				e.preventDefault();
-				dispatch('back');
-			}}
-		>
-			{$LL.components.graphql.editor.backBtn()}
-		</button>
-		<button
-			class="btn"
-			on:click={(e) => {
-				e.preventDefault();
-				save();
-			}}
-		>
-			{$LL.components.graphql.editor.saveBtn()}
-		</button>
-		<button
-			class="btn btn-outline btn-error"
-			on:click={(e) => {
-				e.preventDefault();
-				messageBoxs.open({
-					title: $LL.components.graphql.table.removeModalTitle(),
-					buttonName: $LL.components.graphql.table.removeBtn(),
-					buttonType: 'error',
-					confirm: () => {
-						remove();
-						return true;
-					}
-				});
-			}}
-		>
-			{$LL.components.graphql.editor.removeBtn()}
-		</button>
-	</FormButtons>
-</Form>
+	</Form>
+</Card>

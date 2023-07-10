@@ -6,11 +6,11 @@
 	import {{ enum }}Th from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Th.svelte';
 	import {{ enum }}Td from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Td.svelte';
 	{%- endfor %}
-	import { SectionHead } from '@graphace/ui/components/section';
-	import { Table } from '@graphace/ui/components/table';
+	import { Card } from '@graphace/ui/components/card';
+	import { Table, TableHead, TableLoading } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Plus, PencilSquare, Trash, ChevronLeft } from '@steeze-ui/heroicons';
+	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
 	import type { MutationType{{ name }}Args } from '~/{{ schemaTypesPath }}';
 
@@ -24,7 +24,7 @@
 		back: {};
 	}>();
 
-	let showDeleteButton = false;
+	let showRemoveButton = false;
 
 	let selectAll: boolean;
 	let selectedRows: Record<number, boolean> = {};
@@ -35,9 +35,9 @@
 		.map((row) => row);
 
 	$: if (selectedRowList.length > 0) {
-		showDeleteButton = true;
+		showRemoveButton = true;
 	} else {
-		showDeleteButton = false;
+		showRemoveButton = false;
 	}
 
 	const removeRow = (row: number) => {
@@ -49,183 +49,123 @@
 	};
 </script>
 
-<SectionHead title="{{ name }}">
-	{#if showDeleteButton}
-		<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.remove()}>
-			<button
-				class="btn btn-error btn-outline btn-square"
-				on:click={(e) => {
-					e.preventDefault();
-					messageBoxs.open({
-						title: $LL.components.graphql.table.removeModalTitle(),
-						buttonName: $LL.components.graphql.table.removeBtn(),
-						buttonType: 'error',
-						confirm: () => {
-							removeRows();
-							return true;
-						}
-					});
-				}}
-			>
-				<Icon src={Trash} class="h-6 w-6" solid />
-			</button>
-		</div>
-	{/if}
-	<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.create()}>
-		<button
-			class="btn btn-square md:hidden"
-			on:click={(e) => {
-				e.preventDefault();
-				dispatch('create');
-			}}
-		>
-			<Icon src={Plus} class="h-6 w-6" solid />
-		</button>
-	</div>
-	<button
-		class="hidden md:btn"
-		on:click={(e) => {
-			e.preventDefault();
-			dispatch('create');
+<Card>
+	<TableHead
+		title="{{ name }}"
+		{showRemoveButton}
+		showSearchInput={false}
+		on:create
+		on:save={() => dispatch('save', { nodes })}
+		on:removeRows={() => {
+			messageBoxs.open({
+				title: $LL.components.graphql.table.removeModalTitle(),
+				buttonName: $LL.components.graphql.table.removeBtn(),
+				buttonType: 'error',
+				confirm: () => {
+					removeRows();
+					return true;
+				}
+			});
 		}}
-	>
-		{$LL.routers.type.create()}
-	</button>
-	<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.back()}>
-		<button
-			class="btn btn-square md:hidden"
-			on:click={(e) => {
-				e.preventDefault();
-				dispatch('back');
-			}}
-		>
-			<Icon src={ChevronLeft} class="h-6 w-6" solid />
-		</button>
-	</div>
-	<button
-		class="hidden md:btn"
-		on:click={(e) => {
-			e.preventDefault();
-			dispatch('back');
-		}}
-	>
-		{$LL.routers.type.back()}
-	</button>
-	<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.save()}>
-		<button
-			class="btn btn-square md:hidden"
-			on:click={(e) => {
-				e.preventDefault();
-				dispatch('save', { nodes });
-			}}
-		>
-			<Icon src={ChevronLeft} class="h-6 w-6" solid />
-		</button>
-	</div>
-	<button
-		class="hidden md:btn"
-		on:click={(e) => {
-			e.preventDefault();
-			dispatch('save', { nodes });
-		}}
-	>
-		{$LL.routers.type.save()}
-	</button>
-</SectionHead>
-<div class="divider" />
-<Table>
-	<thead>
-		<tr>
-			<th class="z-10">
-				<label>
-					<input
-						type="checkbox"
-						class="checkbox"
-						bind:checked={selectAll}
-						on:change={() => {
-							if (nodes && nodes.length > 0) {
-								nodes.forEach((_, row) => {
-									selectedRows[row] = selectAll;
-								});
-							}
-						}}
-					/>
-				</label>
-			</th>
-			{%- if fields %}
-			{%- for field in fields %}
-			{%- if field.inMutationArgs %}
-			<th>{{ field.fieldName }}</th>
-			{%- endif %}
-			{%- endfor %}
-			{%- endif %}
-			<th />
-		</tr>
-	</thead>
-	<tbody>
-		{#if nodes && nodes.length > 0}
-			{#each nodes as node, row}
-				{#if node}
-					<tr class="hover">
-						<th class="z-10">
-							<label>
-								<input type="checkbox" class="checkbox" bind:checked={selectedRows[row]} />
-							</label>
-						</th>
-						{%- if fields %}
-						{%- for field in fields %}
-						{%- if field.inMutationArgs %}
-						{%- if field.isScalarType or field.isEnumType %}
-						<{{ field.fieldType.name }}Td
-							name="{{ field.fieldName }}"
-							bind:value={node.{{ field.fieldName }}}
-							{%- if field.isListType %}
-							list
-							{%- endif %}
-							readonly
-							errors={errors[row]?.iterms?.{{ field.fieldName }}}
+		on:back
+	/>
+	<div class="divider" />
+	<Table>
+		<thead>
+			<tr>
+				<th class="z-10">
+					<label>
+						<input
+							type="checkbox"
+							class="checkbox"
+							bind:checked={selectAll}
+							on:change={() => {
+								if (nodes && nodes.length > 0) {
+									nodes.forEach((_, row) => {
+										selectedRows[row] = selectAll;
+									});
+								}
+							}}
 						/>
-						{%- else %}
-						<ObjectTd name="{{ field.fieldName }}" errors={errors[row]?.iterms?.{{ field.fieldName }}} path="_/{{ field.fieldName | paramCase }}" on:gotoField />
-						{%- endif %}
-						{%- endif %}
-						{%- endfor %}
-						{%- endif %}
-						<td>
-							<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
-								<button
-									class="btn btn-square btn-ghost btn-xs"
-									on:click={(e) => {
-										e.preventDefault();
-										dispatch('edit', { row });
-									}}
-								>
-									<Icon src={PencilSquare} solid />
-								</button>
-							</div>
-							<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>
-								<button
-									class="btn btn-square btn-ghost btn-xs"
-									on:click={(e) => {
-										e.preventDefault();
-										messageBoxs.open({
-											title: $LL.components.graphql.table.removeModalTitle(),
-											buttonName: $LL.components.graphql.table.removeBtn(),
-											buttonType: 'error',
-											confirm: () => {
-												removeRow(row);
-												return true;
-											}
-										});
-									}}
-								>
-									<Icon src={Trash} solid />
-								</button>
-							</div>
-						</td>
-					</tr>
-				{/if}
-			{/each}
-		{/if}
-	</tbody>
-</Table>
+					</label>
+				</th>
+				{%- if fields %}
+				{%- for field in fields %}
+				{%- if field.inMutationArgs %}
+				<td>{{ field.fieldName }}</td>
+				{%- endif %}
+				{%- endfor %}
+				{%- endif %}
+				<th />
+			</tr>
+		</thead>
+		<tbody>
+			{#if nodes && nodes.length > 0}
+				{#each nodes as node, row}
+					{#if node}
+						<tr class="hover">
+							<th class="z-10">
+								<label>
+									<input type="checkbox" class="checkbox" bind:checked={selectedRows[row]} />
+								</label>
+							</th>
+							{%- if fields %}
+							{%- for field in fields %}
+							{%- if field.inMutationArgs %}
+							{%- if field.isScalarType or field.isEnumType %}
+							<{{ field.fieldType.name }}Td
+								name="{{ field.fieldName }}"
+								bind:value={node.{{ field.fieldName }}}
+								{%- if field.isListType %}
+								list
+								{%- endif %}
+								readonly
+								errors={errors[row]?.iterms?.{{ field.fieldName }}}
+							/>
+							{%- else %}
+							<ObjectTd name="{{ field.fieldName }}" errors={errors[row]?.iterms?.{{ field.fieldName }}} path="_/{{ field.fieldName | paramCase }}" on:gotoField />
+							{%- endif %}
+							{%- endif %}
+							{%- endfor %}
+							{%- endif %}
+							<th class="z-10">
+								<div class="flex space-x-1">
+									<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
+										<button
+											class="btn btn-square btn-ghost btn-xs"
+											on:click={(e) => {
+												e.preventDefault();
+												dispatch('edit', { row });
+											}}
+										>
+											<Icon src={PencilSquare} solid />
+										</button>
+									</div>
+									<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>
+										<button
+											class="btn btn-square btn-ghost btn-xs"
+											on:click={(e) => {
+												e.preventDefault();
+												messageBoxs.open({
+													title: $LL.components.graphql.table.removeModalTitle(),
+													buttonName: $LL.components.graphql.table.removeBtn(),
+													buttonType: 'error',
+													confirm: () => {
+														removeRow(row);
+														return true;
+													}
+												});
+											}}
+										>
+											<Icon src={Trash} solid />
+										</button>
+									</div>
+								</div>
+							</th>
+						</tr>
+					{/if}
+				{/each}
+			{/if}
+		</tbody>
+	</Table>
+</Card>

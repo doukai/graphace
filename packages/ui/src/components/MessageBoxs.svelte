@@ -8,21 +8,21 @@
 	};
 
 	type MessageBoxProps = {
-		title?: string;
-		content?: string;
-		buttonName?: string;
-		buttonType?: string;
-		isModalOpen?: boolean;
-		cancel?: () => boolean;
-		confirm?: () => boolean;
+		title?: string | undefined;
+		content?: string | undefined;
+		buttonName?: string | undefined;
+		buttonType?: string | undefined;
+		isModalOpen?: boolean | undefined;
+		cancel?: () => boolean | undefined;
+		confirm?: () => boolean | undefined;
 	};
 	const messageBoxStore = writable<MessageBoxComponent[]>([]);
 
 	function open({
-		title = null,
-		content = null,
-		buttonName = null,
-		buttonType = null,
+		title = undefined,
+		content = undefined,
+		buttonName = undefined,
+		buttonType = undefined,
 		cancel = () => true,
 		confirm = () => true
 	}: MessageBoxProps) {
@@ -61,7 +61,7 @@
 	import { Modal, ModalContent, ModalActions } from './modal';
 	import LL from '~/i18n/i18n-svelte';
 
-	const buttonClassName = (buttonType: string) => {
+	const buttonClassName = (buttonType: string | undefined) => {
 		if (buttonType) {
 			return `btn-${buttonType}`;
 		} else {
@@ -71,7 +71,11 @@
 </script>
 
 {#each $messageBoxStore as messageBox (messageBox.id)}
-	<Modal isModalOpen={messageBox.props.isModalOpen} title={messageBox.props.title}>
+	<Modal
+		isModalOpen={messageBox.props.isModalOpen}
+		title={messageBox.props.title}
+		on:close={() => messageBoxs.close()}
+	>
 		<ModalContent>
 			{#if messageBox.props.content}
 				<p class="py-4">
@@ -83,7 +87,7 @@
 			<button
 				class="btn"
 				on:click={() => {
-					if (messageBox.props.cancel()) {
+					if (messageBox.props.cancel && messageBox.props.cancel()) {
 						messageBoxs.close();
 					}
 				}}
@@ -93,7 +97,7 @@
 			<button
 				class="btn btn-outline {buttonClassName(messageBox.props.buttonType)}"
 				on:click={() => {
-					if (messageBox.props.confirm()) {
+					if (messageBox.props.confirm && messageBox.props.confirm()) {
 						messageBoxs.close();
 					}
 				}}

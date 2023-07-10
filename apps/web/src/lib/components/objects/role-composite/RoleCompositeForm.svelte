@@ -63,7 +63,6 @@
 <Card>
 	<Form
 		title="RoleComposite"
-		showRemoveButton={false}
 		on:save={save}
 		on:remove={() =>
 			messageBoxs.open({

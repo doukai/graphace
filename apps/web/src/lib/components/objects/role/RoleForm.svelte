@@ -63,7 +63,6 @@
 <Card>
 	<Form
 		title="Role"
-		showRemoveButton={false}
 		on:save={save}
 		on:remove={() =>
 			messageBoxs.open({

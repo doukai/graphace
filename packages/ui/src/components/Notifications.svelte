@@ -8,14 +8,14 @@
 	};
 
 	type NotificationProps = {
-		type: string;
+		type: string | undefined;
 		message: string;
 		timeout: number;
 	};
 
 	const notificationsStore = writable<NotificationComponent[]>([]);
 
-	function send(message: string, type: string, timeout = 3000) {
+	function send(message: string, type: string | undefined, timeout = 3000) {
 		notificationsStore.update((notification) => {
 			return [...notification, { id: nanoid(), props: { type, message, timeout } }];
 		});
@@ -45,7 +45,7 @@
 		return {
 			subscribe,
 			send,
-			default: (msg: string, timeout = 3000) => send(msg, null, timeout),
+			default: (msg: string, timeout = 3000) => send(msg, undefined, timeout),
 			info: (msg: string, timeout = 3000) => send(msg, 'info', timeout),
 			success: (msg: string, timeout = 3000) => send(msg, 'success', timeout),
 			warning: (msg: string, timeout = 3000) => send(msg, 'warning', timeout),
@@ -67,7 +67,7 @@
 		XCircle
 	} from '@steeze-ui/heroicons';
 
-	const alertClassName = (alertType: string) => {
+	const alertClassName = (alertType: string | undefined) => {
 		if (alertType === 'info') {
 			return 'alert-info';
 		} else if (alertType === 'success') {
@@ -82,25 +82,23 @@
 	};
 </script>
 
-<div class="fixed inset-0 z-30 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start">
+<div class="fixed inset-0 z-50 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start">
 	<div class="w-full flex flex-col items-center space-y-4">
 		{#each $notifications as notification (notification.id)}
-			<div animate:flip transition:fly={{ y: 30 }}>
+			<div class="min-w-[50vw]" animate:flip transition:fly={{ y: 30 }}>
 				<div class="alert {alertClassName(notification.props.type)} shadow-lg">
-					<div>
-						{#if notification.props.type === 'info'}
-							<Icon src={InformationCircle} class="h-5 w-5" />
-						{:else if notification.props.type === 'success'}
-							<Icon src={CheckCircle} class="h-5 w-5" />
-						{:else if notification.props.type === 'warning'}
-							<Icon src={ExclamationTriangle} class="h-5 w-5" />
-						{:else if notification.props.type === 'error'}
-							<Icon src={XCircle} class="h-5 w-5" />
-						{:else}
-							<Icon src={InformationCircle} class="h-5 w-5" />
-						{/if}
-						<span>{notification.props.message}</span>
-					</div>
+					{#if notification.props.type === 'info'}
+						<Icon src={InformationCircle} class="h-5 w-5" />
+					{:else if notification.props.type === 'success'}
+						<Icon src={CheckCircle} class="h-5 w-5" />
+					{:else if notification.props.type === 'warning'}
+						<Icon src={ExclamationTriangle} class="h-5 w-5" />
+					{:else if notification.props.type === 'error'}
+						<Icon src={XCircle} class="h-5 w-5" />
+					{:else}
+						<Icon src={InformationCircle} class="h-5 w-5" />
+					{/if}
+					<span>{notification.props.message}</span>
 				</div>
 			</div>
 		{/each}

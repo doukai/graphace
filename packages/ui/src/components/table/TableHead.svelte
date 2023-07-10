@@ -6,6 +6,7 @@
 	import LL from '~/i18n/i18n-svelte';
 
 	export let title: string = '';
+	export let showSearchInput: boolean = true;
 	export let showCreateButton: boolean = true;
 	export let showSaveButton: boolean = true;
 	export let showRemoveButton: boolean = true;
@@ -24,9 +25,11 @@
 		<span class="text-xl font-semibold">{title}</span>
 	</div>
 	<div class="flex justify-between w-full md:w-auto space-x-1">
-		<div class="flex">
-			<SearchInput on:search />
-		</div>
+		{#if showSearchInput}
+			<div class="flex">
+				<SearchInput on:search />
+			</div>
+		{/if}
 		<div class="flex space-x-1">
 			{#if showRemoveButton}
 				<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.remove()}>

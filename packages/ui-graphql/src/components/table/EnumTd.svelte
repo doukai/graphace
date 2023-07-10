@@ -38,28 +38,30 @@
 	};
 </script>
 
-<div class="flex items-start space-x-1" bind:this={content}>
-	{#if Array.isArray(value) || (list && (value === null || value === undefined))}
-		<CheckboxGroup bind:value items={enums} {errors} {readonly} {disabled} />
-	{:else}
-		<Select {name} bind:value {errors} {placeholder} {readonly} {disabled}>
-			{#each enums as item}
-				<option value={item.value}>{item.name}</option>
-			{/each}
-		</Select>
-	{/if}
-	{#if !readonly && !disabled}
-		<div class="tooltip" data-tip={$LL.components.graphql.table.td.save()}>
-			<button class="btn btn-square btn-primary" on:click={() => mutation()}>
-				<Icon src={Check} class="h-5 w-5" />
-			</button>
-		</div>
-		<div class="tooltip" data-tip={$LL.components.graphql.table.td.clear()}>
-			<button class="btn btn-square btn-outline btn-error" on:click={() => clean()}>
-				<Icon src={XMark} class="h-5 w-5" />
-			</button>
-		</div>
-	{/if}
+<div class="hidden">
+	<div class="flex items-start space-x-1" bind:this={content}>
+		{#if Array.isArray(value) || (list && (value === null || value === undefined))}
+			<CheckboxGroup bind:value items={enums} {errors} {readonly} {disabled} />
+		{:else}
+			<Select {name} bind:value {errors} {placeholder} {readonly} {disabled}>
+				{#each enums as item}
+					<option value={item.value}>{item.name}</option>
+				{/each}
+			</Select>
+		{/if}
+		{#if !readonly && !disabled}
+			<div class="tooltip" data-tip={$LL.components.graphql.table.td.save()}>
+				<button class="btn btn-square btn-primary" on:click={() => mutation()}>
+					<Icon src={Check} class="h-5 w-5" />
+				</button>
+			</div>
+			<div class="tooltip" data-tip={$LL.components.graphql.table.td.clear()}>
+				<button class="btn btn-square btn-outline btn-error" on:click={() => clean()}>
+					<Icon src={XMark} class="h-5 w-5" />
+				</button>
+			</div>
+		{/if}
+	</div>
 </div>
 
 <td>

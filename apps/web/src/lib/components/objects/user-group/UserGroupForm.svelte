@@ -63,7 +63,6 @@
 <Card>
 	<Form
 		title="UserGroup"
-		showRemoveButton={false}
 		on:save={save}
 		on:remove={() =>
 			messageBoxs.open({
