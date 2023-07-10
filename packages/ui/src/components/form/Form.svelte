@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Plus, Trash, ArrowUturnLeft, InboxArrowDown } from '@steeze-ui/heroicons';
+	import { Trash, ArrowUturnLeft, InboxArrowDown } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
 	export let title: string;
 	export let detail: string | undefined = undefined;

@@ -1,9 +1,21 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import { ObjectTd, StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, BooleanTh, BooleanTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
+	import {
+		ObjectTd,
+		StringTh,
+		StringTd,
+		TimestampTh,
+		TimestampTd,
+		IDTh,
+		IDTd,
+		BooleanTh,
+		BooleanTd,
+		IntTh,
+		IntTd
+	} from '@graphace/ui-graphql/components/table';
 	import { Card } from '@graphace/ui/components/card';
-	import { Table, TableHead, TableLoading } from '@graphace/ui/components/table';
+	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -113,7 +125,7 @@
 			args.realmId = undefined;
 			args.updateUserId = undefined;
 		}
-		
+
 		if (after) {
 			args.after = after;
 			args.first = pageSize;
@@ -253,12 +265,7 @@
 					bind:sort={orderBy.description}
 					on:filter={query}
 				/>
-				<IDTh
-					name="id"
-					bind:expression={args.id}
-					bind:sort={orderBy.id}
-					on:filter={query}
-				/>
+				<IDTh name="id" bind:expression={args.id} bind:sort={orderBy.id} on:filter={query} />
 				<td>isDeprecated</td>
 				<StringTh
 					name="name"
@@ -303,7 +310,7 @@
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={pageSize} cols={11 + 2}/>
+			<TableLoading rows={pageSize} cols={11 + 2} />
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
@@ -315,7 +322,12 @@
 										<input type="checkbox" class="checkbox" bind:checked={selectedRows[node.id]} />
 									</label>
 								</th>
-								<ObjectTd name="compositesConnection" errors={errors[row]?.iterms?.compositesConnection} path={`${node.id}/composites-connection`} on:gotoField />
+								<ObjectTd
+									name="compositesConnection"
+									errors={errors[row]?.iterms?.compositesConnection}
+									path={`${node.id}/composites-connection`}
+									on:gotoField
+								/>
 								<StringTd
 									name="createGroupId"
 									bind:value={node.createGroupId}
@@ -340,12 +352,7 @@
 									on:save={() => updateField({ id: node?.id, description: node?.description })}
 									errors={errors[row]?.iterms?.description}
 								/>
-								<IDTd
-									name="id"
-									bind:value={node.id}
-									readonly
-									errors={errors[row]?.iterms?.id}
-								/>
+								<IDTd name="id" bind:value={node.id} readonly errors={errors[row]?.iterms?.id} />
 								<BooleanTd
 									name="isDeprecated"
 									bind:value={node.isDeprecated}
@@ -358,17 +365,42 @@
 									on:save={() => updateField({ id: node?.id, name: node?.name })}
 									errors={errors[row]?.iterms?.name}
 								/>
-								<ObjectTd name="permissions" errors={errors[row]?.iterms?.permissions} path={`${node.id}/permissions`} on:gotoField />
-								<ObjectTd name="permissionsConnection" errors={errors[row]?.iterms?.permissionsConnection} path={`${node.id}/permissions-connection`} on:gotoField />
-								<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+								<ObjectTd
+									name="permissions"
+									errors={errors[row]?.iterms?.permissions}
+									path={`${node.id}/permissions`}
+									on:gotoField
+								/>
+								<ObjectTd
+									name="permissionsConnection"
+									errors={errors[row]?.iterms?.permissionsConnection}
+									path={`${node.id}/permissions-connection`}
+									on:gotoField
+								/>
+								<ObjectTd
+									name="realm"
+									errors={errors[row]?.iterms?.realm}
+									path={`${node.id}/realm`}
+									on:gotoField
+								/>
 								<StringTd
 									name="realmId"
 									bind:value={node.realmId}
 									on:save={() => updateField({ id: node?.id, realmId: node?.realmId })}
 									errors={errors[row]?.iterms?.realmId}
 								/>
-								<ObjectTd name="roleComposite" errors={errors[row]?.iterms?.roleComposite} path={`${node.id}/role-composite`} on:gotoField />
-								<ObjectTd name="roleCompositeConnection" errors={errors[row]?.iterms?.roleCompositeConnection} path={`${node.id}/role-composite-connection`} on:gotoField />
+								<ObjectTd
+									name="roleComposite"
+									errors={errors[row]?.iterms?.roleComposite}
+									path={`${node.id}/role-composite`}
+									on:gotoField
+								/>
+								<ObjectTd
+									name="roleCompositeConnection"
+									errors={errors[row]?.iterms?.roleCompositeConnection}
+									path={`${node.id}/role-composite-connection`}
+									on:gotoField
+								/>
 								<TimestampTd
 									name="updateTime"
 									bind:value={node.updateTime}
@@ -381,10 +413,30 @@
 									on:save={() => updateField({ id: node?.id, updateUserId: node?.updateUserId })}
 									errors={errors[row]?.iterms?.updateUserId}
 								/>
-								<ObjectTd name="userRole" errors={errors[row]?.iterms?.userRole} path={`${node.id}/user-role`} on:gotoField />
-								<ObjectTd name="userRoleConnection" errors={errors[row]?.iterms?.userRoleConnection} path={`${node.id}/user-role-connection`} on:gotoField />
-								<ObjectTd name="users" errors={errors[row]?.iterms?.users} path={`${node.id}/users`} on:gotoField />
-								<ObjectTd name="usersConnection" errors={errors[row]?.iterms?.usersConnection} path={`${node.id}/users-connection`} on:gotoField />
+								<ObjectTd
+									name="userRole"
+									errors={errors[row]?.iterms?.userRole}
+									path={`${node.id}/user-role`}
+									on:gotoField
+								/>
+								<ObjectTd
+									name="userRoleConnection"
+									errors={errors[row]?.iterms?.userRoleConnection}
+									path={`${node.id}/user-role-connection`}
+									on:gotoField
+								/>
+								<ObjectTd
+									name="users"
+									errors={errors[row]?.iterms?.users}
+									path={`${node.id}/users`}
+									on:gotoField
+								/>
+								<ObjectTd
+									name="usersConnection"
+									errors={errors[row]?.iterms?.usersConnection}
+									path={`${node.id}/users-connection`}
+									on:gotoField
+								/>
 								<IntTd
 									name="version"
 									bind:value={node.version}
@@ -432,6 +484,8 @@
 							</tr>
 						{/if}
 					{/each}
+				{:else}
+					<TableEmpty cols={11 + 2} />
 				{/if}
 			</tbody>
 		{/if}

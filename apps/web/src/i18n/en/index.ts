@@ -1,6 +1,8 @@
 import type { BaseTranslation } from '../i18n-types'
+import ui from '@graphace/ui/i18n/en/index'
 
 const en: BaseTranslation = {
+	ui: ui,
 	HI: "Welcome to Svelte Fall Summit {year:number}",
 	localeName: { en: "English", zh: "Chinese" },
 	message: {

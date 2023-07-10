@@ -78,7 +78,8 @@ const zh: Translation = {
 				td: {
 					save: "保存",
 					clear: "清除"
-				}
+				},
+				empty:"test"
 			}
 		}
 	},

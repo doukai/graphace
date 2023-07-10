@@ -1,6 +1,7 @@
 import type { BaseTranslation } from '../i18n-types'
 
 const en: BaseTranslation = {
+	ui: this,
 	HI: "Welcome to Svelte Fall Summit {year:number}",
 	localeName: { en: "English", zh: "Chinese" },
 	message: {
@@ -78,7 +79,8 @@ const en: BaseTranslation = {
 				td: {
 					save: "save",
 					clear: "clear"
-				}
+				},
+				empty: "test"
 			}
 		}
 	},

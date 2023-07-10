@@ -1,6 +1,8 @@
 import type { Translation } from '../i18n-types'
+import ui from '@graphace/ui/i18n/zh/index'
 
 const zh: Translation = {
+	ui: ui,
 	HI: "欢迎来到 Svelte 秋季峰会 {year}",
 	localeName: { en: "英文", zh: "中文" },
 	message: {

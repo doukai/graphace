@@ -19,8 +19,7 @@
     "@graphace/commons": "workspace:*",
     "@graphace/graphql": "workspace:*",
     "@graphace/ui": "workspace:*",
-    "@graphace/ui-graphql": "workspace:*",
-    "typesafe-i18n": "^5.24.3"
+    "@graphace/ui-graphql": "workspace:*"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^3.3.1",
@@ -60,6 +59,7 @@
     "ts-node": "^10.9.1",
     "tslib": "^2.5.3",
     "typescript": "^4.9.5",
+    "typesafe-i18n": "^5.24.3",
     "vite": "^4.3.9"
   },
   "type": "module"

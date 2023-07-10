@@ -3,10 +3,16 @@
   "version": "0.0.1",
   "description": "The user interface for Graphoenix",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/typesafe-i18n",
+      "**/typesafe-i18n/**"
+    ]
+  },
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
