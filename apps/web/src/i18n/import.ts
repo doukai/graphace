@@ -8,7 +8,7 @@ export const importTranslationsForLocale = async (locale: Locales, translations:
         locale,
         translations,
         namespaces: [namespace]
-    }
+    };
 
     await storeTranslationToDisk(localeMapping);
 }
