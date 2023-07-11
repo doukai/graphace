@@ -16,7 +16,7 @@
 
 <div class="hidden md:flex justify-between">
 	<div class="join">
-		<button class="join-item btn">{$LL.components.ui.pagination.size()}</button>
+		<button class="join-item btn">{$LL.ui.pagination.size()}</button>
 		<select
 			class="join-item select select-bordered"
 			bind:value={pageSize}
@@ -31,7 +31,7 @@
 	</div>
 	<div class="flex items-center">
 		<span class="text-sm text-center font-semibold">
-			{$LL.components.ui.pagination.total({ total: totalCount })}
+			{$LL.ui.pagination.total({ total: totalCount })}
 		</span>
 	</div>
 	<div class="join">
@@ -113,7 +113,7 @@
 		«
 	</button>
 	<button class="join-item btn">
-		{$LL.components.ui.pagination.current({ current: pageNumber })}
+		{$LL.ui.pagination.current({ current: pageNumber })}
 	</button>
 	<button
 		class="join-item btn {pageNumber + 1 <= pageCount ? '' : 'btn-disabled'}"

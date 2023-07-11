@@ -21,7 +21,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
 	import LL from '~/i18n/i18n-svelte';
-	import { Pagination } from '@graphace/ui/components/connection';
+	import { Pagination,Cursor } from '@graphace/ui/components/connection';
 	import {
 		Conditional,
 		Operator,
@@ -491,7 +491,7 @@
 		{/if}
 	</Table>
 	<div class="divider" />
-	<Pagination
+	<Cursor
 		bind:pageNumber
 		bind:pageSize
 		{totalCount}

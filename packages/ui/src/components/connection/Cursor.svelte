@@ -14,53 +14,44 @@
 	}>();
 </script>
 
-<div class="navbar bg-base-100 shadow-xl rounded-box">
-	<div class="navbar-start">
-		<div class="hidden sm:form-control">
-			<label class="input-group input-group-lg">
-				<span>{$LL.components.ui.cursor.size()}</span>
-				<select
-					class="select select-bordered"
-					bind:value={pageSize}
-					on:change={() => {
-						dispatch('sizeChange', {
-							selectedPageSize: pageSize
-						});
-					}}
-				>
-					{#each pageSizeOptions as pageSizeOption}
-						<option value={pageSizeOption}>{pageSizeOption}</option>
-					{/each}
-				</select>
-			</label>
-		</div>
+<div class="flex justify-center md:justify-between">
+	<div class="join hidden md:flex">
+		<button class="join-item btn">{$LL.ui.pagination.size()}</button>
+		<select
+			class="join-item select select-bordered"
+			bind:value={pageSize}
+			on:change={() => {
+				dispatch('sizeChange');
+			}}
+		>
+			{#each pageSizeOptions as pageSizeOption}
+				<option value={pageSizeOption}>{pageSizeOption}</option>
+			{/each}
+		</select>
 	</div>
-	<div class="hidden sm:navbar-center" />
-	<div class="navbar-center sm:navbar-end">
-		<div class="btn-group grid grid-cols-2">
-			<button
-				class="btn btn-outline {hasPreviousPage ? '' : 'btn-disabled'}"
-				on:click={() => {
-					dispatch('previous', {
-						selectedPageSize: pageSize,
-						before: startCursor
-					});
-				}}
-			>
-				{$LL.components.ui.cursor.previous()}
-			</button>
-			<button
-				class="btn btn-outline {hasNextPage ? '' : 'btn-disabled'}"
-				on:click={() => {
-					dispatch('next', {
-						selectedPageSize: pageSize,
-						after: endCursor
-					});
-				}}
-			>
-				{$LL.components.ui.cursor.next()}
-			</button>
-		</div>
+
+	<div class="join">
+		<button
+			class="btn btn-outline {hasPreviousPage ? '' : 'btn-disabled'} join-item"
+			on:click={() => {
+				dispatch('previous', {
+					selectedPageSize: pageSize,
+					before: startCursor
+				});
+			}}
+		>
+			{$LL.ui.cursor.previous()}
+		</button>
+		<button
+			class="btn btn-outline {hasNextPage ? '' : 'btn-disabled'} join-item"
+			on:click={() => {
+				dispatch('next', {
+					selectedPageSize: pageSize,
+					after: endCursor
+				});
+			}}
+		>
+			{$LL.ui.cursor.next()}
+		</button>
 	</div>
-	<div class="navbar-end sm:hidden" />
 </div>

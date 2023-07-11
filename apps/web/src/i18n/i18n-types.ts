@@ -2,825 +2,143 @@
 /* eslint-disable */
 import type { BaseTranslation as BaseTranslationType, LocalizedString, RequiredParams } from 'typesafe-i18n'
 
-export type BaseTranslation = BaseTranslationType
+export type BaseTranslation = BaseTranslationType & DisallowNamespaces
 export type BaseLocale = 'en'
 
 export type Locales =
 	| 'en'
 	| 'zh'
 
-export type Translation = RootTranslation
+export type Translation = RootTranslation & DisallowNamespaces
 
-export type Translations = RootTranslation
+export type Translations = RootTranslation &
+{
+	ui: NamespaceUiTranslation
+}
 
-type RootTranslation = {
-	/**
-	 * W​e​l​c​o​m​e​ ​t​o​ ​S​v​e​l​t​e​ ​F​a​l​l​ ​S​u​m​m​i​t​ ​{​y​e​a​r​}
-	 * @param {number} year
-	 */
-	HI: RequiredParams<'year'>
-	localeName: {
+type RootTranslation = {}
+
+export type NamespaceUiTranslation = {
+	cursor: {
 		/**
-		 * E​n​g​l​i​s​h
+		 * s​i​z​e
 		 */
-		en: string
+		size: string
 		/**
-		 * C​h​i​n​e​s​e
+		 * P​r​e​v​i​o​u​s
 		 */
-		zh: string
+		previous: string
+		/**
+		 * N​e​x​t
+		 */
+		next: string
 	}
-	message: {
+	pagination: {
 		/**
-		 * S​a​v​e​ ​s​u​c​c​e​s​s
+		 * s​i​z​e
 		 */
-		saveSuccess: string
+		size: string
 		/**
-		 * C​r​e​a​t​e​ ​s​u​c​c​e​s​s
+		 * {​t​o​t​a​l​}​ ​r​e​s​u​l​t​s
+		 * @param {number} total
 		 */
-		createSuccess: string
+		total: RequiredParams<'total'>
 		/**
-		 * R​e​m​o​v​e​ ​s​u​c​c​e​s​s
+		 * P​a​g​e​ ​{​c​u​r​r​e​n​t​}
+		 * @param {number} current
 		 */
-		removeSuccess: string
+		current: RequiredParams<'current'>
 		/**
-		 * R​e​q​u​e​s​t​ ​f​a​i​l​e​d
+		 * P​r​e​v​i​o​u​s
 		 */
-		requestFailed: string
+		previous: string
 		/**
-		 * S​a​v​e​ ​f​a​i​l​e​d
+		 * N​e​x​t
 		 */
-		saveFailed: string
-		/**
-		 * C​r​e​a​t​e​ ​f​a​i​l​e​d
-		 */
-		createFailed: string
-		/**
-		 * R​e​m​o​v​e​ ​f​a​i​l​e​d
-		 */
-		removeFailed: string
+		next: string
 	}
-	components: {
-		ThemeSelect: {
-			/**
-			 * T​h​e​m​e
-			 */
-			btn: string
-			themes: {
-				/**
-				 * l​i​g​h​t
-				 */
-				light: string
-				/**
-				 * d​a​r​k
-				 */
-				dark: string
-				/**
-				 * c​u​p​c​a​k​e
-				 */
-				cupcake: string
-				/**
-				 * b​u​m​b​l​e​b​e​e
-				 */
-				bumblebee: string
-				/**
-				 * e​m​e​r​a​l​d
-				 */
-				emerald: string
-				/**
-				 * c​o​r​p​o​r​a​t​e
-				 */
-				corporate: string
-				/**
-				 * s​y​n​t​h​w​a​v​e
-				 */
-				synthwave: string
-				/**
-				 * r​e​t​r​o
-				 */
-				retro: string
-				/**
-				 * c​y​b​e​r​p​u​n​k
-				 */
-				cyberpunk: string
-				/**
-				 * v​a​l​e​n​t​i​n​e
-				 */
-				valentine: string
-				/**
-				 * h​a​l​l​o​w​e​e​n
-				 */
-				halloween: string
-				/**
-				 * g​a​r​d​e​n
-				 */
-				garden: string
-				/**
-				 * f​o​r​e​s​t
-				 */
-				forest: string
-				/**
-				 * a​q​u​a
-				 */
-				aqua: string
-				/**
-				 * l​o​f​i
-				 */
-				lofi: string
-				/**
-				 * p​a​s​t​e​l
-				 */
-				pastel: string
-				/**
-				 * f​a​n​t​a​s​y
-				 */
-				fantasy: string
-				/**
-				 * w​i​r​e​f​r​a​m​e
-				 */
-				wireframe: string
-				/**
-				 * b​l​a​c​k
-				 */
-				black: string
-				/**
-				 * l​u​x​u​r​y
-				 */
-				luxury: string
-				/**
-				 * d​r​a​c​u​l​a
-				 */
-				dracula: string
-				/**
-				 * c​m​y​k
-				 */
-				cmyk: string
-				/**
-				 * a​u​t​u​m​n
-				 */
-				autumn: string
-				/**
-				 * b​u​s​i​n​e​s​s
-				 */
-				business: string
-				/**
-				 * a​c​i​d
-				 */
-				acid: string
-				/**
-				 * l​e​m​o​n​a​d​e
-				 */
-				lemonade: string
-				/**
-				 * n​i​g​h​t
-				 */
-				night: string
-				/**
-				 * c​o​f​f​e​e
-				 */
-				coffee: string
-				/**
-				 * w​i​n​t​e​r
-				 */
-				winter: string
-			}
-		}
-		messageBox: {
-			/**
-			 * C​a​n​c​e​l
-			 */
-			cancel: string
-			/**
-			 * C​o​n​f​i​r​m
-			 */
-			confirm: string
-		}
-		ui: {
-			cursor: {
-				/**
-				 * s​i​z​e
-				 */
-				size: string
-				/**
-				 * P​r​e​v​i​o​u​s
-				 */
-				previous: string
-				/**
-				 * N​e​x​t
-				 */
-				next: string
-			}
-			pagination: {
-				/**
-				 * s​i​z​e
-				 */
-				size: string
-				/**
-				 * {​t​o​t​a​l​}​ ​r​e​s​u​l​t​s
-				 * @param {number} total
-				 */
-				total: RequiredParams<'total'>
-				/**
-				 * P​a​g​e​ ​{​c​u​r​r​e​n​t​}
-				 * @param {number} current
-				 */
-				current: RequiredParams<'current'>
-				/**
-				 * P​r​e​v​i​o​u​s
-				 */
-				previous: string
-				/**
-				 * N​e​x​t
-				 */
-				next: string
-			}
-			searchInput: {
-				/**
-				 * S​e​a​r​c​h
-				 */
-				placeholder: string
-			}
-			inputList: {
-				/**
-				 * A​d​d
-				 */
-				add: string
-				/**
-				 * R​e​m​o​v​e
-				 */
-				remove: string
-			}
-		}
-		graphql: {
-			editor: {
-				/**
-				 * S​a​v​e
-				 */
-				saveBtn: string
-				/**
-				 * S​e​l​e​c​t
-				 */
-				selectBtn: string
-				/**
-				 * R​e​m​o​v​e
-				 */
-				removeBtn: string
-				/**
-				 * B​a​c​k
-				 */
-				backBtn: string
-				/**
-				 * C​r​e​a​t​e​ ​a​ ​n​e​w​ ​{​n​a​m​e​}
-				 * @param {string} name
-				 */
-				createType: RequiredParams<'name'>
-				/**
-				 * N​e​w​ ​{​n​a​m​e​}
-				 * @param {string} name
-				 */
-				newType: RequiredParams<'name'>
-				/**
-				 * B​i​n​d​ ​{​n​a​m​e​}
-				 * @param {string} name
-				 */
-				bindType: RequiredParams<'name'>
-			}
-			table: {
-				/**
-				 * R​e​m​o​v​e​ ​r​o​w​?
-				 */
-				removeModalTitle: string
-				/**
-				 * E​d​i​t
-				 */
-				editBtn: string
-				/**
-				 * R​e​m​o​v​e
-				 */
-				removeBtn: string
-				/**
-				 * C​a​n​c​e​l
-				 */
-				cancelBtn: string
-				th: {
-					/**
-					 * f​i​l​t​e​r
-					 */
-					filter: string
-					/**
-					 * c​a​n​c​e​l
-					 */
-					cancel: string
-					/**
-					 * N​o​ ​S​o​r​t
-					 */
-					noSort: string
-					/**
-					 * A​S​C
-					 */
-					asc: string
-					/**
-					 * D​E​S​C
-					 */
-					desc: string
-					/**
-					 * E​q​u​a​l​s
-					 */
-					eq: string
-					/**
-					 * N​o​t​ ​E​q​u​a​l​s
-					 */
-					neq: string
-					/**
-					 * L​i​k​e
-					 */
-					lk: string
-					/**
-					 * N​o​t​ ​L​i​k​e
-					 */
-					nlk: string
-					/**
-					 * G​r​e​a​t​e​r​ ​T​h​a​n
-					 */
-					gt: string
-					/**
-					 * G​r​e​a​t​e​r​ ​E​q​u​a​l​s
-					 */
-					gte: string
-					/**
-					 * L​e​s​s​ ​T​h​a​n
-					 */
-					lt: string
-					/**
-					 * L​e​s​s​ ​E​q​u​a​l​s
-					 */
-					lte: string
-					/**
-					 * I​s​ ​N​u​l​l
-					 */
-					nil: string
-					/**
-					 * N​o​t​ ​N​u​l​l
-					 */
-					nnil: string
-					/**
-					 * I​n
-					 */
-					'in': string
-					/**
-					 * N​o​t​ ​I​n
-					 */
-					nin: string
-					/**
-					 * B​e​t​w​e​e​n
-					 */
-					bt: string
-					/**
-					 * N​o​t​ ​B​e​t​w​e​e​n
-					 */
-					nbt: string
-					/**
-					 * F​i​l​t​e​r​.​.
-					 */
-					filterPlaceholder: string
-				}
-				td: {
-					/**
-					 * s​a​v​e
-					 */
-					save: string
-					/**
-					 * c​l​e​a​r
-					 */
-					clear: string
-				}
-			}
-		}
+	searchInput: {
+		/**
+		 * S​e​a​r​c​h
+		 */
+		placeholder: string
 	}
-	routers: {
-		type: {
-			/**
-			 * S​e​a​r​c​h
-			 */
-			search: string
-			/**
-			 * C​r​e​a​t​e
-			 */
-			create: string
-			/**
-			 * R​e​m​o​v​e
-			 */
-			remove: string
-			/**
-			 * S​a​v​e
-			 */
-			save: string
-			/**
-			 * B​a​c​k
-			 */
-			back: string
-		}
+	inputList: {
+		/**
+		 * A​d​d
+		 */
+		add: string
+		/**
+		 * R​e​m​o​v​e
+		 */
+		remove: string
 	}
 }
 
-export type TranslationFunctions = {
+export type Namespaces =
+	| 'ui'
+
+type DisallowNamespaces = {
 	/**
-	 * Welcome to Svelte Fall Summit {year}
+	 * reserved for 'ui'-namespace\
+	 * you need to use the `./ui/index.ts` file instead
 	 */
-	HI: (arg: { year: number }) => LocalizedString
-	localeName: {
-		/**
-		 * English
-		 */
-		en: () => LocalizedString
-		/**
-		 * Chinese
-		 */
-		zh: () => LocalizedString
-	}
-	message: {
-		/**
-		 * Save success
-		 */
-		saveSuccess: () => LocalizedString
-		/**
-		 * Create success
-		 */
-		createSuccess: () => LocalizedString
-		/**
-		 * Remove success
-		 */
-		removeSuccess: () => LocalizedString
-		/**
-		 * Request failed
-		 */
-		requestFailed: () => LocalizedString
-		/**
-		 * Save failed
-		 */
-		saveFailed: () => LocalizedString
-		/**
-		 * Create failed
-		 */
-		createFailed: () => LocalizedString
-		/**
-		 * Remove failed
-		 */
-		removeFailed: () => LocalizedString
-	}
-	components: {
-		ThemeSelect: {
+	ui?: "[typesafe-i18n] reserved for 'ui'-namespace. You need to use the `./ui/index.ts` file instead."
+}
+
+export type TranslationFunctions = {
+	ui: {
+		cursor: {
 			/**
-			 * Theme
+			 * size
 			 */
-			btn: () => LocalizedString
-			themes: {
-				/**
-				 * light
-				 */
-				light: () => LocalizedString
-				/**
-				 * dark
-				 */
-				dark: () => LocalizedString
-				/**
-				 * cupcake
-				 */
-				cupcake: () => LocalizedString
-				/**
-				 * bumblebee
-				 */
-				bumblebee: () => LocalizedString
-				/**
-				 * emerald
-				 */
-				emerald: () => LocalizedString
-				/**
-				 * corporate
-				 */
-				corporate: () => LocalizedString
-				/**
-				 * synthwave
-				 */
-				synthwave: () => LocalizedString
-				/**
-				 * retro
-				 */
-				retro: () => LocalizedString
-				/**
-				 * cyberpunk
-				 */
-				cyberpunk: () => LocalizedString
-				/**
-				 * valentine
-				 */
-				valentine: () => LocalizedString
-				/**
-				 * halloween
-				 */
-				halloween: () => LocalizedString
-				/**
-				 * garden
-				 */
-				garden: () => LocalizedString
-				/**
-				 * forest
-				 */
-				forest: () => LocalizedString
-				/**
-				 * aqua
-				 */
-				aqua: () => LocalizedString
-				/**
-				 * lofi
-				 */
-				lofi: () => LocalizedString
-				/**
-				 * pastel
-				 */
-				pastel: () => LocalizedString
-				/**
-				 * fantasy
-				 */
-				fantasy: () => LocalizedString
-				/**
-				 * wireframe
-				 */
-				wireframe: () => LocalizedString
-				/**
-				 * black
-				 */
-				black: () => LocalizedString
-				/**
-				 * luxury
-				 */
-				luxury: () => LocalizedString
-				/**
-				 * dracula
-				 */
-				dracula: () => LocalizedString
-				/**
-				 * cmyk
-				 */
-				cmyk: () => LocalizedString
-				/**
-				 * autumn
-				 */
-				autumn: () => LocalizedString
-				/**
-				 * business
-				 */
-				business: () => LocalizedString
-				/**
-				 * acid
-				 */
-				acid: () => LocalizedString
-				/**
-				 * lemonade
-				 */
-				lemonade: () => LocalizedString
-				/**
-				 * night
-				 */
-				night: () => LocalizedString
-				/**
-				 * coffee
-				 */
-				coffee: () => LocalizedString
-				/**
-				 * winter
-				 */
-				winter: () => LocalizedString
-			}
-		}
-		messageBox: {
+			size: () => LocalizedString
 			/**
-			 * Cancel
+			 * Previous
 			 */
-			cancel: () => LocalizedString
+			previous: () => LocalizedString
 			/**
-			 * Confirm
+			 * Next
 			 */
-			confirm: () => LocalizedString
+			next: () => LocalizedString
 		}
-		ui: {
-			cursor: {
-				/**
-				 * size
-				 */
-				size: () => LocalizedString
-				/**
-				 * Previous
-				 */
-				previous: () => LocalizedString
-				/**
-				 * Next
-				 */
-				next: () => LocalizedString
-			}
-			pagination: {
-				/**
-				 * size
-				 */
-				size: () => LocalizedString
-				/**
-				 * {total} results
-				 */
-				total: (arg: { total: number }) => LocalizedString
-				/**
-				 * Page {current}
-				 */
-				current: (arg: { current: number }) => LocalizedString
-				/**
-				 * Previous
-				 */
-				previous: () => LocalizedString
-				/**
-				 * Next
-				 */
-				next: () => LocalizedString
-			}
-			searchInput: {
-				/**
-				 * Search
-				 */
-				placeholder: () => LocalizedString
-			}
-			inputList: {
-				/**
-				 * Add
-				 */
-				add: () => LocalizedString
-				/**
-				 * Remove
-				 */
-				remove: () => LocalizedString
-			}
+		pagination: {
+			/**
+			 * size
+			 */
+			size: () => LocalizedString
+			/**
+			 * {total} results
+			 */
+			total: (arg: { total: number }) => LocalizedString
+			/**
+			 * Page {current}
+			 */
+			current: (arg: { current: number }) => LocalizedString
+			/**
+			 * Previous
+			 */
+			previous: () => LocalizedString
+			/**
+			 * Next
+			 */
+			next: () => LocalizedString
 		}
-		graphql: {
-			editor: {
-				/**
-				 * Save
-				 */
-				saveBtn: () => LocalizedString
-				/**
-				 * Select
-				 */
-				selectBtn: () => LocalizedString
-				/**
-				 * Remove
-				 */
-				removeBtn: () => LocalizedString
-				/**
-				 * Back
-				 */
-				backBtn: () => LocalizedString
-				/**
-				 * Create a new {name}
-				 */
-				createType: (arg: { name: string }) => LocalizedString
-				/**
-				 * New {name}
-				 */
-				newType: (arg: { name: string }) => LocalizedString
-				/**
-				 * Bind {name}
-				 */
-				bindType: (arg: { name: string }) => LocalizedString
-			}
-			table: {
-				/**
-				 * Remove row?
-				 */
-				removeModalTitle: () => LocalizedString
-				/**
-				 * Edit
-				 */
-				editBtn: () => LocalizedString
-				/**
-				 * Remove
-				 */
-				removeBtn: () => LocalizedString
-				/**
-				 * Cancel
-				 */
-				cancelBtn: () => LocalizedString
-				th: {
-					/**
-					 * filter
-					 */
-					filter: () => LocalizedString
-					/**
-					 * cancel
-					 */
-					cancel: () => LocalizedString
-					/**
-					 * No Sort
-					 */
-					noSort: () => LocalizedString
-					/**
-					 * ASC
-					 */
-					asc: () => LocalizedString
-					/**
-					 * DESC
-					 */
-					desc: () => LocalizedString
-					/**
-					 * Equals
-					 */
-					eq: () => LocalizedString
-					/**
-					 * Not Equals
-					 */
-					neq: () => LocalizedString
-					/**
-					 * Like
-					 */
-					lk: () => LocalizedString
-					/**
-					 * Not Like
-					 */
-					nlk: () => LocalizedString
-					/**
-					 * Greater Than
-					 */
-					gt: () => LocalizedString
-					/**
-					 * Greater Equals
-					 */
-					gte: () => LocalizedString
-					/**
-					 * Less Than
-					 */
-					lt: () => LocalizedString
-					/**
-					 * Less Equals
-					 */
-					lte: () => LocalizedString
-					/**
-					 * Is Null
-					 */
-					nil: () => LocalizedString
-					/**
-					 * Not Null
-					 */
-					nnil: () => LocalizedString
-					/**
-					 * In
-					 */
-					'in': () => LocalizedString
-					/**
-					 * Not In
-					 */
-					nin: () => LocalizedString
-					/**
-					 * Between
-					 */
-					bt: () => LocalizedString
-					/**
-					 * Not Between
-					 */
-					nbt: () => LocalizedString
-					/**
-					 * Filter..
-					 */
-					filterPlaceholder: () => LocalizedString
-				}
-				td: {
-					/**
-					 * save
-					 */
-					save: () => LocalizedString
-					/**
-					 * clear
-					 */
-					clear: () => LocalizedString
-				}
-			}
-		}
-	}
-	routers: {
-		type: {
+		searchInput: {
 			/**
 			 * Search
 			 */
-			search: () => LocalizedString
+			placeholder: () => LocalizedString
+		}
+		inputList: {
 			/**
-			 * Create
+			 * Add
 			 */
-			create: () => LocalizedString
+			add: () => LocalizedString
 			/**
 			 * Remove
 			 */
 			remove: () => LocalizedString
-			/**
-			 * Save
-			 */
-			save: () => LocalizedString
-			/**
-			 * Back
-			 */
-			back: () => LocalizedString
 		}
 	}
 }
