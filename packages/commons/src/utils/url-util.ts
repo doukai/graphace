@@ -4,14 +4,14 @@ import type { Errors } from '../types';
 // replaces the locale slug in a relative url
 // e.g. /en/blog/article-1 => /de/blog/article-1
 export const replaceLocaleInUrl = (url: URL, locale: string, full = false): string => {
-	const [, , ...rest] = url.pathname.split('/')
-	const new_pathname = `/${[locale, ...rest].join('/')}`
+	const [, , ...rest] = url.pathname.split('/');
+	const new_pathname = `/${[locale, ...rest].join('/')}`;
 	if (!full) {
-		return `${new_pathname}${url.search}`
+		return `${new_pathname}${url.search}`;
 	}
-	const newUrl = new URL(url.toString())
-	newUrl.pathname = new_pathname
-	return newUrl.toString()
+	const newUrl = new URL(url.toString());
+	newUrl.pathname = new_pathname;
+	return newUrl.toString();
 }
 
 export const getNode = <T>(url: URL): T | undefined => {

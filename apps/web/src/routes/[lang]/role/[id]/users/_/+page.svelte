@@ -8,8 +8,8 @@
 	import { Mutation_role_usersStore } from '$houdini';
 	import type { MutationTypeUserArgs, User } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
-	import { validate } from '@graphace/graphql/schema/JsonSchema';
-	import { locale } from '~/i18n/i18n-svelte';
+	import { validate } from '@graphace/graphql/schema/json-schema';
+	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: node = data.node as MutationTypeUserArgs;
@@ -26,7 +26,7 @@
 			catch: (errors: Errors) => void;
 		}>
 	) => {
-		validate('User', event.detail.args, true, $locale)
+		validate('user', event.detail.args, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_role_users.mutate({

@@ -18,7 +18,7 @@
 
 <FormItem {label} let:id>
 	<div {id} class="{errors ? 'border-2 border-error p-1 rounded-xl' : ''} space-y-5">
-		<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
+		<div class="tooltip" data-tip={$LL.uiGraphql.table.editBtn()}>
 			<button
 				class="btn btn-square btn-outline"
 				on:click={(e) => {

@@ -8,8 +8,8 @@
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Query_group_userGroupStore, Mutation_userGroupStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { validate } from '@graphace/graphql/schema/JsonSchema';
-	import { locale } from '~/i18n/i18n-svelte';
+	import { validate } from '@graphace/graphql/schema/json-schema';
+	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: Query_group_userGroup = data.Query_group_userGroup as Query_group_userGroupStore;
@@ -46,14 +46,14 @@
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
-		validate('Group', event.detail.args, event.detail.update, $locale)
+		validate('group', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				if (row) {
 					errors[row].iterms = {};
 				}
 				Mutation_userGroup.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {
-						event.detail.then(result?.userGroup);
+						event.detail.then(result?.data?.userGroup);
 					})
 					.catch((errors) => {
 						event.detail.catch(errors);

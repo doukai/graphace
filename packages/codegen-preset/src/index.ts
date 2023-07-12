@@ -3,7 +3,7 @@ import { assertObjectType, isEnumType, isListType, isObjectType } from "graphql"
 import type { GraphacePresetConfig } from "./config";
 import * as changeCase from "change-case";
 import { isOperationType, isAggregate, isConnection, isEdge, isPageInfo, isIntrospection, isInnerEnum, getFieldType, getObjectFields, getIDFieldName } from 'graphace-codegen-commons'
-import { buildPath } from "./Builder";
+import { buildPath } from "./builder";
 
 const _graphqlPath = 'lib/graphql';
 const _componentsPath = 'lib/components';

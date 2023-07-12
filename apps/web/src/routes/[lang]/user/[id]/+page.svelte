@@ -6,8 +6,8 @@
 	import { Query_userStore, Mutation_userStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { MutationTypeUserArgs, User } from '~/lib/types/schema';
-	import { validate } from '@graphace/graphql/schema/JsonSchema';
-	import { locale } from '~/i18n/i18n-svelte';
+	import { validate } from '@graphace/graphql/schema/json-schema';
+	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: Query_user = data.Query_user as Query_userStore;
@@ -23,12 +23,12 @@
 			catch: (errors: Errors) => void;
 		}>
 	) => {
-		validate('User', event.detail.args, event.detail.update, $locale)
+		validate('user', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_user.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {
-						event.detail.then(result?.user);
+						event.detail.then(result?.data?.user);
 					})
 					.catch((errors) => {
 						event.detail.catch(errors);

@@ -5,8 +5,8 @@
 	import type { RoleComposite, QueryTypeRoleCompositeConnectionArgs, MutationTypeRoleCompositeArgs } from '~/lib/types/schema';
 	import { Query_roleCompositeConnectionStore, Mutation_roleCompositeStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { validate } from '@graphace/graphql/schema/JsonSchema';
-	import { locale } from '~/i18n/i18n-svelte';
+	import { validate } from '@graphace/graphql/schema/json-schema';
+	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: Query_roleCompositeConnection = data.Query_roleCompositeConnection as Query_roleCompositeConnectionStore;
@@ -40,14 +40,14 @@
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
-		validate('RoleComposite', event.detail.args, event.detail.update, $locale)
+		validate('role-composite', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				if (row) {
 					errors[row].iterms = {};
 				}
 				Mutation_roleComposite.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {
-						event.detail.then(result?.roleComposite);
+						event.detail.then(result?.data?.roleComposite);
 					})
 					.catch((errors) => {
 						event.detail.catch(errors);

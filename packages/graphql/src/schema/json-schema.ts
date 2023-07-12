@@ -42,11 +42,11 @@ export async function validateUpdate(uri: string, data: object | object[], local
 
 export async function validate(uri: string, data: object | object[], update: boolean | undefined, locale: Language = "en") {
     if (Array.isArray(data) && update) {
-        uri += 'ListUpdate';
+        uri += '-list-update';
     } else if (Array.isArray(data)) {
-        uri += 'List';
+        uri += '-list';
     } else if (update) {
-        uri += "Update";
+        uri += "-update";
     }
 
     let validate = ajv.getSchema(uri);

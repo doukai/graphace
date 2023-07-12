@@ -28,7 +28,6 @@
 		if (node) {
 			dispatch('mutation', {
 				args: node,
-				update: true,
 				then: (data) => {
 					node = data;
 					notifications.success($LL.web.message.saveSuccess());

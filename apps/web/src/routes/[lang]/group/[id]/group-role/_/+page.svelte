@@ -8,8 +8,8 @@
 	import { Mutation_group_groupRoleStore } from '$houdini';
 	import type { MutationTypeGroupRoleArgs, GroupRole } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
-	import { validate } from '@graphace/graphql/schema/JsonSchema';
-	import { locale } from '~/i18n/i18n-svelte';
+	import { validate } from '@graphace/graphql/schema/json-schema';
+	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: node = data.node as MutationTypeGroupRoleArgs;
@@ -26,7 +26,7 @@
 			catch: (errors: Errors) => void;
 		}>
 	) => {
-		validate('GroupRole', event.detail.args, true, $locale)
+		validate('group-role', event.detail.args, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_group_groupRole.mutate({

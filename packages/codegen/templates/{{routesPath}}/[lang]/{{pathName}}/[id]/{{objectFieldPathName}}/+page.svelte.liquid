@@ -9,8 +9,8 @@
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Query_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { validate } from '@graphace/graphql/schema/JsonSchema';
-	import { locale } from '~/i18n/i18n-svelte';
+	import { validate } from '@graphace/graphql/schema/json-schema';
+	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: createNode = data.node as MutationType{{ objectFieldTypeName }}Args;
@@ -30,7 +30,7 @@
 			catch: (errors: Errors) => void;
 		}>
 	) => {
-		validate('{{ objectFieldTypeName }}', event.detail.args, event.detail.update, $locale)
+		validate('{{ objectFieldTypeName | paramCase }}', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_{{ name | camelCase }}_{{ objectFieldName }}.mutate({
@@ -39,7 +39,7 @@
 					update: event.detail.update
 				})
 					.then((result) => {
-						event.detail.then(result?.{{ name | camelCase }}?.{{ objectFieldName }});
+						event.detail.then(result?.data?.{{ name | camelCase }}?.{{ objectFieldName }});
 					})
 					.catch((errors) => {
 						event.detail.catch(errors);

@@ -296,7 +296,7 @@
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={pageSize} cols={11 + 2}/>
+			<TableLoading rows={pageSize} cols={16 + 2}/>
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
@@ -421,7 +421,7 @@
 						{/if}
 					{/each}
 				{:else}
-					<TableEmpty cols={11 + 2}/>
+					<TableEmpty cols={16 + 2}/>
 				{/if}
 			</tbody>
 		{/if}

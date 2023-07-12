@@ -1,3 +1,3 @@
 export * from './types'
-export * from './LiquidEngine';
-export * from './Introspection'
+export * from './liquid-engine';
+export * from './introspection'

@@ -240,7 +240,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={14 + 2}/>
+				<TableEmpty cols={16 + 2}/>
 			{/if}
 		</tbody>
 	</Table>

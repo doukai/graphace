@@ -1,8 +1,8 @@
 export const getOS = (): string | null => {
-    let userAgent = window.navigator.userAgent.toLowerCase();
-    let macosPlatforms = /(macintosh|macintel|macppc|mac68k|macos)/i;
-    let windowsPlatforms = /(win32|win64|windows|wince)/i;
-    let iosPlatforms = /(iphone|ipad|ipod)/i;
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    const macosPlatforms = /(macintosh|macintel|macppc|mac68k|macos)/i;
+    const windowsPlatforms = /(win32|win64|windows|wince)/i;
+    const iosPlatforms = /(iphone|ipad|ipod)/i;
     let os: string | null = null
 
     if (macosPlatforms.test(userAgent)) {
