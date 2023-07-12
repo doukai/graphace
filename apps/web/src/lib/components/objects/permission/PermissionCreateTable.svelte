@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import { ObjectTd, StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, BooleanTh, BooleanTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, IDTh, IDTd, StringTh, StringTd, BooleanTh, BooleanTd, IntTh, IntTd, TimestampTh, TimestampTd } from '@graphace/ui-graphql/components/table';
 	import PermissionLevelTh from '~/lib/components/enums/permission-level/PermissionLevelTh.svelte';
 	import PermissionLevelTd from '~/lib/components/enums/permission-level/PermissionLevelTd.svelte';
 	import { Card } from '@graphace/ui/components/card';
-	import { Table, TableHead, TableLoading } from '@graphace/ui/components/table';
+	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
-	import LL from '~/i18n/i18n-svelte';
+	import LL from '$i18n/i18n-svelte';
 	import type { MutationTypePermissionArgs } from '~/lib/types/schema';
 
 	export let nodes: (MutationTypePermissionArgs | null | undefined)[] | null | undefined;
@@ -56,8 +56,8 @@
 		on:save={() => dispatch('save', { nodes })}
 		on:removeRows={() => {
 			messageBoxs.open({
-				title: $LL.components.graphql.table.removeModalTitle(),
-				buttonName: $LL.components.graphql.table.removeBtn(),
+				title: $LL.web.components.graphql.table.removeModalTitle(),
+				buttonName: $LL.web.components.graphql.table.removeBtn(),
 				buttonType: 'error',
 				confirm: () => {
 					removeRows();
@@ -87,22 +87,22 @@
 						/>
 					</label>
 				</th>
-				<td>createGroupId</td>
-				<td>createTime</td>
-				<td>createUserId</td>
-				<td>description</td>
 				<td>id</td>
-				<td>isDeprecated</td>
-				<td>level</td>
 				<td>name</td>
 				<td>ofTypeName</td>
-				<td>realm</td>
-				<td>realmId</td>
+				<td>description</td>
+				<td>level</td>
 				<td>role</td>
-				<td>roleId</td>
-				<td>updateTime</td>
-				<td>updateUserId</td>
+				<td>realm</td>
+				<td>isDeprecated</td>
 				<td>version</td>
+				<td>realmId</td>
+				<td>createUserId</td>
+				<td>createTime</td>
+				<td>updateUserId</td>
+				<td>updateTime</td>
+				<td>createGroupId</td>
+				<td>roleId</td>
 				<th />
 			</tr>
 		</thead>
@@ -116,47 +116,11 @@
 									<input type="checkbox" class="checkbox" bind:checked={selectedRows[row]} />
 								</label>
 							</th>
-							<StringTd
-								name="createGroupId"
-								bind:value={node.createGroupId}
-								readonly
-								errors={errors[row]?.iterms?.createGroupId}
-							/>
-							<TimestampTd
-								name="createTime"
-								bind:value={node.createTime}
-								readonly
-								errors={errors[row]?.iterms?.createTime}
-							/>
-							<StringTd
-								name="createUserId"
-								bind:value={node.createUserId}
-								readonly
-								errors={errors[row]?.iterms?.createUserId}
-							/>
-							<StringTd
-								name="description"
-								bind:value={node.description}
-								readonly
-								errors={errors[row]?.iterms?.description}
-							/>
 							<IDTd
 								name="id"
 								bind:value={node.id}
 								readonly
 								errors={errors[row]?.iterms?.id}
-							/>
-							<BooleanTd
-								name="isDeprecated"
-								bind:value={node.isDeprecated}
-								readonly
-								errors={errors[row]?.iterms?.isDeprecated}
-							/>
-							<PermissionLevelTd
-								name="level"
-								bind:value={node.level}
-								readonly
-								errors={errors[row]?.iterms?.level}
 							/>
 							<StringTd
 								name="name"
@@ -170,19 +134,55 @@
 								readonly
 								errors={errors[row]?.iterms?.ofTypeName}
 							/>
+							<StringTd
+								name="description"
+								bind:value={node.description}
+								readonly
+								errors={errors[row]?.iterms?.description}
+							/>
+							<PermissionLevelTd
+								name="level"
+								bind:value={node.level}
+								readonly
+								errors={errors[row]?.iterms?.level}
+							/>
+							<ObjectTd name="role" errors={errors[row]?.iterms?.role} path="_/role" on:gotoField />
 							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
+							<BooleanTd
+								name="isDeprecated"
+								bind:value={node.isDeprecated}
+								readonly
+								errors={errors[row]?.iterms?.isDeprecated}
+							/>
+							<IntTd
+								name="version"
+								bind:value={node.version}
+								readonly
+								errors={errors[row]?.iterms?.version}
+							/>
 							<StringTd
 								name="realmId"
 								bind:value={node.realmId}
 								readonly
 								errors={errors[row]?.iterms?.realmId}
 							/>
-							<ObjectTd name="role" errors={errors[row]?.iterms?.role} path="_/role" on:gotoField />
-							<IntTd
-								name="roleId"
-								bind:value={node.roleId}
+							<StringTd
+								name="createUserId"
+								bind:value={node.createUserId}
 								readonly
-								errors={errors[row]?.iterms?.roleId}
+								errors={errors[row]?.iterms?.createUserId}
+							/>
+							<TimestampTd
+								name="createTime"
+								bind:value={node.createTime}
+								readonly
+								errors={errors[row]?.iterms?.createTime}
+							/>
+							<StringTd
+								name="updateUserId"
+								bind:value={node.updateUserId}
+								readonly
+								errors={errors[row]?.iterms?.updateUserId}
 							/>
 							<TimestampTd
 								name="updateTime"
@@ -191,20 +191,20 @@
 								errors={errors[row]?.iterms?.updateTime}
 							/>
 							<StringTd
-								name="updateUserId"
-								bind:value={node.updateUserId}
+								name="createGroupId"
+								bind:value={node.createGroupId}
 								readonly
-								errors={errors[row]?.iterms?.updateUserId}
+								errors={errors[row]?.iterms?.createGroupId}
 							/>
 							<IntTd
-								name="version"
-								bind:value={node.version}
+								name="roleId"
+								bind:value={node.roleId}
 								readonly
-								errors={errors[row]?.iterms?.version}
+								errors={errors[row]?.iterms?.roleId}
 							/>
 							<th class="z-10">
 								<div class="flex space-x-1">
-									<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
+									<div class="tooltip" data-tip={$LL.web.components.graphql.table.editBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
 											on:click={(e) => {
@@ -215,14 +215,14 @@
 											<Icon src={PencilSquare} solid />
 										</button>
 									</div>
-									<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>
+									<div class="tooltip" data-tip={$LL.web.components.graphql.table.removeBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
 											on:click={(e) => {
 												e.preventDefault();
 												messageBoxs.open({
-													title: $LL.components.graphql.table.removeModalTitle(),
-													buttonName: $LL.components.graphql.table.removeBtn(),
+													title: $LL.web.components.graphql.table.removeModalTitle(),
+													buttonName: $LL.web.components.graphql.table.removeBtn(),
 													buttonType: 'error',
 													confirm: () => {
 														removeRow(row);
@@ -239,6 +239,8 @@
 						</tr>
 					{/if}
 				{/each}
+			{:else}
+				<TableEmpty cols={14 + 2}/>
 			{/if}
 		</tbody>
 	</Table>

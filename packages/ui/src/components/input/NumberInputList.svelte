@@ -3,7 +3,7 @@
 	import { nanoid } from 'nanoid';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus, PlusSmall, MinusSmall } from '@steeze-ui/heroicons';
-	import LL from '~/i18n/i18n-svelte';
+	import LL from '$i18n/i18n-svelte';
 	export let name: string;
 	export let value: (number | null | undefined)[] | null | undefined;
 	export let placeholder: string = '';
@@ -54,7 +54,7 @@
 						</label>
 					{/if}
 				</div>
-				<div class="tooltip" data-tip={$LL.components.ui.inputList.add()}>
+				<div class="tooltip" data-tip={$LL.ui.inputList.add()}>
 					<button
 						class="mt-3 btn btn-xs btn-square btn-outline"
 						on:click={(e) => {
@@ -65,7 +65,7 @@
 						<Icon src={PlusSmall} class="h-5 w-5" />
 					</button>
 				</div>
-				<div class="tooltip" data-tip={$LL.components.ui.inputList.remove()}>
+				<div class="tooltip" data-tip={$LL.ui.inputList.remove()}>
 					<button
 						class="mt-3 btn btn-xs btn-square btn-outline"
 						on:click={(e) => {
@@ -79,7 +79,7 @@
 			</div>
 		{/each}
 		{#if (value || []).length === 0}
-			<div class="tooltip" data-tip={$LL.components.ui.inputList.add()}>
+			<div class="tooltip" data-tip={$LL.ui.inputList.add()}>
 				<button
 					class="btn btn-square btn-outline"
 					on:click={(e) => {

@@ -1,35 +1,35 @@
-mutation Mutation_group_users($group_id: ID, $group_users: [UserInput], $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $disable: BooleanExpression, $email: StringExpression, $first: Int, $groupBy: [String!], $groups: GroupExpression, $id: StringExpression, $includeDeprecated: Boolean, $last: Int, $lastName: StringExpression, $login: StringExpression, $name: StringExpression, $offset: Int, $orderBy: UserOrderBy, $password: StringExpression, $realm: RealmExpression, $realmId: StringExpression, $roles: RoleExpression, $totalCount: IntExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userGroup: UserGroupExpression, $userRole: UserRoleExpression, $version: IntExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+mutation Mutation_group_users($group_id: ID, $group_users: [UserInput], $first: Int, $last: Int, $offset: Int, $orderBy: UserOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $lastName: StringExpression, $login: StringExpression, $password: StringExpression, $email: StringExpression, $disable: BooleanExpression, $groups: GroupExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $userGroup: UserGroupExpression, $userRole: UserRoleExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
   group(id: $group_id users: $group_users) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
-    createGroupId
-    createTime
-    createUserId
     id
-    isDeprecated
     name
-    parentId
-    realmId
-    updateTime
-    updateUserId
+    isDeprecated
     version
-    usersConnection(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId disable: $disable email: $email first: $first groupBy: $groupBy groups: $groups id: $id includeDeprecated: $includeDeprecated last: $last lastName: $lastName login: $login name: $name offset: $offset orderBy: $orderBy password: $password realm: $realm realmId: $realmId roles: $roles totalCount: $totalCount updateTime: $updateTime updateUserId: $updateUserId userGroup: $userGroup userRole: $userRole version: $version) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    parentId
+    usersConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name lastName: $lastName login: $login password: $password email: $email disable: $disable groups: $groups roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userGroup: $userGroup userRole: $userRole totalCount: $totalCount) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
       totalCount
       edges {
         node {
-          createGroupId
-          createTime
-          createUserId
-          disable
-          email
           id
-          isDeprecated
+          name
           lastName
           login
-          name
           password
-          realmId
-          updateTime
-          updateUserId
+          email
+          disable
+          isDeprecated
           version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
         }
       }
     }

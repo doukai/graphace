@@ -1,10 +1,10 @@
 query Query_current {
   current {
-    groups
+    name
     lastName
     login
-    name
     realmId
+    groups
     roles
   }
 }

@@ -1,15 +1,15 @@
-query Query_groupRoleList($after: ID, $before: ID, $cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $exs: [GroupRoleExpression], $first: Int, $from: GroupExpression, $groupBy: [String!], $groupId: IntExpression, $id: StringExpression, $includeDeprecated: Boolean, $last: Int, $offset: Int, $orderBy: GroupRoleOrderBy, $realmId: StringExpression, $roleId: IntExpression, $to: RoleExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
-  groupRoleList(after: $after before: $before cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId exs: $exs first: $first from: $from groupBy: $groupBy groupId: $groupId id: $id includeDeprecated: $includeDeprecated last: $last offset: $offset orderBy: $orderBy realmId: $realmId roleId: $roleId to: $to updateTime: $updateTime updateUserId: $updateUserId version: $version) @skipNullArguments(if: $skipNullArguments) {
-    createGroupId
-    createTime
-    createUserId
-    groupId
+query Query_groupRoleList($id: StringExpression, $groupId: IntExpression, $from: GroupExpression, $roleId: IntExpression, $to: RoleExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $orderBy: GroupRoleOrderBy, $groupBy: [String!], $cond: Conditional, $exs: [GroupRoleExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID, $skipNullArguments: Boolean = true) {
+  groupRoleList(id: $id groupId: $groupId from: $from roleId: $roleId to: $to includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId orderBy: $orderBy groupBy: $groupBy cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before) @skipNullArguments(if: $skipNullArguments) {
     id
-    isDeprecated
-    realmId
+    groupId
     roleId
-    updateTime
-    updateUserId
+    isDeprecated
     version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
   }
 }

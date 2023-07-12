@@ -7,9 +7,9 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
-			"~/*": [
-				"./src/*"
-			],
+      "~/*": [
+        "./src/*"
+      ],
       "@graphace/commons/*": [
         "../../packages/commons/src/*"
       ],
@@ -18,6 +18,9 @@
       ],
       "@graphace/ui/*": [
         "../../packages/ui/src/*"
+      ],
+      "$i18n/*": [
+        "./src/i18n/*"
       ]
     }
   },

@@ -21,6 +21,20 @@ const en_ui = {
 		add: 'Add',
 		remove: 'Remove',
 	},
+	table: {
+		empty: 'no result',
+	},
+	messageBox: {
+		cancel: 'Cancel',
+		confirm: 'Confirm',
+	},
+	button: {
+		search: 'Search',
+		create: 'Create',
+		remove: 'Remove',
+		save: 'Save',
+		back: 'Back',
+	},
 } satisfies BaseTranslation
 
 export default en_ui

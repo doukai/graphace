@@ -8,9 +8,9 @@
 	export let sort: Sort | null | undefined = undefined;
 
 	let enums = [
+		{ name: Protocol.LOCAL, value: Protocol.LOCAL },
 		{ name: Protocol.GRPC, value: Protocol.GRPC },
 		{ name: Protocol.HTTP, value: Protocol.HTTP },
-		{ name: Protocol.LOCAL, value: Protocol.LOCAL },
 		{ name: Protocol.RSOCKET, value: Protocol.RSOCKET }
 	];
 </script>

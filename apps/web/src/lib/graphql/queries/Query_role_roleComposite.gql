@@ -1,31 +1,31 @@
-query Query_role_roleComposite($role_id: StringExpression, $compositeId: IntExpression, $first: Int, $from: RoleExpression, $groupBy: [String!], $id: StringExpression, $last: Int, $offset: Int, $orderBy: RoleCompositeOrderBy, $roleId: IntExpression, $to: RoleExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true) {
+query Query_role_roleComposite($role_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RoleCompositeOrderBy, $groupBy: [String!], $id: StringExpression, $roleId: IntExpression, $from: RoleExpression, $compositeId: IntExpression, $to: RoleExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true) {
   role(id: $role_id) @skipNullArguments(if: $skipNullArguments) {
-    createGroupId
-    createTime
-    createUserId
-    description
     id
-    isDeprecated
     name
-    realmId
-    updateTime
-    updateUserId
+    description
+    isDeprecated
     version
-    roleCompositeConnection(compositeId: $compositeId first: $first from: $from groupBy: $groupBy id: $id last: $last offset: $offset orderBy: $orderBy roleId: $roleId to: $to totalCount: $totalCount) @skipNullArguments(if: $skipNullArguments) {
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    roleCompositeConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId from: $from compositeId: $compositeId to: $to totalCount: $totalCount) @skipNullArguments(if: $skipNullArguments) {
       totalCount
       edges {
         node {
-          compositeId
-          createGroupId
-          createTime
-          createUserId
           id
-          isDeprecated
-          realmId
           roleId
-          updateTime
-          updateUserId
+          compositeId
+          isDeprecated
           version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
         }
       }
     }

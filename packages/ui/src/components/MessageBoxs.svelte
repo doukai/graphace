@@ -59,7 +59,7 @@
 
 <script lang="ts">
 	import { Modal, ModalContent, ModalActions } from './modal';
-	import LL from '~/i18n/i18n-svelte';
+	import LL from '$i18n/i18n-svelte';
 
 	const buttonClassName = (buttonType: string | undefined) => {
 		if (buttonType) {
@@ -92,7 +92,7 @@
 					}
 				}}
 			>
-				{$LL.components.messageBox.cancel()}
+				{$LL.ui.messageBox.cancel()}
 			</button>
 			<button
 				class="btn btn-outline {buttonClassName(messageBox.props.buttonType)}"
@@ -102,7 +102,7 @@
 					}
 				}}
 			>
-				{messageBox.props.buttonName || $LL.components.messageBox.confirm()}
+				{messageBox.props.buttonName || $LL.ui.messageBox.confirm()}
 			</button>
 		</ModalActions>
 	</Modal>

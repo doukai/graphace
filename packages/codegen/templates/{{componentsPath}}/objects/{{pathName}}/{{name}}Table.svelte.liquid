@@ -7,12 +7,12 @@
 	import {{ enum }}Td from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Td.svelte';
 	{%- endfor %}
 	import { Card } from '@graphace/ui/components/card';
-	import { Table, TableHead, TableLoading } from '@graphace/ui/components/table';
+	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
-	import LL from '~/i18n/i18n-svelte';
+	import LL from '$i18n/i18n-svelte';
 	import {
 		Conditional,
 		Operator,
@@ -73,7 +73,7 @@
 			then: (data) => {},
 			catch: (errors) => {
 				console.error(errors);
-				notifications.error($LL.message.requestFailed());
+				notifications.error($LL.web.message.requestFailed());
 			}
 		});
 	};
@@ -105,7 +105,7 @@
 			then: (data) => {},
 			catch: (errors) => {
 				console.error(errors);
-				notifications.error($LL.message.requestFailed());
+				notifications.error($LL.web.message.requestFailed());
 			}
 		});
 	};
@@ -115,11 +115,11 @@
 			dispatch('mutation', {
 				args,
 				then: (data) => {
-					notifications.success($LL.message.saveSuccess());
+					notifications.success($LL.web.message.saveSuccess());
 				},
 				catch: (errors) => {
 					console.error(errors);
-					notifications.error($LL.message.saveFailed());
+					notifications.error($LL.web.message.saveFailed());
 				}
 			});
 		}
@@ -130,12 +130,12 @@
 			args: { id: id, isDeprecated: true },
 			update: true,
 			then: (data) => {
-				notifications.success($LL.message.removeSuccess());
+				notifications.success($LL.web.message.removeSuccess());
 				query();
 			},
 			catch: (errors) => {
 				console.error(errors);
-				notifications.error($LL.message.removeFailed());
+				notifications.error($LL.web.message.removeFailed());
 			}
 		});
 	}
@@ -148,12 +148,12 @@
 			},
 			update: true,
 			then: (data) => {
-				notifications.success($LL.message.removeSuccess());
+				notifications.success($LL.web.message.removeSuccess());
 				query();
 			},
 			catch: (errors) => {
 				console.error(errors);
-				notifications.error($LL.message.removeFailed());
+				notifications.error($LL.web.message.removeFailed());
 			}
 		});
 	};
@@ -168,8 +168,8 @@
 		on:save={() => dispatch('save', { nodes })}
 		on:removeRows={() => {
 			messageBoxs.open({
-				title: $LL.components.graphql.table.removeModalTitle(),
-				buttonName: $LL.components.graphql.table.removeBtn(),
+				title: $LL.web.components.graphql.table.removeModalTitle(),
+				buttonName: $LL.web.components.graphql.table.removeBtn(),
 				buttonType: 'error',
 				confirm: () => {
 					removeRows();
@@ -260,7 +260,7 @@
 								{%- endif %}
 								<th class="z-10">
 									<div class="flex space-x-1">
-										<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
+										<div class="tooltip" data-tip={$LL.web.components.graphql.table.editBtn()}>
 											<button
 												class="btn btn-square btn-ghost btn-xs"
 												on:click={(e) => {
@@ -273,14 +273,14 @@
 												<Icon src={PencilSquare} solid />
 											</button>
 										</div>
-										<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>
+										<div class="tooltip" data-tip={$LL.web.components.graphql.table.removeBtn()}>
 											<button
 												class="btn btn-square btn-ghost btn-xs"
 												on:click={(e) => {
 													e.preventDefault();
 													messageBoxs.open({
-														title: $LL.components.graphql.table.removeModalTitle(),
-														buttonName: $LL.components.graphql.table.removeBtn(),
+														title: $LL.web.components.graphql.table.removeModalTitle(),
+														buttonName: $LL.web.components.graphql.table.removeBtn(),
 														buttonType: 'error',
 														confirm: () => {
 															if (node?.{{ idName }}) {
@@ -299,6 +299,8 @@
 							</tr>
 						{/if}
 					{/each}
+				{:else}
+					<TableEmpty cols={% raw %}{{% endraw %}{{cols}} + 2}/>
 				{/if}
 			</tbody>
 		{/if}

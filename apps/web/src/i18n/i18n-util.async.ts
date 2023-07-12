@@ -12,10 +12,14 @@ const localeTranslationLoaders = {
 
 const localeNamespaceLoaders = {
 	en: {
-		ui: () => import('./en/ui')
+		ui: () => import('./en/ui'),
+		uiGraphql: () => import('./en/uiGraphql'),
+		web: () => import('./en/web')
 	},
 	zh: {
-		ui: () => import('./zh/ui')
+		ui: () => import('./zh/ui'),
+		uiGraphql: () => import('./zh/uiGraphql'),
+		web: () => import('./zh/web')
 	}
 }
 

@@ -1,35 +1,35 @@
-query Query_user_groups($user_id: StringExpression, $first: Int, $groupBy: [String!], $id: StringExpression, $last: Int, $name: StringExpression, $offset: Int, $orderBy: GroupOrderBy, $parent: GroupExpression, $realm: RealmExpression, $roles: RoleExpression, $subGroups: GroupExpression, $totalCount: IntExpression, $users: UserExpression, $skipNullArguments: Boolean = true) {
+query Query_user_groups($user_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: GroupOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true) {
   user(id: $user_id) @skipNullArguments(if: $skipNullArguments) {
-    createGroupId
-    createTime
-    createUserId
-    disable
-    email
     id
-    isDeprecated
+    name
     lastName
     login
-    name
     password
-    realmId
-    updateTime
-    updateUserId
+    email
+    disable
+    isDeprecated
     version
-    groupsConnection(first: $first groupBy: $groupBy id: $id last: $last name: $name offset: $offset orderBy: $orderBy parent: $parent realm: $realm roles: $roles subGroups: $subGroups totalCount: $totalCount users: $users) @skipNullArguments(if: $skipNullArguments) {
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    groupsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm totalCount: $totalCount) @skipNullArguments(if: $skipNullArguments) {
       totalCount
       edges {
         node {
-          createGroupId
-          createTime
-          createUserId
           id
-          isDeprecated
           name
-          parentId
-          realmId
-          updateTime
-          updateUserId
+          isDeprecated
           version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
+          parentId
         }
       }
     }

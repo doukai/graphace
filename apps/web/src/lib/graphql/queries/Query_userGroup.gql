@@ -1,15 +1,15 @@
-query Query_userGroup($cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $exs: [UserGroupExpression], $from: UserExpression, $groupId: IntExpression, $id: StringExpression, $includeDeprecated: Boolean, $realmId: StringExpression, $to: GroupExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userId: IntExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
-  userGroup(cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId exs: $exs from: $from groupId: $groupId id: $id includeDeprecated: $includeDeprecated realmId: $realmId to: $to updateTime: $updateTime updateUserId: $updateUserId userId: $userId version: $version) @skipNullArguments(if: $skipNullArguments) {
-    createGroupId
-    createTime
-    createUserId
-    groupId
+query Query_userGroup($id: StringExpression, $userId: IntExpression, $from: UserExpression, $groupId: IntExpression, $to: GroupExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $cond: Conditional, $exs: [UserGroupExpression], $skipNullArguments: Boolean = true) {
+  userGroup(id: $id userId: $userId from: $from groupId: $groupId to: $to includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId cond: $cond exs: $exs) @skipNullArguments(if: $skipNullArguments) {
     id
-    isDeprecated
-    realmId
-    updateTime
-    updateUserId
     userId
+    groupId
+    isDeprecated
     version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
   }
 }

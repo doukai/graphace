@@ -9,119 +9,119 @@
 	export let contentClasses = 'mt-16';
 	let themes = [
 		{
-			name: $LL.components.ThemeSelect.themes.light,
+			name: $LL.web.components.ThemeSelect.themes.light,
 			id: 'light'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.dark,
+			name: $LL.web.components.ThemeSelect.themes.dark,
 			id: 'dark'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.cupcake,
+			name: $LL.web.components.ThemeSelect.themes.cupcake,
 			id: 'cupcake'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.bumblebee,
+			name: $LL.web.components.ThemeSelect.themes.bumblebee,
 			id: 'bumblebee'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.emerald,
+			name: $LL.web.components.ThemeSelect.themes.emerald,
 			id: 'emerald'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.corporate,
+			name: $LL.web.components.ThemeSelect.themes.corporate,
 			id: 'corporate'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.synthwave,
+			name: $LL.web.components.ThemeSelect.themes.synthwave,
 			id: 'synthwave'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.retro,
+			name: $LL.web.components.ThemeSelect.themes.retro,
 			id: 'retro'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.cyberpunk,
+			name: $LL.web.components.ThemeSelect.themes.cyberpunk,
 			id: 'cyberpunk'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.valentine,
+			name: $LL.web.components.ThemeSelect.themes.valentine,
 			id: 'valentine'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.halloween,
+			name: $LL.web.components.ThemeSelect.themes.halloween,
 			id: 'halloween'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.garden,
+			name: $LL.web.components.ThemeSelect.themes.garden,
 			id: 'garden'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.forest,
+			name: $LL.web.components.ThemeSelect.themes.forest,
 			id: 'forest'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.aqua,
+			name: $LL.web.components.ThemeSelect.themes.aqua,
 			id: 'aqua'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.lofi,
+			name: $LL.web.components.ThemeSelect.themes.lofi,
 			id: 'lofi'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.pastel,
+			name: $LL.web.components.ThemeSelect.themes.pastel,
 			id: 'pastel'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.fantasy,
+			name: $LL.web.components.ThemeSelect.themes.fantasy,
 			id: 'fantasy'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.wireframe,
+			name: $LL.web.components.ThemeSelect.themes.wireframe,
 			id: 'wireframe'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.black,
+			name: $LL.web.components.ThemeSelect.themes.black,
 			id: 'black'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.luxury,
+			name: $LL.web.components.ThemeSelect.themes.luxury,
 			id: 'luxury'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.dracula,
+			name: $LL.web.components.ThemeSelect.themes.dracula,
 			id: 'dracula'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.cmyk,
+			name: $LL.web.components.ThemeSelect.themes.cmyk,
 			id: 'cmyk'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.autumn,
+			name: $LL.web.components.ThemeSelect.themes.autumn,
 			id: 'autumn'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.business,
+			name: $LL.web.components.ThemeSelect.themes.business,
 			id: 'business'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.acid,
+			name: $LL.web.components.ThemeSelect.themes.acid,
 			id: 'acid'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.lemonade,
+			name: $LL.web.components.ThemeSelect.themes.lemonade,
 			id: 'lemonade'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.night,
+			name: $LL.web.components.ThemeSelect.themes.night,
 			id: 'night'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.coffee,
+			name: $LL.web.components.ThemeSelect.themes.coffee,
 			id: 'coffee'
 		},
 		{
-			name: $LL.components.ThemeSelect.themes.winter,
+			name: $LL.web.components.ThemeSelect.themes.winter,
 			id: 'winter'
 		}
 	];
@@ -135,7 +135,7 @@
 	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 	<div tabindex="0" class={`btn normal-case ${btnClasses}`}>
 		<Icon src={Swatch} class="h-5 w-5 stroke-current" />
-		<span class="hidden font-normal md:inline">{$LL.components.ThemeSelect.btn()}</span>
+		<span class="hidden font-normal md:inline">{$LL.web.components.ThemeSelect.btn()}</span>
 		<Icon src={ChevronDown} class="hidden h-2 w-2 fill-current opacity-60 sm:inline-block" />
 	</div>
 	<div

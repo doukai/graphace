@@ -1,30 +1,30 @@
-query Query_permission_realm($permission_id: StringExpression, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $id: StringExpression, $includeDeprecated: Boolean, $name: StringExpression, $realmId: StringExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
+query Query_permission_realm($permission_id: StringExpression, $id: StringExpression, $name: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $skipNullArguments: Boolean = true) {
   permission(id: $permission_id) @skipNullArguments(if: $skipNullArguments) {
-    createGroupId
-    createTime
-    createUserId
-    description
     id
-    isDeprecated
-    level
     name
     ofTypeName
-    realmId
-    roleId
-    updateTime
-    updateUserId
+    description
+    level
+    isDeprecated
     version
-    realm(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId id: $id includeDeprecated: $includeDeprecated name: $name realmId: $realmId updateTime: $updateTime updateUserId: $updateUserId version: $version) @skipNullArguments(if: $skipNullArguments) {
-      createGroupId
-      createTime
-      createUserId
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    roleId
+    realm(id: $id name: $name includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId) @skipNullArguments(if: $skipNullArguments) {
       id
-      isDeprecated
       name
-      realmId
-      updateTime
-      updateUserId
+      isDeprecated
       version
+      realmId
+      createUserId
+      createTime
+      updateUserId
+      updateTime
+      createGroupId
     }
   }
 }

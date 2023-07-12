@@ -1,31 +1,31 @@
-query Query_group_userGroup($group_id: StringExpression, $first: Int, $from: UserExpression, $groupBy: [String!], $groupId: IntExpression, $id: StringExpression, $last: Int, $offset: Int, $orderBy: UserGroupOrderBy, $to: GroupExpression, $totalCount: IntExpression, $userId: IntExpression, $skipNullArguments: Boolean = true) {
+query Query_group_userGroup($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserGroupOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $from: UserExpression, $groupId: IntExpression, $to: GroupExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true) {
   group(id: $group_id) @skipNullArguments(if: $skipNullArguments) {
-    createGroupId
-    createTime
-    createUserId
     id
-    isDeprecated
     name
-    parentId
-    realmId
-    updateTime
-    updateUserId
+    isDeprecated
     version
-    userGroupConnection(first: $first from: $from groupBy: $groupBy groupId: $groupId id: $id last: $last offset: $offset orderBy: $orderBy to: $to totalCount: $totalCount userId: $userId) @skipNullArguments(if: $skipNullArguments) {
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    parentId
+    userGroupConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId from: $from groupId: $groupId to: $to totalCount: $totalCount) @skipNullArguments(if: $skipNullArguments) {
       totalCount
       edges {
         node {
-          createGroupId
-          createTime
-          createUserId
-          groupId
           id
-          isDeprecated
-          realmId
-          updateTime
-          updateUserId
           userId
+          groupId
+          isDeprecated
           version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
         }
       }
     }

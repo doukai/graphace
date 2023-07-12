@@ -1,31 +1,31 @@
-query Query_group_groupRole($group_id: StringExpression, $first: Int, $from: GroupExpression, $groupBy: [String!], $groupId: IntExpression, $id: StringExpression, $last: Int, $offset: Int, $orderBy: GroupRoleOrderBy, $roleId: IntExpression, $to: RoleExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true) {
+query Query_group_groupRole($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: GroupRoleOrderBy, $groupBy: [String!], $id: StringExpression, $groupId: IntExpression, $from: GroupExpression, $roleId: IntExpression, $to: RoleExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true) {
   group(id: $group_id) @skipNullArguments(if: $skipNullArguments) {
-    createGroupId
-    createTime
-    createUserId
     id
-    isDeprecated
     name
-    parentId
-    realmId
-    updateTime
-    updateUserId
+    isDeprecated
     version
-    groupRoleConnection(first: $first from: $from groupBy: $groupBy groupId: $groupId id: $id last: $last offset: $offset orderBy: $orderBy roleId: $roleId to: $to totalCount: $totalCount) @skipNullArguments(if: $skipNullArguments) {
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    parentId
+    groupRoleConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id groupId: $groupId from: $from roleId: $roleId to: $to totalCount: $totalCount) @skipNullArguments(if: $skipNullArguments) {
       totalCount
       edges {
         node {
-          createGroupId
-          createTime
-          createUserId
-          groupId
           id
-          isDeprecated
-          realmId
+          groupId
           roleId
-          updateTime
-          updateUserId
+          isDeprecated
           version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
         }
       }
     }

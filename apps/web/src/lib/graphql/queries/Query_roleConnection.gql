@@ -1,19 +1,19 @@
-query Query_roleConnection($after: ID, $before: ID, $composites: RoleExpression, $cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $description: StringExpression, $exs: [RoleExpression], $first: Int, $groupBy: [String!], $id: StringExpression, $includeDeprecated: Boolean, $last: Int, $name: StringExpression, $offset: Int, $orderBy: RoleOrderBy, $permissions: PermissionExpression, $realm: RealmExpression, $realmId: StringExpression, $roleComposite: RoleCompositeExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userRole: UserRoleExpression, $users: UserExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
-  roleConnection(after: $after before: $before composites: $composites cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId description: $description exs: $exs first: $first groupBy: $groupBy id: $id includeDeprecated: $includeDeprecated last: $last name: $name offset: $offset orderBy: $orderBy permissions: $permissions realm: $realm realmId: $realmId roleComposite: $roleComposite updateTime: $updateTime updateUserId: $updateUserId userRole: $userRole users: $users version: $version) @skipNullArguments(if: $skipNullArguments) {
+query Query_roleConnection($id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $userRole: UserRoleExpression, $roleComposite: RoleCompositeExpression, $orderBy: RoleOrderBy, $groupBy: [String!], $cond: Conditional, $exs: [RoleExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID, $skipNullArguments: Boolean = true) {
+  roleConnection(id: $id name: $name description: $description users: $users composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userRole: $userRole roleComposite: $roleComposite orderBy: $orderBy groupBy: $groupBy cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before) @skipNullArguments(if: $skipNullArguments) {
     totalCount
     edges {
       node {
-        createGroupId
-        createTime
-        createUserId
-        description
         id
-        isDeprecated
         name
-        realmId
-        updateTime
-        updateUserId
+        description
+        isDeprecated
         version
+        realmId
+        createUserId
+        createTime
+        updateUserId
+        updateTime
+        createGroupId
       }
     }
   }

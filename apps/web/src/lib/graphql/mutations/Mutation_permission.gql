@@ -1,18 +1,18 @@
-mutation Mutation_permission($createGroupId: String, $createTime: Timestamp, $createUserId: String, $description: String, $id: ID, $isDeprecated: Boolean, $level: PermissionLevel, $name: String, $ofTypeName: String, $realm: RealmInput, $realmId: String, $role: RoleInput, $roleId: Int, $updateTime: Timestamp, $updateUserId: String, $version: Int, $where: PermissionExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
-  permission(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId description: $description id: $id isDeprecated: $isDeprecated level: $level name: $name ofTypeName: $ofTypeName realm: $realm realmId: $realmId role: $role roleId: $roleId updateTime: $updateTime updateUserId: $updateUserId version: $version where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
-    createGroupId
-    createTime
-    createUserId
-    description
+mutation Mutation_permission($id: ID, $name: String, $ofTypeName: String, $description: String, $level: PermissionLevel, $role: RoleInput, $realm: RealmInput, $isDeprecated: Boolean, $version: Int, $realmId: String, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $roleId: Int, $where: PermissionExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+  permission(id: $id name: $name ofTypeName: $ofTypeName description: $description level: $level role: $role realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId roleId: $roleId where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
-    isDeprecated
-    level
     name
     ofTypeName
-    realmId
-    roleId
-    updateTime
-    updateUserId
+    description
+    level
+    isDeprecated
     version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    roleId
   }
 }

@@ -1,0 +1,75 @@
+{
+	"compilerOptions": {
+		"paths": {
+			"~": [
+				"./src"
+			],
+			"~/*": [
+				"./src/*"
+			],
+			"@graphace/commons": [
+				"../../packages/commons/src/index"
+			],
+			"@graphace/commons/*": [
+				"../../packages/commons/src/*"
+			],
+			"@graphace/graphql": [
+				"../../packages/graphql/src/index"
+			],
+			"@graphace/graphql/*": [
+				"../../packages/graphql/src/*"
+			],
+			"@graphace/ui": [
+				"../../packages/ui/src/index"
+			],
+			"@graphace/ui/*": [
+				"../../packages/ui/src/*"
+			],
+			"@graphace/ui-graphql": [
+				"../../packages/ui-graphql/src/index"
+			],
+			"@graphace/ui-graphql/*": [
+				"../../packages/ui-graphql/src/*"
+			],
+			"$i18n": [
+				"./src/i18n"
+			],
+			"$i18n/*": [
+				"./src/i18n/*"
+			],
+			"$houdini": [
+				"./$houdini"
+			],
+			"$houdini/*": [
+				"./$houdini/*"
+			],
+			"$lib": [
+				"./src/lib"
+			],
+			"$lib/*": [
+				"./src/lib/*"
+			]
+		},
+		"target": "ESNext",
+		"module": "ESNext",
+		"rootDir": "./",
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"verbatimModuleSyntax": true,
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"exactOptionalPropertyTypes": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedIndexedAccess": true,
+		"noImplicitOverride": true
+	},
+	"include": [
+		"src/**/*.ts"
+	],
+	"exclude": [
+		"node_modules/**"
+	]
+}

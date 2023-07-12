@@ -10,7 +10,7 @@
 	{%- endfor %}
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
-	import LL from '~/i18n/i18n-svelte';
+	import LL from '$i18n/i18n-svelte';
 	import type { {{ name }}, MutationType{{ name }}Args } from '~/{{ schemaTypesPath }}';
 
 	export let node: MutationType{{ name }}Args = {};
@@ -32,12 +32,12 @@
 				dispatch('mutation', {
 					args: node,
 					then: (data) => {
-						notifications.success($LL.message.saveSuccess());
+						notifications.success($LL.web.message.saveSuccess());
 						dispatch('back');
 					},
 					catch: (errors) => {
 						console.error(errors);
-						notifications.error($LL.message.saveFailed());
+						notifications.error($LL.web.message.saveFailed());
 					}
 				});
 			}
@@ -49,12 +49,12 @@
 			dispatch('mutation', {
 				args: { id: node.{{ idName }}, isDeprecated: true },
 				then: (data) => {
-					notifications.success($LL.message.removeSuccess());
+					notifications.success($LL.web.message.removeSuccess());
 					dispatch('back');
 				},
 				catch: (errors) => {
 					console.error(errors);
-					notifications.error($LL.message.removeFailed());
+					notifications.error($LL.web.message.removeFailed());
 				}
 			});
 		}
@@ -68,8 +68,8 @@
 		on:save={save}
 		on:remove={() =>
 			messageBoxs.open({
-				title: $LL.components.graphql.table.removeModalTitle(),
-				buttonName: $LL.components.graphql.table.removeBtn(),
+				title: $LL.web.components.graphql.table.removeModalTitle(),
+				buttonName: $LL.web.components.graphql.table.removeBtn(),
 				buttonType: 'error',
 				confirm: () => {
 					remove();

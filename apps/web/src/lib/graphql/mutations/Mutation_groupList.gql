@@ -1,15 +1,15 @@
-mutation Mutation_groupList($createGroupId: String, $createTime: Timestamp, $createUserId: String, $groupRole: [GroupRoleInput], $id: ID, $isDeprecated: Boolean, $list: [GroupInput], $name: String, $parent: GroupInput, $parentId: Int, $realm: RealmInput, $realmId: String, $roles: [RoleInput], $subGroups: [GroupInput], $updateTime: Timestamp, $updateUserId: String, $userGroup: [UserGroupInput], $users: [UserInput], $version: Int, $where: GroupExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
-  groupList(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId groupRole: $groupRole id: $id isDeprecated: $isDeprecated list: $list name: $name parent: $parent parentId: $parentId realm: $realm realmId: $realmId roles: $roles subGroups: $subGroups updateTime: $updateTime updateUserId: $updateUserId userGroup: $userGroup users: $users version: $version where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
-    createGroupId
-    createTime
-    createUserId
+mutation Mutation_groupList($id: ID, $name: String, $parent: GroupInput, $subGroups: [GroupInput], $users: [UserInput], $roles: [RoleInput], $realm: RealmInput, $isDeprecated: Boolean, $version: Int, $realmId: String, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $parentId: Int, $userGroup: [UserGroupInput], $groupRole: [GroupRoleInput], $list: [GroupInput], $where: GroupExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+  groupList(id: $id name: $name parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId parentId: $parentId userGroup: $userGroup groupRole: $groupRole list: $list where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
-    isDeprecated
     name
-    parentId
-    realmId
-    updateTime
-    updateUserId
+    isDeprecated
     version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    parentId
   }
 }

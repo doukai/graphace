@@ -1,35 +1,35 @@
-mutation Mutation_user_userGroup($user_id: ID, $user_userGroup: [UserGroupInput], $first: Int, $from: UserExpression, $groupBy: [String!], $groupId: IntExpression, $id: StringExpression, $last: Int, $offset: Int, $orderBy: UserGroupOrderBy, $to: GroupExpression, $totalCount: IntExpression, $userId: IntExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+mutation Mutation_user_userGroup($user_id: ID, $user_userGroup: [UserGroupInput], $first: Int, $last: Int, $offset: Int, $orderBy: UserGroupOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $from: UserExpression, $groupId: IntExpression, $to: GroupExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
   user(id: $user_id userGroup: $user_userGroup) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
-    createGroupId
-    createTime
-    createUserId
-    disable
-    email
     id
-    isDeprecated
+    name
     lastName
     login
-    name
     password
-    realmId
-    updateTime
-    updateUserId
+    email
+    disable
+    isDeprecated
     version
-    userGroupConnection(first: $first from: $from groupBy: $groupBy groupId: $groupId id: $id last: $last offset: $offset orderBy: $orderBy to: $to totalCount: $totalCount userId: $userId) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    userGroupConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId from: $from groupId: $groupId to: $to totalCount: $totalCount) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
       totalCount
       edges {
         node {
-          createGroupId
-          createTime
-          createUserId
-          groupId
           id
-          isDeprecated
-          realmId
-          updateTime
-          updateUserId
           userId
+          groupId
+          isDeprecated
           version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
         }
       }
     }

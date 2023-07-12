@@ -4,10 +4,10 @@
 	import type { Errors } from '@graphace/commons/types';
 	import { Card } from '@graphace/ui/components/card';
 	import { Form, FormLoading } from '@graphace/ui/components/form';
-	import { StringItem, TimestampItem, IDItem, BooleanItem, IntItem, ObjectItem } from '@graphace/ui-graphql/components/form';
+	import { IDItem, IntItem, BooleanItem, StringItem, TimestampItem, ObjectItem } from '@graphace/ui-graphql/components/form';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
-	import LL from '~/i18n/i18n-svelte';
+	import LL from '$i18n/i18n-svelte';
 	import type { UserRole, MutationTypeUserRoleArgs } from '~/lib/types/schema';
 
 	export let node: UserRole | null | undefined;
@@ -31,12 +31,12 @@
 				update: true,
 				then: (data) => {
 					node = data;
-					notifications.success($LL.message.saveSuccess());
+					notifications.success($LL.web.message.saveSuccess());
 					dispatch('back');
 				},
 				catch: (errors) => {
 					console.error(errors);
-					notifications.error($LL.message.saveFailed());
+					notifications.error($LL.web.message.saveFailed());
 				}
 			});
 		}
@@ -48,12 +48,12 @@
 				args: { id: node.id, isDeprecated: true },
 				update: true,
 				then: (data) => {
-					notifications.success($LL.message.removeSuccess());
+					notifications.success($LL.web.message.removeSuccess());
 					dispatch('back');
 				},
 				catch: (errors) => {
 					console.error(errors);
-					notifications.error($LL.message.removeFailed());
+					notifications.error($LL.web.message.removeFailed());
 				}
 			});
 		}
@@ -66,8 +66,8 @@
 		on:save={save}
 		on:remove={() =>
 			messageBoxs.open({
-				title: $LL.components.graphql.table.removeModalTitle(),
-				buttonName: $LL.components.graphql.table.removeBtn(),
+				title: $LL.web.components.graphql.table.removeModalTitle(),
+				buttonName: $LL.web.components.graphql.table.removeBtn(),
 				buttonType: 'error',
 				confirm: () => {
 					remove();
@@ -80,19 +80,19 @@
 			<FormLoading rows={11} />
 		{:else}
 			{#if node}
-				<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} errors={errors.createGroupId} />
-				<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} errors={errors.createTime} />
-				<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} errors={errors.createUserId} />
-				<ObjectItem name="from" path={`${node.id}/from`} label="from" errors={errors.from} on:gotoField />
 				<IDItem label="id" name="id" bind:value={node.id} errors={errors.id} />
-				<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} errors={errors.isDeprecated} />
-				<StringItem label="realmId" name="realmId" bind:value={node.realmId} errors={errors.realmId} />
+				<IntItem label="userId" name="userId" bind:value={node.userId} errors={errors.userId} />
+				<ObjectItem name="from" path={`${node.id}/from`} label="from" errors={errors.from} on:gotoField />
 				<IntItem label="roleId" name="roleId" bind:value={node.roleId} errors={errors.roleId} />
 				<ObjectItem name="to" path={`${node.id}/to`} label="to" errors={errors.to} on:gotoField />
-				<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} errors={errors.updateTime} />
-				<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} errors={errors.updateUserId} />
-				<IntItem label="userId" name="userId" bind:value={node.userId} errors={errors.userId} />
+				<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} errors={errors.isDeprecated} />
 				<IntItem label="version" name="version" bind:value={node.version} errors={errors.version} />
+				<StringItem label="realmId" name="realmId" bind:value={node.realmId} errors={errors.realmId} />
+				<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} errors={errors.createUserId} />
+				<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} errors={errors.createTime} />
+				<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} errors={errors.updateUserId} />
+				<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} errors={errors.updateTime} />
+				<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} errors={errors.createGroupId} />
 			{/if}
 		{/if}
 	</Form>

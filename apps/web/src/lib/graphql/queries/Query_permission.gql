@@ -1,18 +1,18 @@
-query Query_permission($cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $description: StringExpression, $exs: [PermissionExpression], $id: StringExpression, $includeDeprecated: Boolean, $level: PermissionLevelExpression, $name: StringExpression, $ofTypeName: StringExpression, $realm: RealmExpression, $realmId: StringExpression, $role: RoleExpression, $roleId: IntExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
-  permission(cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId description: $description exs: $exs id: $id includeDeprecated: $includeDeprecated level: $level name: $name ofTypeName: $ofTypeName realm: $realm realmId: $realmId role: $role roleId: $roleId updateTime: $updateTime updateUserId: $updateUserId version: $version) @skipNullArguments(if: $skipNullArguments) {
-    createGroupId
-    createTime
-    createUserId
-    description
+query Query_permission($id: StringExpression, $name: StringExpression, $ofTypeName: StringExpression, $description: StringExpression, $level: PermissionLevelExpression, $role: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $roleId: IntExpression, $cond: Conditional, $exs: [PermissionExpression], $skipNullArguments: Boolean = true) {
+  permission(id: $id name: $name ofTypeName: $ofTypeName description: $description level: $level role: $role realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId roleId: $roleId cond: $cond exs: $exs) @skipNullArguments(if: $skipNullArguments) {
     id
-    isDeprecated
-    level
     name
     ofTypeName
-    realmId
-    roleId
-    updateTime
-    updateUserId
+    description
+    level
+    isDeprecated
     version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    roleId
   }
 }

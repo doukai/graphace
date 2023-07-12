@@ -1,18 +1,18 @@
-query Query_realmConnection($after: ID, $before: ID, $cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $exs: [RealmExpression], $first: Int, $groupBy: [String!], $id: StringExpression, $includeDeprecated: Boolean, $last: Int, $name: StringExpression, $offset: Int, $orderBy: RealmOrderBy, $realmId: StringExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
-  realmConnection(after: $after before: $before cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId exs: $exs first: $first groupBy: $groupBy id: $id includeDeprecated: $includeDeprecated last: $last name: $name offset: $offset orderBy: $orderBy realmId: $realmId updateTime: $updateTime updateUserId: $updateUserId version: $version) @skipNullArguments(if: $skipNullArguments) {
+query Query_realmConnection($id: StringExpression, $name: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $orderBy: RealmOrderBy, $groupBy: [String!], $cond: Conditional, $exs: [RealmExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID, $skipNullArguments: Boolean = true) {
+  realmConnection(id: $id name: $name includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId orderBy: $orderBy groupBy: $groupBy cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before) @skipNullArguments(if: $skipNullArguments) {
     totalCount
     edges {
       node {
-        createGroupId
-        createTime
-        createUserId
         id
-        isDeprecated
         name
-        realmId
-        updateTime
-        updateUserId
+        isDeprecated
         version
+        realmId
+        createUserId
+        createTime
+        updateUserId
+        updateTime
+        createGroupId
       }
     }
   }

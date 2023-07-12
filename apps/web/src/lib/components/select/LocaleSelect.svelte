@@ -72,7 +72,7 @@
 				<li>
 					<button class:active={value == locale} on:click={() => switchLocale(locale)}>
 						<Iconify class="drop-shadow" icon={flags[locale]} />
-						{$LL.localeName[locale]()}
+						{$LL.web.localeName[locale]()}
 					</button>
 				</li>
 			{/each}

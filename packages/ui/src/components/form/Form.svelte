@@ -2,9 +2,8 @@
 	import { createEventDispatcher } from 'svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Trash, ArrowUturnLeft, InboxArrowDown } from '@steeze-ui/heroicons';
-	import LL from '~/i18n/i18n-svelte';
+	import LL from '$i18n/i18n-svelte';
 	export let title: string;
-	export let detail: string | undefined = undefined;
 	export let showSaveButton: boolean = true;
 	export let showRemoveButton: boolean = true;
 	export let showBackButton: boolean = true;
@@ -22,7 +21,7 @@
 	</div>
 	<div class="flex space-x-1">
 		{#if showRemoveButton}
-			<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.remove()}>
+			<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.remove()}>
 				<button
 					class="btn btn-error btn-outline btn-square md:hidden"
 					on:click={(e) => {
@@ -40,11 +39,11 @@
 					dispatch('remove');
 				}}
 			>
-				{$LL.routers.type.remove()}
+				{$LL.ui.button.remove()}
 			</button>
 		{/if}
 		{#if showSaveButton}
-			<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.save()}>
+			<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.save()}>
 				<button
 					class="btn btn-secondary btn-square md:hidden"
 					on:click={(e) => {
@@ -62,11 +61,11 @@
 					dispatch('save');
 				}}
 			>
-				{$LL.routers.type.save()}
+				{$LL.ui.button.save()}
 			</button>
 		{/if}
 		{#if showBackButton}
-			<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.back()}>
+			<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.back()}>
 				<button
 					class="btn btn-neutral btn-square md:hidden"
 					on:click={(e) => {
@@ -84,7 +83,7 @@
 					dispatch('back');
 				}}
 			>
-				{$LL.routers.type.back()}
+				{$LL.ui.button.back()}
 			</button>
 		{/if}
 	</div>
@@ -100,7 +99,7 @@
 <div class="divider" />
 <div class="flex justify-end space-x-1">
 	{#if showRemoveButton}
-		<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.remove()}>
+		<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.remove()}>
 			<button
 				class="btn btn-error btn-outline btn-square md:hidden"
 				on:click={(e) => {
@@ -118,11 +117,11 @@
 				dispatch('remove');
 			}}
 		>
-			{$LL.routers.type.remove()}
+			{$LL.ui.button.remove()}
 		</button>
 	{/if}
 	{#if showSaveButton}
-		<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.save()}>
+		<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.save()}>
 			<button
 				class="btn btn-secondary btn-square md:hidden"
 				on:click={(e) => {
@@ -140,11 +139,11 @@
 				dispatch('save');
 			}}
 		>
-			{$LL.routers.type.save()}
+			{$LL.ui.button.save()}
 		</button>
 	{/if}
 	{#if showBackButton}
-		<div class="tooltip tooltip-bottom" data-tip={$LL.routers.type.back()}>
+		<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.back()}>
 			<button
 				class="btn btn-neutral btn-square md:hidden"
 				on:click={(e) => {
@@ -162,7 +161,7 @@
 				dispatch('back');
 			}}
 		>
-			{$LL.routers.type.back()}
+			{$LL.ui.button.back()}
 		</button>
 	{/if}
 </div>

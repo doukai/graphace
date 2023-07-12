@@ -69,6 +69,44 @@ type RootTranslation = {
 			 */
 			remove: string
 		}
+		table: {
+			/**
+			 * n​o​ ​r​e​s​u​l​t
+			 */
+			empty: string
+		}
+		messageBox: {
+			/**
+			 * C​a​n​c​e​l
+			 */
+			cancel: string
+			/**
+			 * C​o​n​f​i​r​m
+			 */
+			confirm: string
+		}
+		button: {
+			/**
+			 * S​e​a​r​c​h
+			 */
+			search: string
+			/**
+			 * C​r​e​a​t​e
+			 */
+			create: string
+			/**
+			 * R​e​m​o​v​e
+			 */
+			remove: string
+			/**
+			 * S​a​v​e
+			 */
+			save: string
+			/**
+			 * B​a​c​k
+			 */
+			back: string
+		}
 	}
 }
 
@@ -125,6 +163,44 @@ export type TranslationFunctions = {
 			 * Remove
 			 */
 			remove: () => LocalizedString
+		}
+		table: {
+			/**
+			 * no result
+			 */
+			empty: () => LocalizedString
+		}
+		messageBox: {
+			/**
+			 * Cancel
+			 */
+			cancel: () => LocalizedString
+			/**
+			 * Confirm
+			 */
+			confirm: () => LocalizedString
+		}
+		button: {
+			/**
+			 * Search
+			 */
+			search: () => LocalizedString
+			/**
+			 * Create
+			 */
+			create: () => LocalizedString
+			/**
+			 * Remove
+			 */
+			remove: () => LocalizedString
+			/**
+			 * Save
+			 */
+			save: () => LocalizedString
+			/**
+			 * Back
+			 */
+			back: () => LocalizedString
 		}
 	}
 }

@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import { ObjectTd, StringTh, StringTd, TimestampTh, TimestampTd, IntTh, IntTd, IDTh, IDTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, IDTh, IDTd, IntTh, IntTd, BooleanTh, BooleanTd, StringTh, StringTd, TimestampTh, TimestampTd } from '@graphace/ui-graphql/components/table';
 	import { Card } from '@graphace/ui/components/card';
-	import { Table, TableHead, TableLoading } from '@graphace/ui/components/table';
+	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
-	import LL from '~/i18n/i18n-svelte';
+	import LL from '$i18n/i18n-svelte';
 	import type { MutationTypeUserGroupArgs } from '~/lib/types/schema';
 
 	export let nodes: (MutationTypeUserGroupArgs | null | undefined)[] | null | undefined;
@@ -54,8 +54,8 @@
 		on:save={() => dispatch('save', { nodes })}
 		on:removeRows={() => {
 			messageBoxs.open({
-				title: $LL.components.graphql.table.removeModalTitle(),
-				buttonName: $LL.components.graphql.table.removeBtn(),
+				title: $LL.web.components.graphql.table.removeModalTitle(),
+				buttonName: $LL.web.components.graphql.table.removeBtn(),
 				buttonType: 'error',
 				confirm: () => {
 					removeRows();
@@ -85,19 +85,19 @@
 						/>
 					</label>
 				</th>
-				<td>createGroupId</td>
-				<td>createTime</td>
-				<td>createUserId</td>
+				<td>id</td>
+				<td>userId</td>
 				<td>from</td>
 				<td>groupId</td>
-				<td>id</td>
-				<td>isDeprecated</td>
-				<td>realmId</td>
 				<td>to</td>
-				<td>updateTime</td>
-				<td>updateUserId</td>
-				<td>userId</td>
+				<td>isDeprecated</td>
 				<td>version</td>
+				<td>realmId</td>
+				<td>createUserId</td>
+				<td>createTime</td>
+				<td>updateUserId</td>
+				<td>updateTime</td>
+				<td>createGroupId</td>
 				<th />
 			</tr>
 		</thead>
@@ -111,23 +111,17 @@
 									<input type="checkbox" class="checkbox" bind:checked={selectedRows[row]} />
 								</label>
 							</th>
-							<StringTd
-								name="createGroupId"
-								bind:value={node.createGroupId}
+							<IDTd
+								name="id"
+								bind:value={node.id}
 								readonly
-								errors={errors[row]?.iterms?.createGroupId}
+								errors={errors[row]?.iterms?.id}
 							/>
-							<TimestampTd
-								name="createTime"
-								bind:value={node.createTime}
+							<IntTd
+								name="userId"
+								bind:value={node.userId}
 								readonly
-								errors={errors[row]?.iterms?.createTime}
-							/>
-							<StringTd
-								name="createUserId"
-								bind:value={node.createUserId}
-								readonly
-								errors={errors[row]?.iterms?.createUserId}
+								errors={errors[row]?.iterms?.userId}
 							/>
 							<ObjectTd name="from" errors={errors[row]?.iterms?.from} path="_/from" on:gotoField />
 							<IntTd
@@ -136,42 +130,12 @@
 								readonly
 								errors={errors[row]?.iterms?.groupId}
 							/>
-							<IDTd
-								name="id"
-								bind:value={node.id}
-								readonly
-								errors={errors[row]?.iterms?.id}
-							/>
+							<ObjectTd name="to" errors={errors[row]?.iterms?.to} path="_/to" on:gotoField />
 							<BooleanTd
 								name="isDeprecated"
 								bind:value={node.isDeprecated}
 								readonly
 								errors={errors[row]?.iterms?.isDeprecated}
-							/>
-							<StringTd
-								name="realmId"
-								bind:value={node.realmId}
-								readonly
-								errors={errors[row]?.iterms?.realmId}
-							/>
-							<ObjectTd name="to" errors={errors[row]?.iterms?.to} path="_/to" on:gotoField />
-							<TimestampTd
-								name="updateTime"
-								bind:value={node.updateTime}
-								readonly
-								errors={errors[row]?.iterms?.updateTime}
-							/>
-							<StringTd
-								name="updateUserId"
-								bind:value={node.updateUserId}
-								readonly
-								errors={errors[row]?.iterms?.updateUserId}
-							/>
-							<IntTd
-								name="userId"
-								bind:value={node.userId}
-								readonly
-								errors={errors[row]?.iterms?.userId}
 							/>
 							<IntTd
 								name="version"
@@ -179,9 +143,45 @@
 								readonly
 								errors={errors[row]?.iterms?.version}
 							/>
+							<StringTd
+								name="realmId"
+								bind:value={node.realmId}
+								readonly
+								errors={errors[row]?.iterms?.realmId}
+							/>
+							<StringTd
+								name="createUserId"
+								bind:value={node.createUserId}
+								readonly
+								errors={errors[row]?.iterms?.createUserId}
+							/>
+							<TimestampTd
+								name="createTime"
+								bind:value={node.createTime}
+								readonly
+								errors={errors[row]?.iterms?.createTime}
+							/>
+							<StringTd
+								name="updateUserId"
+								bind:value={node.updateUserId}
+								readonly
+								errors={errors[row]?.iterms?.updateUserId}
+							/>
+							<TimestampTd
+								name="updateTime"
+								bind:value={node.updateTime}
+								readonly
+								errors={errors[row]?.iterms?.updateTime}
+							/>
+							<StringTd
+								name="createGroupId"
+								bind:value={node.createGroupId}
+								readonly
+								errors={errors[row]?.iterms?.createGroupId}
+							/>
 							<th class="z-10">
 								<div class="flex space-x-1">
-									<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
+									<div class="tooltip" data-tip={$LL.web.components.graphql.table.editBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
 											on:click={(e) => {
@@ -192,14 +192,14 @@
 											<Icon src={PencilSquare} solid />
 										</button>
 									</div>
-									<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>
+									<div class="tooltip" data-tip={$LL.web.components.graphql.table.removeBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
 											on:click={(e) => {
 												e.preventDefault();
 												messageBoxs.open({
-													title: $LL.components.graphql.table.removeModalTitle(),
-													buttonName: $LL.components.graphql.table.removeBtn(),
+													title: $LL.web.components.graphql.table.removeModalTitle(),
+													buttonName: $LL.web.components.graphql.table.removeBtn(),
 													buttonType: 'error',
 													confirm: () => {
 														removeRow(row);
@@ -216,6 +216,8 @@
 						</tr>
 					{/if}
 				{/each}
+			{:else}
+				<TableEmpty cols={11 + 2}/>
 			{/if}
 		</tbody>
 	</Table>

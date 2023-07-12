@@ -3,7 +3,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Link } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons/types';
-	import LL from '~/i18n/i18n-svelte';
+	import LL from '$i18n/i18n-svelte';
 
 	export let path: string;
 	export let name: string;
@@ -16,7 +16,7 @@
 
 <td>
 	<div class={errors ? 'border-2 border-error rounded' : ''}>
-		<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
+		<div class="tooltip" data-tip={$LL.uiGraphql.table.editBtn()}>
 			<button
 				class="btn btn-square btn-xs btn-ghost"
 				on:click={(e) => {

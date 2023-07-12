@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import { ObjectTd, StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, BooleanTh, BooleanTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, IDTh, IDTd, StringTh, StringTd, BooleanTh, BooleanTd, IntTh, IntTd, TimestampTh, TimestampTd } from '@graphace/ui-graphql/components/table';
 	import { Card } from '@graphace/ui/components/card';
-	import { Table, TableHead, TableLoading } from '@graphace/ui/components/table';
+	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
-	import LL from '~/i18n/i18n-svelte';
+	import LL from '$i18n/i18n-svelte';
 	import {
 		Conditional,
 		Operator,
@@ -69,7 +69,7 @@
 			then: (data) => {},
 			catch: (errors) => {
 				console.error(errors);
-				notifications.error($LL.message.requestFailed());
+				notifications.error($LL.web.message.requestFailed());
 			}
 		});
 	};
@@ -78,18 +78,18 @@
 		let args: QueryTypeRealmListArgs = {};
 		if (searchValue) {
 			args.cond = Conditional.OR;
-			args.createGroupId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.createUserId = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.name = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.realmId = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.createUserId = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.updateUserId = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.createGroupId = { opr: Operator.LK, val: `%${searchValue}%` };
 		} else {
 			args.cond = undefined;
-			args.createGroupId = undefined;
-			args.createUserId = undefined;
 			args.name = undefined;
 			args.realmId = undefined;
+			args.createUserId = undefined;
 			args.updateUserId = undefined;
+			args.createGroupId = undefined;
 		}
 
 		dispatch('fetch', {
@@ -97,7 +97,7 @@
 			then: (data) => {},
 			catch: (errors) => {
 				console.error(errors);
-				notifications.error($LL.message.requestFailed());
+				notifications.error($LL.web.message.requestFailed());
 			}
 		});
 	};
@@ -107,11 +107,11 @@
 			dispatch('mutation', {
 				args,
 				then: (data) => {
-					notifications.success($LL.message.saveSuccess());
+					notifications.success($LL.web.message.saveSuccess());
 				},
 				catch: (errors) => {
 					console.error(errors);
-					notifications.error($LL.message.saveFailed());
+					notifications.error($LL.web.message.saveFailed());
 				}
 			});
 		}
@@ -122,12 +122,12 @@
 			args: { id: id, isDeprecated: true },
 			update: true,
 			then: (data) => {
-				notifications.success($LL.message.removeSuccess());
+				notifications.success($LL.web.message.removeSuccess());
 				query();
 			},
 			catch: (errors) => {
 				console.error(errors);
-				notifications.error($LL.message.removeFailed());
+				notifications.error($LL.web.message.removeFailed());
 			}
 		});
 	}
@@ -140,12 +140,12 @@
 			},
 			update: true,
 			then: (data) => {
-				notifications.success($LL.message.removeSuccess());
+				notifications.success($LL.web.message.removeSuccess());
 				query();
 			},
 			catch: (errors) => {
 				console.error(errors);
-				notifications.error($LL.message.removeFailed());
+				notifications.error($LL.web.message.removeFailed());
 			}
 		});
 	};
@@ -160,8 +160,8 @@
 		on:save={() => dispatch('save', { nodes })}
 		on:removeRows={() => {
 			messageBoxs.open({
-				title: $LL.components.graphql.table.removeModalTitle(),
-				buttonName: $LL.components.graphql.table.removeBtn(),
+				title: $LL.web.components.graphql.table.removeModalTitle(),
+				buttonName: $LL.web.components.graphql.table.removeBtn(),
 				buttonType: 'error',
 				confirm: () => {
 					removeRows();
@@ -193,10 +193,35 @@
 						/>
 					</label>
 				</th>
+				<IDTh
+					name="id"
+					bind:expression={args.id}
+					bind:sort={orderBy.id}
+					on:filter={query}
+				/>
 				<StringTh
-					name="createGroupId"
-					bind:expression={args.createGroupId}
-					bind:sort={orderBy.createGroupId}
+					name="name"
+					bind:expression={args.name}
+					bind:sort={orderBy.name}
+					on:filter={query}
+				/>
+				<td>isDeprecated</td>
+				<IntTh
+					name="version"
+					bind:expression={args.version}
+					bind:sort={orderBy.version}
+					on:filter={query}
+				/>
+				<StringTh
+					name="realmId"
+					bind:expression={args.realmId}
+					bind:sort={orderBy.realmId}
+					on:filter={query}
+				/>
+				<StringTh
+					name="createUserId"
+					bind:expression={args.createUserId}
+					bind:sort={orderBy.createUserId}
 					on:filter={query}
 				/>
 				<TimestampTh
@@ -206,28 +231,9 @@
 					on:filter={query}
 				/>
 				<StringTh
-					name="createUserId"
-					bind:expression={args.createUserId}
-					bind:sort={orderBy.createUserId}
-					on:filter={query}
-				/>
-				<IDTh
-					name="id"
-					bind:expression={args.id}
-					bind:sort={orderBy.id}
-					on:filter={query}
-				/>
-				<td>isDeprecated</td>
-				<StringTh
-					name="name"
-					bind:expression={args.name}
-					bind:sort={orderBy.name}
-					on:filter={query}
-				/>
-				<StringTh
-					name="realmId"
-					bind:expression={args.realmId}
-					bind:sort={orderBy.realmId}
+					name="updateUserId"
+					bind:expression={args.updateUserId}
+					bind:sort={orderBy.updateUserId}
 					on:filter={query}
 				/>
 				<TimestampTh
@@ -237,15 +243,9 @@
 					on:filter={query}
 				/>
 				<StringTh
-					name="updateUserId"
-					bind:expression={args.updateUserId}
-					bind:sort={orderBy.updateUserId}
-					on:filter={query}
-				/>
-				<IntTh
-					name="version"
-					bind:expression={args.version}
-					bind:sort={orderBy.version}
+					name="createGroupId"
+					bind:expression={args.createGroupId}
+					bind:sort={orderBy.createGroupId}
 					on:filter={query}
 				/>
 				<th />
@@ -264,11 +264,41 @@
 										<input type="checkbox" class="checkbox" bind:checked={selectedRows[node.id]} />
 									</label>
 								</th>
+								<IDTd
+									name="id"
+									bind:value={node.id}
+									readonly
+									errors={errors[row]?.iterms?.id}
+								/>
 								<StringTd
-									name="createGroupId"
-									bind:value={node.createGroupId}
-									on:save={() => updateField({ id: node?.id, createGroupId: node?.createGroupId })}
-									errors={errors[row]?.iterms?.createGroupId}
+									name="name"
+									bind:value={node.name}
+									on:save={() => updateField({ id: node?.id, name: node?.name })}
+									errors={errors[row]?.iterms?.name}
+								/>
+								<BooleanTd
+									name="isDeprecated"
+									bind:value={node.isDeprecated}
+									on:save={() => updateField({ id: node?.id, isDeprecated: node?.isDeprecated })}
+									errors={errors[row]?.iterms?.isDeprecated}
+								/>
+								<IntTd
+									name="version"
+									bind:value={node.version}
+									on:save={() => updateField({ id: node?.id, version: node?.version })}
+									errors={errors[row]?.iterms?.version}
+								/>
+								<StringTd
+									name="realmId"
+									bind:value={node.realmId}
+									on:save={() => updateField({ id: node?.id, realmId: node?.realmId })}
+									errors={errors[row]?.iterms?.realmId}
+								/>
+								<StringTd
+									name="createUserId"
+									bind:value={node.createUserId}
+									on:save={() => updateField({ id: node?.id, createUserId: node?.createUserId })}
+									errors={errors[row]?.iterms?.createUserId}
 								/>
 								<TimestampTd
 									name="createTime"
@@ -277,34 +307,10 @@
 									errors={errors[row]?.iterms?.createTime}
 								/>
 								<StringTd
-									name="createUserId"
-									bind:value={node.createUserId}
-									on:save={() => updateField({ id: node?.id, createUserId: node?.createUserId })}
-									errors={errors[row]?.iterms?.createUserId}
-								/>
-								<IDTd
-									name="id"
-									bind:value={node.id}
-									readonly
-									errors={errors[row]?.iterms?.id}
-								/>
-								<BooleanTd
-									name="isDeprecated"
-									bind:value={node.isDeprecated}
-									on:save={() => updateField({ id: node?.id, isDeprecated: node?.isDeprecated })}
-									errors={errors[row]?.iterms?.isDeprecated}
-								/>
-								<StringTd
-									name="name"
-									bind:value={node.name}
-									on:save={() => updateField({ id: node?.id, name: node?.name })}
-									errors={errors[row]?.iterms?.name}
-								/>
-								<StringTd
-									name="realmId"
-									bind:value={node.realmId}
-									on:save={() => updateField({ id: node?.id, realmId: node?.realmId })}
-									errors={errors[row]?.iterms?.realmId}
+									name="updateUserId"
+									bind:value={node.updateUserId}
+									on:save={() => updateField({ id: node?.id, updateUserId: node?.updateUserId })}
+									errors={errors[row]?.iterms?.updateUserId}
 								/>
 								<TimestampTd
 									name="updateTime"
@@ -313,20 +319,14 @@
 									errors={errors[row]?.iterms?.updateTime}
 								/>
 								<StringTd
-									name="updateUserId"
-									bind:value={node.updateUserId}
-									on:save={() => updateField({ id: node?.id, updateUserId: node?.updateUserId })}
-									errors={errors[row]?.iterms?.updateUserId}
-								/>
-								<IntTd
-									name="version"
-									bind:value={node.version}
-									on:save={() => updateField({ id: node?.id, version: node?.version })}
-									errors={errors[row]?.iterms?.version}
+									name="createGroupId"
+									bind:value={node.createGroupId}
+									on:save={() => updateField({ id: node?.id, createGroupId: node?.createGroupId })}
+									errors={errors[row]?.iterms?.createGroupId}
 								/>
 								<th class="z-10">
 									<div class="flex space-x-1">
-										<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
+										<div class="tooltip" data-tip={$LL.web.components.graphql.table.editBtn()}>
 											<button
 												class="btn btn-square btn-ghost btn-xs"
 												on:click={(e) => {
@@ -339,14 +339,14 @@
 												<Icon src={PencilSquare} solid />
 											</button>
 										</div>
-										<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>
+										<div class="tooltip" data-tip={$LL.web.components.graphql.table.removeBtn()}>
 											<button
 												class="btn btn-square btn-ghost btn-xs"
 												on:click={(e) => {
 													e.preventDefault();
 													messageBoxs.open({
-														title: $LL.components.graphql.table.removeModalTitle(),
-														buttonName: $LL.components.graphql.table.removeBtn(),
+														title: $LL.web.components.graphql.table.removeModalTitle(),
+														buttonName: $LL.web.components.graphql.table.removeBtn(),
 														buttonType: 'error',
 														confirm: () => {
 															if (node?.id) {
@@ -365,6 +365,8 @@
 							</tr>
 						{/if}
 					{/each}
+				{:else}
+					<TableEmpty cols={10 + 2}/>
 				{/if}
 			</tbody>
 		{/if}

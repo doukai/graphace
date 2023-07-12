@@ -1,4 +1,6 @@
 schema: 'http://localhost:8080/graphql'
+config:
+  sort: false
 overwrite: true
 generates:
   ./src/lib/types/schema.ts:

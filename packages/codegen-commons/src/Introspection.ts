@@ -1,5 +1,5 @@
 import * as changeCase from "change-case";
-import { assertEnumType, assertScalarType, isEnumType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLEnumValue, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType, type GraphQLSchema } from 'graphql';
+import { assertEnumType, assertScalarType, isEnumType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLEnumValue, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType, type GraphQLSchema, type GraphQLFieldMap, type GraphQLInputFieldMap, type GraphQLInputField, type GraphQLInputType } from 'graphql';
 
 const aggregateSuffix = ["Count", "Sum", "Avg", "Max", "Min", "Aggregate"];
 const queryTypeName = "QueryType";
@@ -10,6 +10,14 @@ const edgeSuffix = "Edge";
 const pageInfoName = "PageInfo";
 const introspectionPrefix = "__";
 const innerEnum = ["Operator", "Conditional", "Sort", "Function"];
+
+const fieldMapToFields = (map: GraphQLFieldMap<any, any>): GraphQLField<any, any, any>[] => {
+    return Object.keys(map).map(key => map[key]);
+}
+
+const inputFieldMapToFields = (map: GraphQLInputFieldMap): GraphQLInputField[] => {
+    return Object.keys(map).map(key => map[key]);
+}
 
 export const isOperationType = (name?: string): boolean => { return [queryTypeName, mutationTypeName, subscriptionTypeName].some(typeName => name === typeName) };
 export const isAggregate = (name?: string): boolean => { return aggregateSuffix.some(suffix => name?.slice(-suffix.length) === suffix) };
@@ -26,7 +34,14 @@ export const getFieldType = (type: GraphQLOutputType): GraphQLNamedType => {
     return type;
 }
 
-export const fieldTypeIsList = (type: GraphQLOutputType): boolean => {
+export const getInputFieldType = (type: GraphQLInputType): GraphQLNamedType => {
+    if (isListType(type) || isNonNullType(type)) {
+        return getInputFieldType(type.ofType);
+    }
+    return type;
+}
+
+export const fieldTypeIsList = (type: GraphQLOutputType | GraphQLInputType): boolean => {
     if (isNonNullType(type)) {
         return fieldTypeIsList(type.ofType);
     }
@@ -42,7 +57,7 @@ export const getScalarFields = (field?: GraphQLField<any, any, any>): GraphQLFie
                 if (isObjectType(edgesType)) {
                     const nodeType = getFieldType(edgesType.getFields().node.type);
                     if (isObjectType(nodeType)) {
-                        return Object.values(nodeType.getFields())
+                        return fieldMapToFields(nodeType.getFields())
                             .filter(field => !isObjectType(getFieldType(field.type)))
                             .filter(field => !isAggregate(field.name));
                     }
@@ -50,7 +65,7 @@ export const getScalarFields = (field?: GraphQLField<any, any, any>): GraphQLFie
             }
         } else {
             if (isObjectType(fieldType)) {
-                return Object.values(fieldType.getFields())
+                return fieldMapToFields(fieldType.getFields())
                     .filter(field => !isObjectType(getFieldType(field.type)))
                     .filter(field => !isAggregate(field.name));
             }
@@ -61,7 +76,7 @@ export const getScalarFields = (field?: GraphQLField<any, any, any>): GraphQLFie
 
 export const getObjectFields = (type: GraphQLNamedType): GraphQLField<any, any, any>[] | undefined => {
     if (isObjectType(type)) {
-        return Object.values(type.getFields())
+        return fieldMapToFields(type.getFields())
             .filter(field => isObjectType(getFieldType(field.type)))
             .filter(field => !isConnection(getFieldType(field.type).name))
             .filter(field => !isEdge(getFieldType(field.type).name))
@@ -100,11 +115,20 @@ export const getConnectionField = (type: GraphQLNamedType | null | undefined, fi
 }
 
 export const getScalarNames = (type: GraphQLNamedType): string[] | undefined => {
-    if (isObjectType(type) || isInputObjectType(type)) {
-        const scalarNames = Object.values(type.getFields())
+    if (isObjectType(type)) {
+        const scalarNames = fieldMapToFields(type.getFields())
             .filter(field => !isAggregate(field.name))
             .filter(field => !isIntrospection(field.name))
             .map(field => getFieldType(field.type))
+            .filter(type => isScalarType(type))
+            .map(type => assertScalarType(type))
+            .map(type => type.name);
+        return scalarNames.filter((scalarName, index) => scalarNames.indexOf(scalarName) == index);
+    } else if (isInputObjectType(type)) {
+        const scalarNames = inputFieldMapToFields(type.getFields())
+            .filter(field => !isAggregate(field.name))
+            .filter(field => !isIntrospection(field.name))
+            .map(field => getInputFieldType(field.type))
             .filter(type => isScalarType(type))
             .map(type => assertScalarType(type))
             .map(type => type.name);
@@ -114,10 +138,18 @@ export const getScalarNames = (type: GraphQLNamedType): string[] | undefined => 
 }
 
 export const getEnumNames = (type: GraphQLNamedType): string[] | undefined => {
-    if (isObjectType(type) || isInputObjectType(type)) {
-        const enumNames = Object.values(type.getFields())
+    if (isObjectType(type)) {
+        const enumNames = fieldMapToFields(type.getFields())
             .filter(field => !isInnerEnum(field.name))
             .map(field => getFieldType(field.type))
+            .filter(type => isEnumType(type))
+            .map(type => assertEnumType(type))
+            .map(type => type.name);
+        return enumNames.filter((enumName, index) => enumNames.indexOf(enumName) == index);
+    } else if (isInputObjectType(type)) {
+        const enumNames = inputFieldMapToFields(type.getFields())
+            .filter(field => !isInnerEnum(field.name))
+            .map(field => getInputFieldType(field.type))
             .filter(type => isEnumType(type))
             .map(type => assertEnumType(type))
             .map(type => type.name);
@@ -127,8 +159,8 @@ export const getEnumNames = (type: GraphQLNamedType): string[] | undefined => {
 }
 
 export const getIDFieldName = (type: GraphQLNamedType): string | undefined => {
-    if (isObjectType(type) || isInputObjectType(type)) {
-        const idField = Object.values(type.getFields())
+    if (isObjectType(type)) {
+        const idField = fieldMapToFields(type.getFields())
             .filter(field => isScalarType(getFieldType(field.type)))
             .find(field => assertScalarType(getFieldType(field.type)).name === 'ID')
         return idField?.name;
@@ -137,8 +169,8 @@ export const getIDFieldName = (type: GraphQLNamedType): string | undefined => {
 }
 
 export const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): { fieldName: string, fieldType: GraphQLNamedType, isScalarType: boolean, isEnumType: boolean, inQueryArgs: boolean, inMutationArgs: boolean }[] | undefined => {
-    if (isObjectType(type) || isInputObjectType(type)) {
-        return Object.values(type.getFields())
+    if (isObjectType(type)) {
+        return fieldMapToFields(type.getFields())
             .filter(field => !isAggregate(field.name))
             .filter(field => !isIntrospection(field.name))
             .map(field => {
@@ -148,6 +180,23 @@ export const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): { fiel
                     isScalarType: isScalarType(getFieldType(field.type)),
                     isEnumType: isEnumType(getFieldType(field.type)),
                     isObjectType: isObjectType(getFieldType(field.type)),
+                    isNonNullType: isNonNullType(field.type),
+                    isListType: fieldTypeIsList(field.type),
+                    inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),
+                    inMutationArgs: fieldInMutationArgs(schema, type.name, field.name)
+                }
+            });
+    } else if (isInputObjectType(type)) {
+        return inputFieldMapToFields(type.getFields())
+            .filter(field => !isAggregate(field.name))
+            .filter(field => !isIntrospection(field.name))
+            .map(field => {
+                return {
+                    fieldName: field.name,
+                    fieldType: getInputFieldType(field.type),
+                    isScalarType: isScalarType(getInputFieldType(field.type)),
+                    isEnumType: isEnumType(getInputFieldType(field.type)),
+                    isObjectType: isObjectType(getInputFieldType(field.type)),
                     isNonNullType: isNonNullType(field.type),
                     isListType: fieldTypeIsList(field.type),
                     inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),

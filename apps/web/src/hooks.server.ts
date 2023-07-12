@@ -2,12 +2,9 @@ import { detectLocale, i18n, isLocale } from '$i18n/i18n-util';
 import { loadAllLocales } from '$i18n/i18n-util.sync';
 import type { Handle, RequestEvent } from '@sveltejs/kit';
 import { initAcceptLanguageHeaderDetector } from 'typesafe-i18n/detectors';
-import { importTranslationsForLocale } from '~/i18n/import';
-import en_ui from '@graphace/ui/i18n/en/index';
 
 loadAllLocales();
 const L = i18n();
-await importTranslationsForLocale('en', en_ui, 'ui');
 
 export const handle: Handle = async ({ event, resolve }) => {
 	// read language slug

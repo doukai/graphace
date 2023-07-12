@@ -5,7 +5,7 @@
 	import { CheckboxGroup, Select } from '@graphace/ui/components/input';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
-	import LL from '~/i18n/i18n-svelte';
+	import LL from '$i18n/i18n-svelte';
 
 	export let value: string | (string | null | undefined)[] | null | undefined;
 	export let list: boolean = false;
@@ -50,12 +50,12 @@
 			</Select>
 		{/if}
 		{#if !readonly && !disabled}
-			<div class="tooltip" data-tip={$LL.components.graphql.table.td.save()}>
+			<div class="tooltip" data-tip={$LL.uiGraphql.table.td.save()}>
 				<button class="btn btn-square btn-primary" on:click={() => mutation()}>
 					<Icon src={Check} class="h-5 w-5" />
 				</button>
 			</div>
-			<div class="tooltip" data-tip={$LL.components.graphql.table.td.clear()}>
+			<div class="tooltip" data-tip={$LL.uiGraphql.table.td.clear()}>
 				<button class="btn btn-square btn-outline btn-error" on:click={() => clean()}>
 					<Icon src={XMark} class="h-5 w-5" />
 				</button>

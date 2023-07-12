@@ -20,6 +20,20 @@ const en: BaseTranslation = {
 		inputList: {
 			add: "Add",
 			remove: "Remove"
+		},
+		table: {
+			empty: "no result"
+		},
+		messageBox: {
+			cancel: "Cancel",
+			confirm: "Confirm"
+		},
+		button: {
+			search: "Search",
+			create: "Create",
+			remove: "Remove",
+			save: "Save",
+			back: "Back"
 		}
 	},
 }

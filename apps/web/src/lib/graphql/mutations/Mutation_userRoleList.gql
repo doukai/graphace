@@ -1,15 +1,15 @@
-mutation Mutation_userRoleList($createGroupId: String, $createTime: Timestamp, $createUserId: String, $from: UserInput, $id: ID, $isDeprecated: Boolean, $list: [UserRoleInput], $realmId: String, $roleId: Int, $to: RoleInput, $updateTime: Timestamp, $updateUserId: String, $userId: Int, $version: Int, $where: UserRoleExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
-  userRoleList(createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId from: $from id: $id isDeprecated: $isDeprecated list: $list realmId: $realmId roleId: $roleId to: $to updateTime: $updateTime updateUserId: $updateUserId userId: $userId version: $version where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
-    createGroupId
-    createTime
-    createUserId
+mutation Mutation_userRoleList($id: ID, $userId: Int, $from: UserInput, $roleId: Int, $to: RoleInput, $isDeprecated: Boolean, $version: Int, $realmId: String, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $list: [UserRoleInput], $where: UserRoleExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+  userRoleList(id: $id userId: $userId from: $from roleId: $roleId to: $to isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId list: $list where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
-    isDeprecated
-    realmId
-    roleId
-    updateTime
-    updateUserId
     userId
+    roleId
+    isDeprecated
     version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
   }
 }

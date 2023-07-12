@@ -1,28 +1,28 @@
-mutation Mutation_userRole_to($userRole_id: ID, $userRole_to: RoleInput, $composites: RoleExpression, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $description: StringExpression, $id: StringExpression, $includeDeprecated: Boolean, $name: StringExpression, $permissions: PermissionExpression, $realm: RealmExpression, $realmId: StringExpression, $roleComposite: RoleCompositeExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userRole: UserRoleExpression, $users: UserExpression, $version: IntExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+mutation Mutation_userRole_to($userRole_id: ID, $userRole_to: RoleInput, $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $userRole: UserRoleExpression, $roleComposite: RoleCompositeExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
   userRole(id: $userRole_id to: $userRole_to) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
-    createGroupId
-    createTime
-    createUserId
     id
-    isDeprecated
-    realmId
-    roleId
-    updateTime
-    updateUserId
     userId
+    roleId
+    isDeprecated
     version
-    to(composites: $composites createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId description: $description id: $id includeDeprecated: $includeDeprecated name: $name permissions: $permissions realm: $realm realmId: $realmId roleComposite: $roleComposite updateTime: $updateTime updateUserId: $updateUserId userRole: $userRole users: $users version: $version) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
-      createGroupId
-      createTime
-      createUserId
-      description
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    to(id: $id name: $name description: $description users: $users composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userRole: $userRole roleComposite: $roleComposite) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
       id
-      isDeprecated
       name
-      realmId
-      updateTime
-      updateUserId
+      description
+      isDeprecated
       version
+      realmId
+      createUserId
+      createTime
+      updateUserId
+      updateTime
+      createGroupId
     }
   }
 }

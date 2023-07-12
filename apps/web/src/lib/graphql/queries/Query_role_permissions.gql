@@ -1,34 +1,34 @@
-query Query_role_permissions($role_id: StringExpression, $description: StringExpression, $first: Int, $groupBy: [String!], $id: StringExpression, $last: Int, $level: PermissionLevelExpression, $name: StringExpression, $ofTypeName: StringExpression, $offset: Int, $orderBy: PermissionOrderBy, $realm: RealmExpression, $role: RoleExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true) {
+query Query_role_permissions($role_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: PermissionOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $ofTypeName: StringExpression, $description: StringExpression, $level: PermissionLevelExpression, $role: RoleExpression, $realm: RealmExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true) {
   role(id: $role_id) @skipNullArguments(if: $skipNullArguments) {
-    createGroupId
-    createTime
-    createUserId
-    description
     id
-    isDeprecated
     name
-    realmId
-    updateTime
-    updateUserId
+    description
+    isDeprecated
     version
-    permissionsConnection(description: $description first: $first groupBy: $groupBy id: $id last: $last level: $level name: $name ofTypeName: $ofTypeName offset: $offset orderBy: $orderBy realm: $realm role: $role totalCount: $totalCount) @skipNullArguments(if: $skipNullArguments) {
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    permissionsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name ofTypeName: $ofTypeName description: $description level: $level role: $role realm: $realm totalCount: $totalCount) @skipNullArguments(if: $skipNullArguments) {
       totalCount
       edges {
         node {
-          createGroupId
-          createTime
-          createUserId
-          description
           id
-          isDeprecated
-          level
           name
           ofTypeName
-          realmId
-          roleId
-          updateTime
-          updateUserId
+          description
+          level
+          isDeprecated
           version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
+          roleId
         }
       }
     }

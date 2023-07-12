@@ -1,35 +1,35 @@
-mutation Mutation_user_roles($user_id: ID, $user_roles: [RoleInput], $composites: RoleExpression, $description: StringExpression, $first: Int, $groupBy: [String!], $id: StringExpression, $last: Int, $name: StringExpression, $offset: Int, $orderBy: RoleOrderBy, $permissions: PermissionExpression, $realm: RealmExpression, $totalCount: IntExpression, $users: UserExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+mutation Mutation_user_roles($user_id: ID, $user_roles: [RoleInput], $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
   user(id: $user_id roles: $user_roles) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
-    createGroupId
-    createTime
-    createUserId
-    disable
-    email
     id
-    isDeprecated
+    name
     lastName
     login
-    name
     password
-    realmId
-    updateTime
-    updateUserId
+    email
+    disable
+    isDeprecated
     version
-    rolesConnection(composites: $composites description: $description first: $first groupBy: $groupBy id: $id last: $last name: $name offset: $offset orderBy: $orderBy permissions: $permissions realm: $realm totalCount: $totalCount users: $users) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    rolesConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name description: $description users: $users composites: $composites permissions: $permissions realm: $realm totalCount: $totalCount) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
       totalCount
       edges {
         node {
-          createGroupId
-          createTime
-          createUserId
-          description
           id
-          isDeprecated
           name
-          realmId
-          updateTime
-          updateUserId
+          description
+          isDeprecated
           version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
         }
       }
     }

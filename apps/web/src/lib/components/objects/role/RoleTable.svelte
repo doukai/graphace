@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import { ObjectTd, StringTh, StringTd, TimestampTh, TimestampTd, IDTh, IDTd, BooleanTh, BooleanTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, IDTh, IDTd, StringTh, StringTd, BooleanTh, BooleanTd, IntTh, IntTd, TimestampTh, TimestampTd } from '@graphace/ui-graphql/components/table';
 	import { Card } from '@graphace/ui/components/card';
-	import { Table, TableHead, TableLoading } from '@graphace/ui/components/table';
+	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
-	import LL from '~/i18n/i18n-svelte';
+	import LL from '$i18n/i18n-svelte';
 	import {
 		Conditional,
 		Operator,
@@ -69,7 +69,7 @@
 			then: (data) => {},
 			catch: (errors) => {
 				console.error(errors);
-				notifications.error($LL.message.requestFailed());
+				notifications.error($LL.web.message.requestFailed());
 			}
 		});
 	};
@@ -78,20 +78,20 @@
 		let args: QueryTypeRoleListArgs = {};
 		if (searchValue) {
 			args.cond = Conditional.OR;
-			args.createGroupId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.createUserId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.description = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.name = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.description = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.realmId = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.createUserId = { opr: Operator.LK, val: `%${searchValue}%` };
 			args.updateUserId = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.createGroupId = { opr: Operator.LK, val: `%${searchValue}%` };
 		} else {
 			args.cond = undefined;
-			args.createGroupId = undefined;
-			args.createUserId = undefined;
-			args.description = undefined;
 			args.name = undefined;
+			args.description = undefined;
 			args.realmId = undefined;
+			args.createUserId = undefined;
 			args.updateUserId = undefined;
+			args.createGroupId = undefined;
 		}
 
 		dispatch('fetch', {
@@ -99,7 +99,7 @@
 			then: (data) => {},
 			catch: (errors) => {
 				console.error(errors);
-				notifications.error($LL.message.requestFailed());
+				notifications.error($LL.web.message.requestFailed());
 			}
 		});
 	};
@@ -109,11 +109,11 @@
 			dispatch('mutation', {
 				args,
 				then: (data) => {
-					notifications.success($LL.message.saveSuccess());
+					notifications.success($LL.web.message.saveSuccess());
 				},
 				catch: (errors) => {
 					console.error(errors);
-					notifications.error($LL.message.saveFailed());
+					notifications.error($LL.web.message.saveFailed());
 				}
 			});
 		}
@@ -124,12 +124,12 @@
 			args: { id: id, isDeprecated: true },
 			update: true,
 			then: (data) => {
-				notifications.success($LL.message.removeSuccess());
+				notifications.success($LL.web.message.removeSuccess());
 				query();
 			},
 			catch: (errors) => {
 				console.error(errors);
-				notifications.error($LL.message.removeFailed());
+				notifications.error($LL.web.message.removeFailed());
 			}
 		});
 	}
@@ -142,12 +142,12 @@
 			},
 			update: true,
 			then: (data) => {
-				notifications.success($LL.message.removeSuccess());
+				notifications.success($LL.web.message.removeSuccess());
 				query();
 			},
 			catch: (errors) => {
 				console.error(errors);
-				notifications.error($LL.message.removeFailed());
+				notifications.error($LL.web.message.removeFailed());
 			}
 		});
 	};
@@ -162,8 +162,8 @@
 		on:save={() => dispatch('save', { nodes })}
 		on:removeRows={() => {
 			messageBoxs.open({
-				title: $LL.components.graphql.table.removeModalTitle(),
-				buttonName: $LL.components.graphql.table.removeBtn(),
+				title: $LL.web.components.graphql.table.removeModalTitle(),
+				buttonName: $LL.web.components.graphql.table.removeBtn(),
 				buttonType: 'error',
 				confirm: () => {
 					removeRows();
@@ -195,11 +195,44 @@
 						/>
 					</label>
 				</th>
-				<td>compositesConnection</td>
+				<IDTh
+					name="id"
+					bind:expression={args.id}
+					bind:sort={orderBy.id}
+					on:filter={query}
+				/>
 				<StringTh
-					name="createGroupId"
-					bind:expression={args.createGroupId}
-					bind:sort={orderBy.createGroupId}
+					name="name"
+					bind:expression={args.name}
+					bind:sort={orderBy.name}
+					on:filter={query}
+				/>
+				<StringTh
+					name="description"
+					bind:expression={args.description}
+					bind:sort={orderBy.description}
+					on:filter={query}
+				/>
+				<td>users</td>
+				<td>permissions</td>
+				<td>realm</td>
+				<td>isDeprecated</td>
+				<IntTh
+					name="version"
+					bind:expression={args.version}
+					bind:sort={orderBy.version}
+					on:filter={query}
+				/>
+				<StringTh
+					name="realmId"
+					bind:expression={args.realmId}
+					bind:sort={orderBy.realmId}
+					on:filter={query}
+				/>
+				<StringTh
+					name="createUserId"
+					bind:expression={args.createUserId}
+					bind:sort={orderBy.createUserId}
 					on:filter={query}
 				/>
 				<TimestampTh
@@ -209,41 +242,11 @@
 					on:filter={query}
 				/>
 				<StringTh
-					name="createUserId"
-					bind:expression={args.createUserId}
-					bind:sort={orderBy.createUserId}
+					name="updateUserId"
+					bind:expression={args.updateUserId}
+					bind:sort={orderBy.updateUserId}
 					on:filter={query}
 				/>
-				<StringTh
-					name="description"
-					bind:expression={args.description}
-					bind:sort={orderBy.description}
-					on:filter={query}
-				/>
-				<IDTh
-					name="id"
-					bind:expression={args.id}
-					bind:sort={orderBy.id}
-					on:filter={query}
-				/>
-				<td>isDeprecated</td>
-				<StringTh
-					name="name"
-					bind:expression={args.name}
-					bind:sort={orderBy.name}
-					on:filter={query}
-				/>
-				<td>permissions</td>
-				<td>permissionsConnection</td>
-				<td>realm</td>
-				<StringTh
-					name="realmId"
-					bind:expression={args.realmId}
-					bind:sort={orderBy.realmId}
-					on:filter={query}
-				/>
-				<td>roleComposite</td>
-				<td>roleCompositeConnection</td>
 				<TimestampTh
 					name="updateTime"
 					bind:expression={args.updateTime}
@@ -251,21 +254,13 @@
 					on:filter={query}
 				/>
 				<StringTh
-					name="updateUserId"
-					bind:expression={args.updateUserId}
-					bind:sort={orderBy.updateUserId}
+					name="createGroupId"
+					bind:expression={args.createGroupId}
+					bind:sort={orderBy.createGroupId}
 					on:filter={query}
 				/>
 				<td>userRole</td>
-				<td>userRoleConnection</td>
-				<td>users</td>
-				<td>usersConnection</td>
-				<IntTh
-					name="version"
-					bind:expression={args.version}
-					bind:sort={orderBy.version}
-					on:filter={query}
-				/>
+				<td>roleComposite</td>
 				<th />
 			</tr>
 		</thead>
@@ -282,12 +277,50 @@
 										<input type="checkbox" class="checkbox" bind:checked={selectedRows[node.id]} />
 									</label>
 								</th>
-								<ObjectTd name="compositesConnection" errors={errors[row]?.iterms?.compositesConnection} path={`${node.id}/composites-connection`} on:gotoField />
+								<IDTd
+									name="id"
+									bind:value={node.id}
+									readonly
+									errors={errors[row]?.iterms?.id}
+								/>
 								<StringTd
-									name="createGroupId"
-									bind:value={node.createGroupId}
-									on:save={() => updateField({ id: node?.id, createGroupId: node?.createGroupId })}
-									errors={errors[row]?.iterms?.createGroupId}
+									name="name"
+									bind:value={node.name}
+									on:save={() => updateField({ id: node?.id, name: node?.name })}
+									errors={errors[row]?.iterms?.name}
+								/>
+								<StringTd
+									name="description"
+									bind:value={node.description}
+									on:save={() => updateField({ id: node?.id, description: node?.description })}
+									errors={errors[row]?.iterms?.description}
+								/>
+								<ObjectTd name="users" errors={errors[row]?.iterms?.users} path={`${node.id}/users`} on:gotoField />
+								<ObjectTd name="permissions" errors={errors[row]?.iterms?.permissions} path={`${node.id}/permissions`} on:gotoField />
+								<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+								<BooleanTd
+									name="isDeprecated"
+									bind:value={node.isDeprecated}
+									on:save={() => updateField({ id: node?.id, isDeprecated: node?.isDeprecated })}
+									errors={errors[row]?.iterms?.isDeprecated}
+								/>
+								<IntTd
+									name="version"
+									bind:value={node.version}
+									on:save={() => updateField({ id: node?.id, version: node?.version })}
+									errors={errors[row]?.iterms?.version}
+								/>
+								<StringTd
+									name="realmId"
+									bind:value={node.realmId}
+									on:save={() => updateField({ id: node?.id, realmId: node?.realmId })}
+									errors={errors[row]?.iterms?.realmId}
+								/>
+								<StringTd
+									name="createUserId"
+									bind:value={node.createUserId}
+									on:save={() => updateField({ id: node?.id, createUserId: node?.createUserId })}
+									errors={errors[row]?.iterms?.createUserId}
 								/>
 								<TimestampTd
 									name="createTime"
@@ -296,46 +329,11 @@
 									errors={errors[row]?.iterms?.createTime}
 								/>
 								<StringTd
-									name="createUserId"
-									bind:value={node.createUserId}
-									on:save={() => updateField({ id: node?.id, createUserId: node?.createUserId })}
-									errors={errors[row]?.iterms?.createUserId}
+									name="updateUserId"
+									bind:value={node.updateUserId}
+									on:save={() => updateField({ id: node?.id, updateUserId: node?.updateUserId })}
+									errors={errors[row]?.iterms?.updateUserId}
 								/>
-								<StringTd
-									name="description"
-									bind:value={node.description}
-									on:save={() => updateField({ id: node?.id, description: node?.description })}
-									errors={errors[row]?.iterms?.description}
-								/>
-								<IDTd
-									name="id"
-									bind:value={node.id}
-									readonly
-									errors={errors[row]?.iterms?.id}
-								/>
-								<BooleanTd
-									name="isDeprecated"
-									bind:value={node.isDeprecated}
-									on:save={() => updateField({ id: node?.id, isDeprecated: node?.isDeprecated })}
-									errors={errors[row]?.iterms?.isDeprecated}
-								/>
-								<StringTd
-									name="name"
-									bind:value={node.name}
-									on:save={() => updateField({ id: node?.id, name: node?.name })}
-									errors={errors[row]?.iterms?.name}
-								/>
-								<ObjectTd name="permissions" errors={errors[row]?.iterms?.permissions} path={`${node.id}/permissions`} on:gotoField />
-								<ObjectTd name="permissionsConnection" errors={errors[row]?.iterms?.permissionsConnection} path={`${node.id}/permissions-connection`} on:gotoField />
-								<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
-								<StringTd
-									name="realmId"
-									bind:value={node.realmId}
-									on:save={() => updateField({ id: node?.id, realmId: node?.realmId })}
-									errors={errors[row]?.iterms?.realmId}
-								/>
-								<ObjectTd name="roleComposite" errors={errors[row]?.iterms?.roleComposite} path={`${node.id}/role-composite`} on:gotoField />
-								<ObjectTd name="roleCompositeConnection" errors={errors[row]?.iterms?.roleCompositeConnection} path={`${node.id}/role-composite-connection`} on:gotoField />
 								<TimestampTd
 									name="updateTime"
 									bind:value={node.updateTime}
@@ -343,24 +341,16 @@
 									errors={errors[row]?.iterms?.updateTime}
 								/>
 								<StringTd
-									name="updateUserId"
-									bind:value={node.updateUserId}
-									on:save={() => updateField({ id: node?.id, updateUserId: node?.updateUserId })}
-									errors={errors[row]?.iterms?.updateUserId}
+									name="createGroupId"
+									bind:value={node.createGroupId}
+									on:save={() => updateField({ id: node?.id, createGroupId: node?.createGroupId })}
+									errors={errors[row]?.iterms?.createGroupId}
 								/>
 								<ObjectTd name="userRole" errors={errors[row]?.iterms?.userRole} path={`${node.id}/user-role`} on:gotoField />
-								<ObjectTd name="userRoleConnection" errors={errors[row]?.iterms?.userRoleConnection} path={`${node.id}/user-role-connection`} on:gotoField />
-								<ObjectTd name="users" errors={errors[row]?.iterms?.users} path={`${node.id}/users`} on:gotoField />
-								<ObjectTd name="usersConnection" errors={errors[row]?.iterms?.usersConnection} path={`${node.id}/users-connection`} on:gotoField />
-								<IntTd
-									name="version"
-									bind:value={node.version}
-									on:save={() => updateField({ id: node?.id, version: node?.version })}
-									errors={errors[row]?.iterms?.version}
-								/>
+								<ObjectTd name="roleComposite" errors={errors[row]?.iterms?.roleComposite} path={`${node.id}/role-composite`} on:gotoField />
 								<th class="z-10">
 									<div class="flex space-x-1">
-										<div class="tooltip" data-tip={$LL.components.graphql.table.editBtn()}>
+										<div class="tooltip" data-tip={$LL.web.components.graphql.table.editBtn()}>
 											<button
 												class="btn btn-square btn-ghost btn-xs"
 												on:click={(e) => {
@@ -373,14 +363,14 @@
 												<Icon src={PencilSquare} solid />
 											</button>
 										</div>
-										<div class="tooltip" data-tip={$LL.components.graphql.table.removeBtn()}>
+										<div class="tooltip" data-tip={$LL.web.components.graphql.table.removeBtn()}>
 											<button
 												class="btn btn-square btn-ghost btn-xs"
 												on:click={(e) => {
 													e.preventDefault();
 													messageBoxs.open({
-														title: $LL.components.graphql.table.removeModalTitle(),
-														buttonName: $LL.components.graphql.table.removeBtn(),
+														title: $LL.web.components.graphql.table.removeModalTitle(),
+														buttonName: $LL.web.components.graphql.table.removeBtn(),
 														buttonType: 'error',
 														confirm: () => {
 															if (node?.id) {
@@ -399,6 +389,8 @@
 							</tr>
 						{/if}
 					{/each}
+				{:else}
+					<TableEmpty cols={11 + 2}/>
 				{/if}
 			</tbody>
 		{/if}

@@ -1,15 +1,15 @@
-mutation Mutation_roleList($composites: [RoleInput], $createGroupId: String, $createTime: Timestamp, $createUserId: String, $description: String, $id: ID, $isDeprecated: Boolean, $list: [RoleInput], $name: String, $permissions: [PermissionInput], $realm: RealmInput, $realmId: String, $roleComposite: [RoleCompositeInput], $updateTime: Timestamp, $updateUserId: String, $userRole: [UserRoleInput], $users: [UserInput], $version: Int, $where: RoleExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
-  roleList(composites: $composites createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId description: $description id: $id isDeprecated: $isDeprecated list: $list name: $name permissions: $permissions realm: $realm realmId: $realmId roleComposite: $roleComposite updateTime: $updateTime updateUserId: $updateUserId userRole: $userRole users: $users version: $version where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
-    createGroupId
-    createTime
-    createUserId
-    description
+mutation Mutation_roleList($id: ID, $name: String, $description: String, $users: [UserInput], $composites: [RoleInput], $permissions: [PermissionInput], $realm: RealmInput, $isDeprecated: Boolean, $version: Int, $realmId: String, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $userRole: [UserRoleInput], $roleComposite: [RoleCompositeInput], $list: [RoleInput], $where: RoleExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+  roleList(id: $id name: $name description: $description users: $users composites: $composites permissions: $permissions realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userRole: $userRole roleComposite: $roleComposite list: $list where: $where) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
-    isDeprecated
     name
-    realmId
-    updateTime
-    updateUserId
+    description
+    isDeprecated
     version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
   }
 }

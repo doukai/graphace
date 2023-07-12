@@ -1,19 +1,19 @@
-query Query_groupConnection($after: ID, $before: ID, $cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $exs: [GroupExpression], $first: Int, $groupBy: [String!], $groupRole: GroupRoleExpression, $id: StringExpression, $includeDeprecated: Boolean, $last: Int, $name: StringExpression, $offset: Int, $orderBy: GroupOrderBy, $parent: GroupExpression, $parentId: IntExpression, $realm: RealmExpression, $realmId: StringExpression, $roles: RoleExpression, $subGroups: GroupExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userGroup: UserGroupExpression, $users: UserExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
-  groupConnection(after: $after before: $before cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId exs: $exs first: $first groupBy: $groupBy groupRole: $groupRole id: $id includeDeprecated: $includeDeprecated last: $last name: $name offset: $offset orderBy: $orderBy parent: $parent parentId: $parentId realm: $realm realmId: $realmId roles: $roles subGroups: $subGroups updateTime: $updateTime updateUserId: $updateUserId userGroup: $userGroup users: $users version: $version) @skipNullArguments(if: $skipNullArguments) {
+query Query_groupConnection($id: StringExpression, $name: StringExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $parentId: IntExpression, $userGroup: UserGroupExpression, $groupRole: GroupRoleExpression, $orderBy: GroupOrderBy, $groupBy: [String!], $cond: Conditional, $exs: [GroupExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID, $skipNullArguments: Boolean = true) {
+  groupConnection(id: $id name: $name parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId parentId: $parentId userGroup: $userGroup groupRole: $groupRole orderBy: $orderBy groupBy: $groupBy cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before) @skipNullArguments(if: $skipNullArguments) {
     totalCount
     edges {
       node {
-        createGroupId
-        createTime
-        createUserId
         id
-        isDeprecated
         name
-        parentId
-        realmId
-        updateTime
-        updateUserId
+        isDeprecated
         version
+        realmId
+        createUserId
+        createTime
+        updateUserId
+        updateTime
+        createGroupId
+        parentId
       }
     }
   }

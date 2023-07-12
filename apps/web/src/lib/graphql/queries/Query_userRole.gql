@@ -1,15 +1,15 @@
-query Query_userRole($cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $exs: [UserRoleExpression], $from: UserExpression, $id: StringExpression, $includeDeprecated: Boolean, $realmId: StringExpression, $roleId: IntExpression, $to: RoleExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $userId: IntExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
-  userRole(cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId exs: $exs from: $from id: $id includeDeprecated: $includeDeprecated realmId: $realmId roleId: $roleId to: $to updateTime: $updateTime updateUserId: $updateUserId userId: $userId version: $version) @skipNullArguments(if: $skipNullArguments) {
-    createGroupId
-    createTime
-    createUserId
+query Query_userRole($id: StringExpression, $userId: IntExpression, $from: UserExpression, $roleId: IntExpression, $to: RoleExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $cond: Conditional, $exs: [UserRoleExpression], $skipNullArguments: Boolean = true) {
+  userRole(id: $id userId: $userId from: $from roleId: $roleId to: $to includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId cond: $cond exs: $exs) @skipNullArguments(if: $skipNullArguments) {
     id
-    isDeprecated
-    realmId
-    roleId
-    updateTime
-    updateUserId
     userId
+    roleId
+    isDeprecated
     version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
   }
 }

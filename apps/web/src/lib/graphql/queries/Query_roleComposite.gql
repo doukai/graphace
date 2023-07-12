@@ -1,15 +1,15 @@
-query Query_roleComposite($compositeId: IntExpression, $cond: Conditional, $createGroupId: StringExpression, $createTime: StringExpression, $createUserId: StringExpression, $exs: [RoleCompositeExpression], $from: RoleExpression, $id: StringExpression, $includeDeprecated: Boolean, $realmId: StringExpression, $roleId: IntExpression, $to: RoleExpression, $updateTime: StringExpression, $updateUserId: StringExpression, $version: IntExpression, $skipNullArguments: Boolean = true) {
-  roleComposite(compositeId: $compositeId cond: $cond createGroupId: $createGroupId createTime: $createTime createUserId: $createUserId exs: $exs from: $from id: $id includeDeprecated: $includeDeprecated realmId: $realmId roleId: $roleId to: $to updateTime: $updateTime updateUserId: $updateUserId version: $version) @skipNullArguments(if: $skipNullArguments) {
-    compositeId
-    createGroupId
-    createTime
-    createUserId
+query Query_roleComposite($id: StringExpression, $roleId: IntExpression, $from: RoleExpression, $compositeId: IntExpression, $to: RoleExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $cond: Conditional, $exs: [RoleCompositeExpression], $skipNullArguments: Boolean = true) {
+  roleComposite(id: $id roleId: $roleId from: $from compositeId: $compositeId to: $to includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId cond: $cond exs: $exs) @skipNullArguments(if: $skipNullArguments) {
     id
-    isDeprecated
-    realmId
     roleId
-    updateTime
-    updateUserId
+    compositeId
+    isDeprecated
     version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
   }
 }

@@ -11,7 +11,7 @@
 	import { Bars4, AdjustmentsVertical } from '@steeze-ui/heroicons';
 	import { LocaleSelect, ThemeSelect } from '~/lib/components/select';
 	import { Search } from '~/lib/components/input';
-	import { setLocale } from '~/i18n/i18n-svelte';
+	import { setLocale } from '$i18n/i18n-svelte';
 	import type { LayoutData } from './$types';
 
 	export let data: LayoutData;
