@@ -13,7 +13,7 @@ const zh: NamespaceWebTranslation = {
         removeFailed: "删除失败",
     },
     components: {
-        ThemeSelect: {
+        themeSelect: {
             btn: "主题",
             themes: {
                 light: "明亮",
@@ -47,12 +47,10 @@ const zh: NamespaceWebTranslation = {
                 winter: "冬天"
             },
         },
-        graphql: {
-            table: {
-                removeModalTitle: "确认删除?",
-                editBtn: "编辑",
-                removeBtn: "删除"
-            }
+        table: {
+            removeModalTitle: "确认删除?",
+            editBtn: "编辑",
+            removeBtn: "删除"
         }
     }
 }

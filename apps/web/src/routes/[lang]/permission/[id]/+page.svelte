@@ -23,7 +23,7 @@
 			catch: (errors: Errors) => void;
 		}>
 	) => {
-		validate('permission', event.detail.args, event.detail.update, $locale)
+		validate('Permission', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_permission.mutate({ ...event.detail.args, update: event.detail.update })

@@ -25,7 +25,7 @@
 			catch: (errors: Errors) => void;
 		}>
 	) => {
-		validate('user-role', event.detail.args, event.detail.update, $locale)
+		validate('UserRole', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				Mutation_userRole.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {

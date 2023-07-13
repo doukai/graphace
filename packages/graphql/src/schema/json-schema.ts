@@ -41,12 +41,13 @@ export async function validateUpdate(uri: string, data: object | object[], local
 }
 
 export async function validate(uri: string, data: object | object[], update: boolean | undefined, locale: Language = "en") {
+    console.log(JSON.stringify(data));
     if (Array.isArray(data) && update) {
-        uri += '-list-update';
+        uri += 'ListUpdate';
     } else if (Array.isArray(data)) {
-        uri += '-list';
+        uri += 'List';
     } else if (update) {
-        uri += "-update";
+        uri += "Update";
     }
 
     let validate = ajv.getSchema(uri);
@@ -54,11 +55,12 @@ export async function validate(uri: string, data: object | object[], update: boo
         const schema = await loadSchema(uri);
         validate = await ajv.compileAsync(schema);
     }
+    console.log(validate);
 
     return new Promise((resolve: (data: object | object[]) => void, reject: (errors: Record<string, Errors>) => void) => {
         if (validate) {
-            const validateData = removeEmpty(data);
-            const valid = validate(validateData);
+            // const validateData = removeEmpty(data);
+            const valid = validate(data);
             if (!valid) {
                 localize[locale](validate.errors);
                 if (validate.errors) {
@@ -81,13 +83,15 @@ export async function validate(uri: string, data: object | object[], update: boo
                     );
                     console.error(ajv.errorsText(validate.errors, { separator: '\n' }));
                     reject(errorsTree);
+                } else {
+                    throw new Error('validate errors undefined');
                 }
-                throw new Error('validate errors undefined');
             } else {
-                resolve(validateData);
+                resolve(data);
             }
+        } else {
+            throw new Error('validate undefined');
         }
-        throw new Error('validate undefined');
     });
 }
 

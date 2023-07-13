@@ -28,6 +28,7 @@
 		if (node) {
 			dispatch('mutation', {
 				args: node,
+				update: true,
 				then: (data) => {
 					node = data;
 					notifications.success($LL.web.message.saveSuccess());
@@ -65,8 +66,8 @@
 		on:save={save}
 		on:remove={() =>
 			messageBoxs.open({
-				title: $LL.web.components.graphql.table.removeModalTitle(),
-				buttonName: $LL.web.components.graphql.table.removeBtn(),
+				title: $LL.web.components.table.removeModalTitle(),
+				buttonName: $LL.web.components.table.removeBtn(),
 				buttonType: 'error',
 				confirm: () => {
 					remove();

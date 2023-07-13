@@ -13,7 +13,7 @@ const en: BaseTranslation = {
         removeFailed: "Remove failed",
     },
     components: {
-        ThemeSelect: {
+        themeSelect: {
             btn: "Theme",
             themes: {
                 light: "light",
@@ -47,12 +47,10 @@ const en: BaseTranslation = {
                 winter: "winter"
             }
         },
-        graphql: {
-            table: {
-                removeModalTitle: "Remove row?",
-                editBtn: "Edit",
-                removeBtn: "Remove",
-            }
+        table: {
+            removeModalTitle: "Remove row?",
+            editBtn: "Edit",
+            removeBtn: "Remove",
         }
     }
 }

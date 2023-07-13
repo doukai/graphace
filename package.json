@@ -16,7 +16,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
-    "daemon-clean": "turbo daemon clean",
+    "daemon:clean": "turbo daemon clean",
     "login": "turbo login",
     "clean": "npx npkill",
     "lint": "turbo run lint",

@@ -4,7 +4,7 @@ import * as changeCase from "change-case";
 import { assertObjectType, isEnumType, isListType, isObjectType, type GraphQLSchema } from 'graphql';
 import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getScalarNames, getEnumNames, getEnumValues } from 'graphace-codegen-commons';
 import type { Template } from 'graphace-codegen-commons';
-import { buildFileContent } from "./builder";
+import { buildFileContent } from "./builder.js";
 
 type Render = (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => Types.ComplexPluginOutput
 

@@ -25,7 +25,7 @@
 			catch: (errors: Errors) => void;
 		}>
 	) => {
-		validate('role-composite', event.detail.args, event.detail.update, $locale)
+		validate('RoleComposite', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				Mutation_roleComposite.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {

@@ -275,7 +275,7 @@ export type NamespaceWebTranslation = {
 		removeFailed: string
 	}
 	components: {
-		ThemeSelect: {
+		themeSelect: {
 			/**
 			 * T​h​e​m​e
 			 */
@@ -399,21 +399,19 @@ export type NamespaceWebTranslation = {
 				winter: string
 			}
 		}
-		graphql: {
-			table: {
-				/**
-				 * R​e​m​o​v​e​ ​r​o​w​?
-				 */
-				removeModalTitle: string
-				/**
-				 * E​d​i​t
-				 */
-				editBtn: string
-				/**
-				 * R​e​m​o​v​e
-				 */
-				removeBtn: string
-			}
+		table: {
+			/**
+			 * R​e​m​o​v​e​ ​r​o​w​?
+			 */
+			removeModalTitle: string
+			/**
+			 * E​d​i​t
+			 */
+			editBtn: string
+			/**
+			 * R​e​m​o​v​e
+			 */
+			removeBtn: string
 		}
 	}
 }
@@ -694,7 +692,7 @@ export type TranslationFunctions = {
 			removeFailed: () => LocalizedString
 		}
 		components: {
-			ThemeSelect: {
+			themeSelect: {
 				/**
 				 * Theme
 				 */
@@ -818,21 +816,19 @@ export type TranslationFunctions = {
 					winter: () => LocalizedString
 				}
 			}
-			graphql: {
-				table: {
-					/**
-					 * Remove row?
-					 */
-					removeModalTitle: () => LocalizedString
-					/**
-					 * Edit
-					 */
-					editBtn: () => LocalizedString
-					/**
-					 * Remove
-					 */
-					removeBtn: () => LocalizedString
-				}
+			table: {
+				/**
+				 * Remove row?
+				 */
+				removeModalTitle: () => LocalizedString
+				/**
+				 * Edit
+				 */
+				editBtn: () => LocalizedString
+				/**
+				 * Remove
+				 */
+				removeBtn: () => LocalizedString
 			}
 		}
 	}

@@ -9,119 +9,119 @@
 	export let contentClasses = 'mt-16';
 	let themes = [
 		{
-			name: $LL.web.components.ThemeSelect.themes.light,
+			name: $LL.web.components.themeSelect.themes.light,
 			id: 'light'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.dark,
+			name: $LL.web.components.themeSelect.themes.dark,
 			id: 'dark'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.cupcake,
+			name: $LL.web.components.themeSelect.themes.cupcake,
 			id: 'cupcake'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.bumblebee,
+			name: $LL.web.components.themeSelect.themes.bumblebee,
 			id: 'bumblebee'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.emerald,
+			name: $LL.web.components.themeSelect.themes.emerald,
 			id: 'emerald'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.corporate,
+			name: $LL.web.components.themeSelect.themes.corporate,
 			id: 'corporate'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.synthwave,
+			name: $LL.web.components.themeSelect.themes.synthwave,
 			id: 'synthwave'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.retro,
+			name: $LL.web.components.themeSelect.themes.retro,
 			id: 'retro'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.cyberpunk,
+			name: $LL.web.components.themeSelect.themes.cyberpunk,
 			id: 'cyberpunk'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.valentine,
+			name: $LL.web.components.themeSelect.themes.valentine,
 			id: 'valentine'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.halloween,
+			name: $LL.web.components.themeSelect.themes.halloween,
 			id: 'halloween'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.garden,
+			name: $LL.web.components.themeSelect.themes.garden,
 			id: 'garden'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.forest,
+			name: $LL.web.components.themeSelect.themes.forest,
 			id: 'forest'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.aqua,
+			name: $LL.web.components.themeSelect.themes.aqua,
 			id: 'aqua'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.lofi,
+			name: $LL.web.components.themeSelect.themes.lofi,
 			id: 'lofi'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.pastel,
+			name: $LL.web.components.themeSelect.themes.pastel,
 			id: 'pastel'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.fantasy,
+			name: $LL.web.components.themeSelect.themes.fantasy,
 			id: 'fantasy'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.wireframe,
+			name: $LL.web.components.themeSelect.themes.wireframe,
 			id: 'wireframe'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.black,
+			name: $LL.web.components.themeSelect.themes.black,
 			id: 'black'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.luxury,
+			name: $LL.web.components.themeSelect.themes.luxury,
 			id: 'luxury'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.dracula,
+			name: $LL.web.components.themeSelect.themes.dracula,
 			id: 'dracula'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.cmyk,
+			name: $LL.web.components.themeSelect.themes.cmyk,
 			id: 'cmyk'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.autumn,
+			name: $LL.web.components.themeSelect.themes.autumn,
 			id: 'autumn'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.business,
+			name: $LL.web.components.themeSelect.themes.business,
 			id: 'business'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.acid,
+			name: $LL.web.components.themeSelect.themes.acid,
 			id: 'acid'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.lemonade,
+			name: $LL.web.components.themeSelect.themes.lemonade,
 			id: 'lemonade'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.night,
+			name: $LL.web.components.themeSelect.themes.night,
 			id: 'night'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.coffee,
+			name: $LL.web.components.themeSelect.themes.coffee,
 			id: 'coffee'
 		},
 		{
-			name: $LL.web.components.ThemeSelect.themes.winter,
+			name: $LL.web.components.themeSelect.themes.winter,
 			id: 'winter'
 		}
 	];
@@ -135,7 +135,7 @@
 	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 	<div tabindex="0" class={`btn normal-case ${btnClasses}`}>
 		<Icon src={Swatch} class="h-5 w-5 stroke-current" />
-		<span class="hidden font-normal md:inline">{$LL.web.components.ThemeSelect.btn()}</span>
+		<span class="hidden font-normal md:inline">{$LL.web.components.themeSelect.btn()}</span>
 		<Icon src={ChevronDown} class="hidden h-2 w-2 fill-current opacity-60 sm:inline-block" />
 	</div>
 	<div

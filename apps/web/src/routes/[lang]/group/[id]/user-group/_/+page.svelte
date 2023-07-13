@@ -26,7 +26,7 @@
 			catch: (errors: Errors) => void;
 		}>
 	) => {
-		validate('user-group', event.detail.args, true, $locale)
+		validate('UserGroup', event.detail.args, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_group_userGroup.mutate({

@@ -26,7 +26,7 @@
 			catch: (errors: Errors) => void;
 		}>
 	) => {
-		validate('{{ objectFieldTypeName | paramCase }}', event.detail.args, true, $locale)
+		validate('{{ objectFieldTypeName }}', event.detail.args, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_{{ name | camelCase }}_{{ objectFieldName }}.mutate({

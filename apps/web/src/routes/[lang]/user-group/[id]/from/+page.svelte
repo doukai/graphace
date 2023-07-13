@@ -30,7 +30,7 @@
 			catch: (errors: Errors) => void;
 		}>
 	) => {
-		validate('user', event.detail.args, event.detail.update, $locale)
+		validate('User', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_userGroup_from.mutate({

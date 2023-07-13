@@ -30,7 +30,7 @@
 			catch: (errors: Errors) => void;
 		}>
 	) => {
-		validate('realm', event.detail.args, event.detail.update, $locale)
+		validate('Realm', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_permission_realm.mutate({

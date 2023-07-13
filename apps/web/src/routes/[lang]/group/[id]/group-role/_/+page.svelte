@@ -26,7 +26,7 @@
 			catch: (errors: Errors) => void;
 		}>
 	) => {
-		validate('group-role', event.detail.args, true, $locale)
+		validate('GroupRole', event.detail.args, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_group_groupRole.mutate({

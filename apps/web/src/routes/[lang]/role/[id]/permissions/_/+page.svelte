@@ -26,7 +26,7 @@
 			catch: (errors: Errors) => void;
 		}>
 	) => {
-		validate('permission', event.detail.args, true, $locale)
+		validate('Permission', event.detail.args, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_role_permissions.mutate({

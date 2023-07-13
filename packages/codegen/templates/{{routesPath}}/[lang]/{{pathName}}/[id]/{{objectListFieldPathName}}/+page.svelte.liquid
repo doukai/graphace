@@ -62,9 +62,9 @@
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.{{ idName }})?.indexOf(event.detail.args.{{ idName }});
-		validate('{{ name | paramCase }}', event.detail.args, event.detail.update, $locale)
+		validate('{{ name }}', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
-				if (row) {
+				if (row && errors[row]) {
 					errors[row].iterms = {};
 				}
 				Mutation_{{ objectFieldTypeName | camelCase }}.mutate({ ...event.detail.args, update: event.detail.update })
@@ -77,7 +77,7 @@
 			})
 			.catch((validErrors) => {
 				if (row) {
-					errors[row].iterms = validErrors;
+					errors[row] = { errors: errors[row]?.errors, iterms: validErrors };
 				}
 			});
 	};

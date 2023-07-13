@@ -46,9 +46,9 @@
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
-		validate('role', event.detail.args, event.detail.update, $locale)
+		validate('Role', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
-				if (row) {
+				if (row && errors[row]) {
 					errors[row].iterms = {};
 				}
 				Mutation_userRole.mutate({ ...event.detail.args, update: event.detail.update })
@@ -61,7 +61,7 @@
 			})
 			.catch((validErrors) => {
 				if (row) {
-					errors[row].iterms = validErrors;
+					errors[row] = { errors: errors[row]?.errors, iterms: validErrors };
 				}
 			});
 	};

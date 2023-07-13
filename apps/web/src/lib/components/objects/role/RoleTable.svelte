@@ -108,6 +108,7 @@
 		if (args) {
 			dispatch('mutation', {
 				args,
+				update: true,
 				then: (data) => {
 					notifications.success($LL.web.message.saveSuccess());
 				},
@@ -162,8 +163,8 @@
 		on:save={() => dispatch('save', { nodes })}
 		on:removeRows={() => {
 			messageBoxs.open({
-				title: $LL.web.components.graphql.table.removeModalTitle(),
-				buttonName: $LL.web.components.graphql.table.removeBtn(),
+				title: $LL.web.components.table.removeModalTitle(),
+				buttonName: $LL.web.components.table.removeBtn(),
 				buttonType: 'error',
 				confirm: () => {
 					removeRows();
@@ -350,7 +351,7 @@
 								<ObjectTd name="roleComposite" errors={errors[row]?.iterms?.roleComposite} path={`${node.id}/role-composite`} on:gotoField />
 								<th class="z-10">
 									<div class="flex space-x-1">
-										<div class="tooltip" data-tip={$LL.web.components.graphql.table.editBtn()}>
+										<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
 											<button
 												class="btn btn-square btn-ghost btn-xs"
 												on:click={(e) => {
@@ -363,14 +364,14 @@
 												<Icon src={PencilSquare} solid />
 											</button>
 										</div>
-										<div class="tooltip" data-tip={$LL.web.components.graphql.table.removeBtn()}>
+										<div class="tooltip" data-tip={$LL.web.components.table.removeBtn()}>
 											<button
 												class="btn btn-square btn-ghost btn-xs"
 												on:click={(e) => {
 													e.preventDefault();
 													messageBoxs.open({
-														title: $LL.web.components.graphql.table.removeModalTitle(),
-														buttonName: $LL.web.components.graphql.table.removeBtn(),
+														title: $LL.web.components.table.removeModalTitle(),
+														buttonName: $LL.web.components.table.removeBtn(),
 														buttonType: 'error',
 														confirm: () => {
 															if (node?.id) {
