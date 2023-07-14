@@ -18,7 +18,6 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeGroupArgs;
-			update?: boolean;
 			then: (data: Group | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>

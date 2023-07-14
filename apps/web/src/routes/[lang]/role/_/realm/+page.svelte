@@ -18,7 +18,6 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeRealmArgs;
-			update?: boolean;
 			then: (data: Realm | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>

@@ -22,6 +22,7 @@
 		event: CustomEvent<{
 			args: MutationType{{ objectFieldTypeName }}Args;
 			update?: boolean;
+			skipNullArguments?: boolean;
 			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>
@@ -33,6 +34,7 @@
 					{{ name | camelCase }}_id: {{ idName }},
 					{{ name | camelCase }}_{{ objectFieldName }}: [event.detail.args],
 					update: true,
+					skipNullArguments: event.detail.skipNullArguments,
 					mergeToList: ['{{ objectFieldName }}']
 				})
 					.then((result) => {

@@ -26,6 +26,7 @@
 		event: CustomEvent<{
 			args: MutationTypeGroupArgs;
 			update?: boolean;
+			skipNullArguments?: boolean;
 			then: (data: Group | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>
@@ -36,7 +37,8 @@
 				Mutation_groupRole_from.mutate({
 					groupRole_id: groupRole?.id,
 					groupRole_from: event.detail.args,
-					update: event.detail.update
+					update: event.detail.update,
+					skipNullArguments: event.detail.skipNullArguments
 				})
 					.then((result) => {
 						event.detail.then(result?.data?.groupRole?.from);

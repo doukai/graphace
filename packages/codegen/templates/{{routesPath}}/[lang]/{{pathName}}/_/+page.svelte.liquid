@@ -21,13 +21,14 @@
 		event: CustomEvent<{
 			args: MutationType{{ name }}Args;
 			update?: boolean;
+			skipNullArguments?: boolean;
 			then: (data: {{ name }} | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>
 	) => {
 		validate('{{ name }}', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
-				Mutation_{{ name | camelCase }}.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_{{ name | camelCase }}.mutate({ ...event.detail.args, update: event.detail.update, skipNullArguments: event.detail.skipNullArguments })
 					.then((result) => {
 						event.detail.then(result?.data?.{{ name | camelCase }});
 					})

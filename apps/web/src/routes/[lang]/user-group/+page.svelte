@@ -35,6 +35,7 @@
 		event: CustomEvent<{
 			args: MutationTypeUserGroupArgs;
 			update?: boolean;
+			skipNullArguments?: boolean;
 			then: (data: UserGroup | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>
@@ -45,7 +46,7 @@
 				if (row && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_userGroup.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_userGroup.mutate({ ...event.detail.args, update: event.detail.update, skipNullArguments: event.detail.skipNullArguments })
 					.then((result) => {
 						event.detail.then(result?.data?.userGroup);
 					})

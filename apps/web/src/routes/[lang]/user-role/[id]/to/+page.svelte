@@ -26,6 +26,7 @@
 		event: CustomEvent<{
 			args: MutationTypeRoleArgs;
 			update?: boolean;
+			skipNullArguments?: boolean;
 			then: (data: Role | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>
@@ -36,7 +37,8 @@
 				Mutation_userRole_to.mutate({
 					userRole_id: userRole?.id,
 					userRole_to: event.detail.args,
-					update: event.detail.update
+					update: event.detail.update,
+					skipNullArguments: event.detail.skipNullArguments
 				})
 					.then((result) => {
 						event.detail.then(result?.data?.userRole?.to);

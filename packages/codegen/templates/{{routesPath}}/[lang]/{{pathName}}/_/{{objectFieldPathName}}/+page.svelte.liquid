@@ -18,7 +18,6 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationType{{ objectFieldTypeName }}Args;
-			update?: boolean;
 			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>

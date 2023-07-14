@@ -21,13 +21,14 @@
 		event: CustomEvent<{
 			args: MutationTypeUserRoleArgs;
 			update?: boolean;
+			skipNullArguments?: boolean;
 			then: (data: UserRole | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>
 	) => {
 		validate('UserRole', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
-				Mutation_userRole.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_userRole.mutate({ ...event.detail.args, update: event.detail.update, skipNullArguments: event.detail.skipNullArguments })
 					.then((result) => {
 						event.detail.then(result?.data?.userRole);
 					})

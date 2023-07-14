@@ -19,6 +19,7 @@
 		event: CustomEvent<{
 			args: MutationTypeUserGroupArgs;
 			update?: boolean;
+			skipNullArguments?: boolean;
 			then: (data: UserGroup | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>
@@ -26,7 +27,7 @@
 		validate('UserGroup', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_userGroup.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_userGroup.mutate({ ...event.detail.args, update: event.detail.update, skipNullArguments: event.detail.skipNullArguments })
 					.then((result) => {
 						event.detail.then(result?.data?.userGroup);
 					})

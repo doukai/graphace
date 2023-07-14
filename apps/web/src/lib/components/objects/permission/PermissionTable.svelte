@@ -33,6 +33,7 @@
 		mutation: {
 			args: MutationTypePermissionArgs;
 			update?: boolean;
+			skipNullArguments?: boolean;
 			then: (data: Permission | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		};

@@ -26,6 +26,7 @@
 		event: CustomEvent<{
 			args: MutationTypeRealmArgs;
 			update?: boolean;
+			skipNullArguments?: boolean;
 			then: (data: Realm | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>
@@ -36,7 +37,8 @@
 				Mutation_role_realm.mutate({
 					role_id: role?.id,
 					role_realm: event.detail.args,
-					update: event.detail.update
+					update: event.detail.update,
+					skipNullArguments: event.detail.skipNullArguments
 				})
 					.then((result) => {
 						event.detail.then(result?.data?.role?.realm);

@@ -31,6 +31,7 @@
 		mutation: {
 			args: MutationTypeUserGroupArgs;
 			update?: boolean;
+			skipNullArguments?: boolean;
 			then: (data: UserGroup | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		};

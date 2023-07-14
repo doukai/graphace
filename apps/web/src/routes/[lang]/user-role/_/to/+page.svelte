@@ -18,7 +18,6 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeRoleArgs;
-			update?: boolean;
 			then: (data: Role | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>

@@ -31,6 +31,7 @@
 		mutation: {
 			args: MutationTypeUserRoleArgs;
 			update?: boolean;
+			skipNullArguments?: boolean;
 			then: (data: UserRole | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		};
