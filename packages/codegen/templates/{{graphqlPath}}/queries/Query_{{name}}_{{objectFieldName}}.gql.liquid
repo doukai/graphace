@@ -2,12 +2,12 @@ query Query_{{ name }}_{{ objectField.name }}
   {%- if objectField.connectionField %}
   {%- assign connectionArgs = objectField.parentArgs | concat: objectField.connectionField.args %}
   {%- if connectionArgs.length > 0 -%}
-  ({% for arg in connectionArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% else %}, $skipNullArguments: Boolean = true{% endif %}{% endfor %})
+  ({% for arg in connectionArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% else %}, $skipNullArguments: Boolean = false{% endif %}{% endfor %})
   {%- endif %}
   {%- else %}
   {%- assign objectFieldArgs = objectField.parentArgs | concat: objectField.args %}
   {%- if objectFieldArgs.length > 0 -%}
-  ({% for arg in objectFieldArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% else %}, $skipNullArguments: Boolean = true{% endif %}{% endfor %})
+  ({% for arg in objectFieldArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% else %}, $skipNullArguments: Boolean = false{% endif %}{% endfor %})
   {%- endif %}
   {%- endif %} {
   {{ name }}
