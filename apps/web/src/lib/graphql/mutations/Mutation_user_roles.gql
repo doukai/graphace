@@ -1,4 +1,4 @@
-mutation Mutation_user_roles($user_id: ID, $user_roles: [RoleInput], $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+mutation Mutation_user_roles($user_id: ID, $user_roles: [RoleInput], $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = false, $update: Boolean = false, $mergeToList: [String]) {
   user(id: $user_id roles: $user_roles) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
     name

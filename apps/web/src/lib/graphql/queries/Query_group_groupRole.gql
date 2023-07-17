@@ -1,4 +1,4 @@
-query Query_group_groupRole($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: GroupRoleOrderBy, $groupBy: [String!], $id: StringExpression, $groupId: IntExpression, $from: GroupExpression, $roleId: IntExpression, $to: RoleExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true) {
+query Query_group_groupRole($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: GroupRoleOrderBy, $groupBy: [String!], $id: StringExpression, $groupId: IntExpression, $from: GroupExpression, $roleId: IntExpression, $to: RoleExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = false) {
   group(id: $group_id) @skipNullArguments(if: $skipNullArguments) {
     id
     name

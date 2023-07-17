@@ -1,4 +1,4 @@
-mutation Mutation_group_realm($group_id: ID, $group_realm: RealmInput, $id: StringExpression, $name: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+mutation Mutation_group_realm($group_id: ID, $group_realm: RealmInput, $id: StringExpression, $name: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $skipNullArguments: Boolean = false, $update: Boolean = false, $mergeToList: [String]) {
   group(id: $group_id realm: $group_realm) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
     name

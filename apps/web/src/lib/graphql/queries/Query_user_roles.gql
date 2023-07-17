@@ -1,4 +1,4 @@
-query Query_user_roles($user_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true) {
+query Query_user_roles($user_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = false) {
   user(id: $user_id) @skipNullArguments(if: $skipNullArguments) {
     id
     name

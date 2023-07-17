@@ -1,4 +1,4 @@
-mutation Mutation_role_roleComposite($role_id: ID, $role_roleComposite: [RoleCompositeInput], $first: Int, $last: Int, $offset: Int, $orderBy: RoleCompositeOrderBy, $groupBy: [String!], $id: StringExpression, $roleId: IntExpression, $from: RoleExpression, $compositeId: IntExpression, $to: RoleExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+mutation Mutation_role_roleComposite($role_id: ID, $role_roleComposite: [RoleCompositeInput], $first: Int, $last: Int, $offset: Int, $orderBy: RoleCompositeOrderBy, $groupBy: [String!], $id: StringExpression, $roleId: IntExpression, $from: RoleExpression, $compositeId: IntExpression, $to: RoleExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = false, $update: Boolean = false, $mergeToList: [String]) {
   role(id: $role_id roleComposite: $role_roleComposite) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
     name

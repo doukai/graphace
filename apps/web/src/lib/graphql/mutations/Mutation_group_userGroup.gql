@@ -1,4 +1,4 @@
-mutation Mutation_group_userGroup($group_id: ID, $group_userGroup: [UserGroupInput], $first: Int, $last: Int, $offset: Int, $orderBy: UserGroupOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $from: UserExpression, $groupId: IntExpression, $to: GroupExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
+mutation Mutation_group_userGroup($group_id: ID, $group_userGroup: [UserGroupInput], $first: Int, $last: Int, $offset: Int, $orderBy: UserGroupOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $from: UserExpression, $groupId: IntExpression, $to: GroupExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = false, $update: Boolean = false, $mergeToList: [String]) {
   group(id: $group_id userGroup: $group_userGroup) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
     name
