@@ -35,7 +35,6 @@
 		mutation: {
 			args: MutationType{{ name }}Args;
 			update?: boolean;
-			skipNullArguments?: boolean;
 			then: (data: {{ name }} | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		};

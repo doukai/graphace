@@ -1,5 +1,5 @@
-mutation Mutation_permission_realm($permission_id: ID, $permission_realm: RealmInput, $id: StringExpression, $name: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
-  permission(id: $permission_id realm: $permission_realm) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+mutation Mutation_permission_realm($permission_id: ID, $permission_realm: RealmInput, $id: StringExpression, $name: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $update: Boolean = false, $mergeToList: [String]) {
+  permission(id: $permission_id realm: $permission_realm) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
     name
     ofTypeName
@@ -14,7 +14,7 @@ mutation Mutation_permission_realm($permission_id: ID, $permission_realm: RealmI
     updateTime
     createGroupId
     roleId
-    realm(id: $id name: $name includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    realm(id: $id name: $name includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId) @update(if: $update) @mergeToList(arguments: $mergeToList) {
       id
       name
       isDeprecated

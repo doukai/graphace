@@ -22,7 +22,6 @@
 		event: CustomEvent<{
 			args: MutationTypeGroupArgs;
 			update?: boolean;
-			skipNullArguments?: boolean;
 			then: (data: Group | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>
@@ -34,7 +33,6 @@
 					user_id: id,
 					user_groups: [event.detail.args],
 					update: true,
-					skipNullArguments: event.detail.skipNullArguments,
 					mergeToList: ['groups']
 				})
 					.then((result) => {

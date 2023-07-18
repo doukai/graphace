@@ -35,7 +35,6 @@
 		event: CustomEvent<{
 			args: MutationTypeUserRoleArgs;
 			update?: boolean;
-			skipNullArguments?: boolean;
 			then: (data: UserRole | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>
@@ -46,7 +45,7 @@
 				if (row && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_userRole.mutate({ ...event.detail.args, update: event.detail.update, skipNullArguments: event.detail.skipNullArguments })
+				Mutation_userRole.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {
 						event.detail.then(result?.data?.userRole);
 					})

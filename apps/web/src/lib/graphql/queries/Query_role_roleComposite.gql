@@ -1,5 +1,5 @@
-query Query_role_roleComposite($role_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RoleCompositeOrderBy, $groupBy: [String!], $id: StringExpression, $roleId: IntExpression, $from: RoleExpression, $compositeId: IntExpression, $to: RoleExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true) {
-  role(id: $role_id) @skipNullArguments(if: $skipNullArguments) {
+query Query_role_roleComposite($role_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RoleCompositeOrderBy, $groupBy: [String!], $id: StringExpression, $roleId: IntExpression, $from: RoleExpression, $compositeId: IntExpression, $to: RoleExpression, $totalCount: IntExpression, ) {
+  role(id: $role_id)  {
     id
     name
     description
@@ -11,7 +11,7 @@ query Query_role_roleComposite($role_id: StringExpression, $first: Int, $last: I
     updateUserId
     updateTime
     createGroupId
-    roleCompositeConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId from: $from compositeId: $compositeId to: $to totalCount: $totalCount) @skipNullArguments(if: $skipNullArguments) {
+    roleCompositeConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId from: $from compositeId: $compositeId to: $to totalCount: $totalCount)  {
       totalCount
       edges {
         node {

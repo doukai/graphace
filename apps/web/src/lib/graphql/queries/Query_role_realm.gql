@@ -1,5 +1,5 @@
-query Query_role_realm($role_id: StringExpression, $id: StringExpression, $name: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $skipNullArguments: Boolean = true) {
-  role(id: $role_id) @skipNullArguments(if: $skipNullArguments) {
+query Query_role_realm($role_id: StringExpression, $id: StringExpression, $name: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, ) {
+  role(id: $role_id)  {
     id
     name
     description
@@ -11,7 +11,7 @@ query Query_role_realm($role_id: StringExpression, $id: StringExpression, $name:
     updateUserId
     updateTime
     createGroupId
-    realm(id: $id name: $name includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId) @skipNullArguments(if: $skipNullArguments) {
+    realm(id: $id name: $name includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId)  {
       id
       name
       isDeprecated

@@ -17,7 +17,6 @@
 		mutation: {
 			args: MutationTypeRoleCompositeArgs;
 			update?: boolean;
-			skipNullArguments?: boolean;
 			then: (data: RoleComposite | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		};

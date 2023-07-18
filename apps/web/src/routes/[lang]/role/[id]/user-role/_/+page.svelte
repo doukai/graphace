@@ -22,7 +22,6 @@
 		event: CustomEvent<{
 			args: MutationTypeUserRoleArgs;
 			update?: boolean;
-			skipNullArguments?: boolean;
 			then: (data: UserRole | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>
@@ -34,7 +33,6 @@
 					role_id: id,
 					role_userRole: [event.detail.args],
 					update: true,
-					skipNullArguments: event.detail.skipNullArguments,
 					mergeToList: ['userRole']
 				})
 					.then((result) => {

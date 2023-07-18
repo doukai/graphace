@@ -1,5 +1,5 @@
-query Query_role_permissions($role_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: PermissionOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $ofTypeName: StringExpression, $description: StringExpression, $level: PermissionLevelExpression, $role: RoleExpression, $realm: RealmExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true) {
-  role(id: $role_id) @skipNullArguments(if: $skipNullArguments) {
+query Query_role_permissions($role_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: PermissionOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $ofTypeName: StringExpression, $description: StringExpression, $level: PermissionLevelExpression, $role: RoleExpression, $realm: RealmExpression, $totalCount: IntExpression, ) {
+  role(id: $role_id)  {
     id
     name
     description
@@ -11,7 +11,7 @@ query Query_role_permissions($role_id: StringExpression, $first: Int, $last: Int
     updateUserId
     updateTime
     createGroupId
-    permissionsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name ofTypeName: $ofTypeName description: $description level: $level role: $role realm: $realm totalCount: $totalCount) @skipNullArguments(if: $skipNullArguments) {
+    permissionsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name ofTypeName: $ofTypeName description: $description level: $level role: $role realm: $realm totalCount: $totalCount)  {
       totalCount
       edges {
         node {

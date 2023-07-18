@@ -18,7 +18,6 @@
 		mutation: {
 			args: MutationTypeGroupRoleArgs;
 			update?: boolean;
-			skipNullArguments?: boolean;
 			then: (data: GroupRole | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		};

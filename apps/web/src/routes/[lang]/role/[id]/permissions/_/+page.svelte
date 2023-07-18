@@ -22,7 +22,6 @@
 		event: CustomEvent<{
 			args: MutationTypePermissionArgs;
 			update?: boolean;
-			skipNullArguments?: boolean;
 			then: (data: Permission | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>
@@ -34,7 +33,6 @@
 					role_id: id,
 					role_permissions: [event.detail.args],
 					update: true,
-					skipNullArguments: event.detail.skipNullArguments,
 					mergeToList: ['permissions']
 				})
 					.then((result) => {

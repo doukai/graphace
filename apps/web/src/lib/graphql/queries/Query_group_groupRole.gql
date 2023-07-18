@@ -1,5 +1,5 @@
-query Query_group_groupRole($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: GroupRoleOrderBy, $groupBy: [String!], $id: StringExpression, $groupId: IntExpression, $from: GroupExpression, $roleId: IntExpression, $to: RoleExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true) {
-  group(id: $group_id) @skipNullArguments(if: $skipNullArguments) {
+query Query_group_groupRole($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: GroupRoleOrderBy, $groupBy: [String!], $id: StringExpression, $groupId: IntExpression, $from: GroupExpression, $roleId: IntExpression, $to: RoleExpression, $totalCount: IntExpression, ) {
+  group(id: $group_id)  {
     id
     name
     isDeprecated
@@ -11,7 +11,7 @@ query Query_group_groupRole($group_id: StringExpression, $first: Int, $last: Int
     updateTime
     createGroupId
     parentId
-    groupRoleConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id groupId: $groupId from: $from roleId: $roleId to: $to totalCount: $totalCount) @skipNullArguments(if: $skipNullArguments) {
+    groupRoleConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id groupId: $groupId from: $from roleId: $roleId to: $to totalCount: $totalCount)  {
       totalCount
       edges {
         node {

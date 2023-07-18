@@ -26,7 +26,6 @@
 		event: CustomEvent<{
 			args: MutationType{{ objectFieldTypeName }}Args;
 			update?: boolean;
-			skipNullArguments?: boolean;
 			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>
@@ -37,8 +36,7 @@
 				Mutation_{{ name | camelCase }}_{{ objectFieldName }}.mutate({
 					{{ name | camelCase }}_{{ idName }}: {{ name | camelCase }}?.{{ idName }},
 					{{ name | camelCase }}_{{ objectFieldName }}: event.detail.args,
-					update: event.detail.update,
-					skipNullArguments: event.detail.skipNullArguments
+					update: event.detail.update
 				})
 					.then((result) => {
 						event.detail.then(result?.data?.{{ name | camelCase }}?.{{ objectFieldName }});

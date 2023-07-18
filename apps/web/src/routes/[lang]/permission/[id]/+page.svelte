@@ -19,7 +19,6 @@
 		event: CustomEvent<{
 			args: MutationTypePermissionArgs;
 			update?: boolean;
-			skipNullArguments?: boolean;
 			then: (data: Permission | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>
@@ -27,7 +26,7 @@
 		validate('Permission', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_permission.mutate({ ...event.detail.args, update: event.detail.update, skipNullArguments: event.detail.skipNullArguments })
+				Mutation_permission.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {
 						event.detail.then(result?.data?.permission);
 					})

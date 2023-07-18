@@ -33,7 +33,6 @@
 		mutation: {
 			args: MutationTypeGroupArgs;
 			update?: boolean;
-			skipNullArguments?: boolean;
 			then: (data: Group | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		};

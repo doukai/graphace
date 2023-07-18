@@ -1,5 +1,5 @@
-mutation Mutation_role_permissions($role_id: ID, $role_permissions: [PermissionInput], $first: Int, $last: Int, $offset: Int, $orderBy: PermissionOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $ofTypeName: StringExpression, $description: StringExpression, $level: PermissionLevelExpression, $role: RoleExpression, $realm: RealmExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
-  role(id: $role_id permissions: $role_permissions) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+mutation Mutation_role_permissions($role_id: ID, $role_permissions: [PermissionInput], $first: Int, $last: Int, $offset: Int, $orderBy: PermissionOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $ofTypeName: StringExpression, $description: StringExpression, $level: PermissionLevelExpression, $role: RoleExpression, $realm: RealmExpression, $totalCount: IntExpression, $update: Boolean = false, $mergeToList: [String]) {
+  role(id: $role_id permissions: $role_permissions) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
     name
     description
@@ -11,7 +11,7 @@ mutation Mutation_role_permissions($role_id: ID, $role_permissions: [PermissionI
     updateUserId
     updateTime
     createGroupId
-    permissionsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name ofTypeName: $ofTypeName description: $description level: $level role: $role realm: $realm totalCount: $totalCount) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    permissionsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name ofTypeName: $ofTypeName description: $description level: $level role: $role realm: $realm totalCount: $totalCount) @update(if: $update) @mergeToList(arguments: $mergeToList) {
       totalCount
       edges {
         node {

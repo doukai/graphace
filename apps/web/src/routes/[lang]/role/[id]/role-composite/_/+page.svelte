@@ -22,7 +22,6 @@
 		event: CustomEvent<{
 			args: MutationTypeRoleCompositeArgs;
 			update?: boolean;
-			skipNullArguments?: boolean;
 			then: (data: RoleComposite | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>
@@ -34,7 +33,6 @@
 					role_id: id,
 					role_roleComposite: [event.detail.args],
 					update: true,
-					skipNullArguments: event.detail.skipNullArguments,
 					mergeToList: ['roleComposite']
 				})
 					.then((result) => {

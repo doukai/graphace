@@ -14,7 +14,7 @@ directive @cursor on FIELD_DEFINITION
 
 directive @dataType(autoIncrement: Boolean, decimals: Int, default: String, length: Int, type: String) on FIELD_DEFINITION
 
-directive @delete(if: Boolean!) on FIELD
+directive @delete(if: Boolean = false) on FIELD
 
 directive @denyAll on FIELD | OBJECT
 
@@ -36,11 +36,11 @@ directive @permitAll on FIELD | OBJECT
 
 directive @rolesAllowed(roles: [String]) on FIELD | OBJECT
 
-directive @skipNullArguments(if: Boolean!) on FIELD
+directive @skipNullArguments(if: Boolean = false) on FIELD
 
 directive @table(engine: String) on OBJECT
 
-directive @update(if: Boolean!) on FIELD
+directive @update(if: Boolean = false) on FIELD
 
 directive @validation(allOf: [ValidationInput], anyOf: [ValidationInput], const: String, contentEncoding: String, contentMediaType: String, dependentRequired: [Property], else: ValidationInput, enum: [String], exclusiveMaximum: Float, exclusiveMinimum: Float, format: String, if: ValidationInput, items: ValidationInput, maxItems: Int, maxLength: Int, maximum: Float, minItems: Int, minLength: Int, minimum: Float, multipleOf: Float, not: ValidationInput, oneOf: [ValidationInput], pattern: String, properties: [Property], then: ValidationInput, uniqueItems: Boolean) on FIELD_DEFINITION | OBJECT
 

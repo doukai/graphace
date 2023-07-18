@@ -1,5 +1,5 @@
-mutation Mutation_role_users($role_id: ID, $role_users: [UserInput], $first: Int, $last: Int, $offset: Int, $orderBy: UserOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $lastName: StringExpression, $login: StringExpression, $password: StringExpression, $email: StringExpression, $disable: BooleanExpression, $groups: GroupExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $userGroup: UserGroupExpression, $userRole: UserRoleExpression, $totalCount: IntExpression, $skipNullArguments: Boolean = true, $update: Boolean = false, $mergeToList: [String]) {
-  role(id: $role_id users: $role_users) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+mutation Mutation_role_users($role_id: ID, $role_users: [UserInput], $first: Int, $last: Int, $offset: Int, $orderBy: UserOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $lastName: StringExpression, $login: StringExpression, $password: StringExpression, $email: StringExpression, $disable: BooleanExpression, $groups: GroupExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $userGroup: UserGroupExpression, $userRole: UserRoleExpression, $totalCount: IntExpression, $update: Boolean = false, $mergeToList: [String]) {
+  role(id: $role_id users: $role_users) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
     name
     description
@@ -11,7 +11,7 @@ mutation Mutation_role_users($role_id: ID, $role_users: [UserInput], $first: Int
     updateUserId
     updateTime
     createGroupId
-    usersConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name lastName: $lastName login: $login password: $password email: $email disable: $disable groups: $groups roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userGroup: $userGroup userRole: $userRole totalCount: $totalCount) @skipNullArguments(if: $skipNullArguments) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    usersConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name lastName: $lastName login: $login password: $password email: $email disable: $disable groups: $groups roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userGroup: $userGroup userRole: $userRole totalCount: $totalCount) @update(if: $update) @mergeToList(arguments: $mergeToList) {
       totalCount
       edges {
         node {

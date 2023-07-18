@@ -26,7 +26,6 @@
 		event: CustomEvent<{
 			args: MutationTypeRoleArgs;
 			update?: boolean;
-			skipNullArguments?: boolean;
 			then: (data: Role | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>
@@ -37,8 +36,7 @@
 				Mutation_roleComposite_to.mutate({
 					roleComposite_id: roleComposite?.id,
 					roleComposite_to: event.detail.args,
-					update: event.detail.update,
-					skipNullArguments: event.detail.skipNullArguments
+					update: event.detail.update
 				})
 					.then((result) => {
 						event.detail.then(result?.data?.roleComposite?.to);

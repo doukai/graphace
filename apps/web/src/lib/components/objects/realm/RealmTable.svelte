@@ -31,7 +31,6 @@
 		mutation: {
 			args: MutationTypeRealmArgs;
 			update?: boolean;
-			skipNullArguments?: boolean;
 			then: (data: Realm | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		};

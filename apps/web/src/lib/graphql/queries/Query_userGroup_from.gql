@@ -1,5 +1,5 @@
-query Query_userGroup_from($userGroup_id: StringExpression, $id: StringExpression, $name: StringExpression, $lastName: StringExpression, $login: StringExpression, $password: StringExpression, $email: StringExpression, $disable: BooleanExpression, $groups: GroupExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $userGroup: UserGroupExpression, $userRole: UserRoleExpression, $skipNullArguments: Boolean = true) {
-  userGroup(id: $userGroup_id) @skipNullArguments(if: $skipNullArguments) {
+query Query_userGroup_from($userGroup_id: StringExpression, $id: StringExpression, $name: StringExpression, $lastName: StringExpression, $login: StringExpression, $password: StringExpression, $email: StringExpression, $disable: BooleanExpression, $groups: GroupExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $userGroup: UserGroupExpression, $userRole: UserRoleExpression, ) {
+  userGroup(id: $userGroup_id)  {
     id
     userId
     groupId
@@ -11,7 +11,7 @@ query Query_userGroup_from($userGroup_id: StringExpression, $id: StringExpressio
     updateUserId
     updateTime
     createGroupId
-    from(id: $id name: $name lastName: $lastName login: $login password: $password email: $email disable: $disable groups: $groups roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userGroup: $userGroup userRole: $userRole) @skipNullArguments(if: $skipNullArguments) {
+    from(id: $id name: $name lastName: $lastName login: $login password: $password email: $email disable: $disable groups: $groups roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userGroup: $userGroup userRole: $userRole)  {
       id
       name
       lastName

@@ -33,7 +33,6 @@
 		mutation: {
 			args: MutationTypeUserArgs;
 			update?: boolean;
-			skipNullArguments?: boolean;
 			then: (data: User | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		};

@@ -21,14 +21,13 @@
 		event: CustomEvent<{
 			args: MutationTypeRoleCompositeArgs;
 			update?: boolean;
-			skipNullArguments?: boolean;
 			then: (data: RoleComposite | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>
 	) => {
 		validate('RoleComposite', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
-				Mutation_roleComposite.mutate({ ...event.detail.args, update: event.detail.update, skipNullArguments: event.detail.skipNullArguments })
+				Mutation_roleComposite.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {
 						event.detail.then(result?.data?.roleComposite);
 					})

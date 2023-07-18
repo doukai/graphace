@@ -19,7 +19,6 @@
 		event: CustomEvent<{
 			args: MutationTypeGroupRoleArgs;
 			update?: boolean;
-			skipNullArguments?: boolean;
 			then: (data: GroupRole | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		}>
@@ -27,7 +26,7 @@
 		validate('GroupRole', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_groupRole.mutate({ ...event.detail.args, update: event.detail.update, skipNullArguments: event.detail.skipNullArguments })
+				Mutation_groupRole.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {
 						event.detail.then(result?.data?.groupRole);
 					})
