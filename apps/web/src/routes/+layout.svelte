@@ -176,7 +176,7 @@
 		}
 	}
 	.tippy-box[data-theme='daisy'] {
-		@apply inline-block p-1 rounded-lg shadow-sm bg-base-200;
+		@apply inline-block p-1 rounded-lg shadow-lg bg-base-200;
 	}
 	.tippy-box[data-theme~='daisy'][data-placement^='top'] > .tippy-arrow {
 		@apply -bottom-1.5 left-0 border-t-8 border-x-8 border-b-0 border-transparent border-t-base-200;

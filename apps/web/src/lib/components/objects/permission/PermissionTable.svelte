@@ -68,7 +68,9 @@
 
 		dispatch('fetch', {
 			args,
-			then: (data) => {},
+			then: (data) => {
+				errors = {};
+			},
 			catch: (errors) => {
 				console.error(errors);
 				notifications.error($LL.web.message.requestFailed());
@@ -100,7 +102,9 @@
 
 		dispatch('fetch', {
 			args,
-			then: (data) => {},
+			then: (data) => {
+				errors = {};
+			},
 			catch: (errors) => {
 				console.error(errors);
 				notifications.error($LL.web.message.requestFailed());

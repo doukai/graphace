@@ -41,6 +41,11 @@
 							? 'input-error'
 							: ''} {className}"
 						bind:value={item}
+						on:change={() => {
+							if (item === '') {
+								item = null;
+							}
+						}}
 						{readonly}
 						{disabled}
 					/>

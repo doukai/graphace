@@ -48,7 +48,7 @@
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
 		validate('Role', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
-				if (row && errors[row]) {
+				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
 				Mutation_roleComposite.mutate({ ...event.detail.args, update: event.detail.update })
@@ -60,7 +60,7 @@
 					});
 			})
 			.catch((validErrors) => {
-				if (row) {
+				if (row !== -1 && row !== undefined) {
 					errors[row] = { errors: errors[row]?.errors, iterms: validErrors };
 				}
 			});

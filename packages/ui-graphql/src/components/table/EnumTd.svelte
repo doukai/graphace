@@ -65,7 +65,10 @@
 </div>
 
 <td>
-	<div class={errors ? 'border-2 border-error rounded' : ''}>
+	<div
+		class={errors ? 'tooltip tooltip-open tooltip-error' : ''}
+		data-tip={errors?.errors?.map((error) => error.message).join(', ')}
+	>
 		<a
 			class="group link inline-flex"
 			href={null}

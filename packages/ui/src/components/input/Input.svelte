@@ -19,6 +19,11 @@
 		{placeholder}
 		class="input input-bordered {errors?.errors ? 'input-error' : ''} {className}"
 		bind:value
+		on:change={() => {
+			if (value === '') {
+				value = null;
+			}
+		}}
 		{readonly}
 		{disabled}
 	/>
