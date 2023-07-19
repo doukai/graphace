@@ -25,6 +25,8 @@
 	export let totalCount: number = 0;
 	export let isFetching: boolean;
 	export let errors: Record<number, Errors> = {};
+	export let showSaveButton: boolean = true;
+	export let showBackButton: boolean = true;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -51,7 +53,6 @@
 	let before: string | undefined;
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
-	$: offset = (pageNumber - 1) * pageSize;
 
 	let selectAll: boolean;
 	let selectedRows: Record<string, boolean> = {};
@@ -79,10 +80,8 @@
 		} else if (before) {
 			args.before = before;
 			args.last = pageSize;
-		} else if (offset) {
-			args.offset = offset;
-			args.first = pageSize;
 		} else {
+			args.offset = (pageNumber - 1) * pageSize;
 			args.first = pageSize;
 		}
 
@@ -126,10 +125,8 @@
 		} else if (before) {
 			args.before = before;
 			args.last = pageSize;
-		} else if (offset) {
-			args.offset = offset;
-			args.first = pageSize;
 		} else {
+			args.offset = (pageNumber - 1) * pageSize;
 			args.first = pageSize;
 		}
 
@@ -199,6 +196,8 @@
 	<TableHead
 		title="Permission"
 		{showRemoveButton}
+		{showSaveButton}
+		{showBackButton}
 		on:create
 		on:search={(e) => search(e.detail.value)}
 		on:save={() => dispatch('save', { nodes })}

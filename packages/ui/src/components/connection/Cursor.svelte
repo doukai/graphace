@@ -30,7 +30,7 @@
 		</select>
 	</div>
 
-	<div class="join">
+	<div class="join grid grid-cols-2">
 		<button
 			class="btn btn-outline {hasPreviousPage ? '' : 'btn-disabled'} join-item"
 			on:click={() => {

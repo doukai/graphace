@@ -11,7 +11,7 @@
 	import type { Group, MutationTypeGroupArgs } from '~/lib/types/schema';
 
 	export let node: Group | null | undefined;
-	export let isFetching: boolean = false;
+	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
 
 	const dispatch = createEventDispatcher<{

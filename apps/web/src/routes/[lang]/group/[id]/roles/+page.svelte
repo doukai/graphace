@@ -97,6 +97,7 @@
 
 </script>
 <RoleConnectionTable
+	showSaveButton={false}
 	{nodes}
 	{totalCount}
 	{errors}

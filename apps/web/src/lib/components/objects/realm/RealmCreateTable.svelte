@@ -12,6 +12,8 @@
 
 	export let nodes: (MutationTypeRealmArgs | null | undefined)[] | null | undefined;
 	export let errors: Record<number, Errors> = {};
+	export let showSaveButton: boolean = true;
+	export let showBackButton: boolean = true;
 
 	const dispatch = createEventDispatcher<{
 		edit: { row: number };
@@ -49,6 +51,8 @@
 	<TableHead
 		title="Realm"
 		{showRemoveButton}
+		{showSaveButton}
+		{showBackButton}
 		showSearchInput={false}
 		on:create
 		on:save={() => dispatch('save', { nodes })}

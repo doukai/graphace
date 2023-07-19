@@ -14,7 +14,7 @@
 	import type { {{ name }}, MutationType{{ name }}Args } from '~/{{ schemaTypesPath }}';
 
 	export let node: {{ name }} | null | undefined;
-	export let isFetching: boolean = false;
+	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
 
 	const dispatch = createEventDispatcher<{

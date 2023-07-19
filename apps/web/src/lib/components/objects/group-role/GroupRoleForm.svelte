@@ -11,7 +11,7 @@
 	import type { GroupRole, MutationTypeGroupRoleArgs } from '~/lib/types/schema';
 
 	export let node: GroupRole | null | undefined;
-	export let isFetching: boolean = false;
+	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
 
 	const dispatch = createEventDispatcher<{

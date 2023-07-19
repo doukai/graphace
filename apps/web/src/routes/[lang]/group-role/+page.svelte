@@ -77,6 +77,8 @@
 	};
 </script>
 <GroupRoleConnectionTable
+	showSaveButton={false}
+	showBackButton={false}
 	{nodes}
 	{totalCount}
 	{errors}

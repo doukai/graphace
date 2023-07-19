@@ -100,6 +100,8 @@
 
 {%- if connectionField %}
 <{{ name }}ConnectionTable
+	showSaveButton={false}
+	showBackButton={false}
 	{nodes}
 	{totalCount}
 	{errors}
@@ -111,6 +113,9 @@
 	on:gotoField={gotoField}
 />
 {%- else %}
+<{{ name }}Table
+	showSaveButton={false}
+	showBackButton={false}
 	{nodes}
 	{errors}
 	isFetching={$Query_{{ name | camelCase }}List.fetching}

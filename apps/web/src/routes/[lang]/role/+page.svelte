@@ -77,6 +77,8 @@
 	};
 </script>
 <RoleConnectionTable
+	showSaveButton={false}
+	showBackButton={false}
 	{nodes}
 	{totalCount}
 	{errors}

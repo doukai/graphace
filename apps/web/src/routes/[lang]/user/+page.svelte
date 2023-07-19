@@ -77,6 +77,8 @@
 	};
 </script>
 <UserConnectionTable
+	showSaveButton={false}
+	showBackButton={false}
 	{nodes}
 	{totalCount}
 	{errors}

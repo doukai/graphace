@@ -77,6 +77,8 @@
 	};
 </script>
 <PermissionConnectionTable
+	showSaveButton={false}
+	showBackButton={false}
 	{nodes}
 	{totalCount}
 	{errors}

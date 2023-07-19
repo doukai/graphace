@@ -26,19 +26,17 @@
 
 	const save = (): void => {
 		if (node) {
-			if (node) {
-				dispatch('mutation', {
-					args: node,
-					then: (data) => {
-						notifications.success($LL.web.message.saveSuccess());
-						dispatch('back');
-					},
-					catch: (errors) => {
-						console.error(errors);
-						notifications.error($LL.web.message.saveFailed());
-					}
-				});
-			}
+			dispatch('mutation', {
+				args: node,
+				then: (data) => {
+					notifications.success($LL.web.message.saveSuccess());
+					dispatch('back');
+				},
+				catch: (errors) => {
+					console.error(errors);
+					notifications.error($LL.web.message.saveFailed());
+				}
+			});
 		}
 	};
 

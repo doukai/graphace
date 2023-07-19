@@ -26,7 +26,7 @@
 			catch: (errors: Errors) => void;
 		}>
 	) => {
-		validate('UserRole', event.detail.args, true, $locale)
+		validate('User', { userRole: [event.detail.args] }, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_user_userRole.mutate({
@@ -43,7 +43,7 @@
 					});
 			})
 			.catch((validErrors) => {
-				errors = validErrors;
+				errors = validErrors.users.iterms[0].iterms;
 			});
 	};
 

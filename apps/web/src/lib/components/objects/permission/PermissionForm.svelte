@@ -12,7 +12,7 @@
 	import type { Permission, MutationTypePermissionArgs } from '~/lib/types/schema';
 
 	export let node: Permission | null | undefined;
-	export let isFetching: boolean = false;
+	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
 
 	const dispatch = createEventDispatcher<{

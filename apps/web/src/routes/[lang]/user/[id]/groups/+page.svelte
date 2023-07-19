@@ -97,6 +97,7 @@
 
 </script>
 <GroupConnectionTable
+	showSaveButton={false}
 	{nodes}
 	{totalCount}
 	{errors}

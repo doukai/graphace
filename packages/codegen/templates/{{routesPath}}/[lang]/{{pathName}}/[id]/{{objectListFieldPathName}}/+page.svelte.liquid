@@ -114,6 +114,7 @@
 </script>
 {%- if connectionField %}
 <{{ objectFieldTypeName }}ConnectionTable
+	showSaveButton={false}
 	{nodes}
 	{totalCount}
 	{errors}
@@ -127,6 +128,7 @@
 />
 {%- else %}
 <{{ objectFieldTypeName }}Table
+	showSaveButton={false}
 	{nodes}
 	{errors}
 	isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}

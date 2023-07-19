@@ -21,6 +21,8 @@
 	export let nodes: (Realm | null | undefined)[] | null | undefined;
 	export let isFetching: boolean;
 	export let errors: Record<number, Errors> = {};
+	export let showSaveButton: boolean = true;
+	export let showBackButton: boolean = true;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -160,6 +162,8 @@
 	<TableHead
 		title="Realm"
 		{showRemoveButton}
+		{showSaveButton}
+		{showBackButton}
 		on:create
 		on:search={(e) => search(e.detail.value)}
 		on:save={() => dispatch('save', { nodes })}
