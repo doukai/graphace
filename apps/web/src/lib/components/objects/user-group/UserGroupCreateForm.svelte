@@ -10,8 +10,9 @@
 	import LL from '$i18n/i18n-svelte';
 	import type { UserGroup, MutationTypeUserGroupArgs } from '~/lib/types/schema';
 
-	export let node: MutationTypeUserGroupArgs = {};
 	export let errors: Record<string, Errors> = {};
+
+	const node: MutationTypeUserGroupArgs = {};
 
 	const dispatch = createEventDispatcher<{
 		mutation: {

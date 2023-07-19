@@ -13,8 +13,6 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: createNode = data.node as MutationTypeRealmArgs;
-	$: createErrors = data.errors as Record<string, Errors>;
 
 	$: Query_group_realm = data.Query_group_realm as Query_group_realmStore;
 	$: group = $Query_group_realm.data?.group;
@@ -30,13 +28,13 @@
 			catch: (errors: Errors) => void;
 		}>
 	) => {
-		validate('Realm', event.detail.args, event.detail.update, $locale)
+		validate('Group', { realm: event.detail.args }, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_group_realm.mutate({
 					group_id: group?.id,
 					group_realm: event.detail.args,
-					update: event.detail.update
+					update: true
 				})
 					.then((result) => {
 						event.detail.then(result?.data?.group?.realm);
@@ -46,7 +44,7 @@
 					});
 			})
 			.catch((validErrors) => {
-				errors = validErrors;
+				errors = validErrors.realm.iterms;
 			});
 	};
 
@@ -74,8 +72,7 @@
 	/>
 {:else}
 	<RealmCreateForm
-		node={createNode}
-		errors={createErrors}
+		{errors}
 		on:mutation={mutation}
 		on:back={back}
 		on:gotoField={gotoField}

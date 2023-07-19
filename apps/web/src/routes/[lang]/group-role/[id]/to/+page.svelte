@@ -13,8 +13,6 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: createNode = data.node as MutationTypeRoleArgs;
-	$: createErrors = data.errors as Record<string, Errors>;
 
 	$: Query_groupRole_to = data.Query_groupRole_to as Query_groupRole_toStore;
 	$: groupRole = $Query_groupRole_to.data?.groupRole;
@@ -30,13 +28,13 @@
 			catch: (errors: Errors) => void;
 		}>
 	) => {
-		validate('Role', event.detail.args, event.detail.update, $locale)
+		validate('GroupRole', { to: event.detail.args }, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_groupRole_to.mutate({
 					groupRole_id: groupRole?.id,
 					groupRole_to: event.detail.args,
-					update: event.detail.update
+					update: true
 				})
 					.then((result) => {
 						event.detail.then(result?.data?.groupRole?.to);
@@ -46,7 +44,7 @@
 					});
 			})
 			.catch((validErrors) => {
-				errors = validErrors;
+				errors = validErrors.to.iterms;
 			});
 	};
 
@@ -74,8 +72,7 @@
 	/>
 {:else}
 	<RoleCreateForm
-		node={createNode}
-		errors={createErrors}
+		{errors}
 		on:mutation={mutation}
 		on:back={back}
 		on:gotoField={gotoField}

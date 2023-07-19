@@ -13,8 +13,6 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: createNode = data.node as MutationTypeRoleArgs;
-	$: createErrors = data.errors as Record<string, Errors>;
 
 	$: Query_roleComposite_from = data.Query_roleComposite_from as Query_roleComposite_fromStore;
 	$: roleComposite = $Query_roleComposite_from.data?.roleComposite;
@@ -30,13 +28,13 @@
 			catch: (errors: Errors) => void;
 		}>
 	) => {
-		validate('Role', event.detail.args, event.detail.update, $locale)
+		validate('RoleComposite', { from: event.detail.args }, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_roleComposite_from.mutate({
 					roleComposite_id: roleComposite?.id,
 					roleComposite_from: event.detail.args,
-					update: event.detail.update
+					update: true
 				})
 					.then((result) => {
 						event.detail.then(result?.data?.roleComposite?.from);
@@ -46,7 +44,7 @@
 					});
 			})
 			.catch((validErrors) => {
-				errors = validErrors;
+				errors = validErrors.from.iterms;
 			});
 	};
 
@@ -74,8 +72,7 @@
 	/>
 {:else}
 	<RoleCreateForm
-		node={createNode}
-		errors={createErrors}
+		{errors}
 		on:mutation={mutation}
 		on:back={back}
 		on:gotoField={gotoField}

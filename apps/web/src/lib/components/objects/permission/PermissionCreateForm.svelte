@@ -11,8 +11,9 @@
 	import LL from '$i18n/i18n-svelte';
 	import type { Permission, MutationTypePermissionArgs } from '~/lib/types/schema';
 
-	export let node: MutationTypePermissionArgs = {};
 	export let errors: Record<string, Errors> = {};
+
+	const node: MutationTypePermissionArgs = {};
 
 	const dispatch = createEventDispatcher<{
 		mutation: {

@@ -43,7 +43,7 @@
 					});
 			})
 			.catch((validErrors) => {
-				errors = validErrors.users.iterms[0].iterms;
+				errors = validErrors.groups.iterms[0].iterms;
 			});
 	};
 

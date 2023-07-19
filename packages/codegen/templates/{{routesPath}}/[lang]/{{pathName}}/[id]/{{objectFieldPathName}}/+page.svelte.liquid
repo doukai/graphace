@@ -13,8 +13,6 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: createNode = data.node as MutationType{{ objectFieldTypeName }}Args;
-	$: createErrors = data.errors as Record<string, Errors>;
 
 	$: Query_{{ name | camelCase }}_{{ objectFieldName }} = data.Query_{{ name | camelCase }}_{{ objectFieldName }} as Query_{{ name | camelCase }}_{{ objectFieldName }}Store;
 	$: {{ name | camelCase }} = $Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }};
@@ -30,13 +28,13 @@
 			catch: (errors: Errors) => void;
 		}>
 	) => {
-		validate('{{ objectFieldTypeName }}', event.detail.args, event.detail.update, $locale)
+		validate('{{ name }}', { {{ objectFieldName }}: event.detail.args }, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_{{ name | camelCase }}_{{ objectFieldName }}.mutate({
 					{{ name | camelCase }}_{{ idName }}: {{ name | camelCase }}?.{{ idName }},
 					{{ name | camelCase }}_{{ objectFieldName }}: event.detail.args,
-					update: event.detail.update
+					update: true
 				})
 					.then((result) => {
 						event.detail.then(result?.data?.{{ name | camelCase }}?.{{ objectFieldName }});
@@ -46,7 +44,7 @@
 					});
 			})
 			.catch((validErrors) => {
-				errors = validErrors;
+				errors = validErrors.{{ objectFieldName }}.iterms;
 			});
 	};
 
@@ -74,8 +72,7 @@
 	/>
 {:else}
 	<{{ objectFieldTypeName }}CreateForm
-		node={createNode}
-		errors={createErrors}
+		{errors}
 		on:mutation={mutation}
 		on:back={back}
 		on:gotoField={gotoField}

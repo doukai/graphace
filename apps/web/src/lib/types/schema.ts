@@ -100,8 +100,10 @@ export type Group = Meta & {
   parentIdMax?: Maybe<Scalars['Int']>;
   parentIdMin?: Maybe<Scalars['Int']>;
   realmIdCount?: Maybe<Scalars['Int']>;
-  realmIdMax?: Maybe<Scalars['String']>;
-  realmIdMin?: Maybe<Scalars['String']>;
+  realmIdSum?: Maybe<Scalars['Int']>;
+  realmIdAvg?: Maybe<Scalars['Int']>;
+  realmIdMax?: Maybe<Scalars['Int']>;
+  realmIdMin?: Maybe<Scalars['Int']>;
   userGroup?: Maybe<Array<Maybe<UserGroup>>>;
   userGroupAggregate?: Maybe<UserGroup>;
   userGroupConnection?: Maybe<UserGroupConnection>;
@@ -1141,8 +1143,10 @@ export type Permission = Meta & {
   roleIdMax?: Maybe<Scalars['Int']>;
   roleIdMin?: Maybe<Scalars['Int']>;
   realmIdCount?: Maybe<Scalars['Int']>;
-  realmIdMax?: Maybe<Scalars['String']>;
-  realmIdMin?: Maybe<Scalars['String']>;
+  realmIdSum?: Maybe<Scalars['Int']>;
+  realmIdAvg?: Maybe<Scalars['Int']>;
+  realmIdMax?: Maybe<Scalars['Int']>;
+  realmIdMin?: Maybe<Scalars['Int']>;
 };
 
 
@@ -2016,7 +2020,7 @@ export type QueryTypeGroupRoleConnectionArgs = {
 
 export type Realm = Meta & {
   __typename?: 'Realm';
-  id: Scalars['ID'];
+  id?: Maybe<Scalars['ID']>;
   name: Scalars['String'];
   isDeprecated?: Maybe<Scalars['Boolean']>;
   version?: Maybe<Scalars['Int']>;
@@ -2027,8 +2031,8 @@ export type Realm = Meta & {
   updateTime?: Maybe<Scalars['Timestamp']>;
   createGroupId?: Maybe<Scalars['String']>;
   idCount?: Maybe<Scalars['Int']>;
-  idMax?: Maybe<Scalars['String']>;
-  idMin?: Maybe<Scalars['String']>;
+  idMax?: Maybe<Scalars['Int']>;
+  idMin?: Maybe<Scalars['Int']>;
   nameCount?: Maybe<Scalars['Int']>;
   nameMax?: Maybe<Scalars['String']>;
   nameMin?: Maybe<Scalars['String']>;
@@ -2119,8 +2123,10 @@ export type Role = Meta & {
   permissionsAggregate?: Maybe<Permission>;
   permissionsConnection?: Maybe<PermissionConnection>;
   realmIdCount?: Maybe<Scalars['Int']>;
-  realmIdMax?: Maybe<Scalars['String']>;
-  realmIdMin?: Maybe<Scalars['String']>;
+  realmIdSum?: Maybe<Scalars['Int']>;
+  realmIdAvg?: Maybe<Scalars['Int']>;
+  realmIdMax?: Maybe<Scalars['Int']>;
+  realmIdMin?: Maybe<Scalars['Int']>;
   userRole?: Maybe<Array<Maybe<UserRole>>>;
   userRoleAggregate?: Maybe<UserRole>;
   userRoleConnection?: Maybe<UserRoleConnection>;
@@ -3430,8 +3436,10 @@ export type User = Meta & {
   rolesAggregate?: Maybe<Role>;
   rolesConnection?: Maybe<RoleConnection>;
   realmIdCount?: Maybe<Scalars['Int']>;
-  realmIdMax?: Maybe<Scalars['String']>;
-  realmIdMin?: Maybe<Scalars['String']>;
+  realmIdSum?: Maybe<Scalars['Int']>;
+  realmIdAvg?: Maybe<Scalars['Int']>;
+  realmIdMax?: Maybe<Scalars['Int']>;
+  realmIdMin?: Maybe<Scalars['Int']>;
   userGroup?: Maybe<Array<Maybe<UserGroup>>>;
   userGroupAggregate?: Maybe<UserGroup>;
   userGroupConnection?: Maybe<UserGroupConnection>;

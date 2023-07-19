@@ -13,8 +13,6 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: createNode = data.node as MutationTypeGroupArgs;
-	$: createErrors = data.errors as Record<string, Errors>;
 
 	$: Query_userGroup_to = data.Query_userGroup_to as Query_userGroup_toStore;
 	$: userGroup = $Query_userGroup_to.data?.userGroup;
@@ -30,13 +28,13 @@
 			catch: (errors: Errors) => void;
 		}>
 	) => {
-		validate('Group', event.detail.args, event.detail.update, $locale)
+		validate('UserGroup', { to: event.detail.args }, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_userGroup_to.mutate({
 					userGroup_id: userGroup?.id,
 					userGroup_to: event.detail.args,
-					update: event.detail.update
+					update: true
 				})
 					.then((result) => {
 						event.detail.then(result?.data?.userGroup?.to);
@@ -46,7 +44,7 @@
 					});
 			})
 			.catch((validErrors) => {
-				errors = validErrors;
+				errors = validErrors.to.iterms;
 			});
 	};
 
@@ -74,8 +72,7 @@
 	/>
 {:else}
 	<GroupCreateForm
-		node={createNode}
-		errors={createErrors}
+		{errors}
 		on:mutation={mutation}
 		on:back={back}
 		on:gotoField={gotoField}

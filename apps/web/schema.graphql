@@ -36,8 +36,6 @@ directive @permitAll on FIELD | OBJECT
 
 directive @rolesAllowed(roles: [String]) on FIELD | OBJECT
 
-directive @skipNullArguments(if: Boolean = false) on FIELD
-
 directive @table(engine: String) on OBJECT
 
 directive @update(if: Boolean = false) on FIELD
@@ -124,9 +122,11 @@ type Group implements Meta {
   parentIdSum: Int
   realm(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, realmId: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Realm
   realmId: String
+  realmIdAvg: Int
   realmIdCount: Int
-  realmIdMax: String
-  realmIdMin: String
+  realmIdMax: Int
+  realmIdMin: Int
+  realmIdSum: Int
   roles(after: ID, before: ID, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: StringExpression, roleComposite: RoleCompositeExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): [Role]
   rolesAggregate(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: StringExpression, roleComposite: RoleCompositeExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
   rolesConnection(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: StringExpression, roleComposite: RoleCompositeExpression, totalCount: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): RoleConnection
@@ -422,9 +422,11 @@ type Permission implements Meta {
   ofTypeNameMin: String
   realm(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, realmId: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Realm
   realmId: String
+  realmIdAvg: Int
   realmIdCount: Int
-  realmIdMax: String
-  realmIdMin: String
+  realmIdMax: Int
+  realmIdMin: Int
+  realmIdSum: Int
   role(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: StringExpression, roleComposite: RoleCompositeExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role!
   roleId: Int
   roleIdAvg: Int
@@ -579,10 +581,10 @@ type Realm implements Meta {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
-  id: ID!
+  id: ID
   idCount: Int
-  idMax: String
-  idMin: String
+  idMax: Int
+  idMin: Int
   isDeprecated: Boolean
   name: String!
   nameCount: Int
@@ -669,9 +671,11 @@ type Role implements Meta {
   permissionsConnection(description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, level: PermissionLevelExpression, name: StringExpression, ofTypeName: StringExpression, offset: Int, orderBy: PermissionOrderBy, realm: RealmExpression, role: RoleExpression, totalCount: IntExpression): PermissionConnection
   realm(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, realmId: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Realm
   realmId: String
+  realmIdAvg: Int
   realmIdCount: Int
-  realmIdMax: String
-  realmIdMin: String
+  realmIdMax: Int
+  realmIdMin: Int
+  realmIdSum: Int
   roleComposite(after: ID, before: ID, compositeId: IntExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: RoleCompositeOrderBy, realmId: StringExpression, roleId: IntExpression, to: RoleExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [RoleComposite]
   roleCompositeAggregate(compositeId: IntExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: RoleCompositeOrderBy, realmId: StringExpression, roleId: IntExpression, to: RoleExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): RoleComposite
   roleCompositeConnection(compositeId: IntExpression, first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, last: Int, offset: Int, orderBy: RoleCompositeOrderBy, roleId: IntExpression, to: RoleExpression, totalCount: IntExpression): RoleCompositeConnection
@@ -936,9 +940,11 @@ type User implements Meta {
   passwordMin: String
   realm(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, realmId: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Realm
   realmId: String
+  realmIdAvg: Int
   realmIdCount: Int
-  realmIdMax: String
-  realmIdMin: String
+  realmIdMax: Int
+  realmIdMin: Int
+  realmIdSum: Int
   roles(after: ID, before: ID, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: StringExpression, roleComposite: RoleCompositeExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): [Role]
   rolesAggregate(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: StringExpression, roleComposite: RoleCompositeExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
   rolesConnection(composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, totalCount: IntExpression, users: UserExpression): RoleConnection

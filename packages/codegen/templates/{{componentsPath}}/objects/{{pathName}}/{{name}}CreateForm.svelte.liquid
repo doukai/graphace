@@ -13,8 +13,9 @@
 	import LL from '$i18n/i18n-svelte';
 	import type { {{ name }}, MutationType{{ name }}Args } from '~/{{ schemaTypesPath }}';
 
-	export let node: MutationType{{ name }}Args = {};
 	export let errors: Record<string, Errors> = {};
+
+	const node: MutationType{{ name }}Args = {};
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
