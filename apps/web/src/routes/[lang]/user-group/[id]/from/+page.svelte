@@ -7,7 +7,7 @@
 	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypeUserArgs, User } from '~/lib/types/schema';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
-	import { Query_userGroup_fromStore, Mutation_userGroup_fromStore } from '$houdini';
+	import { Query_userGroup_fromStore, Mutation_userGroup_fromStore, Mutation_userStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
 	import { locale } from '$i18n/i18n-svelte';
@@ -18,9 +18,10 @@
 	$: userGroup = $Query_userGroup_from.data?.userGroup;
 	$: node = userGroup?.from;
 	const Mutation_userGroup_from = new Mutation_userGroup_fromStore();
+	const Mutation_user = new Mutation_userStore();
 	let errors: Record<number, Errors> = {};
 
-	const mutation = (
+	const create = (
 		event: CustomEvent<{
 			args: MutationTypeUserArgs;
 			update?: boolean;
@@ -45,6 +46,30 @@
 			})
 			.catch((validErrors) => {
 				errors = validErrors.from.iterms;
+			});
+	};
+
+	const mutation = (
+		event: CustomEvent<{
+			args: MutationTypeUserArgs;
+			update?: boolean;
+			then: (data: User | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		validate('User', event.detail.args, true, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_user.mutate({ ...event.detail.args, update: true })
+					.then((result) => {
+						event.detail.then(result?.data?.user);
+					})
+					.catch((errors) => {
+						event.detail.catch(errors);
+					});
+			})
+			.catch((validErrors) => {
+				errors = validErrors;
 			});
 	};
 
@@ -73,7 +98,7 @@
 {:else}
 	<UserCreateForm
 		{errors}
-		on:mutation={mutation}
+		on:mutation={create}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>

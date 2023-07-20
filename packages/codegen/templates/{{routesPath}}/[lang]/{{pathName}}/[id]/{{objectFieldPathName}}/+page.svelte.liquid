@@ -7,7 +7,7 @@
 	import type { Errors } from '@graphace/commons/types';
 	import type { MutationType{{ objectFieldTypeName }}Args, {{ objectFieldTypeName }} } from '~/{{ schemaTypesPath }}';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
-	import { Query_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store } from '$houdini';
+	import { Query_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ objectFieldTypeName | camelCase }}Store } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
 	import { locale } from '$i18n/i18n-svelte';
@@ -18,11 +18,12 @@
 	$: {{ name | camelCase }} = $Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }};
 	$: node = {{ name | camelCase }}?.{{ objectFieldName }};
 	const Mutation_{{ name | camelCase }}_{{ objectFieldName }} = new Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store();
+	const Mutation_{{ objectFieldTypeName | camelCase }} = new Mutation_{{ objectFieldTypeName | camelCase }}Store();
 	let errors: Record<number, Errors> = {};
 
-	const mutation = (
+	const create = (
 		event: CustomEvent<{
-			args: MutationType{{ objectFieldTypeName }}Args | null;
+			args: MutationType{{ objectFieldTypeName }}Args;
 			update?: boolean;
 			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
 			catch: (errors: Errors) => void;
@@ -45,6 +46,30 @@
 			})
 			.catch((validErrors) => {
 				errors = validErrors.{{ objectFieldName }}.iterms;
+			});
+	};
+
+	const mutation = (
+		event: CustomEvent<{
+			args: MutationType{{ objectFieldTypeName }}Args;
+			update?: boolean;
+			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		validate('{{ objectFieldTypeName }}', event.detail.args, true, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_{{ objectFieldTypeName | camelCase }}.mutate({ ...event.detail.args, update: true })
+					.then((result) => {
+						event.detail.then(result?.data?.{{ objectFieldTypeName | camelCase }});
+					})
+					.catch((errors) => {
+						event.detail.catch(errors);
+					});
+			})
+			.catch((validErrors) => {
+				errors = validErrors;
 			});
 	};
 
@@ -73,7 +98,7 @@
 {:else}
 	<{{ objectFieldTypeName }}CreateForm
 		{errors}
-		on:mutation={mutation}
+		on:mutation={create}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>

@@ -7,7 +7,7 @@
 	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypeRealmArgs, Realm } from '~/lib/types/schema';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
-	import { Query_permission_realmStore, Mutation_permission_realmStore } from '$houdini';
+	import { Query_permission_realmStore, Mutation_permission_realmStore, Mutation_realmStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
 	import { locale } from '$i18n/i18n-svelte';
@@ -18,9 +18,10 @@
 	$: permission = $Query_permission_realm.data?.permission;
 	$: node = permission?.realm;
 	const Mutation_permission_realm = new Mutation_permission_realmStore();
+	const Mutation_realm = new Mutation_realmStore();
 	let errors: Record<number, Errors> = {};
 
-	const mutation = (
+	const create = (
 		event: CustomEvent<{
 			args: MutationTypeRealmArgs;
 			update?: boolean;
@@ -45,6 +46,30 @@
 			})
 			.catch((validErrors) => {
 				errors = validErrors.realm.iterms;
+			});
+	};
+
+	const mutation = (
+		event: CustomEvent<{
+			args: MutationTypeRealmArgs;
+			update?: boolean;
+			then: (data: Realm | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		validate('Realm', event.detail.args, true, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_realm.mutate({ ...event.detail.args, update: true })
+					.then((result) => {
+						event.detail.then(result?.data?.realm);
+					})
+					.catch((errors) => {
+						event.detail.catch(errors);
+					});
+			})
+			.catch((validErrors) => {
+				errors = validErrors;
 			});
 	};
 
@@ -73,7 +98,7 @@
 {:else}
 	<RealmCreateForm
 		{errors}
-		on:mutation={mutation}
+		on:mutation={create}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>

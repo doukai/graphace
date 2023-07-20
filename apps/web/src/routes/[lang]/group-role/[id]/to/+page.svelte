@@ -7,7 +7,7 @@
 	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypeRoleArgs, Role } from '~/lib/types/schema';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
-	import { Query_groupRole_toStore, Mutation_groupRole_toStore } from '$houdini';
+	import { Query_groupRole_toStore, Mutation_groupRole_toStore, Mutation_roleStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
 	import { locale } from '$i18n/i18n-svelte';
@@ -18,9 +18,10 @@
 	$: groupRole = $Query_groupRole_to.data?.groupRole;
 	$: node = groupRole?.to;
 	const Mutation_groupRole_to = new Mutation_groupRole_toStore();
+	const Mutation_role = new Mutation_roleStore();
 	let errors: Record<number, Errors> = {};
 
-	const mutation = (
+	const create = (
 		event: CustomEvent<{
 			args: MutationTypeRoleArgs;
 			update?: boolean;
@@ -45,6 +46,30 @@
 			})
 			.catch((validErrors) => {
 				errors = validErrors.to.iterms;
+			});
+	};
+
+	const mutation = (
+		event: CustomEvent<{
+			args: MutationTypeRoleArgs;
+			update?: boolean;
+			then: (data: Role | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		validate('Role', event.detail.args, true, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_role.mutate({ ...event.detail.args, update: true })
+					.then((result) => {
+						event.detail.then(result?.data?.role);
+					})
+					.catch((errors) => {
+						event.detail.catch(errors);
+					});
+			})
+			.catch((validErrors) => {
+				errors = validErrors;
 			});
 	};
 
@@ -73,7 +98,7 @@
 {:else}
 	<RoleCreateForm
 		{errors}
-		on:mutation={mutation}
+		on:mutation={create}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>
