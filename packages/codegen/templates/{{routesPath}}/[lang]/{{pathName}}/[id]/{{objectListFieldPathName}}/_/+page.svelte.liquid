@@ -32,8 +32,7 @@
 				Mutation_{{ name | camelCase }}_{{ objectFieldName }}.mutate({
 					{{ name | camelCase }}_id: {{ idName }},
 					{{ name | camelCase }}_{{ objectFieldName }}: [event.detail.args],
-					update: true,
-					mergeToList: ['{{ objectFieldName }}']
+					update: true
 				})
 					.then((result) => {
 						event.detail.then(null);

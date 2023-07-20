@@ -36,6 +36,8 @@ directive @permitAll on FIELD | OBJECT
 
 directive @rolesAllowed(roles: [String]) on FIELD | OBJECT
 
+directive @skipNullArguments(if: Boolean = false) on FIELD
+
 directive @table(engine: String) on OBJECT
 
 directive @update(if: Boolean = false) on FIELD

@@ -10,19 +10,19 @@ const config = {
 		url: 'http://localhost:8080/graphql',
 	},
 	scalars: {
-		// the name of the scalar we are configuring
-		Timestamp: {
-			// the corresponding typescript type
-			type: 'Date',
-			// turn the api's response into that type
-			unmarshal(val) {
-				return new Date(val)
-			},
-			// turn the value into something the API can use
-			marshal(date) {
-				return date ? date.toLocaleString() : date
-			}
-		}
+		// // the name of the scalar we are configuring
+		// Timestamp: {
+		// 	// the corresponding typescript type
+		// 	type: 'Date',
+		// 	// turn the api's response into that type
+		// 	unmarshal(val) {
+		// 		return new Date(val)
+		// 	},
+		// 	// turn the value into something the API can use
+		// 	marshal(date) {
+		// 		return date ? date.toLocaleString() : date
+		// 	}
+		// }
 	},
 	defaultCachePolicy: 'NetworkOnly'
 };

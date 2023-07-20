@@ -4,7 +4,14 @@
 	import type { Errors } from '@graphace/commons/types';
 	import { Card } from '@graphace/ui/components/card';
 	import { Form, FormLoading } from '@graphace/ui/components/form';
-	import { IDItem, StringItem, BooleanItem, IntItem, TimestampItem, ObjectItem } from '@graphace/ui-graphql/components/form';
+	import {
+		IDItem,
+		StringItem,
+		BooleanItem,
+		IntItem,
+		TimestampItem,
+		ObjectItem
+	} from '@graphace/ui-graphql/components/form';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
@@ -16,7 +23,7 @@
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
-			args: MutationTypeRealmArgs;
+			args: MutationTypeRealmArgs | null;
 			update?: boolean;
 			then: (data: Realm | null | undefined) => void;
 			catch: (errors: Errors) => void;
@@ -45,7 +52,7 @@
 	const remove = (): void => {
 		if (node) {
 			dispatch('mutation', {
-				args: { id: node.id, isDeprecated: true },
+				args: null,
 				update: true,
 				then: (data) => {
 					notifications.success($LL.web.message.removeSuccess());
@@ -78,19 +85,52 @@
 	>
 		{#if isFetching}
 			<FormLoading rows={10} />
-		{:else}
-			{#if node}
-				<IDItem label="id" name="id" bind:value={node.id} errors={errors.id} />
-				<StringItem label="name" name="name" bind:value={node.name} errors={errors.name} />
-				<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} errors={errors.isDeprecated} />
-				<IntItem label="version" name="version" bind:value={node.version} errors={errors.version} />
-				<StringItem label="realmId" name="realmId" bind:value={node.realmId} errors={errors.realmId} />
-				<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} errors={errors.createUserId} />
-				<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} errors={errors.createTime} />
-				<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} errors={errors.updateUserId} />
-				<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} errors={errors.updateTime} />
-				<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} errors={errors.createGroupId} />
-			{/if}
+		{:else if node}
+			<IDItem label="id" name="id" bind:value={node.id} errors={errors.id} />
+			<StringItem label="name" name="name" bind:value={node.name} errors={errors.name} />
+			<BooleanItem
+				label="isDeprecated"
+				name="isDeprecated"
+				bind:value={node.isDeprecated}
+				errors={errors.isDeprecated}
+			/>
+			<IntItem label="version" name="version" bind:value={node.version} errors={errors.version} />
+			<StringItem
+				label="realmId"
+				name="realmId"
+				bind:value={node.realmId}
+				errors={errors.realmId}
+			/>
+			<StringItem
+				label="createUserId"
+				name="createUserId"
+				bind:value={node.createUserId}
+				errors={errors.createUserId}
+			/>
+			<TimestampItem
+				label="createTime"
+				name="createTime"
+				bind:value={node.createTime}
+				errors={errors.createTime}
+			/>
+			<StringItem
+				label="updateUserId"
+				name="updateUserId"
+				bind:value={node.updateUserId}
+				errors={errors.updateUserId}
+			/>
+			<TimestampItem
+				label="updateTime"
+				name="updateTime"
+				bind:value={node.updateTime}
+				errors={errors.updateTime}
+			/>
+			<StringItem
+				label="createGroupId"
+				name="createGroupId"
+				bind:value={node.createGroupId}
+				errors={errors.createGroupId}
+			/>
 		{/if}
 	</Form>
 </Card>

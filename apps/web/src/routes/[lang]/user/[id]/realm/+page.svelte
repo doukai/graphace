@@ -6,7 +6,11 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypeRealmArgs, Realm } from '~/lib/types/schema';
-	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
+	import {
+		updateNodeParam,
+		updateErrorsParam,
+		getChildPathParam
+	} from '@graphace/commons/utils/url-util';
 	import { Query_user_realmStore, Mutation_user_realmStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
@@ -22,7 +26,7 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeRealmArgs;
+			args: MutationTypeRealmArgs | null;
 			update?: boolean;
 			then: (data: Realm | null | undefined) => void;
 			catch: (errors: Errors) => void;
@@ -52,7 +56,7 @@
 		ot();
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
+	const gotoField = (event: CustomEvent<{ path: string; name: string }>) => {
 		to(`../../realm/${event.detail.path}`, {
 			node: updateNodeParam($page.url, node),
 			errors: updateErrorsParam($page.url, errors),
@@ -71,10 +75,5 @@
 		on:gotoField={gotoField}
 	/>
 {:else}
-	<RealmCreateForm
-		{errors}
-		on:mutation={mutation}
-		on:back={back}
-		on:gotoField={gotoField}
-	/>
+	<RealmCreateForm {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
 {/if}

@@ -19,7 +19,7 @@
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
-			args: MutationType{{ name }}Args;
+			args: MutationType{{ name }}Args | null;
 			update?: boolean;
 			then: (data: {{ name }} | null | undefined) => void;
 			catch: (errors: Errors) => void;
@@ -48,7 +48,7 @@
 	const remove = (): void => {
 		if (node) {
 			dispatch('mutation', {
-				args: { id: node.{{ idName }}, isDeprecated: true },
+				args: null,
 				update: true,
 				then: (data) => {
 					notifications.success($LL.web.message.removeSuccess());
