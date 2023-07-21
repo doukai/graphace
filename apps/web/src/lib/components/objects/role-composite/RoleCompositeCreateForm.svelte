@@ -10,9 +10,8 @@
 	import LL from '$i18n/i18n-svelte';
 	import type { RoleComposite, MutationTypeRoleCompositeArgs } from '~/lib/types/schema';
 
+	export let node: MutationTypeRoleCompositeArgs = {};
 	export let errors: Record<string, Errors> = {};
-
-	const node: MutationTypeRoleCompositeArgs = {};
 
 	const dispatch = createEventDispatcher<{
 		mutation: {

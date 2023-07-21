@@ -71,20 +71,11 @@
 			id: string;
 		}>
 	) => {
-		const row = nodes?.map((node) => node?.id).indexOf(event.detail.id) || totalCount;
-		to(`../../user/${event.detail.id}`, {
-			node: updateNodeParam($page.url, nodes),
-			errors: updateErrorsParam($page.url, errors),
-			path: getChildPathParam($page.url, row)
-		});
+		to(`../../user/${event.detail.id}`);
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		to(`./users/_`, {
-			node: updateNodeParam($page.url, nodes),
-			errors: updateErrorsParam($page.url, errors),
-			path: getChildPathParam($page.url, totalCount)
-		});
+		to(`./users/_`);
 	};
 	
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {

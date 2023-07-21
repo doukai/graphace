@@ -21,7 +21,7 @@
 	const Mutation_{{ objectFieldTypeName | camelCase }} = new Mutation_{{ objectFieldTypeName | camelCase }}Store();
 	let errors: Record<number, Errors> = {};
 
-	const create = (
+	const mutation = (
 		event: CustomEvent<{
 			args: MutationType{{ objectFieldTypeName }}Args;
 			update?: boolean;
@@ -49,7 +49,7 @@
 			});
 	};
 
-	const mutation = (
+	const mutation_{{ objectFieldTypeName | camelCase }} = (
 		event: CustomEvent<{
 			args: MutationType{{ objectFieldTypeName }}Args;
 			update?: boolean;
@@ -91,14 +91,14 @@
 		{node}
 		{errors}
 		isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
-		on:mutation={mutation}
+		on:mutation={mutation_{{ objectFieldTypeName | camelCase }}}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>
 {:else}
 	<{{ objectFieldTypeName }}CreateForm
 		{errors}
-		on:mutation={create}
+		on:mutation={mutation}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>

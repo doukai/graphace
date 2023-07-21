@@ -71,20 +71,11 @@
 			id: string;
 		}>
 	) => {
-		const row = nodes?.map((node) => node?.id).indexOf(event.detail.id) || totalCount;
-		to(`../../permission/${event.detail.id}`, {
-			node: updateNodeParam($page.url, nodes),
-			errors: updateErrorsParam($page.url, errors),
-			path: getChildPathParam($page.url, row)
-		});
+		to(`../../permission/${event.detail.id}`);
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		to(`./permissions/_`, {
-			node: updateNodeParam($page.url, nodes),
-			errors: updateErrorsParam($page.url, errors),
-			path: getChildPathParam($page.url, totalCount)
-		});
+		to(`./permissions/_`);
 	};
 	
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {

@@ -21,7 +21,7 @@
 	const Mutation_realm = new Mutation_realmStore();
 	let errors: Record<number, Errors> = {};
 
-	const create = (
+	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeRealmArgs;
 			update?: boolean;
@@ -49,7 +49,7 @@
 			});
 	};
 
-	const mutation = (
+	const mutation_realm = (
 		event: CustomEvent<{
 			args: MutationTypeRealmArgs;
 			update?: boolean;
@@ -91,14 +91,14 @@
 		{node}
 		{errors}
 		isFetching={$Query_permission_realm.fetching}
-		on:mutation={mutation}
+		on:mutation={mutation_realm}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>
 {:else}
 	<RealmCreateForm
 		{errors}
-		on:mutation={create}
+		on:mutation={mutation}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>

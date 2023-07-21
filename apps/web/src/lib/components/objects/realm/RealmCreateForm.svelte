@@ -10,9 +10,8 @@
 	import LL from '$i18n/i18n-svelte';
 	import type { Realm, MutationTypeRealmArgs } from '~/lib/types/schema';
 
+	export let node: MutationTypeRealmArgs = {};
 	export let errors: Record<string, Errors> = {};
-
-	const node: MutationTypeRealmArgs = {};
 
 	const dispatch = createEventDispatcher<{
 		mutation: {

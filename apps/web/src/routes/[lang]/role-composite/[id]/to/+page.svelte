@@ -21,7 +21,7 @@
 	const Mutation_role = new Mutation_roleStore();
 	let errors: Record<number, Errors> = {};
 
-	const create = (
+	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeRoleArgs;
 			update?: boolean;
@@ -49,7 +49,7 @@
 			});
 	};
 
-	const mutation = (
+	const mutation_role = (
 		event: CustomEvent<{
 			args: MutationTypeRoleArgs;
 			update?: boolean;
@@ -91,14 +91,14 @@
 		{node}
 		{errors}
 		isFetching={$Query_roleComposite_to.fetching}
-		on:mutation={mutation}
+		on:mutation={mutation_role}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>
 {:else}
 	<RoleCreateForm
 		{errors}
-		on:mutation={create}
+		on:mutation={mutation}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>

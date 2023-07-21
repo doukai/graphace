@@ -36,6 +36,7 @@
 					mergeToList: ['users']
 				})
 					.then((result) => {
+						node = event.detail.args;
 						event.detail.then(null);
 					})
 					.catch((errors) => {

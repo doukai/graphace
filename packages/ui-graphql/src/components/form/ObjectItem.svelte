@@ -17,10 +17,10 @@
 </script>
 
 <FormItem {label} let:id>
-	<div {id} class="{errors ? 'border-2 border-error p-1 rounded-xl' : ''} space-y-5">
+	<div {id} class="justify-start">
 		<div class="tooltip" data-tip={$LL.uiGraphql.table.editBtn()}>
 			<button
-				class="btn btn-square btn-outline"
+				class="btn btn-square btn-outline {errors ? 'btn-error' : ''}"
 				on:click={(e) => {
 					e.preventDefault();
 					dispatch('gotoField', { path, name });

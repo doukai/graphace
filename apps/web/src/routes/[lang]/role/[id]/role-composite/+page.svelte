@@ -71,20 +71,11 @@
 			id: string;
 		}>
 	) => {
-		const row = nodes?.map((node) => node?.id).indexOf(event.detail.id) || totalCount;
-		to(`../../role-composite/${event.detail.id}`, {
-			node: updateNodeParam($page.url, nodes),
-			errors: updateErrorsParam($page.url, errors),
-			path: getChildPathParam($page.url, row)
-		});
+		to(`../../role-composite/${event.detail.id}`);
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		to(`./roleComposite/_`, {
-			node: updateNodeParam($page.url, nodes),
-			errors: updateErrorsParam($page.url, errors),
-			path: getChildPathParam($page.url, totalCount)
-		});
+		to(`./roleComposite/_`);
 	};
 	
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {

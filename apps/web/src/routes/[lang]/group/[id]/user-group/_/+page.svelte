@@ -36,6 +36,7 @@
 					mergeToList: ['userGroup']
 				})
 					.then((result) => {
+						node = event.detail.args;
 						event.detail.then(null);
 					})
 					.catch((errors) => {

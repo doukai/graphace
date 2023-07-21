@@ -21,7 +21,7 @@
 	const Mutation_user = new Mutation_userStore();
 	let errors: Record<number, Errors> = {};
 
-	const create = (
+	const mutation = (
 		event: CustomEvent<{
 			args: MutationTypeUserArgs;
 			update?: boolean;
@@ -49,7 +49,7 @@
 			});
 	};
 
-	const mutation = (
+	const mutation_user = (
 		event: CustomEvent<{
 			args: MutationTypeUserArgs;
 			update?: boolean;
@@ -91,14 +91,14 @@
 		{node}
 		{errors}
 		isFetching={$Query_userGroup_from.fetching}
-		on:mutation={mutation}
+		on:mutation={mutation_user}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>
 {:else}
 	<UserCreateForm
 		{errors}
-		on:mutation={create}
+		on:mutation={mutation}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>
