@@ -67,9 +67,7 @@
 			<ThemeSelect slot="option1" />
 			<LocaleSelect slot="option2" />
 		</NavBar>
-		<main
-			class="flex-1 max-w-[100vw] lg:max-w-[calc(100vw-20rem)] lg:px-6 lg:pt-6 lg:pb-16 px-2 py-2"
-		>
+		<main class="flex-1 max-w-[100vw] px-2 py-2 lg:max-w-[calc(100vw-20rem)] lg:px-6 lg:py-6">
 			<slot />
 			<MessageBoxs />
 			<Notifications />

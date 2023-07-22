@@ -17,11 +17,36 @@
 	$: Query_user_realm = data.Query_user_realm as Query_user_realmStore;
 	$: user = $Query_user_realm.data?.user;
 	$: node = user?.realm;
+	$: createNode = data.node;
+	$: errors = data.errors as Record<string, Errors>;
 	const Mutation_user_realm = new Mutation_user_realmStore();
 	const Mutation_realm = new Mutation_realmStore();
-	let errors: Record<number, Errors> = {};
 
 	const mutation = (
+		event: CustomEvent<{
+			args: MutationTypeRealmArgs;
+			update?: boolean;
+			then: (data: Realm | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		validate('Realm', event.detail.args, true, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_realm.mutate({ ...event.detail.args, update: true })
+					.then((result) => {
+						event.detail.then(result?.data?.realm);
+					})
+					.catch((errors) => {
+						event.detail.catch(errors);
+					});
+			})
+			.catch((validErrors) => {
+				errors = validErrors;
+			});
+	};
+
+	const createMutation = (
 		event: CustomEvent<{
 			args: MutationTypeRealmArgs;
 			update?: boolean;
@@ -49,40 +74,20 @@
 			});
 	};
 
-	const mutation_realm = (
-		event: CustomEvent<{
-			args: MutationTypeRealmArgs;
-			update?: boolean;
-			then: (data: Realm | null | undefined) => void;
-			catch: (errors: Errors) => void;
-		}>
-	) => {
-		validate('Realm', event.detail.args, true, $locale)
-			.then((data) => {
-				errors = {};
-				Mutation_realm.mutate({ ...event.detail.args, update: true })
-					.then((result) => {
-						event.detail.then(result?.data?.realm);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
-					});
-			})
-			.catch((validErrors) => {
-				errors = validErrors;
-			});
-	};
-
 	const back = (event: CustomEvent<{}>) => {
 		ot();
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
-		to(`../../realm/${event.detail.path}`, {
-			node: updateNodeParam($page.url, node),
-			errors: updateErrorsParam($page.url, errors),
-			path: getChildPathParam($page.url, event.detail.name)
-		});
+		if (node) {
+			to(`../../realm/${event.detail.path}`);
+		} else {
+			to(`../../realm/${event.detail.path}`, {
+				node: updateNodeParam($page.url, createNode),
+				errors: updateErrorsParam($page.url, errors),
+				path: getChildPathParam($page.url, event.detail.name)
+			});
+		}
 	};
 </script>
 
@@ -91,14 +96,15 @@
 		{node}
 		{errors}
 		isFetching={$Query_user_realm.fetching}
-		on:mutation={mutation_realm}
+		on:mutation={mutation}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>
 {:else}
 	<RealmCreateForm
+		node={createNode}
 		{errors}
-		on:mutation={mutation}
+		on:mutation={createMutation}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>

@@ -17,11 +17,36 @@
 	$: Query_groupRole_to = data.Query_groupRole_to as Query_groupRole_toStore;
 	$: groupRole = $Query_groupRole_to.data?.groupRole;
 	$: node = groupRole?.to;
+	$: createNode = data.node;
+	$: errors = data.errors as Record<string, Errors>;
 	const Mutation_groupRole_to = new Mutation_groupRole_toStore();
 	const Mutation_role = new Mutation_roleStore();
-	let errors: Record<number, Errors> = {};
 
 	const mutation = (
+		event: CustomEvent<{
+			args: MutationTypeRoleArgs;
+			update?: boolean;
+			then: (data: Role | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		validate('Role', event.detail.args, true, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_role.mutate({ ...event.detail.args, update: true })
+					.then((result) => {
+						event.detail.then(result?.data?.role);
+					})
+					.catch((errors) => {
+						event.detail.catch(errors);
+					});
+			})
+			.catch((validErrors) => {
+				errors = validErrors;
+			});
+	};
+
+	const createMutation = (
 		event: CustomEvent<{
 			args: MutationTypeRoleArgs;
 			update?: boolean;
@@ -49,40 +74,20 @@
 			});
 	};
 
-	const mutation_role = (
-		event: CustomEvent<{
-			args: MutationTypeRoleArgs;
-			update?: boolean;
-			then: (data: Role | null | undefined) => void;
-			catch: (errors: Errors) => void;
-		}>
-	) => {
-		validate('Role', event.detail.args, true, $locale)
-			.then((data) => {
-				errors = {};
-				Mutation_role.mutate({ ...event.detail.args, update: true })
-					.then((result) => {
-						event.detail.then(result?.data?.role);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
-					});
-			})
-			.catch((validErrors) => {
-				errors = validErrors;
-			});
-	};
-
 	const back = (event: CustomEvent<{}>) => {
 		ot();
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
-		to(`../../role/${event.detail.path}`, {
-			node: updateNodeParam($page.url, node),
-			errors: updateErrorsParam($page.url, errors),
-			path: getChildPathParam($page.url, event.detail.name)
-		});
+		if (node) {
+			to(`../../role/${event.detail.path}`);
+		} else {
+			to(`../../role/${event.detail.path}`, {
+				node: updateNodeParam($page.url, createNode),
+				errors: updateErrorsParam($page.url, errors),
+				path: getChildPathParam($page.url, event.detail.name)
+			});
+		}
 	};
 </script>
 
@@ -91,14 +96,15 @@
 		{node}
 		{errors}
 		isFetching={$Query_groupRole_to.fetching}
-		on:mutation={mutation_role}
+		on:mutation={mutation}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>
 {:else}
 	<RoleCreateForm
+		node={createNode}
 		{errors}
-		on:mutation={mutation}
+		on:mutation={createMutation}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>

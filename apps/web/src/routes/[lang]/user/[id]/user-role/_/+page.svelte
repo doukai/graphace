@@ -36,8 +36,7 @@
 					mergeToList: ['userRole']
 				})
 					.then((result) => {
-						node = event.detail.args;
-						event.detail.then(null);
+						event.detail.then(undefined);
 					})
 					.catch((errors) => {
 						event.detail.catch(errors);

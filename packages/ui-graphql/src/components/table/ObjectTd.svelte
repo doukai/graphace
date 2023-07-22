@@ -15,7 +15,10 @@
 </script>
 
 <td>
-	<div class={errors ? 'border-2 border-error rounded' : ''}>
+	<div
+		class={errors ? 'tooltip tooltip-open tooltip-error' : ''}
+		data-tip={errors?.errors?.map((error) => error.message).join(', ')}
+	>
 		<div class="tooltip" data-tip={$LL.uiGraphql.table.editBtn()}>
 			<button
 				class="btn btn-square btn-xs btn-ghost"

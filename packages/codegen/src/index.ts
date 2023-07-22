@@ -1,7 +1,7 @@
 import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
 import * as changeCase from "change-case";
-import { assertObjectType, isEnumType, isListType, isObjectType, type GraphQLSchema } from 'graphql';
+import { assertObjectType, isEnumType, isListType, isObjectType, type GraphQLSchema, isNonNullType } from 'graphql';
 import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getScalarNames, getEnumNames, getEnumValues } from 'graphace-codegen-commons';
 import type { Template } from 'graphace-codegen-commons';
 import { buildFileContent } from "./builder.js";
@@ -285,7 +285,7 @@ const renders: Record<Template, Render> = {
                 if (objectField?.type) {
                     const objectFieldType = getFieldType(objectField.type);
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), formPath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
+                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), formPath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath, isNonNullType: isNonNullType(objectField.type) }),
                     };
                 }
             }

@@ -17,11 +17,36 @@
 	$: Query_userRole_from = data.Query_userRole_from as Query_userRole_fromStore;
 	$: userRole = $Query_userRole_from.data?.userRole;
 	$: node = userRole?.from;
+	$: createNode = data.node;
+	$: errors = data.errors as Record<string, Errors>;
 	const Mutation_userRole_from = new Mutation_userRole_fromStore();
 	const Mutation_user = new Mutation_userStore();
-	let errors: Record<number, Errors> = {};
 
 	const mutation = (
+		event: CustomEvent<{
+			args: MutationTypeUserArgs;
+			update?: boolean;
+			then: (data: User | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		validate('User', event.detail.args, true, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_user.mutate({ ...event.detail.args, update: true })
+					.then((result) => {
+						event.detail.then(result?.data?.user);
+					})
+					.catch((errors) => {
+						event.detail.catch(errors);
+					});
+			})
+			.catch((validErrors) => {
+				errors = validErrors;
+			});
+	};
+
+	const createMutation = (
 		event: CustomEvent<{
 			args: MutationTypeUserArgs;
 			update?: boolean;
@@ -49,40 +74,20 @@
 			});
 	};
 
-	const mutation_user = (
-		event: CustomEvent<{
-			args: MutationTypeUserArgs;
-			update?: boolean;
-			then: (data: User | null | undefined) => void;
-			catch: (errors: Errors) => void;
-		}>
-	) => {
-		validate('User', event.detail.args, true, $locale)
-			.then((data) => {
-				errors = {};
-				Mutation_user.mutate({ ...event.detail.args, update: true })
-					.then((result) => {
-						event.detail.then(result?.data?.user);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
-					});
-			})
-			.catch((validErrors) => {
-				errors = validErrors;
-			});
-	};
-
 	const back = (event: CustomEvent<{}>) => {
 		ot();
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
-		to(`../../user/${event.detail.path}`, {
-			node: updateNodeParam($page.url, node),
-			errors: updateErrorsParam($page.url, errors),
-			path: getChildPathParam($page.url, event.detail.name)
-		});
+		if (node) {
+			to(`../../user/${event.detail.path}`);
+		} else {
+			to(`../../user/${event.detail.path}`, {
+				node: updateNodeParam($page.url, createNode),
+				errors: updateErrorsParam($page.url, errors),
+				path: getChildPathParam($page.url, event.detail.name)
+			});
+		}
 	};
 </script>
 
@@ -91,14 +96,15 @@
 		{node}
 		{errors}
 		isFetching={$Query_userRole_from.fetching}
-		on:mutation={mutation_user}
+		on:mutation={mutation}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>
 {:else}
 	<UserCreateForm
+		node={createNode}
 		{errors}
-		on:mutation={mutation}
+		on:mutation={createMutation}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>

@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { ot, to } from '~/lib/stores/useNavigate';
-	import { page } from '$app/stores';
 	import PermissionConnectionTable from '~/lib/components/objects/permission/PermissionConnectionTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypePermissionArgs, QueryTypePermissionConnectionArgs, Permission } from '~/lib/types/schema';
-	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Query_role_permissionsStore, Mutation_permissionStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';

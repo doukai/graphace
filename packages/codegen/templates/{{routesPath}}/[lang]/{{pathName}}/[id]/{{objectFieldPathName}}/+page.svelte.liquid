@@ -17,11 +17,36 @@
 	$: Query_{{ name | camelCase }}_{{ objectFieldName }} = data.Query_{{ name | camelCase }}_{{ objectFieldName }} as Query_{{ name | camelCase }}_{{ objectFieldName }}Store;
 	$: {{ name | camelCase }} = $Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }};
 	$: node = {{ name | camelCase }}?.{{ objectFieldName }};
+	$: createNode = data.node;
+	$: errors = data.errors as Record<string, Errors>;
 	const Mutation_{{ name | camelCase }}_{{ objectFieldName }} = new Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store();
 	const Mutation_{{ objectFieldTypeName | camelCase }} = new Mutation_{{ objectFieldTypeName | camelCase }}Store();
-	let errors: Record<number, Errors> = {};
 
 	const mutation = (
+		event: CustomEvent<{
+			args: MutationType{{ objectFieldTypeName }}Args;
+			update?: boolean;
+			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		validate('{{ objectFieldTypeName }}', event.detail.args, true, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_{{ objectFieldTypeName | camelCase }}.mutate({ ...event.detail.args, update: true })
+					.then((result) => {
+						event.detail.then(result?.data?.{{ objectFieldTypeName | camelCase }});
+					})
+					.catch((errors) => {
+						event.detail.catch(errors);
+					});
+			})
+			.catch((validErrors) => {
+				errors = validErrors;
+			});
+	};
+
+	const createMutation = (
 		event: CustomEvent<{
 			args: MutationType{{ objectFieldTypeName }}Args;
 			update?: boolean;
@@ -49,40 +74,20 @@
 			});
 	};
 
-	const mutation_{{ objectFieldTypeName | camelCase }} = (
-		event: CustomEvent<{
-			args: MutationType{{ objectFieldTypeName }}Args;
-			update?: boolean;
-			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
-			catch: (errors: Errors) => void;
-		}>
-	) => {
-		validate('{{ objectFieldTypeName }}', event.detail.args, true, $locale)
-			.then((data) => {
-				errors = {};
-				Mutation_{{ objectFieldTypeName | camelCase }}.mutate({ ...event.detail.args, update: true })
-					.then((result) => {
-						event.detail.then(result?.data?.{{ objectFieldTypeName | camelCase }});
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
-					});
-			})
-			.catch((validErrors) => {
-				errors = validErrors;
-			});
-	};
-
 	const back = (event: CustomEvent<{}>) => {
 		ot();
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
-		to(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.path}`, {
-			node: updateNodeParam($page.url, node),
-			errors: updateErrorsParam($page.url, errors),
-			path: getChildPathParam($page.url, event.detail.name)
-		});
+		if (node) {
+			to(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.path}`);
+		} else {
+			to(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.path}`, {
+				node: updateNodeParam($page.url, createNode),
+				errors: updateErrorsParam($page.url, errors),
+				path: getChildPathParam($page.url, event.detail.name)
+			});
+		}
 	};
 </script>
 
@@ -90,15 +95,19 @@
 	<{{ objectFieldTypeName }}Form
 		{node}
 		{errors}
+		{%- if isNonNullType %}
+		showRemoveButton={false}
+		{%- endif %}
 		isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
-		on:mutation={mutation_{{ objectFieldTypeName | camelCase }}}
+		on:mutation={mutation}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>
 {:else}
 	<{{ objectFieldTypeName }}CreateForm
+		node={createNode}
 		{errors}
-		on:mutation={mutation}
+		on:mutation={createMutation}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>

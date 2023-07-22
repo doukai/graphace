@@ -17,11 +17,36 @@
 	$: Query_userGroup_to = data.Query_userGroup_to as Query_userGroup_toStore;
 	$: userGroup = $Query_userGroup_to.data?.userGroup;
 	$: node = userGroup?.to;
+	$: createNode = data.node;
+	$: errors = data.errors as Record<string, Errors>;
 	const Mutation_userGroup_to = new Mutation_userGroup_toStore();
 	const Mutation_group = new Mutation_groupStore();
-	let errors: Record<number, Errors> = {};
 
 	const mutation = (
+		event: CustomEvent<{
+			args: MutationTypeGroupArgs;
+			update?: boolean;
+			then: (data: Group | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		validate('Group', event.detail.args, true, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_group.mutate({ ...event.detail.args, update: true })
+					.then((result) => {
+						event.detail.then(result?.data?.group);
+					})
+					.catch((errors) => {
+						event.detail.catch(errors);
+					});
+			})
+			.catch((validErrors) => {
+				errors = validErrors;
+			});
+	};
+
+	const createMutation = (
 		event: CustomEvent<{
 			args: MutationTypeGroupArgs;
 			update?: boolean;
@@ -49,40 +74,20 @@
 			});
 	};
 
-	const mutation_group = (
-		event: CustomEvent<{
-			args: MutationTypeGroupArgs;
-			update?: boolean;
-			then: (data: Group | null | undefined) => void;
-			catch: (errors: Errors) => void;
-		}>
-	) => {
-		validate('Group', event.detail.args, true, $locale)
-			.then((data) => {
-				errors = {};
-				Mutation_group.mutate({ ...event.detail.args, update: true })
-					.then((result) => {
-						event.detail.then(result?.data?.group);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
-					});
-			})
-			.catch((validErrors) => {
-				errors = validErrors;
-			});
-	};
-
 	const back = (event: CustomEvent<{}>) => {
 		ot();
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
-		to(`../../group/${event.detail.path}`, {
-			node: updateNodeParam($page.url, node),
-			errors: updateErrorsParam($page.url, errors),
-			path: getChildPathParam($page.url, event.detail.name)
-		});
+		if (node) {
+			to(`../../group/${event.detail.path}`);
+		} else {
+			to(`../../group/${event.detail.path}`, {
+				node: updateNodeParam($page.url, createNode),
+				errors: updateErrorsParam($page.url, errors),
+				path: getChildPathParam($page.url, event.detail.name)
+			});
+		}
 	};
 </script>
 
@@ -91,14 +96,15 @@
 		{node}
 		{errors}
 		isFetching={$Query_userGroup_to.fetching}
-		on:mutation={mutation_group}
+		on:mutation={mutation}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>
 {:else}
 	<GroupCreateForm
+		node={createNode}
 		{errors}
-		on:mutation={mutation}
+		on:mutation={createMutation}
 		on:back={back}
 		on:gotoField={gotoField}
 	/>

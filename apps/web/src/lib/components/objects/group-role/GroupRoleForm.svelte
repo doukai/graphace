@@ -13,6 +13,7 @@
 	export let node: GroupRole | null | undefined;
 	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
+	export let showRemoveButton: boolean = true;
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
@@ -63,6 +64,7 @@
 <Card>
 	<Form
 		title="GroupRole"
+		{showRemoveButton}
 		on:save={save}
 		on:remove={() =>
 			messageBoxs.open({
