@@ -2,7 +2,14 @@
 	import { createEventDispatcher } from 'svelte';
 	import SearchInput from '../search/SearchInput.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Plus, Trash, ArrowUturnLeft, InboxArrowDown } from '@steeze-ui/heroicons';
+	import {
+		Plus,
+		Trash,
+		ListBullet,
+		Check,
+		ArrowUturnLeft,
+		InboxArrowDown
+	} from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 
 	export let title: string = '';
@@ -11,12 +18,16 @@
 	export let showSaveButton: boolean = true;
 	export let showRemoveButton: boolean = true;
 	export let showBackButton: boolean = true;
+	export let showGotoSelectButton: boolean = false;
+	export let showSelectButton: boolean = false;
 
 	const dispatch = createEventDispatcher<{
 		create: {};
 		save: {};
 		remove: {};
 		back: {};
+		gotoSelect: {};
+		select: {};
 	}>();
 </script>
 
@@ -95,6 +106,50 @@
 					}}
 				>
 					{$LL.ui.button.save()}
+				</button>
+			{/if}
+			{#if showGotoSelectButton}
+				<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.select()}>
+					<button
+						class="btn btn-secondary btn-square md:hidden"
+						on:click={(e) => {
+							e.preventDefault();
+							dispatch('gotoSelect');
+						}}
+					>
+						<Icon src={ListBullet} class="h-6 w-6" solid />
+					</button>
+				</div>
+				<button
+					class="hidden md:flex btn btn-secondary"
+					on:click={(e) => {
+						e.preventDefault();
+						dispatch('gotoSelect');
+					}}
+				>
+					{$LL.ui.button.select()}
+				</button>
+			{/if}
+			{#if showSelectButton}
+				<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.select()}>
+					<button
+						class="btn btn-secondary btn-square md:hidden"
+						on:click={(e) => {
+							e.preventDefault();
+							dispatch('select');
+						}}
+					>
+						<Icon src={Check} class="h-6 w-6" solid />
+					</button>
+				</div>
+				<button
+					class="hidden md:flex btn btn-secondary"
+					on:click={(e) => {
+						e.preventDefault();
+						dispatch('select');
+					}}
+				>
+					{$LL.ui.button.select()}
 				</button>
 			{/if}
 			{#if showBackButton}

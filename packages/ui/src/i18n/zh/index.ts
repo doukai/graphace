@@ -24,16 +24,17 @@ const zh: Translation = {
 		table: {
 			empty: "无结果"
 		},
-        messageBox: {
-            cancel: "取消",
-            confirm: "确认"
-        },
+		messageBox: {
+			cancel: "取消",
+			confirm: "确认"
+		},
 		button: {
 			search: "搜索",
 			create: "新建",
 			remove: "删除",
 			save: "保存",
-			back: "返回"
+			back: "返回",
+			select: "选择"
 		}
 	}
 }

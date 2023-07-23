@@ -14,11 +14,13 @@
 	export let errors: Record<number, Errors> = {};
 	export let showSaveButton: boolean = true;
 	export let showBackButton: boolean = true;
+	export let showGotoSelectButton: boolean = false;
 
 	const dispatch = createEventDispatcher<{
 		edit: { row: number };
 		create: {};
 		save: { nodes: (MutationTypeRealmArgs | null | undefined)[] | null | undefined };
+		gotoSelect: {};
 		back: {};
 	}>();
 
@@ -53,6 +55,7 @@
 		{showRemoveButton}
 		{showSaveButton}
 		{showBackButton}
+		{showGotoSelectButton}
 		showSearchInput={false}
 		on:create
 		on:save={() => dispatch('save', { nodes })}
@@ -67,6 +70,7 @@
 				}
 			});
 		}}
+		on:gotoSelect
 		on:back
 	/>
 	<div class="divider" />

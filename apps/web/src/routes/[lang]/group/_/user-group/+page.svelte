@@ -55,6 +55,7 @@
 	};
 </script>
 <UserGroupCreateTable
+	showGotoSelectButton={true}
 	{nodes}
 	{errors}
 	on:edit={edit}

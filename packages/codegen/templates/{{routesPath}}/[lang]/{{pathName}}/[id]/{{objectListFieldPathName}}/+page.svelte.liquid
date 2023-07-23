@@ -96,6 +96,10 @@
 		to(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.path}`);
 	};
 
+	const gotoSelect = (event: CustomEvent<{}>) => {
+		to(`./{{ objectFieldName }}/~`);
+	};
+
 	const back = (event: CustomEvent<{}>) => {
 		ot();
 	};
@@ -104,6 +108,7 @@
 {%- if connectionField %}
 <{{ objectFieldTypeName }}ConnectionTable
 	showSaveButton={false}
+	showGotoSelectButton={true}
 	{nodes}
 	{totalCount}
 	{errors}
@@ -113,11 +118,13 @@
 	on:edit={edit}
 	on:create={create}
 	on:gotoField={gotoField}
+	on:gotoSelect={gotoSelect}
 	on:back={back}
 />
 {%- else %}
 <{{ objectFieldTypeName }}Table
 	showSaveButton={false}
+	showGotoSelectButton={true}
 	{nodes}
 	{errors}
 	isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
@@ -126,6 +133,7 @@
 	on:edit={edit}
 	on:create={create}
 	on:gotoField={gotoField}
+	on:gotoSelect={gotoSelect}
 	on:back={back}
 />
 {%- endif %}

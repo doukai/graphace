@@ -80,6 +80,10 @@
 		to(`../../group-role/${event.detail.path}`);
 	};
 
+	const gotoSelect = (event: CustomEvent<{}>) => {
+		to(`./groupRole/~`);
+	};
+
 	const back = (event: CustomEvent<{}>) => {
 		ot();
 	};
@@ -87,6 +91,7 @@
 </script>
 <GroupRoleConnectionTable
 	showSaveButton={false}
+	showGotoSelectButton={true}
 	{nodes}
 	{totalCount}
 	{errors}
@@ -96,5 +101,6 @@
 	on:edit={edit}
 	on:create={create}
 	on:gotoField={gotoField}
+	on:gotoSelect={gotoSelect}
 	on:back={back}
 />

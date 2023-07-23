@@ -33,7 +33,8 @@ const en: BaseTranslation = {
 			create: "Create",
 			remove: "Remove",
 			save: "Save",
-			back: "Back"
+			back: "Back",
+			select: "Select"
 		}
 	},
 }

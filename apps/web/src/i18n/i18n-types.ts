@@ -112,6 +112,10 @@ export type NamespaceUiTranslation = {
 		 * B​a​c​k
 		 */
 		back: string
+		/**
+		 * S​e​l​e​c​t
+		 */
+		select: string
 	}
 }
 
@@ -133,6 +137,10 @@ export type NamespaceUiGraphqlTranslation = {
 		 * C​a​n​c​e​l
 		 */
 		cancelBtn: string
+		/**
+		 * S​e​l​e​c​t
+		 */
+		selectBtn: string
 		th: {
 			/**
 			 * f​i​l​t​e​r
@@ -412,6 +420,10 @@ export type NamespaceWebTranslation = {
 			 * R​e​m​o​v​e
 			 */
 			removeBtn: string
+			/**
+			 * S​e​l​e​c​t
+			 */
+			selectBtn: string
 		}
 	}
 }
@@ -532,6 +544,10 @@ export type TranslationFunctions = {
 			 * Back
 			 */
 			back: () => LocalizedString
+			/**
+			 * Select
+			 */
+			select: () => LocalizedString
 		}
 	}
 	uiGraphql: {
@@ -552,6 +568,10 @@ export type TranslationFunctions = {
 			 * Cancel
 			 */
 			cancelBtn: () => LocalizedString
+			/**
+			 * Select
+			 */
+			selectBtn: () => LocalizedString
 			th: {
 				/**
 				 * filter
@@ -829,6 +849,10 @@ export type TranslationFunctions = {
 				 * Remove
 				 */
 				removeBtn: () => LocalizedString
+				/**
+				 * Select
+				 */
+				selectBtn: () => LocalizedString
 			}
 		}
 	}

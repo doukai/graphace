@@ -106,6 +106,10 @@ type RootTranslation = {
 			 * B​a​c​k
 			 */
 			back: string
+			/**
+			 * S​e​l​e​c​t
+			 */
+			select: string
 		}
 	}
 }
@@ -201,6 +205,10 @@ export type TranslationFunctions = {
 			 * Back
 			 */
 			back: () => LocalizedString
+			/**
+			 * Select
+			 */
+			select: () => LocalizedString
 		}
 	}
 }

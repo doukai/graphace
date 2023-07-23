@@ -51,6 +51,7 @@ const en: BaseTranslation = {
             removeModalTitle: "Remove row?",
             editBtn: "Edit",
             removeBtn: "Remove",
+            selectBtn: "Select"
         }
     }
 }

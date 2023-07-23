@@ -34,6 +34,7 @@ const en_ui = {
 		remove: 'Remove',
 		save: 'Save',
 		back: 'Back',
+		select: "Select"
 	},
 } satisfies BaseTranslation
 

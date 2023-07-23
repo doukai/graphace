@@ -55,6 +55,7 @@
 	};
 </script>
 <UserRoleCreateTable
+	showGotoSelectButton={true}
 	{nodes}
 	{errors}
 	on:edit={edit}

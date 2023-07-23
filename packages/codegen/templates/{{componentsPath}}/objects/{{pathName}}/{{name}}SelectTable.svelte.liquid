@@ -1,0 +1,257 @@
+<script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+	import type { Errors } from '@graphace/commons/types';
+	import { {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql/components/table';
+	{%- for enum in enums %}
+	import {{ enum }}Th from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Th.svelte';
+	import {{ enum }}Td from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Td.svelte';
+	{%- endfor %}
+	import { Card } from '@graphace/ui/components/card';
+	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
+	import { notifications } from '@graphace/ui/components/Notifications.svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { CheckCircle } from '@steeze-ui/heroicons';
+	import LL from '$i18n/i18n-svelte';
+	import {
+		Conditional,
+		Operator,
+		{{ name }},
+		{{ name }}OrderBy,
+		QueryType{{ name }}ListArgs,
+		MutationType{{ name }}Args
+	} from '~/{{ schemaTypesPath }}';
+
+	export let nodes: ({{ name }} | null | undefined)[] | null | undefined;
+	export let isFetching: boolean;
+	export let errors: Record<number, Errors> = {};
+	export let multipleSelect: boolean = true;
+
+	const dispatch = createEventDispatcher<{
+		fetch: {
+			args: QueryType{{ name }}ListArgs;
+			then: (data: ({{ name }} | null | undefined)[] | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		};
+		mutation: {
+			args: MutationType{{ name }}Args;
+			update?: boolean;
+			then: (data: {{ name }} | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		};
+		select: {
+			selected: string | null | undefined | (string | null | undefined)[];
+			then: () => void;
+			catch: (errors: Errors) => void;
+		};
+		back: {};
+	}>();
+
+	let showSelectButton = false;
+	let args: QueryType{{ name }}ListArgs = {};
+	let orderBy: {{ name }}OrderBy = {};
+
+	let selectAll: boolean;
+	let selectedIdList: string | null | undefined | (string | null | undefined)[] = multipleSelect
+		? []
+		: undefined;
+
+	$: if (Array.isArray(selectedIdList) && selectedIdList.length > 0) {
+		showSelectButton = true;
+	} else {
+		showSelectButton = false;
+	}
+
+	const query = () => {
+		if (Object.keys(orderBy).length > 0) {
+			args.orderBy = orderBy;
+		} else {
+			args.orderBy = undefined;
+		}
+
+		dispatch('fetch', {
+			args,
+			then: (data) => {
+				errors = {};
+			},
+			catch: (errors) => {
+				console.error(errors);
+				notifications.error($LL.web.message.requestFailed());
+			}
+		});
+	};
+
+	const search = (searchValue: string | undefined) => {
+		let args: QueryType{{ name }}ListArgs = {};
+		if (searchValue) {
+			args.cond = Conditional.OR;
+			{%- if fields %}
+			{%- for field in fields %}
+			{%- if field.isScalarType and field.inQueryArgs and field.fieldType.name == 'String' %}
+			args.{{ field.fieldName }} = { opr: Operator.LK, val: `%${searchValue}%` };
+			{%- endif %}
+			{%- endfor %}
+			{%- endif %}
+		} else {
+			args.cond = undefined;
+			{%- if fields %}
+			{%- for field in fields %}
+			{%- if field.isScalarType and field.inQueryArgs and field.fieldType.name == 'String' %}
+			args.{{ field.fieldName }} = undefined;
+			{%- endif %}
+			{%- endfor %}
+			{%- endif %}
+		}
+
+		dispatch('fetch', {
+			args,
+			then: (data) => {
+				errors = {};
+			},
+			catch: (errors) => {
+				console.error(errors);
+				notifications.error($LL.web.message.requestFailed());
+			}
+		});
+	};
+
+	const updateField = (args: MutationType{{ name }}Args | null | undefined) => {
+		if (args) {
+			dispatch('mutation', {
+				args,
+				update: true,
+				then: (data) => {
+					notifications.success($LL.web.message.saveSuccess());
+				},
+				catch: (errors) => {
+					console.error(errors);
+					notifications.error($LL.web.message.saveFailed());
+				}
+			});
+		}
+	}
+</script>
+
+<Card>
+	<TableHead
+		title="{{ name }}"
+		showCreateButton={false}
+		showSaveButton={false}
+		showRemoveButton={false}
+		{showSelectButton}
+		on:search={(e) => search(e.detail.value)}
+		on:select={() =>
+			dispatch('select', {
+				selected: selectedIdList,
+				then: () => dispatch('back'),
+				catch: () => {}
+			})}
+		on:back
+	/>
+	<div class="divider" />
+	<Table>
+		<thead>
+			<tr>
+				<th class="z-10">
+					{#if multipleSelect}
+						<label>
+							<input
+								type="checkbox"
+								class="checkbox"
+								bind:checked={selectAll}
+								on:change={() => {
+									if (nodes && nodes.length > 0) {
+										selectedIdList = selectAll ? nodes.map((node) => node?.{{ idName }}) : [];
+									}
+								}}
+							/>
+						</label>
+					{/if}
+				</th>
+				{%- if fields %}
+				{%- for field in fields %}
+				{%- if field.isScalarType or field.isEnumType %}
+				{%- if field.inQueryArgs %}
+				<{{ field.fieldType.name }}Th
+					name="{{ field.fieldName }}"
+					bind:expression={args.{{ field.fieldName }}}
+					{%- if field.isListType == false %}
+					bind:sort={orderBy.{{ field.fieldName }}}
+					{%- endif %}
+					on:filter={query}
+				/>
+				{%- else %}
+				<td>{{ field.fieldName }}</td>
+				{%- endif %}
+				{%- endif %}
+				{%- endfor %}
+				{%- endif %}
+				<th />
+			</tr>
+		</thead>
+		{#if isFetching}
+			<TableLoading rows={10} cols={% raw %}{{% endraw %}{{cols}} + 2}/>
+		{:else}
+			<tbody>
+				{#if nodes && nodes.length > 0}
+					{#each nodes as node, row}
+						{#if node && node.{{ idName }}}
+							<tr class="hover">
+								<th class="z-10">
+									<label>
+										{#if multipleSelect}
+											<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
+										{:else}
+											<input type="radio" class="radio" bind:group={selectedIdList} value={node.id} />
+										{/if}
+									</label>
+								</th>
+								{%- if fields %}
+								{%- for field in fields %}
+								{%- if field.isScalarType or field.isEnumType %}
+								<{{ field.fieldType.name }}Td
+									name="{{ field.fieldName }}"
+									bind:value={node.{{ field.fieldName }}}
+									{%- if field.isListType %}
+									list
+									{%- endif %}
+									{%- if field.inMutationArgs and field.fieldName != idName %}
+									on:save={() => updateField({ {{ idName }}: node?.{{ idName }}, {{ field.fieldName }}: node?.{{ field.fieldName }} })}
+									{%- else %}
+									readonly
+									{%- endif %}
+									errors={errors[row]?.iterms?.{{ field.fieldName }}}
+								/>
+								{%- endif %}
+								{%- endfor %}
+								{%- endif %}
+								<th class="z-10">
+									<div class="flex space-x-1">
+										<div class="tooltip" data-tip={$LL.web.components.table.selectBtn()}>
+											<button
+												class="btn btn-square btn-ghost btn-xs"
+												on:click={(e) => {
+													e.preventDefault();
+													if (node && node.{{ idName }}) {
+														dispatch('select', {
+															selected: multipleSelect ? [node.{{ idName }}] : node.{{ idName }},
+															then: () => dispatch('back'),
+															catch: () => {}
+														});
+													}
+												}}
+											>
+												<Icon src={CheckCircle} solid />
+											</button>
+										</div>
+									</div>
+								</th>
+							</tr>
+						{/if}
+					{/each}
+				{:else}
+					<TableEmpty cols={% raw %}{{% endraw %}{{cols}} + 2}/>
+				{/if}
+			</tbody>
+		{/if}
+	</Table>
+</Card>

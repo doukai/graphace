@@ -25,6 +25,7 @@
 	export let errors: Record<number, Errors> = {};
 	export let showSaveButton: boolean = true;
 	export let showBackButton: boolean = true;
+	export let showGotoSelectButton: boolean = false;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -41,6 +42,7 @@
 		edit: { id: string };
 		create: {};
 		save: { nodes: (Role | null | undefined)[] | null | undefined };
+		gotoSelect: {};
 		back: {};
 	}>();
 
@@ -194,6 +196,7 @@
 		{showRemoveButton}
 		{showSaveButton}
 		{showBackButton}
+		{showGotoSelectButton}
 		on:create
 		on:search={(e) => search(e.detail.value)}
 		on:save={() => dispatch('save', { nodes })}
@@ -208,6 +211,7 @@
 				}
 			});
 		}}
+		on:gotoSelect
 		on:back
 	/>
 	<div class="divider" />

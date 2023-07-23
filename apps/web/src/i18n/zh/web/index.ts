@@ -50,7 +50,8 @@ const zh: NamespaceWebTranslation = {
         table: {
             removeModalTitle: "确认删除?",
             editBtn: "编辑",
-            removeBtn: "删除"
+            removeBtn: "删除",
+            selectBtn: "选择"
         }
     }
 }

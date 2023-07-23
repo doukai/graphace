@@ -74,10 +74,6 @@
 			});
 	};
 
-	const back = (event: CustomEvent<{}>) => {
-		ot();
-	};
-
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
 		if (node) {
 			to(`../../role/${event.detail.path}`);
@@ -88,6 +84,14 @@
 				path: getChildPathParam($page.url, event.detail.name)
 			});
 		}
+	};
+
+	const gotoSelect = (event: CustomEvent<{}>) => {
+		to(`./role/~`);
+	};
+
+	const back = (event: CustomEvent<{}>) => {
+		ot();
 	};
 </script>
 

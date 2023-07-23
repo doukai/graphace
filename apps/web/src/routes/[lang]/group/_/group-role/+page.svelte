@@ -55,6 +55,7 @@
 	};
 </script>
 <GroupRoleCreateTable
+	showGotoSelectButton={true}
 	{nodes}
 	{errors}
 	on:edit={edit}

@@ -32,6 +32,10 @@ type RootTranslation = {
 			 * C​a​n​c​e​l
 			 */
 			cancelBtn: string
+			/**
+			 * S​e​l​e​c​t
+			 */
+			selectBtn: string
 			th: {
 				/**
 				 * f​i​l​t​e​r
@@ -147,6 +151,10 @@ export type TranslationFunctions = {
 			 * Cancel
 			 */
 			cancelBtn: () => LocalizedString
+			/**
+			 * Select
+			 */
+			selectBtn: () => LocalizedString
 			th: {
 				/**
 				 * filter

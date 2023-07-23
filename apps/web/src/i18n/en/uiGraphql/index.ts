@@ -7,6 +7,7 @@ const en_uiGraphql = {
 		editBtn: 'Edit',
 		removeBtn: 'Remove',
 		cancelBtn: 'Cancel',
+		selectBtn: 'Select',
 		th: {
 			filter: 'filter',
 			cancel: 'cancel',
