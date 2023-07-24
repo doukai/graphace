@@ -77,7 +77,7 @@
 	<Table>
 		<thead>
 			<tr>
-				<th class="z-10">
+				<th class="z-10 w-12">
 					<label>
 						<input
 							type="checkbox"
@@ -114,7 +114,7 @@
 				{#each nodes as node, row}
 					{#if node}
 						<tr class="hover">
-							<th class="z-10">
+							<th class="z-10 w-12">
 								<label>
 									<input type="checkbox" class="checkbox" bind:checked={selectedRows[row]} />
 								</label>
@@ -187,7 +187,7 @@
 								readonly
 								errors={errors[row]?.iterms?.createGroupId}
 							/>
-							<th class="z-10">
+							<th class="z-10 w-24">
 								<div class="flex space-x-1">
 									<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
 										<button

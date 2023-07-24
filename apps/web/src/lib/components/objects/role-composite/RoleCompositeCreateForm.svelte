@@ -12,6 +12,7 @@
 
 	export let node: MutationTypeRoleCompositeArgs = {};
 	export let errors: Record<string, Errors> = {};
+	export let showGotoSelectButton: boolean = false;
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
@@ -20,6 +21,7 @@
 			then: (data: RoleComposite | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		};
+		gotoSelect: {};
 		back: {};
 	}>();
 
@@ -60,6 +62,7 @@
 	<Form
 		title="RoleComposite"
 		showRemoveButton={false}
+		{showGotoSelectButton}
 		on:save={save}
 		on:remove={() =>
 			messageBoxs.open({
@@ -71,6 +74,7 @@
 					return true;
 				}
 			})}
+		on:gotoSelect
 		on:back
 	>
 		<IDItem label="id" name="id" bind:value={node.id} errors={errors.id} />

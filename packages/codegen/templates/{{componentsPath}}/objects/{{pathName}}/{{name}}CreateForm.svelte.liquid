@@ -15,6 +15,7 @@
 
 	export let node: MutationType{{ name }}Args = {};
 	export let errors: Record<string, Errors> = {};
+	export let showGotoSelectButton: boolean = false;
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
@@ -23,6 +24,7 @@
 			then: (data: {{ name }} | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		};
+		gotoSelect: {};
 		back: {};
 	}>();
 
@@ -63,6 +65,7 @@
 	<Form
 		title="{{ name }}"
 		showRemoveButton={false}
+		{showGotoSelectButton}
 		on:save={save}
 		on:remove={() =>
 			messageBoxs.open({
@@ -74,6 +77,7 @@
 					return true;
 				}
 			})}
+		on:gotoSelect
 		on:back
 	>
 		{%- if fields %}

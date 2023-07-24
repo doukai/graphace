@@ -87,7 +87,7 @@
 	};
 
 	const gotoSelect = (event: CustomEvent<{}>) => {
-		to(`./{{ objectFieldName }}/~`);
+		to(`./{{ objectFieldName }}/__`);
 	};
 
 	const back = (event: CustomEvent<{}>) => {
@@ -97,6 +97,7 @@
 
 {#if node}
 	<{{ objectFieldTypeName }}Form
+		showGotoSelectButton={true}
 		{node}
 		{errors}
 		{%- if isNonNullType %}
@@ -104,15 +105,18 @@
 		{%- endif %}
 		isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
 		on:mutation={mutation}
-		on:back={back}
 		on:gotoField={gotoField}
+		on:gotoSelect={gotoSelect}
+		on:back={back}
 	/>
 {:else}
 	<{{ objectFieldTypeName }}CreateForm
+		showGotoSelectButton={true}
 		node={createNode}
 		{errors}
 		on:mutation={createMutation}
-		on:back={back}
 		on:gotoField={gotoField}
+		on:gotoSelect={gotoSelect}
+		on:back={back}
 	/>
 {/if}

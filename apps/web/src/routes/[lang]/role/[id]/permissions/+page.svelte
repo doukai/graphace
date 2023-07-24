@@ -81,7 +81,7 @@
 	};
 
 	const gotoSelect = (event: CustomEvent<{}>) => {
-		to(`./permissions/~`);
+		to(`./permissions/__`);
 	};
 
 	const back = (event: CustomEvent<{}>) => {

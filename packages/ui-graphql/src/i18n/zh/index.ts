@@ -7,7 +7,6 @@ const zh: Translation = {
 			editBtn: "编辑",
 			removeBtn: "删除",
 			cancelBtn: "取消",
-			selectBtn: '选择',
 			th: {
 				filter: "过滤",
 				cancel: "取消",

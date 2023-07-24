@@ -20,14 +20,14 @@ export type Template =
     '{{routesPath}}/[lang]/{{pathName}}/[id]/+page.ts' |
     '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/+page.svelte' |
     '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/+page.ts' |
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/~/+page.svelte' |
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/~/+page.ts' |
+    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/__/+page.svelte' |
+    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/__/+page.ts' |
     '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.svelte' |
     '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.ts' |
     '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.svelte' |
     '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.ts' |
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/~/+page.svelte' |
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/~/+page.ts' |
+    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/__/+page.svelte' |
+    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/__/+page.ts' |
     '{{routesPath}}/[lang]/{{pathName}}/_/+page.svelte' |
     '{{routesPath}}/[lang]/{{pathName}}/_/+page.ts' |
     '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/+page.svelte' |

@@ -87,7 +87,7 @@
 	};
 
 	const gotoSelect = (event: CustomEvent<{}>) => {
-		to(`./to/~`);
+		to(`./to/__`);
 	};
 
 	const back = (event: CustomEvent<{}>) => {
@@ -97,19 +97,23 @@
 
 {#if node}
 	<RoleForm
+		showGotoSelectButton={true}
 		{node}
 		{errors}
 		isFetching={$Query_userRole_to.fetching}
 		on:mutation={mutation}
-		on:back={back}
 		on:gotoField={gotoField}
+		on:gotoSelect={gotoSelect}
+		on:back={back}
 	/>
 {:else}
 	<RoleCreateForm
+		showGotoSelectButton={true}
 		node={createNode}
 		{errors}
 		on:mutation={createMutation}
-		on:back={back}
 		on:gotoField={gotoField}
+		on:gotoSelect={gotoSelect}
+		on:back={back}
 	/>
 {/if}

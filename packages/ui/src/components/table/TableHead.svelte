@@ -6,7 +6,7 @@
 		Plus,
 		Trash,
 		ListBullet,
-		Check,
+		Link,
 		ArrowUturnLeft,
 		InboxArrowDown
 	} from '@steeze-ui/heroicons';
@@ -111,7 +111,7 @@
 			{#if showGotoSelectButton}
 				<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.select()}>
 					<button
-						class="btn btn-secondary btn-square md:hidden"
+						class="btn btn-outline btn-secondary btn-square md:hidden"
 						on:click={(e) => {
 							e.preventDefault();
 							dispatch('gotoSelect');
@@ -121,7 +121,7 @@
 					</button>
 				</div>
 				<button
-					class="hidden md:flex btn btn-secondary"
+					class="hidden md:flex btn btn-outline btn-secondary"
 					on:click={(e) => {
 						e.preventDefault();
 						dispatch('gotoSelect');
@@ -139,7 +139,7 @@
 							dispatch('select');
 						}}
 					>
-						<Icon src={Check} class="h-6 w-6" solid />
+						<Icon src={Link} class="h-6 w-6" solid />
 					</button>
 				</div>
 				<button

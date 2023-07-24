@@ -81,7 +81,7 @@
 	};
 
 	const gotoSelect = (event: CustomEvent<{}>) => {
-		to(`./roleComposite/~`);
+		to(`./roleComposite/__`);
 	};
 
 	const back = (event: CustomEvent<{}>) => {

@@ -81,7 +81,7 @@
 	};
 
 	const gotoSelect = (event: CustomEvent<{}>) => {
-		to(`./roles/~`);
+		to(`./roles/__`);
 	};
 
 	const back = (event: CustomEvent<{}>) => {

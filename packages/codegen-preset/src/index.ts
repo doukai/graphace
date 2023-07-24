@@ -586,7 +586,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         .map(field => { return { name: type.name, objectFieldName: field.name } }))
                 .map(objectField => {
                     const { name, objectFieldName } = objectField;
-                    const template = '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/~/+page.svelte';
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/__/+page.svelte';
                     const scope = { routesPath, pathName: changeCase.paramCase(name), objectFieldPathName: changeCase.paramCase(objectFieldName) };
                     return {
                         filename: buildPath(template, scope),
@@ -623,7 +623,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         .map(field => { return { name: type.name, objectFieldName: field.name } }))
                 .map(objectField => {
                     const { name, objectFieldName } = objectField;
-                    const template = '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/~/+page.ts';
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/__/+page.ts';
                     const scope = { routesPath, pathName: changeCase.paramCase(name), objectFieldPathName: changeCase.paramCase(objectFieldName) };
                     return {
                         filename: buildPath(template, scope),
@@ -808,7 +808,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         .map(field => { return { name: type.name, objectFieldName: field.name } }))
                 .map(objectField => {
                     const { name, objectFieldName } = objectField;
-                    const template = '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/~/+page.svelte';
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/__/+page.svelte';
                     const scope = { routesPath, pathName: changeCase.paramCase(name), objectListFieldPathName: changeCase.paramCase(objectFieldName) };
                     return {
                         filename: buildPath(template, scope),
@@ -845,7 +845,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         .map(field => { return { name: type.name, objectFieldName: field.name } }))
                 .map(objectField => {
                     const { name, objectFieldName } = objectField;
-                    const template = '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/~/+page.ts';
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/__/+page.ts';
                     const scope = { routesPath, pathName: changeCase.paramCase(name), objectListFieldPathName: changeCase.paramCase(objectFieldName) };
                     return {
                         filename: buildPath(template, scope),

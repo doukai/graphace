@@ -9,7 +9,7 @@
 	import { Pagination } from '@graphace/ui/components/connection';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { CheckCircle } from '@steeze-ui/heroicons';
+	import { Link } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	import {
 		Conditional,
@@ -39,7 +39,7 @@
 			catch: (errors: Errors) => void;
 		};
 		select: {
-			selected: string | null | undefined | (string | null | undefined)[];
+			selected: MutationTypePermissionArgs | null | undefined | (MutationTypePermissionArgs | null | undefined)[];
 			then: () => void;
 			catch: (errors: Errors) => void;
 		};
@@ -59,7 +59,7 @@
 		? []
 		: undefined;
 
-	$: if (Array.isArray(selectedIdList) && selectedIdList.length > 0) {
+	$: if (selectedIdList && !Array.isArray(selectedIdList) || Array.isArray(selectedIdList) && selectedIdList.length > 0) {
 		showSelectButton = true;
 	} else {
 		showSelectButton = false;
@@ -167,9 +167,17 @@
 		on:search={(e) => search(e.detail.value)}
 		on:select={() =>
 			dispatch('select', {
-				selected: selectedIdList,
-				then: () => dispatch('back'),
-				catch: () => {}
+				selected: Array.isArray(selectedIdList)
+					? selectedIdList.flatMap((id) => nodes?.find((node) => node?.id === id))
+					: nodes?.find((node) => node?.id === selectedIdList),
+				then: () => {
+					notifications.success($LL.web.message.saveSuccess());
+					dispatch('back');
+				},
+				catch: (errors) => {
+					console.error(errors);
+					notifications.error($LL.web.message.saveFailed());
+				}
 			})}
 		on:back
 	/>
@@ -177,7 +185,7 @@
 	<Table>
 		<thead>
 			<tr>
-				<th class="z-10">
+				<th class="z-10 w-12">
 					{#if multipleSelect}
 						<label>
 							<input
@@ -283,7 +291,7 @@
 					{#each nodes as node, row}
 						{#if node && node.id}
 							<tr class="hover">
-								<th class="z-10">
+								<th class="z-10 w-12">
 									<label>
 										{#if multipleSelect}
 											<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
@@ -376,7 +384,7 @@
 									on:save={() => updateField({ id: node?.id, roleId: node?.roleId })}
 									errors={errors[row]?.iterms?.roleId}
 								/>
-								<th class="z-10">
+								<th class="z-10 w-12">
 									<div class="flex space-x-1">
 										<div class="tooltip" data-tip={$LL.web.components.table.selectBtn()}>
 											<button
@@ -385,14 +393,20 @@
 													e.preventDefault();
 													if (node && node.id) {
 														dispatch('select', {
-															selected: multipleSelect ? [node.id] : node.id,
-															then: () => dispatch('back'),
-															catch: () => {}
+															selected: multipleSelect ? [node] : node,
+															then: () => {
+																notifications.success($LL.web.message.saveSuccess());
+																dispatch('back');
+															},
+															catch: (errors) => {
+																console.error(errors);
+																notifications.error($LL.web.message.saveFailed());
+															}
 														});
 													}
 												}}
 											>
-												<Icon src={CheckCircle} solid />
+												<Icon src={Link} solid />
 											</button>
 										</div>
 									</div>

@@ -1110,7 +1110,7 @@ export type PageInfo = {
 export type Permission = Meta & {
   __typename?: 'Permission';
   id?: Maybe<Scalars['ID']>;
-  name: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
   ofTypeName?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   level?: Maybe<PermissionLevel>;

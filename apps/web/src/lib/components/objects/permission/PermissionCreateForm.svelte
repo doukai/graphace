@@ -13,6 +13,7 @@
 
 	export let node: MutationTypePermissionArgs = {};
 	export let errors: Record<string, Errors> = {};
+	export let showGotoSelectButton: boolean = false;
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
@@ -21,6 +22,7 @@
 			then: (data: Permission | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		};
+		gotoSelect: {};
 		back: {};
 	}>();
 
@@ -61,6 +63,7 @@
 	<Form
 		title="Permission"
 		showRemoveButton={false}
+		{showGotoSelectButton}
 		on:save={save}
 		on:remove={() =>
 			messageBoxs.open({
@@ -72,6 +75,7 @@
 					return true;
 				}
 			})}
+		on:gotoSelect
 		on:back
 	>
 		<IDItem label="id" name="id" bind:value={node.id} errors={errors.id} />

@@ -216,7 +216,7 @@
 	<Table>
 		<thead>
 			<tr>
-				<th class="z-10">
+				<th class="z-10 w-12">
 					<label>
 						<input
 							type="checkbox"
@@ -311,7 +311,7 @@
 					{#each nodes as node, row}
 						{#if node && node.id}
 							<tr class="hover">
-								<th class="z-10">
+								<th class="z-10 w-12">
 									<label>
 										<input type="checkbox" class="checkbox" bind:checked={selectedRows[node.id]} />
 									</label>
@@ -387,7 +387,7 @@
 								/>
 								<ObjectTd name="userGroup" errors={errors[row]?.iterms?.userGroup} path={`${node.id}/user-group`} on:gotoField />
 								<ObjectTd name="groupRole" errors={errors[row]?.iterms?.groupRole} path={`${node.id}/group-role`} on:gotoField />
-								<th class="z-10">
+								<th class="z-10 w-24">
 									<div class="flex space-x-1">
 										<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
 											<button

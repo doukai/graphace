@@ -14,6 +14,7 @@
 	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
 	export let showRemoveButton: boolean = true;
+	export let showGotoSelectButton: boolean = false;
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
@@ -22,6 +23,7 @@
 			then: (data: Group | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		};
+		gotoSelect: {};
 		back: {};
 	}>();
 
@@ -65,6 +67,7 @@
 	<Form
 		title="Group"
 		{showRemoveButton}
+		{showGotoSelectButton}
 		on:save={save}
 		on:remove={() =>
 			messageBoxs.open({
@@ -76,6 +79,7 @@
 					return true;
 				}
 			})}
+		on:gotoSelect
 		on:back
 	>
 		{#if isFetching}

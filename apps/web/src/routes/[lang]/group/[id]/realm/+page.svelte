@@ -87,7 +87,7 @@
 	};
 
 	const gotoSelect = (event: CustomEvent<{}>) => {
-		to(`./realm/~`);
+		to(`./realm/__`);
 	};
 
 	const back = (event: CustomEvent<{}>) => {
@@ -97,19 +97,23 @@
 
 {#if node}
 	<RealmForm
+		showGotoSelectButton={true}
 		{node}
 		{errors}
 		isFetching={$Query_group_realm.fetching}
 		on:mutation={mutation}
-		on:back={back}
 		on:gotoField={gotoField}
+		on:gotoSelect={gotoSelect}
+		on:back={back}
 	/>
 {:else}
 	<RealmCreateForm
+		showGotoSelectButton={true}
 		node={createNode}
 		{errors}
 		on:mutation={createMutation}
-		on:back={back}
 		on:gotoField={gotoField}
+		on:gotoSelect={gotoSelect}
+		on:back={back}
 	/>
 {/if}

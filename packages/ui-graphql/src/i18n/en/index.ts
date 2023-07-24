@@ -7,7 +7,6 @@ const en: BaseTranslation = {
 			editBtn: "Edit",
 			removeBtn: "Remove",
 			cancelBtn: "Cancel",
-			selectBtn: 'Select',
 			th: {
 				filter: "filter",
 				cancel: "cancel",

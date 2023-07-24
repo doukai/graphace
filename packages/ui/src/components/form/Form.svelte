@@ -1,17 +1,20 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Trash, ArrowUturnLeft, InboxArrowDown } from '@steeze-ui/heroicons';
+	import { Trash, ArrowUturnLeft, Link, InboxArrowDown } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	export let title: string;
 	export let showSaveButton: boolean = true;
 	export let showRemoveButton: boolean = true;
 	export let showBackButton: boolean = true;
+	export let showGotoSelectButton: boolean = false;
 
 	const dispatch = createEventDispatcher<{
 		save: {};
 		remove: {};
+		select: {};
 		back: {};
+		gotoSelect: {};
 	}>();
 </script>
 
@@ -62,6 +65,28 @@
 				}}
 			>
 				{$LL.ui.button.save()}
+			</button>
+		{/if}
+		{#if showGotoSelectButton}
+			<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.select()}>
+				<button
+					class="btn btn-outline btn-secondary btn-square md:hidden"
+					on:click={(e) => {
+						e.preventDefault();
+						dispatch('gotoSelect');
+					}}
+				>
+					<Icon src={Link} class="h-6 w-6" solid />
+				</button>
+			</div>
+			<button
+				class="hidden md:flex btn btn-outline btn-secondary"
+				on:click={(e) => {
+					e.preventDefault();
+					dispatch('gotoSelect');
+				}}
+			>
+				{$LL.ui.button.select()}
 			</button>
 		{/if}
 		{#if showBackButton}
@@ -140,6 +165,28 @@
 			}}
 		>
 			{$LL.ui.button.save()}
+		</button>
+	{/if}
+	{#if showGotoSelectButton}
+		<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.select()}>
+			<button
+				class="btn btn-outline btn-secondary btn-square md:hidden"
+				on:click={(e) => {
+					e.preventDefault();
+					dispatch('gotoSelect');
+				}}
+			>
+				<Icon src={Link} class="h-6 w-6" solid />
+			</button>
+		</div>
+		<button
+			class="hidden md:flex btn btn-outline btn-secondary"
+			on:click={(e) => {
+				e.preventDefault();
+				dispatch('gotoSelect');
+			}}
+		>
+			{$LL.ui.button.select()}
 		</button>
 	{/if}
 	{#if showBackButton}
