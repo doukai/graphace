@@ -15,6 +15,9 @@ const zh: NamespaceWebTranslation = {
         unbindFailed: "解除失败"
     },
     components: {
+        search: {
+            label: "搜索"
+        },
         themeSelect: {
             btn: "主题",
             themes: {
@@ -51,6 +54,7 @@ const zh: NamespaceWebTranslation = {
         },
         table: {
             removeModalTitle: "确认删除?",
+            unbindModalTitle: "确认解除?",
             editBtn: "编辑",
             removeBtn: "删除",
             unbindBtn: "解除",

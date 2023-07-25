@@ -15,6 +15,9 @@ const en: BaseTranslation = {
         unbindFailed: "Unbind failed"
     },
     components: {
+        search: {
+            label: "Search"
+        },
         themeSelect: {
             btn: "Theme",
             themes: {
@@ -51,6 +54,7 @@ const en: BaseTranslation = {
         },
         table: {
             removeModalTitle: "Remove row?",
+            unbindModalTitle: "Unbind row?",
             editBtn: "Edit",
             removeBtn: "Remove",
             unbindBtn: "Unbind",

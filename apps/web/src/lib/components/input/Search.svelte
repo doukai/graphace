@@ -4,6 +4,7 @@
 	import Typeahead from 'svelte-typeahead';
 	import type TItem from 'svelte-typeahead';
 	import { getOS } from '@graphace/commons/utils/system-util';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '~/i18n/i18n-svelte';
 	import pages from '~/lib/data/pages.json';
 
@@ -65,9 +66,9 @@
 		/>
 	</svg>
 	<Typeahead
-		placeholder="Search"
+		placeholder={$LL.web.components.search.label()}
 		limit={8}
-		label="Search"
+		label={$LL.web.components.search.label()}
 		data={searchIndex}
 		extract={(item) => item.tags}
 		inputAfterSelect="clear"

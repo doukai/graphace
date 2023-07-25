@@ -291,6 +291,12 @@ export type NamespaceWebTranslation = {
 		unbindFailed: string
 	}
 	components: {
+		search: {
+			/**
+			 * S​e​a​r​c​h
+			 */
+			label: string
+		}
 		themeSelect: {
 			/**
 			 * T​h​e​m​e
@@ -420,6 +426,10 @@ export type NamespaceWebTranslation = {
 			 * R​e​m​o​v​e​ ​r​o​w​?
 			 */
 			removeModalTitle: string
+			/**
+			 * U​n​b​i​n​d​ ​r​o​w​?
+			 */
+			unbindModalTitle: string
 			/**
 			 * E​d​i​t
 			 */
@@ -732,6 +742,12 @@ export type TranslationFunctions = {
 			unbindFailed: () => LocalizedString
 		}
 		components: {
+			search: {
+				/**
+				 * Search
+				 */
+				label: () => LocalizedString
+			}
 			themeSelect: {
 				/**
 				 * Theme
@@ -861,6 +877,10 @@ export type TranslationFunctions = {
 				 * Remove row?
 				 */
 				removeModalTitle: () => LocalizedString
+				/**
+				 * Unbind row?
+				 */
+				unbindModalTitle: () => LocalizedString
 				/**
 				 * Edit
 				 */

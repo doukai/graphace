@@ -412,7 +412,7 @@ type Permission implements Meta {
   idMin: Int
   isDeprecated: Boolean
   level: PermissionLevel
-  name: String
+  name: String!
   nameCount: Int
   nameMax: String
   nameMin: String
