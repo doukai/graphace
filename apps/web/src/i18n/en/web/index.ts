@@ -7,10 +7,12 @@ const en: BaseTranslation = {
         saveSuccess: "Save success",
         createSuccess: "Create success",
         removeSuccess: "Remove success",
+        unbindSuccess: "Unbind success",
         requestFailed: "Request failed",
         saveFailed: "Save failed",
         createFailed: "Create failed",
         removeFailed: "Remove failed",
+        unbindFailed: "Unbind failed"
     },
     components: {
         themeSelect: {
@@ -51,6 +53,7 @@ const en: BaseTranslation = {
             removeModalTitle: "Remove row?",
             editBtn: "Edit",
             removeBtn: "Remove",
+            unbindBtn: "Unbind",
             selectBtn: "Select"
         }
     }

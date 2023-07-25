@@ -99,6 +99,10 @@ type RootTranslation = {
 			 */
 			remove: string
 			/**
+			 * U​n​b​i​n​d
+			 */
+			unbind: string
+			/**
 			 * S​a​v​e
 			 */
 			save: string
@@ -197,6 +201,10 @@ export type TranslationFunctions = {
 			 * Remove
 			 */
 			remove: () => LocalizedString
+			/**
+			 * Unbind
+			 */
+			unbind: () => LocalizedString
 			/**
 			 * Save
 			 */

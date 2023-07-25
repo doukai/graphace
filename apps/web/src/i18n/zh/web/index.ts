@@ -7,10 +7,12 @@ const zh: NamespaceWebTranslation = {
         saveSuccess: "保存成功",
         createSuccess: "创建成功",
         removeSuccess: "删除成功",
+        unbindSuccess: "解除成功",
         requestFailed: "请求失败",
         saveFailed: "保存失败",
         createFailed: "创建失败",
         removeFailed: "删除失败",
+        unbindFailed: "解除失败"
     },
     components: {
         themeSelect: {
@@ -51,6 +53,7 @@ const zh: NamespaceWebTranslation = {
             removeModalTitle: "确认删除?",
             editBtn: "编辑",
             removeBtn: "删除",
+            unbindBtn: "解除",
             selectBtn: "选择"
         }
     }

@@ -46,9 +46,9 @@
 			});
 	};
 
-	const createMutation = (
+	const parentMutation = (
 		event: CustomEvent<{
-			args: MutationType{{ objectFieldTypeName }}Args;
+			args: MutationType{{ objectFieldTypeName }}Args | null;
 			update?: boolean;
 			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
 			catch: (errors: Errors) => void;
@@ -100,11 +100,13 @@
 		showGotoSelectButton={true}
 		{node}
 		{errors}
-		{%- if isNonNullType %}
 		showRemoveButton={false}
+		{%- if isNonNullType == false %}
+		showUnbindButton={true}
 		{%- endif %}
 		isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
 		on:mutation={mutation}
+		on:parentMutation={parentMutation}
 		on:gotoField={gotoField}
 		on:gotoSelect={gotoSelect}
 		on:back={back}
@@ -114,7 +116,7 @@
 		showGotoSelectButton={true}
 		node={createNode}
 		{errors}
-		on:mutation={createMutation}
+		on:mutation={parentMutation}
 		on:gotoField={gotoField}
 		on:gotoSelect={gotoSelect}
 		on:back={back}

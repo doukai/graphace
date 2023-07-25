@@ -14,11 +14,18 @@
 	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
 	export let showRemoveButton: boolean = true;
+	export let showUnbindButton: boolean = false;
 	export let showGotoSelectButton: boolean = false;
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
 			args: MutationTypeUserArgs;
+			update?: boolean;
+			then: (data: User | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		};
+		parentMutation: {
+			args: MutationTypeUserArgs | null;
 			update?: boolean;
 			then: (data: User | null | undefined) => void;
 			catch: (errors: Errors) => void;
@@ -61,12 +68,30 @@
 			});
 		}
 	};
+
+	const unbind = (): void => {
+		if (node) {
+			dispatch('parentMutation', {
+				args: null,
+				update: true,
+				then: (data) => {
+					notifications.success($LL.web.message.unbindSuccess());
+					dispatch('back');
+				},
+				catch: (errors) => {
+					console.error(errors);
+					notifications.error($LL.web.message.unbindFailed());
+				}
+			});
+		}
+	};
 </script>
 
 <Card>
 	<Form
 		title="User"
 		{showRemoveButton}
+		{showUnbindButton}
 		{showGotoSelectButton}
 		on:save={save}
 		on:remove={() =>
@@ -77,6 +102,24 @@
 				confirm: () => {
 					remove();
 					return true;
+				}
+			})}
+		on:unbind={() =>
+			messageBoxs.open({
+				title: $LL.web.components.table.removeModalTitle(),
+				buttonName: $LL.web.components.table.unbindBtn(),
+				buttonType: 'error',
+				confirm: () => {
+					unbind();
+					return true;
+				},
+				button1: {
+					name: $LL.web.components.table.removeBtn(),
+					className: 'btn-error',
+					onClick: () => {
+						remove();
+						return true;
+					}
 				}
 			})}
 		on:gotoSelect

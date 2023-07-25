@@ -46,9 +46,9 @@
 			});
 	};
 
-	const createMutation = (
+	const parentMutation = (
 		event: CustomEvent<{
-			args: MutationTypeRoleArgs;
+			args: MutationTypeRoleArgs | null;
 			update?: boolean;
 			then: (data: Role | null | undefined) => void;
 			catch: (errors: Errors) => void;
@@ -100,8 +100,11 @@
 		showGotoSelectButton={true}
 		{node}
 		{errors}
+		showRemoveButton={false}
+		showUnbindButton={true}
 		isFetching={$Query_roleComposite_from.fetching}
 		on:mutation={mutation}
+		on:parentMutation={parentMutation}
 		on:gotoField={gotoField}
 		on:gotoSelect={gotoSelect}
 		on:back={back}
@@ -111,7 +114,7 @@
 		showGotoSelectButton={true}
 		node={createNode}
 		{errors}
-		on:mutation={createMutation}
+		on:mutation={parentMutation}
 		on:gotoField={gotoField}
 		on:gotoSelect={gotoSelect}
 		on:back={back}

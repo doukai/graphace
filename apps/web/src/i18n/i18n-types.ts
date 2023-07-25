@@ -105,6 +105,10 @@ export type NamespaceUiTranslation = {
 		 */
 		remove: string
 		/**
+		 * U​n​b​i​n​d
+		 */
+		unbind: string
+		/**
 		 * S​a​v​e
 		 */
 		save: string
@@ -262,6 +266,10 @@ export type NamespaceWebTranslation = {
 		 */
 		removeSuccess: string
 		/**
+		 * U​n​b​i​n​d​ ​s​u​c​c​e​s​s
+		 */
+		unbindSuccess: string
+		/**
 		 * R​e​q​u​e​s​t​ ​f​a​i​l​e​d
 		 */
 		requestFailed: string
@@ -277,6 +285,10 @@ export type NamespaceWebTranslation = {
 		 * R​e​m​o​v​e​ ​f​a​i​l​e​d
 		 */
 		removeFailed: string
+		/**
+		 * U​n​b​i​n​d​ ​f​a​i​l​e​d
+		 */
+		unbindFailed: string
 	}
 	components: {
 		themeSelect: {
@@ -417,6 +429,10 @@ export type NamespaceWebTranslation = {
 			 */
 			removeBtn: string
 			/**
+			 * U​n​b​i​n​d
+			 */
+			unbindBtn: string
+			/**
 			 * S​e​l​e​c​t
 			 */
 			selectBtn: string
@@ -532,6 +548,10 @@ export type TranslationFunctions = {
 			 * Remove
 			 */
 			remove: () => LocalizedString
+			/**
+			 * Unbind
+			 */
+			unbind: () => LocalizedString
 			/**
 			 * Save
 			 */
@@ -687,6 +707,10 @@ export type TranslationFunctions = {
 			 */
 			removeSuccess: () => LocalizedString
 			/**
+			 * Unbind success
+			 */
+			unbindSuccess: () => LocalizedString
+			/**
 			 * Request failed
 			 */
 			requestFailed: () => LocalizedString
@@ -702,6 +726,10 @@ export type TranslationFunctions = {
 			 * Remove failed
 			 */
 			removeFailed: () => LocalizedString
+			/**
+			 * Unbind failed
+			 */
+			unbindFailed: () => LocalizedString
 		}
 		components: {
 			themeSelect: {
@@ -841,6 +869,10 @@ export type TranslationFunctions = {
 				 * Remove
 				 */
 				removeBtn: () => LocalizedString
+				/**
+				 * Unbind
+				 */
+				unbindBtn: () => LocalizedString
 				/**
 				 * Select
 				 */

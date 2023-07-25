@@ -15,6 +15,27 @@
 		isModalOpen?: boolean | undefined;
 		cancel?: () => boolean | undefined;
 		confirm?: () => boolean | undefined;
+		button1?:
+			| {
+					name: string | undefined;
+					className: string | undefined;
+					onClick: () => boolean | undefined;
+			  }
+			| undefined;
+		button2?:
+			| {
+					name: string | undefined;
+					className: string | undefined;
+					onClick: () => boolean | undefined;
+			  }
+			| undefined;
+		button3?:
+			| {
+					name: string | undefined;
+					className: string | undefined;
+					onClick: () => boolean | undefined;
+			  }
+			| undefined;
 	};
 	const messageBoxStore = writable<MessageBoxComponent[]>([]);
 
@@ -24,14 +45,28 @@
 		buttonName = undefined,
 		buttonType = undefined,
 		cancel = () => true,
-		confirm = () => true
+		confirm = () => true,
+		button1 = undefined,
+		button2 = undefined,
+		button3 = undefined
 	}: MessageBoxProps) {
 		messageBoxStore.update((messageBox) => {
 			return [
 				...messageBox,
 				{
 					id: nanoid(),
-					props: { title, content, buttonName, buttonType, isModalOpen: true, cancel, confirm }
+					props: {
+						title,
+						content,
+						buttonName,
+						buttonType,
+						isModalOpen: true,
+						cancel,
+						confirm,
+						button1,
+						button2,
+						button3
+					}
 				}
 			];
 		});
@@ -94,6 +129,42 @@
 			>
 				{$LL.ui.messageBox.cancel()}
 			</button>
+			{#if messageBox.props.button1}
+				<button
+					class="btn {messageBox.props.button1.className}"
+					on:click={() => {
+						if (messageBox.props.button1?.onClick()) {
+							messageBoxs.close();
+						}
+					}}
+				>
+					{messageBox.props.button1.name}
+				</button>
+			{/if}
+			{#if messageBox.props.button2}
+				<button
+					class="btn {messageBox.props.button2.className}"
+					on:click={() => {
+						if (messageBox.props.button2?.onClick()) {
+							messageBoxs.close();
+						}
+					}}
+				>
+					{messageBox.props.button2.name}
+				</button>
+			{/if}
+			{#if messageBox.props.button3}
+				<button
+					class="btn {messageBox.props.button3.className}"
+					on:click={() => {
+						if (messageBox.props.button3?.onClick()) {
+							messageBoxs.close();
+						}
+					}}
+				>
+					{messageBox.props.button3.name}
+				</button>
+			{/if}
 			<button
 				class="btn btn-outline {buttonClassName(messageBox.props.buttonType)}"
 				on:click={() => {

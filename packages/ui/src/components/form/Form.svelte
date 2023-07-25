@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Trash, ArrowUturnLeft, Link, InboxArrowDown } from '@steeze-ui/heroicons';
+	import { Trash, ArrowUturnLeft, Link, InboxArrowDown, LockOpen } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	export let title: string;
 	export let showSaveButton: boolean = true;
 	export let showRemoveButton: boolean = true;
+	export let showUnbindButton: boolean = false;
 	export let showBackButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
 
@@ -14,6 +15,7 @@
 		remove: {};
 		select: {};
 		back: {};
+		unbind: {};
 		gotoSelect: {};
 	}>();
 </script>
@@ -43,6 +45,28 @@
 				}}
 			>
 				{$LL.ui.button.remove()}
+			</button>
+		{/if}
+		{#if showUnbindButton}
+			<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.unbind()}>
+				<button
+					class="btn btn-error btn-outline btn-square md:hidden"
+					on:click={(e) => {
+						e.preventDefault();
+						dispatch('unbind');
+					}}
+				>
+					<Icon src={LockOpen} class="h-6 w-6" solid />
+				</button>
+			</div>
+			<button
+				class="hidden md:flex btn btn-outline btn-error"
+				on:click={(e) => {
+					e.preventDefault();
+					dispatch('unbind');
+				}}
+			>
+				{$LL.ui.button.unbind()}
 			</button>
 		{/if}
 		{#if showSaveButton}
@@ -143,6 +167,28 @@
 			}}
 		>
 			{$LL.ui.button.remove()}
+		</button>
+	{/if}
+	{#if showUnbindButton}
+		<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.unbind()}>
+			<button
+				class="btn btn-error btn-outline btn-square md:hidden"
+				on:click={(e) => {
+					e.preventDefault();
+					dispatch('unbind');
+				}}
+			>
+				<Icon src={LockOpen} class="h-6 w-6" solid />
+			</button>
+		</div>
+		<button
+			class="hidden md:flex btn btn-outline btn-error"
+			on:click={(e) => {
+				e.preventDefault();
+				dispatch('unbind');
+			}}
+		>
+			{$LL.ui.button.unbind()}
 		</button>
 	{/if}
 	{#if showSaveButton}

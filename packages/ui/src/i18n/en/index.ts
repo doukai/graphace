@@ -32,6 +32,7 @@ const en: BaseTranslation = {
 			search: "Search",
 			create: "Create",
 			remove: "Remove",
+			unbind: "Unbind",
 			save: "Save",
 			back: "Back",
 			select: "Select"
