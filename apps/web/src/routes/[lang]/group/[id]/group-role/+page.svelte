@@ -4,17 +4,19 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypeGroupRoleArgs, QueryTypeGroupRoleConnectionArgs, GroupRole } from '~/lib/types/schema';
-	import { Query_group_groupRoleStore, Mutation_groupRoleStore } from '$houdini';
+	import { Query_group_groupRoleStore, Mutation_groupRoleStore, Mutation_group_groupRoleStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	$: id = data.id as string;
 	$: Query_group_groupRole = data.Query_group_groupRole as Query_group_groupRoleStore;
 	$: group = $Query_group_groupRole.data?.group;
 	$: nodes = $Query_group_groupRole.data?.group?.groupRoleConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_group_groupRole.data?.group?.groupRoleConnection?.totalCount || 0;
 	const Mutation_groupRole = new Mutation_groupRoleStore();
+	const Mutation_group_groupRole = new Mutation_group_groupRoleStore();
 	let errors: Record<number, Errors> = {};
 
 	const fetch = (
@@ -64,6 +66,35 @@
 			});
 	};
 
+	const parentMutation = (
+		event: CustomEvent<{
+			args: MutationTypeGroupRoleArgs[];
+			update?: boolean;
+			then: (data: GroupRole[] | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		validate('Group', { groupRole: event.detail.args }, true, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_group_groupRole.mutate({
+					group_id: id,
+					group_groupRole: event.detail.args,
+					update: true,
+					mergeToList: ['groupRole']
+				})
+					.then((result) => {
+						event.detail.then(undefined);
+					})
+					.catch((errors) => {
+						event.detail.catch(errors);
+					});
+			})
+			.catch((validErrors) => {
+				errors = validErrors.roles.iterms;
+			});
+	};
+
 	const edit = (
 		event: CustomEvent<{
 			id: string;
@@ -91,6 +122,8 @@
 </script>
 <GroupRoleConnectionTable
 	showSaveButton={false}
+	showRemoveButton={false}
+	showUnbindButton={true}
 	showGotoSelectButton={true}
 	{nodes}
 	{totalCount}
@@ -98,6 +131,7 @@
 	isFetching={$Query_group_groupRole.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
+	on:parentMutation={parentMutation}
 	on:edit={edit}
 	on:create={create}
 	on:gotoField={gotoField}

@@ -4,17 +4,19 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypeRoleArgs, QueryTypeRoleConnectionArgs, Role } from '~/lib/types/schema';
-	import { Query_group_rolesStore, Mutation_roleStore } from '$houdini';
+	import { Query_group_rolesStore, Mutation_roleStore, Mutation_group_rolesStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	$: id = data.id as string;
 	$: Query_group_roles = data.Query_group_roles as Query_group_rolesStore;
 	$: group = $Query_group_roles.data?.group;
 	$: nodes = $Query_group_roles.data?.group?.rolesConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_group_roles.data?.group?.rolesConnection?.totalCount || 0;
 	const Mutation_role = new Mutation_roleStore();
+	const Mutation_group_roles = new Mutation_group_rolesStore();
 	let errors: Record<number, Errors> = {};
 
 	const fetch = (
@@ -64,6 +66,35 @@
 			});
 	};
 
+	const parentMutation = (
+		event: CustomEvent<{
+			args: MutationTypeRoleArgs[];
+			update?: boolean;
+			then: (data: Role[] | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		validate('Group', { roles: event.detail.args }, true, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_group_roles.mutate({
+					group_id: id,
+					group_roles: event.detail.args,
+					update: true,
+					mergeToList: ['roles']
+				})
+					.then((result) => {
+						event.detail.then(undefined);
+					})
+					.catch((errors) => {
+						event.detail.catch(errors);
+					});
+			})
+			.catch((validErrors) => {
+				errors = validErrors.roles.iterms;
+			});
+	};
+
 	const edit = (
 		event: CustomEvent<{
 			id: string;
@@ -91,6 +122,8 @@
 </script>
 <RoleConnectionTable
 	showSaveButton={false}
+	showRemoveButton={false}
+	showUnbindButton={true}
 	showGotoSelectButton={true}
 	{nodes}
 	{totalCount}
@@ -98,6 +131,7 @@
 	isFetching={$Query_group_roles.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
+	on:parentMutation={parentMutation}
 	on:edit={edit}
 	on:create={create}
 	on:gotoField={gotoField}

@@ -107,7 +107,7 @@
 			})}
 		on:unbind={() =>
 			messageBoxs.open({
-				title: $LL.web.components.table.removeModalTitle(),
+				title: $LL.web.components.table.unbindModalTitle(),
 				buttonName: $LL.web.components.table.unbindBtn(),
 				buttonType: 'error',
 				confirm: () => {

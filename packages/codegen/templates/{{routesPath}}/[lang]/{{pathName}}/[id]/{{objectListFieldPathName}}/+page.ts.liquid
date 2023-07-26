@@ -4,6 +4,7 @@ import { load_Query_{{ name | camelCase }}_{{ objectFieldName }} } from '$houdin
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     return {
+        id: event.params.id,
         ...(await load_Query_{{ name | camelCase }}_{{ objectFieldName }}({ event, variables: { {{ name | camelCase }}_{{ idName }}: { val: event.params.id }{% if connectionField %}, first: 10{% endif %} } }))
     };
 }

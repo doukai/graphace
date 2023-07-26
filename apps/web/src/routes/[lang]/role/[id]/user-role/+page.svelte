@@ -4,17 +4,19 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypeUserRoleArgs, QueryTypeUserRoleConnectionArgs, UserRole } from '~/lib/types/schema';
-	import { Query_role_userRoleStore, Mutation_userRoleStore } from '$houdini';
+	import { Query_role_userRoleStore, Mutation_userRoleStore, Mutation_role_userRoleStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	$: id = data.id as string;
 	$: Query_role_userRole = data.Query_role_userRole as Query_role_userRoleStore;
 	$: role = $Query_role_userRole.data?.role;
 	$: nodes = $Query_role_userRole.data?.role?.userRoleConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_role_userRole.data?.role?.userRoleConnection?.totalCount || 0;
 	const Mutation_userRole = new Mutation_userRoleStore();
+	const Mutation_role_userRole = new Mutation_role_userRoleStore();
 	let errors: Record<number, Errors> = {};
 
 	const fetch = (
@@ -64,6 +66,35 @@
 			});
 	};
 
+	const parentMutation = (
+		event: CustomEvent<{
+			args: MutationTypeUserRoleArgs[];
+			update?: boolean;
+			then: (data: UserRole[] | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		validate('Role', { userRole: event.detail.args }, true, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_role_userRole.mutate({
+					role_id: id,
+					role_userRole: event.detail.args,
+					update: true,
+					mergeToList: ['userRole']
+				})
+					.then((result) => {
+						event.detail.then(undefined);
+					})
+					.catch((errors) => {
+						event.detail.catch(errors);
+					});
+			})
+			.catch((validErrors) => {
+				errors = validErrors.roles.iterms;
+			});
+	};
+
 	const edit = (
 		event: CustomEvent<{
 			id: string;
@@ -91,6 +122,8 @@
 </script>
 <UserRoleConnectionTable
 	showSaveButton={false}
+	showRemoveButton={false}
+	showUnbindButton={true}
 	showGotoSelectButton={true}
 	{nodes}
 	{totalCount}
@@ -98,6 +131,7 @@
 	isFetching={$Query_role_userRole.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
+	on:parentMutation={parentMutation}
 	on:edit={edit}
 	on:create={create}
 	on:gotoField={gotoField}

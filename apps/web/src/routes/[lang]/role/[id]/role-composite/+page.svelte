@@ -4,17 +4,19 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypeRoleCompositeArgs, QueryTypeRoleCompositeConnectionArgs, RoleComposite } from '~/lib/types/schema';
-	import { Query_role_roleCompositeStore, Mutation_roleCompositeStore } from '$houdini';
+	import { Query_role_roleCompositeStore, Mutation_roleCompositeStore, Mutation_role_roleCompositeStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	$: id = data.id as string;
 	$: Query_role_roleComposite = data.Query_role_roleComposite as Query_role_roleCompositeStore;
 	$: role = $Query_role_roleComposite.data?.role;
 	$: nodes = $Query_role_roleComposite.data?.role?.roleCompositeConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_role_roleComposite.data?.role?.roleCompositeConnection?.totalCount || 0;
 	const Mutation_roleComposite = new Mutation_roleCompositeStore();
+	const Mutation_role_roleComposite = new Mutation_role_roleCompositeStore();
 	let errors: Record<number, Errors> = {};
 
 	const fetch = (
@@ -64,6 +66,35 @@
 			});
 	};
 
+	const parentMutation = (
+		event: CustomEvent<{
+			args: MutationTypeRoleCompositeArgs[];
+			update?: boolean;
+			then: (data: RoleComposite[] | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		validate('Role', { roleComposite: event.detail.args }, true, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_role_roleComposite.mutate({
+					role_id: id,
+					role_roleComposite: event.detail.args,
+					update: true,
+					mergeToList: ['roleComposite']
+				})
+					.then((result) => {
+						event.detail.then(undefined);
+					})
+					.catch((errors) => {
+						event.detail.catch(errors);
+					});
+			})
+			.catch((validErrors) => {
+				errors = validErrors.roles.iterms;
+			});
+	};
+
 	const edit = (
 		event: CustomEvent<{
 			id: string;
@@ -91,6 +122,8 @@
 </script>
 <RoleCompositeConnectionTable
 	showSaveButton={false}
+	showRemoveButton={false}
+	showUnbindButton={true}
 	showGotoSelectButton={true}
 	{nodes}
 	{totalCount}
@@ -98,6 +131,7 @@
 	isFetching={$Query_role_roleComposite.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
+	on:parentMutation={parentMutation}
 	on:edit={edit}
 	on:create={create}
 	on:gotoField={gotoField}

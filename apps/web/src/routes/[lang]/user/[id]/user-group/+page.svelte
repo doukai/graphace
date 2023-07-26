@@ -4,17 +4,19 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypeUserGroupArgs, QueryTypeUserGroupConnectionArgs, UserGroup } from '~/lib/types/schema';
-	import { Query_user_userGroupStore, Mutation_userGroupStore } from '$houdini';
+	import { Query_user_userGroupStore, Mutation_userGroupStore, Mutation_user_userGroupStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	$: id = data.id as string;
 	$: Query_user_userGroup = data.Query_user_userGroup as Query_user_userGroupStore;
 	$: user = $Query_user_userGroup.data?.user;
 	$: nodes = $Query_user_userGroup.data?.user?.userGroupConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_user_userGroup.data?.user?.userGroupConnection?.totalCount || 0;
 	const Mutation_userGroup = new Mutation_userGroupStore();
+	const Mutation_user_userGroup = new Mutation_user_userGroupStore();
 	let errors: Record<number, Errors> = {};
 
 	const fetch = (
@@ -64,6 +66,35 @@
 			});
 	};
 
+	const parentMutation = (
+		event: CustomEvent<{
+			args: MutationTypeUserGroupArgs[];
+			update?: boolean;
+			then: (data: UserGroup[] | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		validate('User', { userGroup: event.detail.args }, true, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_user_userGroup.mutate({
+					user_id: id,
+					user_userGroup: event.detail.args,
+					update: true,
+					mergeToList: ['userGroup']
+				})
+					.then((result) => {
+						event.detail.then(undefined);
+					})
+					.catch((errors) => {
+						event.detail.catch(errors);
+					});
+			})
+			.catch((validErrors) => {
+				errors = validErrors.roles.iterms;
+			});
+	};
+
 	const edit = (
 		event: CustomEvent<{
 			id: string;
@@ -91,6 +122,8 @@
 </script>
 <UserGroupConnectionTable
 	showSaveButton={false}
+	showRemoveButton={false}
+	showUnbindButton={true}
 	showGotoSelectButton={true}
 	{nodes}
 	{totalCount}
@@ -98,6 +131,7 @@
 	isFetching={$Query_user_userGroup.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
+	on:parentMutation={parentMutation}
 	on:edit={edit}
 	on:create={create}
 	on:gotoField={gotoField}

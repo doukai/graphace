@@ -22,6 +22,8 @@
 	export let isFetching: boolean;
 	export let errors: Record<number, Errors> = {};
 	export let showSaveButton: boolean = true;
+	export let showRemoveButton: boolean = true;
+	export let showUnbindButton: boolean = false;
 	export let showBackButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
 
@@ -37,6 +39,12 @@
 			then: (data: GroupRole | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		};
+		parentMutation: {
+			args: MutationTypeGroupRoleArgs[];
+			update?: boolean;
+			then: (data: GroupRole[] | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		};
 		edit: { id: string };
 		create: {};
 		save: { nodes: (GroupRole | null | undefined)[] | null | undefined };
@@ -44,22 +52,11 @@
 		back: {};
 	}>();
 
-	let showRemoveButton = false;
 	let args: QueryTypeGroupRoleListArgs = {};
 	let orderBy: GroupRoleOrderBy = {};
 
 	let selectAll: boolean;
-	let selectedRows: Record<string, boolean> = {};
-
-	$: selectedIdList = Object.keys(selectedRows)
-		.filter((id) => selectedRows[id])
-		.map((id) => id);
-
-	$: if (selectedIdList.length > 0) {
-		showRemoveButton = true;
-	} else {
-		showRemoveButton = false;
-	}
+	let selectedIdList: (string | null)[] = [];
 
 	const query = () => {
 		if (Object.keys(orderBy).length > 0) {
@@ -156,12 +153,30 @@
 			}
 		});
 	};
+
+	const unbindRows = (selectedIdList: (string | null)[]) => {
+		dispatch('parentMutation', {
+			args: selectedIdList.map((id) => {
+				return { id: id, isDeprecated: true };
+			}),
+			update: true,
+			then: (data) => {
+				notifications.success($LL.web.message.unbindSuccess());
+				query();
+			},
+			catch: (errors) => {
+				console.error(errors);
+				notifications.error($LL.web.message.unbindFailed());
+			}
+		});
+	};
 </script>
 
 <Card>
 	<TableHead
 		title="GroupRole"
-		{showRemoveButton}
+		showRemoveButton={showRemoveButton && selectedIdList.length > 0}
+		showUnbindButton={showUnbindButton && selectedIdList.length > 0}
 		{showSaveButton}
 		{showBackButton}
 		{showGotoSelectButton}
@@ -179,6 +194,24 @@
 				}
 			});
 		}}
+		on:unbind={() =>
+			messageBoxs.open({
+				title: $LL.web.components.table.unbindModalTitle(),
+				buttonName: $LL.web.components.table.unbindBtn(),
+				buttonType: 'error',
+				confirm: () => {
+					unbindRows(selectedIdList);
+					return true;
+				},
+				button1: {
+					name: $LL.web.components.table.removeBtn(),
+					className: 'btn-error',
+					onClick: () => {
+						removeRows();
+						return true;
+					}
+				}
+			})}
 		on:gotoSelect
 		on:back
 	/>
@@ -194,11 +227,7 @@
 							bind:checked={selectAll}
 							on:change={() => {
 								if (nodes && nodes.length > 0) {
-									nodes.forEach((node) => {
-										if (node?.id) {
-											selectedRows[node.id] = selectAll;
-										}
-									});
+									selectedIdList = selectAll ? nodes.map((node) => node?.id || null) : [];
 								}
 							}}
 						/>
@@ -280,7 +309,7 @@
 							<tr class="hover">
 								<th class="z-10 w-12">
 									<label>
-										<input type="checkbox" class="checkbox" bind:checked={selectedRows[node.id]} />
+										<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
 									</label>
 								</th>
 								<IDTd
@@ -366,27 +395,61 @@
 												<Icon src={PencilSquare} solid />
 											</button>
 										</div>
-										<div class="tooltip" data-tip={$LL.web.components.table.removeBtn()}>
-											<button
-												class="btn btn-square btn-ghost btn-xs"
-												on:click={(e) => {
-													e.preventDefault();
-													messageBoxs.open({
-														title: $LL.web.components.table.removeModalTitle(),
-														buttonName: $LL.web.components.table.removeBtn(),
-														buttonType: 'error',
-														confirm: () => {
-															if (node?.id) {
-																removeRow(node.id);
+										{#if showUnbindButton}
+											<div class="tooltip" data-tip={$LL.web.components.table.unbindBtn()}>
+												<button
+													class="btn btn-square btn-ghost btn-xs"
+													on:click={(e) => {
+														e.preventDefault();
+														messageBoxs.open({
+															title: $LL.web.components.table.unbindModalTitle(),
+															buttonName: $LL.web.components.table.unbindBtn(),
+															buttonType: 'error',
+															confirm: () => {
+																if (node?.id) {
+																	unbindRows([node.id]);
+																}
+																return true;
+															},
+															button1: {
+																name: $LL.web.components.table.removeBtn(),
+																className: 'btn-error',
+																onClick: () => {
+																	if (node?.id) {
+																		removeRow(node.id);
+																	}
+																	return true;
+																}
 															}
-															return true;
-														}
-													});
-												}}
-											>
-												<Icon src={Trash} solid />
-											</button>
-										</div>
+														});
+													}}
+												>
+													<Icon src={LockOpen} solid />
+												</button>
+											</div>
+										{:else}
+											<div class="tooltip" data-tip={$LL.web.components.table.removeBtn()}>
+												<button
+													class="btn btn-square btn-ghost btn-xs"
+													on:click={(e) => {
+														e.preventDefault();
+														messageBoxs.open({
+															title: $LL.web.components.table.removeModalTitle(),
+															buttonName: $LL.web.components.table.removeBtn(),
+															buttonType: 'error',
+															confirm: () => {
+																if (node?.id) {
+																	removeRow(node.id);
+																}
+																return true;
+															}
+														});
+													}}
+												>
+													<Icon src={Trash} solid />
+												</button>
+											</div>
+										{/if}
 									</div>
 								</th>
 							</tr>

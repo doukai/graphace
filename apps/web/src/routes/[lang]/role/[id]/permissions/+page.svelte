@@ -4,17 +4,19 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypePermissionArgs, QueryTypePermissionConnectionArgs, Permission } from '~/lib/types/schema';
-	import { Query_role_permissionsStore, Mutation_permissionStore } from '$houdini';
+	import { Query_role_permissionsStore, Mutation_permissionStore, Mutation_role_permissionsStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	$: id = data.id as string;
 	$: Query_role_permissions = data.Query_role_permissions as Query_role_permissionsStore;
 	$: role = $Query_role_permissions.data?.role;
 	$: nodes = $Query_role_permissions.data?.role?.permissionsConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_role_permissions.data?.role?.permissionsConnection?.totalCount || 0;
 	const Mutation_permission = new Mutation_permissionStore();
+	const Mutation_role_permissions = new Mutation_role_permissionsStore();
 	let errors: Record<number, Errors> = {};
 
 	const fetch = (
@@ -64,6 +66,35 @@
 			});
 	};
 
+	const parentMutation = (
+		event: CustomEvent<{
+			args: MutationTypePermissionArgs[];
+			update?: boolean;
+			then: (data: Permission[] | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		validate('Role', { permissions: event.detail.args }, true, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_role_permissions.mutate({
+					role_id: id,
+					role_permissions: event.detail.args,
+					update: true,
+					mergeToList: ['permissions']
+				})
+					.then((result) => {
+						event.detail.then(undefined);
+					})
+					.catch((errors) => {
+						event.detail.catch(errors);
+					});
+			})
+			.catch((validErrors) => {
+				errors = validErrors.roles.iterms;
+			});
+	};
+
 	const edit = (
 		event: CustomEvent<{
 			id: string;
@@ -91,6 +122,8 @@
 </script>
 <PermissionConnectionTable
 	showSaveButton={false}
+	showRemoveButton={false}
+	showUnbindButton={true}
 	showGotoSelectButton={true}
 	{nodes}
 	{totalCount}
@@ -98,6 +131,7 @@
 	isFetching={$Query_role_permissions.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
+	on:parentMutation={parentMutation}
 	on:edit={edit}
 	on:create={create}
 	on:gotoField={gotoField}

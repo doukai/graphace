@@ -1,26 +1,14 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import {
-		ObjectTd,
-		IDTh,
-		IDTd,
-		StringTh,
-		StringTd,
-		BooleanTh,
-		BooleanTd,
-		IntTh,
-		IntTd,
-		TimestampTh,
-		TimestampTd
-	} from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, IDTh, IDTd, StringTh, StringTd, BooleanTh, BooleanTd, IntTh, IntTd, TimestampTh, TimestampTd } from '@graphace/ui-graphql/components/table';
 	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { Pagination } from '@graphace/ui/components/connection';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
+	import { PencilSquare, Trash, LockOpen } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	import {
 		Conditional,
@@ -36,9 +24,9 @@
 	export let isFetching: boolean;
 	export let errors: Record<number, Errors> = {};
 	export let showSaveButton: boolean = true;
-	export let showBackButton: boolean = true;
 	export let showRemoveButton: boolean = true;
 	export let showUnbindButton: boolean = false;
+	export let showBackButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
 
 	const dispatch = createEventDispatcher<{
@@ -51,6 +39,12 @@
 			args: MutationTypeRoleArgs;
 			update?: boolean;
 			then: (data: Role | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		};
+		parentMutation: {
+			args: MutationTypeRoleArgs[];
+			update?: boolean;
+			then: (data: Role[] | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		};
 		edit: { id: string };
@@ -68,11 +62,7 @@
 	let pageSize: number = 10;
 
 	let selectAll: boolean;
-	let selectedRows: Record<string, boolean> = {};
-
-	$: selectedIdList = Object.keys(selectedRows)
-		.filter((id) => selectedRows[id])
-		.map((id) => id);
+	let selectedIdList: (string | null)[] = [];
 
 	const query = () => {
 		if (Object.keys(orderBy).length > 0) {
@@ -123,7 +113,7 @@
 			args.updateUserId = undefined;
 			args.createGroupId = undefined;
 		}
-
+		
 		if (after) {
 			args.after = after;
 			args.first = pageSize;
@@ -195,6 +185,23 @@
 			}
 		});
 	};
+
+	const unbindRows = (selectedIdList: (string | null)[]) => {
+		dispatch('parentMutation', {
+			args: selectedIdList.map((id) => {
+				return { id: id, isDeprecated: true };
+			}),
+			update: true,
+			then: (data) => {
+				notifications.success($LL.web.message.unbindSuccess());
+				query();
+			},
+			catch: (errors) => {
+				console.error(errors);
+				notifications.error($LL.web.message.unbindFailed());
+			}
+		});
+	};
 </script>
 
 <Card>
@@ -221,11 +228,11 @@
 		}}
 		on:unbind={() =>
 			messageBoxs.open({
-				title: $LL.web.components.table.removeModalTitle(),
+				title: $LL.web.components.table.unbindModalTitle(),
 				buttonName: $LL.web.components.table.unbindBtn(),
 				buttonType: 'error',
 				confirm: () => {
-					unbind();
+					unbindRows(selectedIdList);
 					return true;
 				},
 				button1: {
@@ -252,17 +259,18 @@
 							bind:checked={selectAll}
 							on:change={() => {
 								if (nodes && nodes.length > 0) {
-									nodes.forEach((node) => {
-										if (node?.id) {
-											selectedRows[node.id] = selectAll;
-										}
-									});
+									selectedIdList = selectAll ? nodes.map((node) => node?.id || null) : [];
 								}
 							}}
 						/>
 					</label>
 				</th>
-				<IDTh name="id" bind:expression={args.id} bind:sort={orderBy.id} on:filter={query} />
+				<IDTh
+					name="id"
+					bind:expression={args.id}
+					bind:sort={orderBy.id}
+					on:filter={query}
+				/>
 				<StringTh
 					name="name"
 					bind:expression={args.name}
@@ -327,7 +335,7 @@
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={pageSize} cols={16 + 2} />
+			<TableLoading rows={pageSize} cols={16 + 2}/>
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
@@ -336,10 +344,15 @@
 							<tr class="hover">
 								<th class="z-10 w-12">
 									<label>
-										<input type="checkbox" class="checkbox" bind:checked={selectedRows[node.id]} />
+										<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
 									</label>
 								</th>
-								<IDTd name="id" bind:value={node.id} readonly errors={errors[row]?.iterms?.id} />
+								<IDTd
+									name="id"
+									bind:value={node.id}
+									readonly
+									errors={errors[row]?.iterms?.id}
+								/>
 								<StringTd
 									name="name"
 									bind:value={node.name}
@@ -352,24 +365,9 @@
 									on:save={() => updateField({ id: node?.id, description: node?.description })}
 									errors={errors[row]?.iterms?.description}
 								/>
-								<ObjectTd
-									name="users"
-									errors={errors[row]?.iterms?.users}
-									path={`${node.id}/users`}
-									on:gotoField
-								/>
-								<ObjectTd
-									name="permissions"
-									errors={errors[row]?.iterms?.permissions}
-									path={`${node.id}/permissions`}
-									on:gotoField
-								/>
-								<ObjectTd
-									name="realm"
-									errors={errors[row]?.iterms?.realm}
-									path={`${node.id}/realm`}
-									on:gotoField
-								/>
+								<ObjectTd name="users" errors={errors[row]?.iterms?.users} path={`${node.id}/users`} on:gotoField />
+								<ObjectTd name="permissions" errors={errors[row]?.iterms?.permissions} path={`${node.id}/permissions`} on:gotoField />
+								<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
 								<BooleanTd
 									name="isDeprecated"
 									bind:value={node.isDeprecated}
@@ -418,18 +416,8 @@
 									on:save={() => updateField({ id: node?.id, createGroupId: node?.createGroupId })}
 									errors={errors[row]?.iterms?.createGroupId}
 								/>
-								<ObjectTd
-									name="userRole"
-									errors={errors[row]?.iterms?.userRole}
-									path={`${node.id}/user-role`}
-									on:gotoField
-								/>
-								<ObjectTd
-									name="roleComposite"
-									errors={errors[row]?.iterms?.roleComposite}
-									path={`${node.id}/role-composite`}
-									on:gotoField
-								/>
+								<ObjectTd name="userRole" errors={errors[row]?.iterms?.userRole} path={`${node.id}/user-role`} on:gotoField />
+								<ObjectTd name="roleComposite" errors={errors[row]?.iterms?.roleComposite} path={`${node.id}/role-composite`} on:gotoField />
 								<th class="z-10 w-24">
 									<div class="flex space-x-1">
 										<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
@@ -445,34 +433,68 @@
 												<Icon src={PencilSquare} solid />
 											</button>
 										</div>
-										<div class="tooltip" data-tip={$LL.web.components.table.removeBtn()}>
-											<button
-												class="btn btn-square btn-ghost btn-xs"
-												on:click={(e) => {
-													e.preventDefault();
-													messageBoxs.open({
-														title: $LL.web.components.table.removeModalTitle(),
-														buttonName: $LL.web.components.table.removeBtn(),
-														buttonType: 'error',
-														confirm: () => {
-															if (node?.id) {
-																removeRow(node.id);
+										{#if showUnbindButton}
+											<div class="tooltip" data-tip={$LL.web.components.table.unbindBtn()}>
+												<button
+													class="btn btn-square btn-ghost btn-xs"
+													on:click={(e) => {
+														e.preventDefault();
+														messageBoxs.open({
+															title: $LL.web.components.table.unbindModalTitle(),
+															buttonName: $LL.web.components.table.unbindBtn(),
+															buttonType: 'error',
+															confirm: () => {
+																if (node?.id) {
+																	unbindRows([node.id]);
+																}
+																return true;
+															},
+															button1: {
+																name: $LL.web.components.table.removeBtn(),
+																className: 'btn-error',
+																onClick: () => {
+																	if (node?.id) {
+																		removeRow(node.id);
+																	}
+																	return true;
+																}
 															}
-															return true;
-														}
-													});
-												}}
-											>
-												<Icon src={Trash} solid />
-											</button>
-										</div>
+														});
+													}}
+												>
+													<Icon src={LockOpen} solid />
+												</button>
+											</div>
+										{:else}
+											<div class="tooltip" data-tip={$LL.web.components.table.removeBtn()}>
+												<button
+													class="btn btn-square btn-ghost btn-xs"
+													on:click={(e) => {
+														e.preventDefault();
+														messageBoxs.open({
+															title: $LL.web.components.table.removeModalTitle(),
+															buttonName: $LL.web.components.table.removeBtn(),
+															buttonType: 'error',
+															confirm: () => {
+																if (node?.id) {
+																	removeRow(node.id);
+																}
+																return true;
+															}
+														});
+													}}
+												>
+													<Icon src={Trash} solid />
+												</button>
+											</div>
+										{/if}
 									</div>
 								</th>
 							</tr>
 						{/if}
 					{/each}
 				{:else}
-					<TableEmpty cols={16 + 2} />
+					<TableEmpty cols={16 + 2}/>
 				{/if}
 			</tbody>
 		{/if}

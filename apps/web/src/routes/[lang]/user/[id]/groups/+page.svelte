@@ -4,17 +4,19 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypeGroupArgs, QueryTypeGroupConnectionArgs, Group } from '~/lib/types/schema';
-	import { Query_user_groupsStore, Mutation_groupStore } from '$houdini';
+	import { Query_user_groupsStore, Mutation_groupStore, Mutation_user_groupsStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	$: id = data.id as string;
 	$: Query_user_groups = data.Query_user_groups as Query_user_groupsStore;
 	$: user = $Query_user_groups.data?.user;
 	$: nodes = $Query_user_groups.data?.user?.groupsConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_user_groups.data?.user?.groupsConnection?.totalCount || 0;
 	const Mutation_group = new Mutation_groupStore();
+	const Mutation_user_groups = new Mutation_user_groupsStore();
 	let errors: Record<number, Errors> = {};
 
 	const fetch = (
@@ -64,6 +66,35 @@
 			});
 	};
 
+	const parentMutation = (
+		event: CustomEvent<{
+			args: MutationTypeGroupArgs[];
+			update?: boolean;
+			then: (data: Group[] | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		validate('User', { groups: event.detail.args }, true, $locale)
+			.then((data) => {
+				errors = {};
+				Mutation_user_groups.mutate({
+					user_id: id,
+					user_groups: event.detail.args,
+					update: true,
+					mergeToList: ['groups']
+				})
+					.then((result) => {
+						event.detail.then(undefined);
+					})
+					.catch((errors) => {
+						event.detail.catch(errors);
+					});
+			})
+			.catch((validErrors) => {
+				errors = validErrors.roles.iterms;
+			});
+	};
+
 	const edit = (
 		event: CustomEvent<{
 			id: string;
@@ -91,6 +122,8 @@
 </script>
 <GroupConnectionTable
 	showSaveButton={false}
+	showRemoveButton={false}
+	showUnbindButton={true}
 	showGotoSelectButton={true}
 	{nodes}
 	{totalCount}
@@ -98,6 +131,7 @@
 	isFetching={$Query_user_groups.fetching}
 	on:fetch={fetch}
 	on:mutation={mutation}
+	on:parentMutation={parentMutation}
 	on:edit={edit}
 	on:create={create}
 	on:gotoField={gotoField}
