@@ -1,0 +1,131 @@
+<script lang="ts">
+	import { ot } from '~/lib/stores/useNavigate';
+	import { page } from '$app/stores';
+	import type { Errors } from '@graphace/commons/types';
+	{%- if connectionField %}
+	import {{ objectFieldTypeName }}SelectConnectionTable from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}SelectConnectionTable.svelte';
+	{%- else %}
+	import {{ objectFieldTypeName }}SelectTable from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}SelectTable.svelte';
+	{%- endif %}
+	import type { {{ objectFieldTypeName }}, {% if connectionField %}QueryType{{ objectFieldTypeName }}ConnectionArgs{% else %}QueryType{{ objectFieldTypeName }}ListArgs{% endif %}, MutationType{{ objectFieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
+	import { {% if connectionField %}Query_{{ objectFieldTypeName | camelCase }}ConnectionStore{% else %}Query_{{ objectFieldTypeName | camelCase }}ListStore{% endif %}, Mutation_{{ objectFieldTypeName | camelCase }}Store } from '$houdini';
+	import { updateNodeParam, updateErrorsParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
+	import type { PageData } from './$houdini';
+	import { validate } from '@graphace/graphql/schema/json-schema';
+	import { locale } from '$i18n/i18n-svelte';
+
+	export let data: PageData;
+	$: originalNodes = data.nodes as (MutationType{{ objectFieldTypeName }}Args | null | undefined)[];
+	$: errors = data.errors as Record<number, Errors>;
+	{%- if connectionField %}
+	$: Query_{{ objectFieldTypeName | camelCase }}Connection = data.Query_{{ objectFieldTypeName | camelCase }}Connection as Query_{{ objectFieldTypeName | camelCase }}ConnectionStore;
+	$: nodes = $Query_{{ objectFieldTypeName | camelCase }}Connection.data?.{{ objectFieldTypeName | camelCase }}Connection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $Query_{{ objectFieldTypeName | camelCase }}Connection.data?.{{ objectFieldTypeName | camelCase }}Connection?.totalCount || 0;
+	{%- else %}
+	$: Query_{{ objectFieldTypeName | camelCase }}List = data.Query_{{ objectFieldTypeName | camelCase }}List as Query_{{ objectFieldTypeName | camelCase }}ListStore;
+	$: nodes = $Query_{{ objectFieldTypeName | camelCase }}List.data?.{{ objectFieldTypeName | camelCase }}List;
+	{%- endif %}
+	const Mutation_{{ objectFieldTypeName | camelCase }} = new Mutation_{{ objectFieldTypeName | camelCase }}Store();
+
+	const fetch = (
+		event: CustomEvent<{
+			{%- if connectionField %}
+			args: QueryType{{ objectFieldTypeName }}ConnectionArgs;
+			{%- else %}
+			args: QueryType{{ objectFieldTypeName }}ListArgs;
+			{%- endif %}
+			then: (data: ({{ objectFieldTypeName }} | null | undefined)[] | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		{%- if connectionField %}
+		Query_{{ objectFieldTypeName | camelCase }}Connection.fetch({ variables: event.detail.args })
+		{%- else %}
+		Query_{{ objectFieldTypeName | camelCase }}List.fetch({ variables: event.detail.args })
+		{%- endif %}
+			.then((result) => {
+			{%- if connectionField %}
+				event.detail.then(result.data?.{{ objectFieldTypeName | camelCase }}Connection?.edges?.map((edge) => edge?.node));
+			{%- else %}
+				event.detail.then(result.data?.{{ objectFieldTypeName | camelCase }}List);
+			{%- endif %}
+			})
+			.catch((errors) => {
+				event.detail.catch(errors);
+			});
+	};
+
+	const mutation = (
+		event: CustomEvent<{
+			args: MutationType{{ objectFieldTypeName }}Args;
+			update?: boolean;
+			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		const row = nodes?.map((node) => node?.{{ idName }})?.indexOf(event.detail.args.{{ idName }});
+		validate('{{ objectFieldTypeName }}', event.detail.args, event.detail.update, $locale)
+			.then((data) => {
+				if (row !== -1 && row !== undefined && errors[row]) {
+					errors[row].iterms = {};
+				}
+				Mutation_{{ objectFieldTypeName | camelCase }}.mutate({ ...event.detail.args, update: event.detail.update })
+					.then((result) => {
+						event.detail.then(result?.data?.{{ objectFieldTypeName | camelCase }});
+					})
+					.catch((errors) => {
+						event.detail.catch(errors);
+					});
+			})
+			.catch((validErrors) => {
+				if (row !== -1 && row !== undefined) {
+					errors[row] = { errors: errors[row]?.errors, iterms: validErrors };
+				}
+			});
+	};
+
+	const select = (
+		event: CustomEvent<{
+			selected: MutationType{{ objectFieldTypeName }}Args | null | undefined | (MutationType{{ objectFieldTypeName }}Args | null | undefined)[];
+			then: () => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		if (Array.isArray(event.detail.selected)) {
+			ot({
+				node: updateNodeParam($page.url, [...originalNodes, ...event.detail.selected.filter((item) => !originalNodes.map((node) => node?.{{ idName }}).includes(item?.{{ idName }}))]),
+				errors: updateErrorsParam($page.url, errors)
+			});
+		}
+	};
+
+	const back = (event: CustomEvent<{}>) => {
+		ot({
+			node: getNodeParam($page.url),
+			errors: getErrorsParam($page.url)
+		});
+	};
+</script>
+
+{%- if connectionField %}
+<{{ objectFieldTypeName }}SelectConnectionTable
+	{nodes}
+	{totalCount}
+	{errors}
+	isFetching={$Query_{{ objectFieldTypeName | camelCase }}Connection.fetching}
+	on:fetch={fetch}
+	on:mutation={mutation}
+	on:select={select}
+	on:back={back}
+/>
+{%- else %}
+<{{ objectFieldTypeName }}SelectTable
+	{nodes}
+	{errors}
+	isFetching={$Query_{{ objectFieldTypeName | camelCase }}List.fetching}
+	on:fetch={fetch}
+	on:mutation={mutation}
+	on:select={select}
+	on:back={back}
+/>
+{%- endif %}

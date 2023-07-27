@@ -989,6 +989,82 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 })
         );
 
+        
+
+        generateOptions.push(
+            ...objectTypes
+                .map(type => assertObjectType(type))
+                .flatMap(type =>
+                    Object.values(type.getFields())
+                        .filter(field => isObjectType(getFieldType(field.type)))
+                        .filter(field => !isConnection(getFieldType(field.type).name))
+                        .filter(field => !isEdge(getFieldType(field.type).name))
+                        .filter(field => !isPageInfo(getFieldType(field.type).name))
+                        .filter(field => !isAggregate(field.name))
+                        .filter(field => !isIntrospection(getFieldType(field.type).name))
+                        .filter(field => !isListType(field.type))
+                        .map(field => { return { name: type.name, objectFieldName: field.name } }))
+                .map(objectField => {
+                    const { name, objectFieldName } = objectField;
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/__/+page.svelte';
+                    const scope = { routesPath, pathName: changeCase.paramCase(name), objectFieldPathName: changeCase.paramCase(objectFieldName) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            template,
+                            name,
+                            objectFieldName
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...objectTypes
+                .map(type => assertObjectType(type))
+                .flatMap(type =>
+                    Object.values(type.getFields())
+                        .filter(field => isObjectType(getFieldType(field.type)))
+                        .filter(field => !isConnection(getFieldType(field.type).name))
+                        .filter(field => !isEdge(getFieldType(field.type).name))
+                        .filter(field => !isPageInfo(getFieldType(field.type).name))
+                        .filter(field => !isAggregate(field.name))
+                        .filter(field => !isIntrospection(getFieldType(field.type).name))
+                        .filter(field => !isListType(field.type))
+                        .map(field => { return { name: type.name, objectFieldName: field.name } }))
+                .map(objectField => {
+                    const { name, objectFieldName } = objectField;
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/__/+page.ts';
+                    const scope = { routesPath, pathName: changeCase.paramCase(name), objectFieldPathName: changeCase.paramCase(objectFieldName) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            template,
+                            name,
+                            objectFieldName
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
         generateOptions.push(
             ...objectTypes
                 .map(type => assertObjectType(type))
@@ -1116,6 +1192,80 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 .map(objectField => {
                     const { name, objectFieldName } = objectField;
                     const template = '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/_/+page.ts';
+                    const scope = { routesPath, pathName: changeCase.paramCase(name), objectListFieldPathName: changeCase.paramCase(objectFieldName) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            template,
+                            name,
+                            objectFieldName
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...objectTypes
+                .map(type => assertObjectType(type))
+                .flatMap(type =>
+                    Object.values(type.getFields())
+                        .filter(field => isObjectType(getFieldType(field.type)))
+                        .filter(field => !isConnection(getFieldType(field.type).name))
+                        .filter(field => !isEdge(getFieldType(field.type).name))
+                        .filter(field => !isPageInfo(getFieldType(field.type).name))
+                        .filter(field => !isAggregate(field.name))
+                        .filter(field => !isIntrospection(getFieldType(field.type).name))
+                        .filter(field => isListType(field.type))
+                        .map(field => { return { name: type.name, objectFieldName: field.name } }))
+                .map(objectField => {
+                    const { name, objectFieldName } = objectField;
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/__/+page.svelte';
+                    const scope = { routesPath, pathName: changeCase.paramCase(name), objectListFieldPathName: changeCase.paramCase(objectFieldName) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            template,
+                            name,
+                            objectFieldName
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...objectTypes
+                .map(type => assertObjectType(type))
+                .flatMap(type =>
+                    Object.values(type.getFields())
+                        .filter(field => isObjectType(getFieldType(field.type)))
+                        .filter(field => !isConnection(getFieldType(field.type).name))
+                        .filter(field => !isEdge(getFieldType(field.type).name))
+                        .filter(field => !isPageInfo(getFieldType(field.type).name))
+                        .filter(field => !isAggregate(field.name))
+                        .filter(field => !isIntrospection(getFieldType(field.type).name))
+                        .filter(field => isListType(field.type))
+                        .map(field => { return { name: type.name, objectFieldName: field.name } }))
+                .map(objectField => {
+                    const { name, objectFieldName } = objectField;
+                    const template = '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/__/+page.ts';
                     const scope = { routesPath, pathName: changeCase.paramCase(name), objectListFieldPathName: changeCase.paramCase(objectFieldName) };
                     return {
                         filename: buildPath(template, scope),

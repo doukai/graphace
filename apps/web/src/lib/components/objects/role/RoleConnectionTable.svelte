@@ -65,6 +65,11 @@
 	let selectedIdList: (string | null)[] = [];
 
 	const query = () => {
+		pageNumber = 1;
+		queryPage();
+	};
+
+	const queryPage = () => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -504,7 +509,7 @@
 		bind:pageNumber
 		bind:pageSize
 		{totalCount}
-		on:pageChange={query}
-		on:sizeChange={query}
+		on:pageChange={queryPage}
+		on:sizeChange={queryPage}
 	/>
 </Card>

@@ -3,7 +3,7 @@
 	import type { Errors } from '@graphace/commons/types';
 	import { ObjectTd, IDTh, IDTd, IntTh, IntTd, BooleanTh, BooleanTd, StringTh, StringTd, TimestampTh, TimestampTd } from '@graphace/ui-graphql/components/table';
 	import { Card } from '@graphace/ui/components/card';
-	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
+	import { Table, TableHead, TableEmpty } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
@@ -12,6 +12,7 @@
 
 	export let nodes: (MutationTypeRoleCompositeArgs | null | undefined)[] | null | undefined;
 	export let errors: Record<number, Errors> = {};
+	export let showRemoveButton: boolean = true;
 	export let showSaveButton: boolean = true;
 	export let showBackButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
@@ -19,47 +20,38 @@
 	const dispatch = createEventDispatcher<{
 		edit: { row: number };
 		create: {};
+		mutation: { nodes: (MutationTypeRoleCompositeArgs | null | undefined)[] | null | undefined };
 		save: { nodes: (MutationTypeRoleCompositeArgs | null | undefined)[] | null | undefined };
 		gotoSelect: {};
 		back: {};
 	}>();
 
-	let showRemoveButton = false;
-
 	let selectAll: boolean;
-	let selectedRows: Record<number, boolean> = {};
-
-	$: selectedRowList = Object.keys(selectedRows)
-		.map(Number)
-		.filter((row) => selectedRows[row])
-		.map((row) => row);
-
-	$: if (selectedRowList.length > 0) {
-		showRemoveButton = true;
-	} else {
-		showRemoveButton = false;
-	}
+	let selectedRowList: (number | null)[] = [];
 
 	const removeRow = (row: number) => {
 		nodes?.splice(row, 1);
+		dispatch('mutation', { nodes });
 	};
 
 	const removeRows = () => {
-		selectedRowList.forEach((row) => removeRow(row));
+		dispatch('mutation', {
+			nodes: nodes?.filter((_, index) => !selectedRowList.includes(index))
+		});
 	};
 </script>
 
 <Card>
 	<TableHead
 		title="RoleComposite"
-		{showRemoveButton}
+		showRemoveButton={showRemoveButton && selectedRowList.length > 0}
 		{showSaveButton}
 		{showBackButton}
 		{showGotoSelectButton}
 		showSearchInput={false}
 		on:create
 		on:save={() => dispatch('save', { nodes })}
-		on:removeRows={() => {
+		on:remove={() => {
 			messageBoxs.open({
 				title: $LL.web.components.table.removeModalTitle(),
 				buttonName: $LL.web.components.table.removeBtn(),
@@ -85,9 +77,7 @@
 							bind:checked={selectAll}
 							on:change={() => {
 								if (nodes && nodes.length > 0) {
-									nodes.forEach((_, row) => {
-										selectedRows[row] = selectAll;
-									});
+									selectedRowList = selectAll ? nodes.map((node) => nodes?.indexOf(node) !== undefined ? nodes?.indexOf(node) : null) : [];
 								}
 							}}
 						/>
@@ -116,7 +106,7 @@
 						<tr class="hover">
 							<th class="z-10 w-12">
 								<label>
-									<input type="checkbox" class="checkbox" bind:checked={selectedRows[row]} />
+									<input type="checkbox" class="checkbox" bind:group={selectedRowList} value={row} />
 								</label>
 							</th>
 							<IDTd

@@ -5,7 +5,7 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
 	import type { MutationTypeRoleCompositeArgs } from '~/lib/types/schema';
-	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
+	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam, getPathParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -32,6 +32,19 @@
 		});
 	};
 
+	const mutation = (event: CustomEvent<{ nodes: (MutationTypeRoleCompositeArgs | null | undefined)[] | null | undefined}> ) => {
+		if (event.detail.nodes) {
+			nodes = [...event.detail.nodes];
+		}
+	};
+
+	const save = (event: CustomEvent<{ nodes: (MutationTypeRoleCompositeArgs | null | undefined)[] | null | undefined}> ) => {
+		ot({
+			node: updateNodeParam($page.url, event.detail.nodes),
+			errors: updateErrorsParam($page.url, errors)
+		});
+	};
+
 	const gotoField = (event: CustomEvent<{ path: string; name: string }>) => {
 		to(`../../roleComposite/${event.detail.path}`, {
 			node: updateNodeParam($page.url, nodes),
@@ -40,10 +53,11 @@
 		});
 	};
 
-	const save = (event: CustomEvent<{ nodes: (MutationTypeRoleCompositeArgs | null | undefined)[] | null | undefined}> ) => {
-		ot({
-			node: updateNodeParam($page.url, event.detail.nodes),
-			errors: updateErrorsParam($page.url, errors)
+	const gotoSelect = (event: CustomEvent<{}>) => {
+		to(`./roleComposite/__`, {
+			node: updateNodeParam($page.url, nodes),
+			errors: updateErrorsParam($page.url, errors),
+			path: getPathParam($page.url)
 		});
 	};
 
@@ -60,7 +74,9 @@
 	{errors}
 	on:edit={edit}
 	on:create={create}
-	on:gotoField={gotoField}
+	on:mutation={mutation}
 	on:save={save}
+	on:gotoField={gotoField}
+	on:gotoSelect={gotoSelect}
 	on:back={back}
 />

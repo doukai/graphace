@@ -8,7 +8,7 @@
 		MutationTypeRoleArgs,
 		Role
 	} from '~/lib/types/schema';
-	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
+	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam, getPathParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -42,6 +42,14 @@
 			path: getChildPathParam($page.url, event.detail.name)
 		});
 	};
+
+	const gotoSelect = (event: CustomEvent<{}>) => {
+		to(`./from/__`, {
+			node: updateNodeParam($page.url, node),
+			errors: updateErrorsParam($page.url, errors),
+			path: getPathParam($page.url)
+		});
+	};
 </script>
 
-<RoleCreateForm {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<RoleCreateForm showGotoSelectButton={true} {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} on:gotoSelect={gotoSelect} />

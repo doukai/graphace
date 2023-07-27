@@ -84,6 +84,14 @@ export const updateErrorsParam = (url: URL, errors: Record<string | number, Erro
 	return JSON.stringify(errors);
 }
 
+export const getPathParam = (url: URL): string => {
+	let path: (string | number)[] = [];
+	if (url.searchParams.has('path')) {
+		path = JSON.parse(url.searchParams.get('path') || '[]');
+	}
+	return JSON.stringify(path);
+}
+
 export const getParentPathParam = (url: URL): string => {
 	let path: (string | number)[] = [];
 	if (url.searchParams.has('path')) {
