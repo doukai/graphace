@@ -3,57 +3,33 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
 	import { Card } from '@graphace/ui/components/card';
-	import { Form, FormLoading } from '@graphace/ui/components/form';
+	import { Form } from '@graphace/ui/components/form';
 	import { IDItem, IntItem, BooleanItem, StringItem, TimestampItem, ObjectItem } from '@graphace/ui-graphql/components/form';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
-	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
 	import type { GroupRole, MutationTypeGroupRoleArgs } from '~/lib/types/schema';
 
 	export let node: MutationTypeGroupRoleArgs = {};
 	export let errors: Record<string, Errors> = {};
+	export let showRemoveButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
 
 	const dispatch = createEventDispatcher<{
-		mutation: {
-			args: MutationTypeGroupRoleArgs;
-			update?: boolean;
-			then: (data: GroupRole | null | undefined) => void;
-			catch: (errors: Errors) => void;
-		};
+		mutation: { node: MutationTypeGroupRoleArgs| null | undefined };
+		save: { node: MutationTypeGroupRoleArgs| null | undefined };
 		gotoSelect: {};
 		back: {};
 	}>();
 
 	const save = (): void => {
 		if (node) {
-			dispatch('mutation', {
-				args: node,
-				then: (data) => {
-					notifications.success($LL.web.message.saveSuccess());
-					dispatch('back');
-				},
-				catch: (errors) => {
-					console.error(errors);
-					notifications.error($LL.web.message.saveFailed());
-				}
-			});
+			dispatch('save', { node });
 		}
 	};
 
 	const remove = (): void => {
 		if (node) {
-			dispatch('mutation', {
-				args: { id: node.id, isDeprecated: true },
-				then: (data) => {
-					notifications.success($LL.web.message.removeSuccess());
-					dispatch('back');
-				},
-				catch: (errors) => {
-					console.error(errors);
-					notifications.error($LL.web.message.removeFailed());
-				}
-			});
+			dispatch('mutation', { node: {} });
 		}
 	};
 </script>
@@ -61,7 +37,7 @@
 <Card>
 	<Form
 		title="GroupRole"
-		showRemoveButton={false}
+		showRemoveButton={showRemoveButton && node !== undefined && node !== null && Object.keys(node).length > 0}
 		{showGotoSelectButton}
 		on:save={save}
 		on:remove={() =>

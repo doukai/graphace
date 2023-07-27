@@ -32,7 +32,7 @@ const zh: Translation = {
 			search: "搜索",
 			create: "新建",
 			remove: "删除",
-			unbind: "解除",
+			unbind: "移除",
 			save: "保存",
 			back: "返回",
 			select: "选择"

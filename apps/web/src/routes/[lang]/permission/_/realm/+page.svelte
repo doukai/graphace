@@ -12,18 +12,16 @@
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: node = data.node as MutationTypeRealmArgs;
+	$: node = data.node as MutationTypeRealmArgs | null | undefined;
 	$: errors = data.errors as Record<string, Errors>;
 
-	const mutation = (
-		event: CustomEvent<{
-			args: MutationTypeRealmArgs;
-			then: (data: Realm | null | undefined) => void;
-			catch: (errors: Errors) => void;
-		}>
-	) => {
+	const mutation = (event: CustomEvent<{ node: MutationTypeRealmArgs | null | undefined}> ) => {
+		node = event.detail.node;
+	};
+
+	const save = (event: CustomEvent<{ node: MutationTypeRealmArgs | null | undefined}> ) => {
 		ot({
-			node: updateNodeParam($page.url, event.detail.args),
+			node: updateNodeParam($page.url, event.detail.node),
 			errors: updateErrorsParam($page.url, errors)
 		});
 	};
@@ -52,4 +50,4 @@
 	};
 </script>
 
-<RealmCreateForm showGotoSelectButton={true} {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} on:gotoSelect={gotoSelect} />
+<RealmCreateForm showGotoSelectButton={true} {node} {errors} on:mutation={mutation} on:save={save} on:back={back} on:gotoField={gotoField} on:gotoSelect={gotoSelect} />

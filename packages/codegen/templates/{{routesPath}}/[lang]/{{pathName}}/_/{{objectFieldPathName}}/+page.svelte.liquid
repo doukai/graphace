@@ -12,18 +12,16 @@
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: node = data.node as MutationType{{ objectFieldTypeName }}Args;
+	$: node = data.node as MutationType{{ objectFieldTypeName }}Args | null | undefined;
 	$: errors = data.errors as Record<string, Errors>;
 
-	const mutation = (
-		event: CustomEvent<{
-			args: MutationType{{ objectFieldTypeName }}Args;
-			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
-			catch: (errors: Errors) => void;
-		}>
-	) => {
+	const mutation = (event: CustomEvent<{ node: MutationType{{ objectFieldTypeName }}Args | null | undefined}> ) => {
+		node = event.detail.node;
+	};
+
+	const save = (event: CustomEvent<{ node: MutationType{{ objectFieldTypeName }}Args | null | undefined}> ) => {
 		ot({
-			node: updateNodeParam($page.url, event.detail.args),
+			node: updateNodeParam($page.url, event.detail.node),
 			errors: updateErrorsParam($page.url, errors)
 		});
 	};
@@ -52,4 +50,4 @@
 	};
 </script>
 
-<{{ objectFieldTypeName }}CreateForm showGotoSelectButton={true} {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} on:gotoSelect={gotoSelect} />
+<{{ objectFieldTypeName }}CreateForm showGotoSelectButton={true} {node} {errors} on:mutation={mutation} on:save={save} on:back={back} on:gotoField={gotoField} on:gotoSelect={gotoSelect} />

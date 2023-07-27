@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Trash, ArrowUturnLeft, Link, InboxArrowDown, LockOpen } from '@steeze-ui/heroicons';
+	import { Trash, ArrowUturnLeft, Link, InboxArrowDown, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	export let title: string;
 	export let showSaveButton: boolean = true;
@@ -56,7 +56,7 @@
 						dispatch('unbind');
 					}}
 				>
-					<Icon src={LockOpen} class="h-6 w-6" solid />
+					<Icon src={ArchiveBoxXMark} class="h-6 w-6" solid />
 				</button>
 			</div>
 			<button
@@ -178,7 +178,7 @@
 					dispatch('unbind');
 				}}
 			>
-				<Icon src={LockOpen} class="h-6 w-6" solid />
+				<Icon src={ArchiveBoxXMark} class="h-6 w-6" solid />
 			</button>
 		</div>
 		<button

@@ -1,8 +1,10 @@
 <script lang="ts">
 	import '../app.css';
+	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { themeChange } from 'theme-change';
-	import SideBar from '@graphace/ui/components/SideBar.svelte';
+	import { history } from '~/lib/stores/useNavigate';
+	import { SideBar, Breadcrumbs } from '@graphace/ui/components';
 	import ObjectsMenu from '~/lib/components/menu/ObjectsMenu.svelte';
 	import { NavBar, NavBarStart, NavBarCenter, NavBarEnd } from '@graphace/ui/components/navbar';
 	import Notifications from '@graphace/ui/components/Notifications.svelte';
@@ -67,7 +69,27 @@
 			<ThemeSelect slot="option1" />
 			<LocaleSelect slot="option2" />
 		</NavBar>
-		<main class="flex-1 max-w-[100vw] px-2 py-2 lg:max-w-[calc(100vw-20rem)] lg:px-6 lg:py-6">
+		<main class="flex-1 max-w-[100vw] px-2 py-2 lg:max-w-[calc(100vw-20rem)] lg:px-6">
+			<Breadcrumbs>
+				<li>
+					<a href="/">
+						<span>Home</span>
+					</a>
+				</li>
+				{#each $history as item}
+					<li>
+						<a
+							href={null}
+							on:click={(e) => {
+								e.preventDefault();
+								goto(item);
+							}}
+						>
+							test
+						</a>
+					</li>
+				{/each}
+			</Breadcrumbs>
 			<slot />
 			<MessageBoxs />
 			<Notifications />

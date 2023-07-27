@@ -7,7 +7,7 @@
 	import { Pagination } from '@graphace/ui/components/connection';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Link } from '@steeze-ui/heroicons';
+	import { ArchiveBoxArrowDown } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	import {
 		Conditional,
@@ -64,6 +64,11 @@
 	}
 
 	const query = () => {
+		pageNumber = 1;
+		queryPage();
+	};
+
+	const queryPage = () => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -420,7 +425,7 @@
 													}
 												}}
 											>
-												<Icon src={Link} solid />
+												<Icon src={ArchiveBoxArrowDown} solid />
 											</button>
 										</div>
 									</div>
@@ -439,7 +444,7 @@
 		bind:pageNumber
 		bind:pageSize
 		{totalCount}
-		on:pageChange={query}
-		on:sizeChange={query}
+		on:pageChange={queryPage}
+		on:sizeChange={queryPage}
 	/>
 </Card>

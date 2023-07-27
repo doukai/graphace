@@ -9,7 +9,7 @@
 		Link,
 		ArrowUturnLeft,
 		InboxArrowDown,
-		LockOpen
+		ArchiveBoxXMark
 	} from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 
@@ -76,7 +76,7 @@
 							dispatch('unbind');
 						}}
 					>
-						<Icon src={LockOpen} class="h-6 w-6" solid />
+						<Icon src={ArchiveBoxXMark} class="h-6 w-6" solid />
 					</button>
 				</div>
 				<button

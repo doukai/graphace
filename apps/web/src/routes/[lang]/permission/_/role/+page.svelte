@@ -12,18 +12,16 @@
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: node = data.node as MutationTypeRoleArgs;
+	$: node = data.node as MutationTypeRoleArgs | null | undefined;
 	$: errors = data.errors as Record<string, Errors>;
 
-	const mutation = (
-		event: CustomEvent<{
-			args: MutationTypeRoleArgs;
-			then: (data: Role | null | undefined) => void;
-			catch: (errors: Errors) => void;
-		}>
-	) => {
+	const mutation = (event: CustomEvent<{ node: MutationTypeRoleArgs | null | undefined}> ) => {
+		node = event.detail.node;
+	};
+
+	const save = (event: CustomEvent<{ node: MutationTypeRoleArgs | null | undefined}> ) => {
 		ot({
-			node: updateNodeParam($page.url, event.detail.args),
+			node: updateNodeParam($page.url, event.detail.node),
 			errors: updateErrorsParam($page.url, errors)
 		});
 	};
@@ -52,4 +50,4 @@
 	};
 </script>
 
-<RoleCreateForm showGotoSelectButton={true} {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} on:gotoSelect={gotoSelect} />
+<RoleCreateForm showGotoSelectButton={true} {node} {errors} on:mutation={mutation} on:save={save} on:back={back} on:gotoField={gotoField} on:gotoSelect={gotoSelect} />

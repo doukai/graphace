@@ -29,7 +29,7 @@
 	}>();
 
 	let selectAll: boolean;
-	let selectedRowList: (number | null)[] = [];
+	let selectedRowList: (number | undefined)[] = [];
 
 	const removeRow = (row: number) => {
 		nodes?.splice(row, 1);
@@ -40,6 +40,7 @@
 		dispatch('mutation', {
 			nodes: nodes?.filter((_, index) => !selectedRowList.includes(index))
 		});
+		selectedRowList = [];
 	};
 </script>
 
@@ -79,7 +80,7 @@
 							bind:checked={selectAll}
 							on:change={() => {
 								if (nodes && nodes.length > 0) {
-									selectedRowList = selectAll ? nodes.map((node) => nodes?.indexOf(node) !== undefined ? nodes?.indexOf(node) : null) : [];
+									selectedRowList = selectAll ? nodes.map((node) => nodes?.indexOf(node)) : [];
 								}
 							}}
 						/>

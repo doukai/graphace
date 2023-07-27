@@ -33,9 +33,7 @@
 	};
 
 	const mutation = (event: CustomEvent<{ nodes: (MutationTypeUserArgs | null | undefined)[] | null | undefined}> ) => {
-		if (event.detail.nodes) {
-			nodes = [...event.detail.nodes];
-		}
+		nodes = [...event.detail.nodes || []];
 	};
 
 	const save = (event: CustomEvent<{ nodes: (MutationTypeUserArgs | null | undefined)[] | null | undefined}> ) => {

@@ -6,7 +6,7 @@
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Link } from '@steeze-ui/heroicons';
+	import { ArchiveBoxArrowDown } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	import {
 		Conditional,
@@ -338,7 +338,7 @@
 													}
 												}}
 											>
-												<Icon src={Link} solid />
+												<Icon src={ArchiveBoxArrowDown} solid />
 											</button>
 										</div>
 									</div>

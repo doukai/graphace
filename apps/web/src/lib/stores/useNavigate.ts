@@ -1,7 +1,7 @@
 import { goto } from '$app/navigation';
 import { Writable, writable } from 'svelte/store';
 
-const history: Writable<URL[]> = writable([]);
+export const history: Writable<URL[]> = writable([]);
 
 export function ot(params?: Record<string, string | undefined>) {
     history.update(value => {
