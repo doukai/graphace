@@ -1,14 +1,17 @@
 <script lang="ts">
-	import { ot } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons/types';
 	import UserGroupSelectConnectionTable from '~/lib/components/objects/user-group/UserGroupSelectConnectionTable.svelte';
 	import type { UserGroup, QueryTypeUserGroupConnectionArgs, MutationTypeUserGroupArgs } from '~/lib/types/schema';
 	import { Query_userGroupConnectionStore, Mutation_userGroupStore, Mutation_group_userGroupStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	$: urlName($page.url, $LL.web.path.select());
 	$: id = data.id as string;
 	$: Query_userGroupConnection = data.Query_userGroupConnection as Query_userGroupConnectionStore;
 	$: nodes = $Query_userGroupConnection.data?.userGroupConnection?.edges?.map((edge) => edge?.node);

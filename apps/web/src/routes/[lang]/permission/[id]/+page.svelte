@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { ot, to } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { page } from '$app/stores';
 	import PermissionForm from '~/lib/components/objects/permission/PermissionForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
@@ -12,6 +13,7 @@
 	export let data: PageData;
 	$: Query_permission = data.Query_permission as Query_permissionStore;
 	$: node = $Query_permission.data?.permission;
+	$: urlName($page.url, node?.name || '');
 	const Mutation_permission = new Mutation_permissionStore();
 	let errors: Record<string, Errors> = {};
 

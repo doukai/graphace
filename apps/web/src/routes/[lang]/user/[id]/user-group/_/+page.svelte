@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import UserGroupCreateForm from '~/lib/components/objects/user-group/UserGroupCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
@@ -9,9 +9,11 @@
 	import type { MutationTypeUserGroupArgs, UserGroup } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	$: urlName($page.url, $LL.web.path.create());
 	$: node = data.node as MutationTypeUserGroupArgs;
 	$: id = data.id as string;
 	$: errors = data.errors as Record<string, Errors>;

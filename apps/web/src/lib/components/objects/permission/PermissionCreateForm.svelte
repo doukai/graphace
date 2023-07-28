@@ -7,6 +7,7 @@
 	import { IDItem, StringItem, BooleanItem, IntItem, TimestampItem, ObjectItem } from '@graphace/ui-graphql/components/form';
 	import PermissionLevelItem from '~/lib/components/enums/permission-level/PermissionLevelItem.svelte';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
+	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
 	import type { Permission, MutationTypePermissionArgs } from '~/lib/types/schema';
 
@@ -16,21 +17,45 @@
 	export let showGotoSelectButton: boolean = false;
 
 	const dispatch = createEventDispatcher<{
-		mutation: { node: MutationTypePermissionArgs| null | undefined };
-		save: { node: MutationTypePermissionArgs| null | undefined };
+		mutation: {
+			args: MutationTypePermissionArgs;
+			update?: boolean;
+			then: (data: Permission | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		};
+		save: {};
 		gotoSelect: {};
 		back: {};
 	}>();
 
 	const save = (): void => {
 		if (node) {
-			dispatch('save', { node });
+			dispatch('mutation', {
+				args: node,
+				then: (data) => {
+					notifications.success($LL.web.message.saveSuccess());
+					dispatch('save');
+				},
+				catch: (errors) => {
+					console.error(errors);
+					notifications.error($LL.web.message.saveFailed());
+				}
+			});
 		}
 	};
 
 	const remove = (): void => {
 		if (node) {
-			dispatch('mutation', { node: {} });
+			dispatch('mutation', {
+				args: {},
+				then: (data) => {
+					notifications.success($LL.web.message.removeSuccess());
+				},
+				catch: (errors) => {
+					console.error(errors);
+					notifications.error($LL.web.message.removeFailed());
+				}
+			});
 		}
 	};
 </script>

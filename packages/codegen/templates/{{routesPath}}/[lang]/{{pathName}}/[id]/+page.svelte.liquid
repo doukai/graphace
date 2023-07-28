@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { ot, to } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { page } from '$app/stores';
 	import {{ name }}Form from '~/{{ formPath }}/{{ name | paramCase }}/{{ name }}Form.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
@@ -12,6 +13,7 @@
 	export let data: PageData;
 	$: Query_{{ name | camelCase }} = data.Query_{{ name | camelCase }} as Query_{{ name | camelCase }}Store;
 	$: node = $Query_{{ name | camelCase }}.data?.{{ name | camelCase }};
+	$: urlName($page.url, node?.name || '');
 	const Mutation_{{ name | camelCase }} = new Mutation_{{ name | camelCase }}Store();
 	let errors: Record<string, Errors> = {};
 

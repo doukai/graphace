@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { ot, to } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons/types';
 	import UserRoleConnectionTable from '~/lib/components/objects/user-role/UserRoleConnectionTable.svelte';
 	import type { UserRole, QueryTypeUserRoleConnectionArgs, MutationTypeUserRoleArgs } from '~/lib/types/schema';
@@ -9,6 +10,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	urlName($page.url, 'UserRole');
 	$: Query_userRoleConnection = data.Query_userRoleConnection as Query_userRoleConnectionStore;
 	$: nodes = $Query_userRoleConnection.data?.userRoleConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_userRoleConnection.data?.userRoleConnection?.totalCount || 0;

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { ot, to } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons/types';
 	import GroupRoleConnectionTable from '~/lib/components/objects/group-role/GroupRoleConnectionTable.svelte';
 	import type { GroupRole, QueryTypeGroupRoleConnectionArgs, MutationTypeGroupRoleArgs } from '~/lib/types/schema';
@@ -9,6 +10,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	urlName($page.url, 'GroupRole');
 	$: Query_groupRoleConnection = data.Query_groupRoleConnection as Query_groupRoleConnectionStore;
 	$: nodes = $Query_groupRoleConnection.data?.groupRoleConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_groupRoleConnection.data?.groupRoleConnection?.totalCount || 0;

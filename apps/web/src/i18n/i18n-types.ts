@@ -290,6 +290,16 @@ export type NamespaceWebTranslation = {
 		 */
 		unbindFailed: string
 	}
+	path: {
+		/**
+		 * C​r​e​a​t​e
+		 */
+		create: string
+		/**
+		 * S​e​l​e​c​t
+		 */
+		select: string
+	}
 	components: {
 		search: {
 			/**
@@ -740,6 +750,16 @@ export type TranslationFunctions = {
 			 * Unbind failed
 			 */
 			unbindFailed: () => LocalizedString
+		}
+		path: {
+			/**
+			 * Create
+			 */
+			create: () => LocalizedString
+			/**
+			 * Select
+			 */
+			select: () => LocalizedString
 		}
 		components: {
 			search: {

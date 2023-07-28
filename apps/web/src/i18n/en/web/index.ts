@@ -14,6 +14,10 @@ const en: BaseTranslation = {
         removeFailed: "Remove failed",
         unbindFailed: "Unbind failed"
     },
+    path: {
+        create: "Create",
+        select: "Select"
+    },
     components: {
         search: {
             label: "Search"

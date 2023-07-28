@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { ot, to } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { page } from '$app/stores';
 	import UserRoleForm from '~/lib/components/objects/user-role/UserRoleForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
@@ -12,6 +13,7 @@
 	export let data: PageData;
 	$: Query_userRole = data.Query_userRole as Query_userRoleStore;
 	$: node = $Query_userRole.data?.userRole;
+	$: urlName($page.url, node?.name || '');
 	const Mutation_userRole = new Mutation_userRoleStore();
 	let errors: Record<string, Errors> = {};
 

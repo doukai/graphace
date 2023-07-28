@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import RoleCompositeCreateTable from '~/lib/components/objects/role-composite/RoleCompositeCreateTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
@@ -9,6 +9,7 @@
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
+	urlName($page.url, 'roleComposite');
 	$: nodes = data.nodes as (MutationTypeRoleCompositeArgs | null | undefined)[];
 	$: errors = data.errors as Record<number, Errors>;
 

@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { themeChange } from 'theme-change';
-	import { history } from '~/lib/stores/useNavigate';
+	import { urlNames } from '~/lib/stores/useNavigate';
 	import { SideBar, Breadcrumbs } from '@graphace/ui/components';
 	import ObjectsMenu from '~/lib/components/menu/ObjectsMenu.svelte';
 	import { NavBar, NavBarStart, NavBarCenter, NavBarEnd } from '@graphace/ui/components/navbar';
@@ -76,16 +76,16 @@
 						<span>Home</span>
 					</a>
 				</li>
-				{#each $history as item}
+				{#each $urlNames as urlName}
 					<li>
 						<a
 							href={null}
 							on:click={(e) => {
 								e.preventDefault();
-								goto(item);
+								goto(urlName.url);
 							}}
 						>
-							test
+							{urlName.name}
 						</a>
 					</li>
 				{/each}

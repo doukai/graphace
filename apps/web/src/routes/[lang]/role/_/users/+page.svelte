@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import UserCreateTable from '~/lib/components/objects/user/UserCreateTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
@@ -9,6 +9,7 @@
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
+	urlName($page.url, 'users');
 	$: nodes = data.nodes as (MutationTypeUserArgs | null | undefined)[];
 	$: errors = data.errors as Record<number, Errors>;
 

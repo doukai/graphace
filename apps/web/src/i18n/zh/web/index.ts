@@ -14,6 +14,10 @@ const zh: NamespaceWebTranslation = {
         removeFailed: "删除失败",
         unbindFailed: "移除失败"
     },
+    path: {
+        create: "新建",
+        select: "选择"
+    },
     components: {
         search: {
             label: "搜索"

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { ot, to } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { page } from '$app/stores';
 	import PermissionConnectionTable from '~/lib/components/objects/permission/PermissionConnectionTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
@@ -10,6 +11,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	urlName($page.url, 'permissions');
 	$: id = data.id as string;
 	$: Query_role_permissions = data.Query_role_permissions as Query_role_permissionsStore;
 	$: role = $Query_role_permissions.data?.role;

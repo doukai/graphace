@@ -9,6 +9,7 @@
 	import {{ enum }}Item from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Item.svelte';
 	{%- endfor %}
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
+	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
 	import type { {{ name }}, MutationType{{ name }}Args } from '~/{{ schemaTypesPath }}';
 
@@ -18,21 +19,45 @@
 	export let showGotoSelectButton: boolean = false;
 
 	const dispatch = createEventDispatcher<{
-		mutation: { node: MutationType{{ name }}Args| null | undefined };
-		save: { node: MutationType{{ name }}Args| null | undefined };
+		mutation: {
+			args: MutationType{{ name }}Args;
+			update?: boolean;
+			then: (data: {{ name }} | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		};
+		save: {};
 		gotoSelect: {};
 		back: {};
 	}>();
 
 	const save = (): void => {
 		if (node) {
-			dispatch('save', { node });
+			dispatch('mutation', {
+				args: node,
+				then: (data) => {
+					notifications.success($LL.web.message.saveSuccess());
+					dispatch('save');
+				},
+				catch: (errors) => {
+					console.error(errors);
+					notifications.error($LL.web.message.saveFailed());
+				}
+			});
 		}
 	};
 
 	const remove = (): void => {
 		if (node) {
-			dispatch('mutation', { node: {} });
+			dispatch('mutation', {
+				args: {},
+				then: (data) => {
+					notifications.success($LL.web.message.removeSuccess());
+				},
+				catch: (errors) => {
+					console.error(errors);
+					notifications.error($LL.web.message.removeFailed());
+				}
+			});
 		}
 	};
 </script>

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { ot, to } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons/types';
 	import UserGroupConnectionTable from '~/lib/components/objects/user-group/UserGroupConnectionTable.svelte';
 	import type { UserGroup, QueryTypeUserGroupConnectionArgs, MutationTypeUserGroupArgs } from '~/lib/types/schema';
@@ -9,6 +10,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	urlName($page.url, 'UserGroup');
 	$: Query_userGroupConnection = data.Query_userGroupConnection as Query_userGroupConnectionStore;
 	$: nodes = $Query_userGroupConnection.data?.userGroupConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_userGroupConnection.data?.userGroupConnection?.totalCount || 0;

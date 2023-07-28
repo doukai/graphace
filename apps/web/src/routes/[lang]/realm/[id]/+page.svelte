@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { ot, to } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { page } from '$app/stores';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
@@ -12,6 +13,7 @@
 	export let data: PageData;
 	$: Query_realm = data.Query_realm as Query_realmStore;
 	$: node = $Query_realm.data?.realm;
+	$: urlName($page.url, node?.name || '');
 	const Mutation_realm = new Mutation_realmStore();
 	let errors: Record<string, Errors> = {};
 

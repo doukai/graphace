@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import RoleForm from '~/lib/components/objects/role/RoleForm.svelte';
 	import RoleCreateForm from '~/lib/components/objects/role/RoleCreateForm.svelte';
@@ -13,7 +13,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-
+	urlName($page.url, 'role');
 	$: Query_permission_role = data.Query_permission_role as Query_permission_roleStore;
 	$: permission = $Query_permission_role.data?.permission;
 	$: node = permission?.role;

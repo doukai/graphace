@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import {{ objectFieldTypeName }}Form from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}Form.svelte';
 	import {{ objectFieldTypeName }}CreateForm from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
@@ -13,7 +13,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-
+	urlName($page.url, '{{ objectFieldName }}');
 	$: Query_{{ name | camelCase }}_{{ objectFieldName }} = data.Query_{{ name | camelCase }}_{{ objectFieldName }} as Query_{{ name | camelCase }}_{{ objectFieldName }}Store;
 	$: {{ name | camelCase }} = $Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }};
 	$: node = {{ name | camelCase }}?.{{ objectFieldName }};

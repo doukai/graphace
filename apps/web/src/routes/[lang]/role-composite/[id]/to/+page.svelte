@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import RoleForm from '~/lib/components/objects/role/RoleForm.svelte';
 	import RoleCreateForm from '~/lib/components/objects/role/RoleCreateForm.svelte';
@@ -13,7 +13,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-
+	urlName($page.url, 'to');
 	$: Query_roleComposite_to = data.Query_roleComposite_to as Query_roleComposite_toStore;
 	$: roleComposite = $Query_roleComposite_to.data?.roleComposite;
 	$: node = roleComposite?.to;

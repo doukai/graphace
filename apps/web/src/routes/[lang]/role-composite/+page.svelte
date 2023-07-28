@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { ot, to } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons/types';
 	import RoleCompositeConnectionTable from '~/lib/components/objects/role-composite/RoleCompositeConnectionTable.svelte';
 	import type { RoleComposite, QueryTypeRoleCompositeConnectionArgs, MutationTypeRoleCompositeArgs } from '~/lib/types/schema';
@@ -9,6 +10,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	urlName($page.url, 'RoleComposite');
 	$: Query_roleCompositeConnection = data.Query_roleCompositeConnection as Query_roleCompositeConnectionStore;
 	$: nodes = $Query_roleCompositeConnection.data?.roleCompositeConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_roleCompositeConnection.data?.roleCompositeConnection?.totalCount || 0;

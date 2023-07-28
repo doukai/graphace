@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { ot, to } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons/types';
 	import PermissionConnectionTable from '~/lib/components/objects/permission/PermissionConnectionTable.svelte';
 	import type { Permission, QueryTypePermissionConnectionArgs, MutationTypePermissionArgs } from '~/lib/types/schema';
@@ -9,6 +10,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	urlName($page.url, 'Permission');
 	$: Query_permissionConnection = data.Query_permissionConnection as Query_permissionConnectionStore;
 	$: nodes = $Query_permissionConnection.data?.permissionConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_permissionConnection.data?.permissionConnection?.totalCount || 0;

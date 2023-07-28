@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import GroupRoleCreateTable from '~/lib/components/objects/group-role/GroupRoleCreateTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
@@ -9,6 +9,7 @@
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
+	urlName($page.url, 'groupRole');
 	$: nodes = data.nodes as (MutationTypeGroupRoleArgs | null | undefined)[];
 	$: errors = data.errors as Record<number, Errors>;
 

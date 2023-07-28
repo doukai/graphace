@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons/types';
 	import GroupSelectConnectionTable from '~/lib/components/objects/group/GroupSelectConnectionTable.svelte';
@@ -8,9 +8,11 @@
 	import { updateNodeParam, updateErrorsParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	$: urlName($page.url, $LL.web.path.select());
 	$: originalNodes = data.nodes as (MutationTypeGroupArgs | null | undefined)[];
 	$: errors = data.errors as Record<number, Errors>;
 	$: Query_groupConnection = data.Query_groupConnection as Query_groupConnectionStore;

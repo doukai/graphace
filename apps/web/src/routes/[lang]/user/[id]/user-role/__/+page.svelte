@@ -1,14 +1,17 @@
 <script lang="ts">
-	import { ot } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons/types';
 	import UserRoleSelectConnectionTable from '~/lib/components/objects/user-role/UserRoleSelectConnectionTable.svelte';
 	import type { UserRole, QueryTypeUserRoleConnectionArgs, MutationTypeUserRoleArgs } from '~/lib/types/schema';
 	import { Query_userRoleConnectionStore, Mutation_userRoleStore, Mutation_user_userRoleStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	$: urlName($page.url, $LL.web.path.select());
 	$: id = data.id as string;
 	$: Query_userRoleConnection = data.Query_userRoleConnection as Query_userRoleConnectionStore;
 	$: nodes = $Query_userRoleConnection.data?.userRoleConnection?.edges?.map((edge) => edge?.node);

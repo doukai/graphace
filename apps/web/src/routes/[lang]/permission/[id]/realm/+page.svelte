@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
 	import RealmCreateForm from '~/lib/components/objects/realm/RealmCreateForm.svelte';
@@ -13,7 +13,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-
+	urlName($page.url, 'realm');
 	$: Query_permission_realm = data.Query_permission_realm as Query_permission_realmStore;
 	$: permission = $Query_permission_realm.data?.permission;
 	$: node = permission?.realm;

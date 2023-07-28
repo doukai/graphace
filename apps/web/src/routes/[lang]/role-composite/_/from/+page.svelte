@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import RoleCreateForm from '~/lib/components/objects/role/RoleCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
@@ -12,16 +12,24 @@
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: node = data.node as MutationTypeRoleArgs | null | undefined;
+	urlName($page.url, 'from');
+	$: node = data.node as MutationTypeRoleArgs;
 	$: errors = data.errors as Record<string, Errors>;
 
-	const mutation = (event: CustomEvent<{ node: MutationTypeRoleArgs | null | undefined}> ) => {
-		node = event.detail.node;
+	const mutation = (
+		event: CustomEvent<{
+			args: MutationTypeRoleArgs;
+			update?: boolean;
+			then: (data: Role | null | undefined) => void;
+			catch: (errors: Errors) => void;
+		}>
+	) => {
+		node = event.detail.args;
 	};
 
-	const save = (event: CustomEvent<{ node: MutationTypeRoleArgs | null | undefined}> ) => {
+	const save = (event: CustomEvent<{}> ) => {
 		ot({
-			node: updateNodeParam($page.url, event.detail.node),
+			node: updateNodeParam($page.url, node),
 			errors: updateErrorsParam($page.url, errors)
 		});
 	};

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { ot, to } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { page } from '$app/stores';
 	import GroupConnectionTable from '~/lib/components/objects/group/GroupConnectionTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
@@ -10,6 +11,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	urlName($page.url, 'groups');
 	$: id = data.id as string;
 	$: Query_user_groups = data.Query_user_groups as Query_user_groupsStore;
 	$: user = $Query_user_groups.data?.user;
