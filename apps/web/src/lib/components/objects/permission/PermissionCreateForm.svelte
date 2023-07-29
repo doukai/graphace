@@ -15,6 +15,7 @@
 	export let errors: Record<string, Errors> = {};
 	export let showRemoveButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
+	export let showBackButton: boolean = true;
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
@@ -65,6 +66,7 @@
 		title="Permission"
 		showRemoveButton={showRemoveButton && node !== undefined && node !== null && Object.keys(node).length > 0}
 		{showGotoSelectButton}
+		{showBackButton}
 		on:save={save}
 		on:remove={() =>
 			messageBoxs.open({

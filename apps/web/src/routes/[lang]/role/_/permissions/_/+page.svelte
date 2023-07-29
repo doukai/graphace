@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import PermissionCreateForm from '~/lib/components/objects/permission/PermissionCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
@@ -7,10 +7,9 @@
 	import type { Errors } from '@graphace/commons/types';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
-	import LL from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, $LL.web.path.create());
+	urlName($page.url, PageType.CREATE);
 	$: node = data.node as MutationTypePermissionArgs;
 	$: errors = data.errors as Record<string, Errors>;
 
@@ -43,4 +42,4 @@
 	};
 </script>
 
-<PermissionCreateForm {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<PermissionCreateForm showBackButton={$canBack} {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import GroupCreateForm from '~/lib/components/objects/group/GroupCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
@@ -9,11 +9,10 @@
 	import type { MutationTypeGroupArgs, Group } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
-	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, $LL.web.path.create());
+	urlName($page.url, PageType.CREATE);
 	$: node = data.node as MutationTypeGroupArgs;
 	$: id = data.id as string;
 	$: errors = data.errors as Record<string, Errors>;
@@ -62,4 +61,4 @@
 	};
 </script>
 
-<GroupCreateForm {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<GroupCreateForm showBackButton={$canBack} {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />

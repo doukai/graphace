@@ -9,9 +9,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ArchiveBoxArrowDown } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
-	import {
-		Conditional,
-		Operator,
+	import type {
 		UserRole,
 		UserRoleOrderBy,
 		QueryTypeUserRoleConnectionArgs,
@@ -23,6 +21,7 @@
 	export let isFetching: boolean;
 	export let errors: Record<number, Errors> = {};
 	export let multipleSelect: boolean = true;
+	export let showBackButton: boolean = true;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -101,11 +100,11 @@
 	const search = (searchValue: string | undefined) => {
 		let args: QueryTypeUserRoleConnectionArgs = {};
 		if (searchValue) {
-			args.cond = Conditional.OR;
-			args.realmId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.createUserId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.updateUserId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.createGroupId = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.cond = 'OR';
+			args.realmId = { opr: 'LK', val: `%${searchValue}%` };
+			args.createUserId = { opr: 'LK', val: `%${searchValue}%` };
+			args.updateUserId = { opr: 'LK', val: `%${searchValue}%` };
+			args.createGroupId = { opr: 'LK', val: `%${searchValue}%` };
 		} else {
 			args.cond = undefined;
 			args.realmId = undefined;
@@ -161,6 +160,7 @@
 		showSaveButton={false}
 		showRemoveButton={false}
 		{showSelectButton}
+		{showBackButton}
 		on:search={(e) => search(e.detail.value)}
 		on:select={() =>
 			dispatch('select', {

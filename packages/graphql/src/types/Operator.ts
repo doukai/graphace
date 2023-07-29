@@ -1,20 +1,19 @@
-export enum Operator {
-    EQ = "EQ",
-    NEQ = "NEQ",
-    LK = "LK",
-    NLK = "NLK",
-    GT = "GT",
-    NLTE = "NLTE",
-    GTE = "GTE",
-    NLT = "NLT",
-    LT = "LT",
-    NGTE = "NGTE",
-    LTE = "LTE",
-    NGT = "NGT",
-    NIL = "NIL",
-    NNIL = "NNIL",
-    IN = "IN",
-    NIN = "NIN",
-    BT = "BT",
-    NBT = "NBT",
-}
+export type Operator =
+    "EQ" |
+    "NEQ" |
+    "LK" |
+    "NLK" |
+    "GT" |
+    "NLTE" |
+    "GTE" |
+    "NLT" |
+    "LT" |
+    "NGTE" |
+    "LTE" |
+    "NGT" |
+    "NIL" |
+    "NNIL" |
+    "IN" |
+    "NIN" |
+    "BT" |
+    "NBT";

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons/types';
 	import RealmSelectConnectionTable from '~/lib/components/objects/realm/RealmSelectConnectionTable.svelte';
@@ -7,11 +7,10 @@
 	import { Query_realmConnectionStore, Mutation_realmStore, Mutation_user_realmStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
-	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, $LL.web.path.select());
+	urlName($page.url, PageType.SELECT);
 	$: id = data.id as string;
 	$: Query_realmConnection = data.Query_realmConnection as Query_realmConnectionStore;
 	$: nodes = $Query_realmConnection.data?.realmConnection?.edges?.map((edge) => edge?.node);
@@ -100,6 +99,7 @@
 </script>
 <RealmSelectConnectionTable
 	multipleSelect={false}
+	showBackButton={$canBack}
 	{nodes}
 	{totalCount}
 	{errors}

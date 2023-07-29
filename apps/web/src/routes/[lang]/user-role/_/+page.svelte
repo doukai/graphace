@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import UserRoleCreateForm from '~/lib/components/objects/user-role/UserRoleCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
@@ -9,11 +9,10 @@
 	import type { MutationTypeUserRoleArgs, UserRole } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
-	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, $LL.web.path.create());
+	urlName($page.url, PageType.CREATE);
 	$: node = data.node as MutationTypeUserRoleArgs;
 	$: errors = data.errors as Record<number, Errors>;
 
@@ -55,4 +54,4 @@
 	};
 </script>
 
-<UserRoleCreateForm {node} {errors} showRemoveButton={false} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<UserRoleCreateForm showRemoveButton={false} showBackButton={$canBack} {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />

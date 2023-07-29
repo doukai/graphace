@@ -8,9 +8,9 @@
 	export let sort: Sort | null | undefined = undefined;
 
 	let enums = [
-		{ name: PermissionLevel.READ, value: PermissionLevel.READ },
-		{ name: PermissionLevel.WRITE, value: PermissionLevel.WRITE }
+		{ name: 'READ', value: 'READ' },
+		{ name: 'WRITE', value: 'WRITE' }
 	];
 </script>
 
-<EnumTh {name} {enums} bind:expression bind:sort />
+<EnumTh {name} {enums} bind:expression bind:sort on:filter />

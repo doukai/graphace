@@ -292,6 +292,10 @@ export type NamespaceWebTranslation = {
 	}
 	path: {
 		/**
+		 * H​o​m​e
+		 */
+		home: string
+		/**
 		 * C​r​e​a​t​e
 		 */
 		create: string
@@ -752,6 +756,10 @@ export type TranslationFunctions = {
 			unbindFailed: () => LocalizedString
 		}
 		path: {
+			/**
+			 * Home
+			 */
+			home: () => LocalizedString
 			/**
 			 * Create
 			 */

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons/types';
 	import RealmConnectionTable from '~/lib/components/objects/realm/RealmConnectionTable.svelte';
@@ -80,7 +80,7 @@
 </script>
 <RealmConnectionTable
 	showSaveButton={false}
-	showBackButton={false}
+	showBackButton={$canBack}
 	{nodes}
 	{totalCount}
 	{errors}

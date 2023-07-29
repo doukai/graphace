@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import {{ objectFieldTypeName }}CreateForm from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
@@ -50,7 +50,7 @@
 	};
 
 	const gotoSelect = (event: CustomEvent<{}>) => {
-		to(`./{{ objectFieldName }}/__`, {
+		to(`./{{ objectFieldName | paramCase }}/__`, {
 			node: updateNodeParam($page.url, node),
 			errors: updateErrorsParam($page.url, errors),
 			path: getPathParam($page.url)
@@ -58,4 +58,4 @@
 	};
 </script>
 
-<{{ objectFieldTypeName }}CreateForm showGotoSelectButton={true} {node} {errors} on:mutation={mutation} on:save={save} on:back={back} on:gotoField={gotoField} on:gotoSelect={gotoSelect} />
+<{{ objectFieldTypeName }}CreateForm showGotoSelectButton={true} showBackButton={$canBack} {node} {errors} on:mutation={mutation} on:save={save} on:back={back} on:gotoField={gotoField} on:gotoSelect={gotoSelect} />

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { ot, to, canBack, urlName } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import {{ objectFieldTypeName }}Form from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}Form.svelte';
 	import {{ objectFieldTypeName }}CreateForm from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
@@ -87,7 +87,7 @@
 	};
 
 	const gotoSelect = (event: CustomEvent<{}>) => {
-		to(`./{{ objectFieldName }}/__`);
+		to(`./{{ objectFieldName | paramCase }}/__`);
 	};
 
 	const back = (event: CustomEvent<{}>) => {
@@ -104,6 +104,7 @@
 		{%- if isNonNullType == false %}
 		showUnbindButton={true}
 		{%- endif %}
+		showBackButton={$canBack}
 		isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
 		on:mutation={mutation}
 		on:parentMutation={parentMutation}
@@ -114,6 +115,7 @@
 {:else}
 	<{{ objectFieldTypeName }}CreateForm
 		showGotoSelectButton={true}
+		showBackButton={$canBack}
 		node={createNode}
 		{errors}
 		on:mutation={parentMutation}

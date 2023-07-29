@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { to } from '~/lib/stores/useNavigate';
+	import { init } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import Iconify from '@iconify/svelte';
 	import { locale } from '~/i18n/i18n-svelte';
@@ -17,7 +17,7 @@
 				href={null}
 				on:click={(e) => {
 					e.preventDefault();
-					to(`/${$locale}${href}`);
+					init(`/${$locale}${href}`);
 				}}
 				class={$page.url.pathname === `/${$locale}${href}` ||
 				$page.url.pathname.startsWith(`/${$locale}${href}/`)

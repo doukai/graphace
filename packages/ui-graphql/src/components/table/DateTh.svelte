@@ -4,14 +4,14 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel, BarsArrowDown, BarsArrowUp } from '@steeze-ui/heroicons';
 	import { DateInput, DateInputList } from '@graphace/ui/components/input';
-	import { type StringExpression, Operator, Sort } from '@graphace/graphql/types';
+	import type { StringExpression, Sort } from '@graphace/graphql/types';
 	import LL from '$i18n/i18n-svelte';
 
 	export let name: string;
 	export let expression: StringExpression | null | undefined;
 	export let sort: Sort | null | undefined = undefined;
 
-	let _expression: StringExpression = { opr: Operator.EQ, val: undefined, in: [] };
+	let _expression: StringExpression = { opr: 'EQ', val: undefined, in: [] };
 	let _sort: Sort | undefined = undefined;
 
 	let content: HTMLElement;
@@ -30,7 +30,7 @@
 	};
 
 	const clear = (): void => {
-		_expression.opr = Operator.EQ;
+		_expression.opr = 'EQ';
 		_expression.in = [];
 		_expression.val = undefined;
 		_sort = undefined;
@@ -116,12 +116,12 @@
 				<Icon src={Funnel} class="h-5 w-5" />
 			</span>
 		{/if}
-		{#if sort && sort === Sort.ASC}
+		{#if sort && sort === 'ASC'}
 			<span class="ml-1 flex-none">
 				<Icon src={BarsArrowDown} class="h-5 w-5" />
 			</span>
 		{/if}
-		{#if sort && sort === Sort.DESC}
+		{#if sort && sort === 'DESC'}
 			<span class="ml-1 flex-none">
 				<Icon src={BarsArrowUp} class="h-5 w-5" />
 			</span>

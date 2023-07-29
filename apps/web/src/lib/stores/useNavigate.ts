@@ -1,20 +1,31 @@
 import { goto } from '$app/navigation';
 import { Writable, writable, derived } from 'svelte/store';
 
+export enum PageType {
+    CREATE = 'CREATE',
+    SELECT = 'SELECT'
+}
+
 export const history: Writable<URL[]> = writable([]);
 
-export const urlNameRecord: Writable<Record<string, { url: URL, name: string }>> = writable({});
+export const urlNameRecord: Writable<Record<string, { url: URL, name: string | PageType }>> = writable({});
 
-export function urlName(url: URL, name: string) {
+export function urlName(url: URL, name: string | PageType) {
+    const pathname = url.pathname.split("/").splice(2).join("/");
     urlNameRecord.update((item) => {
         const urls = Object.keys(item);
-        if (urls[urls.length - 1] === url.pathname) {
-            debugger
-            item[url.pathname].name = name;
+        if (urls[urls.length - 1] === pathname) {
+            item[pathname].name = name;
             return item;
         } else {
-            return { ...item, [url.pathname]: { url, name } };
+            return { ...item, [pathname]: { url, name } };
         }
+    });
+    history.update(value => {
+        if (value.length === 0) {
+            return [url];
+        }
+        return [...value];
     });
 };
 
@@ -23,20 +34,17 @@ export const urlNames = derived(
     ($name) => Object.values($name)
 );
 
-export function url(url: URL) {
-    const parts = url.pathname.split('/');
-    const lang = parts.pop();
-    parts.reduce((pre: string[], cur: string) => {
-        return [...pre, [lang, ...pre, cur].join("/")];
-    }, [])
-}
+export const canBack = derived(
+    history,
+    ($history) => $history.length > 1
+);
 
 export function ot(params?: Record<string, string | undefined>) {
     history.update(value => {
-        let current = value.pop();
+        const current = value.pop();
         urlNameRecord.update((item) => {
             if (current) {
-                delete item[current.pathname];
+                delete item[current.pathname.split("/").splice(2).join("/")];
             }
             return item;
         });
@@ -78,4 +86,10 @@ export function to(url: string | URL, params?: Record<string, string | undefined
         goto(toUrl);
         return [...value];
     });
+}
+
+export function init(url: string | URL, params?: Record<string, string | undefined>) {
+    history.set([]);
+    urlNameRecord.set({});
+    to(url, params);
 }

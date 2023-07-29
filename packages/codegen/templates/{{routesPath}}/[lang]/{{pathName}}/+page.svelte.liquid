@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons/types';
 	{%- if connectionField %}
@@ -103,7 +103,7 @@
 {%- if connectionField %}
 <{{ name }}ConnectionTable
 	showSaveButton={false}
-	showBackButton={false}
+	showBackButton={$canBack}
 	{nodes}
 	{totalCount}
 	{errors}
@@ -117,7 +117,7 @@
 {%- else %}
 <{{ name }}Table
 	showSaveButton={false}
-	showBackButton={false}
+	showBackButton={$canBack}
 	{nodes}
 	{errors}
 	isFetching={$Query_{{ name | camelCase }}List.fetching}

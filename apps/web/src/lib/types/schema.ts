@@ -25,10 +25,9 @@ export type BooleanExpression = {
   skipNull?: InputMaybe<Scalars['Boolean']>;
 };
 
-export enum Conditional {
-  AND = 'AND',
-  OR = 'OR'
-}
+export type Conditional =
+  | 'AND'
+  | 'OR';
 
 export type ConditionalExpression = {
   opr?: InputMaybe<Operator>;
@@ -53,13 +52,12 @@ export type FloatExpression = {
   skipNull?: InputMaybe<Scalars['Boolean']>;
 };
 
-export enum Function {
-  COUNT = 'COUNT',
-  MAX = 'MAX',
-  MIN = 'MIN',
-  SUM = 'SUM',
-  AVG = 'AVG'
-}
+export type Function =
+  | 'COUNT'
+  | 'MAX'
+  | 'MIN'
+  | 'SUM'
+  | 'AVG';
 
 export type FunctionExpression = {
   opr?: InputMaybe<Operator>;
@@ -1072,26 +1070,25 @@ export type MutationTypeGroupRoleListArgs = {
   where?: InputMaybe<GroupRoleExpression>;
 };
 
-export enum Operator {
-  EQ = 'EQ',
-  NEQ = 'NEQ',
-  LK = 'LK',
-  NLK = 'NLK',
-  GT = 'GT',
-  NLTE = 'NLTE',
-  GTE = 'GTE',
-  NLT = 'NLT',
-  LT = 'LT',
-  NGTE = 'NGTE',
-  LTE = 'LTE',
-  NGT = 'NGT',
-  NIL = 'NIL',
-  NNIL = 'NNIL',
-  IN = 'IN',
-  NIN = 'NIN',
-  BT = 'BT',
-  NBT = 'NBT'
-}
+export type Operator =
+  | 'EQ'
+  | 'NEQ'
+  | 'LK'
+  | 'NLK'
+  | 'GT'
+  | 'NLTE'
+  | 'GTE'
+  | 'NLT'
+  | 'LT'
+  | 'NGTE'
+  | 'LTE'
+  | 'NGT'
+  | 'NIL'
+  | 'NNIL'
+  | 'IN'
+  | 'NIN'
+  | 'BT'
+  | 'NBT';
 
 export type OperatorExpression = {
   opr?: InputMaybe<Operator>;
@@ -1237,10 +1234,9 @@ export type PermissionInput = {
   roleId?: InputMaybe<Scalars['Int']>;
 };
 
-export enum PermissionLevel {
-  READ = 'READ',
-  WRITE = 'WRITE'
-}
+export type PermissionLevel =
+  | 'READ'
+  | 'WRITE';
 
 export type PermissionLevelExpression = {
   opr?: InputMaybe<Operator>;
@@ -1271,12 +1267,11 @@ export type Property = {
   required?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
-export enum Protocol {
-  LOCAL = 'LOCAL',
-  GRPC = 'GRPC',
-  HTTP = 'HTTP',
-  RSOCKET = 'RSOCKET'
-}
+export type Protocol =
+  | 'LOCAL'
+  | 'GRPC'
+  | 'HTTP'
+  | 'RSOCKET';
 
 export type ProtocolExpression = {
   opr?: InputMaybe<Operator>;
@@ -2649,10 +2644,9 @@ export type RoleOrderBy = {
   createGroupId?: InputMaybe<Sort>;
 };
 
-export enum Sort {
-  ASC = 'ASC',
-  DESC = 'DESC'
-}
+export type Sort =
+  | 'ASC'
+  | 'DESC';
 
 export type SortExpression = {
   opr?: InputMaybe<Operator>;

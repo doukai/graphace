@@ -12,11 +12,11 @@
 	export let placeholder: string = '';
 
 	let enums = [
-		{ name: Protocol.LOCAL, value: Protocol.LOCAL },
-		{ name: Protocol.GRPC, value: Protocol.GRPC },
-		{ name: Protocol.HTTP, value: Protocol.HTTP },
-		{ name: Protocol.RSOCKET, value: Protocol.RSOCKET }
+		{ name: 'LOCAL', value: 'LOCAL' },
+		{ name: 'GRPC', value: 'GRPC' },
+		{ name: 'HTTP', value: 'HTTP' },
+		{ name: 'RSOCKET', value: 'RSOCKET' }
 	];
 </script>
 
-<EnumTd bind:value {list} {enums} {name} {errors} {readonly} {disabled} {placeholder} />
+<EnumTd bind:value {list} {enums} {name} {errors} {readonly} {disabled} {placeholder} on:save />

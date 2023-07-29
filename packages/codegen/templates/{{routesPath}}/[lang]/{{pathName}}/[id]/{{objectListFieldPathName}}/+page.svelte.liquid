@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	{%- if connectionField %}
 	import {{ objectFieldTypeName }}ConnectionTable from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}ConnectionTable.svelte';
@@ -109,7 +109,7 @@
 					});
 			})
 			.catch((validErrors) => {
-				errors = validErrors.roles.iterms;
+				errors = validErrors.{{ objectFieldName }}.iterms;
 			});
 	};
 
@@ -122,7 +122,7 @@
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		to(`./{{ objectFieldName }}/_`);
+		to(`./{{ objectFieldName | paramCase }}/_`);
 	};
 	
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
@@ -130,7 +130,7 @@
 	};
 
 	const gotoSelect = (event: CustomEvent<{}>) => {
-		to(`./{{ objectFieldName }}/__`);
+		to(`./{{ objectFieldName | paramCase }}/__`);
 	};
 
 	const back = (event: CustomEvent<{}>) => {
@@ -144,6 +144,7 @@
 	showRemoveButton={false}
 	showUnbindButton={true}
 	showGotoSelectButton={true}
+	showBackButton={$canBack}
 	{nodes}
 	{totalCount}
 	{errors}
@@ -163,6 +164,7 @@
 	showRemoveButton={false}
 	showUnbindButton={true}
 	showGotoSelectButton={true}
+	showBackButton={$canBack}
 	{nodes}
 	{errors}
 	isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}

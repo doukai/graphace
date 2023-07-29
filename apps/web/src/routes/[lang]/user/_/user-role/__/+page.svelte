@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons/types';
 	import UserRoleSelectConnectionTable from '~/lib/components/objects/user-role/UserRoleSelectConnectionTable.svelte';
@@ -8,11 +8,10 @@
 	import { updateNodeParam, updateErrorsParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
-	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, $LL.web.path.select());
+	urlName($page.url, PageType.SELECT);
 	$: originalNodes = data.nodes as (MutationTypeUserRoleArgs | null | undefined)[];
 	$: errors = data.errors as Record<number, Errors>;
 	$: Query_userRoleConnection = data.Query_userRoleConnection as Query_userRoleConnectionStore;
@@ -88,6 +87,7 @@
 	};
 </script>
 <UserRoleSelectConnectionTable
+	showBackButton={$canBack}
 	{nodes}
 	{totalCount}
 	{errors}

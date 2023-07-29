@@ -22,6 +22,7 @@
 	}>();
 
 	let mutation = (): void => {
+		debugger
 		if (Array.isArray(value)) {
 			value = value.filter((item) => item);
 		}

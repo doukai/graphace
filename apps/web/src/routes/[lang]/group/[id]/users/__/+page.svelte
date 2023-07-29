@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons/types';
 	import UserSelectConnectionTable from '~/lib/components/objects/user/UserSelectConnectionTable.svelte';
@@ -7,11 +7,10 @@
 	import { Query_userConnectionStore, Mutation_userStore, Mutation_group_usersStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
-	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, $LL.web.path.select());
+	urlName($page.url, PageType.SELECT);
 	$: id = data.id as string;
 	$: Query_userConnection = data.Query_userConnection as Query_userConnectionStore;
 	$: nodes = $Query_userConnection.data?.userConnection?.edges?.map((edge) => edge?.node);
@@ -100,6 +99,7 @@
 	};
 </script>
 <UserSelectConnectionTable
+	showBackButton={$canBack}
 	{nodes}
 	{totalCount}
 	{errors}

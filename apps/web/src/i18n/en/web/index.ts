@@ -15,6 +15,7 @@ const en: BaseTranslation = {
         unbindFailed: "Unbind failed"
     },
     path: {
+        home: "Home",
         create: "Create",
         select: "Select"
     },

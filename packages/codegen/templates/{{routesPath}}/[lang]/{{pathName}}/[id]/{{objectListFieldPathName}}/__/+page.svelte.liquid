@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons/types';
 	{%- if connectionField %}
@@ -11,11 +11,10 @@
 	import { {% if connectionField %}Query_{{ objectFieldTypeName | camelCase }}ConnectionStore{% else %}Query_{{ objectFieldTypeName | camelCase }}ListStore{% endif %}, Mutation_{{ objectFieldTypeName | camelCase }}Store, Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
-	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, $LL.web.path.select());
+	urlName($page.url, PageType.SELECT);
 	$: id = data.{{ idName }} as string;
 	{%- if connectionField %}
 	$: Query_{{ objectFieldTypeName | camelCase }}Connection = data.Query_{{ objectFieldTypeName | camelCase }}Connection as Query_{{ objectFieldTypeName | camelCase }}ConnectionStore;
@@ -123,6 +122,7 @@
 
 {%- if connectionField %}
 <{{ objectFieldTypeName }}SelectConnectionTable
+	showBackButton={$canBack}
 	{nodes}
 	{totalCount}
 	{errors}
@@ -134,6 +134,7 @@
 />
 {%- else %}
 <{{ objectFieldTypeName }}SelectTable
+	showBackButton={$canBack}
 	{nodes}
 	{errors}
 	isFetching={$Query_{{ objectFieldTypeName | camelCase }}List.fetching}

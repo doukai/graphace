@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import GroupRoleForm from '~/lib/components/objects/group-role/GroupRoleForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
@@ -51,6 +51,7 @@
 </script>
 
 <GroupRoleForm
+	showBackButton={$canBack}
 	{node}
 	{errors}
 	isFetching={$Query_groupRole.fetching}

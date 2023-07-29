@@ -12,9 +12,9 @@
 	export let placeholder: string = '';
 
 	let enums = [
-		{ name: PermissionLevel.READ, value: PermissionLevel.READ },
-		{ name: PermissionLevel.WRITE, value: PermissionLevel.WRITE }
+		{ name: 'READ', value: 'READ' },
+		{ name: 'WRITE', value: 'WRITE' }
 	];
 </script>
 
-<EnumTd bind:value {list} {enums} {name} {errors} {readonly} {disabled} {placeholder} />
+<EnumTd bind:value {list} {enums} {name} {errors} {readonly} {disabled} {placeholder} on:save />

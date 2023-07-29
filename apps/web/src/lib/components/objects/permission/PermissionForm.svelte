@@ -17,6 +17,7 @@
 	export let showRemoveButton: boolean = true;
 	export let showUnbindButton: boolean = false;
 	export let showGotoSelectButton: boolean = false;
+	export let showBackButton: boolean = true;
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
@@ -94,6 +95,7 @@
 		{showRemoveButton}
 		{showUnbindButton}
 		{showGotoSelectButton}
+		{showBackButton}
 		on:save={save}
 		on:remove={() =>
 			messageBoxs.open({

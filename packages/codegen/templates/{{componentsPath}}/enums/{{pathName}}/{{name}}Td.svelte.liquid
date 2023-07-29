@@ -14,10 +14,10 @@
 	let enums = [
 		{%- if enumValues %}
 		{%- for enumValue in enumValues %}
-		{ name: {{ name }}.{{ enumValue.name }}, value: {{ name }}.{{ enumValue.value }}{% if enumValue.description %}, {{ name }}.{{ enumValue.description }}{% endif %} }{% if forloop.last == false %},{% endif %}
+		{ name: '{{ enumValue.name }}', value: '{{ enumValue.value }}'{% if enumValue.description %}, description: {{ enumValue.description }}{% endif %} }{% if forloop.last == false %},{% endif %}
 		{%- endfor %}
 		{%- endif %}
 	];
 </script>
 
-<EnumTd bind:value {list} {enums} {name} {errors} {readonly} {disabled} {placeholder} />
+<EnumTd bind:value {list} {enums} {name} {errors} {readonly} {disabled} {placeholder} on:save />

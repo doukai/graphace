@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons/types';
 	import { EnumItem } from '@graphace/ui-graphql/components/form';
-	import { PermissionLevel } from '~/lib/types/schema';
 
 	export let value: string | (string | null | undefined)[] | null | undefined;
 	export let list: boolean = false;
@@ -13,8 +12,8 @@
 	export let placeholder: string = '';
 
 	let enums = [
-		{ name: PermissionLevel.READ, value: PermissionLevel.READ },
-		{ name: PermissionLevel.WRITE, value: PermissionLevel.WRITE }
+		{ name: 'READ', value: 'READ' },
+		{ name: 'WRITE', value: 'WRITE' }
 	];
 </script>
 

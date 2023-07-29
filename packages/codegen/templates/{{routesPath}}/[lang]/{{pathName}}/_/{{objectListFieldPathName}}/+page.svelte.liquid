@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { ot, to, canBack, urlName } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import {{ objectFieldTypeName }}CreateTable from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
@@ -18,7 +18,7 @@
 			row: number;
 		}>
 	) => {
-		to(`./{{ objectFieldName }}/_`, {
+		to(`./{{ objectFieldName | paramCase }}/_`, {
 			node: updateNodeParam($page.url, nodes),
 			errors: updateErrorsParam($page.url, errors),
 			path: getChildPathParam($page.url, event.detail.row)
@@ -26,7 +26,7 @@
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		to(`./{{ objectFieldName }}/_`, {
+		to(`./{{ objectFieldName | paramCase }}/_`, {
 			node: updateNodeParam($page.url, nodes),
 			errors: updateErrorsParam($page.url, errors),
 			path: getChildPathParam($page.url, nodes.length)
@@ -45,7 +45,7 @@
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string }>) => {
-		to(`../../{{ objectFieldTypeName | camelCase }}/${event.detail.path}`, {
+		to(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.path}`, {
 			node: updateNodeParam($page.url, nodes),
 			errors: updateErrorsParam($page.url, errors),
 			path: getChildPathParam($page.url, event.detail.name)
@@ -53,7 +53,7 @@
 	};
 
 	const gotoSelect = (event: CustomEvent<{}>) => {
-		to(`./{{ objectFieldName }}/__`, {
+		to(`./{{ objectFieldName | paramCase }}/__`, {
 			node: updateNodeParam($page.url, nodes),
 			errors: updateErrorsParam($page.url, errors),
 			path: getPathParam($page.url)
@@ -69,6 +69,7 @@
 </script>
 <{{ objectFieldTypeName }}CreateTable
 	showGotoSelectButton={true}
+	showBackButton={$canBack}
 	{nodes}
 	{errors}
 	on:edit={edit}

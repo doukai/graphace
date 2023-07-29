@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons/types';
 	import RoleSelectConnectionTable from '~/lib/components/objects/role/RoleSelectConnectionTable.svelte';
@@ -8,11 +8,10 @@
 	import { updateNodeParam, updateErrorsParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
-	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, $LL.web.path.select());
+	urlName($page.url, PageType.SELECT);
 	$: errors = data.errors as Record<number, Errors>;
 	$: Query_roleConnection = data.Query_roleConnection as Query_roleConnectionStore;
 	$: nodes = $Query_roleConnection.data?.roleConnection?.edges?.map((edge) => edge?.node);
@@ -88,6 +87,7 @@
 </script>
 <RoleSelectConnectionTable
 	multipleSelect={false}
+	showBackButton={$canBack}
 	{nodes}
 	{totalCount}
 	{errors}

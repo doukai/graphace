@@ -15,6 +15,7 @@ const zh: NamespaceWebTranslation = {
         unbindFailed: "移除失败"
     },
     path: {
+        home: "主页",
         create: "新建",
         select: "选择"
     },

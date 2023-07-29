@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import UserRoleConnectionTable from '~/lib/components/objects/user-role/UserRoleConnectionTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
@@ -93,7 +93,7 @@
 					});
 			})
 			.catch((validErrors) => {
-				errors = validErrors.roles.iterms;
+				errors = validErrors.userRole.iterms;
 			});
 	};
 
@@ -106,7 +106,7 @@
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		to(`./userRole/_`);
+		to(`./user-role/_`);
 	};
 	
 	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
@@ -114,7 +114,7 @@
 	};
 
 	const gotoSelect = (event: CustomEvent<{}>) => {
-		to(`./userRole/__`);
+		to(`./user-role/__`);
 	};
 
 	const back = (event: CustomEvent<{}>) => {
@@ -127,6 +127,7 @@
 	showRemoveButton={false}
 	showUnbindButton={true}
 	showGotoSelectButton={true}
+	showBackButton={$canBack}
 	{nodes}
 	{totalCount}
 	{errors}

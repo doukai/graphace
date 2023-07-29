@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { ot, to, canBack, urlName } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
 	import RealmCreateForm from '~/lib/components/objects/realm/RealmCreateForm.svelte';
@@ -102,6 +102,7 @@
 		{errors}
 		showRemoveButton={false}
 		showUnbindButton={true}
+		showBackButton={$canBack}
 		isFetching={$Query_group_realm.fetching}
 		on:mutation={mutation}
 		on:parentMutation={parentMutation}
@@ -112,6 +113,7 @@
 {:else}
 	<RealmCreateForm
 		showGotoSelectButton={true}
+		showBackButton={$canBack}
 		node={createNode}
 		{errors}
 		on:mutation={parentMutation}

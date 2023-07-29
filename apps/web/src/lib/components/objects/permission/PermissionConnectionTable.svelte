@@ -12,9 +12,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
-	import {
-		Conditional,
-		Operator,
+	import type {
 		Permission,
 		PermissionOrderBy,
 		QueryTypePermissionConnectionArgs,
@@ -104,14 +102,14 @@
 	const search = (searchValue: string | undefined) => {
 		let args: QueryTypePermissionConnectionArgs = {};
 		if (searchValue) {
-			args.cond = Conditional.OR;
-			args.name = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.ofTypeName = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.description = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.realmId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.createUserId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.updateUserId = { opr: Operator.LK, val: `%${searchValue}%` };
-			args.createGroupId = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.cond = 'OR';
+			args.name = { opr: 'LK', val: `%${searchValue}%` };
+			args.ofTypeName = { opr: 'LK', val: `%${searchValue}%` };
+			args.description = { opr: 'LK', val: `%${searchValue}%` };
+			args.realmId = { opr: 'LK', val: `%${searchValue}%` };
+			args.createUserId = { opr: 'LK', val: `%${searchValue}%` };
+			args.updateUserId = { opr: 'LK', val: `%${searchValue}%` };
+			args.createGroupId = { opr: 'LK', val: `%${searchValue}%` };
 		} else {
 			args.cond = undefined;
 			args.name = undefined;
@@ -180,7 +178,7 @@
 	const removeRows = () => {
 		dispatch('mutation', {
 			args: {
-				where: { id: { opr: Operator.IN, in: selectedIdList } },
+				where: { id: { opr: 'IN', in: selectedIdList } },
 				isDeprecated: true
 			},
 			update: true,
@@ -197,9 +195,11 @@
 
 	const unbindRows = (selectedIdList: (string | null)[]) => {
 		dispatch('parentMutation', {
-			args: selectedIdList.map((id) => {
-				return { id: id, isDeprecated: true };
-			}),
+			args: selectedIdList
+				.map((id) => nodes?.find((node) => node?.id === id))
+				.map((node) => {
+					return { ...node, isDeprecated: true };
+				}),
 			update: true,
 			then: (data) => {
 				notifications.success($LL.web.message.unbindSuccess());
@@ -219,8 +219,8 @@
 		showRemoveButton={showRemoveButton && selectedIdList.length > 0}
 		showUnbindButton={showUnbindButton && selectedIdList.length > 0}
 		{showSaveButton}
-		{showBackButton}
 		{showGotoSelectButton}
+		{showBackButton}
 		on:create
 		on:search={(e) => search(e.detail.value)}
 		on:save={() => dispatch('save', { nodes })}

@@ -8,11 +8,11 @@
 	export let sort: Sort | null | undefined = undefined;
 
 	let enums = [
-		{ name: Protocol.LOCAL, value: Protocol.LOCAL },
-		{ name: Protocol.GRPC, value: Protocol.GRPC },
-		{ name: Protocol.HTTP, value: Protocol.HTTP },
-		{ name: Protocol.RSOCKET, value: Protocol.RSOCKET }
+		{ name: 'LOCAL', value: 'LOCAL' },
+		{ name: 'GRPC', value: 'GRPC' },
+		{ name: 'HTTP', value: 'HTTP' },
+		{ name: 'RSOCKET', value: 'RSOCKET' }
 	];
 </script>
 
-<EnumTh {name} {enums} bind:expression bind:sort />
+<EnumTh {name} {enums} bind:expression bind:sort on:filter />

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import UserConnectionTable from '~/lib/components/objects/user/UserConnectionTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
@@ -93,7 +93,7 @@
 					});
 			})
 			.catch((validErrors) => {
-				errors = validErrors.roles.iterms;
+				errors = validErrors.users.iterms;
 			});
 	};
 
@@ -127,6 +127,7 @@
 	showRemoveButton={false}
 	showUnbindButton={true}
 	showGotoSelectButton={true}
+	showBackButton={$canBack}
 	{nodes}
 	{totalCount}
 	{errors}

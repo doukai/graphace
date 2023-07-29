@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons/types';
 	import PermissionSelectConnectionTable from '~/lib/components/objects/permission/PermissionSelectConnectionTable.svelte';
@@ -7,11 +7,10 @@
 	import { Query_permissionConnectionStore, Mutation_permissionStore, Mutation_role_permissionsStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
-	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, $LL.web.path.select());
+	urlName($page.url, PageType.SELECT);
 	$: id = data.id as string;
 	$: Query_permissionConnection = data.Query_permissionConnection as Query_permissionConnectionStore;
 	$: nodes = $Query_permissionConnection.data?.permissionConnection?.edges?.map((edge) => edge?.node);
@@ -100,6 +99,7 @@
 	};
 </script>
 <PermissionSelectConnectionTable
+	showBackButton={$canBack}
 	{nodes}
 	{totalCount}
 	{errors}

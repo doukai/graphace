@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons/types';
 	import { EnumItem } from '@graphace/ui-graphql/components/form';
-	import { Protocol } from '~/lib/types/schema';
 
 	export let value: string | (string | null | undefined)[] | null | undefined;
 	export let list: boolean = false;
@@ -13,10 +12,10 @@
 	export let placeholder: string = '';
 
 	let enums = [
-		{ name: Protocol.LOCAL, value: Protocol.LOCAL },
-		{ name: Protocol.GRPC, value: Protocol.GRPC },
-		{ name: Protocol.HTTP, value: Protocol.HTTP },
-		{ name: Protocol.RSOCKET, value: Protocol.RSOCKET }
+		{ name: 'LOCAL', value: 'LOCAL' },
+		{ name: 'GRPC', value: 'GRPC' },
+		{ name: 'HTTP', value: 'HTTP' },
+		{ name: 'RSOCKET', value: 'RSOCKET' }
 	];
 </script>
 

@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { themeChange } from 'theme-change';
-	import { urlNames } from '~/lib/stores/useNavigate';
+	import { urlNames, PageType, init, history } from '~/lib/stores/useNavigate';
 	import { SideBar, Breadcrumbs } from '@graphace/ui/components';
 	import ObjectsMenu from '~/lib/components/menu/ObjectsMenu.svelte';
 	import { NavBar, NavBarStart, NavBarCenter, NavBarEnd } from '@graphace/ui/components/navbar';
@@ -14,6 +14,7 @@
 	import { LocaleSelect, ThemeSelect } from '~/lib/components/select';
 	import { Search } from '~/lib/components/input';
 	import { setLocale } from '$i18n/i18n-svelte';
+	import LL from '$i18n/i18n-svelte';
 	import type { LayoutData } from './$types';
 
 	export let data: LayoutData;
@@ -69,27 +70,41 @@
 			<ThemeSelect slot="option1" />
 			<LocaleSelect slot="option2" />
 		</NavBar>
-		<main class="flex-1 max-w-[100vw] px-2 py-2 lg:max-w-[calc(100vw-20rem)] lg:px-6">
-			<Breadcrumbs>
-				<li>
-					<a href="/">
-						<span>Home</span>
-					</a>
-				</li>
-				{#each $urlNames as urlName}
+		<main class="flex-1 max-w-[100vw] px-2 py-2 lg:max-w-[calc(100vw-20rem)]">
+			{#if $urlNames.length > 0}
+				<Breadcrumbs>
 					<li>
 						<a
 							href={null}
 							on:click={(e) => {
 								e.preventDefault();
-								goto(urlName.url);
+								init('/');
 							}}
 						>
-							{urlName.name}
+							<span>{$LL.web.path.home()}</span>
 						</a>
 					</li>
-				{/each}
-			</Breadcrumbs>
+					{#each $urlNames as urlName}
+						<li>
+							<a
+								href={null}
+								on:click={(e) => {
+									e.preventDefault();
+									goto(urlName.url);
+								}}
+							>
+								{#if urlName.name === PageType.CREATE}
+									{$LL.web.path.create()}
+								{:else if urlName.name === PageType.SELECT}
+									{$LL.web.path.select()}
+								{:else}
+									{urlName.name}
+								{/if}
+							</a>
+						</li>
+					{/each}
+				</Breadcrumbs>
+			{/if}
 			<slot />
 			<MessageBoxs />
 			<Notifications />

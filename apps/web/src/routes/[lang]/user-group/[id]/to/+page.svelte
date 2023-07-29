@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ot, to, urlName } from '~/lib/stores/useNavigate';
+	import { ot, to, canBack, urlName } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import GroupForm from '~/lib/components/objects/group/GroupForm.svelte';
 	import GroupCreateForm from '~/lib/components/objects/group/GroupCreateForm.svelte';
@@ -102,6 +102,7 @@
 		{errors}
 		showRemoveButton={false}
 		showUnbindButton={true}
+		showBackButton={$canBack}
 		isFetching={$Query_userGroup_to.fetching}
 		on:mutation={mutation}
 		on:parentMutation={parentMutation}
@@ -112,6 +113,7 @@
 {:else}
 	<GroupCreateForm
 		showGotoSelectButton={true}
+		showBackButton={$canBack}
 		node={createNode}
 		{errors}
 		on:mutation={parentMutation}

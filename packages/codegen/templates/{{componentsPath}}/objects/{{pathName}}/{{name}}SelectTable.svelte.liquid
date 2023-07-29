@@ -12,9 +12,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ArchiveBoxArrowDown } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
-	import {
-		Conditional,
-		Operator,
+	import type {
 		{{ name }},
 		{{ name }}OrderBy,
 		QueryType{{ name }}ListArgs,
@@ -25,6 +23,7 @@
 	export let isFetching: boolean;
 	export let errors: Record<number, Errors> = {};
 	export let multipleSelect: boolean = true;
+	export let showBackButton: boolean = true;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -83,11 +82,11 @@
 	const search = (searchValue: string | undefined) => {
 		let args: QueryType{{ name }}ListArgs = {};
 		if (searchValue) {
-			args.cond = Conditional.OR;
+			args.cond = 'OR';
 			{%- if fields %}
 			{%- for field in fields %}
 			{%- if field.isScalarType and field.inQueryArgs and field.fieldType.name == 'String' %}
-			args.{{ field.fieldName }} = { opr: Operator.LK, val: `%${searchValue}%` };
+			args.{{ field.fieldName }} = { opr: 'LK', val: `%${searchValue}%` };
 			{%- endif %}
 			{%- endfor %}
 			{%- endif %}
@@ -138,6 +137,7 @@
 		showSaveButton={false}
 		showRemoveButton={false}
 		{showSelectButton}
+		{showBackButton}
 		on:search={(e) => search(e.detail.value)}
 		on:select={() =>
 			dispatch('select', {
