@@ -11,7 +11,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	urlName($page.url, PageType.SELECT);
+	$: urlName($page.url, 'groupRole', PageType.SELECT);
 	$: originalNodes = data.nodes as (MutationTypeGroupRoleArgs | null | undefined)[];
 	$: errors = data.errors as Record<number, Errors>;
 	$: Query_groupRoleConnection = data.Query_groupRoleConnection as Query_groupRoleConnectionStore;

@@ -10,7 +10,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	urlName($page.url, 'Realm');
+	$: urlName($page.url, 'Realm');
 	$: Query_realmConnection = data.Query_realmConnection as Query_realmConnectionStore;
 	$: nodes = $Query_realmConnection.data?.realmConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_realmConnection.data?.realmConnection?.totalCount || 0;

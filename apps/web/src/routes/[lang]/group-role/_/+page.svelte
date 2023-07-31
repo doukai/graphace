@@ -12,7 +12,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	urlName($page.url, PageType.CREATE);
+	$: urlName($page.url, 'GroupRole', PageType.CREATE);
 	$: node = data.node as MutationTypeGroupRoleArgs;
 	$: errors = data.errors as Record<number, Errors>;
 

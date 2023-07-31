@@ -13,7 +13,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	urlName($page.url, 'realm');
+	$: urlName($page.url, 'realm');
 	$: Query_permission_realm = data.Query_permission_realm as Query_permission_realmStore;
 	$: permission = $Query_permission_realm.data?.permission;
 	$: node = permission?.realm;

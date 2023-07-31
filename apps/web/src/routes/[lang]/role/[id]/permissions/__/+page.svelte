@@ -10,7 +10,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	urlName($page.url, PageType.SELECT);
+	$: urlName($page.url, 'permissions', PageType.SELECT);
 	$: id = data.id as string;
 	$: Query_permissionConnection = data.Query_permissionConnection as Query_permissionConnectionStore;
 	$: nodes = $Query_permissionConnection.data?.permissionConnection?.edges?.map((edge) => edge?.node);

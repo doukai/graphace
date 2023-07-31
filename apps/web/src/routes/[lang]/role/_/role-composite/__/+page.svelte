@@ -11,7 +11,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	urlName($page.url, PageType.SELECT);
+	$: urlName($page.url, 'roleComposite', PageType.SELECT);
 	$: originalNodes = data.nodes as (MutationTypeRoleCompositeArgs | null | undefined)[];
 	$: errors = data.errors as Record<number, Errors>;
 	$: Query_roleCompositeConnection = data.Query_roleCompositeConnection as Query_roleCompositeConnectionStore;

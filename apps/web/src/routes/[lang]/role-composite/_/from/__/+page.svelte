@@ -11,7 +11,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	urlName($page.url, PageType.SELECT);
+	$: urlName($page.url, 'from', PageType.SELECT);
 	$: errors = data.errors as Record<number, Errors>;
 	$: Query_roleConnection = data.Query_roleConnection as Query_roleConnectionStore;
 	$: nodes = $Query_roleConnection.data?.roleConnection?.edges?.map((edge) => edge?.node);

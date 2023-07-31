@@ -10,7 +10,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	urlName($page.url, 'RoleComposite');
+	$: urlName($page.url, 'RoleComposite');
 	$: Query_roleCompositeConnection = data.Query_roleCompositeConnection as Query_roleCompositeConnectionStore;
 	$: nodes = $Query_roleCompositeConnection.data?.roleCompositeConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_roleCompositeConnection.data?.roleCompositeConnection?.totalCount || 0;

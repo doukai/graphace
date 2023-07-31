@@ -15,7 +15,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	urlName($page.url, PageType.SELECT);
+	$: urlName($page.url, '{{ objectFieldName }}', PageType.SELECT);
 	$: originalNodes = data.nodes as (MutationType{{ objectFieldTypeName }}Args | null | undefined)[];
 	$: errors = data.errors as Record<number, Errors>;
 	{%- if connectionField %}

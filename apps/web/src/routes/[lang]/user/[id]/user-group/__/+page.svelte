@@ -10,7 +10,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	urlName($page.url, PageType.SELECT);
+	$: urlName($page.url, 'userGroup', PageType.SELECT);
 	$: id = data.id as string;
 	$: Query_userGroupConnection = data.Query_userGroupConnection as Query_userGroupConnectionStore;
 	$: nodes = $Query_userGroupConnection.data?.userGroupConnection?.edges?.map((edge) => edge?.node);

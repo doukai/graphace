@@ -9,13 +9,7 @@
 		switchNavbarStyle ? 'shadow-sm' : ''
 	}`}
 >
-	<a href="/" aria-current="page" aria-label="Homepage" class="flex-0 btn btn-ghost px-2">
-		<Iconify class="h-6 w-6 md:h-8 md:w-8" icon="logos:graphql" />
-		<div class="font-title inline-flex text-lg md:text-2xl">
-			<span class="lowercase">graph</span>
-			<span class="uppercase text-[#E535AB]">ACE</span>
-		</div>
-	</a>
+	<slot name="logo" />
 </div>
 
 <div

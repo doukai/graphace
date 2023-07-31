@@ -9,7 +9,7 @@
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	urlName($page.url, 'users');
+	$: urlName($page.url, 'users');
 	$: nodes = data.nodes as (MutationTypeUserArgs | null | undefined)[];
 	$: errors = data.errors as Record<number, Errors>;
 

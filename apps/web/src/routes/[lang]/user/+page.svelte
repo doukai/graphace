@@ -10,7 +10,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	urlName($page.url, 'User');
+	$: urlName($page.url, 'User');
 	$: Query_userConnection = data.Query_userConnection as Query_userConnectionStore;
 	$: nodes = $Query_userConnection.data?.userConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_userConnection.data?.userConnection?.totalCount || 0;

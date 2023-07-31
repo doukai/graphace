@@ -25,7 +25,6 @@
 					: ''}
 			>
 				<span>{name}</span>
-				<!-- <span class="badge badge-sm font-mono lowercase"></span> -->
 			</a>
 		</li>
 	{/each}

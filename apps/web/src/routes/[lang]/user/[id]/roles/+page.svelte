@@ -11,7 +11,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	urlName($page.url, 'roles');
+	$: urlName($page.url, 'roles');
 	$: id = data.id as string;
 	$: Query_user_roles = data.Query_user_roles as Query_user_rolesStore;
 	$: user = $Query_user_roles.data?.user;

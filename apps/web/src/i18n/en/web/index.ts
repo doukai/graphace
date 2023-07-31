@@ -1,7 +1,7 @@
 import type { BaseTranslation } from '../../i18n-types';
 
 const en: BaseTranslation = {
-    HI: "Welcome to Svelte Fall Summit {year:number}",
+    welcome: "Welcome to {name:string}",
     localeName: { en: "English", zh: "Chinese" },
     message: {
         saveSuccess: "Save success",
@@ -16,8 +16,8 @@ const en: BaseTranslation = {
     },
     path: {
         home: "Home",
-        create: "Create",
-        select: "Select"
+        create: "Create {name:string}",
+        select: "Select {name:string}"
     },
     components: {
         search: {

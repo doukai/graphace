@@ -1,7 +1,7 @@
 import type { NamespaceWebTranslation } from '../../i18n-types'
 
 const zh: NamespaceWebTranslation = {
-    HI: "欢迎来到 Svelte 秋季峰会 {year}",
+    welcome: "Welcome to {name}",
     localeName: { en: "英文", zh: "中文" },
     message: {
         saveSuccess: "保存成功",
@@ -16,8 +16,8 @@ const zh: NamespaceWebTranslation = {
     },
     path: {
         home: "主页",
-        create: "新建",
-        select: "选择"
+        create: "新建 {name}",
+        select: "选择 {name}"
     },
     components: {
         search: {

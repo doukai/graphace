@@ -2,6 +2,6 @@
 	import LL from '$i18n/i18n-svelte';
 </script>
 
-<h2>
-	{$LL.web.HI({ year: 2021 })}
-</h2>
+<h1>
+	{$LL.web.welcome({ name: 'Graphoenix' })}
+</h1>

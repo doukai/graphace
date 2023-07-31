@@ -32,18 +32,7 @@
 				</label>
 			</span>
 			<div class="flex items-center gap-2 lg:hidden">
-				<a
-					href="/"
-					aria-current="page"
-					aria-label="Homepage"
-					class="flex-0 btn btn-ghost gap-1 px-2 md:gap-2"
-				>
-					<Iconify class="h-6 w-6 md:h-8 md:w-8" icon="logos:graphql" />
-					<div class="font-title inline-flex text-lg md:text-2xl">
-						<span class="lowercase">graph</span>
-						<span class="uppercase text-[#E535AB]">ACE</span>
-					</div>
-				</a>
+				<slot name="logo" />
 			</div>
 			<div class="hidden w-full max-w-sm lg:flex">
 				<slot name="search" />

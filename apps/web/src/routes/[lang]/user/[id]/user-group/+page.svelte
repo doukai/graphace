@@ -11,7 +11,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	urlName($page.url, 'userGroup');
+	$: urlName($page.url, 'userGroup');
 	$: id = data.id as string;
 	$: Query_user_userGroup = data.Query_user_userGroup as Query_user_userGroupStore;
 	$: user = $Query_user_userGroup.data?.user;

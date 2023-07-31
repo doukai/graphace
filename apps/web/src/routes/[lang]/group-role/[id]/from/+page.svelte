@@ -13,7 +13,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	urlName($page.url, 'from');
+	$: urlName($page.url, 'from');
 	$: Query_groupRole_from = data.Query_groupRole_from as Query_groupRole_fromStore;
 	$: groupRole = $Query_groupRole_from.data?.groupRole;
 	$: node = groupRole?.from;

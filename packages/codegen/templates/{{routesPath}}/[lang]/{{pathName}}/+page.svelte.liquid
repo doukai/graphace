@@ -14,7 +14,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	urlName($page.url, '{{ name }}');
+	$: urlName($page.url, '{{ name }}');
 	{%- if connectionField %}
 	$: Query_{{ name | camelCase }}Connection = data.Query_{{ name | camelCase }}Connection as Query_{{ name | camelCase }}ConnectionStore;
 	$: nodes = $Query_{{ name | camelCase }}Connection.data?.{{ name | camelCase }}Connection?.edges?.map((edge) => edge?.node);

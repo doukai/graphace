@@ -12,7 +12,7 @@
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	urlName($page.url, '{{ objectFieldName }}');
+	$: urlName($page.url, '{{ objectFieldName }}');
 	$: node = data.node as MutationType{{ objectFieldTypeName }}Args;
 	$: errors = data.errors as Record<string, Errors>;
 

@@ -15,7 +15,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	urlName($page.url, '{{ objectFieldName }}');
+	$: urlName($page.url, '{{ objectFieldName }}');
 	$: id = data.id as string;
 	$: Query_{{ name | camelCase }}_{{ objectFieldName }} = data.Query_{{ name | camelCase }}_{{ objectFieldName }} as Query_{{ name | camelCase }}_{{ objectFieldName }}Store;
 	$: {{ name | camelCase }} = $Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }};

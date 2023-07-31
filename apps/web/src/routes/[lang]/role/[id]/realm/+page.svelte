@@ -13,7 +13,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	urlName($page.url, 'realm');
+	$: urlName($page.url, 'realm');
 	$: Query_role_realm = data.Query_role_realm as Query_role_realmStore;
 	$: role = $Query_role_realm.data?.role;
 	$: node = role?.realm;

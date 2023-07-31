@@ -11,7 +11,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	urlName($page.url, PageType.SELECT);
+	$: urlName($page.url, 'permissions', PageType.SELECT);
 	$: originalNodes = data.nodes as (MutationTypePermissionArgs | null | undefined)[];
 	$: errors = data.errors as Record<number, Errors>;
 	$: Query_permissionConnection = data.Query_permissionConnection as Query_permissionConnectionStore;

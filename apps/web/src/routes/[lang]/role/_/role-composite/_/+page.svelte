@@ -9,7 +9,7 @@
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	urlName($page.url, PageType.CREATE);
+	$: urlName($page.url, 'roleComposite', PageType.CREATE);
 	$: node = data.node as MutationTypeRoleCompositeArgs;
 	$: errors = data.errors as Record<string, Errors>;
 

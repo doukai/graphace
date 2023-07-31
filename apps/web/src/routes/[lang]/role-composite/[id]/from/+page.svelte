@@ -13,7 +13,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	urlName($page.url, 'from');
+	$: urlName($page.url, 'from');
 	$: Query_roleComposite_from = data.Query_roleComposite_from as Query_roleComposite_fromStore;
 	$: roleComposite = $Query_roleComposite_from.data?.roleComposite;
 	$: node = roleComposite?.from;

@@ -238,10 +238,10 @@ export type NamespaceUiGraphqlTranslation = {
 
 export type NamespaceWebTranslation = {
 	/**
-	 * W​e​l​c​o​m​e​ ​t​o​ ​S​v​e​l​t​e​ ​F​a​l​l​ ​S​u​m​m​i​t​ ​{​y​e​a​r​}
-	 * @param {number} year
+	 * W​e​l​c​o​m​e​ ​t​o​ ​{​n​a​m​e​}
+	 * @param {string} name
 	 */
-	HI: RequiredParams<'year'>
+	welcome: RequiredParams<'name'>
 	localeName: {
 		/**
 		 * E​n​g​l​i​s​h
@@ -296,13 +296,15 @@ export type NamespaceWebTranslation = {
 		 */
 		home: string
 		/**
-		 * C​r​e​a​t​e
+		 * C​r​e​a​t​e​ ​{​n​a​m​e​}
+		 * @param {string} name
 		 */
-		create: string
+		create: RequiredParams<'name'>
 		/**
-		 * S​e​l​e​c​t
+		 * S​e​l​e​c​t​ ​{​n​a​m​e​}
+		 * @param {string} name
 		 */
-		select: string
+		select: RequiredParams<'name'>
 	}
 	components: {
 		search: {
@@ -704,9 +706,9 @@ export type TranslationFunctions = {
 	}
 	web: {
 		/**
-		 * Welcome to Svelte Fall Summit {year}
+		 * Welcome to {name}
 		 */
-		HI: (arg: { year: number }) => LocalizedString
+		welcome: (arg: { name: string }) => LocalizedString
 		localeName: {
 			/**
 			 * English
@@ -761,13 +763,13 @@ export type TranslationFunctions = {
 			 */
 			home: () => LocalizedString
 			/**
-			 * Create
+			 * Create {name}
 			 */
-			create: () => LocalizedString
+			create: (arg: { name: string }) => LocalizedString
 			/**
-			 * Select
+			 * Select {name}
 			 */
-			select: () => LocalizedString
+			select: (arg: { name: string }) => LocalizedString
 		}
 		components: {
 			search: {

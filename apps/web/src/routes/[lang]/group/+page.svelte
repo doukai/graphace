@@ -10,7 +10,7 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	urlName($page.url, 'Group');
+	$: urlName($page.url, 'Group');
 	$: Query_groupConnection = data.Query_groupConnection as Query_groupConnectionStore;
 	$: nodes = $Query_groupConnection.data?.groupConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_groupConnection.data?.groupConnection?.totalCount || 0;

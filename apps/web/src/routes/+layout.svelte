@@ -1,16 +1,13 @@
 <script lang="ts">
 	import '../app.css';
-	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { themeChange } from 'theme-change';
-	import { urlNames, PageType, init, history } from '~/lib/stores/useNavigate';
+	import { to, PageType, init, history } from '~/lib/stores/useNavigate';
 	import { SideBar, Breadcrumbs } from '@graphace/ui/components';
 	import ObjectsMenu from '~/lib/components/menu/ObjectsMenu.svelte';
-	import { NavBar, NavBarStart, NavBarCenter, NavBarEnd } from '@graphace/ui/components/navbar';
+	import { NavBar } from '@graphace/ui/components/navbar';
 	import Notifications from '@graphace/ui/components/Notifications.svelte';
 	import MessageBoxs from '@graphace/ui/components/MessageBoxs.svelte';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Bars4, AdjustmentsVertical } from '@steeze-ui/heroicons';
+	import Iconify from '@iconify/svelte';
 	import { LocaleSelect, ThemeSelect } from '~/lib/components/select';
 	import { Search } from '~/lib/components/input';
 	import { setLocale } from '$i18n/i18n-svelte';
@@ -66,12 +63,29 @@
 	<input id="drawer" type="checkbox" class="drawer-toggle" bind:checked />
 	<div class="drawer-content bg-base-200">
 		<NavBar>
+			<a
+				href={null}
+				on:click={(e) => {
+					e.preventDefault();
+					init('/');
+				}}
+				aria-current="page"
+				aria-label={$LL.web.path.home()}
+				class="flex-0 btn btn-ghost gap-1 px-2 md:gap-2"
+				slot="logo"
+			>
+				<Iconify class="h-6 w-6 md:h-8 md:w-8" icon="logos:graphql" />
+				<div class="font-title inline-flex text-lg md:text-2xl">
+					<span class="lowercase">graph</span>
+					<span class="uppercase text-[#E535AB]">ACE</span>
+				</div>
+			</a>
 			<Search {addScrollPaddingToNavbar} {removeScrollPaddingFromNavbar} slot="search" />
 			<ThemeSelect slot="option1" />
 			<LocaleSelect slot="option2" />
 		</NavBar>
 		<main class="flex-1 max-w-[100vw] px-2 py-2 lg:max-w-[calc(100vw-20rem)]">
-			{#if $urlNames.length > 0}
+			{#if $history.length > 0}
 				<Breadcrumbs>
 					<li>
 						<a
@@ -84,21 +98,21 @@
 							<span>{$LL.web.path.home()}</span>
 						</a>
 					</li>
-					{#each $urlNames as urlName}
+					{#each $history as page}
 						<li>
 							<a
 								href={null}
 								on:click={(e) => {
 									e.preventDefault();
-									goto(urlName.url);
+									to(page.url);
 								}}
 							>
-								{#if urlName.name === PageType.CREATE}
-									{$LL.web.path.create()}
-								{:else if urlName.name === PageType.SELECT}
-									{$LL.web.path.select()}
+								{#if page.type === PageType.CREATE}
+									{$LL.web.path.create({ name: page.name })}
+								{:else if page.type === PageType.SELECT}
+									{$LL.web.path.select({ name: page.name })}
 								{:else}
-									{urlName.name}
+									{page.name}
 								{/if}
 							</a>
 						</li>
@@ -119,6 +133,23 @@
 		<label for="drawer" class="drawer-overlay" aria-label="Close menu" />
 		<aside class="bg-base-100 w-80">
 			<SideBar {drawerSidebarScrollY}>
+				<a
+					href={null}
+					on:click={(e) => {
+						e.preventDefault();
+						init('/');
+					}}
+					aria-current="page"
+					aria-label={$LL.web.path.home()}
+					class="flex-0 btn btn-ghost px-2"
+					slot="logo"
+				>
+					<Iconify class="h-6 w-6 md:h-8 md:w-8" icon="logos:graphql" />
+					<div class="font-title inline-flex text-lg md:text-2xl">
+						<span class="lowercase">graph</span>
+						<span class="uppercase text-[#E535AB]">ACE</span>
+					</div>
+				</a>
 				<Search on:search={closeDrawer} on:focus={openDrawer} slot="search" />
 				<ObjectsMenu slot="items" />
 			</SideBar>
@@ -128,67 +159,6 @@
 		</aside>
 	</div>
 </div>
-
-<!-- <div class="drawer">
-	<input id="left-drawer" type="checkbox" class="drawer-toggle" />
-	<div class="drawer-content">
-		<div class="drawer drawer-end">
-			<input id="right-drawer" type="checkbox" class="drawer-toggle" />
-			<div class="drawer-content">
-				<div
-					class={isMenuOpen ? 'hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0' : 'hidden'}
-				>
-					<SideBar>
-						<ObjectsMenu />
-					</SideBar>
-				</div>
-				<div class={isMenuOpen ? 'md:pl-64 flex flex-col' : 'flex flex-col'}>
-					<NavBar>
-						<NavBarStart>
-							<button
-								class="hidden md:btn md:btn-square md:btn-ghost"
-								on:click={(e) => (isMenuOpen = !isMenuOpen)}
-							>
-								<Icon src={Bars4} solid class="h-6 w-6" />
-							</button>
-							<label for="left-drawer" class="btn btn-square btn-ghost drawer-button md:hidden">
-								<Icon src={Bars4} solid class="h-6 w-6" />
-							</label>
-						</NavBarStart>
-						<NavBarCenter />
-						<NavBarEnd>
-							<LocaleSelect />
-							<label for="right-drawer" class="ml-1 btn btn-square btn-ghost drawer-button">
-								<Icon src={AdjustmentsVertical} solid class="h-6 w-6" />
-							</label>
-						</NavBarEnd>
-					</NavBar>
-					<main class="flex-1">
-						<div class="py-6">
-							<div class="overflow-hidden max-w-full mx-auto px-4 sm:px-6 md:px-8">
-								<slot />
-							</div>
-						</div>
-						<MessageBoxs />
-						<Notifications />
-					</main>
-				</div>
-			</div>
-			<div class="drawer-side">
-				<label for="right-drawer" class="drawer-overlay" />
-				<div class="menu p-4 overflow-y-auto bg-base-100 text-base-content space-y-3">
-					<ThemeSelect />
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="drawer-side">
-		<label for="left-drawer" class="drawer-overlay" />
-		<ul class="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
-			<ObjectsMenu />
-		</ul>
-	</div>
-</div> -->
 
 <style global>
 	code[class*='language-'],
