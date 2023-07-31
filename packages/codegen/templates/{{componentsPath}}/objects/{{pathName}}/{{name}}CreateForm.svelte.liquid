@@ -65,7 +65,7 @@
 
 <Card>
 	<Form
-		title="{{ name }}"
+		title={$LL.graphql.objects.{{ name }}.name()}
 		showRemoveButton={showRemoveButton && node !== undefined && node !== null && Object.keys(node).length > 0}
 		{showGotoSelectButton}
 		{showBackButton}
@@ -87,10 +87,10 @@
 		{%- for field in fields %}
 		{%- if field.isScalarType or field.isEnumType %}
 		{%- if field.inMutationArgs %}
-		<{{ field.fieldType.name }}Item label="{{ field.fieldName }}" name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}}{% if field.isListType %} list{% endif %} errors={errors.{{ field.fieldName }}} />
+		<{{ field.fieldType.name }}Item label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}}{% if field.isListType %} list{% endif %} errors={errors.{{ field.fieldName }}} />
 		{%- endif %}
 		{%- else %}
-		<ObjectItem name="{{ field.fieldName }}" path="_/{{ field.fieldName | paramCase }}" label="{{ field.fieldName }}" errors={errors.{{ field.fieldName }}} on:gotoField />
+		<ObjectItem name="{{ field.fieldName }}" path="_/{{ field.fieldName | paramCase }}" label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} errors={errors.{{ field.fieldName }}} on:gotoField />
 		{%- endif %}
 		{%- endfor %}
 		{%- endif %}

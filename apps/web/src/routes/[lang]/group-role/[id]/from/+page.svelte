@@ -10,10 +10,11 @@
 	import { Query_groupRole_fromStore, Mutation_groupRole_fromStore, Mutation_groupStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'from');
+	$: urlName($page.url, $LL.graphql.objects.GroupRole.fields.from.name());
 	$: Query_groupRole_from = data.Query_groupRole_from as Query_groupRole_fromStore;
 	$: groupRole = $Query_groupRole_from.data?.groupRole;
 	$: node = groupRole?.from;

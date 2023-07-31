@@ -10,9 +10,10 @@
 	} from '~/lib/types/schema';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam, getPathParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
+	import LL from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'realm');
+	$: urlName($page.url, $LL.graphql.objects.User.fields.realm.name());
 	$: node = data.node as MutationTypeRealmArgs;
 	$: errors = data.errors as Record<string, Errors>;
 

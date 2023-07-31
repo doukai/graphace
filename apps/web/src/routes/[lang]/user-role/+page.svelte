@@ -7,10 +7,11 @@
 	import { Query_userRoleConnectionStore, Mutation_userRoleStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'UserRole');
+	$: urlName($page.url, $LL.graphql.objects.UserRole.name());
 	$: Query_userRoleConnection = data.Query_userRoleConnection as Query_userRoleConnectionStore;
 	$: nodes = $Query_userRoleConnection.data?.userRoleConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_userRoleConnection.data?.userRoleConnection?.totalCount || 0;

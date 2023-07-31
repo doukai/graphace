@@ -182,7 +182,7 @@
 
 <Card>
 	<TableHead
-		title="Permission"
+		title={$LL.graphql.objects.Permission.name()}
 		showRemoveButton={showRemoveButton && selectedIdList.length > 0}
 		showUnbindButton={showUnbindButton && selectedIdList.length > 0}
 		{showSaveButton}
@@ -242,82 +242,82 @@
 					</label>
 				</th>
 				<IDTh
-					name="id"
+					name={$LL.graphql.objects.Permission.fields.id.name()}
 					bind:expression={args.id}
 					bind:sort={orderBy.id}
 					on:filter={query}
 				/>
 				<StringTh
-					name="name"
+					name={$LL.graphql.objects.Permission.fields.name.name()}
 					bind:expression={args.name}
 					bind:sort={orderBy.name}
 					on:filter={query}
 				/>
 				<StringTh
-					name="ofTypeName"
+					name={$LL.graphql.objects.Permission.fields.ofTypeName.name()}
 					bind:expression={args.ofTypeName}
 					bind:sort={orderBy.ofTypeName}
 					on:filter={query}
 				/>
 				<StringTh
-					name="description"
+					name={$LL.graphql.objects.Permission.fields.description.name()}
 					bind:expression={args.description}
 					bind:sort={orderBy.description}
 					on:filter={query}
 				/>
 				<PermissionLevelTh
-					name="level"
+					name={$LL.graphql.objects.Permission.fields.level.name()}
 					bind:expression={args.level}
 					bind:sort={orderBy.level}
 					on:filter={query}
 				/>
-				<td>role</td>
-				<td>realm</td>
-				<td>isDeprecated</td>
+				<td>{$LL.graphql.objects.Permission.fields.role.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.realm.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.isDeprecated.name()}</td>
 				<IntTh
-					name="version"
+					name={$LL.graphql.objects.Permission.fields.version.name()}
 					bind:expression={args.version}
 					bind:sort={orderBy.version}
 					on:filter={query}
 				/>
 				<StringTh
-					name="realmId"
+					name={$LL.graphql.objects.Permission.fields.realmId.name()}
 					bind:expression={args.realmId}
 					bind:sort={orderBy.realmId}
 					on:filter={query}
 				/>
 				<StringTh
-					name="createUserId"
+					name={$LL.graphql.objects.Permission.fields.createUserId.name()}
 					bind:expression={args.createUserId}
 					bind:sort={orderBy.createUserId}
 					on:filter={query}
 				/>
 				<TimestampTh
-					name="createTime"
+					name={$LL.graphql.objects.Permission.fields.createTime.name()}
 					bind:expression={args.createTime}
 					bind:sort={orderBy.createTime}
 					on:filter={query}
 				/>
 				<StringTh
-					name="updateUserId"
+					name={$LL.graphql.objects.Permission.fields.updateUserId.name()}
 					bind:expression={args.updateUserId}
 					bind:sort={orderBy.updateUserId}
 					on:filter={query}
 				/>
 				<TimestampTh
-					name="updateTime"
+					name={$LL.graphql.objects.Permission.fields.updateTime.name()}
 					bind:expression={args.updateTime}
 					bind:sort={orderBy.updateTime}
 					on:filter={query}
 				/>
 				<StringTh
-					name="createGroupId"
+					name={$LL.graphql.objects.Permission.fields.createGroupId.name()}
 					bind:expression={args.createGroupId}
 					bind:sort={orderBy.createGroupId}
 					on:filter={query}
 				/>
 				<IntTh
-					name="roleId"
+					name={$LL.graphql.objects.Permission.fields.roleId.name()}
 					bind:expression={args.roleId}
 					bind:sort={orderBy.roleId}
 					on:filter={query}

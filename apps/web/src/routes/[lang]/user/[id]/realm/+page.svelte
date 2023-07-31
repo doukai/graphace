@@ -10,10 +10,11 @@
 	import { Query_user_realmStore, Mutation_user_realmStore, Mutation_realmStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'realm');
+	$: urlName($page.url, $LL.graphql.objects.User.fields.realm.name());
 	$: Query_user_realm = data.Query_user_realm as Query_user_realmStore;
 	$: user = $Query_user_realm.data?.user;
 	$: node = user?.realm;

@@ -44,7 +44,7 @@
 
 <Card>
 	<TableHead
-		title="UserRole"
+		title={$LL.graphql.objects.UserRole.name()}
 		showRemoveButton={showRemoveButton && selectedRowList.length > 0}
 		{showSaveButton}
 		{showBackButton}
@@ -84,19 +84,19 @@
 						/>
 					</label>
 				</th>
-				<td>id</td>
-				<td>userId</td>
-				<td>from</td>
-				<td>roleId</td>
-				<td>to</td>
-				<td>isDeprecated</td>
-				<td>version</td>
-				<td>realmId</td>
-				<td>createUserId</td>
-				<td>createTime</td>
-				<td>updateUserId</td>
-				<td>updateTime</td>
-				<td>createGroupId</td>
+				<td>{$LL.graphql.objects.UserRole.fields.id.name()}</td>
+				<td>{$LL.graphql.objects.UserRole.fields.userId.name()}</td>
+				<td>{$LL.graphql.objects.UserRole.fields.from.name()}</td>
+				<td>{$LL.graphql.objects.UserRole.fields.roleId.name()}</td>
+				<td>{$LL.graphql.objects.UserRole.fields.to.name()}</td>
+				<td>{$LL.graphql.objects.UserRole.fields.isDeprecated.name()}</td>
+				<td>{$LL.graphql.objects.UserRole.fields.version.name()}</td>
+				<td>{$LL.graphql.objects.UserRole.fields.realmId.name()}</td>
+				<td>{$LL.graphql.objects.UserRole.fields.createUserId.name()}</td>
+				<td>{$LL.graphql.objects.UserRole.fields.createTime.name()}</td>
+				<td>{$LL.graphql.objects.UserRole.fields.updateUserId.name()}</td>
+				<td>{$LL.graphql.objects.UserRole.fields.updateTime.name()}</td>
+				<td>{$LL.graphql.objects.UserRole.fields.createGroupId.name()}</td>
 				<th />
 			</tr>
 		</thead>

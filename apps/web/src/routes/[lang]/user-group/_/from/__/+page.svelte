@@ -9,9 +9,10 @@
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
 	import { locale } from '$i18n/i18n-svelte';
+	import LL from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'from', PageType.SELECT);
+	$: urlName($page.url, $LL.graphql.objects.UserGroup.fields.from.name(), PageType.SELECT);
 	$: errors = data.errors as Record<number, Errors>;
 	$: Query_userConnection = data.Query_userConnection as Query_userConnectionStore;
 	$: nodes = $Query_userConnection.data?.userConnection?.edges?.map((edge) => edge?.node);

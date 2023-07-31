@@ -44,7 +44,7 @@
 
 <Card>
 	<TableHead
-		title="RoleComposite"
+		title={$LL.graphql.objects.RoleComposite.name()}
 		showRemoveButton={showRemoveButton && selectedRowList.length > 0}
 		{showSaveButton}
 		{showBackButton}
@@ -84,19 +84,19 @@
 						/>
 					</label>
 				</th>
-				<td>id</td>
-				<td>roleId</td>
-				<td>from</td>
-				<td>compositeId</td>
-				<td>to</td>
-				<td>isDeprecated</td>
-				<td>version</td>
-				<td>realmId</td>
-				<td>createUserId</td>
-				<td>createTime</td>
-				<td>updateUserId</td>
-				<td>updateTime</td>
-				<td>createGroupId</td>
+				<td>{$LL.graphql.objects.RoleComposite.fields.id.name()}</td>
+				<td>{$LL.graphql.objects.RoleComposite.fields.roleId.name()}</td>
+				<td>{$LL.graphql.objects.RoleComposite.fields.from.name()}</td>
+				<td>{$LL.graphql.objects.RoleComposite.fields.compositeId.name()}</td>
+				<td>{$LL.graphql.objects.RoleComposite.fields.to.name()}</td>
+				<td>{$LL.graphql.objects.RoleComposite.fields.isDeprecated.name()}</td>
+				<td>{$LL.graphql.objects.RoleComposite.fields.version.name()}</td>
+				<td>{$LL.graphql.objects.RoleComposite.fields.realmId.name()}</td>
+				<td>{$LL.graphql.objects.RoleComposite.fields.createUserId.name()}</td>
+				<td>{$LL.graphql.objects.RoleComposite.fields.createTime.name()}</td>
+				<td>{$LL.graphql.objects.RoleComposite.fields.updateUserId.name()}</td>
+				<td>{$LL.graphql.objects.RoleComposite.fields.updateTime.name()}</td>
+				<td>{$LL.graphql.objects.RoleComposite.fields.createGroupId.name()}</td>
 				<th />
 			</tr>
 		</thead>

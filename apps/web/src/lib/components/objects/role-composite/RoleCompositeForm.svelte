@@ -90,7 +90,7 @@
 
 <Card>
 	<Form
-		title="RoleComposite"
+		title={$LL.graphql.objects.RoleComposite.name()}
 		{showRemoveButton}
 		{showUnbindButton}
 		{showGotoSelectButton}
@@ -131,19 +131,19 @@
 			<FormLoading rows={11} />
 		{:else}
 			{#if node}
-				<IDItem label="id" name="id" bind:value={node.id} errors={errors.id} />
-				<IntItem label="roleId" name="roleId" bind:value={node.roleId} errors={errors.roleId} />
-				<ObjectItem name="from" path={`${node.id}/from`} label="from" errors={errors.from} on:gotoField />
-				<IntItem label="compositeId" name="compositeId" bind:value={node.compositeId} errors={errors.compositeId} />
-				<ObjectItem name="to" path={`${node.id}/to`} label="to" errors={errors.to} on:gotoField />
-				<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} errors={errors.isDeprecated} />
-				<IntItem label="version" name="version" bind:value={node.version} errors={errors.version} />
-				<StringItem label="realmId" name="realmId" bind:value={node.realmId} errors={errors.realmId} />
-				<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} errors={errors.createUserId} />
-				<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} errors={errors.createTime} />
-				<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} errors={errors.updateUserId} />
-				<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} errors={errors.updateTime} />
-				<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} errors={errors.createGroupId} />
+				<IDItem label={$LL.graphql.objects.RoleComposite.fields.id.name()} name="id" bind:value={node.id} errors={errors.id} />
+				<IntItem label={$LL.graphql.objects.RoleComposite.fields.roleId.name()} name="roleId" bind:value={node.roleId} errors={errors.roleId} />
+				<ObjectItem name="from" path={`${node.id}/from`} label={$LL.graphql.objects.RoleComposite.fields.from.name()} errors={errors.from} on:gotoField />
+				<IntItem label={$LL.graphql.objects.RoleComposite.fields.compositeId.name()} name="compositeId" bind:value={node.compositeId} errors={errors.compositeId} />
+				<ObjectItem name="to" path={`${node.id}/to`} label={$LL.graphql.objects.RoleComposite.fields.to.name()} errors={errors.to} on:gotoField />
+				<BooleanItem label={$LL.graphql.objects.RoleComposite.fields.isDeprecated.name()} name="isDeprecated" bind:value={node.isDeprecated} errors={errors.isDeprecated} />
+				<IntItem label={$LL.graphql.objects.RoleComposite.fields.version.name()} name="version" bind:value={node.version} errors={errors.version} />
+				<StringItem label={$LL.graphql.objects.RoleComposite.fields.realmId.name()} name="realmId" bind:value={node.realmId} errors={errors.realmId} />
+				<StringItem label={$LL.graphql.objects.RoleComposite.fields.createUserId.name()} name="createUserId" bind:value={node.createUserId} errors={errors.createUserId} />
+				<TimestampItem label={$LL.graphql.objects.RoleComposite.fields.createTime.name()} name="createTime" bind:value={node.createTime} errors={errors.createTime} />
+				<StringItem label={$LL.graphql.objects.RoleComposite.fields.updateUserId.name()} name="updateUserId" bind:value={node.updateUserId} errors={errors.updateUserId} />
+				<TimestampItem label={$LL.graphql.objects.RoleComposite.fields.updateTime.name()} name="updateTime" bind:value={node.updateTime} errors={errors.updateTime} />
+				<StringItem label={$LL.graphql.objects.RoleComposite.fields.createGroupId.name()} name="createGroupId" bind:value={node.createGroupId} errors={errors.createGroupId} />
 			{/if}
 		{/if}
 	</Form>

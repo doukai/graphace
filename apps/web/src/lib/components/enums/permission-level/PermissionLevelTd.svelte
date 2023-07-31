@@ -2,6 +2,7 @@
 	import type { Errors } from '@graphace/commons/types';
 	import { EnumTd } from '@graphace/ui-graphql/components/table';
 	import { PermissionLevel } from '~/lib/types/schema';
+	import LL from '$i18n/i18n-svelte';
 
 	export let value: string | (string | null | undefined)[] | null | undefined;
 	export let list: boolean = false;
@@ -11,9 +12,9 @@
 	export let disabled = false;
 	export let placeholder: string = '';
 
-	let enums = [
-		{ name: 'READ', value: 'READ' },
-		{ name: 'WRITE', value: 'WRITE' }
+	$: enums = [
+		{ name: $LL.graphql.enums.PermissionLevel.values.READ.name(), value: 'READ' },
+		{ name: $LL.graphql.enums.PermissionLevel.values.WRITE.name(), value: 'WRITE' }
 	];
 </script>
 

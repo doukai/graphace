@@ -7,10 +7,11 @@
 	import { Query_realmConnectionStore, Mutation_realmStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'Realm');
+	$: urlName($page.url, $LL.graphql.objects.Realm.name());
 	$: Query_realmConnection = data.Query_realmConnection as Query_realmConnectionStore;
 	$: nodes = $Query_realmConnection.data?.realmConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_realmConnection.data?.realmConnection?.totalCount || 0;

@@ -122,7 +122,7 @@
 
 <Card>
 	<TableHead
-		title="RoleComposite"
+		title={$LL.graphql.objects.RoleComposite.name()}
 		showCreateButton={false}
 		showSaveButton={false}
 		showRemoveButton={false}
@@ -166,62 +166,62 @@
 					{/if}
 				</th>
 				<IDTh
-					name="id"
+					name={$LL.graphql.objects.RoleComposite.fields.id.name()}
 					bind:expression={args.id}
 					bind:sort={orderBy.id}
 					on:filter={query}
 				/>
 				<IntTh
-					name="roleId"
+					name={$LL.graphql.objects.RoleComposite.fields.roleId.name()}
 					bind:expression={args.roleId}
 					bind:sort={orderBy.roleId}
 					on:filter={query}
 				/>
 				<IntTh
-					name="compositeId"
+					name={$LL.graphql.objects.RoleComposite.fields.compositeId.name()}
 					bind:expression={args.compositeId}
 					bind:sort={orderBy.compositeId}
 					on:filter={query}
 				/>
-				<td>isDeprecated</td>
+				<td>{$LL.graphql.objects.RoleComposite.fields.isDeprecated.name()}</td>
 				<IntTh
-					name="version"
+					name={$LL.graphql.objects.RoleComposite.fields.version.name()}
 					bind:expression={args.version}
 					bind:sort={orderBy.version}
 					on:filter={query}
 				/>
 				<StringTh
-					name="realmId"
+					name={$LL.graphql.objects.RoleComposite.fields.realmId.name()}
 					bind:expression={args.realmId}
 					bind:sort={orderBy.realmId}
 					on:filter={query}
 				/>
 				<StringTh
-					name="createUserId"
+					name={$LL.graphql.objects.RoleComposite.fields.createUserId.name()}
 					bind:expression={args.createUserId}
 					bind:sort={orderBy.createUserId}
 					on:filter={query}
 				/>
 				<TimestampTh
-					name="createTime"
+					name={$LL.graphql.objects.RoleComposite.fields.createTime.name()}
 					bind:expression={args.createTime}
 					bind:sort={orderBy.createTime}
 					on:filter={query}
 				/>
 				<StringTh
-					name="updateUserId"
+					name={$LL.graphql.objects.RoleComposite.fields.updateUserId.name()}
 					bind:expression={args.updateUserId}
 					bind:sort={orderBy.updateUserId}
 					on:filter={query}
 				/>
 				<TimestampTh
-					name="updateTime"
+					name={$LL.graphql.objects.RoleComposite.fields.updateTime.name()}
 					bind:expression={args.updateTime}
 					bind:sort={orderBy.updateTime}
 					on:filter={query}
 				/>
 				<StringTh
-					name="createGroupId"
+					name={$LL.graphql.objects.RoleComposite.fields.createGroupId.name()}
 					bind:expression={args.createGroupId}
 					bind:sort={orderBy.createGroupId}
 					on:filter={query}

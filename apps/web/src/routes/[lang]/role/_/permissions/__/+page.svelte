@@ -8,10 +8,11 @@
 	import { updateNodeParam, updateErrorsParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'permissions', PageType.SELECT);
+	$: urlName($page.url, $LL.graphql.objects.Role.fields.permissions.name(), PageType.SELECT);
 	$: originalNodes = data.nodes as (MutationTypePermissionArgs | null | undefined)[];
 	$: errors = data.errors as Record<number, Errors>;
 	$: Query_permissionConnection = data.Query_permissionConnection as Query_permissionConnectionStore;

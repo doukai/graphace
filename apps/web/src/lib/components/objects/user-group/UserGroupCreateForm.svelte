@@ -62,7 +62,7 @@
 
 <Card>
 	<Form
-		title="UserGroup"
+		title={$LL.graphql.objects.UserGroup.name()}
 		showRemoveButton={showRemoveButton && node !== undefined && node !== null && Object.keys(node).length > 0}
 		{showGotoSelectButton}
 		{showBackButton}
@@ -80,18 +80,18 @@
 		on:gotoSelect
 		on:back
 	>
-		<IDItem label="id" name="id" bind:value={node.id} errors={errors.id} />
-		<IntItem label="userId" name="userId" bind:value={node.userId} errors={errors.userId} />
-		<ObjectItem name="from" path="_/from" label="from" errors={errors.from} on:gotoField />
-		<IntItem label="groupId" name="groupId" bind:value={node.groupId} errors={errors.groupId} />
-		<ObjectItem name="to" path="_/to" label="to" errors={errors.to} on:gotoField />
-		<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} errors={errors.isDeprecated} />
-		<IntItem label="version" name="version" bind:value={node.version} errors={errors.version} />
-		<StringItem label="realmId" name="realmId" bind:value={node.realmId} errors={errors.realmId} />
-		<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} errors={errors.createUserId} />
-		<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} errors={errors.createTime} />
-		<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} errors={errors.updateUserId} />
-		<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} errors={errors.updateTime} />
-		<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} errors={errors.createGroupId} />
+		<IDItem label={$LL.graphql.objects.UserGroup.fields.id.name()} name="id" bind:value={node.id} errors={errors.id} />
+		<IntItem label={$LL.graphql.objects.UserGroup.fields.userId.name()} name="userId" bind:value={node.userId} errors={errors.userId} />
+		<ObjectItem name="from" path="_/from" label={$LL.graphql.objects.UserGroup.fields.from.name()} errors={errors.from} on:gotoField />
+		<IntItem label={$LL.graphql.objects.UserGroup.fields.groupId.name()} name="groupId" bind:value={node.groupId} errors={errors.groupId} />
+		<ObjectItem name="to" path="_/to" label={$LL.graphql.objects.UserGroup.fields.to.name()} errors={errors.to} on:gotoField />
+		<BooleanItem label={$LL.graphql.objects.UserGroup.fields.isDeprecated.name()} name="isDeprecated" bind:value={node.isDeprecated} errors={errors.isDeprecated} />
+		<IntItem label={$LL.graphql.objects.UserGroup.fields.version.name()} name="version" bind:value={node.version} errors={errors.version} />
+		<StringItem label={$LL.graphql.objects.UserGroup.fields.realmId.name()} name="realmId" bind:value={node.realmId} errors={errors.realmId} />
+		<StringItem label={$LL.graphql.objects.UserGroup.fields.createUserId.name()} name="createUserId" bind:value={node.createUserId} errors={errors.createUserId} />
+		<TimestampItem label={$LL.graphql.objects.UserGroup.fields.createTime.name()} name="createTime" bind:value={node.createTime} errors={errors.createTime} />
+		<StringItem label={$LL.graphql.objects.UserGroup.fields.updateUserId.name()} name="updateUserId" bind:value={node.updateUserId} errors={errors.updateUserId} />
+		<TimestampItem label={$LL.graphql.objects.UserGroup.fields.updateTime.name()} name="updateTime" bind:value={node.updateTime} errors={errors.updateTime} />
+		<StringItem label={$LL.graphql.objects.UserGroup.fields.createGroupId.name()} name="createGroupId" bind:value={node.createGroupId} errors={errors.createGroupId} />
 	</Form>
 </Card>

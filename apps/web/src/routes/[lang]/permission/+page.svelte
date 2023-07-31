@@ -7,10 +7,11 @@
 	import { Query_permissionConnectionStore, Mutation_permissionStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'Permission');
+	$: urlName($page.url, $LL.graphql.objects.Permission.name());
 	$: Query_permissionConnection = data.Query_permissionConnection as Query_permissionConnectionStore;
 	$: nodes = $Query_permissionConnection.data?.permissionConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_permissionConnection.data?.permissionConnection?.totalCount || 0;

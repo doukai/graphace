@@ -7,9 +7,10 @@
 	import type { MutationTypeRoleArgs } from '~/lib/types/schema';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam, getPathParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
+	import LL from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'roles');
+	$: urlName($page.url, $LL.graphql.objects.User.fields.roles.name());
 	$: nodes = data.nodes as (MutationTypeRoleArgs | null | undefined)[];
 	$: errors = data.errors as Record<number, Errors>;
 

@@ -126,7 +126,7 @@
 
 <Card>
 	<TableHead
-		title="Role"
+		title={$LL.graphql.objects.Role.name()}
 		showCreateButton={false}
 		showSaveButton={false}
 		showRemoveButton={false}
@@ -170,62 +170,62 @@
 					{/if}
 				</th>
 				<IDTh
-					name="id"
+					name={$LL.graphql.objects.Role.fields.id.name()}
 					bind:expression={args.id}
 					bind:sort={orderBy.id}
 					on:filter={query}
 				/>
 				<StringTh
-					name="name"
+					name={$LL.graphql.objects.Role.fields.name.name()}
 					bind:expression={args.name}
 					bind:sort={orderBy.name}
 					on:filter={query}
 				/>
 				<StringTh
-					name="description"
+					name={$LL.graphql.objects.Role.fields.description.name()}
 					bind:expression={args.description}
 					bind:sort={orderBy.description}
 					on:filter={query}
 				/>
-				<td>isDeprecated</td>
+				<td>{$LL.graphql.objects.Role.fields.isDeprecated.name()}</td>
 				<IntTh
-					name="version"
+					name={$LL.graphql.objects.Role.fields.version.name()}
 					bind:expression={args.version}
 					bind:sort={orderBy.version}
 					on:filter={query}
 				/>
 				<StringTh
-					name="realmId"
+					name={$LL.graphql.objects.Role.fields.realmId.name()}
 					bind:expression={args.realmId}
 					bind:sort={orderBy.realmId}
 					on:filter={query}
 				/>
 				<StringTh
-					name="createUserId"
+					name={$LL.graphql.objects.Role.fields.createUserId.name()}
 					bind:expression={args.createUserId}
 					bind:sort={orderBy.createUserId}
 					on:filter={query}
 				/>
 				<TimestampTh
-					name="createTime"
+					name={$LL.graphql.objects.Role.fields.createTime.name()}
 					bind:expression={args.createTime}
 					bind:sort={orderBy.createTime}
 					on:filter={query}
 				/>
 				<StringTh
-					name="updateUserId"
+					name={$LL.graphql.objects.Role.fields.updateUserId.name()}
 					bind:expression={args.updateUserId}
 					bind:sort={orderBy.updateUserId}
 					on:filter={query}
 				/>
 				<TimestampTh
-					name="updateTime"
+					name={$LL.graphql.objects.Role.fields.updateTime.name()}
 					bind:expression={args.updateTime}
 					bind:sort={orderBy.updateTime}
 					on:filter={query}
 				/>
 				<StringTh
-					name="createGroupId"
+					name={$LL.graphql.objects.Role.fields.createGroupId.name()}
 					bind:expression={args.createGroupId}
 					bind:sort={orderBy.createGroupId}
 					on:filter={query}

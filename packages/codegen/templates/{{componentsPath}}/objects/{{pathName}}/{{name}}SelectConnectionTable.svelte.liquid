@@ -165,7 +165,7 @@
 
 <Card>
 	<TableHead
-		title="{{ name }}"
+		title={$LL.graphql.objects.{{ name }}.name()}
 		showCreateButton={false}
 		showSaveButton={false}
 		showRemoveButton={false}
@@ -213,7 +213,7 @@
 				{%- if field.isScalarType or field.isEnumType %}
 				{%- if field.inQueryArgs %}
 				<{{ field.fieldType.name }}Th
-					name="{{ field.fieldName }}"
+					name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 					bind:expression={args.{{ field.fieldName }}}
 					{%- if field.isListType == false %}
 					bind:sort={orderBy.{{ field.fieldName }}}
@@ -221,7 +221,7 @@
 					on:filter={query}
 				/>
 				{%- else %}
-				<td>{{ field.fieldName }}</td>
+				<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
 				{%- endif %}
 				{%- endif %}
 				{%- endfor %}

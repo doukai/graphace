@@ -7,10 +7,11 @@
 	import { Query_roleConnectionStore, Mutation_roleStore, Mutation_group_rolesStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'roles', PageType.SELECT);
+	$: urlName($page.url, $LL.graphql.objects.Group.fields.roles.name(), PageType.SELECT);
 	$: id = data.id as string;
 	$: Query_roleConnection = data.Query_roleConnection as Query_roleConnectionStore;
 	$: nodes = $Query_roleConnection.data?.roleConnection?.edges?.map((edge) => edge?.node);

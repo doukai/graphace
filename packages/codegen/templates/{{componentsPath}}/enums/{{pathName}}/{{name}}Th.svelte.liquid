@@ -2,15 +2,16 @@
 	import type { StringExpression, Sort } from '@graphace/graphql/types';
 	import { EnumTh } from '@graphace/ui-graphql/components/table';
 	import { {{ name }} } from '~/lib/types/schema';
+	import LL from '$i18n/i18n-svelte';
 
 	export let name: string;
 	export let expression: StringExpression | null | undefined;
 	export let sort: Sort | null | undefined = undefined;
 
-	let enums = [
+	$: enums = [
 		{%- if enumValues %}
 		{%- for enumValue in enumValues %}
-		{ name: '{{ enumValue.name }}', value: '{{ enumValue.value }}'{% if enumValue.description %}, description: {{ enumValue.description }}{% endif %} }{% if forloop.last == false %},{% endif %}
+		{ name: $LL.graphql.enums.{{ name }}.values.{{ enumValue.name }}.name(), value: '{{ enumValue.value }}'{% if enumValue.description %}, description: {{ enumValue.description }}{% endif %} }{% if forloop.last == false %},{% endif %}
 		{%- endfor %}
 		{%- endif %}
 	];

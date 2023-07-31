@@ -184,7 +184,7 @@
 
 <Card>
 	<TableHead
-		title="User"
+		title={$LL.graphql.objects.User.name()}
 		showRemoveButton={showRemoveButton && selectedIdList.length > 0}
 		showUnbindButton={showUnbindButton && selectedIdList.length > 0}
 		{showSaveButton}
@@ -244,95 +244,95 @@
 					</label>
 				</th>
 				<IDTh
-					name="id"
+					name={$LL.graphql.objects.User.fields.id.name()}
 					bind:expression={args.id}
 					bind:sort={orderBy.id}
 					on:filter={query}
 				/>
 				<StringTh
-					name="name"
+					name={$LL.graphql.objects.User.fields.name.name()}
 					bind:expression={args.name}
 					bind:sort={orderBy.name}
 					on:filter={query}
 				/>
 				<StringTh
-					name="lastName"
+					name={$LL.graphql.objects.User.fields.lastName.name()}
 					bind:expression={args.lastName}
 					bind:sort={orderBy.lastName}
 					on:filter={query}
 				/>
 				<StringTh
-					name="login"
+					name={$LL.graphql.objects.User.fields.login.name()}
 					bind:expression={args.login}
 					bind:sort={orderBy.login}
 					on:filter={query}
 				/>
 				<StringTh
-					name="password"
+					name={$LL.graphql.objects.User.fields.password.name()}
 					bind:expression={args.password}
 					bind:sort={orderBy.password}
 					on:filter={query}
 				/>
 				<StringTh
-					name="email"
+					name={$LL.graphql.objects.User.fields.email.name()}
 					bind:expression={args.email}
 					bind:sort={orderBy.email}
 					on:filter={query}
 				/>
 				<BooleanTh
-					name="disable"
+					name={$LL.graphql.objects.User.fields.disable.name()}
 					bind:expression={args.disable}
 					bind:sort={orderBy.disable}
 					on:filter={query}
 				/>
-				<td>groups</td>
-				<td>roles</td>
-				<td>realm</td>
-				<td>isDeprecated</td>
+				<td>{$LL.graphql.objects.User.fields.groups.name()}</td>
+				<td>{$LL.graphql.objects.User.fields.roles.name()}</td>
+				<td>{$LL.graphql.objects.User.fields.realm.name()}</td>
+				<td>{$LL.graphql.objects.User.fields.isDeprecated.name()}</td>
 				<IntTh
-					name="version"
+					name={$LL.graphql.objects.User.fields.version.name()}
 					bind:expression={args.version}
 					bind:sort={orderBy.version}
 					on:filter={query}
 				/>
 				<StringTh
-					name="realmId"
+					name={$LL.graphql.objects.User.fields.realmId.name()}
 					bind:expression={args.realmId}
 					bind:sort={orderBy.realmId}
 					on:filter={query}
 				/>
 				<StringTh
-					name="createUserId"
+					name={$LL.graphql.objects.User.fields.createUserId.name()}
 					bind:expression={args.createUserId}
 					bind:sort={orderBy.createUserId}
 					on:filter={query}
 				/>
 				<TimestampTh
-					name="createTime"
+					name={$LL.graphql.objects.User.fields.createTime.name()}
 					bind:expression={args.createTime}
 					bind:sort={orderBy.createTime}
 					on:filter={query}
 				/>
 				<StringTh
-					name="updateUserId"
+					name={$LL.graphql.objects.User.fields.updateUserId.name()}
 					bind:expression={args.updateUserId}
 					bind:sort={orderBy.updateUserId}
 					on:filter={query}
 				/>
 				<TimestampTh
-					name="updateTime"
+					name={$LL.graphql.objects.User.fields.updateTime.name()}
 					bind:expression={args.updateTime}
 					bind:sort={orderBy.updateTime}
 					on:filter={query}
 				/>
 				<StringTh
-					name="createGroupId"
+					name={$LL.graphql.objects.User.fields.createGroupId.name()}
 					bind:expression={args.createGroupId}
 					bind:sort={orderBy.createGroupId}
 					on:filter={query}
 				/>
-				<td>userGroup</td>
-				<td>userRole</td>
+				<td>{$LL.graphql.objects.User.fields.userGroup.name()}</td>
+				<td>{$LL.graphql.objects.User.fields.userRole.name()}</td>
 				<th />
 			</tr>
 		</thead>

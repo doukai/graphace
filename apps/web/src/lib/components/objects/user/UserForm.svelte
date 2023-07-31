@@ -90,7 +90,7 @@
 
 <Card>
 	<Form
-		title="User"
+		title={$LL.graphql.objects.User.name()}
 		{showRemoveButton}
 		{showUnbindButton}
 		{showGotoSelectButton}
@@ -131,26 +131,26 @@
 			<FormLoading rows={15} />
 		{:else}
 			{#if node}
-				<IDItem label="id" name="id" bind:value={node.id} errors={errors.id} />
-				<StringItem label="name" name="name" bind:value={node.name} errors={errors.name} />
-				<StringItem label="lastName" name="lastName" bind:value={node.lastName} errors={errors.lastName} />
-				<StringItem label="login" name="login" bind:value={node.login} errors={errors.login} />
-				<StringItem label="password" name="password" bind:value={node.password} errors={errors.password} />
-				<StringItem label="email" name="email" bind:value={node.email} errors={errors.email} />
-				<BooleanItem label="disable" name="disable" bind:value={node.disable} errors={errors.disable} />
-				<ObjectItem name="groups" path={`${node.id}/groups`} label="groups" errors={errors.groups} on:gotoField />
-				<ObjectItem name="roles" path={`${node.id}/roles`} label="roles" errors={errors.roles} on:gotoField />
-				<ObjectItem name="realm" path={`${node.id}/realm`} label="realm" errors={errors.realm} on:gotoField />
-				<BooleanItem label="isDeprecated" name="isDeprecated" bind:value={node.isDeprecated} errors={errors.isDeprecated} />
-				<IntItem label="version" name="version" bind:value={node.version} errors={errors.version} />
-				<StringItem label="realmId" name="realmId" bind:value={node.realmId} errors={errors.realmId} />
-				<StringItem label="createUserId" name="createUserId" bind:value={node.createUserId} errors={errors.createUserId} />
-				<TimestampItem label="createTime" name="createTime" bind:value={node.createTime} errors={errors.createTime} />
-				<StringItem label="updateUserId" name="updateUserId" bind:value={node.updateUserId} errors={errors.updateUserId} />
-				<TimestampItem label="updateTime" name="updateTime" bind:value={node.updateTime} errors={errors.updateTime} />
-				<StringItem label="createGroupId" name="createGroupId" bind:value={node.createGroupId} errors={errors.createGroupId} />
-				<ObjectItem name="userGroup" path={`${node.id}/user-group`} label="userGroup" errors={errors.userGroup} on:gotoField />
-				<ObjectItem name="userRole" path={`${node.id}/user-role`} label="userRole" errors={errors.userRole} on:gotoField />
+				<IDItem label={$LL.graphql.objects.User.fields.id.name()} name="id" bind:value={node.id} errors={errors.id} />
+				<StringItem label={$LL.graphql.objects.User.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
+				<StringItem label={$LL.graphql.objects.User.fields.lastName.name()} name="lastName" bind:value={node.lastName} errors={errors.lastName} />
+				<StringItem label={$LL.graphql.objects.User.fields.login.name()} name="login" bind:value={node.login} errors={errors.login} />
+				<StringItem label={$LL.graphql.objects.User.fields.password.name()} name="password" bind:value={node.password} errors={errors.password} />
+				<StringItem label={$LL.graphql.objects.User.fields.email.name()} name="email" bind:value={node.email} errors={errors.email} />
+				<BooleanItem label={$LL.graphql.objects.User.fields.disable.name()} name="disable" bind:value={node.disable} errors={errors.disable} />
+				<ObjectItem name="groups" path={`${node.id}/groups`} label={$LL.graphql.objects.User.fields.groups.name()} errors={errors.groups} on:gotoField />
+				<ObjectItem name="roles" path={`${node.id}/roles`} label={$LL.graphql.objects.User.fields.roles.name()} errors={errors.roles} on:gotoField />
+				<ObjectItem name="realm" path={`${node.id}/realm`} label={$LL.graphql.objects.User.fields.realm.name()} errors={errors.realm} on:gotoField />
+				<BooleanItem label={$LL.graphql.objects.User.fields.isDeprecated.name()} name="isDeprecated" bind:value={node.isDeprecated} errors={errors.isDeprecated} />
+				<IntItem label={$LL.graphql.objects.User.fields.version.name()} name="version" bind:value={node.version} errors={errors.version} />
+				<StringItem label={$LL.graphql.objects.User.fields.realmId.name()} name="realmId" bind:value={node.realmId} errors={errors.realmId} />
+				<StringItem label={$LL.graphql.objects.User.fields.createUserId.name()} name="createUserId" bind:value={node.createUserId} errors={errors.createUserId} />
+				<TimestampItem label={$LL.graphql.objects.User.fields.createTime.name()} name="createTime" bind:value={node.createTime} errors={errors.createTime} />
+				<StringItem label={$LL.graphql.objects.User.fields.updateUserId.name()} name="updateUserId" bind:value={node.updateUserId} errors={errors.updateUserId} />
+				<TimestampItem label={$LL.graphql.objects.User.fields.updateTime.name()} name="updateTime" bind:value={node.updateTime} errors={errors.updateTime} />
+				<StringItem label={$LL.graphql.objects.User.fields.createGroupId.name()} name="createGroupId" bind:value={node.createGroupId} errors={errors.createGroupId} />
+				<ObjectItem name="userGroup" path={`${node.id}/user-group`} label={$LL.graphql.objects.User.fields.userGroup.name()} errors={errors.userGroup} on:gotoField />
+				<ObjectItem name="userRole" path={`${node.id}/user-role`} label={$LL.graphql.objects.User.fields.userRole.name()} errors={errors.userRole} on:gotoField />
 			{/if}
 		{/if}
 	</Form>

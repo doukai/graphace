@@ -8,10 +8,11 @@
 	import { Query_role_permissionsStore, Mutation_permissionStore, Mutation_role_permissionsStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'permissions');
+	$: urlName($page.url, $LL.graphql.objects.Role.fields.permissions.name());
 	$: id = data.id as string;
 	$: Query_role_permissions = data.Query_role_permissions as Query_role_permissionsStore;
 	$: role = $Query_role_permissions.data?.role;

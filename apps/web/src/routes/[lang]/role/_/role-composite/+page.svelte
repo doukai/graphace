@@ -7,9 +7,10 @@
 	import type { MutationTypeRoleCompositeArgs } from '~/lib/types/schema';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam, getPathParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
+	import LL from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'roleComposite');
+	$: urlName($page.url, $LL.graphql.objects.Role.fields.roleComposite.name());
 	$: nodes = data.nodes as (MutationTypeRoleCompositeArgs | null | undefined)[];
 	$: errors = data.errors as Record<number, Errors>;
 

@@ -8,16 +8,14 @@ export enum PageType {
 
 export const history: Writable<{ url: URL, name: string, type: PageType | undefined }[]> = writable([]);
 
-export function urlName(url: URL, name: string, type: PageType | undefined) {
+export function urlName(url: URL, name: string, type?: PageType | undefined) {
     const pathname = url.pathname.split("/").splice(2).join("/");
     history.update(($history) => {
         if ($history.length === 0) {
             return [{ url, name, type }];
-        } else if ($history[$history.length - 1].url.pathname.split("/").splice(2).join("/") === pathname) {
-            $history[$history.length - 1] = { url, name, type };
-            return $history;
         } else if ($history.map(page => page.url.pathname.split("/").splice(2).join("/")).includes(pathname)) {
-            return $history.splice(0, $history.map(page => page.url.pathname.split("/").splice(2).join("/")).indexOf(pathname) + 1);
+            $history[$history.map(page => page.url.pathname.split("/").splice(2).join("/")).indexOf(pathname)] = { url, name, type };
+            return $history;
         } else {
             $history.push({ url, name, type });
             return $history;
@@ -66,6 +64,13 @@ export function to(url: string | URL, params?: Record<string, string | undefined
             }
         });
     }
+    history.update(($history) => {
+        const pathname = toUrl.pathname.split("/").splice(2).join("/");
+        if ($history.map(page => page.url.pathname.split("/").splice(2).join("/")).includes(pathname)) {
+            return $history.splice(0, $history.map(page => page.url.pathname.split("/").splice(2).join("/")).indexOf(pathname) + 1);
+        }
+        return $history;
+    });
     goto(toUrl);
 }
 

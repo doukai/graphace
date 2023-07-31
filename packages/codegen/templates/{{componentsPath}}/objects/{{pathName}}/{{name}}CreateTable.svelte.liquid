@@ -48,7 +48,7 @@
 
 <Card>
 	<TableHead
-		title="{{ name }}"
+		title={$LL.graphql.objects.{{ name }}.name()}
 		showRemoveButton={showRemoveButton && selectedRowList.length > 0}
 		{showSaveButton}
 		{showBackButton}
@@ -91,7 +91,7 @@
 				{%- if fields %}
 				{%- for field in fields %}
 				{%- if field.inMutationArgs %}
-				<td>{{ field.fieldName }}</td>
+				<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
 				{%- endif %}
 				{%- endfor %}
 				{%- endif %}

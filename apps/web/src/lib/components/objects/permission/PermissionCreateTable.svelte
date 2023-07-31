@@ -46,7 +46,7 @@
 
 <Card>
 	<TableHead
-		title="Permission"
+		title={$LL.graphql.objects.Permission.name()}
 		showRemoveButton={showRemoveButton && selectedRowList.length > 0}
 		{showSaveButton}
 		{showBackButton}
@@ -86,22 +86,22 @@
 						/>
 					</label>
 				</th>
-				<td>id</td>
-				<td>name</td>
-				<td>ofTypeName</td>
-				<td>description</td>
-				<td>level</td>
-				<td>role</td>
-				<td>realm</td>
-				<td>isDeprecated</td>
-				<td>version</td>
-				<td>realmId</td>
-				<td>createUserId</td>
-				<td>createTime</td>
-				<td>updateUserId</td>
-				<td>updateTime</td>
-				<td>createGroupId</td>
-				<td>roleId</td>
+				<td>{$LL.graphql.objects.Permission.fields.id.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.name.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.ofTypeName.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.description.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.level.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.role.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.realm.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.isDeprecated.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.version.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.realmId.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.createUserId.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.createTime.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.updateUserId.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.updateTime.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.createGroupId.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.roleId.name()}</td>
 				<th />
 			</tr>
 		</thead>

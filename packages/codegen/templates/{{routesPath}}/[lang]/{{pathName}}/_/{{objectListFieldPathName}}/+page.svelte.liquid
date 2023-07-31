@@ -7,9 +7,10 @@
 	import type { MutationType{{ objectFieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam, getPathParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
+	import LL from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, '{{ objectFieldName }}');
+	$: urlName($page.url, $LL.graphql.objects.{{ name }}.fields.{{ objectFieldName }}.name());
 	$: nodes = data.nodes as (MutationType{{ objectFieldTypeName }}Args | null | undefined)[];
 	$: errors = data.errors as Record<number, Errors>;
 

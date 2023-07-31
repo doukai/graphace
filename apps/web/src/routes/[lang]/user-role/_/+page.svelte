@@ -9,10 +9,11 @@
 	import type { MutationTypeUserRoleArgs, UserRole } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'UserRole', PageType.CREATE);
+	$: urlName($page.url, $LL.graphql.objects.UserRole.name(), PageType.CREATE);
 	$: node = data.node as MutationTypeUserRoleArgs;
 	$: errors = data.errors as Record<number, Errors>;
 

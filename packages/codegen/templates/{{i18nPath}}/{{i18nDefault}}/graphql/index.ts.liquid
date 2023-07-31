@@ -1,6 +1,6 @@
 import type { BaseTranslation } from '../../i18n-types';
 
-const en: BaseTranslation = {
+const {{ lang }}: BaseTranslation = {
 {%- if objects %}
 	objects: {
 {%- for object in objects %}
@@ -35,4 +35,4 @@ const en: BaseTranslation = {
 {%- endif %}
 }
 
-export default en;
+export default {{ lang }};

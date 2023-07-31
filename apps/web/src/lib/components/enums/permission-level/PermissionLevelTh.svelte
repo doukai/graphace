@@ -2,14 +2,15 @@
 	import type { StringExpression, Sort } from '@graphace/graphql/types';
 	import { EnumTh } from '@graphace/ui-graphql/components/table';
 	import { PermissionLevel } from '~/lib/types/schema';
+	import LL from '$i18n/i18n-svelte';
 
 	export let name: string;
 	export let expression: StringExpression | null | undefined;
 	export let sort: Sort | null | undefined = undefined;
 
-	let enums = [
-		{ name: 'READ', value: 'READ' },
-		{ name: 'WRITE', value: 'WRITE' }
+	$: enums = [
+		{ name: $LL.graphql.enums.PermissionLevel.values.READ.name(), value: 'READ' },
+		{ name: $LL.graphql.enums.PermissionLevel.values.WRITE.name(), value: 'WRITE' }
 	];
 </script>
 

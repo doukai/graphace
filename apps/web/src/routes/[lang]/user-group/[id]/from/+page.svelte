@@ -10,10 +10,11 @@
 	import { Query_userGroup_fromStore, Mutation_userGroup_fromStore, Mutation_userStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'from');
+	$: urlName($page.url, $LL.graphql.objects.UserGroup.fields.from.name());
 	$: Query_userGroup_from = data.Query_userGroup_from as Query_userGroup_fromStore;
 	$: userGroup = $Query_userGroup_from.data?.userGroup;
 	$: node = userGroup?.from;

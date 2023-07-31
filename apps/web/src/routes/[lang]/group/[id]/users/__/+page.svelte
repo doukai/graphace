@@ -7,10 +7,11 @@
 	import { Query_userConnectionStore, Mutation_userStore, Mutation_group_usersStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'users', PageType.SELECT);
+	$: urlName($page.url, $LL.graphql.objects.Group.fields.users.name(), PageType.SELECT);
 	$: id = data.id as string;
 	$: Query_userConnection = data.Query_userConnection as Query_userConnectionStore;
 	$: nodes = $Query_userConnection.data?.userConnection?.edges?.map((edge) => edge?.node);

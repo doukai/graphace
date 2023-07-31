@@ -7,10 +7,11 @@
 	import { Query_userConnectionStore, Mutation_userStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'User');
+	$: urlName($page.url, $LL.graphql.objects.User.name());
 	$: Query_userConnection = data.Query_userConnection as Query_userConnectionStore;
 	$: nodes = $Query_userConnection.data?.userConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_userConnection.data?.userConnection?.totalCount || 0;

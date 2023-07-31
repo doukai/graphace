@@ -30,6 +30,7 @@ const renders: Record<Template, Render> = {
         return {
             content: buildFileContent(config.template,
                 {
+                    lang: config.i18nDefault,
                     objects: Object.values(schema.getTypeMap())
                         .filter(type => isObjectType(type))
                         .filter(type => !isOperationType(type.name))

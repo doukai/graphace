@@ -9,10 +9,11 @@
 	import type { MutationTypeUserGroupArgs, UserGroup } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'Group', PageType.CREATE);
+	$: urlName($page.url, $LL.graphql.objects.Group.fields.userGroup.name(), PageType.CREATE);
 	$: node = data.node as MutationTypeUserGroupArgs;
 	$: id = data.id as string;
 	$: errors = data.errors as Record<string, Errors>;

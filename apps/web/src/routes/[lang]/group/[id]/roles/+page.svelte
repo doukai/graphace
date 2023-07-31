@@ -8,10 +8,11 @@
 	import { Query_group_rolesStore, Mutation_roleStore, Mutation_group_rolesStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'roles');
+	$: urlName($page.url, $LL.graphql.objects.Group.fields.roles.name());
 	$: id = data.id as string;
 	$: Query_group_roles = data.Query_group_roles as Query_group_rolesStore;
 	$: group = $Query_group_roles.data?.group;

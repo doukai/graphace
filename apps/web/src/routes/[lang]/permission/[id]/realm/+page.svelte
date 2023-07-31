@@ -10,10 +10,11 @@
 	import { Query_permission_realmStore, Mutation_permission_realmStore, Mutation_realmStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'realm');
+	$: urlName($page.url, $LL.graphql.objects.Permission.fields.realm.name());
 	$: Query_permission_realm = data.Query_permission_realm as Query_permission_realmStore;
 	$: permission = $Query_permission_realm.data?.permission;
 	$: node = permission?.realm;

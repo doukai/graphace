@@ -10,10 +10,11 @@
 	import { Query_roleComposite_toStore, Mutation_roleComposite_toStore, Mutation_roleStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'to');
+	$: urlName($page.url, $LL.graphql.objects.RoleComposite.fields.to.name());
 	$: Query_roleComposite_to = data.Query_roleComposite_to as Query_roleComposite_toStore;
 	$: roleComposite = $Query_roleComposite_to.data?.roleComposite;
 	$: node = roleComposite?.to;

@@ -9,10 +9,11 @@
 	import type { MutationTypePermissionArgs, Permission } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { validate } from '@graphace/graphql/schema/json-schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'Permission', PageType.CREATE);
+	$: urlName($page.url, $LL.graphql.objects.Permission.name(), PageType.CREATE);
 	$: node = data.node as MutationTypePermissionArgs;
 	$: errors = data.errors as Record<number, Errors>;
 

@@ -7,9 +7,10 @@
 	import type { Errors } from '@graphace/commons/types';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
+	import LL from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, 'roleComposite', PageType.CREATE);
+	$: urlName($page.url, $LL.graphql.objects.Role.fields.roleComposite.name(), PageType.CREATE);
 	$: node = data.node as MutationTypeRoleCompositeArgs;
 	$: errors = data.errors as Record<string, Errors>;
 

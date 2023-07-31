@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { onMount, createEventDispatcher } from 'svelte';
-	import { goto } from '$app/navigation';
+	import { init } from '~/lib/stores/useNavigate';
 	import Typeahead from 'svelte-typeahead';
 	import type TItem from 'svelte-typeahead';
 	import { getOS } from '@graphace/commons/utils/system-util';
 	import LL from '$i18n/i18n-svelte';
+	import type { NamespaceGraphqlTranslation } from '$i18n/i18n-types';
 	import { locale } from '~/i18n/i18n-svelte';
 	import pages from '~/lib/data/pages.json';
 
@@ -13,7 +14,14 @@
 
 	const dispatch = createEventDispatcher();
 
-	let searchIndex: any[] = pages.flatMap((page) => page.items);
+	$: searchIndex = pages.flatMap((page) =>
+		page.items.map((item) => {
+			return {
+				...item,
+				name: $LL.graphql.objects[item.name as keyof NamespaceGraphqlTranslation['objects']].name()
+			};
+		})
+	) as any[];
 
 	let os: string;
 	onMount(() => {
@@ -41,7 +49,7 @@
 			originalIndex: number;
 		}>
 	) {
-		goto('/' + $locale + searchIndex[select.detail.originalIndex].href);
+		init('/' + $locale + searchIndex[select.detail.originalIndex].href);
 		dispatch('search', select.detail);
 	}
 </script>

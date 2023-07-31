@@ -2,16 +2,30 @@
 	import { init } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import Iconify from '@iconify/svelte';
+	import LL from '$i18n/i18n-svelte';
+	import type { NamespaceGraphqlTranslation } from '$i18n/i18n-types';
 	import { locale } from '~/i18n/i18n-svelte';
 	import pages from '~/lib/data/pages.json';
+
+	const menus = pages.map((page) => {
+		return {
+			...page,
+			items: page.items.map((item) => {
+				return {
+					...item,
+					objectKey: item.name as keyof NamespaceGraphqlTranslation['objects']
+				};
+			})
+		};
+	});
 </script>
 
-{#each pages as { name, icon, items }}
+{#each menus as { name, icon, items }}
 	<li class="menu-title flex flex-row gap-4">
 		<span class="text-base-content"><Iconify class="w-5 h-5" {icon} /></span>
 		<span>{name}</span>
 	</li>
-	{#each items as { name, href }}
+	{#each items as { href, objectKey }}
 		<li>
 			<a
 				href={null}
@@ -24,7 +38,7 @@
 					? 'active'
 					: ''}
 			>
-				<span>{name}</span>
+				<span>{$LL.graphql.objects[objectKey].name()}</span>
 			</a>
 		</li>
 	{/each}
