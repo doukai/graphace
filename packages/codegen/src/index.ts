@@ -1,8 +1,8 @@
 import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
 import * as changeCase from "change-case";
-import { assertObjectType, isEnumType, isListType, isObjectType, type GraphQLSchema, isNonNullType } from 'graphql';
-import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getScalarNames, getEnumNames, getEnumValues } from 'graphace-codegen-commons';
+import { assertObjectType, isEnumType, isListType, isObjectType, type GraphQLSchema, isNonNullType, assertEnumType } from 'graphql';
+import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getScalarNames, getEnumNames, getEnumValues, isAggregate } from 'graphace-codegen-commons';
 import type { Template } from 'graphace-codegen-commons';
 import { buildFileContent } from "./builder.js";
 
@@ -22,6 +22,43 @@ const renders: Record<Template, Render> = {
                         .filter(type => !isIntrospection(type.name))
                         .filter(type => getIDFieldName(type))
                         .map(type => assertObjectType(type))
+                }
+            ),
+        };
+    },
+    '{{i18nPath}}/{{i18nDefault}}/graphql/index.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        return {
+            content: buildFileContent(config.template,
+                {
+                    objects: Object.values(schema.getTypeMap())
+                        .filter(type => isObjectType(type))
+                        .filter(type => !isOperationType(type.name))
+                        .filter(type => !isConnection(type.name))
+                        .filter(type => !isEdge(type.name))
+                        .filter(type => !isPageInfo(type.name))
+                        .filter(type => !isIntrospection(type.name))
+                        .map(type => assertObjectType(type))
+                        .map(objectType => {
+                            return {
+                                ...assertObjectType(objectType),
+                                fields: Object.values(objectType.getFields())
+                                    .filter(field => !isConnection(getFieldType(field.type).name))
+                                    .filter(field => !isEdge(getFieldType(field.type).name))
+                                    .filter(field => !isAggregate(field.name))
+                                    .filter(field => !isPageInfo(getFieldType(field.type).name))
+                                    .filter(field => !isIntrospection(getFieldType(field.type).name))
+                            };
+                        }),
+                    enums: Object.values(schema.getTypeMap())
+                        .filter(type => isEnumType(type))
+                        .filter(type => !isIntrospection(type.name))
+                        .map(type => assertEnumType(type))
+                        .map(enumType => {
+                            return {
+                                ...enumType,
+                                values: enumType.getValues()
+                            }
+                        })
                 }
             ),
         };

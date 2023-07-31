@@ -13,6 +13,7 @@ export const load: LayoutLoad<{ locale: Locales }> = async ({ data: { locale } }
 	await loadNamespaceAsync(locale, "ui");
 	await loadNamespaceAsync(locale, "uiGraphql");
 	await loadNamespaceAsync(locale, "web");
+	await loadNamespaceAsync(locale, "graphql");
 	setLocale(locale);
 	// get the translation functions value from the store
 	const $LL = get(LL);

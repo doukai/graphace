@@ -9,6 +9,8 @@ const _graphqlPath = 'lib/graphql';
 const _componentsPath = 'lib/components';
 const _dataPath = 'lib/data';
 const _routesPath = 'routes';
+const _i18nPath = 'i18n';
+const _i18nDefault = 'en';
 
 export const preset: Types.OutputPreset<GraphacePresetConfig> = {
     buildGeneratesSection: options => {
@@ -17,6 +19,8 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         const componentsPath = `${options.baseOutputDir}/${options.presetConfig.componentsPath || _componentsPath}`;
         const dataPath = `${options.baseOutputDir}/${options.presetConfig.dataPath || _dataPath}`;
         const routesPath = `${options.baseOutputDir}/${options.presetConfig.routesPath || _routesPath}`;
+        const i18nPath = `${options.baseOutputDir}/${options.presetConfig.i18nPath || _i18nPath}`;
+        const i18nDefault = `${options.presetConfig.i18nDefault || _i18nDefault}`;
 
         const queryFields = options.schemaAst?.getQueryType()?.getFields() || [];
         const mutationFields = options.schemaAst?.getMutationType()?.getFields() || [];
@@ -48,6 +52,29 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                     routesPath: options.presetConfig.graphqlPath || _routesPath,
                     dataPath: options.presetConfig.dataPath || _dataPath,
                     template: pagesTemplate,
+                },
+                schema: options.schema,
+                schemaAst: options.schemaAst,
+                skipDocumentsValidation: true,
+            }
+        );
+
+        const i18nTemplate = '{{i18nPath}}/{{i18nDefault}}/graphql/index.ts';
+        const i18nScope = { i18nPath, i18nDefault };
+        generateOptions.push(
+            {
+                filename: buildPath(i18nTemplate, i18nScope),
+                documents: options.documents,
+                plugins: options.plugins,
+                pluginMap: options.pluginMap,
+                config: {
+                    graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                    componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                    routesPath: options.presetConfig.graphqlPath || _routesPath,
+                    dataPath: options.presetConfig.dataPath || _dataPath,
+                    i18nPath: options.presetConfig.i18nPath || _i18nPath,
+                    i18nDefault: options.presetConfig.i18nDefault || _i18nDefault,
+                    template: i18nTemplate,
                 },
                 schema: options.schema,
                 schemaAst: options.schemaAst,
@@ -988,8 +1015,6 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                     };
                 })
         );
-
-        
 
         generateOptions.push(
             ...objectTypes

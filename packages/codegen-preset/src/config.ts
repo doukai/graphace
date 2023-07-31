@@ -7,4 +7,8 @@ export interface GraphacePresetConfig {
   dataPath?: string;
 
   routesPath?: string;
+
+  i18nPath?: string;
+
+  i18nDefault?: string;
 }

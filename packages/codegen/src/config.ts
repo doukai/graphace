@@ -14,6 +14,10 @@ export interface GraphacePluginConfig extends RawTypesConfig {
 
   schemaTypesPath?: string;
 
+  i18nPath?: string;
+
+  i18nDefault?: string;
+
   name?: string;
 
   objectFieldName?: string;
