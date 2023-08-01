@@ -3,45 +3,45 @@ import type { NamespaceGraphqlTranslation } from '../../i18n-types'
 const zh: NamespaceGraphqlTranslation = {
 	objects: {
 		CurrentUser: {
-			name: 'CurrentUser',
+			name: '当前用户',
 			fields: {
 				name: {
-					name: 'name',
+					name: '姓名',
 				},
 				lastName: {
-					name: 'lastName',
+					name: '姓氏',
 				},
 				login: {
-					name: 'login',
+					name: '账号',
 				},
 				realmId: {
 					name: 'realmId',
 				},
 				groups: {
-					name: 'groups',
+					name: '组织',
 				},
 				roles: {
-					name: 'roles',
+					name: '角色',
 				}
 			}
 		},
 		Group: {
-			name: 'Group',
+			name: '组织',
 			fields: {
 				id: {
 					name: 'id',
 				},
 				name: {
-					name: 'name',
+					name: '组织名',
 				},
 				users: {
-					name: 'users',
+					name: '用户',
 				},
 				roles: {
-					name: 'roles',
+					name: '角色',
 				},
 				realm: {
-					name: 'realm',
+					name: '租户',
 				},
 				isDeprecated: {
 					name: 'isDeprecated',
@@ -123,28 +123,28 @@ const zh: NamespaceGraphqlTranslation = {
 			}
 		},
 		Permission: {
-			name: 'Permission',
+			name: '权限',
 			fields: {
 				id: {
 					name: 'id',
 				},
 				name: {
-					name: 'name',
+					name: '名称',
 				},
 				ofTypeName: {
 					name: 'ofTypeName',
 				},
 				description: {
-					name: 'description',
+					name: '说明',
 				},
 				level: {
-					name: 'level',
+					name: '权限级别',
 				},
 				role: {
-					name: 'role',
+					name: '角色',
 				},
 				realm: {
-					name: 'realm',
+					name: '租户',
 				},
 				isDeprecated: {
 					name: 'isDeprecated',
@@ -176,13 +176,13 @@ const zh: NamespaceGraphqlTranslation = {
 			}
 		},
 		Realm: {
-			name: 'Realm',
+			name: '租户',
 			fields: {
 				id: {
 					name: 'id',
 				},
 				name: {
-					name: 'name',
+					name: '租户名',
 				},
 				isDeprecated: {
 					name: 'isDeprecated',
@@ -211,16 +211,16 @@ const zh: NamespaceGraphqlTranslation = {
 			}
 		},
 		Role: {
-			name: 'Role',
+			name: '角色',
 			fields: {
 				id: {
 					name: 'id',
 				},
 				name: {
-					name: 'name',
+					name: '角色名',
 				},
 				description: {
-					name: 'description',
+					name: '说明',
 				},
 				users: {
 					name: 'users',
@@ -308,37 +308,37 @@ const zh: NamespaceGraphqlTranslation = {
 			}
 		},
 		User: {
-			name: 'User',
+			name: '用户',
 			fields: {
 				id: {
 					name: 'id',
 				},
 				name: {
-					name: 'name',
+					name: '姓名',
 				},
 				lastName: {
-					name: 'lastName',
+					name: '姓氏',
 				},
 				login: {
-					name: 'login',
+					name: '账号',
 				},
 				password: {
-					name: 'password',
+					name: '密码',
 				},
 				email: {
-					name: 'email',
+					name: '邮箱',
 				},
 				disable: {
-					name: 'disable',
+					name: '状态',
 				},
 				groups: {
-					name: 'groups',
+					name: '组织',
 				},
 				roles: {
-					name: 'roles',
+					name: '角色',
 				},
 				realm: {
-					name: 'realm',
+					name: '租户',
 				},
 				isDeprecated: {
 					name: 'isDeprecated',
@@ -553,13 +553,13 @@ const zh: NamespaceGraphqlTranslation = {
 			}
 		},
 		PermissionLevel: {
-			name: 'PermissionLevel',
+			name: '权限级别',
 			values: {
 				READ: {
-					name: 'READ',
+					name: '只读',
 				},
 				WRITE: {
-					name: 'WRITE',
+					name: '读写',
 				}
 			}
 		},

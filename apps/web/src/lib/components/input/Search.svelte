@@ -78,7 +78,7 @@
 		limit={8}
 		label={$LL.web.components.search.label()}
 		data={searchIndex}
-		extract={(item) => item.tags}
+		extract={(item) => item.name}
 		inputAfterSelect="clear"
 		on:select={onSelect}
 		on:focus={removeScrollPaddingFromNavbar}

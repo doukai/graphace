@@ -1111,7 +1111,7 @@ export type Permission = Meta & {
   ofTypeName?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   level?: Maybe<PermissionLevel>;
-  role: Role;
+  role?: Maybe<Role>;
   realm?: Maybe<Realm>;
   isDeprecated?: Maybe<Scalars['Boolean']>;
   version?: Maybe<Scalars['Int']>;

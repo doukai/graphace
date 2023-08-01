@@ -102,6 +102,7 @@
 		{node}
 		{errors}
 		showRemoveButton={false}
+		showUnbindButton={true}
 		showBackButton={$canBack}
 		isFetching={$Query_permission_role.fetching}
 		on:mutation={mutation}

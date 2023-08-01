@@ -226,7 +226,7 @@
 		on:create
 		on:search={(e) => search(e.detail.value)}
 		on:save={() => dispatch('save', { nodes })}
-		on:removeRows={() => {
+		on:remove={() => {
 			messageBoxs.open({
 				title: $LL.web.components.table.removeModalTitle(),
 				buttonName: $LL.web.components.table.removeBtn(),

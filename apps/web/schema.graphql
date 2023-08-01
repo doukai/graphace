@@ -427,7 +427,7 @@ type Permission implements Meta {
   realmIdMax: Int
   realmIdMin: Int
   realmIdSum: Int
-  role(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: StringExpression, roleComposite: RoleCompositeExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role!
+  role(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: StringExpression, roleComposite: RoleCompositeExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
   roleId: Int
   roleIdAvg: Int
   roleIdCount: Int
