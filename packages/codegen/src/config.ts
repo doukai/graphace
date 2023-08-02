@@ -1,4 +1,5 @@
 import type { RawTypesConfig } from '@graphql-codegen/visitor-plugin-common';
+import type { BuilderConfig } from "graphace-codegen-commons/types/types";
 import type { Template } from 'graphace-codegen-commons';
 
 export interface GraphacePluginConfig extends RawTypesConfig {
@@ -21,4 +22,6 @@ export interface GraphacePluginConfig extends RawTypesConfig {
   name?: string;
 
   objectFieldName?: string;
+
+  builder?: BuilderConfig;
 }

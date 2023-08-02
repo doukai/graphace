@@ -2,7 +2,7 @@ import type { Types } from "@graphql-codegen/plugin-helpers";
 import { assertObjectType, isEnumType, isListType, isObjectType } from "graphql";
 import type { GraphacePresetConfig } from "./config";
 import * as changeCase from "change-case";
-import { isOperationType, isAggregate, isConnection, isEdge, isPageInfo, isIntrospection, isInnerEnum, getFieldType, getObjectFields, getIDFieldName } from 'graphace-codegen-commons'
+import { isOperationType, isAggregate, isConnection, isEdge, isPageInfo, isIntrospection, isInnerEnum, getFieldType, getObjectFields, getIDFieldName, queryTypeName, mutationTypeName } from 'graphace-codegen-commons'
 import { buildPath } from "./builder";
 
 const _graphqlPath = 'lib/graphql';
@@ -37,6 +37,8 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             .filter(type => !isIntrospection(type.name))
             .filter(type => !isInnerEnum(type.name))
             .filter(type => isEnumType(type));
+
+        console.log(JSON.stringify(options.presetConfig.builder));
 
         const pagesTemplate = '{{dataPath}}/pages.json';
         const pageScope = { dataPath };
@@ -84,6 +86,12 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...Object.values(queryFields)
+                .filter(queryField =>
+                    !isObjectType(getFieldType(queryField.type)) ||
+                    !(options.presetConfig.builder?.objects || []).filter(object => object.name === queryTypeName || object.name === 'any').flatMap(object => object.fields || [])
+                        .filter(field => field.inGraphQL === false)
+                        .some(field => field.name === queryField.name)
+                )
                 .map(field => {
                     const template = '{{graphqlPath}}/queries/Query_{{name}}.gql';
                     const scope = { graphqlPath, name: field.name };
@@ -108,6 +116,12 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...Object.values(queryFields)
+                .filter(queryField =>
+                    !isObjectType(getFieldType(queryField.type)) ||
+                    !(options.presetConfig.builder?.objects || []).filter(object => object.name === queryTypeName || object.name === 'any').flatMap(object => object.fields || [])
+                        .filter(field => field.inGraphQL === false)
+                        .some(field => field.name === queryField.name)
+                )
                 .filter(field => !isListType(field.type))
                 .filter(field => !isConnection(getFieldType(field.type).name))
                 .flatMap(field => getObjectFields(getFieldType(field.type))?.map(objectField => { return { name: field.name, objectFieldName: objectField.name } }) || [])
@@ -137,6 +151,12 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...Object.values(mutationFields)
+                .filter(mutationField =>
+                    !isObjectType(getFieldType(mutationField.type)) ||
+                    !(options.presetConfig.builder?.objects || []).filter(object => object.name === mutationTypeName || object.name === 'any').flatMap(object => object.fields || [])
+                        .filter(field => field.inGraphQL === false)
+                        .some(field => field.name === mutationField.name)
+                )
                 .map(field => {
                     const template = '{{graphqlPath}}/mutations/Mutation_{{name}}.gql';
                     const scope = { graphqlPath, name: field.name };
@@ -161,6 +181,12 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...Object.values(mutationFields)
+                .filter(mutationField =>
+                    !isObjectType(getFieldType(mutationField.type)) ||
+                    !(options.presetConfig.builder?.objects || []).filter(object => object.name === mutationTypeName || object.name === 'any').flatMap(object => object.fields || [])
+                        .filter(field => field.inGraphQL === false)
+                        .some(field => field.name === mutationField.name)
+                )
                 .filter(field => !isListType(field.type))
                 .flatMap(field => getObjectFields(getFieldType(field.type))?.map(objectField => { return { name: field.name, objectFieldName: objectField.name } }) || [])
                 .map(objectField => {

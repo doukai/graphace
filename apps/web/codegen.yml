@@ -14,3 +14,19 @@ generates:
     preset: graphace-codegen-preset
     plugins:
       - graphace-codegen
+    presetConfig:
+      builder:
+        objects:
+          - 
+            name: QueryType
+            fields:
+              - 
+                name: userRole
+                inGraphQL: false
+          - 
+            name: MutationType
+            fields:
+              - 
+                name: userRole
+                inGraphQL: false
+
