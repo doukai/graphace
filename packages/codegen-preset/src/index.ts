@@ -53,6 +53,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                     componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                     routesPath: options.presetConfig.graphqlPath || _routesPath,
                     dataPath: options.presetConfig.dataPath || _dataPath,
+                    builder: options.presetConfig.builder,
                     template: pagesTemplate,
                 },
                 schema: options.schema,
@@ -76,6 +77,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                     dataPath: options.presetConfig.dataPath || _dataPath,
                     i18nPath: options.presetConfig.i18nPath || _i18nPath,
                     i18nDefault: options.presetConfig.i18nDefault || _i18nDefault,
+                    builder: options.presetConfig.builder,
                     template: i18nTemplate,
                 },
                 schema: options.schema,
@@ -88,7 +90,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             ...Object.values(queryFields)
                 .filter(queryField =>
                     !isObjectType(getFieldType(queryField.type)) ||
-                    !(options.presetConfig.builder?.objects || []).filter(object => object.name === queryTypeName || object.name === 'any').flatMap(object => object.fields || [])
+                    !(options.presetConfig.builder?.objects || []).filter(objectConfig => objectConfig.name === queryTypeName || objectConfig.name === 'any').flatMap(objectConfig => objectConfig.fields || [])
                         .filter(field => field.inGraphQL === false)
                         .some(field => field.name === queryField.name)
                 )
@@ -104,6 +106,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name: field.name
                         },
@@ -118,7 +121,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             ...Object.values(queryFields)
                 .filter(queryField =>
                     !isObjectType(getFieldType(queryField.type)) ||
-                    !(options.presetConfig.builder?.objects || []).filter(object => object.name === queryTypeName || object.name === 'any').flatMap(object => object.fields || [])
+                    !(options.presetConfig.builder?.objects || []).filter(objectConfig => objectConfig.name === queryTypeName || objectConfig.name === 'any').flatMap(objectConfig => objectConfig.fields || [])
                         .filter(field => field.inGraphQL === false)
                         .some(field => field.name === queryField.name)
                 )
@@ -138,6 +141,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -153,7 +157,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             ...Object.values(mutationFields)
                 .filter(mutationField =>
                     !isObjectType(getFieldType(mutationField.type)) ||
-                    !(options.presetConfig.builder?.objects || []).filter(object => object.name === mutationTypeName || object.name === 'any').flatMap(object => object.fields || [])
+                    !(options.presetConfig.builder?.objects || []).filter(objectConfig => objectConfig.name === mutationTypeName || objectConfig.name === 'any').flatMap(objectConfig => objectConfig.fields || [])
                         .filter(field => field.inGraphQL === false)
                         .some(field => field.name === mutationField.name)
                 )
@@ -169,6 +173,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name: field.name
                         },
@@ -183,7 +188,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             ...Object.values(mutationFields)
                 .filter(mutationField =>
                     !isObjectType(getFieldType(mutationField.type)) ||
-                    !(options.presetConfig.builder?.objects || []).filter(object => object.name === mutationTypeName || object.name === 'any').flatMap(object => object.fields || [])
+                    !(options.presetConfig.builder?.objects || []).filter(objectConfig => objectConfig.name === mutationTypeName || objectConfig.name === 'any').flatMap(objectConfig => objectConfig.fields || [])
                         .filter(field => field.inGraphQL === false)
                         .some(field => field.name === mutationField.name)
                 )
@@ -202,6 +207,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -215,6 +221,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inComponent !== false
+                )
                 .map(type => {
                     const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Table.svelte';
                     const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
@@ -227,6 +236,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name: type.name
                         },
@@ -239,6 +249,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inComponent !== false
+                )
                 .map(type => {
                     const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}ConnectionTable.svelte';
                     const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
@@ -251,6 +264,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name: type.name
                         },
@@ -263,6 +277,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inComponent !== false
+                )
                 .map(type => {
                     const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}CreateTable.svelte';
                     const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
@@ -275,6 +292,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name: type.name
                         },
@@ -287,6 +305,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inComponent !== false
+                )
                 .map(type => {
                     const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectTable.svelte';
                     const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
@@ -299,6 +320,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name: type.name
                         },
@@ -311,6 +333,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inComponent !== false
+                )
                 .map(type => {
                     const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectConnectionTable.svelte';
                     const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
@@ -323,6 +348,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name: type.name
                         },
@@ -335,6 +361,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inComponent !== false
+                )
                 .map(type => {
                     const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Form.svelte';
                     const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
@@ -347,6 +376,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name: type.name
                         },
@@ -359,6 +389,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inComponent !== false
+                )
                 .map(type => {
                     const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}CreateForm.svelte';
                     const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
@@ -371,6 +404,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name: type.name
                         },
@@ -383,6 +417,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...enumTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.enums || []).find(enumConfig => enumConfig.name === type.name)?.inComponent !== false
+                )
                 .map(type => {
                     const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Item.svelte';
                     const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
@@ -395,6 +432,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name: type.name
                         },
@@ -407,6 +445,12 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...enumTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.enums || []).find(enumConfig => enumConfig.name === type.name)?.inComponent !== false
+                )
+                .filter(type =>
+                    (options.presetConfig.builder?.enums || []).find(enumConfig => enumConfig.name === type.name)?.inComponent !== false
+                )
                 .map(type => {
                     const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Th.svelte';
                     const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
@@ -419,6 +463,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name: type.name
                         },
@@ -432,6 +477,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...enumTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.enums || []).find(enumConfig => enumConfig.name === type.name)?.inComponent !== false
+                )
                 .map(type => {
                     const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte';
                     const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
@@ -444,6 +492,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name: type.name
                         },
@@ -456,6 +505,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => {
                     const template = '{{routesPath}}/[lang]/{{pathName}}/+page.svelte';
                     const scope = { routesPath, pathName: changeCase.paramCase(type.name) };
@@ -468,6 +520,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name: type.name
                         },
@@ -480,6 +533,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => {
                     const template = '{{routesPath}}/[lang]/{{pathName}}/+page.ts';
                     const scope = { routesPath, pathName: changeCase.paramCase(type.name) };
@@ -492,6 +548,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name: type.name
                         },
@@ -504,6 +561,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => {
                     const template = '{{routesPath}}/[lang]/{{pathName}}/[id]/+page.svelte';
                     const scope = { routesPath, pathName: changeCase.paramCase(type.name) };
@@ -516,6 +576,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name: type.name
                         },
@@ -528,6 +589,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => {
                     const template = '{{routesPath}}/[lang]/{{pathName}}/[id]/+page.ts';
                     const scope = { routesPath, pathName: changeCase.paramCase(type.name) };
@@ -540,6 +604,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name: type.name
                         },
@@ -552,6 +617,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => assertObjectType(type))
                 .flatMap(type =>
                     Object.values(type.getFields())
@@ -576,6 +644,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -589,6 +658,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => assertObjectType(type))
                 .flatMap(type =>
                     Object.values(type.getFields())
@@ -613,6 +685,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -626,6 +699,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => assertObjectType(type))
                 .flatMap(type =>
                     Object.values(type.getFields())
@@ -650,6 +726,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -663,6 +740,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => assertObjectType(type))
                 .flatMap(type =>
                     Object.values(type.getFields())
@@ -687,6 +767,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -700,6 +781,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => assertObjectType(type))
                 .flatMap(type =>
                     Object.values(type.getFields())
@@ -724,6 +808,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -737,6 +822,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => assertObjectType(type))
                 .flatMap(type =>
                     Object.values(type.getFields())
@@ -761,6 +849,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -774,6 +863,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => assertObjectType(type))
                 .flatMap(type =>
                     Object.values(type.getFields())
@@ -798,6 +890,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -811,6 +904,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => assertObjectType(type))
                 .flatMap(type =>
                     Object.values(type.getFields())
@@ -835,6 +931,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -848,6 +945,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => assertObjectType(type))
                 .flatMap(type =>
                     Object.values(type.getFields())
@@ -872,6 +972,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -885,6 +986,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => assertObjectType(type))
                 .flatMap(type =>
                     Object.values(type.getFields())
@@ -909,6 +1013,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -922,6 +1027,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => {
                     const template = '{{routesPath}}/[lang]/{{pathName}}/_/+page.svelte';
                     const scope = { routesPath, pathName: changeCase.paramCase(type.name) };
@@ -934,6 +1042,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name: type.name
                         },
@@ -946,6 +1055,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => {
                     const template = '{{routesPath}}/[lang]/{{pathName}}/_/+page.ts';
                     const scope = { routesPath, pathName: changeCase.paramCase(type.name) };
@@ -958,6 +1070,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name: type.name
                         },
@@ -970,6 +1083,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => assertObjectType(type))
                 .flatMap(type =>
                     Object.values(type.getFields())
@@ -994,6 +1110,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -1007,6 +1124,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => assertObjectType(type))
                 .flatMap(type =>
                     Object.values(type.getFields())
@@ -1031,6 +1151,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -1044,6 +1165,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => assertObjectType(type))
                 .flatMap(type =>
                     Object.values(type.getFields())
@@ -1068,6 +1192,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -1081,6 +1206,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => assertObjectType(type))
                 .flatMap(type =>
                     Object.values(type.getFields())
@@ -1105,6 +1233,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -1118,6 +1247,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => assertObjectType(type))
                 .flatMap(type =>
                     Object.values(type.getFields())
@@ -1142,6 +1274,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -1155,6 +1288,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => assertObjectType(type))
                 .flatMap(type =>
                     Object.values(type.getFields())
@@ -1179,6 +1315,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -1192,6 +1329,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => assertObjectType(type))
                 .flatMap(type =>
                     Object.values(type.getFields())
@@ -1216,6 +1356,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -1229,6 +1370,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => assertObjectType(type))
                 .flatMap(type =>
                     Object.values(type.getFields())
@@ -1253,6 +1397,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -1266,6 +1411,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => assertObjectType(type))
                 .flatMap(type =>
                     Object.values(type.getFields())
@@ -1290,6 +1438,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
@@ -1303,6 +1452,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...objectTypes
+                .filter(type =>
+                    (options.presetConfig.builder?.objects || []).find(objectConfig => objectConfig.name === type.name)?.inRoute !== false
+                )
                 .map(type => assertObjectType(type))
                 .flatMap(type =>
                     Object.values(type.getFields())
@@ -1327,6 +1479,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
                             template,
                             name,
                             objectFieldName
