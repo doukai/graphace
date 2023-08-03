@@ -10,6 +10,5 @@ query Query_group($id: StringExpression, $name: StringExpression, $parent: Group
     updateUserId
     updateTime
     createGroupId
-    parentId
   }
 }

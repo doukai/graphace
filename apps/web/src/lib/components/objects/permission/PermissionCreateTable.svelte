@@ -86,22 +86,12 @@
 						/>
 					</label>
 				</th>
-				<td>{$LL.graphql.objects.Permission.fields.id.name()}</td>
 				<td>{$LL.graphql.objects.Permission.fields.name.name()}</td>
 				<td>{$LL.graphql.objects.Permission.fields.ofTypeName.name()}</td>
 				<td>{$LL.graphql.objects.Permission.fields.description.name()}</td>
 				<td>{$LL.graphql.objects.Permission.fields.level.name()}</td>
 				<td>{$LL.graphql.objects.Permission.fields.role.name()}</td>
 				<td>{$LL.graphql.objects.Permission.fields.realm.name()}</td>
-				<td>{$LL.graphql.objects.Permission.fields.isDeprecated.name()}</td>
-				<td>{$LL.graphql.objects.Permission.fields.version.name()}</td>
-				<td>{$LL.graphql.objects.Permission.fields.realmId.name()}</td>
-				<td>{$LL.graphql.objects.Permission.fields.createUserId.name()}</td>
-				<td>{$LL.graphql.objects.Permission.fields.createTime.name()}</td>
-				<td>{$LL.graphql.objects.Permission.fields.updateUserId.name()}</td>
-				<td>{$LL.graphql.objects.Permission.fields.updateTime.name()}</td>
-				<td>{$LL.graphql.objects.Permission.fields.createGroupId.name()}</td>
-				<td>{$LL.graphql.objects.Permission.fields.roleId.name()}</td>
 				<th />
 			</tr>
 		</thead>
@@ -115,12 +105,6 @@
 									<input type="checkbox" class="checkbox" bind:group={selectedRowList} value={row} />
 								</label>
 							</th>
-							<IDTd
-								name="id"
-								bind:value={node.id}
-								readonly
-								errors={errors[row]?.iterms?.id}
-							/>
 							<StringTd
 								name="name"
 								bind:value={node.name}
@@ -147,60 +131,6 @@
 							/>
 							<ObjectTd name="role" errors={errors[row]?.iterms?.role} path="_/role" on:gotoField />
 							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
-							<BooleanTd
-								name="isDeprecated"
-								bind:value={node.isDeprecated}
-								readonly
-								errors={errors[row]?.iterms?.isDeprecated}
-							/>
-							<IntTd
-								name="version"
-								bind:value={node.version}
-								readonly
-								errors={errors[row]?.iterms?.version}
-							/>
-							<StringTd
-								name="realmId"
-								bind:value={node.realmId}
-								readonly
-								errors={errors[row]?.iterms?.realmId}
-							/>
-							<StringTd
-								name="createUserId"
-								bind:value={node.createUserId}
-								readonly
-								errors={errors[row]?.iterms?.createUserId}
-							/>
-							<TimestampTd
-								name="createTime"
-								bind:value={node.createTime}
-								readonly
-								errors={errors[row]?.iterms?.createTime}
-							/>
-							<StringTd
-								name="updateUserId"
-								bind:value={node.updateUserId}
-								readonly
-								errors={errors[row]?.iterms?.updateUserId}
-							/>
-							<TimestampTd
-								name="updateTime"
-								bind:value={node.updateTime}
-								readonly
-								errors={errors[row]?.iterms?.updateTime}
-							/>
-							<StringTd
-								name="createGroupId"
-								bind:value={node.createGroupId}
-								readonly
-								errors={errors[row]?.iterms?.createGroupId}
-							/>
-							<IntTd
-								name="roleId"
-								bind:value={node.roleId}
-								readonly
-								errors={errors[row]?.iterms?.roleId}
-							/>
 							<th class="z-10 w-24">
 								<div class="flex space-x-1">
 									<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
@@ -239,7 +169,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={16 + 2}/>
+				<TableEmpty cols={6 + 2}/>
 			{/if}
 		</tbody>
 	</Table>

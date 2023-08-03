@@ -13,7 +13,6 @@ query Query_permission_realm($permission_id: StringExpression, $id: StringExpres
     updateUserId
     updateTime
     createGroupId
-    roleId
     realm(id: $id name: $name includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId)  {
       id
       name

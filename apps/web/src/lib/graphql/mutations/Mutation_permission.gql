@@ -13,6 +13,5 @@ mutation Mutation_permission($id: ID, $name: String, $ofTypeName: String, $descr
     updateUserId
     updateTime
     createGroupId
-    roleId
   }
 }

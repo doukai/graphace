@@ -84,7 +84,6 @@
 						/>
 					</label>
 				</th>
-				<td>{$LL.graphql.objects.User.fields.id.name()}</td>
 				<td>{$LL.graphql.objects.User.fields.name.name()}</td>
 				<td>{$LL.graphql.objects.User.fields.lastName.name()}</td>
 				<td>{$LL.graphql.objects.User.fields.login.name()}</td>
@@ -93,16 +92,6 @@
 				<td>{$LL.graphql.objects.User.fields.groups.name()}</td>
 				<td>{$LL.graphql.objects.User.fields.roles.name()}</td>
 				<td>{$LL.graphql.objects.User.fields.realm.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.isDeprecated.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.version.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.realmId.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.createUserId.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.createTime.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.updateUserId.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.updateTime.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.createGroupId.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.userGroup.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.userRole.name()}</td>
 				<th />
 			</tr>
 		</thead>
@@ -116,12 +105,6 @@
 									<input type="checkbox" class="checkbox" bind:group={selectedRowList} value={row} />
 								</label>
 							</th>
-							<IDTd
-								name="id"
-								bind:value={node.id}
-								readonly
-								errors={errors[row]?.iterms?.id}
-							/>
 							<StringTd
 								name="name"
 								bind:value={node.name}
@@ -155,56 +138,6 @@
 							<ObjectTd name="groups" errors={errors[row]?.iterms?.groups} path="_/groups" on:gotoField />
 							<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
 							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
-							<BooleanTd
-								name="isDeprecated"
-								bind:value={node.isDeprecated}
-								readonly
-								errors={errors[row]?.iterms?.isDeprecated}
-							/>
-							<IntTd
-								name="version"
-								bind:value={node.version}
-								readonly
-								errors={errors[row]?.iterms?.version}
-							/>
-							<StringTd
-								name="realmId"
-								bind:value={node.realmId}
-								readonly
-								errors={errors[row]?.iterms?.realmId}
-							/>
-							<StringTd
-								name="createUserId"
-								bind:value={node.createUserId}
-								readonly
-								errors={errors[row]?.iterms?.createUserId}
-							/>
-							<TimestampTd
-								name="createTime"
-								bind:value={node.createTime}
-								readonly
-								errors={errors[row]?.iterms?.createTime}
-							/>
-							<StringTd
-								name="updateUserId"
-								bind:value={node.updateUserId}
-								readonly
-								errors={errors[row]?.iterms?.updateUserId}
-							/>
-							<TimestampTd
-								name="updateTime"
-								bind:value={node.updateTime}
-								readonly
-								errors={errors[row]?.iterms?.updateTime}
-							/>
-							<StringTd
-								name="createGroupId"
-								bind:value={node.createGroupId}
-								readonly
-								errors={errors[row]?.iterms?.createGroupId}
-							/>
-							<ObjectTd name="userGroup" errors={errors[row]?.iterms?.userGroup} path="_/user-group" on:gotoField />
-							<ObjectTd name="userRole" errors={errors[row]?.iterms?.userRole} path="_/user-role" on:gotoField />
 							<th class="z-10 w-24">
 								<div class="flex space-x-1">
 									<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
@@ -243,7 +176,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={19 + 2}/>
+				<TableEmpty cols={8 + 2}/>
 			{/if}
 		</tbody>
 	</Table>

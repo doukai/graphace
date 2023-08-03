@@ -44,22 +44,16 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         initConfig(options.presetConfig.builder);
 
         const targetQueryFields = Object.values(queryFields)
-            .filter(queryField =>
-                !isObjectType(getFieldType(queryField.type)) ||
-                inGraphQLField(queryTypeName, queryField.name)
-            );
+            .filter(queryField => inGraphQLField(queryTypeName, queryField.name, getFieldType(queryField.type).name));
 
         const targetMutationFields = Object.values(mutationFields)
-            .filter(mutationField =>
-                !isObjectType(getFieldType(mutationField.type)) ||
-                inGraphQLField(mutationTypeName, mutationField.name)
-            );
+            .filter(mutationField => inGraphQLField(mutationTypeName, mutationField.name, getFieldType(mutationField.type).name));
 
         const targetComponentObjectTypes = objectTypes
-            .filter(type => inComponentEnum(type.name));
+            .filter(type => inComponentObject(type.name));
 
         const targetComponentEnumTypes = enumTypes
-            .filter(type => inComponentObject(type.name));
+            .filter(type => inComponentEnum(type.name));
 
         const targetRouteObjectType = objectTypes
             .filter(type => inRouteObject(type.name));

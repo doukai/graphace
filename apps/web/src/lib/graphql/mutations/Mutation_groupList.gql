@@ -10,6 +10,5 @@ mutation Mutation_groupList($id: ID, $name: String, $parent: GroupInput, $subGro
     updateUserId
     updateTime
     createGroupId
-    parentId
   }
 }

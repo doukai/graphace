@@ -10,7 +10,6 @@ query Query_group_realm($group_id: StringExpression, $id: StringExpression, $nam
     updateUserId
     updateTime
     createGroupId
-    parentId
     realm(id: $id name: $name includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId)  {
       id
       name

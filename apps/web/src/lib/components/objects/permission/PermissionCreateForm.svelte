@@ -81,21 +81,11 @@
 		on:gotoSelect
 		on:back
 	>
-		<IDItem label={$LL.graphql.objects.Permission.fields.id.name()} name="id" bind:value={node.id} errors={errors.id} />
 		<StringItem label={$LL.graphql.objects.Permission.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
 		<StringItem label={$LL.graphql.objects.Permission.fields.ofTypeName.name()} name="ofTypeName" bind:value={node.ofTypeName} errors={errors.ofTypeName} />
 		<StringItem label={$LL.graphql.objects.Permission.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
 		<PermissionLevelItem label={$LL.graphql.objects.Permission.fields.level.name()} name="level" bind:value={node.level} errors={errors.level} />
 		<ObjectItem name="role" path="_/role" label={$LL.graphql.objects.Permission.fields.role.name()} errors={errors.role} on:gotoField />
 		<ObjectItem name="realm" path="_/realm" label={$LL.graphql.objects.Permission.fields.realm.name()} errors={errors.realm} on:gotoField />
-		<BooleanItem label={$LL.graphql.objects.Permission.fields.isDeprecated.name()} name="isDeprecated" bind:value={node.isDeprecated} errors={errors.isDeprecated} />
-		<IntItem label={$LL.graphql.objects.Permission.fields.version.name()} name="version" bind:value={node.version} errors={errors.version} />
-		<StringItem label={$LL.graphql.objects.Permission.fields.realmId.name()} name="realmId" bind:value={node.realmId} errors={errors.realmId} />
-		<StringItem label={$LL.graphql.objects.Permission.fields.createUserId.name()} name="createUserId" bind:value={node.createUserId} errors={errors.createUserId} />
-		<TimestampItem label={$LL.graphql.objects.Permission.fields.createTime.name()} name="createTime" bind:value={node.createTime} errors={errors.createTime} />
-		<StringItem label={$LL.graphql.objects.Permission.fields.updateUserId.name()} name="updateUserId" bind:value={node.updateUserId} errors={errors.updateUserId} />
-		<TimestampItem label={$LL.graphql.objects.Permission.fields.updateTime.name()} name="updateTime" bind:value={node.updateTime} errors={errors.updateTime} />
-		<StringItem label={$LL.graphql.objects.Permission.fields.createGroupId.name()} name="createGroupId" bind:value={node.createGroupId} errors={errors.createGroupId} />
-		<IntItem label={$LL.graphql.objects.Permission.fields.roleId.name()} name="roleId" bind:value={node.roleId} errors={errors.roleId} />
 	</Form>
 </Card>

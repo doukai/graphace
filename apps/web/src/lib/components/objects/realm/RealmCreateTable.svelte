@@ -84,16 +84,7 @@
 						/>
 					</label>
 				</th>
-				<td>{$LL.graphql.objects.Realm.fields.id.name()}</td>
 				<td>{$LL.graphql.objects.Realm.fields.name.name()}</td>
-				<td>{$LL.graphql.objects.Realm.fields.isDeprecated.name()}</td>
-				<td>{$LL.graphql.objects.Realm.fields.version.name()}</td>
-				<td>{$LL.graphql.objects.Realm.fields.realmId.name()}</td>
-				<td>{$LL.graphql.objects.Realm.fields.createUserId.name()}</td>
-				<td>{$LL.graphql.objects.Realm.fields.createTime.name()}</td>
-				<td>{$LL.graphql.objects.Realm.fields.updateUserId.name()}</td>
-				<td>{$LL.graphql.objects.Realm.fields.updateTime.name()}</td>
-				<td>{$LL.graphql.objects.Realm.fields.createGroupId.name()}</td>
 				<th />
 			</tr>
 		</thead>
@@ -107,65 +98,11 @@
 									<input type="checkbox" class="checkbox" bind:group={selectedRowList} value={row} />
 								</label>
 							</th>
-							<IDTd
-								name="id"
-								bind:value={node.id}
-								readonly
-								errors={errors[row]?.iterms?.id}
-							/>
 							<StringTd
 								name="name"
 								bind:value={node.name}
 								readonly
 								errors={errors[row]?.iterms?.name}
-							/>
-							<BooleanTd
-								name="isDeprecated"
-								bind:value={node.isDeprecated}
-								readonly
-								errors={errors[row]?.iterms?.isDeprecated}
-							/>
-							<IntTd
-								name="version"
-								bind:value={node.version}
-								readonly
-								errors={errors[row]?.iterms?.version}
-							/>
-							<StringTd
-								name="realmId"
-								bind:value={node.realmId}
-								readonly
-								errors={errors[row]?.iterms?.realmId}
-							/>
-							<StringTd
-								name="createUserId"
-								bind:value={node.createUserId}
-								readonly
-								errors={errors[row]?.iterms?.createUserId}
-							/>
-							<TimestampTd
-								name="createTime"
-								bind:value={node.createTime}
-								readonly
-								errors={errors[row]?.iterms?.createTime}
-							/>
-							<StringTd
-								name="updateUserId"
-								bind:value={node.updateUserId}
-								readonly
-								errors={errors[row]?.iterms?.updateUserId}
-							/>
-							<TimestampTd
-								name="updateTime"
-								bind:value={node.updateTime}
-								readonly
-								errors={errors[row]?.iterms?.updateTime}
-							/>
-							<StringTd
-								name="createGroupId"
-								bind:value={node.createGroupId}
-								readonly
-								errors={errors[row]?.iterms?.createGroupId}
 							/>
 							<th class="z-10 w-24">
 								<div class="flex space-x-1">
@@ -205,7 +142,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={10 + 2}/>
+				<TableEmpty cols={1 + 2}/>
 			{/if}
 		</tbody>
 	</Table>

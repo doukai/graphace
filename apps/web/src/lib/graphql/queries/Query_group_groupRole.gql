@@ -10,7 +10,6 @@ query Query_group_groupRole($group_id: StringExpression, $first: Int, $last: Int
     updateUserId
     updateTime
     createGroupId
-    parentId
     groupRoleConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id groupId: $groupId from: $from roleId: $roleId to: $to totalCount: $totalCount)  {
       totalCount
       edges {

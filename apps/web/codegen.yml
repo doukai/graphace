@@ -18,23 +18,72 @@ generates:
       builder:
         objects:
           - 
-            name: QueryType
+            name: any
             fields:
               - 
-                name: userRole
-                inGraphQL: false
+                name: id
+                inList: false
+                inDetail: false
+              - 
+                name: isDeprecated
+                inList: false
+                inDetail: false
+              - 
+                name: version
+                inList: false
+                inDetail: false
+              - 
+                name: realmId
+                inList: false
+                inDetail: false
+              - 
+                name: createUserId
+                inList: false
+                inDetail: false
+              - 
+                name: createTime
+                inList: false
+                inDetail: false
+              - 
+                name: updateUserId
+                inList: false
+                inDetail: false
+              - 
+                name: updateTime
+                inList: false
+                inDetail: false
+              - 
+                name: createGroupId
+                inList: false
+                inDetail: false
           - 
-            name: MutationType
-            fields:
-              - 
-                name: userRole
-                inGraphQL: false
+            name: UserGroup
+            ignore: true
+          - 
+            name: UserRole
+            ignore: true
+          - 
+            name: RoleComposite
+            ignore: true
+          - 
+            name: GroupRole
+            ignore: true
           - 
             name: User
             fields:
               - 
                 name: password
-                inGraphQL: false
-                inList: false
-                inDetail: false
+                ignore: true
+          - 
+            name: Group
+            fields:
+              - 
+                name: parentId
+                ignore: true
+          - 
+            name: Permission
+            fields:
+              - 
+                name: roleId
+                ignore: true
 

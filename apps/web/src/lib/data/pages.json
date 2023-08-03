@@ -9,11 +9,6 @@
         "href": "/group"
 	},
 	{
-        "name": "GroupRole",
-        "tags": "GroupRole",
-        "href": "/group-role"
-	},
-	{
         "name": "Permission",
         "tags": "Permission",
         "href": "/permission"
@@ -29,24 +24,9 @@
         "href": "/role"
 	},
 	{
-        "name": "RoleComposite",
-        "tags": "RoleComposite",
-        "href": "/role-composite"
-	},
-	{
         "name": "User",
         "tags": "User",
         "href": "/user"
-	},
-	{
-        "name": "UserGroup",
-        "tags": "UserGroup",
-        "href": "/user-group"
-	},
-	{
-        "name": "UserRole",
-        "tags": "UserRole",
-        "href": "/user-role"
 	}
     ]
   }

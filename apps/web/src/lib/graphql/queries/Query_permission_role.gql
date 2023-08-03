@@ -13,7 +13,6 @@ query Query_permission_role($permission_id: StringExpression, $id: StringExpress
     updateUserId
     updateTime
     createGroupId
-    roleId
     role(id: $id name: $name description: $description users: $users composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userRole: $userRole roleComposite: $roleComposite)  {
       id
       name

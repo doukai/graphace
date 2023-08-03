@@ -13,7 +13,6 @@ mutation Mutation_permission_role($permission_id: ID, $permission_role: RoleInpu
     updateUserId
     updateTime
     createGroupId
-    roleId
     role(id: $id name: $name description: $description users: $users composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userRole: $userRole roleComposite: $roleComposite) @update(if: $update) @mergeToList(arguments: $mergeToList) {
       id
       name

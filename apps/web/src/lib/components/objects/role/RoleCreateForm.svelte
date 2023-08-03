@@ -80,21 +80,10 @@
 		on:gotoSelect
 		on:back
 	>
-		<IDItem label={$LL.graphql.objects.Role.fields.id.name()} name="id" bind:value={node.id} errors={errors.id} />
 		<StringItem label={$LL.graphql.objects.Role.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
 		<StringItem label={$LL.graphql.objects.Role.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
 		<ObjectItem name="users" path="_/users" label={$LL.graphql.objects.Role.fields.users.name()} errors={errors.users} on:gotoField />
 		<ObjectItem name="permissions" path="_/permissions" label={$LL.graphql.objects.Role.fields.permissions.name()} errors={errors.permissions} on:gotoField />
 		<ObjectItem name="realm" path="_/realm" label={$LL.graphql.objects.Role.fields.realm.name()} errors={errors.realm} on:gotoField />
-		<BooleanItem label={$LL.graphql.objects.Role.fields.isDeprecated.name()} name="isDeprecated" bind:value={node.isDeprecated} errors={errors.isDeprecated} />
-		<IntItem label={$LL.graphql.objects.Role.fields.version.name()} name="version" bind:value={node.version} errors={errors.version} />
-		<StringItem label={$LL.graphql.objects.Role.fields.realmId.name()} name="realmId" bind:value={node.realmId} errors={errors.realmId} />
-		<StringItem label={$LL.graphql.objects.Role.fields.createUserId.name()} name="createUserId" bind:value={node.createUserId} errors={errors.createUserId} />
-		<TimestampItem label={$LL.graphql.objects.Role.fields.createTime.name()} name="createTime" bind:value={node.createTime} errors={errors.createTime} />
-		<StringItem label={$LL.graphql.objects.Role.fields.updateUserId.name()} name="updateUserId" bind:value={node.updateUserId} errors={errors.updateUserId} />
-		<TimestampItem label={$LL.graphql.objects.Role.fields.updateTime.name()} name="updateTime" bind:value={node.updateTime} errors={errors.updateTime} />
-		<StringItem label={$LL.graphql.objects.Role.fields.createGroupId.name()} name="createGroupId" bind:value={node.createGroupId} errors={errors.createGroupId} />
-		<ObjectItem name="userRole" path="_/user-role" label={$LL.graphql.objects.Role.fields.userRole.name()} errors={errors.userRole} on:gotoField />
-		<ObjectItem name="roleComposite" path="_/role-composite" label={$LL.graphql.objects.Role.fields.roleComposite.name()} errors={errors.roleComposite} on:gotoField />
 	</Form>
 </Card>

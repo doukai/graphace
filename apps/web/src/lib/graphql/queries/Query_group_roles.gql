@@ -10,7 +10,6 @@ query Query_group_roles($group_id: StringExpression, $first: Int, $last: Int, $o
     updateUserId
     updateTime
     createGroupId
-    parentId
     rolesConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name description: $description users: $users composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userRole: $userRole roleComposite: $roleComposite totalCount: $totalCount)  {
       totalCount
       edges {

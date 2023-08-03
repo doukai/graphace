@@ -1,5 +1,6 @@
 import type { GraphQLNamedType } from "graphql";
 import type { BuilderConfig } from "./types/types";
+import { connectionSuffix } from "./introspection";
 
 let builderConfig: BuilderConfig | undefined;
 
@@ -8,33 +9,73 @@ export function initConfig(builder: BuilderConfig | undefined) {
 }
 
 export function inComponentEnum(typeName: string): boolean {
-    return (builderConfig?.enums || []).find(enumConfig => enumConfig.name === typeName)?.inComponent !== false
+    const enumConifg = builderConfig?.enums?.find(enumConfig => enumConfig.name === typeName);
+    return enumConifg?.inComponent !== false && enumConifg?.ignore !== true;
 }
 
 export function inComponentObject(typeName: string): boolean {
-    return (builderConfig?.objects || []).find(objectConfig => objectConfig.name === typeName)?.inComponent !== false
+    const objectConfig = builderConfig?.objects?.find(objectConfig => objectConfig.name === typeName);
+    return objectConfig?.inComponent !== false && objectConfig?.ignore !== true;
 }
 
 export function inRouteObject(typeName: string): boolean {
-    return (builderConfig?.objects || []).find(objectConfig => objectConfig.name === typeName)?.inRoute !== false
+    const objectConfig = builderConfig?.objects?.find(objectConfig => objectConfig.name === typeName);
+    return objectConfig?.inRoute !== false && objectConfig?.ignore !== true;
 }
 
-export function inGraphQLField(typeName: string, fieldName: string): boolean {
-    return !(builderConfig?.objects || []).filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any').flatMap(objectConfig => objectConfig.fields || [])
-        .filter(field => field.inGraphQL === false)
-        .some(field => field.name === fieldName);
+export function getObjectImports(typeName: string): string[] | undefined {
+    return builderConfig?.objects?.find(objectConfig => objectConfig.name === typeName)?.import;
 }
 
-export function inListField(typeName: string, fieldName: string): boolean {
-    return !(builderConfig?.objects || []).filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any').flatMap(objectConfig => objectConfig.fields || [])
-        .filter(field => field.inList === false)
-        .some(field => field.name === fieldName);
+export function getObjectArrayImports(typeName: string): string[] | undefined {
+    return builderConfig?.objects?.find(objectConfig => objectConfig.name === typeName)?.arrayImport;
 }
 
-export function inDetailField(typeName: string, fieldName: string): boolean {
-    return !(builderConfig?.objects || []).filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any').flatMap(objectConfig => objectConfig.fields || [])
-        .filter(field => field.inDetail === false)
-        .some(field => field.name === fieldName);
+export function getObjectComponent(typeName: string): string | undefined {
+    return builderConfig?.objects?.find(objectConfig => objectConfig.name === typeName)?.component;
+}
+
+export function getObjectArrayComponent(typeName: string): string | undefined {
+    return builderConfig?.objects?.find(objectConfig => objectConfig.name === typeName)?.arrayComponent;
+}
+
+export function inGraphQLField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
+    const originalFieldTypeName = fieldTypeName.lastIndexOf(connectionSuffix) === -1 ?
+        fieldTypeName :
+        fieldTypeName.substring(0, fieldTypeName.lastIndexOf(connectionSuffix));
+    return !(builderConfig?.objects || [])
+        .filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any')
+        .flatMap(objectConfig => objectConfig.fields || [])
+        .filter(fieldConfig => fieldConfig.inGraphQL === false || fieldConfig.ignore === true)
+        .some(fieldConfig => fieldConfig.name === fieldName) &&
+        builderConfig?.objects?.find(objectConfig => objectConfig.name === originalFieldTypeName)?.ignore !== true &&
+        builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true;
+}
+
+export function inListField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
+    const originalFieldTypeName = fieldTypeName.lastIndexOf(connectionSuffix) === -1 ?
+        fieldTypeName :
+        fieldTypeName.substring(0, fieldTypeName.lastIndexOf(connectionSuffix));
+    return !(builderConfig?.objects || [])
+        .filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any')
+        .flatMap(objectConfig => objectConfig.fields || [])
+        .filter(fieldConfig => fieldConfig.inList === false || fieldConfig.ignore === true)
+        .some(fieldConfig => fieldConfig.name === fieldName) &&
+        builderConfig?.objects?.find(objectConfig => objectConfig.name === originalFieldTypeName)?.ignore !== true &&
+        builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true;
+}
+
+export function inDetailField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
+    const originalFieldTypeName = fieldTypeName.lastIndexOf(connectionSuffix) === -1 ?
+        fieldTypeName :
+        fieldTypeName.substring(0, fieldTypeName.lastIndexOf(connectionSuffix));
+    return !(builderConfig?.objects || [])
+        .filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any')
+        .flatMap(objectConfig => objectConfig.fields || [])
+        .filter(fieldConfig => fieldConfig.inDetail === false || fieldConfig.ignore === true)
+        .some(fieldConfig => fieldConfig.name === fieldName) &&
+        builderConfig?.objects?.find(objectConfig => objectConfig.name === originalFieldTypeName)?.ignore !== true &&
+        builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true;
 }
 
 export function componentFields(
@@ -81,7 +122,7 @@ export function componentFieldImports(
         inMutationArgs: boolean
     }[] | undefined
 ): string[] | undefined {
-    return fields?.flatMap(field => getFieldImport(typeName, field) || []);
+    return fields?.flatMap(field => field.isListType ? getFieldArrayImport(typeName, field) || [] : getFieldImport(typeName, field) || []);
 }
 
 export function getFieldImport(
@@ -110,17 +151,45 @@ export function getFieldImport(
     return undefined;
 }
 
-export function getFieldComponent(typeName: string, field: {
-    fieldName: string,
-    fieldType: GraphQLNamedType,
-    isScalarType: boolean,
-    isEnumType: boolean,
-    isObjectType: boolean,
-    isNonNullType: boolean,
-    isListType: boolean,
-    inQueryArgs: boolean,
-    inMutationArgs: boolean
-}): string | undefined {
+export function getFieldArrayImport(
+    typeName: string,
+    field: {
+        fieldName: string,
+        fieldType: GraphQLNamedType,
+        isScalarType: boolean,
+        isEnumType: boolean,
+        isObjectType: boolean,
+        isNonNullType: boolean,
+        isListType: boolean,
+        inQueryArgs: boolean,
+        inMutationArgs: boolean
+    }): string[] | undefined {
+    const fieldImport = (builderConfig?.objects || []).filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any').flatMap(objectConfig => objectConfig.fields || [])?.find(fieldConfig => fieldConfig.name === field.fieldName)?.arrayImport;
+    if (fieldImport) {
+        return Array.from(new Set(fieldImport));
+    } else if (field.isScalarType) {
+        return Array.from(new Set(builderConfig?.scalars?.find(scalarConfig => scalarConfig.name === field.fieldType.name)?.arrayImport));
+    } else if (field.isEnumType) {
+        return Array.from(new Set(builderConfig?.enums?.find(enumConfig => enumConfig.name === field.fieldType.name)?.arrayImport));
+    } else if (field.isObjectType) {
+        return Array.from(new Set(builderConfig?.objects?.find(objectConfig => objectConfig.name === field.fieldType.name)?.arrayImport));
+    }
+    return undefined;
+}
+
+export function getFieldComponent(
+    typeName: string,
+    field: {
+        fieldName: string,
+        fieldType: GraphQLNamedType,
+        isScalarType: boolean,
+        isEnumType: boolean,
+        isObjectType: boolean,
+        isNonNullType: boolean,
+        isListType: boolean,
+        inQueryArgs: boolean,
+        inMutationArgs: boolean
+    }): string | undefined {
     const fieldComponent = (builderConfig?.objects || []).filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any').flatMap(objectConfig => objectConfig.fields || [])?.find(fieldConfig => fieldConfig.name === field.fieldName)?.component;
     if (fieldComponent) {
         return fieldComponent;
@@ -134,17 +203,19 @@ export function getFieldComponent(typeName: string, field: {
     return undefined;
 }
 
-export function getFieldArrayComponent(typeName: string, field: {
-    fieldName: string,
-    fieldType: GraphQLNamedType,
-    isScalarType: boolean,
-    isEnumType: boolean,
-    isObjectType: boolean,
-    isNonNullType: boolean,
-    isListType: boolean,
-    inQueryArgs: boolean,
-    inMutationArgs: boolean
-}): string | undefined {
+export function getFieldArrayComponent(
+    typeName: string,
+    field: {
+        fieldName: string,
+        fieldType: GraphQLNamedType,
+        isScalarType: boolean,
+        isEnumType: boolean,
+        isObjectType: boolean,
+        isNonNullType: boolean,
+        isListType: boolean,
+        inQueryArgs: boolean,
+        inMutationArgs: boolean
+    }): string | undefined {
     const fieldArrayComponent = (builderConfig?.objects || []).filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any').flatMap(objectConfig => objectConfig.fields || [])?.find(fieldConfig => fieldConfig.name === field.fieldName)?.arrayComponent;
     if (fieldArrayComponent) {
         return fieldArrayComponent;
@@ -157,4 +228,3 @@ export function getFieldArrayComponent(typeName: string, field: {
     }
     return undefined;
 }
-

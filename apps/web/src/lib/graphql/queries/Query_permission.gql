@@ -13,6 +13,5 @@ query Query_permission($id: StringExpression, $name: StringExpression, $ofTypeNa
     updateUserId
     updateTime
     createGroupId
-    roleId
   }
 }

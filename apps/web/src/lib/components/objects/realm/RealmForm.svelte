@@ -128,19 +128,10 @@
 		on:back
 	>
 		{#if isFetching}
-			<FormLoading rows={10} />
+			<FormLoading rows={1} />
 		{:else}
 			{#if node}
-				<IDItem label={$LL.graphql.objects.Realm.fields.id.name()} name="id" bind:value={node.id} errors={errors.id} />
 				<StringItem label={$LL.graphql.objects.Realm.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
-				<BooleanItem label={$LL.graphql.objects.Realm.fields.isDeprecated.name()} name="isDeprecated" bind:value={node.isDeprecated} errors={errors.isDeprecated} />
-				<IntItem label={$LL.graphql.objects.Realm.fields.version.name()} name="version" bind:value={node.version} errors={errors.version} />
-				<StringItem label={$LL.graphql.objects.Realm.fields.realmId.name()} name="realmId" bind:value={node.realmId} errors={errors.realmId} />
-				<StringItem label={$LL.graphql.objects.Realm.fields.createUserId.name()} name="createUserId" bind:value={node.createUserId} errors={errors.createUserId} />
-				<TimestampItem label={$LL.graphql.objects.Realm.fields.createTime.name()} name="createTime" bind:value={node.createTime} errors={errors.createTime} />
-				<StringItem label={$LL.graphql.objects.Realm.fields.updateUserId.name()} name="updateUserId" bind:value={node.updateUserId} errors={errors.updateUserId} />
-				<TimestampItem label={$LL.graphql.objects.Realm.fields.updateTime.name()} name="updateTime" bind:value={node.updateTime} errors={errors.updateTime} />
-				<StringItem label={$LL.graphql.objects.Realm.fields.createGroupId.name()} name="createGroupId" bind:value={node.createGroupId} errors={errors.createGroupId} />
 			{/if}
 		{/if}
 	</Form>

@@ -13,6 +13,5 @@ query Query_permissionList($id: StringExpression, $name: StringExpression, $ofTy
     updateUserId
     updateTime
     createGroupId
-    roleId
   }
 }

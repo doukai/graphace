@@ -10,7 +10,6 @@ mutation Mutation_group_realm($group_id: ID, $group_realm: RealmInput, $id: Stri
     updateUserId
     updateTime
     createGroupId
-    parentId
     realm(id: $id name: $name includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId) @update(if: $update) @mergeToList(arguments: $mergeToList) {
       id
       name

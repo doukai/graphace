@@ -80,17 +80,9 @@
 		if (searchValue) {
 			args.cond = 'OR';
 			args.name = { opr: 'LK', val: `%${searchValue}%` };
-			args.realmId = { opr: 'LK', val: `%${searchValue}%` };
-			args.createUserId = { opr: 'LK', val: `%${searchValue}%` };
-			args.updateUserId = { opr: 'LK', val: `%${searchValue}%` };
-			args.createGroupId = { opr: 'LK', val: `%${searchValue}%` };
 		} else {
 			args.cond = undefined;
 			args.name = undefined;
-			args.realmId = undefined;
-			args.createUserId = undefined;
-			args.updateUserId = undefined;
-			args.createGroupId = undefined;
 		}
 
 		dispatch('fetch', {
@@ -167,66 +159,17 @@
 						</label>
 					{/if}
 				</th>
-				<IDTh
-					name={$LL.graphql.objects.Realm.fields.id.name()}
-					bind:expression={args.id}
-					bind:sort={orderBy.id}
-					on:filter={query}
-				/>
 				<StringTh
 					name={$LL.graphql.objects.Realm.fields.name.name()}
 					bind:expression={args.name}
 					bind:sort={orderBy.name}
 					on:filter={query}
 				/>
-				<td>{$LL.graphql.objects.Realm.fields.isDeprecated.name()}</td>
-				<IntTh
-					name={$LL.graphql.objects.Realm.fields.version.name()}
-					bind:expression={args.version}
-					bind:sort={orderBy.version}
-					on:filter={query}
-				/>
-				<StringTh
-					name={$LL.graphql.objects.Realm.fields.realmId.name()}
-					bind:expression={args.realmId}
-					bind:sort={orderBy.realmId}
-					on:filter={query}
-				/>
-				<StringTh
-					name={$LL.graphql.objects.Realm.fields.createUserId.name()}
-					bind:expression={args.createUserId}
-					bind:sort={orderBy.createUserId}
-					on:filter={query}
-				/>
-				<TimestampTh
-					name={$LL.graphql.objects.Realm.fields.createTime.name()}
-					bind:expression={args.createTime}
-					bind:sort={orderBy.createTime}
-					on:filter={query}
-				/>
-				<StringTh
-					name={$LL.graphql.objects.Realm.fields.updateUserId.name()}
-					bind:expression={args.updateUserId}
-					bind:sort={orderBy.updateUserId}
-					on:filter={query}
-				/>
-				<TimestampTh
-					name={$LL.graphql.objects.Realm.fields.updateTime.name()}
-					bind:expression={args.updateTime}
-					bind:sort={orderBy.updateTime}
-					on:filter={query}
-				/>
-				<StringTh
-					name={$LL.graphql.objects.Realm.fields.createGroupId.name()}
-					bind:expression={args.createGroupId}
-					bind:sort={orderBy.createGroupId}
-					on:filter={query}
-				/>
 				<th />
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={10} cols={10 + 2}/>
+			<TableLoading rows={10} cols={1 + 2}/>
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
@@ -242,65 +185,11 @@
 										{/if}
 									</label>
 								</th>
-								<IDTd
-									name="id"
-									bind:value={node.id}
-									readonly
-									errors={errors[row]?.iterms?.id}
-								/>
 								<StringTd
 									name="name"
 									bind:value={node.name}
 									on:save={() => updateField({ id: node?.id, name: node?.name })}
 									errors={errors[row]?.iterms?.name}
-								/>
-								<BooleanTd
-									name="isDeprecated"
-									bind:value={node.isDeprecated}
-									on:save={() => updateField({ id: node?.id, isDeprecated: node?.isDeprecated })}
-									errors={errors[row]?.iterms?.isDeprecated}
-								/>
-								<IntTd
-									name="version"
-									bind:value={node.version}
-									on:save={() => updateField({ id: node?.id, version: node?.version })}
-									errors={errors[row]?.iterms?.version}
-								/>
-								<StringTd
-									name="realmId"
-									bind:value={node.realmId}
-									on:save={() => updateField({ id: node?.id, realmId: node?.realmId })}
-									errors={errors[row]?.iterms?.realmId}
-								/>
-								<StringTd
-									name="createUserId"
-									bind:value={node.createUserId}
-									on:save={() => updateField({ id: node?.id, createUserId: node?.createUserId })}
-									errors={errors[row]?.iterms?.createUserId}
-								/>
-								<TimestampTd
-									name="createTime"
-									bind:value={node.createTime}
-									on:save={() => updateField({ id: node?.id, createTime: node?.createTime })}
-									errors={errors[row]?.iterms?.createTime}
-								/>
-								<StringTd
-									name="updateUserId"
-									bind:value={node.updateUserId}
-									on:save={() => updateField({ id: node?.id, updateUserId: node?.updateUserId })}
-									errors={errors[row]?.iterms?.updateUserId}
-								/>
-								<TimestampTd
-									name="updateTime"
-									bind:value={node.updateTime}
-									on:save={() => updateField({ id: node?.id, updateTime: node?.updateTime })}
-									errors={errors[row]?.iterms?.updateTime}
-								/>
-								<StringTd
-									name="createGroupId"
-									bind:value={node.createGroupId}
-									on:save={() => updateField({ id: node?.id, createGroupId: node?.createGroupId })}
-									errors={errors[row]?.iterms?.createGroupId}
 								/>
 								<th class="z-10 w-12">
 									<div class="flex space-x-1">
@@ -333,7 +222,7 @@
 						{/if}
 					{/each}
 				{:else}
-					<TableEmpty cols={10 + 2}/>
+					<TableEmpty cols={1 + 2}/>
 				{/if}
 			</tbody>
 		{/if}

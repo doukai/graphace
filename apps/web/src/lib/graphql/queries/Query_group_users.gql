@@ -10,7 +10,6 @@ query Query_group_users($group_id: StringExpression, $first: Int, $last: Int, $o
     updateUserId
     updateTime
     createGroupId
-    parentId
     usersConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name lastName: $lastName login: $login password: $password email: $email disable: $disable groups: $groups roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userGroup: $userGroup userRole: $userRole totalCount: $totalCount)  {
       totalCount
       edges {

@@ -78,50 +78,6 @@ const en: BaseTranslation = {
 				}
 			}
 		},
-		GroupRole: {
-			name: 'GroupRole',
-			fields: {
-				id: {
-					name: 'id',
-				},
-				groupId: {
-					name: 'groupId',
-				},
-				from: {
-					name: 'from',
-				},
-				roleId: {
-					name: 'roleId',
-				},
-				to: {
-					name: 'to',
-				},
-				isDeprecated: {
-					name: 'isDeprecated',
-				},
-				version: {
-					name: 'version',
-				},
-				realmId: {
-					name: 'realmId',
-				},
-				createUserId: {
-					name: 'createUserId',
-				},
-				createTime: {
-					name: 'createTime',
-				},
-				updateUserId: {
-					name: 'updateUserId',
-				},
-				updateTime: {
-					name: 'updateTime',
-				},
-				createGroupId: {
-					name: 'createGroupId',
-				}
-			}
-		},
 		Permission: {
 			name: 'Permission',
 			fields: {
@@ -263,50 +219,6 @@ const en: BaseTranslation = {
 				}
 			}
 		},
-		RoleComposite: {
-			name: 'RoleComposite',
-			fields: {
-				id: {
-					name: 'id',
-				},
-				roleId: {
-					name: 'roleId',
-				},
-				from: {
-					name: 'from',
-				},
-				compositeId: {
-					name: 'compositeId',
-				},
-				to: {
-					name: 'to',
-				},
-				isDeprecated: {
-					name: 'isDeprecated',
-				},
-				version: {
-					name: 'version',
-				},
-				realmId: {
-					name: 'realmId',
-				},
-				createUserId: {
-					name: 'createUserId',
-				},
-				createTime: {
-					name: 'createTime',
-				},
-				updateUserId: {
-					name: 'updateUserId',
-				},
-				updateTime: {
-					name: 'updateTime',
-				},
-				createGroupId: {
-					name: 'createGroupId',
-				}
-			}
-		},
 		User: {
 			name: 'User',
 			fields: {
@@ -369,94 +281,6 @@ const en: BaseTranslation = {
 				},
 				userRole: {
 					name: 'userRole',
-				}
-			}
-		},
-		UserGroup: {
-			name: 'UserGroup',
-			fields: {
-				id: {
-					name: 'id',
-				},
-				userId: {
-					name: 'userId',
-				},
-				from: {
-					name: 'from',
-				},
-				groupId: {
-					name: 'groupId',
-				},
-				to: {
-					name: 'to',
-				},
-				isDeprecated: {
-					name: 'isDeprecated',
-				},
-				version: {
-					name: 'version',
-				},
-				realmId: {
-					name: 'realmId',
-				},
-				createUserId: {
-					name: 'createUserId',
-				},
-				createTime: {
-					name: 'createTime',
-				},
-				updateUserId: {
-					name: 'updateUserId',
-				},
-				updateTime: {
-					name: 'updateTime',
-				},
-				createGroupId: {
-					name: 'createGroupId',
-				}
-			}
-		},
-		UserRole: {
-			name: 'UserRole',
-			fields: {
-				id: {
-					name: 'id',
-				},
-				userId: {
-					name: 'userId',
-				},
-				from: {
-					name: 'from',
-				},
-				roleId: {
-					name: 'roleId',
-				},
-				to: {
-					name: 'to',
-				},
-				isDeprecated: {
-					name: 'isDeprecated',
-				},
-				version: {
-					name: 'version',
-				},
-				realmId: {
-					name: 'realmId',
-				},
-				createUserId: {
-					name: 'createUserId',
-				},
-				createTime: {
-					name: 'createTime',
-				},
-				updateUserId: {
-					name: 'updateUserId',
-				},
-				updateTime: {
-					name: 'updateTime',
-				},
-				createGroupId: {
-					name: 'createGroupId',
 				}
 			}
 		}
