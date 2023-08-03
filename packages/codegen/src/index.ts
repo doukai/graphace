@@ -2,7 +2,7 @@ import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
 import * as changeCase from "change-case";
 import { assertObjectType, isEnumType, isListType, isObjectType, type GraphQLSchema, isNonNullType, assertEnumType } from 'graphql';
-import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getScalarNames, getEnumNames, getEnumValues, isAggregate } from 'graphace-codegen-commons';
+import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getScalarNames, getEnumNames, getEnumValues, isAggregate, initConfig, inRouteObject, inGraphQLField, inListField, inDetailField, componentFields, componentFieldImports } from 'graphace-codegen-commons';
 import type { Template } from 'graphace-codegen-commons';
 import { buildFileContent } from "./builder.js";
 
@@ -14,6 +14,7 @@ const renders: Record<Template, Render> = {
             content: buildFileContent(config.template,
                 {
                     objects: Object.values(schema.getTypeMap())
+                        .filter(type => inRouteObject(type.name))
                         .filter(type => isObjectType(type))
                         .filter(type => !isOperationType(type.name))
                         .filter(type => !isConnection(type.name))
@@ -32,6 +33,7 @@ const renders: Record<Template, Render> = {
                 {
                     lang: config.i18nDefault,
                     objects: Object.values(schema.getTypeMap())
+                        .filter(type => inRouteObject(type.name))
                         .filter(type => isObjectType(type))
                         .filter(type => !isOperationType(type.name))
                         .filter(type => !isConnection(type.name))
@@ -74,7 +76,7 @@ const renders: Record<Template, Render> = {
                 const fieldType = getFieldType(field.type);
                 const idFieldName = getIDFieldName(fieldType);
                 return {
-                    content: buildFileContent(config.template, { name: field.name, idName: idFieldName, args: field.args, isConnection: isConnection(field.name), fields: getScalarFields(field) }),
+                    content: buildFileContent(config.template, { name: field.name, idName: idFieldName, args: field.args, isConnection: isConnection(field.name), fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name)) }),
                 };
             }
         }
@@ -103,7 +105,7 @@ const renders: Record<Template, Render> = {
                     }
                 }
                 return {
-                    content: buildFileContent(config.template, { name: field.name, idName: idFieldName, args: field.args, isConnection: isConnection(field.name), fields: getScalarFields(field), objectField: objectField }),
+                    content: buildFileContent(config.template, { name: field.name, idName: idFieldName, args: field.args, isConnection: isConnection(field.name), fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name)), objectField: objectField }),
                 };
             }
         }
@@ -120,7 +122,7 @@ const renders: Record<Template, Render> = {
                 const fieldType = getFieldType(field.type);
                 const idFieldName = getIDFieldName(fieldType);
                 return {
-                    content: buildFileContent(config.template, { name: field.name, idName: idFieldName, args: field.args, fields: getScalarFields(field) }),
+                    content: buildFileContent(config.template, { name: field.name, idName: idFieldName, args: field.args, fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name)) }),
                 };
             }
         }
@@ -149,7 +151,7 @@ const renders: Record<Template, Render> = {
                     }
                 }
                 return {
-                    content: buildFileContent(config.template, { name: field.name, idName: idFieldName, args: field.args, fields: getScalarFields(field), objectField: objectField }),
+                    content: buildFileContent(config.template, { name: field.name, idName: idFieldName, args: field.args, fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name)), objectField: objectField }),
                 };
             }
         }
@@ -162,7 +164,7 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type)?.filter(field => !isConnection(field.fieldName)), rows: getFields(schema, type)?.filter(field => field.isScalarType || field.isEnumType).length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
+                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), imports: componentFieldImports(typeName, getFields(schema, type)), fields: componentFields(typeName, getFields(schema, type))?.filter(field => inDetailField(typeName, field.fieldName)).filter(field => !isConnection(field.fieldName)), rows: getFields(schema, type)?.filter(field => inDetailField(typeName, field.fieldName)).filter(field => field.isScalarType || field.isEnumType).length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
                 };
             }
         }
@@ -175,7 +177,7 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type)?.filter(field => !isConnection(field.fieldName)), rows: getFields(schema, type)?.filter(field => field.isScalarType || field.isEnumType).length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
+                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), imports: componentFieldImports(typeName, getFields(schema, type)), fields: componentFields(typeName, getFields(schema, type))?.filter(field => inDetailField(typeName, field.fieldName)).filter(field => !isConnection(field.fieldName)), rows: getFields(schema, type)?.filter(field => inDetailField(typeName, field.fieldName)).filter(field => field.isScalarType || field.isEnumType).length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
                 };
             }
         }
@@ -188,7 +190,7 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type)?.filter(field => !isConnection(field.fieldName)), cols: getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
+                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), imports: componentFieldImports(typeName, getFields(schema, type)), fields: componentFields(typeName, getFields(schema, type))?.filter(field => inListField(typeName, field.fieldName)).filter(field => !isConnection(field.fieldName)), cols: getFields(schema, type)?.filter(field => inListField(typeName, field.fieldName)).filter(field => !isConnection(field.fieldName)).length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
                 };
             }
         }
@@ -201,7 +203,7 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type)?.filter(field => !isConnection(field.fieldName)), cols: getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
+                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), imports: componentFieldImports(typeName, getFields(schema, type)), fields: componentFields(typeName, getFields(schema, type))?.filter(field => inListField(typeName, field.fieldName)).filter(field => !isConnection(field.fieldName)), cols: getFields(schema, type)?.filter(field => inListField(typeName, field.fieldName)).filter(field => !isConnection(field.fieldName)).length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
                 };
             }
         }
@@ -214,7 +216,7 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type)?.filter(field => !isConnection(field.fieldName)), cols: getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
+                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), imports: componentFieldImports(typeName, getFields(schema, type)), fields: componentFields(typeName, getFields(schema, type))?.filter(field => inListField(typeName, field.fieldName)).filter(field => !isConnection(field.fieldName)), cols: getFields(schema, type)?.filter(field => inListField(typeName, field.fieldName)).filter(field => !isConnection(field.fieldName)).length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
                 };
             }
         }
@@ -227,7 +229,7 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type)?.filter(field => !isConnection(field.fieldName)), cols: getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
+                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), imports: componentFieldImports(typeName, getFields(schema, type)), fields: componentFields(typeName, getFields(schema, type))?.filter(field => inListField(typeName, field.fieldName)).filter(field => !isConnection(field.fieldName)), cols: getFields(schema, type)?.filter(field => inListField(typeName, field.fieldName)).filter(field => !isConnection(field.fieldName)).length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
                 };
             }
         }
@@ -240,7 +242,7 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), fields: getFields(schema, type)?.filter(field => !isConnection(field.fieldName)), cols: getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
+                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), imports: componentFieldImports(typeName, getFields(schema, type)), fields: componentFields(typeName, getFields(schema, type))?.filter(field => inListField(typeName, field.fieldName)).filter(field => !isConnection(field.fieldName)), cols: getFields(schema, type)?.filter(field => inListField(typeName, field.fieldName)).filter(field => !isConnection(field.fieldName)).length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
                 };
             }
         }
@@ -731,6 +733,7 @@ export const plugin: PluginFunction<GraphacePluginConfig, Types.ComplexPluginOut
     documents: Types.DocumentFile[],
     config: GraphacePluginConfig
 ) => {
+    initConfig(config.builder);
     if (!config.schemaTypesPath) {
         config.schemaTypesPath = _schemaTypesPath;
     }

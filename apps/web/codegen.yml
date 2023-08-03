@@ -29,4 +29,12 @@ generates:
               - 
                 name: userRole
                 inGraphQL: false
+          - 
+            name: User
+            fields:
+              - 
+                name: password
+                inGraphQL: false
+                inList: false
+                inDetail: false
 

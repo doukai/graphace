@@ -4,7 +4,6 @@ mutation Mutation_user_groups($user_id: ID, $user_groups: [GroupInput], $first: 
     name
     lastName
     login
-    password
     email
     disable
     isDeprecated

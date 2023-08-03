@@ -104,7 +104,6 @@
 			args.name = { opr: 'LK', val: `%${searchValue}%` };
 			args.lastName = { opr: 'LK', val: `%${searchValue}%` };
 			args.login = { opr: 'LK', val: `%${searchValue}%` };
-			args.password = { opr: 'LK', val: `%${searchValue}%` };
 			args.email = { opr: 'LK', val: `%${searchValue}%` };
 			args.realmId = { opr: 'LK', val: `%${searchValue}%` };
 			args.createUserId = { opr: 'LK', val: `%${searchValue}%` };
@@ -115,7 +114,6 @@
 			args.name = undefined;
 			args.lastName = undefined;
 			args.login = undefined;
-			args.password = undefined;
 			args.email = undefined;
 			args.realmId = undefined;
 			args.createUserId = undefined;
@@ -301,12 +299,6 @@
 					on:filter={query}
 				/>
 				<StringTh
-					name={$LL.graphql.objects.User.fields.password.name()}
-					bind:expression={args.password}
-					bind:sort={orderBy.password}
-					on:filter={query}
-				/>
-				<StringTh
 					name={$LL.graphql.objects.User.fields.email.name()}
 					bind:expression={args.email}
 					bind:sort={orderBy.email}
@@ -370,7 +362,7 @@
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={pageSize} cols={20 + 2}/>
+			<TableLoading rows={pageSize} cols={19 + 2}/>
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
@@ -405,12 +397,6 @@
 									bind:value={node.login}
 									on:save={() => updateField({ id: node?.id, login: node?.login })}
 									errors={errors[row]?.iterms?.login}
-								/>
-								<StringTd
-									name="password"
-									bind:value={node.password}
-									on:save={() => updateField({ id: node?.id, password: node?.password })}
-									errors={errors[row]?.iterms?.password}
 								/>
 								<StringTd
 									name="email"
@@ -553,7 +539,7 @@
 						{/if}
 					{/each}
 				{:else}
-					<TableEmpty cols={20 + 2}/>
+					<TableEmpty cols={19 + 2}/>
 				{/if}
 			</tbody>
 		{/if}

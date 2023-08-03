@@ -2,6 +2,11 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
 	import { {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql/components/table';
+	{%- if imports %}
+	{%- for import in imports %}
+	{{ import }}
+	{%- endfor %}
+	{%- endif %}
 	{%- for enum in enums %}
 	import {{ enum }}Th from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Th.svelte';
 	import {{ enum }}Td from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Td.svelte';
@@ -249,6 +254,9 @@
 								{%- if fields %}
 								{%- for field in fields %}
 								{%- if field.isScalarType or field.isEnumType %}
+								{%- if field.component %}
+								{{ field.component }}
+								{%- else %}
 								<{{ field.fieldType.name }}Td
 									name="{{ field.fieldName }}"
 									bind:value={node.{{ field.fieldName }}}
@@ -262,6 +270,7 @@
 									{%- endif %}
 									errors={errors[row]?.iterms?.{{ field.fieldName }}}
 								/>
+								{%- endif %}
 								{%- endif %}
 								{%- endfor %}
 								{%- endif %}

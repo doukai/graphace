@@ -4,7 +4,6 @@ mutation Mutation_userList($id: ID, $name: String, $lastName: String, $login: St
     name
     lastName
     login
-    password
     email
     disable
     isDeprecated

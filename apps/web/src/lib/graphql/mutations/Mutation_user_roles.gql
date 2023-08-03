@@ -4,7 +4,6 @@ mutation Mutation_user_roles($user_id: ID, $user_roles: [RoleInput], $first: Int
     name
     lastName
     login
-    password
     email
     disable
     isDeprecated

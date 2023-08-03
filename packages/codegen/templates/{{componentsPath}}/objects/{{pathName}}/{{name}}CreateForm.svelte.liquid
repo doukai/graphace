@@ -5,6 +5,11 @@
 	import { Card } from '@graphace/ui/components/card';
 	import { Form } from '@graphace/ui/components/form';
 	import { {% for scalar in scalars %}{{ scalar }}Item, {% endfor %}ObjectItem } from '@graphace/ui-graphql/components/form';
+	{%- if imports %}
+	{%- for import in imports %}
+	{{ import }}
+	{%- endfor %}
+	{%- endif %}
 	{%- for enum in enums %}
 	import {{ enum }}Item from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Item.svelte';
 	{%- endfor %}
@@ -85,12 +90,16 @@
 	>
 		{%- if fields %}
 		{%- for field in fields %}
-		{%- if field.isScalarType or field.isEnumType %}
 		{%- if field.inMutationArgs %}
+		{%- if field.component %}
+		{{ field.component }}
+		{%- else %}
+		{%- if field.isScalarType or field.isEnumType %}
 		<{{ field.fieldType.name }}Item label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}}{% if field.isListType %} list{% endif %} errors={errors.{{ field.fieldName }}} />
-		{%- endif %}
 		{%- else %}
 		<ObjectItem name="{{ field.fieldName }}" path="_/{{ field.fieldName | paramCase }}" label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} errors={errors.{{ field.fieldName }}} on:gotoField />
+		{%- endif %}
+		{%- endif %}
 		{%- endif %}
 		{%- endfor %}
 		{%- endif %}

@@ -4,7 +4,6 @@ query Query_user_userRole($user_id: StringExpression, $first: Int, $last: Int, $
     name
     lastName
     login
-    password
     email
     disable
     isDeprecated

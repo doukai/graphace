@@ -4,7 +4,6 @@ query Query_userList($id: StringExpression, $name: StringExpression, $lastName: 
     name
     lastName
     login
-    password
     email
     disable
     isDeprecated

@@ -136,7 +136,7 @@ export const getIDFieldName = (type: GraphQLNamedType): string | undefined => {
     return undefined;
 }
 
-export const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): { fieldName: string, fieldType: GraphQLNamedType, isScalarType: boolean, isEnumType: boolean, inQueryArgs: boolean, inMutationArgs: boolean }[] | undefined => {
+export const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): { fieldName: string, fieldType: GraphQLNamedType, isScalarType: boolean, isEnumType: boolean, isObjectType: boolean, isNonNullType: boolean, isListType: boolean, inQueryArgs: boolean, inMutationArgs: boolean }[] | undefined => {
     if (isObjectType(type) || isInputObjectType(type)) {
         return Object.values(type.getFields())
             .filter(field => !isAggregate(field.name))

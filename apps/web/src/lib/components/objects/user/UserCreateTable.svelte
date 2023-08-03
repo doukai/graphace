@@ -88,7 +88,6 @@
 				<td>{$LL.graphql.objects.User.fields.name.name()}</td>
 				<td>{$LL.graphql.objects.User.fields.lastName.name()}</td>
 				<td>{$LL.graphql.objects.User.fields.login.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.password.name()}</td>
 				<td>{$LL.graphql.objects.User.fields.email.name()}</td>
 				<td>{$LL.graphql.objects.User.fields.disable.name()}</td>
 				<td>{$LL.graphql.objects.User.fields.groups.name()}</td>
@@ -140,12 +139,6 @@
 								bind:value={node.login}
 								readonly
 								errors={errors[row]?.iterms?.login}
-							/>
-							<StringTd
-								name="password"
-								bind:value={node.password}
-								readonly
-								errors={errors[row]?.iterms?.password}
 							/>
 							<StringTd
 								name="email"
@@ -250,7 +243,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={20 + 2}/>
+				<TableEmpty cols={19 + 2}/>
 			{/if}
 		</tbody>
 	</Table>

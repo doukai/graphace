@@ -4,7 +4,6 @@ query Query_user_groups($user_id: StringExpression, $first: Int, $last: Int, $of
     name
     lastName
     login
-    password
     email
     disable
     isDeprecated
