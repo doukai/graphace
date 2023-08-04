@@ -1,0 +1,32 @@
+query Query_group_subGroups($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: GroupOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $totalCount: IntExpression, ) {
+  group(id: $group_id)  {
+    id
+    name
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    subGroupsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm totalCount: $totalCount)  {
+      totalCount
+      edges {
+        node {
+          id
+          name
+          isDeprecated
+          version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
+          parentId
+        }
+      }
+    }
+  }
+}

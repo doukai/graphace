@@ -275,13 +275,14 @@
 					on:filter={query}
 				/>
 				<td>{$LL.graphql.objects.Role.fields.users.name()}</td>
+				<td>{$LL.graphql.objects.Role.fields.composites.name()}</td>
 				<td>{$LL.graphql.objects.Role.fields.permissions.name()}</td>
 				<td>{$LL.graphql.objects.Role.fields.realm.name()}</td>
 				<th />
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={pageSize} cols={5 + 2}/>
+			<TableLoading rows={pageSize} cols={6 + 2}/>
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
@@ -306,6 +307,7 @@
 									errors={errors[row]?.iterms?.description}
 								/>
 								<ObjectTd name="users" errors={errors[row]?.iterms?.users} path={`${node.id}/users`} on:gotoField />
+								<ObjectTd name="composites" errors={errors[row]?.iterms?.composites} path={`${node.id}/composites`} on:gotoField />
 								<ObjectTd name="permissions" errors={errors[row]?.iterms?.permissions} path={`${node.id}/permissions`} on:gotoField />
 								<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
 								<th class="z-10 w-24">
@@ -384,7 +386,7 @@
 						{/if}
 					{/each}
 				{:else}
-					<TableEmpty cols={5 + 2}/>
+					<TableEmpty cols={6 + 2}/>
 				{/if}
 			</tbody>
 		{/if}

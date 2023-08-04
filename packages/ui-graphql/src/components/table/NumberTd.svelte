@@ -17,6 +17,7 @@
 	export let placeholder: string = '';
 
 	let content: HTMLElement;
+	let tippyElement: any;
 	const dispatch = createEventDispatcher<{
 		save: {};
 	}>();
@@ -26,6 +27,7 @@
 			value = value.filter((item) => item);
 		}
 		dispatch('save');
+		tippyElement._tippy.hide();
 	};
 
 	let clean = (): void => {
@@ -35,6 +37,7 @@
 			value = null;
 		}
 		dispatch('save');
+		tippyElement._tippy.hide();
 	};
 </script>
 
@@ -79,6 +82,7 @@
 				maxWidth: 'none',
 				appendTo: () => document.body
 			}}
+			bind:this={tippyElement}
 		>
 			{#if Array.isArray(value) || (list && (value === null || value === undefined))}
 				{#if value && value.length > 0}

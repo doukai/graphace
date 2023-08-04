@@ -87,6 +87,7 @@
 				<td>{$LL.graphql.objects.Role.fields.name.name()}</td>
 				<td>{$LL.graphql.objects.Role.fields.description.name()}</td>
 				<td>{$LL.graphql.objects.Role.fields.users.name()}</td>
+				<td>{$LL.graphql.objects.Role.fields.composites.name()}</td>
 				<td>{$LL.graphql.objects.Role.fields.permissions.name()}</td>
 				<td>{$LL.graphql.objects.Role.fields.realm.name()}</td>
 				<th />
@@ -115,6 +116,7 @@
 								errors={errors[row]?.iterms?.description}
 							/>
 							<ObjectTd name="users" errors={errors[row]?.iterms?.users} path="_/users" on:gotoField />
+							<ObjectTd name="composites" errors={errors[row]?.iterms?.composites} path="_/composites" on:gotoField />
 							<ObjectTd name="permissions" errors={errors[row]?.iterms?.permissions} path="_/permissions" on:gotoField />
 							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
 							<th class="z-10 w-24">
@@ -155,7 +157,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={5 + 2}/>
+				<TableEmpty cols={6 + 2}/>
 			{/if}
 		</tbody>
 	</Table>

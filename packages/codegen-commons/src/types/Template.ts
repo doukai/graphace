@@ -12,9 +12,11 @@ export type Template =
     '{{componentsPath}}/objects/{{pathName}}/{{name}}CreateTable.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectTable.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectConnectionTable.svelte' |
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Th.svelte' |
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Item.svelte' |
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Th.svelte' |
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte' |
+    '{{componentsPath}}/enums/{{pathName}}/{{name}}Input.svelte' |
     '{{routesPath}}/[lang]/{{pathName}}/+page.svelte' |
     '{{routesPath}}/[lang]/{{pathName}}/+page.ts' |
     '{{routesPath}}/[lang]/{{pathName}}/[id]/+page.svelte' |

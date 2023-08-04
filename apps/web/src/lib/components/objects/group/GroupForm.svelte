@@ -4,7 +4,7 @@
 	import type { Errors } from '@graphace/commons/types';
 	import { Card } from '@graphace/ui/components/card';
 	import { Form, FormLoading } from '@graphace/ui/components/form';
-	import { IDItem, StringItem, BooleanItem, IntItem, TimestampItem, ObjectItem } from '@graphace/ui-graphql/components/form';
+	import { IDItem, StringItem, BooleanItem, IntItem, TimestampItem,  } from '@graphace/ui-graphql/components/form';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
@@ -132,6 +132,8 @@
 		{:else}
 			{#if node}
 				<StringItem label={$LL.graphql.objects.Group.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
+				<ObjectItem name="parent" path={`${node.id}/parent`} label={$LL.graphql.objects.Group.fields.parent.name()} errors={errors.parent} on:gotoField />
+				<ObjectItem name="subGroups" path={`${node.id}/sub-groups`} label={$LL.graphql.objects.Group.fields.subGroups.name()} errors={errors.subGroups} on:gotoField />
 				<ObjectItem name="users" path={`${node.id}/users`} label={$LL.graphql.objects.Group.fields.users.name()} errors={errors.users} on:gotoField />
 				<ObjectItem name="roles" path={`${node.id}/roles`} label={$LL.graphql.objects.Group.fields.roles.name()} errors={errors.roles} on:gotoField />
 				<ObjectItem name="realm" path={`${node.id}/realm`} label={$LL.graphql.objects.Group.fields.realm.name()} errors={errors.realm} on:gotoField />

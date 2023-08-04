@@ -389,6 +389,31 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         );
 
         generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Th.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
             ...targetComponentEnumTypes
                 .map(type => {
                     const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Item.svelte';
@@ -443,6 +468,31 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             ...targetComponentEnumTypes
                 .map(type => {
                     const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentEnumTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Input.svelte';
                     const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
                     return {
                         filename: buildPath(template, scope),

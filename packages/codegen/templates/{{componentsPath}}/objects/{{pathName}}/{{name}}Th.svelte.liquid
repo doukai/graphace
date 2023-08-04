@@ -1,0 +1,167 @@
+<script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+	import { tippy } from '@graphace/ui/components/tippy';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Check, XMark, Funnel } from '@steeze-ui/heroicons';
+	import { {% for scalar in scalars %}{{ scalar }}Input{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql/components/input';
+	{%- for enum in enums %}
+	import {{ enum }}Input from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Input.svelte';
+	{%- endfor %}
+	import type { {% for scalar in scalars %}{{ scalar }}Expression{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/graphql/types';
+	import LL from '$i18n/i18n-svelte';
+	import type { {{ name }}Expression } from '$houdini';
+
+	export let name: string;
+	export let expression: {{ name }}Expression | null | undefined;
+
+	let _expression: {
+		{%- if fields %}
+		{%- for field in fields %}
+		{%- if field.isScalarType or field.isEnumType %}
+		{{ field.fieldName }}: {{ field.fieldType.name }}Expression;
+		{%- endif %}
+		{%- endfor %}
+		{%- endif %}
+	} = {
+		{%- if fields %}
+		{%- for field in fields %}
+		{%- if field.isScalarType or field.isEnumType %}
+		{{ field.fieldName }}: {}{% if forloop.last == false %},{% endif %}
+		{%- endif %}
+		{%- endfor %}
+		{%- endif %}
+	};
+
+	let content: HTMLElement;
+	let tippyElement: any;
+	const dispatch = createEventDispatcher<{
+		filter: {};
+	}>();
+
+	const filter = (): void => {
+		{%- if fields %}
+		{%- for field in fields %}
+		{%- if field.isScalarType or field.isEnumType %}
+		if (_expression.{{ field.fieldName }}.val || (_expression.{{ field.fieldName }}.in && _expression.{{ field.fieldName }}.in.length > 0)) {
+			expression = { ...expression, {{ field.fieldName }}: _expression.{{ field.fieldName }} };
+		} else {
+			expression = { ...expression, {{ field.fieldName }}: undefined };
+		}
+		{%- endif %}
+		{%- endfor %}
+		{%- endif %}
+
+		if (Object.keys(expression).length > 0) {
+			dispatch('filter');
+		} else {
+			expression = undefined;
+		}
+		tippyElement._tippy.hide();
+	};
+
+	const clear = (): void => {
+		{%- if fields %}
+		{%- for field in fields %}
+		{%- if field.isScalarType or field.isEnumType %}
+		_expression.{{ field.fieldName }} = {};
+		{%- endif %}
+		{%- endfor %}
+		{%- endif %}
+		expression = undefined;
+		dispatch('filter');
+		tippyElement._tippy.hide();
+	};
+
+	{%- if fields %}
+	{%- for field in fields %}
+	{%- if field.isScalarType or field.isEnumType %}
+	const {{ field.fieldName }}OprChange = (): void => {
+		_expression.{{ field.fieldName }}.in = [];
+		_expression.{{ field.fieldName }}.val = undefined;
+	};
+	{%- endif %}
+	{%- endfor %}
+	{%- endif %}
+</script>
+<div class="hidden">
+	<div class="space-y-1" bind:this={content}>
+		{%- if fields %}
+		{%- for field in fields %}
+		{%- if field.isScalarType or field.isEnumType %}
+		<div class="flex items-start space-x-1">
+			<select
+				class="select select-bordered"
+				bind:value={_expression.{{ field.fieldName }}.opr}
+				on:change={% raw %}{{% endraw %}{{ field.fieldName }}OprChange}
+			>
+				<option value="EQ" selected>{$LL.uiGraphql.table.th.eq()}</option>
+				<option value="NEQ">{$LL.uiGraphql.table.th.neq()}</option>
+				<option value="LK">{$LL.uiGraphql.table.th.lk()}</option>
+				<option value="NLK">{$LL.uiGraphql.table.th.nlk()}</option>
+				<option value="GT">{$LL.uiGraphql.table.th.gt()}</option>
+				<option value="GTE">{$LL.uiGraphql.table.th.gte()}</option>
+				<option value="LT">{$LL.uiGraphql.table.th.lt()}</option>
+				<option value="LTE">{$LL.uiGraphql.table.th.lte()}</option>
+				<option value="NIL">{$LL.uiGraphql.table.th.nil()}</option>
+				<option value="NNIL">{$LL.uiGraphql.table.th.nnil()}</option>
+				<option value="IN">{$LL.uiGraphql.table.th.in()}</option>
+				<option value="NIN">{$LL.uiGraphql.table.th.nin()}</option>
+				<option value="BT">{$LL.uiGraphql.table.th.bt()}</option>
+				<option value="NBT">{$LL.uiGraphql.table.th.nbt()}</option>
+			</select>
+			{#if _expression.{{ field.fieldName }}.opr === 'IN' || _expression.{{ field.fieldName }}.opr === 'NIN' || _expression.{{ field.fieldName }}.opr === 'BT' || _expression.{{ field.fieldName }}.opr === 'NBT'}
+				<{{ field.fieldType.name }}Input
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.{{ field.fieldName }}.in}
+				/>
+			{:else}
+				<{{ field.fieldType.name }}Input
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.{{ field.fieldName }}.val}
+				/>
+			{/if}
+		</div>
+		{%- endif %}
+		{%- endfor %}
+		{%- endif %}
+
+		<div class="tooltip" data-tip={$LL.uiGraphql.table.th.filter()}>
+			<button class="btn btn-square btn-primary" on:click={filter}>
+				<Icon src={Check} class="h-5 w-5" />
+			</button>
+		</div>
+		<div class="tooltip" data-tip={$LL.uiGraphql.table.th.cancel()}>
+			<button class="btn btn-square btn-outline btn-error" on:click={clear}>
+				<Icon src={XMark} class="h-5 w-5" />
+			</button>
+		</div>
+	</div>
+</div>
+
+<td>
+	<a
+		class="link group inline-flex"
+		href={null}
+		use:tippy={% raw %}{{{% endraw %}
+			content,
+			placement: 'bottom',
+			interactive: true,
+			arrow: true,
+			trigger: 'click',
+			interactiveBorder: 30,
+			theme: 'daisy',
+			maxWidth: 'none',
+			appendTo: () => document.body
+		{% raw %}}}{% endraw %}
+		bind:this={tippyElement}
+	>
+		{name}
+		{#if expression && Object.keys(expression).length > 0}
+			<span class="ml-1 flex-none">
+				<Icon src={Funnel} class="h-5 w-5" />
+			</span>
+		{/if}
+	</a>
+</td>

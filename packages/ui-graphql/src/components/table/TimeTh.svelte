@@ -15,6 +15,7 @@
 	let _sort: Sort | undefined = undefined;
 
 	let content: HTMLElement;
+	let tippyElement: any;
 	const dispatch = createEventDispatcher<{
 		filter: {};
 	}>();
@@ -27,6 +28,7 @@
 		}
 		sort = _sort;
 		dispatch('filter');
+		tippyElement._tippy.hide();
 	};
 
 	const clear = (): void => {
@@ -37,6 +39,7 @@
 		expression = undefined;
 		sort = undefined;
 		dispatch('filter');
+		tippyElement._tippy.hide();
 	};
 
 	const oprChange = (): void => {
@@ -76,7 +79,7 @@
 				bind:value={_expression.val}
 			/>
 		{/if}
-		<select class="select select-bordered" bind:value={sort}>
+		<select class="select select-bordered" bind:value={_sort}>
 			<option value={undefined} selected>{$LL.uiGraphql.table.th.noSort()}</option>
 			<option value="ASC">{$LL.uiGraphql.table.th.asc()}</option>
 			<option value="DESC">{$LL.uiGraphql.table.th.desc()}</option>
@@ -109,6 +112,7 @@
 			maxWidth: 'none',
 			appendTo: () => document.body
 		}}
+		bind:this={tippyElement}
 	>
 		{name}
 		{#if expression?.val || (expression?.in && expression.in.length > 0)}

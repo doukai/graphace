@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { tippy } from '@graphace/ui/components/tippy';
+	import { tippy, type TippyInstance } from '@graphace/ui/components/tippy';
 	import type { Errors } from '@graphace/commons/types';
 	import { Input, InputList } from '@graphace/ui/components/input';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -16,6 +16,7 @@
 	export let placeholder: string = '';
 
 	let content: HTMLElement;
+	let tippyElement: any;
 	const dispatch = createEventDispatcher<{
 		save: {};
 	}>();
@@ -25,6 +26,7 @@
 			value = value.filter((item) => item);
 		}
 		dispatch('save');
+		tippyElement._tippy.hide();
 	};
 
 	let clean = (): void => {
@@ -34,6 +36,7 @@
 			value = null;
 		}
 		dispatch('save');
+		tippyElement._tippy.hide();
 	};
 </script>
 
@@ -78,6 +81,7 @@
 				maxWidth: 'none',
 				appendTo: () => document.body
 			}}
+			bind:this={tippyElement}
 		>
 			{#if Array.isArray(value) || (list && (value === null || value === undefined))}
 				{#if value && value.length > 0}

@@ -47,12 +47,6 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				realmId: {
-					/**
-					 * r​e​a​l​m​I​d
-					 */
-					name: string
-				}
 				groups: {
 					/**
 					 * g​r​o​u​p​s
@@ -73,15 +67,21 @@ export type NamespaceGraphqlTranslation = {
 			 */
 			name: string
 			fields: {
-				id: {
-					/**
-					 * i​d
-					 */
-					name: string
-				}
 				name: {
 					/**
 					 * n​a​m​e
+					 */
+					name: string
+				}
+				parent: {
+					/**
+					 * p​a​r​e​n​t
+					 */
+					name: string
+				}
+				subGroups: {
+					/**
+					 * s​u​b​G​r​o​u​p​s
 					 */
 					name: string
 				}
@@ -103,158 +103,6 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				isDeprecated: {
-					/**
-					 * i​s​D​e​p​r​e​c​a​t​e​d
-					 */
-					name: string
-				}
-				version: {
-					/**
-					 * v​e​r​s​i​o​n
-					 */
-					name: string
-				}
-				realmId: {
-					/**
-					 * r​e​a​l​m​I​d
-					 */
-					name: string
-				}
-				createUserId: {
-					/**
-					 * c​r​e​a​t​e​U​s​e​r​I​d
-					 */
-					name: string
-				}
-				createTime: {
-					/**
-					 * c​r​e​a​t​e​T​i​m​e
-					 */
-					name: string
-				}
-				updateUserId: {
-					/**
-					 * u​p​d​a​t​e​U​s​e​r​I​d
-					 */
-					name: string
-				}
-				updateTime: {
-					/**
-					 * u​p​d​a​t​e​T​i​m​e
-					 */
-					name: string
-				}
-				createGroupId: {
-					/**
-					 * c​r​e​a​t​e​G​r​o​u​p​I​d
-					 */
-					name: string
-				}
-				parentId: {
-					/**
-					 * p​a​r​e​n​t​I​d
-					 */
-					name: string
-				}
-				userGroup: {
-					/**
-					 * u​s​e​r​G​r​o​u​p
-					 */
-					name: string
-				}
-				groupRole: {
-					/**
-					 * g​r​o​u​p​R​o​l​e
-					 */
-					name: string
-				}
-			}
-		}
-		GroupRole: {
-			/**
-			 * G​r​o​u​p​R​o​l​e
-			 */
-			name: string
-			fields: {
-				id: {
-					/**
-					 * i​d
-					 */
-					name: string
-				}
-				groupId: {
-					/**
-					 * g​r​o​u​p​I​d
-					 */
-					name: string
-				}
-				from: {
-					/**
-					 * f​r​o​m
-					 */
-					name: string
-				}
-				roleId: {
-					/**
-					 * r​o​l​e​I​d
-					 */
-					name: string
-				}
-				to: {
-					/**
-					 * t​o
-					 */
-					name: string
-				}
-				isDeprecated: {
-					/**
-					 * i​s​D​e​p​r​e​c​a​t​e​d
-					 */
-					name: string
-				}
-				version: {
-					/**
-					 * v​e​r​s​i​o​n
-					 */
-					name: string
-				}
-				realmId: {
-					/**
-					 * r​e​a​l​m​I​d
-					 */
-					name: string
-				}
-				createUserId: {
-					/**
-					 * c​r​e​a​t​e​U​s​e​r​I​d
-					 */
-					name: string
-				}
-				createTime: {
-					/**
-					 * c​r​e​a​t​e​T​i​m​e
-					 */
-					name: string
-				}
-				updateUserId: {
-					/**
-					 * u​p​d​a​t​e​U​s​e​r​I​d
-					 */
-					name: string
-				}
-				updateTime: {
-					/**
-					 * u​p​d​a​t​e​T​i​m​e
-					 */
-					name: string
-				}
-				createGroupId: {
-					/**
-					 * c​r​e​a​t​e​G​r​o​u​p​I​d
-					 */
-					name: string
-				}
 			}
 		}
 		Permission: {
@@ -263,12 +111,6 @@ export type NamespaceGraphqlTranslation = {
 			 */
 			name: string
 			fields: {
-				id: {
-					/**
-					 * i​d
-					 */
-					name: string
-				}
 				name: {
 					/**
 					 * n​a​m​e
@@ -305,60 +147,6 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				isDeprecated: {
-					/**
-					 * i​s​D​e​p​r​e​c​a​t​e​d
-					 */
-					name: string
-				}
-				version: {
-					/**
-					 * v​e​r​s​i​o​n
-					 */
-					name: string
-				}
-				realmId: {
-					/**
-					 * r​e​a​l​m​I​d
-					 */
-					name: string
-				}
-				createUserId: {
-					/**
-					 * c​r​e​a​t​e​U​s​e​r​I​d
-					 */
-					name: string
-				}
-				createTime: {
-					/**
-					 * c​r​e​a​t​e​T​i​m​e
-					 */
-					name: string
-				}
-				updateUserId: {
-					/**
-					 * u​p​d​a​t​e​U​s​e​r​I​d
-					 */
-					name: string
-				}
-				updateTime: {
-					/**
-					 * u​p​d​a​t​e​T​i​m​e
-					 */
-					name: string
-				}
-				createGroupId: {
-					/**
-					 * c​r​e​a​t​e​G​r​o​u​p​I​d
-					 */
-					name: string
-				}
-				roleId: {
-					/**
-					 * r​o​l​e​I​d
-					 */
-					name: string
-				}
 			}
 		}
 		Realm: {
@@ -367,63 +155,9 @@ export type NamespaceGraphqlTranslation = {
 			 */
 			name: string
 			fields: {
-				id: {
-					/**
-					 * i​d
-					 */
-					name: string
-				}
 				name: {
 					/**
 					 * n​a​m​e
-					 */
-					name: string
-				}
-				isDeprecated: {
-					/**
-					 * i​s​D​e​p​r​e​c​a​t​e​d
-					 */
-					name: string
-				}
-				version: {
-					/**
-					 * v​e​r​s​i​o​n
-					 */
-					name: string
-				}
-				realmId: {
-					/**
-					 * r​e​a​l​m​I​d
-					 */
-					name: string
-				}
-				createUserId: {
-					/**
-					 * c​r​e​a​t​e​U​s​e​r​I​d
-					 */
-					name: string
-				}
-				createTime: {
-					/**
-					 * c​r​e​a​t​e​T​i​m​e
-					 */
-					name: string
-				}
-				updateUserId: {
-					/**
-					 * u​p​d​a​t​e​U​s​e​r​I​d
-					 */
-					name: string
-				}
-				updateTime: {
-					/**
-					 * u​p​d​a​t​e​T​i​m​e
-					 */
-					name: string
-				}
-				createGroupId: {
-					/**
-					 * c​r​e​a​t​e​G​r​o​u​p​I​d
 					 */
 					name: string
 				}
@@ -435,12 +169,6 @@ export type NamespaceGraphqlTranslation = {
 			 */
 			name: string
 			fields: {
-				id: {
-					/**
-					 * i​d
-					 */
-					name: string
-				}
 				name: {
 					/**
 					 * n​a​m​e
@@ -459,6 +187,12 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				composites: {
+					/**
+					 * c​o​m​p​o​s​i​t​e​s
+					 */
+					name: string
+				}
 				permissions: {
 					/**
 					 * p​e​r​m​i​s​s​i​o​n​s
@@ -471,152 +205,6 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				isDeprecated: {
-					/**
-					 * i​s​D​e​p​r​e​c​a​t​e​d
-					 */
-					name: string
-				}
-				version: {
-					/**
-					 * v​e​r​s​i​o​n
-					 */
-					name: string
-				}
-				realmId: {
-					/**
-					 * r​e​a​l​m​I​d
-					 */
-					name: string
-				}
-				createUserId: {
-					/**
-					 * c​r​e​a​t​e​U​s​e​r​I​d
-					 */
-					name: string
-				}
-				createTime: {
-					/**
-					 * c​r​e​a​t​e​T​i​m​e
-					 */
-					name: string
-				}
-				updateUserId: {
-					/**
-					 * u​p​d​a​t​e​U​s​e​r​I​d
-					 */
-					name: string
-				}
-				updateTime: {
-					/**
-					 * u​p​d​a​t​e​T​i​m​e
-					 */
-					name: string
-				}
-				createGroupId: {
-					/**
-					 * c​r​e​a​t​e​G​r​o​u​p​I​d
-					 */
-					name: string
-				}
-				userRole: {
-					/**
-					 * u​s​e​r​R​o​l​e
-					 */
-					name: string
-				}
-				roleComposite: {
-					/**
-					 * r​o​l​e​C​o​m​p​o​s​i​t​e
-					 */
-					name: string
-				}
-			}
-		}
-		RoleComposite: {
-			/**
-			 * R​o​l​e​C​o​m​p​o​s​i​t​e
-			 */
-			name: string
-			fields: {
-				id: {
-					/**
-					 * i​d
-					 */
-					name: string
-				}
-				roleId: {
-					/**
-					 * r​o​l​e​I​d
-					 */
-					name: string
-				}
-				from: {
-					/**
-					 * f​r​o​m
-					 */
-					name: string
-				}
-				compositeId: {
-					/**
-					 * c​o​m​p​o​s​i​t​e​I​d
-					 */
-					name: string
-				}
-				to: {
-					/**
-					 * t​o
-					 */
-					name: string
-				}
-				isDeprecated: {
-					/**
-					 * i​s​D​e​p​r​e​c​a​t​e​d
-					 */
-					name: string
-				}
-				version: {
-					/**
-					 * v​e​r​s​i​o​n
-					 */
-					name: string
-				}
-				realmId: {
-					/**
-					 * r​e​a​l​m​I​d
-					 */
-					name: string
-				}
-				createUserId: {
-					/**
-					 * c​r​e​a​t​e​U​s​e​r​I​d
-					 */
-					name: string
-				}
-				createTime: {
-					/**
-					 * c​r​e​a​t​e​T​i​m​e
-					 */
-					name: string
-				}
-				updateUserId: {
-					/**
-					 * u​p​d​a​t​e​U​s​e​r​I​d
-					 */
-					name: string
-				}
-				updateTime: {
-					/**
-					 * u​p​d​a​t​e​T​i​m​e
-					 */
-					name: string
-				}
-				createGroupId: {
-					/**
-					 * c​r​e​a​t​e​G​r​o​u​p​I​d
-					 */
-					name: string
-				}
 			}
 		}
 		User: {
@@ -625,12 +213,6 @@ export type NamespaceGraphqlTranslation = {
 			 */
 			name: string
 			fields: {
-				id: {
-					/**
-					 * i​d
-					 */
-					name: string
-				}
 				name: {
 					/**
 					 * n​a​m​e
@@ -646,12 +228,6 @@ export type NamespaceGraphqlTranslation = {
 				login: {
 					/**
 					 * l​o​g​i​n
-					 */
-					name: string
-				}
-				password: {
-					/**
-					 * p​a​s​s​w​o​r​d
 					 */
 					name: string
 				}
@@ -685,416 +261,10 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				isDeprecated: {
-					/**
-					 * i​s​D​e​p​r​e​c​a​t​e​d
-					 */
-					name: string
-				}
-				version: {
-					/**
-					 * v​e​r​s​i​o​n
-					 */
-					name: string
-				}
-				realmId: {
-					/**
-					 * r​e​a​l​m​I​d
-					 */
-					name: string
-				}
-				createUserId: {
-					/**
-					 * c​r​e​a​t​e​U​s​e​r​I​d
-					 */
-					name: string
-				}
-				createTime: {
-					/**
-					 * c​r​e​a​t​e​T​i​m​e
-					 */
-					name: string
-				}
-				updateUserId: {
-					/**
-					 * u​p​d​a​t​e​U​s​e​r​I​d
-					 */
-					name: string
-				}
-				updateTime: {
-					/**
-					 * u​p​d​a​t​e​T​i​m​e
-					 */
-					name: string
-				}
-				createGroupId: {
-					/**
-					 * c​r​e​a​t​e​G​r​o​u​p​I​d
-					 */
-					name: string
-				}
-				userGroup: {
-					/**
-					 * u​s​e​r​G​r​o​u​p
-					 */
-					name: string
-				}
-				userRole: {
-					/**
-					 * u​s​e​r​R​o​l​e
-					 */
-					name: string
-				}
-			}
-		}
-		UserGroup: {
-			/**
-			 * U​s​e​r​G​r​o​u​p
-			 */
-			name: string
-			fields: {
-				id: {
-					/**
-					 * i​d
-					 */
-					name: string
-				}
-				userId: {
-					/**
-					 * u​s​e​r​I​d
-					 */
-					name: string
-				}
-				from: {
-					/**
-					 * f​r​o​m
-					 */
-					name: string
-				}
-				groupId: {
-					/**
-					 * g​r​o​u​p​I​d
-					 */
-					name: string
-				}
-				to: {
-					/**
-					 * t​o
-					 */
-					name: string
-				}
-				isDeprecated: {
-					/**
-					 * i​s​D​e​p​r​e​c​a​t​e​d
-					 */
-					name: string
-				}
-				version: {
-					/**
-					 * v​e​r​s​i​o​n
-					 */
-					name: string
-				}
-				realmId: {
-					/**
-					 * r​e​a​l​m​I​d
-					 */
-					name: string
-				}
-				createUserId: {
-					/**
-					 * c​r​e​a​t​e​U​s​e​r​I​d
-					 */
-					name: string
-				}
-				createTime: {
-					/**
-					 * c​r​e​a​t​e​T​i​m​e
-					 */
-					name: string
-				}
-				updateUserId: {
-					/**
-					 * u​p​d​a​t​e​U​s​e​r​I​d
-					 */
-					name: string
-				}
-				updateTime: {
-					/**
-					 * u​p​d​a​t​e​T​i​m​e
-					 */
-					name: string
-				}
-				createGroupId: {
-					/**
-					 * c​r​e​a​t​e​G​r​o​u​p​I​d
-					 */
-					name: string
-				}
-			}
-		}
-		UserRole: {
-			/**
-			 * U​s​e​r​R​o​l​e
-			 */
-			name: string
-			fields: {
-				id: {
-					/**
-					 * i​d
-					 */
-					name: string
-				}
-				userId: {
-					/**
-					 * u​s​e​r​I​d
-					 */
-					name: string
-				}
-				from: {
-					/**
-					 * f​r​o​m
-					 */
-					name: string
-				}
-				roleId: {
-					/**
-					 * r​o​l​e​I​d
-					 */
-					name: string
-				}
-				to: {
-					/**
-					 * t​o
-					 */
-					name: string
-				}
-				isDeprecated: {
-					/**
-					 * i​s​D​e​p​r​e​c​a​t​e​d
-					 */
-					name: string
-				}
-				version: {
-					/**
-					 * v​e​r​s​i​o​n
-					 */
-					name: string
-				}
-				realmId: {
-					/**
-					 * r​e​a​l​m​I​d
-					 */
-					name: string
-				}
-				createUserId: {
-					/**
-					 * c​r​e​a​t​e​U​s​e​r​I​d
-					 */
-					name: string
-				}
-				createTime: {
-					/**
-					 * c​r​e​a​t​e​T​i​m​e
-					 */
-					name: string
-				}
-				updateUserId: {
-					/**
-					 * u​p​d​a​t​e​U​s​e​r​I​d
-					 */
-					name: string
-				}
-				updateTime: {
-					/**
-					 * u​p​d​a​t​e​T​i​m​e
-					 */
-					name: string
-				}
-				createGroupId: {
-					/**
-					 * c​r​e​a​t​e​G​r​o​u​p​I​d
-					 */
-					name: string
-				}
 			}
 		}
 	}
 	enums: {
-		Conditional: {
-			/**
-			 * C​o​n​d​i​t​i​o​n​a​l
-			 */
-			name: string
-			values: {
-				AND: {
-					/**
-					 * A​N​D
-					 */
-					name: string
-				}
-				OR: {
-					/**
-					 * O​R
-					 */
-					name: string
-				}
-			}
-		}
-		Function: {
-			/**
-			 * F​u​n​c​t​i​o​n
-			 */
-			name: string
-			values: {
-				COUNT: {
-					/**
-					 * C​O​U​N​T
-					 */
-					name: string
-				}
-				MAX: {
-					/**
-					 * M​A​X
-					 */
-					name: string
-				}
-				MIN: {
-					/**
-					 * M​I​N
-					 */
-					name: string
-				}
-				SUM: {
-					/**
-					 * S​U​M
-					 */
-					name: string
-				}
-				AVG: {
-					/**
-					 * A​V​G
-					 */
-					name: string
-				}
-			}
-		}
-		Operator: {
-			/**
-			 * O​p​e​r​a​t​o​r
-			 */
-			name: string
-			values: {
-				EQ: {
-					/**
-					 * E​Q
-					 */
-					name: string
-				}
-				NEQ: {
-					/**
-					 * N​E​Q
-					 */
-					name: string
-				}
-				LK: {
-					/**
-					 * L​K
-					 */
-					name: string
-				}
-				NLK: {
-					/**
-					 * N​L​K
-					 */
-					name: string
-				}
-				GT: {
-					/**
-					 * G​T
-					 */
-					name: string
-				}
-				NLTE: {
-					/**
-					 * N​L​T​E
-					 */
-					name: string
-				}
-				GTE: {
-					/**
-					 * G​T​E
-					 */
-					name: string
-				}
-				NLT: {
-					/**
-					 * N​L​T
-					 */
-					name: string
-				}
-				LT: {
-					/**
-					 * L​T
-					 */
-					name: string
-				}
-				NGTE: {
-					/**
-					 * N​G​T​E
-					 */
-					name: string
-				}
-				LTE: {
-					/**
-					 * L​T​E
-					 */
-					name: string
-				}
-				NGT: {
-					/**
-					 * N​G​T
-					 */
-					name: string
-				}
-				NIL: {
-					/**
-					 * N​I​L
-					 */
-					name: string
-				}
-				NNIL: {
-					/**
-					 * N​N​I​L
-					 */
-					name: string
-				}
-				IN: {
-					/**
-					 * I​N
-					 */
-					name: string
-				}
-				NIN: {
-					/**
-					 * N​I​N
-					 */
-					name: string
-				}
-				BT: {
-					/**
-					 * B​T
-					 */
-					name: string
-				}
-				NBT: {
-					/**
-					 * N​B​T
-					 */
-					name: string
-				}
-			}
-		}
 		PermissionLevel: {
 			/**
 			 * P​e​r​m​i​s​s​i​o​n​L​e​v​e​l
@@ -1110,58 +280,6 @@ export type NamespaceGraphqlTranslation = {
 				WRITE: {
 					/**
 					 * W​R​I​T​E
-					 */
-					name: string
-				}
-			}
-		}
-		Protocol: {
-			/**
-			 * P​r​o​t​o​c​o​l
-			 */
-			name: string
-			values: {
-				LOCAL: {
-					/**
-					 * L​O​C​A​L
-					 */
-					name: string
-				}
-				GRPC: {
-					/**
-					 * G​R​P​C
-					 */
-					name: string
-				}
-				HTTP: {
-					/**
-					 * H​T​T​P
-					 */
-					name: string
-				}
-				RSOCKET: {
-					/**
-					 * R​S​O​C​K​E​T
-					 */
-					name: string
-				}
-			}
-		}
-		Sort: {
-			/**
-			 * S​o​r​t
-			 */
-			name: string
-			values: {
-				ASC: {
-					/**
-					 * A​S​C
-					 */
-					name: string
-				}
-				DESC: {
-					/**
-					 * D​E​S​C
 					 */
 					name: string
 				}
@@ -1675,12 +793,6 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					realmId: {
-						/**
-						 * realmId
-						 */
-						name: () => LocalizedString
-					}
 					groups: {
 						/**
 						 * groups
@@ -1701,15 +813,21 @@ export type TranslationFunctions = {
 				 */
 				name: () => LocalizedString
 				fields: {
-					id: {
-						/**
-						 * id
-						 */
-						name: () => LocalizedString
-					}
 					name: {
 						/**
 						 * name
+						 */
+						name: () => LocalizedString
+					}
+					parent: {
+						/**
+						 * parent
+						 */
+						name: () => LocalizedString
+					}
+					subGroups: {
+						/**
+						 * subGroups
 						 */
 						name: () => LocalizedString
 					}
@@ -1731,158 +849,6 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					isDeprecated: {
-						/**
-						 * isDeprecated
-						 */
-						name: () => LocalizedString
-					}
-					version: {
-						/**
-						 * version
-						 */
-						name: () => LocalizedString
-					}
-					realmId: {
-						/**
-						 * realmId
-						 */
-						name: () => LocalizedString
-					}
-					createUserId: {
-						/**
-						 * createUserId
-						 */
-						name: () => LocalizedString
-					}
-					createTime: {
-						/**
-						 * createTime
-						 */
-						name: () => LocalizedString
-					}
-					updateUserId: {
-						/**
-						 * updateUserId
-						 */
-						name: () => LocalizedString
-					}
-					updateTime: {
-						/**
-						 * updateTime
-						 */
-						name: () => LocalizedString
-					}
-					createGroupId: {
-						/**
-						 * createGroupId
-						 */
-						name: () => LocalizedString
-					}
-					parentId: {
-						/**
-						 * parentId
-						 */
-						name: () => LocalizedString
-					}
-					userGroup: {
-						/**
-						 * userGroup
-						 */
-						name: () => LocalizedString
-					}
-					groupRole: {
-						/**
-						 * groupRole
-						 */
-						name: () => LocalizedString
-					}
-				}
-			}
-			GroupRole: {
-				/**
-				 * GroupRole
-				 */
-				name: () => LocalizedString
-				fields: {
-					id: {
-						/**
-						 * id
-						 */
-						name: () => LocalizedString
-					}
-					groupId: {
-						/**
-						 * groupId
-						 */
-						name: () => LocalizedString
-					}
-					from: {
-						/**
-						 * from
-						 */
-						name: () => LocalizedString
-					}
-					roleId: {
-						/**
-						 * roleId
-						 */
-						name: () => LocalizedString
-					}
-					to: {
-						/**
-						 * to
-						 */
-						name: () => LocalizedString
-					}
-					isDeprecated: {
-						/**
-						 * isDeprecated
-						 */
-						name: () => LocalizedString
-					}
-					version: {
-						/**
-						 * version
-						 */
-						name: () => LocalizedString
-					}
-					realmId: {
-						/**
-						 * realmId
-						 */
-						name: () => LocalizedString
-					}
-					createUserId: {
-						/**
-						 * createUserId
-						 */
-						name: () => LocalizedString
-					}
-					createTime: {
-						/**
-						 * createTime
-						 */
-						name: () => LocalizedString
-					}
-					updateUserId: {
-						/**
-						 * updateUserId
-						 */
-						name: () => LocalizedString
-					}
-					updateTime: {
-						/**
-						 * updateTime
-						 */
-						name: () => LocalizedString
-					}
-					createGroupId: {
-						/**
-						 * createGroupId
-						 */
-						name: () => LocalizedString
-					}
 				}
 			}
 			Permission: {
@@ -1891,12 +857,6 @@ export type TranslationFunctions = {
 				 */
 				name: () => LocalizedString
 				fields: {
-					id: {
-						/**
-						 * id
-						 */
-						name: () => LocalizedString
-					}
 					name: {
 						/**
 						 * name
@@ -1933,60 +893,6 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					isDeprecated: {
-						/**
-						 * isDeprecated
-						 */
-						name: () => LocalizedString
-					}
-					version: {
-						/**
-						 * version
-						 */
-						name: () => LocalizedString
-					}
-					realmId: {
-						/**
-						 * realmId
-						 */
-						name: () => LocalizedString
-					}
-					createUserId: {
-						/**
-						 * createUserId
-						 */
-						name: () => LocalizedString
-					}
-					createTime: {
-						/**
-						 * createTime
-						 */
-						name: () => LocalizedString
-					}
-					updateUserId: {
-						/**
-						 * updateUserId
-						 */
-						name: () => LocalizedString
-					}
-					updateTime: {
-						/**
-						 * updateTime
-						 */
-						name: () => LocalizedString
-					}
-					createGroupId: {
-						/**
-						 * createGroupId
-						 */
-						name: () => LocalizedString
-					}
-					roleId: {
-						/**
-						 * roleId
-						 */
-						name: () => LocalizedString
-					}
 				}
 			}
 			Realm: {
@@ -1995,63 +901,9 @@ export type TranslationFunctions = {
 				 */
 				name: () => LocalizedString
 				fields: {
-					id: {
-						/**
-						 * id
-						 */
-						name: () => LocalizedString
-					}
 					name: {
 						/**
 						 * name
-						 */
-						name: () => LocalizedString
-					}
-					isDeprecated: {
-						/**
-						 * isDeprecated
-						 */
-						name: () => LocalizedString
-					}
-					version: {
-						/**
-						 * version
-						 */
-						name: () => LocalizedString
-					}
-					realmId: {
-						/**
-						 * realmId
-						 */
-						name: () => LocalizedString
-					}
-					createUserId: {
-						/**
-						 * createUserId
-						 */
-						name: () => LocalizedString
-					}
-					createTime: {
-						/**
-						 * createTime
-						 */
-						name: () => LocalizedString
-					}
-					updateUserId: {
-						/**
-						 * updateUserId
-						 */
-						name: () => LocalizedString
-					}
-					updateTime: {
-						/**
-						 * updateTime
-						 */
-						name: () => LocalizedString
-					}
-					createGroupId: {
-						/**
-						 * createGroupId
 						 */
 						name: () => LocalizedString
 					}
@@ -2063,12 +915,6 @@ export type TranslationFunctions = {
 				 */
 				name: () => LocalizedString
 				fields: {
-					id: {
-						/**
-						 * id
-						 */
-						name: () => LocalizedString
-					}
 					name: {
 						/**
 						 * name
@@ -2087,6 +933,12 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
+					composites: {
+						/**
+						 * composites
+						 */
+						name: () => LocalizedString
+					}
 					permissions: {
 						/**
 						 * permissions
@@ -2099,152 +951,6 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					isDeprecated: {
-						/**
-						 * isDeprecated
-						 */
-						name: () => LocalizedString
-					}
-					version: {
-						/**
-						 * version
-						 */
-						name: () => LocalizedString
-					}
-					realmId: {
-						/**
-						 * realmId
-						 */
-						name: () => LocalizedString
-					}
-					createUserId: {
-						/**
-						 * createUserId
-						 */
-						name: () => LocalizedString
-					}
-					createTime: {
-						/**
-						 * createTime
-						 */
-						name: () => LocalizedString
-					}
-					updateUserId: {
-						/**
-						 * updateUserId
-						 */
-						name: () => LocalizedString
-					}
-					updateTime: {
-						/**
-						 * updateTime
-						 */
-						name: () => LocalizedString
-					}
-					createGroupId: {
-						/**
-						 * createGroupId
-						 */
-						name: () => LocalizedString
-					}
-					userRole: {
-						/**
-						 * userRole
-						 */
-						name: () => LocalizedString
-					}
-					roleComposite: {
-						/**
-						 * roleComposite
-						 */
-						name: () => LocalizedString
-					}
-				}
-			}
-			RoleComposite: {
-				/**
-				 * RoleComposite
-				 */
-				name: () => LocalizedString
-				fields: {
-					id: {
-						/**
-						 * id
-						 */
-						name: () => LocalizedString
-					}
-					roleId: {
-						/**
-						 * roleId
-						 */
-						name: () => LocalizedString
-					}
-					from: {
-						/**
-						 * from
-						 */
-						name: () => LocalizedString
-					}
-					compositeId: {
-						/**
-						 * compositeId
-						 */
-						name: () => LocalizedString
-					}
-					to: {
-						/**
-						 * to
-						 */
-						name: () => LocalizedString
-					}
-					isDeprecated: {
-						/**
-						 * isDeprecated
-						 */
-						name: () => LocalizedString
-					}
-					version: {
-						/**
-						 * version
-						 */
-						name: () => LocalizedString
-					}
-					realmId: {
-						/**
-						 * realmId
-						 */
-						name: () => LocalizedString
-					}
-					createUserId: {
-						/**
-						 * createUserId
-						 */
-						name: () => LocalizedString
-					}
-					createTime: {
-						/**
-						 * createTime
-						 */
-						name: () => LocalizedString
-					}
-					updateUserId: {
-						/**
-						 * updateUserId
-						 */
-						name: () => LocalizedString
-					}
-					updateTime: {
-						/**
-						 * updateTime
-						 */
-						name: () => LocalizedString
-					}
-					createGroupId: {
-						/**
-						 * createGroupId
-						 */
-						name: () => LocalizedString
-					}
 				}
 			}
 			User: {
@@ -2253,12 +959,6 @@ export type TranslationFunctions = {
 				 */
 				name: () => LocalizedString
 				fields: {
-					id: {
-						/**
-						 * id
-						 */
-						name: () => LocalizedString
-					}
 					name: {
 						/**
 						 * name
@@ -2274,12 +974,6 @@ export type TranslationFunctions = {
 					login: {
 						/**
 						 * login
-						 */
-						name: () => LocalizedString
-					}
-					password: {
-						/**
-						 * password
 						 */
 						name: () => LocalizedString
 					}
@@ -2313,416 +1007,10 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					isDeprecated: {
-						/**
-						 * isDeprecated
-						 */
-						name: () => LocalizedString
-					}
-					version: {
-						/**
-						 * version
-						 */
-						name: () => LocalizedString
-					}
-					realmId: {
-						/**
-						 * realmId
-						 */
-						name: () => LocalizedString
-					}
-					createUserId: {
-						/**
-						 * createUserId
-						 */
-						name: () => LocalizedString
-					}
-					createTime: {
-						/**
-						 * createTime
-						 */
-						name: () => LocalizedString
-					}
-					updateUserId: {
-						/**
-						 * updateUserId
-						 */
-						name: () => LocalizedString
-					}
-					updateTime: {
-						/**
-						 * updateTime
-						 */
-						name: () => LocalizedString
-					}
-					createGroupId: {
-						/**
-						 * createGroupId
-						 */
-						name: () => LocalizedString
-					}
-					userGroup: {
-						/**
-						 * userGroup
-						 */
-						name: () => LocalizedString
-					}
-					userRole: {
-						/**
-						 * userRole
-						 */
-						name: () => LocalizedString
-					}
-				}
-			}
-			UserGroup: {
-				/**
-				 * UserGroup
-				 */
-				name: () => LocalizedString
-				fields: {
-					id: {
-						/**
-						 * id
-						 */
-						name: () => LocalizedString
-					}
-					userId: {
-						/**
-						 * userId
-						 */
-						name: () => LocalizedString
-					}
-					from: {
-						/**
-						 * from
-						 */
-						name: () => LocalizedString
-					}
-					groupId: {
-						/**
-						 * groupId
-						 */
-						name: () => LocalizedString
-					}
-					to: {
-						/**
-						 * to
-						 */
-						name: () => LocalizedString
-					}
-					isDeprecated: {
-						/**
-						 * isDeprecated
-						 */
-						name: () => LocalizedString
-					}
-					version: {
-						/**
-						 * version
-						 */
-						name: () => LocalizedString
-					}
-					realmId: {
-						/**
-						 * realmId
-						 */
-						name: () => LocalizedString
-					}
-					createUserId: {
-						/**
-						 * createUserId
-						 */
-						name: () => LocalizedString
-					}
-					createTime: {
-						/**
-						 * createTime
-						 */
-						name: () => LocalizedString
-					}
-					updateUserId: {
-						/**
-						 * updateUserId
-						 */
-						name: () => LocalizedString
-					}
-					updateTime: {
-						/**
-						 * updateTime
-						 */
-						name: () => LocalizedString
-					}
-					createGroupId: {
-						/**
-						 * createGroupId
-						 */
-						name: () => LocalizedString
-					}
-				}
-			}
-			UserRole: {
-				/**
-				 * UserRole
-				 */
-				name: () => LocalizedString
-				fields: {
-					id: {
-						/**
-						 * id
-						 */
-						name: () => LocalizedString
-					}
-					userId: {
-						/**
-						 * userId
-						 */
-						name: () => LocalizedString
-					}
-					from: {
-						/**
-						 * from
-						 */
-						name: () => LocalizedString
-					}
-					roleId: {
-						/**
-						 * roleId
-						 */
-						name: () => LocalizedString
-					}
-					to: {
-						/**
-						 * to
-						 */
-						name: () => LocalizedString
-					}
-					isDeprecated: {
-						/**
-						 * isDeprecated
-						 */
-						name: () => LocalizedString
-					}
-					version: {
-						/**
-						 * version
-						 */
-						name: () => LocalizedString
-					}
-					realmId: {
-						/**
-						 * realmId
-						 */
-						name: () => LocalizedString
-					}
-					createUserId: {
-						/**
-						 * createUserId
-						 */
-						name: () => LocalizedString
-					}
-					createTime: {
-						/**
-						 * createTime
-						 */
-						name: () => LocalizedString
-					}
-					updateUserId: {
-						/**
-						 * updateUserId
-						 */
-						name: () => LocalizedString
-					}
-					updateTime: {
-						/**
-						 * updateTime
-						 */
-						name: () => LocalizedString
-					}
-					createGroupId: {
-						/**
-						 * createGroupId
-						 */
-						name: () => LocalizedString
-					}
 				}
 			}
 		}
 		enums: {
-			Conditional: {
-				/**
-				 * Conditional
-				 */
-				name: () => LocalizedString
-				values: {
-					AND: {
-						/**
-						 * AND
-						 */
-						name: () => LocalizedString
-					}
-					OR: {
-						/**
-						 * OR
-						 */
-						name: () => LocalizedString
-					}
-				}
-			}
-			Function: {
-				/**
-				 * Function
-				 */
-				name: () => LocalizedString
-				values: {
-					COUNT: {
-						/**
-						 * COUNT
-						 */
-						name: () => LocalizedString
-					}
-					MAX: {
-						/**
-						 * MAX
-						 */
-						name: () => LocalizedString
-					}
-					MIN: {
-						/**
-						 * MIN
-						 */
-						name: () => LocalizedString
-					}
-					SUM: {
-						/**
-						 * SUM
-						 */
-						name: () => LocalizedString
-					}
-					AVG: {
-						/**
-						 * AVG
-						 */
-						name: () => LocalizedString
-					}
-				}
-			}
-			Operator: {
-				/**
-				 * Operator
-				 */
-				name: () => LocalizedString
-				values: {
-					EQ: {
-						/**
-						 * EQ
-						 */
-						name: () => LocalizedString
-					}
-					NEQ: {
-						/**
-						 * NEQ
-						 */
-						name: () => LocalizedString
-					}
-					LK: {
-						/**
-						 * LK
-						 */
-						name: () => LocalizedString
-					}
-					NLK: {
-						/**
-						 * NLK
-						 */
-						name: () => LocalizedString
-					}
-					GT: {
-						/**
-						 * GT
-						 */
-						name: () => LocalizedString
-					}
-					NLTE: {
-						/**
-						 * NLTE
-						 */
-						name: () => LocalizedString
-					}
-					GTE: {
-						/**
-						 * GTE
-						 */
-						name: () => LocalizedString
-					}
-					NLT: {
-						/**
-						 * NLT
-						 */
-						name: () => LocalizedString
-					}
-					LT: {
-						/**
-						 * LT
-						 */
-						name: () => LocalizedString
-					}
-					NGTE: {
-						/**
-						 * NGTE
-						 */
-						name: () => LocalizedString
-					}
-					LTE: {
-						/**
-						 * LTE
-						 */
-						name: () => LocalizedString
-					}
-					NGT: {
-						/**
-						 * NGT
-						 */
-						name: () => LocalizedString
-					}
-					NIL: {
-						/**
-						 * NIL
-						 */
-						name: () => LocalizedString
-					}
-					NNIL: {
-						/**
-						 * NNIL
-						 */
-						name: () => LocalizedString
-					}
-					IN: {
-						/**
-						 * IN
-						 */
-						name: () => LocalizedString
-					}
-					NIN: {
-						/**
-						 * NIN
-						 */
-						name: () => LocalizedString
-					}
-					BT: {
-						/**
-						 * BT
-						 */
-						name: () => LocalizedString
-					}
-					NBT: {
-						/**
-						 * NBT
-						 */
-						name: () => LocalizedString
-					}
-				}
-			}
 			PermissionLevel: {
 				/**
 				 * PermissionLevel
@@ -2738,58 +1026,6 @@ export type TranslationFunctions = {
 					WRITE: {
 						/**
 						 * WRITE
-						 */
-						name: () => LocalizedString
-					}
-				}
-			}
-			Protocol: {
-				/**
-				 * Protocol
-				 */
-				name: () => LocalizedString
-				values: {
-					LOCAL: {
-						/**
-						 * LOCAL
-						 */
-						name: () => LocalizedString
-					}
-					GRPC: {
-						/**
-						 * GRPC
-						 */
-						name: () => LocalizedString
-					}
-					HTTP: {
-						/**
-						 * HTTP
-						 */
-						name: () => LocalizedString
-					}
-					RSOCKET: {
-						/**
-						 * RSOCKET
-						 */
-						name: () => LocalizedString
-					}
-				}
-			}
-			Sort: {
-				/**
-				 * Sort
-				 */
-				name: () => LocalizedString
-				values: {
-					ASC: {
-						/**
-						 * ASC
-						 */
-						name: () => LocalizedString
-					}
-					DESC: {
-						/**
-						 * DESC
 						 */
 						name: () => LocalizedString
 					}

@@ -85,6 +85,8 @@
 					</label>
 				</th>
 				<td>{$LL.graphql.objects.Group.fields.name.name()}</td>
+				<td>{$LL.graphql.objects.Group.fields.parent.name()}</td>
+				<td>{$LL.graphql.objects.Group.fields.subGroups.name()}</td>
 				<td>{$LL.graphql.objects.Group.fields.users.name()}</td>
 				<td>{$LL.graphql.objects.Group.fields.roles.name()}</td>
 				<td>{$LL.graphql.objects.Group.fields.realm.name()}</td>
@@ -107,6 +109,8 @@
 								readonly
 								errors={errors[row]?.iterms?.name}
 							/>
+							<ObjectTd name="parent" errors={errors[row]?.iterms?.parent} path="_/parent" on:gotoField />
+							<ObjectTd name="subGroups" errors={errors[row]?.iterms?.subGroups} path="_/sub-groups" on:gotoField />
 							<ObjectTd name="users" errors={errors[row]?.iterms?.users} path="_/users" on:gotoField />
 							<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
 							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
@@ -148,7 +152,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={4 + 2}/>
+				<TableEmpty cols={6 + 2}/>
 			{/if}
 		</tbody>
 	</Table>

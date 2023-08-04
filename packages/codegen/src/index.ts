@@ -2,7 +2,7 @@ import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
 import * as changeCase from "change-case";
 import { assertObjectType, isEnumType, isListType, isObjectType, type GraphQLSchema, isNonNullType, assertEnumType } from 'graphql';
-import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getScalarNames, getEnumNames, getEnumValues, isAggregate, initConfig, inRouteObject, inGraphQLField, inListField, inDetailField, componentFields, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent } from 'graphace-codegen-commons';
+import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getScalarNames, getEnumNames, getEnumValues, isAggregate, initConfig, inRouteObject, inGraphQLField, inListField, inDetailField, componentFields, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, inComponentEnum, isInnerEnum } from 'graphace-codegen-commons';
 import type { Template } from 'graphace-codegen-commons';
 import { buildFileContent } from "./builder.js";
 
@@ -45,6 +45,7 @@ const renders: Record<Template, Render> = {
                             return {
                                 ...assertObjectType(objectType),
                                 fields: Object.values(objectType.getFields())
+                                    .filter(field => inListField(objectType.name, field.name, getFieldType(field.type).name) || inDetailField(objectType.name, field.name, getFieldType(field.type).name))
                                     .filter(field => !isConnection(getFieldType(field.type).name))
                                     .filter(field => !isEdge(getFieldType(field.type).name))
                                     .filter(field => !isAggregate(field.name))
@@ -53,8 +54,10 @@ const renders: Record<Template, Render> = {
                             };
                         }),
                     enums: Object.values(schema.getTypeMap())
+                        .filter(type => inComponentEnum(type.name))
                         .filter(type => isEnumType(type))
                         .filter(type => !isIntrospection(type.name))
+                        .filter(type => !isInnerEnum(type.name))
                         .map(type => assertEnumType(type))
                         .map(enumType => {
                             return {
@@ -249,6 +252,19 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Th.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                return {
+                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(type), enums: getEnumNames(type), imports: componentFieldImports(typeName, getFields(schema, type)), fields: componentFields(typeName, getFields(schema, type))?.filter(field => inDetailField(typeName, field.fieldName, field.fieldType.name)).filter(field => !isConnection(field.fieldName)), rows: getFields(schema, type)?.filter(field => inDetailField(typeName, field.fieldName, field.fieldType.name)).filter(field => field.isScalarType || field.isEnumType).length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
+    },
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Item.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
@@ -276,6 +292,19 @@ const renders: Record<Template, Render> = {
         throw new Error(`${typeName} undefined`);
     },
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isEnumType(type)) {
+                return {
+                    content: buildFileContent(config.template, { name: type?.name, enumValues: getEnumValues(type) }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
+    },
+    '{{componentsPath}}/enums/{{pathName}}/{{name}}Input.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);

@@ -1,0 +1,33 @@
+mutation Mutation_role_composites($role_id: ID, $role_composites: [RoleInput], $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $totalCount: IntExpression, $update: Boolean = false, $mergeToList: [String]) {
+  role(id: $role_id composites: $role_composites) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    id
+    name
+    description
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    compositesConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name description: $description users: $users composites: $composites permissions: $permissions realm: $realm totalCount: $totalCount) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+      totalCount
+      edges {
+        node {
+          id
+          name
+          description
+          isDeprecated
+          version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
+        }
+      }
+    }
+  }
+}

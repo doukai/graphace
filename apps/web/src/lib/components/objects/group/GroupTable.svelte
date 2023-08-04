@@ -233,6 +233,8 @@
 					bind:sort={orderBy.name}
 					on:filter={query}
 				/>
+				<td>{$LL.graphql.objects.Group.fields.parent.name()}</td>
+				<td>{$LL.graphql.objects.Group.fields.subGroups.name()}</td>
 				<td>{$LL.graphql.objects.Group.fields.users.name()}</td>
 				<td>{$LL.graphql.objects.Group.fields.roles.name()}</td>
 				<td>{$LL.graphql.objects.Group.fields.realm.name()}</td>
@@ -240,7 +242,7 @@
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={10} cols={4 + 2}/>
+			<TableLoading rows={10} cols={6 + 2}/>
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
@@ -258,6 +260,8 @@
 									on:save={() => updateField({ id: node?.id, name: node?.name })}
 									errors={errors[row]?.iterms?.name}
 								/>
+								<ObjectTd name="parent" errors={errors[row]?.iterms?.parent} path={`${node.id}/parent`} on:gotoField />
+								<ObjectTd name="subGroups" errors={errors[row]?.iterms?.subGroups} path={`${node.id}/sub-groups`} on:gotoField />
 								<ObjectTd name="users" errors={errors[row]?.iterms?.users} path={`${node.id}/users`} on:gotoField />
 								<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path={`${node.id}/roles`} on:gotoField />
 								<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
@@ -337,7 +341,7 @@
 						{/if}
 					{/each}
 				{:else}
-					<TableEmpty cols={4 + 2}/>
+					<TableEmpty cols={6 + 2}/>
 				{/if}
 			</tbody>
 		{/if}
