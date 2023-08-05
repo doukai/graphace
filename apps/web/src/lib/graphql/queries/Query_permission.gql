@@ -1,9 +1,9 @@
-query Query_permission($id: StringExpression, $name: StringExpression, $ofTypeName: StringExpression, $description: StringExpression, $level: PermissionLevelExpression, $role: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $roleId: IntExpression, $cond: Conditional, $exs: [PermissionExpression]) {
-  permission(id: $id name: $name ofTypeName: $ofTypeName description: $description level: $level role: $role realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId roleId: $roleId cond: $cond exs: $exs)  {
+query Query_permission($id: StringExpression, $name: StringExpression, $description: StringExpression, $type: PermissionTypeExpression, $level: PermissionLevelExpression, $role: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $roleId: IntExpression, $cond: Conditional, $exs: [PermissionExpression]) {
+  permission(id: $id name: $name description: $description type: $type level: $level role: $role realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId roleId: $roleId cond: $cond exs: $exs)  {
     id
     name
-    ofTypeName
     description
+    type
     level
     isDeprecated
     version

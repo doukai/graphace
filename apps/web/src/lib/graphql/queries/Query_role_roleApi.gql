@@ -1,0 +1,33 @@
+query Query_role_roleApi($role_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RoleApiOrderBy, $groupBy: [String!], $id: StringExpression, $roleId: IntExpression, $from: RoleExpression, $apiId: IntExpression, $to: ApiExpression, $totalCount: IntExpression, ) {
+  role(id: $role_id)  {
+    id
+    name
+    description
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    roleApiConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId from: $from apiId: $apiId to: $to totalCount: $totalCount)  {
+      totalCount
+      edges {
+        node {
+          id
+          roleId
+          apiId
+          isDeprecated
+          version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
+        }
+      }
+    }
+  }
+}

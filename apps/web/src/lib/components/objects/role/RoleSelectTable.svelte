@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import { IDTh, IDTd, StringTh, StringTd, BooleanTh, BooleanTd, IntTh, IntTd, TimestampTh, TimestampTd } from '@graphace/ui-graphql/components/table';
+	import { StringTh, StringTd } from '@graphace/ui-graphql/components/table';
 	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
@@ -177,7 +177,7 @@
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={10} cols={6 + 2}/>
+			<TableLoading rows={10} cols={8 + 2}/>
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
@@ -236,7 +236,7 @@
 						{/if}
 					{/each}
 				{:else}
-					<TableEmpty cols={6 + 2}/>
+					<TableEmpty cols={8 + 2}/>
 				{/if}
 			</tbody>
 		{/if}

@@ -1,0 +1,33 @@
+mutation Mutation_role_roleMenu($role_id: ID, $role_roleMenu: [RoleMenuInput], $first: Int, $last: Int, $offset: Int, $orderBy: RoleMenuOrderBy, $groupBy: [String!], $id: StringExpression, $roleId: IntExpression, $from: RoleExpression, $menuId: IntExpression, $to: MenuExpression, $totalCount: IntExpression, $update: Boolean = false, $mergeToList: [String]) {
+  role(id: $role_id roleMenu: $role_roleMenu) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    id
+    name
+    description
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    roleMenuConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId from: $from menuId: $menuId to: $to totalCount: $totalCount) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+      totalCount
+      edges {
+        node {
+          id
+          roleId
+          menuId
+          isDeprecated
+          version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
+        }
+      }
+    }
+  }
+}

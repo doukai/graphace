@@ -14,7 +14,7 @@
 </script>
 
 <div class="w-full">
-	<div class="{errors?.errors ? 'border-2 border-error p-1 rounded-xl' : ''} space-y-5">
+	<div class="{errors?.errors ? 'border-2 border-error p-1 rounded-xl' : ''} space-y-2">
 		<div class="max-w-lg space-y-4">
 			{#each items as item, row}
 				<div class="relative flex items-start">

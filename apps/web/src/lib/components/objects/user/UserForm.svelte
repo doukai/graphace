@@ -4,7 +4,7 @@
 	import type { Errors } from '@graphace/commons/types';
 	import { Card } from '@graphace/ui/components/card';
 	import { Form, FormLoading } from '@graphace/ui/components/form';
-	import { IDItem, StringItem, BooleanItem, IntItem, TimestampItem,  } from '@graphace/ui-graphql/components/form';
+	import { StringItem, BooleanItem, ObjectItem } from '@graphace/ui-graphql/components/form';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
@@ -128,13 +128,14 @@
 		on:back
 	>
 		{#if isFetching}
-			<FormLoading rows={5} />
+			<FormLoading rows={9} />
 		{:else}
 			{#if node}
 				<StringItem label={$LL.graphql.objects.User.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
 				<StringItem label={$LL.graphql.objects.User.fields.lastName.name()} name="lastName" bind:value={node.lastName} errors={errors.lastName} />
 				<StringItem label={$LL.graphql.objects.User.fields.login.name()} name="login" bind:value={node.login} errors={errors.login} />
 				<StringItem label={$LL.graphql.objects.User.fields.email.name()} name="email" bind:value={node.email} errors={errors.email} />
+				<StringItem label={$LL.graphql.objects.User.fields.phones.name()} name="phones" bind:value={node.phones} list errors={errors.phones} />
 				<BooleanItem label={$LL.graphql.objects.User.fields.disable.name()} name="disable" bind:value={node.disable} errors={errors.disable} />
 				<ObjectItem name="groups" path={`${node.id}/groups`} label={$LL.graphql.objects.User.fields.groups.name()} errors={errors.groups} on:gotoField />
 				<ObjectItem name="roles" path={`${node.id}/roles`} label={$LL.graphql.objects.User.fields.roles.name()} errors={errors.roles} on:gotoField />

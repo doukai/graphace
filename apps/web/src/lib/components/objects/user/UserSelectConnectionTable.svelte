@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import { IDTh, IDTd, StringTh, StringTd, BooleanTh, BooleanTd, IntTh, IntTd, TimestampTh, TimestampTd } from '@graphace/ui-graphql/components/table';
+	import { StringTh, StringTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
 	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { Pagination } from '@graphace/ui/components/connection';
@@ -105,12 +105,14 @@
 			args.lastName = { opr: 'LK', val: `%${searchValue}%` };
 			args.login = { opr: 'LK', val: `%${searchValue}%` };
 			args.email = { opr: 'LK', val: `%${searchValue}%` };
+			args.phones = { opr: 'LK', val: `%${searchValue}%` };
 		} else {
 			args.cond = undefined;
 			args.name = undefined;
 			args.lastName = undefined;
 			args.login = undefined;
 			args.email = undefined;
+			args.phones = undefined;
 		}
 		
 		if (after) {
@@ -222,6 +224,11 @@
 					bind:sort={orderBy.email}
 					on:filter={query}
 				/>
+				<StringTh
+					name={$LL.graphql.objects.User.fields.phones.name()}
+					bind:expression={args.phones}
+					on:filter={query}
+				/>
 				<BooleanTh
 					name={$LL.graphql.objects.User.fields.disable.name()}
 					bind:expression={args.disable}
@@ -232,7 +239,7 @@
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={pageSize} cols={8 + 2}/>
+			<TableLoading rows={pageSize} cols={9 + 2}/>
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
@@ -272,6 +279,13 @@
 									on:save={() => updateField({ id: node?.id, email: node?.email })}
 									errors={errors[row]?.iterms?.email}
 								/>
+								<StringTd
+									name="phones"
+									bind:value={node.phones}
+									list
+									on:save={() => updateField({ id: node?.id, phones: node?.phones })}
+									errors={errors[row]?.iterms?.phones}
+								/>
 								<BooleanTd
 									name="disable"
 									bind:value={node.disable}
@@ -309,7 +323,7 @@
 						{/if}
 					{/each}
 				{:else}
-					<TableEmpty cols={8 + 2}/>
+					<TableEmpty cols={9 + 2}/>
 				{/if}
 			</tbody>
 		{/if}

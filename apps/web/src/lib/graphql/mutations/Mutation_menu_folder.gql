@@ -1,0 +1,36 @@
+mutation Mutation_menu_folder($menu_id: ID, $menu_folder: MenuInput, $id: StringExpression, $name: StringExpression, $type: MenuTypeExpression, $path: StringExpression, $icon: StringExpression, $folder: MenuExpression, $description: StringExpression, $role: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $parentId: IntExpression, $roleId: IntExpression, $update: Boolean = false, $mergeToList: [String]) {
+  menu(id: $menu_id folder: $menu_folder) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    id
+    name
+    type
+    path
+    icon
+    description
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    folder(id: $id name: $name type: $type path: $path icon: $icon folder: $folder description: $description role: $role realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId parentId: $parentId roleId: $roleId) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+      id
+      name
+      type
+      path
+      icon
+      description
+      isDeprecated
+      version
+      realmId
+      createUserId
+      createTime
+      updateUserId
+      updateTime
+      createGroupId
+      parentId
+      roleId
+    }
+  }
+}

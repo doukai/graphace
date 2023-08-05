@@ -1,10 +1,11 @@
-query Query_user_roles($user_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $totalCount: IntExpression, ) {
+query Query_user_roles($user_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $composites: RoleExpression, $permissions: PermissionExpression, $apis: ApiExpression, $menus: MenuExpression, $realm: RealmExpression, $totalCount: IntExpression, ) {
   user(id: $user_id)  {
     id
     name
     lastName
     login
     email
+    phones
     disable
     isDeprecated
     version
@@ -14,7 +15,7 @@ query Query_user_roles($user_id: StringExpression, $first: Int, $last: Int, $off
     updateUserId
     updateTime
     createGroupId
-    rolesConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name description: $description users: $users composites: $composites permissions: $permissions realm: $realm totalCount: $totalCount)  {
+    rolesConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name description: $description users: $users composites: $composites permissions: $permissions apis: $apis menus: $menus realm: $realm totalCount: $totalCount)  {
       totalCount
       edges {
         node {

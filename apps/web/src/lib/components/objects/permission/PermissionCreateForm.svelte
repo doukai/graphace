@@ -4,7 +4,8 @@
 	import type { Errors } from '@graphace/commons/types';
 	import { Card } from '@graphace/ui/components/card';
 	import { Form } from '@graphace/ui/components/form';
-	import { IDItem, StringItem, BooleanItem, IntItem, TimestampItem, ObjectItem } from '@graphace/ui-graphql/components/form';
+	import { StringItem, ObjectItem } from '@graphace/ui-graphql/components/form';
+	import PermissionTypeItem from '~/lib/components/enums/permission-type/PermissionTypeItem.svelte';
 	import PermissionLevelItem from '~/lib/components/enums/permission-level/PermissionLevelItem.svelte';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
@@ -82,8 +83,8 @@
 		on:back
 	>
 		<StringItem label={$LL.graphql.objects.Permission.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
-		<StringItem label={$LL.graphql.objects.Permission.fields.ofTypeName.name()} name="ofTypeName" bind:value={node.ofTypeName} errors={errors.ofTypeName} />
 		<StringItem label={$LL.graphql.objects.Permission.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
+		<PermissionTypeItem label={$LL.graphql.objects.Permission.fields.type.name()} name="type" bind:value={node.type} errors={errors.type} />
 		<PermissionLevelItem label={$LL.graphql.objects.Permission.fields.level.name()} name="level" bind:value={node.level} errors={errors.level} />
 		<ObjectItem name="role" path="_/role" label={$LL.graphql.objects.Permission.fields.role.name()} errors={errors.role} on:gotoField />
 		<ObjectItem name="realm" path="_/realm" label={$LL.graphql.objects.Permission.fields.realm.name()} errors={errors.realm} on:gotoField />

@@ -2,8 +2,8 @@ mutation Mutation_permission_realm($permission_id: ID, $permission_realm: RealmI
   permission(id: $permission_id realm: $permission_realm) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
     name
-    ofTypeName
     description
+    type
     level
     isDeprecated
     version

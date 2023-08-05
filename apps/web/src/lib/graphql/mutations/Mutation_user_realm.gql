@@ -5,6 +5,7 @@ mutation Mutation_user_realm($user_id: ID, $user_realm: RealmInput, $id: StringE
     lastName
     login
     email
+    phones
     disable
     isDeprecated
     version

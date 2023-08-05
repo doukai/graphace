@@ -1,0 +1,37 @@
+mutation Mutation_user_userPhones($user_id: ID, $user_userPhones: [UserPhonesInput], $first: Int, $last: Int, $offset: Int, $orderBy: UserPhonesOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $from: UserExpression, $phone: StringExpression, $totalCount: IntExpression, $update: Boolean = false, $mergeToList: [String]) {
+  user(id: $user_id userPhones: $user_userPhones) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    id
+    name
+    lastName
+    login
+    email
+    phones
+    disable
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    userPhonesConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId from: $from phone: $phone totalCount: $totalCount) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+      totalCount
+      edges {
+        node {
+          id
+          userId
+          phone
+          isDeprecated
+          version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
+        }
+      }
+    }
+  }
+}

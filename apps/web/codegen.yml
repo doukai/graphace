@@ -66,6 +66,12 @@ generates:
             name: RoleComposite
             ignore: true
           - 
+            name: RoleApi
+            ignore: true
+          - 
+            name: RoleMenu
+            ignore: true
+          - 
             name: GroupRole
             ignore: true
           - 
@@ -75,6 +81,9 @@ generates:
                 name: password
                 ignore: true
           - 
+            name: UserPhones
+            ignore: true
+          - 
             name: Group
             fields:
               - 
@@ -83,6 +92,21 @@ generates:
           - 
             name: Permission
             fields:
+              - 
+                name: roleId
+                ignore: true
+          - 
+            name: Api
+            fields:
+              - 
+                name: roleId
+                ignore: true
+          - 
+            name: Menu
+            fields:
+              - 
+                name: parentId
+                ignore: true
               - 
                 name: roleId
                 ignore: true

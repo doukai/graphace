@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import { ObjectTd, IDTh, IDTd, StringTh, StringTd, BooleanTh, BooleanTd, IntTh, IntTd, TimestampTh, TimestampTd } from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, StringTh, StringTd } from '@graphace/ui-graphql/components/table';
+	import PermissionTypeTh from '~/lib/components/enums/permission-type/PermissionTypeTh.svelte';
+	import PermissionTypeTd from '~/lib/components/enums/permission-type/PermissionTypeTd.svelte';
 	import PermissionLevelTh from '~/lib/components/enums/permission-level/PermissionLevelTh.svelte';
 	import PermissionLevelTd from '~/lib/components/enums/permission-level/PermissionLevelTd.svelte';
 	import { Card } from '@graphace/ui/components/card';
@@ -87,8 +89,8 @@
 					</label>
 				</th>
 				<td>{$LL.graphql.objects.Permission.fields.name.name()}</td>
-				<td>{$LL.graphql.objects.Permission.fields.ofTypeName.name()}</td>
 				<td>{$LL.graphql.objects.Permission.fields.description.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.type.name()}</td>
 				<td>{$LL.graphql.objects.Permission.fields.level.name()}</td>
 				<td>{$LL.graphql.objects.Permission.fields.role.name()}</td>
 				<td>{$LL.graphql.objects.Permission.fields.realm.name()}</td>
@@ -112,16 +114,16 @@
 								errors={errors[row]?.iterms?.name}
 							/>
 							<StringTd
-								name="ofTypeName"
-								bind:value={node.ofTypeName}
-								readonly
-								errors={errors[row]?.iterms?.ofTypeName}
-							/>
-							<StringTd
 								name="description"
 								bind:value={node.description}
 								readonly
 								errors={errors[row]?.iterms?.description}
+							/>
+							<PermissionTypeTd
+								name="type"
+								bind:value={node.type}
+								readonly
+								errors={errors[row]?.iterms?.type}
 							/>
 							<PermissionLevelTd
 								name="level"

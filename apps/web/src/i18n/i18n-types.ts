@@ -23,6 +23,44 @@ type RootTranslation = {}
 
 export type NamespaceGraphqlTranslation = {
 	objects: {
+		Api: {
+			/**
+			 * A​p​i
+			 */
+			name: string
+			fields: {
+				name: {
+					/**
+					 * n​a​m​e
+					 */
+					name: string
+				}
+				description: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n
+					 */
+					name: string
+				}
+				type: {
+					/**
+					 * t​y​p​e
+					 */
+					name: string
+				}
+				role: {
+					/**
+					 * r​o​l​e
+					 */
+					name: string
+				}
+				realm: {
+					/**
+					 * r​e​a​l​m
+					 */
+					name: string
+				}
+			}
+		}
 		CurrentUser: {
 			/**
 			 * C​u​r​r​e​n​t​U​s​e​r
@@ -105,6 +143,62 @@ export type NamespaceGraphqlTranslation = {
 				}
 			}
 		}
+		Menu: {
+			/**
+			 * M​e​n​u
+			 */
+			name: string
+			fields: {
+				name: {
+					/**
+					 * n​a​m​e
+					 */
+					name: string
+				}
+				type: {
+					/**
+					 * t​y​p​e
+					 */
+					name: string
+				}
+				path: {
+					/**
+					 * p​a​t​h
+					 */
+					name: string
+				}
+				icon: {
+					/**
+					 * i​c​o​n
+					 */
+					name: string
+				}
+				folder: {
+					/**
+					 * f​o​l​d​e​r
+					 */
+					name: string
+				}
+				description: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n
+					 */
+					name: string
+				}
+				role: {
+					/**
+					 * r​o​l​e
+					 */
+					name: string
+				}
+				realm: {
+					/**
+					 * r​e​a​l​m
+					 */
+					name: string
+				}
+			}
+		}
 		Permission: {
 			/**
 			 * P​e​r​m​i​s​s​i​o​n
@@ -117,15 +211,15 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				ofTypeName: {
-					/**
-					 * o​f​T​y​p​e​N​a​m​e
-					 */
-					name: string
-				}
 				description: {
 					/**
 					 * d​e​s​c​r​i​p​t​i​o​n
+					 */
+					name: string
+				}
+				type: {
+					/**
+					 * t​y​p​e
 					 */
 					name: string
 				}
@@ -199,6 +293,18 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				apis: {
+					/**
+					 * a​p​i​s
+					 */
+					name: string
+				}
+				menus: {
+					/**
+					 * m​e​n​u​s
+					 */
+					name: string
+				}
 				realm: {
 					/**
 					 * r​e​a​l​m
@@ -237,6 +343,12 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				phones: {
+					/**
+					 * p​h​o​n​e​s
+					 */
+					name: string
+				}
 				disable: {
 					/**
 					 * d​i​s​a​b​l​e
@@ -265,9 +377,93 @@ export type NamespaceGraphqlTranslation = {
 		}
 	}
 	enums: {
+		ApiType: {
+			/**
+			 * A​p​i​T​y​p​e
+			 */
+			name: string
+			values: {
+				QUERY: {
+					/**
+					 * Q​U​E​R​Y
+					 */
+					name: string
+				}
+				MUTATION: {
+					/**
+					 * M​U​T​A​T​I​O​N
+					 */
+					name: string
+				}
+				SUBSCRIPTION: {
+					/**
+					 * S​U​B​S​C​R​I​P​T​I​O​N
+					 */
+					name: string
+				}
+			}
+		}
+		MenuType: {
+			/**
+			 * M​e​n​u​T​y​p​e
+			 */
+			name: string
+			values: {
+				FOLDER: {
+					/**
+					 * F​O​L​D​E​R
+					 */
+					name: string
+				}
+				PAGE: {
+					/**
+					 * P​A​G​E
+					 */
+					name: string
+				}
+			}
+		}
 		PermissionLevel: {
 			/**
 			 * P​e​r​m​i​s​s​i​o​n​L​e​v​e​l
+			 */
+			name: string
+			values: {
+				USER: {
+					/**
+					 * U​S​E​R
+					 */
+					name: string
+				}
+				GROUP: {
+					/**
+					 * G​R​O​U​P
+					 */
+					name: string
+				}
+				SUB_GROUP: {
+					/**
+					 * S​U​B​_​G​R​O​U​P
+					 */
+					name: string
+				}
+				REALM: {
+					/**
+					 * R​E​A​L​M
+					 */
+					name: string
+				}
+				ALL: {
+					/**
+					 * A​L​L
+					 */
+					name: string
+				}
+			}
+		}
+		PermissionType: {
+			/**
+			 * P​e​r​m​i​s​s​i​o​n​T​y​p​e
 			 */
 			name: string
 			values: {
@@ -769,6 +965,44 @@ type DisallowNamespaces = {
 export type TranslationFunctions = {
 	graphql: {
 		objects: {
+			Api: {
+				/**
+				 * Api
+				 */
+				name: () => LocalizedString
+				fields: {
+					name: {
+						/**
+						 * name
+						 */
+						name: () => LocalizedString
+					}
+					description: {
+						/**
+						 * description
+						 */
+						name: () => LocalizedString
+					}
+					type: {
+						/**
+						 * type
+						 */
+						name: () => LocalizedString
+					}
+					role: {
+						/**
+						 * role
+						 */
+						name: () => LocalizedString
+					}
+					realm: {
+						/**
+						 * realm
+						 */
+						name: () => LocalizedString
+					}
+				}
+			}
 			CurrentUser: {
 				/**
 				 * CurrentUser
@@ -851,6 +1085,62 @@ export type TranslationFunctions = {
 					}
 				}
 			}
+			Menu: {
+				/**
+				 * Menu
+				 */
+				name: () => LocalizedString
+				fields: {
+					name: {
+						/**
+						 * name
+						 */
+						name: () => LocalizedString
+					}
+					type: {
+						/**
+						 * type
+						 */
+						name: () => LocalizedString
+					}
+					path: {
+						/**
+						 * path
+						 */
+						name: () => LocalizedString
+					}
+					icon: {
+						/**
+						 * icon
+						 */
+						name: () => LocalizedString
+					}
+					folder: {
+						/**
+						 * folder
+						 */
+						name: () => LocalizedString
+					}
+					description: {
+						/**
+						 * description
+						 */
+						name: () => LocalizedString
+					}
+					role: {
+						/**
+						 * role
+						 */
+						name: () => LocalizedString
+					}
+					realm: {
+						/**
+						 * realm
+						 */
+						name: () => LocalizedString
+					}
+				}
+			}
 			Permission: {
 				/**
 				 * Permission
@@ -863,15 +1153,15 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					ofTypeName: {
-						/**
-						 * ofTypeName
-						 */
-						name: () => LocalizedString
-					}
 					description: {
 						/**
 						 * description
+						 */
+						name: () => LocalizedString
+					}
+					type: {
+						/**
+						 * type
 						 */
 						name: () => LocalizedString
 					}
@@ -945,6 +1235,18 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
+					apis: {
+						/**
+						 * apis
+						 */
+						name: () => LocalizedString
+					}
+					menus: {
+						/**
+						 * menus
+						 */
+						name: () => LocalizedString
+					}
 					realm: {
 						/**
 						 * realm
@@ -983,6 +1285,12 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
+					phones: {
+						/**
+						 * phones
+						 */
+						name: () => LocalizedString
+					}
 					disable: {
 						/**
 						 * disable
@@ -1011,9 +1319,93 @@ export type TranslationFunctions = {
 			}
 		}
 		enums: {
+			ApiType: {
+				/**
+				 * ApiType
+				 */
+				name: () => LocalizedString
+				values: {
+					QUERY: {
+						/**
+						 * QUERY
+						 */
+						name: () => LocalizedString
+					}
+					MUTATION: {
+						/**
+						 * MUTATION
+						 */
+						name: () => LocalizedString
+					}
+					SUBSCRIPTION: {
+						/**
+						 * SUBSCRIPTION
+						 */
+						name: () => LocalizedString
+					}
+				}
+			}
+			MenuType: {
+				/**
+				 * MenuType
+				 */
+				name: () => LocalizedString
+				values: {
+					FOLDER: {
+						/**
+						 * FOLDER
+						 */
+						name: () => LocalizedString
+					}
+					PAGE: {
+						/**
+						 * PAGE
+						 */
+						name: () => LocalizedString
+					}
+				}
+			}
 			PermissionLevel: {
 				/**
 				 * PermissionLevel
+				 */
+				name: () => LocalizedString
+				values: {
+					USER: {
+						/**
+						 * USER
+						 */
+						name: () => LocalizedString
+					}
+					GROUP: {
+						/**
+						 * GROUP
+						 */
+						name: () => LocalizedString
+					}
+					SUB_GROUP: {
+						/**
+						 * SUB_GROUP
+						 */
+						name: () => LocalizedString
+					}
+					REALM: {
+						/**
+						 * REALM
+						 */
+						name: () => LocalizedString
+					}
+					ALL: {
+						/**
+						 * ALL
+						 */
+						name: () => LocalizedString
+					}
+				}
+			}
+			PermissionType: {
+				/**
+				 * PermissionType
 				 */
 				name: () => LocalizedString
 				values: {

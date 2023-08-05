@@ -1,0 +1,16 @@
+query Query_apiList($id: StringExpression, $name: StringExpression, $description: StringExpression, $type: ApiTypeExpression, $role: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $roleId: IntExpression, $orderBy: ApiOrderBy, $groupBy: [String!], $cond: Conditional, $exs: [ApiExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
+  apiList(id: $id name: $name description: $description type: $type role: $role realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId roleId: $roleId orderBy: $orderBy groupBy: $groupBy cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before)  {
+    id
+    name
+    description
+    type
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+  }
+}

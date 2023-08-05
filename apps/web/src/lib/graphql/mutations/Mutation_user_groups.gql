@@ -5,6 +5,7 @@ mutation Mutation_user_groups($user_id: ID, $user_groups: [GroupInput], $first: 
     lastName
     login
     email
+    phones
     disable
     isDeprecated
     version

@@ -26,7 +26,7 @@
 </script>
 
 <div class="w-full">
-	<div {id} class="{errors?.errors ? 'border-2 border-error p-1 rounded-xl' : ''} space-y-5">
+	<div {id} class="{errors?.errors ? 'border-2 border-error p-1 rounded-xl' : ''} space-y-2">
 		{#each value || [] as item, index}
 			<div class="flex space-x-1">
 				<div class="form-control w-full">

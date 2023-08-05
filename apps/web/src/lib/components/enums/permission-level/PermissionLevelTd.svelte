@@ -13,8 +13,11 @@
 	export let placeholder: string = '';
 
 	$: enums = [
-		{ name: $LL.graphql.enums.PermissionLevel.values.READ.name(), value: 'READ' },
-		{ name: $LL.graphql.enums.PermissionLevel.values.WRITE.name(), value: 'WRITE' }
+		{ name: $LL.graphql.enums.PermissionLevel.values.USER.name(), value: 'USER' },
+		{ name: $LL.graphql.enums.PermissionLevel.values.GROUP.name(), value: 'GROUP' },
+		{ name: $LL.graphql.enums.PermissionLevel.values.SUB_GROUP.name(), value: 'SUB_GROUP' },
+		{ name: $LL.graphql.enums.PermissionLevel.values.REALM.name(), value: 'REALM' },
+		{ name: $LL.graphql.enums.PermissionLevel.values.ALL.name(), value: 'ALL' }
 	];
 </script>
 

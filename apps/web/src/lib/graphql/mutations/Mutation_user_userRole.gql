@@ -5,6 +5,7 @@ mutation Mutation_user_userRole($user_id: ID, $user_userRole: [UserRoleInput], $
     lastName
     login
     email
+    phones
     disable
     isDeprecated
     version

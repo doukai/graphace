@@ -1,7 +1,13 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import { ObjectTd, IDTh, IDTd, StringTh, StringTd, BooleanTh, BooleanTd, IntTh, IntTd, TimestampTh, TimestampTd } from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, StringTh, StringTd } from '@graphace/ui-graphql/components/table';
+	import UserTh from '~/lib/components/objects/user/UserTh.svelte';
+	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
+	import PermissionTh from '~/lib/components/objects/permission/PermissionTh.svelte';
+	import ApiTh from '~/lib/components/objects/api/ApiTh.svelte';
+	import MenuTh from '~/lib/components/objects/menu/MenuTh.svelte';
+	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
 	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { Pagination } from '@graphace/ui/components/connection';
@@ -274,15 +280,41 @@
 					bind:sort={orderBy.description}
 					on:filter={query}
 				/>
-				<td>{$LL.graphql.objects.Role.fields.users.name()}</td>
-				<td>{$LL.graphql.objects.Role.fields.composites.name()}</td>
-				<td>{$LL.graphql.objects.Role.fields.permissions.name()}</td>
-				<td>{$LL.graphql.objects.Role.fields.realm.name()}</td>
+				<UserTh
+					name={$LL.graphql.objects.Role.fields.users.name()}
+					bind:expression={args.users}
+					on:filter={query}
+				/>
+				<RoleTh
+					name={$LL.graphql.objects.Role.fields.composites.name()}
+					bind:expression={args.composites}
+					on:filter={query}
+				/>
+				<PermissionTh
+					name={$LL.graphql.objects.Role.fields.permissions.name()}
+					bind:expression={args.permissions}
+					on:filter={query}
+				/>
+				<ApiTh
+					name={$LL.graphql.objects.Role.fields.apis.name()}
+					bind:expression={args.apis}
+					on:filter={query}
+				/>
+				<MenuTh
+					name={$LL.graphql.objects.Role.fields.menus.name()}
+					bind:expression={args.menus}
+					on:filter={query}
+				/>
+				<RealmTh
+					name={$LL.graphql.objects.Role.fields.realm.name()}
+					bind:expression={args.realm}
+					on:filter={query}
+				/>
 				<th />
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={pageSize} cols={6 + 2}/>
+			<TableLoading rows={pageSize} cols={8 + 2}/>
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
@@ -309,6 +341,8 @@
 								<ObjectTd name="users" errors={errors[row]?.iterms?.users} path={`${node.id}/users`} on:gotoField />
 								<ObjectTd name="composites" errors={errors[row]?.iterms?.composites} path={`${node.id}/composites`} on:gotoField />
 								<ObjectTd name="permissions" errors={errors[row]?.iterms?.permissions} path={`${node.id}/permissions`} on:gotoField />
+								<ObjectTd name="apis" errors={errors[row]?.iterms?.apis} path={`${node.id}/apis`} on:gotoField />
+								<ObjectTd name="menus" errors={errors[row]?.iterms?.menus} path={`${node.id}/menus`} on:gotoField />
 								<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
 								<th class="z-10 w-24">
 									<div class="flex space-x-1">
@@ -386,7 +420,7 @@
 						{/if}
 					{/each}
 				{:else}
-					<TableEmpty cols={6 + 2}/>
+					<TableEmpty cols={8 + 2}/>
 				{/if}
 			</tbody>
 		{/if}

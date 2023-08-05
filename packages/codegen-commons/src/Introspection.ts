@@ -1,5 +1,5 @@
 import * as changeCase from "change-case";
-import { assertEnumType, assertScalarType, isEnumType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLEnumValue, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType, type GraphQLSchema } from 'graphql';
+import { assertEnumType, assertScalarType, isEnumType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLEnumValue, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType, type GraphQLSchema, assertObjectType } from 'graphql';
 
 export const aggregateSuffix = ["Count", "Sum", "Avg", "Max", "Min", "Aggregate"];
 export const queryTypeName = "QueryType";
@@ -99,31 +99,103 @@ export const getConnectionField = (type: GraphQLNamedType | null | undefined, fi
     return undefined;
 }
 
-export const getScalarNames = (type: GraphQLNamedType): string[] | undefined => {
-    if (isObjectType(type) || isInputObjectType(type)) {
-        const scalarNames = Object.values(type.getFields())
-            .filter(field => !isAggregate(field.name))
-            .filter(field => !isIntrospection(field.name))
-            .map(field => getFieldType(field.type))
-            .filter(type => isScalarType(type))
-            .map(type => assertScalarType(type))
-            .map(type => type.name);
-        return scalarNames.filter((scalarName, index) => scalarNames.indexOf(scalarName) == index);
-    }
-    return undefined;
+export const getScalarNames = (
+    fields: {
+        fieldName: string,
+        fieldType: GraphQLNamedType,
+        isScalarType: boolean,
+        isEnumType: boolean,
+        isObjectType: boolean,
+        isNonNullType: boolean,
+        isListType: boolean,
+        inQueryArgs: boolean,
+        inMutationArgs: boolean
+    }[] | undefined
+): string[] | undefined => {
+    const scalarNames = fields?.filter(field => !isAggregate(field.fieldName))
+        .filter(field => !isIntrospection(field.fieldName))
+        .map(field => field.fieldType)
+        .filter(type => isScalarType(type))
+        .map(type => assertScalarType(type))
+        .map(type => type.name);
+    return scalarNames?.filter((scalarName, index) => scalarNames.indexOf(scalarName) == index);
 }
 
-export const getEnumNames = (type: GraphQLNamedType): string[] | undefined => {
-    if (isObjectType(type) || isInputObjectType(type)) {
-        const enumNames = Object.values(type.getFields())
-            .filter(field => !isInnerEnum(field.name))
-            .map(field => getFieldType(field.type))
-            .filter(type => isEnumType(type))
-            .map(type => assertEnumType(type))
-            .map(type => type.name);
-        return enumNames.filter((enumName, index) => enumNames.indexOf(enumName) == index);
-    }
-    return undefined;
+export const getBaseScalarNames = (
+    fields: {
+        fieldName: string,
+        fieldType: GraphQLNamedType,
+        isScalarType: boolean,
+        isEnumType: boolean,
+        isObjectType: boolean,
+        isNonNullType: boolean,
+        isListType: boolean,
+        inQueryArgs: boolean,
+        inMutationArgs: boolean
+    }[] | undefined
+): string[] | undefined => {
+    const baseScalarNames = getScalarNames(fields)?.map(typeName => {
+        switch (typeName) {
+            case "Boolean":
+                return "Boolean";
+            case "ID":
+            case "String":
+            case "Date":
+            case "Time":
+            case "DateTime":
+            case "Timestamp":
+                return "String";
+            case "Int":
+            case "BigInteger":
+            case "Float":
+            case "BigDecimal":
+                return "Number";
+            default:
+                return "String";
+        }
+    });
+    return baseScalarNames?.filter((baseScalarName, index) => baseScalarNames.indexOf(baseScalarName) == index);
+}
+
+export const getEnumNames = (
+    fields: {
+        fieldName: string,
+        fieldType: GraphQLNamedType,
+        isScalarType: boolean,
+        isEnumType: boolean,
+        isObjectType: boolean,
+        isNonNullType: boolean,
+        isListType: boolean,
+        inQueryArgs: boolean,
+        inMutationArgs: boolean
+    }[] | undefined
+): string[] | undefined => {
+    const enumNames = fields?.filter(field => !isInnerEnum(field.fieldName))
+        .map(field => field.fieldType)
+        .filter(type => isEnumType(type))
+        .map(type => assertEnumType(type))
+        .map(type => type.name);
+    return enumNames?.filter((enumName, index) => enumNames.indexOf(enumName) == index);
+}
+
+export const getObjectNames = (
+    fields: {
+        fieldName: string,
+        fieldType: GraphQLNamedType,
+        isScalarType: boolean,
+        isEnumType: boolean,
+        isObjectType: boolean,
+        isNonNullType: boolean,
+        isListType: boolean,
+        inQueryArgs: boolean,
+        inMutationArgs: boolean
+    }[] | undefined
+): string[] | undefined => {
+    const objectNames = fields?.map(field => field.fieldType)
+        .filter(type => isObjectType(type))
+        .map(type => assertObjectType(type))
+        .map(type => type.name);
+    return objectNames?.filter((objectName, index) => objectNames.indexOf(objectName) == index);
 }
 
 export const getIDFieldName = (type: GraphQLNamedType): string | undefined => {

@@ -1,9 +1,9 @@
-mutation Mutation_permission_role($permission_id: ID, $permission_role: RoleInput, $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $userRole: UserRoleExpression, $roleComposite: RoleCompositeExpression, $update: Boolean = false, $mergeToList: [String]) {
+mutation Mutation_permission_role($permission_id: ID, $permission_role: RoleInput, $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $composites: RoleExpression, $permissions: PermissionExpression, $apis: ApiExpression, $menus: MenuExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: StringExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $userRole: UserRoleExpression, $roleComposite: RoleCompositeExpression, $roleApi: RoleApiExpression, $roleMenu: RoleMenuExpression, $update: Boolean = false, $mergeToList: [String]) {
   permission(id: $permission_id role: $permission_role) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
     name
-    ofTypeName
     description
+    type
     level
     isDeprecated
     version
@@ -13,7 +13,7 @@ mutation Mutation_permission_role($permission_id: ID, $permission_role: RoleInpu
     updateUserId
     updateTime
     createGroupId
-    role(id: $id name: $name description: $description users: $users composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userRole: $userRole roleComposite: $roleComposite) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    role(id: $id name: $name description: $description users: $users composites: $composites permissions: $permissions apis: $apis menus: $menus realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userRole: $userRole roleComposite: $roleComposite roleApi: $roleApi roleMenu: $roleMenu) @update(if: $update) @mergeToList(arguments: $mergeToList) {
       id
       name
       description

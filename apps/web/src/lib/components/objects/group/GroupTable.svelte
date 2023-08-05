@@ -1,7 +1,11 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import { ObjectTd, IDTh, IDTd, StringTh, StringTd, BooleanTh, BooleanTd, IntTh, IntTd, TimestampTh, TimestampTd } from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, StringTh, StringTd } from '@graphace/ui-graphql/components/table';
+	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
+	import UserTh from '~/lib/components/objects/user/UserTh.svelte';
+	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
+	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
 	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
@@ -233,11 +237,31 @@
 					bind:sort={orderBy.name}
 					on:filter={query}
 				/>
-				<td>{$LL.graphql.objects.Group.fields.parent.name()}</td>
-				<td>{$LL.graphql.objects.Group.fields.subGroups.name()}</td>
-				<td>{$LL.graphql.objects.Group.fields.users.name()}</td>
-				<td>{$LL.graphql.objects.Group.fields.roles.name()}</td>
-				<td>{$LL.graphql.objects.Group.fields.realm.name()}</td>
+				<GroupTh
+					name={$LL.graphql.objects.Group.fields.parent.name()}
+					bind:expression={args.parent}
+					on:filter={query}
+				/>
+				<GroupTh
+					name={$LL.graphql.objects.Group.fields.subGroups.name()}
+					bind:expression={args.subGroups}
+					on:filter={query}
+				/>
+				<UserTh
+					name={$LL.graphql.objects.Group.fields.users.name()}
+					bind:expression={args.users}
+					on:filter={query}
+				/>
+				<RoleTh
+					name={$LL.graphql.objects.Group.fields.roles.name()}
+					bind:expression={args.roles}
+					on:filter={query}
+				/>
+				<RealmTh
+					name={$LL.graphql.objects.Group.fields.realm.name()}
+					bind:expression={args.realm}
+					on:filter={query}
+				/>
 				<th />
 			</tr>
 		</thead>

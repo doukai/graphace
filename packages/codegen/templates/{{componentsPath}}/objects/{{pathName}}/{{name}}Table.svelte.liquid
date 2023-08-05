@@ -11,6 +11,9 @@
 	import {{ enum }}Th from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Th.svelte';
 	import {{ enum }}Td from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Td.svelte';
 	{%- endfor %}
+	{%- for object in objects %}
+	import {{ object }}Th from '~/{{ objectsPath }}/{{ object | paramCase }}/{{ object }}Th.svelte';
+	{%- endfor %}
 	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
@@ -250,8 +253,8 @@
 				</th>
 				{%- if fields %}
 				{%- for field in fields %}
-				{%- if field.isScalarType or field.isEnumType %}
 				{%- if field.inQueryArgs %}
+				{%- if field.isScalarType or field.isEnumType %}
 				<{{ field.fieldType.name }}Th
 					name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 					bind:expression={args.{{ field.fieldName }}}
@@ -261,7 +264,11 @@
 					on:filter={query}
 				/>
 				{%- else %}
-				<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
+				<{{ field.fieldType.name }}Th
+					name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+					bind:expression={args.{{ field.fieldName }}}
+					on:filter={query}
+				/>
 				{%- endif %}
 				{%- else %}
 				<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>

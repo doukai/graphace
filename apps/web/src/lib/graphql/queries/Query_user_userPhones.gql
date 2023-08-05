@@ -1,0 +1,37 @@
+query Query_user_userPhones($user_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserPhonesOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $from: UserExpression, $phone: StringExpression, $totalCount: IntExpression, ) {
+  user(id: $user_id)  {
+    id
+    name
+    lastName
+    login
+    email
+    phones
+    disable
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    userPhonesConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId from: $from phone: $phone totalCount: $totalCount)  {
+      totalCount
+      edges {
+        node {
+          id
+          userId
+          phone
+          isDeprecated
+          version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
+        }
+      }
+    }
+  }
+}

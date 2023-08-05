@@ -5,6 +5,7 @@ query Query_user_userRole($user_id: StringExpression, $first: Int, $last: Int, $
     lastName
     login
     email
+    phones
     disable
     isDeprecated
     version

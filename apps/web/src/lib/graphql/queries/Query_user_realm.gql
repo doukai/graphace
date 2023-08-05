@@ -5,6 +5,7 @@ query Query_user_realm($user_id: StringExpression, $id: StringExpression, $name:
     lastName
     login
     email
+    phones
     disable
     isDeprecated
     version

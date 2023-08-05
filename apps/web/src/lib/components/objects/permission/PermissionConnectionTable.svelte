@@ -1,9 +1,13 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import { ObjectTd, IDTh, IDTd, StringTh, StringTd, BooleanTh, BooleanTd, IntTh, IntTd, TimestampTh, TimestampTd } from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, StringTh, StringTd } from '@graphace/ui-graphql/components/table';
+	import PermissionTypeTh from '~/lib/components/enums/permission-type/PermissionTypeTh.svelte';
+	import PermissionTypeTd from '~/lib/components/enums/permission-type/PermissionTypeTd.svelte';
 	import PermissionLevelTh from '~/lib/components/enums/permission-level/PermissionLevelTh.svelte';
 	import PermissionLevelTd from '~/lib/components/enums/permission-level/PermissionLevelTd.svelte';
+	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
+	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
 	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { Pagination } from '@graphace/ui/components/connection';
@@ -104,12 +108,10 @@
 		if (searchValue) {
 			args.cond = 'OR';
 			args.name = { opr: 'LK', val: `%${searchValue}%` };
-			args.ofTypeName = { opr: 'LK', val: `%${searchValue}%` };
 			args.description = { opr: 'LK', val: `%${searchValue}%` };
 		} else {
 			args.cond = undefined;
 			args.name = undefined;
-			args.ofTypeName = undefined;
 			args.description = undefined;
 		}
 		
@@ -273,15 +275,15 @@
 					on:filter={query}
 				/>
 				<StringTh
-					name={$LL.graphql.objects.Permission.fields.ofTypeName.name()}
-					bind:expression={args.ofTypeName}
-					bind:sort={orderBy.ofTypeName}
-					on:filter={query}
-				/>
-				<StringTh
 					name={$LL.graphql.objects.Permission.fields.description.name()}
 					bind:expression={args.description}
 					bind:sort={orderBy.description}
+					on:filter={query}
+				/>
+				<PermissionTypeTh
+					name={$LL.graphql.objects.Permission.fields.type.name()}
+					bind:expression={args.type}
+					bind:sort={orderBy.type}
 					on:filter={query}
 				/>
 				<PermissionLevelTh
@@ -290,8 +292,16 @@
 					bind:sort={orderBy.level}
 					on:filter={query}
 				/>
-				<td>{$LL.graphql.objects.Permission.fields.role.name()}</td>
-				<td>{$LL.graphql.objects.Permission.fields.realm.name()}</td>
+				<RoleTh
+					name={$LL.graphql.objects.Permission.fields.role.name()}
+					bind:expression={args.role}
+					on:filter={query}
+				/>
+				<RealmTh
+					name={$LL.graphql.objects.Permission.fields.realm.name()}
+					bind:expression={args.realm}
+					on:filter={query}
+				/>
 				<th />
 			</tr>
 		</thead>
@@ -315,16 +325,16 @@
 									errors={errors[row]?.iterms?.name}
 								/>
 								<StringTd
-									name="ofTypeName"
-									bind:value={node.ofTypeName}
-									on:save={() => updateField({ id: node?.id, ofTypeName: node?.ofTypeName })}
-									errors={errors[row]?.iterms?.ofTypeName}
-								/>
-								<StringTd
 									name="description"
 									bind:value={node.description}
 									on:save={() => updateField({ id: node?.id, description: node?.description })}
 									errors={errors[row]?.iterms?.description}
+								/>
+								<PermissionTypeTd
+									name="type"
+									bind:value={node.type}
+									on:save={() => updateField({ id: node?.id, type: node?.type })}
+									errors={errors[row]?.iterms?.type}
 								/>
 								<PermissionLevelTd
 									name="level"

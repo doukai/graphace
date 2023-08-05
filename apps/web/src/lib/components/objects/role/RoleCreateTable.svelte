@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import { ObjectTd, IDTh, IDTd, StringTh, StringTd, BooleanTh, BooleanTd, IntTh, IntTd, TimestampTh, TimestampTd } from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, StringTh, StringTd } from '@graphace/ui-graphql/components/table';
 	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableEmpty } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
@@ -89,6 +89,8 @@
 				<td>{$LL.graphql.objects.Role.fields.users.name()}</td>
 				<td>{$LL.graphql.objects.Role.fields.composites.name()}</td>
 				<td>{$LL.graphql.objects.Role.fields.permissions.name()}</td>
+				<td>{$LL.graphql.objects.Role.fields.apis.name()}</td>
+				<td>{$LL.graphql.objects.Role.fields.menus.name()}</td>
 				<td>{$LL.graphql.objects.Role.fields.realm.name()}</td>
 				<th />
 			</tr>
@@ -118,6 +120,8 @@
 							<ObjectTd name="users" errors={errors[row]?.iterms?.users} path="_/users" on:gotoField />
 							<ObjectTd name="composites" errors={errors[row]?.iterms?.composites} path="_/composites" on:gotoField />
 							<ObjectTd name="permissions" errors={errors[row]?.iterms?.permissions} path="_/permissions" on:gotoField />
+							<ObjectTd name="apis" errors={errors[row]?.iterms?.apis} path="_/apis" on:gotoField />
+							<ObjectTd name="menus" errors={errors[row]?.iterms?.menus} path="_/menus" on:gotoField />
 							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
 							<th class="z-10 w-24">
 								<div class="flex space-x-1">
@@ -157,7 +161,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={6 + 2}/>
+				<TableEmpty cols={8 + 2}/>
 			{/if}
 		</tbody>
 	</Table>

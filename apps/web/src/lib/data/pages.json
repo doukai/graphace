@@ -4,9 +4,19 @@
     "icon": "material-symbols:data-object",
     "items": [
 	{
+        "name": "Api",
+        "tags": "Api",
+        "href": "/api"
+	},
+	{
         "name": "Group",
         "tags": "Group",
         "href": "/group"
+	},
+	{
+        "name": "Menu",
+        "tags": "Menu",
+        "href": "/menu"
 	},
 	{
         "name": "Permission",

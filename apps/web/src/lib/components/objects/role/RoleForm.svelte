@@ -4,7 +4,7 @@
 	import type { Errors } from '@graphace/commons/types';
 	import { Card } from '@graphace/ui/components/card';
 	import { Form, FormLoading } from '@graphace/ui/components/form';
-	import { IDItem, StringItem, BooleanItem, IntItem, TimestampItem,  } from '@graphace/ui-graphql/components/form';
+	import { StringItem, ObjectItem } from '@graphace/ui-graphql/components/form';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
@@ -128,7 +128,7 @@
 		on:back
 	>
 		{#if isFetching}
-			<FormLoading rows={2} />
+			<FormLoading rows={8} />
 		{:else}
 			{#if node}
 				<StringItem label={$LL.graphql.objects.Role.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
@@ -136,6 +136,8 @@
 				<ObjectItem name="users" path={`${node.id}/users`} label={$LL.graphql.objects.Role.fields.users.name()} errors={errors.users} on:gotoField />
 				<ObjectItem name="composites" path={`${node.id}/composites`} label={$LL.graphql.objects.Role.fields.composites.name()} errors={errors.composites} on:gotoField />
 				<ObjectItem name="permissions" path={`${node.id}/permissions`} label={$LL.graphql.objects.Role.fields.permissions.name()} errors={errors.permissions} on:gotoField />
+				<ObjectItem name="apis" path={`${node.id}/apis`} label={$LL.graphql.objects.Role.fields.apis.name()} errors={errors.apis} on:gotoField />
+				<ObjectItem name="menus" path={`${node.id}/menus`} label={$LL.graphql.objects.Role.fields.menus.name()} errors={errors.menus} on:gotoField />
 				<ObjectItem name="realm" path={`${node.id}/realm`} label={$LL.graphql.objects.Role.fields.realm.name()} errors={errors.realm} on:gotoField />
 			{/if}
 		{/if}

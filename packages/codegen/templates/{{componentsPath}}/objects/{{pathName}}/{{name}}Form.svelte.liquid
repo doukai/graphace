@@ -4,7 +4,7 @@
 	import type { Errors } from '@graphace/commons/types';
 	import { Card } from '@graphace/ui/components/card';
 	import { Form, FormLoading } from '@graphace/ui/components/form';
-	import { {% for scalar in scalars %}{{ scalar }}Item, {% endfor %} } from '@graphace/ui-graphql/components/form';
+	import { {% for scalar in scalars %}{{ scalar }}Item, {% endfor %}ObjectItem } from '@graphace/ui-graphql/components/form';
 	{%- if imports %}
 	{%- for import in imports %}
 	{{ import }}

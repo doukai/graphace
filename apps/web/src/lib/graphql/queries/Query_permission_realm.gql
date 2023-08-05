@@ -2,8 +2,8 @@ query Query_permission_realm($permission_id: StringExpression, $id: StringExpres
   permission(id: $permission_id)  {
     id
     name
-    ofTypeName
     description
+    type
     level
     isDeprecated
     version

@@ -5,6 +5,7 @@ query Query_user_groups($user_id: StringExpression, $first: Int, $last: Int, $of
     lastName
     login
     email
+    phones
     disable
     isDeprecated
     version

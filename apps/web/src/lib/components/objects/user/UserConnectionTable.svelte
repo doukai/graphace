@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import { ObjectTd, IDTh, IDTd, StringTh, StringTd, BooleanTh, BooleanTd, IntTh, IntTd, TimestampTh, TimestampTd } from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, StringTh, StringTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
+	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
+	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
+	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
 	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { Pagination } from '@graphace/ui/components/connection';
@@ -105,12 +108,14 @@
 			args.lastName = { opr: 'LK', val: `%${searchValue}%` };
 			args.login = { opr: 'LK', val: `%${searchValue}%` };
 			args.email = { opr: 'LK', val: `%${searchValue}%` };
+			args.phones = { opr: 'LK', val: `%${searchValue}%` };
 		} else {
 			args.cond = undefined;
 			args.name = undefined;
 			args.lastName = undefined;
 			args.login = undefined;
 			args.email = undefined;
+			args.phones = undefined;
 		}
 		
 		if (after) {
@@ -290,20 +295,37 @@
 					bind:sort={orderBy.email}
 					on:filter={query}
 				/>
+				<StringTh
+					name={$LL.graphql.objects.User.fields.phones.name()}
+					bind:expression={args.phones}
+					on:filter={query}
+				/>
 				<BooleanTh
 					name={$LL.graphql.objects.User.fields.disable.name()}
 					bind:expression={args.disable}
 					bind:sort={orderBy.disable}
 					on:filter={query}
 				/>
-				<td>{$LL.graphql.objects.User.fields.groups.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.roles.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.realm.name()}</td>
+				<GroupTh
+					name={$LL.graphql.objects.User.fields.groups.name()}
+					bind:expression={args.groups}
+					on:filter={query}
+				/>
+				<RoleTh
+					name={$LL.graphql.objects.User.fields.roles.name()}
+					bind:expression={args.roles}
+					on:filter={query}
+				/>
+				<RealmTh
+					name={$LL.graphql.objects.User.fields.realm.name()}
+					bind:expression={args.realm}
+					on:filter={query}
+				/>
 				<th />
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={pageSize} cols={8 + 2}/>
+			<TableLoading rows={pageSize} cols={9 + 2}/>
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
@@ -338,6 +360,13 @@
 									bind:value={node.email}
 									on:save={() => updateField({ id: node?.id, email: node?.email })}
 									errors={errors[row]?.iterms?.email}
+								/>
+								<StringTd
+									name="phones"
+									bind:value={node.phones}
+									list
+									on:save={() => updateField({ id: node?.id, phones: node?.phones })}
+									errors={errors[row]?.iterms?.phones}
 								/>
 								<BooleanTd
 									name="disable"
@@ -424,7 +453,7 @@
 						{/if}
 					{/each}
 				{:else}
-					<TableEmpty cols={8 + 2}/>
+					<TableEmpty cols={9 + 2}/>
 				{/if}
 			</tbody>
 		{/if}

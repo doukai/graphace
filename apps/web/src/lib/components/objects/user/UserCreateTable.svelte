@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import { ObjectTd, IDTh, IDTd, StringTh, StringTd, BooleanTh, BooleanTd, IntTh, IntTd, TimestampTh, TimestampTd } from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, StringTh, StringTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
 	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableEmpty } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
@@ -88,6 +88,7 @@
 				<td>{$LL.graphql.objects.User.fields.lastName.name()}</td>
 				<td>{$LL.graphql.objects.User.fields.login.name()}</td>
 				<td>{$LL.graphql.objects.User.fields.email.name()}</td>
+				<td>{$LL.graphql.objects.User.fields.phones.name()}</td>
 				<td>{$LL.graphql.objects.User.fields.disable.name()}</td>
 				<td>{$LL.graphql.objects.User.fields.groups.name()}</td>
 				<td>{$LL.graphql.objects.User.fields.roles.name()}</td>
@@ -128,6 +129,13 @@
 								bind:value={node.email}
 								readonly
 								errors={errors[row]?.iterms?.email}
+							/>
+							<StringTd
+								name="phones"
+								bind:value={node.phones}
+								list
+								readonly
+								errors={errors[row]?.iterms?.phones}
 							/>
 							<BooleanTd
 								name="disable"
@@ -176,7 +184,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={8 + 2}/>
+				<TableEmpty cols={9 + 2}/>
 			{/if}
 		</tbody>
 	</Table>
