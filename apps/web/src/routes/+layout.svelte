@@ -85,40 +85,38 @@
 			<LocaleSelect slot="option2" />
 		</NavBar>
 		<main class="flex-1 max-w-[100vw] px-2 py-2 lg:max-w-[calc(100vw-20rem)]">
-			{#if $history.length > 0}
-				<Breadcrumbs>
+			<Breadcrumbs>
+				<li>
+					<a
+						href={null}
+						on:click={(e) => {
+							e.preventDefault();
+							init('/');
+						}}
+					>
+						<span>{$LL.web.path.home()}</span>
+					</a>
+				</li>
+				{#each $history as page}
 					<li>
 						<a
 							href={null}
 							on:click={(e) => {
 								e.preventDefault();
-								init('/');
+								to(page.url);
 							}}
 						>
-							<span>{$LL.web.path.home()}</span>
+							{#if page.type === PageType.CREATE}
+								{$LL.web.path.create({ name: page.name })}
+							{:else if page.type === PageType.SELECT}
+								{$LL.web.path.select({ name: page.name })}
+							{:else}
+								{page.name}
+							{/if}
 						</a>
 					</li>
-					{#each $history as page}
-						<li>
-							<a
-								href={null}
-								on:click={(e) => {
-									e.preventDefault();
-									to(page.url);
-								}}
-							>
-								{#if page.type === PageType.CREATE}
-									{$LL.web.path.create({ name: page.name })}
-								{:else if page.type === PageType.SELECT}
-									{$LL.web.path.select({ name: page.name })}
-								{:else}
-									{page.name}
-								{/if}
-							</a>
-						</li>
-					{/each}
-				</Breadcrumbs>
-			{/if}
+				{/each}
+			</Breadcrumbs>
 			<slot />
 			<MessageBoxs />
 			<Notifications />
