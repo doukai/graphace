@@ -19,7 +19,7 @@
 	/>
 </svelte:head>
 
-<NavBar>
+<NavBar showMenuButton={false}>
 	<ThemeSelect slot="option1" />
 	<LocaleSelect slot="option2" />
 </NavBar>
