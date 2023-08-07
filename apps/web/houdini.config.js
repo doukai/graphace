@@ -1,13 +1,18 @@
 /** @type {import('houdini').ConfigFile} */
 const config = {
-	apiUrl: 'http://localhost:8080/graphql',
 	plugins: {
 		'houdini-svelte': {
 			client: './src/client.js'
 		}
 	},
 	watchSchema: {
-		url: 'http://localhost:8080/graphql',
+		url: 'env:PUBLIC_GRAPHQL_URL',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization(env) {
+				return `Bearer ${env.AUTH_TOKEN}`
+			}
+		}
 	},
 	scalars: {
 		// the name of the scalar we are configuring

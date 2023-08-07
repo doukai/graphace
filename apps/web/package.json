@@ -12,6 +12,7 @@
 		"format": "prettier --write --ignore-path=../../.prettierignore .",
 		"generate": "concurrently --kill-others \"houdini generate\" \"graphql-codegen\" \"typesafe-i18n\"",
 		"houdini:generate": "houdini generate",
+		"houdini:pull-schema": "houdini pull-schema",
 		"graphql-codegen": "graphql-codegen",
 		"i18n:import": "tsx --tsconfig tsconfig.build.json src/i18n/import.ts",
 		"typesafe-i18n": "typesafe-i18n"
@@ -41,6 +42,7 @@
 		"concurrently": "^8.2.0",
 		"daisyui": "^3.0.25",
 		"date-fns": "^2.30.0",
+		"dotenv": "^16.3.1",
 		"eslint-config-custom": "workspace:*",
 		"graphace-codegen": "workspace:*",
 		"graphace-codegen-preset": "workspace:*",

@@ -2,13 +2,17 @@ import type { BaseTranslation } from '../i18n-types'
 
 const en: BaseTranslation = {
 	ui: {
+		menu: {
+			menu: "Menu",
+			open: "Open Menu"
+		},
 		cursor: {
-			size: "size",
+			size: "Size",
 			previous: "Previous",
 			next: "Next"
 		},
 		pagination: {
-			size: "size",
+			size: "Size",
 			total: "{total:number} results",
 			current: "Page {current:number}",
 			previous: "Previous",

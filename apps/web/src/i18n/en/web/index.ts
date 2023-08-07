@@ -2,6 +2,13 @@ import type { BaseTranslation } from '../../i18n-types';
 
 const en: BaseTranslation = {
     welcome: "Welcome to {name:string}",
+    login: {
+        detail: "Full-stack GraphQL development platform, powered by GraphQL Svelte and Reactor Java",
+        account: "Account",
+        login: "Login",
+        password: "Password",
+        forgot: "Forgot password?"
+    },
     localeName: { en: "English", zh: "Chinese" },
     message: {
         saveSuccess: "Save success",

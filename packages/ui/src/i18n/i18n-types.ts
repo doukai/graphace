@@ -15,9 +15,19 @@ export type Translations = RootTranslation
 
 type RootTranslation = {
 	ui: {
+		menu: {
+			/**
+			 * M​e​n​u
+			 */
+			menu: string
+			/**
+			 * O​p​e​n​ ​M​e​n​u
+			 */
+			open: string
+		}
 		cursor: {
 			/**
-			 * s​i​z​e
+			 * S​i​z​e
 			 */
 			size: string
 			/**
@@ -31,7 +41,7 @@ type RootTranslation = {
 		}
 		pagination: {
 			/**
-			 * s​i​z​e
+			 * S​i​z​e
 			 */
 			size: string
 			/**
@@ -120,9 +130,19 @@ type RootTranslation = {
 
 export type TranslationFunctions = {
 	ui: {
+		menu: {
+			/**
+			 * Menu
+			 */
+			menu: () => LocalizedString
+			/**
+			 * Open Menu
+			 */
+			open: () => LocalizedString
+		}
 		cursor: {
 			/**
-			 * size
+			 * Size
 			 */
 			size: () => LocalizedString
 			/**
@@ -136,7 +156,7 @@ export type TranslationFunctions = {
 		}
 		pagination: {
 			/**
-			 * size
+			 * Size
 			 */
 			size: () => LocalizedString
 			/**

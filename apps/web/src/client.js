@@ -1,12 +1,14 @@
 import { HoudiniClient } from '$houdini';
 import { error } from '@sveltejs/kit';
+import { PUBLIC_GRAPHQL_URL } from '$env/static/public';
 
 export default new HoudiniClient({
-	url: 'http://localhost:8080/graphql',
+	url: PUBLIC_GRAPHQL_URL,
 	fetchParams({ session }) {
 		return {
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				// Authorization: `Bearer ${session.token}`,
 			},
 		}
 	},

@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -96,6 +96,9 @@ importers:
       date-fns:
         specifier: ^2.30.0
         version: 2.30.0
+      dotenv:
+        specifier: ^16.3.1
+        version: 16.3.1
       eslint-config-custom:
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
@@ -252,7 +255,7 @@ importers:
         version: 8.8.0(eslint@8.42.0)
       eslint-config-turbo:
         specifier: latest
-        version: 1.10.3(eslint@8.42.0)
+        version: 0.0.7(eslint@8.42.0)
       eslint-plugin-svelte3:
         specifier: ^4.0.0
         version: 4.0.0(eslint@8.42.0)(svelte@3.59.1)
@@ -2483,7 +2486,7 @@ packages:
       '@whatwg-node/fetch': 0.8.8
       chalk: 4.1.2
       debug: 4.3.4
-      dotenv: 16.1.4
+      dotenv: 16.3.1
       graphql: 16.6.0
       graphql-request: 6.1.0(graphql@16.6.0)
       http-proxy-agent: 6.1.1
@@ -4206,8 +4209,8 @@ packages:
       no-case: 3.0.4
       tslib: 2.5.3
 
-  /dotenv@16.1.4:
-    resolution: {integrity: sha512-m55RtE8AsPeJBpOIFKihEmqUcoVncQIwo7x9U8ZwLEZw9ZpXboz2c+rvog+jUaJvVrZ5kBOeYQBX5+8Aa/OZQw==}
+  /dotenv@16.3.1:
+    resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
     engines: {node: '>=12'}
     dev: true
 
@@ -4369,13 +4372,13 @@ packages:
       eslint: 8.42.0
     dev: false
 
-  /eslint-config-turbo@1.10.3(eslint@8.42.0):
-    resolution: {integrity: sha512-ggzPfTJfMsMS383oZ4zfTP1zQvyMyiigOQJRUnLt1nqII6SKkTzdKZdwmXRDHU24KFwUfEFtT6c8vnm2VhL0uQ==}
+  /eslint-config-turbo@0.0.7(eslint@8.42.0):
+    resolution: {integrity: sha512-WbrGlyfs94rOXrhombi1wjIAYGdV2iosgJRndOZtmDQeq5GLTzYmBUCJQZWtLBEBUPCj96RxZ2OL7Cn+xv/Azg==}
     peerDependencies:
       eslint: '>6.6.0'
     dependencies:
       eslint: 8.42.0
-      eslint-plugin-turbo: 1.10.3(eslint@8.42.0)
+      eslint-plugin-turbo: 0.0.7(eslint@8.42.0)
     dev: false
 
   /eslint-plugin-svelte3@4.0.0(eslint@8.42.0)(svelte@3.59.1):
@@ -4388,8 +4391,8 @@ packages:
       svelte: 3.59.1
     dev: false
 
-  /eslint-plugin-turbo@1.10.3(eslint@8.42.0):
-    resolution: {integrity: sha512-g3Mnnk7el1FqxHfqbE/MayLvCsYjA/vKmAnUj66kV4AlM7p/EZqdt42NMcMSKtDVEm0w+utQkkzWG2Xsa0Pd/g==}
+  /eslint-plugin-turbo@0.0.7(eslint@8.42.0):
+    resolution: {integrity: sha512-iajOH8eD4jha3duztGVBD1BEmvNrQBaA/y3HFHf91vMDRYRwH7BpHSDFtxydDpk5ghlhRxG299SFxz7D6z4MBQ==}
     peerDependencies:
       eslint: '>6.6.0'
     dependencies:

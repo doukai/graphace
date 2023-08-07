@@ -24,7 +24,6 @@
 			then: (data: Menu | null | undefined) => void;
 			catch: (errors: Errors) => void;
 		};
-		save: {};
 		gotoSelect: {};
 		back: {};
 	}>();
@@ -35,7 +34,7 @@
 				args: node,
 				then: (data) => {
 					notifications.success($LL.web.message.saveSuccess());
-					dispatch('save');
+					dispatch('back');
 				},
 				catch: (errors) => {
 					console.error(errors);
@@ -51,6 +50,7 @@
 				args: {},
 				then: (data) => {
 					notifications.success($LL.web.message.removeSuccess());
+					dispatch('back');
 				},
 				catch: (errors) => {
 					console.error(errors);

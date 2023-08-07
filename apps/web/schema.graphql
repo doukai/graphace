@@ -1439,7 +1439,7 @@ type User implements Meta {
   nameCount: Int
   nameMax: String
   nameMin: String
-  password: String!
+  password: String
   passwordCount: Int
   passwordMax: String
   passwordMin: String

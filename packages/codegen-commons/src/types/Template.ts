@@ -17,29 +17,29 @@ export type Template =
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Th.svelte' |
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte' |
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Input.svelte' |
-    '{{routesPath}}/[lang]/{{pathName}}/+page.svelte' |
-    '{{routesPath}}/[lang]/{{pathName}}/+page.ts' |
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/+page.svelte' |
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/+page.ts' |
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/+page.svelte' |
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/+page.ts' |
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/__/+page.svelte' |
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/__/+page.ts' |
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.svelte' |
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.ts' |
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.svelte' |
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.ts' |
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/__/+page.svelte' |
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/__/+page.ts' |
-    '{{routesPath}}/[lang]/{{pathName}}/_/+page.svelte' |
-    '{{routesPath}}/[lang]/{{pathName}}/_/+page.ts' |
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/+page.svelte' |
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/+page.ts' |
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/__/+page.svelte' |
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/__/+page.ts' |
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/+page.svelte' |
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/+page.ts' |
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/_/+page.svelte' |
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/_/+page.ts' |
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/__/+page.svelte' |
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/__/+page.ts' 
+    '{{routesPath}}/{{pathName}}/+page.svelte' |
+    '{{routesPath}}/{{pathName}}/+page.ts' |
+    '{{routesPath}}/{{pathName}}/[id]/+page.svelte' |
+    '{{routesPath}}/{{pathName}}/[id]/+page.ts' |
+    '{{routesPath}}/{{pathName}}/[id]/{{objectFieldPathName}}/+page.svelte' |
+    '{{routesPath}}/{{pathName}}/[id]/{{objectFieldPathName}}/+page.ts' |
+    '{{routesPath}}/{{pathName}}/[id]/{{objectFieldPathName}}/__/+page.svelte' |
+    '{{routesPath}}/{{pathName}}/[id]/{{objectFieldPathName}}/__/+page.ts' |
+    '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.svelte' |
+    '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.ts' |
+    '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.svelte' |
+    '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.ts' |
+    '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/__/+page.svelte' |
+    '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/__/+page.ts' |
+    '{{routesPath}}/{{pathName}}/_/+page.svelte' |
+    '{{routesPath}}/{{pathName}}/_/+page.ts' |
+    '{{routesPath}}/{{pathName}}/_/{{objectFieldPathName}}/+page.svelte' |
+    '{{routesPath}}/{{pathName}}/_/{{objectFieldPathName}}/+page.ts' |
+    '{{routesPath}}/{{pathName}}/_/{{objectFieldPathName}}/__/+page.svelte' |
+    '{{routesPath}}/{{pathName}}/_/{{objectFieldPathName}}/__/+page.ts' |
+    '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/+page.svelte' |
+    '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/+page.ts' |
+    '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/_/+page.svelte' |
+    '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/_/+page.ts' |
+    '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/__/+page.svelte' |
+    '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/__/+page.ts' 

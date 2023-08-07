@@ -2,6 +2,10 @@ import type { Translation } from '../i18n-types'
 
 const zh: Translation = {
 	ui: {
+		menu: {
+			menu: "菜单",
+			open: "打开菜单"
+		},
 		cursor: {
 			size: "条数",
 			previous: "上一页",

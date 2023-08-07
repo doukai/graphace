@@ -485,9 +485,19 @@ export type NamespaceGraphqlTranslation = {
 }
 
 export type NamespaceUiTranslation = {
+	menu: {
+		/**
+		 * M​e​n​u
+		 */
+		menu: string
+		/**
+		 * O​p​e​n​ ​M​e​n​u
+		 */
+		open: string
+	}
 	cursor: {
 		/**
-		 * s​i​z​e
+		 * S​i​z​e
 		 */
 		size: string
 		/**
@@ -501,7 +511,7 @@ export type NamespaceUiTranslation = {
 	}
 	pagination: {
 		/**
-		 * s​i​z​e
+		 * S​i​z​e
 		 */
 		size: string
 		/**
@@ -706,6 +716,28 @@ export type NamespaceWebTranslation = {
 	 * @param {string} name
 	 */
 	welcome: RequiredParams<'name'>
+	login: {
+		/**
+		 * F​u​l​l​-​s​t​a​c​k​ ​G​r​a​p​h​Q​L​ ​d​e​v​e​l​o​p​m​e​n​t​ ​p​l​a​t​f​o​r​m​,​ ​p​o​w​e​r​e​d​ ​b​y​ ​G​r​a​p​h​Q​L​ ​S​v​e​l​t​e​ ​a​n​d​ ​R​e​a​c​t​o​r​ ​J​a​v​a
+		 */
+		detail: string
+		/**
+		 * A​c​c​o​u​n​t
+		 */
+		account: string
+		/**
+		 * L​o​g​i​n
+		 */
+		login: string
+		/**
+		 * P​a​s​s​w​o​r​d
+		 */
+		password: string
+		/**
+		 * F​o​r​g​o​t​ ​p​a​s​s​w​o​r​d​?
+		 */
+		forgot: string
+	}
 	localeName: {
 		/**
 		 * E​n​g​l​i​s​h
@@ -1426,9 +1458,19 @@ export type TranslationFunctions = {
 		}
 	}
 	ui: {
+		menu: {
+			/**
+			 * Menu
+			 */
+			menu: () => LocalizedString
+			/**
+			 * Open Menu
+			 */
+			open: () => LocalizedString
+		}
 		cursor: {
 			/**
-			 * size
+			 * Size
 			 */
 			size: () => LocalizedString
 			/**
@@ -1442,7 +1484,7 @@ export type TranslationFunctions = {
 		}
 		pagination: {
 			/**
-			 * size
+			 * Size
 			 */
 			size: () => LocalizedString
 			/**
@@ -1642,6 +1684,28 @@ export type TranslationFunctions = {
 		 * Welcome to {name}
 		 */
 		welcome: (arg: { name: string }) => LocalizedString
+		login: {
+			/**
+			 * Full-stack GraphQL development platform, powered by GraphQL Svelte and Reactor Java
+			 */
+			detail: () => LocalizedString
+			/**
+			 * Account
+			 */
+			account: () => LocalizedString
+			/**
+			 * Login
+			 */
+			login: () => LocalizedString
+			/**
+			 * Password
+			 */
+			password: () => LocalizedString
+			/**
+			 * Forgot password?
+			 */
+			forgot: () => LocalizedString
+		}
 		localeName: {
 			/**
 			 * English

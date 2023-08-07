@@ -1,5 +1,5 @@
 <script lang="ts">
-	import '../app.css';
+	import '../../../app.css';
 	import { onMount } from 'svelte';
 	import { to, PageType, init, history } from '~/lib/stores/useNavigate';
 	import { SideBar, Breadcrumbs } from '@graphace/ui/components';

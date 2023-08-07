@@ -5546,7 +5546,7 @@ export type User = Meta & {
   name: Scalars['String'];
   lastName?: Maybe<Scalars['String']>;
   login: Scalars['String'];
-  password: Scalars['String'];
+  password?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   phones?: Maybe<Array<Maybe<Scalars['String']>>>;
   disable?: Maybe<Scalars['Boolean']>;

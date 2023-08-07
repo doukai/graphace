@@ -3,6 +3,13 @@ import type { NamespaceWebTranslation } from '../../i18n-types'
 const zh: NamespaceWebTranslation = {
     welcome: "Welcome to {name}",
     localeName: { en: "英文", zh: "中文" },
+    login: {
+        detail: "全栈GraphQL开发平台, 基于GraphQL Svelte 响应式Java",
+        account: "账号",
+        login: "登录",
+        password: "密码",
+        forgot: "忘记密码?"
+    },
     message: {
         saveSuccess: "保存成功",
         createSuccess: "创建成功",

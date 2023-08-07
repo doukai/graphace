@@ -325,7 +325,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -339,7 +339,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -353,7 +353,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/[id]/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -366,7 +366,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/[id]/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -379,7 +379,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/[id]/{{objectFieldPathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -396,7 +396,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/[id]/{{objectFieldPathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -413,7 +413,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/__/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/[id]/{{objectFieldPathName}}/__/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -431,7 +431,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectFieldPathName}}/__/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/[id]/{{objectFieldPathName}}/__/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -449,7 +449,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -467,7 +467,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -485,7 +485,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -503,7 +503,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -521,7 +521,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/__/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/__/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -539,7 +539,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/[id]/{{objectListFieldPathName}}/__/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/__/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -557,7 +557,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/_/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/_/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -570,7 +570,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/_/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/_/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -583,7 +583,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/_/{{objectFieldPathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -600,7 +600,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/_/{{objectFieldPathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -617,7 +617,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/__/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/_/{{objectFieldPathName}}/__/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -635,7 +635,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectFieldPathName}}/__/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/_/{{objectFieldPathName}}/__/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -653,7 +653,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -671,7 +671,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -689,7 +689,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/_/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/_/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -707,7 +707,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/_/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/_/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -725,7 +725,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/__/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/__/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -743,7 +743,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/[lang]/{{pathName}}/_/{{objectListFieldPathName}}/__/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/__/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
