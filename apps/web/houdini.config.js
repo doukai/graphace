@@ -2,7 +2,7 @@
 const config = {
 	plugins: {
 		'houdini-svelte': {
-			client: './src/client.js'
+			client: './src/client.ts'
 		}
 	},
 	watchSchema: {
