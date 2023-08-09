@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import RoleApiConnectionTable from '~/lib/components/objects/role-api/RoleApiConnectionTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import type { MutationTypeRoleApiArgs, QueryTypeRoleApiConnectionArgs, RoleApi } from '~/lib/types/schema';
 	import { Query_role_roleApiStore, Mutation_roleApiStore, Mutation_role_roleApiStore } from '$houdini';
 	import type { PageData } from './$houdini';
@@ -26,7 +26,7 @@
 		event: CustomEvent<{
 			args: QueryTypeRoleApiConnectionArgs;
 			then: (data: (RoleApi | null | undefined)[] | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		Query_role_roleApi.fetch({
@@ -34,9 +34,9 @@
 		})
 			.then((result) => {
 				event.detail.then(result.data?.role?.roleApiConnection?.edges?.map((edge) => edge?.node));
-			})
-			.catch((errors) => {
-				event.detail.catch(errors);
+				if (result.errors) {
+					event.detail.catch(result.errors);
+				}
 			});
 	};
 
@@ -45,7 +45,7 @@
 			args: MutationTypeRoleApiArgs;
 			update?: boolean;
 			then: (data: RoleApi | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
@@ -57,9 +57,9 @@
 				Mutation_roleApi.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {
 						event.detail.then(result?.data?.roleApi);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {
@@ -74,7 +74,7 @@
 			args: MutationTypeRoleApiArgs[];
 			update?: boolean;
 			then: (data: RoleApi[] | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		validate('Role', { roleApi: event.detail.args }, true, $locale)
@@ -88,9 +88,9 @@
 				})
 					.then((result) => {
 						event.detail.then(undefined);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {

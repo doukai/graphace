@@ -4,7 +4,7 @@
 	import GroupForm from '~/lib/components/objects/group/GroupForm.svelte';
 	import GroupCreateForm from '~/lib/components/objects/group/GroupCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import type { MutationTypeGroupArgs, Group } from '~/lib/types/schema';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Query_group_parentStore, Mutation_group_parentStore, Mutation_groupStore } from '$houdini';
@@ -28,7 +28,7 @@
 			args: MutationTypeGroupArgs;
 			update?: boolean;
 			then: (data: Group | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		validate('Group', event.detail.args, true, $locale)
@@ -37,9 +37,9 @@
 				Mutation_group.mutate({ ...event.detail.args, update: true })
 					.then((result) => {
 						event.detail.then(result?.data?.group);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {
@@ -52,7 +52,7 @@
 			args: MutationTypeGroupArgs | null;
 			update?: boolean;
 			then: (data: Group | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		validate('Group', { parent: event.detail.args }, true, $locale)
@@ -65,9 +65,9 @@
 				})
 					.then((result) => {
 						event.detail.then(result?.data?.group?.parent);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {

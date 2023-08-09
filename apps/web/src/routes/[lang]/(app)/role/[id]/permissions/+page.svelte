@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import PermissionConnectionTable from '~/lib/components/objects/permission/PermissionConnectionTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import type { MutationTypePermissionArgs, QueryTypePermissionConnectionArgs, Permission } from '~/lib/types/schema';
 	import { Query_role_permissionsStore, Mutation_permissionStore, Mutation_role_permissionsStore } from '$houdini';
 	import type { PageData } from './$houdini';
@@ -26,7 +26,7 @@
 		event: CustomEvent<{
 			args: QueryTypePermissionConnectionArgs;
 			then: (data: (Permission | null | undefined)[] | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		Query_role_permissions.fetch({
@@ -34,9 +34,9 @@
 		})
 			.then((result) => {
 				event.detail.then(result.data?.role?.permissionsConnection?.edges?.map((edge) => edge?.node));
-			})
-			.catch((errors) => {
-				event.detail.catch(errors);
+				if (result.errors) {
+					event.detail.catch(result.errors);
+				}
 			});
 	};
 
@@ -45,7 +45,7 @@
 			args: MutationTypePermissionArgs;
 			update?: boolean;
 			then: (data: Permission | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
@@ -57,9 +57,9 @@
 				Mutation_permission.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {
 						event.detail.then(result?.data?.permission);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {
@@ -74,7 +74,7 @@
 			args: MutationTypePermissionArgs[];
 			update?: boolean;
 			then: (data: Permission[] | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		validate('Role', { permissions: event.detail.args }, true, $locale)
@@ -88,9 +88,9 @@
 				})
 					.then((result) => {
 						event.detail.then(undefined);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {

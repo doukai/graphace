@@ -1,0 +1,3 @@
+query Login($login: String, $password: String) {
+	login(login: $login, password: $password)
+}

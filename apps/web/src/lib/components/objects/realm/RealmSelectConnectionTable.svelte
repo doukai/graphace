@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { StringTh, StringTd } from '@graphace/ui-graphql/components/table';
 	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
@@ -27,18 +27,18 @@
 		fetch: {
 			args: QueryTypeRealmConnectionArgs;
 			then: (data: (Realm | null | undefined)[] | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		};
 		mutation: {
 			args: MutationTypeRealmArgs;
 			update?: boolean;
 			then: (data: Realm | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		};
 		select: {
 			selected: MutationTypeRealmArgs | null | undefined | (MutationTypeRealmArgs | null | undefined)[];
 			then: () => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		};
 		back: {};
 	}>();

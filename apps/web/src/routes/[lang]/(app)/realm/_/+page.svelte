@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import RealmCreateForm from '~/lib/components/objects/realm/RealmCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Mutation_realmStore } from '$houdini';
 	import type { MutationTypeRealmArgs, Realm } from '~/lib/types/schema';
@@ -24,7 +24,7 @@
 			args: MutationTypeRealmArgs;
 			update?: boolean;
 			then: (data: Realm | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		validate('Realm', event.detail.args, event.detail.update, $locale)
@@ -32,9 +32,9 @@
 				Mutation_realm.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {
 						event.detail.then(result?.data?.realm);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {

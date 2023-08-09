@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import GroupCreateForm from '~/lib/components/objects/group/GroupCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import type {
 		MutationTypeGroupArgs,
 		Group
@@ -22,7 +22,7 @@
 			args: MutationTypeGroupArgs;
 			update?: boolean;
 			then: (data: Group | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		node = event.detail.args;

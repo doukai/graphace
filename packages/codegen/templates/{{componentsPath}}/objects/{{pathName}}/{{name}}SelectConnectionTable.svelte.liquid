@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql/components/table';
 	{%- if imports %}
 	{%- for import in imports %}
@@ -36,18 +36,18 @@
 		fetch: {
 			args: QueryType{{ name }}ConnectionArgs;
 			then: (data: ({{ name }} | null | undefined)[] | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		};
 		mutation: {
 			args: MutationType{{ name }}Args;
 			update?: boolean;
 			then: (data: {{ name }} | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		};
 		select: {
 			selected: MutationType{{ name }}Args | null | undefined | (MutationType{{ name }}Args | null | undefined)[];
 			then: () => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		};
 		back: {};
 	}>();

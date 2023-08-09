@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	{%- if connectionField %}
 	import {{ name }}ConnectionTable from '~/{{ tablePath }}/{{ name | paramCase }}/{{ name }}ConnectionTable.svelte';
 	{%- else %}
@@ -35,7 +35,7 @@
 			args: QueryType{{ name }}ListArgs;
 			{%- endif %}
 			then: (data: ({{ name }} | null | undefined)[] | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		{%- if connectionField %}
@@ -49,9 +49,9 @@
 			{%- else %}
 				event.detail.then(result.data?.{{ name | camelCase }}List);
 			{%- endif %}
-			})
-			.catch((errors) => {
-				event.detail.catch(errors);
+				if (result.errors) {
+					event.detail.catch(result.errors);
+				}
 			});
 	};
 
@@ -60,7 +60,7 @@
 			args: MutationType{{ name }}Args;
 			update?: boolean;
 			then: (data: {{ name }} | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.{{ idName }})?.indexOf(event.detail.args.{{ idName }});
@@ -72,9 +72,9 @@
 				Mutation_{{ name | camelCase }}.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {
 						event.detail.then(result?.data?.{{ name | camelCase }});
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {

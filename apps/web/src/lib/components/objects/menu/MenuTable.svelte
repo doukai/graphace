@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { ObjectTd, StringTh, StringTd } from '@graphace/ui-graphql/components/table';
 	import MenuTypeTh from '~/lib/components/enums/menu-type/MenuTypeTh.svelte';
 	import MenuTypeTd from '~/lib/components/enums/menu-type/MenuTypeTd.svelte';
@@ -34,19 +34,19 @@
 		fetch: {
 			args: QueryTypeMenuListArgs;
 			then: (data: (Menu | null | undefined)[] | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		};
 		mutation: {
 			args: MutationTypeMenuArgs;
 			update?: boolean;
 			then: (data: Menu | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		};
 		parentMutation: {
 			args: MutationTypeMenuArgs[];
 			update?: boolean;
 			then: (data: Menu[] | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		};
 		edit: { id: string };
 		create: {};

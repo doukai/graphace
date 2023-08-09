@@ -1,9 +1,20 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+	import type { GraphQLError } from '@graphace/commons/types';
 	import LL from '$i18n/i18n-svelte';
 	import { nanoid } from 'nanoid';
 
 	const accountId = nanoid();
 	const passwordId = nanoid();
+
+	const dispatch = createEventDispatcher<{
+		login: {
+			login: string;
+			password: string;
+			then: (token: string) => void;
+			catch: (errors: GraphQLError[]) => void;
+		};
+	}>();
 </script>
 
 <div class="hero min-h-[calc(100vh-4rem)] bg-base-200">
@@ -34,7 +45,7 @@
 					</label>
 					<input
 						id={passwordId}
-						type="text"
+						type="password"
 						placeholder={$LL.web.login.password()}
 						class="input input-bordered"
 					/>

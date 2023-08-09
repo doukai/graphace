@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { ObjectTd, StringTh, StringTd } from '@graphace/ui-graphql/components/table';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import UserTh from '~/lib/components/objects/user/UserTh.svelte';
@@ -35,19 +35,19 @@
 		fetch: {
 			args: QueryTypeGroupConnectionArgs;
 			then: (data: (Group | null | undefined)[] | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		};
 		mutation: {
 			args: MutationTypeGroupArgs;
 			update?: boolean;
 			then: (data: Group | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		};
 		parentMutation: {
 			args: MutationTypeGroupArgs[];
 			update?: boolean;
 			then: (data: Group[] | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		};
 		edit: { id: string };
 		create: {};

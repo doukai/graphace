@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import MenuCreateForm from '~/lib/components/objects/menu/MenuCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import type {
 		MutationTypeMenuArgs,
 		Menu
@@ -22,7 +22,7 @@
 			args: MutationTypeMenuArgs;
 			update?: boolean;
 			then: (data: Menu | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		node = event.detail.args;

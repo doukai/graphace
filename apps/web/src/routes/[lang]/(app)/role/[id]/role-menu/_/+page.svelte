@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import RoleMenuCreateForm from '~/lib/components/objects/role-menu/RoleMenuCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Mutation_role_roleMenuStore } from '$houdini';
 	import type { MutationTypeRoleMenuArgs, RoleMenu } from '~/lib/types/schema';
@@ -25,7 +25,7 @@
 			args: MutationTypeRoleMenuArgs;
 			update?: boolean;
 			then: (data: RoleMenu | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		validate('Role', { roleMenu: [event.detail.args] }, true, $locale)
@@ -39,9 +39,9 @@
 				})
 					.then((result) => {
 						event.detail.then(undefined);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {

@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import UserPhonesConnectionTable from '~/lib/components/objects/user-phones/UserPhonesConnectionTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import type { MutationTypeUserPhonesArgs, QueryTypeUserPhonesConnectionArgs, UserPhones } from '~/lib/types/schema';
 	import { Query_user_userPhonesStore, Mutation_userPhonesStore, Mutation_user_userPhonesStore } from '$houdini';
 	import type { PageData } from './$houdini';
@@ -26,7 +26,7 @@
 		event: CustomEvent<{
 			args: QueryTypeUserPhonesConnectionArgs;
 			then: (data: (UserPhones | null | undefined)[] | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		Query_user_userPhones.fetch({
@@ -34,9 +34,9 @@
 		})
 			.then((result) => {
 				event.detail.then(result.data?.user?.userPhonesConnection?.edges?.map((edge) => edge?.node));
-			})
-			.catch((errors) => {
-				event.detail.catch(errors);
+				if (result.errors) {
+					event.detail.catch(result.errors);
+				}
 			});
 	};
 
@@ -45,7 +45,7 @@
 			args: MutationTypeUserPhonesArgs;
 			update?: boolean;
 			then: (data: UserPhones | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
@@ -57,9 +57,9 @@
 				Mutation_userPhones.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {
 						event.detail.then(result?.data?.userPhones);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {
@@ -74,7 +74,7 @@
 			args: MutationTypeUserPhonesArgs[];
 			update?: boolean;
 			then: (data: UserPhones[] | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		validate('User', { userPhones: event.detail.args }, true, $locale)
@@ -88,9 +88,9 @@
 				})
 					.then((result) => {
 						event.detail.then(undefined);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {

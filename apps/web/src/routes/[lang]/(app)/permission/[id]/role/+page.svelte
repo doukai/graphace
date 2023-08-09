@@ -4,7 +4,7 @@
 	import RoleForm from '~/lib/components/objects/role/RoleForm.svelte';
 	import RoleCreateForm from '~/lib/components/objects/role/RoleCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import type { MutationTypeRoleArgs, Role } from '~/lib/types/schema';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Query_permission_roleStore, Mutation_permission_roleStore, Mutation_roleStore } from '$houdini';
@@ -28,7 +28,7 @@
 			args: MutationTypeRoleArgs;
 			update?: boolean;
 			then: (data: Role | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		validate('Role', event.detail.args, true, $locale)
@@ -37,9 +37,9 @@
 				Mutation_role.mutate({ ...event.detail.args, update: true })
 					.then((result) => {
 						event.detail.then(result?.data?.role);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {
@@ -52,7 +52,7 @@
 			args: MutationTypeRoleArgs | null;
 			update?: boolean;
 			then: (data: Role | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		validate('Permission', { role: event.detail.args }, true, $locale)
@@ -65,9 +65,9 @@
 				})
 					.then((result) => {
 						event.detail.then(result?.data?.permission?.role);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {

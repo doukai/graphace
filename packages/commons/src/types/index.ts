@@ -1,3 +1,3 @@
-import type { Error, Errors } from "./Error"
+import type { Error, Errors, GraphQLError } from "./Error"
 
-export { Error, Errors }
+export { Error, Errors, GraphQLError }

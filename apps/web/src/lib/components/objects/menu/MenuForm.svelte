@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { Card } from '@graphace/ui/components/card';
 	import { Form, FormLoading } from '@graphace/ui/components/form';
 	import { StringItem, ObjectItem } from '@graphace/ui-graphql/components/form';
@@ -24,13 +24,13 @@
 			args: MutationTypeMenuArgs;
 			update?: boolean;
 			then: (data: Menu | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		};
 		parentMutation: {
 			args: MutationTypeMenuArgs | null;
 			update?: boolean;
 			then: (data: Menu | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		};
 		gotoSelect: {};
 		back: {};

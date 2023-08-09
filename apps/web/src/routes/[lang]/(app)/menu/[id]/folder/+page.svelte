@@ -4,7 +4,7 @@
 	import MenuForm from '~/lib/components/objects/menu/MenuForm.svelte';
 	import MenuCreateForm from '~/lib/components/objects/menu/MenuCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import type { MutationTypeMenuArgs, Menu } from '~/lib/types/schema';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Query_menu_folderStore, Mutation_menu_folderStore, Mutation_menuStore } from '$houdini';
@@ -28,7 +28,7 @@
 			args: MutationTypeMenuArgs;
 			update?: boolean;
 			then: (data: Menu | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		validate('Menu', event.detail.args, true, $locale)
@@ -37,9 +37,9 @@
 				Mutation_menu.mutate({ ...event.detail.args, update: true })
 					.then((result) => {
 						event.detail.then(result?.data?.menu);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {
@@ -52,7 +52,7 @@
 			args: MutationTypeMenuArgs | null;
 			update?: boolean;
 			then: (data: Menu | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		validate('Menu', { folder: event.detail.args }, true, $locale)
@@ -65,9 +65,9 @@
 				})
 					.then((result) => {
 						event.detail.then(result?.data?.menu?.folder);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {

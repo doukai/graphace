@@ -4,7 +4,7 @@
 	import RoleApiCreateForm from '~/lib/components/objects/role-api/RoleApiCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { MutationTypeRoleApiArgs, RoleApi } from '~/lib/types/schema';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
 	import LL from '$i18n/i18n-svelte';
@@ -18,7 +18,7 @@
 		event: CustomEvent<{
 			args: MutationTypeRoleApiArgs;
 			then: (data: RoleApi | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		ot({

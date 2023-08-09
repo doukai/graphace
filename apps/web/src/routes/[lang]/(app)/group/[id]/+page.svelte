@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import GroupForm from '~/lib/components/objects/group/GroupForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { Query_groupStore, Mutation_groupStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { MutationTypeGroupArgs, Group } from '~/lib/types/schema';
@@ -22,7 +22,7 @@
 			args: MutationTypeGroupArgs;
 			update?: boolean;
 			then: (data: Group | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		validate('Group', event.detail.args, event.detail.update, $locale)
@@ -31,9 +31,9 @@
 				Mutation_group.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {
 						event.detail.then(result?.data?.group);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {

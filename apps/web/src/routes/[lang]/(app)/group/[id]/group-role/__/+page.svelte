@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import GroupRoleSelectConnectionTable from '~/lib/components/objects/group-role/GroupRoleSelectConnectionTable.svelte';
 	import type { GroupRole, QueryTypeGroupRoleConnectionArgs, MutationTypeGroupRoleArgs } from '~/lib/types/schema';
 	import { Query_groupRoleConnectionStore, Mutation_groupRoleStore, Mutation_group_groupRoleStore } from '$houdini';
@@ -24,15 +24,15 @@
 		event: CustomEvent<{
 			args: QueryTypeGroupRoleConnectionArgs;
 			then: (data: (GroupRole | null | undefined)[] | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		Query_groupRoleConnection.fetch({ variables: event.detail.args })
 			.then((result) => {
 				event.detail.then(result.data?.groupRoleConnection?.edges?.map((edge) => edge?.node));
-			})
-			.catch((errors) => {
-				event.detail.catch(errors);
+				if (result.errors) {
+					event.detail.catch(result.errors);
+				}
 			});
 	};
 
@@ -41,7 +41,7 @@
 			args: MutationTypeGroupRoleArgs;
 			update?: boolean;
 			then: (data: GroupRole | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
@@ -53,9 +53,9 @@
 				Mutation_groupRole.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {
 						event.detail.then(result?.data?.groupRole);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {
@@ -69,7 +69,7 @@
 		event: CustomEvent<{
 			selected: MutationTypeGroupRoleArgs | null | undefined | (MutationTypeGroupRoleArgs | null | undefined)[];
 			then: () => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		validate('Group', { groupRole: event.detail.selected }, true, $locale)
@@ -84,9 +84,9 @@
 					})
 						.then((result) => {
 							event.detail.then();
-						})
-						.catch((errors) => {
-							event.detail.catch(errors);
+							if (result.errors) {
+								event.detail.catch(result.errors);
+							}
 						});
 				}
 			})

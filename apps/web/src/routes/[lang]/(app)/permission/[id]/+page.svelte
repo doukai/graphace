@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import PermissionForm from '~/lib/components/objects/permission/PermissionForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { Query_permissionStore, Mutation_permissionStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { MutationTypePermissionArgs, Permission } from '~/lib/types/schema';
@@ -22,7 +22,7 @@
 			args: MutationTypePermissionArgs;
 			update?: boolean;
 			then: (data: Permission | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		validate('Permission', event.detail.args, event.detail.update, $locale)
@@ -31,9 +31,9 @@
 				Mutation_permission.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {
 						event.detail.then(result?.data?.permission);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {

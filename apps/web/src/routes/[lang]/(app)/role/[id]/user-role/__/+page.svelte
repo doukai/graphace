@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import UserRoleSelectConnectionTable from '~/lib/components/objects/user-role/UserRoleSelectConnectionTable.svelte';
 	import type { UserRole, QueryTypeUserRoleConnectionArgs, MutationTypeUserRoleArgs } from '~/lib/types/schema';
 	import { Query_userRoleConnectionStore, Mutation_userRoleStore, Mutation_role_userRoleStore } from '$houdini';
@@ -24,15 +24,15 @@
 		event: CustomEvent<{
 			args: QueryTypeUserRoleConnectionArgs;
 			then: (data: (UserRole | null | undefined)[] | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		Query_userRoleConnection.fetch({ variables: event.detail.args })
 			.then((result) => {
 				event.detail.then(result.data?.userRoleConnection?.edges?.map((edge) => edge?.node));
-			})
-			.catch((errors) => {
-				event.detail.catch(errors);
+				if (result.errors) {
+					event.detail.catch(result.errors);
+				}
 			});
 	};
 
@@ -41,7 +41,7 @@
 			args: MutationTypeUserRoleArgs;
 			update?: boolean;
 			then: (data: UserRole | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
@@ -53,9 +53,9 @@
 				Mutation_userRole.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {
 						event.detail.then(result?.data?.userRole);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {
@@ -69,7 +69,7 @@
 		event: CustomEvent<{
 			selected: MutationTypeUserRoleArgs | null | undefined | (MutationTypeUserRoleArgs | null | undefined)[];
 			then: () => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		validate('Role', { userRole: event.detail.selected }, true, $locale)
@@ -84,9 +84,9 @@
 					})
 						.then((result) => {
 							event.detail.then();
-						})
-						.catch((errors) => {
-							event.detail.catch(errors);
+							if (result.errors) {
+								event.detail.catch(result.errors);
+							}
 						});
 				}
 			})

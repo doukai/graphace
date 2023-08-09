@@ -1,5 +1,5 @@
-import Login from "./Login.svelte";
+import LoginForm from "./LoginForm.svelte";
 
 export {
-    Login
+    LoginForm
 }

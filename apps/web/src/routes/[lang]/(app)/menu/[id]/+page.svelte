@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import MenuForm from '~/lib/components/objects/menu/MenuForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { Query_menuStore, Mutation_menuStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { MutationTypeMenuArgs, Menu } from '~/lib/types/schema';
@@ -22,7 +22,7 @@
 			args: MutationTypeMenuArgs;
 			update?: boolean;
 			then: (data: Menu | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		validate('Menu', event.detail.args, event.detail.update, $locale)
@@ -31,9 +31,9 @@
 				Mutation_menu.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {
 						event.detail.then(result?.data?.menu);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {

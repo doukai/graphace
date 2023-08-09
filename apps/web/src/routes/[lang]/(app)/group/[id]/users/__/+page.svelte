@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import UserSelectConnectionTable from '~/lib/components/objects/user/UserSelectConnectionTable.svelte';
 	import type { User, QueryTypeUserConnectionArgs, MutationTypeUserArgs } from '~/lib/types/schema';
 	import { Query_userConnectionStore, Mutation_userStore, Mutation_group_usersStore } from '$houdini';
@@ -24,15 +24,15 @@
 		event: CustomEvent<{
 			args: QueryTypeUserConnectionArgs;
 			then: (data: (User | null | undefined)[] | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		Query_userConnection.fetch({ variables: event.detail.args })
 			.then((result) => {
 				event.detail.then(result.data?.userConnection?.edges?.map((edge) => edge?.node));
-			})
-			.catch((errors) => {
-				event.detail.catch(errors);
+				if (result.errors) {
+					event.detail.catch(result.errors);
+				}
 			});
 	};
 
@@ -41,7 +41,7 @@
 			args: MutationTypeUserArgs;
 			update?: boolean;
 			then: (data: User | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
@@ -53,9 +53,9 @@
 				Mutation_user.mutate({ ...event.detail.args, update: event.detail.update })
 					.then((result) => {
 						event.detail.then(result?.data?.user);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {
@@ -69,7 +69,7 @@
 		event: CustomEvent<{
 			selected: MutationTypeUserArgs | null | undefined | (MutationTypeUserArgs | null | undefined)[];
 			then: () => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		validate('Group', { users: event.detail.selected }, true, $locale)
@@ -84,9 +84,9 @@
 					})
 						.then((result) => {
 							event.detail.then();
-						})
-						.catch((errors) => {
-							event.detail.catch(errors);
+							if (result.errors) {
+								event.detail.catch(result.errors);
+							}
 						});
 				}
 			})

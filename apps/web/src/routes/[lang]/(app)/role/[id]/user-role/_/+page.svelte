@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import UserRoleCreateForm from '~/lib/components/objects/user-role/UserRoleCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Mutation_role_userRoleStore } from '$houdini';
 	import type { MutationTypeUserRoleArgs, UserRole } from '~/lib/types/schema';
@@ -25,7 +25,7 @@
 			args: MutationTypeUserRoleArgs;
 			update?: boolean;
 			then: (data: UserRole | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		validate('Role', { userRole: [event.detail.args] }, true, $locale)
@@ -39,9 +39,9 @@
 				})
 					.then((result) => {
 						event.detail.then(undefined);
-					})
-					.catch((errors) => {
-						event.detail.catch(errors);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
 					});
 			})
 			.catch((validErrors) => {

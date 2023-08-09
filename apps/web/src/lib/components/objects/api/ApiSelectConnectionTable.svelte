@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { StringTh, StringTd } from '@graphace/ui-graphql/components/table';
 	import ApiTypeTh from '~/lib/components/enums/api-type/ApiTypeTh.svelte';
 	import ApiTypeTd from '~/lib/components/enums/api-type/ApiTypeTd.svelte';
@@ -29,18 +29,18 @@
 		fetch: {
 			args: QueryTypeApiConnectionArgs;
 			then: (data: (Api | null | undefined)[] | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		};
 		mutation: {
 			args: MutationTypeApiArgs;
 			update?: boolean;
 			then: (data: Api | null | undefined) => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		};
 		select: {
 			selected: MutationTypeApiArgs | null | undefined | (MutationTypeApiArgs | null | undefined)[];
 			then: () => void;
-			catch: (errors: Errors) => void;
+			catch: (errors: GraphQLError[]) => void;
 		};
 		back: {};
 	}>();
