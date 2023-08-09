@@ -23,8 +23,7 @@ export default new HoudiniClient({
 		operations: ['all'],
 		// the function to call
 		error: (errors, ctx) => {
-			const status = parseInt(errors[0].message?.substring(1, 4));
-			if (status === 401) {
+			if (errors.map(error => error.extensions).some(extensions => extensions?.code <= -40100 && extensions?.code >= -40199)) {
 				throw redirect(307, `/${lang}/login`);
 			}
 		}
