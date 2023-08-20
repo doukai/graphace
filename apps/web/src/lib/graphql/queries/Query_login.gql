@@ -1,3 +1,0 @@
-query Query_login($login: String, $password: String) {
-  login(login: $login password: $password) 
-}

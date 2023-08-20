@@ -1,4 +1,4 @@
-mutation Mutation_user_roles($user_id: ID, $user_roles: [RoleInput], $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $composites: RoleExpression, $permissions: PermissionExpression, $apis: ApiExpression, $menus: MenuExpression, $realm: RealmExpression, $totalCount: IntExpression, $update: Boolean = false, $mergeToList: [String]) {
+mutation Mutation_user_roles($user_id: ID, $user_roles: [RoleInput], $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $composites: RoleExpression, $permissions: PermissionExpression, $apis: ApiExpression, $menus: MenuExpression, $realm: RealmExpression, $update: Boolean = false, $mergeToList: [String]) {
   user(id: $user_id roles: $user_roles) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
     name
@@ -15,7 +15,7 @@ mutation Mutation_user_roles($user_id: ID, $user_roles: [RoleInput], $first: Int
     updateUserId
     updateTime
     createGroupId
-    rolesConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name description: $description users: $users composites: $composites permissions: $permissions apis: $apis menus: $menus realm: $realm totalCount: $totalCount) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    rolesConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name description: $description users: $users composites: $composites permissions: $permissions apis: $apis menus: $menus realm: $realm) @update(if: $update) @mergeToList(arguments: $mergeToList) {
       totalCount
       edges {
         node {

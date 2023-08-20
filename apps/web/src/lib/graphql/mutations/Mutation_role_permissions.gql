@@ -1,4 +1,4 @@
-mutation Mutation_role_permissions($role_id: ID, $role_permissions: [PermissionInput], $first: Int, $last: Int, $offset: Int, $orderBy: PermissionOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $type: PermissionTypeExpression, $level: PermissionLevelExpression, $role: RoleExpression, $realm: RealmExpression, $totalCount: IntExpression, $update: Boolean = false, $mergeToList: [String]) {
+mutation Mutation_role_permissions($role_id: ID, $role_permissions: [PermissionInput], $first: Int, $last: Int, $offset: Int, $orderBy: PermissionOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $type: PermissionTypeExpression, $level: PermissionLevelExpression, $role: RoleExpression, $realm: RealmExpression, $update: Boolean = false, $mergeToList: [String]) {
   role(id: $role_id permissions: $role_permissions) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
     name
@@ -11,7 +11,7 @@ mutation Mutation_role_permissions($role_id: ID, $role_permissions: [PermissionI
     updateUserId
     updateTime
     createGroupId
-    permissionsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name description: $description type: $type level: $level role: $role realm: $realm totalCount: $totalCount) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    permissionsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name description: $description type: $type level: $level role: $role realm: $realm) @update(if: $update) @mergeToList(arguments: $mergeToList) {
       totalCount
       edges {
         node {

@@ -7,6 +7,10 @@ loadAllLocales();
 const L = i18n();
 
 export const handle: Handle = async ({ event, resolve }) => {
+
+	const { cookies } = event;
+	
+
 	// read language slug
 	const [, lang] = event.url.pathname.split('/');
 

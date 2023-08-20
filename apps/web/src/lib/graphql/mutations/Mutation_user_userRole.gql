@@ -1,4 +1,4 @@
-mutation Mutation_user_userRole($user_id: ID, $user_userRole: [UserRoleInput], $first: Int, $last: Int, $offset: Int, $orderBy: UserRoleOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $from: UserExpression, $roleId: IntExpression, $to: RoleExpression, $totalCount: IntExpression, $update: Boolean = false, $mergeToList: [String]) {
+mutation Mutation_user_userRole($user_id: ID, $user_userRole: [UserRoleInput], $first: Int, $last: Int, $offset: Int, $orderBy: UserRoleOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $from: UserExpression, $roleId: IntExpression, $to: RoleExpression, $update: Boolean = false, $mergeToList: [String]) {
   user(id: $user_id userRole: $user_userRole) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
     name
@@ -15,7 +15,7 @@ mutation Mutation_user_userRole($user_id: ID, $user_userRole: [UserRoleInput], $
     updateUserId
     updateTime
     createGroupId
-    userRoleConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId from: $from roleId: $roleId to: $to totalCount: $totalCount) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    userRoleConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId from: $from roleId: $roleId to: $to) @update(if: $update) @mergeToList(arguments: $mergeToList) {
       totalCount
       edges {
         node {

@@ -1,4 +1,4 @@
-mutation Mutation_user_groups($user_id: ID, $user_groups: [GroupInput], $first: Int, $last: Int, $offset: Int, $orderBy: GroupOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $totalCount: IntExpression, $update: Boolean = false, $mergeToList: [String]) {
+mutation Mutation_user_groups($user_id: ID, $user_groups: [GroupInput], $first: Int, $last: Int, $offset: Int, $orderBy: GroupOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $update: Boolean = false, $mergeToList: [String]) {
   user(id: $user_id groups: $user_groups) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
     name
@@ -15,7 +15,7 @@ mutation Mutation_user_groups($user_id: ID, $user_groups: [GroupInput], $first: 
     updateUserId
     updateTime
     createGroupId
-    groupsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm totalCount: $totalCount) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    groupsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm) @update(if: $update) @mergeToList(arguments: $mergeToList) {
       totalCount
       edges {
         node {

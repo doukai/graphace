@@ -1,4 +1,4 @@
-query Query_role_userRole($role_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserRoleOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $from: UserExpression, $roleId: IntExpression, $to: RoleExpression, $totalCount: IntExpression, ) {
+query Query_role_userRole($role_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserRoleOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $from: UserExpression, $roleId: IntExpression, $to: RoleExpression, ) {
   role(id: $role_id)  {
     id
     name
@@ -11,7 +11,7 @@ query Query_role_userRole($role_id: StringExpression, $first: Int, $last: Int, $
     updateUserId
     updateTime
     createGroupId
-    userRoleConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId from: $from roleId: $roleId to: $to totalCount: $totalCount)  {
+    userRoleConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId from: $from roleId: $roleId to: $to)  {
       totalCount
       edges {
         node {

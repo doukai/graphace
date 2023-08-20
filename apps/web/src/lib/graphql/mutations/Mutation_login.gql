@@ -1,0 +1,3 @@
+mutation Mutation_login($login: String!, $password: String!, $update: Boolean = false, $mergeToList: [String]) {
+  login(login: $login password: $password) @update(if: $update) @mergeToList(arguments: $mergeToList)
+}

@@ -1,4 +1,4 @@
-mutation Mutation_role_roleComposite($role_id: ID, $role_roleComposite: [RoleCompositeInput], $first: Int, $last: Int, $offset: Int, $orderBy: RoleCompositeOrderBy, $groupBy: [String!], $id: StringExpression, $roleId: IntExpression, $from: RoleExpression, $compositeId: IntExpression, $to: RoleExpression, $totalCount: IntExpression, $update: Boolean = false, $mergeToList: [String]) {
+mutation Mutation_role_roleComposite($role_id: ID, $role_roleComposite: [RoleCompositeInput], $first: Int, $last: Int, $offset: Int, $orderBy: RoleCompositeOrderBy, $groupBy: [String!], $id: StringExpression, $roleId: IntExpression, $from: RoleExpression, $compositeId: IntExpression, $to: RoleExpression, $update: Boolean = false, $mergeToList: [String]) {
   role(id: $role_id roleComposite: $role_roleComposite) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
     name
@@ -11,7 +11,7 @@ mutation Mutation_role_roleComposite($role_id: ID, $role_roleComposite: [RoleCom
     updateUserId
     updateTime
     createGroupId
-    roleCompositeConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId from: $from compositeId: $compositeId to: $to totalCount: $totalCount) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    roleCompositeConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId from: $from compositeId: $compositeId to: $to) @update(if: $update) @mergeToList(arguments: $mergeToList) {
       totalCount
       edges {
         node {

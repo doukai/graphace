@@ -1,4 +1,4 @@
-query Query_group_userGroup($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserGroupOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $from: UserExpression, $groupId: IntExpression, $to: GroupExpression, $totalCount: IntExpression, ) {
+query Query_group_userGroup($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserGroupOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $from: UserExpression, $groupId: IntExpression, $to: GroupExpression, ) {
   group(id: $group_id)  {
     id
     name
@@ -10,7 +10,7 @@ query Query_group_userGroup($group_id: StringExpression, $first: Int, $last: Int
     updateUserId
     updateTime
     createGroupId
-    userGroupConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId from: $from groupId: $groupId to: $to totalCount: $totalCount)  {
+    userGroupConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId from: $from groupId: $groupId to: $to)  {
       totalCount
       edges {
         node {

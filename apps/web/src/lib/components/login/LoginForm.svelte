@@ -6,11 +6,13 @@
 
 	const accountId = nanoid();
 	const passwordId = nanoid();
+	let login: string | undefined = undefined;
+	let password: string | undefined = undefined;
 
 	const dispatch = createEventDispatcher<{
 		login: {
-			login: string;
-			password: string;
+			login: string | undefined;
+			password: string | undefined;
 			then: (token: string) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
@@ -37,6 +39,7 @@
 						type="text"
 						placeholder={$LL.web.login.account()}
 						class="input input-bordered"
+						bind:value={login}
 					/>
 				</div>
 				<div class="form-control">
@@ -48,13 +51,27 @@
 						type="password"
 						placeholder={$LL.web.login.password()}
 						class="input input-bordered"
+						bind:value={password}
 					/>
 					<div class="label">
 						<a href={null} class="label-text-alt link link-hover">{$LL.web.login.forgot()}</a>
 					</div>
 				</div>
 				<div class="form-control mt-6">
-					<button class="btn btn-primary">{$LL.web.login.login()}</button>
+					<button
+						class="btn btn-primary"
+						on:click={(e) => {
+							e.preventDefault();
+							dispatch('login', {
+								login,
+								password,
+								then: (token) => {},
+								catch: (errors) => {}
+							});
+						}}
+					>
+						{$LL.web.login.login()}
+					</button>
 				</div>
 			</div>
 		</div>

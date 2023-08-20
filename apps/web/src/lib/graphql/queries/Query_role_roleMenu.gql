@@ -1,4 +1,4 @@
-query Query_role_roleMenu($role_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RoleMenuOrderBy, $groupBy: [String!], $id: StringExpression, $roleId: IntExpression, $from: RoleExpression, $menuId: IntExpression, $to: MenuExpression, $totalCount: IntExpression, ) {
+query Query_role_roleMenu($role_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RoleMenuOrderBy, $groupBy: [String!], $id: StringExpression, $roleId: IntExpression, $from: RoleExpression, $menuId: IntExpression, $to: MenuExpression, ) {
   role(id: $role_id)  {
     id
     name
@@ -11,7 +11,7 @@ query Query_role_roleMenu($role_id: StringExpression, $first: Int, $last: Int, $
     updateUserId
     updateTime
     createGroupId
-    roleMenuConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId from: $from menuId: $menuId to: $to totalCount: $totalCount)  {
+    roleMenuConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId from: $from menuId: $menuId to: $to)  {
       totalCount
       edges {
         node {

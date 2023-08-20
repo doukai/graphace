@@ -1,4 +1,4 @@
-query Query_group_groupRole($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: GroupRoleOrderBy, $groupBy: [String!], $id: StringExpression, $groupId: IntExpression, $from: GroupExpression, $roleId: IntExpression, $to: RoleExpression, $totalCount: IntExpression, ) {
+query Query_group_groupRole($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: GroupRoleOrderBy, $groupBy: [String!], $id: StringExpression, $groupId: IntExpression, $from: GroupExpression, $roleId: IntExpression, $to: RoleExpression, ) {
   group(id: $group_id)  {
     id
     name
@@ -10,7 +10,7 @@ query Query_group_groupRole($group_id: StringExpression, $first: Int, $last: Int
     updateUserId
     updateTime
     createGroupId
-    groupRoleConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id groupId: $groupId from: $from roleId: $roleId to: $to totalCount: $totalCount)  {
+    groupRoleConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id groupId: $groupId from: $from roleId: $roleId to: $to)  {
       totalCount
       edges {
         node {
