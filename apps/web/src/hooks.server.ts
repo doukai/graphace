@@ -3,6 +3,7 @@ import { redirect } from '@sveltejs/kit';
 import { loadAllLocales } from '$i18n/i18n-util.sync';
 import type { Handle, RequestEvent } from '@sveltejs/kit';
 import { initAcceptLanguageHeaderDetector } from 'typesafe-i18n/detectors';
+import { setSession } from '$houdini'
 
 loadAllLocales();
 const L = i18n();
@@ -12,7 +13,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// read language slug
 	const [, lang] = event.url.pathname.split('/');
 
-	const { cookies } = event;
+	const { cookies, locals } = event;
 	const token = cookies.get('Authorization');
 
 	if (!token) {
