@@ -1,4 +1,5 @@
 import { detectLocale, i18n, isLocale } from '$i18n/i18n-util';
+import { redirect } from '@sveltejs/kit';
 import { loadAllLocales } from '$i18n/i18n-util.sync';
 import type { Handle, RequestEvent } from '@sveltejs/kit';
 import { initAcceptLanguageHeaderDetector } from 'typesafe-i18n/detectors';
@@ -8,11 +9,15 @@ const L = i18n();
 
 export const handle: Handle = async ({ event, resolve }) => {
 
-	const { cookies } = event;
-	
-
 	// read language slug
 	const [, lang] = event.url.pathname.split('/');
+
+	const { cookies } = event;
+	const token = cookies.get('Authorization');
+
+	if (!token) {
+		throw redirect(307, `/${lang}/login`);
+	}
 
 	// redirect to base locale if no locale slug was found
 	if (!lang) {
