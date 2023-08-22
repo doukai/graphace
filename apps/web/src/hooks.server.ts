@@ -13,12 +13,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// read language slug
 	const [, lang] = event.url.pathname.split('/');
 
-	const { cookies, locals } = event;
-	const token = cookies.get('Authorization');
-
-	if (!token) {
-		throw redirect(307, `/${lang}/login`);
-	}
 
 	// redirect to base locale if no locale slug was found
 	if (!lang) {
@@ -37,6 +31,16 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// bind locale and translation functions to current request
 	event.locals.locale = locale;
 	event.locals.LL = LL;
+
+
+	const { cookies, locals, request } = event;
+	const token = cookies.get('Authorization');
+
+	console.log(token)
+
+	if (!token && event.url.pathname !== `/${locale}/login`) {
+		throw redirect(307, `/${locale}/login`);
+	}
 
 	// replace html lang attribute with correct language
 	return resolve(event, { transformPageChunk: ({ html }) => html.replace('%lang%', locale) });
