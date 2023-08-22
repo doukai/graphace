@@ -13,7 +13,7 @@ export default new HoudiniClient({
 		return {
 			headers: {
 				'Content-Type': 'application/json',
-				// Authorization: `Bearer ${session.token}`,
+				Authorization: `${session?.token}`,
 			},
 		}
 	},

@@ -10,10 +10,25 @@ declare namespace App {
 		locale: Locales
 		LL: TranslationFunctions
 	}
-
+	interface Session {
+		token: string | undefined;
+		user?: User;
+	}
 	interface PageData {
 	}
 
 	interface Platform {
 	}
+}
+
+interface User {
+	iss: string
+	sub?: string
+	upn?: string
+	full_name?: string | undefined
+	family_name?: string | undefined
+	groups?: string[] | undefined
+	roles?: string[] | undefined
+	iat?: number
+	exp?: number
 }
