@@ -72,6 +72,9 @@ const en: BaseTranslation = {
             unbindBtn: "Unbind",
             selectBtn: "Select"
         }
+    },
+    errors: {
+        "-40101": 'Authentication failed'
     }
 }
 

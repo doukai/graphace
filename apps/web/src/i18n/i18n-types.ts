@@ -960,6 +960,12 @@ export type NamespaceWebTranslation = {
 			selectBtn: string
 		}
 	}
+	errors: {
+		/**
+		 * A​u​t​h​e​n​t​i​c​a​t​i​o​n​ ​f​a​i​l​e​d
+		 */
+		'-40101': string
+	}
 }
 
 export type Namespaces =
@@ -1925,6 +1931,12 @@ export type TranslationFunctions = {
 				 */
 				selectBtn: () => LocalizedString
 			}
+		}
+		errors: {
+			/**
+			 * Authentication failed
+			 */
+			'-40101': () => LocalizedString
 		}
 	}
 }

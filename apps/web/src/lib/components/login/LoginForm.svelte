@@ -1,9 +1,15 @@
 <script lang="ts">
 	import LL from '$i18n/i18n-svelte';
+	import type { NamespaceWebTranslation } from '$i18n/i18n-types';
 	import type { Errors } from '@graphace/commons/types';
 	import { nanoid } from 'nanoid';
 
 	export let errors: Record<string, Errors> = {};
+	export let errorCodes: number[] = [];
+
+	$: errorMessageKeys = errorCodes.map(
+		(code) => ('' + code) as keyof NamespaceWebTranslation['errors']
+	);
 
 	const accountId = nanoid();
 	const passwordId = nanoid();
@@ -61,6 +67,9 @@
 						<div class="label">
 							<a href={null} class="label-text-alt link link-hover">{$LL.web.login.forgot()}</a>
 						</div>
+						{#each errorMessageKeys as messageKey}
+							<p class="text-error text-center text-sm">{$LL.web.errors[messageKey]()}</p>
+						{/each}
 					</div>
 					<div class="form-control mt-6">
 						<button class="btn btn-primary">

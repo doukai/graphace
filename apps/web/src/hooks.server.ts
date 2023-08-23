@@ -41,7 +41,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	// replace html lang attribute with correct language
-	return resolve(event, { transformPageChunk: ({ html }) => html.replace('%lang%', locale) });
+	const response = await resolve(event, { transformPageChunk: ({ html }) => html.replace('%lang%', locale) });
+	if (response.status === 401 && event.url.pathname !== loginPathName) {
+		throw redirect(307, loginPathName);
+	}
+
+	return response;
 }
 
 const getPreferredLocale = ({ request }: RequestEvent): Locales => {

@@ -72,6 +72,9 @@ const zh: NamespaceWebTranslation = {
             unbindBtn: "移除",
             selectBtn: "选择"
         }
+    },
+    errors: {
+        "-40101": '认证失败'
     }
 }
 
