@@ -9,10 +9,10 @@ declare namespace App {
 	interface Locals {
 		locale: Locales
 		LL: TranslationFunctions
+		jwt?: JsonWebToken;
 	}
 	interface Session {
 		token: string | undefined;
-		user?: User;
 	}
 	interface PageData {
 	}
@@ -21,7 +21,7 @@ declare namespace App {
 	}
 }
 
-interface User {
+interface JsonWebToken {
 	iss: string
 	sub?: string
 	upn?: string

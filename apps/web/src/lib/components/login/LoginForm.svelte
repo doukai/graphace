@@ -1,6 +1,9 @@
 <script lang="ts">
 	import LL from '$i18n/i18n-svelte';
+	import type { Errors } from '@graphace/commons/types';
 	import { nanoid } from 'nanoid';
+
+	export let errors: Record<string, Errors> = {};
 
 	const accountId = nanoid();
 	const passwordId = nanoid();
@@ -17,7 +20,7 @@
 		</div>
 		<div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
 			<div class="card-body">
-				<form method="POST" action="?/login">
+				<form method="POST">
 					<div class="form-control">
 						<label for={accountId} class="label">
 							<span class="label-text">{$LL.web.login.account()}</span>
@@ -29,6 +32,13 @@
 							placeholder={$LL.web.login.account()}
 							class="input input-bordered"
 						/>
+						{#if errors.login?.errors}
+							<label for={accountId} class="label">
+								{#each errors.login?.errors as error}
+									<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+								{/each}
+							</label>
+						{/if}
 					</div>
 					<div class="form-control">
 						<label for={passwordId} class="label">
@@ -41,6 +51,13 @@
 							placeholder={$LL.web.login.password()}
 							class="input input-bordered"
 						/>
+						{#if errors.password?.errors}
+							<label for={passwordId} class="label">
+								{#each errors.password?.errors as error}
+									<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+								{/each}
+							</label>
+						{/if}
 						<div class="label">
 							<a href={null} class="label-text-alt link link-hover">{$LL.web.login.forgot()}</a>
 						</div>

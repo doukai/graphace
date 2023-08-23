@@ -1,19 +1,25 @@
 import { type ServerLoadEvent, fail, redirect } from '@sveltejs/kit';
-import { graphql } from '$houdini';
-import jwt_decode from "jwt-decode";
+import { graphql } from '$houdini'
 import type { Actions } from './$types';
+import { validateAsync } from '@graphace/graphql/schema/json-schema';
+import { locale } from '$i18n/i18n-svelte';
+import { baseLocale } from '~/i18n/i18n-util';
 
+let lang: Locales = baseLocale;
+locale.subscribe($locale => lang = $locale)
 
 export const actions = {
-    login: async (event: ServerLoadEvent) => {
-        const { cookies, locals } = event;
+    default: async (event: ServerLoadEvent) => {
+        const { cookies, request } = event;
         const data = await event.request.formData()
 
         const login = data.get('login')?.toString()
         const password = data.get('password')?.toString()
 
-        if (!login || !password) {
-            return fail(403, { login: '*' })
+        const errors = await validateAsync('MutationType', { login: { login, password } }, lang);
+
+        if (errors) {
+            return fail(400, errors);
         }
 
         const loginMutation = graphql(`
@@ -23,19 +29,22 @@ export const actions = {
         `);
 
         const result = await loginMutation.mutate({ login, password }, { event });
-        const token = result.data?.login;
+        console.log(result)
 
-        if (token) {
-            cookies.set('Authorization', "Bearer " + token);
-            const jwtToken = jwt_decode(token);
-            console.log(JSON.stringify(jwtToken));
+        if (result.data?.login) {
+            cookies.set('Authorization', "Bearer " + result.data?.login);
             const from = event.url.searchParams.get('from');
             if (from) {
                 throw redirect(307, from);
             } else {
                 throw redirect(307, `/`);
             }
+        } else {
+            if (result.errors) {
+                // console.error(result.errors);
+            }
+
         }
-        return {};
+        return { success: true }
     },
 } satisfies Actions;

@@ -1,5 +1,4 @@
 import { HoudiniClient } from '$houdini';
-import { redirect } from '@sveltejs/kit';
 import { PUBLIC_GRAPHQL_URL } from '$env/static/public';
 import { locale } from '~/i18n/i18n-svelte';
 import { baseLocale } from '~/i18n/i18n-util';
@@ -17,15 +16,13 @@ export default new HoudiniClient({
 			},
 		}
 	},
-	throwOnError: {
-		// can be any combination of
-		// query, mutation, subscription, and all
-		operations: ['all'],
-		// the function to call
-		error: (errors, ctx) => {
-			if (errors.map(error => error.extensions).some(extensions => extensions?.code <= -40100 && extensions?.code >= -40199)) {
-				throw redirect(307, `/${lang}/login`);
-			}
-		}
-	}
+	// throwOnError: {
+	// 	// can be any combination of
+	// 	// query, mutation, subscription, and all
+	// 	operations: ['all'],
+	// 	// the function to call
+	// 	error: (errors, ctx) => {
+	// 		console.error(errors);
+	// 	}
+	// }
 });
