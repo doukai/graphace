@@ -10,7 +10,7 @@ const config = {
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization(env) {
-				return `Bearer ${env.AUTH_TOKEN}`
+				return `${env.AUTH_SCHEME} ${Buffer.from(env.AUTH_TOKEN).toString('base64')}`
 			}
 		}
 	},

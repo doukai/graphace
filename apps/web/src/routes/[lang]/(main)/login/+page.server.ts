@@ -7,15 +7,12 @@ export const actions = {
     default: async (event: ServerLoadEvent) => {
         const { cookies } = event;
         const data = await event.request.formData();
-
         const login = data.get('login')?.toString() || undefined;
         const password = data.get('password')?.toString() || undefined;
-
         const errors = await validateAsync('MutationType', { login: { login, password } }, event.locals.locale);
 
-        console.log(errors);
         if (errors) {
-            return fail(400, { errors });
+            return fail(400, { errors: errors.login?.iterms });
         }
 
         const loginMutation = graphql(`
@@ -24,21 +21,25 @@ export const actions = {
             }
         `);
 
-        const result = await loginMutation.mutate({ login, password }, { event });
+        if (login && password) {
+            const result = await loginMutation.mutate({ login, password }, { event });
+            console.log("++++++++++++++++>>>>"+JSON.stringify(result));
 
-        if (result.data?.login) {
-            cookies.set('Authorization', "Bearer " + result.data?.login);
-            const from = event.url.searchParams.get('from');
-            if (from) {
-                throw redirect(307, from);
+            if (result.data?.login) {
+                cookies.set('Authorization', "Bearer " + result.data?.login);
+                const from = event.url.searchParams.get('from');
+                if (from) {
+                    throw redirect(307, from);
+                } else {
+                    throw redirect(307, `/`);
+                }
             } else {
-                throw redirect(307, `/`);
-            }
-        } else {
-            if (result.errors) {
-                return fail(400, { errorCodes: result.errors.map(error => error?.extensions?.code) });
+                if (result.errors) {
+                    return fail(400, { errorCodes: result.errors.map(error => error?.extensions?.code) });
+                }
             }
         }
+
         return { success: true };
     },
 } satisfies Actions;

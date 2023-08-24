@@ -37,8 +37,6 @@ async function loadSchema(uri: string) {
 }
 
 export async function validate(uri: string, data: object | object[], locale: Language = "en") {
-    console.log(JSON.stringify(data));
-
     let validate = ajv.getSchema(uri);
     if (!validate) {
         const schema = await loadSchema(uri);
@@ -67,8 +65,6 @@ export async function validate(uri: string, data: object | object[], locale: Lan
 
 
 export async function validateAsync(uri: string, data: object | object[], locale: Language = "en"): Promise<Record<string, Errors> | undefined> {
-    console.log(JSON.stringify(data));
-
     let validate = ajv.getSchema(uri);
     if (!validate) {
         const schema = await loadSchema(uri);

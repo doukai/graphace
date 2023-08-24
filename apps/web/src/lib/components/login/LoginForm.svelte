@@ -36,7 +36,7 @@
 							name="login"
 							type="text"
 							placeholder={$LL.web.login.account()}
-							class="input input-bordered"
+							class="input input-bordered {errors.login?.errors ? 'input-error' : ''}"
 						/>
 						{#if errors.login?.errors}
 							<label for={accountId} class="label">
@@ -55,7 +55,7 @@
 							name="password"
 							type="password"
 							placeholder={$LL.web.login.password()}
-							class="input input-bordered"
+							class="input input-bordered {errors.password?.errors ? 'input-error' : ''}"
 						/>
 						{#if errors.password?.errors}
 							<label for={passwordId} class="label">

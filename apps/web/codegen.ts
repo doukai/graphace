@@ -6,7 +6,7 @@ const config: CodegenConfig = {
         [process.env.PUBLIC_GRAPHQL_URL]: {
             headers: {
                 'content-type': 'application/json',
-                Authorization: `Bearer ${process.env.AUTH_TOKEN}`
+                Authorization: `${process.env.AUTH_SCHEME} ${Buffer.from(process.env.AUTH_TOKEN).toString('base64')}`
             }
         }
     },

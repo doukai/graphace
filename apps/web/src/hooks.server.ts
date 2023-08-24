@@ -42,6 +42,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	// replace html lang attribute with correct language
 	const response = await resolve(event, { transformPageChunk: ({ html }) => html.replace('%lang%', locale) });
+	console.log(">>>>>>>>>>>>>>>>>"+JSON.stringify(response))
 	if (response.status === 401 && event.url.pathname !== loginPathName) {
 		throw redirect(307, loginPathName);
 	}
