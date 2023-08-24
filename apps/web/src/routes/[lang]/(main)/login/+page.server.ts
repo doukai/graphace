@@ -23,8 +23,6 @@ export const actions = {
 
         if (login && password) {
             const result = await loginMutation.mutate({ login, password }, { event });
-            console.log("++++++++++++++++>>>>"+JSON.stringify(result));
-
             if (result.data?.login) {
                 cookies.set('Authorization', "Bearer " + result.data?.login);
                 const from = event.url.searchParams.get('from');
@@ -39,7 +37,6 @@ export const actions = {
                 }
             }
         }
-
         return { success: true };
     },
 } satisfies Actions;
