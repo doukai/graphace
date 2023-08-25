@@ -13,6 +13,7 @@ declare namespace App {
 	}
 	interface Session {
 		token: string | undefined;
+		locale: Locales
 	}
 	interface PageData {
 	}

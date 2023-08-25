@@ -959,6 +959,20 @@ export type NamespaceWebTranslation = {
 			 */
 			selectBtn: string
 		}
+		userMenu: {
+			/**
+			 * P​r​o​f​i​l​e
+			 */
+			profile: string
+			/**
+			 * S​e​t​t​i​n​g​s
+			 */
+			settings: string
+			/**
+			 * L​o​g​o​u​t
+			 */
+			logout: string
+		}
 	}
 	errors: {
 		/**
@@ -1930,6 +1944,20 @@ export type TranslationFunctions = {
 				 * Select
 				 */
 				selectBtn: () => LocalizedString
+			}
+			userMenu: {
+				/**
+				 * Profile
+				 */
+				profile: () => LocalizedString
+				/**
+				 * Settings
+				 */
+				settings: () => LocalizedString
+				/**
+				 * Logout
+				 */
+				logout: () => LocalizedString
 			}
 		}
 		errors: {

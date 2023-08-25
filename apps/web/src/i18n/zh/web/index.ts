@@ -71,6 +71,11 @@ const zh: NamespaceWebTranslation = {
             removeBtn: "删除",
             unbindBtn: "移除",
             selectBtn: "选择"
+        },
+        userMenu: {
+            profile: "个人资料",
+            settings: "系统设置",
+            logout: "退出"
         }
     },
     errors: {

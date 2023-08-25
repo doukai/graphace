@@ -37,12 +37,14 @@ async function loadSchema(uri: string) {
 }
 
 export async function validate(uri: string, data: object | object[], locale: Language = "en") {
+    console.log(JSON.stringify(data))
     let validate = ajv.getSchema(uri);
     if (!validate) {
         const schema = await loadSchema(uri);
         validate = await ajv.compileAsync(schema);
     }
     return new Promise((resolve: (data: object | object[]) => void, reject: (errors: Record<string, Errors>) => void) => {
+        console.log(JSON.stringify(data))
         if (validate) {
             // const validateData = removeEmpty(data);
             const valid = validate(data);

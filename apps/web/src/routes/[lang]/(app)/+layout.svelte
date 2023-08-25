@@ -4,6 +4,7 @@
 	import { to, PageType, init, history } from '~/lib/stores/useNavigate';
 	import { SideBar, Breadcrumbs } from '@graphace/ui/components';
 	import ObjectsMenu from '~/lib/components/menu/ObjectsMenu.svelte';
+	import UserMenu from '~/lib/components/menu/UserMenu.svelte';
 	import { NavBar } from '@graphace/ui/components/navbar';
 	import Notifications from '@graphace/ui/components/Notifications.svelte';
 	import MessageBoxs from '@graphace/ui/components/MessageBoxs.svelte';
@@ -83,6 +84,7 @@
 			<Search {addScrollPaddingToNavbar} {removeScrollPaddingFromNavbar} slot="search" />
 			<ThemeSelect slot="option1" />
 			<LocaleSelect slot="option2" />
+			<UserMenu slot="option3" />
 		</NavBar>
 		<main class="flex-1 max-w-[100vw] px-2 py-2 lg:max-w-[calc(100vw-20rem)]">
 			<Breadcrumbs>

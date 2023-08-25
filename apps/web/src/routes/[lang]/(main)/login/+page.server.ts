@@ -12,7 +12,7 @@ export const actions = {
         const errors = await validateAsync('MutationType', { login: { login, password } }, event.locals.locale);
 
         if (errors) {
-            return fail(400, { errors: errors.login?.iterms });
+            return fail(400, { errors: errors.login?.iterms, logining: false });
         }
 
         const loginMutation = graphql(`
@@ -24,7 +24,7 @@ export const actions = {
         if (login && password) {
             const result = await loginMutation.mutate({ login, password }, { event });
             if (result.data?.login) {
-                cookies.set('Authorization', "Bearer " + result.data?.login);
+                cookies.set('Authorization', "Bearer " + result.data?.login, { path: '/' });
                 const from = event.url.searchParams.get('from');
                 if (from) {
                     throw redirect(307, from);
@@ -33,10 +33,10 @@ export const actions = {
                 }
             } else {
                 if (result.errors) {
-                    return fail(400, { errorCodes: result.errors.map(error => error?.extensions?.code) });
+                    return fail(400, { authErrorCodes: result.errors.map(error => error?.extensions?.code), logining: false });
                 }
             }
         }
-        return { success: true };
+        return { logining: false };
     },
 } satisfies Actions;

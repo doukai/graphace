@@ -25,13 +25,12 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		Query_roleConnection.fetch({ variables: event.detail.args })
-			.then((result) => {
-				event.detail.then(result.data?.roleConnection?.edges?.map((edge) => edge?.node));
-				if (result.errors) {
-					event.detail.catch(result.errors);
-				}
-			});
+		Query_roleConnection.fetch({ variables: event.detail.args }).then((result) => {
+			event.detail.then(result.data?.roleConnection?.edges?.map((edge) => edge?.node));
+			if (result.errors) {
+				event.detail.catch(result.errors);
+			}
+		});
 	};
 
 	const mutation = (
@@ -43,22 +42,24 @@
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
-		validate('Role', event.detail.args, event.detail.update, $locale)
+		validate('MutationType', { role: event.detail.args }, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_role.mutate({ ...event.detail.args, update: event.detail.update })
-					.then((result) => {
+				Mutation_role.mutate({ ...event.detail.args, update: event.detail.update }).then(
+					(result) => {
 						event.detail.then(result?.data?.role);
 						if (result.errors) {
 							event.detail.catch(result.errors);
 						}
-					});
+					}
+				);
 			})
 			.catch((validErrors) => {
+				console.log(JSON.stringify(validErrors))
 				if (row !== -1 && row !== undefined) {
-					errors[row] = { errors: errors[row]?.errors, iterms: validErrors };
+					errors[row] = { errors: errors[row]?.errors, iterms: validErrors.role };
 				}
 			});
 	};
@@ -75,10 +76,11 @@
 		to(`./role/_`);
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
+	const gotoField = (event: CustomEvent<{ path: string; name: string }>) => {
 		to(`./role/${event.detail.path}`);
 	};
 </script>
+
 <RoleConnectionTable
 	showSaveButton={false}
 	showBackButton={$canBack}

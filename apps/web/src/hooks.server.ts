@@ -37,7 +37,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	if (!token && event.url.pathname !== loginPathName) {
 		throw redirect(307, loginPathName);
 	} else {
-		setSession(event, { token });
+		setSession(event, { token, locale });
 	}
 
 	// replace html lang attribute with correct language

@@ -71,6 +71,11 @@ const en: BaseTranslation = {
             removeBtn: "Remove",
             unbindBtn: "Unbind",
             selectBtn: "Select"
+        },
+        userMenu: {
+            profile: "Profile",
+            settings: "Settings",
+            logout: "Logout"
         }
     },
     errors: {

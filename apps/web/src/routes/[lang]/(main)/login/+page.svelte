@@ -5,4 +5,4 @@
 	export let form: ActionData;
 </script>
 
-<LoginForm errors={form?.errors} errorCodes={form?.errorCodes} />
+<LoginForm errors={form?.errors} authErrorCodes={form?.authErrorCodes} logining={form?.logining} />

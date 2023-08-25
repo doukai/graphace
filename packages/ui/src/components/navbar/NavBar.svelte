@@ -46,6 +46,8 @@
 			<slot name="option1" />
 			<slot name="option2" />
 			<slot name="option3" />
+			<slot name="option4" />
+			<slot name="option5" />
 		</div>
 	</nav>
 </div>

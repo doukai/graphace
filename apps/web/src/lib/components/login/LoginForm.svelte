@@ -5,9 +5,10 @@
 	import { nanoid } from 'nanoid';
 
 	export let errors: Record<string, Errors> = {};
-	export let errorCodes: number[] = [];
+	export let authErrorCodes: number[] = [];
+	export let logining: boolean = false;
 
-	$: errorMessageKeys = errorCodes.map(
+	$: authErrorMessageKeys = authErrorCodes.map(
 		(code) => ('' + code) as keyof NamespaceWebTranslation['errors']
 	);
 
@@ -26,7 +27,12 @@
 		</div>
 		<div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
 			<div class="card-body">
-				<form method="POST">
+				<form
+					method="POST"
+					on:submit={(e) => {
+						logining = true;
+					}}
+				>
 					<div class="form-control">
 						<label for={accountId} class="label">
 							<span class="label-text">{$LL.web.login.account()}</span>
@@ -67,12 +73,17 @@
 						<div class="label">
 							<a href={null} class="label-text-alt link link-hover">{$LL.web.login.forgot()}</a>
 						</div>
-						{#each errorMessageKeys as messageKey}
-							<p class="text-error text-center text-sm">{$LL.web.errors[messageKey]()}</p>
+						{#each authErrorMessageKeys as messageKey}
+							<p class="text-error text-center text-sm font-semibold">
+								{$LL.web.errors[messageKey]()}
+							</p>
 						{/each}
 					</div>
 					<div class="form-control mt-6">
-						<button class="btn btn-primary">
+						<button class="btn btn-primary" disabled={logining}>
+							{#if logining}
+								<span class="loading loading-spinner" />
+							{/if}
 							{$LL.web.login.login()}
 						</button>
 					</div>
