@@ -8,7 +8,7 @@
 	import { Mutation_user_rolesStore } from '$houdini';
 	import type { MutationTypeRoleArgs, Role } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
-	import { validate } from '@graphace/graphql/schema/json-schema';
+	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -28,7 +28,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validate('User', { roles: [event.detail.args] }, true, $locale)
+		validateMutation('User', { roles: [event.detail.args] }, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_user_roles.mutate({

@@ -7,7 +7,7 @@
 	import { Query_menuStore, Mutation_menuStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { MutationTypeMenuArgs, Menu } from '~/lib/types/schema';
-	import { validate } from '@graphace/graphql/schema/json-schema';
+	import { validateMutation } from '~/lib/utils';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
@@ -25,7 +25,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validate('Menu', event.detail.args, event.detail.update, $locale)
+		validateMutation('Menu', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_menu.mutate({ ...event.detail.args, update: event.detail.update })

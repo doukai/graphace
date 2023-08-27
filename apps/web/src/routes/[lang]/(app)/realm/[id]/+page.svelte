@@ -7,7 +7,7 @@
 	import { Query_realmStore, Mutation_realmStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { MutationTypeRealmArgs, Realm } from '~/lib/types/schema';
-	import { validate } from '@graphace/graphql/schema/json-schema';
+	import { validateMutation } from '~/lib/utils';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
@@ -25,7 +25,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validate('Realm', event.detail.args, event.detail.update, $locale)
+		validateMutation('Realm', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_realm.mutate({ ...event.detail.args, update: event.detail.update })

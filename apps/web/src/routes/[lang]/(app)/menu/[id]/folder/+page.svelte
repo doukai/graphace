@@ -9,7 +9,7 @@
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Query_menu_folderStore, Mutation_menu_folderStore, Mutation_menuStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { validate } from '@graphace/graphql/schema/json-schema';
+	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -31,7 +31,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validate('Menu', event.detail.args, true, $locale)
+		validateMutation('Menu', event.detail.args, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_menu.mutate({ ...event.detail.args, update: true })
@@ -55,7 +55,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validate('Menu', { folder: event.detail.args }, true, $locale)
+		validateMutation('Menu', { folder: event.detail.args }, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_menu_folder.mutate({

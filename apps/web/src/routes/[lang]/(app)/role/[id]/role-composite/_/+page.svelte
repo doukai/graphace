@@ -8,7 +8,7 @@
 	import { Mutation_role_roleCompositeStore } from '$houdini';
 	import type { MutationTypeRoleCompositeArgs, RoleComposite } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
-	import { validate } from '@graphace/graphql/schema/json-schema';
+	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -28,7 +28,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validate('Role', { roleComposite: [event.detail.args] }, true, $locale)
+		validateMutation('Role', { roleComposite: [event.detail.args] }, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_role_roleComposite.mutate({

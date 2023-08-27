@@ -9,7 +9,7 @@
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Query_group_realmStore, Mutation_group_realmStore, Mutation_realmStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { validate } from '@graphace/graphql/schema/json-schema';
+	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -31,7 +31,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validate('Realm', event.detail.args, true, $locale)
+		validateMutation('Realm', event.detail.args, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_realm.mutate({ ...event.detail.args, update: true })
@@ -55,7 +55,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validate('Group', { realm: event.detail.args }, true, $locale)
+		validateMutation('Group', { realm: event.detail.args }, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_group_realm.mutate({

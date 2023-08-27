@@ -6,7 +6,7 @@
 	import type { UserRole, QueryTypeUserRoleConnectionArgs, MutationTypeUserRoleArgs } from '~/lib/types/schema';
 	import { Query_userRoleConnectionStore, Mutation_userRoleStore, Mutation_role_userRoleStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { validate } from '@graphace/graphql/schema/json-schema';
+	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -45,7 +45,7 @@
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
-		validate('UserRole', event.detail.args, event.detail.update, $locale)
+		validateMutation('UserRole', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
@@ -72,7 +72,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validate('Role', { userRole: event.detail.selected }, true, $locale)
+		validateMutation('Role', { userRole: event.detail.selected }, true, $locale)
 			.then((data) => {
 				errors = {};
 				if (Array.isArray(event.detail.selected)) {

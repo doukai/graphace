@@ -7,7 +7,7 @@
 	import { Query_apiStore, Mutation_apiStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { MutationTypeApiArgs, Api } from '~/lib/types/schema';
-	import { validate } from '@graphace/graphql/schema/json-schema';
+	import { validateMutation } from '~/lib/utils';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
@@ -25,7 +25,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validate('Api', event.detail.args, event.detail.update, $locale)
+		validateMutation('Api', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_api.mutate({ ...event.detail.args, update: event.detail.update })

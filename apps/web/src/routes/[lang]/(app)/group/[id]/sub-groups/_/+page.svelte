@@ -8,7 +8,7 @@
 	import { Mutation_group_subGroupsStore } from '$houdini';
 	import type { MutationTypeGroupArgs, Group } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
-	import { validate } from '@graphace/graphql/schema/json-schema';
+	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -28,7 +28,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validate('Group', { subGroups: [event.detail.args] }, true, $locale)
+		validateMutation('Group', { subGroups: [event.detail.args] }, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_group_subGroups.mutate({

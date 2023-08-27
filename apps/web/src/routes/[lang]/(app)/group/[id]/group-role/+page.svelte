@@ -7,7 +7,7 @@
 	import type { MutationTypeGroupRoleArgs, QueryTypeGroupRoleConnectionArgs, GroupRole } from '~/lib/types/schema';
 	import { Query_group_groupRoleStore, Mutation_groupRoleStore, Mutation_group_groupRoleStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { validate } from '@graphace/graphql/schema/json-schema';
+	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -49,7 +49,7 @@
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
-		validate('GroupRole', event.detail.args, event.detail.update, $locale)
+		validateMutation('GroupRole', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
@@ -77,7 +77,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validate('Group', { groupRole: event.detail.args }, true, $locale)
+		validateMutation('Group', { groupRole: event.detail.args }, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_group_groupRole.mutate({

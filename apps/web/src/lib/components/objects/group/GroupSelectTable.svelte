@@ -142,8 +142,8 @@
 	<div class="divider" />
 	<Table>
 		<thead>
-			<tr>
-				<th class="z-10 w-12">
+			<tr class="z-20">
+				<th class="w-12">
 					{#if multipleSelect}
 						<label>
 							<input

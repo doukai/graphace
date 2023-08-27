@@ -1,7 +1,7 @@
 import { type ServerLoadEvent, fail, redirect } from '@sveltejs/kit';
 import { graphql } from '$houdini'
 import type { Actions } from './$types';
-import { validateAsync } from '@graphace/graphql/schema/json-schema';
+import { validateAsync } from '~/lib/utils';
 
 export const actions = {
     default: async (event: ServerLoadEvent) => {
@@ -9,10 +9,10 @@ export const actions = {
         const data = await event.request.formData();
         const login = data.get('login')?.toString() || undefined;
         const password = data.get('password')?.toString() || undefined;
-        const errors = await validateAsync('MutationType', { login: { login, password } }, event.locals.locale);
+        const errors = await validateAsync('MutationType_login', { login, password }, event.locals.locale);
 
         if (errors) {
-            return fail(400, { errors: errors.login?.iterms, logining: false });
+            return fail(400, { errors: errors?.iterms, logining: false });
         }
 
         const loginMutation = graphql(`

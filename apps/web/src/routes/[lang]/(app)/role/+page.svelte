@@ -6,7 +6,7 @@
 	import type { Role, QueryTypeRoleConnectionArgs, MutationTypeRoleArgs } from '~/lib/types/schema';
 	import { Query_roleConnectionStore, Mutation_roleStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { validate } from '@graphace/graphql/schema/json-schema';
+	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -25,12 +25,13 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		Query_roleConnection.fetch({ variables: event.detail.args }).then((result) => {
-			event.detail.then(result.data?.roleConnection?.edges?.map((edge) => edge?.node));
-			if (result.errors) {
-				event.detail.catch(result.errors);
-			}
-		});
+		Query_roleConnection.fetch({ variables: event.detail.args })
+			.then((result) => {
+				event.detail.then(result.data?.roleConnection?.edges?.map((edge) => edge?.node));
+				if (result.errors) {
+					event.detail.catch(result.errors);
+				}
+			});
 	};
 
 	const mutation = (
@@ -42,24 +43,22 @@
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
-		validate('MutationType', { role: event.detail.args }, $locale)
+		validateMutation('Role', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_role.mutate({ ...event.detail.args, update: event.detail.update }).then(
-					(result) => {
+				Mutation_role.mutate({ ...event.detail.args, update: event.detail.update })
+					.then((result) => {
 						event.detail.then(result?.data?.role);
 						if (result.errors) {
 							event.detail.catch(result.errors);
 						}
-					}
-				);
+					});
 			})
 			.catch((validErrors) => {
-				console.log(JSON.stringify(validErrors))
 				if (row !== -1 && row !== undefined) {
-					errors[row] = { errors: errors[row]?.errors, iterms: validErrors.role };
+					errors[row] = { errors: errors[row]?.errors, iterms: validErrors };
 				}
 			});
 	};
@@ -76,11 +75,10 @@
 		to(`./role/_`);
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string; name: string }>) => {
+	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
 		to(`./role/${event.detail.path}`);
 	};
 </script>
-
 <RoleConnectionTable
 	showSaveButton={false}
 	showBackButton={$canBack}

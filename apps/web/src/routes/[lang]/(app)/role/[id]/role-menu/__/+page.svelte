@@ -6,7 +6,7 @@
 	import type { RoleMenu, QueryTypeRoleMenuConnectionArgs, MutationTypeRoleMenuArgs } from '~/lib/types/schema';
 	import { Query_roleMenuConnectionStore, Mutation_roleMenuStore, Mutation_role_roleMenuStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { validate } from '@graphace/graphql/schema/json-schema';
+	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -45,7 +45,7 @@
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
-		validate('RoleMenu', event.detail.args, event.detail.update, $locale)
+		validateMutation('RoleMenu', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
@@ -72,7 +72,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validate('Role', { roleMenu: event.detail.selected }, true, $locale)
+		validateMutation('Role', { roleMenu: event.detail.selected }, true, $locale)
 			.then((data) => {
 				errors = {};
 				if (Array.isArray(event.detail.selected)) {

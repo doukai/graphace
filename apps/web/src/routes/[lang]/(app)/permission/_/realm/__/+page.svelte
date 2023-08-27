@@ -7,7 +7,7 @@
 	import { Query_realmConnectionStore, Mutation_realmStore } from '$houdini';
 	import { updateNodeParam, updateErrorsParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
-	import { validate } from '@graphace/graphql/schema/json-schema';
+	import { validateMutation } from '~/lib/utils';
 	import { locale } from '$i18n/i18n-svelte';
 	import LL from '$i18n/i18n-svelte';
 
@@ -44,7 +44,7 @@
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
-		validate('Realm', event.detail.args, event.detail.update, $locale)
+		validateMutation('Realm', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
