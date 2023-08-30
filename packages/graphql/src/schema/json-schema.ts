@@ -147,8 +147,12 @@ export async function validateAsync(ajv: Ajv, loadSchema: (uri: string) => Promi
     }
 }
 
+export function objectNameToFieldName(objectName: string): string {
+    return changeCase.camelCase(objectName)
+}
+
 export function objectNameToUri(operationTypeName: string, objectName: string, data: object | object[], update: boolean | undefined = false): string {
-    const fieldName = changeCase.camelCase(objectName)
+    const fieldName = objectNameToFieldName(objectName)
     let uri = operationTypeName + "_" + fieldName;
     if (Array.isArray(data)) {
         uri += "List";
