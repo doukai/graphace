@@ -1,0 +1,17 @@
+{
+  "name": "spectaql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "spectaql -D spectaql.yml",
+    "spectaql": "spectaql spectaql.yml",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "spectaql": "^2.3.0"
+  }
+}

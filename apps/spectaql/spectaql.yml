@@ -1,0 +1,6 @@
+spectaql:
+  targetDir: public
+introspection:
+  url: http://localhost:8080/graphql
+  headers:
+    Authorization: Basic cm9vdDpyb290
