@@ -16,7 +16,7 @@ export async function loadSchema(uri: string) {
 }
 
 export async function validateQuery(objectName: string, data: object, list: boolean | undefined, locale: Language = "en"): Promise<object> {
-    let uri = objectNameToFieldName(objectName);
+    let uri = PUBLIC_QUERY_TYPE_NAME + "_" + objectNameToFieldName(objectName);
     if (list) {
         uri += "List";
     }
@@ -32,7 +32,7 @@ export async function validateMutation(objectName: string, data: object, update:
 }
 
 export async function validateSubscription(objectName: string, data: object, list: boolean | undefined, locale: Language = "en"): Promise<object> {
-    let uri = objectNameToFieldName(objectName);
+    let uri = PUBLIC_SUBSCRIPTION_TYPE_NAME + "_" + objectNameToFieldName(objectName);
     if (list) {
         uri += "List";
     }
