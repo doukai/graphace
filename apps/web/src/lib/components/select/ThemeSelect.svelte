@@ -4,6 +4,11 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Swatch, ChevronDown, Check } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
+
+	onMount(() => {
+		themeChange(false);
+	});
+	
 	export let dropdownClasses = '';
 	export let btnClasses = 'btn-ghost';
 	export let contentClasses = 'mt-16';
@@ -125,10 +130,6 @@
 			id: 'winter'
 		}
 	];
-
-	onMount(() => {
-		themeChange(false);
-	});
 </script>
 
 <div title="Change Theme" class={`dropdown dropdown-end ${dropdownClasses}`}>

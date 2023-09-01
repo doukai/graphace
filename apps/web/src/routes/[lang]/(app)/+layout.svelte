@@ -13,6 +13,7 @@
 	import { Search } from '~/lib/components/input';
 	import { setLocale } from '$i18n/i18n-svelte';
 	import LL from '$i18n/i18n-svelte';
+	import { locale } from '$i18n/i18n-svelte';
 	import type { LayoutData } from './$types';
 
 	export let data: LayoutData;
@@ -68,7 +69,7 @@
 				href={null}
 				on:click={(e) => {
 					e.preventDefault();
-					init('/');
+					init(`/${$locale}`);
 				}}
 				aria-current="page"
 				aria-label={$LL.web.path.home()}
@@ -93,7 +94,7 @@
 						href={null}
 						on:click={(e) => {
 							e.preventDefault();
-							init('/');
+							init(`/${$locale}`);
 						}}
 					>
 						<span>{$LL.web.path.home()}</span>
@@ -137,7 +138,7 @@
 					href={null}
 					on:click={(e) => {
 						e.preventDefault();
-						init('/');
+						init(`/${$locale}`);
 					}}
 					aria-current="page"
 					aria-label={$LL.web.path.home()}

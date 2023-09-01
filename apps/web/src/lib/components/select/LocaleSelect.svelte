@@ -10,13 +10,17 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import Iconify from '@iconify/svelte';
 	import { Language, ChevronDown } from '@steeze-ui/heroicons';
-	import LL from '$i18n/i18n-svelte';
 
 	$: value = $locale as Locales;
 
 	const flags: Record<Locales, string> = {
 		en: 'twemoji:flag-united-kingdom',
 		zh: 'twemoji:flag-china'
+	};
+
+	const names: Record<Locales, string> = {
+		en: 'English',
+		zh: '简体中文'
 	};
 
 	const switchLocale = async (newLocale: Locales, updateHistoryState = true) => {
@@ -38,7 +42,7 @@
 	};
 
 	// update `lang` attribute
-	$: browser && document.querySelector('html').setAttribute('lang', $locale);
+	$: browser && document.querySelector('html')!.setAttribute('lang', $locale);
 
 	// update locale when navigating via browser back/forward buttons
 	const handlePopStateEvent = async ({ state }: PopStateEvent) => switchLocale(state.locale, false);
@@ -72,7 +76,7 @@
 				<li>
 					<button class:active={value == locale} on:click={() => switchLocale(locale)}>
 						<Iconify class="drop-shadow" icon={flags[locale]} />
-						{$LL.web.localeName[locale]()}
+						{names[locale]}
 					</button>
 				</li>
 			{/each}
