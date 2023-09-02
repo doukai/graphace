@@ -416,7 +416,8 @@ export type GroupUsersArgs = {
   name?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
-  password?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
@@ -524,7 +525,8 @@ export type GroupUsersAggregateArgs = {
   name?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
-  password?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
@@ -555,7 +557,8 @@ export type GroupUsersConnectionArgs = {
   name?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
-  password?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
@@ -1553,7 +1556,8 @@ export type MutationTypeUserArgs = {
   name?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
   login?: InputMaybe<Scalars['String']>;
-  password?: InputMaybe<Scalars['String']>;
+  salt?: InputMaybe<Scalars['String']>;
+  hash?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   disable?: InputMaybe<Scalars['Boolean']>;
@@ -1580,7 +1584,8 @@ export type MutationTypeUserListArgs = {
   name?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
   login?: InputMaybe<Scalars['String']>;
-  password?: InputMaybe<Scalars['String']>;
+  salt?: InputMaybe<Scalars['String']>;
+  hash?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   disable?: InputMaybe<Scalars['Boolean']>;
@@ -2525,7 +2530,8 @@ export type QueryTypeUserArgs = {
   name?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
-  password?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
@@ -2553,7 +2559,8 @@ export type QueryTypeUserListArgs = {
   name?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
-  password?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
@@ -2588,7 +2595,8 @@ export type QueryTypeUserConnectionArgs = {
   name?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
-  password?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
@@ -3825,7 +3833,8 @@ export type RoleUsersArgs = {
   name?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
-  password?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
@@ -3944,7 +3953,8 @@ export type RoleUsersAggregateArgs = {
   name?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
-  password?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
@@ -3975,7 +3985,8 @@ export type RoleUsersConnectionArgs = {
   name?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
-  password?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
@@ -5262,7 +5273,8 @@ export type SubscriptionTypeUserArgs = {
   name?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
-  password?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
@@ -5290,7 +5302,8 @@ export type SubscriptionTypeUserListArgs = {
   name?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
-  password?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
@@ -5325,7 +5338,8 @@ export type SubscriptionTypeUserConnectionArgs = {
   name?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
-  password?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
@@ -6343,7 +6357,8 @@ export type User = Meta & {
   name: Scalars['String'];
   lastName?: Maybe<Scalars['String']>;
   login: Scalars['String'];
-  password?: Maybe<Scalars['String']>;
+  salt?: Maybe<Scalars['String']>;
+  hash?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   phones?: Maybe<Array<Maybe<Scalars['String']>>>;
   disable?: Maybe<Scalars['Boolean']>;
@@ -6370,9 +6385,12 @@ export type User = Meta & {
   loginCount?: Maybe<Scalars['Int']>;
   loginMax?: Maybe<Scalars['String']>;
   loginMin?: Maybe<Scalars['String']>;
-  passwordCount?: Maybe<Scalars['Int']>;
-  passwordMax?: Maybe<Scalars['String']>;
-  passwordMin?: Maybe<Scalars['String']>;
+  saltCount?: Maybe<Scalars['Int']>;
+  saltMax?: Maybe<Scalars['String']>;
+  saltMin?: Maybe<Scalars['String']>;
+  hashCount?: Maybe<Scalars['Int']>;
+  hashMax?: Maybe<Scalars['String']>;
+  hashMin?: Maybe<Scalars['String']>;
   emailCount?: Maybe<Scalars['Int']>;
   emailMax?: Maybe<Scalars['String']>;
   emailMin?: Maybe<Scalars['String']>;
@@ -6613,7 +6631,8 @@ export type UserConnectionQueryTypeArguments = {
   name?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
-  password?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
@@ -6653,7 +6672,8 @@ export type UserExpression = {
   name?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
-  password?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
@@ -6711,7 +6731,8 @@ export type UserGroupFromArgs = {
   name?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
-  password?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
@@ -6922,7 +6943,8 @@ export type UserInput = {
   name: Scalars['String'];
   lastName?: InputMaybe<Scalars['String']>;
   login: Scalars['String'];
-  password?: InputMaybe<Scalars['String']>;
+  salt?: InputMaybe<Scalars['String']>;
+  hash?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   disable?: InputMaybe<Scalars['Boolean']>;
@@ -6947,7 +6969,8 @@ export type UserListMutationTypeArguments = {
   name?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
   login?: InputMaybe<Scalars['String']>;
-  password?: InputMaybe<Scalars['String']>;
+  salt?: InputMaybe<Scalars['String']>;
+  hash?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   disable?: InputMaybe<Scalars['Boolean']>;
@@ -6974,7 +6997,8 @@ export type UserListQueryTypeArguments = {
   name?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
-  password?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
@@ -7008,7 +7032,8 @@ export type UserMutationTypeArguments = {
   name?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
   login?: InputMaybe<Scalars['String']>;
-  password?: InputMaybe<Scalars['String']>;
+  salt?: InputMaybe<Scalars['String']>;
+  hash?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   disable?: InputMaybe<Scalars['Boolean']>;
@@ -7034,7 +7059,8 @@ export type UserOrderBy = {
   name?: InputMaybe<Sort>;
   lastName?: InputMaybe<Sort>;
   login?: InputMaybe<Sort>;
-  password?: InputMaybe<Sort>;
+  salt?: InputMaybe<Sort>;
+  hash?: InputMaybe<Sort>;
   email?: InputMaybe<Sort>;
   disable?: InputMaybe<Sort>;
   isDeprecated?: InputMaybe<Sort>;
@@ -7080,7 +7106,8 @@ export type UserPhonesFromArgs = {
   name?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
-  password?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
@@ -7262,7 +7289,8 @@ export type UserQueryTypeArguments = {
   name?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
-  password?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
@@ -7320,7 +7348,8 @@ export type UserRoleFromArgs = {
   name?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
-  password?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;

@@ -108,7 +108,11 @@ const config: CodegenConfig = {
                             name: 'User',
                             fields: [
                                 {
-                                    name: 'password',
+                                    name: 'salt',
+                                    ignore: true
+                                },
+                                {
+                                    name: 'hash',
                                     ignore: true
                                 }
                             ]
