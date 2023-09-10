@@ -24,6 +24,10 @@ directive @format(locale: String, value: String) on FIELD | FIELD_DEFINITION
 
 directive @func(field: String, name: Function) on FIELD_DEFINITION
 
+directive @implementInputs(inputs: [String]) on INPUT_OBJECT
+
+directive @inputInterface on INPUT_OBJECT
+
 directive @invoke(className: String, methodName: String, parameters: [InvokeParameter], returnClassName: String) on FIELD_DEFINITION | INPUT_OBJECT | MUTATION | QUERY | SUBSCRIPTION
 
 directive @invokes(list: [Invoke]) on FIELD_DEFINITION | INPUT_OBJECT | MUTATION | QUERY | SUBSCRIPTION
@@ -43,233 +47,6 @@ directive @table(engine: String) on OBJECT
 directive @update(if: Boolean = false) on FIELD
 
 directive @validation(allOf: [ValidationInput], anyOf: [ValidationInput], const: String, contentEncoding: String, contentMediaType: String, dependentRequired: [Property], else: ValidationInput, enum: [String], exclusiveMaximum: Float, exclusiveMinimum: Float, format: String, if: ValidationInput, items: ValidationInput, maxItems: Int, maxLength: Int, maximum: Float, minItems: Int, minLength: Int, minimum: Float, multipleOf: Float, not: ValidationInput, oneOf: [ValidationInput], pattern: String, properties: [Property], then: ValidationInput, uniqueItems: Boolean) on FIELD_DEFINITION | INPUT_FIELD_DEFINITION | INPUT_OBJECT | OBJECT
-
-type Api implements Meta {
-  createGroupId: String
-  createTime: Timestamp
-  createUserId: String
-  description: String
-  descriptionCount: Int
-  descriptionMax: String
-  descriptionMin: String
-  id: ID
-  idCount: Int
-  idMax: Int
-  idMin: Int
-  isDeprecated: Boolean
-  name: String!
-  nameCount: Int
-  nameMax: String
-  nameMin: String
-  realm(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Realm
-  realmId: Int
-  realmIdAvg: Int
-  realmIdCount: Int
-  realmIdMax: Int
-  realmIdMin: Int
-  realmIdSum: Int
-  role(apis: ApiExpression, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, menus: MenuExpression, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleApi: RoleApiExpression, roleComposite: RoleCompositeExpression, roleMenu: RoleMenuExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
-  roleId: Int
-  roleIdAvg: Int
-  roleIdCount: Int
-  roleIdMax: Int
-  roleIdMin: Int
-  roleIdSum: Int
-  type: ApiType
-  updateTime: Timestamp
-  updateUserId: String
-  version: Int
-}
-
-type ApiConnection {
-  edges: [ApiEdge]
-  pageInfo: PageInfo
-  totalCount: Int
-}
-
-input ApiConnectionQueryTypeArguments {
-  after: ID
-  before: ID
-  cond: Conditional = AND
-  createGroupId: StringExpression
-  createTime: StringExpression
-  createUserId: StringExpression
-  description: StringExpression
-  exs: [ApiExpression]
-  first: Int
-  groupBy: [String!]
-  id: StringExpression
-  includeDeprecated: Boolean = false
-  last: Int
-  name: StringExpression
-  offset: Int
-  orderBy: ApiOrderBy
-  realm: RealmExpression
-  realmId: IntExpression
-  role: RoleExpression
-  roleId: IntExpression
-  type: ApiTypeExpression
-  updateTime: StringExpression
-  updateUserId: StringExpression
-  version: IntExpression
-}
-
-type ApiEdge {
-  cursor: ID
-  node: Api
-}
-
-input ApiExpression {
-  cond: Conditional = AND
-  createGroupId: StringExpression
-  createTime: StringExpression
-  createUserId: StringExpression
-  description: StringExpression
-  exs: [ApiExpression]
-  id: StringExpression
-  includeDeprecated: Boolean = false
-  name: StringExpression
-  realm: RealmExpression
-  realmId: IntExpression
-  role: RoleExpression
-  roleId: IntExpression
-  type: ApiTypeExpression
-  updateTime: StringExpression
-  updateUserId: StringExpression
-  version: IntExpression
-}
-
-input ApiInput {
-  createGroupId: String
-  createTime: Timestamp
-  createUserId: String
-  description: String
-  id: ID
-  isDeprecated: Boolean
-  name: String!
-  realm: RealmInput
-  realmId: Int
-  role: RoleInput
-  roleId: Int
-  type: ApiType
-  updateTime: Timestamp
-  updateUserId: String
-  version: Int
-}
-
-input ApiListMutationTypeArguments {
-  createGroupId: String
-  createTime: Timestamp
-  createUserId: String
-  description: String
-  id: ID
-  isDeprecated: Boolean
-  list: [ApiInput]
-  name: String
-  realm: RealmInput
-  realmId: Int
-  role: RoleInput
-  roleId: Int
-  type: ApiType
-  updateTime: Timestamp
-  updateUserId: String
-  version: Int
-  where: ApiExpression
-}
-
-input ApiListQueryTypeArguments {
-  after: ID
-  before: ID
-  cond: Conditional = AND
-  createGroupId: StringExpression
-  createTime: StringExpression
-  createUserId: StringExpression
-  description: StringExpression
-  exs: [ApiExpression]
-  first: Int
-  groupBy: [String!]
-  id: StringExpression
-  includeDeprecated: Boolean = false
-  last: Int
-  name: StringExpression
-  offset: Int
-  orderBy: ApiOrderBy
-  realm: RealmExpression
-  realmId: IntExpression
-  role: RoleExpression
-  roleId: IntExpression
-  type: ApiTypeExpression
-  updateTime: StringExpression
-  updateUserId: StringExpression
-  version: IntExpression
-}
-
-input ApiMutationTypeArguments {
-  createGroupId: String
-  createTime: Timestamp
-  createUserId: String
-  description: String
-  id: ID
-  isDeprecated: Boolean
-  name: String
-  realm: RealmInput
-  realmId: Int
-  role: RoleInput
-  roleId: Int
-  type: ApiType
-  updateTime: Timestamp
-  updateUserId: String
-  version: Int
-  where: ApiExpression
-}
-
-input ApiOrderBy {
-  createGroupId: Sort
-  createTime: Sort
-  createUserId: Sort
-  description: Sort
-  id: Sort
-  isDeprecated: Sort
-  name: Sort
-  realmId: Sort
-  roleId: Sort
-  type: Sort
-  updateTime: Sort
-  updateUserId: Sort
-  version: Sort
-}
-
-input ApiQueryTypeArguments {
-  cond: Conditional = AND
-  createGroupId: StringExpression
-  createTime: StringExpression
-  createUserId: StringExpression
-  description: StringExpression
-  exs: [ApiExpression]
-  id: StringExpression
-  includeDeprecated: Boolean = false
-  name: StringExpression
-  realm: RealmExpression
-  realmId: IntExpression
-  role: RoleExpression
-  roleId: IntExpression
-  type: ApiTypeExpression
-  updateTime: StringExpression
-  updateUserId: StringExpression
-  version: IntExpression
-}
-
-enum ApiType {
-  MUTATION
-  QUERY
-  SUBSCRIPTION
-}
-
-input ApiTypeExpression {
-  in: [ApiType]
-  opr: Operator = EQ
-  val: ApiType
-}
 
 scalar BigDecimal
 
@@ -295,10 +72,11 @@ input ConditionalExpression {
 
 type CurrentUser {
   groups: [String]
+  id: String
   lastName: String
   login: String
   name: String
-  realmId: String
+  realmId: Int
   roles: [String]
 }
 
@@ -331,6 +109,12 @@ type Group implements Meta {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
+  deep: Int
+  deepAvg: Int
+  deepCount: Int
+  deepMax: Int
+  deepMin: Int
+  deepSum: Int
   groupRole: [GroupRole]
   groupRoleAggregate(first: Int, from: GroupExpression, groupBy: [String!], groupId: IntExpression, id: StringExpression, last: Int, offset: Int, orderBy: GroupRoleOrderBy, roleId: IntExpression, to: RoleExpression): GroupRole
   groupRoleConnection(first: Int, from: GroupExpression, groupBy: [String!], groupId: IntExpression, id: StringExpression, last: Int, offset: Int, orderBy: GroupRoleOrderBy, roleId: IntExpression, to: RoleExpression): GroupRoleConnection
@@ -343,13 +127,17 @@ type Group implements Meta {
   nameCount: Int
   nameMax: String
   nameMin: String
-  parent(id: StringExpression, name: StringExpression, parent: GroupExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): Group
+  parent(deep: IntExpression, id: StringExpression, name: StringExpression, parent: GroupExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): Group
   parentId: Int
   parentIdAvg: Int
   parentIdCount: Int
   parentIdMax: Int
   parentIdMin: Int
   parentIdSum: Int
+  path: String
+  pathCount: Int
+  pathMax: String
+  pathMin: String
   realm(id: StringExpression, name: StringExpression): Realm
   realmId: Int
   realmIdAvg: Int
@@ -357,12 +145,12 @@ type Group implements Meta {
   realmIdMax: Int
   realmIdMin: Int
   realmIdSum: Int
-  roles(after: ID, apis: ApiExpression, before: ID, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, menus: MenuExpression, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleApi: RoleApiExpression, roleComposite: RoleCompositeExpression, roleMenu: RoleMenuExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): [Role]
-  rolesAggregate(apis: ApiExpression, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, menus: MenuExpression, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleApi: RoleApiExpression, roleComposite: RoleCompositeExpression, roleMenu: RoleMenuExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
-  rolesConnection(apis: ApiExpression, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, menus: MenuExpression, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleApi: RoleApiExpression, roleComposite: RoleCompositeExpression, roleMenu: RoleMenuExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): RoleConnection
-  subGroups(after: ID, before: ID, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): [Group]
-  subGroupsAggregate(first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): Group
-  subGroupsConnection(first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): GroupConnection
+  roles(after: ID, before: ID, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): [Role]
+  rolesAggregate(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
+  rolesConnection(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): RoleConnection
+  subGroups(after: ID, before: ID, deep: IntExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): [Group]
+  subGroupsAggregate(deep: IntExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): Group
+  subGroupsConnection(deep: IntExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): GroupConnection
   updateTime: Timestamp
   updateUserId: String
   userGroup: [UserGroup]
@@ -387,6 +175,7 @@ input GroupConnectionQueryTypeArguments {
   createGroupId: StringExpression
   createTime: StringExpression
   createUserId: StringExpression
+  deep: IntExpression
   exs: [GroupExpression]
   first: Int
   groupBy: [String!]
@@ -399,6 +188,39 @@ input GroupConnectionQueryTypeArguments {
   orderBy: GroupOrderBy
   parent: GroupExpression
   parentId: IntExpression
+  path: StringExpression
+  realm: RealmExpression
+  realmId: IntExpression
+  roles: RoleExpression
+  subGroups: GroupExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  userGroup: UserGroupExpression
+  users: UserExpression
+  version: IntExpression
+}
+
+input GroupConnectionSubscriptionTypeArguments {
+  after: ID
+  before: ID
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  deep: IntExpression
+  exs: [GroupExpression]
+  first: Int
+  groupBy: [String!]
+  groupRole: GroupRoleExpression
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  name: StringExpression
+  offset: Int
+  orderBy: GroupOrderBy
+  parent: GroupExpression
+  parentId: IntExpression
+  path: StringExpression
   realm: RealmExpression
   realmId: IntExpression
   roles: RoleExpression
@@ -420,6 +242,7 @@ input GroupExpression {
   createGroupId: StringExpression
   createTime: StringExpression
   createUserId: StringExpression
+  deep: IntExpression
   exs: [GroupExpression]
   groupRole: GroupRoleExpression
   id: StringExpression
@@ -427,6 +250,7 @@ input GroupExpression {
   name: StringExpression
   parent: GroupExpression
   parentId: IntExpression
+  path: StringExpression
   realm: RealmExpression
   realmId: IntExpression
   roles: RoleExpression
@@ -442,12 +266,14 @@ input GroupInput {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
+  deep: Int
   groupRole: [GroupRoleInput]
   id: ID
   isDeprecated: Boolean
   name: String!
   parent: GroupInput
   parentId: Int
+  path: String
   realm: RealmInput
   realmId: Int
   roles: [RoleInput]
@@ -463,6 +289,7 @@ input GroupListMutationTypeArguments {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
+  deep: Int
   groupRole: [GroupRoleInput]
   id: ID
   isDeprecated: Boolean
@@ -470,6 +297,7 @@ input GroupListMutationTypeArguments {
   name: String
   parent: GroupInput
   parentId: Int
+  path: String
   realm: RealmInput
   realmId: Int
   roles: [RoleInput]
@@ -489,6 +317,7 @@ input GroupListQueryTypeArguments {
   createGroupId: StringExpression
   createTime: StringExpression
   createUserId: StringExpression
+  deep: IntExpression
   exs: [GroupExpression]
   first: Int
   groupBy: [String!]
@@ -501,6 +330,39 @@ input GroupListQueryTypeArguments {
   orderBy: GroupOrderBy
   parent: GroupExpression
   parentId: IntExpression
+  path: StringExpression
+  realm: RealmExpression
+  realmId: IntExpression
+  roles: RoleExpression
+  subGroups: GroupExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  userGroup: UserGroupExpression
+  users: UserExpression
+  version: IntExpression
+}
+
+input GroupListSubscriptionTypeArguments {
+  after: ID
+  before: ID
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  deep: IntExpression
+  exs: [GroupExpression]
+  first: Int
+  groupBy: [String!]
+  groupRole: GroupRoleExpression
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  name: StringExpression
+  offset: Int
+  orderBy: GroupOrderBy
+  parent: GroupExpression
+  parentId: IntExpression
+  path: StringExpression
   realm: RealmExpression
   realmId: IntExpression
   roles: RoleExpression
@@ -516,12 +378,14 @@ input GroupMutationTypeArguments {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
+  deep: Int
   groupRole: [GroupRoleInput]
   id: ID
   isDeprecated: Boolean
   name: String
   parent: GroupInput
   parentId: Int
+  path: String
   realm: RealmInput
   realmId: Int
   roles: [RoleInput]
@@ -538,10 +402,12 @@ input GroupOrderBy {
   createGroupId: Sort
   createTime: Sort
   createUserId: Sort
+  deep: Sort
   id: Sort
   isDeprecated: Sort
   name: Sort
   parentId: Sort
+  path: Sort
   realmId: Sort
   updateTime: Sort
   updateUserId: Sort
@@ -553,6 +419,7 @@ input GroupQueryTypeArguments {
   createGroupId: StringExpression
   createTime: StringExpression
   createUserId: StringExpression
+  deep: IntExpression
   exs: [GroupExpression]
   groupRole: GroupRoleExpression
   id: StringExpression
@@ -560,6 +427,7 @@ input GroupQueryTypeArguments {
   name: StringExpression
   parent: GroupExpression
   parentId: IntExpression
+  path: StringExpression
   realm: RealmExpression
   realmId: IntExpression
   roles: RoleExpression
@@ -575,7 +443,7 @@ type GroupRole implements Meta {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
-  from(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, parent: GroupExpression, parentId: IntExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): Group
+  from(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, deep: IntExpression, groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, parent: GroupExpression, parentId: IntExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): Group
   groupId: Int
   groupIdAvg: Int
   groupIdCount: Int
@@ -594,7 +462,7 @@ type GroupRole implements Meta {
   roleIdMax: Int
   roleIdMin: Int
   roleIdSum: Int
-  to(apis: ApiExpression, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, menus: MenuExpression, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleApi: RoleApiExpression, roleComposite: RoleCompositeExpression, roleMenu: RoleMenuExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
+  to(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
   updateTime: Timestamp
   updateUserId: String
   version: Int
@@ -607,6 +475,31 @@ type GroupRoleConnection {
 }
 
 input GroupRoleConnectionQueryTypeArguments {
+  after: ID
+  before: ID
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [GroupRoleExpression]
+  first: Int
+  from: GroupExpression
+  groupBy: [String!]
+  groupId: IntExpression
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  offset: Int
+  orderBy: GroupRoleOrderBy
+  realmId: IntExpression
+  roleId: IntExpression
+  to: RoleExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  version: IntExpression
+}
+
+input GroupRoleConnectionSubscriptionTypeArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -713,6 +606,31 @@ input GroupRoleListQueryTypeArguments {
   version: IntExpression
 }
 
+input GroupRoleListSubscriptionTypeArguments {
+  after: ID
+  before: ID
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [GroupRoleExpression]
+  first: Int
+  from: GroupExpression
+  groupBy: [String!]
+  groupId: IntExpression
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  offset: Int
+  orderBy: GroupRoleOrderBy
+  realmId: IntExpression
+  roleId: IntExpression
+  to: RoleExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  version: IntExpression
+}
+
 input GroupRoleMutationTypeArguments {
   createGroupId: String
   createTime: Timestamp
@@ -762,6 +680,49 @@ input GroupRoleQueryTypeArguments {
   version: IntExpression
 }
 
+input GroupRoleSubscriptionTypeArguments {
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [GroupRoleExpression]
+  from: GroupExpression
+  groupId: IntExpression
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  realmId: IntExpression
+  roleId: IntExpression
+  to: RoleExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  version: IntExpression
+}
+
+input GroupSubscriptionTypeArguments {
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  deep: IntExpression
+  exs: [GroupExpression]
+  groupRole: GroupRoleExpression
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  name: StringExpression
+  parent: GroupExpression
+  parentId: IntExpression
+  path: StringExpression
+  realm: RealmExpression
+  realmId: IntExpression
+  roles: RoleExpression
+  subGroups: GroupExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  userGroup: UserGroupExpression
+  users: UserExpression
+  version: IntExpression
+}
+
 input IDExpression {
   in: [ID]
   opr: Operator = EQ
@@ -794,278 +755,6 @@ input MapWith {
   type: String
 }
 
-type Menu implements Meta {
-  createGroupId: String
-  createTime: Timestamp
-  createUserId: String
-  description: String
-  descriptionCount: Int
-  descriptionMax: String
-  descriptionMin: String
-  folder(description: StringExpression, folder: MenuExpression, icon: StringExpression, id: StringExpression, name: StringExpression, path: StringExpression, realm: RealmExpression, role: RoleExpression, type: MenuTypeExpression): Menu
-  icon: String
-  iconCount: Int
-  iconMax: String
-  iconMin: String
-  id: ID
-  idCount: Int
-  idMax: Int
-  idMin: Int
-  isDeprecated: Boolean
-  name: String!
-  nameCount: Int
-  nameMax: String
-  nameMin: String
-  parentId: Int
-  parentIdAvg: Int
-  parentIdCount: Int
-  parentIdMax: Int
-  parentIdMin: Int
-  parentIdSum: Int
-  path: String
-  pathCount: Int
-  pathMax: String
-  pathMin: String
-  realm(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Realm
-  realmId: Int
-  realmIdAvg: Int
-  realmIdCount: Int
-  realmIdMax: Int
-  realmIdMin: Int
-  realmIdSum: Int
-  role(apis: ApiExpression, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, menus: MenuExpression, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleApi: RoleApiExpression, roleComposite: RoleCompositeExpression, roleMenu: RoleMenuExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
-  roleId: Int
-  roleIdAvg: Int
-  roleIdCount: Int
-  roleIdMax: Int
-  roleIdMin: Int
-  roleIdSum: Int
-  type: MenuType!
-  updateTime: Timestamp
-  updateUserId: String
-  version: Int
-}
-
-type MenuConnection {
-  edges: [MenuEdge]
-  pageInfo: PageInfo
-  totalCount: Int
-}
-
-input MenuConnectionQueryTypeArguments {
-  after: ID
-  before: ID
-  cond: Conditional = AND
-  createGroupId: StringExpression
-  createTime: StringExpression
-  createUserId: StringExpression
-  description: StringExpression
-  exs: [MenuExpression]
-  first: Int
-  folder: MenuExpression
-  groupBy: [String!]
-  icon: StringExpression
-  id: StringExpression
-  includeDeprecated: Boolean = false
-  last: Int
-  name: StringExpression
-  offset: Int
-  orderBy: MenuOrderBy
-  parentId: IntExpression
-  path: StringExpression
-  realm: RealmExpression
-  realmId: IntExpression
-  role: RoleExpression
-  roleId: IntExpression
-  type: MenuTypeExpression
-  updateTime: StringExpression
-  updateUserId: StringExpression
-  version: IntExpression
-}
-
-type MenuEdge {
-  cursor: ID
-  node: Menu
-}
-
-input MenuExpression {
-  cond: Conditional = AND
-  createGroupId: StringExpression
-  createTime: StringExpression
-  createUserId: StringExpression
-  description: StringExpression
-  exs: [MenuExpression]
-  folder: MenuExpression
-  icon: StringExpression
-  id: StringExpression
-  includeDeprecated: Boolean = false
-  name: StringExpression
-  parentId: IntExpression
-  path: StringExpression
-  realm: RealmExpression
-  realmId: IntExpression
-  role: RoleExpression
-  roleId: IntExpression
-  type: MenuTypeExpression
-  updateTime: StringExpression
-  updateUserId: StringExpression
-  version: IntExpression
-}
-
-input MenuInput {
-  createGroupId: String
-  createTime: Timestamp
-  createUserId: String
-  description: String
-  folder: MenuInput
-  icon: String
-  id: ID
-  isDeprecated: Boolean
-  name: String!
-  parentId: Int
-  path: String
-  realm: RealmInput
-  realmId: Int
-  role: RoleInput
-  roleId: Int
-  type: MenuType!
-  updateTime: Timestamp
-  updateUserId: String
-  version: Int
-}
-
-input MenuListMutationTypeArguments {
-  createGroupId: String
-  createTime: Timestamp
-  createUserId: String
-  description: String
-  folder: MenuInput
-  icon: String
-  id: ID
-  isDeprecated: Boolean
-  list: [MenuInput]
-  name: String
-  parentId: Int
-  path: String
-  realm: RealmInput
-  realmId: Int
-  role: RoleInput
-  roleId: Int
-  type: MenuType
-  updateTime: Timestamp
-  updateUserId: String
-  version: Int
-  where: MenuExpression
-}
-
-input MenuListQueryTypeArguments {
-  after: ID
-  before: ID
-  cond: Conditional = AND
-  createGroupId: StringExpression
-  createTime: StringExpression
-  createUserId: StringExpression
-  description: StringExpression
-  exs: [MenuExpression]
-  first: Int
-  folder: MenuExpression
-  groupBy: [String!]
-  icon: StringExpression
-  id: StringExpression
-  includeDeprecated: Boolean = false
-  last: Int
-  name: StringExpression
-  offset: Int
-  orderBy: MenuOrderBy
-  parentId: IntExpression
-  path: StringExpression
-  realm: RealmExpression
-  realmId: IntExpression
-  role: RoleExpression
-  roleId: IntExpression
-  type: MenuTypeExpression
-  updateTime: StringExpression
-  updateUserId: StringExpression
-  version: IntExpression
-}
-
-input MenuMutationTypeArguments {
-  createGroupId: String
-  createTime: Timestamp
-  createUserId: String
-  description: String
-  folder: MenuInput
-  icon: String
-  id: ID
-  isDeprecated: Boolean
-  name: String
-  parentId: Int
-  path: String
-  realm: RealmInput
-  realmId: Int
-  role: RoleInput
-  roleId: Int
-  type: MenuType
-  updateTime: Timestamp
-  updateUserId: String
-  version: Int
-  where: MenuExpression
-}
-
-input MenuOrderBy {
-  createGroupId: Sort
-  createTime: Sort
-  createUserId: Sort
-  description: Sort
-  icon: Sort
-  id: Sort
-  isDeprecated: Sort
-  name: Sort
-  parentId: Sort
-  path: Sort
-  realmId: Sort
-  roleId: Sort
-  type: Sort
-  updateTime: Sort
-  updateUserId: Sort
-  version: Sort
-}
-
-input MenuQueryTypeArguments {
-  cond: Conditional = AND
-  createGroupId: StringExpression
-  createTime: StringExpression
-  createUserId: StringExpression
-  description: StringExpression
-  exs: [MenuExpression]
-  folder: MenuExpression
-  icon: StringExpression
-  id: StringExpression
-  includeDeprecated: Boolean = false
-  name: StringExpression
-  parentId: IntExpression
-  path: StringExpression
-  realm: RealmExpression
-  realmId: IntExpression
-  role: RoleExpression
-  roleId: IntExpression
-  type: MenuTypeExpression
-  updateTime: StringExpression
-  updateUserId: StringExpression
-  version: IntExpression
-}
-
-enum MenuType {
-  FOLDER
-  PAGE
-}
-
-input MenuTypeExpression {
-  in: [MenuType]
-  opr: Operator = EQ
-  val: MenuType
-}
-
 interface Meta {
   createGroupId: String
   createTime: Timestamp
@@ -1077,33 +766,46 @@ interface Meta {
   version: Int
 }
 
-type MutationType implements Meta {
-  api(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, id: ID, isDeprecated: Boolean, name: String, realm: RealmInput, realmId: Int, role: RoleInput, roleId: Int, type: ApiType, updateTime: Timestamp, updateUserId: String, version: Int, where: ApiExpression): Api
-  apiList(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, id: ID, isDeprecated: Boolean, list: [ApiInput], name: String, realm: RealmInput, realmId: Int, role: RoleInput, roleId: Int, type: ApiType, updateTime: Timestamp, updateUserId: String, version: Int, where: ApiExpression): [Api]
+input MetaExpression {
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  realmId: IntExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+}
+
+input MetaInput {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
-  group(createGroupId: String, createTime: Timestamp, createUserId: String, groupRole: [GroupRoleInput], id: ID, isDeprecated: Boolean, name: String, parent: GroupInput, parentId: Int, realm: RealmInput, realmId: Int, roles: [RoleInput], subGroups: [GroupInput], updateTime: Timestamp, updateUserId: String, userGroup: [UserGroupInput], users: [UserInput], version: Int, where: GroupExpression): Group
-  groupList(createGroupId: String, createTime: Timestamp, createUserId: String, groupRole: [GroupRoleInput], id: ID, isDeprecated: Boolean, list: [GroupInput], name: String, parent: GroupInput, parentId: Int, realm: RealmInput, realmId: Int, roles: [RoleInput], subGroups: [GroupInput], updateTime: Timestamp, updateUserId: String, userGroup: [UserGroupInput], users: [UserInput], version: Int, where: GroupExpression): [Group]
+  realmId: Int
+  updateTime: Timestamp
+  updateUserId: String
+  version: Int
+}
+
+type MutationType implements Meta {
+  createGroupId: String
+  createTime: Timestamp
+  createUserId: String
+  group(createGroupId: String, createTime: Timestamp, createUserId: String, deep: Int, groupRole: [GroupRoleInput], id: ID, isDeprecated: Boolean, name: String, parent: GroupInput, parentId: Int, path: String, realm: RealmInput, realmId: Int, roles: [RoleInput], subGroups: [GroupInput], updateTime: Timestamp, updateUserId: String, userGroup: [UserGroupInput], users: [UserInput], version: Int, where: GroupExpression): Group
+  groupList(createGroupId: String, createTime: Timestamp, createUserId: String, deep: Int, groupRole: [GroupRoleInput], id: ID, isDeprecated: Boolean, list: [GroupInput], name: String, parent: GroupInput, parentId: Int, path: String, realm: RealmInput, realmId: Int, roles: [RoleInput], subGroups: [GroupInput], updateTime: Timestamp, updateUserId: String, userGroup: [UserGroupInput], users: [UserInput], version: Int, where: GroupExpression): [Group]
   groupRole(createGroupId: String, createTime: Timestamp, createUserId: String, from: GroupInput, groupId: Int, id: ID, isDeprecated: Boolean, realmId: Int, roleId: Int, to: RoleInput, updateTime: Timestamp, updateUserId: String, version: Int, where: GroupRoleExpression): GroupRole
   groupRoleList(createGroupId: String, createTime: Timestamp, createUserId: String, from: GroupInput, groupId: Int, id: ID, isDeprecated: Boolean, list: [GroupRoleInput], realmId: Int, roleId: Int, to: RoleInput, updateTime: Timestamp, updateUserId: String, version: Int, where: GroupRoleExpression): [GroupRole]
   isDeprecated: Boolean
   login(login: String!, password: String!): String
-  menu(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, folder: MenuInput, icon: String, id: ID, isDeprecated: Boolean, name: String, parentId: Int, path: String, realm: RealmInput, realmId: Int, role: RoleInput, roleId: Int, type: MenuType, updateTime: Timestamp, updateUserId: String, version: Int, where: MenuExpression): Menu
-  menuList(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, folder: MenuInput, icon: String, id: ID, isDeprecated: Boolean, list: [MenuInput], name: String, parentId: Int, path: String, realm: RealmInput, realmId: Int, role: RoleInput, roleId: Int, type: MenuType, updateTime: Timestamp, updateUserId: String, version: Int, where: MenuExpression): [Menu]
-  permission(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, id: ID, isDeprecated: Boolean, level: PermissionLevel, name: String, realm: RealmInput, realmId: Int, role: RoleInput, roleId: Int, type: PermissionType, updateTime: Timestamp, updateUserId: String, version: Int, where: PermissionExpression): Permission
-  permissionList(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, id: ID, isDeprecated: Boolean, level: PermissionLevel, list: [PermissionInput], name: String, realm: RealmInput, realmId: Int, role: RoleInput, roleId: Int, type: PermissionType, updateTime: Timestamp, updateUserId: String, version: Int, where: PermissionExpression): [Permission]
+  permission(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, field: String, isDeprecated: Boolean, name: ID, permissionType: PermissionType, realm: RealmInput, realmId: Int, rolePermission: [RolePermissionInput], roles: [RoleInput], type: String, updateTime: Timestamp, updateUserId: String, version: Int, where: PermissionExpression): Permission
+  permissionList(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, field: String, isDeprecated: Boolean, list: [PermissionInput], name: ID, permissionType: PermissionType, realm: RealmInput, realmId: Int, rolePermission: [RolePermissionInput], roles: [RoleInput], type: String, updateTime: Timestamp, updateUserId: String, version: Int, where: PermissionExpression): [Permission]
   realm(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, name: String, realmId: Int, updateTime: Timestamp, updateUserId: String, version: Int, where: RealmExpression): Realm
   realmId: Int
   realmList(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, list: [RealmInput], name: String, realmId: Int, updateTime: Timestamp, updateUserId: String, version: Int, where: RealmExpression): [Realm]
-  role(apis: [ApiInput], composites: [RoleInput], createGroupId: String, createTime: Timestamp, createUserId: String, description: String, id: ID, isDeprecated: Boolean, menus: [MenuInput], name: String, permissions: [PermissionInput], realm: RealmInput, realmId: Int, roleApi: [RoleApiInput], roleComposite: [RoleCompositeInput], roleMenu: [RoleMenuInput], updateTime: Timestamp, updateUserId: String, userRole: [UserRoleInput], users: [UserInput], version: Int, where: RoleExpression): Role
-  roleApi(apiId: Int, createGroupId: String, createTime: Timestamp, createUserId: String, from: RoleInput, id: ID, isDeprecated: Boolean, realmId: Int, roleId: Int, to: ApiInput, updateTime: Timestamp, updateUserId: String, version: Int, where: RoleApiExpression): RoleApi
-  roleApiList(apiId: Int, createGroupId: String, createTime: Timestamp, createUserId: String, from: RoleInput, id: ID, isDeprecated: Boolean, list: [RoleApiInput], realmId: Int, roleId: Int, to: ApiInput, updateTime: Timestamp, updateUserId: String, version: Int, where: RoleApiExpression): [RoleApi]
+  role(composites: [RoleInput], createGroupId: String, createTime: Timestamp, createUserId: String, description: String, id: ID, isDeprecated: Boolean, name: String, permissions: [PermissionInput], realm: RealmInput, realmId: Int, roleComposite: [RoleCompositeInput], rolePermission: [RolePermissionInput], updateTime: Timestamp, updateUserId: String, userRole: [UserRoleInput], users: [UserInput], version: Int, where: RoleExpression): Role
   roleComposite(compositeId: Int, createGroupId: String, createTime: Timestamp, createUserId: String, from: RoleInput, id: ID, isDeprecated: Boolean, realmId: Int, roleId: Int, to: RoleInput, updateTime: Timestamp, updateUserId: String, version: Int, where: RoleCompositeExpression): RoleComposite
   roleCompositeList(compositeId: Int, createGroupId: String, createTime: Timestamp, createUserId: String, from: RoleInput, id: ID, isDeprecated: Boolean, list: [RoleCompositeInput], realmId: Int, roleId: Int, to: RoleInput, updateTime: Timestamp, updateUserId: String, version: Int, where: RoleCompositeExpression): [RoleComposite]
-  roleList(apis: [ApiInput], composites: [RoleInput], createGroupId: String, createTime: Timestamp, createUserId: String, description: String, id: ID, isDeprecated: Boolean, list: [RoleInput], menus: [MenuInput], name: String, permissions: [PermissionInput], realm: RealmInput, realmId: Int, roleApi: [RoleApiInput], roleComposite: [RoleCompositeInput], roleMenu: [RoleMenuInput], updateTime: Timestamp, updateUserId: String, userRole: [UserRoleInput], users: [UserInput], version: Int, where: RoleExpression): [Role]
-  roleMenu(createGroupId: String, createTime: Timestamp, createUserId: String, from: RoleInput, id: ID, isDeprecated: Boolean, menuId: Int, realmId: Int, roleId: Int, to: MenuInput, updateTime: Timestamp, updateUserId: String, version: Int, where: RoleMenuExpression): RoleMenu
-  roleMenuList(createGroupId: String, createTime: Timestamp, createUserId: String, from: RoleInput, id: ID, isDeprecated: Boolean, list: [RoleMenuInput], menuId: Int, realmId: Int, roleId: Int, to: MenuInput, updateTime: Timestamp, updateUserId: String, version: Int, where: RoleMenuExpression): [RoleMenu]
+  roleList(composites: [RoleInput], createGroupId: String, createTime: Timestamp, createUserId: String, description: String, id: ID, isDeprecated: Boolean, list: [RoleInput], name: String, permissions: [PermissionInput], realm: RealmInput, realmId: Int, roleComposite: [RoleCompositeInput], rolePermission: [RolePermissionInput], updateTime: Timestamp, updateUserId: String, userRole: [UserRoleInput], users: [UserInput], version: Int, where: RoleExpression): [Role]
+  rolePermission(createGroupId: String, createTime: Timestamp, createUserId: String, from: RoleInput, id: ID, isDeprecated: Boolean, permissionName: String, realmId: Int, roleId: Int, to: PermissionInput, updateTime: Timestamp, updateUserId: String, version: Int, where: RolePermissionExpression): RolePermission
+  rolePermissionList(createGroupId: String, createTime: Timestamp, createUserId: String, from: RoleInput, id: ID, isDeprecated: Boolean, list: [RolePermissionInput], permissionName: String, realmId: Int, roleId: Int, to: PermissionInput, updateTime: Timestamp, updateUserId: String, version: Int, where: RolePermissionExpression): [RolePermission]
   updateTime: Timestamp
   updateUserId: String
   user(createGroupId: String, createTime: Timestamp, createUserId: String, disable: Boolean, email: String, groups: [GroupInput], hash: String, id: ID, isDeprecated: Boolean, lastName: String, login: String, name: String, phones: [String], realm: RealmInput, realmId: Int, roles: [RoleInput], salt: String, updateTime: Timestamp, updateUserId: String, userGroup: [UserGroupInput], userPhones: [UserPhonesInput], userRole: [UserRoleInput], version: Int, where: UserExpression): User
@@ -1159,16 +861,16 @@ type Permission implements Meta {
   descriptionCount: Int
   descriptionMax: String
   descriptionMin: String
-  id: ID
-  idCount: Int
-  idMax: Int
-  idMin: Int
+  field: String!
+  fieldCount: Int
+  fieldMax: String
+  fieldMin: String
   isDeprecated: Boolean
-  level: PermissionLevel
-  name: String!
+  name: ID!
   nameCount: Int
   nameMax: String
   nameMin: String
+  permissionType: PermissionType!
   realm(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Realm
   realmId: Int
   realmIdAvg: Int
@@ -1176,14 +878,16 @@ type Permission implements Meta {
   realmIdMax: Int
   realmIdMin: Int
   realmIdSum: Int
-  role(apis: ApiExpression, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, menus: MenuExpression, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleApi: RoleApiExpression, roleComposite: RoleCompositeExpression, roleMenu: RoleMenuExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
-  roleId: Int
-  roleIdAvg: Int
-  roleIdCount: Int
-  roleIdMax: Int
-  roleIdMin: Int
-  roleIdSum: Int
-  type: PermissionType
+  rolePermission: [RolePermission]
+  rolePermissionAggregate(first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, last: Int, offset: Int, orderBy: RolePermissionOrderBy, permissionName: StringExpression, roleId: IntExpression, to: PermissionExpression): RolePermission
+  rolePermissionConnection(first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, last: Int, offset: Int, orderBy: RolePermissionOrderBy, permissionName: StringExpression, roleId: IntExpression, to: PermissionExpression): RolePermissionConnection
+  roles(after: ID, before: ID, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): [Role]
+  rolesAggregate(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
+  rolesConnection(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): RoleConnection
+  type: String!
+  typeCount: Int
+  typeMax: String
+  typeMin: String
   updateTime: Timestamp
   updateUserId: String
   version: Int
@@ -1204,20 +908,48 @@ input PermissionConnectionQueryTypeArguments {
   createUserId: StringExpression
   description: StringExpression
   exs: [PermissionExpression]
+  field: StringExpression
   first: Int
   groupBy: [String!]
-  id: StringExpression
   includeDeprecated: Boolean = false
   last: Int
-  level: PermissionLevelExpression
   name: StringExpression
   offset: Int
   orderBy: PermissionOrderBy
+  permissionType: PermissionTypeExpression
   realm: RealmExpression
   realmId: IntExpression
-  role: RoleExpression
-  roleId: IntExpression
-  type: PermissionTypeExpression
+  rolePermission: RolePermissionExpression
+  roles: RoleExpression
+  type: StringExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  version: IntExpression
+}
+
+input PermissionConnectionSubscriptionTypeArguments {
+  after: ID
+  before: ID
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  description: StringExpression
+  exs: [PermissionExpression]
+  field: StringExpression
+  first: Int
+  groupBy: [String!]
+  includeDeprecated: Boolean = false
+  last: Int
+  name: StringExpression
+  offset: Int
+  orderBy: PermissionOrderBy
+  permissionType: PermissionTypeExpression
+  realm: RealmExpression
+  realmId: IntExpression
+  rolePermission: RolePermissionExpression
+  roles: RoleExpression
+  type: StringExpression
   updateTime: StringExpression
   updateUserId: StringExpression
   version: IntExpression
@@ -1235,15 +967,15 @@ input PermissionExpression {
   createUserId: StringExpression
   description: StringExpression
   exs: [PermissionExpression]
-  id: StringExpression
+  field: StringExpression
   includeDeprecated: Boolean = false
-  level: PermissionLevelExpression
   name: StringExpression
+  permissionType: PermissionTypeExpression
   realm: RealmExpression
   realmId: IntExpression
-  role: RoleExpression
-  roleId: IntExpression
-  type: PermissionTypeExpression
+  rolePermission: RolePermissionExpression
+  roles: RoleExpression
+  type: StringExpression
   updateTime: StringExpression
   updateUserId: StringExpression
   version: IntExpression
@@ -1254,32 +986,18 @@ input PermissionInput {
   createTime: Timestamp
   createUserId: String
   description: String
-  id: ID
+  field: String!
   isDeprecated: Boolean
-  level: PermissionLevel
-  name: String!
+  name: ID!
+  permissionType: PermissionType!
   realm: RealmInput
   realmId: Int
-  role: RoleInput
-  roleId: Int
-  type: PermissionType
+  rolePermission: [RolePermissionInput]
+  roles: [RoleInput]
+  type: String!
   updateTime: Timestamp
   updateUserId: String
   version: Int
-}
-
-enum PermissionLevel {
-  ALL
-  GROUP
-  REALM
-  SUB_GROUP
-  USER
-}
-
-input PermissionLevelExpression {
-  in: [PermissionLevel]
-  opr: Operator = EQ
-  val: PermissionLevel
 }
 
 input PermissionListMutationTypeArguments {
@@ -1287,16 +1005,16 @@ input PermissionListMutationTypeArguments {
   createTime: Timestamp
   createUserId: String
   description: String
-  id: ID
+  field: String
   isDeprecated: Boolean
-  level: PermissionLevel
   list: [PermissionInput]
-  name: String
+  name: ID
+  permissionType: PermissionType
   realm: RealmInput
   realmId: Int
-  role: RoleInput
-  roleId: Int
-  type: PermissionType
+  rolePermission: [RolePermissionInput]
+  roles: [RoleInput]
+  type: String
   updateTime: Timestamp
   updateUserId: String
   version: Int
@@ -1312,20 +1030,48 @@ input PermissionListQueryTypeArguments {
   createUserId: StringExpression
   description: StringExpression
   exs: [PermissionExpression]
+  field: StringExpression
   first: Int
   groupBy: [String!]
-  id: StringExpression
   includeDeprecated: Boolean = false
   last: Int
-  level: PermissionLevelExpression
   name: StringExpression
   offset: Int
   orderBy: PermissionOrderBy
+  permissionType: PermissionTypeExpression
   realm: RealmExpression
   realmId: IntExpression
-  role: RoleExpression
-  roleId: IntExpression
-  type: PermissionTypeExpression
+  rolePermission: RolePermissionExpression
+  roles: RoleExpression
+  type: StringExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  version: IntExpression
+}
+
+input PermissionListSubscriptionTypeArguments {
+  after: ID
+  before: ID
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  description: StringExpression
+  exs: [PermissionExpression]
+  field: StringExpression
+  first: Int
+  groupBy: [String!]
+  includeDeprecated: Boolean = false
+  last: Int
+  name: StringExpression
+  offset: Int
+  orderBy: PermissionOrderBy
+  permissionType: PermissionTypeExpression
+  realm: RealmExpression
+  realmId: IntExpression
+  rolePermission: RolePermissionExpression
+  roles: RoleExpression
+  type: StringExpression
   updateTime: StringExpression
   updateUserId: StringExpression
   version: IntExpression
@@ -1336,15 +1082,15 @@ input PermissionMutationTypeArguments {
   createTime: Timestamp
   createUserId: String
   description: String
-  id: ID
+  field: String
   isDeprecated: Boolean
-  level: PermissionLevel
-  name: String
+  name: ID
+  permissionType: PermissionType
   realm: RealmInput
   realmId: Int
-  role: RoleInput
-  roleId: Int
-  type: PermissionType
+  rolePermission: [RolePermissionInput]
+  roles: [RoleInput]
+  type: String
   updateTime: Timestamp
   updateUserId: String
   version: Int
@@ -1356,12 +1102,11 @@ input PermissionOrderBy {
   createTime: Sort
   createUserId: Sort
   description: Sort
-  id: Sort
+  field: Sort
   isDeprecated: Sort
-  level: Sort
   name: Sort
+  permissionType: Sort
   realmId: Sort
-  roleId: Sort
   type: Sort
   updateTime: Sort
   updateUserId: Sort
@@ -1375,15 +1120,36 @@ input PermissionQueryTypeArguments {
   createUserId: StringExpression
   description: StringExpression
   exs: [PermissionExpression]
-  id: StringExpression
+  field: StringExpression
   includeDeprecated: Boolean = false
-  level: PermissionLevelExpression
   name: StringExpression
+  permissionType: PermissionTypeExpression
   realm: RealmExpression
   realmId: IntExpression
-  role: RoleExpression
-  roleId: IntExpression
-  type: PermissionTypeExpression
+  rolePermission: RolePermissionExpression
+  roles: RoleExpression
+  type: StringExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  version: IntExpression
+}
+
+input PermissionSubscriptionTypeArguments {
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  description: StringExpression
+  exs: [PermissionExpression]
+  field: StringExpression
+  includeDeprecated: Boolean = false
+  name: StringExpression
+  permissionType: PermissionTypeExpression
+  realm: RealmExpression
+  realmId: IntExpression
+  rolePermission: RolePermissionExpression
+  roles: RoleExpression
+  type: StringExpression
   updateTime: StringExpression
   updateUserId: StringExpression
   version: IntExpression
@@ -1420,42 +1186,34 @@ input ProtocolExpression {
 }
 
 type QueryType implements Meta {
-  api(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [ApiExpression], id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, realm: RealmExpression, realmId: IntExpression, role: RoleExpression, roleId: IntExpression, type: ApiTypeExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Api
-  apiConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [ApiExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: ApiOrderBy, realm: RealmExpression, realmId: IntExpression, role: RoleExpression, roleId: IntExpression, type: ApiTypeExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): ApiConnection
-  apiList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [ApiExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: ApiOrderBy, realm: RealmExpression, realmId: IntExpression, role: RoleExpression, roleId: IntExpression, type: ApiTypeExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [Api]
   createGroupId: String
   createTime: Timestamp
   createUserId: String
   current: CurrentUser
-  group(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [GroupExpression], groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, parent: GroupExpression, parentId: IntExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): Group
-  groupConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [GroupExpression], first: Int, groupBy: [String!], groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: IntExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): GroupConnection
-  groupList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [GroupExpression], first: Int, groupBy: [String!], groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: IntExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): [Group]
+  currentPermissionList: [String]
+  group(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, deep: IntExpression, exs: [GroupExpression], groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, parent: GroupExpression, parentId: IntExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): Group
+  groupConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, deep: IntExpression, exs: [GroupExpression], first: Int, groupBy: [String!], groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: IntExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): GroupConnection
+  groupList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, deep: IntExpression, exs: [GroupExpression], first: Int, groupBy: [String!], groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: IntExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): [Group]
   groupRole(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [GroupRoleExpression], from: GroupExpression, groupId: IntExpression, id: StringExpression, includeDeprecated: Boolean = false, realmId: IntExpression, roleId: IntExpression, to: RoleExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): GroupRole
   groupRoleConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [GroupRoleExpression], first: Int, from: GroupExpression, groupBy: [String!], groupId: IntExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: GroupRoleOrderBy, realmId: IntExpression, roleId: IntExpression, to: RoleExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): GroupRoleConnection
   groupRoleList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [GroupRoleExpression], first: Int, from: GroupExpression, groupBy: [String!], groupId: IntExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: GroupRoleOrderBy, realmId: IntExpression, roleId: IntExpression, to: RoleExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [GroupRole]
   isDeprecated: Boolean
-  menu(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [MenuExpression], folder: MenuExpression, icon: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, parentId: IntExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, role: RoleExpression, roleId: IntExpression, type: MenuTypeExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Menu
-  menuConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [MenuExpression], first: Int, folder: MenuExpression, groupBy: [String!], icon: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: MenuOrderBy, parentId: IntExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, role: RoleExpression, roleId: IntExpression, type: MenuTypeExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): MenuConnection
-  menuList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [MenuExpression], first: Int, folder: MenuExpression, groupBy: [String!], icon: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: MenuOrderBy, parentId: IntExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, role: RoleExpression, roleId: IntExpression, type: MenuTypeExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [Menu]
-  permission(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [PermissionExpression], id: StringExpression, includeDeprecated: Boolean = false, level: PermissionLevelExpression, name: StringExpression, realm: RealmExpression, realmId: IntExpression, role: RoleExpression, roleId: IntExpression, type: PermissionTypeExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Permission
-  permissionConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [PermissionExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, level: PermissionLevelExpression, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, realm: RealmExpression, realmId: IntExpression, role: RoleExpression, roleId: IntExpression, type: PermissionTypeExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): PermissionConnection
-  permissionList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [PermissionExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, level: PermissionLevelExpression, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, realm: RealmExpression, realmId: IntExpression, role: RoleExpression, roleId: IntExpression, type: PermissionTypeExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [Permission]
+  permission(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [PermissionExpression], field: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissionType: PermissionTypeExpression, realm: RealmExpression, realmId: IntExpression, rolePermission: RolePermissionExpression, roles: RoleExpression, type: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Permission
+  permissionConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [PermissionExpression], field: StringExpression, first: Int, groupBy: [String!], includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, permissionType: PermissionTypeExpression, realm: RealmExpression, realmId: IntExpression, rolePermission: RolePermissionExpression, roles: RoleExpression, type: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): PermissionConnection
+  permissionList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [PermissionExpression], field: StringExpression, first: Int, groupBy: [String!], includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, permissionType: PermissionTypeExpression, realm: RealmExpression, realmId: IntExpression, rolePermission: RolePermissionExpression, roles: RoleExpression, type: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [Permission]
   realm(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RealmExpression], id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Realm
   realmConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RealmExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RealmOrderBy, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): RealmConnection
   realmId: Int
   realmList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RealmExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RealmOrderBy, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [Realm]
-  role(apis: ApiExpression, composites: RoleExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [RoleExpression], id: StringExpression, includeDeprecated: Boolean = false, menus: MenuExpression, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleApi: RoleApiExpression, roleComposite: RoleCompositeExpression, roleMenu: RoleMenuExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
-  roleApi(apiId: IntExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleApiExpression], from: RoleExpression, id: StringExpression, includeDeprecated: Boolean = false, realmId: IntExpression, roleId: IntExpression, to: ApiExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): RoleApi
-  roleApiConnection(after: ID, apiId: IntExpression, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleApiExpression], first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: RoleApiOrderBy, realmId: IntExpression, roleId: IntExpression, to: ApiExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): RoleApiConnection
-  roleApiList(after: ID, apiId: IntExpression, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleApiExpression], first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: RoleApiOrderBy, realmId: IntExpression, roleId: IntExpression, to: ApiExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [RoleApi]
+  role(composites: RoleExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [RoleExpression], id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
   roleComposite(compositeId: IntExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleCompositeExpression], from: RoleExpression, id: StringExpression, includeDeprecated: Boolean = false, realmId: IntExpression, roleId: IntExpression, to: RoleExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): RoleComposite
   roleCompositeConnection(after: ID, before: ID, compositeId: IntExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleCompositeExpression], first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: RoleCompositeOrderBy, realmId: IntExpression, roleId: IntExpression, to: RoleExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): RoleCompositeConnection
   roleCompositeList(after: ID, before: ID, compositeId: IntExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleCompositeExpression], first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: RoleCompositeOrderBy, realmId: IntExpression, roleId: IntExpression, to: RoleExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [RoleComposite]
-  roleConnection(after: ID, apis: ApiExpression, before: ID, composites: RoleExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [RoleExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, menus: MenuExpression, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleApi: RoleApiExpression, roleComposite: RoleCompositeExpression, roleMenu: RoleMenuExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): RoleConnection
-  roleList(after: ID, apis: ApiExpression, before: ID, composites: RoleExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [RoleExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, menus: MenuExpression, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleApi: RoleApiExpression, roleComposite: RoleCompositeExpression, roleMenu: RoleMenuExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): [Role]
-  roleMenu(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleMenuExpression], from: RoleExpression, id: StringExpression, includeDeprecated: Boolean = false, menuId: IntExpression, realmId: IntExpression, roleId: IntExpression, to: MenuExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): RoleMenu
-  roleMenuConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleMenuExpression], first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, menuId: IntExpression, offset: Int, orderBy: RoleMenuOrderBy, realmId: IntExpression, roleId: IntExpression, to: MenuExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): RoleMenuConnection
-  roleMenuList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleMenuExpression], first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, menuId: IntExpression, offset: Int, orderBy: RoleMenuOrderBy, realmId: IntExpression, roleId: IntExpression, to: MenuExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [RoleMenu]
+  roleConnection(after: ID, before: ID, composites: RoleExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [RoleExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): RoleConnection
+  roleList(after: ID, before: ID, composites: RoleExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [RoleExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): [Role]
+  rolePermission(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RolePermissionExpression], from: RoleExpression, id: StringExpression, includeDeprecated: Boolean = false, permissionName: StringExpression, realmId: IntExpression, roleId: IntExpression, to: PermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): RolePermission
+  rolePermissionConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RolePermissionExpression], first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: RolePermissionOrderBy, permissionName: StringExpression, realmId: IntExpression, roleId: IntExpression, to: PermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): RolePermissionConnection
+  rolePermissionList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RolePermissionExpression], first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: RolePermissionOrderBy, permissionName: StringExpression, realmId: IntExpression, roleId: IntExpression, to: PermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [RolePermission]
   updateTime: Timestamp
   updateUserId: String
   user(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, disable: BooleanExpression, email: StringExpression, exs: [UserExpression], groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, lastName: StringExpression, login: StringExpression, name: StringExpression, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, userPhones: UserPhonesExpression, userRole: UserRoleExpression, version: IntExpression): User
@@ -1499,6 +1257,28 @@ type RealmConnection {
 }
 
 input RealmConnectionQueryTypeArguments {
+  after: ID
+  before: ID
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [RealmExpression]
+  first: Int
+  groupBy: [String!]
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  name: StringExpression
+  offset: Int
+  orderBy: RealmOrderBy
+  realmId: IntExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  version: IntExpression
+}
+
+input RealmConnectionSubscriptionTypeArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -1590,6 +1370,28 @@ input RealmListQueryTypeArguments {
   version: IntExpression
 }
 
+input RealmListSubscriptionTypeArguments {
+  after: ID
+  before: ID
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [RealmExpression]
+  first: Int
+  groupBy: [String!]
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  name: StringExpression
+  offset: Int
+  orderBy: RealmOrderBy
+  realmId: IntExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  version: IntExpression
+}
+
 input RealmMutationTypeArguments {
   createGroupId: String
   createTime: Timestamp
@@ -1632,13 +1434,25 @@ input RealmQueryTypeArguments {
   version: IntExpression
 }
 
+input RealmSubscriptionTypeArguments {
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [RealmExpression]
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  name: StringExpression
+  realmId: IntExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  version: IntExpression
+}
+
 type Role implements Meta {
-  apis(after: ID, before: ID, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: ApiOrderBy, realm: RealmExpression, role: RoleExpression, type: ApiTypeExpression): [Api]
-  apisAggregate(description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: ApiOrderBy, realm: RealmExpression, role: RoleExpression, type: ApiTypeExpression): Api
-  apisConnection(description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: ApiOrderBy, realm: RealmExpression, role: RoleExpression, type: ApiTypeExpression): ApiConnection
-  composites(after: ID, apis: ApiExpression, before: ID, composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, menus: MenuExpression, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, users: UserExpression): [Role]
-  compositesAggregate(apis: ApiExpression, composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, menus: MenuExpression, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, users: UserExpression): Role
-  compositesConnection(apis: ApiExpression, composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, menus: MenuExpression, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, users: UserExpression): RoleConnection
+  composites(after: ID, before: ID, composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, users: UserExpression): [Role]
+  compositesAggregate(composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, users: UserExpression): Role
+  compositesConnection(composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, users: UserExpression): RoleConnection
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -1651,16 +1465,13 @@ type Role implements Meta {
   idMax: Int
   idMin: Int
   isDeprecated: Boolean
-  menus(after: ID, before: ID, description: StringExpression, first: Int, folder: MenuExpression, groupBy: [String!], icon: StringExpression, id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: MenuOrderBy, path: StringExpression, realm: RealmExpression, role: RoleExpression, type: MenuTypeExpression): [Menu]
-  menusAggregate(description: StringExpression, first: Int, folder: MenuExpression, groupBy: [String!], icon: StringExpression, id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: MenuOrderBy, path: StringExpression, realm: RealmExpression, role: RoleExpression, type: MenuTypeExpression): Menu
-  menusConnection(description: StringExpression, first: Int, folder: MenuExpression, groupBy: [String!], icon: StringExpression, id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: MenuOrderBy, path: StringExpression, realm: RealmExpression, role: RoleExpression, type: MenuTypeExpression): MenuConnection
   name: String!
   nameCount: Int
   nameMax: String
   nameMin: String
-  permissions(after: ID, before: ID, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, level: PermissionLevelExpression, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, realm: RealmExpression, role: RoleExpression, type: PermissionTypeExpression): [Permission]
-  permissionsAggregate(description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, level: PermissionLevelExpression, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, realm: RealmExpression, role: RoleExpression, type: PermissionTypeExpression): Permission
-  permissionsConnection(description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, level: PermissionLevelExpression, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, realm: RealmExpression, role: RoleExpression, type: PermissionTypeExpression): PermissionConnection
+  permissions(after: ID, before: ID, description: StringExpression, field: StringExpression, first: Int, groupBy: [String!], last: Int, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, permissionType: PermissionTypeExpression, realm: RealmExpression, roles: RoleExpression, type: StringExpression): [Permission]
+  permissionsAggregate(description: StringExpression, field: StringExpression, first: Int, groupBy: [String!], last: Int, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, permissionType: PermissionTypeExpression, realm: RealmExpression, roles: RoleExpression, type: StringExpression): Permission
+  permissionsConnection(description: StringExpression, field: StringExpression, first: Int, groupBy: [String!], last: Int, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, permissionType: PermissionTypeExpression, realm: RealmExpression, roles: RoleExpression, type: StringExpression): PermissionConnection
   realm(id: StringExpression, name: StringExpression): Realm
   realmId: Int
   realmIdAvg: Int
@@ -1668,15 +1479,12 @@ type Role implements Meta {
   realmIdMax: Int
   realmIdMin: Int
   realmIdSum: Int
-  roleApi: [RoleApi]
-  roleApiAggregate(apiId: IntExpression, first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, last: Int, offset: Int, orderBy: RoleApiOrderBy, roleId: IntExpression, to: ApiExpression): RoleApi
-  roleApiConnection(apiId: IntExpression, first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, last: Int, offset: Int, orderBy: RoleApiOrderBy, roleId: IntExpression, to: ApiExpression): RoleApiConnection
   roleComposite: [RoleComposite]
   roleCompositeAggregate(compositeId: IntExpression, first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, last: Int, offset: Int, orderBy: RoleCompositeOrderBy, roleId: IntExpression, to: RoleExpression): RoleComposite
   roleCompositeConnection(compositeId: IntExpression, first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, last: Int, offset: Int, orderBy: RoleCompositeOrderBy, roleId: IntExpression, to: RoleExpression): RoleCompositeConnection
-  roleMenu: [RoleMenu]
-  roleMenuAggregate(first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, last: Int, menuId: IntExpression, offset: Int, orderBy: RoleMenuOrderBy, roleId: IntExpression, to: MenuExpression): RoleMenu
-  roleMenuConnection(first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, last: Int, menuId: IntExpression, offset: Int, orderBy: RoleMenuOrderBy, roleId: IntExpression, to: MenuExpression): RoleMenuConnection
+  rolePermission: [RolePermission]
+  rolePermissionAggregate(first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, last: Int, offset: Int, orderBy: RolePermissionOrderBy, permissionName: StringExpression, roleId: IntExpression, to: PermissionExpression): RolePermission
+  rolePermissionConnection(first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, last: Int, offset: Int, orderBy: RolePermissionOrderBy, permissionName: StringExpression, roleId: IntExpression, to: PermissionExpression): RolePermissionConnection
   updateTime: Timestamp
   updateUserId: String
   userRole: [UserRole]
@@ -1686,197 +1494,6 @@ type Role implements Meta {
   usersAggregate(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, disable: BooleanExpression, email: StringExpression, first: Int, groupBy: [String!], groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, userPhones: UserPhonesExpression, userRole: UserRoleExpression, version: IntExpression): User
   usersConnection(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, disable: BooleanExpression, email: StringExpression, first: Int, groupBy: [String!], groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, userPhones: UserPhonesExpression, userRole: UserRoleExpression, version: IntExpression): UserConnection
   version: Int
-}
-
-type RoleApi implements Meta {
-  apiId: Int
-  apiIdAvg: Int
-  apiIdCount: Int
-  apiIdMax: Int
-  apiIdMin: Int
-  apiIdSum: Int
-  createGroupId: String
-  createTime: Timestamp
-  createUserId: String
-  from(apis: ApiExpression, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, menus: MenuExpression, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleApi: RoleApiExpression, roleComposite: RoleCompositeExpression, roleMenu: RoleMenuExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
-  id: ID
-  idCount: Int
-  idMax: Int
-  idMin: Int
-  isDeprecated: Boolean
-  realmId: Int
-  roleId: Int
-  roleIdAvg: Int
-  roleIdCount: Int
-  roleIdMax: Int
-  roleIdMin: Int
-  roleIdSum: Int
-  to(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, realm: RealmExpression, realmId: IntExpression, role: RoleExpression, roleId: IntExpression, type: ApiTypeExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Api
-  updateTime: Timestamp
-  updateUserId: String
-  version: Int
-}
-
-type RoleApiConnection {
-  edges: [RoleApiEdge]
-  pageInfo: PageInfo
-  totalCount: Int
-}
-
-input RoleApiConnectionQueryTypeArguments {
-  after: ID
-  apiId: IntExpression
-  before: ID
-  cond: Conditional = AND
-  createGroupId: StringExpression
-  createTime: StringExpression
-  createUserId: StringExpression
-  exs: [RoleApiExpression]
-  first: Int
-  from: RoleExpression
-  groupBy: [String!]
-  id: StringExpression
-  includeDeprecated: Boolean = false
-  last: Int
-  offset: Int
-  orderBy: RoleApiOrderBy
-  realmId: IntExpression
-  roleId: IntExpression
-  to: ApiExpression
-  updateTime: StringExpression
-  updateUserId: StringExpression
-  version: IntExpression
-}
-
-type RoleApiEdge {
-  cursor: ID
-  node: RoleApi
-}
-
-input RoleApiExpression {
-  apiId: IntExpression
-  cond: Conditional = AND
-  createGroupId: StringExpression
-  createTime: StringExpression
-  createUserId: StringExpression
-  exs: [RoleApiExpression]
-  from: RoleExpression
-  id: StringExpression
-  includeDeprecated: Boolean = false
-  realmId: IntExpression
-  roleId: IntExpression
-  to: ApiExpression
-  updateTime: StringExpression
-  updateUserId: StringExpression
-  version: IntExpression
-}
-
-input RoleApiInput {
-  apiId: Int
-  createGroupId: String
-  createTime: Timestamp
-  createUserId: String
-  from: RoleInput
-  id: ID
-  isDeprecated: Boolean
-  realmId: Int
-  roleId: Int
-  to: ApiInput
-  updateTime: Timestamp
-  updateUserId: String
-  version: Int
-}
-
-input RoleApiListMutationTypeArguments {
-  apiId: Int
-  createGroupId: String
-  createTime: Timestamp
-  createUserId: String
-  from: RoleInput
-  id: ID
-  isDeprecated: Boolean
-  list: [RoleApiInput]
-  realmId: Int
-  roleId: Int
-  to: ApiInput
-  updateTime: Timestamp
-  updateUserId: String
-  version: Int
-  where: RoleApiExpression
-}
-
-input RoleApiListQueryTypeArguments {
-  after: ID
-  apiId: IntExpression
-  before: ID
-  cond: Conditional = AND
-  createGroupId: StringExpression
-  createTime: StringExpression
-  createUserId: StringExpression
-  exs: [RoleApiExpression]
-  first: Int
-  from: RoleExpression
-  groupBy: [String!]
-  id: StringExpression
-  includeDeprecated: Boolean = false
-  last: Int
-  offset: Int
-  orderBy: RoleApiOrderBy
-  realmId: IntExpression
-  roleId: IntExpression
-  to: ApiExpression
-  updateTime: StringExpression
-  updateUserId: StringExpression
-  version: IntExpression
-}
-
-input RoleApiMutationTypeArguments {
-  apiId: Int
-  createGroupId: String
-  createTime: Timestamp
-  createUserId: String
-  from: RoleInput
-  id: ID
-  isDeprecated: Boolean
-  realmId: Int
-  roleId: Int
-  to: ApiInput
-  updateTime: Timestamp
-  updateUserId: String
-  version: Int
-  where: RoleApiExpression
-}
-
-input RoleApiOrderBy {
-  apiId: Sort
-  createGroupId: Sort
-  createTime: Sort
-  createUserId: Sort
-  id: Sort
-  isDeprecated: Sort
-  realmId: Sort
-  roleId: Sort
-  updateTime: Sort
-  updateUserId: Sort
-  version: Sort
-}
-
-input RoleApiQueryTypeArguments {
-  apiId: IntExpression
-  cond: Conditional = AND
-  createGroupId: StringExpression
-  createTime: StringExpression
-  createUserId: StringExpression
-  exs: [RoleApiExpression]
-  from: RoleExpression
-  id: StringExpression
-  includeDeprecated: Boolean = false
-  realmId: IntExpression
-  roleId: IntExpression
-  to: ApiExpression
-  updateTime: StringExpression
-  updateUserId: StringExpression
-  version: IntExpression
 }
 
 type RoleComposite implements Meta {
@@ -1889,7 +1506,7 @@ type RoleComposite implements Meta {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
-  from(apis: ApiExpression, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, menus: MenuExpression, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleApi: RoleApiExpression, roleComposite: RoleCompositeExpression, roleMenu: RoleMenuExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
+  from(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
   id: ID
   idCount: Int
   idMax: Int
@@ -1902,7 +1519,7 @@ type RoleComposite implements Meta {
   roleIdMax: Int
   roleIdMin: Int
   roleIdSum: Int
-  to(apis: ApiExpression, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, menus: MenuExpression, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleApi: RoleApiExpression, roleComposite: RoleCompositeExpression, roleMenu: RoleMenuExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
+  to(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
   updateTime: Timestamp
   updateUserId: String
   version: Int
@@ -1915,6 +1532,31 @@ type RoleCompositeConnection {
 }
 
 input RoleCompositeConnectionQueryTypeArguments {
+  after: ID
+  before: ID
+  compositeId: IntExpression
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [RoleCompositeExpression]
+  first: Int
+  from: RoleExpression
+  groupBy: [String!]
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  offset: Int
+  orderBy: RoleCompositeOrderBy
+  realmId: IntExpression
+  roleId: IntExpression
+  to: RoleExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  version: IntExpression
+}
+
+input RoleCompositeConnectionSubscriptionTypeArguments {
   after: ID
   before: ID
   compositeId: IntExpression
@@ -2021,6 +1663,31 @@ input RoleCompositeListQueryTypeArguments {
   version: IntExpression
 }
 
+input RoleCompositeListSubscriptionTypeArguments {
+  after: ID
+  before: ID
+  compositeId: IntExpression
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [RoleCompositeExpression]
+  first: Int
+  from: RoleExpression
+  groupBy: [String!]
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  offset: Int
+  orderBy: RoleCompositeOrderBy
+  realmId: IntExpression
+  roleId: IntExpression
+  to: RoleExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  version: IntExpression
+}
+
 input RoleCompositeMutationTypeArguments {
   compositeId: Int
   createGroupId: String
@@ -2070,6 +1737,24 @@ input RoleCompositeQueryTypeArguments {
   version: IntExpression
 }
 
+input RoleCompositeSubscriptionTypeArguments {
+  compositeId: IntExpression
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [RoleCompositeExpression]
+  from: RoleExpression
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  realmId: IntExpression
+  roleId: IntExpression
+  to: RoleExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  version: IntExpression
+}
+
 type RoleConnection {
   edges: [RoleEdge]
   pageInfo: PageInfo
@@ -2078,7 +1763,6 @@ type RoleConnection {
 
 input RoleConnectionQueryTypeArguments {
   after: ID
-  apis: ApiExpression
   before: ID
   composites: RoleExpression
   cond: Conditional = AND
@@ -2092,16 +1776,44 @@ input RoleConnectionQueryTypeArguments {
   id: StringExpression
   includeDeprecated: Boolean = false
   last: Int
-  menus: MenuExpression
   name: StringExpression
   offset: Int
   orderBy: RoleOrderBy
   permissions: PermissionExpression
   realm: RealmExpression
   realmId: IntExpression
-  roleApi: RoleApiExpression
   roleComposite: RoleCompositeExpression
-  roleMenu: RoleMenuExpression
+  rolePermission: RolePermissionExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  userRole: UserRoleExpression
+  users: UserExpression
+  version: IntExpression
+}
+
+input RoleConnectionSubscriptionTypeArguments {
+  after: ID
+  before: ID
+  composites: RoleExpression
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  description: StringExpression
+  exs: [RoleExpression]
+  first: Int
+  groupBy: [String!]
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  name: StringExpression
+  offset: Int
+  orderBy: RoleOrderBy
+  permissions: PermissionExpression
+  realm: RealmExpression
+  realmId: IntExpression
+  roleComposite: RoleCompositeExpression
+  rolePermission: RolePermissionExpression
   updateTime: StringExpression
   updateUserId: StringExpression
   userRole: UserRoleExpression
@@ -2115,7 +1827,6 @@ type RoleEdge {
 }
 
 input RoleExpression {
-  apis: ApiExpression
   composites: RoleExpression
   cond: Conditional = AND
   createGroupId: StringExpression
@@ -2125,14 +1836,12 @@ input RoleExpression {
   exs: [RoleExpression]
   id: StringExpression
   includeDeprecated: Boolean = false
-  menus: MenuExpression
   name: StringExpression
   permissions: PermissionExpression
   realm: RealmExpression
   realmId: IntExpression
-  roleApi: RoleApiExpression
   roleComposite: RoleCompositeExpression
-  roleMenu: RoleMenuExpression
+  rolePermission: RolePermissionExpression
   updateTime: StringExpression
   updateUserId: StringExpression
   userRole: UserRoleExpression
@@ -2141,7 +1850,6 @@ input RoleExpression {
 }
 
 input RoleInput {
-  apis: [ApiInput]
   composites: [RoleInput]
   createGroupId: String
   createTime: Timestamp
@@ -2149,14 +1857,12 @@ input RoleInput {
   description: String
   id: ID
   isDeprecated: Boolean
-  menus: [MenuInput]
   name: String!
   permissions: [PermissionInput]
   realm: RealmInput
   realmId: Int
-  roleApi: [RoleApiInput]
   roleComposite: [RoleCompositeInput]
-  roleMenu: [RoleMenuInput]
+  rolePermission: [RolePermissionInput]
   updateTime: Timestamp
   updateUserId: String
   userRole: [UserRoleInput]
@@ -2165,7 +1871,6 @@ input RoleInput {
 }
 
 input RoleListMutationTypeArguments {
-  apis: [ApiInput]
   composites: [RoleInput]
   createGroupId: String
   createTime: Timestamp
@@ -2174,14 +1879,12 @@ input RoleListMutationTypeArguments {
   id: ID
   isDeprecated: Boolean
   list: [RoleInput]
-  menus: [MenuInput]
   name: String
   permissions: [PermissionInput]
   realm: RealmInput
   realmId: Int
-  roleApi: [RoleApiInput]
   roleComposite: [RoleCompositeInput]
-  roleMenu: [RoleMenuInput]
+  rolePermission: [RolePermissionInput]
   updateTime: Timestamp
   updateUserId: String
   userRole: [UserRoleInput]
@@ -2192,7 +1895,6 @@ input RoleListMutationTypeArguments {
 
 input RoleListQueryTypeArguments {
   after: ID
-  apis: ApiExpression
   before: ID
   composites: RoleExpression
   cond: Conditional = AND
@@ -2206,16 +1908,14 @@ input RoleListQueryTypeArguments {
   id: StringExpression
   includeDeprecated: Boolean = false
   last: Int
-  menus: MenuExpression
   name: StringExpression
   offset: Int
   orderBy: RoleOrderBy
   permissions: PermissionExpression
   realm: RealmExpression
   realmId: IntExpression
-  roleApi: RoleApiExpression
   roleComposite: RoleCompositeExpression
-  roleMenu: RoleMenuExpression
+  rolePermission: RolePermissionExpression
   updateTime: StringExpression
   updateUserId: StringExpression
   userRole: UserRoleExpression
@@ -2223,199 +1923,37 @@ input RoleListQueryTypeArguments {
   version: IntExpression
 }
 
-type RoleMenu implements Meta {
-  createGroupId: String
-  createTime: Timestamp
-  createUserId: String
-  from(apis: ApiExpression, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, menus: MenuExpression, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleApi: RoleApiExpression, roleComposite: RoleCompositeExpression, roleMenu: RoleMenuExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
-  id: ID
-  idCount: Int
-  idMax: Int
-  idMin: Int
-  isDeprecated: Boolean
-  menuId: Int
-  menuIdAvg: Int
-  menuIdCount: Int
-  menuIdMax: Int
-  menuIdMin: Int
-  menuIdSum: Int
-  realmId: Int
-  roleId: Int
-  roleIdAvg: Int
-  roleIdCount: Int
-  roleIdMax: Int
-  roleIdMin: Int
-  roleIdSum: Int
-  to(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, folder: MenuExpression, icon: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, parentId: IntExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, role: RoleExpression, roleId: IntExpression, type: MenuTypeExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Menu
-  updateTime: Timestamp
-  updateUserId: String
-  version: Int
-}
-
-type RoleMenuConnection {
-  edges: [RoleMenuEdge]
-  pageInfo: PageInfo
-  totalCount: Int
-}
-
-input RoleMenuConnectionQueryTypeArguments {
+input RoleListSubscriptionTypeArguments {
   after: ID
   before: ID
+  composites: RoleExpression
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
   createUserId: StringExpression
-  exs: [RoleMenuExpression]
+  description: StringExpression
+  exs: [RoleExpression]
   first: Int
-  from: RoleExpression
   groupBy: [String!]
   id: StringExpression
   includeDeprecated: Boolean = false
   last: Int
-  menuId: IntExpression
+  name: StringExpression
   offset: Int
-  orderBy: RoleMenuOrderBy
+  orderBy: RoleOrderBy
+  permissions: PermissionExpression
+  realm: RealmExpression
   realmId: IntExpression
-  roleId: IntExpression
-  to: MenuExpression
+  roleComposite: RoleCompositeExpression
+  rolePermission: RolePermissionExpression
   updateTime: StringExpression
   updateUserId: StringExpression
-  version: IntExpression
-}
-
-type RoleMenuEdge {
-  cursor: ID
-  node: RoleMenu
-}
-
-input RoleMenuExpression {
-  cond: Conditional = AND
-  createGroupId: StringExpression
-  createTime: StringExpression
-  createUserId: StringExpression
-  exs: [RoleMenuExpression]
-  from: RoleExpression
-  id: StringExpression
-  includeDeprecated: Boolean = false
-  menuId: IntExpression
-  realmId: IntExpression
-  roleId: IntExpression
-  to: MenuExpression
-  updateTime: StringExpression
-  updateUserId: StringExpression
-  version: IntExpression
-}
-
-input RoleMenuInput {
-  createGroupId: String
-  createTime: Timestamp
-  createUserId: String
-  from: RoleInput
-  id: ID
-  isDeprecated: Boolean
-  menuId: Int
-  realmId: Int
-  roleId: Int
-  to: MenuInput
-  updateTime: Timestamp
-  updateUserId: String
-  version: Int
-}
-
-input RoleMenuListMutationTypeArguments {
-  createGroupId: String
-  createTime: Timestamp
-  createUserId: String
-  from: RoleInput
-  id: ID
-  isDeprecated: Boolean
-  list: [RoleMenuInput]
-  menuId: Int
-  realmId: Int
-  roleId: Int
-  to: MenuInput
-  updateTime: Timestamp
-  updateUserId: String
-  version: Int
-  where: RoleMenuExpression
-}
-
-input RoleMenuListQueryTypeArguments {
-  after: ID
-  before: ID
-  cond: Conditional = AND
-  createGroupId: StringExpression
-  createTime: StringExpression
-  createUserId: StringExpression
-  exs: [RoleMenuExpression]
-  first: Int
-  from: RoleExpression
-  groupBy: [String!]
-  id: StringExpression
-  includeDeprecated: Boolean = false
-  last: Int
-  menuId: IntExpression
-  offset: Int
-  orderBy: RoleMenuOrderBy
-  realmId: IntExpression
-  roleId: IntExpression
-  to: MenuExpression
-  updateTime: StringExpression
-  updateUserId: StringExpression
-  version: IntExpression
-}
-
-input RoleMenuMutationTypeArguments {
-  createGroupId: String
-  createTime: Timestamp
-  createUserId: String
-  from: RoleInput
-  id: ID
-  isDeprecated: Boolean
-  menuId: Int
-  realmId: Int
-  roleId: Int
-  to: MenuInput
-  updateTime: Timestamp
-  updateUserId: String
-  version: Int
-  where: RoleMenuExpression
-}
-
-input RoleMenuOrderBy {
-  createGroupId: Sort
-  createTime: Sort
-  createUserId: Sort
-  id: Sort
-  isDeprecated: Sort
-  menuId: Sort
-  realmId: Sort
-  roleId: Sort
-  updateTime: Sort
-  updateUserId: Sort
-  version: Sort
-}
-
-input RoleMenuQueryTypeArguments {
-  cond: Conditional = AND
-  createGroupId: StringExpression
-  createTime: StringExpression
-  createUserId: StringExpression
-  exs: [RoleMenuExpression]
-  from: RoleExpression
-  id: StringExpression
-  includeDeprecated: Boolean = false
-  menuId: IntExpression
-  realmId: IntExpression
-  roleId: IntExpression
-  to: MenuExpression
-  updateTime: StringExpression
-  updateUserId: StringExpression
+  userRole: UserRoleExpression
+  users: UserExpression
   version: IntExpression
 }
 
 input RoleMutationTypeArguments {
-  apis: [ApiInput]
   composites: [RoleInput]
   createGroupId: String
   createTime: Timestamp
@@ -2423,14 +1961,12 @@ input RoleMutationTypeArguments {
   description: String
   id: ID
   isDeprecated: Boolean
-  menus: [MenuInput]
   name: String
   permissions: [PermissionInput]
   realm: RealmInput
   realmId: Int
-  roleApi: [RoleApiInput]
   roleComposite: [RoleCompositeInput]
-  roleMenu: [RoleMenuInput]
+  rolePermission: [RolePermissionInput]
   updateTime: Timestamp
   updateUserId: String
   userRole: [UserRoleInput]
@@ -2453,8 +1989,264 @@ input RoleOrderBy {
   version: Sort
 }
 
+type RolePermission implements Meta {
+  createGroupId: String
+  createTime: Timestamp
+  createUserId: String
+  from(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
+  id: ID
+  idCount: Int
+  idMax: Int
+  idMin: Int
+  isDeprecated: Boolean
+  permissionName: String
+  permissionNameCount: Int
+  permissionNameMax: String
+  permissionNameMin: String
+  realmId: Int
+  roleId: Int
+  roleIdAvg: Int
+  roleIdCount: Int
+  roleIdMax: Int
+  roleIdMin: Int
+  roleIdSum: Int
+  to(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, field: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissionType: PermissionTypeExpression, realm: RealmExpression, realmId: IntExpression, rolePermission: RolePermissionExpression, roles: RoleExpression, type: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Permission
+  updateTime: Timestamp
+  updateUserId: String
+  version: Int
+}
+
+type RolePermissionConnection {
+  edges: [RolePermissionEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+input RolePermissionConnectionQueryTypeArguments {
+  after: ID
+  before: ID
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [RolePermissionExpression]
+  first: Int
+  from: RoleExpression
+  groupBy: [String!]
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  offset: Int
+  orderBy: RolePermissionOrderBy
+  permissionName: StringExpression
+  realmId: IntExpression
+  roleId: IntExpression
+  to: PermissionExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  version: IntExpression
+}
+
+input RolePermissionConnectionSubscriptionTypeArguments {
+  after: ID
+  before: ID
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [RolePermissionExpression]
+  first: Int
+  from: RoleExpression
+  groupBy: [String!]
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  offset: Int
+  orderBy: RolePermissionOrderBy
+  permissionName: StringExpression
+  realmId: IntExpression
+  roleId: IntExpression
+  to: PermissionExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  version: IntExpression
+}
+
+type RolePermissionEdge {
+  cursor: ID
+  node: RolePermission
+}
+
+input RolePermissionExpression {
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [RolePermissionExpression]
+  from: RoleExpression
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  permissionName: StringExpression
+  realmId: IntExpression
+  roleId: IntExpression
+  to: PermissionExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  version: IntExpression
+}
+
+input RolePermissionInput {
+  createGroupId: String
+  createTime: Timestamp
+  createUserId: String
+  from: RoleInput
+  id: ID
+  isDeprecated: Boolean
+  permissionName: String
+  realmId: Int
+  roleId: Int
+  to: PermissionInput
+  updateTime: Timestamp
+  updateUserId: String
+  version: Int
+}
+
+input RolePermissionListMutationTypeArguments {
+  createGroupId: String
+  createTime: Timestamp
+  createUserId: String
+  from: RoleInput
+  id: ID
+  isDeprecated: Boolean
+  list: [RolePermissionInput]
+  permissionName: String
+  realmId: Int
+  roleId: Int
+  to: PermissionInput
+  updateTime: Timestamp
+  updateUserId: String
+  version: Int
+  where: RolePermissionExpression
+}
+
+input RolePermissionListQueryTypeArguments {
+  after: ID
+  before: ID
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [RolePermissionExpression]
+  first: Int
+  from: RoleExpression
+  groupBy: [String!]
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  offset: Int
+  orderBy: RolePermissionOrderBy
+  permissionName: StringExpression
+  realmId: IntExpression
+  roleId: IntExpression
+  to: PermissionExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  version: IntExpression
+}
+
+input RolePermissionListSubscriptionTypeArguments {
+  after: ID
+  before: ID
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [RolePermissionExpression]
+  first: Int
+  from: RoleExpression
+  groupBy: [String!]
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  offset: Int
+  orderBy: RolePermissionOrderBy
+  permissionName: StringExpression
+  realmId: IntExpression
+  roleId: IntExpression
+  to: PermissionExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  version: IntExpression
+}
+
+input RolePermissionMutationTypeArguments {
+  createGroupId: String
+  createTime: Timestamp
+  createUserId: String
+  from: RoleInput
+  id: ID
+  isDeprecated: Boolean
+  permissionName: String
+  realmId: Int
+  roleId: Int
+  to: PermissionInput
+  updateTime: Timestamp
+  updateUserId: String
+  version: Int
+  where: RolePermissionExpression
+}
+
+input RolePermissionOrderBy {
+  createGroupId: Sort
+  createTime: Sort
+  createUserId: Sort
+  id: Sort
+  isDeprecated: Sort
+  permissionName: Sort
+  realmId: Sort
+  roleId: Sort
+  updateTime: Sort
+  updateUserId: Sort
+  version: Sort
+}
+
+input RolePermissionQueryTypeArguments {
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [RolePermissionExpression]
+  from: RoleExpression
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  permissionName: StringExpression
+  realmId: IntExpression
+  roleId: IntExpression
+  to: PermissionExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  version: IntExpression
+}
+
+input RolePermissionSubscriptionTypeArguments {
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [RolePermissionExpression]
+  from: RoleExpression
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  permissionName: StringExpression
+  realmId: IntExpression
+  roleId: IntExpression
+  to: PermissionExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  version: IntExpression
+}
+
 input RoleQueryTypeArguments {
-  apis: ApiExpression
   composites: RoleExpression
   cond: Conditional = AND
   createGroupId: StringExpression
@@ -2464,14 +2256,35 @@ input RoleQueryTypeArguments {
   exs: [RoleExpression]
   id: StringExpression
   includeDeprecated: Boolean = false
-  menus: MenuExpression
   name: StringExpression
   permissions: PermissionExpression
   realm: RealmExpression
   realmId: IntExpression
-  roleApi: RoleApiExpression
   roleComposite: RoleCompositeExpression
-  roleMenu: RoleMenuExpression
+  rolePermission: RolePermissionExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  userRole: UserRoleExpression
+  users: UserExpression
+  version: IntExpression
+}
+
+input RoleSubscriptionTypeArguments {
+  composites: RoleExpression
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  description: StringExpression
+  exs: [RoleExpression]
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  name: StringExpression
+  permissions: PermissionExpression
+  realm: RealmExpression
+  realmId: IntExpression
+  roleComposite: RoleCompositeExpression
+  rolePermission: RolePermissionExpression
   updateTime: StringExpression
   updateUserId: StringExpression
   userRole: UserRoleExpression
@@ -2498,41 +2311,32 @@ input StringExpression {
 }
 
 type SubscriptionType implements Meta {
-  api(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [ApiExpression], id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, realm: RealmExpression, realmId: IntExpression, role: RoleExpression, roleId: IntExpression, type: ApiTypeExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Api
-  apiConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [ApiExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: ApiOrderBy, realm: RealmExpression, realmId: IntExpression, role: RoleExpression, roleId: IntExpression, type: ApiTypeExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): ApiConnection
-  apiList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [ApiExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: ApiOrderBy, realm: RealmExpression, realmId: IntExpression, role: RoleExpression, roleId: IntExpression, type: ApiTypeExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [Api]
   createGroupId: String
   createTime: Timestamp
   createUserId: String
-  group(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [GroupExpression], groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, parent: GroupExpression, parentId: IntExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): Group
-  groupConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [GroupExpression], first: Int, groupBy: [String!], groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: IntExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): GroupConnection
-  groupList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [GroupExpression], first: Int, groupBy: [String!], groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: IntExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): [Group]
+  group(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, deep: IntExpression, exs: [GroupExpression], groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, parent: GroupExpression, parentId: IntExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): Group
+  groupConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, deep: IntExpression, exs: [GroupExpression], first: Int, groupBy: [String!], groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: IntExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): GroupConnection
+  groupList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, deep: IntExpression, exs: [GroupExpression], first: Int, groupBy: [String!], groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: IntExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): [Group]
   groupRole(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [GroupRoleExpression], from: GroupExpression, groupId: IntExpression, id: StringExpression, includeDeprecated: Boolean = false, realmId: IntExpression, roleId: IntExpression, to: RoleExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): GroupRole
   groupRoleConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [GroupRoleExpression], first: Int, from: GroupExpression, groupBy: [String!], groupId: IntExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: GroupRoleOrderBy, realmId: IntExpression, roleId: IntExpression, to: RoleExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): GroupRoleConnection
   groupRoleList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [GroupRoleExpression], first: Int, from: GroupExpression, groupBy: [String!], groupId: IntExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: GroupRoleOrderBy, realmId: IntExpression, roleId: IntExpression, to: RoleExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [GroupRole]
   isDeprecated: Boolean
-  menu(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [MenuExpression], folder: MenuExpression, icon: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, parentId: IntExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, role: RoleExpression, roleId: IntExpression, type: MenuTypeExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Menu
-  menuConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [MenuExpression], first: Int, folder: MenuExpression, groupBy: [String!], icon: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: MenuOrderBy, parentId: IntExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, role: RoleExpression, roleId: IntExpression, type: MenuTypeExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): MenuConnection
-  menuList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [MenuExpression], first: Int, folder: MenuExpression, groupBy: [String!], icon: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: MenuOrderBy, parentId: IntExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, role: RoleExpression, roleId: IntExpression, type: MenuTypeExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [Menu]
-  permission(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [PermissionExpression], id: StringExpression, includeDeprecated: Boolean = false, level: PermissionLevelExpression, name: StringExpression, realm: RealmExpression, realmId: IntExpression, role: RoleExpression, roleId: IntExpression, type: PermissionTypeExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Permission
-  permissionConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [PermissionExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, level: PermissionLevelExpression, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, realm: RealmExpression, realmId: IntExpression, role: RoleExpression, roleId: IntExpression, type: PermissionTypeExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): PermissionConnection
-  permissionList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [PermissionExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, level: PermissionLevelExpression, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, realm: RealmExpression, realmId: IntExpression, role: RoleExpression, roleId: IntExpression, type: PermissionTypeExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [Permission]
+  permission(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [PermissionExpression], field: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissionType: PermissionTypeExpression, realm: RealmExpression, realmId: IntExpression, rolePermission: RolePermissionExpression, roles: RoleExpression, type: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Permission
+  permissionConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [PermissionExpression], field: StringExpression, first: Int, groupBy: [String!], includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, permissionType: PermissionTypeExpression, realm: RealmExpression, realmId: IntExpression, rolePermission: RolePermissionExpression, roles: RoleExpression, type: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): PermissionConnection
+  permissionList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [PermissionExpression], field: StringExpression, first: Int, groupBy: [String!], includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, permissionType: PermissionTypeExpression, realm: RealmExpression, realmId: IntExpression, rolePermission: RolePermissionExpression, roles: RoleExpression, type: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [Permission]
   realm(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RealmExpression], id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Realm
   realmConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RealmExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RealmOrderBy, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): RealmConnection
   realmId: Int
   realmList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RealmExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RealmOrderBy, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [Realm]
-  role(apis: ApiExpression, composites: RoleExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [RoleExpression], id: StringExpression, includeDeprecated: Boolean = false, menus: MenuExpression, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleApi: RoleApiExpression, roleComposite: RoleCompositeExpression, roleMenu: RoleMenuExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
-  roleApi(apiId: IntExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleApiExpression], from: RoleExpression, id: StringExpression, includeDeprecated: Boolean = false, realmId: IntExpression, roleId: IntExpression, to: ApiExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): RoleApi
-  roleApiConnection(after: ID, apiId: IntExpression, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleApiExpression], first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: RoleApiOrderBy, realmId: IntExpression, roleId: IntExpression, to: ApiExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): RoleApiConnection
-  roleApiList(after: ID, apiId: IntExpression, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleApiExpression], first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: RoleApiOrderBy, realmId: IntExpression, roleId: IntExpression, to: ApiExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [RoleApi]
+  role(composites: RoleExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [RoleExpression], id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
   roleComposite(compositeId: IntExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleCompositeExpression], from: RoleExpression, id: StringExpression, includeDeprecated: Boolean = false, realmId: IntExpression, roleId: IntExpression, to: RoleExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): RoleComposite
   roleCompositeConnection(after: ID, before: ID, compositeId: IntExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleCompositeExpression], first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: RoleCompositeOrderBy, realmId: IntExpression, roleId: IntExpression, to: RoleExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): RoleCompositeConnection
   roleCompositeList(after: ID, before: ID, compositeId: IntExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleCompositeExpression], first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: RoleCompositeOrderBy, realmId: IntExpression, roleId: IntExpression, to: RoleExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [RoleComposite]
-  roleConnection(after: ID, apis: ApiExpression, before: ID, composites: RoleExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [RoleExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, menus: MenuExpression, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleApi: RoleApiExpression, roleComposite: RoleCompositeExpression, roleMenu: RoleMenuExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): RoleConnection
-  roleList(after: ID, apis: ApiExpression, before: ID, composites: RoleExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [RoleExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, menus: MenuExpression, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleApi: RoleApiExpression, roleComposite: RoleCompositeExpression, roleMenu: RoleMenuExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): [Role]
-  roleMenu(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleMenuExpression], from: RoleExpression, id: StringExpression, includeDeprecated: Boolean = false, menuId: IntExpression, realmId: IntExpression, roleId: IntExpression, to: MenuExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): RoleMenu
-  roleMenuConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleMenuExpression], first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, menuId: IntExpression, offset: Int, orderBy: RoleMenuOrderBy, realmId: IntExpression, roleId: IntExpression, to: MenuExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): RoleMenuConnection
-  roleMenuList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleMenuExpression], first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, menuId: IntExpression, offset: Int, orderBy: RoleMenuOrderBy, realmId: IntExpression, roleId: IntExpression, to: MenuExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [RoleMenu]
+  roleConnection(after: ID, before: ID, composites: RoleExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [RoleExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): RoleConnection
+  roleList(after: ID, before: ID, composites: RoleExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [RoleExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): [Role]
+  rolePermission(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RolePermissionExpression], from: RoleExpression, id: StringExpression, includeDeprecated: Boolean = false, permissionName: StringExpression, realmId: IntExpression, roleId: IntExpression, to: PermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): RolePermission
+  rolePermissionConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RolePermissionExpression], first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: RolePermissionOrderBy, permissionName: StringExpression, realmId: IntExpression, roleId: IntExpression, to: PermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): RolePermissionConnection
+  rolePermissionList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RolePermissionExpression], first: Int, from: RoleExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: RolePermissionOrderBy, permissionName: StringExpression, realmId: IntExpression, roleId: IntExpression, to: PermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [RolePermission]
   updateTime: Timestamp
   updateUserId: String
   user(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, disable: BooleanExpression, email: StringExpression, exs: [UserExpression], groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, lastName: StringExpression, login: StringExpression, name: StringExpression, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, userPhones: UserPhonesExpression, userRole: UserRoleExpression, version: IntExpression): User
@@ -2563,9 +2367,9 @@ type User implements Meta {
   emailCount: Int
   emailMax: String
   emailMin: String
-  groups(after: ID, before: ID, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): [Group]
-  groupsAggregate(first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): Group
-  groupsConnection(first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): GroupConnection
+  groups(after: ID, before: ID, deep: IntExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): [Group]
+  groupsAggregate(deep: IntExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): Group
+  groupsConnection(deep: IntExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): GroupConnection
   hash: String
   hashCount: Int
   hashMax: String
@@ -2595,9 +2399,9 @@ type User implements Meta {
   realmIdMax: Int
   realmIdMin: Int
   realmIdSum: Int
-  roles(after: ID, apis: ApiExpression, before: ID, composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, menus: MenuExpression, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, users: UserExpression): [Role]
-  rolesAggregate(apis: ApiExpression, composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, menus: MenuExpression, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, users: UserExpression): Role
-  rolesConnection(apis: ApiExpression, composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, menus: MenuExpression, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, users: UserExpression): RoleConnection
+  roles(after: ID, before: ID, composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, users: UserExpression): [Role]
+  rolesAggregate(composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, users: UserExpression): Role
+  rolesConnection(composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, users: UserExpression): RoleConnection
   salt: String
   saltCount: Int
   saltMax: String
@@ -2623,6 +2427,41 @@ type UserConnection {
 }
 
 input UserConnectionQueryTypeArguments {
+  after: ID
+  before: ID
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  disable: BooleanExpression
+  email: StringExpression
+  exs: [UserExpression]
+  first: Int
+  groupBy: [String!]
+  groups: GroupExpression
+  hash: StringExpression
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  lastName: StringExpression
+  login: StringExpression
+  name: StringExpression
+  offset: Int
+  orderBy: UserOrderBy
+  phones: StringExpression
+  realm: RealmExpression
+  realmId: IntExpression
+  roles: RoleExpression
+  salt: StringExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  userGroup: UserGroupExpression
+  userPhones: UserPhonesExpression
+  userRole: UserRoleExpression
+  version: IntExpression
+}
+
+input UserConnectionSubscriptionTypeArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -2707,7 +2546,7 @@ type UserGroup implements Meta {
   idMin: Int
   isDeprecated: Boolean
   realmId: Int
-  to(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, parent: GroupExpression, parentId: IntExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): Group
+  to(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, deep: IntExpression, groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, parent: GroupExpression, parentId: IntExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): Group
   updateTime: Timestamp
   updateUserId: String
   userId: Int
@@ -2726,6 +2565,31 @@ type UserGroupConnection {
 }
 
 input UserGroupConnectionQueryTypeArguments {
+  after: ID
+  before: ID
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [UserGroupExpression]
+  first: Int
+  from: UserExpression
+  groupBy: [String!]
+  groupId: IntExpression
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  offset: Int
+  orderBy: UserGroupOrderBy
+  realmId: IntExpression
+  to: GroupExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  userId: IntExpression
+  version: IntExpression
+}
+
+input UserGroupConnectionSubscriptionTypeArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -2832,6 +2696,31 @@ input UserGroupListQueryTypeArguments {
   version: IntExpression
 }
 
+input UserGroupListSubscriptionTypeArguments {
+  after: ID
+  before: ID
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [UserGroupExpression]
+  first: Int
+  from: UserExpression
+  groupBy: [String!]
+  groupId: IntExpression
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  offset: Int
+  orderBy: UserGroupOrderBy
+  realmId: IntExpression
+  to: GroupExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  userId: IntExpression
+  version: IntExpression
+}
+
 input UserGroupMutationTypeArguments {
   createGroupId: String
   createTime: Timestamp
@@ -2864,6 +2753,24 @@ input UserGroupOrderBy {
 }
 
 input UserGroupQueryTypeArguments {
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [UserGroupExpression]
+  from: UserExpression
+  groupId: IntExpression
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  realmId: IntExpression
+  to: GroupExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  userId: IntExpression
+  version: IntExpression
+}
+
+input UserGroupSubscriptionTypeArguments {
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -2936,6 +2843,41 @@ input UserListMutationTypeArguments {
 }
 
 input UserListQueryTypeArguments {
+  after: ID
+  before: ID
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  disable: BooleanExpression
+  email: StringExpression
+  exs: [UserExpression]
+  first: Int
+  groupBy: [String!]
+  groups: GroupExpression
+  hash: StringExpression
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  lastName: StringExpression
+  login: StringExpression
+  name: StringExpression
+  offset: Int
+  orderBy: UserOrderBy
+  phones: StringExpression
+  realm: RealmExpression
+  realmId: IntExpression
+  roles: RoleExpression
+  salt: StringExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  userGroup: UserGroupExpression
+  userPhones: UserPhonesExpression
+  userRole: UserRoleExpression
+  version: IntExpression
+}
+
+input UserListSubscriptionTypeArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -3072,6 +3014,30 @@ input UserPhonesConnectionQueryTypeArguments {
   version: IntExpression
 }
 
+input UserPhonesConnectionSubscriptionTypeArguments {
+  after: ID
+  before: ID
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [UserPhonesExpression]
+  first: Int
+  from: UserExpression
+  groupBy: [String!]
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  offset: Int
+  orderBy: UserPhonesOrderBy
+  phone: StringExpression
+  realmId: IntExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  userId: IntExpression
+  version: IntExpression
+}
+
 type UserPhonesEdge {
   cursor: ID
   node: UserPhones
@@ -3150,6 +3116,30 @@ input UserPhonesListQueryTypeArguments {
   version: IntExpression
 }
 
+input UserPhonesListSubscriptionTypeArguments {
+  after: ID
+  before: ID
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [UserPhonesExpression]
+  first: Int
+  from: UserExpression
+  groupBy: [String!]
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  offset: Int
+  orderBy: UserPhonesOrderBy
+  phone: StringExpression
+  realmId: IntExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  userId: IntExpression
+  version: IntExpression
+}
+
 input UserPhonesMutationTypeArguments {
   createGroupId: String
   createTime: Timestamp
@@ -3181,6 +3171,23 @@ input UserPhonesOrderBy {
 }
 
 input UserPhonesQueryTypeArguments {
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [UserPhonesExpression]
+  from: UserExpression
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  phone: StringExpression
+  realmId: IntExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  userId: IntExpression
+  version: IntExpression
+}
+
+input UserPhonesSubscriptionTypeArguments {
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -3242,7 +3249,7 @@ type UserRole implements Meta {
   roleIdMax: Int
   roleIdMin: Int
   roleIdSum: Int
-  to(apis: ApiExpression, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, menus: MenuExpression, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleApi: RoleApiExpression, roleComposite: RoleCompositeExpression, roleMenu: RoleMenuExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
+  to(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
   updateTime: Timestamp
   updateUserId: String
   userId: Int
@@ -3261,6 +3268,31 @@ type UserRoleConnection {
 }
 
 input UserRoleConnectionQueryTypeArguments {
+  after: ID
+  before: ID
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [UserRoleExpression]
+  first: Int
+  from: UserExpression
+  groupBy: [String!]
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  offset: Int
+  orderBy: UserRoleOrderBy
+  realmId: IntExpression
+  roleId: IntExpression
+  to: RoleExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  userId: IntExpression
+  version: IntExpression
+}
+
+input UserRoleConnectionSubscriptionTypeArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -3367,6 +3399,31 @@ input UserRoleListQueryTypeArguments {
   version: IntExpression
 }
 
+input UserRoleListSubscriptionTypeArguments {
+  after: ID
+  before: ID
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [UserRoleExpression]
+  first: Int
+  from: UserExpression
+  groupBy: [String!]
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  last: Int
+  offset: Int
+  orderBy: UserRoleOrderBy
+  realmId: IntExpression
+  roleId: IntExpression
+  to: RoleExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  userId: IntExpression
+  version: IntExpression
+}
+
 input UserRoleMutationTypeArguments {
   createGroupId: String
   createTime: Timestamp
@@ -3413,6 +3470,52 @@ input UserRoleQueryTypeArguments {
   updateTime: StringExpression
   updateUserId: StringExpression
   userId: IntExpression
+  version: IntExpression
+}
+
+input UserRoleSubscriptionTypeArguments {
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  exs: [UserRoleExpression]
+  from: UserExpression
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  realmId: IntExpression
+  roleId: IntExpression
+  to: RoleExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  userId: IntExpression
+  version: IntExpression
+}
+
+input UserSubscriptionTypeArguments {
+  cond: Conditional = AND
+  createGroupId: StringExpression
+  createTime: StringExpression
+  createUserId: StringExpression
+  disable: BooleanExpression
+  email: StringExpression
+  exs: [UserExpression]
+  groups: GroupExpression
+  hash: StringExpression
+  id: StringExpression
+  includeDeprecated: Boolean = false
+  lastName: StringExpression
+  login: StringExpression
+  name: StringExpression
+  phones: StringExpression
+  realm: RealmExpression
+  realmId: IntExpression
+  roles: RoleExpression
+  salt: StringExpression
+  updateTime: StringExpression
+  updateUserId: StringExpression
+  userGroup: UserGroupExpression
+  userPhones: UserPhonesExpression
+  userRole: UserRoleExpression
   version: IntExpression
 }
 

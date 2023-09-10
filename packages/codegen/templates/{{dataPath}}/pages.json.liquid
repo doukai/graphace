@@ -8,7 +8,8 @@
 	{
         "name": "{{ object.name }}",
         "tags": "{{ object.name }}",
-        "href": "/{{ object.name | paramCase }}"
+        "href": "/{{ object.name | paramCase }}",
+        "permissions": ["{{ object.name }}::*::*"]
 	}{%- if forloop.last == false -%},{%- endif %}
 {%- endfor %}
 {%- endif %}

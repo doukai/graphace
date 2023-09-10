@@ -337,18 +337,6 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				salt: {
-					/**
-					 * s​a​l​t
-					 */
-					name: string
-				}
-				hash: {
-					/**
-					 * h​a​s​h
-					 */
-					name: string
-				}
 				email: {
 					/**
 					 * e​m​a​i​l
@@ -1340,18 +1328,6 @@ export type TranslationFunctions = {
 					login: {
 						/**
 						 * login
-						 */
-						name: () => LocalizedString
-					}
-					salt: {
-						/**
-						 * salt
-						 */
-						name: () => LocalizedString
-					}
-					hash: {
-						/**
-						 * hash
 						 */
 						name: () => LocalizedString
 					}
