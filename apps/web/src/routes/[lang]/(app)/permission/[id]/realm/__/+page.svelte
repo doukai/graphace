@@ -12,7 +12,7 @@
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Permission.fields.realm.name(), PageType.SELECT);
-	$: id = data.id as string;
+	$: name = data.name as string;
 	$: Query_realmConnection = data.Query_realmConnection as Query_realmConnectionStore;
 	$: nodes = $Query_realmConnection.data?.realmConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_realmConnection.data?.realmConnection?.totalCount || 0;
@@ -44,7 +44,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
+		const row = nodes?.map((node) => node?.name)?.indexOf(event.detail.args.name);
 		validateMutation('Realm', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
@@ -72,12 +72,12 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Permission', { realm: event.detail.selected }, true, $locale)
+		validateMutation('Permission', { name: name, realm: event.detail.selected }, true, $locale)
 			.then((data) => {
 				errors = {};
 				if (!Array.isArray(event.detail.selected)) {
 					Mutation_permission_realm.mutate({
-						permission_id: id,
+						permission_name: name,
 						permission_realm: event.detail.selected,
 						update: true
 					})

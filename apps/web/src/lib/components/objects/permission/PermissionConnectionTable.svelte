@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
-	import { ObjectTd, StringTh, StringTd } from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, IDTh, IDTd, StringTh, StringTd } from '@graphace/ui-graphql/components/table';
 	import PermissionTypeTh from '~/lib/components/enums/permission-type/PermissionTypeTh.svelte';
 	import PermissionTypeTd from '~/lib/components/enums/permission-type/PermissionTypeTd.svelte';
-	import PermissionLevelTh from '~/lib/components/enums/permission-level/PermissionLevelTh.svelte';
-	import PermissionLevelTd from '~/lib/components/enums/permission-level/PermissionLevelTd.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
 	import { Card } from '@graphace/ui/components/card';
@@ -107,11 +105,13 @@
 		let args: QueryTypePermissionConnectionArgs = {};
 		if (searchValue) {
 			args.cond = 'OR';
-			args.name = { opr: 'LK', val: `%${searchValue}%` };
+			args.field = { opr: 'LK', val: `%${searchValue}%` };
+			args.type = { opr: 'LK', val: `%${searchValue}%` };
 			args.description = { opr: 'LK', val: `%${searchValue}%` };
 		} else {
 			args.cond = undefined;
-			args.name = undefined;
+			args.field = undefined;
+			args.type = undefined;
 			args.description = undefined;
 		}
 		
@@ -190,7 +190,7 @@
 	const unbindRows = (selectedIdList: (string | null)[]) => {
 		dispatch('parentMutation', {
 			args: selectedIdList
-				.map((id) => nodes?.find((node) => node?.id === id))
+				.map((id) => nodes?.find((node) => node?.name === id))
 				.map((node) => {
 					return { ...node, isDeprecated: true };
 				}),
@@ -268,10 +268,28 @@
 						/>
 					</label>
 				</th>
-				<StringTh
+				<IDTh
 					name={$LL.graphql.objects.Permission.fields.name.name()}
 					bind:expression={args.name}
 					bind:sort={orderBy.name}
+					on:filter={query}
+				/>
+				<StringTh
+					name={$LL.graphql.objects.Permission.fields.field.name()}
+					bind:expression={args.field}
+					bind:sort={orderBy.field}
+					on:filter={query}
+				/>
+				<StringTh
+					name={$LL.graphql.objects.Permission.fields.type.name()}
+					bind:expression={args.type}
+					bind:sort={orderBy.type}
+					on:filter={query}
+				/>
+				<PermissionTypeTh
+					name={$LL.graphql.objects.Permission.fields.permissionType.name()}
+					bind:expression={args.permissionType}
+					bind:sort={orderBy.permissionType}
 					on:filter={query}
 				/>
 				<StringTh
@@ -280,21 +298,9 @@
 					bind:sort={orderBy.description}
 					on:filter={query}
 				/>
-				<PermissionTypeTh
-					name={$LL.graphql.objects.Permission.fields.type.name()}
-					bind:expression={args.type}
-					bind:sort={orderBy.type}
-					on:filter={query}
-				/>
-				<PermissionLevelTh
-					name={$LL.graphql.objects.Permission.fields.level.name()}
-					bind:expression={args.level}
-					bind:sort={orderBy.level}
-					on:filter={query}
-				/>
 				<RoleTh
-					name={$LL.graphql.objects.Permission.fields.role.name()}
-					bind:expression={args.role}
+					name={$LL.graphql.objects.Permission.fields.roles.name()}
+					bind:expression={args.roles}
 					on:filter={query}
 				/>
 				<RealmTh
@@ -306,44 +312,50 @@
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={pageSize} cols={6 + 2}/>
+			<TableLoading rows={pageSize} cols={7 + 2}/>
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
 					{#each nodes as node, row}
-						{#if node && node.id}
+						{#if node && node.name}
 							<tr class="hover">
 								<th class="z-10 w-12">
 									<label>
 										<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
 									</label>
 								</th>
-								<StringTd
+								<IDTd
 									name="name"
 									bind:value={node.name}
-									on:save={() => updateField({ id: node?.id, name: node?.name })}
+									readonly
 									errors={errors[row]?.iterms?.name}
+								/>
+								<StringTd
+									name="field"
+									bind:value={node.field}
+									on:save={() => updateField({ name: node?.name, field: node?.field })}
+									errors={errors[row]?.iterms?.field}
+								/>
+								<StringTd
+									name="type"
+									bind:value={node.type}
+									on:save={() => updateField({ name: node?.name, type: node?.type })}
+									errors={errors[row]?.iterms?.type}
+								/>
+								<PermissionTypeTd
+									name="permissionType"
+									bind:value={node.permissionType}
+									on:save={() => updateField({ name: node?.name, permissionType: node?.permissionType })}
+									errors={errors[row]?.iterms?.permissionType}
 								/>
 								<StringTd
 									name="description"
 									bind:value={node.description}
-									on:save={() => updateField({ id: node?.id, description: node?.description })}
+									on:save={() => updateField({ name: node?.name, description: node?.description })}
 									errors={errors[row]?.iterms?.description}
 								/>
-								<PermissionTypeTd
-									name="type"
-									bind:value={node.type}
-									on:save={() => updateField({ id: node?.id, type: node?.type })}
-									errors={errors[row]?.iterms?.type}
-								/>
-								<PermissionLevelTd
-									name="level"
-									bind:value={node.level}
-									on:save={() => updateField({ id: node?.id, level: node?.level })}
-									errors={errors[row]?.iterms?.level}
-								/>
-								<ObjectTd name="role" errors={errors[row]?.iterms?.role} path={`${node.id}/role`} on:gotoField />
-								<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+								<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path={`${node.name}/roles`} on:gotoField />
+								<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.name}/realm`} on:gotoField />
 								<th class="z-10 w-24">
 									<div class="flex space-x-1">
 										<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
@@ -351,8 +363,8 @@
 												class="btn btn-square btn-ghost btn-xs"
 												on:click={(e) => {
 													e.preventDefault();
-													if (node && node.id) {
-														dispatch('edit', { id: node.id });
+													if (node && node.name) {
+														dispatch('edit', { id: node.name });
 													}
 												}}
 											>
@@ -370,8 +382,8 @@
 															buttonName: $LL.web.components.table.unbindBtn(),
 															buttonType: 'error',
 															confirm: () => {
-																if (node?.id) {
-																	unbindRows([node.id]);
+																if (node?.name) {
+																	unbindRows([node.name]);
 																}
 																return true;
 															},
@@ -379,8 +391,8 @@
 																name: $LL.web.components.table.removeBtn(),
 																className: 'btn-error',
 																onClick: () => {
-																	if (node?.id) {
-																		removeRow(node.id);
+																	if (node?.name) {
+																		removeRow(node.name);
 																	}
 																	return true;
 																}
@@ -402,8 +414,8 @@
 															buttonName: $LL.web.components.table.removeBtn(),
 															buttonType: 'error',
 															confirm: () => {
-																if (node?.id) {
-																	removeRow(node.id);
+																if (node?.name) {
+																	removeRow(node.name);
 																}
 																return true;
 															}
@@ -420,7 +432,7 @@
 						{/if}
 					{/each}
 				{:else}
-					<TableEmpty cols={6 + 2}/>
+					<TableEmpty cols={7 + 2}/>
 				{/if}
 			</tbody>
 		{/if}

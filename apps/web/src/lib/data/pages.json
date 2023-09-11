@@ -4,39 +4,34 @@
     "icon": "material-symbols:data-object",
     "items": [
 	{
-        "name": "Api",
-        "tags": "Api",
-        "href": "/api"
-	},
-	{
         "name": "Group",
         "tags": "Group",
-        "href": "/group"
-	},
-	{
-        "name": "Menu",
-        "tags": "Menu",
-        "href": "/menu"
+        "href": "/group",
+        "permissions": ["Group::*::*"]
 	},
 	{
         "name": "Permission",
         "tags": "Permission",
-        "href": "/permission"
+        "href": "/permission",
+        "permissions": ["Permission::*::*"]
 	},
 	{
         "name": "Realm",
         "tags": "Realm",
-        "href": "/realm"
+        "href": "/realm",
+        "permissions": ["Realm::*::*"]
 	},
 	{
         "name": "Role",
         "tags": "Role",
-        "href": "/role"
+        "href": "/role",
+        "permissions": ["Role::*::*"]
 	},
 	{
         "name": "User",
         "tags": "User",
-        "href": "/user"
+        "href": "/user",
+        "permissions": ["User::*::*"]
 	}
     ]
   }

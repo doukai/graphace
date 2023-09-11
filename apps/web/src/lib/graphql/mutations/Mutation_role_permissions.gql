@@ -1,4 +1,4 @@
-mutation Mutation_role_permissions($role_id: ID, $role_permissions: [PermissionInput], $first: Int, $last: Int, $offset: Int, $orderBy: PermissionOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $type: PermissionTypeExpression, $level: PermissionLevelExpression, $role: RoleExpression, $realm: RealmExpression, $update: Boolean = false, $mergeToList: [String]) {
+mutation Mutation_role_permissions($role_id: ID, $role_permissions: [PermissionInput], $first: Int, $last: Int, $offset: Int, $orderBy: PermissionOrderBy, $groupBy: [String!], $name: StringExpression, $field: StringExpression, $type: StringExpression, $permissionType: PermissionTypeExpression, $description: StringExpression, $roles: RoleExpression, $realm: RealmExpression, $update: Boolean = false, $mergeToList: [String]) {
   role(id: $role_id permissions: $role_permissions) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
     name
@@ -11,15 +11,15 @@ mutation Mutation_role_permissions($role_id: ID, $role_permissions: [PermissionI
     updateUserId
     updateTime
     createGroupId
-    permissionsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name description: $description type: $type level: $level role: $role realm: $realm) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    permissionsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy name: $name field: $field type: $type permissionType: $permissionType description: $description roles: $roles realm: $realm) @update(if: $update) @mergeToList(arguments: $mergeToList) {
       totalCount
       edges {
         node {
-          id
           name
-          description
+          field
           type
-          level
+          permissionType
+          description
           isDeprecated
           version
           realmId
@@ -28,7 +28,6 @@ mutation Mutation_role_permissions($role_id: ID, $role_permissions: [PermissionI
           updateUserId
           updateTime
           createGroupId
-          roleId
         }
       }
     }

@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
-	import { StringTh, StringTd } from '@graphace/ui-graphql/components/table';
+	import { IDTh, IDTd, StringTh, StringTd } from '@graphace/ui-graphql/components/table';
 	import PermissionTypeTh from '~/lib/components/enums/permission-type/PermissionTypeTh.svelte';
 	import PermissionTypeTd from '~/lib/components/enums/permission-type/PermissionTypeTd.svelte';
-	import PermissionLevelTh from '~/lib/components/enums/permission-level/PermissionLevelTh.svelte';
-	import PermissionLevelTd from '~/lib/components/enums/permission-level/PermissionLevelTd.svelte';
 	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { Pagination } from '@graphace/ui/components/connection';
@@ -105,11 +103,13 @@
 		let args: QueryTypePermissionConnectionArgs = {};
 		if (searchValue) {
 			args.cond = 'OR';
-			args.name = { opr: 'LK', val: `%${searchValue}%` };
+			args.field = { opr: 'LK', val: `%${searchValue}%` };
+			args.type = { opr: 'LK', val: `%${searchValue}%` };
 			args.description = { opr: 'LK', val: `%${searchValue}%` };
 		} else {
 			args.cond = undefined;
-			args.name = undefined;
+			args.field = undefined;
+			args.type = undefined;
 			args.description = undefined;
 		}
 		
@@ -165,8 +165,8 @@
 		on:select={() =>
 			dispatch('select', {
 				selected: Array.isArray(selectedIdList)
-					? selectedIdList.flatMap((id) => nodes?.find((node) => node?.id === id))
-					: nodes?.find((node) => node?.id === selectedIdList),
+					? selectedIdList.flatMap((id) => nodes?.find((node) => node?.name === id))
+					: nodes?.find((node) => node?.name === selectedIdList),
 				then: () => {
 					notifications.success($LL.web.message.saveSuccess());
 					dispatch('back');
@@ -191,17 +191,35 @@
 								bind:checked={selectAll}
 								on:change={() => {
 									if (nodes && nodes.length > 0) {
-										selectedIdList = selectAll ? nodes.map((node) => node?.id) : [];
+										selectedIdList = selectAll ? nodes.map((node) => node?.name) : [];
 									}
 								}}
 							/>
 						</label>
 					{/if}
 				</th>
-				<StringTh
+				<IDTh
 					name={$LL.graphql.objects.Permission.fields.name.name()}
 					bind:expression={args.name}
 					bind:sort={orderBy.name}
+					on:filter={query}
+				/>
+				<StringTh
+					name={$LL.graphql.objects.Permission.fields.field.name()}
+					bind:expression={args.field}
+					bind:sort={orderBy.field}
+					on:filter={query}
+				/>
+				<StringTh
+					name={$LL.graphql.objects.Permission.fields.type.name()}
+					bind:expression={args.type}
+					bind:sort={orderBy.type}
+					on:filter={query}
+				/>
+				<PermissionTypeTh
+					name={$LL.graphql.objects.Permission.fields.permissionType.name()}
+					bind:expression={args.permissionType}
+					bind:sort={orderBy.permissionType}
 					on:filter={query}
 				/>
 				<StringTh
@@ -210,28 +228,16 @@
 					bind:sort={orderBy.description}
 					on:filter={query}
 				/>
-				<PermissionTypeTh
-					name={$LL.graphql.objects.Permission.fields.type.name()}
-					bind:expression={args.type}
-					bind:sort={orderBy.type}
-					on:filter={query}
-				/>
-				<PermissionLevelTh
-					name={$LL.graphql.objects.Permission.fields.level.name()}
-					bind:expression={args.level}
-					bind:sort={orderBy.level}
-					on:filter={query}
-				/>
 				<th />
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={pageSize} cols={6 + 2}/>
+			<TableLoading rows={pageSize} cols={7 + 2}/>
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
 					{#each nodes as node, row}
-						{#if node && node.id}
+						{#if node && node.name}
 							<tr class="hover">
 								<th class="z-10 w-12">
 									<label>
@@ -242,29 +248,35 @@
 										{/if}
 									</label>
 								</th>
-								<StringTd
+								<IDTd
 									name="name"
 									bind:value={node.name}
-									on:save={() => updateField({ id: node?.id, name: node?.name })}
+									readonly
 									errors={errors[row]?.iterms?.name}
+								/>
+								<StringTd
+									name="field"
+									bind:value={node.field}
+									on:save={() => updateField({ name: node?.name, field: node?.field })}
+									errors={errors[row]?.iterms?.field}
+								/>
+								<StringTd
+									name="type"
+									bind:value={node.type}
+									on:save={() => updateField({ name: node?.name, type: node?.type })}
+									errors={errors[row]?.iterms?.type}
+								/>
+								<PermissionTypeTd
+									name="permissionType"
+									bind:value={node.permissionType}
+									on:save={() => updateField({ name: node?.name, permissionType: node?.permissionType })}
+									errors={errors[row]?.iterms?.permissionType}
 								/>
 								<StringTd
 									name="description"
 									bind:value={node.description}
-									on:save={() => updateField({ id: node?.id, description: node?.description })}
+									on:save={() => updateField({ name: node?.name, description: node?.description })}
 									errors={errors[row]?.iterms?.description}
-								/>
-								<PermissionTypeTd
-									name="type"
-									bind:value={node.type}
-									on:save={() => updateField({ id: node?.id, type: node?.type })}
-									errors={errors[row]?.iterms?.type}
-								/>
-								<PermissionLevelTd
-									name="level"
-									bind:value={node.level}
-									on:save={() => updateField({ id: node?.id, level: node?.level })}
-									errors={errors[row]?.iterms?.level}
 								/>
 								<th class="z-10 w-12">
 									<div class="flex space-x-1">
@@ -273,7 +285,7 @@
 												class="btn btn-square btn-ghost btn-xs"
 												on:click={(e) => {
 													e.preventDefault();
-													if (node && node.id) {
+													if (node && node.name) {
 														dispatch('select', {
 															selected: multipleSelect ? [node] : node,
 															then: () => {
@@ -297,7 +309,7 @@
 						{/if}
 					{/each}
 				{:else}
-					<TableEmpty cols={6 + 2}/>
+					<TableEmpty cols={7 + 2}/>
 				{/if}
 			</tbody>
 		{/if}

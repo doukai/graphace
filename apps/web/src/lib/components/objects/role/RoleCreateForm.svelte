@@ -83,10 +83,9 @@
 		<StringItem label={$LL.graphql.objects.Role.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
 		<StringItem label={$LL.graphql.objects.Role.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
 		<ObjectItem name="users" path="_/users" label={$LL.graphql.objects.Role.fields.users.name()} errors={errors.users} on:gotoField />
+		<ObjectItem name="groups" path="_/groups" label={$LL.graphql.objects.Role.fields.groups.name()} errors={errors.groups} on:gotoField />
 		<ObjectItem name="composites" path="_/composites" label={$LL.graphql.objects.Role.fields.composites.name()} errors={errors.composites} on:gotoField />
 		<ObjectItem name="permissions" path="_/permissions" label={$LL.graphql.objects.Role.fields.permissions.name()} errors={errors.permissions} on:gotoField />
-		<ObjectItem name="apis" path="_/apis" label={$LL.graphql.objects.Role.fields.apis.name()} errors={errors.apis} on:gotoField />
-		<ObjectItem name="menus" path="_/menus" label={$LL.graphql.objects.Role.fields.menus.name()} errors={errors.menus} on:gotoField />
 		<ObjectItem name="realm" path="_/realm" label={$LL.graphql.objects.Role.fields.realm.name()} errors={errors.realm} on:gotoField />
 	</Form>
 </Card>

@@ -28,7 +28,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('User', { userPhones: [event.detail.args] }, true, $locale)
+		validateMutation('User', { id: id, userPhones: [event.detail.args] }, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_user_userPhones.mutate({

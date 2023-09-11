@@ -1,0 +1,35 @@
+mutation Mutation_role_groups($role_id: ID, $role_groups: [GroupInput], $first: Int, $last: Int, $offset: Int, $orderBy: GroupOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $path: StringExpression, $deep: IntExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $update: Boolean = false, $mergeToList: [String]) {
+  role(id: $role_id groups: $role_groups) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    id
+    name
+    description
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    groupsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name path: $path deep: $deep parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+      totalCount
+      edges {
+        node {
+          id
+          name
+          path
+          deep
+          isDeprecated
+          version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
+          parentId
+        }
+      }
+    }
+  }
+}

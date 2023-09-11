@@ -3,8 +3,8 @@
 	import { tippy } from '@graphace/ui/components/tippy';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel } from '@steeze-ui/heroicons';
-	import { StringInput } from '@graphace/ui-graphql/components/input';
-	import type { StringExpression } from '@graphace/graphql/types';
+	import { StringInput, IntInput } from '@graphace/ui-graphql/components/input';
+	import type { StringExpression, NumberExpression } from '@graphace/graphql/types';
 	import LL from '$i18n/i18n-svelte';
 	import type { GroupExpression } from '$houdini';
 
@@ -13,8 +13,12 @@
 
 	let _expression: {
 		name: StringExpression;
+		path: StringExpression;
+		deep: IntExpression;
 	} = {
 		name: {},
+		path: {},
+		deep: {},
 	};
 
 	let content: HTMLElement;
@@ -29,6 +33,16 @@
 		} else {
 			expression = { ...expression, name: undefined };
 		}
+		if (_expression.path.val || (_expression.path.in && _expression.path.in.length > 0)) {
+			expression = { ...expression, path: _expression.path };
+		} else {
+			expression = { ...expression, path: undefined };
+		}
+		if (_expression.deep.val || (_expression.deep.in && _expression.deep.in.length > 0)) {
+			expression = { ...expression, deep: _expression.deep };
+		} else {
+			expression = { ...expression, deep: undefined };
+		}
 
 		if (Object.keys(expression).length > 0) {
 			dispatch('filter');
@@ -40,6 +54,8 @@
 
 	const clear = (): void => {
 		_expression.name = {};
+		_expression.path = {};
+		_expression.deep = {};
 		expression = undefined;
 		dispatch('filter');
 		tippyElement._tippy.hide();
@@ -47,6 +63,14 @@
 	const nameOprChange = (): void => {
 		_expression.name.in = [];
 		_expression.name.val = undefined;
+	};
+	const pathOprChange = (): void => {
+		_expression.path.in = [];
+		_expression.path.val = undefined;
+	};
+	const deepOprChange = (): void => {
+		_expression.deep.in = [];
+		_expression.deep.val = undefined;
 	};
 </script>
 <div class="hidden">
@@ -88,6 +112,82 @@
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{name}
 					bind:value={_expression.name.val}
+				/>
+			{/if}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-1/3">
+					{$LL.graphql.objects.Group.fields.path.name()}
+				</button>
+				<select
+					class="select select-bordered join-item w-2/3"
+					bind:value={_expression.path.opr}
+					on:change={pathOprChange}
+				>
+					<option value="EQ" selected>{$LL.uiGraphql.table.th.eq()}</option>
+					<option value="NEQ">{$LL.uiGraphql.table.th.neq()}</option>
+					<option value="LK">{$LL.uiGraphql.table.th.lk()}</option>
+					<option value="NLK">{$LL.uiGraphql.table.th.nlk()}</option>
+					<option value="GT">{$LL.uiGraphql.table.th.gt()}</option>
+					<option value="GTE">{$LL.uiGraphql.table.th.gte()}</option>
+					<option value="LT">{$LL.uiGraphql.table.th.lt()}</option>
+					<option value="LTE">{$LL.uiGraphql.table.th.lte()}</option>
+					<option value="NIL">{$LL.uiGraphql.table.th.nil()}</option>
+					<option value="NNIL">{$LL.uiGraphql.table.th.nnil()}</option>
+					<option value="IN">{$LL.uiGraphql.table.th.in()}</option>
+					<option value="NIN">{$LL.uiGraphql.table.th.nin()}</option>
+					<option value="BT">{$LL.uiGraphql.table.th.bt()}</option>
+					<option value="NBT">{$LL.uiGraphql.table.th.nbt()}</option>
+				</select>
+			</div>
+			{#if _expression.path.opr === 'IN' || _expression.path.opr === 'NIN' || _expression.path.opr === 'BT' || _expression.path.opr === 'NBT'}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.path.in}
+				/>
+			{:else}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.path.val}
+				/>
+			{/if}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-1/3">
+					{$LL.graphql.objects.Group.fields.deep.name()}
+				</button>
+				<select
+					class="select select-bordered join-item w-2/3"
+					bind:value={_expression.deep.opr}
+					on:change={deepOprChange}
+				>
+					<option value="EQ" selected>{$LL.uiGraphql.table.th.eq()}</option>
+					<option value="NEQ">{$LL.uiGraphql.table.th.neq()}</option>
+					<option value="LK">{$LL.uiGraphql.table.th.lk()}</option>
+					<option value="NLK">{$LL.uiGraphql.table.th.nlk()}</option>
+					<option value="GT">{$LL.uiGraphql.table.th.gt()}</option>
+					<option value="GTE">{$LL.uiGraphql.table.th.gte()}</option>
+					<option value="LT">{$LL.uiGraphql.table.th.lt()}</option>
+					<option value="LTE">{$LL.uiGraphql.table.th.lte()}</option>
+					<option value="NIL">{$LL.uiGraphql.table.th.nil()}</option>
+					<option value="NNIL">{$LL.uiGraphql.table.th.nnil()}</option>
+					<option value="IN">{$LL.uiGraphql.table.th.in()}</option>
+					<option value="NIN">{$LL.uiGraphql.table.th.nin()}</option>
+					<option value="BT">{$LL.uiGraphql.table.th.bt()}</option>
+					<option value="NBT">{$LL.uiGraphql.table.th.nbt()}</option>
+				</select>
+			</div>
+			{#if _expression.deep.opr === 'IN' || _expression.deep.opr === 'NIN' || _expression.deep.opr === 'BT' || _expression.deep.opr === 'NBT'}
+				<IntInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.deep.in}
+				/>
+			{:else}
+				<IntInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.deep.val}
 				/>
 			{/if}
 		</div>

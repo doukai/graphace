@@ -2,6 +2,8 @@ query Query_group_users($group_id: StringExpression, $first: Int, $last: Int, $o
   group(id: $group_id)  {
     id
     name
+    path
+    deep
     isDeprecated
     version
     realmId

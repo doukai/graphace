@@ -55,11 +55,11 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Permission', { realm: event.detail.args }, true, $locale)
+		validateMutation('Permission', { name: permission?.name, realm: event.detail.args }, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_permission_realm.mutate({
-					permission_id: permission?.id,
+					permission_name: permission?.name,
 					permission_realm: event.detail.args,
 					update: true
 				})

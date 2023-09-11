@@ -1,4 +1,4 @@
-query Query_user_userGroup($user_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserGroupOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $from: UserExpression, $groupId: IntExpression, $to: GroupExpression, ) {
+query Query_user_userGroup($user_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserGroupOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $userIdType: UserExpression, $groupId: IntExpression, $groupIdType: GroupExpression, ) {
   user(id: $user_id)  {
     id
     name
@@ -15,7 +15,7 @@ query Query_user_userGroup($user_id: StringExpression, $first: Int, $last: Int, 
     updateUserId
     updateTime
     createGroupId
-    userGroupConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId from: $from groupId: $groupId to: $to)  {
+    userGroupConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId userIdType: $userIdType groupId: $groupId groupIdType: $groupIdType)  {
       totalCount
       edges {
         node {

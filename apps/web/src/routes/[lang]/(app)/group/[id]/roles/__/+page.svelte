@@ -72,7 +72,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Group', { roles: event.detail.selected }, true, $locale)
+		validateMutation('Group', { id: id, roles: event.detail.selected }, true, $locale)
 			.then((data) => {
 				errors = {};
 				if (Array.isArray(event.detail.selected)) {

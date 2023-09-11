@@ -3,26 +3,27 @@
 	import { tippy } from '@graphace/ui/components/tippy';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel } from '@steeze-ui/heroicons';
-	import { StringInput } from '@graphace/ui-graphql/components/input';
+	import { IDInput, StringInput } from '@graphace/ui-graphql/components/input';
 	import PermissionTypeInput from '~/lib/components/enums/permission-type/PermissionTypeInput.svelte';
-	import PermissionLevelInput from '~/lib/components/enums/permission-level/PermissionLevelInput.svelte';
 	import type { StringExpression } from '@graphace/graphql/types';
 	import LL from '$i18n/i18n-svelte';
-	import type { PermissionTypeExpression, PermissionLevelExpression, PermissionExpression } from '$houdini';
+	import type { PermissionTypeExpression, PermissionExpression } from '$houdini';
 
 	export let name: string;
 	export let expression: PermissionExpression | null | undefined;
 
 	let _expression: {
-		name: StringExpression;
+		name: IDExpression;
+		field: StringExpression;
+		type: StringExpression;
+		permissionType: PermissionTypeExpression;
 		description: StringExpression;
-		type: PermissionTypeExpression;
-		level: PermissionLevelExpression;
 	} = {
 		name: {},
-		description: {},
+		field: {},
 		type: {},
-		level: {},
+		permissionType: {},
+		description: {},
 	};
 
 	let content: HTMLElement;
@@ -37,20 +38,25 @@
 		} else {
 			expression = { ...expression, name: undefined };
 		}
-		if (_expression.description.val || (_expression.description.in && _expression.description.in.length > 0)) {
-			expression = { ...expression, description: _expression.description };
+		if (_expression.field.val || (_expression.field.in && _expression.field.in.length > 0)) {
+			expression = { ...expression, field: _expression.field };
 		} else {
-			expression = { ...expression, description: undefined };
+			expression = { ...expression, field: undefined };
 		}
 		if (_expression.type.val || (_expression.type.in && _expression.type.in.length > 0)) {
 			expression = { ...expression, type: _expression.type };
 		} else {
 			expression = { ...expression, type: undefined };
 		}
-		if (_expression.level.val || (_expression.level.in && _expression.level.in.length > 0)) {
-			expression = { ...expression, level: _expression.level };
+		if (_expression.permissionType.val || (_expression.permissionType.in && _expression.permissionType.in.length > 0)) {
+			expression = { ...expression, permissionType: _expression.permissionType };
 		} else {
-			expression = { ...expression, level: undefined };
+			expression = { ...expression, permissionType: undefined };
+		}
+		if (_expression.description.val || (_expression.description.in && _expression.description.in.length > 0)) {
+			expression = { ...expression, description: _expression.description };
+		} else {
+			expression = { ...expression, description: undefined };
 		}
 
 		if (Object.keys(expression).length > 0) {
@@ -63,9 +69,10 @@
 
 	const clear = (): void => {
 		_expression.name = {};
-		_expression.description = {};
+		_expression.field = {};
 		_expression.type = {};
-		_expression.level = {};
+		_expression.permissionType = {};
+		_expression.description = {};
 		expression = undefined;
 		dispatch('filter');
 		tippyElement._tippy.hide();
@@ -74,17 +81,21 @@
 		_expression.name.in = [];
 		_expression.name.val = undefined;
 	};
-	const descriptionOprChange = (): void => {
-		_expression.description.in = [];
-		_expression.description.val = undefined;
+	const fieldOprChange = (): void => {
+		_expression.field.in = [];
+		_expression.field.val = undefined;
 	};
 	const typeOprChange = (): void => {
 		_expression.type.in = [];
 		_expression.type.val = undefined;
 	};
-	const levelOprChange = (): void => {
-		_expression.level.in = [];
-		_expression.level.val = undefined;
+	const permissionTypeOprChange = (): void => {
+		_expression.permissionType.in = [];
+		_expression.permissionType.val = undefined;
+	};
+	const descriptionOprChange = (): void => {
+		_expression.description.in = [];
+		_expression.description.val = undefined;
 	};
 </script>
 <div class="hidden">
@@ -116,16 +127,130 @@
 				</select>
 			</div>
 			{#if _expression.name.opr === 'IN' || _expression.name.opr === 'NIN' || _expression.name.opr === 'BT' || _expression.name.opr === 'NBT'}
-				<StringInput
+				<IDInput
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{name}
 					bind:value={_expression.name.in}
 				/>
 			{:else}
-				<StringInput
+				<IDInput
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{name}
 					bind:value={_expression.name.val}
+				/>
+			{/if}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-1/3">
+					{$LL.graphql.objects.Permission.fields.field.name()}
+				</button>
+				<select
+					class="select select-bordered join-item w-2/3"
+					bind:value={_expression.field.opr}
+					on:change={fieldOprChange}
+				>
+					<option value="EQ" selected>{$LL.uiGraphql.table.th.eq()}</option>
+					<option value="NEQ">{$LL.uiGraphql.table.th.neq()}</option>
+					<option value="LK">{$LL.uiGraphql.table.th.lk()}</option>
+					<option value="NLK">{$LL.uiGraphql.table.th.nlk()}</option>
+					<option value="GT">{$LL.uiGraphql.table.th.gt()}</option>
+					<option value="GTE">{$LL.uiGraphql.table.th.gte()}</option>
+					<option value="LT">{$LL.uiGraphql.table.th.lt()}</option>
+					<option value="LTE">{$LL.uiGraphql.table.th.lte()}</option>
+					<option value="NIL">{$LL.uiGraphql.table.th.nil()}</option>
+					<option value="NNIL">{$LL.uiGraphql.table.th.nnil()}</option>
+					<option value="IN">{$LL.uiGraphql.table.th.in()}</option>
+					<option value="NIN">{$LL.uiGraphql.table.th.nin()}</option>
+					<option value="BT">{$LL.uiGraphql.table.th.bt()}</option>
+					<option value="NBT">{$LL.uiGraphql.table.th.nbt()}</option>
+				</select>
+			</div>
+			{#if _expression.field.opr === 'IN' || _expression.field.opr === 'NIN' || _expression.field.opr === 'BT' || _expression.field.opr === 'NBT'}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.field.in}
+				/>
+			{:else}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.field.val}
+				/>
+			{/if}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-1/3">
+					{$LL.graphql.objects.Permission.fields.type.name()}
+				</button>
+				<select
+					class="select select-bordered join-item w-2/3"
+					bind:value={_expression.type.opr}
+					on:change={typeOprChange}
+				>
+					<option value="EQ" selected>{$LL.uiGraphql.table.th.eq()}</option>
+					<option value="NEQ">{$LL.uiGraphql.table.th.neq()}</option>
+					<option value="LK">{$LL.uiGraphql.table.th.lk()}</option>
+					<option value="NLK">{$LL.uiGraphql.table.th.nlk()}</option>
+					<option value="GT">{$LL.uiGraphql.table.th.gt()}</option>
+					<option value="GTE">{$LL.uiGraphql.table.th.gte()}</option>
+					<option value="LT">{$LL.uiGraphql.table.th.lt()}</option>
+					<option value="LTE">{$LL.uiGraphql.table.th.lte()}</option>
+					<option value="NIL">{$LL.uiGraphql.table.th.nil()}</option>
+					<option value="NNIL">{$LL.uiGraphql.table.th.nnil()}</option>
+					<option value="IN">{$LL.uiGraphql.table.th.in()}</option>
+					<option value="NIN">{$LL.uiGraphql.table.th.nin()}</option>
+					<option value="BT">{$LL.uiGraphql.table.th.bt()}</option>
+					<option value="NBT">{$LL.uiGraphql.table.th.nbt()}</option>
+				</select>
+			</div>
+			{#if _expression.type.opr === 'IN' || _expression.type.opr === 'NIN' || _expression.type.opr === 'BT' || _expression.type.opr === 'NBT'}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.type.in}
+				/>
+			{:else}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.type.val}
+				/>
+			{/if}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-1/3">
+					{$LL.graphql.objects.Permission.fields.permissionType.name()}
+				</button>
+				<select
+					class="select select-bordered join-item w-2/3"
+					bind:value={_expression.permissionType.opr}
+					on:change={permissionTypeOprChange}
+				>
+					<option value="EQ" selected>{$LL.uiGraphql.table.th.eq()}</option>
+					<option value="NEQ">{$LL.uiGraphql.table.th.neq()}</option>
+					<option value="LK">{$LL.uiGraphql.table.th.lk()}</option>
+					<option value="NLK">{$LL.uiGraphql.table.th.nlk()}</option>
+					<option value="GT">{$LL.uiGraphql.table.th.gt()}</option>
+					<option value="GTE">{$LL.uiGraphql.table.th.gte()}</option>
+					<option value="LT">{$LL.uiGraphql.table.th.lt()}</option>
+					<option value="LTE">{$LL.uiGraphql.table.th.lte()}</option>
+					<option value="NIL">{$LL.uiGraphql.table.th.nil()}</option>
+					<option value="NNIL">{$LL.uiGraphql.table.th.nnil()}</option>
+					<option value="IN">{$LL.uiGraphql.table.th.in()}</option>
+					<option value="NIN">{$LL.uiGraphql.table.th.nin()}</option>
+					<option value="BT">{$LL.uiGraphql.table.th.bt()}</option>
+					<option value="NBT">{$LL.uiGraphql.table.th.nbt()}</option>
+				</select>
+			</div>
+			{#if _expression.permissionType.opr === 'IN' || _expression.permissionType.opr === 'NIN' || _expression.permissionType.opr === 'BT' || _expression.permissionType.opr === 'NBT'}
+				<PermissionTypeInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.permissionType.in}
+				/>
+			{:else}
+				<PermissionTypeInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.permissionType.val}
 				/>
 			{/if}
 			<div class="join">
@@ -164,82 +289,6 @@
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{name}
 					bind:value={_expression.description.val}
-				/>
-			{/if}
-			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
-					{$LL.graphql.objects.Permission.fields.type.name()}
-				</button>
-				<select
-					class="select select-bordered join-item w-2/3"
-					bind:value={_expression.type.opr}
-					on:change={typeOprChange}
-				>
-					<option value="EQ" selected>{$LL.uiGraphql.table.th.eq()}</option>
-					<option value="NEQ">{$LL.uiGraphql.table.th.neq()}</option>
-					<option value="LK">{$LL.uiGraphql.table.th.lk()}</option>
-					<option value="NLK">{$LL.uiGraphql.table.th.nlk()}</option>
-					<option value="GT">{$LL.uiGraphql.table.th.gt()}</option>
-					<option value="GTE">{$LL.uiGraphql.table.th.gte()}</option>
-					<option value="LT">{$LL.uiGraphql.table.th.lt()}</option>
-					<option value="LTE">{$LL.uiGraphql.table.th.lte()}</option>
-					<option value="NIL">{$LL.uiGraphql.table.th.nil()}</option>
-					<option value="NNIL">{$LL.uiGraphql.table.th.nnil()}</option>
-					<option value="IN">{$LL.uiGraphql.table.th.in()}</option>
-					<option value="NIN">{$LL.uiGraphql.table.th.nin()}</option>
-					<option value="BT">{$LL.uiGraphql.table.th.bt()}</option>
-					<option value="NBT">{$LL.uiGraphql.table.th.nbt()}</option>
-				</select>
-			</div>
-			{#if _expression.type.opr === 'IN' || _expression.type.opr === 'NIN' || _expression.type.opr === 'BT' || _expression.type.opr === 'NBT'}
-				<PermissionTypeInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					{name}
-					bind:value={_expression.type.in}
-				/>
-			{:else}
-				<PermissionTypeInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					{name}
-					bind:value={_expression.type.val}
-				/>
-			{/if}
-			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
-					{$LL.graphql.objects.Permission.fields.level.name()}
-				</button>
-				<select
-					class="select select-bordered join-item w-2/3"
-					bind:value={_expression.level.opr}
-					on:change={levelOprChange}
-				>
-					<option value="EQ" selected>{$LL.uiGraphql.table.th.eq()}</option>
-					<option value="NEQ">{$LL.uiGraphql.table.th.neq()}</option>
-					<option value="LK">{$LL.uiGraphql.table.th.lk()}</option>
-					<option value="NLK">{$LL.uiGraphql.table.th.nlk()}</option>
-					<option value="GT">{$LL.uiGraphql.table.th.gt()}</option>
-					<option value="GTE">{$LL.uiGraphql.table.th.gte()}</option>
-					<option value="LT">{$LL.uiGraphql.table.th.lt()}</option>
-					<option value="LTE">{$LL.uiGraphql.table.th.lte()}</option>
-					<option value="NIL">{$LL.uiGraphql.table.th.nil()}</option>
-					<option value="NNIL">{$LL.uiGraphql.table.th.nnil()}</option>
-					<option value="IN">{$LL.uiGraphql.table.th.in()}</option>
-					<option value="NIN">{$LL.uiGraphql.table.th.nin()}</option>
-					<option value="BT">{$LL.uiGraphql.table.th.bt()}</option>
-					<option value="NBT">{$LL.uiGraphql.table.th.nbt()}</option>
-				</select>
-			</div>
-			{#if _expression.level.opr === 'IN' || _expression.level.opr === 'NIN' || _expression.level.opr === 'BT' || _expression.level.opr === 'NBT'}
-				<PermissionLevelInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					{name}
-					bind:value={_expression.level.in}
-				/>
-			{:else}
-				<PermissionLevelInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					{name}
-					bind:value={_expression.level.val}
 				/>
 			{/if}
 		</div>

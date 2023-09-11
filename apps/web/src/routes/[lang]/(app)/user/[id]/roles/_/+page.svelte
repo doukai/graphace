@@ -28,7 +28,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('User', { roles: [event.detail.args] }, true, $locale)
+		validateMutation('User', { id: id, roles: [event.detail.args] }, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_user_roles.mutate({

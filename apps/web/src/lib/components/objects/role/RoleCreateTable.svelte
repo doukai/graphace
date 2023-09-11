@@ -87,10 +87,9 @@
 				<td>{$LL.graphql.objects.Role.fields.name.name()}</td>
 				<td>{$LL.graphql.objects.Role.fields.description.name()}</td>
 				<td>{$LL.graphql.objects.Role.fields.users.name()}</td>
+				<td>{$LL.graphql.objects.Role.fields.groups.name()}</td>
 				<td>{$LL.graphql.objects.Role.fields.composites.name()}</td>
 				<td>{$LL.graphql.objects.Role.fields.permissions.name()}</td>
-				<td>{$LL.graphql.objects.Role.fields.apis.name()}</td>
-				<td>{$LL.graphql.objects.Role.fields.menus.name()}</td>
 				<td>{$LL.graphql.objects.Role.fields.realm.name()}</td>
 				<th />
 			</tr>
@@ -118,10 +117,9 @@
 								errors={errors[row]?.iterms?.description}
 							/>
 							<ObjectTd name="users" errors={errors[row]?.iterms?.users} path="_/users" on:gotoField />
+							<ObjectTd name="groups" errors={errors[row]?.iterms?.groups} path="_/groups" on:gotoField />
 							<ObjectTd name="composites" errors={errors[row]?.iterms?.composites} path="_/composites" on:gotoField />
 							<ObjectTd name="permissions" errors={errors[row]?.iterms?.permissions} path="_/permissions" on:gotoField />
-							<ObjectTd name="apis" errors={errors[row]?.iterms?.apis} path="_/apis" on:gotoField />
-							<ObjectTd name="menus" errors={errors[row]?.iterms?.menus} path="_/menus" on:gotoField />
 							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
 							<th class="z-10 w-24">
 								<div class="flex space-x-1">
@@ -161,7 +159,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={8 + 2}/>
+				<TableEmpty cols={7 + 2}/>
 			{/if}
 		</tbody>
 	</Table>

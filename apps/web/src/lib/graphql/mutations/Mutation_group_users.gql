@@ -2,6 +2,8 @@ mutation Mutation_group_users($group_id: ID, $group_users: [UserInput], $first: 
   group(id: $group_id users: $group_users) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
     name
+    path
+    deep
     isDeprecated
     version
     realmId

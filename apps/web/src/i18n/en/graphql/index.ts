@@ -2,26 +2,6 @@ import type { BaseTranslation } from '../../i18n-types';
 
 const en: BaseTranslation = {
 	objects: {
-		Api: {
-			name: 'Api',
-			fields: {
-				name: {
-					name: 'name',
-				},
-				description: {
-					name: 'description',
-				},
-				type: {
-					name: 'type',
-				},
-				role: {
-					name: 'role',
-				},
-				realm: {
-					name: 'realm',
-				}
-			}
-		},
 		CurrentUser: {
 			name: 'CurrentUser',
 			fields: {
@@ -48,6 +28,12 @@ const en: BaseTranslation = {
 				name: {
 					name: 'name',
 				},
+				path: {
+					name: 'path',
+				},
+				deep: {
+					name: 'deep',
+				},
 				parent: {
 					name: 'parent',
 				},
@@ -65,52 +51,26 @@ const en: BaseTranslation = {
 				}
 			}
 		},
-		Menu: {
-			name: 'Menu',
-			fields: {
-				name: {
-					name: 'name',
-				},
-				type: {
-					name: 'type',
-				},
-				path: {
-					name: 'path',
-				},
-				icon: {
-					name: 'icon',
-				},
-				folder: {
-					name: 'folder',
-				},
-				description: {
-					name: 'description',
-				},
-				role: {
-					name: 'role',
-				},
-				realm: {
-					name: 'realm',
-				}
-			}
-		},
 		Permission: {
 			name: 'Permission',
 			fields: {
 				name: {
 					name: 'name',
 				},
-				description: {
-					name: 'description',
+				field: {
+					name: 'field',
 				},
 				type: {
 					name: 'type',
 				},
-				level: {
-					name: 'level',
+				permissionType: {
+					name: 'permissionType',
 				},
-				role: {
-					name: 'role',
+				description: {
+					name: 'description',
+				},
+				roles: {
+					name: 'roles',
 				},
 				realm: {
 					name: 'realm',
@@ -137,17 +97,14 @@ const en: BaseTranslation = {
 				users: {
 					name: 'users',
 				},
+				groups: {
+					name: 'groups',
+				},
 				composites: {
 					name: 'composites',
 				},
 				permissions: {
 					name: 'permissions',
-				},
-				apis: {
-					name: 'apis',
-				},
-				menus: {
-					name: 'menus',
 				},
 				realm: {
 					name: 'realm',
@@ -188,51 +145,6 @@ const en: BaseTranslation = {
 		}
 	},
 	enums: {
-		ApiType: {
-			name: 'ApiType',
-			values: {
-				QUERY: {
-					name: 'QUERY',
-				},
-				MUTATION: {
-					name: 'MUTATION',
-				},
-				SUBSCRIPTION: {
-					name: 'SUBSCRIPTION',
-				}
-			}
-		},
-		MenuType: {
-			name: 'MenuType',
-			values: {
-				FOLDER: {
-					name: 'FOLDER',
-				},
-				PAGE: {
-					name: 'PAGE',
-				}
-			}
-		},
-		PermissionLevel: {
-			name: 'PermissionLevel',
-			values: {
-				USER: {
-					name: 'USER',
-				},
-				GROUP: {
-					name: 'GROUP',
-				},
-				SUB_GROUP: {
-					name: 'SUB_GROUP',
-				},
-				REALM: {
-					name: 'REALM',
-				},
-				ALL: {
-					name: 'ALL',
-				}
-			}
-		},
 		PermissionType: {
 			name: 'PermissionType',
 			values: {

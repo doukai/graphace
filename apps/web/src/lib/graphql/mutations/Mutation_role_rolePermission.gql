@@ -1,0 +1,33 @@
+mutation Mutation_role_rolePermission($role_id: ID, $role_rolePermission: [RolePermissionInput], $first: Int, $last: Int, $offset: Int, $orderBy: RolePermissionOrderBy, $groupBy: [String!], $id: StringExpression, $roleId: IntExpression, $roleIdType: RoleExpression, $permissionName: StringExpression, $permissionNameType: PermissionExpression, $update: Boolean = false, $mergeToList: [String]) {
+  role(id: $role_id rolePermission: $role_rolePermission) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    id
+    name
+    description
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    rolePermissionConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId roleIdType: $roleIdType permissionName: $permissionName permissionNameType: $permissionNameType) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+      totalCount
+      edges {
+        node {
+          id
+          roleId
+          permissionName
+          isDeprecated
+          version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
+        }
+      }
+    }
+  }
+}

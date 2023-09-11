@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
-	import { StringTh, StringTd } from '@graphace/ui-graphql/components/table';
+	import { StringTh, StringTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
 	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { Pagination } from '@graphace/ui/components/connection';
@@ -102,9 +102,11 @@
 		if (searchValue) {
 			args.cond = 'OR';
 			args.name = { opr: 'LK', val: `%${searchValue}%` };
+			args.path = { opr: 'LK', val: `%${searchValue}%` };
 		} else {
 			args.cond = undefined;
 			args.name = undefined;
+			args.path = undefined;
 		}
 		
 		if (after) {
@@ -198,11 +200,23 @@
 					bind:sort={orderBy.name}
 					on:filter={query}
 				/>
+				<StringTh
+					name={$LL.graphql.objects.Group.fields.path.name()}
+					bind:expression={args.path}
+					bind:sort={orderBy.path}
+					on:filter={query}
+				/>
+				<IntTh
+					name={$LL.graphql.objects.Group.fields.deep.name()}
+					bind:expression={args.deep}
+					bind:sort={orderBy.deep}
+					on:filter={query}
+				/>
 				<th />
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={pageSize} cols={6 + 2}/>
+			<TableLoading rows={pageSize} cols={8 + 2}/>
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
@@ -223,6 +237,18 @@
 									bind:value={node.name}
 									on:save={() => updateField({ id: node?.id, name: node?.name })}
 									errors={errors[row]?.iterms?.name}
+								/>
+								<StringTd
+									name="path"
+									bind:value={node.path}
+									on:save={() => updateField({ id: node?.id, path: node?.path })}
+									errors={errors[row]?.iterms?.path}
+								/>
+								<IntTd
+									name="deep"
+									bind:value={node.deep}
+									on:save={() => updateField({ id: node?.id, deep: node?.deep })}
+									errors={errors[row]?.iterms?.deep}
 								/>
 								<th class="z-10 w-12">
 									<div class="flex space-x-1">
@@ -255,7 +281,7 @@
 						{/if}
 					{/each}
 				{:else}
-					<TableEmpty cols={6 + 2}/>
+					<TableEmpty cols={8 + 2}/>
 				{/if}
 			</tbody>
 		{/if}

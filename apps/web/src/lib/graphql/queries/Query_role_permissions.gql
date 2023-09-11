@@ -1,4 +1,4 @@
-query Query_role_permissions($role_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: PermissionOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $type: PermissionTypeExpression, $level: PermissionLevelExpression, $role: RoleExpression, $realm: RealmExpression, ) {
+query Query_role_permissions($role_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: PermissionOrderBy, $groupBy: [String!], $name: StringExpression, $field: StringExpression, $type: StringExpression, $permissionType: PermissionTypeExpression, $description: StringExpression, $roles: RoleExpression, $realm: RealmExpression, ) {
   role(id: $role_id)  {
     id
     name
@@ -11,15 +11,15 @@ query Query_role_permissions($role_id: StringExpression, $first: Int, $last: Int
     updateUserId
     updateTime
     createGroupId
-    permissionsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name description: $description type: $type level: $level role: $role realm: $realm)  {
+    permissionsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy name: $name field: $field type: $type permissionType: $permissionType description: $description roles: $roles realm: $realm)  {
       totalCount
       edges {
         node {
-          id
           name
-          description
+          field
           type
-          level
+          permissionType
+          description
           isDeprecated
           version
           realmId
@@ -28,7 +28,6 @@ query Query_role_permissions($role_id: StringExpression, $first: Int, $last: Int
           updateUserId
           updateTime
           createGroupId
-          roleId
         }
       }
     }

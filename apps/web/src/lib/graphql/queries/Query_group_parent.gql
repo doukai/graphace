@@ -1,7 +1,9 @@
-query Query_group_parent($group_id: StringExpression, $id: StringExpression, $name: StringExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, ) {
+query Query_group_parent($group_id: StringExpression, $id: StringExpression, $name: StringExpression, $path: StringExpression, $deep: IntExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, ) {
   group(id: $group_id)  {
     id
     name
+    path
+    deep
     isDeprecated
     version
     realmId
@@ -10,9 +12,11 @@ query Query_group_parent($group_id: StringExpression, $id: StringExpression, $na
     updateUserId
     updateTime
     createGroupId
-    parent(id: $id name: $name parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm)  {
+    parent(id: $id name: $name path: $path deep: $deep parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm)  {
       id
       name
+      path
+      deep
       isDeprecated
       version
       realmId

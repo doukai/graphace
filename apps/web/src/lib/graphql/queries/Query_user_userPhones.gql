@@ -1,4 +1,4 @@
-query Query_user_userPhones($user_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserPhonesOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $from: UserExpression, $phone: StringExpression, ) {
+query Query_user_userPhones($user_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserPhonesOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $userIdType: UserExpression, $phone: StringExpression, ) {
   user(id: $user_id)  {
     id
     name
@@ -15,7 +15,7 @@ query Query_user_userPhones($user_id: StringExpression, $first: Int, $last: Int,
     updateUserId
     updateTime
     createGroupId
-    userPhonesConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId from: $from phone: $phone)  {
+    userPhonesConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId userIdType: $userIdType phone: $phone)  {
       totalCount
       edges {
         node {

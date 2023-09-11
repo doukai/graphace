@@ -3,10 +3,9 @@
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { ObjectTd, StringTh, StringTd } from '@graphace/ui-graphql/components/table';
 	import UserTh from '~/lib/components/objects/user/UserTh.svelte';
+	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import PermissionTh from '~/lib/components/objects/permission/PermissionTh.svelte';
-	import ApiTh from '~/lib/components/objects/api/ApiTh.svelte';
-	import MenuTh from '~/lib/components/objects/menu/MenuTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
 	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
@@ -285,6 +284,11 @@
 					bind:expression={args.users}
 					on:filter={query}
 				/>
+				<GroupTh
+					name={$LL.graphql.objects.Role.fields.groups.name()}
+					bind:expression={args.groups}
+					on:filter={query}
+				/>
 				<RoleTh
 					name={$LL.graphql.objects.Role.fields.composites.name()}
 					bind:expression={args.composites}
@@ -293,16 +297,6 @@
 				<PermissionTh
 					name={$LL.graphql.objects.Role.fields.permissions.name()}
 					bind:expression={args.permissions}
-					on:filter={query}
-				/>
-				<ApiTh
-					name={$LL.graphql.objects.Role.fields.apis.name()}
-					bind:expression={args.apis}
-					on:filter={query}
-				/>
-				<MenuTh
-					name={$LL.graphql.objects.Role.fields.menus.name()}
-					bind:expression={args.menus}
 					on:filter={query}
 				/>
 				<RealmTh
@@ -314,7 +308,7 @@
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={pageSize} cols={8 + 2}/>
+			<TableLoading rows={pageSize} cols={7 + 2}/>
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
@@ -339,10 +333,9 @@
 									errors={errors[row]?.iterms?.description}
 								/>
 								<ObjectTd name="users" errors={errors[row]?.iterms?.users} path={`${node.id}/users`} on:gotoField />
+								<ObjectTd name="groups" errors={errors[row]?.iterms?.groups} path={`${node.id}/groups`} on:gotoField />
 								<ObjectTd name="composites" errors={errors[row]?.iterms?.composites} path={`${node.id}/composites`} on:gotoField />
 								<ObjectTd name="permissions" errors={errors[row]?.iterms?.permissions} path={`${node.id}/permissions`} on:gotoField />
-								<ObjectTd name="apis" errors={errors[row]?.iterms?.apis} path={`${node.id}/apis`} on:gotoField />
-								<ObjectTd name="menus" errors={errors[row]?.iterms?.menus} path={`${node.id}/menus`} on:gotoField />
 								<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
 								<th class="z-10 w-24">
 									<div class="flex space-x-1">
@@ -420,7 +413,7 @@
 						{/if}
 					{/each}
 				{:else}
-					<TableEmpty cols={8 + 2}/>
+					<TableEmpty cols={7 + 2}/>
 				{/if}
 			</tbody>
 		{/if}

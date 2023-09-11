@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import { ObjectTd, StringTh, StringTd } from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, StringTh, StringTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
 	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableEmpty } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
@@ -85,6 +85,8 @@
 					</label>
 				</th>
 				<td>{$LL.graphql.objects.Group.fields.name.name()}</td>
+				<td>{$LL.graphql.objects.Group.fields.path.name()}</td>
+				<td>{$LL.graphql.objects.Group.fields.deep.name()}</td>
 				<td>{$LL.graphql.objects.Group.fields.parent.name()}</td>
 				<td>{$LL.graphql.objects.Group.fields.subGroups.name()}</td>
 				<td>{$LL.graphql.objects.Group.fields.users.name()}</td>
@@ -108,6 +110,18 @@
 								bind:value={node.name}
 								readonly
 								errors={errors[row]?.iterms?.name}
+							/>
+							<StringTd
+								name="path"
+								bind:value={node.path}
+								readonly
+								errors={errors[row]?.iterms?.path}
+							/>
+							<IntTd
+								name="deep"
+								bind:value={node.deep}
+								readonly
+								errors={errors[row]?.iterms?.deep}
 							/>
 							<ObjectTd name="parent" errors={errors[row]?.iterms?.parent} path="_/parent" on:gotoField />
 							<ObjectTd name="subGroups" errors={errors[row]?.iterms?.subGroups} path="_/sub-groups" on:gotoField />
@@ -152,7 +166,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={6 + 2}/>
+				<TableEmpty cols={8 + 2}/>
 			{/if}
 		</tbody>
 	</Table>

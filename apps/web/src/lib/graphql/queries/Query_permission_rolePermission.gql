@@ -1,0 +1,35 @@
+query Query_permission_rolePermission($permission_name: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RolePermissionOrderBy, $groupBy: [String!], $id: StringExpression, $roleId: IntExpression, $roleIdType: RoleExpression, $permissionName: StringExpression, $permissionNameType: PermissionExpression, ) {
+  permission(name: $permission_name)  {
+    name
+    field
+    type
+    permissionType
+    description
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    rolePermissionConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId roleIdType: $roleIdType permissionName: $permissionName permissionNameType: $permissionNameType)  {
+      totalCount
+      edges {
+        node {
+          id
+          roleId
+          permissionName
+          isDeprecated
+          version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
+        }
+      }
+    }
+  }
+}

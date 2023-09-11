@@ -93,11 +93,7 @@ const config: CodegenConfig = {
                             ignore: true
                         },
                         {
-                            name: 'RoleApi',
-                            ignore: true
-                        },
-                        {
-                            name: 'RoleMenu',
+                            name: 'RolePermission',
                             ignore: true
                         },
                         {
@@ -133,28 +129,6 @@ const config: CodegenConfig = {
                         {
                             name: 'Permission',
                             fields: [
-                                {
-                                    name: 'roleId',
-                                    ignore: true
-                                }
-                            ]
-                        },
-                        {
-                            name: 'Api',
-                            fields: [
-                                {
-                                    name: 'roleId',
-                                    ignore: true
-                                }
-                            ]
-                        },
-                        {
-                            name: 'Menu',
-                            fields: [
-                                {
-                                    name: 'parentId',
-                                    ignore: true
-                                },
                                 {
                                     name: 'roleId',
                                     ignore: true

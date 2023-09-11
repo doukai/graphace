@@ -4,7 +4,7 @@
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { Card } from '@graphace/ui/components/card';
 	import { Form, FormLoading } from '@graphace/ui/components/form';
-	import { StringItem, ObjectItem } from '@graphace/ui-graphql/components/form';
+	import { StringItem, IntItem, ObjectItem } from '@graphace/ui-graphql/components/form';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
@@ -128,10 +128,12 @@
 		on:back
 	>
 		{#if isFetching}
-			<FormLoading rows={6} />
+			<FormLoading rows={8} />
 		{:else}
 			{#if node}
 				<StringItem label={$LL.graphql.objects.Group.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
+				<StringItem label={$LL.graphql.objects.Group.fields.path.name()} name="path" bind:value={node.path} errors={errors.path} />
+				<IntItem label={$LL.graphql.objects.Group.fields.deep.name()} name="deep" bind:value={node.deep} errors={errors.deep} />
 				<ObjectItem name="parent" path={`${node.id}/parent`} label={$LL.graphql.objects.Group.fields.parent.name()} errors={errors.parent} on:gotoField />
 				<ObjectItem name="subGroups" path={`${node.id}/sub-groups`} label={$LL.graphql.objects.Group.fields.subGroups.name()} errors={errors.subGroups} on:gotoField />
 				<ObjectItem name="users" path={`${node.id}/users`} label={$LL.graphql.objects.Group.fields.users.name()} errors={errors.users} on:gotoField />

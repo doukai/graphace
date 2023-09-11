@@ -16,7 +16,7 @@
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.{{ name }}.fields.{{ objectFieldName }}.name(), PageType.SELECT);
-	$: id = data.{{ idName }} as string;
+	$: {{ idName }} = data.{{ idName }} as string;
 	{%- if connectionField %}
 	$: Query_{{ objectFieldTypeName | camelCase }}Connection = data.Query_{{ objectFieldTypeName | camelCase }}Connection as Query_{{ objectFieldTypeName | camelCase }}ConnectionStore;
 	$: nodes = $Query_{{ objectFieldTypeName | camelCase }}Connection.data?.{{ objectFieldTypeName | camelCase }}Connection?.edges?.map((edge) => edge?.node);
@@ -93,7 +93,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('{{ name }}', { {{ objectFieldName }}: event.detail.selected }, true, $locale)
+		validateMutation('{{ name }}', { {{ idName }}: {{ idName }}, {{ objectFieldName }}: event.detail.selected }, true, $locale)
 			.then((data) => {
 				errors = {};
 				if (!Array.isArray(event.detail.selected)) {

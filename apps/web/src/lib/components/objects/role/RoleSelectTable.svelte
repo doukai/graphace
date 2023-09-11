@@ -177,7 +177,7 @@
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={10} cols={8 + 2}/>
+			<TableLoading rows={10} cols={7 + 2}/>
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
@@ -236,7 +236,7 @@
 						{/if}
 					{/each}
 				{:else}
-					<TableEmpty cols={8 + 2}/>
+					<TableEmpty cols={7 + 2}/>
 				{/if}
 			</tbody>
 		{/if}

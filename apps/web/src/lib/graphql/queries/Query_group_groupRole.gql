@@ -1,7 +1,9 @@
-query Query_group_groupRole($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: GroupRoleOrderBy, $groupBy: [String!], $id: StringExpression, $groupId: IntExpression, $from: GroupExpression, $roleId: IntExpression, $to: RoleExpression, ) {
+query Query_group_groupRole($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: GroupRoleOrderBy, $groupBy: [String!], $id: StringExpression, $roleId: IntExpression, $roleIdType: RoleExpression, $groupId: IntExpression, $groupIdType: GroupExpression, ) {
   group(id: $group_id)  {
     id
     name
+    path
+    deep
     isDeprecated
     version
     realmId
@@ -10,13 +12,13 @@ query Query_group_groupRole($group_id: StringExpression, $first: Int, $last: Int
     updateUserId
     updateTime
     createGroupId
-    groupRoleConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id groupId: $groupId from: $from roleId: $roleId to: $to)  {
+    groupRoleConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId roleIdType: $roleIdType groupId: $groupId groupIdType: $groupIdType)  {
       totalCount
       edges {
         node {
           id
-          groupId
           roleId
+          groupId
           isDeprecated
           version
           realmId

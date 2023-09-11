@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import { ObjectTd, StringTh, StringTd } from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, IDTh, IDTd, StringTh, StringTd } from '@graphace/ui-graphql/components/table';
 	import PermissionTypeTh from '~/lib/components/enums/permission-type/PermissionTypeTh.svelte';
 	import PermissionTypeTd from '~/lib/components/enums/permission-type/PermissionTypeTd.svelte';
-	import PermissionLevelTh from '~/lib/components/enums/permission-level/PermissionLevelTh.svelte';
-	import PermissionLevelTd from '~/lib/components/enums/permission-level/PermissionLevelTd.svelte';
 	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableEmpty } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
@@ -89,10 +87,11 @@
 					</label>
 				</th>
 				<td>{$LL.graphql.objects.Permission.fields.name.name()}</td>
-				<td>{$LL.graphql.objects.Permission.fields.description.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.field.name()}</td>
 				<td>{$LL.graphql.objects.Permission.fields.type.name()}</td>
-				<td>{$LL.graphql.objects.Permission.fields.level.name()}</td>
-				<td>{$LL.graphql.objects.Permission.fields.role.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.permissionType.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.description.name()}</td>
+				<td>{$LL.graphql.objects.Permission.fields.roles.name()}</td>
 				<td>{$LL.graphql.objects.Permission.fields.realm.name()}</td>
 				<th />
 			</tr>
@@ -107,11 +106,29 @@
 									<input type="checkbox" class="checkbox" bind:group={selectedRowList} value={row} />
 								</label>
 							</th>
-							<StringTd
+							<IDTd
 								name="name"
 								bind:value={node.name}
 								readonly
 								errors={errors[row]?.iterms?.name}
+							/>
+							<StringTd
+								name="field"
+								bind:value={node.field}
+								readonly
+								errors={errors[row]?.iterms?.field}
+							/>
+							<StringTd
+								name="type"
+								bind:value={node.type}
+								readonly
+								errors={errors[row]?.iterms?.type}
+							/>
+							<PermissionTypeTd
+								name="permissionType"
+								bind:value={node.permissionType}
+								readonly
+								errors={errors[row]?.iterms?.permissionType}
 							/>
 							<StringTd
 								name="description"
@@ -119,19 +136,7 @@
 								readonly
 								errors={errors[row]?.iterms?.description}
 							/>
-							<PermissionTypeTd
-								name="type"
-								bind:value={node.type}
-								readonly
-								errors={errors[row]?.iterms?.type}
-							/>
-							<PermissionLevelTd
-								name="level"
-								bind:value={node.level}
-								readonly
-								errors={errors[row]?.iterms?.level}
-							/>
-							<ObjectTd name="role" errors={errors[row]?.iterms?.role} path="_/role" on:gotoField />
+							<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
 							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
 							<th class="z-10 w-24">
 								<div class="flex space-x-1">
@@ -171,7 +176,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={6 + 2}/>
+				<TableEmpty cols={7 + 2}/>
 			{/if}
 		</tbody>
 	</Table>

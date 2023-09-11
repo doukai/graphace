@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
-	import { ObjectTd, StringTh, StringTd } from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, StringTh, StringTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import UserTh from '~/lib/components/objects/user/UserTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
@@ -106,9 +106,11 @@
 		if (searchValue) {
 			args.cond = 'OR';
 			args.name = { opr: 'LK', val: `%${searchValue}%` };
+			args.path = { opr: 'LK', val: `%${searchValue}%` };
 		} else {
 			args.cond = undefined;
 			args.name = undefined;
+			args.path = undefined;
 		}
 		
 		if (after) {
@@ -270,6 +272,18 @@
 					bind:sort={orderBy.name}
 					on:filter={query}
 				/>
+				<StringTh
+					name={$LL.graphql.objects.Group.fields.path.name()}
+					bind:expression={args.path}
+					bind:sort={orderBy.path}
+					on:filter={query}
+				/>
+				<IntTh
+					name={$LL.graphql.objects.Group.fields.deep.name()}
+					bind:expression={args.deep}
+					bind:sort={orderBy.deep}
+					on:filter={query}
+				/>
 				<GroupTh
 					name={$LL.graphql.objects.Group.fields.parent.name()}
 					bind:expression={args.parent}
@@ -299,7 +313,7 @@
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={pageSize} cols={6 + 2}/>
+			<TableLoading rows={pageSize} cols={8 + 2}/>
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
@@ -316,6 +330,18 @@
 									bind:value={node.name}
 									on:save={() => updateField({ id: node?.id, name: node?.name })}
 									errors={errors[row]?.iterms?.name}
+								/>
+								<StringTd
+									name="path"
+									bind:value={node.path}
+									on:save={() => updateField({ id: node?.id, path: node?.path })}
+									errors={errors[row]?.iterms?.path}
+								/>
+								<IntTd
+									name="deep"
+									bind:value={node.deep}
+									on:save={() => updateField({ id: node?.id, deep: node?.deep })}
+									errors={errors[row]?.iterms?.deep}
 								/>
 								<ObjectTd name="parent" errors={errors[row]?.iterms?.parent} path={`${node.id}/parent`} on:gotoField />
 								<ObjectTd name="subGroups" errors={errors[row]?.iterms?.subGroups} path={`${node.id}/sub-groups`} on:gotoField />
@@ -398,7 +424,7 @@
 						{/if}
 					{/each}
 				{:else}
-					<TableEmpty cols={6 + 2}/>
+					<TableEmpty cols={8 + 2}/>
 				{/if}
 			</tbody>
 		{/if}

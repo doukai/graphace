@@ -1,7 +1,9 @@
-query Query_group_userGroup($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserGroupOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $from: UserExpression, $groupId: IntExpression, $to: GroupExpression, ) {
+query Query_group_userGroup($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserGroupOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $userIdType: UserExpression, $groupId: IntExpression, $groupIdType: GroupExpression, ) {
   group(id: $group_id)  {
     id
     name
+    path
+    deep
     isDeprecated
     version
     realmId
@@ -10,7 +12,7 @@ query Query_group_userGroup($group_id: StringExpression, $first: Int, $last: Int
     updateUserId
     updateTime
     createGroupId
-    userGroupConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId from: $from groupId: $groupId to: $to)  {
+    userGroupConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId userIdType: $userIdType groupId: $groupId groupIdType: $groupIdType)  {
       totalCount
       edges {
         node {

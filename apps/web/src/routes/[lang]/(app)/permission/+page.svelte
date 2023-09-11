@@ -42,7 +42,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
+		const row = nodes?.map((node) => node?.name)?.indexOf(event.detail.args.name);
 		validateMutation('Permission', event.detail.args, event.detail.update, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {

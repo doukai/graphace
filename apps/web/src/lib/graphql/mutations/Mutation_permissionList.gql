@@ -1,10 +1,10 @@
-mutation Mutation_permissionList($id: ID, $name: String, $description: String, $type: PermissionType, $level: PermissionLevel, $role: RoleInput, $realm: RealmInput, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $roleId: Int, $list: [PermissionInput], $where: PermissionExpression, $update: Boolean = false, $mergeToList: [String]) {
-  permissionList(id: $id name: $name description: $description type: $type level: $level role: $role realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId roleId: $roleId list: $list where: $where) @update(if: $update) @mergeToList(arguments: $mergeToList) {
-    id
+mutation Mutation_permissionList($name: ID, $field: String, $type: String, $permissionType: PermissionType, $description: String, $roles: [RoleInput], $realm: RealmInput, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $rolePermission: [RolePermissionInput], $list: [PermissionInput], $where: PermissionExpression, $update: Boolean = false, $mergeToList: [String]) {
+  permissionList(name: $name field: $field type: $type permissionType: $permissionType description: $description roles: $roles realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId rolePermission: $rolePermission list: $list where: $where) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     name
-    description
+    field
     type
-    level
+    permissionType
+    description
     isDeprecated
     version
     realmId

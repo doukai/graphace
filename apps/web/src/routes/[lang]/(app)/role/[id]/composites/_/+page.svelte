@@ -28,7 +28,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Role', { composites: [event.detail.args] }, true, $locale)
+		validateMutation('Role', { id: id, composites: [event.detail.args] }, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_role_composites.mutate({

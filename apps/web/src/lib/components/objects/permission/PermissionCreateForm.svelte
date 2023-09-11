@@ -4,9 +4,8 @@
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { Card } from '@graphace/ui/components/card';
 	import { Form } from '@graphace/ui/components/form';
-	import { StringItem, ObjectItem } from '@graphace/ui-graphql/components/form';
+	import { IDItem, StringItem, ObjectItem } from '@graphace/ui-graphql/components/form';
 	import PermissionTypeItem from '~/lib/components/enums/permission-type/PermissionTypeItem.svelte';
-	import PermissionLevelItem from '~/lib/components/enums/permission-level/PermissionLevelItem.svelte';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
@@ -82,11 +81,12 @@
 		on:gotoSelect
 		on:back
 	>
-		<StringItem label={$LL.graphql.objects.Permission.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
+		<IDItem label={$LL.graphql.objects.Permission.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
+		<StringItem label={$LL.graphql.objects.Permission.fields.field.name()} name="field" bind:value={node.field} errors={errors.field} />
+		<StringItem label={$LL.graphql.objects.Permission.fields.type.name()} name="type" bind:value={node.type} errors={errors.type} />
+		<PermissionTypeItem label={$LL.graphql.objects.Permission.fields.permissionType.name()} name="permissionType" bind:value={node.permissionType} errors={errors.permissionType} />
 		<StringItem label={$LL.graphql.objects.Permission.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
-		<PermissionTypeItem label={$LL.graphql.objects.Permission.fields.type.name()} name="type" bind:value={node.type} errors={errors.type} />
-		<PermissionLevelItem label={$LL.graphql.objects.Permission.fields.level.name()} name="level" bind:value={node.level} errors={errors.level} />
-		<ObjectItem name="role" path="_/role" label={$LL.graphql.objects.Permission.fields.role.name()} errors={errors.role} on:gotoField />
+		<ObjectItem name="roles" path="_/roles" label={$LL.graphql.objects.Permission.fields.roles.name()} errors={errors.roles} on:gotoField />
 		<ObjectItem name="realm" path="_/realm" label={$LL.graphql.objects.Permission.fields.realm.name()} errors={errors.realm} on:gotoField />
 	</Form>
 </Card>

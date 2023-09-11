@@ -55,7 +55,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('User', { realm: event.detail.args }, true, $locale)
+		validateMutation('User', { id: user?.id, realm: event.detail.args }, true, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_user_realm.mutate({

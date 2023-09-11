@@ -1,7 +1,9 @@
-query Query_group_subGroups($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: GroupOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, ) {
+query Query_group_subGroups($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: GroupOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $path: StringExpression, $deep: IntExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, ) {
   group(id: $group_id)  {
     id
     name
+    path
+    deep
     isDeprecated
     version
     realmId
@@ -10,12 +12,14 @@ query Query_group_subGroups($group_id: StringExpression, $first: Int, $last: Int
     updateUserId
     updateTime
     createGroupId
-    subGroupsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm)  {
+    subGroupsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name path: $path deep: $deep parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm)  {
       totalCount
       edges {
         node {
           id
           name
+          path
+          deep
           isDeprecated
           version
           realmId

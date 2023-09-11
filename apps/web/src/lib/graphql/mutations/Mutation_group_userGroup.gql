@@ -1,7 +1,9 @@
-mutation Mutation_group_userGroup($group_id: ID, $group_userGroup: [UserGroupInput], $first: Int, $last: Int, $offset: Int, $orderBy: UserGroupOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $from: UserExpression, $groupId: IntExpression, $to: GroupExpression, $update: Boolean = false, $mergeToList: [String]) {
+mutation Mutation_group_userGroup($group_id: ID, $group_userGroup: [UserGroupInput], $first: Int, $last: Int, $offset: Int, $orderBy: UserGroupOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $userIdType: UserExpression, $groupId: IntExpression, $groupIdType: GroupExpression, $update: Boolean = false, $mergeToList: [String]) {
   group(id: $group_id userGroup: $group_userGroup) @update(if: $update) @mergeToList(arguments: $mergeToList) {
     id
     name
+    path
+    deep
     isDeprecated
     version
     realmId
@@ -10,7 +12,7 @@ mutation Mutation_group_userGroup($group_id: ID, $group_userGroup: [UserGroupInp
     updateUserId
     updateTime
     createGroupId
-    userGroupConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId from: $from groupId: $groupId to: $to) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    userGroupConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId userIdType: $userIdType groupId: $groupId groupIdType: $groupIdType) @update(if: $update) @mergeToList(arguments: $mergeToList) {
       totalCount
       edges {
         node {

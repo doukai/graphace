@@ -1,5 +1,6 @@
 query Query_current {
   current {
+    id
     name
     lastName
     login
