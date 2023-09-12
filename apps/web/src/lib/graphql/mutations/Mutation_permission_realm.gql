@@ -13,7 +13,7 @@ mutation Mutation_permission_realm($permission_name: ID, $permission_realm: Real
     updateUserId
     updateTime
     createGroupId
-    realm(id: $id name: $name includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    realm(id: $id name: $name includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId) {
       id
       name
       isDeprecated

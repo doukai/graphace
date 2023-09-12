@@ -12,7 +12,7 @@ mutation Mutation_group_roles($group_id: ID, $group_roles: [RoleInput], $first: 
     updateUserId
     updateTime
     createGroupId
-    rolesConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userRole: $userRole groupRole: $groupRole roleComposite: $roleComposite rolePermission: $rolePermission) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    rolesConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userRole: $userRole groupRole: $groupRole roleComposite: $roleComposite rolePermission: $rolePermission) {
       totalCount
       edges {
         node {

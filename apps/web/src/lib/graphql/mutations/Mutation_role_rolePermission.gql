@@ -11,7 +11,7 @@ mutation Mutation_role_rolePermission($role_id: ID, $role_rolePermission: [RoleP
     updateUserId
     updateTime
     createGroupId
-    rolePermissionConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId roleIdType: $roleIdType permissionName: $permissionName permissionNameType: $permissionNameType) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    rolePermissionConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId roleIdType: $roleIdType permissionName: $permissionName permissionNameType: $permissionNameType) {
       totalCount
       edges {
         node {

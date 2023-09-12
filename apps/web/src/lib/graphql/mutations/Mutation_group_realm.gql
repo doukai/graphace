@@ -12,7 +12,7 @@ mutation Mutation_group_realm($group_id: ID, $group_realm: RealmInput, $id: Stri
     updateUserId
     updateTime
     createGroupId
-    realm(id: $id name: $name) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    realm(id: $id name: $name) {
       id
       name
       isDeprecated

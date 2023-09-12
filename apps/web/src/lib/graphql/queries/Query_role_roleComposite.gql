@@ -1,4 +1,4 @@
-query Query_role_roleComposite($role_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RoleCompositeOrderBy, $groupBy: [String!], $id: StringExpression, $roleId: IntExpression, $roleIdType: RoleExpression, $compositeId: IntExpression, $compositeIdType: RoleExpression, ) {
+query Query_role_roleComposite($role_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RoleCompositeOrderBy, $groupBy: [String!], $id: StringExpression, $roleId: IntExpression, $roleIdType: RoleExpression, $compositeId: IntExpression, $compositeIdType: RoleExpression) {
   role(id: $role_id)  {
     id
     name

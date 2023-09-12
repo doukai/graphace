@@ -21,6 +21,7 @@
 		QueryTypeRoleConnectionArgs,
 		MutationTypeRoleArgs
 	} from '~/lib/types/schema';
+	import type { RealmInput } from '$houdini';
 
 	export let nodes: (Role | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;
@@ -45,7 +46,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		};
 		parentMutation: {
-			args: MutationTypeRoleArgs[];
+			args: RealmInput[];
 			update?: boolean;
 			then: (data: Role[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
@@ -191,7 +192,7 @@
 			args: selectedIdList
 				.map((id) => nodes?.find((node) => node?.id === id))
 				.map((node) => {
-					return { ...node, isDeprecated: true };
+					return { ...node!, isDeprecated: true };
 				}),
 			update: true,
 			then: (data) => {

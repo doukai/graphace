@@ -1,4 +1,4 @@
-query Query_role_userRole($role_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserRoleOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $userIdType: UserExpression, $roleId: IntExpression, $roleIdType: RoleExpression, ) {
+query Query_role_userRole($role_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserRoleOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $userIdType: UserExpression, $roleId: IntExpression, $roleIdType: RoleExpression) {
   role(id: $role_id)  {
     id
     name

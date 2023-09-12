@@ -15,7 +15,7 @@ mutation Mutation_user_userPhones($user_id: ID, $user_userPhones: [UserPhonesInp
     updateUserId
     updateTime
     createGroupId
-    userPhonesConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId userIdType: $userIdType phone: $phone) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    userPhonesConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId userIdType: $userIdType phone: $phone) {
       totalCount
       edges {
         node {

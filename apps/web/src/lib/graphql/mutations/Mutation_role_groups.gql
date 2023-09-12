@@ -11,7 +11,7 @@ mutation Mutation_role_groups($role_id: ID, $role_groups: [GroupInput], $first: 
     updateUserId
     updateTime
     createGroupId
-    groupsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name path: $path deep: $deep parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    groupsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name path: $path deep: $deep parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm) {
       totalCount
       edges {
         node {

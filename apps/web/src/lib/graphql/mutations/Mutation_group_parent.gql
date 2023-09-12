@@ -12,7 +12,7 @@ mutation Mutation_group_parent($group_id: ID, $group_parent: GroupInput, $id: St
     updateUserId
     updateTime
     createGroupId
-    parent(id: $id name: $name path: $path deep: $deep parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    parent(id: $id name: $name path: $path deep: $deep parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm) {
       id
       name
       path

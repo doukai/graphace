@@ -12,7 +12,7 @@ mutation Mutation_group_groupRole($group_id: ID, $group_groupRole: [GroupRoleInp
     updateUserId
     updateTime
     createGroupId
-    groupRoleConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId roleIdType: $roleIdType groupId: $groupId groupIdType: $groupIdType) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    groupRoleConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId roleIdType: $roleIdType groupId: $groupId groupIdType: $groupIdType) {
       totalCount
       edges {
         node {

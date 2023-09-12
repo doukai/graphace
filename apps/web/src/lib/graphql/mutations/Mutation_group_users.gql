@@ -12,7 +12,7 @@ mutation Mutation_group_users($group_id: ID, $group_users: [UserInput], $first: 
     updateUserId
     updateTime
     createGroupId
-    usersConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name lastName: $lastName login: $login salt: $salt hash: $hash email: $email phones: $phones disable: $disable groups: $groups roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userPhones: $userPhones userGroup: $userGroup userRole: $userRole) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    usersConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name lastName: $lastName login: $login salt: $salt hash: $hash email: $email phones: $phones disable: $disable groups: $groups roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userPhones: $userPhones userGroup: $userGroup userRole: $userRole) {
       totalCount
       edges {
         node {

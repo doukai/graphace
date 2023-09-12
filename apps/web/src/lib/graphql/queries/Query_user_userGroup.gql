@@ -1,4 +1,4 @@
-query Query_user_userGroup($user_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserGroupOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $userIdType: UserExpression, $groupId: IntExpression, $groupIdType: GroupExpression, ) {
+query Query_user_userGroup($user_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserGroupOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $userIdType: UserExpression, $groupId: IntExpression, $groupIdType: GroupExpression) {
   user(id: $user_id)  {
     id
     name

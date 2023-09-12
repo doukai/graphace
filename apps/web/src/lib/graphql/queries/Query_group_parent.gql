@@ -1,4 +1,4 @@
-query Query_group_parent($group_id: StringExpression, $id: StringExpression, $name: StringExpression, $path: StringExpression, $deep: IntExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, ) {
+query Query_group_parent($group_id: StringExpression, $id: StringExpression, $name: StringExpression, $path: StringExpression, $deep: IntExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression) {
   group(id: $group_id)  {
     id
     name

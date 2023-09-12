@@ -11,7 +11,7 @@ mutation Mutation_role_realm($role_id: ID, $role_realm: RealmInput, $id: StringE
     updateUserId
     updateTime
     createGroupId
-    realm(id: $id name: $name) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    realm(id: $id name: $name) {
       id
       name
       isDeprecated

@@ -9,6 +9,7 @@
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
 	import type { Realm, MutationTypeRealmArgs } from '~/lib/types/schema';
+	import type { RealmInput } from '$houdini';
 
 	export let node: Realm | null | undefined;
 	export let isFetching: boolean;
@@ -26,7 +27,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		};
 		parentMutation: {
-			args: MutationTypeRealmArgs | null;
+			args: RealmInput | null;
 			update?: boolean;
 			then: (data: Realm | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;

@@ -1,4 +1,4 @@
-query Query_permission_realm($permission_name: StringExpression, $id: StringExpression, $name: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, ) {
+query Query_permission_realm($permission_name: StringExpression, $id: StringExpression, $name: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression) {
   permission(name: $permission_name)  {
     name
     field

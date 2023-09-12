@@ -20,7 +20,7 @@ mutation Mutation_{{ name }}_{{ objectField.name }}
     {{ objectField.name }}Connection 
     {%- if objectField.connectionField.args and objectField.connectionField.args.length > 0 -%}
     ({% for arg in objectField.connectionField.args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})
-    {%- endif %}{% if objectField.connectionField.args and objectField.connectionField.args.length > 0 %} @update(if: $update) @mergeToList(arguments: $mergeToList){% endif %} {
+    {%- endif %}{% if objectField.connectionField.args and objectField.connectionField.args.length > 0 %}{% endif %} {
       totalCount
       edges {
         node {
@@ -34,7 +34,7 @@ mutation Mutation_{{ name }}_{{ objectField.name }}
     {{ objectField.name }} 
     {%- if objectField.args and objectField.args.length > 0 -%}
     ({% for arg in objectField.args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})
-    {%- endif %}{% if objectField.args and objectField.args.length > 0 %} @update(if: $update) @mergeToList(arguments: $mergeToList){% endif %} {
+    {%- endif %}{% if objectField.args and objectField.args.length > 0 %}{% endif %} {
       {%- for field in objectField.fields %}
       {{ field.name }}
       {%- endfor %}

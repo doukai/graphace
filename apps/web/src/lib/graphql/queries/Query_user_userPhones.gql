@@ -1,4 +1,4 @@
-query Query_user_userPhones($user_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserPhonesOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $userIdType: UserExpression, $phone: StringExpression, ) {
+query Query_user_userPhones($user_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserPhonesOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $userIdType: UserExpression, $phone: StringExpression) {
   user(id: $user_id)  {
     id
     name

@@ -11,7 +11,7 @@ mutation Mutation_role_roleComposite($role_id: ID, $role_roleComposite: [RoleCom
     updateUserId
     updateTime
     createGroupId
-    roleCompositeConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId roleIdType: $roleIdType compositeId: $compositeId compositeIdType: $compositeIdType) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    roleCompositeConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId roleIdType: $roleIdType compositeId: $compositeId compositeIdType: $compositeIdType) {
       totalCount
       edges {
         node {

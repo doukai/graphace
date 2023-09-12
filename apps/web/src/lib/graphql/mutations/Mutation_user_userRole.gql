@@ -15,7 +15,7 @@ mutation Mutation_user_userRole($user_id: ID, $user_userRole: [UserRoleInput], $
     updateUserId
     updateTime
     createGroupId
-    userRoleConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId userIdType: $userIdType roleId: $roleId roleIdType: $roleIdType) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+    userRoleConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId userIdType: $userIdType roleId: $roleId roleIdType: $roleIdType) {
       totalCount
       edges {
         node {
