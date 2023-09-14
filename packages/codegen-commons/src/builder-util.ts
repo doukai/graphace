@@ -238,10 +238,10 @@ export function getFieldArrayComponent(
     return undefined;
 }
 
-export function getQueryTypeName() { return builderConfig?.queryTypeName };
+export function getQueryTypeName() { return builderConfig?.queryTypeName || 'Query' };
 
-export function getMutationTypeName() { return builderConfig?.mutationTypeName };
+export function getMutationTypeName() { return builderConfig?.mutationTypeName || 'Mutation' };
 
-export function getSubscriptionTypeName() { return builderConfig?.subscriptionTypeName };
+export function getSubscriptionTypeName() { return builderConfig?.subscriptionTypeName || 'Subscription' };
 
 export const isOperationType = (name?: string): boolean => { return [builderConfig?.queryTypeName, builderConfig?.mutationTypeName, builderConfig?.subscriptionTypeName].some(typeName => name === typeName) };

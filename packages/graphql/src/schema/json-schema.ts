@@ -155,8 +155,9 @@ export function objectNameToUri(operationTypeName: string, objectName: string, d
     const fieldName = objectNameToFieldName(objectName);
     let uri = operationTypeName + "_" + fieldName;
     if (Array.isArray(data)) {
-        uri += "List";
+        uri += "List_Arguments";
     } else {
+        uri += "_Arguments";
         if (Object.keys(data).includes('where')) {
             uri += "_update";
         }

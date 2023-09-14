@@ -2,7 +2,7 @@ import type { Types } from "@graphql-codegen/plugin-helpers";
 import { assertObjectType, isEnumType, isListType, isObjectType } from "graphql";
 import type { GraphacePresetConfig } from "./config";
 import * as changeCase from "change-case";
-import { isOperationType, isAggregate, isConnection, isEdge, isPageInfo, isIntrospection, isInnerEnum, getFieldType, getObjectFields, getIDFieldName, queryTypeName, mutationTypeName, initConfig, inGraphQLField, inComponentEnum, inComponentObject, inRouteObject, inDetailField } from 'graphace-codegen-commons'
+import { isOperationType, isAggregate, isConnection, isEdge, isPageInfo, isIntrospection, isInnerEnum, getFieldType, getObjectFields, getIDFieldName, initConfig, inGraphQLField, inComponentEnum, inComponentObject, inRouteObject, inDetailField, getQueryTypeName, getMutationTypeName } from 'graphace-codegen-commons'
 import { buildPath } from "./builder";
 
 const _graphqlPath = 'lib/graphql';
@@ -44,10 +44,10 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         initConfig(options.presetConfig.builder);
 
         const targetQueryFields = Object.values(queryFields)
-            .filter(queryField => inGraphQLField(queryTypeName, queryField.name, getFieldType(queryField.type).name));
+            .filter(queryField => inGraphQLField(getQueryTypeName(), queryField.name, getFieldType(queryField.type).name));
 
         const targetMutationFields = Object.values(mutationFields)
-            .filter(mutationField => inGraphQLField(mutationTypeName, mutationField.name, getFieldType(mutationField.type).name));
+            .filter(mutationField => inGraphQLField(getMutationTypeName(), mutationField.name, getFieldType(mutationField.type).name));
 
         const targetComponentObjectTypes = objectTypes
             .filter(type => inComponentObject(type.name));

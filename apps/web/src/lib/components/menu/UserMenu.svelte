@@ -17,8 +17,8 @@
 		tabindex="0"
 		class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
 	>
-		<li><a>{$LL.web.components.userMenu.profile()}</a></li>
-		<li><a>{$LL.web.components.userMenu.settings()}</a></li>
+		<li><a href={undefined}>{$LL.web.components.userMenu.profile()}</a></li>
+		<li><a href={undefined}>{$LL.web.components.userMenu.settings()}</a></li>
 		<div class="divider mt-0 mb-0" />
 		<li><a href={`/${$locale}/logout`}>{$LL.web.components.userMenu.logout()}</a></li>
 	</ul>

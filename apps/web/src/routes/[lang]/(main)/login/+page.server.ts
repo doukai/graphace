@@ -9,7 +9,7 @@ export const actions = {
         const data = await event.request.formData();
         const login = data.get('login')?.toString() || undefined;
         const password = data.get('password')?.toString() || undefined;
-        const errors = await validateAsync('MutationType_login', { login, password }, event.locals.locale);
+        const errors = await validateAsync('Mutation_login_Arguments', { login, password }, event.locals.locale);
         if (errors) {
             return fail(400, { errors, logining: false });
         }

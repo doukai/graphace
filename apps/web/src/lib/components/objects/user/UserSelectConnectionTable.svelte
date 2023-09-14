@@ -9,12 +9,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ArchiveBoxArrowDown } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
-	import type {
-		User,
-		UserOrderBy,
-		QueryUserConnectionArgs,
-		UserInput
-	} from '~/lib/types/schema';
+	import type { User, UserOrderBy, QueryUserConnectionArgs, UserInput } from '~/lib/types/schema';
 
 	export let nodes: (User | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;
@@ -55,7 +50,10 @@
 		? []
 		: undefined;
 
-	$: if (selectedIdList && !Array.isArray(selectedIdList) || Array.isArray(selectedIdList) && selectedIdList.length > 0) {
+	$: if (
+		(selectedIdList && !Array.isArray(selectedIdList)) ||
+		(Array.isArray(selectedIdList) && selectedIdList.length > 0)
+	) {
 		showSelectButton = true;
 	} else {
 		showSelectButton = false;
@@ -113,7 +111,7 @@
 			args.email = undefined;
 			args.phones = undefined;
 		}
-		
+
 		if (after) {
 			args.after = after;
 			args.first = pageSize;
@@ -165,7 +163,9 @@
 		on:select={() =>
 			dispatch('select', {
 				selected: Array.isArray(selectedIdList)
-					? selectedIdList.flatMap((id) => nodes?.find((node) => node?.id === id))
+					? selectedIdList.map((id) => {
+							return { id, where: { id: { val: id } } };
+					  })
 					: nodes?.find((node) => node?.id === selectedIdList),
 				then: () => {
 					notifications.success($LL.web.message.saveSuccess());
@@ -237,7 +237,7 @@
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={pageSize} cols={9 + 2}/>
+			<TableLoading rows={pageSize} cols={9 + 2} />
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
@@ -247,47 +247,63 @@
 								<th class="z-10 w-12">
 									<label>
 										{#if multipleSelect}
-											<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
+											<input
+												type="checkbox"
+												class="checkbox"
+												bind:group={selectedIdList}
+												value={node.id}
+											/>
 										{:else}
-											<input type="radio" class="radio" bind:group={selectedIdList} value={node.id} />
+											<input
+												type="radio"
+												class="radio"
+												bind:group={selectedIdList}
+												value={node.id}
+											/>
 										{/if}
 									</label>
 								</th>
 								<StringTd
 									name="name"
 									bind:value={node.name}
-									on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+									on:save={() =>
+										updateField({ name: node?.name, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.name}
 								/>
 								<StringTd
 									name="lastName"
 									bind:value={node.lastName}
-									on:save={() => updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } })}
+									on:save={() =>
+										updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.lastName}
 								/>
 								<StringTd
 									name="login"
 									bind:value={node.login}
-									on:save={() => updateField({ login: node?.login, where: { id: { val: node?.id } } })}
+									on:save={() =>
+										updateField({ login: node?.login, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.login}
 								/>
 								<StringTd
 									name="email"
 									bind:value={node.email}
-									on:save={() => updateField({ email: node?.email, where: { id: { val: node?.id } } })}
+									on:save={() =>
+										updateField({ email: node?.email, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.email}
 								/>
 								<StringTd
 									name="phones"
 									bind:value={node.phones}
 									list
-									on:save={() => updateField({ phones: node?.phones, where: { id: { val: node?.id } } })}
+									on:save={() =>
+										updateField({ phones: node?.phones, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.phones}
 								/>
 								<BooleanTd
 									name="disable"
 									bind:value={node.disable}
-									on:save={() => updateField({ disable: node?.disable, where: { id: { val: node?.id } } })}
+									on:save={() =>
+										updateField({ disable: node?.disable, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.disable}
 								/>
 								<th class="z-10 w-12">
@@ -321,7 +337,7 @@
 						{/if}
 					{/each}
 				{:else}
-					<TableEmpty cols={9 + 2}/>
+					<TableEmpty cols={9 + 2} />
 				{/if}
 			</tbody>
 		{/if}
