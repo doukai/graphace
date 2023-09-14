@@ -5,7 +5,7 @@
 	import RealmCreateForm from '~/lib/components/objects/realm/RealmCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
-	import type { MutationTypeRealmArgs, Realm } from '~/lib/types/schema';
+	import type { MutationRealmArgs, Realm } from '~/lib/types/schema';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Query_group_realmStore, Mutation_group_realmStore, Mutation_realmStore } from '$houdini';
 	import type { PageData } from './$houdini';
@@ -25,16 +25,15 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeRealmArgs;
-			update?: boolean;
+			args: MutationRealmArgs;
 			then: (data: Realm | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Realm', event.detail.args, true, $locale)
+		validateMutation('Realm', event.detail.args, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_realm.mutate({ ...event.detail.args, update: true })
+				Mutation_realm.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.realm);
 						if (result.errors) {
@@ -49,19 +48,17 @@
 
 	const parentMutation = (
 		event: CustomEvent<{
-			args: MutationTypeRealmArgs | null;
-			update?: boolean;
+			args: MutationRealmArgs | null;
 			then: (data: Realm | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Group', { id: group?.id, realm: event.detail.args }, true, $locale)
+		validateMutation('Group', { id: group?.id, realm: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_group_realm.mutate({
 					group_id: group?.id,
-					group_realm: event.detail.args,
-					update: true
+					group_realm: event.detail.args
 				})
 					.then((result) => {
 						event.detail.then(result?.data?.group?.realm);

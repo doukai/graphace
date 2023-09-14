@@ -6,7 +6,7 @@
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Mutation_roleStore } from '$houdini';
-	import type { MutationTypeRoleArgs, Role } from '~/lib/types/schema';
+	import type { MutationRoleArgs, Role } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -14,22 +14,21 @@
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Role.name(), PageType.CREATE);
-	$: node = data.node as MutationTypeRoleArgs;
+	$: node = data.node as MutationRoleArgs;
 	$: errors = data.errors as Record<number, Errors>;
 
 	const Mutation_role = new Mutation_roleStore();
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeRoleArgs;
-			update?: boolean;
+			args: MutationRoleArgs;
 			then: (data: Role | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Role', event.detail.args, event.detail.update, $locale)
+		validateMutation('Role', event.detail.args, $locale)
 			.then((data) => {
-				Mutation_role.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_role.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.role);
 						if (result.errors) {

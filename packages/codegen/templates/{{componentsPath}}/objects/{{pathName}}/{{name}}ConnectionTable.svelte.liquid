@@ -25,8 +25,8 @@
 	import type {
 		{{ name }},
 		{{ name }}OrderBy,
-		QueryType{{ name }}ConnectionArgs,
-		MutationType{{ name }}Args
+		{{ queryTypeName }}{{ name }}ConnectionArgs,
+		{{ name }}Input
 	} from '~/{{ schemaTypesPath }}';
 
 	export let nodes: ({{ name }} | null | undefined)[] | null | undefined;
@@ -41,19 +41,17 @@
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
-			args: QueryType{{ name }}ConnectionArgs;
+			args: {{ queryTypeName }}{{ name }}ConnectionArgs;
 			then: (data: ({{ name }} | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		mutation: {
-			args: MutationType{{ name }}Args;
-			update?: boolean;
+			args: {{ name }}Input;
 			then: (data: {{ name }} | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		parentMutation: {
-			args: MutationType{{ name }}Args[];
-			update?: boolean;
+			args: {{ name }}Input[];
 			then: (data: {{ name }}[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
@@ -64,7 +62,7 @@
 		back: {};
 	}>();
 
-	let args: QueryType{{ name }}ConnectionArgs = {};
+	let args: {{ queryTypeName }}{{ name }}ConnectionArgs = {};
 	let orderBy: {{ name }}OrderBy = {};
 	let after: string | undefined;
 	let before: string | undefined;
@@ -110,7 +108,7 @@
 	};
 
 	const search = (searchValue: string | undefined) => {
-		let args: QueryType{{ name }}ConnectionArgs = {};
+		let args: {{ queryTypeName }}{{ name }}ConnectionArgs = {};
 		if (searchValue) {
 			args.cond = 'OR';
 			{%- if fields %}
@@ -154,11 +152,10 @@
 		});
 	};
 
-	const updateField = (args: MutationType{{ name }}Args | null | undefined) => {
+	const updateField = (args: {{ name }}Input | null | undefined) => {
 		if (args) {
 			dispatch('mutation', {
 				args,
-				update: true,
 				then: (data) => {
 					notifications.success($LL.web.message.saveSuccess());
 				},
@@ -173,7 +170,6 @@
 	const removeRow = (id: string) => {
 		dispatch('mutation', {
 			args: { id: id, isDeprecated: true },
-			update: true,
 			then: (data) => {
 				notifications.success($LL.web.message.removeSuccess());
 				query();
@@ -191,7 +187,6 @@
 				where: { id: { opr: 'IN', in: selectedIdList } },
 				isDeprecated: true
 			},
-			update: true,
 			then: (data) => {
 				notifications.success($LL.web.message.removeSuccess());
 				query();
@@ -210,7 +205,6 @@
 				.map((node) => {
 					return { ...node, isDeprecated: true };
 				}),
-			update: true,
 			then: (data) => {
 				notifications.success($LL.web.message.unbindSuccess());
 				query();
@@ -337,7 +331,7 @@
 									list
 									{%- endif %}
 									{%- if field.inMutationArgs and field.fieldName != idName %}
-									on:save={() => updateField({ {{ idName }}: node?.{{ idName }}, {{ field.fieldName }}: node?.{{ field.fieldName }} })}
+									on:save={() => updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } })}
 									{%- else %}
 									readonly
 									{%- endif %}

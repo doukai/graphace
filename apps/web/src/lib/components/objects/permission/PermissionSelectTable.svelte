@@ -13,8 +13,8 @@
 	import type {
 		Permission,
 		PermissionOrderBy,
-		QueryTypePermissionListArgs,
-		MutationTypePermissionArgs
+		QueryPermissionListArgs,
+		PermissionInput
 	} from '~/lib/types/schema';
 
 	export let nodes: (Permission | null | undefined)[] | null | undefined;
@@ -25,18 +25,17 @@
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
-			args: QueryTypePermissionListArgs;
+			args: QueryPermissionListArgs;
 			then: (data: (Permission | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		mutation: {
-			args: MutationTypePermissionArgs;
-			update?: boolean;
+			args: PermissionInput;
 			then: (data: Permission | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		select: {
-			selected: MutationTypePermissionArgs | null | undefined | (MutationTypePermissionArgs | null | undefined)[];
+			selected: PermissionInput | null | undefined | (PermissionInput | null | undefined)[];
 			then: () => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
@@ -44,7 +43,7 @@
 	}>();
 
 	let showSelectButton = false;
-	let args: QueryTypePermissionListArgs = {};
+	let args: QueryPermissionListArgs = {};
 	let orderBy: PermissionOrderBy = {};
 
 	let selectAll: boolean;
@@ -78,7 +77,7 @@
 	};
 
 	const search = (searchValue: string | undefined) => {
-		let args: QueryTypePermissionListArgs = {};
+		let args: QueryPermissionListArgs = {};
 		if (searchValue) {
 			args.cond = 'OR';
 			args.field = { opr: 'LK', val: `%${searchValue}%` };
@@ -103,11 +102,10 @@
 		});
 	};
 
-	const updateField = (args: MutationTypePermissionArgs | null | undefined) => {
+	const updateField = (args: PermissionInput | null | undefined) => {
 		if (args) {
 			dispatch('mutation', {
 				args,
-				update: true,
 				then: (data) => {
 					notifications.success($LL.web.message.saveSuccess());
 				},
@@ -224,25 +222,25 @@
 								<StringTd
 									name="field"
 									bind:value={node.field}
-									on:save={() => updateField({ name: node?.name, field: node?.field })}
+									on:save={() => updateField({ field: node?.field, where: { name: { val: node?.name } } })}
 									errors={errors[row]?.iterms?.field}
 								/>
 								<StringTd
 									name="type"
 									bind:value={node.type}
-									on:save={() => updateField({ name: node?.name, type: node?.type })}
+									on:save={() => updateField({ type: node?.type, where: { name: { val: node?.name } } })}
 									errors={errors[row]?.iterms?.type}
 								/>
 								<PermissionTypeTd
 									name="permissionType"
 									bind:value={node.permissionType}
-									on:save={() => updateField({ name: node?.name, permissionType: node?.permissionType })}
+									on:save={() => updateField({ permissionType: node?.permissionType, where: { name: { val: node?.name } } })}
 									errors={errors[row]?.iterms?.permissionType}
 								/>
 								<StringTd
 									name="description"
 									bind:value={node.description}
-									on:save={() => updateField({ name: node?.name, description: node?.description })}
+									on:save={() => updateField({ description: node?.description, where: { name: { val: node?.name } } })}
 									errors={errors[row]?.iterms?.description}
 								/>
 								<th class="z-10 w-12">

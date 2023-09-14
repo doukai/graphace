@@ -8,7 +8,7 @@
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
-	import type { Group, MutationTypeGroupArgs } from '~/lib/types/schema';
+	import type { Group, GroupInput } from '~/lib/types/schema';
 
 	export let node: Group | null | undefined;
 	export let isFetching: boolean;
@@ -20,14 +20,12 @@
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
-			args: MutationTypeGroupArgs;
-			update?: boolean;
+			args: GroupInput;
 			then: (data: Group | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		parentMutation: {
-			args: MutationTypeGroupArgs | null;
-			update?: boolean;
+			args: GroupInput | null;
 			then: (data: Group | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
@@ -39,7 +37,6 @@
 		if (node) {
 			dispatch('mutation', {
 				args: node,
-				update: true,
 				then: (data) => {
 					node = data;
 					notifications.success($LL.web.message.saveSuccess());
@@ -57,7 +54,6 @@
 		if (node) {
 			dispatch('mutation', {
 				args: { id: node.id, isDeprecated: true },
-				update: true,
 				then: (data) => {
 					notifications.success($LL.web.message.removeSuccess());
 					dispatch('back');
@@ -74,7 +70,6 @@
 		if (node) {
 			dispatch('parentMutation', {
 				args: null,
-				update: true,
 				then: (data) => {
 					notifications.success($LL.web.message.unbindSuccess());
 					dispatch('back');

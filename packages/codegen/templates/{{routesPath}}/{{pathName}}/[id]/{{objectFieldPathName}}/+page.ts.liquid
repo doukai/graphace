@@ -2,11 +2,11 @@ import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
 import type { Errors } from '@graphace/commons/types';
 import { load_Query_{{ name | camelCase }}_{{ objectFieldName }} } from '$houdini';
-import type { MutationType{{ objectFieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
+import type { {{ mutationTypeName }}{{ objectFieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
 import { getNode, getErrors } from '@graphace/commons/utils/url-util';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    const node: MutationType{{ objectFieldTypeName }}Args = getNode(event.url) || {};
+    const node: {{ mutationTypeName }}{{ objectFieldTypeName }}Args = getNode(event.url) || {};
 	const errors: Record<string, Errors> = getErrors(event.url) || {};
     return {
         node,

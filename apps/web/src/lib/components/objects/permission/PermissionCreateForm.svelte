@@ -9,9 +9,9 @@
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
-	import type { Permission, MutationTypePermissionArgs } from '~/lib/types/schema';
+	import type { Permission, PermissionInput } from '~/lib/types/schema';
 
-	export let node: MutationTypePermissionArgs = {};
+	export let node: PermissionInput = {};
 	export let errors: Record<string, Errors> = {};
 	export let showRemoveButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
@@ -19,8 +19,7 @@
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
-			args: MutationTypePermissionArgs;
-			update?: boolean;
+			args: PermissionInput;
 			then: (data: Permission | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};

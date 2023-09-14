@@ -1,5 +1,5 @@
-mutation Mutation_role_groups($role_id: ID, $role_groups: [GroupInput], $first: Int, $last: Int, $offset: Int, $orderBy: GroupOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $path: StringExpression, $deep: IntExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $update: Boolean = false, $mergeToList: [String]) {
-  role(id: $role_id groups: $role_groups) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+mutation Mutation_role_groups($role_id: ID, $role_groups: [GroupInput], $first: Int, $last: Int, $offset: Int, $orderBy: GroupOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $path: StringExpression, $deep: IntExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $mergeToList: [String]) {
+  role(id: $role_id groups: $role_groups) @mergeToList(arguments: $mergeToList) {
     id
     name
     description

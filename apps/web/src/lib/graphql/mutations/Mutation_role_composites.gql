@@ -1,5 +1,5 @@
-mutation Mutation_role_composites($role_id: ID, $role_composites: [RoleInput], $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $groups: GroupExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $update: Boolean = false, $mergeToList: [String]) {
-  role(id: $role_id composites: $role_composites) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+mutation Mutation_role_composites($role_id: ID, $role_composites: [RoleInput], $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $groups: GroupExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $mergeToList: [String]) {
+  role(id: $role_id composites: $role_composites) @mergeToList(arguments: $mergeToList) {
     id
     name
     description

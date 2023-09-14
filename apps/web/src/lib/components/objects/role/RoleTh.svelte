@@ -4,7 +4,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel } from '@steeze-ui/heroicons';
 	import { StringInput } from '@graphace/ui-graphql/components/input';
-	import type { StringExpression } from '@graphace/graphql/types';
+	import type { StringExpression } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 	import type { RoleExpression } from '$houdini';
 

@@ -1,5 +1,5 @@
-mutation Mutation_realm($id: ID, $name: String, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $where: RealmExpression, $update: Boolean = false, $mergeToList: [String]) {
-  realm(id: $id name: $name isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId where: $where) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+mutation Mutation_realm($id: ID, $name: String, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $where: RealmExpression, $mergeToList: [String]) {
+  realm(id: $id name: $name isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId where: $where) @mergeToList(arguments: $mergeToList) {
     id
     name
     isDeprecated

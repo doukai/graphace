@@ -4,7 +4,7 @@
 	import RoleConnectionTable from '~/lib/components/objects/role/RoleConnectionTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
-	import type { MutationTypeRoleArgs, QueryTypeRoleConnectionArgs, Role } from '~/lib/types/schema';
+	import type { MutationRoleArgs, QueryRoleConnectionArgs, Role } from '~/lib/types/schema';
 	import { Query_group_rolesStore, Mutation_roleStore, Mutation_group_rolesStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validateMutation } from '~/lib/utils';
@@ -24,7 +24,7 @@
 
 	const fetch = (
 		event: CustomEvent<{
-			args: QueryTypeRoleConnectionArgs;
+			args: QueryRoleConnectionArgs;
 			then: (data: (Role | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
@@ -42,19 +42,18 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeRoleArgs;
-			update?: boolean;
+			args: MutationRoleArgs;
 			then: (data: Role | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
-		validateMutation('Role', event.detail.args, event.detail.update, $locale)
+		validateMutation('Role', event.detail.args, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_role.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_role.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.role);
 						if (result.errors) {
@@ -71,19 +70,17 @@
 
 	const parentMutation = (
 		event: CustomEvent<{
-			args: MutationTypeRoleArgs[];
-			update?: boolean;
+			args: MutationRoleArgs[];
 			then: (data: Role[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Group', { id: id, roles: event.detail.args }, true, $locale)
+		validateMutation('Group', { id: id, roles: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_group_roles.mutate({
 					group_id: id,
 					group_roles: event.detail.args,
-					update: true,
 					mergeToList: ['roles']
 				})
 					.then((result) => {

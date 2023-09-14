@@ -5,7 +5,7 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import type {
-		MutationTypeGroupArgs,
+		MutationGroupArgs,
 		Group
 	} from '~/lib/types/schema';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam, getPathParam } from '@graphace/commons/utils/url-util';
@@ -14,13 +14,12 @@
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Group.fields.parent.name());
-	$: node = data.node as MutationTypeGroupArgs;
+	$: node = data.node as MutationGroupArgs;
 	$: errors = data.errors as Record<string, Errors>;
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeGroupArgs;
-			update?: boolean;
+			args: MutationGroupArgs;
 			then: (data: Group | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>

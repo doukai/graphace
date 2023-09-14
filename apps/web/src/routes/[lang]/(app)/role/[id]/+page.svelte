@@ -6,7 +6,7 @@
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { Query_roleStore, Mutation_roleStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import type { MutationTypeRoleArgs, Role } from '~/lib/types/schema';
+	import type { MutationRoleArgs, Role } from '~/lib/types/schema';
 	import { validateMutation } from '~/lib/utils';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -19,16 +19,15 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeRoleArgs;
-			update?: boolean;
+			args: MutationRoleArgs;
 			then: (data: Role | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Role', event.detail.args, event.detail.update, $locale)
+		validateMutation('Role', event.detail.args, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_role.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_role.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.role);
 						if (result.errors) {

@@ -6,7 +6,7 @@
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { Query_userStore, Mutation_userStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import type { MutationTypeUserArgs, User } from '~/lib/types/schema';
+	import type { MutationUserArgs, User } from '~/lib/types/schema';
 	import { validateMutation } from '~/lib/utils';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -19,16 +19,15 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeUserArgs;
-			update?: boolean;
+			args: MutationUserArgs;
 			then: (data: User | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('User', event.detail.args, event.detail.update, $locale)
+		validateMutation('User', event.detail.args, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_user.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_user.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.user);
 						if (result.errors) {

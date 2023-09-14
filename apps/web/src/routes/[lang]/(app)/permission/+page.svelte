@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import PermissionConnectionTable from '~/lib/components/objects/permission/PermissionConnectionTable.svelte';
-	import type { Permission, QueryTypePermissionConnectionArgs, MutationTypePermissionArgs } from '~/lib/types/schema';
+	import type { Permission, QueryPermissionConnectionArgs, MutationPermissionArgs } from '~/lib/types/schema';
 	import { Query_permissionConnectionStore, Mutation_permissionStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validateMutation } from '~/lib/utils';
@@ -20,7 +20,7 @@
 
 	const fetch = (
 		event: CustomEvent<{
-			args: QueryTypePermissionConnectionArgs;
+			args: QueryPermissionConnectionArgs;
 			then: (data: (Permission | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
@@ -36,19 +36,18 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypePermissionArgs;
-			update?: boolean;
+			args: MutationPermissionArgs;
 			then: (data: Permission | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.name)?.indexOf(event.detail.args.name);
-		validateMutation('Permission', event.detail.args, event.detail.update, $locale)
+		validateMutation('Permission', event.detail.args, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_permission.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_permission.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.permission);
 						if (result.errors) {

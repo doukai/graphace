@@ -11,20 +11,20 @@ import { validate as _validate, validateAsync as _validateAsync, objectNameToFie
 export const ajv = addFormats(new Ajv({ loadSchema: loadSchema, allErrors: true, messages: false }));
 
 export async function loadSchema(uri: string) {
-    const res = await fetch(`${PUBLIC_SCHEMA_URL}/${uri}`);
+    const res = await fetch(`${PUBLIC_SCHEMA_URL!}/${uri}`);
     return res.json();
 }
 
 export async function validateQuery(objectName: string, data: object, list: boolean | undefined, locale: Language = "en"): Promise<object> {
-    let uri = PUBLIC_QUERY_TYPE_NAME + "_" + objectNameToFieldName(objectName);
+    let uri = PUBLIC_QUERY_TYPE_NAME || 'Query' + "_" + objectNameToFieldName(objectName);
     if (list) {
         uri += "List";
     }
     return _validate(ajv, loadSchema, uri, data, locale);
 }
 
-export async function validateMutation(objectName: string, data: object, update: boolean | undefined, locale: Language = "en"): Promise<object> {
-    const uri = objectNameToUri(PUBLIC_MUTATION_TYPE_NAME, objectName, data, update);
+export async function validateMutation(objectName: string, data: object, locale: Language = "en"): Promise<object> {
+    const uri = objectNameToUri(PUBLIC_MUTATION_TYPE_NAME || 'Mutation', objectName, data);
     if (Array.isArray(data)) {
         return _validate(ajv, loadSchema, uri, { list: data }, locale);
     }
@@ -32,7 +32,7 @@ export async function validateMutation(objectName: string, data: object, update:
 }
 
 export async function validateSubscription(objectName: string, data: object, list: boolean | undefined, locale: Language = "en"): Promise<object> {
-    let uri = PUBLIC_SUBSCRIPTION_TYPE_NAME + "_" + objectNameToFieldName(objectName);
+    let uri = PUBLIC_SUBSCRIPTION_TYPE_NAME || 'Subscription' + "_" + objectNameToFieldName(objectName);
     if (list) {
         uri += "List";
     }

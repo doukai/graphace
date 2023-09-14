@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import PermissionCreateForm from '~/lib/components/objects/permission/PermissionCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { MutationTypePermissionArgs, Permission } from '~/lib/types/schema';
+	import type { MutationPermissionArgs, Permission } from '~/lib/types/schema';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
@@ -11,12 +11,12 @@
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Role.fields.permissions.name(), PageType.CREATE);
-	$: node = data.node as MutationTypePermissionArgs;
+	$: node = data.node as MutationPermissionArgs;
 	$: errors = data.errors as Record<string, Errors>;
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypePermissionArgs;
+			args: MutationPermissionArgs;
 			then: (data: Permission | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>

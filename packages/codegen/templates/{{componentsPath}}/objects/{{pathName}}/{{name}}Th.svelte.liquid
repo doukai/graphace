@@ -7,7 +7,7 @@
 	{%- for enum in enums %}
 	import {{ enum }}Input from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Input.svelte';
 	{%- endfor %}
-	import type { {% for scalar in baseScalars %}{{ scalar }}Expression{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/graphql/types';
+	import type { {% for scalar in scalars %}{{ scalar }}Expression{% if forloop.last == false %}, {% endif %}{% endfor %} } from '~/{{ schemaTypesPath }}';
 	import LL from '$i18n/i18n-svelte';
 	import type { {% for enum in enums %}{{ enum }}Expression, {% endfor %}{{ name }}Expression } from '$houdini';
 

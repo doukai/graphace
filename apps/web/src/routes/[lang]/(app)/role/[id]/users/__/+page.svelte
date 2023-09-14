@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import UserSelectConnectionTable from '~/lib/components/objects/user/UserSelectConnectionTable.svelte';
-	import type { User, QueryTypeUserConnectionArgs, MutationTypeUserArgs } from '~/lib/types/schema';
+	import type { User, QueryUserConnectionArgs, MutationUserArgs } from '~/lib/types/schema';
 	import { Query_userConnectionStore, Mutation_userStore, Mutation_role_usersStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validateMutation } from '~/lib/utils';
@@ -22,7 +22,7 @@
 
 	const fetch = (
 		event: CustomEvent<{
-			args: QueryTypeUserConnectionArgs;
+			args: QueryUserConnectionArgs;
 			then: (data: (User | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
@@ -38,19 +38,18 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeUserArgs;
-			update?: boolean;
+			args: MutationUserArgs;
 			then: (data: User | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
-		validateMutation('User', event.detail.args, event.detail.update, $locale)
+		validateMutation('User', event.detail.args, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_user.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_user.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.user);
 						if (result.errors) {
@@ -67,19 +66,18 @@
 
 	const select = (
 		event: CustomEvent<{
-			selected: MutationTypeUserArgs | null | undefined | (MutationTypeUserArgs | null | undefined)[];
+			selected: MutationUserArgs | null | undefined | (MutationUserArgs | null | undefined)[];
 			then: () => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Role', { id: id, users: event.detail.selected }, true, $locale)
+		validateMutation('Role', { id: id, users: event.detail.selected }, $locale)
 			.then((data) => {
 				errors = {};
 				if (Array.isArray(event.detail.selected)) {
 					Mutation_role_users.mutate({
 						role_id: id,
 						role_users: event.detail.selected,
-						update: true,
 						mergeToList: ['users']
 					})
 						.then((result) => {

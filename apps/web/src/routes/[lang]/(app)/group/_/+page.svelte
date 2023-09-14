@@ -6,7 +6,7 @@
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Mutation_groupStore } from '$houdini';
-	import type { MutationTypeGroupArgs, Group } from '~/lib/types/schema';
+	import type { MutationGroupArgs, Group } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -14,22 +14,21 @@
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Group.name(), PageType.CREATE);
-	$: node = data.node as MutationTypeGroupArgs;
+	$: node = data.node as MutationGroupArgs;
 	$: errors = data.errors as Record<number, Errors>;
 
 	const Mutation_group = new Mutation_groupStore();
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeGroupArgs;
-			update?: boolean;
+			args: MutationGroupArgs;
 			then: (data: Group | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Group', event.detail.args, event.detail.update, $locale)
+		validateMutation('Group', event.detail.args, $locale)
 			.then((data) => {
-				Mutation_group.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_group.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.group);
 						if (result.errors) {

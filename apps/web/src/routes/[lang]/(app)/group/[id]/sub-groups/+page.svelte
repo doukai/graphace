@@ -4,7 +4,7 @@
 	import GroupConnectionTable from '~/lib/components/objects/group/GroupConnectionTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
-	import type { MutationTypeGroupArgs, QueryTypeGroupConnectionArgs, Group } from '~/lib/types/schema';
+	import type { MutationGroupArgs, QueryGroupConnectionArgs, Group } from '~/lib/types/schema';
 	import { Query_group_subGroupsStore, Mutation_groupStore, Mutation_group_subGroupsStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validateMutation } from '~/lib/utils';
@@ -24,7 +24,7 @@
 
 	const fetch = (
 		event: CustomEvent<{
-			args: QueryTypeGroupConnectionArgs;
+			args: QueryGroupConnectionArgs;
 			then: (data: (Group | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
@@ -42,19 +42,18 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeGroupArgs;
-			update?: boolean;
+			args: MutationGroupArgs;
 			then: (data: Group | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
-		validateMutation('Group', event.detail.args, event.detail.update, $locale)
+		validateMutation('Group', event.detail.args, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_group.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_group.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.group);
 						if (result.errors) {
@@ -71,19 +70,17 @@
 
 	const parentMutation = (
 		event: CustomEvent<{
-			args: MutationTypeGroupArgs[];
-			update?: boolean;
+			args: MutationGroupArgs[];
 			then: (data: Group[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Group', { id: id, subGroups: event.detail.args }, true, $locale)
+		validateMutation('Group', { id: id, subGroups: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_group_subGroups.mutate({
 					group_id: id,
 					group_subGroups: event.detail.args,
-					update: true,
 					mergeToList: ['subGroups']
 				})
 					.then((result) => {

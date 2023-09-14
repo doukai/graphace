@@ -2,10 +2,19 @@ import type { GraphQLNamedType } from "graphql";
 import type { BuilderConfig } from "./types/types";
 import { connectionSuffix } from "./introspection";
 
-let builderConfig: BuilderConfig | undefined;
+let builderConfig: BuilderConfig | undefined = {};
 
 export function initConfig(builder: BuilderConfig | undefined) {
-    builderConfig = builder;
+    builderConfig = { ...builder };
+    if (!builderConfig.queryTypeName) {
+        builderConfig.queryTypeName = 'Query';
+    }
+    if (!builderConfig.mutationTypeName) {
+        builderConfig.mutationTypeName = 'Mutation';
+    }
+    if (!builderConfig.subscriptionTypeName) {
+        builderConfig.subscriptionTypeName = 'Subscription';
+    }
 }
 
 export function inComponentEnum(typeName: string): boolean {
@@ -228,3 +237,11 @@ export function getFieldArrayComponent(
     }
     return undefined;
 }
+
+export function getQueryTypeName() { return builderConfig?.queryTypeName };
+
+export function getMutationTypeName() { return builderConfig?.mutationTypeName };
+
+export function getSubscriptionTypeName() { return builderConfig?.subscriptionTypeName };
+
+export const isOperationType = (name?: string): boolean => { return [builderConfig?.queryTypeName, builderConfig?.mutationTypeName, builderConfig?.subscriptionTypeName].some(typeName => name === typeName) };

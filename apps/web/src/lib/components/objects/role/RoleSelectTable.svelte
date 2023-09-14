@@ -11,8 +11,8 @@
 	import type {
 		Role,
 		RoleOrderBy,
-		QueryTypeRoleListArgs,
-		MutationTypeRoleArgs
+		QueryRoleListArgs,
+		RoleInput
 	} from '~/lib/types/schema';
 
 	export let nodes: (Role | null | undefined)[] | null | undefined;
@@ -23,18 +23,17 @@
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
-			args: QueryTypeRoleListArgs;
+			args: QueryRoleListArgs;
 			then: (data: (Role | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		mutation: {
-			args: MutationTypeRoleArgs;
-			update?: boolean;
+			args: RoleInput;
 			then: (data: Role | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		select: {
-			selected: MutationTypeRoleArgs | null | undefined | (MutationTypeRoleArgs | null | undefined)[];
+			selected: RoleInput | null | undefined | (RoleInput | null | undefined)[];
 			then: () => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
@@ -42,7 +41,7 @@
 	}>();
 
 	let showSelectButton = false;
-	let args: QueryTypeRoleListArgs = {};
+	let args: QueryRoleListArgs = {};
 	let orderBy: RoleOrderBy = {};
 
 	let selectAll: boolean;
@@ -76,7 +75,7 @@
 	};
 
 	const search = (searchValue: string | undefined) => {
-		let args: QueryTypeRoleListArgs = {};
+		let args: QueryRoleListArgs = {};
 		if (searchValue) {
 			args.cond = 'OR';
 			args.name = { opr: 'LK', val: `%${searchValue}%` };
@@ -99,11 +98,10 @@
 		});
 	};
 
-	const updateField = (args: MutationTypeRoleArgs | null | undefined) => {
+	const updateField = (args: RoleInput | null | undefined) => {
 		if (args) {
 			dispatch('mutation', {
 				args,
-				update: true,
 				then: (data) => {
 					notifications.success($LL.web.message.saveSuccess());
 				},
@@ -196,13 +194,13 @@
 								<StringTd
 									name="name"
 									bind:value={node.name}
-									on:save={() => updateField({ id: node?.id, name: node?.name })}
+									on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.name}
 								/>
 								<StringTd
 									name="description"
 									bind:value={node.description}
-									on:save={() => updateField({ id: node?.id, description: node?.description })}
+									on:save={() => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.description}
 								/>
 								<th class="z-10 w-12">

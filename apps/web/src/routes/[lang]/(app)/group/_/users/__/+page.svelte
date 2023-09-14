@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import UserSelectConnectionTable from '~/lib/components/objects/user/UserSelectConnectionTable.svelte';
-	import type { User, QueryTypeUserConnectionArgs, MutationTypeUserArgs } from '~/lib/types/schema';
+	import type { User, QueryUserConnectionArgs, MutationUserArgs } from '~/lib/types/schema';
 	import { Query_userConnectionStore, Mutation_userStore } from '$houdini';
 	import { updateNodeParam, updateErrorsParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
@@ -13,7 +13,7 @@
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Group.fields.users.name(), PageType.SELECT);
-	$: originalNodes = data.nodes as (MutationTypeUserArgs | null | undefined)[];
+	$: originalNodes = data.nodes as (MutationUserArgs | null | undefined)[];
 	$: errors = data.errors as Record<number, Errors>;
 	$: Query_userConnection = data.Query_userConnection as Query_userConnectionStore;
 	$: nodes = $Query_userConnection.data?.userConnection?.edges?.map((edge) => edge?.node);
@@ -22,7 +22,7 @@
 
 	const fetch = (
 		event: CustomEvent<{
-			args: QueryTypeUserConnectionArgs;
+			args: QueryUserConnectionArgs;
 			then: (data: (User | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
@@ -38,19 +38,18 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeUserArgs;
-			update?: boolean;
+			args: MutationUserArgs;
 			then: (data: User | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
-		validateMutation('User', event.detail.args, event.detail.update, $locale)
+		validateMutation('User', event.detail.args, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_user.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_user.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.user);
 						if (result.errors) {
@@ -67,7 +66,7 @@
 
 	const select = (
 		event: CustomEvent<{
-			selected: MutationTypeUserArgs | null | undefined | (MutationTypeUserArgs | null | undefined)[];
+			selected: MutationUserArgs | null | undefined | (MutationUserArgs | null | undefined)[];
 			then: () => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>

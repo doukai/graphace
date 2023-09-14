@@ -8,9 +8,9 @@
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
-	import type { Group, MutationTypeGroupArgs } from '~/lib/types/schema';
+	import type { Group, GroupInput } from '~/lib/types/schema';
 
-	export let node: MutationTypeGroupArgs = {};
+	export let node: GroupInput = {};
 	export let errors: Record<string, Errors> = {};
 	export let showRemoveButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
@@ -18,8 +18,7 @@
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
-			args: MutationTypeGroupArgs;
-			update?: boolean;
+			args: GroupInput;
 			then: (data: Group | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};

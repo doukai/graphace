@@ -5,7 +5,7 @@
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import type {
-		MutationTypeRealmArgs,
+		MutationRealmArgs,
 		Realm
 	} from '~/lib/types/schema';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam, getPathParam } from '@graphace/commons/utils/url-util';
@@ -14,13 +14,12 @@
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.User.fields.realm.name());
-	$: node = data.node as MutationTypeRealmArgs;
+	$: node = data.node as MutationRealmArgs;
 	$: errors = data.errors as Record<string, Errors>;
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeRealmArgs;
-			update?: boolean;
+			args: MutationRealmArgs;
 			then: (data: Realm | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>

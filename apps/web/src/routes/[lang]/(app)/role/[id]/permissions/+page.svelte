@@ -4,7 +4,7 @@
 	import PermissionConnectionTable from '~/lib/components/objects/permission/PermissionConnectionTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
-	import type { MutationTypePermissionArgs, QueryTypePermissionConnectionArgs, Permission } from '~/lib/types/schema';
+	import type { MutationPermissionArgs, QueryPermissionConnectionArgs, Permission } from '~/lib/types/schema';
 	import { Query_role_permissionsStore, Mutation_permissionStore, Mutation_role_permissionsStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validateMutation } from '~/lib/utils';
@@ -24,7 +24,7 @@
 
 	const fetch = (
 		event: CustomEvent<{
-			args: QueryTypePermissionConnectionArgs;
+			args: QueryPermissionConnectionArgs;
 			then: (data: (Permission | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
@@ -42,19 +42,18 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypePermissionArgs;
-			update?: boolean;
+			args: MutationPermissionArgs;
 			then: (data: Permission | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
-		validateMutation('Permission', event.detail.args, event.detail.update, $locale)
+		validateMutation('Permission', event.detail.args, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_permission.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_permission.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.permission);
 						if (result.errors) {
@@ -71,19 +70,17 @@
 
 	const parentMutation = (
 		event: CustomEvent<{
-			args: MutationTypePermissionArgs[];
-			update?: boolean;
+			args: MutationPermissionArgs[];
 			then: (data: Permission[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Role', { id: id, permissions: event.detail.args }, true, $locale)
+		validateMutation('Role', { id: id, permissions: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_role_permissions.mutate({
 					role_id: id,
 					role_permissions: event.detail.args,
-					update: true,
 					mergeToList: ['permissions']
 				})
 					.then((result) => {

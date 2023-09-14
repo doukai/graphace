@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import UserCreateForm from '~/lib/components/objects/user/UserCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { MutationTypeUserArgs, User } from '~/lib/types/schema';
+	import type { MutationUserArgs, User } from '~/lib/types/schema';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
@@ -11,12 +11,12 @@
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Role.fields.users.name(), PageType.CREATE);
-	$: node = data.node as MutationTypeUserArgs;
+	$: node = data.node as MutationUserArgs;
 	$: errors = data.errors as Record<string, Errors>;
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeUserArgs;
+			args: MutationUserArgs;
 			then: (data: User | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>

@@ -17,8 +17,8 @@
 	import type {
 		Permission,
 		PermissionOrderBy,
-		QueryTypePermissionConnectionArgs,
-		MutationTypePermissionArgs
+		QueryPermissionConnectionArgs,
+		PermissionInput
 	} from '~/lib/types/schema';
 
 	export let nodes: (Permission | null | undefined)[] | null | undefined;
@@ -33,19 +33,17 @@
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
-			args: QueryTypePermissionConnectionArgs;
+			args: QueryPermissionConnectionArgs;
 			then: (data: (Permission | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		mutation: {
-			args: MutationTypePermissionArgs;
-			update?: boolean;
+			args: PermissionInput;
 			then: (data: Permission | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		parentMutation: {
-			args: MutationTypePermissionArgs[];
-			update?: boolean;
+			args: PermissionInput[];
 			then: (data: Permission[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
@@ -56,7 +54,7 @@
 		back: {};
 	}>();
 
-	let args: QueryTypePermissionConnectionArgs = {};
+	let args: QueryPermissionConnectionArgs = {};
 	let orderBy: PermissionOrderBy = {};
 	let after: string | undefined;
 	let before: string | undefined;
@@ -102,7 +100,7 @@
 	};
 
 	const search = (searchValue: string | undefined) => {
-		let args: QueryTypePermissionConnectionArgs = {};
+		let args: QueryPermissionConnectionArgs = {};
 		if (searchValue) {
 			args.cond = 'OR';
 			args.field = { opr: 'LK', val: `%${searchValue}%` };
@@ -138,11 +136,10 @@
 		});
 	};
 
-	const updateField = (args: MutationTypePermissionArgs | null | undefined) => {
+	const updateField = (args: PermissionInput | null | undefined) => {
 		if (args) {
 			dispatch('mutation', {
 				args,
-				update: true,
 				then: (data) => {
 					notifications.success($LL.web.message.saveSuccess());
 				},
@@ -157,7 +154,6 @@
 	const removeRow = (id: string) => {
 		dispatch('mutation', {
 			args: { id: id, isDeprecated: true },
-			update: true,
 			then: (data) => {
 				notifications.success($LL.web.message.removeSuccess());
 				query();
@@ -175,7 +171,6 @@
 				where: { id: { opr: 'IN', in: selectedIdList } },
 				isDeprecated: true
 			},
-			update: true,
 			then: (data) => {
 				notifications.success($LL.web.message.removeSuccess());
 				query();
@@ -194,7 +189,6 @@
 				.map((node) => {
 					return { ...node, isDeprecated: true };
 				}),
-			update: true,
 			then: (data) => {
 				notifications.success($LL.web.message.unbindSuccess());
 				query();
@@ -333,25 +327,25 @@
 								<StringTd
 									name="field"
 									bind:value={node.field}
-									on:save={() => updateField({ name: node?.name, field: node?.field })}
+									on:save={() => updateField({ field: node?.field, where: { name: { val: node?.name } } })}
 									errors={errors[row]?.iterms?.field}
 								/>
 								<StringTd
 									name="type"
 									bind:value={node.type}
-									on:save={() => updateField({ name: node?.name, type: node?.type })}
+									on:save={() => updateField({ type: node?.type, where: { name: { val: node?.name } } })}
 									errors={errors[row]?.iterms?.type}
 								/>
 								<PermissionTypeTd
 									name="permissionType"
 									bind:value={node.permissionType}
-									on:save={() => updateField({ name: node?.name, permissionType: node?.permissionType })}
+									on:save={() => updateField({ permissionType: node?.permissionType, where: { name: { val: node?.name } } })}
 									errors={errors[row]?.iterms?.permissionType}
 								/>
 								<StringTd
 									name="description"
 									bind:value={node.description}
-									on:save={() => updateField({ name: node?.name, description: node?.description })}
+									on:save={() => updateField({ description: node?.description, where: { name: { val: node?.name } } })}
 									errors={errors[row]?.iterms?.description}
 								/>
 								<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path={`${node.name}/roles`} on:gotoField />

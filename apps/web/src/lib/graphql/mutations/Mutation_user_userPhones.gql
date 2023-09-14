@@ -1,5 +1,5 @@
-mutation Mutation_user_userPhones($user_id: ID, $user_userPhones: [UserPhonesInput], $first: Int, $last: Int, $offset: Int, $orderBy: UserPhonesOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $userIdType: UserExpression, $phone: StringExpression, $update: Boolean = false, $mergeToList: [String]) {
-  user(id: $user_id userPhones: $user_userPhones) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+mutation Mutation_user_userPhones($user_id: ID, $user_userPhones: [UserPhonesInput], $first: Int, $last: Int, $offset: Int, $orderBy: UserPhonesOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $userIdType: UserExpression, $phone: StringExpression, $mergeToList: [String]) {
+  user(id: $user_id userPhones: $user_userPhones) @mergeToList(arguments: $mergeToList) {
     id
     name
     lastName

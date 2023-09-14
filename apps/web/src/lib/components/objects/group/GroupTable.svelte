@@ -16,8 +16,8 @@
 	import type {
 		Group,
 		GroupOrderBy,
-		QueryTypeGroupListArgs,
-		MutationTypeGroupArgs
+		QueryGroupListArgs,
+		GroupInput
 	} from '~/lib/types/schema';
 
 	export let nodes: (Group | null | undefined)[] | null | undefined;
@@ -31,19 +31,17 @@
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
-			args: QueryTypeGroupListArgs;
+			args: QueryGroupListArgs;
 			then: (data: (Group | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		mutation: {
-			args: MutationTypeGroupArgs;
-			update?: boolean;
+			args: GroupInput;
 			then: (data: Group | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		parentMutation: {
-			args: MutationTypeGroupArgs[];
-			update?: boolean;
+			args: GroupInput[];
 			then: (data: Group[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
@@ -54,7 +52,7 @@
 		back: {};
 	}>();
 
-	let args: QueryTypeGroupListArgs = {};
+	let args: QueryGroupListArgs = {};
 	let orderBy: GroupOrderBy = {};
 
 	let selectAll: boolean;
@@ -80,7 +78,7 @@
 	};
 
 	const search = (searchValue: string | undefined) => {
-		let args: QueryTypeGroupListArgs = {};
+		let args: QueryGroupListArgs = {};
 		if (searchValue) {
 			args.cond = 'OR';
 			args.name = { opr: 'LK', val: `%${searchValue}%` };
@@ -103,11 +101,10 @@
 		});
 	};
 
-	const updateField = (args: MutationTypeGroupArgs | null | undefined) => {
+	const updateField = (args: GroupInput | null | undefined) => {
 		if (args) {
 			dispatch('mutation', {
 				args,
-				update: true,
 				then: (data) => {
 					notifications.success($LL.web.message.saveSuccess());
 				},
@@ -122,7 +119,6 @@
 	const removeRow = (id: string) => {
 		dispatch('mutation', {
 			args: { id: id, isDeprecated: true },
-			update: true,
 			then: (data) => {
 				notifications.success($LL.web.message.removeSuccess());
 				query();
@@ -140,7 +136,6 @@
 				where: { id: { opr: 'IN', in: selectedIdList } },
 				isDeprecated: true
 			},
-			update: true,
 			then: (data) => {
 				notifications.success($LL.web.message.removeSuccess());
 				query();
@@ -159,7 +154,6 @@
 				.map((node) => {
 					return { ...node, isDeprecated: true };
 				}),
-			update: true,
 			then: (data) => {
 				notifications.success($LL.web.message.unbindSuccess());
 				query();
@@ -295,19 +289,19 @@
 								<StringTd
 									name="name"
 									bind:value={node.name}
-									on:save={() => updateField({ id: node?.id, name: node?.name })}
+									on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.name}
 								/>
 								<StringTd
 									name="path"
 									bind:value={node.path}
-									on:save={() => updateField({ id: node?.id, path: node?.path })}
+									on:save={() => updateField({ path: node?.path, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.path}
 								/>
 								<IntTd
 									name="deep"
 									bind:value={node.deep}
-									on:save={() => updateField({ id: node?.id, deep: node?.deep })}
+									on:save={() => updateField({ deep: node?.deep, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.deep}
 								/>
 								<ObjectTd name="parent" errors={errors[row]?.iterms?.parent} path={`${node.id}/parent`} on:gotoField />

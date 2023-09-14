@@ -2,16 +2,12 @@ import * as changeCase from "change-case";
 import { assertEnumType, assertScalarType, isEnumType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLEnumValue, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType, type GraphQLSchema, assertObjectType } from 'graphql';
 
 export const aggregateSuffix = ["Count", "Sum", "Avg", "Max", "Min", "Aggregate"];
-export const queryTypeName = "QueryType";
-export const mutationTypeName = "MutationType";
-export const subscriptionTypeName = "SubscriptionType";
 export const connectionSuffix = "Connection";
 export const edgeSuffix = "Edge";
 export const pageInfoName = "PageInfo";
 export const introspectionPrefix = "__";
 export const innerEnum = ["Operator", "Conditional", "Sort", "Function", "Protocol"];
 
-export const isOperationType = (name?: string): boolean => { return [queryTypeName, mutationTypeName, subscriptionTypeName].some(typeName => name === typeName) };
 export const isAggregate = (name?: string): boolean => { return aggregateSuffix.some(suffix => name?.slice(-suffix.length) === suffix) };
 export const isConnection = (name?: string): boolean => { return name?.slice(-connectionSuffix.length) === connectionSuffix };
 export const isEdge = (name?: string): boolean => { return name?.slice(-edgeSuffix.length) === edgeSuffix };

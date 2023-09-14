@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import RoleCreateForm from '~/lib/components/objects/role/RoleCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { MutationTypeRoleArgs, Role } from '~/lib/types/schema';
+	import type { MutationRoleArgs, Role } from '~/lib/types/schema';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
@@ -11,12 +11,12 @@
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Group.fields.roles.name(), PageType.CREATE);
-	$: node = data.node as MutationTypeRoleArgs;
+	$: node = data.node as MutationRoleArgs;
 	$: errors = data.errors as Record<string, Errors>;
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeRoleArgs;
+			args: MutationRoleArgs;
 			then: (data: Role | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>

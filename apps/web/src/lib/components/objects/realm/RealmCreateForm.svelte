@@ -8,9 +8,9 @@
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
-	import type { Realm, MutationTypeRealmArgs } from '~/lib/types/schema';
+	import type { Realm, RealmInput } from '~/lib/types/schema';
 
-	export let node: MutationTypeRealmArgs = {};
+	export let node: RealmInput = {};
 	export let errors: Record<string, Errors> = {};
 	export let showRemoveButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
@@ -18,8 +18,7 @@
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
-			args: MutationTypeRealmArgs;
-			update?: boolean;
+			args: RealmInput;
 			then: (data: Realm | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};

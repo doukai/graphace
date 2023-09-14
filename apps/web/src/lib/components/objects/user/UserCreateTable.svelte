@@ -8,9 +8,9 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
-	import type { MutationTypeUserArgs } from '~/lib/types/schema';
+	import type { UserInput } from '~/lib/types/schema';
 
-	export let nodes: (MutationTypeUserArgs | null | undefined)[] | null | undefined;
+	export let nodes: (UserInput | null | undefined)[] | null | undefined;
 	export let errors: Record<number, Errors> = {};
 	export let showRemoveButton: boolean = true;
 	export let showSaveButton: boolean = true;
@@ -20,8 +20,8 @@
 	const dispatch = createEventDispatcher<{
 		edit: { row: number };
 		create: {};
-		mutation: { nodes: (MutationTypeUserArgs | null | undefined)[] | null | undefined };
-		save: { nodes: (MutationTypeUserArgs | null | undefined)[] | null | undefined };
+		mutation: { nodes: (UserInput | null | undefined)[] | null | undefined };
+		save: { nodes: (UserInput | null | undefined)[] | null | undefined };
 		gotoSelect: {};
 		back: {};
 	}>();

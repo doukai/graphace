@@ -6,7 +6,7 @@
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { Query_realmStore, Mutation_realmStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import type { MutationTypeRealmArgs, Realm } from '~/lib/types/schema';
+	import type { MutationRealmArgs, Realm } from '~/lib/types/schema';
 	import { validateMutation } from '~/lib/utils';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -19,16 +19,15 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeRealmArgs;
-			update?: boolean;
+			args: MutationRealmArgs;
 			then: (data: Realm | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Realm', event.detail.args, event.detail.update, $locale)
+		validateMutation('Realm', event.detail.args, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_realm.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_realm.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.realm);
 						if (result.errors) {

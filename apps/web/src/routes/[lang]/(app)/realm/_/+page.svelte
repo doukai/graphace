@@ -6,7 +6,7 @@
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Mutation_realmStore } from '$houdini';
-	import type { MutationTypeRealmArgs, Realm } from '~/lib/types/schema';
+	import type { MutationRealmArgs, Realm } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -14,22 +14,21 @@
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Realm.name(), PageType.CREATE);
-	$: node = data.node as MutationTypeRealmArgs;
+	$: node = data.node as MutationRealmArgs;
 	$: errors = data.errors as Record<number, Errors>;
 
 	const Mutation_realm = new Mutation_realmStore();
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeRealmArgs;
-			update?: boolean;
+			args: MutationRealmArgs;
 			then: (data: Realm | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Realm', event.detail.args, event.detail.update, $locale)
+		validateMutation('Realm', event.detail.args, $locale)
 			.then((data) => {
-				Mutation_realm.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_realm.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.realm);
 						if (result.errors) {

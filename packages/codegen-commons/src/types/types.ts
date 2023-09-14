@@ -2,6 +2,9 @@ export type BuilderConfig = {
     objects?: ObjectConfig[]
     enums?: EnumConfig[]
     scalars?: ScalarConfig[]
+    queryTypeName?: string
+    mutationTypeName?: string
+    subscriptionTypeName?: string
 }
 
 export type ObjectConfig = {

@@ -4,14 +4,14 @@
 	import RoleCreateTable from '~/lib/components/objects/role/RoleCreateTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
-	import type { MutationTypeRoleArgs } from '~/lib/types/schema';
+	import type { MutationRoleArgs } from '~/lib/types/schema';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam, getPathParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
 	import LL from '$i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.User.fields.roles.name());
-	$: nodes = data.nodes as (MutationTypeRoleArgs | null | undefined)[];
+	$: nodes = data.nodes as (MutationRoleArgs | null | undefined)[];
 	$: errors = data.errors as Record<number, Errors>;
 
 	const edit = (
@@ -34,11 +34,11 @@
 		});
 	};
 
-	const mutation = (event: CustomEvent<{ nodes: (MutationTypeRoleArgs | null | undefined)[] | null | undefined}> ) => {
+	const mutation = (event: CustomEvent<{ nodes: (MutationRoleArgs | null | undefined)[] | null | undefined}> ) => {
 		nodes = [...event.detail.nodes || []];
 	};
 
-	const save = (event: CustomEvent<{ nodes: (MutationTypeRoleArgs | null | undefined)[] | null | undefined}> ) => {
+	const save = (event: CustomEvent<{ nodes: (MutationRoleArgs | null | undefined)[] | null | undefined}> ) => {
 		ot({
 			node: updateNodeParam($page.url, event.detail.nodes),
 			errors: updateErrorsParam($page.url, errors)

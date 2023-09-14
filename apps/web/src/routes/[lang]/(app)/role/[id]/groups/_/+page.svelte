@@ -6,7 +6,7 @@
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Mutation_role_groupsStore } from '$houdini';
-	import type { MutationTypeGroupArgs, Group } from '~/lib/types/schema';
+	import type { MutationGroupArgs, Group } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -14,7 +14,7 @@
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Role.fields.groups.name(), PageType.CREATE);
-	$: node = data.node as MutationTypeGroupArgs;
+	$: node = data.node as MutationGroupArgs;
 	$: id = data.id as string;
 	$: errors = data.errors as Record<string, Errors>;
 
@@ -22,19 +22,17 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeGroupArgs;
-			update?: boolean;
+			args: MutationGroupArgs;
 			then: (data: Group | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Role', { id: id, groups: [event.detail.args] }, true, $locale)
+		validateMutation('Role', { id: id, groups: [event.detail.args] }, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_role_groups.mutate({
 					role_id: id,
 					role_groups: [event.detail.args],
-					update: true,
 					mergeToList: ['groups']
 				})
 					.then((result) => {

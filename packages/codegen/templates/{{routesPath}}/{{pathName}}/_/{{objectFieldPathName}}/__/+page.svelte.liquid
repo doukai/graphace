@@ -7,7 +7,7 @@
 	{%- else %}
 	import {{ objectFieldTypeName }}SelectTable from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}SelectTable.svelte';
 	{%- endif %}
-	import type { {{ objectFieldTypeName }}, {% if connectionField %}QueryType{{ objectFieldTypeName }}ConnectionArgs{% else %}QueryType{{ objectFieldTypeName }}ListArgs{% endif %}, MutationType{{ objectFieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
+	import type { {{ objectFieldTypeName }}, {% if connectionField %}{{ queryTypeName }}{{ objectFieldTypeName }}ConnectionArgs{% else %}{{ queryTypeName }}{{ objectFieldTypeName }}ListArgs{% endif %}, {{ mutationTypeName }}{{ objectFieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
 	import { {% if connectionField %}Query_{{ objectFieldTypeName | camelCase }}ConnectionStore{% else %}Query_{{ objectFieldTypeName | camelCase }}ListStore{% endif %}, Mutation_{{ objectFieldTypeName | camelCase }}Store } from '$houdini';
 	import { updateNodeParam, updateErrorsParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
@@ -31,9 +31,9 @@
 	const fetch = (
 		event: CustomEvent<{
 			{%- if connectionField %}
-			args: QueryType{{ objectFieldTypeName }}ConnectionArgs;
+			args: {{ queryTypeName }}{{ objectFieldTypeName }}ConnectionArgs;
 			{%- else %}
-			args: QueryType{{ objectFieldTypeName }}ListArgs;
+			args: {{ queryTypeName }}{{ objectFieldTypeName }}ListArgs;
 			{%- endif %}
 			then: (data: ({{ objectFieldTypeName }} | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
@@ -58,19 +58,18 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationType{{ objectFieldTypeName }}Args;
-			update?: boolean;
+			args: {{ objectFieldTypeName }}Args;
 			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.{{ idName }})?.indexOf(event.detail.args.{{ idName }});
-		validateMutation('{{ objectFieldTypeName }}', event.detail.args, event.detail.update, $locale)
+		validateMutation('{{ objectFieldTypeName }}', event.detail.args, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_{{ objectFieldTypeName | camelCase }}.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_{{ objectFieldTypeName | camelCase }}.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.{{ objectFieldTypeName | camelCase }});
 						if (result.errors) {
@@ -87,7 +86,7 @@
 
 	const select = (
 		event: CustomEvent<{
-			selected: MutationType{{ objectFieldTypeName }}Args | null | undefined | (MutationType{{ objectFieldTypeName }}Args | null | undefined)[];
+			selected: {{ objectFieldTypeName }}Args | null | undefined | ({{ mutationTypeName }}{{ objectFieldTypeName }}Args | null | undefined)[];
 			then: () => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>

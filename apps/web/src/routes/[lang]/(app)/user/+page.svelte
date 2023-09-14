@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import UserConnectionTable from '~/lib/components/objects/user/UserConnectionTable.svelte';
-	import type { User, QueryTypeUserConnectionArgs, MutationTypeUserArgs } from '~/lib/types/schema';
+	import type { User, QueryUserConnectionArgs, MutationUserArgs } from '~/lib/types/schema';
 	import { Query_userConnectionStore, Mutation_userStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validateMutation } from '~/lib/utils';
@@ -20,7 +20,7 @@
 
 	const fetch = (
 		event: CustomEvent<{
-			args: QueryTypeUserConnectionArgs;
+			args: QueryUserConnectionArgs;
 			then: (data: (User | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
@@ -36,19 +36,18 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeUserArgs;
-			update?: boolean;
+			args: MutationUserArgs;
 			then: (data: User | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
-		validateMutation('User', event.detail.args, event.detail.update, $locale)
+		validateMutation('User', event.detail.args, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_user.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_user.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.user);
 						if (result.errors) {

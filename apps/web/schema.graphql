@@ -1,9 +1,3 @@
-schema {
-  query: QueryType
-  mutation: MutationType
-  subscription: SubscriptionType
-}
-
 directive @classInfo(annotationName: String, className: String!, exists: Boolean, grpcClassName: String) on OBJECT
 
 directive @connection(agg: String, field: String) on FIELD_DEFINITION
@@ -168,7 +162,7 @@ type GroupConnection {
   totalCount: Int
 }
 
-input GroupConnectionQueryTypeArguments {
+input GroupConnectionQueryArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -200,7 +194,7 @@ input GroupConnectionQueryTypeArguments {
   version: IntExpression
 }
 
-input GroupConnectionSubscriptionTypeArguments {
+input GroupConnectionSubscriptionArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -270,7 +264,7 @@ input GroupInput {
   groupRole: [GroupRoleInput]
   id: ID
   isDeprecated: Boolean
-  name: String!
+  name: String
   parent: GroupInput
   parentId: Int
   path: String
@@ -283,9 +277,10 @@ input GroupInput {
   userGroup: [UserGroupInput]
   users: [UserInput]
   version: Int
+  where: GroupExpression
 }
 
-input GroupListMutationTypeArguments {
+input GroupListMutationArguments {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -310,7 +305,7 @@ input GroupListMutationTypeArguments {
   where: GroupExpression
 }
 
-input GroupListQueryTypeArguments {
+input GroupListQueryArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -342,7 +337,7 @@ input GroupListQueryTypeArguments {
   version: IntExpression
 }
 
-input GroupListSubscriptionTypeArguments {
+input GroupListSubscriptionArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -374,7 +369,7 @@ input GroupListSubscriptionTypeArguments {
   version: IntExpression
 }
 
-input GroupMutationTypeArguments {
+input GroupMutationArguments {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -414,7 +409,7 @@ input GroupOrderBy {
   version: Sort
 }
 
-input GroupQueryTypeArguments {
+input GroupQueryArguments {
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -474,7 +469,7 @@ type GroupRoleConnection {
   totalCount: Int
 }
 
-input GroupRoleConnectionQueryTypeArguments {
+input GroupRoleConnectionQueryArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -499,7 +494,7 @@ input GroupRoleConnectionQueryTypeArguments {
   version: IntExpression
 }
 
-input GroupRoleConnectionSubscriptionTypeArguments {
+input GroupRoleConnectionSubscriptionArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -561,9 +556,10 @@ input GroupRoleInput {
   updateTime: Timestamp
   updateUserId: String
   version: Int
+  where: GroupRoleExpression
 }
 
-input GroupRoleListMutationTypeArguments {
+input GroupRoleListMutationArguments {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -581,7 +577,7 @@ input GroupRoleListMutationTypeArguments {
   where: GroupRoleExpression
 }
 
-input GroupRoleListQueryTypeArguments {
+input GroupRoleListQueryArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -606,7 +602,7 @@ input GroupRoleListQueryTypeArguments {
   version: IntExpression
 }
 
-input GroupRoleListSubscriptionTypeArguments {
+input GroupRoleListSubscriptionArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -631,7 +627,7 @@ input GroupRoleListSubscriptionTypeArguments {
   version: IntExpression
 }
 
-input GroupRoleMutationTypeArguments {
+input GroupRoleMutationArguments {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -662,7 +658,7 @@ input GroupRoleOrderBy {
   version: Sort
 }
 
-input GroupRoleQueryTypeArguments {
+input GroupRoleQueryArguments {
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -680,7 +676,7 @@ input GroupRoleQueryTypeArguments {
   version: IntExpression
 }
 
-input GroupRoleSubscriptionTypeArguments {
+input GroupRoleSubscriptionArguments {
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -698,7 +694,7 @@ input GroupRoleSubscriptionTypeArguments {
   version: IntExpression
 }
 
-input GroupSubscriptionTypeArguments {
+input GroupSubscriptionArguments {
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -785,7 +781,7 @@ input MetaInput {
   version: Int
 }
 
-type MutationType implements Meta {
+type Mutation implements Meta {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -817,6 +813,11 @@ type MutationType implements Meta {
   userRole(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, realmId: Int, roleId: Int, roleIdType: RoleInput, updateTime: Timestamp, updateUserId: String, userId: Int, userIdType: UserInput, version: Int, where: UserRoleExpression): UserRole
   userRoleList(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, list: [UserRoleInput], realmId: Int, roleId: Int, roleIdType: RoleInput, updateTime: Timestamp, updateUserId: String, userId: Int, userIdType: UserInput, version: Int, where: UserRoleExpression): [UserRole]
   version: Int
+}
+
+input Mutation_login_Arguments {
+  login: String!
+  password: String!
 }
 
 enum Operator {
@@ -899,7 +900,7 @@ type PermissionConnection {
   totalCount: Int
 }
 
-input PermissionConnectionQueryTypeArguments {
+input PermissionConnectionQueryArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -927,7 +928,7 @@ input PermissionConnectionQueryTypeArguments {
   version: IntExpression
 }
 
-input PermissionConnectionSubscriptionTypeArguments {
+input PermissionConnectionSubscriptionArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -986,21 +987,22 @@ input PermissionInput {
   createTime: Timestamp
   createUserId: String
   description: String
-  field: String!
+  field: String
   isDeprecated: Boolean
-  name: ID!
-  permissionType: PermissionType!
+  name: ID
+  permissionType: PermissionType
   realm: RealmInput
   realmId: Int
   rolePermission: [RolePermissionInput]
   roles: [RoleInput]
-  type: String!
+  type: String
   updateTime: Timestamp
   updateUserId: String
   version: Int
+  where: PermissionExpression
 }
 
-input PermissionListMutationTypeArguments {
+input PermissionListMutationArguments {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -1021,7 +1023,7 @@ input PermissionListMutationTypeArguments {
   where: PermissionExpression
 }
 
-input PermissionListQueryTypeArguments {
+input PermissionListQueryArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -1049,7 +1051,7 @@ input PermissionListQueryTypeArguments {
   version: IntExpression
 }
 
-input PermissionListSubscriptionTypeArguments {
+input PermissionListSubscriptionArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -1077,7 +1079,7 @@ input PermissionListSubscriptionTypeArguments {
   version: IntExpression
 }
 
-input PermissionMutationTypeArguments {
+input PermissionMutationArguments {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -1113,7 +1115,7 @@ input PermissionOrderBy {
   version: Sort
 }
 
-input PermissionQueryTypeArguments {
+input PermissionQueryArguments {
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -1134,7 +1136,7 @@ input PermissionQueryTypeArguments {
   version: IntExpression
 }
 
-input PermissionSubscriptionTypeArguments {
+input PermissionSubscriptionArguments {
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -1185,7 +1187,7 @@ input ProtocolExpression {
   val: Protocol
 }
 
-type QueryType implements Meta {
+type Query implements Meta {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -1256,7 +1258,7 @@ type RealmConnection {
   totalCount: Int
 }
 
-input RealmConnectionQueryTypeArguments {
+input RealmConnectionQueryArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -1278,7 +1280,7 @@ input RealmConnectionQueryTypeArguments {
   version: IntExpression
 }
 
-input RealmConnectionSubscriptionTypeArguments {
+input RealmConnectionSubscriptionArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -1326,14 +1328,15 @@ input RealmInput {
   createUserId: String
   id: ID
   isDeprecated: Boolean
-  name: String!
+  name: String
   realmId: Int
   updateTime: Timestamp
   updateUserId: String
   version: Int
+  where: RealmExpression
 }
 
-input RealmListMutationTypeArguments {
+input RealmListMutationArguments {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -1348,7 +1351,7 @@ input RealmListMutationTypeArguments {
   where: RealmExpression
 }
 
-input RealmListQueryTypeArguments {
+input RealmListQueryArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -1370,7 +1373,7 @@ input RealmListQueryTypeArguments {
   version: IntExpression
 }
 
-input RealmListSubscriptionTypeArguments {
+input RealmListSubscriptionArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -1392,7 +1395,7 @@ input RealmListSubscriptionTypeArguments {
   version: IntExpression
 }
 
-input RealmMutationTypeArguments {
+input RealmMutationArguments {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -1419,7 +1422,7 @@ input RealmOrderBy {
   version: Sort
 }
 
-input RealmQueryTypeArguments {
+input RealmQueryArguments {
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -1434,7 +1437,7 @@ input RealmQueryTypeArguments {
   version: IntExpression
 }
 
-input RealmSubscriptionTypeArguments {
+input RealmSubscriptionArguments {
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -1537,7 +1540,7 @@ type RoleCompositeConnection {
   totalCount: Int
 }
 
-input RoleCompositeConnectionQueryTypeArguments {
+input RoleCompositeConnectionQueryArguments {
   after: ID
   before: ID
   compositeId: IntExpression
@@ -1562,7 +1565,7 @@ input RoleCompositeConnectionQueryTypeArguments {
   version: IntExpression
 }
 
-input RoleCompositeConnectionSubscriptionTypeArguments {
+input RoleCompositeConnectionSubscriptionArguments {
   after: ID
   before: ID
   compositeId: IntExpression
@@ -1624,9 +1627,10 @@ input RoleCompositeInput {
   updateTime: Timestamp
   updateUserId: String
   version: Int
+  where: RoleCompositeExpression
 }
 
-input RoleCompositeListMutationTypeArguments {
+input RoleCompositeListMutationArguments {
   compositeId: Int
   compositeIdType: RoleInput
   createGroupId: String
@@ -1644,7 +1648,7 @@ input RoleCompositeListMutationTypeArguments {
   where: RoleCompositeExpression
 }
 
-input RoleCompositeListQueryTypeArguments {
+input RoleCompositeListQueryArguments {
   after: ID
   before: ID
   compositeId: IntExpression
@@ -1669,7 +1673,7 @@ input RoleCompositeListQueryTypeArguments {
   version: IntExpression
 }
 
-input RoleCompositeListSubscriptionTypeArguments {
+input RoleCompositeListSubscriptionArguments {
   after: ID
   before: ID
   compositeId: IntExpression
@@ -1694,7 +1698,7 @@ input RoleCompositeListSubscriptionTypeArguments {
   version: IntExpression
 }
 
-input RoleCompositeMutationTypeArguments {
+input RoleCompositeMutationArguments {
   compositeId: Int
   compositeIdType: RoleInput
   createGroupId: String
@@ -1725,7 +1729,7 @@ input RoleCompositeOrderBy {
   version: Sort
 }
 
-input RoleCompositeQueryTypeArguments {
+input RoleCompositeQueryArguments {
   compositeId: IntExpression
   compositeIdType: RoleExpression
   cond: Conditional = AND
@@ -1743,7 +1747,7 @@ input RoleCompositeQueryTypeArguments {
   version: IntExpression
 }
 
-input RoleCompositeSubscriptionTypeArguments {
+input RoleCompositeSubscriptionArguments {
   compositeId: IntExpression
   compositeIdType: RoleExpression
   cond: Conditional = AND
@@ -1767,7 +1771,7 @@ type RoleConnection {
   totalCount: Int
 }
 
-input RoleConnectionQueryTypeArguments {
+input RoleConnectionQueryArguments {
   after: ID
   before: ID
   composites: RoleExpression
@@ -1799,7 +1803,7 @@ input RoleConnectionQueryTypeArguments {
   version: IntExpression
 }
 
-input RoleConnectionSubscriptionTypeArguments {
+input RoleConnectionSubscriptionArguments {
   after: ID
   before: ID
   composites: RoleExpression
@@ -1871,7 +1875,7 @@ input RoleInput {
   groups: [GroupInput]
   id: ID
   isDeprecated: Boolean
-  name: String!
+  name: String
   permissions: [PermissionInput]
   realm: RealmInput
   realmId: Int
@@ -1882,9 +1886,10 @@ input RoleInput {
   userRole: [UserRoleInput]
   users: [UserInput]
   version: Int
+  where: RoleExpression
 }
 
-input RoleListMutationTypeArguments {
+input RoleListMutationArguments {
   composites: [RoleInput]
   createGroupId: String
   createTime: Timestamp
@@ -1909,7 +1914,7 @@ input RoleListMutationTypeArguments {
   where: RoleExpression
 }
 
-input RoleListQueryTypeArguments {
+input RoleListQueryArguments {
   after: ID
   before: ID
   composites: RoleExpression
@@ -1941,7 +1946,7 @@ input RoleListQueryTypeArguments {
   version: IntExpression
 }
 
-input RoleListSubscriptionTypeArguments {
+input RoleListSubscriptionArguments {
   after: ID
   before: ID
   composites: RoleExpression
@@ -1973,7 +1978,7 @@ input RoleListSubscriptionTypeArguments {
   version: IntExpression
 }
 
-input RoleMutationTypeArguments {
+input RoleMutationArguments {
   composites: [RoleInput]
   createGroupId: String
   createTime: Timestamp
@@ -2044,7 +2049,7 @@ type RolePermissionConnection {
   totalCount: Int
 }
 
-input RolePermissionConnectionQueryTypeArguments {
+input RolePermissionConnectionQueryArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -2069,7 +2074,7 @@ input RolePermissionConnectionQueryTypeArguments {
   version: IntExpression
 }
 
-input RolePermissionConnectionSubscriptionTypeArguments {
+input RolePermissionConnectionSubscriptionArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -2131,9 +2136,10 @@ input RolePermissionInput {
   updateTime: Timestamp
   updateUserId: String
   version: Int
+  where: RolePermissionExpression
 }
 
-input RolePermissionListMutationTypeArguments {
+input RolePermissionListMutationArguments {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -2151,7 +2157,7 @@ input RolePermissionListMutationTypeArguments {
   where: RolePermissionExpression
 }
 
-input RolePermissionListQueryTypeArguments {
+input RolePermissionListQueryArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -2176,7 +2182,7 @@ input RolePermissionListQueryTypeArguments {
   version: IntExpression
 }
 
-input RolePermissionListSubscriptionTypeArguments {
+input RolePermissionListSubscriptionArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -2201,7 +2207,7 @@ input RolePermissionListSubscriptionTypeArguments {
   version: IntExpression
 }
 
-input RolePermissionMutationTypeArguments {
+input RolePermissionMutationArguments {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -2232,7 +2238,7 @@ input RolePermissionOrderBy {
   version: Sort
 }
 
-input RolePermissionQueryTypeArguments {
+input RolePermissionQueryArguments {
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -2250,7 +2256,7 @@ input RolePermissionQueryTypeArguments {
   version: IntExpression
 }
 
-input RolePermissionSubscriptionTypeArguments {
+input RolePermissionSubscriptionArguments {
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -2268,7 +2274,7 @@ input RolePermissionSubscriptionTypeArguments {
   version: IntExpression
 }
 
-input RoleQueryTypeArguments {
+input RoleQueryArguments {
   composites: RoleExpression
   cond: Conditional = AND
   createGroupId: StringExpression
@@ -2293,7 +2299,7 @@ input RoleQueryTypeArguments {
   version: IntExpression
 }
 
-input RoleSubscriptionTypeArguments {
+input RoleSubscriptionArguments {
   composites: RoleExpression
   cond: Conditional = AND
   createGroupId: StringExpression
@@ -2336,7 +2342,7 @@ input StringExpression {
   val: String
 }
 
-type SubscriptionType implements Meta {
+type Subscription implements Meta {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -2452,7 +2458,7 @@ type UserConnection {
   totalCount: Int
 }
 
-input UserConnectionQueryTypeArguments {
+input UserConnectionQueryArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -2487,7 +2493,7 @@ input UserConnectionQueryTypeArguments {
   version: IntExpression
 }
 
-input UserConnectionSubscriptionTypeArguments {
+input UserConnectionSubscriptionArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -2590,7 +2596,7 @@ type UserGroupConnection {
   totalCount: Int
 }
 
-input UserGroupConnectionQueryTypeArguments {
+input UserGroupConnectionQueryArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -2615,7 +2621,7 @@ input UserGroupConnectionQueryTypeArguments {
   version: IntExpression
 }
 
-input UserGroupConnectionSubscriptionTypeArguments {
+input UserGroupConnectionSubscriptionArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -2677,9 +2683,10 @@ input UserGroupInput {
   userId: Int
   userIdType: UserInput
   version: Int
+  where: UserGroupExpression
 }
 
-input UserGroupListMutationTypeArguments {
+input UserGroupListMutationArguments {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -2697,7 +2704,7 @@ input UserGroupListMutationTypeArguments {
   where: UserGroupExpression
 }
 
-input UserGroupListQueryTypeArguments {
+input UserGroupListQueryArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -2722,7 +2729,7 @@ input UserGroupListQueryTypeArguments {
   version: IntExpression
 }
 
-input UserGroupListSubscriptionTypeArguments {
+input UserGroupListSubscriptionArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -2747,7 +2754,7 @@ input UserGroupListSubscriptionTypeArguments {
   version: IntExpression
 }
 
-input UserGroupMutationTypeArguments {
+input UserGroupMutationArguments {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -2778,7 +2785,7 @@ input UserGroupOrderBy {
   version: Sort
 }
 
-input UserGroupQueryTypeArguments {
+input UserGroupQueryArguments {
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -2796,7 +2803,7 @@ input UserGroupQueryTypeArguments {
   version: IntExpression
 }
 
-input UserGroupSubscriptionTypeArguments {
+input UserGroupSubscriptionArguments {
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -2825,8 +2832,8 @@ input UserInput {
   id: ID
   isDeprecated: Boolean
   lastName: String
-  login: String!
-  name: String!
+  login: String
+  name: String
   phones: [String]
   realm: RealmInput
   realmId: Int
@@ -2838,9 +2845,10 @@ input UserInput {
   userPhones: [UserPhonesInput]
   userRole: [UserRoleInput]
   version: Int
+  where: UserExpression
 }
 
-input UserListMutationTypeArguments {
+input UserListMutationArguments {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -2868,7 +2876,7 @@ input UserListMutationTypeArguments {
   where: UserExpression
 }
 
-input UserListQueryTypeArguments {
+input UserListQueryArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -2903,7 +2911,7 @@ input UserListQueryTypeArguments {
   version: IntExpression
 }
 
-input UserListSubscriptionTypeArguments {
+input UserListSubscriptionArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -2938,7 +2946,7 @@ input UserListSubscriptionTypeArguments {
   version: IntExpression
 }
 
-input UserMutationTypeArguments {
+input UserMutationArguments {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -3016,7 +3024,7 @@ type UserPhonesConnection {
   totalCount: Int
 }
 
-input UserPhonesConnectionQueryTypeArguments {
+input UserPhonesConnectionQueryArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -3040,7 +3048,7 @@ input UserPhonesConnectionQueryTypeArguments {
   version: IntExpression
 }
 
-input UserPhonesConnectionSubscriptionTypeArguments {
+input UserPhonesConnectionSubscriptionArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -3099,9 +3107,10 @@ input UserPhonesInput {
   userId: Int
   userIdType: UserInput
   version: Int
+  where: UserPhonesExpression
 }
 
-input UserPhonesListMutationTypeArguments {
+input UserPhonesListMutationArguments {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -3118,7 +3127,7 @@ input UserPhonesListMutationTypeArguments {
   where: UserPhonesExpression
 }
 
-input UserPhonesListQueryTypeArguments {
+input UserPhonesListQueryArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -3142,7 +3151,7 @@ input UserPhonesListQueryTypeArguments {
   version: IntExpression
 }
 
-input UserPhonesListSubscriptionTypeArguments {
+input UserPhonesListSubscriptionArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -3166,7 +3175,7 @@ input UserPhonesListSubscriptionTypeArguments {
   version: IntExpression
 }
 
-input UserPhonesMutationTypeArguments {
+input UserPhonesMutationArguments {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -3196,7 +3205,7 @@ input UserPhonesOrderBy {
   version: Sort
 }
 
-input UserPhonesQueryTypeArguments {
+input UserPhonesQueryArguments {
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -3213,7 +3222,7 @@ input UserPhonesQueryTypeArguments {
   version: IntExpression
 }
 
-input UserPhonesSubscriptionTypeArguments {
+input UserPhonesSubscriptionArguments {
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -3230,7 +3239,7 @@ input UserPhonesSubscriptionTypeArguments {
   version: IntExpression
 }
 
-input UserQueryTypeArguments {
+input UserQueryArguments {
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -3293,7 +3302,7 @@ type UserRoleConnection {
   totalCount: Int
 }
 
-input UserRoleConnectionQueryTypeArguments {
+input UserRoleConnectionQueryArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -3318,7 +3327,7 @@ input UserRoleConnectionQueryTypeArguments {
   version: IntExpression
 }
 
-input UserRoleConnectionSubscriptionTypeArguments {
+input UserRoleConnectionSubscriptionArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -3380,9 +3389,10 @@ input UserRoleInput {
   userId: Int
   userIdType: UserInput
   version: Int
+  where: UserRoleExpression
 }
 
-input UserRoleListMutationTypeArguments {
+input UserRoleListMutationArguments {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -3400,7 +3410,7 @@ input UserRoleListMutationTypeArguments {
   where: UserRoleExpression
 }
 
-input UserRoleListQueryTypeArguments {
+input UserRoleListQueryArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -3425,7 +3435,7 @@ input UserRoleListQueryTypeArguments {
   version: IntExpression
 }
 
-input UserRoleListSubscriptionTypeArguments {
+input UserRoleListSubscriptionArguments {
   after: ID
   before: ID
   cond: Conditional = AND
@@ -3450,7 +3460,7 @@ input UserRoleListSubscriptionTypeArguments {
   version: IntExpression
 }
 
-input UserRoleMutationTypeArguments {
+input UserRoleMutationArguments {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -3481,7 +3491,7 @@ input UserRoleOrderBy {
   version: Sort
 }
 
-input UserRoleQueryTypeArguments {
+input UserRoleQueryArguments {
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -3499,7 +3509,7 @@ input UserRoleQueryTypeArguments {
   version: IntExpression
 }
 
-input UserRoleSubscriptionTypeArguments {
+input UserRoleSubscriptionArguments {
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -3517,7 +3527,7 @@ input UserRoleSubscriptionTypeArguments {
   version: IntExpression
 }
 
-input UserSubscriptionTypeArguments {
+input UserSubscriptionArguments {
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression

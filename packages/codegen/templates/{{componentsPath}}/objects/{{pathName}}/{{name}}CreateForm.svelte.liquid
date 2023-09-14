@@ -16,9 +16,9 @@
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
-	import type { {{ name }}, MutationType{{ name }}Args } from '~/{{ schemaTypesPath }}';
+	import type { {{ name }}, {{ name }}Input } from '~/{{ schemaTypesPath }}';
 
-	export let node: MutationType{{ name }}Args = {};
+	export let node: {{ name }}Input = {};
 	export let errors: Record<string, Errors> = {};
 	export let showRemoveButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
@@ -26,8 +26,7 @@
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
-			args: MutationType{{ name }}Args;
-			update?: boolean;
+			args: {{ name }}Input;
 			then: (data: {{ name }} | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};

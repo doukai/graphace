@@ -12,8 +12,8 @@
 	import type {
 		User,
 		UserOrderBy,
-		QueryTypeUserConnectionArgs,
-		MutationTypeUserArgs
+		QueryUserConnectionArgs,
+		UserInput
 	} from '~/lib/types/schema';
 
 	export let nodes: (User | null | undefined)[] | null | undefined;
@@ -25,18 +25,17 @@
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
-			args: QueryTypeUserConnectionArgs;
+			args: QueryUserConnectionArgs;
 			then: (data: (User | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		mutation: {
-			args: MutationTypeUserArgs;
-			update?: boolean;
+			args: UserInput;
 			then: (data: User | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		select: {
-			selected: MutationTypeUserArgs | null | undefined | (MutationTypeUserArgs | null | undefined)[];
+			selected: UserInput | null | undefined | (UserInput | null | undefined)[];
 			then: () => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
@@ -44,7 +43,7 @@
 	}>();
 
 	let showSelectButton = false;
-	let args: QueryTypeUserConnectionArgs = {};
+	let args: QueryUserConnectionArgs = {};
 	let orderBy: UserOrderBy = {};
 	let after: string | undefined;
 	let before: string | undefined;
@@ -98,7 +97,7 @@
 	};
 
 	const search = (searchValue: string | undefined) => {
-		let args: QueryTypeUserConnectionArgs = {};
+		let args: QueryUserConnectionArgs = {};
 		if (searchValue) {
 			args.cond = 'OR';
 			args.name = { opr: 'LK', val: `%${searchValue}%` };
@@ -138,11 +137,10 @@
 		});
 	};
 
-	const updateField = (args: MutationTypeUserArgs | null | undefined) => {
+	const updateField = (args: UserInput | null | undefined) => {
 		if (args) {
 			dispatch('mutation', {
 				args,
-				update: true,
 				then: (data) => {
 					notifications.success($LL.web.message.saveSuccess());
 				},
@@ -258,38 +256,38 @@
 								<StringTd
 									name="name"
 									bind:value={node.name}
-									on:save={() => updateField({ id: node?.id, name: node?.name })}
+									on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.name}
 								/>
 								<StringTd
 									name="lastName"
 									bind:value={node.lastName}
-									on:save={() => updateField({ id: node?.id, lastName: node?.lastName })}
+									on:save={() => updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.lastName}
 								/>
 								<StringTd
 									name="login"
 									bind:value={node.login}
-									on:save={() => updateField({ id: node?.id, login: node?.login })}
+									on:save={() => updateField({ login: node?.login, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.login}
 								/>
 								<StringTd
 									name="email"
 									bind:value={node.email}
-									on:save={() => updateField({ id: node?.id, email: node?.email })}
+									on:save={() => updateField({ email: node?.email, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.email}
 								/>
 								<StringTd
 									name="phones"
 									bind:value={node.phones}
 									list
-									on:save={() => updateField({ id: node?.id, phones: node?.phones })}
+									on:save={() => updateField({ phones: node?.phones, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.phones}
 								/>
 								<BooleanTd
 									name="disable"
 									bind:value={node.disable}
-									on:save={() => updateField({ id: node?.id, disable: node?.disable })}
+									on:save={() => updateField({ disable: node?.disable, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.disable}
 								/>
 								<th class="z-10 w-12">

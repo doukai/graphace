@@ -6,7 +6,7 @@
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { Query_permissionStore, Mutation_permissionStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import type { MutationTypePermissionArgs, Permission } from '~/lib/types/schema';
+	import type { MutationPermissionArgs, Permission } from '~/lib/types/schema';
 	import { validateMutation } from '~/lib/utils';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -19,16 +19,15 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypePermissionArgs;
-			update?: boolean;
+			args: MutationPermissionArgs;
 			then: (data: Permission | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Permission', event.detail.args, event.detail.update, $locale)
+		validateMutation('Permission', event.detail.args, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_permission.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_permission.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.permission);
 						if (result.errors) {

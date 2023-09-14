@@ -5,7 +5,7 @@
 	import { Check, XMark, Funnel } from '@steeze-ui/heroicons';
 	import { IDInput, StringInput } from '@graphace/ui-graphql/components/input';
 	import PermissionTypeInput from '~/lib/components/enums/permission-type/PermissionTypeInput.svelte';
-	import type { StringExpression } from '@graphace/graphql/types';
+	import type { IDExpression, StringExpression } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 	import type { PermissionTypeExpression, PermissionExpression } from '$houdini';
 

@@ -2,7 +2,7 @@ import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
 import * as changeCase from "change-case";
 import { assertObjectType, isEnumType, isListType, isObjectType, type GraphQLSchema, isNonNullType, assertEnumType } from 'graphql';
-import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getScalarNames, getEnumNames, getEnumValues, isAggregate, initConfig, inRouteObject, inGraphQLField, inListField, inDetailField, componentFields, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, inComponentEnum, isInnerEnum, getObjectNames, getBaseScalarNames } from 'graphace-codegen-commons';
+import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getScalarNames, getEnumNames, getEnumValues, isAggregate, initConfig, inRouteObject, inGraphQLField, inListField, inDetailField, componentFields, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, inComponentEnum, isInnerEnum, getObjectNames, getBaseScalarNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName } from 'graphace-codegen-commons';
 import type { Template } from 'graphace-codegen-commons';
 import { buildFileContent } from "./builder.js";
 
@@ -79,7 +79,13 @@ const renders: Record<Template, Render> = {
                 const fieldType = getFieldType(field.type);
                 const idFieldName = getIDFieldName(fieldType);
                 return {
-                    content: buildFileContent(config.template, { name: field.name, idName: idFieldName, args: field.args, isConnection: isConnection(field.name), fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name)) }),
+                    content: buildFileContent(config.template, {
+                        name: field.name,
+                        idName: idFieldName,
+                        args: field.args,
+                        isConnection: isConnection(field.name),
+                        fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name))
+                    }),
                 };
             }
         }
@@ -108,7 +114,13 @@ const renders: Record<Template, Render> = {
                     }
                 }
                 return {
-                    content: buildFileContent(config.template, { name: field.name, idName: idFieldName, args: field.args, isConnection: isConnection(field.name), fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name)), objectField: objectField }),
+                    content: buildFileContent(config.template, {
+                        name: field.name,
+                        idName: idFieldName,
+                        args: field.args,
+                        isConnection: isConnection(field.name),
+                        fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name)), objectField: objectField
+                    }),
                 };
             }
         }
@@ -125,7 +137,12 @@ const renders: Record<Template, Render> = {
                 const fieldType = getFieldType(field.type);
                 const idFieldName = getIDFieldName(fieldType);
                 return {
-                    content: buildFileContent(config.template, { name: field.name, idName: idFieldName, args: field.args, fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name)) }),
+                    content: buildFileContent(config.template, {
+                        name: field.name,
+                        idName: idFieldName,
+                        args: field.args,
+                        fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name))
+                    }),
                 };
             }
         }
@@ -154,7 +171,13 @@ const renders: Record<Template, Render> = {
                     }
                 }
                 return {
-                    content: buildFileContent(config.template, { name: field.name, idName: idFieldName, args: field.args, fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name)), objectField: objectField }),
+                    content: buildFileContent(config.template, {
+                        name: field.name,
+                        idName: idFieldName,
+                        args: field.args,
+                        fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name)),
+                        objectField: objectField
+                    }),
                 };
             }
         }
@@ -168,7 +191,20 @@ const renders: Record<Template, Render> = {
             if (type && isObjectType(type)) {
                 const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inDetailField(typeName, field.fieldName, field.fieldType.name));
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(fields), enums: getEnumNames(fields), imports: componentFieldImports(typeName, fields), fields: componentFields(typeName, fields), rows: fields?.length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        idName: getIDFieldName(type),
+                        scalars: getScalarNames(fields),
+                        enums: getEnumNames(fields),
+                        imports: componentFieldImports(typeName, fields),
+                        fields: componentFields(typeName, fields),
+                        rows: fields?.length,
+                        schemaTypesPath: config.schemaTypesPath,
+                        enumsPath: `${config.componentsPath}/enums`,
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName()
+                    }),
                 };
             }
         }
@@ -182,7 +218,20 @@ const renders: Record<Template, Render> = {
             if (type && isObjectType(type)) {
                 const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inDetailField(typeName, field.fieldName, field.fieldType.name));
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(fields), enums: getEnumNames(fields), imports: componentFieldImports(typeName, fields), fields: componentFields(typeName, fields), rows: fields?.length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        idName: getIDFieldName(type),
+                        scalars: getScalarNames(fields),
+                        enums: getEnumNames(fields),
+                        imports: componentFieldImports(typeName, fields),
+                        fields: componentFields(typeName, fields),
+                        rows: fields?.length,
+                        schemaTypesPath: config.schemaTypesPath,
+                        enumsPath: `${config.componentsPath}/enums`,
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName()
+                    }),
                 };
             }
         }
@@ -196,7 +245,22 @@ const renders: Record<Template, Render> = {
             if (type && isObjectType(type)) {
                 const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldType.name));
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(fields), enums: getEnumNames(fields), objects: getObjectNames(fields), imports: componentFieldImports(typeName, fields), fields: componentFields(typeName, fields), cols: fields?.length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums`, objectsPath: `${config.componentsPath}/objects` }),
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        idName: getIDFieldName(type),
+                        scalars: getScalarNames(fields),
+                        enums: getEnumNames(fields),
+                        objects: getObjectNames(fields),
+                        imports: componentFieldImports(typeName, fields),
+                        fields: componentFields(typeName, fields),
+                        cols: fields?.length,
+                        schemaTypesPath: config.schemaTypesPath,
+                        enumsPath: `${config.componentsPath}/enums`,
+                        objectsPath: `${config.componentsPath}/objects`,
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName()
+                    }),
                 };
             }
         }
@@ -210,7 +274,22 @@ const renders: Record<Template, Render> = {
             if (type && isObjectType(type)) {
                 const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldType.name));
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(fields), enums: getEnumNames(fields), objects: getObjectNames(fields), imports: componentFieldImports(typeName, fields), fields: componentFields(typeName, fields), cols: fields?.length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums`, objectsPath: `${config.componentsPath}/objects` }),
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        idName: getIDFieldName(type),
+                        scalars: getScalarNames(fields),
+                        enums: getEnumNames(fields),
+                        objects: getObjectNames(fields),
+                        imports: componentFieldImports(typeName, fields),
+                        fields: componentFields(typeName, fields),
+                        cols: fields?.length,
+                        schemaTypesPath: config.schemaTypesPath,
+                        enumsPath: `${config.componentsPath}/enums`,
+                        objectsPath: `${config.componentsPath}/objects`,
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName()
+                    }),
                 };
             }
         }
@@ -224,7 +303,20 @@ const renders: Record<Template, Render> = {
             if (type && isObjectType(type)) {
                 const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldType.name));
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(fields), enums: getEnumNames(fields), imports: componentFieldImports(typeName, fields), fields: componentFields(typeName, fields), cols: fields?.length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        idName: getIDFieldName(type),
+                        scalars: getScalarNames(fields),
+                        enums: getEnumNames(fields),
+                        imports: componentFieldImports(typeName, fields),
+                        fields: componentFields(typeName, fields),
+                        cols: fields?.length,
+                        schemaTypesPath: config.schemaTypesPath,
+                        enumsPath: `${config.componentsPath}/enums`,
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName()
+                    }),
                 };
             }
         }
@@ -238,7 +330,20 @@ const renders: Record<Template, Render> = {
             if (type && isObjectType(type)) {
                 const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldType.name));
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(fields), enums: getEnumNames(fields), imports: componentFieldImports(typeName, fields), fields: componentFields(typeName, fields), cols: fields?.length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        idName: getIDFieldName(type),
+                        scalars: getScalarNames(fields),
+                        enums: getEnumNames(fields),
+                        imports: componentFieldImports(typeName, fields),
+                        fields: componentFields(typeName, fields),
+                        cols: fields?.length,
+                        schemaTypesPath: config.schemaTypesPath,
+                        enumsPath: `${config.componentsPath}/enums`,
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName()
+                    }),
                 };
             }
         }
@@ -252,7 +357,20 @@ const renders: Record<Template, Render> = {
             if (type && isObjectType(type)) {
                 const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldType.name));
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(fields), enums: getEnumNames(fields), imports: componentFieldImports(typeName, fields), fields: componentFields(typeName, fields), cols: fields?.length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        idName: getIDFieldName(type),
+                        scalars: getScalarNames(fields),
+                        enums: getEnumNames(fields),
+                        imports: componentFieldImports(typeName, fields),
+                        fields: componentFields(typeName, fields),
+                        cols: fields?.length,
+                        schemaTypesPath: config.schemaTypesPath,
+                        enumsPath: `${config.componentsPath}/enums`,
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName()
+                    }),
                 };
             }
         }
@@ -266,7 +384,21 @@ const renders: Record<Template, Render> = {
             if (type && isObjectType(type)) {
                 const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldType.name));
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), scalars: getScalarNames(fields), baseScalars: getBaseScalarNames(fields), enums: getEnumNames(fields), imports: componentFieldImports(typeName, fields), fields: componentFields(typeName, fields), cols: fields?.length, schemaTypesPath: config.schemaTypesPath, enumsPath: `${config.componentsPath}/enums` }),
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        idName: getIDFieldName(type),
+                        scalars: getScalarNames(fields),
+                        baseScalars: getBaseScalarNames(fields),
+                        enums: getEnumNames(fields),
+                        imports: componentFieldImports(typeName, fields),
+                        fields: componentFields(typeName, fields),
+                        cols: fields?.length,
+                        schemaTypesPath: config.schemaTypesPath,
+                        enumsPath: `${config.componentsPath}/enums`,
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName()
+                    }),
                 };
             }
         }
@@ -279,7 +411,13 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isEnumType(type)) {
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, enumValues: getEnumValues(type) }),
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        enumValues: getEnumValues(type),
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName()
+                    }),
                 };
             }
         }
@@ -292,7 +430,13 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isEnumType(type)) {
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, enumValues: getEnumValues(type) }),
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        enumValues: getEnumValues(type),
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName()
+                    }),
                 };
             }
         }
@@ -305,7 +449,13 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isEnumType(type)) {
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, enumValues: getEnumValues(type) }),
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        enumValues: getEnumValues(type),
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName()
+                    }),
                 };
             }
         }
@@ -318,7 +468,13 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isEnumType(type)) {
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, enumValues: getEnumValues(type) }),
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        enumValues: getEnumValues(type),
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName()
+                    }),
                 };
             }
         }
@@ -332,7 +488,18 @@ const renders: Record<Template, Render> = {
             const connectionField = getConnectionField(schema.getQueryType(), changeCase.camelCase(typeName));
             if (type && isObjectType(type)) {
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), imports: getObjectArrayImports(typeName), component: getObjectArrayComponent(typeName), connectionField: connectionField, tablePath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        idName: getIDFieldName(type),
+                        imports: getObjectArrayImports(typeName),
+                        component: getObjectArrayComponent(typeName),
+                        connectionField: connectionField,
+                        tablePath: `${config.componentsPath}/objects`,
+                        schemaTypesPath: config.schemaTypesPath,
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName()
+                    }),
                 };
             }
         }
@@ -346,7 +513,14 @@ const renders: Record<Template, Render> = {
             const connectionField = getConnectionField(schema.getQueryType(), changeCase.camelCase(typeName));
             if (type && isObjectType(type)) {
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), connectionField: connectionField }),
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        idName: getIDFieldName(type),
+                        connectionField: connectionField,
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName()
+                    }),
                 };
             }
         }
@@ -359,7 +533,17 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), imports: getObjectImports(typeName), component: getObjectComponent(typeName), formPath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        idName: getIDFieldName(type),
+                        imports: getObjectImports(typeName),
+                        component: getObjectComponent(typeName),
+                        formPath: `${config.componentsPath}/objects`,
+                        schemaTypesPath: config.schemaTypesPath,
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName()
+                    }),
                 };
             }
         }
@@ -372,7 +556,13 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type) }),
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        idName: getIDFieldName(type),
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName()
+                    }),
                 };
             }
         }
@@ -388,7 +578,21 @@ const renders: Record<Template, Render> = {
                 if (objectField?.type) {
                     const objectFieldType = getFieldType(objectField.type);
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), imports: getObjectImports(typeName), component: getObjectComponent(typeName), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), formPath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath, isNonNullType: isNonNullType(objectField.type) }),
+                        content: buildFileContent(config.template, {
+                            name: type?.name,
+                            idName: getIDFieldName(type),
+                            imports: getObjectImports(typeName),
+                            component: getObjectComponent(typeName),
+                            objectFieldName: objectField.name,
+                            objectFieldTypeName: objectFieldType.name,
+                            objectFieldTypeFields: getFields(schema, objectFieldType),
+                            formPath: `${config.componentsPath}/objects`,
+                            schemaTypesPath: config.schemaTypesPath,
+                            isNonNullType: isNonNullType(objectField.type),
+                            queryTypeName: getQueryTypeName(),
+                            mutationTypeName: getMutationTypeName(),
+                            subscriptionTypeName: getSubscriptionTypeName()
+                        }),
                     };
                 }
             }
@@ -405,7 +609,16 @@ const renders: Record<Template, Render> = {
                 if (objectField?.type) {
                     const objectFieldType = getFieldType(objectField.type);
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, schemaTypesPath: config.schemaTypesPath }),
+                        content: buildFileContent(config.template, {
+                            name: type?.name,
+                            idName: getIDFieldName(type),
+                            objectFieldName: objectField.name,
+                            objectFieldTypeName: objectFieldType.name,
+                            schemaTypesPath: config.schemaTypesPath,
+                            queryTypeName: getQueryTypeName(),
+                            mutationTypeName: getMutationTypeName(),
+                            subscriptionTypeName: getSubscriptionTypeName()
+                        }),
                     };
                 }
             }
@@ -423,7 +636,22 @@ const renders: Record<Template, Render> = {
                     const objectFieldType = getFieldType(objectField.type);
                     const connectionField = getConnectionField(schema.getQueryType(), changeCase.camelCase(objectFieldType.name));
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), imports: getObjectArrayImports(typeName), component: getObjectArrayComponent(typeName), connectionField: connectionField, objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), tablePath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath, isNonNullType: isNonNullType(objectField.type) }),
+                        content: buildFileContent(config.template, {
+                            name: type?.name,
+                            idName: getIDFieldName(type),
+                            imports: getObjectArrayImports(typeName),
+                            component: getObjectArrayComponent(typeName),
+                            connectionField: connectionField,
+                            objectFieldName: objectField.name,
+                            objectFieldTypeName: objectFieldType.name,
+                            objectFieldTypeFields: getFields(schema, objectFieldType),
+                            tablePath: `${config.componentsPath}/objects`,
+                            schemaTypesPath: config.schemaTypesPath,
+                            isNonNullType: isNonNullType(objectField.type),
+                            queryTypeName: getQueryTypeName(),
+                            mutationTypeName: getMutationTypeName(),
+                            subscriptionTypeName: getSubscriptionTypeName()
+                        }),
                     };
                 }
             }
@@ -441,7 +669,17 @@ const renders: Record<Template, Render> = {
                     const objectFieldType = getFieldType(objectField.type);
                     const connectionField = getConnectionField(schema.getQueryType(), changeCase.camelCase(objectFieldType.name));
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), connectionField: connectionField, objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, schemaTypesPath: config.schemaTypesPath }),
+                        content: buildFileContent(config.template, {
+                            name: type?.name,
+                            idName: getIDFieldName(type),
+                            connectionField: connectionField,
+                            objectFieldName: objectField.name,
+                            objectFieldTypeName: objectFieldType.name,
+                            schemaTypesPath: config.schemaTypesPath,
+                            queryTypeName: getQueryTypeName(),
+                            mutationTypeName: getMutationTypeName(),
+                            subscriptionTypeName: getSubscriptionTypeName()
+                        }),
                     };
                 }
             }
@@ -459,7 +697,21 @@ const renders: Record<Template, Render> = {
                     const objectFieldType = getFieldType(objectField.type);
                     const connectionField = getConnectionField(type, objectField.name);
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), imports: getObjectArrayImports(typeName), component: getObjectArrayComponent(typeName), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), connectionField: connectionField, tablePath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
+                        content: buildFileContent(config.template, {
+                            name: type?.name,
+                            idName: getIDFieldName(type),
+                            imports: getObjectArrayImports(typeName),
+                            component: getObjectArrayComponent(typeName),
+                            objectFieldName: objectField.name,
+                            objectFieldTypeName: objectFieldType.name,
+                            objectFieldTypeFields: getFields(schema, objectFieldType),
+                            connectionField: connectionField,
+                            tablePath: `${config.componentsPath}/objects`,
+                            schemaTypesPath: config.schemaTypesPath,
+                            queryTypeName: getQueryTypeName(),
+                            mutationTypeName: getMutationTypeName(),
+                            subscriptionTypeName: getSubscriptionTypeName()
+                        }),
                     };
                 }
             }
@@ -477,7 +729,16 @@ const renders: Record<Template, Render> = {
                     const objectFieldType = getFieldType(objectField.type);
                     const connectionField = getConnectionField(type, objectField.name);
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, connectionField: connectionField }),
+                        content: buildFileContent(config.template, {
+                            name: type?.name,
+                            idName: getIDFieldName(type),
+                            objectFieldName: objectField.name,
+                            objectFieldTypeName: objectFieldType.name,
+                            connectionField: connectionField,
+                            queryTypeName: getQueryTypeName(),
+                            mutationTypeName: getMutationTypeName(),
+                            subscriptionTypeName: getSubscriptionTypeName()
+                        }),
                     };
                 }
             }
@@ -495,7 +756,21 @@ const renders: Record<Template, Render> = {
                     const objectFieldType = getFieldType(objectField.type);
                     const connectionField = getConnectionField(type, objectField.name);
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), imports: getObjectImports(typeName), component: getObjectComponent(typeName), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), connectionField: connectionField, formPath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
+                        content: buildFileContent(config.template, {
+                            name: type?.name,
+                            idName: getIDFieldName(type),
+                            imports: getObjectImports(typeName),
+                            component: getObjectComponent(typeName),
+                            objectFieldName: objectField.name,
+                            objectFieldTypeName: objectFieldType.name,
+                            objectFieldTypeFields: getFields(schema, objectFieldType),
+                            connectionField: connectionField,
+                            formPath: `${config.componentsPath}/objects`,
+                            schemaTypesPath: config.schemaTypesPath,
+                            queryTypeName: getQueryTypeName(),
+                            mutationTypeName: getMutationTypeName(),
+                            subscriptionTypeName: getSubscriptionTypeName()
+                        }),
                     };
                 }
             }
@@ -513,7 +788,17 @@ const renders: Record<Template, Render> = {
                     const objectFieldType = getFieldType(objectField.type);
                     const connectionField = getConnectionField(type, objectField.name);
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, connectionField: connectionField, schemaTypesPath: config.schemaTypesPath }),
+                        content: buildFileContent(config.template, {
+                            name: type?.name,
+                            idName: getIDFieldName(type),
+                            objectFieldName: objectField.name,
+                            objectFieldTypeName: objectFieldType.name,
+                            connectionField: connectionField,
+                            schemaTypesPath: config.schemaTypesPath,
+                            queryTypeName: getQueryTypeName(),
+                            mutationTypeName: getMutationTypeName(),
+                            subscriptionTypeName: getSubscriptionTypeName()
+                        }),
                     };
                 }
             }
@@ -531,7 +816,21 @@ const renders: Record<Template, Render> = {
                     const objectFieldType = getFieldType(objectField.type);
                     const connectionField = getConnectionField(schema.getQueryType(), changeCase.camelCase(objectFieldType.name));
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), imports: getObjectArrayImports(typeName), component: getObjectArrayComponent(typeName), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), connectionField: connectionField, tablePath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
+                        content: buildFileContent(config.template, {
+                            name: type?.name,
+                            idName: getIDFieldName(type),
+                            imports: getObjectArrayImports(typeName),
+                            component: getObjectArrayComponent(typeName),
+                            objectFieldName: objectField.name,
+                            objectFieldTypeName: objectFieldType.name,
+                            objectFieldTypeFields: getFields(schema, objectFieldType),
+                            connectionField: connectionField,
+                            tablePath: `${config.componentsPath}/objects`,
+                            schemaTypesPath: config.schemaTypesPath,
+                            queryTypeName: getQueryTypeName(),
+                            mutationTypeName: getMutationTypeName(),
+                            subscriptionTypeName: getSubscriptionTypeName()
+                        }),
                     };
                 }
             }
@@ -549,7 +848,16 @@ const renders: Record<Template, Render> = {
                     const objectFieldType = getFieldType(objectField.type);
                     const connectionField = getConnectionField(schema.getQueryType(), changeCase.camelCase(objectFieldType.name));
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, connectionField: connectionField }),
+                        content: buildFileContent(config.template, {
+                            name: type?.name,
+                            idName: getIDFieldName(type),
+                            objectFieldName: objectField.name,
+                            objectFieldTypeName: objectFieldType.name,
+                            connectionField: connectionField,
+                            queryTypeName: getQueryTypeName(),
+                            mutationTypeName: getMutationTypeName(),
+                            subscriptionTypeName: getSubscriptionTypeName()
+                        }),
                     };
                 }
             }
@@ -563,7 +871,17 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), imports: getObjectImports(typeName), component: getObjectComponent(typeName), formPath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        idName: getIDFieldName(type),
+                        imports: getObjectImports(typeName),
+                        component: getObjectComponent(typeName),
+                        formPath: `${config.componentsPath}/objects`,
+                        schemaTypesPath: config.schemaTypesPath,
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName()
+                    }),
                 };
             }
         }
@@ -576,7 +894,14 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 return {
-                    content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), schemaTypesPath: config.schemaTypesPath }),
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        idName: getIDFieldName(type),
+                        schemaTypesPath: config.schemaTypesPath,
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName()
+                    }),
                 };
             }
         }
@@ -592,7 +917,20 @@ const renders: Record<Template, Render> = {
                 if (objectField?.type) {
                     const objectFieldType = getFieldType(objectField.type);
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), imports: getObjectImports(typeName), component: getObjectComponent(typeName), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), formPath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
+                        content: buildFileContent(config.template, {
+                            name: type?.name,
+                            idName: getIDFieldName(type),
+                            imports: getObjectImports(typeName),
+                            component: getObjectComponent(typeName),
+                            objectFieldName: objectField.name,
+                            objectFieldTypeName: objectFieldType.name,
+                            objectFieldTypeFields: getFields(schema, objectFieldType),
+                            formPath: `${config.componentsPath}/objects`,
+                            schemaTypesPath: config.schemaTypesPath,
+                            queryTypeName: getQueryTypeName(),
+                            mutationTypeName: getMutationTypeName(),
+                            subscriptionTypeName: getSubscriptionTypeName()
+                        }),
                     };
                 }
             }
@@ -609,7 +947,16 @@ const renders: Record<Template, Render> = {
                 if (objectField?.type) {
                     const objectFieldType = getFieldType(objectField.type);
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, schemaTypesPath: config.schemaTypesPath }),
+                        content: buildFileContent(config.template, {
+                            name: type?.name,
+                            idName: getIDFieldName(type),
+                            objectFieldName: objectField.name,
+                            objectFieldTypeName: objectFieldType.name,
+                            schemaTypesPath: config.schemaTypesPath,
+                            queryTypeName: getQueryTypeName(),
+                            mutationTypeName: getMutationTypeName(),
+                            subscriptionTypeName: getSubscriptionTypeName()
+                        }),
                     };
                 }
             }
@@ -627,7 +974,22 @@ const renders: Record<Template, Render> = {
                     const objectFieldType = getFieldType(objectField.type);
                     const connectionField = getConnectionField(schema.getQueryType(), changeCase.camelCase(objectFieldType.name));
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), imports: getObjectArrayImports(typeName), component: getObjectArrayComponent(typeName), connectionField: connectionField, objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), tablePath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath, isNonNullType: isNonNullType(objectField.type) }),
+                        content: buildFileContent(config.template, {
+                            name: type?.name,
+                            idName: getIDFieldName(type),
+                            imports: getObjectArrayImports(typeName),
+                            component: getObjectArrayComponent(typeName),
+                            connectionField: connectionField,
+                            objectFieldName: objectField.name,
+                            objectFieldTypeName: objectFieldType.name,
+                            objectFieldTypeFields: getFields(schema, objectFieldType),
+                            tablePath: `${config.componentsPath}/objects`,
+                            schemaTypesPath: config.schemaTypesPath,
+                            isNonNullType: isNonNullType(objectField.type),
+                            queryTypeName: getQueryTypeName(),
+                            mutationTypeName: getMutationTypeName(),
+                            subscriptionTypeName: getSubscriptionTypeName()
+                        }),
                     };
                 }
             }
@@ -645,7 +1007,17 @@ const renders: Record<Template, Render> = {
                     const objectFieldType = getFieldType(objectField.type);
                     const connectionField = getConnectionField(schema.getQueryType(), changeCase.camelCase(objectFieldType.name));
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), connectionField: connectionField, objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, schemaTypesPath: config.schemaTypesPath }),
+                        content: buildFileContent(config.template, {
+                            name: type?.name,
+                            idName: getIDFieldName(type),
+                            connectionField: connectionField,
+                            objectFieldName: objectField.name,
+                            objectFieldTypeName: objectFieldType.name,
+                            schemaTypesPath: config.schemaTypesPath,
+                            queryTypeName: getQueryTypeName(),
+                            mutationTypeName: getMutationTypeName(),
+                            subscriptionTypeName: getSubscriptionTypeName()
+                        }),
                     };
                 }
             }
@@ -663,7 +1035,21 @@ const renders: Record<Template, Render> = {
                     const objectFieldType = getFieldType(objectField.type);
                     const connectionField = getConnectionField(type, objectField.name);
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), imports: getObjectArrayImports(typeName), component: getObjectArrayComponent(typeName), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), connectionField: connectionField, tablePath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
+                        content: buildFileContent(config.template, {
+                            name: type?.name,
+                            idName: getIDFieldName(type),
+                            imports: getObjectArrayImports(typeName),
+                            component: getObjectArrayComponent(typeName),
+                            objectFieldName: objectField.name,
+                            objectFieldTypeName: objectFieldType.name,
+                            objectFieldTypeFields: getFields(schema, objectFieldType),
+                            connectionField: connectionField,
+                            tablePath: `${config.componentsPath}/objects`,
+                            schemaTypesPath: config.schemaTypesPath,
+                            queryTypeName: getQueryTypeName(),
+                            mutationTypeName: getMutationTypeName(),
+                            subscriptionTypeName: getSubscriptionTypeName()
+                        }),
                     };
                 }
             }
@@ -681,7 +1067,16 @@ const renders: Record<Template, Render> = {
                     const objectFieldType = getFieldType(objectField.type);
                     const connectionField = getConnectionField(type, objectField.name);
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, connectionField: connectionField }),
+                        content: buildFileContent(config.template, {
+                            name: type?.name,
+                            idName: getIDFieldName(type),
+                            objectFieldName: objectField.name,
+                            objectFieldTypeName: objectFieldType.name,
+                            connectionField: connectionField,
+                            queryTypeName: getQueryTypeName(),
+                            mutationTypeName: getMutationTypeName(),
+                            subscriptionTypeName: getSubscriptionTypeName()
+                        }),
                     };
                 }
             }
@@ -699,7 +1094,21 @@ const renders: Record<Template, Render> = {
                     const objectFieldType = getFieldType(objectField.type);
                     const connectionField = getConnectionField(type, objectField.name);
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), imports: getObjectImports(typeName), component: getObjectComponent(typeName), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), connectionField: connectionField, formPath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
+                        content: buildFileContent(config.template, {
+                            name: type?.name,
+                            idName: getIDFieldName(type),
+                            imports: getObjectImports(typeName),
+                            component: getObjectComponent(typeName),
+                            objectFieldName: objectField.name,
+                            objectFieldTypeName: objectFieldType.name,
+                            objectFieldTypeFields: getFields(schema, objectFieldType),
+                            connectionField: connectionField,
+                            formPath: `${config.componentsPath}/objects`,
+                            schemaTypesPath: config.schemaTypesPath,
+                            queryTypeName: getQueryTypeName(),
+                            mutationTypeName: getMutationTypeName(),
+                            subscriptionTypeName: getSubscriptionTypeName()
+                        }),
                     };
                 }
             }
@@ -717,7 +1126,17 @@ const renders: Record<Template, Render> = {
                     const objectFieldType = getFieldType(objectField.type);
                     const connectionField = getConnectionField(type, objectField.name);
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, connectionField: connectionField, schemaTypesPath: config.schemaTypesPath }),
+                        content: buildFileContent(config.template, {
+                            name: type?.name,
+                            idName: getIDFieldName(type),
+                            objectFieldName: objectField.name,
+                            objectFieldTypeName: objectFieldType.name,
+                            connectionField: connectionField,
+                            schemaTypesPath: config.schemaTypesPath,
+                            queryTypeName: getQueryTypeName(),
+                            mutationTypeName: getMutationTypeName(),
+                            subscriptionTypeName: getSubscriptionTypeName()
+                        }),
                     };
                 }
             }
@@ -735,7 +1154,21 @@ const renders: Record<Template, Render> = {
                     const objectFieldType = getFieldType(objectField.type);
                     const connectionField = getConnectionField(schema.getQueryType(), changeCase.camelCase(objectFieldType.name));
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), imports: getObjectArrayImports(typeName), component: getObjectArrayComponent(typeName), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, objectFieldTypeFields: getFields(schema, objectFieldType), connectionField: connectionField, tablePath: `${config.componentsPath}/objects`, schemaTypesPath: config.schemaTypesPath }),
+                        content: buildFileContent(config.template, {
+                            name: type?.name,
+                            idName: getIDFieldName(type),
+                            imports: getObjectArrayImports(typeName),
+                            component: getObjectArrayComponent(typeName),
+                            objectFieldName: objectField.name,
+                            objectFieldTypeName: objectFieldType.name,
+                            objectFieldTypeFields: getFields(schema, objectFieldType),
+                            connectionField: connectionField,
+                            tablePath: `${config.componentsPath}/objects`,
+                            schemaTypesPath: config.schemaTypesPath,
+                            queryTypeName: getQueryTypeName(),
+                            mutationTypeName: getMutationTypeName(),
+                            subscriptionTypeName: getSubscriptionTypeName()
+                        }),
                     };
                 }
             }
@@ -753,7 +1186,16 @@ const renders: Record<Template, Render> = {
                     const objectFieldType = getFieldType(objectField.type);
                     const connectionField = getConnectionField(schema.getQueryType(), changeCase.camelCase(objectFieldType.name));
                     return {
-                        content: buildFileContent(config.template, { name: type?.name, idName: getIDFieldName(type), objectFieldName: objectField.name, objectFieldTypeName: objectFieldType.name, connectionField: connectionField }),
+                        content: buildFileContent(config.template, {
+                            name: type?.name,
+                            idName: getIDFieldName(type),
+                            objectFieldName: objectField.name,
+                            objectFieldTypeName: objectFieldType.name,
+                            connectionField: connectionField,
+                            queryTypeName: getQueryTypeName(),
+                            mutationTypeName: getMutationTypeName(),
+                            subscriptionTypeName: getSubscriptionTypeName()
+                        }),
                     };
                 }
             }

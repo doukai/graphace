@@ -4,14 +4,14 @@
 	import PermissionCreateTable from '~/lib/components/objects/permission/PermissionCreateTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
-	import type { MutationTypePermissionArgs } from '~/lib/types/schema';
+	import type { MutationPermissionArgs } from '~/lib/types/schema';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam, getPathParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
 	import LL from '$i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Role.fields.permissions.name());
-	$: nodes = data.nodes as (MutationTypePermissionArgs | null | undefined)[];
+	$: nodes = data.nodes as (MutationPermissionArgs | null | undefined)[];
 	$: errors = data.errors as Record<number, Errors>;
 
 	const edit = (
@@ -34,11 +34,11 @@
 		});
 	};
 
-	const mutation = (event: CustomEvent<{ nodes: (MutationTypePermissionArgs | null | undefined)[] | null | undefined}> ) => {
+	const mutation = (event: CustomEvent<{ nodes: (MutationPermissionArgs | null | undefined)[] | null | undefined}> ) => {
 		nodes = [...event.detail.nodes || []];
 	};
 
-	const save = (event: CustomEvent<{ nodes: (MutationTypePermissionArgs | null | undefined)[] | null | undefined}> ) => {
+	const save = (event: CustomEvent<{ nodes: (MutationPermissionArgs | null | undefined)[] | null | undefined}> ) => {
 		ot({
 			node: updateNodeParam($page.url, event.detail.nodes),
 			errors: updateErrorsParam($page.url, errors)

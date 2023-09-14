@@ -1,5 +1,5 @@
-mutation Mutation_permission_realm($permission_name: ID, $permission_realm: RealmInput, $id: StringExpression, $name: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $update: Boolean = false, $mergeToList: [String]) {
-  permission(name: $permission_name realm: $permission_realm) @update(if: $update) @mergeToList(arguments: $mergeToList) {
+mutation Mutation_permission_realm($permission_name: ID, $permission_realm: RealmInput, $id: StringExpression, $name: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $mergeToList: [String]) {
+  permission(name: $permission_name realm: $permission_realm) @mergeToList(arguments: $mergeToList) {
     name
     field
     type

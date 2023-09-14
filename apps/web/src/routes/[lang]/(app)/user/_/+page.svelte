@@ -6,7 +6,7 @@
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Mutation_userStore } from '$houdini';
-	import type { MutationTypeUserArgs, User } from '~/lib/types/schema';
+	import type { MutationUserArgs, User } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -14,22 +14,21 @@
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.User.name(), PageType.CREATE);
-	$: node = data.node as MutationTypeUserArgs;
+	$: node = data.node as MutationUserArgs;
 	$: errors = data.errors as Record<number, Errors>;
 
 	const Mutation_user = new Mutation_userStore();
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeUserArgs;
-			update?: boolean;
+			args: MutationUserArgs;
 			then: (data: User | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('User', event.detail.args, event.detail.update, $locale)
+		validateMutation('User', event.detail.args, $locale)
 			.then((data) => {
-				Mutation_user.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_user.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.user);
 						if (result.errors) {

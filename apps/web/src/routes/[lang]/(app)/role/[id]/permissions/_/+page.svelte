@@ -6,7 +6,7 @@
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Mutation_role_permissionsStore } from '$houdini';
-	import type { MutationTypePermissionArgs, Permission } from '~/lib/types/schema';
+	import type { MutationPermissionArgs, Permission } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -14,7 +14,7 @@
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Role.fields.permissions.name(), PageType.CREATE);
-	$: node = data.node as MutationTypePermissionArgs;
+	$: node = data.node as MutationPermissionArgs;
 	$: id = data.id as string;
 	$: errors = data.errors as Record<string, Errors>;
 
@@ -22,19 +22,17 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypePermissionArgs;
-			update?: boolean;
+			args: MutationPermissionArgs;
 			then: (data: Permission | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Role', { id: id, permissions: [event.detail.args] }, true, $locale)
+		validateMutation('Role', { id: id, permissions: [event.detail.args] }, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_role_permissions.mutate({
 					role_id: id,
 					role_permissions: [event.detail.args],
-					update: true,
 					mergeToList: ['permissions']
 				})
 					.then((result) => {

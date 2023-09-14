@@ -6,7 +6,7 @@
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { Query_{{ name | camelCase }}Store, Mutation_{{ name | camelCase }}Store } from '$houdini';
 	import type { PageData } from './$houdini';
-	import type { MutationType{{ name }}Args, {{ name }} } from '~/{{ schemaTypesPath }}';
+	import type { {{ mutationTypeName }}{{ name }}Args, {{ name }} } from '~/{{ schemaTypesPath }}';
 	import { validateMutation } from '~/lib/utils';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -19,16 +19,15 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationType{{ name }}Args;
-			update?: boolean;
+			args: {{ mutationTypeName }}{{ name }}Args;
 			then: (data: {{ name }} | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('{{ name }}', event.detail.args, event.detail.update, $locale)
+		validateMutation('{{ name }}', event.detail.args, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_{{ name | camelCase }}.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_{{ name | camelCase }}.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.{{ name | camelCase }});
 						if (result.errors) {

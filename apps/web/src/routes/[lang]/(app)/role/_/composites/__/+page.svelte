@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import RoleSelectConnectionTable from '~/lib/components/objects/role/RoleSelectConnectionTable.svelte';
-	import type { Role, QueryTypeRoleConnectionArgs, MutationTypeRoleArgs } from '~/lib/types/schema';
+	import type { Role, QueryRoleConnectionArgs, MutationRoleArgs } from '~/lib/types/schema';
 	import { Query_roleConnectionStore, Mutation_roleStore } from '$houdini';
 	import { updateNodeParam, updateErrorsParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
@@ -13,7 +13,7 @@
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Role.fields.composites.name(), PageType.SELECT);
-	$: originalNodes = data.nodes as (MutationTypeRoleArgs | null | undefined)[];
+	$: originalNodes = data.nodes as (MutationRoleArgs | null | undefined)[];
 	$: errors = data.errors as Record<number, Errors>;
 	$: Query_roleConnection = data.Query_roleConnection as Query_roleConnectionStore;
 	$: nodes = $Query_roleConnection.data?.roleConnection?.edges?.map((edge) => edge?.node);
@@ -22,7 +22,7 @@
 
 	const fetch = (
 		event: CustomEvent<{
-			args: QueryTypeRoleConnectionArgs;
+			args: QueryRoleConnectionArgs;
 			then: (data: (Role | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
@@ -38,19 +38,18 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeRoleArgs;
-			update?: boolean;
+			args: MutationRoleArgs;
 			then: (data: Role | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
-		validateMutation('Role', event.detail.args, event.detail.update, $locale)
+		validateMutation('Role', event.detail.args, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_role.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_role.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.role);
 						if (result.errors) {
@@ -67,7 +66,7 @@
 
 	const select = (
 		event: CustomEvent<{
-			selected: MutationTypeRoleArgs | null | undefined | (MutationTypeRoleArgs | null | undefined)[];
+			selected: MutationRoleArgs | null | undefined | (MutationRoleArgs | null | undefined)[];
 			then: () => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>

@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import PermissionSelectConnectionTable from '~/lib/components/objects/permission/PermissionSelectConnectionTable.svelte';
-	import type { Permission, QueryTypePermissionConnectionArgs, MutationTypePermissionArgs } from '~/lib/types/schema';
+	import type { Permission, QueryPermissionConnectionArgs, MutationPermissionArgs } from '~/lib/types/schema';
 	import { Query_permissionConnectionStore, Mutation_permissionStore } from '$houdini';
 	import { updateNodeParam, updateErrorsParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
@@ -13,7 +13,7 @@
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Role.fields.permissions.name(), PageType.SELECT);
-	$: originalNodes = data.nodes as (MutationTypePermissionArgs | null | undefined)[];
+	$: originalNodes = data.nodes as (MutationPermissionArgs | null | undefined)[];
 	$: errors = data.errors as Record<number, Errors>;
 	$: Query_permissionConnection = data.Query_permissionConnection as Query_permissionConnectionStore;
 	$: nodes = $Query_permissionConnection.data?.permissionConnection?.edges?.map((edge) => edge?.node);
@@ -22,7 +22,7 @@
 
 	const fetch = (
 		event: CustomEvent<{
-			args: QueryTypePermissionConnectionArgs;
+			args: QueryPermissionConnectionArgs;
 			then: (data: (Permission | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
@@ -38,19 +38,18 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypePermissionArgs;
-			update?: boolean;
+			args: MutationPermissionArgs;
 			then: (data: Permission | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id);
-		validateMutation('Permission', event.detail.args, event.detail.update, $locale)
+		validateMutation('Permission', event.detail.args, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_permission.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_permission.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.permission);
 						if (result.errors) {
@@ -67,7 +66,7 @@
 
 	const select = (
 		event: CustomEvent<{
-			selected: MutationTypePermissionArgs | null | undefined | (MutationTypePermissionArgs | null | undefined)[];
+			selected: MutationPermissionArgs | null | undefined | (MutationPermissionArgs | null | undefined)[];
 			then: () => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>

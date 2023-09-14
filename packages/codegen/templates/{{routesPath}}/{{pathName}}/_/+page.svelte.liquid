@@ -6,7 +6,7 @@
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Mutation_{{ name | camelCase }}Store } from '$houdini';
-	import type { MutationType{{ name }}Args, {{ name }} } from '~/{{ schemaTypesPath }}';
+	import type { {{ mutationTypeName }}{{ name }}Args, {{ name }} } from '~/{{ schemaTypesPath }}';
 	import type { PageData } from './$houdini';
 	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -14,22 +14,21 @@
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.{{ name }}.name(), PageType.CREATE);
-	$: node = data.node as MutationType{{ name }}Args;
+	$: node = data.node as {{ mutationTypeName }}{{ name }}Args;
 	$: errors = data.errors as Record<number, Errors>;
 
 	const Mutation_{{ name | camelCase }} = new Mutation_{{ name | camelCase }}Store();
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationType{{ name }}Args;
-			update?: boolean;
+			args: {{ mutationTypeName }}{{ name }}Args;
 			then: (data: {{ name }} | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('{{ name }}', event.detail.args, event.detail.update, $locale)
+		validateMutation('{{ name }}', event.detail.args, $locale)
 			.then((data) => {
-				Mutation_{{ name | camelCase }}.mutate({ ...event.detail.args, update: event.detail.update })
+				Mutation_{{ name | camelCase }}.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.{{ name | camelCase }});
 						if (result.errors) {

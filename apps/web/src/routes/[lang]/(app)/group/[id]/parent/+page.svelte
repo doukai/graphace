@@ -5,7 +5,7 @@
 	import GroupCreateForm from '~/lib/components/objects/group/GroupCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
-	import type { MutationTypeGroupArgs, Group } from '~/lib/types/schema';
+	import type { MutationGroupArgs, Group } from '~/lib/types/schema';
 	import { updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons/utils/url-util';
 	import { Query_group_parentStore, Mutation_group_parentStore, Mutation_groupStore } from '$houdini';
 	import type { PageData } from './$houdini';
@@ -25,16 +25,15 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: MutationTypeGroupArgs;
-			update?: boolean;
+			args: MutationGroupArgs;
 			then: (data: Group | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Group', event.detail.args, true, $locale)
+		validateMutation('Group', event.detail.args, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_group.mutate({ ...event.detail.args, update: true })
+				Mutation_group.mutate(event.detail.args)
 					.then((result) => {
 						event.detail.then(result?.data?.group);
 						if (result.errors) {
@@ -49,19 +48,17 @@
 
 	const parentMutation = (
 		event: CustomEvent<{
-			args: MutationTypeGroupArgs | null;
-			update?: boolean;
+			args: MutationGroupArgs | null;
 			then: (data: Group | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Group', { id: group?.id, parent: event.detail.args }, true, $locale)
+		validateMutation('Group', { id: group?.id, parent: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_group_parent.mutate({
 					group_id: group?.id,
-					group_parent: event.detail.args,
-					update: true
+					group_parent: event.detail.args
 				})
 					.then((result) => {
 						event.detail.then(result?.data?.group?.parent);
