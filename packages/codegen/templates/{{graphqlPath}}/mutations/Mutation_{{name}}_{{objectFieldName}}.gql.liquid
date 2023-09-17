@@ -11,7 +11,7 @@ mutation Mutation_{{ name }}_{{ objectField.name }}
   {%- endif %}
   {%- endif %} {
   {{ name }}
-    {%- if objectField.parentArgs and objectField.parentArgs.length > 0 %}({% for arg in objectField.parentArgs %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %}{% if objectField.parentArgs and objectField.parentArgs.length > 0 %} @mergeToList(arguments: $mergeToList){% endif %}
+    {%- if objectField.parentArgs and objectField.parentArgs.length > 0 %}({% for arg in objectField.parentArgs %}{% if arg.name == idName %}where: {val: {% raw %}{{% endraw %}{{ arg.name }}: ${{ arg.alias }}}}{% else %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %}{% if objectField.parentArgs and objectField.parentArgs.length > 0 %} @mergeToList(arguments: $mergeToList){% endif %}
     {%- if fields %} {
     {%- for field in fields %}
     {{ field.name }}

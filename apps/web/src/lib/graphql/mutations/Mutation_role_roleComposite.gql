@@ -1,5 +1,5 @@
 mutation Mutation_role_roleComposite($role_id: ID, $role_roleComposite: [RoleCompositeInput], $first: Int, $last: Int, $offset: Int, $orderBy: RoleCompositeOrderBy, $groupBy: [String!], $id: StringExpression, $roleId: IntExpression, $roleIdType: RoleExpression, $compositeId: IntExpression, $compositeIdType: RoleExpression, $mergeToList: [String]) {
-  role(id: $role_id roleComposite: $role_roleComposite) @mergeToList(arguments: $mergeToList) {
+  role(where: {val: {id: $role_id}} roleComposite: $role_roleComposite) @mergeToList(arguments: $mergeToList) {
     id
     name
     description

@@ -145,8 +145,8 @@
 		on:select={() =>
 			dispatch('select', {
 				selected: Array.isArray(selectedIdList)
-					? selectedIdList.map((id) => ({ {{ idName }}, where: { {{ idName }}: { val: id } } }))
-					: { {{ idName }}: selectedIdList, where: { {{ idName }}: { val: selectedIdList } } },
+					? selectedIdList.map((id) => ({ where: { {{ idName }}: { val: id } } }))
+					: { where: { {{ idName }}: { val: selectedIdList } } },
 				then: () => {
 					notifications.success($LL.web.message.saveSuccess());
 					dispatch('back');

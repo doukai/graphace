@@ -1,5 +1,5 @@
 mutation Mutation_role_permissions($role_id: ID, $role_permissions: [PermissionInput], $first: Int, $last: Int, $offset: Int, $orderBy: PermissionOrderBy, $groupBy: [String!], $name: StringExpression, $field: StringExpression, $type: StringExpression, $permissionType: PermissionTypeExpression, $description: StringExpression, $roles: RoleExpression, $realm: RealmExpression, $mergeToList: [String]) {
-  role(id: $role_id permissions: $role_permissions) @mergeToList(arguments: $mergeToList) {
+  role(where: {val: {id: $role_id}} permissions: $role_permissions) @mergeToList(arguments: $mergeToList) {
     id
     name
     description

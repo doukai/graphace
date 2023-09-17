@@ -1,5 +1,5 @@
 mutation Mutation_group_realm($group_id: ID, $group_realm: RealmInput, $id: StringExpression, $name: StringExpression, $mergeToList: [String]) {
-  group(id: $group_id realm: $group_realm) @mergeToList(arguments: $mergeToList) {
+  group(where: {val: {id: $group_id}} realm: $group_realm) @mergeToList(arguments: $mergeToList) {
     id
     name
     path

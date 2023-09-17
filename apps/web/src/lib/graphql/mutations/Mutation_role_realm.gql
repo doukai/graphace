@@ -1,5 +1,5 @@
 mutation Mutation_role_realm($role_id: ID, $role_realm: RealmInput, $id: StringExpression, $name: StringExpression, $mergeToList: [String]) {
-  role(id: $role_id realm: $role_realm) @mergeToList(arguments: $mergeToList) {
+  role(where: {val: {id: $role_id}} realm: $role_realm) @mergeToList(arguments: $mergeToList) {
     id
     name
     description

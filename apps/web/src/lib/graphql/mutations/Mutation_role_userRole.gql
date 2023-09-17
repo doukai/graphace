@@ -1,5 +1,5 @@
 mutation Mutation_role_userRole($role_id: ID, $role_userRole: [UserRoleInput], $first: Int, $last: Int, $offset: Int, $orderBy: UserRoleOrderBy, $groupBy: [String!], $id: StringExpression, $userId: IntExpression, $userIdType: UserExpression, $roleId: IntExpression, $roleIdType: RoleExpression, $mergeToList: [String]) {
-  role(id: $role_id userRole: $role_userRole) @mergeToList(arguments: $mergeToList) {
+  role(where: {val: {id: $role_id}} userRole: $role_userRole) @mergeToList(arguments: $mergeToList) {
     id
     name
     description
