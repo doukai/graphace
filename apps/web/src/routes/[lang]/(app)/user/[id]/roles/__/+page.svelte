@@ -71,7 +71,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('User', { id: id, roles: event.detail.selected }, $locale)
+		validateMutation('User', { where: { id: { val: id } }, roles: event.detail.selected }, $locale)
 			.then((data) => {
 				errors = {};
 				if (Array.isArray(event.detail.selected)) {

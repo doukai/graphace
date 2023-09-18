@@ -55,7 +55,10 @@
 		? []
 		: undefined;
 
-	$: if (selectedIdList && !Array.isArray(selectedIdList) || Array.isArray(selectedIdList) && selectedIdList.length > 0) {
+	$: if (
+		(selectedIdList && !Array.isArray(selectedIdList)) ||
+		(Array.isArray(selectedIdList) && selectedIdList.length > 0)
+	) {
 		showSelectButton = true;
 	} else {
 		showSelectButton = false;
@@ -107,7 +110,7 @@
 			args.name = undefined;
 			args.path = undefined;
 		}
-		
+
 		if (after) {
 			args.after = after;
 			args.first = pageSize;
@@ -159,8 +162,16 @@
 		on:select={() =>
 			dispatch('select', {
 				selected: Array.isArray(selectedIdList)
-					? selectedIdList.map((id) => ({ where: { id: { val: id } } }))
-					: { where: { id: { val: selectedIdList } } },
+					? selectedIdList.map((id) => ({
+							where: { id: { val: id } },
+							path: nodes?.find((node) => node?.id === id)?.path,
+							deep: nodes?.find((node) => node?.id === id)?.deep
+					  }))
+					: {
+							where: { id: { val: selectedIdList } },
+							path: nodes?.find((node) => node?.id === selectedIdList)?.path,
+							deep: nodes?.find((node) => node?.id === selectedIdList)?.deep
+					  },
 				then: () => {
 					notifications.success($LL.web.message.saveSuccess());
 					dispatch('back');
@@ -214,7 +225,7 @@
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={pageSize} cols={8 + 2}/>
+			<TableLoading rows={pageSize} cols={8 + 2} />
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
@@ -224,28 +235,41 @@
 								<th class="z-10 w-12">
 									<label>
 										{#if multipleSelect}
-											<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
+											<input
+												type="checkbox"
+												class="checkbox"
+												bind:group={selectedIdList}
+												value={node.id}
+											/>
 										{:else}
-											<input type="radio" class="radio" bind:group={selectedIdList} value={node.id} />
+											<input
+												type="radio"
+												class="radio"
+												bind:group={selectedIdList}
+												value={node.id}
+											/>
 										{/if}
 									</label>
 								</th>
 								<StringTd
 									name="name"
 									bind:value={node.name}
-									on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+									on:save={() =>
+										updateField({ name: node?.name, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.name}
 								/>
 								<StringTd
 									name="path"
 									bind:value={node.path}
-									on:save={() => updateField({ path: node?.path, where: { id: { val: node?.id } } })}
+									on:save={() =>
+										updateField({ path: node?.path, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.path}
 								/>
 								<IntTd
 									name="deep"
 									bind:value={node.deep}
-									on:save={() => updateField({ deep: node?.deep, where: { id: { val: node?.id } } })}
+									on:save={() =>
+										updateField({ deep: node?.deep, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.deep}
 								/>
 								<th class="z-10 w-12">
@@ -279,7 +303,7 @@
 						{/if}
 					{/each}
 				{:else}
-					<TableEmpty cols={8 + 2}/>
+					<TableEmpty cols={8 + 2} />
 				{/if}
 			</tbody>
 		{/if}
