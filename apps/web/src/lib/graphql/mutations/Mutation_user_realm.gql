@@ -1,5 +1,5 @@
-mutation Mutation_user_realm($user_id: ID, $user_realm: RealmInput, $id: StringExpression, $name: StringExpression, $mergeToList: [String]) {
-  user(where: {val: {id: $user_id}} realm: $user_realm) @mergeToList(arguments: $mergeToList) {
+mutation Mutation_user_realm($user_id: String, $user_realm: RealmInput, $id: StringExpression, $name: StringExpression, $mergeToList: [String]) {
+  user(where: {id: {val: $user_id}}  realm: $user_realm) @mergeToList(arguments: $mergeToList) {
     id
     name
     lastName

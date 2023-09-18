@@ -164,7 +164,7 @@ const renders: Record<Template, Render> = {
                     objectField = {
                         name: subField?.name,
                         args: subField?.args,
-                        parentArgs: field.args.filter(arg => arg.name === idFieldName).concat(field.args.filter(arg => arg.name === subField?.name)).map(arg => { return { name: arg.name, alias: `${field.name}_${arg.name}`, type: arg.type } }),
+                        parentArgs: field.args.filter(arg => arg.name === subField?.name).map(arg => { return { name: arg.name, alias: `${field.name}_${arg.name}`, type: arg.type } }),
                         isListType: isListType(subField?.type),
                         connectionField: getConnectionField(fieldType, subField?.name),
                         fields: getScalarFields(subField),

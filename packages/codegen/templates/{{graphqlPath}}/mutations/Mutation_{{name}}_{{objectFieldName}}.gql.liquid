@@ -2,16 +2,16 @@ mutation Mutation_{{ name }}_{{ objectField.name }}
   {%- if objectField.connectionField %}
   {%- assign connectionArgs = objectField.parentArgs | concat: objectField.connectionField.args %}
   {%- if connectionArgs.length > 0 -%}
-  ({% for arg in connectionArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% else %}, $mergeToList: [String]{% endif %}{% endfor %})
+  (${{ name }}_{{ idName }}: String, {% for arg in connectionArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% else %}, $mergeToList: [String]{% endif %}{% endfor %})
   {%- endif %}
   {%- else %}
   {%- assign objectFieldArgs = objectField.parentArgs | concat: objectField.args %}
   {%- if objectFieldArgs.length > 0 -%}
-  ({% for arg in objectFieldArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% else %}, $mergeToList: [String]{% endif %}{% endfor %})
+  (${{ name }}_{{ idName }}: String, {% for arg in objectFieldArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% else %}, $mergeToList: [String]{% endif %}{% endfor %})
   {%- endif %}
   {%- endif %} {
   {{ name }}
-    {%- if objectField.parentArgs and objectField.parentArgs.length > 0 %}({% for arg in objectField.parentArgs %}{% if arg.name == idName %}where: {val: {% raw %}{{% endraw %}{{ arg.name }}: ${{ arg.alias }}}}{% else %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %}{% if objectField.parentArgs and objectField.parentArgs.length > 0 %} @mergeToList(arguments: $mergeToList){% endif %}
+    {%- if objectField.parentArgs and objectField.parentArgs.length > 0 %}(where: {% raw %}{{% endraw %}{{ idName }}: {val: ${{ name }}_{{ idName }}}}  {% for arg in objectField.parentArgs %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %}{% if objectField.parentArgs and objectField.parentArgs.length > 0 %} @mergeToList(arguments: $mergeToList){% endif %}
     {%- if fields %} {
     {%- for field in fields %}
     {{ field.name }}

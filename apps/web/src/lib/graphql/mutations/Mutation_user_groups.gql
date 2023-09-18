@@ -1,5 +1,5 @@
-mutation Mutation_user_groups($user_id: ID, $user_groups: [GroupInput], $first: Int, $last: Int, $offset: Int, $orderBy: GroupOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $path: StringExpression, $deep: IntExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $mergeToList: [String]) {
-  user(where: {val: {id: $user_id}} groups: $user_groups) @mergeToList(arguments: $mergeToList) {
+mutation Mutation_user_groups($user_id: String, $user_groups: [GroupInput], $first: Int, $last: Int, $offset: Int, $orderBy: GroupOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $path: StringExpression, $deep: IntExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $mergeToList: [String]) {
+  user(where: {id: {val: $user_id}}  groups: $user_groups) @mergeToList(arguments: $mergeToList) {
     id
     name
     lastName
