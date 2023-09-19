@@ -91,7 +91,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('{{ name }}', { {{ idName }}: {{ idName }}, {{ objectFieldName }}: event.detail.args }, $locale)
+		validateMutation('{{ name }}', { where: { {{ idName }}: { val: {{ idName }} }}, {{ objectFieldName }}: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_{{ name | camelCase }}_{{ objectFieldName }}.mutate({

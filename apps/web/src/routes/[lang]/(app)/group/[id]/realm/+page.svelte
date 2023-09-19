@@ -53,7 +53,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Group', { id: group?.id, realm: event.detail.args }, $locale)
+		validateMutation('Group', { where: { id: { val: group?.id }}, realm: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_group_realm.mutate({

@@ -75,7 +75,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Group', { id: id, users: event.detail.args }, $locale)
+		validateMutation('Group', { where: { id: { val: id }}, users: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_group_users.mutate({
