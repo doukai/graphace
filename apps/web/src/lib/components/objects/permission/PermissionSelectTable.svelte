@@ -130,8 +130,8 @@
 		on:select={() =>
 			dispatch('select', {
 				selected: Array.isArray(selectedIdList)
-					? selectedIdList.map((id) => ({ where: { name: { val: id } } }))
-					: { where: { name: { val: selectedIdList } } },
+					? selectedIdList.flatMap(id => nodes?.find(node => node?.name == id)).map((node) => ({ ...node, where: { name: { val: node?.name } } }))
+					: { ...nodes?.find(node => node?.name == selectedIdList), where: { name: { val: selectedIdList } } },
 				then: () => {
 					notifications.success($LL.web.message.saveSuccess());
 					dispatch('back');
@@ -252,7 +252,7 @@
 													e.preventDefault();
 													if (node && node.name) {
 														dispatch('select', {
-															selected: multipleSelect ? [node] : node,
+															selected: multipleSelect ? [{ ...node, where: { name: { val: node.name } } }] : { ...node, where: { name: { val: node.name } } },
 															then: () => {
 																notifications.success($LL.web.message.saveSuccess());
 																dispatch('back');

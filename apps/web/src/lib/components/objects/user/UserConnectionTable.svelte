@@ -156,7 +156,7 @@
 
 	const removeRow = (id: string) => {
 		dispatch('mutation', {
-			args: { id: id, isDeprecated: true },
+			args: { where: { id: { val: id } }, isDeprecated: true },
 			then: (data) => {
 				notifications.success($LL.web.message.removeSuccess());
 				query();

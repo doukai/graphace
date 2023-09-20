@@ -61,7 +61,7 @@
 	const remove = (): void => {
 		if (node) {
 			dispatch('mutation', {
-				args: { id: node.{{ idName }}, isDeprecated: true },
+				args: { where: { {{ idName }}: { val: node.{{ idName }} } }, isDeprecated: true },
 				then: (data) => {
 					notifications.success($LL.web.message.removeSuccess());
 					dispatch('back');
