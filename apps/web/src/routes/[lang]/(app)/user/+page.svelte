@@ -2,8 +2,10 @@
 	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
+	import { buildTree } from '@graphace/commons/utils/tree-util';
 	import { Card } from '@graphace/ui/components/card';
 	import UserConnectionTable from '~/lib/components/objects/user/UserConnectionTable.svelte';
+	import GroupTreeMenu, { GroupTree } from '~/lib/components/objects/group/GroupTreeMenu.svelte';
 	import type { User, QueryUserConnectionArgs, MutationUserArgs } from '~/lib/types/schema';
 	import { Query_userConnectionStore, Mutation_userStore } from '$houdini';
 	import type { PageData } from './$houdini';
@@ -15,6 +17,10 @@
 	$: urlName($page.url, $LL.graphql.objects.User.name());
 	$: Query_userConnection = data.Query_userConnection as Query_userConnectionStore;
 	$: nodes = $Query_userConnection.data?.userConnection?.edges?.map((edge) => edge?.node);
+	$: groupTrees = buildTree(
+		$Query_userConnection.data?.groupList,
+		(current, parent) => current?.parent?.id === parent?.id
+	) as GroupTree[];
 	$: totalCount = $Query_userConnection.data?.userConnection?.totalCount || 0;
 	const Mutation_user = new Mutation_userStore();
 	let errors: Record<number, Errors> = {};
@@ -81,28 +87,7 @@
 <div class="flex flex-row gap-2">
 	<div class="basis-1/5">
 		<Card>
-			<ul class="menu bg-base-200 w-56 rounded-box">
-				<li><a>Item 1</a></li>
-				<li>
-					<details open>
-						<summary>Parent</summary>
-						<ul>
-							<li><a>level 2 item 1</a></li>
-							<li><a>level 2 item 2</a></li>
-							<li>
-								<details open>
-									<summary>Parent</summary>
-									<ul>
-										<li><a>level 3 item 1</a></li>
-										<li><a>level 3 item 2</a></li>
-									</ul>
-								</details>
-							</li>
-						</ul>
-					</details>
-				</li>
-				<li><a>Item 3</a></li>
-			</ul>
+			<GroupTreeMenu nodeTrees={groupTrees} />
 		</Card>
 	</div>
 	<div class="basis-4/5">

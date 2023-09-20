@@ -1,15 +1,19 @@
-export type NodeTree<T> = Map<T, NodeTree<T>>;
+export interface NodeTree<T> {
+    node: T
+    children?: NodeTree<T>[] | null | undefined
+}
 
 export function buildTree<T>(
-    nodes: (any | null | undefined)[],
+    nodes: (any | null | undefined)[] | null | undefined,
     isSub: (current: T | undefined | null, parent?: T | undefined | null) => boolean,
     parent?: T | null | undefined
-): NodeTree<T> {
-    return Object.fromEntries(
-        nodes
+): NodeTree<T>[] | null | undefined {
+    if (nodes) {
+        return nodes
             ?.filter(
-                (node) => isSub(node, parent)
+                (node) => !parent && node.deep === 0 || isSub(node, parent)
             )
-            .map((node) => [node, buildTree(nodes, isSub, node)])
-    );
+            .map((node) => ({ node, children: buildTree(nodes, isSub, node) }))
+    }
+    return undefined;
 }
