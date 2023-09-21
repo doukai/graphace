@@ -1,7 +1,13 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
-	import { ObjectTd, StringTh, StringTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
+	import {
+		ObjectTd,
+		StringTh,
+		StringTd,
+		BooleanTh,
+		BooleanTd
+	} from '@graphace/ui-graphql/components/table';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
@@ -13,12 +19,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
-	import type {
-		User,
-		UserOrderBy,
-		QueryUserConnectionArgs,
-		UserInput
-	} from '~/lib/types/schema';
+	import type { User, UserOrderBy, QueryUserConnectionArgs, UserInput } from '~/lib/types/schema';
 
 	export let nodes: (User | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;
@@ -29,6 +30,7 @@
 	export let showUnbindButton: boolean = false;
 	export let showBackButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
+	export let groupId: string | null | undefined = undefined;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -63,6 +65,12 @@
 	let selectAll: boolean;
 	let selectedIdList: (string | null)[] = [];
 
+	$: if (groupId) {
+		query();
+	} else {
+		query();
+	}
+
 	const query = () => {
 		pageNumber = 1;
 		queryPage();
@@ -84,6 +92,12 @@
 		} else {
 			args.offset = (pageNumber - 1) * pageSize;
 			args.first = pageSize;
+		}
+
+		if (groupId) {
+			args.groups = { id: { val: groupId } };
+		} else {
+			args.groups = undefined;
 		}
 
 		dispatch('fetch', {
@@ -115,7 +129,7 @@
 			args.email = undefined;
 			args.phones = undefined;
 		}
-		
+
 		if (after) {
 			args.after = after;
 			args.first = pageSize;
@@ -125,6 +139,12 @@
 		} else {
 			args.offset = (pageNumber - 1) * pageSize;
 			args.first = pageSize;
+		}
+
+		if (groupId) {
+			args.groups = { id: { val: groupId } };
+		} else {
+			args.groups = undefined;
 		}
 
 		dispatch('fetch', {
@@ -319,7 +339,7 @@
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={pageSize} cols={9 + 2}/>
+			<TableLoading rows={pageSize} cols={9 + 2} />
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
@@ -328,49 +348,75 @@
 							<tr class="hover">
 								<th class="z-10 w-12">
 									<label>
-										<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
+										<input
+											type="checkbox"
+											class="checkbox"
+											bind:group={selectedIdList}
+											value={node.id}
+										/>
 									</label>
 								</th>
 								<StringTd
 									name="name"
 									bind:value={node.name}
-									on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+									on:save={() =>
+										updateField({ name: node?.name, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.name}
 								/>
 								<StringTd
 									name="lastName"
 									bind:value={node.lastName}
-									on:save={() => updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } })}
+									on:save={() =>
+										updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.lastName}
 								/>
 								<StringTd
 									name="login"
 									bind:value={node.login}
-									on:save={() => updateField({ login: node?.login, where: { id: { val: node?.id } } })}
+									on:save={() =>
+										updateField({ login: node?.login, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.login}
 								/>
 								<StringTd
 									name="email"
 									bind:value={node.email}
-									on:save={() => updateField({ email: node?.email, where: { id: { val: node?.id } } })}
+									on:save={() =>
+										updateField({ email: node?.email, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.email}
 								/>
 								<StringTd
 									name="phones"
 									bind:value={node.phones}
 									list
-									on:save={() => updateField({ phones: node?.phones, where: { id: { val: node?.id } } })}
+									on:save={() =>
+										updateField({ phones: node?.phones, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.phones}
 								/>
 								<BooleanTd
 									name="disable"
 									bind:value={node.disable}
-									on:save={() => updateField({ disable: node?.disable, where: { id: { val: node?.id } } })}
+									on:save={() =>
+										updateField({ disable: node?.disable, where: { id: { val: node?.id } } })}
 									errors={errors[row]?.iterms?.disable}
 								/>
-								<ObjectTd name="groups" errors={errors[row]?.iterms?.groups} path={`${node.id}/groups`} on:gotoField />
-								<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path={`${node.id}/roles`} on:gotoField />
-								<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+								<ObjectTd
+									name="groups"
+									errors={errors[row]?.iterms?.groups}
+									path={`${node.id}/groups`}
+									on:gotoField
+								/>
+								<ObjectTd
+									name="roles"
+									errors={errors[row]?.iterms?.roles}
+									path={`${node.id}/roles`}
+									on:gotoField
+								/>
+								<ObjectTd
+									name="realm"
+									errors={errors[row]?.iterms?.realm}
+									path={`${node.id}/realm`}
+									on:gotoField
+								/>
 								<th class="z-10 w-24">
 									<div class="flex space-x-1">
 										<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
@@ -447,7 +493,7 @@
 						{/if}
 					{/each}
 				{:else}
-					<TableEmpty cols={9 + 2}/>
+					<TableEmpty cols={9 + 2} />
 				{/if}
 			</tbody>
 		{/if}

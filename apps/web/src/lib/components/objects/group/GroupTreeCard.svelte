@@ -13,6 +13,7 @@
 	export let currentDeep = 0;
 	export let deeps = 2;
 	export let showSearchInput: boolean = true;
+	export let activeId: string | null | undefined = undefined;
 
 	const GroupNodesQuery = graphql(`
 		query GroupNodesQuery($path: StringExpression, $deep: IntExpression, $name: StringExpression) {
@@ -57,6 +58,7 @@
 			value: string | undefined;
 		}>
 	) => {
+		activeId = undefined;
 		let variables;
 		if (event.detail.value) {
 			variables = {
@@ -86,18 +88,9 @@
 </script>
 
 <Card>
-	<div class="flex justify-between">
-		<div class="hidden md:flex items-center">
-			<span class="text-xl font-semibold">{$LL.graphql.objects.Group.name()}</span>
-		</div>
-		<div class="flex justify-between w-full md:w-auto space-x-1">
-			{#if showSearchInput}
-				<div class="flex">
-					<SearchInput on:search={search} />
-				</div>
-			{/if}
-		</div>
-	</div>
+	{#if showSearchInput}
+		<SearchInput on:search={search} />
+	{/if}
 	<div class="divider" />
-	<GroupTreeMenu bind:nodeTrees {currentDeep} {deeps} on:fetch={fetch} />
+	<GroupTreeMenu bind:activeId bind:nodeTrees {currentDeep} {deeps} on:fetch={fetch} />
 </Card>

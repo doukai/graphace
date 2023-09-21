@@ -24,6 +24,7 @@
 	$: totalCount = $Query_userConnection.data?.userConnection?.totalCount || 0;
 	const Mutation_user = new Mutation_userStore();
 	let errors: Record<number, Errors> = {};
+	let groupId: string | null | undefined = undefined;
 
 	const fetch = (
 		event: CustomEvent<{
@@ -86,12 +87,13 @@
 
 <div class="flex flex-row gap-2">
 	<div class="basis-1/6">
-		<GroupTreeCard nodeTrees={groupTrees} />
+		<GroupTreeCard bind:activeId={groupId} nodeTrees={groupTrees} />
 	</div>
 	<div class="basis-5/6">
 		<UserConnectionTable
 			showSaveButton={false}
 			showBackButton={$canBack}
+			bind:groupId
 			{nodes}
 			{totalCount}
 			{errors}
