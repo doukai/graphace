@@ -15,7 +15,6 @@
 	export let currentDeep = 0;
 	export let deeps = 2;
 	export let activeId: string | null | undefined = undefined;
-	let childActiveId: string | null | undefined = undefined;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -64,7 +63,6 @@
 							},
 							then: (nodeTrees) => {
 								nodeTree.children = nodeTrees;
-								childActiveId = undefined;
 							},
 							catch: (errors) => {
 								console.error(errors);
@@ -77,7 +75,7 @@
 				</a>
 				{#if nodeTree.children}
 					<GroupTreeMenu
-						bind:activeId={childActiveId}
+						bind:activeId
 						bind:nodeTrees={nodeTree.children}
 						currentDeep={currentDeep + 1}
 						{deeps}
