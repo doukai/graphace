@@ -3,8 +3,9 @@
 </script>
 
 <script lang="ts">
-	import { graphql } from '$houdini';
-	import { type NodeTree, buildTree } from '@graphace/commons/utils/tree-util';
+	import { createEventDispatcher } from 'svelte';
+	import type { GraphQLError } from '@graphace/commons/types';
+	import type { NodeTree } from '@graphace/commons/utils/tree-util';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import GroupTreeMenu from './GroupTreeMenu.svelte';
 	import type { Group } from '~/lib/types/schema';
@@ -13,20 +14,36 @@
 	export let nodeTrees: GroupTree[] | null | undefined;
 	export let currentDeep = 0;
 	export let deeps = 2;
+	export let activeId: string | null | undefined = undefined;
+	let childActiveId: string | null | undefined = undefined;
 
-	const GroupNodesQuery = graphql(`
-		query GroupNodesQuery($path: String, $deep: Int) {
-			groupList(deep: { opr: LT, val: $deep }, path: { opr: LK, val: $path }) {
-				id
-				name
-				path
-				deep
-				parent {
-					id
-				}
+	const dispatch = createEventDispatcher<{
+		fetch: {
+			args: { deep: number; path: string; nodeTree: GroupTree };
+			then: (data: GroupTree[] | null | undefined) => void;
+			catch: (errors: GraphQLError[]) => void;
+		};
+	}>();
+
+	const fetch = (
+		event: CustomEvent<{
+			args: { deep: number; path: string; nodeTree: GroupTree };
+			then: (data: GroupTree[] | null | undefined) => void;
+			catch: (errors: GraphQLError[]) => void;
+		}>
+	) => {
+		activeId = event.detail.args.nodeTree.node.id;
+		dispatch('fetch', {
+			args: event.detail.args,
+			then: (nodeTrees) => {
+				event.detail.args.nodeTree.children = nodeTrees;
+			},
+			catch: (errors) => {
+				console.error(errors);
+				notifications.error($LL.web.message.requestFailed());
 			}
-		}
-	`);
+		});
+	};
 </script>
 
 <ul class={currentDeep ? '' : 'menu'}>
@@ -34,29 +51,38 @@
 		{#each nodeTrees as nodeTree}
 			<li>
 				<a
+					class={nodeTree.node.id === activeId ? 'active' : ''}
 					href={null}
 					on:click={(e) => {
 						e.preventDefault();
-						GroupNodesQuery.fetch({
-							variables: { deep: currentDeep + deeps, path: nodeTree.node.path }
-						})
-							.then((result) => {
-								nodeTree.children = buildTree(
-									result.data?.groupList,
-									(current, parent) => current?.parent?.id === parent?.id,
-									nodeTree.node
-								);
-							})
-							.catch((errors) => {
+						activeId = nodeTree.node.id;
+						dispatch('fetch', {
+							args: {
+								deep: currentDeep + deeps,
+								path: `${nodeTree.node.path || '/'}%`,
+								nodeTree
+							},
+							then: (nodeTrees) => {
+								nodeTree.children = nodeTrees;
+								childActiveId = undefined;
+							},
+							catch: (errors) => {
 								console.error(errors);
 								notifications.error($LL.web.message.requestFailed());
-							});
+							}
+						});
 					}}
 				>
 					{nodeTree.node.name}
 				</a>
 				{#if nodeTree.children}
-					<GroupTreeMenu nodeTrees={nodeTree.children} currentDeep={currentDeep + 1} {deeps} />
+					<GroupTreeMenu
+						bind:activeId={childActiveId}
+						bind:nodeTrees={nodeTree.children}
+						currentDeep={currentDeep + 1}
+						{deeps}
+						on:fetch={fetch}
+					/>
 				{/if}
 			</li>
 		{/each}

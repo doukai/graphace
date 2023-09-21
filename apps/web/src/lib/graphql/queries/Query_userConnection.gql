@@ -23,7 +23,7 @@ query Query_userConnection($id: StringExpression, $name: StringExpression, $last
       }
     }
   }
-	groupList(deep: { opr: LT, val: 1 }, path: { opr: LK, val: "/%" }) {
+	groupList(deep: { opr: LT, val: 2 }, path: { opr: LK, val: "/%" }) {
 		id
 		name
 		path

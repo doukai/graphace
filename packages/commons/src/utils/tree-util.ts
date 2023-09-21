@@ -9,11 +9,25 @@ export function buildTree<T>(
     parent?: T | null | undefined
 ): NodeTree<T>[] | null | undefined {
     if (nodes) {
-        return nodes
-            ?.filter(
-                (node) => !parent && node.deep === 0 || isSub(node, parent)
-            )
-            .map((node) => ({ node, children: buildTree(nodes, isSub, node) }))
+        if (parent) {
+            return nodes
+                ?.filter(
+                    (node) => isSub(node, parent)
+                )
+                .map((node) => ({ node, children: buildTree(nodes, isSub, node) }))
+        } else {
+            return nodes.reduce((pre, cur) => {
+                if (pre.some((item: T | null | undefined) => isSub(item, cur))) {
+                    pre = pre.filter((item: T | null | undefined) => !isSub(item, cur));
+                } else {
+                    if (!pre.some((item: T | null | undefined) => isSub(cur, item))) {
+                        pre.push(cur);
+                    }
+                }
+                return pre;
+            }, [])
+                .map((node: T | null | undefined) => ({ node, children: buildTree(nodes, isSub, node) }))
+        }
     }
     return undefined;
 }

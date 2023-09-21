@@ -3,9 +3,9 @@
 	import { page } from '$app/stores';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { buildTree } from '@graphace/commons/utils/tree-util';
-	import { Card } from '@graphace/ui/components/card';
 	import UserConnectionTable from '~/lib/components/objects/user/UserConnectionTable.svelte';
-	import GroupTreeMenu, { GroupTree } from '~/lib/components/objects/group/GroupTreeMenu.svelte';
+	import type { GroupTree } from '~/lib/components/objects/group/GroupTreeMenu.svelte';
+	import GroupTreeCard from '~/lib/components/objects/group/GroupTreeCard.svelte';
 	import type { User, QueryUserConnectionArgs, MutationUserArgs } from '~/lib/types/schema';
 	import { Query_userConnectionStore, Mutation_userStore } from '$houdini';
 	import type { PageData } from './$houdini';
@@ -85,12 +85,10 @@
 </script>
 
 <div class="flex flex-row gap-2">
-	<div class="basis-1/5">
-		<Card>
-			<GroupTreeMenu nodeTrees={groupTrees} />
-		</Card>
+	<div class="basis-1/6">
+		<GroupTreeCard nodeTrees={groupTrees} />
 	</div>
-	<div class="basis-4/5">
+	<div class="basis-5/6">
 		<UserConnectionTable
 			showSaveButton={false}
 			showBackButton={$canBack}
