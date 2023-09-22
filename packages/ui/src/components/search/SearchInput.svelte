@@ -4,7 +4,7 @@
 	import { MagnifyingGlass } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	export let name: string = '';
-	let value: string | undefined;
+	export let value: string | undefined = undefined;
 	const dispatch = createEventDispatcher<{
 		search: { value: string | undefined };
 	}>();

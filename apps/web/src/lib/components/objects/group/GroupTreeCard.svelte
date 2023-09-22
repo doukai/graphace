@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { graphql } from '$houdini';
+	import { graphql, Operator } from '$houdini';
+	import type { GroupNodesQueryVariables } from './$houdini';
 	import type { GraphQLError } from '@graphace/commons/types';
-	import { Operator } from '$houdini';
 	import { Card } from '@graphace/ui/components/card';
 	import GroupTreeMenu, { GroupTree } from '~/lib/components/objects/group/GroupTreeMenu.svelte';
 	import { buildTree } from '@graphace/commons/utils/tree-util';
@@ -9,14 +9,17 @@
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
 
-	export let nodeTrees: GroupTree[] | null | undefined;
 	export let currentDeep = 0;
 	export let deeps = 2;
 	export let showSearchInput: boolean = true;
 	export let activeId: string | null | undefined = undefined;
+	export const _GroupNodesQueryVariables: GroupNodesQueryVariables = ({}) => {
+		return { deep: { opr: Operator.LT, val: deeps }, path: { opr: Operator.LK, val: '/%' } };
+	};
 
 	const GroupNodesQuery = graphql(`
-		query GroupNodesQuery($path: StringExpression, $deep: IntExpression, $name: StringExpression) {
+		query GroupNodesQuery($path: StringExpression, $deep: IntExpression, $name: StringExpression)
+		@load {
 			groupList(deep: $deep, path: $path, name: $name) {
 				id
 				name
@@ -28,6 +31,21 @@
 			}
 		}
 	`);
+
+	let nodeTrees: GroupTree[] | null | undefined = undefined;
+	GroupNodesQuery.fetch({
+		variables: { deep: { opr: Operator.LT, val: deeps }, path: { opr: Operator.LK, val: '/%' } }
+	})
+		.then((result) => {
+			nodeTrees = buildTree(
+				result.data?.groupList,
+				(current, parent) => current?.parent?.id === parent?.id
+			);
+		})
+		.catch((errors) => {
+			console.error(errors);
+			notifications.error($LL.web.message.requestFailed());
+		});
 
 	const fetch = (
 		event: CustomEvent<{
@@ -92,5 +110,12 @@
 		<SearchInput on:search={search} />
 	{/if}
 	<div class="divider" />
-	<GroupTreeMenu bind:activeId bind:nodeTrees {currentDeep} {deeps} on:fetch={fetch} />
+
+	<GroupTreeMenu
+		bind:activeId
+		{nodeTrees}
+		{currentDeep}
+		{deeps}
+		on:fetch={fetch}
+	/>
 </Card>

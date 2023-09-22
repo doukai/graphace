@@ -31,17 +31,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		activeId = event.detail.args.nodeTree.node.id;
-		dispatch('fetch', {
-			args: event.detail.args,
-			then: (nodeTrees) => {
-				event.detail.args.nodeTree.children = nodeTrees;
-			},
-			catch: (errors) => {
-				console.error(errors);
-				notifications.error($LL.web.message.requestFailed());
-			}
-		});
+		dispatch('fetch', event.detail);
 	};
 </script>
 
@@ -73,15 +63,13 @@
 				>
 					{nodeTree.node.name}
 				</a>
-				{#if nodeTree.children}
-					<GroupTreeMenu
-						bind:activeId
-						bind:nodeTrees={nodeTree.children}
-						currentDeep={currentDeep + 1}
-						{deeps}
-						on:fetch={fetch}
-					/>
-				{/if}
+				<GroupTreeMenu
+					bind:activeId
+					nodeTrees={nodeTree.children}
+					currentDeep={currentDeep + 1}
+					{deeps}
+					on:fetch={fetch}
+				/>
 			</li>
 		{/each}
 	{/if}
