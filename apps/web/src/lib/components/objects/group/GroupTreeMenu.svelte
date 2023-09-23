@@ -3,36 +3,68 @@
 </script>
 
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	import type { GraphQLError } from '@graphace/commons/types';
-	import type { NodeTree } from '@graphace/commons/utils/tree-util';
+	import { graphql, Operator } from '$houdini';
+	import { type NodeTree, buildTree } from '@graphace/commons/utils/tree-util';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
+	import MenuTreeLoading from '@graphace/ui/components/menu/MenuTreeLoading.svelte';
 	import GroupTreeMenu from './GroupTreeMenu.svelte';
 	import type { Group } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
-
-	export let nodeTrees: GroupTree[] | null | undefined;
+	export let nodeTrees: GroupTree[] | null | undefined = undefined;
 	export let currentDeep = 0;
 	export let deeps = 2;
+	export let groupName: string | null | undefined = undefined;
 	export let activeId: string | null | undefined = undefined;
 
-	const dispatch = createEventDispatcher<{
-		fetch: {
-			args: { deep: number; path: string; nodeTree: GroupTree };
-			then: (data: GroupTree[] | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		};
-	}>();
+	const GroupNodesQuery = graphql(`
+		query GroupNodesQuery($path: StringExpression, $deep: IntExpression, $name: StringExpression) {
+			groupList(deep: $deep, path: $path, name: $name) {
+				id
+				name
+				path
+				deep
+				parent {
+					id
+				}
+			}
+		}
+	`);
 
-	const fetch = (
-		event: CustomEvent<{
-			args: { deep: number; path: string; nodeTree: GroupTree };
-			then: (data: GroupTree[] | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		}>
-	) => {
-		dispatch('fetch', event.detail);
-	};
+	$: if (groupName) {
+		let variables = {
+			deep: undefined,
+			path: undefined,
+			name: { opr: Operator.LK, val: `%${groupName}%` }
+		};
+		GroupNodesQuery.fetch({ variables })
+			.then((result) => {
+				nodeTrees = buildTree(
+					result.data?.groupList,
+					(current, parent) => current?.parent?.id === parent?.id
+				);
+			})
+			.catch((errors) => {
+				console.error(errors);
+				notifications.error($LL.web.message.requestFailed());
+			});
+	} else if (currentDeep === 0) {
+		let variables = {
+			deep: { opr: Operator.LT, val: deeps },
+			path: { opr: Operator.LK, val: '/%' },
+			name: undefined
+		};
+		GroupNodesQuery.fetch({ variables })
+			.then((result) => {
+				nodeTrees = buildTree(
+					result.data?.groupList,
+					(current, parent) => current?.parent?.id === parent?.id
+				);
+			})
+			.catch((errors) => {
+				console.error(errors);
+				notifications.error($LL.web.message.requestFailed());
+			});
+	}
 </script>
 
 <ul class={currentDeep ? '' : 'menu'}>
@@ -45,31 +77,40 @@
 					on:click={(e) => {
 						e.preventDefault();
 						activeId = nodeTree.node.id;
-						dispatch('fetch', {
-							args: {
-								deep: currentDeep + deeps,
-								path: `${nodeTree.node.path || '/'}%`,
-								nodeTree
-							},
-							then: (nodeTrees) => {
-								nodeTree.children = nodeTrees;
-							},
-							catch: (errors) => {
+						GroupNodesQuery.fetch({
+							variables: {
+								deep: { opr: Operator.LT, val: currentDeep + deeps },
+								path: {
+									opr: Operator.LK,
+									val: `${(nodeTree.node.path || '') + (nodeTree.node.id || '') + '/'}%`
+								}
+							}
+						})
+							.then((result) => {
+								nodeTree.children = buildTree(
+									result.data?.groupList,
+									(current, parent) => current?.parent?.id === parent?.id,
+									nodeTree.node
+								);
+							})
+							.catch((errors) => {
 								console.error(errors);
 								notifications.error($LL.web.message.requestFailed());
-							}
-						});
+							});
 					}}
 				>
 					{nodeTree.node.name}
 				</a>
-				<GroupTreeMenu
-					bind:activeId
-					nodeTrees={nodeTree.children}
-					currentDeep={currentDeep + 1}
-					{deeps}
-					on:fetch={fetch}
-				/>
+				{#if $GroupNodesQuery.fetching}
+					<MenuTreeLoading />
+				{:else if nodeTree.children}
+					<GroupTreeMenu
+						bind:activeId
+						nodeTrees={nodeTree.children}
+						currentDeep={currentDeep + 1}
+						{deeps}
+					/>
+				{/if}
 			</li>
 		{/each}
 	{/if}
