@@ -25,7 +25,6 @@ query Query_group_parent($group_id: StringExpression, $id: StringExpression, $na
       updateUserId
       updateTime
       createGroupId
-      parentId
     }
   }
 }

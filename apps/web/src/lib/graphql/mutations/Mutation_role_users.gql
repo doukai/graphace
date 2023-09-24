@@ -19,8 +19,6 @@ mutation Mutation_role_users($role_id: String, $role_users: [UserInput], $first:
           name
           lastName
           login
-          salt
-          hash
           email
           phones
           disable

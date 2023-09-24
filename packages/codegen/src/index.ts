@@ -102,15 +102,16 @@ const renders: Record<Template, Render> = {
                 const fieldType = getFieldType(field.type);
                 const idFieldName = getIDFieldName(fieldType);
                 let objectField = undefined;
-                if (config.objectFieldName) {
-                    const subField = getSubField(field, config.objectFieldName);
+                const subField = getSubField(field, config.objectFieldName);
+                if (config.objectFieldName && subField) {
+                    const subFieldType = getFieldType(subField?.type);
                     objectField = {
                         name: subField?.name,
                         args: subField?.args,
                         parentArgs: field.args.filter(arg => arg.name === idFieldName).map(arg => { return { name: arg.name, alias: `${field.name}_${arg.name}`, type: arg.type } }),
                         isListType: isListType(subField?.type),
                         connectionField: getConnectionField(fieldType, subField?.name),
-                        fields: getScalarFields(subField),
+                        fields: getScalarFields(subField)?.filter(field => inGraphQLField(subFieldType.name, field.name, getFieldType(field.type).name)),
                     }
                 }
                 return {
@@ -119,7 +120,8 @@ const renders: Record<Template, Render> = {
                         idName: idFieldName,
                         args: field.args,
                         isConnection: isConnection(field.name),
-                        fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name)), objectField: objectField
+                        fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name)),
+                        objectField: objectField
                     }),
                 };
             }
@@ -159,15 +161,16 @@ const renders: Record<Template, Render> = {
                 const fieldType = getFieldType(field.type);
                 const idFieldName = getIDFieldName(fieldType);
                 let objectField = undefined;
-                if (config.objectFieldName) {
-                    const subField = getSubField(field, config.objectFieldName);
+                const subField = getSubField(field, config.objectFieldName);
+                if (config.objectFieldName && subField) {
+                    const subFieldType = getFieldType(subField?.type);
                     objectField = {
                         name: subField?.name,
                         args: subField?.args,
                         parentArgs: field.args.filter(arg => arg.name === subField?.name).map(arg => { return { name: arg.name, alias: `${field.name}_${arg.name}`, type: arg.type } }),
                         isListType: isListType(subField?.type),
                         connectionField: getConnectionField(fieldType, subField?.name),
-                        fields: getScalarFields(subField),
+                        fields: getScalarFields(subField)?.filter(field => inGraphQLField(subFieldType.name, field.name, getFieldType(field.type).name)),
                     }
                 }
                 return {

@@ -240,9 +240,9 @@
 								<th class="z-10 w-12">
 									<label>
 										{#if multipleSelect}
-											<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
+											<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.name} />
 										{:else}
-											<input type="radio" class="radio" bind:group={selectedIdList} value={node.id} />
+											<input type="radio" class="radio" bind:group={selectedIdList} value={node.name} />
 										{/if}
 									</label>
 								</th>

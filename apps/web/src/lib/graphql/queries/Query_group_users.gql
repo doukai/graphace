@@ -20,8 +20,6 @@ query Query_group_users($group_id: StringExpression, $first: Int, $last: Int, $o
           name
           lastName
           login
-          salt
-          hash
           email
           phones
           disable

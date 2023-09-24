@@ -28,7 +28,6 @@ query Query_group_subGroups($group_id: StringExpression, $first: Int, $last: Int
           updateUserId
           updateTime
           createGroupId
-          parentId
         }
       }
     }

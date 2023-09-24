@@ -25,7 +25,6 @@ mutation Mutation_group_parent($group_id: String, $group_parent: GroupInput, $id
       updateUserId
       updateTime
       createGroupId
-      parentId
     }
   }
 }

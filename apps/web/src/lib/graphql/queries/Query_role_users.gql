@@ -19,8 +19,6 @@ query Query_role_users($role_id: StringExpression, $first: Int, $last: Int, $off
           name
           lastName
           login
-          salt
-          hash
           email
           phones
           disable

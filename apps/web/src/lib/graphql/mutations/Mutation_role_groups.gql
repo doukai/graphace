@@ -27,7 +27,6 @@ mutation Mutation_role_groups($role_id: String, $role_groups: [GroupInput], $fir
           updateUserId
           updateTime
           createGroupId
-          parentId
         }
       }
     }

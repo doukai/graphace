@@ -223,7 +223,7 @@
 							bind:checked={selectAll}
 							on:change={() => {
 								if (nodes && nodes.length > 0) {
-									selectedIdList = selectAll ? nodes.map((node) => node?.id || null) : [];
+									selectedIdList = selectAll ? nodes.map((node) => node?.name || null) : [];
 								}
 							}}
 						/>
@@ -282,7 +282,7 @@
 							<tr class="hover">
 								<th class="z-10 w-12">
 									<label>
-										<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
+										<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.name} />
 									</label>
 								</th>
 								<IDTd

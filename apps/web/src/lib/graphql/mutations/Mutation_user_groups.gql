@@ -31,7 +31,6 @@ mutation Mutation_user_groups($user_id: String, $user_groups: [GroupInput], $fir
           updateUserId
           updateTime
           createGroupId
-          parentId
         }
       }
     }

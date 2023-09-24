@@ -31,7 +31,6 @@ query Query_user_groups($user_id: StringExpression, $first: Int, $last: Int, $of
           updateUserId
           updateTime
           createGroupId
-          parentId
         }
       }
     }

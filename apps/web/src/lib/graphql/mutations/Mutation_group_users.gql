@@ -20,8 +20,6 @@ mutation Mutation_group_users($group_id: String, $group_users: [UserInput], $fir
           name
           lastName
           login
-          salt
-          hash
           email
           phones
           disable
