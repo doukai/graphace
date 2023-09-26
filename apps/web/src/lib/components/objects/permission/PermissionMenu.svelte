@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { graphql } from '$houdini';
+	import { graphql, Operator } from '$houdini';
 	import type { PermissionTypesQueryVariables } from './$houdini';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
@@ -13,7 +13,7 @@
 		return {
 			first: pageSize,
 			offset: (pageNumber - 1) * pageSize,
-			type: typeName ? { val: typeName } : undefined
+			type: undefined
 		};
 	};
 
@@ -39,11 +39,15 @@
 	$: pageCount =
 		totalCount % pageSize == 0 ? ~~(totalCount / pageSize) : ~~(totalCount / pageSize) + 1;
 
+	$: if (typeName) {
+		queryPage();
+	}
+
 	const queryPage = () => {
 		let variables = {
 			first: pageSize,
 			offset: (pageNumber - 1) * pageSize,
-			type: typeName ? { val: typeName } : undefined
+			type: typeName ? { opr: Operator.LK, val: `%${typeName}%` } : undefined
 		};
 		PermissionTypesQuery.fetch({ variables }).catch((errors) => {
 			console.error(errors);

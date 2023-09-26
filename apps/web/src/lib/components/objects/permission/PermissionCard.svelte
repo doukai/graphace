@@ -5,7 +5,7 @@
 
 	export let showSearchInput: boolean = true;
 	export let activeTypeName: string | null | undefined = undefined;
-	export let typeName: string | undefined = undefined;
+	export let typeName: string | null | undefined = undefined;
 </script>
 
 <Card>

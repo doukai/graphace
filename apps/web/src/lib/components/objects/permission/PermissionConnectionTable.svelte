@@ -30,6 +30,7 @@
 	export let showUnbindButton: boolean = false;
 	export let showBackButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
+	export let typeName: string | null | undefined = undefined;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -64,6 +65,12 @@
 	let selectAll: boolean;
 	let selectedIdList: (string | null)[] = [];
 
+	$: if (typeName) {
+		query();
+	} else {
+		query();
+	}
+
 	const query = () => {
 		pageNumber = 1;
 		queryPage();
@@ -85,6 +92,12 @@
 		} else {
 			args.offset = (pageNumber - 1) * pageSize;
 			args.first = pageSize;
+		}
+
+		if (typeName) {
+			args.type = { val: typeName };
+		} else {
+			args.type = undefined;
 		}
 
 		dispatch('fetch', {
@@ -112,7 +125,7 @@
 			args.type = undefined;
 			args.description = undefined;
 		}
-		
+
 		if (after) {
 			args.after = after;
 			args.first = pageSize;
@@ -122,6 +135,12 @@
 		} else {
 			args.offset = (pageNumber - 1) * pageSize;
 			args.first = pageSize;
+		}
+
+		if (typeName) {
+			args.type = { val: typeName };
+		} else {
+			args.type = undefined;
 		}
 
 		dispatch('fetch', {
@@ -168,7 +187,7 @@
 	const removeRows = () => {
 		dispatch('mutation', {
 			args: {
-				where: { id: { opr: 'IN', in: selectedIdList } },
+				where: { name: { opr: 'IN', in: selectedIdList } },
 				isDeprecated: true
 			},
 			then: (data) => {
@@ -306,7 +325,7 @@
 			</tr>
 		</thead>
 		{#if isFetching}
-			<TableLoading rows={pageSize} cols={7 + 2}/>
+			<TableLoading rows={pageSize} cols={7 + 2} />
 		{:else}
 			<tbody>
 				{#if nodes && nodes.length > 0}
@@ -315,7 +334,12 @@
 							<tr class="hover">
 								<th class="z-10 w-12">
 									<label>
-										<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.name} />
+										<input
+											type="checkbox"
+											class="checkbox"
+											bind:group={selectedIdList}
+											value={node.name}
+										/>
 									</label>
 								</th>
 								<IDTd
@@ -327,29 +351,49 @@
 								<StringTd
 									name="field"
 									bind:value={node.field}
-									on:save={() => updateField({ field: node?.field, where: { name: { val: node?.name } } })}
+									on:save={() =>
+										updateField({ field: node?.field, where: { name: { val: node?.name } } })}
 									errors={errors[row]?.iterms?.field}
 								/>
 								<StringTd
 									name="type"
 									bind:value={node.type}
-									on:save={() => updateField({ type: node?.type, where: { name: { val: node?.name } } })}
+									on:save={() =>
+										updateField({ type: node?.type, where: { name: { val: node?.name } } })}
 									errors={errors[row]?.iterms?.type}
 								/>
 								<PermissionTypeTd
 									name="permissionType"
 									bind:value={node.permissionType}
-									on:save={() => updateField({ permissionType: node?.permissionType, where: { name: { val: node?.name } } })}
+									on:save={() =>
+										updateField({
+											permissionType: node?.permissionType,
+											where: { name: { val: node?.name } }
+										})}
 									errors={errors[row]?.iterms?.permissionType}
 								/>
 								<StringTd
 									name="description"
 									bind:value={node.description}
-									on:save={() => updateField({ description: node?.description, where: { name: { val: node?.name } } })}
+									on:save={() =>
+										updateField({
+											description: node?.description,
+											where: { name: { val: node?.name } }
+										})}
 									errors={errors[row]?.iterms?.description}
 								/>
-								<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path={`${node.name}/roles`} on:gotoField />
-								<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.name}/realm`} on:gotoField />
+								<ObjectTd
+									name="roles"
+									errors={errors[row]?.iterms?.roles}
+									path={`${node.name}/roles`}
+									on:gotoField
+								/>
+								<ObjectTd
+									name="realm"
+									errors={errors[row]?.iterms?.realm}
+									path={`${node.name}/realm`}
+									on:gotoField
+								/>
 								<th class="z-10 w-24">
 									<div class="flex space-x-1">
 										<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
@@ -426,7 +470,7 @@
 						{/if}
 					{/each}
 				{:else}
-					<TableEmpty cols={7 + 2}/>
+					<TableEmpty cols={7 + 2} />
 				{/if}
 			</tbody>
 		{/if}
