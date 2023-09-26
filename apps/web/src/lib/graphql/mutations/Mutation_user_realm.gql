@@ -1,4 +1,4 @@
-mutation Mutation_user_realm($user_id: String, $user_realm: RealmInput, $id: StringExpression, $name: StringExpression, $mergeToList: [String]) {
+mutation Mutation_user_realm($user_id: String, $user_realm: RealmInput, $id: StringExpression, $name: StringExpression, $groupBy: [String!], $mergeToList: [String]) {
   user(where: {id: {val: $user_id}}  realm: $user_realm) @mergeToList(arguments: $mergeToList) {
     id
     name
@@ -15,7 +15,7 @@ mutation Mutation_user_realm($user_id: String, $user_realm: RealmInput, $id: Str
     updateUserId
     updateTime
     createGroupId
-    realm(id: $id name: $name) {
+    realm(id: $id name: $name groupBy: $groupBy) {
       id
       name
       isDeprecated

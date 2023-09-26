@@ -135,6 +135,7 @@ export type GroupParentArgs = {
   users?: InputMaybe<UserExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
@@ -148,13 +149,13 @@ export type GroupSubGroupsArgs = {
   users?: InputMaybe<UserExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
   orderBy?: InputMaybe<GroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
@@ -182,13 +183,13 @@ export type GroupUsersArgs = {
   userPhones?: InputMaybe<UserPhonesExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   userRole?: InputMaybe<UserRoleExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
   orderBy?: InputMaybe<UserOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
@@ -213,19 +214,20 @@ export type GroupRolesArgs = {
   groupRole?: InputMaybe<GroupRoleExpression>;
   roleComposite?: InputMaybe<RoleCompositeExpression>;
   rolePermission?: InputMaybe<RolePermissionExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
   orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 export type GroupRealmArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
@@ -774,6 +776,7 @@ export type GroupRoleRoleIdTypeArgs = {
   groupRole?: InputMaybe<GroupRoleExpression>;
   roleComposite?: InputMaybe<RoleCompositeExpression>;
   rolePermission?: InputMaybe<RolePermissionExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
@@ -798,6 +801,7 @@ export type GroupRoleGroupIdTypeArgs = {
   parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type GroupRoleConnection = {
@@ -1716,13 +1720,13 @@ export type PermissionRolesArgs = {
   groupRole?: InputMaybe<GroupRoleExpression>;
   roleComposite?: InputMaybe<RoleCompositeExpression>;
   rolePermission?: InputMaybe<RolePermissionExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
   orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
@@ -1737,6 +1741,7 @@ export type PermissionRealmArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
@@ -3316,13 +3321,13 @@ export type RoleUsersArgs = {
   userPhones?: InputMaybe<UserPhonesExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   userRole?: InputMaybe<UserRoleExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
   orderBy?: InputMaybe<UserOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
@@ -3336,13 +3341,13 @@ export type RoleGroupsArgs = {
   users?: InputMaybe<UserExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
   orderBy?: InputMaybe<GroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
@@ -3355,13 +3360,13 @@ export type RoleCompositesArgs = {
   composites?: InputMaybe<RoleExpression>;
   permissions?: InputMaybe<PermissionExpression>;
   realm?: InputMaybe<RealmExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
   orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
@@ -3373,19 +3378,20 @@ export type RolePermissionsArgs = {
   description?: InputMaybe<StringExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
   orderBy?: InputMaybe<PermissionOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 export type RoleRealmArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
@@ -3718,6 +3724,7 @@ export type RoleCompositeRoleIdTypeArgs = {
   groupRole?: InputMaybe<GroupRoleExpression>;
   roleComposite?: InputMaybe<RoleCompositeExpression>;
   rolePermission?: InputMaybe<RolePermissionExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
@@ -3742,6 +3749,7 @@ export type RoleCompositeCompositeIdTypeArgs = {
   groupRole?: InputMaybe<GroupRoleExpression>;
   roleComposite?: InputMaybe<RoleCompositeExpression>;
   rolePermission?: InputMaybe<RolePermissionExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type RoleCompositeConnection = {
@@ -4280,6 +4288,7 @@ export type RolePermissionRoleIdTypeArgs = {
   groupRole?: InputMaybe<GroupRoleExpression>;
   roleComposite?: InputMaybe<RoleCompositeExpression>;
   rolePermission?: InputMaybe<RolePermissionExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
@@ -4300,6 +4309,7 @@ export type RolePermissionPermissionNameTypeArgs = {
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
   rolePermission?: InputMaybe<RolePermissionExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type RolePermissionConnection = {
@@ -5582,13 +5592,13 @@ export type UserGroupsArgs = {
   users?: InputMaybe<UserExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
   orderBy?: InputMaybe<GroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
@@ -5601,19 +5611,20 @@ export type UserRolesArgs = {
   composites?: InputMaybe<RoleExpression>;
   permissions?: InputMaybe<PermissionExpression>;
   realm?: InputMaybe<RealmExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
   orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 export type UserRealmArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
@@ -5934,6 +5945,7 @@ export type UserGroupUserIdTypeArgs = {
   userPhones?: InputMaybe<UserPhonesExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   userRole?: InputMaybe<UserRoleExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
@@ -5958,6 +5970,7 @@ export type UserGroupGroupIdTypeArgs = {
   parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type UserGroupConnection = {
@@ -6416,6 +6429,7 @@ export type UserPhonesUserIdTypeArgs = {
   userPhones?: InputMaybe<UserPhonesExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   userRole?: InputMaybe<UserRoleExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type UserPhonesConnection = {
@@ -6724,6 +6738,7 @@ export type UserRoleUserIdTypeArgs = {
   userPhones?: InputMaybe<UserPhonesExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   userRole?: InputMaybe<UserRoleExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
@@ -6748,6 +6763,7 @@ export type UserRoleRoleIdTypeArgs = {
   groupRole?: InputMaybe<GroupRoleExpression>;
   roleComposite?: InputMaybe<RoleCompositeExpression>;
   rolePermission?: InputMaybe<RolePermissionExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type UserRoleConnection = {

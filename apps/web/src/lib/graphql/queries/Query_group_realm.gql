@@ -1,4 +1,4 @@
-query Query_group_realm($group_id: StringExpression, $id: StringExpression, $name: StringExpression) {
+query Query_group_realm($group_id: StringExpression, $id: StringExpression, $name: StringExpression, $groupBy: [String!]) {
   group(id: $group_id)  {
     id
     name
@@ -12,7 +12,7 @@ query Query_group_realm($group_id: StringExpression, $id: StringExpression, $nam
     updateUserId
     updateTime
     createGroupId
-    realm(id: $id name: $name)  {
+    realm(id: $id name: $name groupBy: $groupBy)  {
       id
       name
       isDeprecated

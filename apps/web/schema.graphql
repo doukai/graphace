@@ -121,7 +121,7 @@ type Group implements Meta {
   nameCount: Int
   nameMax: String
   nameMin: String
-  parent(deep: IntExpression, id: StringExpression, name: StringExpression, parent: GroupExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): Group
+  parent(deep: IntExpression, groupBy: [String!], id: StringExpression, name: StringExpression, parent: GroupExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): Group
   parentId: Int
   parentIdAvg: Int
   parentIdCount: Int
@@ -132,7 +132,7 @@ type Group implements Meta {
   pathCount: Int
   pathMax: String
   pathMin: String
-  realm(id: StringExpression, name: StringExpression): Realm
+  realm(groupBy: [String!], id: StringExpression, name: StringExpression): Realm
   realmId: Int
   realmIdAvg: Int
   realmIdCount: Int
@@ -444,7 +444,7 @@ type GroupRole implements Meta {
   groupIdMax: Int
   groupIdMin: Int
   groupIdSum: Int
-  groupIdType(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, deep: IntExpression, groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, parent: GroupExpression, parentId: IntExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): Group
+  groupIdType(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, deep: IntExpression, groupBy: [String!], groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, parent: GroupExpression, parentId: IntExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): Group
   id: ID
   idCount: Int
   idMax: Int
@@ -457,7 +457,7 @@ type GroupRole implements Meta {
   roleIdMax: Int
   roleIdMin: Int
   roleIdSum: Int
-  roleIdType(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
+  roleIdType(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, groupBy: [String!], groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
   updateTime: Timestamp
   updateUserId: String
   version: Int
@@ -872,7 +872,7 @@ type Permission implements Meta {
   nameMax: String
   nameMin: String
   permissionType: PermissionType!
-  realm(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Realm
+  realm(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Realm
   realmId: Int
   realmIdAvg: Int
   realmIdCount: Int
@@ -1481,7 +1481,7 @@ type Role implements Meta {
   permissions(after: ID, before: ID, description: StringExpression, field: StringExpression, first: Int, groupBy: [String!], last: Int, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, permissionType: PermissionTypeExpression, realm: RealmExpression, roles: RoleExpression, type: StringExpression): [Permission]
   permissionsAggregate(description: StringExpression, field: StringExpression, first: Int, groupBy: [String!], last: Int, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, permissionType: PermissionTypeExpression, realm: RealmExpression, roles: RoleExpression, type: StringExpression): Permission
   permissionsConnection(description: StringExpression, field: StringExpression, first: Int, groupBy: [String!], last: Int, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, permissionType: PermissionTypeExpression, realm: RealmExpression, roles: RoleExpression, type: StringExpression): PermissionConnection
-  realm(id: StringExpression, name: StringExpression): Realm
+  realm(groupBy: [String!], id: StringExpression, name: StringExpression): Realm
   realmId: Int
   realmIdAvg: Int
   realmIdCount: Int
@@ -1512,7 +1512,7 @@ type RoleComposite implements Meta {
   compositeIdMax: Int
   compositeIdMin: Int
   compositeIdSum: Int
-  compositeIdType(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
+  compositeIdType(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, groupBy: [String!], groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -1528,7 +1528,7 @@ type RoleComposite implements Meta {
   roleIdMax: Int
   roleIdMin: Int
   roleIdSum: Int
-  roleIdType(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
+  roleIdType(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, groupBy: [String!], groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
   updateTime: Timestamp
   updateUserId: String
   version: Int
@@ -2029,7 +2029,7 @@ type RolePermission implements Meta {
   permissionNameCount: Int
   permissionNameMax: String
   permissionNameMin: String
-  permissionNameType(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, field: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissionType: PermissionTypeExpression, realm: RealmExpression, realmId: IntExpression, rolePermission: RolePermissionExpression, roles: RoleExpression, type: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Permission
+  permissionNameType(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, field: StringExpression, groupBy: [String!], includeDeprecated: Boolean = false, name: StringExpression, permissionType: PermissionTypeExpression, realm: RealmExpression, realmId: IntExpression, rolePermission: RolePermissionExpression, roles: RoleExpression, type: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Permission
   realmId: Int
   roleId: Int
   roleIdAvg: Int
@@ -2037,7 +2037,7 @@ type RolePermission implements Meta {
   roleIdMax: Int
   roleIdMin: Int
   roleIdSum: Int
-  roleIdType(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
+  roleIdType(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, groupBy: [String!], groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
   updateTime: Timestamp
   updateUserId: String
   version: Int
@@ -2424,7 +2424,7 @@ type User implements Meta {
   nameMax: String
   nameMin: String
   phones(first: Int, in: [String], last: Int, offset: Int, opr: Operator = EQ, sort: Sort, val: String): [String]
-  realm(id: StringExpression, name: StringExpression): Realm
+  realm(groupBy: [String!], id: StringExpression, name: StringExpression): Realm
   realmId: Int
   realmIdAvg: Int
   realmIdCount: Int
@@ -2571,7 +2571,7 @@ type UserGroup implements Meta {
   groupIdMax: Int
   groupIdMin: Int
   groupIdSum: Int
-  groupIdType(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, deep: IntExpression, groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, parent: GroupExpression, parentId: IntExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): Group
+  groupIdType(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, deep: IntExpression, groupBy: [String!], groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, parent: GroupExpression, parentId: IntExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): Group
   id: ID
   idCount: Int
   idMax: Int
@@ -2586,7 +2586,7 @@ type UserGroup implements Meta {
   userIdMax: Int
   userIdMin: Int
   userIdSum: Int
-  userIdType(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, disable: BooleanExpression, email: StringExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, lastName: StringExpression, login: StringExpression, name: StringExpression, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, userPhones: UserPhonesExpression, userRole: UserRoleExpression, version: IntExpression): User
+  userIdType(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, disable: BooleanExpression, email: StringExpression, groupBy: [String!], groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, lastName: StringExpression, login: StringExpression, name: StringExpression, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, userPhones: UserPhonesExpression, userRole: UserRoleExpression, version: IntExpression): User
   version: Int
 }
 
@@ -3014,7 +3014,7 @@ type UserPhones implements Meta {
   userIdMax: Int
   userIdMin: Int
   userIdSum: Int
-  userIdType(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, disable: BooleanExpression, email: StringExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, lastName: StringExpression, login: StringExpression, name: StringExpression, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, userPhones: UserPhonesExpression, userRole: UserRoleExpression, version: IntExpression): User
+  userIdType(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, disable: BooleanExpression, email: StringExpression, groupBy: [String!], groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, lastName: StringExpression, login: StringExpression, name: StringExpression, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, userPhones: UserPhonesExpression, userRole: UserRoleExpression, version: IntExpression): User
   version: Int
 }
 
@@ -3283,7 +3283,7 @@ type UserRole implements Meta {
   roleIdMax: Int
   roleIdMin: Int
   roleIdSum: Int
-  roleIdType(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
+  roleIdType(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, groupBy: [String!], groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
   updateTime: Timestamp
   updateUserId: String
   userId: Int
@@ -3292,7 +3292,7 @@ type UserRole implements Meta {
   userIdMax: Int
   userIdMin: Int
   userIdSum: Int
-  userIdType(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, disable: BooleanExpression, email: StringExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, lastName: StringExpression, login: StringExpression, name: StringExpression, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, userPhones: UserPhonesExpression, userRole: UserRoleExpression, version: IntExpression): User
+  userIdType(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, disable: BooleanExpression, email: StringExpression, groupBy: [String!], groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, lastName: StringExpression, login: StringExpression, name: StringExpression, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, userPhones: UserPhonesExpression, userRole: UserRoleExpression, version: IntExpression): User
   version: Int
 }
 

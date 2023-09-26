@@ -1,4 +1,4 @@
-mutation Mutation_permission_realm($permission_name: String, $permission_realm: RealmInput, $id: StringExpression, $name: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $mergeToList: [String]) {
+mutation Mutation_permission_realm($permission_name: String, $permission_realm: RealmInput, $id: StringExpression, $name: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $groupBy: [String!], $mergeToList: [String]) {
   permission(where: {name: {val: $permission_name}}  realm: $permission_realm) @mergeToList(arguments: $mergeToList) {
     name
     field
@@ -13,7 +13,7 @@ mutation Mutation_permission_realm($permission_name: String, $permission_realm: 
     updateUserId
     updateTime
     createGroupId
-    realm(id: $id name: $name includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId) {
+    realm(id: $id name: $name includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupBy: $groupBy) {
       id
       name
       isDeprecated
