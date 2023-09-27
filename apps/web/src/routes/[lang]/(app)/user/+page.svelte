@@ -74,7 +74,11 @@
 	};
 
 	const create = (event: CustomEvent<{}>) => {
-		to(`./user/_`);
+		if (groupId) {
+			to(`./group/${groupId}/users`);
+		} else {
+			to(`./user/_`);
+		}
 	};
 
 	const gotoField = (event: CustomEvent<{ path: string; name: string }>) => {
@@ -82,9 +86,9 @@
 	};
 </script>
 
-<div class="flex xl:flex-row xl:gap-2">
+<div class="flex xl:items-start xl:flex-row xl:gap-2">
 	<div class="hidden xl:flex xl:basis-1/6">
-		<GroupTreeCard bind:activeId={groupId} />
+		<GroupTreeCard bind:activeGroupId={groupId} />
 	</div>
 	<div class="w-full xl:basis-5/6">
 		<UserConnectionTable

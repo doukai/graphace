@@ -6,7 +6,7 @@
 	export let currentDeep = 0;
 	export let deeps = 2;
 	export let showSearchInput: boolean = true;
-	export let activeId: string | null | undefined = undefined;
+	export let activeGroupId: string | null | undefined = undefined;
 	export let groupName: string | undefined = undefined;
 </script>
 
@@ -14,7 +14,7 @@
 	{#if showSearchInput}
 		<SearchInput
 			on:search={(e) => {
-				activeId = undefined;
+				activeGroupId = undefined;
 				if (e.detail.value) {
 					groupName = e.detail.value;
 				} else {
@@ -25,5 +25,5 @@
 	{/if}
 	<div class="divider" />
 
-	<GroupTreeMenu bind:activeId bind:groupName {currentDeep} {deeps} />
+	<GroupTreeMenu bind:activeGroupId bind:groupName {currentDeep} {deeps} />
 </Card>

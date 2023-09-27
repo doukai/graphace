@@ -14,7 +14,7 @@
 	export let currentDeep = 0;
 	export let deeps = 2;
 	export let groupName: string | null | undefined = undefined;
-	export let activeId: string | null | undefined = undefined;
+	export let activeGroupId: string | null | undefined = undefined;
 
 	const GroupNodesQuery = graphql(`
 		query GroupNodesQuery($path: StringExpression, $deep: IntExpression, $name: StringExpression) {
@@ -72,11 +72,11 @@
 		{#each nodeTrees as nodeTree}
 			<li>
 				<a
-					class={nodeTree.node.id === activeId ? 'active' : ''}
+					class={nodeTree.node.id === activeGroupId ? 'active' : ''}
 					href={null}
 					on:click={(e) => {
 						e.preventDefault();
-						activeId = nodeTree.node.id;
+						activeGroupId = nodeTree.node.id;
 						GroupNodesQuery.fetch({
 							variables: {
 								deep: { opr: Operator.LT, val: currentDeep + deeps },
@@ -105,7 +105,7 @@
 					<MenuTreeLoading />
 				{:else if nodeTree.children}
 					<GroupTreeMenu
-						bind:activeId
+						bind:activeGroupId
 						nodeTrees={nodeTree.children}
 						currentDeep={currentDeep + 1}
 						{deeps}
