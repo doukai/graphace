@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-	import { graphql, Operator } from '$houdini';
+	import { graphql, GroupNodesQuery$input, Operator } from '$houdini';
 	import { type NodeTree, buildTree } from '@graphace/commons/utils/tree-util';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import MenuTreeLoading from '@graphace/ui/components/menu/MenuTreeLoading.svelte';
@@ -11,6 +11,7 @@
 	import type { Group } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 	export let nodeTrees: GroupTree[] | null | undefined = undefined;
+	export let parent: Group | null | undefined = undefined;
 	export let currentDeep = 0;
 	export let deeps = 2;
 	export let groupName: string | null | undefined = undefined;
@@ -30,41 +31,42 @@
 		}
 	`);
 
-	$: if (groupName) {
-		let variables = {
-			deep: undefined,
-			path: undefined,
-			name: { opr: Operator.LK, val: `%${groupName}%` }
-		};
-		GroupNodesQuery.fetch({ variables })
-			.then((result) => {
-				nodeTrees = buildTree(
-					result.data?.groupList,
-					(current, parent) => current?.parent?.id === parent?.id
-				);
-			})
-			.catch((errors) => {
-				console.error(errors);
-				notifications.error($LL.web.message.requestFailed());
-			});
-	} else if (currentDeep === 0) {
-		let variables = {
-			deep: { opr: Operator.LT, val: deeps },
-			path: { opr: Operator.LK, val: '/%' },
-			name: undefined
-		};
-		GroupNodesQuery.fetch({ variables })
-			.then((result) => {
-				nodeTrees = buildTree(
-					result.data?.groupList,
-					(current, parent) => current?.parent?.id === parent?.id
-				);
-			})
-			.catch((errors) => {
-				console.error(errors);
-				notifications.error($LL.web.message.requestFailed());
-			});
+	$: if (currentDeep === 0) {
+		queryNodes(groupName);
 	}
+
+	$: if (parent?.id === activeGroupId) {
+		queryNodes(groupName);
+	}
+
+	$: if (!nodeTrees || parent?.id === activeGroupId) {
+		nodeTrees = buildTree(
+			$GroupNodesQuery.data?.groupList,
+			(current, parent) => current?.parent?.id === parent?.id,
+			parent
+		);
+	}
+
+	const queryNodes = (groupName?: string | null | undefined) => {
+		let variables: GroupNodesQuery$input;
+		if (groupName) {
+			variables = {
+				deep: undefined,
+				path: undefined,
+				name: { opr: Operator.LK, val: `%${groupName}%` }
+			};
+		} else {
+			variables = {
+				deep: { opr: Operator.LT, val: currentDeep + deeps },
+				path: { opr: Operator.LK, val: `${(parent?.path || '') + (parent?.id || '') + '/'}%` },
+				name: undefined
+			};
+		}
+		GroupNodesQuery.fetch({ variables }).catch((errors) => {
+			console.error(errors);
+			notifications.error($LL.web.message.requestFailed());
+		});
+	};
 </script>
 
 <ul class={currentDeep ? '' : 'menu'}>
@@ -77,26 +79,6 @@
 					on:click={(e) => {
 						e.preventDefault();
 						activeGroupId = nodeTree.node.id;
-						GroupNodesQuery.fetch({
-							variables: {
-								deep: { opr: Operator.LT, val: currentDeep + deeps },
-								path: {
-									opr: Operator.LK,
-									val: `${(nodeTree.node.path || '') + (nodeTree.node.id || '') + '/'}%`
-								}
-							}
-						})
-							.then((result) => {
-								nodeTree.children = buildTree(
-									result.data?.groupList,
-									(current, parent) => current?.parent?.id === parent?.id,
-									nodeTree.node
-								);
-							})
-							.catch((errors) => {
-								console.error(errors);
-								notifications.error($LL.web.message.requestFailed());
-							});
 					}}
 				>
 					{nodeTree.node.name}
@@ -108,6 +90,7 @@
 						bind:activeGroupId
 						nodeTrees={nodeTree.children}
 						currentDeep={currentDeep + 1}
+						parent={nodeTree.node}
 						{deeps}
 					/>
 				{/if}

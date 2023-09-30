@@ -65,18 +65,14 @@
 	let selectAll: boolean;
 	let selectedIdList: (string | null)[] = [];
 
-	$: if (typeName) {
-		query();
-	} else {
-		query();
-	}
+	$: queryPage(typeName);
 
 	const query = () => {
 		pageNumber = 1;
 		queryPage();
 	};
 
-	const queryPage = () => {
+	const queryPage = (typeName?: string | null | undefined) => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {

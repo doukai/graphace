@@ -1,35 +1,41 @@
 <script lang="ts">
 	import { graphql, Operator } from '$houdini';
-	import type { PermissionTypesQueryVariables } from './$houdini';
-	import MenuLoading from '@graphace/ui/components/menu/MenuLoading.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
 
 	export let typeName: string | null | undefined;
 	export let activeTypeName: string | null | undefined;
-
-	export const _PermissionTypesQueryVariables: PermissionTypesQueryVariables = ({}) => {
-		return {
-			type: undefined
-		};
-	};
+	let pageNumber: number = 1;
+	let pageSize: number = 10;
 
 	const PermissionTypesQuery = graphql(`
-		query PermissionTypesQuery($type: StringExpression) @load {
-			permissionList(type: $type, groupBy: ["type"]) {
-				type
+		query PermissionTypesQuery($type: StringExpression, $first: Int, $offset: Int) {
+			permissionConnection(type: $type, first: $first, offset: $offset, groupBy: ["type"]) {
+				totalCount
+				edges {
+					node {
+						type
+					}
+				}
 			}
 		}
 	`);
 
-	$: typeNames = $PermissionTypesQuery.data?.permissionList?.map((permission) => permission?.type);
+	$: typeNames = $PermissionTypesQuery.data?.permissionConnection?.edges?.map(
+		(edge) => edge?.node?.type
+	);
 
-	$: if (typeName) {
-		queryPage();
-	}
+	$: totalCount = $PermissionTypesQuery.data?.permissionConnection?.totalCount || 0;
 
-	const queryPage = () => {
+	$: pageCount =
+		totalCount % pageSize == 0 ? ~~(totalCount / pageSize) : ~~(totalCount / pageSize) + 1;
+
+	$: queryPage(typeName);
+
+	const queryPage = (typeName?: string | null | undefined) => {
 		let variables = {
+			first: pageSize,
+			offset: (pageNumber - 1) * pageSize,
 			type: typeName ? { opr: Operator.LK, val: `%${typeName}%` } : undefined
 		};
 		PermissionTypesQuery.fetch({ variables }).catch((errors) => {
@@ -39,25 +45,45 @@
 	};
 </script>
 
-{#if $PermissionTypesQuery.fetching}
-	<MenuLoading />
-{:else}
-	<ul class="menu">
-		{#if typeNames}
-			{#each typeNames as typeName}
-				<li>
-					<a
-						class={typeName === activeTypeName ? 'active' : ''}
-						href={null}
-						on:click={(e) => {
-							e.preventDefault();
-							activeTypeName = typeName;
-						}}
-					>
-						{typeName}
-					</a>
-				</li>
-			{/each}
-		{/if}
-	</ul>
-{/if}
+<ul class="menu">
+	{#if typeNames}
+		{#each typeNames as typeName}
+			<li>
+				<a
+					class={typeName === activeTypeName ? 'active' : ''}
+					href={null}
+					on:click={(e) => {
+						e.preventDefault();
+						activeTypeName = typeName;
+					}}
+				>
+					{typeName}
+				</a>
+			</li>
+		{/each}
+	{/if}
+</ul>
+<div class="divider" />
+<div class="flex justify-center join">
+	<button
+		class="join-item btn {pageNumber - 1 ? '' : 'btn-disabled'}"
+		on:click={() => {
+			pageNumber = pageNumber - 1;
+			queryPage();
+		}}
+	>
+		«
+	</button>
+	<button class="join-item btn">
+		{$LL.ui.pagination.current({ current: pageNumber })}
+	</button>
+	<button
+		class="join-item btn {pageNumber + 1 <= pageCount ? '' : 'btn-disabled'}"
+		on:click={() => {
+			pageNumber = pageNumber + 1;
+			queryPage();
+		}}
+	>
+		»
+	</button>
+</div>
