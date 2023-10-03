@@ -36,7 +36,7 @@
 		let variables = {
 			first: pageSize,
 			offset: (pageNumber - 1) * pageSize,
-			type: typeName ? { opr: Operator.LK, val: `%${typeName}%` } : undefined
+			type: typeName ? { val: typeName } : undefined
 		};
 		PermissionTypesQuery.fetch({ variables }).catch((errors) => {
 			console.error(errors);

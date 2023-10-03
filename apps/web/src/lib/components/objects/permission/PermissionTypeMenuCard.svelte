@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Card } from '@graphace/ui/components/card';
-	import PermissionMenu from '~/lib/components/objects/permission/PermissionMenu.svelte';
+	import PermissionTypeMenu from '~/lib/components/objects/permission/PermissionTypeMenu.svelte';
 	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
 
 	export let showSearchInput: boolean = true;
@@ -23,5 +23,5 @@
 	{/if}
 	<div class="divider" />
 
-	<PermissionMenu bind:activeTypeName bind:typeName />
+	<PermissionTypeMenu bind:activeTypeName bind:typeName />
 </Card>

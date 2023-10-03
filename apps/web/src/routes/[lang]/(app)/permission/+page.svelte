@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import PermissionConnectionTable from '~/lib/components/objects/permission/PermissionConnectionTable.svelte';
-	import PermissionCard from '~/lib/components/objects/permission/PermissionCard.svelte';
+	import PermissionTypeMenuCard from '~/lib/components/objects/permission/PermissionTypeMenuCard.svelte';
 	import type {
 		Permission,
 		QueryPermissionConnectionArgs,
@@ -90,7 +90,7 @@
 
 <div class="flex xl:items-start xl:flex-row xl:gap-2">
 	<div class="hidden xl:flex xl:basis-1/6">
-		<PermissionCard bind:activeTypeName={typeName} />
+		<PermissionTypeMenuCard bind:activeTypeName={typeName} />
 	</div>
 	<div class="w-full xl:basis-5/6">
 		<PermissionConnectionTable
