@@ -1,25 +1,12 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { graphql, Operator, PermissionTypeFieldsQuery$result } from '$houdini';
-	import type { Errors, GraphQLError } from '@graphace/commons/types';
-	import { ObjectTd, IDTh, IDTd, StringTh, StringTd } from '@graphace/ui-graphql/components/table';
-	import PermissionTypeTh from '~/lib/components/enums/permission-type/PermissionTypeTh.svelte';
-	import PermissionTypeTd from '~/lib/components/enums/permission-type/PermissionTypeTd.svelte';
-	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
-	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
+	import { graphql, PermissionType, PermissionTypeFieldsQuery$result } from '$houdini';
+	import type { GraphQLError } from '@graphace/commons/types';
 	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
-	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
-	import type {
-		Permission,
-		PermissionOrderBy,
-		QueryPermissionListArgs,
-		PermissionInput
-	} from '~/lib/types/schema';
+	import type { Permission, PermissionInput } from '~/lib/types/schema';
 
 	export let showSaveButton: boolean = true;
 	export let showRemoveButton: boolean = true;
@@ -70,11 +57,11 @@
 
 	$: result = $PermissionTypeFieldsQuery.data;
 
-	let args: QueryPermissionListArgs = {};
-	let orderBy: PermissionOrderBy = {};
-
-	let selectAll: boolean;
+	let selectAllRead: boolean;
+	let selectAllWrite: boolean;
 	let selectedIdList: (string | null)[] = [];
+	let fieldReadList: (string | null)[] = [];
+	let fieldWriteList: (string | null)[] = [];
 
 	const query = (typeName?: string | null | undefined) => {
 		let variables = {
@@ -105,6 +92,48 @@
 			<tr class="z-20">
 				<td>{$LL.graphql.objects.Permission.fields.type.name()} </td>
 				<td>{$LL.graphql.objects.Permission.fields.field.name()} </td>
+				<td>
+					<div class="flex items-center gap-2">
+						<label>
+							<input
+								type="checkbox"
+								class="checkbox"
+								bind:checked={selectAllRead}
+								on:change={() => {
+									if (result?.permissionList && result?.permissionList.length > 0) {
+										fieldReadList = selectAllRead
+											? result?.permissionList.map(
+													(node) => node?.type + '::' + node?.field + '::' + PermissionType.READ
+											  )
+											: [];
+									}
+								}}
+							/>
+						</label>
+						{$LL.graphql.enums.PermissionType.values.READ.name()}
+					</div>
+				</td>
+				<td>
+					<div class="flex items-center gap-2">
+						<label class="label cursor-pointer">
+							<input
+								type="checkbox"
+								class="checkbox"
+								bind:checked={selectAllWrite}
+								on:change={() => {
+									if (result?.permissionList && result?.permissionList.length > 0) {
+										fieldWriteList = selectAllWrite
+											? result?.permissionList.map(
+													(node) => node?.type + '::' + node?.field + '::' + PermissionType.WRITE
+											  )
+											: [];
+									}
+								}}
+							/>
+						</label>
+						{$LL.graphql.enums.PermissionType.values.WRITE.name()}
+					</div>
+				</td>
 			</tr>
 		</thead>
 		{#if $PermissionTypeFieldsQuery.fetching}
@@ -114,9 +143,29 @@
 				{#if result?.permissionList && result?.permissionList.length > 0}
 					{#each result?.permissionList as node, row}
 						{#if node}
-							<tr>
-								<td>{node.type} </td>
-								<td>{node.field} </td>
+							<tr class="hover">
+								<td>{node.type}</td>
+								<td>{node.field}</td>
+								<td>
+									<label>
+										<input
+											type="checkbox"
+											class="checkbox"
+											bind:group={fieldReadList}
+											value={node?.type + '::' + node?.field + '::' + PermissionType.READ}
+										/>
+									</label>
+								</td>
+								<td>
+									<label>
+										<input
+											type="checkbox"
+											class="checkbox"
+											bind:group={fieldWriteList}
+											value={node?.type + '::' + node?.field + '::' + PermissionType.WRITE}
+										/>
+									</label>
+								</td>
 							</tr>
 						{/if}
 					{/each}

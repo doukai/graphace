@@ -149,10 +149,10 @@ const zh: NamespaceGraphqlTranslation = {
 			name: '权限类型',
 			values: {
 				READ: {
-					name: '只读',
+					name: '读',
 				},
 				WRITE: {
-					name: '读写',
+					name: '写',
 				}
 			}
 		}
