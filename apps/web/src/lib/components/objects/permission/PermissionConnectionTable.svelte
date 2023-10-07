@@ -476,7 +476,7 @@
 		bind:pageNumber
 		bind:pageSize
 		{totalCount}
-		on:pageChange={queryPage}
-		on:sizeChange={queryPage}
+		on:pageChange={(e) => queryPage(typeName)}
+		on:sizeChange={(e) => queryPage(typeName)}
 	/>
 </Card>

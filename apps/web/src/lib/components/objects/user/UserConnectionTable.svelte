@@ -65,18 +65,14 @@
 	let selectAll: boolean;
 	let selectedIdList: (string | null)[] = [];
 
-	$: if (groupId) {
-		query();
-	} else {
-		query();
-	}
+	$: queryPage(groupId);
 
 	const query = () => {
 		pageNumber = 1;
 		queryPage();
 	};
 
-	const queryPage = () => {
+	const queryPage = (groupId?: string | null | undefined) => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -503,7 +499,7 @@
 		bind:pageNumber
 		bind:pageSize
 		{totalCount}
-		on:pageChange={queryPage}
-		on:sizeChange={queryPage}
+		on:pageChange={(e) => queryPage(groupId)}
+		on:sizeChange={(e) => queryPage(groupId)}
 	/>
 </Card>

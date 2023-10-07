@@ -1,42 +1,32 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import { graphql, PermissionType, PermissionTypeFieldsQuery$result } from '$houdini';
-	import type { GraphQLError } from '@graphace/commons/types';
 	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
-	import type { Permission, PermissionInput } from '~/lib/types/schema';
 
-	export let showSaveButton: boolean = true;
-	export let showRemoveButton: boolean = true;
-	export let showUnbindButton: boolean = false;
 	export let showBackButton: boolean = true;
-	export let showGotoSelectButton: boolean = false;
 	export let roleId: string | null | undefined = undefined;
 	export let typeName: string | null | undefined = undefined;
 
 	let result: PermissionTypeFieldsQuery$result | null | undefined;
 
-	const dispatch = createEventDispatcher<{
-		parentMutation: {
-			args: PermissionInput[];
-			then: (data: Permission[] | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		};
-		back: {};
-	}>();
+	let selectAllRead: boolean;
+	let selectAllWrite: boolean;
+	let fieldReadList: (string | null | undefined)[] | null | undefined = [];
+	let fieldWriteList: (string | null | undefined)[] | null | undefined = [];
 
 	const PermissionTypeFieldsQuery = graphql(`
 		query PermissionTypeFieldsQuery(
-			$role_id: StringExpression
+			$roleId: StringExpression
 			$type: StringExpression
 			$field: StringExpression
 		) {
-			role(id: $role_id) {
+			role(id: $roleId) {
 				id
 				permissions(type: $type, field: $field) {
 					name
+					permissionType
 				}
 			}
 			permissionList(
@@ -51,39 +41,86 @@
 		}
 	`);
 
+	const PermissionTypeFieldsMutation = graphql(`
+		mutation PermissionTypeFieldsMutation(
+			$roleId: Int
+			$removeNameList: [String]
+			$insertList: [RolePermissionInput]
+		) {
+			removeList: rolePermissionList(
+				isDeprecated: true
+				where: { roleId: { val: $roleId }, permissionName: { opr: IN, in: $removeNameList } }
+			) {
+				id
+			}
+			insertList: rolePermissionList(list: $insertList) {
+				id
+			}
+		}
+	`);
+
 	$: if (typeName) {
 		query(typeName);
 	}
 
 	$: result = $PermissionTypeFieldsQuery.data;
-
-	let selectAllRead: boolean;
-	let selectAllWrite: boolean;
-	let selectedIdList: (string | null)[] = [];
-	let fieldReadList: (string | null)[] = [];
-	let fieldWriteList: (string | null)[] = [];
+	$: permissionNameList = fieldReadList?.concat(fieldWriteList);
 
 	const query = (typeName?: string | null | undefined) => {
 		let variables = {
-			role_id: { val: roleId },
+			roleId: { val: roleId },
 			type: typeName ? { val: typeName } : undefined
 		};
-		PermissionTypeFieldsQuery.fetch({ variables }).catch((errors) => {
-			console.error(errors);
-			notifications.error($LL.web.message.requestFailed());
-		});
+		PermissionTypeFieldsQuery.fetch({ variables })
+			.then((result) => {
+				fieldReadList =
+					result.data?.role?.permissions
+						?.filter((permission) => permission?.permissionType === PermissionType.READ)
+						.map((permission) => permission?.name) || [];
+				fieldWriteList =
+					result.data?.role?.permissions
+						?.filter((permission) => permission?.permissionType === PermissionType.WRITE)
+						.map((permission) => permission?.name) || [];
+			})
+			.catch((errors) => {
+				console.error(errors);
+				notifications.error($LL.web.message.requestFailed());
+			});
+	};
+
+	const mutation = () => {
+		let variables = {
+			roleId: parseInt(roleId || ''),
+			removeNameList: result?.role?.permissions
+				?.map((permission) => permission?.name)
+				.filter((name) => name && !permissionNameList?.includes(name)),
+			insertList: permissionNameList?.map((name) => ({
+				roleId: parseInt(roleId || ''),
+				permissionName: name
+			}))
+		};
+		PermissionTypeFieldsMutation.mutate(variables)
+			.then(() => {
+				query(typeName);
+			})
+			.catch((errors) => {
+				console.error(errors);
+				notifications.error($LL.web.message.requestFailed());
+			});
 	};
 </script>
 
 <Card>
 	<TableHead
 		title={$LL.graphql.objects.Permission.name()}
-		showRemoveButton={showRemoveButton && selectedIdList.length > 0}
-		showUnbindButton={showUnbindButton && selectedIdList.length > 0}
-		{showSaveButton}
-		{showGotoSelectButton}
+		showSelectButton={(fieldReadList?.length || 0) > 0 || (fieldWriteList?.length || 0) > 0}
+		showCreateButton={false}
+		showSaveButton={false}
+		showRemoveButton={false}
 		{showBackButton}
-		on:create
+		on:select={() => {
+			mutation();
+		}}
 		on:back
 	/>
 	<div class="divider" />
@@ -141,7 +178,7 @@
 		{:else}
 			<tbody>
 				{#if result?.permissionList && result?.permissionList.length > 0}
-					{#each result?.permissionList as node, row}
+					{#each result?.permissionList as node}
 						{#if node}
 							<tr class="hover">
 								<td>{node.type}</td>
