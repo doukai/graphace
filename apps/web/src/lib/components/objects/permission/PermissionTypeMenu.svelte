@@ -27,6 +27,10 @@
 
 	$: totalCount = $PermissionTypesQuery.data?.permissionConnection?.totalCount || 0;
 
+	$: if (!activeTypeName && typeNames && typeNames?.length > 0) {
+		activeTypeName = typeNames[0];
+	}
+
 	$: pageCount =
 		totalCount % pageSize == 0 ? ~~(totalCount / pageSize) : ~~(totalCount / pageSize) + 1;
 

@@ -5,16 +5,8 @@
 	import PermissionTypeMenuCard from '~/lib/components/objects/permission/PermissionTypeMenuCard.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
-	import type {
-		MutationPermissionArgs,
-		QueryPermissionConnectionArgs,
-		Permission
-	} from '~/lib/types/schema';
-	import {
-		Query_role_permissionsStore,
-		Mutation_permissionStore,
-		Mutation_role_permissionsStore
-	} from '$houdini';
+	import type { MutationPermissionArgs, Permission } from '~/lib/types/schema';
+	import { Mutation_role_permissionsStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -24,7 +16,6 @@
 	$: id = data.id;
 	$: urlName($page.url, $LL.graphql.objects.Role.fields.permissions.name());
 
-	const Mutation_permission = new Mutation_permissionStore();
 	const Mutation_role_permissions = new Mutation_role_permissionsStore();
 	let errors: Record<number, Errors> = {};
 	let typeName: string | null | undefined = undefined;
@@ -90,10 +81,6 @@
 	</div>
 	<div class="w-full xl:basis-5/6">
 		<PermissionFieldSelectTable
-			showSaveButton={false}
-			showRemoveButton={false}
-			showUnbindButton={true}
-			showGotoSelectButton={true}
 			showBackButton={$canBack}
 			bind:roleId={id}
 			bind:typeName
