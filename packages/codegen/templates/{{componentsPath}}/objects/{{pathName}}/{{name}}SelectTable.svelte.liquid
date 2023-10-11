@@ -241,11 +241,10 @@
 								{%- endif %}
 								<th class="z-10 w-12">
 									<div class="flex space-x-1">
-										<div class="tooltip" data-tip={$LL.web.components.table.selectBtn()}>
+										<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.selectBtn()}>
 											<button
 												class="btn btn-square btn-ghost btn-xs"
-												on:click={(e) => {
-													e.preventDefault();
+												on:click|preventDefault={(e) => {
 													if (node && node.{{ idName }}) {
 														dispatch('select', {
 															selected: multipleSelect ? [{ ...node, where: { {{ idName }}: { val: node.{{ idName }} } } }] : { ...node, where: { {{ idName }}: { val: node.{{ idName }} } } },

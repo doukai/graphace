@@ -67,8 +67,7 @@
 		<NavBar>
 			<a
 				href={null}
-				on:click={(e) => {
-					e.preventDefault();
+				on:click|preventDefault={(e) => {
 					init(`/${$locale}`);
 				}}
 				aria-current="page"
@@ -92,8 +91,7 @@
 				<li>
 					<a
 						href={null}
-						on:click={(e) => {
-							e.preventDefault();
+						on:click|preventDefault={(e) => {
 							init(`/${$locale}`);
 						}}
 					>
@@ -104,8 +102,7 @@
 					<li>
 						<a
 							href={null}
-							on:click={(e) => {
-								e.preventDefault();
+							on:click|preventDefault={(e) => {
 								to(page.url);
 							}}
 						>
@@ -136,8 +133,7 @@
 			<SideBar {drawerSidebarScrollY}>
 				<a
 					href={null}
-					on:click={(e) => {
-						e.preventDefault();
+					on:click|preventDefault={(e) => {
 						init(`/${$locale}`);
 					}}
 					aria-current="page"

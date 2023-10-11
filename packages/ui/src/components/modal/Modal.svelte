@@ -20,8 +20,7 @@
 	<div class="modal-box {className}">
 		<button
 			class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-			on:click={(e) => {
-				e.preventDefault();
+			on:click|preventDefault={(e) => {
 				dispatch('close');
 			}}
 		>

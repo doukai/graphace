@@ -56,8 +56,7 @@
 				<a
 					class={typeName === activeTypeName ? 'active' : ''}
 					href={null}
-					on:click={(e) => {
-						e.preventDefault();
+					on:click|preventDefault={(e) => {
 						activeTypeName = typeName;
 					}}
 				>

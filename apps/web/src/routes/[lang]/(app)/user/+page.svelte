@@ -58,7 +58,6 @@
 				});
 			})
 			.catch((validErrors) => {
-				debugger;
 				if (row !== -1 && row !== undefined) {
 					errors[row] = { errors: errors[row]?.errors, iterms: validErrors };
 				}

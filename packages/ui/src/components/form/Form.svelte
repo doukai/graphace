@@ -29,8 +29,7 @@
 			<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.remove()}>
 				<button
 					class="btn btn-error btn-outline btn-square md:hidden"
-					on:click={(e) => {
-						e.preventDefault();
+					on:click|preventDefault={(e) => {
 						dispatch('remove');
 					}}
 				>
@@ -39,8 +38,7 @@
 			</div>
 			<button
 				class="hidden md:flex btn btn-outline btn-error"
-				on:click={(e) => {
-					e.preventDefault();
+				on:click|preventDefault={(e) => {
 					dispatch('remove');
 				}}
 			>
@@ -51,8 +49,7 @@
 			<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.unbind()}>
 				<button
 					class="btn btn-error btn-outline btn-square md:hidden"
-					on:click={(e) => {
-						e.preventDefault();
+					on:click|preventDefault={(e) => {
 						dispatch('unbind');
 					}}
 				>
@@ -61,8 +58,7 @@
 			</div>
 			<button
 				class="hidden md:flex btn btn-outline btn-error"
-				on:click={(e) => {
-					e.preventDefault();
+				on:click|preventDefault={(e) => {
 					dispatch('unbind');
 				}}
 			>
@@ -73,8 +69,7 @@
 			<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.save()}>
 				<button
 					class="btn btn-secondary btn-square md:hidden"
-					on:click={(e) => {
-						e.preventDefault();
+					on:click|preventDefault={(e) => {
 						dispatch('save');
 					}}
 				>
@@ -83,8 +78,7 @@
 			</div>
 			<button
 				class="hidden md:flex btn btn-secondary"
-				on:click={(e) => {
-					e.preventDefault();
+				on:click|preventDefault={(e) => {
 					dispatch('save');
 				}}
 			>
@@ -95,8 +89,7 @@
 			<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.select()}>
 				<button
 					class="btn btn-outline btn-secondary btn-square md:hidden"
-					on:click={(e) => {
-						e.preventDefault();
+					on:click|preventDefault={(e) => {
 						dispatch('gotoSelect');
 					}}
 				>
@@ -105,8 +98,7 @@
 			</div>
 			<button
 				class="hidden md:flex btn btn-outline btn-secondary"
-				on:click={(e) => {
-					e.preventDefault();
+				on:click|preventDefault={(e) => {
 					dispatch('gotoSelect');
 				}}
 			>
@@ -117,8 +109,7 @@
 			<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.back()}>
 				<button
 					class="btn btn-neutral btn-square md:hidden"
-					on:click={(e) => {
-						e.preventDefault();
+					on:click|preventDefault={(e) => {
 						dispatch('back');
 					}}
 				>
@@ -127,8 +118,7 @@
 			</div>
 			<button
 				class="hidden md:flex btn btn-neutral"
-				on:click={(e) => {
-					e.preventDefault();
+				on:click|preventDefault={(e) => {
 					dispatch('back');
 				}}
 			>
@@ -151,8 +141,7 @@
 		<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.remove()}>
 			<button
 				class="btn btn-error btn-outline btn-square md:hidden"
-				on:click={(e) => {
-					e.preventDefault();
+				on:click|preventDefault={(e) => {
 					dispatch('remove');
 				}}
 			>
@@ -161,8 +150,7 @@
 		</div>
 		<button
 			class="hidden md:flex btn btn-outline btn-error"
-			on:click={(e) => {
-				e.preventDefault();
+			on:click|preventDefault={(e) => {
 				dispatch('remove');
 			}}
 		>
@@ -173,8 +161,7 @@
 		<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.unbind()}>
 			<button
 				class="btn btn-error btn-outline btn-square md:hidden"
-				on:click={(e) => {
-					e.preventDefault();
+				on:click|preventDefault={(e) => {
 					dispatch('unbind');
 				}}
 			>
@@ -183,8 +170,7 @@
 		</div>
 		<button
 			class="hidden md:flex btn btn-outline btn-error"
-			on:click={(e) => {
-				e.preventDefault();
+			on:click|preventDefault={(e) => {
 				dispatch('unbind');
 			}}
 		>
@@ -195,8 +181,7 @@
 		<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.save()}>
 			<button
 				class="btn btn-secondary btn-square md:hidden"
-				on:click={(e) => {
-					e.preventDefault();
+				on:click|preventDefault={(e) => {
 					dispatch('save');
 				}}
 			>
@@ -205,8 +190,7 @@
 		</div>
 		<button
 			class="hidden md:flex btn btn-secondary"
-			on:click={(e) => {
-				e.preventDefault();
+			on:click|preventDefault={(e) => {
 				dispatch('save');
 			}}
 		>
@@ -217,8 +201,7 @@
 		<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.select()}>
 			<button
 				class="btn btn-outline btn-secondary btn-square md:hidden"
-				on:click={(e) => {
-					e.preventDefault();
+				on:click|preventDefault={(e) => {
 					dispatch('gotoSelect');
 				}}
 			>
@@ -227,8 +210,7 @@
 		</div>
 		<button
 			class="hidden md:flex btn btn-outline btn-secondary"
-			on:click={(e) => {
-				e.preventDefault();
+			on:click|preventDefault={(e) => {
 				dispatch('gotoSelect');
 			}}
 		>
@@ -239,8 +221,7 @@
 		<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.back()}>
 			<button
 				class="btn btn-neutral btn-square md:hidden"
-				on:click={(e) => {
-					e.preventDefault();
+				on:click|preventDefault={(e) => {
 					dispatch('back');
 				}}
 			>
@@ -249,8 +230,7 @@
 		</div>
 		<button
 			class="hidden md:flex btn btn-neutral"
-			on:click={(e) => {
-				e.preventDefault();
+			on:click|preventDefault={(e) => {
 				dispatch('back');
 			}}
 		>

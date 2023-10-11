@@ -29,8 +29,7 @@
 		<li>
 			<a
 				href={null}
-				on:click={(e) => {
-					e.preventDefault();
+				on:click|preventDefault={(e) => {
 					init(`/${$locale}${href}`);
 				}}
 				class={$page.url.pathname === `/${$locale}${href}` ||

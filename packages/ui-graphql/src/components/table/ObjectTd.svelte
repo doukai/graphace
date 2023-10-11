@@ -8,6 +8,7 @@
 	export let path: string;
 	export let name: string;
 	export let errors: Errors | undefined = undefined;
+	let blur = false;
 
 	const dispatch = createEventDispatcher<{
 		gotoField: { path: string; name: string };
@@ -16,16 +17,16 @@
 
 <td>
 	<div
-		class={errors ? 'tooltip tooltip-open tooltip-error' : ''}
+		class={errors ? 'tooltip tooltip-open tooltip-error hover:z-30' : ''}
 		data-tip={errors?.errors?.map((error) => error.message).join(', ')}
 	>
-		<div class="tooltip" data-tip={$LL.uiGraphql.table.editBtn()}>
+		<div class="tooltip hover:z-30" data-tip={$LL.uiGraphql.table.editBtn()}>
 			<button
 				class="btn btn-square btn-xs btn-ghost"
-				on:click={(e) => {
-					e.preventDefault();
+				on:click|preventDefault={(e) => {
 					dispatch('gotoField', { path, name });
 				}}
+				on:blur={() => (blur = true)}
 			>
 				<Icon src={Link} class="h-5 w-5" />
 			</button>

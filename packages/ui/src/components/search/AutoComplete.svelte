@@ -21,7 +21,7 @@
 	$: dispatch('search', { searchValue });
 </script>
 
-<div class="dropdown w-full">
+<div class="dropdown">
 	<input
 		type="search"
 		class="input input-bordered w-full"
@@ -39,7 +39,14 @@
 				<li>
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<!-- svelte-ignore a11y-missing-attribute -->
-					<a on:click|preventDefault={() => (selectedItem = item)}>{item.label}</a>
+					<a
+						on:click|preventDefault={() => {
+							selectedItem = item;
+							searchValue = item.label;
+						}}
+					>
+						{item.label}
+					</a>
 				</li>
 			{/each}
 		</ul>

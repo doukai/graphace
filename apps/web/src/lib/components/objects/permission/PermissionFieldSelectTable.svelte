@@ -79,12 +79,22 @@
 		query(typeName);
 	}
 
+	let selectedItem:
+		| { value: string | null | undefined; label: string | null | undefined }
+		| null
+		| undefined = undefined;
+	$: typeName = selectedItem?.value;
+
 	$: result = $PermissionTypeFieldsQuery.data;
 	$: permissionNameList = fieldReadList?.concat(fieldWriteList);
 	$: items = $PermissionTypeListQuery.data?.permissionList?.map((permission) => ({
 		value: permission?.type,
 		label: permission?.type
 	}));
+
+	$: if (!items) {
+		PermissionTypeListQuery.fetch({ variables: { first: 10 } });
+	}
 
 	const query = (typeName?: string | null | undefined) => {
 		let variables = {
@@ -136,7 +146,7 @@
 			<span class="text-xl font-semibold">{$LL.graphql.objects.Permission.name()}</span>
 		</div>
 		<div class="flex justify-between w-full md:w-auto space-x-1">
-			<div class="flex w-full">
+			<div class="flex">
 				<AutoComplete
 					placeholder={$LL.graphql.objects.Permission.fields.type.name()}
 					on:search={(e) => {
@@ -149,6 +159,7 @@
 						PermissionTypeListQuery.fetch({ variables });
 					}}
 					bind:items
+					bind:selectedItem
 				/>
 			</div>
 			<div class="flex space-x-1">

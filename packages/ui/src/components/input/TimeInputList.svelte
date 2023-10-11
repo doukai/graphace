@@ -57,8 +57,7 @@
 				<div class="tooltip" data-tip={$LL.ui.inputList.add()}>
 					<button
 						class="mt-3 btn btn-xs btn-square btn-outline"
-						on:click={(e) => {
-							e.preventDefault();
+						on:click|preventDefault={(e) => {
 							addItem(index);
 						}}
 					>
@@ -68,8 +67,7 @@
 				<div class="tooltip" data-tip={$LL.ui.inputList.remove()}>
 					<button
 						class="mt-3 btn btn-xs btn-square btn-outline"
-						on:click={(e) => {
-							e.preventDefault();
+						on:click|preventDefault={(e) => {
 							removeItem(index);
 						}}
 					>
@@ -82,8 +80,7 @@
 			<div class="tooltip" data-tip={$LL.ui.inputList.add()}>
 				<button
 					class="btn btn-square btn-outline"
-					on:click={(e) => {
-						e.preventDefault();
+					on:click|preventDefault={(e) => {
 						addItem(0);
 					}}
 				>

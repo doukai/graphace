@@ -21,8 +21,7 @@
 		<div class="tooltip" data-tip={$LL.uiGraphql.table.editBtn()}>
 			<button
 				class="btn btn-square btn-outline {errors ? 'btn-error' : ''}"
-				on:click={(e) => {
-					e.preventDefault();
+				on:click|preventDefault={(e) => {
 					dispatch('gotoField', { path, name });
 				}}
 			>

@@ -64,7 +64,7 @@
 
 <td>
 	<div
-		class={errors ? 'tooltip tooltip-open tooltip-error' : ''}
+		class={errors ? 'tooltip tooltip-open tooltip-error hover:z-30' : ''}
 		data-tip={errors?.errors?.map((error) => error.message).join(', ')}
 	>
 		<a

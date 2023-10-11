@@ -138,22 +138,20 @@
 							{%- endif %}
 							<th class="z-10 w-24">
 								<div class="flex space-x-1">
-									<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
+									<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.editBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
-											on:click={(e) => {
-												e.preventDefault();
+											on:click|preventDefault={(e) => {
 												dispatch('edit', { row });
 											}}
 										>
 											<Icon src={PencilSquare} solid />
 										</button>
 									</div>
-									<div class="tooltip" data-tip={$LL.web.components.table.removeBtn()}>
+									<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.removeBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
-											on:click={(e) => {
-												e.preventDefault();
+											on:click|preventDefault={(e) => {
 												messageBoxs.open({
 													title: $LL.web.components.table.removeModalTitle(),
 													buttonName: $LL.web.components.table.removeBtn(),
