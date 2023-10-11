@@ -3,7 +3,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { MagnifyingGlass } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
-	export let name: string = '';
+	export let name: string | undefined = undefined;
 	export let value: string | undefined = undefined;
 	const dispatch = createEventDispatcher<{
 		search: { value: string | undefined };
@@ -18,7 +18,10 @@
 		placeholder={$LL.ui.searchInput.placeholder()}
 		bind:value
 	/>
-	<button class="btn btn-square join-item" on:click={() => dispatch('search', { value })}>
+	<button
+		class="btn btn-square join-item"
+		on:click|preventDefault={() => dispatch('search', { value })}
+	>
 		<Icon src={MagnifyingGlass} class="h-6 w-6" />
 	</button>
 </div>

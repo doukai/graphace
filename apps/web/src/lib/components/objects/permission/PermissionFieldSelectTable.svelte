@@ -1,13 +1,21 @@
 <script lang="ts">
-	import { graphql, PermissionType, PermissionTypeFieldsQuery$result } from '$houdini';
+	import { graphql, Operator, PermissionType, PermissionTypeFieldsQuery$result } from '$houdini';
 	import { Card } from '@graphace/ui/components/card';
-	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
+	import { Table, TableLoading, TableEmpty } from '@graphace/ui/components/table';
+	import AutoComplete from '@graphace/ui/components/search/AutoComplete.svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Link, ArrowUturnLeft } from '@steeze-ui/heroicons';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	export let showBackButton: boolean = true;
 	export let roleId: string | null | undefined = undefined;
 	export let typeName: string | null | undefined = undefined;
+
+	const dispatch = createEventDispatcher<{
+		back: {};
+	}>();
 
 	let result: PermissionTypeFieldsQuery$result | null | undefined;
 
@@ -15,6 +23,14 @@
 	let selectAllWrite: boolean;
 	let fieldReadList: (string | null | undefined)[] | null | undefined = [];
 	let fieldWriteList: (string | null | undefined)[] | null | undefined = [];
+
+	const PermissionTypeListQuery = graphql(`
+		query PermissionTypeListQuery($type: StringExpression, $first: Int) {
+			permissionList(type: $type, first: $first, groupBy: ["type"]) {
+				type
+			}
+		}
+	`);
 
 	const PermissionTypeFieldsQuery = graphql(`
 		query PermissionTypeFieldsQuery(
@@ -65,6 +81,10 @@
 
 	$: result = $PermissionTypeFieldsQuery.data;
 	$: permissionNameList = fieldReadList?.concat(fieldWriteList);
+	$: items = $PermissionTypeListQuery.data?.permissionList?.map((permission) => ({
+		value: permission?.type,
+		label: permission?.type
+	}));
 
 	const query = (typeName?: string | null | undefined) => {
 		let variables = {
@@ -111,23 +131,72 @@
 </script>
 
 <Card>
-	<TableHead
-		title={$LL.graphql.objects.Permission.name()}
-		showSelectButton={(fieldReadList?.length || 0) > 0 || (fieldWriteList?.length || 0) > 0}
-		showCreateButton={false}
-		showSaveButton={false}
-		showRemoveButton={false}
-		{showBackButton}
-		on:select={() => {
-			mutation();
-		}}
-		on:back
-	/>
+	<div class="flex justify-between">
+		<div class="hidden md:flex items-center">
+			<span class="text-xl font-semibold">{$LL.graphql.objects.Permission.name()}</span>
+		</div>
+		<div class="flex justify-between w-full md:w-auto space-x-1">
+			<div class="flex w-full">
+				<AutoComplete
+					placeholder={$LL.graphql.objects.Permission.fields.type.name()}
+					on:search={(e) => {
+						let variables = {
+							type: e.detail.searchValue
+								? { opr: Operator.LK, val: `%${e.detail.searchValue}%` }
+								: undefined,
+							first: 10
+						};
+						PermissionTypeListQuery.fetch({ variables });
+					}}
+					bind:items
+				/>
+			</div>
+			<div class="flex space-x-1">
+				<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.select()}>
+					<button
+						class="btn btn-secondary btn-square md:hidden"
+						on:click|preventDefault={() => {
+							mutation();
+						}}
+					>
+						<Icon src={Link} class="h-6 w-6" solid />
+					</button>
+				</div>
+				<button
+					class="hidden md:flex btn btn-secondary"
+					on:click|preventDefault={() => {
+						mutation();
+					}}
+				>
+					{$LL.ui.button.select()}
+				</button>
+				{#if showBackButton}
+					<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.back()}>
+						<button
+							class="btn btn-neutral btn-square md:hidden"
+							on:click|preventDefault={() => {
+								dispatch('back');
+							}}
+						>
+							<Icon src={ArrowUturnLeft} class="h-6 w-6" solid />
+						</button>
+					</div>
+					<button
+						class="hidden md:flex btn btn-neutral"
+						on:click|preventDefault={() => {
+							dispatch('back');
+						}}
+					>
+						{$LL.ui.button.back()}
+					</button>
+				{/if}
+			</div>
+		</div>
+	</div>
 	<div class="divider" />
 	<Table>
 		<thead>
 			<tr class="z-20">
-				<td>{$LL.graphql.objects.Permission.fields.type.name()} </td>
 				<td>{$LL.graphql.objects.Permission.fields.field.name()} </td>
 				<td>
 					<div class="flex items-center gap-2">
@@ -181,7 +250,6 @@
 					{#each result?.permissionList as node}
 						{#if node}
 							<tr class="hover">
-								<td>{node.type}</td>
 								<td>{node.field}</td>
 								<td>
 									<label>
