@@ -2,6 +2,7 @@
 	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
+	import { Card } from '@graphace/ui/components/card';
 	import UserConnectionTable from '~/lib/components/objects/user/UserConnectionTable.svelte';
 	import GroupTreeCard from '~/lib/components/objects/group/GroupTreeCard.svelte';
 	import type { User, QueryUserConnectionArgs, MutationUserArgs } from '~/lib/types/schema';
@@ -90,19 +91,21 @@
 		<GroupTreeCard bind:activeGroupId={groupId} />
 	</div>
 	<div class="w-full xl:basis-5/6">
-		<UserConnectionTable
-			showSaveButton={false}
-			showBackButton={$canBack}
-			bind:groupId
-			{nodes}
-			{totalCount}
-			{errors}
-			isFetching={$Query_userConnection.fetching}
-			on:fetch={fetch}
-			on:mutation={mutation}
-			on:edit={edit}
-			on:create={create}
-			on:gotoField={gotoField}
-		/>
+		<Card>
+			<UserConnectionTable
+				showSaveButton={false}
+				showBackButton={$canBack}
+				bind:groupId
+				{nodes}
+				{totalCount}
+				{errors}
+				isFetching={$Query_userConnection.fetching}
+				on:fetch={fetch}
+				on:mutation={mutation}
+				on:edit={edit}
+				on:create={create}
+				on:gotoField={gotoField}
+			/>
+		</Card>
 	</div>
 </div>

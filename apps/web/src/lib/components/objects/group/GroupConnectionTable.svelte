@@ -6,7 +6,6 @@
 	import UserTh from '~/lib/components/objects/user/UserTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
-	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { Pagination } from '@graphace/ui/components/connection';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
@@ -199,236 +198,231 @@
 	};
 </script>
 
-<Card>
-	<TableHead
-		title={$LL.graphql.objects.Group.name()}
-		showRemoveButton={showRemoveButton && selectedIdList.length > 0}
-		showUnbindButton={showUnbindButton && selectedIdList.length > 0}
-		{showSaveButton}
-		{showGotoSelectButton}
-		{showBackButton}
-		on:create
-		on:search={(e) => search(e.detail.value)}
-		on:save={() => dispatch('save', { nodes })}
-		on:remove={() => {
-			messageBoxs.open({
-				title: $LL.web.components.table.removeModalTitle(),
-				buttonName: $LL.web.components.table.removeBtn(),
-				buttonType: 'error',
-				confirm: () => {
+<TableHead
+	title={$LL.graphql.objects.Group.name()}
+	showRemoveButton={showRemoveButton && selectedIdList.length > 0}
+	showUnbindButton={showUnbindButton && selectedIdList.length > 0}
+	{showSaveButton}
+	{showGotoSelectButton}
+	{showBackButton}
+	on:create
+	on:search={(e) => search(e.detail.value)}
+	on:save={() => dispatch('save', { nodes })}
+	on:remove={() => {
+		messageBoxs.open({
+			title: $LL.web.components.table.removeModalTitle(),
+			buttonName: $LL.web.components.table.removeBtn(),
+			buttonType: 'error',
+			confirm: () => {
+				removeRows();
+				return true;
+			}
+		});
+	}}
+	on:unbind={() =>
+		messageBoxs.open({
+			title: $LL.web.components.table.unbindModalTitle(),
+			buttonName: $LL.web.components.table.unbindBtn(),
+			buttonType: 'error',
+			confirm: () => {
+				unbindRows(selectedIdList);
+				return true;
+			},
+			button1: {
+				name: $LL.web.components.table.removeBtn(),
+				className: 'btn-error',
+				onClick: () => {
 					removeRows();
 					return true;
 				}
-			});
-		}}
-		on:unbind={() =>
-			messageBoxs.open({
-				title: $LL.web.components.table.unbindModalTitle(),
-				buttonName: $LL.web.components.table.unbindBtn(),
-				buttonType: 'error',
-				confirm: () => {
-					unbindRows(selectedIdList);
-					return true;
-				},
-				button1: {
-					name: $LL.web.components.table.removeBtn(),
-					className: 'btn-error',
-					onClick: () => {
-						removeRows();
-						return true;
-					}
-				}
-			})}
-		on:gotoSelect
-		on:back
-	/>
-	<div class="divider" />
-	<Table>
-		<thead>
-			<tr class="z-20">
-				<th class="w-12">
-					<label>
-						<input
-							type="checkbox"
-							class="checkbox"
-							bind:checked={selectAll}
-							on:change={() => {
-								if (nodes && nodes.length > 0) {
-									selectedIdList = selectAll ? nodes.map((node) => node?.id || null) : [];
-								}
-							}}
-						/>
-					</label>
-				</th>
-				<StringTh
-					name={$LL.graphql.objects.Group.fields.name.name()}
-					bind:expression={args.name}
-					bind:sort={orderBy.name}
-					on:filter={query}
-				/>
-				<StringTh
-					name={$LL.graphql.objects.Group.fields.path.name()}
-					bind:expression={args.path}
-					bind:sort={orderBy.path}
-					on:filter={query}
-				/>
-				<IntTh
-					name={$LL.graphql.objects.Group.fields.deep.name()}
-					bind:expression={args.deep}
-					bind:sort={orderBy.deep}
-					on:filter={query}
-				/>
-				<GroupTh
-					name={$LL.graphql.objects.Group.fields.parent.name()}
-					bind:expression={args.parent}
-					on:filter={query}
-				/>
-				<GroupTh
-					name={$LL.graphql.objects.Group.fields.subGroups.name()}
-					bind:expression={args.subGroups}
-					on:filter={query}
-				/>
-				<UserTh
-					name={$LL.graphql.objects.Group.fields.users.name()}
-					bind:expression={args.users}
-					on:filter={query}
-				/>
-				<RoleTh
-					name={$LL.graphql.objects.Group.fields.roles.name()}
-					bind:expression={args.roles}
-					on:filter={query}
-				/>
-				<RealmTh
-					name={$LL.graphql.objects.Group.fields.realm.name()}
-					bind:expression={args.realm}
-					on:filter={query}
-				/>
-				<th />
-			</tr>
-		</thead>
-		{#if isFetching}
-			<TableLoading rows={pageSize} cols={8 + 2}/>
-		{:else}
-			<tbody>
-				{#if nodes && nodes.length > 0}
-					{#each nodes as node, row}
-						{#if node && node.id}
-							<tr class="hover">
-								<th class="z-10 w-12">
-									<label>
-										<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
-									</label>
-								</th>
-								<StringTd
-									name="name"
-									bind:value={node.name}
-									on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
-									errors={errors[row]?.iterms?.name}
-								/>
-								<StringTd
-									name="path"
-									bind:value={node.path}
-									on:save={() => updateField({ path: node?.path, where: { id: { val: node?.id } } })}
-									errors={errors[row]?.iterms?.path}
-								/>
-								<IntTd
-									name="deep"
-									bind:value={node.deep}
-									on:save={() => updateField({ deep: node?.deep, where: { id: { val: node?.id } } })}
-									errors={errors[row]?.iterms?.deep}
-								/>
-								<ObjectTd name="parent" errors={errors[row]?.iterms?.parent} path={`${node.id}/parent`} on:gotoField />
-								<ObjectTd name="subGroups" errors={errors[row]?.iterms?.subGroups} path={`${node.id}/sub-groups`} on:gotoField />
-								<ObjectTd name="users" errors={errors[row]?.iterms?.users} path={`${node.id}/users`} on:gotoField />
-								<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path={`${node.id}/roles`} on:gotoField />
-								<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
-								<th class="z-10 w-24">
-									<div class="flex space-x-1">
-										<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
+			}
+		})}
+	on:gotoSelect
+	on:back
+/>
+<div class="divider" />
+<Table>
+	<thead>
+		<tr class="z-20">
+			<th class="w-12">
+				<label>
+					<input
+						type="checkbox"
+						class="checkbox"
+						bind:checked={selectAll}
+						on:change={() => {
+							if (nodes && nodes.length > 0) {
+								selectedIdList = selectAll ? nodes.map((node) => node?.id || null) : [];
+							}
+						}}
+					/>
+				</label>
+			</th>
+			<StringTh
+				name={$LL.graphql.objects.Group.fields.name.name()}
+				bind:expression={args.name}
+				bind:sort={orderBy.name}
+				on:filter={query}
+			/>
+			<StringTh
+				name={$LL.graphql.objects.Group.fields.path.name()}
+				bind:expression={args.path}
+				bind:sort={orderBy.path}
+				on:filter={query}
+			/>
+			<IntTh
+				name={$LL.graphql.objects.Group.fields.deep.name()}
+				bind:expression={args.deep}
+				bind:sort={orderBy.deep}
+				on:filter={query}
+			/>
+			<GroupTh
+				name={$LL.graphql.objects.Group.fields.parent.name()}
+				bind:expression={args.parent}
+				on:filter={query}
+			/>
+			<GroupTh
+				name={$LL.graphql.objects.Group.fields.subGroups.name()}
+				bind:expression={args.subGroups}
+				on:filter={query}
+			/>
+			<UserTh
+				name={$LL.graphql.objects.Group.fields.users.name()}
+				bind:expression={args.users}
+				on:filter={query}
+			/>
+			<RoleTh
+				name={$LL.graphql.objects.Group.fields.roles.name()}
+				bind:expression={args.roles}
+				on:filter={query}
+			/>
+			<RealmTh
+				name={$LL.graphql.objects.Group.fields.realm.name()}
+				bind:expression={args.realm}
+				on:filter={query}
+			/>
+			<th />
+		</tr>
+	</thead>
+	{#if isFetching}
+		<TableLoading rows={pageSize} cols={8 + 2}/>
+	{:else}
+		<tbody>
+			{#if nodes && nodes.length > 0}
+				{#each nodes as node, row}
+					{#if node && node.id}
+						<tr class="hover">
+							<th class="z-20 w-12">
+								<label>
+									<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
+								</label>
+							</th>
+							<StringTd
+								name="name"
+								bind:value={node.name}
+								on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								errors={errors[row]?.iterms?.name}
+							/>
+							<StringTd
+								name="path"
+								bind:value={node.path}
+								on:save={() => updateField({ path: node?.path, where: { id: { val: node?.id } } })}
+								errors={errors[row]?.iterms?.path}
+							/>
+							<IntTd
+								name="deep"
+								bind:value={node.deep}
+								on:save={() => updateField({ deep: node?.deep, where: { id: { val: node?.id } } })}
+								errors={errors[row]?.iterms?.deep}
+							/>
+							<ObjectTd name="parent" errors={errors[row]?.iterms?.parent} path={`${node.id}/parent`} on:gotoField />
+							<ObjectTd name="subGroups" errors={errors[row]?.iterms?.subGroups} path={`${node.id}/sub-groups`} on:gotoField />
+							<ObjectTd name="users" errors={errors[row]?.iterms?.users} path={`${node.id}/users`} on:gotoField />
+							<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path={`${node.id}/roles`} on:gotoField />
+							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+							<th class="z-20 w-24">
+								<div class="flex space-x-1">
+									<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.editBtn()}>
+										<button
+											class="btn btn-square btn-ghost btn-xs"
+											on:click|preventDefault={(e) => {
+												if (node && node.id) {
+													dispatch('edit', { id: node.id });
+												}
+											}}
+										>
+											<Icon src={PencilSquare} solid />
+										</button>
+									</div>
+									{#if showUnbindButton}
+										<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.unbindBtn()}>
 											<button
 												class="btn btn-square btn-ghost btn-xs"
-												on:click={(e) => {
-													e.preventDefault();
-													if (node && node.id) {
-														dispatch('edit', { id: node.id });
-													}
-												}}
-											>
-												<Icon src={PencilSquare} solid />
-											</button>
-										</div>
-										{#if showUnbindButton}
-											<div class="tooltip" data-tip={$LL.web.components.table.unbindBtn()}>
-												<button
-													class="btn btn-square btn-ghost btn-xs"
-													on:click={(e) => {
-														e.preventDefault();
-														messageBoxs.open({
-															title: $LL.web.components.table.unbindModalTitle(),
-															buttonName: $LL.web.components.table.unbindBtn(),
-															buttonType: 'error',
-															confirm: () => {
-																if (node?.id) {
-																	unbindRows([node.id]);
-																}
-																return true;
-															},
-															button1: {
-																name: $LL.web.components.table.removeBtn(),
-																className: 'btn-error',
-																onClick: () => {
-																	if (node?.id) {
-																		removeRow(node.id);
-																	}
-																	return true;
-																}
+												on:click|preventDefault={(e) => {
+													messageBoxs.open({
+														title: $LL.web.components.table.unbindModalTitle(),
+														buttonName: $LL.web.components.table.unbindBtn(),
+														buttonType: 'error',
+														confirm: () => {
+															if (node?.id) {
+																unbindRows([node.id]);
 															}
-														});
-													}}
-												>
-													<Icon src={ArchiveBoxXMark} solid />
-												</button>
-											</div>
-										{:else}
-											<div class="tooltip" data-tip={$LL.web.components.table.removeBtn()}>
-												<button
-													class="btn btn-square btn-ghost btn-xs"
-													on:click={(e) => {
-														e.preventDefault();
-														messageBoxs.open({
-															title: $LL.web.components.table.removeModalTitle(),
-															buttonName: $LL.web.components.table.removeBtn(),
-															buttonType: 'error',
-															confirm: () => {
+															return true;
+														},
+														button1: {
+															name: $LL.web.components.table.removeBtn(),
+															className: 'btn-error',
+															onClick: () => {
 																if (node?.id) {
 																	removeRow(node.id);
 																}
 																return true;
 															}
-														});
-													}}
-												>
-													<Icon src={Trash} solid />
-												</button>
-											</div>
-										{/if}
-									</div>
-								</th>
-							</tr>
-						{/if}
-					{/each}
-				{:else}
-					<TableEmpty cols={8 + 2}/>
-				{/if}
-			</tbody>
-		{/if}
-	</Table>
-	<div class="divider" />
-	<Pagination
-		bind:pageNumber
-		bind:pageSize
-		{totalCount}
-		on:pageChange={queryPage}
-		on:sizeChange={queryPage}
-	/>
-</Card>
+														}
+													});
+												}}
+											>
+												<Icon src={ArchiveBoxXMark} solid />
+											</button>
+										</div>
+									{:else}
+										<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.removeBtn()}>
+											<button
+												class="btn btn-square btn-ghost btn-xs"
+												on:click|preventDefault={(e) => {
+													messageBoxs.open({
+														title: $LL.web.components.table.removeModalTitle(),
+														buttonName: $LL.web.components.table.removeBtn(),
+														buttonType: 'error',
+														confirm: () => {
+															if (node?.id) {
+																removeRow(node.id);
+															}
+															return true;
+														}
+													});
+												}}
+											>
+												<Icon src={Trash} solid />
+											</button>
+										</div>
+									{/if}
+								</div>
+							</th>
+						</tr>
+					{/if}
+				{/each}
+			{:else}
+				<TableEmpty cols={8 + 2}/>
+			{/if}
+		</tbody>
+	{/if}
+</Table>
+<div class="divider" />
+<Pagination
+	bind:pageNumber
+	bind:pageSize
+	{totalCount}
+	on:pageChange={queryPage}
+	on:sizeChange={queryPage}
+/>

@@ -145,6 +145,26 @@ const en: BaseTranslation = {
 		}
 	},
 	enums: {
+		Func: {
+			name: 'Func',
+			values: {
+				COUNT: {
+					name: 'COUNT',
+				},
+				MAX: {
+					name: 'MAX',
+				},
+				MIN: {
+					name: 'MIN',
+				},
+				SUM: {
+					name: 'SUM',
+				},
+				AVG: {
+					name: 'AVG',
+				}
+			}
+		},
 		PermissionType: {
 			name: 'PermissionType',
 			values: {

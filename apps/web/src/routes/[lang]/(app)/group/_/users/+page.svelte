@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ot, to, canBack, urlName } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
+	import { Card } from '@graphace/ui/components/card';
 	import UserCreateTable from '~/lib/components/objects/user/UserCreateTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons/types';
@@ -68,16 +69,19 @@
 		});
 	};
 </script>
-<UserCreateTable
-	showGotoSelectButton={true}
-	showBackButton={$canBack}
-	{nodes}
-	{errors}
-	on:edit={edit}
-	on:create={create}
-	on:mutation={mutation}
-	on:save={save}
-	on:gotoField={gotoField}
-	on:gotoSelect={gotoSelect}
-	on:back={back}
-/>
+
+<Card>
+	<UserCreateTable
+		showGotoSelectButton={true}
+		showBackButton={$canBack}
+		{nodes}
+		{errors}
+		on:edit={edit}
+		on:create={create}
+		on:mutation={mutation}
+		on:save={save}
+		on:gotoField={gotoField}
+		on:gotoSelect={gotoSelect}
+		on:back={back}
+	/>
+</Card>

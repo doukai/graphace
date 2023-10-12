@@ -2,6 +2,7 @@
 	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
+	import { Card } from '@graphace/ui/components/card';
 	import RealmSelectConnectionTable from '~/lib/components/objects/realm/RealmSelectConnectionTable.svelte';
 	import type { Realm, QueryRealmConnectionArgs, MutationRealmArgs } from '~/lib/types/schema';
 	import { Query_realmConnectionStore, Mutation_realmStore, Mutation_group_realmStore } from '$houdini';
@@ -96,15 +97,18 @@
 		ot();
 	};
 </script>
-<RealmSelectConnectionTable
-	multipleSelect={false}
-	showBackButton={$canBack}
-	{nodes}
-	{totalCount}
-	{errors}
-	isFetching={$Query_realmConnection.fetching}
-	on:fetch={fetch}
-	on:mutation={mutation}
-	on:select={select}
-	on:back={back}
-/>
+
+<Card>
+	<RealmSelectConnectionTable
+		multipleSelect={false}
+		showBackButton={$canBack}
+		{nodes}
+		{totalCount}
+		{errors}
+		isFetching={$Query_realmConnection.fetching}
+		on:fetch={fetch}
+		on:mutation={mutation}
+		on:select={select}
+		on:back={back}
+	/>
+</Card>

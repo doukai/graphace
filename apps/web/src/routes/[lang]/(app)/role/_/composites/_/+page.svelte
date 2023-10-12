@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
+	import { Card } from '@graphace/ui/components/card';
 	import RoleCreateForm from '~/lib/components/objects/role/RoleCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { MutationRoleArgs, Role } from '~/lib/types/schema';
@@ -43,4 +44,6 @@
 	};
 </script>
 
-<RoleCreateForm showBackButton={$canBack} {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<Card>
+	<RoleCreateForm showBackButton={$canBack} {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+</Card>

@@ -11,7 +11,6 @@
 	import {{ enum }}Th from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Th.svelte';
 	import {{ enum }}Td from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Td.svelte';
 	{%- endfor %}
-	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableEmpty } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -51,129 +50,127 @@
 	};
 </script>
 
-<Card>
-	<TableHead
-		title={$LL.graphql.objects.{{ name }}.name()}
-		showRemoveButton={showRemoveButton && selectedRowList.length > 0}
-		{showSaveButton}
-		{showBackButton}
-		{showGotoSelectButton}
-		showSearchInput={false}
-		on:create
-		on:save={() => dispatch('save', { nodes })}
-		on:remove={() => {
-			messageBoxs.open({
-				title: $LL.web.components.table.removeModalTitle(),
-				buttonName: $LL.web.components.table.removeBtn(),
-				buttonType: 'error',
-				confirm: () => {
-					removeRows();
-					return true;
-				}
-			});
-		}}
-		on:gotoSelect
-		on:back
-	/>
-	<div class="divider" />
-	<Table>
-		<thead>
-			<tr>
-				<th class="z-10 w-12">
-					<label>
-						<input
-							type="checkbox"
-							class="checkbox"
-							bind:checked={selectAll}
-							on:change={() => {
-								if (nodes && nodes.length > 0) {
-									selectedRowList = selectAll ? nodes.map((node) => nodes?.indexOf(node)) : [];
-								}
-							}}
+<TableHead
+	title={$LL.graphql.objects.{{ name }}.name()}
+	showRemoveButton={showRemoveButton && selectedRowList.length > 0}
+	{showSaveButton}
+	{showBackButton}
+	{showGotoSelectButton}
+	showSearchInput={false}
+	on:create
+	on:save={() => dispatch('save', { nodes })}
+	on:remove={() => {
+		messageBoxs.open({
+			title: $LL.web.components.table.removeModalTitle(),
+			buttonName: $LL.web.components.table.removeBtn(),
+			buttonType: 'error',
+			confirm: () => {
+				removeRows();
+				return true;
+			}
+		});
+	}}
+	on:gotoSelect
+	on:back
+/>
+<div class="divider" />
+<Table>
+	<thead>
+		<tr>
+			<th class="z-20 w-12">
+				<label>
+					<input
+						type="checkbox"
+						class="checkbox"
+						bind:checked={selectAll}
+						on:change={() => {
+							if (nodes && nodes.length > 0) {
+								selectedRowList = selectAll ? nodes.map((node) => nodes?.indexOf(node)) : [];
+							}
+						}}
+					/>
+				</label>
+			</th>
+			{%- if fields %}
+			{%- for field in fields %}
+			{%- if field.inMutationArgs %}
+			<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
+			{%- endif %}
+			{%- endfor %}
+			{%- endif %}
+			<th />
+		</tr>
+	</thead>
+	<tbody>
+		{#if nodes && nodes.length > 0}
+			{#each nodes as node, row}
+				{#if node}
+					<tr class="hover">
+						<th class="z-20 w-12">
+							<label>
+								<input type="checkbox" class="checkbox" bind:group={selectedRowList} value={row} />
+							</label>
+						</th>
+						{%- if fields %}
+						{%- for field in fields %}
+						{%- if field.inMutationArgs %}
+						{%- if field.component %}
+						{{ field.component }}
+						{%- else %}
+						{%- if field.isScalarType or field.isEnumType %}
+						<{{ field.fieldType.name }}Td
+							name="{{ field.fieldName }}"
+							bind:value={node.{{ field.fieldName }}}
+							{%- if field.isListType %}
+							list
+							{%- endif %}
+							readonly
+							errors={errors[row]?.iterms?.{{ field.fieldName }}}
 						/>
-					</label>
-				</th>
-				{%- if fields %}
-				{%- for field in fields %}
-				{%- if field.inMutationArgs %}
-				<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
-				{%- endif %}
-				{%- endfor %}
-				{%- endif %}
-				<th />
-			</tr>
-		</thead>
-		<tbody>
-			{#if nodes && nodes.length > 0}
-				{#each nodes as node, row}
-					{#if node}
-						<tr class="hover">
-							<th class="z-10 w-12">
-								<label>
-									<input type="checkbox" class="checkbox" bind:group={selectedRowList} value={row} />
-								</label>
-							</th>
-							{%- if fields %}
-							{%- for field in fields %}
-							{%- if field.inMutationArgs %}
-							{%- if field.component %}
-							{{ field.component }}
-							{%- else %}
-							{%- if field.isScalarType or field.isEnumType %}
-							<{{ field.fieldType.name }}Td
-								name="{{ field.fieldName }}"
-								bind:value={node.{{ field.fieldName }}}
-								{%- if field.isListType %}
-								list
-								{%- endif %}
-								readonly
-								errors={errors[row]?.iterms?.{{ field.fieldName }}}
-							/>
-							{%- else %}
-							<ObjectTd name="{{ field.fieldName }}" errors={errors[row]?.iterms?.{{ field.fieldName }}} path="_/{{ field.fieldName | paramCase }}" on:gotoField />
-							{%- endif %}
-							{%- endif %}
-							{%- endif %}
-							{%- endfor %}
-							{%- endif %}
-							<th class="z-10 w-24">
-								<div class="flex space-x-1">
-									<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.editBtn()}>
-										<button
-											class="btn btn-square btn-ghost btn-xs"
-											on:click|preventDefault={(e) => {
-												dispatch('edit', { row });
-											}}
-										>
-											<Icon src={PencilSquare} solid />
-										</button>
-									</div>
-									<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.removeBtn()}>
-										<button
-											class="btn btn-square btn-ghost btn-xs"
-											on:click|preventDefault={(e) => {
-												messageBoxs.open({
-													title: $LL.web.components.table.removeModalTitle(),
-													buttonName: $LL.web.components.table.removeBtn(),
-													buttonType: 'error',
-													confirm: () => {
-														removeRow(row);
-														return true;
-													}
-												});
-											}}
-										>
-											<Icon src={Trash} solid />
-										</button>
-									</div>
+						{%- else %}
+						<ObjectTd name="{{ field.fieldName }}" errors={errors[row]?.iterms?.{{ field.fieldName }}} path="_/{{ field.fieldName | paramCase }}" on:gotoField />
+						{%- endif %}
+						{%- endif %}
+						{%- endif %}
+						{%- endfor %}
+						{%- endif %}
+						<th class="z-20 w-24">
+							<div class="flex space-x-1">
+								<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.editBtn()}>
+									<button
+										class="btn btn-square btn-ghost btn-xs"
+										on:click|preventDefault={(e) => {
+											dispatch('edit', { row });
+										}}
+									>
+										<Icon src={PencilSquare} solid />
+									</button>
 								</div>
-							</th>
-						</tr>
-					{/if}
-				{/each}
-			{:else}
-				<TableEmpty cols={% raw %}{{% endraw %}{{cols}} + 2}/>
-			{/if}
-		</tbody>
-	</Table>
-</Card>
+								<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.removeBtn()}>
+									<button
+										class="btn btn-square btn-ghost btn-xs"
+										on:click|preventDefault={(e) => {
+											messageBoxs.open({
+												title: $LL.web.components.table.removeModalTitle(),
+												buttonName: $LL.web.components.table.removeBtn(),
+												buttonType: 'error',
+												confirm: () => {
+													removeRow(row);
+													return true;
+												}
+											});
+										}}
+									>
+										<Icon src={Trash} solid />
+									</button>
+								</div>
+							</div>
+						</th>
+					</tr>
+				{/if}
+			{/each}
+		{:else}
+			<TableEmpty cols={% raw %}{{% endraw %}{{cols}} + 2}/>
+		{/if}
+	</tbody>
+</Table>

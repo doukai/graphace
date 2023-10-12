@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
+	import { Card } from '@graphace/ui/components/card';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
@@ -49,12 +50,14 @@
 	};
 </script>
 
-<RealmForm
-	showBackButton={$canBack}
-	{node}
-	{errors}
-	isFetching={$Query_realm.fetching}
-	on:mutation={mutation}
-	on:back={back}
-	on:gotoField={gotoField}
-/>
+<Card>
+	<RealmForm
+		showBackButton={$canBack}
+		{node}
+		{errors}
+		isFetching={$Query_realm.fetching}
+		on:mutation={mutation}
+		on:back={back}
+		on:gotoField={gotoField}
+	/>
+</Card>

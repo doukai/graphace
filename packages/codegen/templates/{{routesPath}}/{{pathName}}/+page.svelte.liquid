@@ -2,6 +2,7 @@
 	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
+	import { Card } from '@graphace/ui/components/card';
 	{%- if connectionField %}
 	import {{ name }}ConnectionTable from '~/{{ tablePath }}/{{ name | paramCase }}/{{ name }}ConnectionTable.svelte';
 	{%- else %}
@@ -100,31 +101,33 @@
 	};
 </script>
 
-{%- if connectionField %}
-<{{ name }}ConnectionTable
-	showSaveButton={false}
-	showBackButton={$canBack}
-	{nodes}
-	{totalCount}
-	{errors}
-	isFetching={$Query_{{ name | camelCase }}Connection.fetching}
-	on:fetch={fetch}
-	on:mutation={mutation}
-	on:edit={edit}
-	on:create={create}
-	on:gotoField={gotoField}
-/>
-{%- else %}
-<{{ name }}Table
-	showSaveButton={false}
-	showBackButton={$canBack}
-	{nodes}
-	{errors}
-	isFetching={$Query_{{ name | camelCase }}List.fetching}
-	on:fetch={fetch}
-	on:mutation={mutation}
-	on:edit={edit}
-	on:create={create}
-	on:gotoField={gotoField}
-/>
-{%- endif %}
+<Card>
+	{%- if connectionField %}
+	<{{ name }}ConnectionTable
+		showSaveButton={false}
+		showBackButton={$canBack}
+		{nodes}
+		{totalCount}
+		{errors}
+		isFetching={$Query_{{ name | camelCase }}Connection.fetching}
+		on:fetch={fetch}
+		on:mutation={mutation}
+		on:edit={edit}
+		on:create={create}
+		on:gotoField={gotoField}
+	/>
+	{%- else %}
+	<{{ name }}Table
+		showSaveButton={false}
+		showBackButton={$canBack}
+		{nodes}
+		{errors}
+		isFetching={$Query_{{ name | camelCase }}List.fetching}
+		on:fetch={fetch}
+		on:mutation={mutation}
+		on:edit={edit}
+		on:create={create}
+		on:gotoField={gotoField}
+	/>
+	{%- endif %}
+</Card>

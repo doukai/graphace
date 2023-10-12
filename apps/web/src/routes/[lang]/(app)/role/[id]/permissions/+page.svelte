@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
+	import { Card } from '@graphace/ui/components/card';
 	import PermissionFieldSelectTable from '~/lib/components/objects/permission/PermissionFieldSelectTable.svelte';
 	import PermissionTypeMenuCard from '~/lib/components/objects/permission/PermissionTypeMenuCard.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
@@ -80,16 +81,18 @@
 		<PermissionTypeMenuCard bind:activeTypeName={typeName} />
 	</div>
 	<div class="w-full xl:basis-5/6">
-		<PermissionFieldSelectTable
-			showBackButton={$canBack}
-			bind:roleId={id}
-			bind:typeName
-			on:parentMutation={parentMutation}
-			on:edit={edit}
-			on:create={create}
-			on:gotoField={gotoField}
-			on:gotoSelect={gotoSelect}
-			on:back={back}
-		/>
+		<Card>
+			<PermissionFieldSelectTable
+				showBackButton={$canBack}
+				bind:roleId={id}
+				bind:typeName
+				on:parentMutation={parentMutation}
+				on:edit={edit}
+				on:create={create}
+				on:gotoField={gotoField}
+				on:gotoSelect={gotoSelect}
+				on:back={back}
+			/>
+		</Card>
 	</div>
 </div>

@@ -2,6 +2,7 @@
 	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
+	import { Card } from '@graphace/ui/components/card';
 	import PermissionConnectionTable from '~/lib/components/objects/permission/PermissionConnectionTable.svelte';
 	import PermissionTypeMenuCard from '~/lib/components/objects/permission/PermissionTypeMenuCard.svelte';
 	import type {
@@ -93,19 +94,21 @@
 		<PermissionTypeMenuCard bind:activeTypeName={typeName} />
 	</div>
 	<div class="w-full xl:basis-5/6">
-		<PermissionConnectionTable
-			showSaveButton={false}
-			showBackButton={$canBack}
-			bind:typeName
-			{nodes}
-			{totalCount}
-			{errors}
-			isFetching={$Query_permissionConnection.fetching}
-			on:fetch={fetch}
-			on:mutation={mutation}
-			on:edit={edit}
-			on:create={create}
-			on:gotoField={gotoField}
-		/>
+		<Card>
+			<PermissionConnectionTable
+				showSaveButton={false}
+				showBackButton={$canBack}
+				bind:typeName
+				{nodes}
+				{totalCount}
+				{errors}
+				isFetching={$Query_permissionConnection.fetching}
+				on:fetch={fetch}
+				on:mutation={mutation}
+				on:edit={edit}
+				on:create={create}
+				on:gotoField={gotoField}
+			/>
+		</Card>
 	</div>
 </div>

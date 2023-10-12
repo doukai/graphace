@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
+	import { Card } from '@graphace/ui/components/card';
 	import UserForm from '~/lib/components/objects/user/UserForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
@@ -49,12 +50,14 @@
 	};
 </script>
 
-<UserForm
-	showBackButton={$canBack}
-	{node}
-	{errors}
-	isFetching={$Query_user.fetching}
-	on:mutation={mutation}
-	on:back={back}
-	on:gotoField={gotoField}
-/>
+<Card>
+	<UserForm
+		showBackButton={$canBack}
+		{node}
+		{errors}
+		isFetching={$Query_user.fetching}
+		on:mutation={mutation}
+		on:back={back}
+		on:gotoField={gotoField}
+	/>
+</Card>

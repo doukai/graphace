@@ -2,6 +2,7 @@
 	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
+	import { Card } from '@graphace/ui/components/card';
 	import GroupConnectionTable from '~/lib/components/objects/group/GroupConnectionTable.svelte';
 	import type { Group, QueryGroupConnectionArgs, MutationGroupArgs } from '~/lib/types/schema';
 	import { Query_groupConnectionStore, Mutation_groupStore } from '$houdini';
@@ -78,16 +79,19 @@
 		to(`./group/${event.detail.path}`);
 	};
 </script>
-<GroupConnectionTable
-	showSaveButton={false}
-	showBackButton={$canBack}
-	{nodes}
-	{totalCount}
-	{errors}
-	isFetching={$Query_groupConnection.fetching}
-	on:fetch={fetch}
-	on:mutation={mutation}
-	on:edit={edit}
-	on:create={create}
-	on:gotoField={gotoField}
-/>
+
+<Card>
+	<GroupConnectionTable
+		showSaveButton={false}
+		showBackButton={$canBack}
+		{nodes}
+		{totalCount}
+		{errors}
+		isFetching={$Query_groupConnection.fetching}
+		on:fetch={fetch}
+		on:mutation={mutation}
+		on:edit={edit}
+		on:create={create}
+		on:gotoField={gotoField}
+	/>
+</Card>

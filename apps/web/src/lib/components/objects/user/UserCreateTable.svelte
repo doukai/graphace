@@ -2,7 +2,6 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
 	import { ObjectTd, StringTh, StringTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
-	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableEmpty } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -42,150 +41,146 @@
 	};
 </script>
 
-<Card>
-	<TableHead
-		title={$LL.graphql.objects.User.name()}
-		showRemoveButton={showRemoveButton && selectedRowList.length > 0}
-		{showSaveButton}
-		{showBackButton}
-		{showGotoSelectButton}
-		showSearchInput={false}
-		on:create
-		on:save={() => dispatch('save', { nodes })}
-		on:remove={() => {
-			messageBoxs.open({
-				title: $LL.web.components.table.removeModalTitle(),
-				buttonName: $LL.web.components.table.removeBtn(),
-				buttonType: 'error',
-				confirm: () => {
-					removeRows();
-					return true;
-				}
-			});
-		}}
-		on:gotoSelect
-		on:back
-	/>
-	<div class="divider" />
-	<Table>
-		<thead>
-			<tr>
-				<th class="z-10 w-12">
-					<label>
-						<input
-							type="checkbox"
-							class="checkbox"
-							bind:checked={selectAll}
-							on:change={() => {
-								if (nodes && nodes.length > 0) {
-									selectedRowList = selectAll ? nodes.map((node) => nodes?.indexOf(node)) : [];
-								}
-							}}
+<TableHead
+	title={$LL.graphql.objects.User.name()}
+	showRemoveButton={showRemoveButton && selectedRowList.length > 0}
+	{showSaveButton}
+	{showBackButton}
+	{showGotoSelectButton}
+	showSearchInput={false}
+	on:create
+	on:save={() => dispatch('save', { nodes })}
+	on:remove={() => {
+		messageBoxs.open({
+			title: $LL.web.components.table.removeModalTitle(),
+			buttonName: $LL.web.components.table.removeBtn(),
+			buttonType: 'error',
+			confirm: () => {
+				removeRows();
+				return true;
+			}
+		});
+	}}
+	on:gotoSelect
+	on:back
+/>
+<div class="divider" />
+<Table>
+	<thead>
+		<tr>
+			<th class="z-20 w-12">
+				<label>
+					<input
+						type="checkbox"
+						class="checkbox"
+						bind:checked={selectAll}
+						on:change={() => {
+							if (nodes && nodes.length > 0) {
+								selectedRowList = selectAll ? nodes.map((node) => nodes?.indexOf(node)) : [];
+							}
+						}}
+					/>
+				</label>
+			</th>
+			<td>{$LL.graphql.objects.User.fields.name.name()}</td>
+			<td>{$LL.graphql.objects.User.fields.lastName.name()}</td>
+			<td>{$LL.graphql.objects.User.fields.login.name()}</td>
+			<td>{$LL.graphql.objects.User.fields.email.name()}</td>
+			<td>{$LL.graphql.objects.User.fields.phones.name()}</td>
+			<td>{$LL.graphql.objects.User.fields.disable.name()}</td>
+			<td>{$LL.graphql.objects.User.fields.groups.name()}</td>
+			<td>{$LL.graphql.objects.User.fields.roles.name()}</td>
+			<td>{$LL.graphql.objects.User.fields.realm.name()}</td>
+			<th />
+		</tr>
+	</thead>
+	<tbody>
+		{#if nodes && nodes.length > 0}
+			{#each nodes as node, row}
+				{#if node}
+					<tr class="hover">
+						<th class="z-20 w-12">
+							<label>
+								<input type="checkbox" class="checkbox" bind:group={selectedRowList} value={row} />
+							</label>
+						</th>
+						<StringTd
+							name="name"
+							bind:value={node.name}
+							readonly
+							errors={errors[row]?.iterms?.name}
 						/>
-					</label>
-				</th>
-				<td>{$LL.graphql.objects.User.fields.name.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.lastName.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.login.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.email.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.phones.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.disable.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.groups.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.roles.name()}</td>
-				<td>{$LL.graphql.objects.User.fields.realm.name()}</td>
-				<th />
-			</tr>
-		</thead>
-		<tbody>
-			{#if nodes && nodes.length > 0}
-				{#each nodes as node, row}
-					{#if node}
-						<tr class="hover">
-							<th class="z-10 w-12">
-								<label>
-									<input type="checkbox" class="checkbox" bind:group={selectedRowList} value={row} />
-								</label>
-							</th>
-							<StringTd
-								name="name"
-								bind:value={node.name}
-								readonly
-								errors={errors[row]?.iterms?.name}
-							/>
-							<StringTd
-								name="lastName"
-								bind:value={node.lastName}
-								readonly
-								errors={errors[row]?.iterms?.lastName}
-							/>
-							<StringTd
-								name="login"
-								bind:value={node.login}
-								readonly
-								errors={errors[row]?.iterms?.login}
-							/>
-							<StringTd
-								name="email"
-								bind:value={node.email}
-								readonly
-								errors={errors[row]?.iterms?.email}
-							/>
-							<StringTd
-								name="phones"
-								bind:value={node.phones}
-								list
-								readonly
-								errors={errors[row]?.iterms?.phones}
-							/>
-							<BooleanTd
-								name="disable"
-								bind:value={node.disable}
-								readonly
-								errors={errors[row]?.iterms?.disable}
-							/>
-							<ObjectTd name="groups" errors={errors[row]?.iterms?.groups} path="_/groups" on:gotoField />
-							<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
-							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
-							<th class="z-10 w-24">
-								<div class="flex space-x-1">
-									<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
-										<button
-											class="btn btn-square btn-ghost btn-xs"
-											on:click={(e) => {
-												e.preventDefault();
-												dispatch('edit', { row });
-											}}
-										>
-											<Icon src={PencilSquare} solid />
-										</button>
-									</div>
-									<div class="tooltip" data-tip={$LL.web.components.table.removeBtn()}>
-										<button
-											class="btn btn-square btn-ghost btn-xs"
-											on:click={(e) => {
-												e.preventDefault();
-												messageBoxs.open({
-													title: $LL.web.components.table.removeModalTitle(),
-													buttonName: $LL.web.components.table.removeBtn(),
-													buttonType: 'error',
-													confirm: () => {
-														removeRow(row);
-														return true;
-													}
-												});
-											}}
-										>
-											<Icon src={Trash} solid />
-										</button>
-									</div>
+						<StringTd
+							name="lastName"
+							bind:value={node.lastName}
+							readonly
+							errors={errors[row]?.iterms?.lastName}
+						/>
+						<StringTd
+							name="login"
+							bind:value={node.login}
+							readonly
+							errors={errors[row]?.iterms?.login}
+						/>
+						<StringTd
+							name="email"
+							bind:value={node.email}
+							readonly
+							errors={errors[row]?.iterms?.email}
+						/>
+						<StringTd
+							name="phones"
+							bind:value={node.phones}
+							list
+							readonly
+							errors={errors[row]?.iterms?.phones}
+						/>
+						<BooleanTd
+							name="disable"
+							bind:value={node.disable}
+							readonly
+							errors={errors[row]?.iterms?.disable}
+						/>
+						<ObjectTd name="groups" errors={errors[row]?.iterms?.groups} path="_/groups" on:gotoField />
+						<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
+						<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
+						<th class="z-20 w-24">
+							<div class="flex space-x-1">
+								<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.editBtn()}>
+									<button
+										class="btn btn-square btn-ghost btn-xs"
+										on:click|preventDefault={(e) => {
+											dispatch('edit', { row });
+										}}
+									>
+										<Icon src={PencilSquare} solid />
+									</button>
 								</div>
-							</th>
-						</tr>
-					{/if}
-				{/each}
-			{:else}
-				<TableEmpty cols={9 + 2}/>
-			{/if}
-		</tbody>
-	</Table>
-</Card>
+								<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.removeBtn()}>
+									<button
+										class="btn btn-square btn-ghost btn-xs"
+										on:click|preventDefault={(e) => {
+											messageBoxs.open({
+												title: $LL.web.components.table.removeModalTitle(),
+												buttonName: $LL.web.components.table.removeBtn(),
+												buttonType: 'error',
+												confirm: () => {
+													removeRow(row);
+													return true;
+												}
+											});
+										}}
+									>
+										<Icon src={Trash} solid />
+									</button>
+								</div>
+							</div>
+						</th>
+					</tr>
+				{/if}
+			{/each}
+		{:else}
+			<TableEmpty cols={9 + 2}/>
+		{/if}
+	</tbody>
+</Table>

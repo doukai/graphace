@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ot, to, canBack, urlName } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
+	import { Card } from '@graphace/ui/components/card';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
 	import RealmCreateForm from '~/lib/components/objects/realm/RealmCreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
@@ -93,30 +94,32 @@
 	};
 </script>
 
-{#if node}
-	<RealmForm
-		showGotoSelectButton={true}
-		{node}
-		{errors}
-		showRemoveButton={false}
-		showUnbindButton={true}
-		showBackButton={$canBack}
-		isFetching={$Query_permission_realm.fetching}
-		on:mutation={mutation}
-		on:parentMutation={parentMutation}
-		on:gotoField={gotoField}
-		on:gotoSelect={gotoSelect}
-		on:back={back}
-	/>
-{:else}
-	<RealmCreateForm
-		showGotoSelectButton={true}
-		showBackButton={$canBack}
-		node={createNode}
-		{errors}
-		on:mutation={parentMutation}
-		on:gotoField={gotoField}
-		on:gotoSelect={gotoSelect}
-		on:back={back}
-	/>
-{/if}
+<Card>
+	{#if node}
+		<RealmForm
+			showGotoSelectButton={true}
+			{node}
+			{errors}
+			showRemoveButton={false}
+			showUnbindButton={true}
+			showBackButton={$canBack}
+			isFetching={$Query_permission_realm.fetching}
+			on:mutation={mutation}
+			on:parentMutation={parentMutation}
+			on:gotoField={gotoField}
+			on:gotoSelect={gotoSelect}
+			on:back={back}
+		/>
+	{:else}
+		<RealmCreateForm
+			showGotoSelectButton={true}
+			showBackButton={$canBack}
+			node={createNode}
+			{errors}
+			on:mutation={parentMutation}
+			on:gotoField={gotoField}
+			on:gotoSelect={gotoSelect}
+			on:back={back}
+		/>
+	{/if}
+</Card>

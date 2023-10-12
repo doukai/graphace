@@ -12,21 +12,21 @@ directive @delete(if: Boolean = false) on FIELD
 
 directive @denyAll on FIELD | OBJECT
 
-directive @fetch(anchor: Boolean, from: String!, protocol: Protocol, to: String, with: MapWith) on FIELD_DEFINITION
+directive @fetch(anchor: Boolean, from: String!, protocol: Protocol, to: String, with: With) on FIELD_DEFINITION
 
 directive @format(locale: String, value: String) on FIELD | FIELD_DEFINITION
 
-directive @func(field: String, name: Function) on FIELD_DEFINITION
+directive @func(field: String, name: Func) on FIELD_DEFINITION
 
-directive @implementInputs(inputs: [String]) on INPUT_OBJECT
+directive @implements(interfaces: [String]) on INPUT_OBJECT | OBJECT
 
-directive @inputInterface on INPUT_OBJECT
+directive @interface on INPUT_OBJECT | OBJECT
 
 directive @invoke(className: String, methodName: String, parameters: [InvokeParameter], returnClassName: String) on FIELD_DEFINITION | INPUT_OBJECT | MUTATION | QUERY | SUBSCRIPTION
 
 directive @invokes(list: [Invoke]) on FIELD_DEFINITION | INPUT_OBJECT | MUTATION | QUERY | SUBSCRIPTION
 
-directive @map(anchor: Boolean, from: String!, to: String, with: MapWith) on FIELD_DEFINITION
+directive @map(anchor: Boolean, from: String!, to: String, with: With) on FIELD_DEFINITION
 
 directive @mergeToList(arguments: [String]) on FIELD
 
@@ -37,8 +37,6 @@ directive @permitAll on FIELD | OBJECT
 directive @rolesAllowed(roles: [String]) on FIELD | OBJECT
 
 directive @table(engine: String) on OBJECT
-
-directive @update(if: Boolean = false) on FIELD
 
 directive @validation(allOf: [ValidationInput], anyOf: [ValidationInput], const: String, contentEncoding: String, contentMediaType: String, dependentRequired: [Property], else: ValidationInput, enum: [String], exclusiveMaximum: Float, exclusiveMinimum: Float, format: String, if: ValidationInput, items: ValidationInput, maxItems: Int, maxLength: Int, maximum: Float, minItems: Int, minLength: Int, minimum: Float, multipleOf: Float, not: ValidationInput, oneOf: [ValidationInput], pattern: String, properties: [Property], then: ValidationInput, uniqueItems: Boolean) on FIELD_DEFINITION | INPUT_FIELD_DEFINITION | INPUT_OBJECT | OBJECT
 
@@ -85,7 +83,7 @@ input FloatExpression {
   val: Float
 }
 
-enum Function {
+enum Func {
   AVG
   COUNT
   MAX
@@ -93,10 +91,10 @@ enum Function {
   SUM
 }
 
-input FunctionExpression {
-  in: [Function]
+input FuncExpression {
+  in: [Func]
   opr: Operator = EQ
-  val: Function
+  val: Func
 }
 
 type Group implements Meta {
@@ -747,12 +745,6 @@ input Invoke {
 input InvokeParameter {
   className: String
   name: String
-}
-
-input MapWith {
-  from: String
-  to: String
-  type: String
 }
 
 interface Meta {
@@ -3604,4 +3596,10 @@ input ValidationInput {
   properties: [Property]
   then: ValidationInput
   uniqueItems: Boolean
+}
+
+input With {
+  from: String
+  to: String
+  type: String
 }

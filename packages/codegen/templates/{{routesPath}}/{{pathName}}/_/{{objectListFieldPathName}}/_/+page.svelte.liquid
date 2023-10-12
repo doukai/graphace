@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
+	import { Card } from '@graphace/ui/components/card';
 	import {{ objectFieldTypeName }}CreateForm from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { {{ mutationTypeName }}{{ objectFieldTypeName }}Args, {{ objectFieldTypeName }} } from '~/lib/types/schema';
@@ -43,4 +44,6 @@
 	};
 </script>
 
-<{{ objectFieldTypeName }}CreateForm showBackButton={$canBack} {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+<Card>
+	<{{ objectFieldTypeName }}CreateForm showBackButton={$canBack} {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+</Card>

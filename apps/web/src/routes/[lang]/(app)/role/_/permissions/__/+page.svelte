@@ -2,6 +2,7 @@
 	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
+	import { Card } from '@graphace/ui/components/card';
 	import PermissionSelectConnectionTable from '~/lib/components/objects/permission/PermissionSelectConnectionTable.svelte';
 	import type { Permission, QueryPermissionConnectionArgs, MutationPermissionArgs } from '~/lib/types/schema';
 	import { Query_permissionConnectionStore, Mutation_permissionStore } from '$houdini';
@@ -86,14 +87,17 @@
 		});
 	};
 </script>
-<PermissionSelectConnectionTable
-	showBackButton={$canBack}
-	{nodes}
-	{totalCount}
-	{errors}
-	isFetching={$Query_permissionConnection.fetching}
-	on:fetch={fetch}
-	on:mutation={mutation}
-	on:select={select}
-	on:back={back}
-/>
+
+<Card>
+	<PermissionSelectConnectionTable
+		showBackButton={$canBack}
+		{nodes}
+		{totalCount}
+		{errors}
+		isFetching={$Query_permissionConnection.fetching}
+		on:fetch={fetch}
+		on:mutation={mutation}
+		on:select={select}
+		on:back={back}
+	/>
+</Card>

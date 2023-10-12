@@ -2,6 +2,7 @@
 	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
+	import { Card } from '@graphace/ui/components/card';
 	import RealmConnectionTable from '~/lib/components/objects/realm/RealmConnectionTable.svelte';
 	import type { Realm, QueryRealmConnectionArgs, MutationRealmArgs } from '~/lib/types/schema';
 	import { Query_realmConnectionStore, Mutation_realmStore } from '$houdini';
@@ -78,16 +79,19 @@
 		to(`./realm/${event.detail.path}`);
 	};
 </script>
-<RealmConnectionTable
-	showSaveButton={false}
-	showBackButton={$canBack}
-	{nodes}
-	{totalCount}
-	{errors}
-	isFetching={$Query_realmConnection.fetching}
-	on:fetch={fetch}
-	on:mutation={mutation}
-	on:edit={edit}
-	on:create={create}
-	on:gotoField={gotoField}
-/>
+
+<Card>
+	<RealmConnectionTable
+		showSaveButton={false}
+		showBackButton={$canBack}
+		{nodes}
+		{totalCount}
+		{errors}
+		isFetching={$Query_realmConnection.fetching}
+		on:fetch={fetch}
+		on:mutation={mutation}
+		on:edit={edit}
+		on:create={create}
+		on:gotoField={gotoField}
+	/>
+</Card>

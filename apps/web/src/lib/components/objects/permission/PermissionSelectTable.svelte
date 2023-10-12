@@ -4,7 +4,6 @@
 	import { IDTh, IDTd, StringTh, StringTd } from '@graphace/ui-graphql/components/table';
 	import PermissionTypeTh from '~/lib/components/enums/permission-type/PermissionTypeTh.svelte';
 	import PermissionTypeTd from '~/lib/components/enums/permission-type/PermissionTypeTd.svelte';
-	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -118,165 +117,162 @@
 	}
 </script>
 
-<Card>
-	<TableHead
-		title={$LL.graphql.objects.Permission.name()}
-		showCreateButton={false}
-		showSaveButton={false}
-		showRemoveButton={false}
-		{showSelectButton}
-		{showBackButton}
-		on:search={(e) => search(e.detail.value)}
-		on:select={() =>
-			dispatch('select', {
-				selected: Array.isArray(selectedIdList)
-					? selectedIdList.flatMap(id => nodes?.find(node => node?.name == id)).map((node) => ({ ...node, where: { name: { val: node?.name } } }))
-					: { ...nodes?.find(node => node?.name == selectedIdList), where: { name: { val: selectedIdList } } },
-				then: () => {
-					notifications.success($LL.web.message.saveSuccess());
-					dispatch('back');
-				},
-				catch: (errors) => {
-					console.error(errors);
-					notifications.error($LL.web.message.saveFailed());
-				}
-			})}
-		on:back
-	/>
-	<div class="divider" />
-	<Table>
-		<thead>
-			<tr class="z-20">
-				<th class="w-12">
-					{#if multipleSelect}
-						<label>
-							<input
-								type="checkbox"
-								class="checkbox"
-								bind:checked={selectAll}
-								on:change={() => {
-									if (nodes && nodes.length > 0) {
-										selectedIdList = selectAll ? nodes.map((node) => node?.name) : [];
-									}
-								}}
-							/>
-						</label>
-					{/if}
-				</th>
-				<IDTh
-					name={$LL.graphql.objects.Permission.fields.name.name()}
-					bind:expression={args.name}
-					bind:sort={orderBy.name}
-					on:filter={query}
-				/>
-				<StringTh
-					name={$LL.graphql.objects.Permission.fields.field.name()}
-					bind:expression={args.field}
-					bind:sort={orderBy.field}
-					on:filter={query}
-				/>
-				<StringTh
-					name={$LL.graphql.objects.Permission.fields.type.name()}
-					bind:expression={args.type}
-					bind:sort={orderBy.type}
-					on:filter={query}
-				/>
-				<PermissionTypeTh
-					name={$LL.graphql.objects.Permission.fields.permissionType.name()}
-					bind:expression={args.permissionType}
-					bind:sort={orderBy.permissionType}
-					on:filter={query}
-				/>
-				<StringTh
-					name={$LL.graphql.objects.Permission.fields.description.name()}
-					bind:expression={args.description}
-					bind:sort={orderBy.description}
-					on:filter={query}
-				/>
-				<th />
-			</tr>
-		</thead>
-		{#if isFetching}
-			<TableLoading rows={10} cols={7 + 2}/>
-		{:else}
-			<tbody>
-				{#if nodes && nodes.length > 0}
-					{#each nodes as node, row}
-						{#if node && node.name}
-							<tr class="hover">
-								<th class="z-10 w-12">
-									<label>
-										{#if multipleSelect}
-											<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.name} />
-										{:else}
-											<input type="radio" class="radio" bind:group={selectedIdList} value={node.name} />
-										{/if}
-									</label>
-								</th>
-								<IDTd
-									name="name"
-									bind:value={node.name}
-									readonly
-									errors={errors[row]?.iterms?.name}
-								/>
-								<StringTd
-									name="field"
-									bind:value={node.field}
-									on:save={() => updateField({ field: node?.field, where: { name: { val: node?.name } } })}
-									errors={errors[row]?.iterms?.field}
-								/>
-								<StringTd
-									name="type"
-									bind:value={node.type}
-									on:save={() => updateField({ type: node?.type, where: { name: { val: node?.name } } })}
-									errors={errors[row]?.iterms?.type}
-								/>
-								<PermissionTypeTd
-									name="permissionType"
-									bind:value={node.permissionType}
-									on:save={() => updateField({ permissionType: node?.permissionType, where: { name: { val: node?.name } } })}
-									errors={errors[row]?.iterms?.permissionType}
-								/>
-								<StringTd
-									name="description"
-									bind:value={node.description}
-									on:save={() => updateField({ description: node?.description, where: { name: { val: node?.name } } })}
-									errors={errors[row]?.iterms?.description}
-								/>
-								<th class="z-10 w-12">
-									<div class="flex space-x-1">
-										<div class="tooltip" data-tip={$LL.web.components.table.selectBtn()}>
-											<button
-												class="btn btn-square btn-ghost btn-xs"
-												on:click={(e) => {
-													e.preventDefault();
-													if (node && node.name) {
-														dispatch('select', {
-															selected: multipleSelect ? [{ ...node, where: { name: { val: node.name } } }] : { ...node, where: { name: { val: node.name } } },
-															then: () => {
-																notifications.success($LL.web.message.saveSuccess());
-																dispatch('back');
-															},
-															catch: (errors) => {
-																console.error(errors);
-																notifications.error($LL.web.message.saveFailed());
-															}
-														});
-													}
-												}}
-											>
-												<Icon src={ArchiveBoxArrowDown} solid />
-											</button>
-										</div>
-									</div>
-								</th>
-							</tr>
-						{/if}
-					{/each}
-				{:else}
-					<TableEmpty cols={7 + 2}/>
+<TableHead
+	title={$LL.graphql.objects.Permission.name()}
+	showCreateButton={false}
+	showSaveButton={false}
+	showRemoveButton={false}
+	{showSelectButton}
+	{showBackButton}
+	on:search={(e) => search(e.detail.value)}
+	on:select={() =>
+		dispatch('select', {
+			selected: Array.isArray(selectedIdList)
+				? selectedIdList.flatMap(id => nodes?.find(node => node?.name == id)).map((node) => ({ ...node, where: { name: { val: node?.name } } }))
+				: { ...nodes?.find(node => node?.name == selectedIdList), where: { name: { val: selectedIdList } } },
+			then: () => {
+				notifications.success($LL.web.message.saveSuccess());
+				dispatch('back');
+			},
+			catch: (errors) => {
+				console.error(errors);
+				notifications.error($LL.web.message.saveFailed());
+			}
+		})}
+	on:back
+/>
+<div class="divider" />
+<Table>
+	<thead>
+		<tr class="z-20">
+			<th class="w-12">
+				{#if multipleSelect}
+					<label>
+						<input
+							type="checkbox"
+							class="checkbox"
+							bind:checked={selectAll}
+							on:change={() => {
+								if (nodes && nodes.length > 0) {
+									selectedIdList = selectAll ? nodes.map((node) => node?.name) : [];
+								}
+							}}
+						/>
+					</label>
 				{/if}
-			</tbody>
-		{/if}
-	</Table>
-</Card>
+			</th>
+			<IDTh
+				name={$LL.graphql.objects.Permission.fields.name.name()}
+				bind:expression={args.name}
+				bind:sort={orderBy.name}
+				on:filter={query}
+			/>
+			<StringTh
+				name={$LL.graphql.objects.Permission.fields.field.name()}
+				bind:expression={args.field}
+				bind:sort={orderBy.field}
+				on:filter={query}
+			/>
+			<StringTh
+				name={$LL.graphql.objects.Permission.fields.type.name()}
+				bind:expression={args.type}
+				bind:sort={orderBy.type}
+				on:filter={query}
+			/>
+			<PermissionTypeTh
+				name={$LL.graphql.objects.Permission.fields.permissionType.name()}
+				bind:expression={args.permissionType}
+				bind:sort={orderBy.permissionType}
+				on:filter={query}
+			/>
+			<StringTh
+				name={$LL.graphql.objects.Permission.fields.description.name()}
+				bind:expression={args.description}
+				bind:sort={orderBy.description}
+				on:filter={query}
+			/>
+			<th />
+		</tr>
+	</thead>
+	{#if isFetching}
+		<TableLoading rows={10} cols={7 + 2}/>
+	{:else}
+		<tbody>
+			{#if nodes && nodes.length > 0}
+				{#each nodes as node, row}
+					{#if node && node.name}
+						<tr class="hover">
+							<th class="z-20 w-12">
+								<label>
+									{#if multipleSelect}
+										<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.name} />
+									{:else}
+										<input type="radio" class="radio" bind:group={selectedIdList} value={node.name} />
+									{/if}
+								</label>
+							</th>
+							<IDTd
+								name="name"
+								bind:value={node.name}
+								readonly
+								errors={errors[row]?.iterms?.name}
+							/>
+							<StringTd
+								name="field"
+								bind:value={node.field}
+								on:save={() => updateField({ field: node?.field, where: { name: { val: node?.name } } })}
+								errors={errors[row]?.iterms?.field}
+							/>
+							<StringTd
+								name="type"
+								bind:value={node.type}
+								on:save={() => updateField({ type: node?.type, where: { name: { val: node?.name } } })}
+								errors={errors[row]?.iterms?.type}
+							/>
+							<PermissionTypeTd
+								name="permissionType"
+								bind:value={node.permissionType}
+								on:save={() => updateField({ permissionType: node?.permissionType, where: { name: { val: node?.name } } })}
+								errors={errors[row]?.iterms?.permissionType}
+							/>
+							<StringTd
+								name="description"
+								bind:value={node.description}
+								on:save={() => updateField({ description: node?.description, where: { name: { val: node?.name } } })}
+								errors={errors[row]?.iterms?.description}
+							/>
+							<th class="z-20 w-12">
+								<div class="flex space-x-1">
+									<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.selectBtn()}>
+										<button
+											class="btn btn-square btn-ghost btn-xs"
+											on:click|preventDefault={(e) => {
+												if (node && node.name) {
+													dispatch('select', {
+														selected: multipleSelect ? [{ ...node, where: { name: { val: node.name } } }] : { ...node, where: { name: { val: node.name } } },
+														then: () => {
+															notifications.success($LL.web.message.saveSuccess());
+															dispatch('back');
+														},
+														catch: (errors) => {
+															console.error(errors);
+															notifications.error($LL.web.message.saveFailed());
+														}
+													});
+												}
+											}}
+										>
+											<Icon src={ArchiveBoxArrowDown} solid />
+										</button>
+									</div>
+								</div>
+							</th>
+						</tr>
+					{/if}
+				{/each}
+			{:else}
+				<TableEmpty cols={7 + 2}/>
+			{/if}
+		</tbody>
+	{/if}
+</Table>

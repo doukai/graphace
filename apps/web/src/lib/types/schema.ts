@@ -53,17 +53,17 @@ export type FloatExpression = {
   skipNull?: InputMaybe<Scalars['Boolean']>;
 };
 
-export type Function =
+export type Func =
   | 'COUNT'
   | 'MAX'
   | 'MIN'
   | 'SUM'
   | 'AVG';
 
-export type FunctionExpression = {
+export type FuncExpression = {
   opr?: InputMaybe<Operator>;
-  val?: InputMaybe<Function>;
-  in?: InputMaybe<Array<InputMaybe<Function>>>;
+  val?: InputMaybe<Func>;
+  in?: InputMaybe<Array<InputMaybe<Func>>>;
 };
 
 export type Group = Meta & {
@@ -720,6 +720,7 @@ export type GroupQueryArguments = {
   parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
 };
@@ -1015,6 +1016,7 @@ export type GroupRoleQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupRoleExpression>>>;
 };
@@ -1033,6 +1035,7 @@ export type GroupRoleSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupRoleExpression>>>;
 };
@@ -1058,6 +1061,7 @@ export type GroupSubscriptionArguments = {
   parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
 };
@@ -1086,12 +1090,6 @@ export type Invoke = {
 export type InvokeParameter = {
   name?: InputMaybe<Scalars['String']>;
   className?: InputMaybe<Scalars['String']>;
-};
-
-export type MapWith = {
-  type?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['String']>;
-  to?: InputMaybe<Scalars['String']>;
 };
 
 export type Meta = {
@@ -2070,6 +2068,7 @@ export type PermissionQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
   rolePermission?: InputMaybe<RolePermissionExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
 };
@@ -2091,6 +2090,7 @@ export type PermissionSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
   rolePermission?: InputMaybe<RolePermissionExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
 };
@@ -2195,6 +2195,7 @@ export type QueryUserArgs = {
   userPhones?: InputMaybe<UserPhonesExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   userRole?: InputMaybe<UserRoleExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
 };
@@ -2293,6 +2294,7 @@ export type QueryRoleArgs = {
   groupRole?: InputMaybe<GroupRoleExpression>;
   roleComposite?: InputMaybe<RoleCompositeExpression>;
   rolePermission?: InputMaybe<RolePermissionExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
 };
@@ -2385,6 +2387,7 @@ export type QueryGroupArgs = {
   parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
 };
@@ -2467,6 +2470,7 @@ export type QueryRealmArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
 };
@@ -2535,6 +2539,7 @@ export type QueryPermissionArgs = {
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
   rolePermission?: InputMaybe<RolePermissionExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
 };
@@ -2611,6 +2616,7 @@ export type QueryUserPhonesArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserPhonesExpression>>>;
 };
@@ -2680,6 +2686,7 @@ export type QueryUserGroupArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserGroupExpression>>>;
 };
@@ -2751,6 +2758,7 @@ export type QueryUserRoleArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserRoleExpression>>>;
 };
@@ -2822,6 +2830,7 @@ export type QueryGroupRoleArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupRoleExpression>>>;
 };
@@ -2893,6 +2902,7 @@ export type QueryRoleCompositeArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleCompositeExpression>>>;
 };
@@ -2964,6 +2974,7 @@ export type QueryRolePermissionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RolePermissionExpression>>>;
 };
@@ -3223,6 +3234,7 @@ export type RealmQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
 };
@@ -3238,6 +3250,7 @@ export type RealmSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
 };
@@ -3963,6 +3976,7 @@ export type RoleCompositeQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleCompositeExpression>>>;
 };
@@ -3981,6 +3995,7 @@ export type RoleCompositeSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleCompositeExpression>>>;
 };
@@ -4523,6 +4538,7 @@ export type RolePermissionQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RolePermissionExpression>>>;
 };
@@ -4541,6 +4557,7 @@ export type RolePermissionSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RolePermissionExpression>>>;
 };
@@ -4566,6 +4583,7 @@ export type RoleQueryArguments = {
   groupRole?: InputMaybe<GroupRoleExpression>;
   roleComposite?: InputMaybe<RoleCompositeExpression>;
   rolePermission?: InputMaybe<RolePermissionExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
 };
@@ -4591,6 +4609,7 @@ export type RoleSubscriptionArguments = {
   groupRole?: InputMaybe<GroupRoleExpression>;
   roleComposite?: InputMaybe<RoleCompositeExpression>;
   rolePermission?: InputMaybe<RolePermissionExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
 };
@@ -4682,6 +4701,7 @@ export type SubscriptionUserArgs = {
   userPhones?: InputMaybe<UserPhonesExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   userRole?: InputMaybe<UserRoleExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
 };
@@ -4780,6 +4800,7 @@ export type SubscriptionRoleArgs = {
   groupRole?: InputMaybe<GroupRoleExpression>;
   roleComposite?: InputMaybe<RoleCompositeExpression>;
   rolePermission?: InputMaybe<RolePermissionExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
 };
@@ -4872,6 +4893,7 @@ export type SubscriptionGroupArgs = {
   parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
 };
@@ -4954,6 +4976,7 @@ export type SubscriptionRealmArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
 };
@@ -5022,6 +5045,7 @@ export type SubscriptionPermissionArgs = {
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
   rolePermission?: InputMaybe<RolePermissionExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
 };
@@ -5098,6 +5122,7 @@ export type SubscriptionUserPhonesArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserPhonesExpression>>>;
 };
@@ -5167,6 +5192,7 @@ export type SubscriptionUserGroupArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserGroupExpression>>>;
 };
@@ -5238,6 +5264,7 @@ export type SubscriptionUserRoleArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserRoleExpression>>>;
 };
@@ -5309,6 +5336,7 @@ export type SubscriptionGroupRoleArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupRoleExpression>>>;
 };
@@ -5380,6 +5408,7 @@ export type SubscriptionRoleCompositeArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleCompositeExpression>>>;
 };
@@ -5451,6 +5480,7 @@ export type SubscriptionRolePermissionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RolePermissionExpression>>>;
 };
@@ -6184,6 +6214,7 @@ export type UserGroupQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserGroupExpression>>>;
 };
@@ -6202,6 +6233,7 @@ export type UserGroupSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserGroupExpression>>>;
 };
@@ -6634,6 +6666,7 @@ export type UserPhonesQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserPhonesExpression>>>;
 };
@@ -6651,6 +6684,7 @@ export type UserPhonesSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserPhonesExpression>>>;
 };
@@ -6679,6 +6713,7 @@ export type UserQueryArguments = {
   userPhones?: InputMaybe<UserPhonesExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   userRole?: InputMaybe<UserRoleExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
 };
@@ -6977,6 +7012,7 @@ export type UserRoleQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserRoleExpression>>>;
 };
@@ -6995,6 +7031,7 @@ export type UserRoleSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserRoleExpression>>>;
 };
@@ -7023,6 +7060,7 @@ export type UserSubscriptionArguments = {
   userPhones?: InputMaybe<UserPhonesExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   userRole?: InputMaybe<UserRoleExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
 };
@@ -7054,4 +7092,10 @@ export type ValidationInput = {
   then?: InputMaybe<ValidationInput>;
   else?: InputMaybe<ValidationInput>;
   dependentRequired?: InputMaybe<Array<InputMaybe<Property>>>;
+};
+
+export type With = {
+  type?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['String']>;
+  to?: InputMaybe<Scalars['String']>;
 };

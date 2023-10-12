@@ -76,8 +76,7 @@
 				<a
 					class={nodeTree.node.id === activeGroupId ? 'active' : ''}
 					href={null}
-					on:click={(e) => {
-						e.preventDefault();
+					on:click|preventDefault={(e) => {
 						activeGroupId = nodeTree.node.id;
 					}}
 				>

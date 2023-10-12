@@ -2,7 +2,6 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
 	import { ObjectTd, StringTh, StringTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
-	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableEmpty } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -42,132 +41,128 @@
 	};
 </script>
 
-<Card>
-	<TableHead
-		title={$LL.graphql.objects.Group.name()}
-		showRemoveButton={showRemoveButton && selectedRowList.length > 0}
-		{showSaveButton}
-		{showBackButton}
-		{showGotoSelectButton}
-		showSearchInput={false}
-		on:create
-		on:save={() => dispatch('save', { nodes })}
-		on:remove={() => {
-			messageBoxs.open({
-				title: $LL.web.components.table.removeModalTitle(),
-				buttonName: $LL.web.components.table.removeBtn(),
-				buttonType: 'error',
-				confirm: () => {
-					removeRows();
-					return true;
-				}
-			});
-		}}
-		on:gotoSelect
-		on:back
-	/>
-	<div class="divider" />
-	<Table>
-		<thead>
-			<tr>
-				<th class="z-10 w-12">
-					<label>
-						<input
-							type="checkbox"
-							class="checkbox"
-							bind:checked={selectAll}
-							on:change={() => {
-								if (nodes && nodes.length > 0) {
-									selectedRowList = selectAll ? nodes.map((node) => nodes?.indexOf(node)) : [];
-								}
-							}}
+<TableHead
+	title={$LL.graphql.objects.Group.name()}
+	showRemoveButton={showRemoveButton && selectedRowList.length > 0}
+	{showSaveButton}
+	{showBackButton}
+	{showGotoSelectButton}
+	showSearchInput={false}
+	on:create
+	on:save={() => dispatch('save', { nodes })}
+	on:remove={() => {
+		messageBoxs.open({
+			title: $LL.web.components.table.removeModalTitle(),
+			buttonName: $LL.web.components.table.removeBtn(),
+			buttonType: 'error',
+			confirm: () => {
+				removeRows();
+				return true;
+			}
+		});
+	}}
+	on:gotoSelect
+	on:back
+/>
+<div class="divider" />
+<Table>
+	<thead>
+		<tr>
+			<th class="z-20 w-12">
+				<label>
+					<input
+						type="checkbox"
+						class="checkbox"
+						bind:checked={selectAll}
+						on:change={() => {
+							if (nodes && nodes.length > 0) {
+								selectedRowList = selectAll ? nodes.map((node) => nodes?.indexOf(node)) : [];
+							}
+						}}
+					/>
+				</label>
+			</th>
+			<td>{$LL.graphql.objects.Group.fields.name.name()}</td>
+			<td>{$LL.graphql.objects.Group.fields.path.name()}</td>
+			<td>{$LL.graphql.objects.Group.fields.deep.name()}</td>
+			<td>{$LL.graphql.objects.Group.fields.parent.name()}</td>
+			<td>{$LL.graphql.objects.Group.fields.subGroups.name()}</td>
+			<td>{$LL.graphql.objects.Group.fields.users.name()}</td>
+			<td>{$LL.graphql.objects.Group.fields.roles.name()}</td>
+			<td>{$LL.graphql.objects.Group.fields.realm.name()}</td>
+			<th />
+		</tr>
+	</thead>
+	<tbody>
+		{#if nodes && nodes.length > 0}
+			{#each nodes as node, row}
+				{#if node}
+					<tr class="hover">
+						<th class="z-20 w-12">
+							<label>
+								<input type="checkbox" class="checkbox" bind:group={selectedRowList} value={row} />
+							</label>
+						</th>
+						<StringTd
+							name="name"
+							bind:value={node.name}
+							readonly
+							errors={errors[row]?.iterms?.name}
 						/>
-					</label>
-				</th>
-				<td>{$LL.graphql.objects.Group.fields.name.name()}</td>
-				<td>{$LL.graphql.objects.Group.fields.path.name()}</td>
-				<td>{$LL.graphql.objects.Group.fields.deep.name()}</td>
-				<td>{$LL.graphql.objects.Group.fields.parent.name()}</td>
-				<td>{$LL.graphql.objects.Group.fields.subGroups.name()}</td>
-				<td>{$LL.graphql.objects.Group.fields.users.name()}</td>
-				<td>{$LL.graphql.objects.Group.fields.roles.name()}</td>
-				<td>{$LL.graphql.objects.Group.fields.realm.name()}</td>
-				<th />
-			</tr>
-		</thead>
-		<tbody>
-			{#if nodes && nodes.length > 0}
-				{#each nodes as node, row}
-					{#if node}
-						<tr class="hover">
-							<th class="z-10 w-12">
-								<label>
-									<input type="checkbox" class="checkbox" bind:group={selectedRowList} value={row} />
-								</label>
-							</th>
-							<StringTd
-								name="name"
-								bind:value={node.name}
-								readonly
-								errors={errors[row]?.iterms?.name}
-							/>
-							<StringTd
-								name="path"
-								bind:value={node.path}
-								readonly
-								errors={errors[row]?.iterms?.path}
-							/>
-							<IntTd
-								name="deep"
-								bind:value={node.deep}
-								readonly
-								errors={errors[row]?.iterms?.deep}
-							/>
-							<ObjectTd name="parent" errors={errors[row]?.iterms?.parent} path="_/parent" on:gotoField />
-							<ObjectTd name="subGroups" errors={errors[row]?.iterms?.subGroups} path="_/sub-groups" on:gotoField />
-							<ObjectTd name="users" errors={errors[row]?.iterms?.users} path="_/users" on:gotoField />
-							<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
-							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
-							<th class="z-10 w-24">
-								<div class="flex space-x-1">
-									<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
-										<button
-											class="btn btn-square btn-ghost btn-xs"
-											on:click={(e) => {
-												e.preventDefault();
-												dispatch('edit', { row });
-											}}
-										>
-											<Icon src={PencilSquare} solid />
-										</button>
-									</div>
-									<div class="tooltip" data-tip={$LL.web.components.table.removeBtn()}>
-										<button
-											class="btn btn-square btn-ghost btn-xs"
-											on:click={(e) => {
-												e.preventDefault();
-												messageBoxs.open({
-													title: $LL.web.components.table.removeModalTitle(),
-													buttonName: $LL.web.components.table.removeBtn(),
-													buttonType: 'error',
-													confirm: () => {
-														removeRow(row);
-														return true;
-													}
-												});
-											}}
-										>
-											<Icon src={Trash} solid />
-										</button>
-									</div>
+						<StringTd
+							name="path"
+							bind:value={node.path}
+							readonly
+							errors={errors[row]?.iterms?.path}
+						/>
+						<IntTd
+							name="deep"
+							bind:value={node.deep}
+							readonly
+							errors={errors[row]?.iterms?.deep}
+						/>
+						<ObjectTd name="parent" errors={errors[row]?.iterms?.parent} path="_/parent" on:gotoField />
+						<ObjectTd name="subGroups" errors={errors[row]?.iterms?.subGroups} path="_/sub-groups" on:gotoField />
+						<ObjectTd name="users" errors={errors[row]?.iterms?.users} path="_/users" on:gotoField />
+						<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
+						<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
+						<th class="z-20 w-24">
+							<div class="flex space-x-1">
+								<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.editBtn()}>
+									<button
+										class="btn btn-square btn-ghost btn-xs"
+										on:click|preventDefault={(e) => {
+											dispatch('edit', { row });
+										}}
+									>
+										<Icon src={PencilSquare} solid />
+									</button>
 								</div>
-							</th>
-						</tr>
-					{/if}
-				{/each}
-			{:else}
-				<TableEmpty cols={8 + 2}/>
-			{/if}
-		</tbody>
-	</Table>
-</Card>
+								<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.removeBtn()}>
+									<button
+										class="btn btn-square btn-ghost btn-xs"
+										on:click|preventDefault={(e) => {
+											messageBoxs.open({
+												title: $LL.web.components.table.removeModalTitle(),
+												buttonName: $LL.web.components.table.removeBtn(),
+												buttonType: 'error',
+												confirm: () => {
+													removeRow(row);
+													return true;
+												}
+											});
+										}}
+									>
+										<Icon src={Trash} solid />
+									</button>
+								</div>
+							</div>
+						</th>
+					</tr>
+				{/if}
+			{/each}
+		{:else}
+			<TableEmpty cols={8 + 2}/>
+		{/if}
+	</tbody>
+</Table>

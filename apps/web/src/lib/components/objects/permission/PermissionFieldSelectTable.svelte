@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { graphql, Operator, PermissionType, PermissionTypeFieldsQuery$result } from '$houdini';
-	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import AutoComplete from '@graphace/ui/components/search/AutoComplete.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -140,155 +139,153 @@
 	};
 </script>
 
-<Card>
-	<div class="flex justify-between">
-		<div class="hidden md:flex items-center">
-			<span class="text-xl font-semibold">{$LL.graphql.objects.Permission.name()}</span>
+<div class="flex justify-between">
+	<div class="hidden md:flex items-center">
+		<span class="text-xl font-semibold">{$LL.graphql.objects.Permission.name()}</span>
+	</div>
+	<div class="flex justify-between w-full md:w-auto space-x-1">
+		<div class="flex">
+			<AutoComplete
+				placeholder={$LL.graphql.objects.Permission.fields.type.name()}
+				on:search={(e) => {
+					let variables = {
+						type: e.detail.searchValue
+							? { opr: Operator.LK, val: `%${e.detail.searchValue}%` }
+							: undefined,
+						first: 10
+					};
+					PermissionTypeListQuery.fetch({ variables });
+				}}
+				bind:items
+				bind:selectedItem
+			/>
 		</div>
-		<div class="flex justify-between w-full md:w-auto space-x-1">
-			<div class="flex">
-				<AutoComplete
-					placeholder={$LL.graphql.objects.Permission.fields.type.name()}
-					on:search={(e) => {
-						let variables = {
-							type: e.detail.searchValue
-								? { opr: Operator.LK, val: `%${e.detail.searchValue}%` }
-								: undefined,
-							first: 10
-						};
-						PermissionTypeListQuery.fetch({ variables });
-					}}
-					bind:items
-					bind:selectedItem
-				/>
-			</div>
-			<div class="flex space-x-1">
-				<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.select()}>
-					<button
-						class="btn btn-secondary btn-square md:hidden"
-						on:click|preventDefault={() => {
-							mutation();
-						}}
-					>
-						<Icon src={Link} class="h-6 w-6" solid />
-					</button>
-				</div>
+		<div class="flex space-x-1">
+			<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.select()}>
 				<button
-					class="hidden md:flex btn btn-secondary"
+					class="btn btn-secondary btn-square md:hidden"
 					on:click|preventDefault={() => {
 						mutation();
 					}}
 				>
-					{$LL.ui.button.select()}
+					<Icon src={Link} class="h-6 w-6" solid />
 				</button>
-				{#if showBackButton}
-					<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.back()}>
-						<button
-							class="btn btn-neutral btn-square md:hidden"
-							on:click|preventDefault={() => {
-								dispatch('back');
-							}}
-						>
-							<Icon src={ArrowUturnLeft} class="h-6 w-6" solid />
-						</button>
-					</div>
+			</div>
+			<button
+				class="hidden md:flex btn btn-secondary"
+				on:click|preventDefault={() => {
+					mutation();
+				}}
+			>
+				{$LL.ui.button.select()}
+			</button>
+			{#if showBackButton}
+				<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.back()}>
 					<button
-						class="hidden md:flex btn btn-neutral"
+						class="btn btn-neutral btn-square md:hidden"
 						on:click|preventDefault={() => {
 							dispatch('back');
 						}}
 					>
-						{$LL.ui.button.back()}
+						<Icon src={ArrowUturnLeft} class="h-6 w-6" solid />
 					</button>
-				{/if}
-			</div>
+				</div>
+				<button
+					class="hidden md:flex btn btn-neutral"
+					on:click|preventDefault={() => {
+						dispatch('back');
+					}}
+				>
+					{$LL.ui.button.back()}
+				</button>
+			{/if}
 		</div>
 	</div>
-	<div class="divider" />
-	<Table>
-		<thead>
-			<tr class="z-20">
-				<td>{$LL.graphql.objects.Permission.fields.field.name()} </td>
-				<td>
-					<div class="flex items-center gap-2">
-						<label>
-							<input
-								type="checkbox"
-								class="checkbox"
-								bind:checked={selectAllRead}
-								on:change={() => {
-									if (result?.permissionList && result?.permissionList.length > 0) {
-										fieldReadList = selectAllRead
-											? result?.permissionList.map(
-													(node) => node?.type + '::' + node?.field + '::' + PermissionType.READ
-											  )
-											: [];
-									}
-								}}
-							/>
-						</label>
-						{$LL.graphql.enums.PermissionType.values.READ.name()}
-					</div>
-				</td>
-				<td>
-					<div class="flex items-center gap-2">
-						<label class="label cursor-pointer">
-							<input
-								type="checkbox"
-								class="checkbox"
-								bind:checked={selectAllWrite}
-								on:change={() => {
-									if (result?.permissionList && result?.permissionList.length > 0) {
-										fieldWriteList = selectAllWrite
-											? result?.permissionList.map(
-													(node) => node?.type + '::' + node?.field + '::' + PermissionType.WRITE
-											  )
-											: [];
-									}
-								}}
-							/>
-						</label>
-						{$LL.graphql.enums.PermissionType.values.WRITE.name()}
-					</div>
-				</td>
-			</tr>
-		</thead>
-		{#if $PermissionTypeFieldsQuery.fetching}
-			<TableLoading rows={10} cols={2 + 2} />
-		{:else}
-			<tbody>
-				{#if result?.permissionList && result?.permissionList.length > 0}
-					{#each result?.permissionList as node}
-						{#if node}
-							<tr class="hover">
-								<td>{node.field}</td>
-								<td>
-									<label>
-										<input
-											type="checkbox"
-											class="checkbox"
-											bind:group={fieldReadList}
-											value={node?.type + '::' + node?.field + '::' + PermissionType.READ}
-										/>
-									</label>
-								</td>
-								<td>
-									<label>
-										<input
-											type="checkbox"
-											class="checkbox"
-											bind:group={fieldWriteList}
-											value={node?.type + '::' + node?.field + '::' + PermissionType.WRITE}
-										/>
-									</label>
-								</td>
-							</tr>
-						{/if}
-					{/each}
-				{:else}
-					<TableEmpty cols={2 + 2} />
-				{/if}
-			</tbody>
-		{/if}
-	</Table>
-</Card>
+</div>
+<div class="divider" />
+<Table>
+	<thead>
+		<tr class="z-20">
+			<td>{$LL.graphql.objects.Permission.fields.field.name()} </td>
+			<td>
+				<div class="flex items-center gap-2">
+					<label>
+						<input
+							type="checkbox"
+							class="checkbox"
+							bind:checked={selectAllRead}
+							on:change={() => {
+								if (result?.permissionList && result?.permissionList.length > 0) {
+									fieldReadList = selectAllRead
+										? result?.permissionList.map(
+												(node) => node?.type + '::' + node?.field + '::' + PermissionType.READ
+										  )
+										: [];
+								}
+							}}
+						/>
+					</label>
+					{$LL.graphql.enums.PermissionType.values.READ.name()}
+				</div>
+			</td>
+			<td>
+				<div class="flex items-center gap-2">
+					<label class="label cursor-pointer">
+						<input
+							type="checkbox"
+							class="checkbox"
+							bind:checked={selectAllWrite}
+							on:change={() => {
+								if (result?.permissionList && result?.permissionList.length > 0) {
+									fieldWriteList = selectAllWrite
+										? result?.permissionList.map(
+												(node) => node?.type + '::' + node?.field + '::' + PermissionType.WRITE
+										  )
+										: [];
+								}
+							}}
+						/>
+					</label>
+					{$LL.graphql.enums.PermissionType.values.WRITE.name()}
+				</div>
+			</td>
+		</tr>
+	</thead>
+	{#if $PermissionTypeFieldsQuery.fetching}
+		<TableLoading rows={10} cols={2 + 2} />
+	{:else}
+		<tbody>
+			{#if result?.permissionList && result?.permissionList.length > 0}
+				{#each result?.permissionList as node}
+					{#if node}
+						<tr class="hover">
+							<td>{node.field}</td>
+							<td>
+								<label>
+									<input
+										type="checkbox"
+										class="checkbox"
+										bind:group={fieldReadList}
+										value={node?.type + '::' + node?.field + '::' + PermissionType.READ}
+									/>
+								</label>
+							</td>
+							<td>
+								<label>
+									<input
+										type="checkbox"
+										class="checkbox"
+										bind:group={fieldWriteList}
+										value={node?.type + '::' + node?.field + '::' + PermissionType.WRITE}
+									/>
+								</label>
+							</td>
+						</tr>
+					{/if}
+				{/each}
+			{:else}
+				<TableEmpty cols={2 + 2} />
+			{/if}
+		</tbody>
+	{/if}
+</Table>

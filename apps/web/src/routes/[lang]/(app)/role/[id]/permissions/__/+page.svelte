@@ -2,17 +2,10 @@
 	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
+	import { Card } from '@graphace/ui/components/card';
 	import PermissionSelectConnectionTable from '~/lib/components/objects/permission/PermissionSelectConnectionTable.svelte';
-	import type {
-		Permission,
-		QueryPermissionConnectionArgs,
-		MutationPermissionArgs
-	} from '~/lib/types/schema';
-	import {
-		Query_permissionConnectionStore,
-		Mutation_permissionStore,
-		Mutation_role_permissionsStore
-	} from '$houdini';
+	import type { Permission, QueryPermissionConnectionArgs, MutationPermissionArgs } from '~/lib/types/schema';
+	import { Query_permissionConnectionStore, Mutation_permissionStore, Mutation_role_permissionsStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -21,11 +14,8 @@
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Role.fields.permissions.name(), PageType.SELECT);
 	$: id = data.id as string;
-	$: Query_permissionConnection =
-		data.Query_permissionConnection as Query_permissionConnectionStore;
-	$: nodes = $Query_permissionConnection.data?.permissionConnection?.edges?.map(
-		(edge) => edge?.node
-	);
+	$: Query_permissionConnection = data.Query_permissionConnection as Query_permissionConnectionStore;
+	$: nodes = $Query_permissionConnection.data?.permissionConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_permissionConnection.data?.permissionConnection?.totalCount || 0;
 	const Mutation_permission = new Mutation_permissionStore();
 	const Mutation_role_permissions = new Mutation_role_permissionsStore();
@@ -38,12 +28,13 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		Query_permissionConnection.fetch({ variables: event.detail.args }).then((result) => {
-			event.detail.then(result.data?.permissionConnection?.edges?.map((edge) => edge?.node));
-			if (result.errors) {
-				event.detail.catch(result.errors);
-			}
-		});
+		Query_permissionConnection.fetch({ variables: event.detail.args })
+			.then((result) => {
+				event.detail.then(result.data?.permissionConnection?.edges?.map((edge) => edge?.node));
+				if (result.errors) {
+					event.detail.catch(result.errors);
+				}
+			});
 	};
 
 	const mutation = (
@@ -53,20 +44,19 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		const row = nodes
-			?.map((node) => node?.name)
-			?.indexOf(event.detail.args.name || event.detail.args.where?.name?.val || undefined);
+		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id || event.detail.args.where?.id?.val || undefined);
 		validateMutation('Permission', event.detail.args, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_permission.mutate(event.detail.args).then((result) => {
-					event.detail.then(result?.data?.permission);
-					if (result.errors) {
-						event.detail.catch(result.errors);
-					}
-				});
+				Mutation_permission.mutate(event.detail.args)
+					.then((result) => {
+						event.detail.then(result?.data?.permission);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
+					});
 			})
 			.catch((validErrors) => {
 				if (row !== -1 && row !== undefined) {
@@ -77,20 +67,12 @@
 
 	const select = (
 		event: CustomEvent<{
-			selected:
-				| MutationPermissionArgs
-				| null
-				| undefined
-				| (MutationPermissionArgs | null | undefined)[];
+			selected: MutationPermissionArgs | null | undefined | (MutationPermissionArgs | null | undefined)[];
 			then: () => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation(
-			'Role',
-			{ where: { id: { val: id } }, permissions: event.detail.selected },
-			$locale
-		)
+		validateMutation('Role', { where: { id: { val: id } }, permissions: event.detail.selected }, $locale)
 			.then((data) => {
 				errors = {};
 				if (Array.isArray(event.detail.selected)) {
@@ -98,12 +80,13 @@
 						role_id: id,
 						role_permissions: event.detail.selected,
 						mergeToList: ['permissions']
-					}).then((result) => {
-						event.detail.then();
-						if (result.errors) {
-							event.detail.catch(result.errors);
-						}
-					});
+					})
+						.then((result) => {
+							event.detail.then();
+							if (result.errors) {
+								event.detail.catch(result.errors);
+							}
+						});
 				}
 			})
 			.catch((validErrors) => {
@@ -116,14 +99,16 @@
 	};
 </script>
 
-<PermissionSelectConnectionTable
-	showBackButton={$canBack}
-	{nodes}
-	{totalCount}
-	{errors}
-	isFetching={$Query_permissionConnection.fetching}
-	on:fetch={fetch}
-	on:mutation={mutation}
-	on:select={select}
-	on:back={back}
-/>
+<Card>
+	<PermissionSelectConnectionTable
+		showBackButton={$canBack}
+		{nodes}
+		{totalCount}
+		{errors}
+		isFetching={$Query_permissionConnection.fetching}
+		on:fetch={fetch}
+		on:mutation={mutation}
+		on:select={select}
+		on:back={back}
+	/>
+</Card>

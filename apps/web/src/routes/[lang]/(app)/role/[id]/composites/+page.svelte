@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
+	import { Card } from '@graphace/ui/components/card';
 	import RoleConnectionTable from '~/lib/components/objects/role/RoleConnectionTable.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
@@ -120,22 +121,25 @@
 	};
 
 </script>
-<RoleConnectionTable
-	showSaveButton={false}
-	showRemoveButton={false}
-	showUnbindButton={true}
-	showGotoSelectButton={true}
-	showBackButton={$canBack}
-	{nodes}
-	{totalCount}
-	{errors}
-	isFetching={$Query_role_composites.fetching}
-	on:fetch={fetch}
-	on:mutation={mutation}
-	on:parentMutation={parentMutation}
-	on:edit={edit}
-	on:create={create}
-	on:gotoField={gotoField}
-	on:gotoSelect={gotoSelect}
-	on:back={back}
-/>
+
+<Card>
+	<RoleConnectionTable
+		showSaveButton={false}
+		showRemoveButton={false}
+		showUnbindButton={true}
+		showGotoSelectButton={true}
+		showBackButton={$canBack}
+		{nodes}
+		{totalCount}
+		{errors}
+		isFetching={$Query_role_composites.fetching}
+		on:fetch={fetch}
+		on:mutation={mutation}
+		on:parentMutation={parentMutation}
+		on:edit={edit}
+		on:create={create}
+		on:gotoField={gotoField}
+		on:gotoSelect={gotoSelect}
+		on:back={back}
+	/>
+</Card>

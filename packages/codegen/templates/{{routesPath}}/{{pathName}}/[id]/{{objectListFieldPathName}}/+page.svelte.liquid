@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
+	import { Card } from '@graphace/ui/components/card';
 	{%- if connectionField %}
 	import {{ objectFieldTypeName }}ConnectionTable from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}ConnectionTable.svelte';
 	{%- else %}
@@ -136,43 +137,46 @@
 	};
 
 </script>
-{%- if connectionField %}
-<{{ objectFieldTypeName }}ConnectionTable
-	showSaveButton={false}
-	showRemoveButton={false}
-	showUnbindButton={true}
-	showGotoSelectButton={true}
-	showBackButton={$canBack}
-	{nodes}
-	{totalCount}
-	{errors}
-	isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
-	on:fetch={fetch}
-	on:mutation={mutation}
-	on:parentMutation={parentMutation}
-	on:edit={edit}
-	on:create={create}
-	on:gotoField={gotoField}
-	on:gotoSelect={gotoSelect}
-	on:back={back}
-/>
-{%- else %}
-<{{ objectFieldTypeName }}Table
-	showSaveButton={false}
-	showRemoveButton={false}
-	showUnbindButton={true}
-	showGotoSelectButton={true}
-	showBackButton={$canBack}
-	{nodes}
-	{errors}
-	isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
-	on:fetch={fetch}
-	on:mutation={mutation}
-	on:parentMutation={parentMutation}
-	on:edit={edit}
-	on:create={create}
-	on:gotoField={gotoField}
-	on:gotoSelect={gotoSelect}
-	on:back={back}
-/>
-{%- endif %}
+
+<Card>
+	{%- if connectionField %}
+	<{{ objectFieldTypeName }}ConnectionTable
+		showSaveButton={false}
+		showRemoveButton={false}
+		showUnbindButton={true}
+		showGotoSelectButton={true}
+		showBackButton={$canBack}
+		{nodes}
+		{totalCount}
+		{errors}
+		isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
+		on:fetch={fetch}
+		on:mutation={mutation}
+		on:parentMutation={parentMutation}
+		on:edit={edit}
+		on:create={create}
+		on:gotoField={gotoField}
+		on:gotoSelect={gotoSelect}
+		on:back={back}
+	/>
+	{%- else %}
+	<{{ objectFieldTypeName }}Table
+		showSaveButton={false}
+		showRemoveButton={false}
+		showUnbindButton={true}
+		showGotoSelectButton={true}
+		showBackButton={$canBack}
+		{nodes}
+		{errors}
+		isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
+		on:fetch={fetch}
+		on:mutation={mutation}
+		on:parentMutation={parentMutation}
+		on:edit={edit}
+		on:create={create}
+		on:gotoField={gotoField}
+		on:gotoSelect={gotoSelect}
+		on:back={back}
+	/>
+	{%- endif %}
+</Card>

@@ -2,6 +2,7 @@
 	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
+	import { Card } from '@graphace/ui/components/card';
 	{%- if connectionField %}
 	import {{ objectFieldTypeName }}SelectConnectionTable from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}SelectConnectionTable.svelte';
 	{%- else %}
@@ -108,27 +109,29 @@
 	};
 </script>
 
-{%- if connectionField %}
-<{{ objectFieldTypeName }}SelectConnectionTable
-	showBackButton={$canBack}
-	{nodes}
-	{totalCount}
-	{errors}
-	isFetching={$Query_{{ objectFieldTypeName | camelCase }}Connection.fetching}
-	on:fetch={fetch}
-	on:mutation={mutation}
-	on:select={select}
-	on:back={back}
-/>
-{%- else %}
-<{{ objectFieldTypeName }}SelectTable
-	showBackButton={$canBack}
-	{nodes}
-	{errors}
-	isFetching={$Query_{{ objectFieldTypeName | camelCase }}List.fetching}
-	on:fetch={fetch}
-	on:mutation={mutation}
-	on:select={select}
-	on:back={back}
-/>
-{%- endif %}
+<Card>
+	{%- if connectionField %}
+	<{{ objectFieldTypeName }}SelectConnectionTable
+		showBackButton={$canBack}
+		{nodes}
+		{totalCount}
+		{errors}
+		isFetching={$Query_{{ objectFieldTypeName | camelCase }}Connection.fetching}
+		on:fetch={fetch}
+		on:mutation={mutation}
+		on:select={select}
+		on:back={back}
+	/>
+	{%- else %}
+	<{{ objectFieldTypeName }}SelectTable
+		showBackButton={$canBack}
+		{nodes}
+		{errors}
+		isFetching={$Query_{{ objectFieldTypeName | camelCase }}List.fetching}
+		on:fetch={fetch}
+		on:mutation={mutation}
+		on:select={select}
+		on:back={back}
+	/>
+	{%- endif %}
+</Card>

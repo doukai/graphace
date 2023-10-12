@@ -5,7 +5,6 @@
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
-	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
@@ -171,252 +170,247 @@
 	};
 </script>
 
-<Card>
-	<TableHead
-		title={$LL.graphql.objects.User.name()}
-		showRemoveButton={showRemoveButton && selectedIdList.length > 0}
-		showUnbindButton={showUnbindButton && selectedIdList.length > 0}
-		{showSaveButton}
-		{showGotoSelectButton}
-		{showBackButton}
-		on:create
-		on:search={(e) => search(e.detail.value)}
-		on:save={() => dispatch('save', { nodes })}
-		on:remove={() => {
-			messageBoxs.open({
-				title: $LL.web.components.table.removeModalTitle(),
-				buttonName: $LL.web.components.table.removeBtn(),
-				buttonType: 'error',
-				confirm: () => {
+<TableHead
+	title={$LL.graphql.objects.User.name()}
+	showRemoveButton={showRemoveButton && selectedIdList.length > 0}
+	showUnbindButton={showUnbindButton && selectedIdList.length > 0}
+	{showSaveButton}
+	{showGotoSelectButton}
+	{showBackButton}
+	on:create
+	on:search={(e) => search(e.detail.value)}
+	on:save={() => dispatch('save', { nodes })}
+	on:remove={() => {
+		messageBoxs.open({
+			title: $LL.web.components.table.removeModalTitle(),
+			buttonName: $LL.web.components.table.removeBtn(),
+			buttonType: 'error',
+			confirm: () => {
+				removeRows();
+				return true;
+			}
+		});
+	}}
+	on:unbind={() =>
+		messageBoxs.open({
+			title: $LL.web.components.table.unbindModalTitle(),
+			buttonName: $LL.web.components.table.unbindBtn(),
+			buttonType: 'error',
+			confirm: () => {
+				unbindRows(selectedIdList);
+				return true;
+			},
+			button1: {
+				name: $LL.web.components.table.removeBtn(),
+				className: 'btn-error',
+				onClick: () => {
 					removeRows();
 					return true;
 				}
-			});
-		}}
-		on:unbind={() =>
-			messageBoxs.open({
-				title: $LL.web.components.table.unbindModalTitle(),
-				buttonName: $LL.web.components.table.unbindBtn(),
-				buttonType: 'error',
-				confirm: () => {
-					unbindRows(selectedIdList);
-					return true;
-				},
-				button1: {
-					name: $LL.web.components.table.removeBtn(),
-					className: 'btn-error',
-					onClick: () => {
-						removeRows();
-						return true;
-					}
-				}
-			})}
-		on:gotoSelect
-		on:back
-	/>
-	<div class="divider" />
-	<Table>
-		<thead>
-			<tr class="z-20">
-				<th class="w-12">
-					<label>
-						<input
-							type="checkbox"
-							class="checkbox"
-							bind:checked={selectAll}
-							on:change={() => {
-								if (nodes && nodes.length > 0) {
-									selectedIdList = selectAll ? nodes.map((node) => node?.id || null) : [];
-								}
-							}}
-						/>
-					</label>
-				</th>
-				<StringTh
-					name={$LL.graphql.objects.User.fields.name.name()}
-					bind:expression={args.name}
-					bind:sort={orderBy.name}
-					on:filter={query}
-				/>
-				<StringTh
-					name={$LL.graphql.objects.User.fields.lastName.name()}
-					bind:expression={args.lastName}
-					bind:sort={orderBy.lastName}
-					on:filter={query}
-				/>
-				<StringTh
-					name={$LL.graphql.objects.User.fields.login.name()}
-					bind:expression={args.login}
-					bind:sort={orderBy.login}
-					on:filter={query}
-				/>
-				<StringTh
-					name={$LL.graphql.objects.User.fields.email.name()}
-					bind:expression={args.email}
-					bind:sort={orderBy.email}
-					on:filter={query}
-				/>
-				<StringTh
-					name={$LL.graphql.objects.User.fields.phones.name()}
-					bind:expression={args.phones}
-					on:filter={query}
-				/>
-				<BooleanTh
-					name={$LL.graphql.objects.User.fields.disable.name()}
-					bind:expression={args.disable}
-					bind:sort={orderBy.disable}
-					on:filter={query}
-				/>
-				<GroupTh
-					name={$LL.graphql.objects.User.fields.groups.name()}
-					bind:expression={args.groups}
-					on:filter={query}
-				/>
-				<RoleTh
-					name={$LL.graphql.objects.User.fields.roles.name()}
-					bind:expression={args.roles}
-					on:filter={query}
-				/>
-				<RealmTh
-					name={$LL.graphql.objects.User.fields.realm.name()}
-					bind:expression={args.realm}
-					on:filter={query}
-				/>
-				<th />
-			</tr>
-		</thead>
-		{#if isFetching}
-			<TableLoading rows={10} cols={9 + 2}/>
-		{:else}
-			<tbody>
-				{#if nodes && nodes.length > 0}
-					{#each nodes as node, row}
-						{#if node && node.id}
-							<tr class="hover">
-								<th class="z-10 w-12">
-									<label>
-										<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
-									</label>
-								</th>
-								<StringTd
-									name="name"
-									bind:value={node.name}
-									on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
-									errors={errors[row]?.iterms?.name}
-								/>
-								<StringTd
-									name="lastName"
-									bind:value={node.lastName}
-									on:save={() => updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } })}
-									errors={errors[row]?.iterms?.lastName}
-								/>
-								<StringTd
-									name="login"
-									bind:value={node.login}
-									on:save={() => updateField({ login: node?.login, where: { id: { val: node?.id } } })}
-									errors={errors[row]?.iterms?.login}
-								/>
-								<StringTd
-									name="email"
-									bind:value={node.email}
-									on:save={() => updateField({ email: node?.email, where: { id: { val: node?.id } } })}
-									errors={errors[row]?.iterms?.email}
-								/>
-								<StringTd
-									name="phones"
-									bind:value={node.phones}
-									list
-									on:save={() => updateField({ phones: node?.phones, where: { id: { val: node?.id } } })}
-									errors={errors[row]?.iterms?.phones}
-								/>
-								<BooleanTd
-									name="disable"
-									bind:value={node.disable}
-									on:save={() => updateField({ disable: node?.disable, where: { id: { val: node?.id } } })}
-									errors={errors[row]?.iterms?.disable}
-								/>
-								<ObjectTd name="groups" errors={errors[row]?.iterms?.groups} path={`${node.id}/groups`} on:gotoField />
-								<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path={`${node.id}/roles`} on:gotoField />
-								<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
-								<th class="z-10 w-24">
-									<div class="flex space-x-1">
-										<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
+			}
+		})}
+	on:gotoSelect
+	on:back
+/>
+<div class="divider" />
+<Table>
+	<thead>
+		<tr class="z-20">
+			<th class="w-12">
+				<label>
+					<input
+						type="checkbox"
+						class="checkbox"
+						bind:checked={selectAll}
+						on:change={() => {
+							if (nodes && nodes.length > 0) {
+								selectedIdList = selectAll ? nodes.map((node) => node?.id || null) : [];
+							}
+						}}
+					/>
+				</label>
+			</th>
+			<StringTh
+				name={$LL.graphql.objects.User.fields.name.name()}
+				bind:expression={args.name}
+				bind:sort={orderBy.name}
+				on:filter={query}
+			/>
+			<StringTh
+				name={$LL.graphql.objects.User.fields.lastName.name()}
+				bind:expression={args.lastName}
+				bind:sort={orderBy.lastName}
+				on:filter={query}
+			/>
+			<StringTh
+				name={$LL.graphql.objects.User.fields.login.name()}
+				bind:expression={args.login}
+				bind:sort={orderBy.login}
+				on:filter={query}
+			/>
+			<StringTh
+				name={$LL.graphql.objects.User.fields.email.name()}
+				bind:expression={args.email}
+				bind:sort={orderBy.email}
+				on:filter={query}
+			/>
+			<StringTh
+				name={$LL.graphql.objects.User.fields.phones.name()}
+				bind:expression={args.phones}
+				on:filter={query}
+			/>
+			<BooleanTh
+				name={$LL.graphql.objects.User.fields.disable.name()}
+				bind:expression={args.disable}
+				bind:sort={orderBy.disable}
+				on:filter={query}
+			/>
+			<GroupTh
+				name={$LL.graphql.objects.User.fields.groups.name()}
+				bind:expression={args.groups}
+				on:filter={query}
+			/>
+			<RoleTh
+				name={$LL.graphql.objects.User.fields.roles.name()}
+				bind:expression={args.roles}
+				on:filter={query}
+			/>
+			<RealmTh
+				name={$LL.graphql.objects.User.fields.realm.name()}
+				bind:expression={args.realm}
+				on:filter={query}
+			/>
+			<th />
+		</tr>
+	</thead>
+	{#if isFetching}
+		<TableLoading rows={10} cols={9 + 2}/>
+	{:else}
+		<tbody>
+			{#if nodes && nodes.length > 0}
+				{#each nodes as node, row}
+					{#if node && node.id}
+						<tr class="hover">
+							<th class="z-20 w-12">
+								<label>
+									<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
+								</label>
+							</th>
+							<StringTd
+								name="name"
+								bind:value={node.name}
+								on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								errors={errors[row]?.iterms?.name}
+							/>
+							<StringTd
+								name="lastName"
+								bind:value={node.lastName}
+								on:save={() => updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } })}
+								errors={errors[row]?.iterms?.lastName}
+							/>
+							<StringTd
+								name="login"
+								bind:value={node.login}
+								on:save={() => updateField({ login: node?.login, where: { id: { val: node?.id } } })}
+								errors={errors[row]?.iterms?.login}
+							/>
+							<StringTd
+								name="email"
+								bind:value={node.email}
+								on:save={() => updateField({ email: node?.email, where: { id: { val: node?.id } } })}
+								errors={errors[row]?.iterms?.email}
+							/>
+							<StringTd
+								name="phones"
+								bind:value={node.phones}
+								list
+								on:save={() => updateField({ phones: node?.phones, where: { id: { val: node?.id } } })}
+								errors={errors[row]?.iterms?.phones}
+							/>
+							<BooleanTd
+								name="disable"
+								bind:value={node.disable}
+								on:save={() => updateField({ disable: node?.disable, where: { id: { val: node?.id } } })}
+								errors={errors[row]?.iterms?.disable}
+							/>
+							<ObjectTd name="groups" errors={errors[row]?.iterms?.groups} path={`${node.id}/groups`} on:gotoField />
+							<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path={`${node.id}/roles`} on:gotoField />
+							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+							<th class="z-20 w-24">
+								<div class="flex space-x-1">
+									<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.editBtn()}>
+										<button
+											class="btn btn-square btn-ghost btn-xs"
+											on:click|preventDefault={(e) => {
+												if (node && node.id) {
+													dispatch('edit', { id: node.id });
+												}
+											}}
+										>
+											<Icon src={PencilSquare} solid />
+										</button>
+									</div>
+									{#if showUnbindButton}
+										<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.unbindBtn()}>
 											<button
 												class="btn btn-square btn-ghost btn-xs"
-												on:click={(e) => {
-													e.preventDefault();
-													if (node && node.id) {
-														dispatch('edit', { id: node.id });
-													}
-												}}
-											>
-												<Icon src={PencilSquare} solid />
-											</button>
-										</div>
-										{#if showUnbindButton}
-											<div class="tooltip" data-tip={$LL.web.components.table.unbindBtn()}>
-												<button
-													class="btn btn-square btn-ghost btn-xs"
-													on:click={(e) => {
-														e.preventDefault();
-														messageBoxs.open({
-															title: $LL.web.components.table.unbindModalTitle(),
-															buttonName: $LL.web.components.table.unbindBtn(),
-															buttonType: 'error',
-															confirm: () => {
-																if (node?.id) {
-																	unbindRows([node.id]);
-																}
-																return true;
-															},
-															button1: {
-																name: $LL.web.components.table.removeBtn(),
-																className: 'btn-error',
-																onClick: () => {
-																	if (node?.id) {
-																		removeRow(node.id);
-																	}
-																	return true;
-																}
+												on:click|preventDefault={(e) => {
+													messageBoxs.open({
+														title: $LL.web.components.table.unbindModalTitle(),
+														buttonName: $LL.web.components.table.unbindBtn(),
+														buttonType: 'error',
+														confirm: () => {
+															if (node?.id) {
+																unbindRows([node.id]);
 															}
-														});
-													}}
-												>
-													<Icon src={ArchiveBoxXMark} solid />
-												</button>
-											</div>
-										{:else}
-											<div class="tooltip" data-tip={$LL.web.components.table.removeBtn()}>
-												<button
-													class="btn btn-square btn-ghost btn-xs"
-													on:click={(e) => {
-														e.preventDefault();
-														messageBoxs.open({
-															title: $LL.web.components.table.removeModalTitle(),
-															buttonName: $LL.web.components.table.removeBtn(),
-															buttonType: 'error',
-															confirm: () => {
+															return true;
+														},
+														button1: {
+															name: $LL.web.components.table.removeBtn(),
+															className: 'btn-error',
+															onClick: () => {
 																if (node?.id) {
 																	removeRow(node.id);
 																}
 																return true;
 															}
-														});
-													}}
-												>
-													<Icon src={Trash} solid />
-												</button>
-											</div>
-										{/if}
-									</div>
-								</th>
-							</tr>
-						{/if}
-					{/each}
-				{:else}
-					<TableEmpty cols={9 + 2}/>
-				{/if}
-			</tbody>
-		{/if}
-	</Table>
-</Card>
+														}
+													});
+												}}
+											>
+												<Icon src={ArchiveBoxXMark} solid />
+											</button>
+										</div>
+									{:else}
+										<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.removeBtn()}>
+											<button
+												class="btn btn-square btn-ghost btn-xs"
+												on:click|preventDefault={(e) => {
+													messageBoxs.open({
+														title: $LL.web.components.table.removeModalTitle(),
+														buttonName: $LL.web.components.table.removeBtn(),
+														buttonType: 'error',
+														confirm: () => {
+															if (node?.id) {
+																removeRow(node.id);
+															}
+															return true;
+														}
+													});
+												}}
+											>
+												<Icon src={Trash} solid />
+											</button>
+										</div>
+									{/if}
+								</div>
+							</th>
+						</tr>
+					{/if}
+				{/each}
+			{:else}
+				<TableEmpty cols={9 + 2}/>
+			{/if}
+		</tbody>
+	{/if}
+</Table>

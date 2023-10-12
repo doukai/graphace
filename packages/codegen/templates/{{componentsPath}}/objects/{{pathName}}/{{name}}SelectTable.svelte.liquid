@@ -11,7 +11,6 @@
 	import {{ enum }}Th from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Th.svelte';
 	import {{ enum }}Td from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Td.svelte';
 	{%- endfor %}
-	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -133,145 +132,143 @@
 	}
 </script>
 
-<Card>
-	<TableHead
-		title={$LL.graphql.objects.{{ name }}.name()}
-		showCreateButton={false}
-		showSaveButton={false}
-		showRemoveButton={false}
-		{showSelectButton}
-		{showBackButton}
-		on:search={(e) => search(e.detail.value)}
-		on:select={() =>
-			dispatch('select', {
-				selected: Array.isArray(selectedIdList)
-					? selectedIdList.flatMap(id => nodes?.find(node => node?.{{ idName }} == id)).map((node) => ({ ...node, where: { {{ idName }}: { val: node?.{{ idName }} } } }))
-					: { ...nodes?.find(node => node?.{{ idName }} == selectedIdList), where: { {{ idName }}: { val: selectedIdList } } },
-				then: () => {
-					notifications.success($LL.web.message.saveSuccess());
-					dispatch('back');
-				},
-				catch: (errors) => {
-					console.error(errors);
-					notifications.error($LL.web.message.saveFailed());
-				}
-			})}
-		on:back
-	/>
-	<div class="divider" />
-	<Table>
-		<thead>
-			<tr class="z-20">
-				<th class="w-12">
-					{#if multipleSelect}
-						<label>
-							<input
-								type="checkbox"
-								class="checkbox"
-								bind:checked={selectAll}
-								on:change={() => {
-									if (nodes && nodes.length > 0) {
-										selectedIdList = selectAll ? nodes.map((node) => node?.{{ idName }}) : [];
-									}
-								}}
-							/>
-						</label>
-					{/if}
-				</th>
-				{%- if fields %}
-				{%- for field in fields %}
-				{%- if field.isScalarType or field.isEnumType %}
-				{%- if field.inQueryArgs %}
-				<{{ field.fieldType.name }}Th
-					name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-					bind:expression={args.{{ field.fieldName }}}
-					{%- if field.isListType == false %}
-					bind:sort={orderBy.{{ field.fieldName }}}
-					{%- endif %}
-					on:filter={query}
-				/>
-				{%- else %}
-				<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
-				{%- endif %}
-				{%- endif %}
-				{%- endfor %}
-				{%- endif %}
-				<th />
-			</tr>
-		</thead>
-		{#if isFetching}
-			<TableLoading rows={10} cols={% raw %}{{% endraw %}{{cols}} + 2}/>
-		{:else}
-			<tbody>
-				{#if nodes && nodes.length > 0}
-					{#each nodes as node, row}
-						{#if node && node.{{ idName }}}
-							<tr class="hover">
-								<th class="z-10 w-12">
-									<label>
-										{#if multipleSelect}
-											<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.{{ idName }}} />
-										{:else}
-											<input type="radio" class="radio" bind:group={selectedIdList} value={node.{{ idName }}} />
-										{/if}
-									</label>
-								</th>
-								{%- if fields %}
-								{%- for field in fields %}
-								{%- if field.isScalarType or field.isEnumType %}
-								{%- if field.component %}
-								{{ field.component }}
-								{%- else %}
-								<{{ field.fieldType.name }}Td
-									name="{{ field.fieldName }}"
-									bind:value={node.{{ field.fieldName }}}
-									{%- if field.isListType %}
-									list
-									{%- endif %}
-									{%- if field.inMutationArgs and field.fieldName != idName %}
-									on:save={() => updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } })}
-									{%- else %}
-									readonly
-									{%- endif %}
-									errors={errors[row]?.iterms?.{{ field.fieldName }}}
-								/>
-								{%- endif %}
-								{%- endif %}
-								{%- endfor %}
-								{%- endif %}
-								<th class="z-10 w-12">
-									<div class="flex space-x-1">
-										<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.selectBtn()}>
-											<button
-												class="btn btn-square btn-ghost btn-xs"
-												on:click|preventDefault={(e) => {
-													if (node && node.{{ idName }}) {
-														dispatch('select', {
-															selected: multipleSelect ? [{ ...node, where: { {{ idName }}: { val: node.{{ idName }} } } }] : { ...node, where: { {{ idName }}: { val: node.{{ idName }} } } },
-															then: () => {
-																notifications.success($LL.web.message.saveSuccess());
-																dispatch('back');
-															},
-															catch: (errors) => {
-																console.error(errors);
-																notifications.error($LL.web.message.saveFailed());
-															}
-														});
-													}
-												}}
-											>
-												<Icon src={ArchiveBoxArrowDown} solid />
-											</button>
-										</div>
-									</div>
-								</th>
-							</tr>
-						{/if}
-					{/each}
-				{:else}
-					<TableEmpty cols={% raw %}{{% endraw %}{{cols}} + 2}/>
+<TableHead
+	title={$LL.graphql.objects.{{ name }}.name()}
+	showCreateButton={false}
+	showSaveButton={false}
+	showRemoveButton={false}
+	{showSelectButton}
+	{showBackButton}
+	on:search={(e) => search(e.detail.value)}
+	on:select={() =>
+		dispatch('select', {
+			selected: Array.isArray(selectedIdList)
+				? selectedIdList.flatMap(id => nodes?.find(node => node?.{{ idName }} == id)).map((node) => ({ ...node, where: { {{ idName }}: { val: node?.{{ idName }} } } }))
+				: { ...nodes?.find(node => node?.{{ idName }} == selectedIdList), where: { {{ idName }}: { val: selectedIdList } } },
+			then: () => {
+				notifications.success($LL.web.message.saveSuccess());
+				dispatch('back');
+			},
+			catch: (errors) => {
+				console.error(errors);
+				notifications.error($LL.web.message.saveFailed());
+			}
+		})}
+	on:back
+/>
+<div class="divider" />
+<Table>
+	<thead>
+		<tr class="z-20">
+			<th class="w-12">
+				{#if multipleSelect}
+					<label>
+						<input
+							type="checkbox"
+							class="checkbox"
+							bind:checked={selectAll}
+							on:change={() => {
+								if (nodes && nodes.length > 0) {
+									selectedIdList = selectAll ? nodes.map((node) => node?.{{ idName }}) : [];
+								}
+							}}
+						/>
+					</label>
 				{/if}
-			</tbody>
-		{/if}
-	</Table>
-</Card>
+			</th>
+			{%- if fields %}
+			{%- for field in fields %}
+			{%- if field.isScalarType or field.isEnumType %}
+			{%- if field.inQueryArgs %}
+			<{{ field.fieldType.name }}Th
+				name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+				bind:expression={args.{{ field.fieldName }}}
+				{%- if field.isListType == false %}
+				bind:sort={orderBy.{{ field.fieldName }}}
+				{%- endif %}
+				on:filter={query}
+			/>
+			{%- else %}
+			<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
+			{%- endif %}
+			{%- endif %}
+			{%- endfor %}
+			{%- endif %}
+			<th />
+		</tr>
+	</thead>
+	{#if isFetching}
+		<TableLoading rows={10} cols={% raw %}{{% endraw %}{{cols}} + 2}/>
+	{:else}
+		<tbody>
+			{#if nodes && nodes.length > 0}
+				{#each nodes as node, row}
+					{#if node && node.{{ idName }}}
+						<tr class="hover">
+							<th class="z-20 w-12">
+								<label>
+									{#if multipleSelect}
+										<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.{{ idName }}} />
+									{:else}
+										<input type="radio" class="radio" bind:group={selectedIdList} value={node.{{ idName }}} />
+									{/if}
+								</label>
+							</th>
+							{%- if fields %}
+							{%- for field in fields %}
+							{%- if field.isScalarType or field.isEnumType %}
+							{%- if field.component %}
+							{{ field.component }}
+							{%- else %}
+							<{{ field.fieldType.name }}Td
+								name="{{ field.fieldName }}"
+								bind:value={node.{{ field.fieldName }}}
+								{%- if field.isListType %}
+								list
+								{%- endif %}
+								{%- if field.inMutationArgs and field.fieldName != idName %}
+								on:save={() => updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } })}
+								{%- else %}
+								readonly
+								{%- endif %}
+								errors={errors[row]?.iterms?.{{ field.fieldName }}}
+							/>
+							{%- endif %}
+							{%- endif %}
+							{%- endfor %}
+							{%- endif %}
+							<th class="z-20 w-12">
+								<div class="flex space-x-1">
+									<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.selectBtn()}>
+										<button
+											class="btn btn-square btn-ghost btn-xs"
+											on:click|preventDefault={(e) => {
+												if (node && node.{{ idName }}) {
+													dispatch('select', {
+														selected: multipleSelect ? [{ ...node, where: { {{ idName }}: { val: node.{{ idName }} } } }] : { ...node, where: { {{ idName }}: { val: node.{{ idName }} } } },
+														then: () => {
+															notifications.success($LL.web.message.saveSuccess());
+															dispatch('back');
+														},
+														catch: (errors) => {
+															console.error(errors);
+															notifications.error($LL.web.message.saveFailed());
+														}
+													});
+												}
+											}}
+										>
+											<Icon src={ArchiveBoxArrowDown} solid />
+										</button>
+									</div>
+								</div>
+							</th>
+						</tr>
+					{/if}
+				{/each}
+			{:else}
+				<TableEmpty cols={% raw %}{{% endraw %}{{cols}} + 2}/>
+			{/if}
+		</tbody>
+	{/if}
+</Table>

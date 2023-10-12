@@ -2,7 +2,6 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import { StringTh, StringTd } from '@graphace/ui-graphql/components/table';
-	import { Card } from '@graphace/ui/components/card';
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { Pagination } from '@graphace/ui/components/connection';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
@@ -147,137 +146,134 @@
 	};
 </script>
 
-<Card>
-	<TableHead
-		title={$LL.graphql.objects.Role.name()}
-		showCreateButton={false}
-		showSaveButton={false}
-		showRemoveButton={false}
-		{showSelectButton}
-		{showBackButton}
-		on:search={(e) => search(e.detail.value)}
-		on:select={() =>
-			dispatch('select', {
-				selected: Array.isArray(selectedIdList)
-					? selectedIdList.flatMap(id => nodes?.find(node => node?.id == id)).map((node) => ({ ...node, where: { id: { val: node?.id } } }))
-					: { ...nodes?.find(node => node?.id == selectedIdList), where: { id: { val: selectedIdList } } },
-				then: () => {
-					notifications.success($LL.web.message.saveSuccess());
-					dispatch('back');
-				},
-				catch: (errors) => {
-					console.error(errors);
-					notifications.error($LL.web.message.saveFailed());
-				}
-			})}
-		on:back
-	/>
-	<div class="divider" />
-	<Table>
-		<thead>
-			<tr class="z-20">
-				<th class="w-12">
-					{#if multipleSelect}
-						<label>
-							<input
-								type="checkbox"
-								class="checkbox"
-								bind:checked={selectAll}
-								on:change={() => {
-									if (nodes && nodes.length > 0) {
-										selectedIdList = selectAll ? nodes.map((node) => node?.id) : [];
-									}
-								}}
-							/>
-						</label>
-					{/if}
-				</th>
-				<StringTh
-					name={$LL.graphql.objects.Role.fields.name.name()}
-					bind:expression={args.name}
-					bind:sort={orderBy.name}
-					on:filter={query}
-				/>
-				<StringTh
-					name={$LL.graphql.objects.Role.fields.description.name()}
-					bind:expression={args.description}
-					bind:sort={orderBy.description}
-					on:filter={query}
-				/>
-				<th />
-			</tr>
-		</thead>
-		{#if isFetching}
-			<TableLoading rows={pageSize} cols={7 + 2}/>
-		{:else}
-			<tbody>
-				{#if nodes && nodes.length > 0}
-					{#each nodes as node, row}
-						{#if node && node.id}
-							<tr class="hover">
-								<th class="z-10 w-12">
-									<label>
-										{#if multipleSelect}
-											<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
-										{:else}
-											<input type="radio" class="radio" bind:group={selectedIdList} value={node.id} />
-										{/if}
-									</label>
-								</th>
-								<StringTd
-									name="name"
-									bind:value={node.name}
-									on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
-									errors={errors[row]?.iterms?.name}
-								/>
-								<StringTd
-									name="description"
-									bind:value={node.description}
-									on:save={() => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
-									errors={errors[row]?.iterms?.description}
-								/>
-								<th class="z-10 w-12">
-									<div class="flex space-x-1">
-										<div class="tooltip" data-tip={$LL.web.components.table.selectBtn()}>
-											<button
-												class="btn btn-square btn-ghost btn-xs"
-												on:click={(e) => {
-													e.preventDefault();
-													if (node && node.id) {
-														dispatch('select', {
-															selected: multipleSelect ? [{ ...node, where: { id: { val: node.id } } }] : { ...node, where: { id: { val: node.id } } },
-															then: () => {
-																notifications.success($LL.web.message.saveSuccess());
-																dispatch('back');
-															},
-															catch: (errors) => {
-																console.error(errors);
-																notifications.error($LL.web.message.saveFailed());
-															}
-														});
-													}
-												}}
-											>
-												<Icon src={ArchiveBoxArrowDown} solid />
-											</button>
-										</div>
-									</div>
-								</th>
-							</tr>
-						{/if}
-					{/each}
-				{:else}
-					<TableEmpty cols={7 + 2}/>
+<TableHead
+	title={$LL.graphql.objects.Role.name()}
+	showCreateButton={false}
+	showSaveButton={false}
+	showRemoveButton={false}
+	{showSelectButton}
+	{showBackButton}
+	on:search={(e) => search(e.detail.value)}
+	on:select={() =>
+		dispatch('select', {
+			selected: Array.isArray(selectedIdList)
+				? selectedIdList.flatMap(id => nodes?.find(node => node?.id == id)).map((node) => ({ ...node, where: { id: { val: node?.id } } }))
+				: { ...nodes?.find(node => node?.id == selectedIdList), where: { id: { val: selectedIdList } } },
+			then: () => {
+				notifications.success($LL.web.message.saveSuccess());
+				dispatch('back');
+			},
+			catch: (errors) => {
+				console.error(errors);
+				notifications.error($LL.web.message.saveFailed());
+			}
+		})}
+	on:back
+/>
+<div class="divider" />
+<Table>
+	<thead>
+		<tr class="z-20">
+			<th class="w-12">
+				{#if multipleSelect}
+					<label>
+						<input
+							type="checkbox"
+							class="checkbox"
+							bind:checked={selectAll}
+							on:change={() => {
+								if (nodes && nodes.length > 0) {
+									selectedIdList = selectAll ? nodes.map((node) => node?.id) : [];
+								}
+							}}
+						/>
+					</label>
 				{/if}
-			</tbody>
-		{/if}
-	</Table>
-	<div class="divider" />
-	<Pagination
-		bind:pageNumber
-		bind:pageSize
-		{totalCount}
-		on:pageChange={queryPage}
-		on:sizeChange={queryPage}
-	/>
-</Card>
+			</th>
+			<StringTh
+				name={$LL.graphql.objects.Role.fields.name.name()}
+				bind:expression={args.name}
+				bind:sort={orderBy.name}
+				on:filter={query}
+			/>
+			<StringTh
+				name={$LL.graphql.objects.Role.fields.description.name()}
+				bind:expression={args.description}
+				bind:sort={orderBy.description}
+				on:filter={query}
+			/>
+			<th />
+		</tr>
+	</thead>
+	{#if isFetching}
+		<TableLoading rows={pageSize} cols={7 + 2}/>
+	{:else}
+		<tbody>
+			{#if nodes && nodes.length > 0}
+				{#each nodes as node, row}
+					{#if node && node.id}
+						<tr class="hover">
+							<th class="z-20 w-12">
+								<label>
+									{#if multipleSelect}
+										<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
+									{:else}
+										<input type="radio" class="radio" bind:group={selectedIdList} value={node.id} />
+									{/if}
+								</label>
+							</th>
+							<StringTd
+								name="name"
+								bind:value={node.name}
+								on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								errors={errors[row]?.iterms?.name}
+							/>
+							<StringTd
+								name="description"
+								bind:value={node.description}
+								on:save={() => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
+								errors={errors[row]?.iterms?.description}
+							/>
+							<th class="z-20 w-12">
+								<div class="flex space-x-1">
+									<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.selectBtn()}>
+										<button
+											class="btn btn-square btn-ghost btn-xs"
+											on:click|preventDefault={(e) => {
+												if (node && node.id) {
+													dispatch('select', {
+														selected: multipleSelect ? [{ ...node, where: { id: { val: node.id } } }] : { ...node, where: { id: { val: node.id } } },
+														then: () => {
+															notifications.success($LL.web.message.saveSuccess());
+															dispatch('back');
+														},
+														catch: (errors) => {
+															console.error(errors);
+															notifications.error($LL.web.message.saveFailed());
+														}
+													});
+												}
+											}}
+										>
+											<Icon src={ArchiveBoxArrowDown} solid />
+										</button>
+									</div>
+								</div>
+							</th>
+						</tr>
+					{/if}
+				{/each}
+			{:else}
+				<TableEmpty cols={7 + 2}/>
+			{/if}
+		</tbody>
+	{/if}
+</Table>
+<div class="divider" />
+<Pagination
+	bind:pageNumber
+	bind:pageSize
+	{totalCount}
+	on:pageChange={queryPage}
+	on:sizeChange={queryPage}
+/>

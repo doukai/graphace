@@ -2,6 +2,7 @@
 	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
+	import { Card } from '@graphace/ui/components/card';
 	import RoleConnectionTable from '~/lib/components/objects/role/RoleConnectionTable.svelte';
 	import type { Role, QueryRoleConnectionArgs, MutationRoleArgs } from '~/lib/types/schema';
 	import { Query_roleConnectionStore, Mutation_roleStore } from '$houdini';
@@ -78,16 +79,19 @@
 		to(`./role/${event.detail.path}`);
 	};
 </script>
-<RoleConnectionTable
-	showSaveButton={false}
-	showBackButton={$canBack}
-	{nodes}
-	{totalCount}
-	{errors}
-	isFetching={$Query_roleConnection.fetching}
-	on:fetch={fetch}
-	on:mutation={mutation}
-	on:edit={edit}
-	on:create={create}
-	on:gotoField={gotoField}
-/>
+
+<Card>
+	<RoleConnectionTable
+		showSaveButton={false}
+		showBackButton={$canBack}
+		{nodes}
+		{totalCount}
+		{errors}
+		isFetching={$Query_roleConnection.fetching}
+		on:fetch={fetch}
+		on:mutation={mutation}
+		on:edit={edit}
+		on:create={create}
+		on:gotoField={gotoField}
+	/>
+</Card>
