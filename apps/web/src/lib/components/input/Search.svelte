@@ -31,6 +31,7 @@
 	let seachboxEl: HTMLLabelElement;
 	function handleKeydown(e: KeyboardEvent) {
 		if ((e.keyCode === 75 && e.metaKey) || (e.keyCode === 75 && e.ctrlKey)) {
+			e.preventDefault();
 			let searchInput: HTMLInputElement | null = seachboxEl.querySelector('input[type=search]');
 			if (searchInput) {
 				searchInput.focus();
@@ -53,7 +54,7 @@
 	}
 </script>
 
-<svelte:window on:keydown|preventDefault={handleKeydown} />
+<svelte:window on:keydown={handleKeydown} />
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
 <label class="searchbox relative mx-3 w-full" bind:this={seachboxEl}>
