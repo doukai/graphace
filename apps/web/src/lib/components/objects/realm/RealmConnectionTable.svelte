@@ -269,7 +269,7 @@
 				{#each nodes as node, row}
 					{#if node && node.id}
 						<tr class="hover">
-							<th class="z-20 w-12">
+							<th class="z-10 w-12">
 								<label>
 									<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
 								</label>
@@ -280,9 +280,9 @@
 								on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
 								errors={errors[row]?.iterms?.name}
 							/>
-							<th class="z-20 w-24">
+							<th class="z-10 hover:z-30 w-24">
 								<div class="flex space-x-1">
-									<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.editBtn()}>
+									<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
 											on:click|preventDefault={(e) => {
@@ -295,7 +295,7 @@
 										</button>
 									</div>
 									{#if showUnbindButton}
-										<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.unbindBtn()}>
+										<div class="tooltip" data-tip={$LL.web.components.table.unbindBtn()}>
 											<button
 												class="btn btn-square btn-ghost btn-xs"
 												on:click|preventDefault={(e) => {
@@ -326,7 +326,7 @@
 											</button>
 										</div>
 									{:else}
-										<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.removeBtn()}>
+										<div class="tooltip" data-tip={$LL.web.components.table.removeBtn()}>
 											<button
 												class="btn btn-square btn-ghost btn-xs"
 												on:click|preventDefault={(e) => {

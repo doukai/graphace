@@ -242,7 +242,7 @@
 				{#each nodes as node, row}
 					{#if node && node.id}
 						<tr class="hover">
-							<th class="z-20 w-12">
+							<th class="z-10 w-12">
 								<label>
 									{#if multipleSelect}
 										<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
@@ -288,9 +288,9 @@
 								on:save={() => updateField({ disable: node?.disable, where: { id: { val: node?.id } } })}
 								errors={errors[row]?.iterms?.disable}
 							/>
-							<th class="z-20 w-12">
+							<th class="z-10 hover:z-30 w-12">
 								<div class="flex space-x-1">
-									<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.selectBtn()}>
+									<div class="tooltip" data-tip={$LL.web.components.table.selectBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
 											on:click|preventDefault={(e) => {
