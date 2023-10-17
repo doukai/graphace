@@ -4,6 +4,7 @@ import { loadAllLocales } from '$i18n/i18n-util.sync';
 import type { Handle, RequestEvent } from '@sveltejs/kit';
 import { initAcceptLanguageHeaderDetector } from 'typesafe-i18n/detectors';
 import { setSession } from '$houdini'
+import { jwt } from '@graphace/commons/stores/useAuth'
 loadAllLocales();
 const L = i18n();
 
@@ -38,6 +39,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 		throw redirect(307, loginPathName);
 	} else {
 		setSession(event, { token, locale });
+	}
+	if (event.locals.jwt) {
+		jwt.set(event.locals.jwt);
 	}
 
 	// replace html lang attribute with correct language

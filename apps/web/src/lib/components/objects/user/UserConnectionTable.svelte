@@ -19,6 +19,7 @@
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	import type { User, UserOrderBy, QueryUserConnectionArgs, UserInput } from '~/lib/types/schema';
+	import { auth } from '@graphace/commons/stores/useAuth';
 
 	export let nodes: (User | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;
@@ -279,12 +280,14 @@
 					/>
 				</label>
 			</th>
-			<StringTh
-				name={$LL.graphql.objects.User.fields.name.name()}
-				bind:expression={args.name}
-				bind:sort={orderBy.name}
-				on:filter={query}
-			/>
+			{#if auth('', '')}
+				<StringTh
+					name={$LL.graphql.objects.User.fields.name.name()}
+					bind:expression={args.name}
+					bind:sort={orderBy.name}
+					on:filter={query}
+				/>
+			{/if}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.lastName.name()}
 				bind:expression={args.lastName}
@@ -353,8 +356,7 @@
 							<StringTd
 								name="name"
 								bind:value={node.name}
-								on:save={() =>
-									updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
 								errors={errors[row]?.iterms?.name}
 							/>
 							<StringTd

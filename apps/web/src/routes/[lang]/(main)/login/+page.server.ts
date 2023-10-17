@@ -1,6 +1,7 @@
 import { type ServerLoadEvent, fail, redirect } from '@sveltejs/kit';
 import { graphql } from '$houdini'
 import type { Actions } from './$types';
+import jwt_decode from "jwt-decode";
 import { validateAsync } from '~/lib/utils';
 
 export const actions = {
@@ -24,6 +25,7 @@ export const actions = {
             const result = await loginMutation.mutate({ login, password }, { event });
             if (result.data?.login) {
                 cookies.set('Authorization', "Bearer " + result.data?.login, { path: '/' });
+                event.locals.jwt = jwt_decode(result.data?.login);
                 const from = event.url.searchParams.get('from');
                 if (from) {
                     throw redirect(307, from);

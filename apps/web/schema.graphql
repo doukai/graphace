@@ -740,6 +740,7 @@ input Invoke {
   methodName: String
   parameters: [InvokeParameter]
   returnClassName: String
+  thrownTypes: [String]
 }
 
 input InvokeParameter {

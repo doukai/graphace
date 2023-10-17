@@ -2,6 +2,7 @@
 
 type Locales = import('./i18n/i18n-types').Locales
 type TranslationFunctions = import('$i18n/i18n-types').TranslationFunctions
+type JsonWebToken = import('@graphace/commons/types').JsonWebToken
 
 // See https://kit.svelte.dev/docs/typescript
 // for information about these interfaces
@@ -20,16 +21,4 @@ declare namespace App {
 
 	interface Platform {
 	}
-}
-
-interface JsonWebToken {
-	iss: string
-	sub?: string
-	upn?: string
-	full_name?: string | undefined
-	family_name?: string | undefined
-	groups?: string[] | undefined
-	roles?: string[] | undefined
-	iat?: number
-	exp?: number
 }
