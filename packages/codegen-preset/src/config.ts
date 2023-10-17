@@ -14,4 +14,6 @@ export interface GraphacePresetConfig {
   i18nDefault?: string;
 
   builder?: BuilderConfig;
+
+  useAuth?: boolean;
 }

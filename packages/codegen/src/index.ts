@@ -22,7 +22,8 @@ const renders: Record<Template, Render> = {
                         .filter(type => !isPageInfo(type.name))
                         .filter(type => !isIntrospection(type.name))
                         .filter(type => getIDFieldName(type))
-                        .map(type => assertObjectType(type))
+                        .map(type => assertObjectType(type)),
+                    useAuth: config.useAuth
                 }
             ),
         };
@@ -206,7 +207,8 @@ const renders: Record<Template, Render> = {
                         enumsPath: `${config.componentsPath}/enums`,
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
-                        subscriptionTypeName: getSubscriptionTypeName()
+                        subscriptionTypeName: getSubscriptionTypeName(),
+                        useAuth: config.useAuth
                     }),
                 };
             }
@@ -233,7 +235,8 @@ const renders: Record<Template, Render> = {
                         enumsPath: `${config.componentsPath}/enums`,
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
-                        subscriptionTypeName: getSubscriptionTypeName()
+                        subscriptionTypeName: getSubscriptionTypeName(),
+                        useAuth: config.useAuth
                     }),
                 };
             }
@@ -262,7 +265,8 @@ const renders: Record<Template, Render> = {
                         objectsPath: `${config.componentsPath}/objects`,
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
-                        subscriptionTypeName: getSubscriptionTypeName()
+                        subscriptionTypeName: getSubscriptionTypeName(),
+                        useAuth: config.useAuth
                     }),
                 };
             }
@@ -291,7 +295,8 @@ const renders: Record<Template, Render> = {
                         objectsPath: `${config.componentsPath}/objects`,
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
-                        subscriptionTypeName: getSubscriptionTypeName()
+                        subscriptionTypeName: getSubscriptionTypeName(),
+                        useAuth: config.useAuth
                     }),
                 };
             }
@@ -318,7 +323,8 @@ const renders: Record<Template, Render> = {
                         enumsPath: `${config.componentsPath}/enums`,
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
-                        subscriptionTypeName: getSubscriptionTypeName()
+                        subscriptionTypeName: getSubscriptionTypeName(),
+                        useAuth: config.useAuth
                     }),
                 };
             }
@@ -345,7 +351,8 @@ const renders: Record<Template, Render> = {
                         enumsPath: `${config.componentsPath}/enums`,
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
-                        subscriptionTypeName: getSubscriptionTypeName()
+                        subscriptionTypeName: getSubscriptionTypeName(),
+                        useAuth: config.useAuth
                     }),
                 };
             }
@@ -372,7 +379,8 @@ const renders: Record<Template, Render> = {
                         enumsPath: `${config.componentsPath}/enums`,
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
-                        subscriptionTypeName: getSubscriptionTypeName()
+                        subscriptionTypeName: getSubscriptionTypeName(),
+                        useAuth: config.useAuth
                     }),
                 };
             }

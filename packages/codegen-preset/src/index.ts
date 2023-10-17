@@ -72,6 +72,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                     routesPath: options.presetConfig.graphqlPath || _routesPath,
                     dataPath: options.presetConfig.dataPath || _dataPath,
                     builder: options.presetConfig.builder,
+                    useAuth: options.presetConfig.useAuth,
                     template: pagesTemplate,
                 },
                 schema: options.schema,
@@ -96,6 +97,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                     i18nPath: options.presetConfig.i18nPath || _i18nPath,
                     i18nDefault: options.presetConfig.i18nDefault || _i18nDefault,
                     builder: options.presetConfig.builder,
+                    useAuth: options.presetConfig.useAuth,
                     template: i18nTemplate,
                 },
                 schema: options.schema,
@@ -119,6 +121,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name: field.name
                         },
@@ -148,6 +151,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -174,6 +178,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name: field.name
                         },
@@ -202,6 +207,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -228,6 +234,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name: type.name
                         },
@@ -253,6 +260,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name: type.name
                         },
@@ -278,6 +286,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name: type.name
                         },
@@ -303,6 +312,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name: type.name
                         },
@@ -328,6 +338,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name: type.name
                         },
@@ -353,6 +364,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name: type.name
                         },
@@ -378,6 +390,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name: type.name
                         },
@@ -403,6 +416,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name: type.name
                         },
@@ -428,6 +442,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name: type.name
                         },
@@ -453,6 +468,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name: type.name
                         },
@@ -479,6 +495,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name: type.name
                         },
@@ -504,6 +521,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name: type.name
                         },
@@ -529,6 +547,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name: type.name
                         },
@@ -554,6 +573,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name: type.name
                         },
@@ -579,6 +599,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name: type.name
                         },
@@ -604,6 +625,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name: type.name
                         },
@@ -642,6 +664,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -681,6 +704,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -720,6 +744,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -759,6 +784,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -798,6 +824,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -837,6 +864,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -876,6 +904,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -915,6 +944,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -954,6 +984,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -993,6 +1024,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -1019,6 +1051,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name: type.name
                         },
@@ -1044,6 +1077,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name: type.name
                         },
@@ -1082,6 +1116,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -1121,6 +1156,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -1160,6 +1196,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -1199,6 +1236,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -1238,6 +1276,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -1277,6 +1316,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -1316,6 +1356,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -1355,6 +1396,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -1394,6 +1436,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName
@@ -1433,6 +1476,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
                             template,
                             name,
                             objectFieldName

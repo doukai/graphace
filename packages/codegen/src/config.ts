@@ -24,4 +24,6 @@ export interface GraphacePluginConfig extends RawTypesConfig {
   objectFieldName?: string;
 
   builder?: BuilderConfig;
+
+  useAuth?: boolean;
 }
