@@ -53,16 +53,16 @@
 		back: {};
 	}>();
 
-	let showSelectButton = false;
-	let args: {{ queryTypeName }}{{ name }}ConnectionArgs = {};
-	let orderBy: {{ name }}OrderBy = {};
-	let after: string | undefined;
-	let before: string | undefined;
-	let pageNumber: number = 1;
-	let pageSize: number = 10;
+	export let showSelectButton = false;
+	export let args: {{ queryTypeName }}{{ name }}ConnectionArgs = {};
+	export let orderBy: {{ name }}OrderBy = {};
+	export let after: string | undefined;
+	export let before: string | undefined;
+	export let pageNumber: number = 1;
+	export let pageSize: number = 10;
 
 	let selectAll: boolean;
-	let selectedIdList: string | null | undefined | (string | null | undefined)[] = multipleSelect
+	export let selectedIdList: string | null | undefined | (string | null | undefined)[] = multipleSelect
 		? []
 		: undefined;
 
@@ -72,12 +72,12 @@
 		showSelectButton = false;
 	}
 
-	const query = () => {
+	export const query = () => {
 		pageNumber = 1;
 		queryPage();
 	};
 
-	const queryPage = () => {
+	export const queryPage = () => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -107,7 +107,7 @@
 		});
 	};
 
-	const search = (searchValue: string | undefined) => {
+	export const search = (searchValue: string | undefined) => {
 		let args: {{ queryTypeName }}{{ name }}ConnectionArgs = {};
 		if (searchValue) {
 			args.cond = 'OR';
@@ -176,7 +176,7 @@
 	{showSelectButton}
 	{showBackButton}
 	on:search={(e) => search(e.detail.value)}
-	on:select={() =>
+	on:select={(e) =>
 		dispatch('select', {
 			selected: Array.isArray(selectedIdList)
 				? selectedIdList.flatMap(id => nodes?.find(node => node?.{{ idName }} == id)).map((node) => ({ ...node, where: { {{ idName }}: { val: node?.{{ idName }} } } }))
@@ -203,7 +203,7 @@
 							type="checkbox"
 							class="checkbox"
 							bind:checked={selectAll}
-							on:change={() => {
+							on:change={(e) => {
 								if (nodes && nodes.length > 0) {
 									selectedIdList = selectAll ? nodes.map((node) => node?.{{ idName }}) : [];
 								}
@@ -225,7 +225,7 @@
 				{%- if field.isListType == false %}
 				bind:sort={orderBy.{{ field.fieldName }}}
 				{%- endif %}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{%- else %}
 			<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
@@ -272,7 +272,7 @@
 								list
 								{%- endif %}
 								{%- if field.inMutationArgs and field.fieldName != idName %}
-								on:save={() => updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } })}
+								on:save={(e) => updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } })}
 								{%- if useAuth %}
 								readonly={!auth('{{ name }}::{{ field.fieldName }}::WRITE')}
 								{%- endif %}
@@ -328,6 +328,6 @@
 	bind:pageNumber
 	bind:pageSize
 	{totalCount}
-	on:pageChange={queryPage}
-	on:sizeChange={queryPage}
+	on:pageChange={(e) => queryPage()}
+	on:sizeChange={(e) => queryPage()}
 />

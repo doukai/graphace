@@ -19,9 +19,10 @@ export const isRoot: Readable<boolean | undefined> = derived(
 );
 
 export function auth(...authPermissions: string[]): boolean {
-    return get(jwt)?.is_root || authPermissions.map(authPermission => authPermission.split("::"))
+    const $jwt = get(jwt);
+    return $jwt?.is_root || authPermissions.map(authPermission => authPermission.split("::"))
         .map(authParts =>
-            get(jwt)?.permissions?.map(permissions => permissions.split("::"))
+            $jwt?.permissions?.map(permissions => permissions.split("::"))
                 .some(parts =>
                     (authParts[0] === '*' || authParts[0] === parts[0]) &&
                     (authParts[1] === '*' || authParts[1] === parts[1]) &&

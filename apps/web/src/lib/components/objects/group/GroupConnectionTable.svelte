@@ -54,22 +54,22 @@
 		back: {};
 	}>();
 
-	let args: QueryGroupConnectionArgs = {};
-	let orderBy: GroupOrderBy = {};
-	let after: string | undefined;
-	let before: string | undefined;
-	let pageNumber: number = 1;
-	let pageSize: number = 10;
+	export let args: QueryGroupConnectionArgs = {};
+	export let orderBy: GroupOrderBy = {};
+	export let after: string | undefined;
+	export let before: string | undefined;
+	export let pageNumber: number = 1;
+	export let pageSize: number = 10;
 
 	let selectAll: boolean;
-	let selectedIdList: (string | null)[] = [];
+	export let selectedIdList: (string | null)[] = [];
 
-	const query = () => {
+	export const query = () => {
 		pageNumber = 1;
 		queryPage();
 	};
 
-	const queryPage = () => {
+	export const queryPage = () => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -99,7 +99,7 @@
 		});
 	};
 
-	const search = (searchValue: string | undefined) => {
+	export const search = (searchValue: string | undefined) => {
 		let args: QueryGroupConnectionArgs = {};
 		if (searchValue) {
 			args.cond = 'OR';
@@ -208,8 +208,8 @@
 	{showBackButton}
 	on:create
 	on:search={(e) => search(e.detail.value)}
-	on:save={() => dispatch('save', { nodes })}
-	on:remove={() => {
+	on:save={(e) => dispatch('save', { nodes })}
+	on:remove={(e) => {
 		messageBoxs.open({
 			title: $LL.web.components.table.removeModalTitle(),
 			buttonName: $LL.web.components.table.removeBtn(),
@@ -220,7 +220,7 @@
 			}
 		});
 	}}
-	on:unbind={() =>
+	on:unbind={(e) =>
 		messageBoxs.open({
 			title: $LL.web.components.table.unbindModalTitle(),
 			buttonName: $LL.web.components.table.unbindBtn(),
@@ -251,7 +251,7 @@
 						type="checkbox"
 						class="checkbox"
 						bind:checked={selectAll}
-						on:change={() => {
+						on:change={(e) => {
 							if (nodes && nodes.length > 0) {
 								selectedIdList = selectAll ? nodes.map((node) => node?.id || null) : [];
 							}
@@ -264,7 +264,7 @@
 				name={$LL.graphql.objects.Group.fields.name.name()}
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('Group::path::*')}
@@ -272,7 +272,7 @@
 				name={$LL.graphql.objects.Group.fields.path.name()}
 				bind:expression={args.path}
 				bind:sort={orderBy.path}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('Group::deep::*')}
@@ -280,42 +280,42 @@
 				name={$LL.graphql.objects.Group.fields.deep.name()}
 				bind:expression={args.deep}
 				bind:sort={orderBy.deep}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('Group::parent::*')}
 			<GroupTh
 				name={$LL.graphql.objects.Group.fields.parent.name()}
 				bind:expression={args.parent}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('Group::subGroups::*')}
 			<GroupTh
 				name={$LL.graphql.objects.Group.fields.subGroups.name()}
 				bind:expression={args.subGroups}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('Group::users::*')}
 			<UserTh
 				name={$LL.graphql.objects.Group.fields.users.name()}
 				bind:expression={args.users}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('Group::roles::*')}
 			<RoleTh
 				name={$LL.graphql.objects.Group.fields.roles.name()}
 				bind:expression={args.roles}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('Group::realm::*')}
 			<RealmTh
 				name={$LL.graphql.objects.Group.fields.realm.name()}
 				bind:expression={args.realm}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('Group::*::WRITE')}
@@ -463,6 +463,6 @@
 	bind:pageNumber
 	bind:pageSize
 	{totalCount}
-	on:pageChange={queryPage}
-	on:sizeChange={queryPage}
+	on:pageChange={(e) => queryPage()}
+	on:sizeChange={(e) => queryPage()}
 />

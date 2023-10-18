@@ -6,7 +6,7 @@ export const connectionSuffix = "Connection";
 export const edgeSuffix = "Edge";
 export const pageInfoName = "PageInfo";
 export const introspectionPrefix = "__";
-export const innerEnum = ["Operator", "Conditional", "Sort", "Function", "Protocol"];
+export const innerEnum = [];
 
 export const isAggregate = (name?: string): boolean => { return aggregateSuffix.some(suffix => name?.slice(-suffix.length) === suffix) };
 export const isConnection = (name?: string): boolean => { return name?.slice(-connectionSuffix.length) === connectionSuffix };

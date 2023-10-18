@@ -53,22 +53,22 @@
 		back: {};
 	}>();
 
-	let args: QueryUserConnectionArgs = {};
-	let orderBy: UserOrderBy = {};
-	let after: string | undefined;
-	let before: string | undefined;
-	let pageNumber: number = 1;
-	let pageSize: number = 10;
+	export let args: QueryUserConnectionArgs = {};
+	export let orderBy: UserOrderBy = {};
+	export let after: string | undefined;
+	export let before: string | undefined;
+	export let pageNumber: number = 1;
+	export let pageSize: number = 10;
 
 	let selectAll: boolean;
-	let selectedIdList: (string | null)[] = [];
+	export let selectedIdList: (string | null)[] = [];
 
-	const query = () => {
+	export const query = () => {
 		pageNumber = 1;
 		queryPage();
 	};
 
-	const queryPage = () => {
+	export const queryPage = () => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -98,7 +98,7 @@
 		});
 	};
 
-	const search = (searchValue: string | undefined) => {
+	export const search = (searchValue: string | undefined) => {
 		let args: QueryUserConnectionArgs = {};
 		if (searchValue) {
 			args.cond = 'OR';
@@ -213,8 +213,8 @@
 	{showBackButton}
 	on:create
 	on:search={(e) => search(e.detail.value)}
-	on:save={() => dispatch('save', { nodes })}
-	on:remove={() => {
+	on:save={(e) => dispatch('save', { nodes })}
+	on:remove={(e) => {
 		messageBoxs.open({
 			title: $LL.web.components.table.removeModalTitle(),
 			buttonName: $LL.web.components.table.removeBtn(),
@@ -225,7 +225,7 @@
 			}
 		});
 	}}
-	on:unbind={() =>
+	on:unbind={(e) =>
 		messageBoxs.open({
 			title: $LL.web.components.table.unbindModalTitle(),
 			buttonName: $LL.web.components.table.unbindBtn(),
@@ -256,7 +256,7 @@
 						type="checkbox"
 						class="checkbox"
 						bind:checked={selectAll}
-						on:change={() => {
+						on:change={(e) => {
 							if (nodes && nodes.length > 0) {
 								selectedIdList = selectAll ? nodes.map((node) => node?.id || null) : [];
 							}
@@ -269,7 +269,7 @@
 				name={$LL.graphql.objects.User.fields.name.name()}
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('User::lastName::*')}
@@ -277,7 +277,7 @@
 				name={$LL.graphql.objects.User.fields.lastName.name()}
 				bind:expression={args.lastName}
 				bind:sort={orderBy.lastName}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('User::login::*')}
@@ -285,7 +285,7 @@
 				name={$LL.graphql.objects.User.fields.login.name()}
 				bind:expression={args.login}
 				bind:sort={orderBy.login}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('User::email::*')}
@@ -293,14 +293,14 @@
 				name={$LL.graphql.objects.User.fields.email.name()}
 				bind:expression={args.email}
 				bind:sort={orderBy.email}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('User::phones::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.phones.name()}
 				bind:expression={args.phones}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('User::disable::*')}
@@ -308,28 +308,28 @@
 				name={$LL.graphql.objects.User.fields.disable.name()}
 				bind:expression={args.disable}
 				bind:sort={orderBy.disable}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('User::groups::*')}
 			<GroupTh
 				name={$LL.graphql.objects.User.fields.groups.name()}
 				bind:expression={args.groups}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('User::roles::*')}
 			<RoleTh
 				name={$LL.graphql.objects.User.fields.roles.name()}
 				bind:expression={args.roles}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('User::realm::*')}
 			<RealmTh
 				name={$LL.graphql.objects.User.fields.realm.name()}
 				bind:expression={args.realm}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('User::*::WRITE')}
@@ -499,6 +499,6 @@
 	bind:pageNumber
 	bind:pageSize
 	{totalCount}
-	on:pageChange={queryPage}
-	on:sizeChange={queryPage}
+	on:pageChange={(e) => queryPage()}
+	on:sizeChange={(e) => queryPage()}
 />

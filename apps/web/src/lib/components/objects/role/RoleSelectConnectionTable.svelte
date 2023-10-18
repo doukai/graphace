@@ -42,16 +42,16 @@
 		back: {};
 	}>();
 
-	let showSelectButton = false;
-	let args: QueryRoleConnectionArgs = {};
-	let orderBy: RoleOrderBy = {};
-	let after: string | undefined;
-	let before: string | undefined;
-	let pageNumber: number = 1;
-	let pageSize: number = 10;
+	export let showSelectButton = false;
+	export let args: QueryRoleConnectionArgs = {};
+	export let orderBy: RoleOrderBy = {};
+	export let after: string | undefined;
+	export let before: string | undefined;
+	export let pageNumber: number = 1;
+	export let pageSize: number = 10;
 
 	let selectAll: boolean;
-	let selectedIdList: string | null | undefined | (string | null | undefined)[] = multipleSelect
+	export let selectedIdList: string | null | undefined | (string | null | undefined)[] = multipleSelect
 		? []
 		: undefined;
 
@@ -61,12 +61,12 @@
 		showSelectButton = false;
 	}
 
-	const query = () => {
+	export const query = () => {
 		pageNumber = 1;
 		queryPage();
 	};
 
-	const queryPage = () => {
+	export const queryPage = () => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -96,7 +96,7 @@
 		});
 	};
 
-	const search = (searchValue: string | undefined) => {
+	export const search = (searchValue: string | undefined) => {
 		let args: QueryRoleConnectionArgs = {};
 		if (searchValue) {
 			args.cond = 'OR';
@@ -155,7 +155,7 @@
 	{showSelectButton}
 	{showBackButton}
 	on:search={(e) => search(e.detail.value)}
-	on:select={() =>
+	on:select={(e) =>
 		dispatch('select', {
 			selected: Array.isArray(selectedIdList)
 				? selectedIdList.flatMap(id => nodes?.find(node => node?.id == id)).map((node) => ({ ...node, where: { id: { val: node?.id } } }))
@@ -182,7 +182,7 @@
 							type="checkbox"
 							class="checkbox"
 							bind:checked={selectAll}
-							on:change={() => {
+							on:change={(e) => {
 								if (nodes && nodes.length > 0) {
 									selectedIdList = selectAll ? nodes.map((node) => node?.id) : [];
 								}
@@ -196,7 +196,7 @@
 				name={$LL.graphql.objects.Role.fields.name.name()}
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('Role::description::*')}
@@ -204,7 +204,7 @@
 				name={$LL.graphql.objects.Role.fields.description.name()}
 				bind:expression={args.description}
 				bind:sort={orderBy.description}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			<th />
@@ -231,7 +231,7 @@
 							<StringTd
 								name="name"
 								bind:value={node.name}
-								on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
 								readonly={!auth('Role::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
@@ -240,7 +240,7 @@
 							<StringTd
 								name="description"
 								bind:value={node.description}
-								on:save={() => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
 								readonly={!auth('Role::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>
@@ -285,6 +285,6 @@
 	bind:pageNumber
 	bind:pageSize
 	{totalCount}
-	on:pageChange={queryPage}
-	on:sizeChange={queryPage}
+	on:pageChange={(e) => queryPage()}
+	on:sizeChange={(e) => queryPage()}
 />

@@ -51,12 +51,12 @@
 		back: {};
 	}>();
 
-	let showSelectButton = false;
-	let args: {{ queryTypeName }}{{ name }}ListArgs = {};
-	let orderBy: {{ name }}OrderBy = {};
+	export let showSelectButton = false;
+	export let args: {{ queryTypeName }}{{ name }}ListArgs = {};
+	export let orderBy: {{ name }}OrderBy = {};
 
 	let selectAll: boolean;
-	let selectedIdList: string | null | undefined | (string | null | undefined)[] = multipleSelect
+	export let selectedIdList: string | null | undefined | (string | null | undefined)[] = multipleSelect
 		? []
 		: undefined;
 
@@ -66,7 +66,7 @@
 		showSelectButton = false;
 	}
 
-	const query = () => {
+	export const query = () => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -85,7 +85,7 @@
 		});
 	};
 
-	const search = (searchValue: string | undefined) => {
+	export const search = (searchValue: string | undefined) => {
 		let args: {{ queryTypeName }}{{ name }}ListArgs = {};
 		if (searchValue) {
 			args.cond = 'OR';
@@ -143,7 +143,7 @@
 	{showSelectButton}
 	{showBackButton}
 	on:search={(e) => search(e.detail.value)}
-	on:select={() =>
+	on:select={(e) =>
 		dispatch('select', {
 			selected: Array.isArray(selectedIdList)
 				? selectedIdList.flatMap(id => nodes?.find(node => node?.{{ idName }} == id)).map((node) => ({ ...node, where: { {{ idName }}: { val: node?.{{ idName }} } } }))
@@ -170,7 +170,7 @@
 							type="checkbox"
 							class="checkbox"
 							bind:checked={selectAll}
-							on:change={() => {
+							on:change={(e) => {
 								if (nodes && nodes.length > 0) {
 									selectedIdList = selectAll ? nodes.map((node) => node?.{{ idName }}) : [];
 								}
@@ -192,7 +192,7 @@
 				{%- if field.isListType == false %}
 				bind:sort={orderBy.{{ field.fieldName }}}
 				{%- endif %}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{%- else %}
 			<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
@@ -239,7 +239,7 @@
 								list
 								{%- endif %}
 								{%- if field.inMutationArgs and field.fieldName != idName %}
-								on:save={() => updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } })}
+								on:save={(e) => updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } })}
 								{%- if useAuth %}
 								readonly={!auth('{{ name }}::{{ field.fieldName }}::WRITE')}
 								{%- endif %}

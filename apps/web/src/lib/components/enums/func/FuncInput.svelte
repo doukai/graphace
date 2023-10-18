@@ -10,6 +10,8 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
+	export let containerClassName: string = '';
+	export let className: string = '';
 
 	$: enums = [
 		{ name: $LL.graphql.enums.Func.values.COUNT.name(), value: 'COUNT' },
@@ -20,4 +22,4 @@
 	];
 </script>
 
-<EnumInput bind:value {list} {enums} {name} {errors} {readonly} {disabled} {placeholder} />
+<EnumInput bind:value {list} {enums} {name} {errors} {readonly} {disabled} {placeholder} {containerClassName} {className} />

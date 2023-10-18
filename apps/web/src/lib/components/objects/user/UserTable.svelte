@@ -51,13 +51,13 @@
 		back: {};
 	}>();
 
-	let args: QueryUserListArgs = {};
-	let orderBy: UserOrderBy = {};
+	export let args: QueryUserListArgs = {};
+	export let orderBy: UserOrderBy = {};
 
 	let selectAll: boolean;
-	let selectedIdList: (string | null)[] = [];
+	export let selectedIdList: (string | null)[] = [];
 
-	const query = () => {
+	export const query = () => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -76,7 +76,7 @@
 		});
 	};
 
-	const search = (searchValue: string | undefined) => {
+	export const search = (searchValue: string | undefined) => {
 		let args: QueryUserListArgs = {};
 		if (searchValue) {
 			args.cond = 'OR';
@@ -180,8 +180,8 @@
 	{showBackButton}
 	on:create
 	on:search={(e) => search(e.detail.value)}
-	on:save={() => dispatch('save', { nodes })}
-	on:remove={() => {
+	on:save={(e) => dispatch('save', { nodes })}
+	on:remove={(e) => {
 		messageBoxs.open({
 			title: $LL.web.components.table.removeModalTitle(),
 			buttonName: $LL.web.components.table.removeBtn(),
@@ -192,7 +192,7 @@
 			}
 		});
 	}}
-	on:unbind={() =>
+	on:unbind={(e) =>
 		messageBoxs.open({
 			title: $LL.web.components.table.unbindModalTitle(),
 			buttonName: $LL.web.components.table.unbindBtn(),
@@ -223,7 +223,7 @@
 						type="checkbox"
 						class="checkbox"
 						bind:checked={selectAll}
-						on:change={() => {
+						on:change={(e) => {
 							if (nodes && nodes.length > 0) {
 								selectedIdList = selectAll ? nodes.map((node) => node?.id || null) : [];
 							}
@@ -236,7 +236,7 @@
 				name={$LL.graphql.objects.User.fields.name.name()}
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('User::lastName::*')}
@@ -244,7 +244,7 @@
 				name={$LL.graphql.objects.User.fields.lastName.name()}
 				bind:expression={args.lastName}
 				bind:sort={orderBy.lastName}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('User::login::*')}
@@ -252,7 +252,7 @@
 				name={$LL.graphql.objects.User.fields.login.name()}
 				bind:expression={args.login}
 				bind:sort={orderBy.login}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('User::email::*')}
@@ -260,14 +260,14 @@
 				name={$LL.graphql.objects.User.fields.email.name()}
 				bind:expression={args.email}
 				bind:sort={orderBy.email}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('User::phones::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.phones.name()}
 				bind:expression={args.phones}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('User::disable::*')}
@@ -275,28 +275,28 @@
 				name={$LL.graphql.objects.User.fields.disable.name()}
 				bind:expression={args.disable}
 				bind:sort={orderBy.disable}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('User::groups::*')}
 			<GroupTh
 				name={$LL.graphql.objects.User.fields.groups.name()}
 				bind:expression={args.groups}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('User::roles::*')}
 			<RoleTh
 				name={$LL.graphql.objects.User.fields.roles.name()}
 				bind:expression={args.roles}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('User::realm::*')}
 			<RealmTh
 				name={$LL.graphql.objects.User.fields.realm.name()}
 				bind:expression={args.realm}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			<th />
@@ -319,7 +319,7 @@
 							<StringTd
 								name="name"
 								bind:value={node.name}
-								on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
 								readonly={!auth('User::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
@@ -328,7 +328,7 @@
 							<StringTd
 								name="lastName"
 								bind:value={node.lastName}
-								on:save={() => updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } })}
 								readonly={!auth('User::lastName::WRITE')}
 								errors={errors[row]?.iterms?.lastName}
 							/>
@@ -337,7 +337,7 @@
 							<StringTd
 								name="login"
 								bind:value={node.login}
-								on:save={() => updateField({ login: node?.login, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ login: node?.login, where: { id: { val: node?.id } } })}
 								readonly={!auth('User::login::WRITE')}
 								errors={errors[row]?.iterms?.login}
 							/>
@@ -346,7 +346,7 @@
 							<StringTd
 								name="email"
 								bind:value={node.email}
-								on:save={() => updateField({ email: node?.email, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ email: node?.email, where: { id: { val: node?.id } } })}
 								readonly={!auth('User::email::WRITE')}
 								errors={errors[row]?.iterms?.email}
 							/>
@@ -356,7 +356,7 @@
 								name="phones"
 								bind:value={node.phones}
 								list
-								on:save={() => updateField({ phones: node?.phones, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ phones: node?.phones, where: { id: { val: node?.id } } })}
 								readonly={!auth('User::phones::WRITE')}
 								errors={errors[row]?.iterms?.phones}
 							/>
@@ -365,7 +365,7 @@
 							<BooleanTd
 								name="disable"
 								bind:value={node.disable}
-								on:save={() => updateField({ disable: node?.disable, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ disable: node?.disable, where: { id: { val: node?.id } } })}
 								readonly={!auth('User::disable::WRITE')}
 								errors={errors[row]?.iterms?.disable}
 							/>

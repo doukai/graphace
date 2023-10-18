@@ -53,13 +53,13 @@
 		back: {};
 	}>();
 
-	let args: QueryRoleListArgs = {};
-	let orderBy: RoleOrderBy = {};
+	export let args: QueryRoleListArgs = {};
+	export let orderBy: RoleOrderBy = {};
 
 	let selectAll: boolean;
-	let selectedIdList: (string | null)[] = [];
+	export let selectedIdList: (string | null)[] = [];
 
-	const query = () => {
+	export const query = () => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -78,7 +78,7 @@
 		});
 	};
 
-	const search = (searchValue: string | undefined) => {
+	export const search = (searchValue: string | undefined) => {
 		let args: QueryRoleListArgs = {};
 		if (searchValue) {
 			args.cond = 'OR';
@@ -176,8 +176,8 @@
 	{showBackButton}
 	on:create
 	on:search={(e) => search(e.detail.value)}
-	on:save={() => dispatch('save', { nodes })}
-	on:remove={() => {
+	on:save={(e) => dispatch('save', { nodes })}
+	on:remove={(e) => {
 		messageBoxs.open({
 			title: $LL.web.components.table.removeModalTitle(),
 			buttonName: $LL.web.components.table.removeBtn(),
@@ -188,7 +188,7 @@
 			}
 		});
 	}}
-	on:unbind={() =>
+	on:unbind={(e) =>
 		messageBoxs.open({
 			title: $LL.web.components.table.unbindModalTitle(),
 			buttonName: $LL.web.components.table.unbindBtn(),
@@ -219,7 +219,7 @@
 						type="checkbox"
 						class="checkbox"
 						bind:checked={selectAll}
-						on:change={() => {
+						on:change={(e) => {
 							if (nodes && nodes.length > 0) {
 								selectedIdList = selectAll ? nodes.map((node) => node?.id || null) : [];
 							}
@@ -232,7 +232,7 @@
 				name={$LL.graphql.objects.Role.fields.name.name()}
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('Role::description::*')}
@@ -240,42 +240,42 @@
 				name={$LL.graphql.objects.Role.fields.description.name()}
 				bind:expression={args.description}
 				bind:sort={orderBy.description}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('Role::users::*')}
 			<UserTh
 				name={$LL.graphql.objects.Role.fields.users.name()}
 				bind:expression={args.users}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('Role::groups::*')}
 			<GroupTh
 				name={$LL.graphql.objects.Role.fields.groups.name()}
 				bind:expression={args.groups}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('Role::composites::*')}
 			<RoleTh
 				name={$LL.graphql.objects.Role.fields.composites.name()}
 				bind:expression={args.composites}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('Role::permissions::*')}
 			<PermissionTh
 				name={$LL.graphql.objects.Role.fields.permissions.name()}
 				bind:expression={args.permissions}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if auth('Role::realm::*')}
 			<RealmTh
 				name={$LL.graphql.objects.Role.fields.realm.name()}
 				bind:expression={args.realm}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{/if}
 			<th />
@@ -298,7 +298,7 @@
 							<StringTd
 								name="name"
 								bind:value={node.name}
-								on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
 								readonly={!auth('Role::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
@@ -307,7 +307,7 @@
 							<StringTd
 								name="description"
 								bind:value={node.description}
-								on:save={() => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
 								readonly={!auth('Role::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>

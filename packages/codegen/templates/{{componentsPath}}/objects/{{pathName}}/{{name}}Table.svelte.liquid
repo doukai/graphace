@@ -62,13 +62,13 @@
 		back: {};
 	}>();
 
-	let args: {{ queryTypeName }}{{ name }}ListArgs = {};
-	let orderBy: {{ name }}OrderBy = {};
+	export let args: {{ queryTypeName }}{{ name }}ListArgs = {};
+	export let orderBy: {{ name }}OrderBy = {};
 
 	let selectAll: boolean;
-	let selectedIdList: (string | null)[] = [];
+	export let selectedIdList: (string | null)[] = [];
 
-	const query = () => {
+	export const query = () => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -87,7 +87,7 @@
 		});
 	};
 
-	const search = (searchValue: string | undefined) => {
+	export const search = (searchValue: string | undefined) => {
 		let args: {{ queryTypeName }}{{ name }}ListArgs = {};
 		if (searchValue) {
 			args.cond = 'OR';
@@ -202,8 +202,8 @@
 	{showBackButton}
 	on:create
 	on:search={(e) => search(e.detail.value)}
-	on:save={() => dispatch('save', { nodes })}
-	on:remove={() => {
+	on:save={(e) => dispatch('save', { nodes })}
+	on:remove={(e) => {
 		messageBoxs.open({
 			title: $LL.web.components.table.removeModalTitle(),
 			buttonName: $LL.web.components.table.removeBtn(),
@@ -214,7 +214,7 @@
 			}
 		});
 	}}
-	on:unbind={() =>
+	on:unbind={(e) =>
 		messageBoxs.open({
 			title: $LL.web.components.table.unbindModalTitle(),
 			buttonName: $LL.web.components.table.unbindBtn(),
@@ -245,7 +245,7 @@
 						type="checkbox"
 						class="checkbox"
 						bind:checked={selectAll}
-						on:change={() => {
+						on:change={(e) => {
 							if (nodes && nodes.length > 0) {
 								selectedIdList = selectAll ? nodes.map((node) => node?.{{ idName }} || null) : [];
 							}
@@ -266,13 +266,13 @@
 				{%- if field.isListType == false %}
 				bind:sort={orderBy.{{ field.fieldName }}}
 				{%- endif %}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{%- else %}
 			<{{ field.fieldType.name }}Th
 				name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 				bind:expression={args.{{ field.fieldName }}}
-				on:filter={query}
+				on:filter={(e) => query()}
 			/>
 			{%- endif %}
 			{%- else %}
@@ -315,7 +315,7 @@
 								list
 								{%- endif %}
 								{%- if field.inMutationArgs and field.fieldName != idName %}
-								on:save={() => updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } })}
+								on:save={(e) => updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } })}
 								{%- if useAuth %}
 								readonly={!auth('{{ name }}::{{ field.fieldName }}::WRITE')}
 								{%- endif %}

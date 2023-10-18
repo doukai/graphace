@@ -7,6 +7,8 @@
 	import type { StringExpression, BooleanExpression } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 	import type { UserExpression } from '$houdini';
+	import OperatorSelect from '@graphace/ui-graphql/components/input/OperatorSelect.svelte';
+	import { auth } from '@graphace/commons/stores/useAuth';
 
 	export let name: string;
 	export let expression: UserExpression | null | undefined;
@@ -112,30 +114,16 @@
 <div class="hidden">
 	<div class="space-y-2" bind:this={content}>
 		<div class="grid grid-cols-2 gap-2">
+			{#if auth('User::name::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.User.fields.name.name()}
 				</button>
-				<select
-					class="select select-bordered join-item w-2/3"
+				<OperatorSelect
+					className="join-item w-2/3"
 					bind:value={_expression.name.opr}
-					on:change={nameOprChange}
-				>
-					<option value="EQ" selected>{$LL.uiGraphql.table.th.eq()}</option>
-					<option value="NEQ">{$LL.uiGraphql.table.th.neq()}</option>
-					<option value="LK">{$LL.uiGraphql.table.th.lk()}</option>
-					<option value="NLK">{$LL.uiGraphql.table.th.nlk()}</option>
-					<option value="GT">{$LL.uiGraphql.table.th.gt()}</option>
-					<option value="GTE">{$LL.uiGraphql.table.th.gte()}</option>
-					<option value="LT">{$LL.uiGraphql.table.th.lt()}</option>
-					<option value="LTE">{$LL.uiGraphql.table.th.lte()}</option>
-					<option value="NIL">{$LL.uiGraphql.table.th.nil()}</option>
-					<option value="NNIL">{$LL.uiGraphql.table.th.nnil()}</option>
-					<option value="IN">{$LL.uiGraphql.table.th.in()}</option>
-					<option value="NIN">{$LL.uiGraphql.table.th.nin()}</option>
-					<option value="BT">{$LL.uiGraphql.table.th.bt()}</option>
-					<option value="NBT">{$LL.uiGraphql.table.th.nbt()}</option>
-				</select>
+					on:change={(e) => nameOprChange()}
+				/>
 			</div>
 			{#if _expression.name.opr === 'IN' || _expression.name.opr === 'NIN' || _expression.name.opr === 'BT' || _expression.name.opr === 'NBT'}
 				<StringInput
@@ -150,30 +138,17 @@
 					bind:value={_expression.name.val}
 				/>
 			{/if}
+			{/if}
+			{#if auth('User::lastName::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.User.fields.lastName.name()}
 				</button>
-				<select
-					class="select select-bordered join-item w-2/3"
+				<OperatorSelect
+					className="join-item w-2/3"
 					bind:value={_expression.lastName.opr}
-					on:change={lastNameOprChange}
-				>
-					<option value="EQ" selected>{$LL.uiGraphql.table.th.eq()}</option>
-					<option value="NEQ">{$LL.uiGraphql.table.th.neq()}</option>
-					<option value="LK">{$LL.uiGraphql.table.th.lk()}</option>
-					<option value="NLK">{$LL.uiGraphql.table.th.nlk()}</option>
-					<option value="GT">{$LL.uiGraphql.table.th.gt()}</option>
-					<option value="GTE">{$LL.uiGraphql.table.th.gte()}</option>
-					<option value="LT">{$LL.uiGraphql.table.th.lt()}</option>
-					<option value="LTE">{$LL.uiGraphql.table.th.lte()}</option>
-					<option value="NIL">{$LL.uiGraphql.table.th.nil()}</option>
-					<option value="NNIL">{$LL.uiGraphql.table.th.nnil()}</option>
-					<option value="IN">{$LL.uiGraphql.table.th.in()}</option>
-					<option value="NIN">{$LL.uiGraphql.table.th.nin()}</option>
-					<option value="BT">{$LL.uiGraphql.table.th.bt()}</option>
-					<option value="NBT">{$LL.uiGraphql.table.th.nbt()}</option>
-				</select>
+					on:change={(e) => lastNameOprChange()}
+				/>
 			</div>
 			{#if _expression.lastName.opr === 'IN' || _expression.lastName.opr === 'NIN' || _expression.lastName.opr === 'BT' || _expression.lastName.opr === 'NBT'}
 				<StringInput
@@ -188,30 +163,17 @@
 					bind:value={_expression.lastName.val}
 				/>
 			{/if}
+			{/if}
+			{#if auth('User::login::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.User.fields.login.name()}
 				</button>
-				<select
-					class="select select-bordered join-item w-2/3"
+				<OperatorSelect
+					className="join-item w-2/3"
 					bind:value={_expression.login.opr}
-					on:change={loginOprChange}
-				>
-					<option value="EQ" selected>{$LL.uiGraphql.table.th.eq()}</option>
-					<option value="NEQ">{$LL.uiGraphql.table.th.neq()}</option>
-					<option value="LK">{$LL.uiGraphql.table.th.lk()}</option>
-					<option value="NLK">{$LL.uiGraphql.table.th.nlk()}</option>
-					<option value="GT">{$LL.uiGraphql.table.th.gt()}</option>
-					<option value="GTE">{$LL.uiGraphql.table.th.gte()}</option>
-					<option value="LT">{$LL.uiGraphql.table.th.lt()}</option>
-					<option value="LTE">{$LL.uiGraphql.table.th.lte()}</option>
-					<option value="NIL">{$LL.uiGraphql.table.th.nil()}</option>
-					<option value="NNIL">{$LL.uiGraphql.table.th.nnil()}</option>
-					<option value="IN">{$LL.uiGraphql.table.th.in()}</option>
-					<option value="NIN">{$LL.uiGraphql.table.th.nin()}</option>
-					<option value="BT">{$LL.uiGraphql.table.th.bt()}</option>
-					<option value="NBT">{$LL.uiGraphql.table.th.nbt()}</option>
-				</select>
+					on:change={(e) => loginOprChange()}
+				/>
 			</div>
 			{#if _expression.login.opr === 'IN' || _expression.login.opr === 'NIN' || _expression.login.opr === 'BT' || _expression.login.opr === 'NBT'}
 				<StringInput
@@ -226,30 +188,17 @@
 					bind:value={_expression.login.val}
 				/>
 			{/if}
+			{/if}
+			{#if auth('User::email::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.User.fields.email.name()}
 				</button>
-				<select
-					class="select select-bordered join-item w-2/3"
+				<OperatorSelect
+					className="join-item w-2/3"
 					bind:value={_expression.email.opr}
-					on:change={emailOprChange}
-				>
-					<option value="EQ" selected>{$LL.uiGraphql.table.th.eq()}</option>
-					<option value="NEQ">{$LL.uiGraphql.table.th.neq()}</option>
-					<option value="LK">{$LL.uiGraphql.table.th.lk()}</option>
-					<option value="NLK">{$LL.uiGraphql.table.th.nlk()}</option>
-					<option value="GT">{$LL.uiGraphql.table.th.gt()}</option>
-					<option value="GTE">{$LL.uiGraphql.table.th.gte()}</option>
-					<option value="LT">{$LL.uiGraphql.table.th.lt()}</option>
-					<option value="LTE">{$LL.uiGraphql.table.th.lte()}</option>
-					<option value="NIL">{$LL.uiGraphql.table.th.nil()}</option>
-					<option value="NNIL">{$LL.uiGraphql.table.th.nnil()}</option>
-					<option value="IN">{$LL.uiGraphql.table.th.in()}</option>
-					<option value="NIN">{$LL.uiGraphql.table.th.nin()}</option>
-					<option value="BT">{$LL.uiGraphql.table.th.bt()}</option>
-					<option value="NBT">{$LL.uiGraphql.table.th.nbt()}</option>
-				</select>
+					on:change={(e) => emailOprChange()}
+				/>
 			</div>
 			{#if _expression.email.opr === 'IN' || _expression.email.opr === 'NIN' || _expression.email.opr === 'BT' || _expression.email.opr === 'NBT'}
 				<StringInput
@@ -264,30 +213,17 @@
 					bind:value={_expression.email.val}
 				/>
 			{/if}
+			{/if}
+			{#if auth('User::phones::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.User.fields.phones.name()}
 				</button>
-				<select
-					class="select select-bordered join-item w-2/3"
+				<OperatorSelect
+					className="join-item w-2/3"
 					bind:value={_expression.phones.opr}
-					on:change={phonesOprChange}
-				>
-					<option value="EQ" selected>{$LL.uiGraphql.table.th.eq()}</option>
-					<option value="NEQ">{$LL.uiGraphql.table.th.neq()}</option>
-					<option value="LK">{$LL.uiGraphql.table.th.lk()}</option>
-					<option value="NLK">{$LL.uiGraphql.table.th.nlk()}</option>
-					<option value="GT">{$LL.uiGraphql.table.th.gt()}</option>
-					<option value="GTE">{$LL.uiGraphql.table.th.gte()}</option>
-					<option value="LT">{$LL.uiGraphql.table.th.lt()}</option>
-					<option value="LTE">{$LL.uiGraphql.table.th.lte()}</option>
-					<option value="NIL">{$LL.uiGraphql.table.th.nil()}</option>
-					<option value="NNIL">{$LL.uiGraphql.table.th.nnil()}</option>
-					<option value="IN">{$LL.uiGraphql.table.th.in()}</option>
-					<option value="NIN">{$LL.uiGraphql.table.th.nin()}</option>
-					<option value="BT">{$LL.uiGraphql.table.th.bt()}</option>
-					<option value="NBT">{$LL.uiGraphql.table.th.nbt()}</option>
-				</select>
+					on:change={(e) => phonesOprChange()}
+				/>
 			</div>
 			{#if _expression.phones.opr === 'IN' || _expression.phones.opr === 'NIN' || _expression.phones.opr === 'BT' || _expression.phones.opr === 'NBT'}
 				<StringInput
@@ -302,30 +238,17 @@
 					bind:value={_expression.phones.val}
 				/>
 			{/if}
+			{/if}
+			{#if auth('User::disable::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.User.fields.disable.name()}
 				</button>
-				<select
-					class="select select-bordered join-item w-2/3"
+				<OperatorSelect
+					className="join-item w-2/3"
 					bind:value={_expression.disable.opr}
-					on:change={disableOprChange}
-				>
-					<option value="EQ" selected>{$LL.uiGraphql.table.th.eq()}</option>
-					<option value="NEQ">{$LL.uiGraphql.table.th.neq()}</option>
-					<option value="LK">{$LL.uiGraphql.table.th.lk()}</option>
-					<option value="NLK">{$LL.uiGraphql.table.th.nlk()}</option>
-					<option value="GT">{$LL.uiGraphql.table.th.gt()}</option>
-					<option value="GTE">{$LL.uiGraphql.table.th.gte()}</option>
-					<option value="LT">{$LL.uiGraphql.table.th.lt()}</option>
-					<option value="LTE">{$LL.uiGraphql.table.th.lte()}</option>
-					<option value="NIL">{$LL.uiGraphql.table.th.nil()}</option>
-					<option value="NNIL">{$LL.uiGraphql.table.th.nnil()}</option>
-					<option value="IN">{$LL.uiGraphql.table.th.in()}</option>
-					<option value="NIN">{$LL.uiGraphql.table.th.nin()}</option>
-					<option value="BT">{$LL.uiGraphql.table.th.bt()}</option>
-					<option value="NBT">{$LL.uiGraphql.table.th.nbt()}</option>
-				</select>
+					on:change={(e) => disableOprChange()}
+				/>
 			</div>
 			{#if _expression.disable.opr === 'IN' || _expression.disable.opr === 'NIN' || _expression.disable.opr === 'BT' || _expression.disable.opr === 'NBT'}
 				<BooleanInput
@@ -338,15 +261,16 @@
 					bind:value={_expression.disable.val}
 				/>
 			{/if}
+			{/if}
 		</div>
 		<div class="flex justify-center space-x-2">
 			<div class="tooltip" data-tip={$LL.uiGraphql.table.th.filter()}>
-				<button class="btn btn-square btn-primary" on:click={filter}>
+				<button class="btn btn-square btn-primary" on:click={(e) => filter()}>
 					<Icon src={Check} class="h-5 w-5" />
 				</button>
 			</div>
 			<div class="tooltip" data-tip={$LL.uiGraphql.table.th.cancel()}>
-				<button class="btn btn-square btn-outline btn-error" on:click={clear}>
+				<button class="btn btn-square btn-outline btn-error" on:click={(e) => clear()}>
 					<Icon src={XMark} class="h-5 w-5" />
 				</button>
 			</div>

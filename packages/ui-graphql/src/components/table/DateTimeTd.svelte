@@ -49,12 +49,12 @@
 		{/if}
 		{#if !readonly && !disabled}
 			<div class="tooltip" data-tip={$LL.uiGraphql.table.td.save()}>
-				<button class="btn btn-square btn-primary" on:click={() => mutation()}>
+				<button class="btn btn-square btn-primary" on:click|preventDefault={(e) => mutation()}>
 					<Icon src={Check} class="h-5 w-5" />
 				</button>
 			</div>
 			<div class="tooltip" data-tip={$LL.uiGraphql.table.td.clear()}>
-				<button class="btn btn-square btn-outline btn-error" on:click={() => clean()}>
+				<button class="btn btn-square btn-outline btn-error" on:click|preventDefault={(e) => clean()}>
 					<Icon src={XMark} class="h-5 w-5" />
 				</button>
 			</div>

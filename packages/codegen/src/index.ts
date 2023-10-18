@@ -408,7 +408,8 @@ const renders: Record<Template, Render> = {
                         enumsPath: `${config.componentsPath}/enums`,
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
-                        subscriptionTypeName: getSubscriptionTypeName()
+                        subscriptionTypeName: getSubscriptionTypeName(),
+                        useAuth: config.useAuth
                     }),
                 };
             }

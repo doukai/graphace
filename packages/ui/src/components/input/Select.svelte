@@ -4,6 +4,7 @@
 	export let name: string;
 	export let value: string | null | undefined;
 	export let placeholder: string = '';
+	export let containerClassName: string = '';
 	export let className: string = '';
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
@@ -11,7 +12,7 @@
 	export let id: string = nanoid();
 </script>
 
-<div class="form-control w-full">
+<div class={containerClassName ? containerClassName : 'form-control w-full'}>
 	{#if readonly}
 		<input
 			type="text"

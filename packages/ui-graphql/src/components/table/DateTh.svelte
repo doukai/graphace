@@ -6,6 +6,7 @@
 	import { DateInput, DateInputList } from '@graphace/ui/components/input';
 	import type { StringExpression, Sort } from '@graphace/graphql/types';
 	import LL from '$i18n/i18n-svelte';
+	import OperatorSelect from '~/components/input/OperatorSelect.svelte';
 
 	export let name: string;
 	export let expression: StringExpression | null | undefined;
@@ -50,22 +51,11 @@
 
 <div class="hidden">
 	<div class="flex items-start space-x-1" bind:this={content}>
-		<select class="select select-bordered" bind:value={_expression.opr} on:change={oprChange}>
-			<option value="EQ" selected>{$LL.uiGraphql.table.th.eq()}</option>
-			<option value="NEQ">{$LL.uiGraphql.table.th.neq()}</option>
-			<option value="LK">{$LL.uiGraphql.table.th.lk()}</option>
-			<option value="NLK">{$LL.uiGraphql.table.th.nlk()}</option>
-			<option value="GT">{$LL.uiGraphql.table.th.gt()}</option>
-			<option value="GTE">{$LL.uiGraphql.table.th.gte()}</option>
-			<option value="LT">{$LL.uiGraphql.table.th.lt()}</option>
-			<option value="LTE">{$LL.uiGraphql.table.th.lte()}</option>
-			<option value="NIL">{$LL.uiGraphql.table.th.nil()}</option>
-			<option value="NNIL">{$LL.uiGraphql.table.th.nnil()}</option>
-			<option value="IN">{$LL.uiGraphql.table.th.in()}</option>
-			<option value="NIN">{$LL.uiGraphql.table.th.nin()}</option>
-			<option value="BT">{$LL.uiGraphql.table.th.bt()}</option>
-			<option value="NBT">{$LL.uiGraphql.table.th.nbt()}</option>
-		</select>
+		<OperatorSelect
+			className="join-item w-2/3"
+			bind:value={_expression.opr}
+			on:change={(e) => oprChange()}
+		/>
 		{#if _expression.opr === 'IN' || _expression.opr === 'NIN' || _expression.opr === 'BT' || _expression.opr === 'NBT'}
 			<DateInputList
 				placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
@@ -85,12 +75,12 @@
 			<option value="DESC">{$LL.uiGraphql.table.th.desc()}</option>
 		</select>
 		<div class="tooltip" data-tip={$LL.uiGraphql.table.th.filter()}>
-			<button class="btn btn-square btn-primary" on:click={filter}>
+			<button class="btn btn-square btn-primary" on:click|preventDefault={(e) => filter()}>
 				<Icon src={Check} class="h-5 w-5" />
 			</button>
 		</div>
 		<div class="tooltip" data-tip={$LL.uiGraphql.table.th.cancel()}>
-			<button class="btn btn-square btn-outline btn-error" on:click={clear}>
+			<button class="btn btn-square btn-outline btn-error" on:click|preventDefault={(e) => clear()}>
 				<Icon src={XMark} class="h-5 w-5" />
 			</button>
 		</div>

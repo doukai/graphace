@@ -2,6 +2,7 @@
 	import type { Errors } from '@graphace/commons/types';
 	import { nanoid } from 'nanoid';
 	export let value: string | (string | null | undefined)[] | null | undefined;
+	export let containerClassName: string = '';
 	export let errors: Errors | undefined = undefined;
 	export let items: { name: string; value: string | null | undefined; description?: string }[] = [];
 	export let readonly = false;
@@ -13,7 +14,7 @@
 	}
 </script>
 
-<div class="w-full">
+<div class={containerClassName ? containerClassName : 'w-full'}>
 	<div class="{errors?.errors ? 'border-2 border-error p-1 rounded-xl' : ''} space-y-2">
 		<div class="max-w-lg space-y-4">
 			{#each items as item, row}

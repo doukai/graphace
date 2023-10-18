@@ -10,12 +10,23 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
+	export let containerClassName: string = '';
+	export let className: string = '';
 </script>
 
 {#if Array.isArray(value) || (list && (value === null || value === undefined))}
-	<CheckboxGroup bind:value items={enums} {errors} {readonly} {disabled} />
+	<CheckboxGroup bind:value {containerClassName} items={enums} {errors} {readonly} {disabled} />
 {:else}
-	<Select {name} bind:value {errors} {placeholder} {readonly} {disabled}>
+	<Select
+		{name}
+		bind:value
+		{errors}
+		{placeholder}
+		{containerClassName}
+		{className}
+		{readonly}
+		{disabled}
+	>
 		{#each enums as item}
 			<option value={item.value}>{item.name}</option>
 		{/each}

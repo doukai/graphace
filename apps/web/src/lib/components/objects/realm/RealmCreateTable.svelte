@@ -44,14 +44,14 @@
 
 <TableHead
 	title={$LL.graphql.objects.Realm.name()}
-	showRemoveButton={auth('Realm::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
+	showRemoveButton={auth('Realm::*::WRITE') && showRemoveButton && selectedRowList.length > 0}
 	showSaveButton={auth('Realm::*::WRITE') && showSaveButton}
 	showGotoSelectButton={auth('Realm::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	showSearchInput={false}
 	on:create
-	on:save={() => dispatch('save', { nodes })}
-	on:remove={() => {
+	on:save={(e) => dispatch('save', { nodes })}
+	on:remove={(e) => {
 		messageBoxs.open({
 			title: $LL.web.components.table.removeModalTitle(),
 			buttonName: $LL.web.components.table.removeBtn(),
@@ -75,7 +75,7 @@
 						type="checkbox"
 						class="checkbox"
 						bind:checked={selectAll}
-						on:change={() => {
+						on:change={(e) => {
 							if (nodes && nodes.length > 0) {
 								selectedRowList = selectAll ? nodes.map((node) => nodes?.indexOf(node)) : [];
 							}

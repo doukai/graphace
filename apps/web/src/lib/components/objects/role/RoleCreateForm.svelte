@@ -64,8 +64,8 @@
 	showRemoveButton={auth('Role::*::WRITE') && showRemoveButton && node !== undefined && node !== null && Object.keys(node).length > 0}
 	showGotoSelectButton={auth('Role::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
-	on:save={save}
-	on:remove={() =>
+	on:save={(e) => save()}
+	on:remove={(e) =>
 		messageBoxs.open({
 			title: $LL.web.components.table.removeModalTitle(),
 			buttonName: $LL.web.components.table.removeBtn(),
