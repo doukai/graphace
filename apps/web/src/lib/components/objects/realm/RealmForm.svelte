@@ -8,6 +8,7 @@
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
 	import type { Realm, RealmInput } from '~/lib/types/schema';
+	import { auth } from '@graphace/commons/stores/useAuth';
 
 	export let node: Realm | null | undefined;
 	export let isFetching: boolean;
@@ -84,9 +85,9 @@
 
 <Form
 	title={$LL.graphql.objects.Realm.name()}
-	{showRemoveButton}
-	{showUnbindButton}
-	{showGotoSelectButton}
+	showRemoveButton={auth('Realm::*::WRITE') && showRemoveButton}
+	showUnbindButton={auth('Realm::*::WRITE') && showUnbindButton}
+	showGotoSelectButton={auth('Realm::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	on:save={save}
 	on:remove={() =>
@@ -124,7 +125,9 @@
 		<FormLoading rows={1} />
 	{:else}
 		{#if node}
+			{#if auth('Realm::name::*')}
 			<StringItem label={$LL.graphql.objects.Realm.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
+			{/if}
 		{/if}
 	{/if}
 </Form>

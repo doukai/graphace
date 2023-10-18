@@ -14,6 +14,7 @@
 		QueryGroupConnectionArgs,
 		GroupInput
 	} from '~/lib/types/schema';
+	import { auth } from '@graphace/commons/stores/useAuth';
 
 	export let nodes: (Group | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;
@@ -190,24 +191,30 @@
 					</label>
 				{/if}
 			</th>
+			{#if auth('Group::name::*')}
 			<StringTh
 				name={$LL.graphql.objects.Group.fields.name.name()}
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Group::path::*')}
 			<StringTh
 				name={$LL.graphql.objects.Group.fields.path.name()}
 				bind:expression={args.path}
 				bind:sort={orderBy.path}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Group::deep::*')}
 			<IntTh
 				name={$LL.graphql.objects.Group.fields.deep.name()}
 				bind:expression={args.deep}
 				bind:sort={orderBy.deep}
 				on:filter={query}
 			/>
+			{/if}
 			<th />
 		</tr>
 	</thead>
@@ -228,24 +235,33 @@
 									{/if}
 								</label>
 							</th>
+							{#if auth('Group::name::*')}
 							<StringTd
 								name="name"
 								bind:value={node.name}
 								on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								readonly={!auth('Group::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
+							{/if}
+							{#if auth('Group::path::*')}
 							<StringTd
 								name="path"
 								bind:value={node.path}
 								on:save={() => updateField({ path: node?.path, where: { id: { val: node?.id } } })}
+								readonly={!auth('Group::path::WRITE')}
 								errors={errors[row]?.iterms?.path}
 							/>
+							{/if}
+							{#if auth('Group::deep::*')}
 							<IntTd
 								name="deep"
 								bind:value={node.deep}
 								on:save={() => updateField({ deep: node?.deep, where: { id: { val: node?.id } } })}
+								readonly={!auth('Group::deep::WRITE')}
 								errors={errors[row]?.iterms?.deep}
 							/>
+							{/if}
 							<th class="z-10 hover:z-30 w-12">
 								<div class="flex space-x-1">
 									<div class="tooltip" data-tip={$LL.web.components.table.selectBtn()}>

@@ -17,6 +17,9 @@
 	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
+	{%- if useAuth %}
+	import { auth } from '@graphace/commons/stores/useAuth';
+	{%- endif %}
 
 	export let nodes: ({{ name }}Input | null | undefined)[] | null | undefined;
 	export let errors: Record<number, Errors> = {};
@@ -52,10 +55,16 @@
 
 <TableHead
 	title={$LL.graphql.objects.{{ name }}.name()}
-	showRemoveButton={showRemoveButton && selectedRowList.length > 0}
+	{%- if useAuth %}
+	showRemoveButton={auth('{{ name }}::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
+	showSaveButton={auth('{{ name }}::*::WRITE') && showSaveButton}
+	showGotoSelectButton={auth('{{ name }}::*::WRITE') && showGotoSelectButton}
+	{%- else %}
+	showRemoveButton={showRemoveButton && selectedIdList.length > 0}
 	{showSaveButton}
-	{showBackButton}
 	{showGotoSelectButton}
+	{%- endif %}
+	{showBackButton}
 	showSearchInput={false}
 	on:create
 	on:save={() => dispatch('save', { nodes })}
@@ -93,8 +102,14 @@
 			</th>
 			{%- if fields %}
 			{%- for field in fields %}
+			{%- if useAuth %}
+			{#if auth('{{ name }}::{{ field.fieldName }}::*')}
+			{%- endif %}
 			{%- if field.inMutationArgs %}
 			<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
+			{%- endif %}
+			{%- if useAuth %}
+			{/if}
 			{%- endif %}
 			{%- endfor %}
 			{%- endif %}
@@ -113,6 +128,9 @@
 						</th>
 						{%- if fields %}
 						{%- for field in fields %}
+						{%- if useAuth %}
+						{#if auth('{{ name }}::{{ field.fieldName }}::*')}
+						{%- endif %}
 						{%- if field.inMutationArgs %}
 						{%- if field.component %}
 						{{ field.component }}
@@ -132,7 +150,13 @@
 						{%- endif %}
 						{%- endif %}
 						{%- endif %}
+						{%- if useAuth %}
+						{/if}
+						{%- endif %}
 						{%- endfor %}
+						{%- endif %}
+						{%- if useAuth %}
+						{#if auth('{{ name }}::*::WRITE')}
 						{%- endif %}
 						<th class="z-10 hover:z-30 w-24">
 							<div class="flex space-x-1">
@@ -166,6 +190,9 @@
 								</div>
 							</div>
 						</th>
+						{%- if useAuth %}
+						{/if}
+						{%- endif %}
 					</tr>
 				{/if}
 			{/each}

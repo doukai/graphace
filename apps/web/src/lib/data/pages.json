@@ -3,36 +3,36 @@
     "name": "Objects",
     "icon": "material-symbols:data-object",
     "items": [
-	{
+	    {
         "name": "Group",
         "tags": "Group",
         "href": "/group",
         "permissions": ["Group::*::*"]
-	},
-	{
+	    },
+	    {
         "name": "Permission",
         "tags": "Permission",
         "href": "/permission",
         "permissions": ["Permission::*::*"]
-	},
-	{
+	    },
+	    {
         "name": "Realm",
         "tags": "Realm",
         "href": "/realm",
         "permissions": ["Realm::*::*"]
-	},
-	{
+	    },
+	    {
         "name": "Role",
         "tags": "Role",
         "href": "/role",
         "permissions": ["Role::*::*"]
-	},
-	{
+	    },
+	    {
         "name": "User",
         "tags": "User",
         "href": "/user",
         "permissions": ["User::*::*"]
-	}
+	    }
     ]
   }
 ]

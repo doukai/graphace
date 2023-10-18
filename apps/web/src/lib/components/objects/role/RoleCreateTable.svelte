@@ -8,6 +8,7 @@
 	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	import type { RoleInput } from '~/lib/types/schema';
+	import { auth } from '@graphace/commons/stores/useAuth';
 
 	export let nodes: (RoleInput | null | undefined)[] | null | undefined;
 	export let errors: Record<number, Errors> = {};
@@ -43,10 +44,10 @@
 
 <TableHead
 	title={$LL.graphql.objects.Role.name()}
-	showRemoveButton={showRemoveButton && selectedRowList.length > 0}
-	{showSaveButton}
+	showRemoveButton={auth('Role::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
+	showSaveButton={auth('Role::*::WRITE') && showSaveButton}
+	showGotoSelectButton={auth('Role::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
-	{showGotoSelectButton}
 	showSearchInput={false}
 	on:create
 	on:save={() => dispatch('save', { nodes })}
@@ -82,13 +83,27 @@
 					/>
 				</label>
 			</th>
+			{#if auth('Role::name::*')}
 			<td>{$LL.graphql.objects.Role.fields.name.name()}</td>
+			{/if}
+			{#if auth('Role::description::*')}
 			<td>{$LL.graphql.objects.Role.fields.description.name()}</td>
+			{/if}
+			{#if auth('Role::users::*')}
 			<td>{$LL.graphql.objects.Role.fields.users.name()}</td>
+			{/if}
+			{#if auth('Role::groups::*')}
 			<td>{$LL.graphql.objects.Role.fields.groups.name()}</td>
+			{/if}
+			{#if auth('Role::composites::*')}
 			<td>{$LL.graphql.objects.Role.fields.composites.name()}</td>
+			{/if}
+			{#if auth('Role::permissions::*')}
 			<td>{$LL.graphql.objects.Role.fields.permissions.name()}</td>
+			{/if}
+			{#if auth('Role::realm::*')}
 			<td>{$LL.graphql.objects.Role.fields.realm.name()}</td>
+			{/if}
 			<th />
 		</tr>
 	</thead>
@@ -102,23 +117,38 @@
 								<input type="checkbox" class="checkbox" bind:group={selectedRowList} value={row} />
 							</label>
 						</th>
+						{#if auth('Role::name::*')}
 						<StringTd
 							name="name"
 							bind:value={node.name}
 							readonly
 							errors={errors[row]?.iterms?.name}
 						/>
+						{/if}
+						{#if auth('Role::description::*')}
 						<StringTd
 							name="description"
 							bind:value={node.description}
 							readonly
 							errors={errors[row]?.iterms?.description}
 						/>
+						{/if}
+						{#if auth('Role::users::*')}
 						<ObjectTd name="users" errors={errors[row]?.iterms?.users} path="_/users" on:gotoField />
+						{/if}
+						{#if auth('Role::groups::*')}
 						<ObjectTd name="groups" errors={errors[row]?.iterms?.groups} path="_/groups" on:gotoField />
+						{/if}
+						{#if auth('Role::composites::*')}
 						<ObjectTd name="composites" errors={errors[row]?.iterms?.composites} path="_/composites" on:gotoField />
+						{/if}
+						{#if auth('Role::permissions::*')}
 						<ObjectTd name="permissions" errors={errors[row]?.iterms?.permissions} path="_/permissions" on:gotoField />
+						{/if}
+						{#if auth('Role::realm::*')}
 						<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
+						{/if}
+						{#if auth('Role::*::WRITE')}
 						<th class="z-10 hover:z-30 w-24">
 							<div class="flex space-x-1">
 								<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
@@ -151,6 +181,7 @@
 								</div>
 							</div>
 						</th>
+						{/if}
 					</tr>
 				{/if}
 			{/each}

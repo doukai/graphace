@@ -18,6 +18,7 @@
 		QueryGroupListArgs,
 		GroupInput
 	} from '~/lib/types/schema';
+	import { auth } from '@graphace/commons/stores/useAuth';
 
 	export let nodes: (Group | null | undefined)[] | null | undefined;
 	export let isFetching: boolean;
@@ -167,10 +168,10 @@
 
 <TableHead
 	title={$LL.graphql.objects.Group.name()}
-	showRemoveButton={showRemoveButton && selectedIdList.length > 0}
-	showUnbindButton={showUnbindButton && selectedIdList.length > 0}
-	{showSaveButton}
-	{showGotoSelectButton}
+	showRemoveButton={auth('Group::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
+	showUnbindButton={auth('Group::*::WRITE') && showUnbindButton && selectedIdList.length > 0}
+	showSaveButton={auth('Group::*::WRITE') && showSaveButton}
+	showGotoSelectButton={auth('Group::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	on:create
 	on:search={(e) => search(e.detail.value)}
@@ -225,49 +226,65 @@
 					/>
 				</label>
 			</th>
+			{#if auth('Group::name::*')}
 			<StringTh
 				name={$LL.graphql.objects.Group.fields.name.name()}
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Group::path::*')}
 			<StringTh
 				name={$LL.graphql.objects.Group.fields.path.name()}
 				bind:expression={args.path}
 				bind:sort={orderBy.path}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Group::deep::*')}
 			<IntTh
 				name={$LL.graphql.objects.Group.fields.deep.name()}
 				bind:expression={args.deep}
 				bind:sort={orderBy.deep}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Group::parent::*')}
 			<GroupTh
 				name={$LL.graphql.objects.Group.fields.parent.name()}
 				bind:expression={args.parent}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Group::subGroups::*')}
 			<GroupTh
 				name={$LL.graphql.objects.Group.fields.subGroups.name()}
 				bind:expression={args.subGroups}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Group::users::*')}
 			<UserTh
 				name={$LL.graphql.objects.Group.fields.users.name()}
 				bind:expression={args.users}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Group::roles::*')}
 			<RoleTh
 				name={$LL.graphql.objects.Group.fields.roles.name()}
 				bind:expression={args.roles}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Group::realm::*')}
 			<RealmTh
 				name={$LL.graphql.objects.Group.fields.realm.name()}
 				bind:expression={args.realm}
 				on:filter={query}
 			/>
+			{/if}
 			<th />
 		</tr>
 	</thead>
@@ -284,29 +301,49 @@
 									<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
 								</label>
 							</th>
+							{#if auth('Group::name::*')}
 							<StringTd
 								name="name"
 								bind:value={node.name}
 								on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								readonly={!auth('Group::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
+							{/if}
+							{#if auth('Group::path::*')}
 							<StringTd
 								name="path"
 								bind:value={node.path}
 								on:save={() => updateField({ path: node?.path, where: { id: { val: node?.id } } })}
+								readonly={!auth('Group::path::WRITE')}
 								errors={errors[row]?.iterms?.path}
 							/>
+							{/if}
+							{#if auth('Group::deep::*')}
 							<IntTd
 								name="deep"
 								bind:value={node.deep}
 								on:save={() => updateField({ deep: node?.deep, where: { id: { val: node?.id } } })}
+								readonly={!auth('Group::deep::WRITE')}
 								errors={errors[row]?.iterms?.deep}
 							/>
+							{/if}
+							{#if auth('Group::parent::*')}
 							<ObjectTd name="parent" errors={errors[row]?.iterms?.parent} path={`${node.id}/parent`} on:gotoField />
+							{/if}
+							{#if auth('Group::subGroups::*')}
 							<ObjectTd name="subGroups" errors={errors[row]?.iterms?.subGroups} path={`${node.id}/sub-groups`} on:gotoField />
+							{/if}
+							{#if auth('Group::users::*')}
 							<ObjectTd name="users" errors={errors[row]?.iterms?.users} path={`${node.id}/users`} on:gotoField />
+							{/if}
+							{#if auth('Group::roles::*')}
 							<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path={`${node.id}/roles`} on:gotoField />
+							{/if}
+							{#if auth('Group::realm::*')}
 							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+							{/if}
+							{#if auth('Group::*::WRITE')}
 							<th class="z-10 hover:z-30 w-24">
 								<div class="flex space-x-1">
 									<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
@@ -376,6 +413,7 @@
 									{/if}
 								</div>
 							</th>
+							{/if}
 						</tr>
 					{/if}
 				{/each}

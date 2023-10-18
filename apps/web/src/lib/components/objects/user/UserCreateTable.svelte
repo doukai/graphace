@@ -8,6 +8,7 @@
 	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	import type { UserInput } from '~/lib/types/schema';
+	import { auth } from '@graphace/commons/stores/useAuth';
 
 	export let nodes: (UserInput | null | undefined)[] | null | undefined;
 	export let errors: Record<number, Errors> = {};
@@ -43,10 +44,10 @@
 
 <TableHead
 	title={$LL.graphql.objects.User.name()}
-	showRemoveButton={showRemoveButton && selectedRowList.length > 0}
-	{showSaveButton}
+	showRemoveButton={auth('User::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
+	showSaveButton={auth('User::*::WRITE') && showSaveButton}
+	showGotoSelectButton={auth('User::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
-	{showGotoSelectButton}
 	showSearchInput={false}
 	on:create
 	on:save={() => dispatch('save', { nodes })}
@@ -82,15 +83,33 @@
 					/>
 				</label>
 			</th>
+			{#if auth('User::name::*')}
 			<td>{$LL.graphql.objects.User.fields.name.name()}</td>
+			{/if}
+			{#if auth('User::lastName::*')}
 			<td>{$LL.graphql.objects.User.fields.lastName.name()}</td>
+			{/if}
+			{#if auth('User::login::*')}
 			<td>{$LL.graphql.objects.User.fields.login.name()}</td>
+			{/if}
+			{#if auth('User::email::*')}
 			<td>{$LL.graphql.objects.User.fields.email.name()}</td>
+			{/if}
+			{#if auth('User::phones::*')}
 			<td>{$LL.graphql.objects.User.fields.phones.name()}</td>
+			{/if}
+			{#if auth('User::disable::*')}
 			<td>{$LL.graphql.objects.User.fields.disable.name()}</td>
+			{/if}
+			{#if auth('User::groups::*')}
 			<td>{$LL.graphql.objects.User.fields.groups.name()}</td>
+			{/if}
+			{#if auth('User::roles::*')}
 			<td>{$LL.graphql.objects.User.fields.roles.name()}</td>
+			{/if}
+			{#if auth('User::realm::*')}
 			<td>{$LL.graphql.objects.User.fields.realm.name()}</td>
+			{/if}
 			<th />
 		</tr>
 	</thead>
@@ -104,30 +123,39 @@
 								<input type="checkbox" class="checkbox" bind:group={selectedRowList} value={row} />
 							</label>
 						</th>
+						{#if auth('User::name::*')}
 						<StringTd
 							name="name"
 							bind:value={node.name}
 							readonly
 							errors={errors[row]?.iterms?.name}
 						/>
+						{/if}
+						{#if auth('User::lastName::*')}
 						<StringTd
 							name="lastName"
 							bind:value={node.lastName}
 							readonly
 							errors={errors[row]?.iterms?.lastName}
 						/>
+						{/if}
+						{#if auth('User::login::*')}
 						<StringTd
 							name="login"
 							bind:value={node.login}
 							readonly
 							errors={errors[row]?.iterms?.login}
 						/>
+						{/if}
+						{#if auth('User::email::*')}
 						<StringTd
 							name="email"
 							bind:value={node.email}
 							readonly
 							errors={errors[row]?.iterms?.email}
 						/>
+						{/if}
+						{#if auth('User::phones::*')}
 						<StringTd
 							name="phones"
 							bind:value={node.phones}
@@ -135,15 +163,25 @@
 							readonly
 							errors={errors[row]?.iterms?.phones}
 						/>
+						{/if}
+						{#if auth('User::disable::*')}
 						<BooleanTd
 							name="disable"
 							bind:value={node.disable}
 							readonly
 							errors={errors[row]?.iterms?.disable}
 						/>
+						{/if}
+						{#if auth('User::groups::*')}
 						<ObjectTd name="groups" errors={errors[row]?.iterms?.groups} path="_/groups" on:gotoField />
+						{/if}
+						{#if auth('User::roles::*')}
 						<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
+						{/if}
+						{#if auth('User::realm::*')}
 						<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
+						{/if}
+						{#if auth('User::*::WRITE')}
 						<th class="z-10 hover:z-30 w-24">
 							<div class="flex space-x-1">
 								<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
@@ -176,6 +214,7 @@
 								</div>
 							</div>
 						</th>
+						{/if}
 					</tr>
 				{/if}
 			{/each}

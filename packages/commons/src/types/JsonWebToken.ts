@@ -7,6 +7,7 @@ export interface JsonWebToken {
     groups?: string[] | undefined
     roles?: string[] | undefined
     permissions?: string[] | undefined
+    is_root?: boolean | undefined
     iat?: number
     exp?: number
 }

@@ -1,13 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
-	import {
-		ObjectTd,
-		StringTh,
-		StringTd,
-		BooleanTh,
-		BooleanTd
-	} from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, StringTh, StringTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql/components/table';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
@@ -18,7 +12,12 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
-	import type { User, UserOrderBy, QueryUserConnectionArgs, UserInput } from '~/lib/types/schema';
+	import type {
+		User,
+		UserOrderBy,
+		QueryUserConnectionArgs,
+		UserInput
+	} from '~/lib/types/schema';
 	import { auth } from '@graphace/commons/stores/useAuth';
 
 	export let nodes: (User | null | undefined)[] | null | undefined;
@@ -30,7 +29,6 @@
 	export let showUnbindButton: boolean = false;
 	export let showBackButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
-	export let groupId: string | null | undefined = undefined;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -65,14 +63,12 @@
 	let selectAll: boolean;
 	let selectedIdList: (string | null)[] = [];
 
-	$: queryPage(groupId);
-
 	const query = () => {
 		pageNumber = 1;
 		queryPage();
 	};
 
-	const queryPage = (groupId?: string | null | undefined) => {
+	const queryPage = () => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -88,12 +84,6 @@
 		} else {
 			args.offset = (pageNumber - 1) * pageSize;
 			args.first = pageSize;
-		}
-
-		if (groupId) {
-			args.groups = { id: { val: groupId } };
-		} else {
-			args.groups = undefined;
 		}
 
 		dispatch('fetch', {
@@ -125,7 +115,7 @@
 			args.email = undefined;
 			args.phones = undefined;
 		}
-
+		
 		if (after) {
 			args.after = after;
 			args.first = pageSize;
@@ -135,12 +125,6 @@
 		} else {
 			args.offset = (pageNumber - 1) * pageSize;
 			args.first = pageSize;
-		}
-
-		if (groupId) {
-			args.groups = { id: { val: groupId } };
-		} else {
-			args.groups = undefined;
 		}
 
 		dispatch('fetch', {
@@ -222,10 +206,10 @@
 
 <TableHead
 	title={$LL.graphql.objects.User.name()}
-	showRemoveButton={showRemoveButton && selectedIdList.length > 0}
-	showUnbindButton={showUnbindButton && selectedIdList.length > 0}
-	{showSaveButton}
-	{showGotoSelectButton}
+	showRemoveButton={auth('User::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
+	showUnbindButton={auth('User::*::WRITE') && showUnbindButton && selectedIdList.length > 0}
+	showSaveButton={auth('User::*::WRITE') && showSaveButton}
+	showGotoSelectButton={auth('User::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	on:create
 	on:search={(e) => search(e.detail.value)}
@@ -280,63 +264,81 @@
 					/>
 				</label>
 			</th>
-			{#if auth('', '')}
-				<StringTh
-					name={$LL.graphql.objects.User.fields.name.name()}
-					bind:expression={args.name}
-					bind:sort={orderBy.name}
-					on:filter={query}
-				/>
+			{#if auth('User::name::*')}
+			<StringTh
+				name={$LL.graphql.objects.User.fields.name.name()}
+				bind:expression={args.name}
+				bind:sort={orderBy.name}
+				on:filter={query}
+			/>
 			{/if}
+			{#if auth('User::lastName::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.lastName.name()}
 				bind:expression={args.lastName}
 				bind:sort={orderBy.lastName}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('User::login::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.login.name()}
 				bind:expression={args.login}
 				bind:sort={orderBy.login}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('User::email::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.email.name()}
 				bind:expression={args.email}
 				bind:sort={orderBy.email}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('User::phones::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.phones.name()}
 				bind:expression={args.phones}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('User::disable::*')}
 			<BooleanTh
 				name={$LL.graphql.objects.User.fields.disable.name()}
 				bind:expression={args.disable}
 				bind:sort={orderBy.disable}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('User::groups::*')}
 			<GroupTh
 				name={$LL.graphql.objects.User.fields.groups.name()}
 				bind:expression={args.groups}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('User::roles::*')}
 			<RoleTh
 				name={$LL.graphql.objects.User.fields.roles.name()}
 				bind:expression={args.roles}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('User::realm::*')}
 			<RealmTh
 				name={$LL.graphql.objects.User.fields.realm.name()}
 				bind:expression={args.realm}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('User::*::WRITE')}
 			<th />
+			{/if}
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading rows={pageSize} cols={9 + 2} />
+		<TableLoading rows={pageSize} cols={9 + 2}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
@@ -345,74 +347,74 @@
 						<tr class="hover">
 							<th class="z-10 w-12">
 								<label>
-									<input
-										type="checkbox"
-										class="checkbox"
-										bind:group={selectedIdList}
-										value={node.id}
-									/>
+									<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
 								</label>
 							</th>
+							{#if auth('User::name::*')}
 							<StringTd
 								name="name"
 								bind:value={node.name}
 								on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								readonly={!auth('User::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
+							{/if}
+							{#if auth('User::lastName::*')}
 							<StringTd
 								name="lastName"
 								bind:value={node.lastName}
-								on:save={() =>
-									updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } })}
+								on:save={() => updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } })}
+								readonly={!auth('User::lastName::WRITE')}
 								errors={errors[row]?.iterms?.lastName}
 							/>
+							{/if}
+							{#if auth('User::login::*')}
 							<StringTd
 								name="login"
 								bind:value={node.login}
-								on:save={() =>
-									updateField({ login: node?.login, where: { id: { val: node?.id } } })}
+								on:save={() => updateField({ login: node?.login, where: { id: { val: node?.id } } })}
+								readonly={!auth('User::login::WRITE')}
 								errors={errors[row]?.iterms?.login}
 							/>
+							{/if}
+							{#if auth('User::email::*')}
 							<StringTd
 								name="email"
 								bind:value={node.email}
-								on:save={() =>
-									updateField({ email: node?.email, where: { id: { val: node?.id } } })}
+								on:save={() => updateField({ email: node?.email, where: { id: { val: node?.id } } })}
+								readonly={!auth('User::email::WRITE')}
 								errors={errors[row]?.iterms?.email}
 							/>
+							{/if}
+							{#if auth('User::phones::*')}
 							<StringTd
 								name="phones"
 								bind:value={node.phones}
 								list
-								on:save={() =>
-									updateField({ phones: node?.phones, where: { id: { val: node?.id } } })}
+								on:save={() => updateField({ phones: node?.phones, where: { id: { val: node?.id } } })}
+								readonly={!auth('User::phones::WRITE')}
 								errors={errors[row]?.iterms?.phones}
 							/>
+							{/if}
+							{#if auth('User::disable::*')}
 							<BooleanTd
 								name="disable"
 								bind:value={node.disable}
-								on:save={() =>
-									updateField({ disable: node?.disable, where: { id: { val: node?.id } } })}
+								on:save={() => updateField({ disable: node?.disable, where: { id: { val: node?.id } } })}
+								readonly={!auth('User::disable::WRITE')}
 								errors={errors[row]?.iterms?.disable}
 							/>
-							<ObjectTd
-								name="groups"
-								errors={errors[row]?.iterms?.groups}
-								path={`${node.id}/groups`}
-								on:gotoField
-							/>
-							<ObjectTd
-								name="roles"
-								errors={errors[row]?.iterms?.roles}
-								path={`${node.id}/roles`}
-								on:gotoField
-							/>
-							<ObjectTd
-								name="realm"
-								errors={errors[row]?.iterms?.realm}
-								path={`${node.id}/realm`}
-								on:gotoField
-							/>
+							{/if}
+							{#if auth('User::groups::*')}
+							<ObjectTd name="groups" errors={errors[row]?.iterms?.groups} path={`${node.id}/groups`} on:gotoField />
+							{/if}
+							{#if auth('User::roles::*')}
+							<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path={`${node.id}/roles`} on:gotoField />
+							{/if}
+							{#if auth('User::realm::*')}
+							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+							{/if}
+							{#if auth('User::*::WRITE')}
 							<th class="z-10 hover:z-30 w-24">
 								<div class="flex space-x-1">
 									<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
@@ -482,11 +484,12 @@
 									{/if}
 								</div>
 							</th>
+							{/if}
 						</tr>
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={9 + 2} />
+				<TableEmpty cols={9 + 2}/>
 			{/if}
 		</tbody>
 	{/if}
@@ -496,6 +499,6 @@
 	bind:pageNumber
 	bind:pageSize
 	{totalCount}
-	on:pageChange={(e) => queryPage(groupId)}
-	on:sizeChange={(e) => queryPage(groupId)}
+	on:pageChange={queryPage}
+	on:sizeChange={queryPage}
 />

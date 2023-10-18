@@ -60,7 +60,6 @@
 		rel="stylesheet"
 	/>
 </svelte:head>
-
 <div class="drawer lg:drawer-open bg-base-100">
 	<input id="drawer" type="checkbox" class="drawer-toggle" bind:checked />
 	<div class="drawer-content bg-base-200">

@@ -19,6 +19,7 @@
 		QueryRoleListArgs,
 		RoleInput
 	} from '~/lib/types/schema';
+	import { auth } from '@graphace/commons/stores/useAuth';
 
 	export let nodes: (Role | null | undefined)[] | null | undefined;
 	export let isFetching: boolean;
@@ -168,10 +169,10 @@
 
 <TableHead
 	title={$LL.graphql.objects.Role.name()}
-	showRemoveButton={showRemoveButton && selectedIdList.length > 0}
-	showUnbindButton={showUnbindButton && selectedIdList.length > 0}
-	{showSaveButton}
-	{showGotoSelectButton}
+	showRemoveButton={auth('Role::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
+	showUnbindButton={auth('Role::*::WRITE') && showUnbindButton && selectedIdList.length > 0}
+	showSaveButton={auth('Role::*::WRITE') && showSaveButton}
+	showGotoSelectButton={auth('Role::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	on:create
 	on:search={(e) => search(e.detail.value)}
@@ -226,43 +227,57 @@
 					/>
 				</label>
 			</th>
+			{#if auth('Role::name::*')}
 			<StringTh
 				name={$LL.graphql.objects.Role.fields.name.name()}
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Role::description::*')}
 			<StringTh
 				name={$LL.graphql.objects.Role.fields.description.name()}
 				bind:expression={args.description}
 				bind:sort={orderBy.description}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Role::users::*')}
 			<UserTh
 				name={$LL.graphql.objects.Role.fields.users.name()}
 				bind:expression={args.users}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Role::groups::*')}
 			<GroupTh
 				name={$LL.graphql.objects.Role.fields.groups.name()}
 				bind:expression={args.groups}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Role::composites::*')}
 			<RoleTh
 				name={$LL.graphql.objects.Role.fields.composites.name()}
 				bind:expression={args.composites}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Role::permissions::*')}
 			<PermissionTh
 				name={$LL.graphql.objects.Role.fields.permissions.name()}
 				bind:expression={args.permissions}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Role::realm::*')}
 			<RealmTh
 				name={$LL.graphql.objects.Role.fields.realm.name()}
 				bind:expression={args.realm}
 				on:filter={query}
 			/>
+			{/if}
 			<th />
 		</tr>
 	</thead>
@@ -279,23 +294,40 @@
 									<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
 								</label>
 							</th>
+							{#if auth('Role::name::*')}
 							<StringTd
 								name="name"
 								bind:value={node.name}
 								on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								readonly={!auth('Role::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
+							{/if}
+							{#if auth('Role::description::*')}
 							<StringTd
 								name="description"
 								bind:value={node.description}
 								on:save={() => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
+								readonly={!auth('Role::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>
+							{/if}
+							{#if auth('Role::users::*')}
 							<ObjectTd name="users" errors={errors[row]?.iterms?.users} path={`${node.id}/users`} on:gotoField />
+							{/if}
+							{#if auth('Role::groups::*')}
 							<ObjectTd name="groups" errors={errors[row]?.iterms?.groups} path={`${node.id}/groups`} on:gotoField />
+							{/if}
+							{#if auth('Role::composites::*')}
 							<ObjectTd name="composites" errors={errors[row]?.iterms?.composites} path={`${node.id}/composites`} on:gotoField />
+							{/if}
+							{#if auth('Role::permissions::*')}
 							<ObjectTd name="permissions" errors={errors[row]?.iterms?.permissions} path={`${node.id}/permissions`} on:gotoField />
+							{/if}
+							{#if auth('Role::realm::*')}
 							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+							{/if}
+							{#if auth('Role::*::WRITE')}
 							<th class="z-10 hover:z-30 w-24">
 								<div class="flex space-x-1">
 									<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
@@ -365,6 +397,7 @@
 									{/if}
 								</div>
 							</th>
+							{/if}
 						</tr>
 					{/if}
 				{/each}

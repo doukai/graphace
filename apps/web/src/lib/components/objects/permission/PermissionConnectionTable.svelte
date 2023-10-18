@@ -19,6 +19,7 @@
 		QueryPermissionConnectionArgs,
 		PermissionInput
 	} from '~/lib/types/schema';
+	import { auth } from '@graphace/commons/stores/useAuth';
 
 	export let nodes: (Permission | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;
@@ -29,7 +30,6 @@
 	export let showUnbindButton: boolean = false;
 	export let showBackButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
-	export let typeName: string | null | undefined = undefined;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -64,14 +64,12 @@
 	let selectAll: boolean;
 	let selectedIdList: (string | null)[] = [];
 
-	$: queryPage(typeName);
-
 	const query = () => {
 		pageNumber = 1;
 		queryPage();
 	};
 
-	const queryPage = (typeName?: string | null | undefined) => {
+	const queryPage = () => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -87,12 +85,6 @@
 		} else {
 			args.offset = (pageNumber - 1) * pageSize;
 			args.first = pageSize;
-		}
-
-		if (typeName) {
-			args.type = { val: typeName };
-		} else {
-			args.type = undefined;
 		}
 
 		dispatch('fetch', {
@@ -120,7 +112,7 @@
 			args.type = undefined;
 			args.description = undefined;
 		}
-
+		
 		if (after) {
 			args.after = after;
 			args.first = pageSize;
@@ -130,12 +122,6 @@
 		} else {
 			args.offset = (pageNumber - 1) * pageSize;
 			args.first = pageSize;
-		}
-
-		if (typeName) {
-			args.type = { val: typeName };
-		} else {
-			args.type = undefined;
 		}
 
 		dispatch('fetch', {
@@ -217,10 +203,10 @@
 
 <TableHead
 	title={$LL.graphql.objects.Permission.name()}
-	showRemoveButton={showRemoveButton && selectedIdList.length > 0}
-	showUnbindButton={showUnbindButton && selectedIdList.length > 0}
-	{showSaveButton}
-	{showGotoSelectButton}
+	showRemoveButton={auth('Permission::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
+	showUnbindButton={auth('Permission::*::WRITE') && showUnbindButton && selectedIdList.length > 0}
+	showSaveButton={auth('Permission::*::WRITE') && showSaveButton}
+	showGotoSelectButton={auth('Permission::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	on:create
 	on:search={(e) => search(e.detail.value)}
@@ -275,51 +261,67 @@
 					/>
 				</label>
 			</th>
+			{#if auth('Permission::name::*')}
 			<IDTh
 				name={$LL.graphql.objects.Permission.fields.name.name()}
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Permission::field::*')}
 			<StringTh
 				name={$LL.graphql.objects.Permission.fields.field.name()}
 				bind:expression={args.field}
 				bind:sort={orderBy.field}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Permission::type::*')}
 			<StringTh
 				name={$LL.graphql.objects.Permission.fields.type.name()}
 				bind:expression={args.type}
 				bind:sort={orderBy.type}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Permission::permissionType::*')}
 			<PermissionTypeTh
 				name={$LL.graphql.objects.Permission.fields.permissionType.name()}
 				bind:expression={args.permissionType}
 				bind:sort={orderBy.permissionType}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Permission::description::*')}
 			<StringTh
 				name={$LL.graphql.objects.Permission.fields.description.name()}
 				bind:expression={args.description}
 				bind:sort={orderBy.description}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Permission::roles::*')}
 			<RoleTh
 				name={$LL.graphql.objects.Permission.fields.roles.name()}
 				bind:expression={args.roles}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Permission::realm::*')}
 			<RealmTh
 				name={$LL.graphql.objects.Permission.fields.realm.name()}
 				bind:expression={args.realm}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Permission::*::WRITE')}
 			<th />
+			{/if}
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading rows={pageSize} cols={7 + 2} />
+		<TableLoading rows={pageSize} cols={7 + 2}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
@@ -328,69 +330,63 @@
 						<tr class="hover">
 							<th class="z-10 w-12">
 								<label>
-									<input
-										type="checkbox"
-										class="checkbox"
-										bind:group={selectedIdList}
-										value={node.name}
-									/>
+									<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.name} />
 								</label>
 							</th>
+							{#if auth('Permission::name::*')}
 							<IDTd
 								name="name"
 								bind:value={node.name}
 								readonly
 								errors={errors[row]?.iterms?.name}
 							/>
+							{/if}
+							{#if auth('Permission::field::*')}
 							<StringTd
 								name="field"
 								bind:value={node.field}
-								on:save={() =>
-									updateField({ field: node?.field, where: { name: { val: node?.name } } })}
+								on:save={() => updateField({ field: node?.field, where: { name: { val: node?.name } } })}
+								readonly={!auth('Permission::field::WRITE')}
 								errors={errors[row]?.iterms?.field}
 							/>
+							{/if}
+							{#if auth('Permission::type::*')}
 							<StringTd
 								name="type"
 								bind:value={node.type}
-								on:save={() =>
-									updateField({ type: node?.type, where: { name: { val: node?.name } } })}
+								on:save={() => updateField({ type: node?.type, where: { name: { val: node?.name } } })}
+								readonly={!auth('Permission::type::WRITE')}
 								errors={errors[row]?.iterms?.type}
 							/>
+							{/if}
+							{#if auth('Permission::permissionType::*')}
 							<PermissionTypeTd
 								name="permissionType"
 								bind:value={node.permissionType}
-								on:save={() =>
-									updateField({
-										permissionType: node?.permissionType,
-										where: { name: { val: node?.name } }
-									})}
+								on:save={() => updateField({ permissionType: node?.permissionType, where: { name: { val: node?.name } } })}
+								readonly={!auth('Permission::permissionType::WRITE')}
 								errors={errors[row]?.iterms?.permissionType}
 							/>
+							{/if}
+							{#if auth('Permission::description::*')}
 							<StringTd
 								name="description"
 								bind:value={node.description}
-								on:save={() =>
-									updateField({
-										description: node?.description,
-										where: { name: { val: node?.name } }
-									})}
+								on:save={() => updateField({ description: node?.description, where: { name: { val: node?.name } } })}
+								readonly={!auth('Permission::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>
-							<ObjectTd
-								name="roles"
-								errors={errors[row]?.iterms?.roles}
-								path={`${node.name}/roles`}
-								on:gotoField
-							/>
-							<ObjectTd
-								name="realm"
-								errors={errors[row]?.iterms?.realm}
-								path={`${node.name}/realm`}
-								on:gotoField
-							/>
+							{/if}
+							{#if auth('Permission::roles::*')}
+							<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path={`${node.name}/roles`} on:gotoField />
+							{/if}
+							{#if auth('Permission::realm::*')}
+							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.name}/realm`} on:gotoField />
+							{/if}
+							{#if auth('Permission::*::WRITE')}
 							<th class="z-10 hover:z-30 w-24">
 								<div class="flex space-x-1">
-									<div class="tooltip hover:z-30" data-tip={$LL.web.components.table.editBtn()}>
+									<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
 											on:click|preventDefault={(e) => {
@@ -457,11 +453,12 @@
 									{/if}
 								</div>
 							</th>
+							{/if}
 						</tr>
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={7 + 2} />
+				<TableEmpty cols={7 + 2}/>
 			{/if}
 		</tbody>
 	{/if}
@@ -471,6 +468,6 @@
 	bind:pageNumber
 	bind:pageSize
 	{totalCount}
-	on:pageChange={(e) => queryPage(typeName)}
-	on:sizeChange={(e) => queryPage(typeName)}
+	on:pageChange={queryPage}
+	on:sizeChange={queryPage}
 />

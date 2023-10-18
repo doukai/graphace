@@ -8,6 +8,7 @@
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
 	import type { Group, GroupInput } from '~/lib/types/schema';
+	import { auth } from '@graphace/commons/stores/useAuth';
 
 	export let node: GroupInput = {};
 	export let errors: Record<string, Errors> = {};
@@ -60,8 +61,8 @@
 
 <Form
 	title={$LL.graphql.objects.Group.name()}
-	showRemoveButton={showRemoveButton && node !== undefined && node !== null && Object.keys(node).length > 0}
-	{showGotoSelectButton}
+	showRemoveButton={auth('Group::*::WRITE') && showRemoveButton && node !== undefined && node !== null && Object.keys(node).length > 0}
+	showGotoSelectButton={auth('Group::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	on:save={save}
 	on:remove={() =>
@@ -77,12 +78,28 @@
 	on:gotoSelect
 	on:back
 >
+	{#if auth('Group::name::*')}
 	<StringItem label={$LL.graphql.objects.Group.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
+	{/if}
+	{#if auth('Group::path::*')}
 	<StringItem label={$LL.graphql.objects.Group.fields.path.name()} name="path" bind:value={node.path} errors={errors.path} />
+	{/if}
+	{#if auth('Group::deep::*')}
 	<IntItem label={$LL.graphql.objects.Group.fields.deep.name()} name="deep" bind:value={node.deep} errors={errors.deep} />
+	{/if}
+	{#if auth('Group::parent::*')}
 	<ObjectItem name="parent" path="_/parent" label={$LL.graphql.objects.Group.fields.parent.name()} errors={errors.parent} on:gotoField />
+	{/if}
+	{#if auth('Group::subGroups::*')}
 	<ObjectItem name="subGroups" path="_/sub-groups" label={$LL.graphql.objects.Group.fields.subGroups.name()} errors={errors.subGroups} on:gotoField />
+	{/if}
+	{#if auth('Group::users::*')}
 	<ObjectItem name="users" path="_/users" label={$LL.graphql.objects.Group.fields.users.name()} errors={errors.users} on:gotoField />
+	{/if}
+	{#if auth('Group::roles::*')}
 	<ObjectItem name="roles" path="_/roles" label={$LL.graphql.objects.Group.fields.roles.name()} errors={errors.roles} on:gotoField />
+	{/if}
+	{#if auth('Group::realm::*')}
 	<ObjectItem name="realm" path="_/realm" label={$LL.graphql.objects.Group.fields.realm.name()} errors={errors.realm} on:gotoField />
+	{/if}
 </Form>

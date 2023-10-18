@@ -27,6 +27,9 @@
 		{{ queryTypeName }}{{ name }}ConnectionArgs,
 		{{ name }}Input
 	} from '~/{{ schemaTypesPath }}';
+	{%- if useAuth %}
+	import { auth } from '@graphace/commons/stores/useAuth';
+	{%- endif %}
 
 	export let nodes: ({{ name }} | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;
@@ -218,10 +221,17 @@
 
 <TableHead
 	title={$LL.graphql.objects.{{ name }}.name()}
+	{%- if useAuth %}
+	showRemoveButton={auth('{{ name }}::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
+	showUnbindButton={auth('{{ name }}::*::WRITE') && showUnbindButton && selectedIdList.length > 0}
+	showSaveButton={auth('{{ name }}::*::WRITE') && showSaveButton}
+	showGotoSelectButton={auth('{{ name }}::*::WRITE') && showGotoSelectButton}
+	{%- else %}
 	showRemoveButton={showRemoveButton && selectedIdList.length > 0}
 	showUnbindButton={showUnbindButton && selectedIdList.length > 0}
 	{showSaveButton}
 	{showGotoSelectButton}
+	{%- endif %}
 	{showBackButton}
 	on:create
 	on:search={(e) => search(e.detail.value)}
@@ -278,6 +288,9 @@
 			</th>
 			{%- if fields %}
 			{%- for field in fields %}
+			{%- if useAuth %}
+			{#if auth('{{ name }}::{{ field.fieldName }}::*')}
+			{%- endif %}
 			{%- if field.inQueryArgs %}
 			{%- if field.isScalarType or field.isEnumType %}
 			<{{ field.fieldType.name }}Th
@@ -298,9 +311,18 @@
 			{%- else %}
 			<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
 			{%- endif %}
+			{%- if useAuth %}
+			{/if}
+			{%- endif %}
 			{%- endfor %}
 			{%- endif %}
+			{%- if useAuth %}
+			{#if auth('{{ name }}::*::WRITE')}
+			{%- endif %}
 			<th />
+			{%- if useAuth %}
+			{/if}
+			{%- endif %}
 		</tr>
 	</thead>
 	{#if isFetching}
@@ -318,6 +340,9 @@
 							</th>
 							{%- if fields %}
 							{%- for field in fields %}
+							{%- if useAuth %}
+							{#if auth('{{ name }}::{{ field.fieldName }}::*')}
+							{%- endif %}
 							{%- if field.component %}
 							{{ field.component }}
 							{%- else %}
@@ -330,6 +355,9 @@
 								{%- endif %}
 								{%- if field.inMutationArgs and field.fieldName != idName %}
 								on:save={() => updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } })}
+								{%- if useAuth %}
+								readonly={!auth('{{ name }}::{{ field.fieldName }}::WRITE')}
+								{%- endif %}
 								{%- else %}
 								readonly
 								{%- endif %}
@@ -339,7 +367,13 @@
 							<ObjectTd name="{{ field.fieldName }}" errors={errors[row]?.iterms?.{{ field.fieldName }}} path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} on:gotoField />
 							{%- endif %}
 							{%- endif %}
+							{%- if useAuth %}
+							{/if}
+							{%- endif %}
 							{%- endfor %}
+							{%- endif %}
+							{%- if useAuth %}
+							{#if auth('{{ name }}::*::WRITE')}
 							{%- endif %}
 							<th class="z-10 hover:z-30 w-24">
 								<div class="flex space-x-1">
@@ -410,6 +444,9 @@
 									{/if}
 								</div>
 							</th>
+							{%- if useAuth %}
+							{/if}
+							{%- endif %}
 						</tr>
 					{/if}
 				{/each}

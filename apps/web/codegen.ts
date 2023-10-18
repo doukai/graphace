@@ -136,7 +136,8 @@ const config: CodegenConfig = {
                             ]
                         }
                     ]
-                }
+                },
+                useAuth: true
             }
 
         }

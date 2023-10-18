@@ -13,6 +13,7 @@
 		QueryRealmListArgs,
 		RealmInput
 	} from '~/lib/types/schema';
+	import { auth } from '@graphace/commons/stores/useAuth';
 
 	export let nodes: (Realm | null | undefined)[] | null | undefined;
 	export let isFetching: boolean;
@@ -155,12 +156,14 @@
 					</label>
 				{/if}
 			</th>
+			{#if auth('Realm::name::*')}
 			<StringTh
 				name={$LL.graphql.objects.Realm.fields.name.name()}
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
 				on:filter={query}
 			/>
+			{/if}
 			<th />
 		</tr>
 	</thead>
@@ -181,12 +184,15 @@
 									{/if}
 								</label>
 							</th>
+							{#if auth('Realm::name::*')}
 							<StringTd
 								name="name"
 								bind:value={node.name}
 								on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								readonly={!auth('Realm::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
+							{/if}
 							<th class="z-10 hover:z-30 w-12">
 								<div class="flex space-x-1">
 									<div class="tooltip" data-tip={$LL.web.components.table.selectBtn()}>

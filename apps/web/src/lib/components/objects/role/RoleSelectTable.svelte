@@ -13,6 +13,7 @@
 		QueryRoleListArgs,
 		RoleInput
 	} from '~/lib/types/schema';
+	import { auth } from '@graphace/commons/stores/useAuth';
 
 	export let nodes: (Role | null | undefined)[] | null | undefined;
 	export let isFetching: boolean;
@@ -157,18 +158,22 @@
 					</label>
 				{/if}
 			</th>
+			{#if auth('Role::name::*')}
 			<StringTh
 				name={$LL.graphql.objects.Role.fields.name.name()}
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Role::description::*')}
 			<StringTh
 				name={$LL.graphql.objects.Role.fields.description.name()}
 				bind:expression={args.description}
 				bind:sort={orderBy.description}
 				on:filter={query}
 			/>
+			{/if}
 			<th />
 		</tr>
 	</thead>
@@ -189,18 +194,24 @@
 									{/if}
 								</label>
 							</th>
+							{#if auth('Role::name::*')}
 							<StringTd
 								name="name"
 								bind:value={node.name}
 								on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								readonly={!auth('Role::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
+							{/if}
+							{#if auth('Role::description::*')}
 							<StringTd
 								name="description"
 								bind:value={node.description}
 								on:save={() => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
+								readonly={!auth('Role::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>
+							{/if}
 							<th class="z-10 hover:z-30 w-12">
 								<div class="flex space-x-1">
 									<div class="tooltip" data-tip={$LL.web.components.table.selectBtn()}>

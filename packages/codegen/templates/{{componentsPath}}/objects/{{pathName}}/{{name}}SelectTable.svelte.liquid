@@ -22,6 +22,9 @@
 		{{ queryTypeName }}{{ name }}ListArgs,
 		{{ name }}Input
 	} from '~/{{ schemaTypesPath }}';
+	{%- if useAuth %}
+	import { auth } from '@graphace/commons/stores/useAuth';
+	{%- endif %}
 
 	export let nodes: ({{ name }} | null | undefined)[] | null | undefined;
 	export let isFetching: boolean;
@@ -179,6 +182,9 @@
 			{%- if fields %}
 			{%- for field in fields %}
 			{%- if field.isScalarType or field.isEnumType %}
+			{%- if useAuth %}
+			{#if auth('{{ name }}::{{ field.fieldName }}::*')}
+			{%- endif %}
 			{%- if field.inQueryArgs %}
 			<{{ field.fieldType.name }}Th
 				name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
@@ -190,6 +196,9 @@
 			/>
 			{%- else %}
 			<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
+			{%- endif %}
+			{%- if useAuth %}
+			{/if}
 			{%- endif %}
 			{%- endif %}
 			{%- endfor %}
@@ -217,6 +226,9 @@
 							{%- if fields %}
 							{%- for field in fields %}
 							{%- if field.isScalarType or field.isEnumType %}
+							{%- if useAuth %}
+							{#if auth('{{ name }}::{{ field.fieldName }}::*')}
+							{%- endif %}
 							{%- if field.component %}
 							{{ field.component }}
 							{%- else %}
@@ -228,11 +240,17 @@
 								{%- endif %}
 								{%- if field.inMutationArgs and field.fieldName != idName %}
 								on:save={() => updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } })}
+								{%- if useAuth %}
+								readonly={!auth('{{ name }}::{{ field.fieldName }}::WRITE')}
+								{%- endif %}
 								{%- else %}
 								readonly
 								{%- endif %}
 								errors={errors[row]?.iterms?.{{ field.fieldName }}}
 							/>
+							{%- endif %}
+							{%- if useAuth %}
+							{/if}
 							{%- endif %}
 							{%- endif %}
 							{%- endfor %}

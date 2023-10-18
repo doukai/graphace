@@ -8,6 +8,7 @@
 	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	import type { GroupInput } from '~/lib/types/schema';
+	import { auth } from '@graphace/commons/stores/useAuth';
 
 	export let nodes: (GroupInput | null | undefined)[] | null | undefined;
 	export let errors: Record<number, Errors> = {};
@@ -43,10 +44,10 @@
 
 <TableHead
 	title={$LL.graphql.objects.Group.name()}
-	showRemoveButton={showRemoveButton && selectedRowList.length > 0}
-	{showSaveButton}
+	showRemoveButton={auth('Group::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
+	showSaveButton={auth('Group::*::WRITE') && showSaveButton}
+	showGotoSelectButton={auth('Group::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
-	{showGotoSelectButton}
 	showSearchInput={false}
 	on:create
 	on:save={() => dispatch('save', { nodes })}
@@ -82,14 +83,30 @@
 					/>
 				</label>
 			</th>
+			{#if auth('Group::name::*')}
 			<td>{$LL.graphql.objects.Group.fields.name.name()}</td>
+			{/if}
+			{#if auth('Group::path::*')}
 			<td>{$LL.graphql.objects.Group.fields.path.name()}</td>
+			{/if}
+			{#if auth('Group::deep::*')}
 			<td>{$LL.graphql.objects.Group.fields.deep.name()}</td>
+			{/if}
+			{#if auth('Group::parent::*')}
 			<td>{$LL.graphql.objects.Group.fields.parent.name()}</td>
+			{/if}
+			{#if auth('Group::subGroups::*')}
 			<td>{$LL.graphql.objects.Group.fields.subGroups.name()}</td>
+			{/if}
+			{#if auth('Group::users::*')}
 			<td>{$LL.graphql.objects.Group.fields.users.name()}</td>
+			{/if}
+			{#if auth('Group::roles::*')}
 			<td>{$LL.graphql.objects.Group.fields.roles.name()}</td>
+			{/if}
+			{#if auth('Group::realm::*')}
 			<td>{$LL.graphql.objects.Group.fields.realm.name()}</td>
+			{/if}
 			<th />
 		</tr>
 	</thead>
@@ -103,29 +120,46 @@
 								<input type="checkbox" class="checkbox" bind:group={selectedRowList} value={row} />
 							</label>
 						</th>
+						{#if auth('Group::name::*')}
 						<StringTd
 							name="name"
 							bind:value={node.name}
 							readonly
 							errors={errors[row]?.iterms?.name}
 						/>
+						{/if}
+						{#if auth('Group::path::*')}
 						<StringTd
 							name="path"
 							bind:value={node.path}
 							readonly
 							errors={errors[row]?.iterms?.path}
 						/>
+						{/if}
+						{#if auth('Group::deep::*')}
 						<IntTd
 							name="deep"
 							bind:value={node.deep}
 							readonly
 							errors={errors[row]?.iterms?.deep}
 						/>
+						{/if}
+						{#if auth('Group::parent::*')}
 						<ObjectTd name="parent" errors={errors[row]?.iterms?.parent} path="_/parent" on:gotoField />
+						{/if}
+						{#if auth('Group::subGroups::*')}
 						<ObjectTd name="subGroups" errors={errors[row]?.iterms?.subGroups} path="_/sub-groups" on:gotoField />
+						{/if}
+						{#if auth('Group::users::*')}
 						<ObjectTd name="users" errors={errors[row]?.iterms?.users} path="_/users" on:gotoField />
+						{/if}
+						{#if auth('Group::roles::*')}
 						<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
+						{/if}
+						{#if auth('Group::realm::*')}
 						<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
+						{/if}
+						{#if auth('Group::*::WRITE')}
 						<th class="z-10 hover:z-30 w-24">
 							<div class="flex space-x-1">
 								<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
@@ -158,6 +192,7 @@
 								</div>
 							</div>
 						</th>
+						{/if}
 					</tr>
 				{/if}
 			{/each}

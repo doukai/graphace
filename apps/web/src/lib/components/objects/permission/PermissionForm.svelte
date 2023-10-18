@@ -9,6 +9,7 @@
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
 	import type { Permission, PermissionInput } from '~/lib/types/schema';
+	import { auth } from '@graphace/commons/stores/useAuth';
 
 	export let node: Permission | null | undefined;
 	export let isFetching: boolean;
@@ -85,9 +86,9 @@
 
 <Form
 	title={$LL.graphql.objects.Permission.name()}
-	{showRemoveButton}
-	{showUnbindButton}
-	{showGotoSelectButton}
+	showRemoveButton={auth('Permission::*::WRITE') && showRemoveButton}
+	showUnbindButton={auth('Permission::*::WRITE') && showUnbindButton}
+	showGotoSelectButton={auth('Permission::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	on:save={save}
 	on:remove={() =>
@@ -125,13 +126,27 @@
 		<FormLoading rows={7} />
 	{:else}
 		{#if node}
+			{#if auth('Permission::name::*')}
 			<IDItem label={$LL.graphql.objects.Permission.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
+			{/if}
+			{#if auth('Permission::field::*')}
 			<StringItem label={$LL.graphql.objects.Permission.fields.field.name()} name="field" bind:value={node.field} errors={errors.field} />
+			{/if}
+			{#if auth('Permission::type::*')}
 			<StringItem label={$LL.graphql.objects.Permission.fields.type.name()} name="type" bind:value={node.type} errors={errors.type} />
+			{/if}
+			{#if auth('Permission::permissionType::*')}
 			<PermissionTypeItem label={$LL.graphql.objects.Permission.fields.permissionType.name()} name="permissionType" bind:value={node.permissionType} errors={errors.permissionType} />
+			{/if}
+			{#if auth('Permission::description::*')}
 			<StringItem label={$LL.graphql.objects.Permission.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
+			{/if}
+			{#if auth('Permission::roles::*')}
 			<ObjectItem name="roles" path={`${node.name}/roles`} label={$LL.graphql.objects.Permission.fields.roles.name()} errors={errors.roles} on:gotoField />
+			{/if}
+			{#if auth('Permission::realm::*')}
 			<ObjectItem name="realm" path={`${node.name}/realm`} label={$LL.graphql.objects.Permission.fields.realm.name()} errors={errors.realm} on:gotoField />
+			{/if}
 		{/if}
 	{/if}
 </Form>

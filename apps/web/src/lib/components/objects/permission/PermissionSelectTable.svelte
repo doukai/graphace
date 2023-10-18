@@ -15,6 +15,7 @@
 		QueryPermissionListArgs,
 		PermissionInput
 	} from '~/lib/types/schema';
+	import { auth } from '@graphace/commons/stores/useAuth';
 
 	export let nodes: (Permission | null | undefined)[] | null | undefined;
 	export let isFetching: boolean;
@@ -161,36 +162,46 @@
 					</label>
 				{/if}
 			</th>
+			{#if auth('Permission::name::*')}
 			<IDTh
 				name={$LL.graphql.objects.Permission.fields.name.name()}
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Permission::field::*')}
 			<StringTh
 				name={$LL.graphql.objects.Permission.fields.field.name()}
 				bind:expression={args.field}
 				bind:sort={orderBy.field}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Permission::type::*')}
 			<StringTh
 				name={$LL.graphql.objects.Permission.fields.type.name()}
 				bind:expression={args.type}
 				bind:sort={orderBy.type}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Permission::permissionType::*')}
 			<PermissionTypeTh
 				name={$LL.graphql.objects.Permission.fields.permissionType.name()}
 				bind:expression={args.permissionType}
 				bind:sort={orderBy.permissionType}
 				on:filter={query}
 			/>
+			{/if}
+			{#if auth('Permission::description::*')}
 			<StringTh
 				name={$LL.graphql.objects.Permission.fields.description.name()}
 				bind:expression={args.description}
 				bind:sort={orderBy.description}
 				on:filter={query}
 			/>
+			{/if}
 			<th />
 		</tr>
 	</thead>
@@ -211,36 +222,50 @@
 									{/if}
 								</label>
 							</th>
+							{#if auth('Permission::name::*')}
 							<IDTd
 								name="name"
 								bind:value={node.name}
 								readonly
 								errors={errors[row]?.iterms?.name}
 							/>
+							{/if}
+							{#if auth('Permission::field::*')}
 							<StringTd
 								name="field"
 								bind:value={node.field}
 								on:save={() => updateField({ field: node?.field, where: { name: { val: node?.name } } })}
+								readonly={!auth('Permission::field::WRITE')}
 								errors={errors[row]?.iterms?.field}
 							/>
+							{/if}
+							{#if auth('Permission::type::*')}
 							<StringTd
 								name="type"
 								bind:value={node.type}
 								on:save={() => updateField({ type: node?.type, where: { name: { val: node?.name } } })}
+								readonly={!auth('Permission::type::WRITE')}
 								errors={errors[row]?.iterms?.type}
 							/>
+							{/if}
+							{#if auth('Permission::permissionType::*')}
 							<PermissionTypeTd
 								name="permissionType"
 								bind:value={node.permissionType}
 								on:save={() => updateField({ permissionType: node?.permissionType, where: { name: { val: node?.name } } })}
+								readonly={!auth('Permission::permissionType::WRITE')}
 								errors={errors[row]?.iterms?.permissionType}
 							/>
+							{/if}
+							{#if auth('Permission::description::*')}
 							<StringTd
 								name="description"
 								bind:value={node.description}
 								on:save={() => updateField({ description: node?.description, where: { name: { val: node?.name } } })}
+								readonly={!auth('Permission::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>
+							{/if}
 							<th class="z-10 hover:z-30 w-12">
 								<div class="flex space-x-1">
 									<div class="tooltip" data-tip={$LL.web.components.table.selectBtn()}>

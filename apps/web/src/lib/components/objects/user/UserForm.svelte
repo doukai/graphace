@@ -8,6 +8,7 @@
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
 	import type { User, UserInput } from '~/lib/types/schema';
+	import { auth } from '@graphace/commons/stores/useAuth';
 
 	export let node: User | null | undefined;
 	export let isFetching: boolean;
@@ -84,9 +85,9 @@
 
 <Form
 	title={$LL.graphql.objects.User.name()}
-	{showRemoveButton}
-	{showUnbindButton}
-	{showGotoSelectButton}
+	showRemoveButton={auth('User::*::WRITE') && showRemoveButton}
+	showUnbindButton={auth('User::*::WRITE') && showUnbindButton}
+	showGotoSelectButton={auth('User::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	on:save={save}
 	on:remove={() =>
@@ -124,15 +125,33 @@
 		<FormLoading rows={9} />
 	{:else}
 		{#if node}
+			{#if auth('User::name::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
+			{/if}
+			{#if auth('User::lastName::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.lastName.name()} name="lastName" bind:value={node.lastName} errors={errors.lastName} />
+			{/if}
+			{#if auth('User::login::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.login.name()} name="login" bind:value={node.login} errors={errors.login} />
+			{/if}
+			{#if auth('User::email::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.email.name()} name="email" bind:value={node.email} errors={errors.email} />
+			{/if}
+			{#if auth('User::phones::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.phones.name()} name="phones" bind:value={node.phones} list errors={errors.phones} />
+			{/if}
+			{#if auth('User::disable::*')}
 			<BooleanItem label={$LL.graphql.objects.User.fields.disable.name()} name="disable" bind:value={node.disable} errors={errors.disable} />
+			{/if}
+			{#if auth('User::groups::*')}
 			<ObjectItem name="groups" path={`${node.id}/groups`} label={$LL.graphql.objects.User.fields.groups.name()} errors={errors.groups} on:gotoField />
+			{/if}
+			{#if auth('User::roles::*')}
 			<ObjectItem name="roles" path={`${node.id}/roles`} label={$LL.graphql.objects.User.fields.roles.name()} errors={errors.roles} on:gotoField />
+			{/if}
+			{#if auth('User::realm::*')}
 			<ObjectItem name="realm" path={`${node.id}/realm`} label={$LL.graphql.objects.User.fields.realm.name()} errors={errors.realm} on:gotoField />
+			{/if}
 		{/if}
 	{/if}
 </Form>

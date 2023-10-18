@@ -1085,6 +1085,7 @@ export type Invoke = {
   methodName?: InputMaybe<Scalars['String']>;
   parameters?: InputMaybe<Array<InputMaybe<InvokeParameter>>>;
   returnClassName?: InputMaybe<Scalars['String']>;
+  thrownTypes?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type InvokeParameter = {

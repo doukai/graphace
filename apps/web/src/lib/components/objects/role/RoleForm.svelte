@@ -8,6 +8,7 @@
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
 	import type { Role, RoleInput } from '~/lib/types/schema';
+	import { auth } from '@graphace/commons/stores/useAuth';
 
 	export let node: Role | null | undefined;
 	export let isFetching: boolean;
@@ -84,9 +85,9 @@
 
 <Form
 	title={$LL.graphql.objects.Role.name()}
-	{showRemoveButton}
-	{showUnbindButton}
-	{showGotoSelectButton}
+	showRemoveButton={auth('Role::*::WRITE') && showRemoveButton}
+	showUnbindButton={auth('Role::*::WRITE') && showUnbindButton}
+	showGotoSelectButton={auth('Role::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	on:save={save}
 	on:remove={() =>
@@ -124,13 +125,27 @@
 		<FormLoading rows={7} />
 	{:else}
 		{#if node}
+			{#if auth('Role::name::*')}
 			<StringItem label={$LL.graphql.objects.Role.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
+			{/if}
+			{#if auth('Role::description::*')}
 			<StringItem label={$LL.graphql.objects.Role.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
+			{/if}
+			{#if auth('Role::users::*')}
 			<ObjectItem name="users" path={`${node.id}/users`} label={$LL.graphql.objects.Role.fields.users.name()} errors={errors.users} on:gotoField />
+			{/if}
+			{#if auth('Role::groups::*')}
 			<ObjectItem name="groups" path={`${node.id}/groups`} label={$LL.graphql.objects.Role.fields.groups.name()} errors={errors.groups} on:gotoField />
+			{/if}
+			{#if auth('Role::composites::*')}
 			<ObjectItem name="composites" path={`${node.id}/composites`} label={$LL.graphql.objects.Role.fields.composites.name()} errors={errors.composites} on:gotoField />
+			{/if}
+			{#if auth('Role::permissions::*')}
 			<ObjectItem name="permissions" path={`${node.id}/permissions`} label={$LL.graphql.objects.Role.fields.permissions.name()} errors={errors.permissions} on:gotoField />
+			{/if}
+			{#if auth('Role::realm::*')}
 			<ObjectItem name="realm" path={`${node.id}/realm`} label={$LL.graphql.objects.Role.fields.realm.name()} errors={errors.realm} on:gotoField />
+			{/if}
 		{/if}
 	{/if}
 </Form>

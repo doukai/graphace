@@ -5,12 +5,12 @@
     "items": [
 {%- if objects %}
 {%- for object in objects %}
-	{
+	    {
         "name": "{{ object.name }}",
         "tags": "{{ object.name }}",
-        "href": "/{{ object.name | paramCase }}",
-        "permissions": ["{{ object.name }}::*::*"]
-	}{%- if forloop.last == false -%},{%- endif %}
+        "href": "/{{ object.name | paramCase }}"{%- if useAuth %},
+        "permissions": ["{{ object.name }}::*::*"]{%- endif %}
+	    }{%- if forloop.last == false -%},{%- endif %}
 {%- endfor %}
 {%- endif %}
     ]

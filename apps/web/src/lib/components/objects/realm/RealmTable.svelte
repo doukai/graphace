@@ -14,6 +14,7 @@
 		QueryRealmListArgs,
 		RealmInput
 	} from '~/lib/types/schema';
+	import { auth } from '@graphace/commons/stores/useAuth';
 
 	export let nodes: (Realm | null | undefined)[] | null | undefined;
 	export let isFetching: boolean;
@@ -161,10 +162,10 @@
 
 <TableHead
 	title={$LL.graphql.objects.Realm.name()}
-	showRemoveButton={showRemoveButton && selectedIdList.length > 0}
-	showUnbindButton={showUnbindButton && selectedIdList.length > 0}
-	{showSaveButton}
-	{showGotoSelectButton}
+	showRemoveButton={auth('Realm::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
+	showUnbindButton={auth('Realm::*::WRITE') && showUnbindButton && selectedIdList.length > 0}
+	showSaveButton={auth('Realm::*::WRITE') && showSaveButton}
+	showGotoSelectButton={auth('Realm::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	on:create
 	on:search={(e) => search(e.detail.value)}
@@ -219,12 +220,14 @@
 					/>
 				</label>
 			</th>
+			{#if auth('Realm::name::*')}
 			<StringTh
 				name={$LL.graphql.objects.Realm.fields.name.name()}
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
 				on:filter={query}
 			/>
+			{/if}
 			<th />
 		</tr>
 	</thead>
@@ -241,12 +244,16 @@
 									<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
 								</label>
 							</th>
+							{#if auth('Realm::name::*')}
 							<StringTd
 								name="name"
 								bind:value={node.name}
 								on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								readonly={!auth('Realm::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
+							{/if}
+							{#if auth('Realm::*::WRITE')}
 							<th class="z-10 hover:z-30 w-24">
 								<div class="flex space-x-1">
 									<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
@@ -316,6 +323,7 @@
 									{/if}
 								</div>
 							</th>
+							{/if}
 						</tr>
 					{/if}
 				{/each}

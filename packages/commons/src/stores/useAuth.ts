@@ -1,4 +1,4 @@
-import { type Writable, writable, derived, type Readable } from 'svelte/store';
+import { type Writable, type Readable, writable, derived, get } from 'svelte/store';
 import type { JsonWebToken } from '~/types';
 
 export const jwt: Writable<JsonWebToken | undefined> = writable(undefined);
@@ -13,18 +13,20 @@ export const roles: Readable<string[] | undefined> = derived(
     ($jwt) => $jwt?.roles
 );
 
-let $permissions: string[] = [];
-permissions.subscribe(permissions => $permissions = permissions || []);
+export const isRoot: Readable<boolean | undefined> = derived(
+    jwt,
+    ($jwt) => $jwt?.is_root
+);
 
 export function auth(...authPermissions: string[]): boolean {
-    return authPermissions.map(authPermission => authPermission.split("::"))
+    return get(jwt)?.is_root || authPermissions.map(authPermission => authPermission.split("::"))
         .map(authParts =>
-            $permissions?.map(permissions => permissions.split("::"))
+            get(jwt)?.permissions?.map(permissions => permissions.split("::"))
                 .some(parts =>
                     (authParts[0] === '*' || authParts[0] === parts[0]) &&
                     (authParts[1] === '*' || authParts[1] === parts[1]) &&
                     (authParts[2] === '*' || authParts[2] === parts[2])
                 )
         )
-        .reduce((pre, cur) => pre && cur, true);
+        .reduce((pre, cur) => pre && cur, true) || false;
 }

@@ -3,8 +3,9 @@ import type { Locales } from '$i18n/i18n-types'
 import { loadLocaleAsync, loadNamespaceAsync } from '$i18n/i18n-util.async';
 import LL, { setLocale } from '$i18n/i18n-svelte';
 import { get } from 'svelte/store';
+import { jwt as jwtStore } from '@graphace/commons/stores/useAuth';
 
-export const load: LayoutLoad<{ locale: Locales }> = async ({ data: { locale } }) => {
+export const load: LayoutLoad<{ locale: Locales, jwt: JsonWebToken }> = async ({ data: { locale, jwt } }) => {
 	// load dictionary into memory
 	await loadLocaleAsync(locale);
 
@@ -15,6 +16,8 @@ export const load: LayoutLoad<{ locale: Locales }> = async ({ data: { locale } }
 	// get the translation functions value from the store
 	const $LL = get(LL);
 	console.info($LL.log({ fileName: '+layout.ts' }));
+
+	jwtStore.set(jwt);
 
 	// pass locale to the "rendering context"
 	return { locale };

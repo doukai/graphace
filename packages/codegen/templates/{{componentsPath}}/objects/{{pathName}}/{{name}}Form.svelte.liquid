@@ -16,6 +16,9 @@
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
 	import type { {{ name }}, {{ name }}Input } from '~/{{ schemaTypesPath }}';
+	{%- if useAuth %}
+	import { auth } from '@graphace/commons/stores/useAuth';
+	{%- endif %}
 
 	export let node: {{ name }} | null | undefined;
 	export let isFetching: boolean;
@@ -92,9 +95,15 @@
 
 <Form
 	title={$LL.graphql.objects.{{ name }}.name()}
+	{%- if useAuth %}
+	showRemoveButton={auth('{{ name }}::*::WRITE') && showRemoveButton}
+	showUnbindButton={auth('{{ name }}::*::WRITE') && showUnbindButton}
+	showGotoSelectButton={auth('{{ name }}::*::WRITE') && showGotoSelectButton}
+	{%- else %}
 	{showRemoveButton}
 	{showUnbindButton}
 	{showGotoSelectButton}
+	{%- endif %}
 	{showBackButton}
 	on:save={save}
 	on:remove={() =>
@@ -134,6 +143,9 @@
 		{#if node}
 			{%- if fields %}
 			{%- for field in fields %}
+			{%- if useAuth %}
+			{#if auth('{{ name }}::{{ field.fieldName }}::*')}
+			{%- endif %}
 			{%- if field.component %}
 			{{ field.component }}
 			{%- else %}
@@ -142,6 +154,9 @@
 			{%- else %}
 			<ObjectItem name="{{ field.fieldName }}" path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} errors={errors.{{ field.fieldName }}} on:gotoField />
 			{%- endif %}
+			{%- endif %}
+			{%- if useAuth %}
+			{/if}
 			{%- endif %}
 			{%- endfor %}
 			{%- endif %}

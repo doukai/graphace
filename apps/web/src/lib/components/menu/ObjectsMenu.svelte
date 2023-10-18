@@ -6,6 +6,7 @@
 	import type { NamespaceGraphqlTranslation } from '$i18n/i18n-types';
 	import { locale } from '~/i18n/i18n-svelte';
 	import pages from '~/lib/data/pages.json';
+	import { auth } from '@graphace/commons/stores/useAuth';
 
 	const menus = pages.map((page) => {
 		return {
@@ -25,20 +26,22 @@
 		<span class="text-base-content"><Iconify class="w-5 h-5" {icon} /></span>
 		<span>{name}</span>
 	</li>
-	{#each items as { href, objectKey }}
-		<li>
-			<a
-				href={null}
-				on:click|preventDefault={(e) => {
-					init(`/${$locale}${href}`);
-				}}
-				class={$page.url.pathname === `/${$locale}${href}` ||
-				$page.url.pathname.startsWith(`/${$locale}${href}/`)
-					? 'active'
-					: ''}
-			>
-				<span>{$LL.graphql.objects[objectKey].name()}</span>
-			</a>
-		</li>
+	{#each items as { href, objectKey, permissions }}
+		{#if auth(...permissions)}
+			<li>
+				<a
+					href={null}
+					on:click|preventDefault={(e) => {
+						init(`/${$locale}${href}`);
+					}}
+					class={$page.url.pathname === `/${$locale}${href}` ||
+					$page.url.pathname.startsWith(`/${$locale}${href}/`)
+						? 'active'
+						: ''}
+				>
+					<span>{$LL.graphql.objects[objectKey].name()}</span>
+				</a>
+			</li>
+		{/if}
 	{/each}
 {/each}
