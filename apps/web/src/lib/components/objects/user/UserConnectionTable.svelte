@@ -354,7 +354,7 @@
 							<StringTd
 								name="name"
 								bind:value={node.name}
-								on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
 								readonly={!auth('User::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
@@ -363,7 +363,7 @@
 							<StringTd
 								name="lastName"
 								bind:value={node.lastName}
-								on:save={() => updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } })}
 								readonly={!auth('User::lastName::WRITE')}
 								errors={errors[row]?.iterms?.lastName}
 							/>
@@ -372,7 +372,7 @@
 							<StringTd
 								name="login"
 								bind:value={node.login}
-								on:save={() => updateField({ login: node?.login, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ login: node?.login, where: { id: { val: node?.id } } })}
 								readonly={!auth('User::login::WRITE')}
 								errors={errors[row]?.iterms?.login}
 							/>
@@ -381,7 +381,7 @@
 							<StringTd
 								name="email"
 								bind:value={node.email}
-								on:save={() => updateField({ email: node?.email, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ email: node?.email, where: { id: { val: node?.id } } })}
 								readonly={!auth('User::email::WRITE')}
 								errors={errors[row]?.iterms?.email}
 							/>
@@ -391,7 +391,7 @@
 								name="phones"
 								bind:value={node.phones}
 								list
-								on:save={() => updateField({ phones: node?.phones, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ phones: node?.phones, where: { id: { val: node?.id } } })}
 								readonly={!auth('User::phones::WRITE')}
 								errors={errors[row]?.iterms?.phones}
 							/>
@@ -400,7 +400,7 @@
 							<BooleanTd
 								name="disable"
 								bind:value={node.disable}
-								on:save={() => updateField({ disable: node?.disable, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ disable: node?.disable, where: { id: { val: node?.id } } })}
 								readonly={!auth('User::disable::WRITE')}
 								errors={errors[row]?.iterms?.disable}
 							/>

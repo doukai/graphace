@@ -340,7 +340,7 @@
 							<StringTd
 								name="name"
 								bind:value={node.name}
-								on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
 								readonly={!auth('Group::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
@@ -349,7 +349,7 @@
 							<StringTd
 								name="path"
 								bind:value={node.path}
-								on:save={() => updateField({ path: node?.path, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ path: node?.path, where: { id: { val: node?.id } } })}
 								readonly={!auth('Group::path::WRITE')}
 								errors={errors[row]?.iterms?.path}
 							/>
@@ -358,7 +358,7 @@
 							<IntTd
 								name="deep"
 								bind:value={node.deep}
-								on:save={() => updateField({ deep: node?.deep, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ deep: node?.deep, where: { id: { val: node?.id } } })}
 								readonly={!auth('Group::deep::WRITE')}
 								errors={errors[row]?.iterms?.deep}
 							/>

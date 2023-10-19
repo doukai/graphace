@@ -345,7 +345,7 @@
 							<StringTd
 								name="field"
 								bind:value={node.field}
-								on:save={() => updateField({ field: node?.field, where: { name: { val: node?.name } } })}
+								on:save={(e) => updateField({ field: node?.field, where: { name: { val: node?.name } } })}
 								readonly={!auth('Permission::field::WRITE')}
 								errors={errors[row]?.iterms?.field}
 							/>
@@ -354,7 +354,7 @@
 							<StringTd
 								name="type"
 								bind:value={node.type}
-								on:save={() => updateField({ type: node?.type, where: { name: { val: node?.name } } })}
+								on:save={(e) => updateField({ type: node?.type, where: { name: { val: node?.name } } })}
 								readonly={!auth('Permission::type::WRITE')}
 								errors={errors[row]?.iterms?.type}
 							/>
@@ -363,7 +363,7 @@
 							<PermissionTypeTd
 								name="permissionType"
 								bind:value={node.permissionType}
-								on:save={() => updateField({ permissionType: node?.permissionType, where: { name: { val: node?.name } } })}
+								on:save={(e) => updateField({ permissionType: node?.permissionType, where: { name: { val: node?.name } } })}
 								readonly={!auth('Permission::permissionType::WRITE')}
 								errors={errors[row]?.iterms?.permissionType}
 							/>
@@ -372,7 +372,7 @@
 							<StringTd
 								name="description"
 								bind:value={node.description}
-								on:save={() => updateField({ description: node?.description, where: { name: { val: node?.name } } })}
+								on:save={(e) => updateField({ description: node?.description, where: { name: { val: node?.name } } })}
 								readonly={!auth('Permission::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>

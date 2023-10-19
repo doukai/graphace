@@ -145,96 +145,6 @@ const en: BaseTranslation = {
 		}
 	},
 	enums: {
-		Conditional: {
-			name: 'Conditional',
-			values: {
-				AND: {
-					name: 'AND',
-				},
-				OR: {
-					name: 'OR',
-				}
-			}
-		},
-		Func: {
-			name: 'Func',
-			values: {
-				COUNT: {
-					name: 'COUNT',
-				},
-				MAX: {
-					name: 'MAX',
-				},
-				MIN: {
-					name: 'MIN',
-				},
-				SUM: {
-					name: 'SUM',
-				},
-				AVG: {
-					name: 'AVG',
-				}
-			}
-		},
-		Operator: {
-			name: 'Operator',
-			values: {
-				EQ: {
-					name: 'EQ',
-				},
-				NEQ: {
-					name: 'NEQ',
-				},
-				LK: {
-					name: 'LK',
-				},
-				NLK: {
-					name: 'NLK',
-				},
-				GT: {
-					name: 'GT',
-				},
-				NLTE: {
-					name: 'NLTE',
-				},
-				GTE: {
-					name: 'GTE',
-				},
-				NLT: {
-					name: 'NLT',
-				},
-				LT: {
-					name: 'LT',
-				},
-				NGTE: {
-					name: 'NGTE',
-				},
-				LTE: {
-					name: 'LTE',
-				},
-				NGT: {
-					name: 'NGT',
-				},
-				NIL: {
-					name: 'NIL',
-				},
-				NNIL: {
-					name: 'NNIL',
-				},
-				IN: {
-					name: 'IN',
-				},
-				NIN: {
-					name: 'NIN',
-				},
-				BT: {
-					name: 'BT',
-				},
-				NBT: {
-					name: 'NBT',
-				}
-			}
-		},
 		PermissionType: {
 			name: 'PermissionType',
 			values: {
@@ -243,34 +153,6 @@ const en: BaseTranslation = {
 				},
 				WRITE: {
 					name: 'WRITE',
-				}
-			}
-		},
-		Protocol: {
-			name: 'Protocol',
-			values: {
-				LOCAL: {
-					name: 'LOCAL',
-				},
-				GRPC: {
-					name: 'GRPC',
-				},
-				HTTP: {
-					name: 'HTTP',
-				},
-				RSOCKET: {
-					name: 'RSOCKET',
-				}
-			}
-		},
-		Sort: {
-			name: 'Sort',
-			values: {
-				ASC: {
-					name: 'ASC',
-				},
-				DESC: {
-					name: 'DESC',
 				}
 			}
 		}

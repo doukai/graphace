@@ -6,7 +6,7 @@
 	import { Checkbox, CheckboxGroup, Select } from '@graphace/ui/components/input';
 	import type { StringExpression, Sort } from '@graphace/graphql/types';
 	import LL from '$i18n/i18n-svelte';
-	import OperatorSelect from '~/components/input/OperatorSelect.svelte';
+	import OperatorSelect from '../input/OperatorSelect.svelte';
 
 	export let name: string;
 	export let enums: { name: string; value: string | null | undefined; description?: string }[];
@@ -52,11 +52,7 @@
 
 <div class="hidden">
 	<div class="flex items-start space-x-1" bind:this={content}>
-		<OperatorSelect
-			className="join-item w-2/3"
-			bind:value={_expression.opr}
-			on:change={(e) => oprChange()}
-		/>
+		<OperatorSelect bind:value={_expression.opr} on:change={(e) => oprChange()} />
 		{#if _expression.opr === 'IN' || _expression.opr === 'NIN' || _expression.opr === 'BT' || _expression.opr === 'NBT'}
 			<CheckboxGroup bind:value={_expression.in}>
 				{#each enums as item}

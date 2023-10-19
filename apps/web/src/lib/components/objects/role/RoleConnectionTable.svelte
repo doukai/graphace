@@ -333,7 +333,7 @@
 							<StringTd
 								name="name"
 								bind:value={node.name}
-								on:save={() => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
 								readonly={!auth('Role::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
@@ -342,7 +342,7 @@
 							<StringTd
 								name="description"
 								bind:value={node.description}
-								on:save={() => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
 								readonly={!auth('Role::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>

@@ -59,7 +59,10 @@
 				</button>
 			</div>
 			<div class="tooltip" data-tip={$LL.uiGraphql.table.td.clear()}>
-				<button class="btn btn-square btn-outline btn-error" on:click|preventDefault={(e) => clean()}>
+				<button
+					class="btn btn-square btn-outline btn-error"
+					on:click|preventDefault={(e) => clean()}
+				>
 					<Icon src={XMark} class="h-5 w-5" />
 				</button>
 			</div>
@@ -92,18 +95,20 @@
 				{#if value && value.length > 0}
 					{#if value && value.length > 3}
 						{value
-							.filter((item) => item)
+							.map((valueItem) => enums.find((item) => item.value === valueItem)?.name || valueItem)
 							.slice(0, 3)
 							.join(',')
 							.concat('...')}
 					{:else}
-						{value.filter((item) => item).join(',')}
+						{value
+							.map((valueItem) => enums.find((item) => item.value === valueItem)?.name || valueItem)
+							.join(',')}
 					{/if}
 				{:else}
 					<Icon src={Minus} class="h-5 w-5" />
 				{/if}
 			{:else if value}
-				{value}
+				{enums.find((item) => item.value === value)?.name || value}
 			{:else}
 				<Icon src={Minus} class="h-5 w-5" />
 			{/if}

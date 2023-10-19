@@ -295,44 +295,6 @@ export type NamespaceGraphqlTranslation = {
 		}
 	}
 	enums: {
-		Func: {
-			/**
-			 * F​u​n​c
-			 */
-			name: string
-			values: {
-				COUNT: {
-					/**
-					 * C​O​U​N​T
-					 */
-					name: string
-				}
-				MAX: {
-					/**
-					 * M​A​X
-					 */
-					name: string
-				}
-				MIN: {
-					/**
-					 * M​I​N
-					 */
-					name: string
-				}
-				SUM: {
-					/**
-					 * S​U​M
-					 */
-					name: string
-				}
-				AVG: {
-					/**
-					 * A​V​G
-					 */
-					name: string
-				}
-			}
-		}
 		PermissionType: {
 			/**
 			 * P​e​r​m​i​s​s​i​o​n​T​y​p​e
@@ -1161,44 +1123,6 @@ export type TranslationFunctions = {
 			}
 		}
 		enums: {
-			Func: {
-				/**
-				 * Func
-				 */
-				name: () => LocalizedString
-				values: {
-					COUNT: {
-						/**
-						 * COUNT
-						 */
-						name: () => LocalizedString
-					}
-					MAX: {
-						/**
-						 * MAX
-						 */
-						name: () => LocalizedString
-					}
-					MIN: {
-						/**
-						 * MIN
-						 */
-						name: () => LocalizedString
-					}
-					SUM: {
-						/**
-						 * SUM
-						 */
-						name: () => LocalizedString
-					}
-					AVG: {
-						/**
-						 * AVG
-						 */
-						name: () => LocalizedString
-					}
-				}
-			}
 			PermissionType: {
 				/**
 				 * PermissionType
