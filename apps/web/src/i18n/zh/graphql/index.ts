@@ -28,12 +28,6 @@ const zh: NamespaceGraphqlTranslation = {
 				name: {
 					name: '名称',
 				},
-				path: {
-					name: '路径',
-				},
-				deep: {
-					name: '层级',
-				},
 				parent: {
 					name: '上级',
 				},
@@ -74,6 +68,32 @@ const zh: NamespaceGraphqlTranslation = {
 				},
 				realm: {
 					name: '租户',
+				}
+			}
+		},
+		Policy: {
+			name: '策略',
+			fields: {
+				ptype: {
+					name: '类型',
+				},
+				v0: {
+					name: '参数0',
+				},
+				v1: {
+					name: '参数1',
+				},
+				v2: {
+					name: '参数2',
+				},
+				v3: {
+					name: '参数3',
+				},
+				v4: {
+					name: '参数4',
+				},
+				v5: {
+					name: '参数5',
 				}
 			}
 		},

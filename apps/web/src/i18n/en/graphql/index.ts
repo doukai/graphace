@@ -28,12 +28,6 @@ const en: BaseTranslation = {
 				name: {
 					name: 'name',
 				},
-				path: {
-					name: 'path',
-				},
-				deep: {
-					name: 'deep',
-				},
 				parent: {
 					name: 'parent',
 				},
@@ -74,6 +68,32 @@ const en: BaseTranslation = {
 				},
 				realm: {
 					name: 'realm',
+				}
+			}
+		},
+		Policy: {
+			name: 'Policy',
+			fields: {
+				ptype: {
+					name: 'ptype',
+				},
+				v0: {
+					name: 'v0',
+				},
+				v1: {
+					name: 'v1',
+				},
+				v2: {
+					name: 'v2',
+				},
+				v3: {
+					name: 'v3',
+				},
+				v4: {
+					name: 'v4',
+				},
+				v5: {
+					name: 'v5',
 				}
 			}
 		},

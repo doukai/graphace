@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors, GraphQLError } from '@graphace/commons/types';
-	import { StringTh, StringTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
+	import { StringTh, StringTd } from '@graphace/ui-graphql/components/table';
 	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
 	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -79,11 +79,9 @@
 		if (searchValue) {
 			args.cond = 'OR';
 			args.name = { opr: 'LK', val: `%${searchValue}%` };
-			args.path = { opr: 'LK', val: `%${searchValue}%` };
 		} else {
 			args.cond = undefined;
 			args.name = undefined;
-			args.path = undefined;
 		}
 
 		dispatch('fetch', {
@@ -166,27 +164,11 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if auth('Group::path::*')}
-			<StringTh
-				name={$LL.graphql.objects.Group.fields.path.name()}
-				bind:expression={args.path}
-				bind:sort={orderBy.path}
-				on:filter={(e) => query()}
-			/>
-			{/if}
-			{#if auth('Group::deep::*')}
-			<IntTh
-				name={$LL.graphql.objects.Group.fields.deep.name()}
-				bind:expression={args.deep}
-				bind:sort={orderBy.deep}
-				on:filter={(e) => query()}
-			/>
-			{/if}
 			<th />
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading rows={10} cols={8 + 2}/>
+		<TableLoading rows={10} cols={6 + 2}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
@@ -209,24 +191,6 @@
 								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
 								readonly={!auth('Group::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
-							/>
-							{/if}
-							{#if auth('Group::path::*')}
-							<StringTd
-								name="path"
-								bind:value={node.path}
-								on:save={(e) => updateField({ path: node?.path, where: { id: { val: node?.id } } })}
-								readonly={!auth('Group::path::WRITE')}
-								errors={errors[row]?.iterms?.path}
-							/>
-							{/if}
-							{#if auth('Group::deep::*')}
-							<IntTd
-								name="deep"
-								bind:value={node.deep}
-								on:save={(e) => updateField({ deep: node?.deep, where: { id: { val: node?.id } } })}
-								readonly={!auth('Group::deep::WRITE')}
-								errors={errors[row]?.iterms?.deep}
 							/>
 							{/if}
 							<th class="z-10 hover:z-30 w-12">
@@ -259,7 +223,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={8 + 2}/>
+				<TableEmpty cols={6 + 2}/>
 			{/if}
 		</tbody>
 	{/if}

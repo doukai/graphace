@@ -15,5 +15,6 @@ mutation Mutation_user($id: ID, $name: String, $lastName: String, $login: String
     updateUserId
     updateTime
     createGroupId
+    syncUserPolicy
   }
 }

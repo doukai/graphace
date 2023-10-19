@@ -110,6 +110,25 @@ const config: CodegenConfig = {
                                 {
                                     name: 'hash',
                                     ignore: true
+                                },
+                                {
+                                    name: 'syncUserPolicy',
+                                    inQuery: false,
+                                    inSubscription: false,
+                                    inList: false,
+                                    inDetail: false
+                                }
+                            ]
+                        },
+                        {
+                            name: 'Role',
+                            fields: [
+                                {
+                                    name: 'syncRolePolicy',
+                                    inQuery: false,
+                                    inSubscription: false,
+                                    inList: false,
+                                    inDetail: false
                                 }
                             ]
                         },
@@ -121,8 +140,25 @@ const config: CodegenConfig = {
                             name: 'Group',
                             fields: [
                                 {
+                                    name: 'path',
+                                    inList: false,
+                                    inDetail: false
+                                },
+                                {
+                                    name: 'deep',
+                                    inList: false,
+                                    inDetail: false
+                                },
+                                {
                                     name: 'parentId',
                                     ignore: true
+                                },
+                                {
+                                    name: 'syncGroupPolicy',
+                                    inQuery: false,
+                                    inSubscription: false,
+                                    inList: false,
+                                    inDetail: false
                                 }
                             ]
                         },
@@ -132,6 +168,13 @@ const config: CodegenConfig = {
                                 {
                                     name: 'roleId',
                                     ignore: true
+                                },
+                                {
+                                    name: 'syncPermissionPolicy',
+                                    inQuery: false,
+                                    inSubscription: false,
+                                    inList: false,
+                                    inDetail: false
                                 }
                             ]
                         }

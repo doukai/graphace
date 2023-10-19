@@ -12,6 +12,7 @@ mutation Mutation_group_roles($group_id: String, $group_roles: [RoleInput], $fir
     updateUserId
     updateTime
     createGroupId
+    syncGroupPolicy
     rolesConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userRole: $userRole groupRole: $groupRole roleComposite: $roleComposite rolePermission: $rolePermission) {
       totalCount
       edges {
@@ -27,6 +28,7 @@ mutation Mutation_group_roles($group_id: String, $group_roles: [RoleInput], $fir
           updateUserId
           updateTime
           createGroupId
+          syncRolePolicy
         }
       }
     }

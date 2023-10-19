@@ -11,6 +11,7 @@ mutation Mutation_role_userRole($role_id: String, $role_userRole: [UserRoleInput
     updateUserId
     updateTime
     createGroupId
+    syncRolePolicy
     userRoleConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId userIdType: $userIdType roleId: $roleId roleIdType: $roleIdType) {
       totalCount
       edges {

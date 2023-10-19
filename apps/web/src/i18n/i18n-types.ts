@@ -73,18 +73,6 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				path: {
-					/**
-					 * p​a​t​h
-					 */
-					name: string
-				}
-				deep: {
-					/**
-					 * d​e​e​p
-					 */
-					name: string
-				}
 				parent: {
 					/**
 					 * p​a​r​e​n​t
@@ -162,6 +150,56 @@ export type NamespaceGraphqlTranslation = {
 				realm: {
 					/**
 					 * r​e​a​l​m
+					 */
+					name: string
+				}
+			}
+		}
+		Policy: {
+			/**
+			 * P​o​l​i​c​y
+			 */
+			name: string
+			fields: {
+				ptype: {
+					/**
+					 * p​t​y​p​e
+					 */
+					name: string
+				}
+				v0: {
+					/**
+					 * v​0
+					 */
+					name: string
+				}
+				v1: {
+					/**
+					 * v​1
+					 */
+					name: string
+				}
+				v2: {
+					/**
+					 * v​2
+					 */
+					name: string
+				}
+				v3: {
+					/**
+					 * v​3
+					 */
+					name: string
+				}
+				v4: {
+					/**
+					 * v​4
+					 */
+					name: string
+				}
+				v5: {
+					/**
+					 * v​5
 					 */
 					name: string
 				}
@@ -901,18 +939,6 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					path: {
-						/**
-						 * path
-						 */
-						name: () => LocalizedString
-					}
-					deep: {
-						/**
-						 * deep
-						 */
-						name: () => LocalizedString
-					}
 					parent: {
 						/**
 						 * parent
@@ -990,6 +1016,56 @@ export type TranslationFunctions = {
 					realm: {
 						/**
 						 * realm
+						 */
+						name: () => LocalizedString
+					}
+				}
+			}
+			Policy: {
+				/**
+				 * Policy
+				 */
+				name: () => LocalizedString
+				fields: {
+					ptype: {
+						/**
+						 * ptype
+						 */
+						name: () => LocalizedString
+					}
+					v0: {
+						/**
+						 * v0
+						 */
+						name: () => LocalizedString
+					}
+					v1: {
+						/**
+						 * v1
+						 */
+						name: () => LocalizedString
+					}
+					v2: {
+						/**
+						 * v2
+						 */
+						name: () => LocalizedString
+					}
+					v3: {
+						/**
+						 * v3
+						 */
+						name: () => LocalizedString
+					}
+					v4: {
+						/**
+						 * v4
+						 */
+						name: () => LocalizedString
+					}
+					v5: {
+						/**
+						 * v5
 						 */
 						name: () => LocalizedString
 					}

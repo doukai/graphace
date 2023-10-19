@@ -23,6 +23,9 @@ export type FieldConfig = {
     name: string
     ignore?: boolean
     inGraphQL?: boolean
+    inQuery?: boolean
+    inMutation?: boolean
+    inSubscription?: boolean
     inList?: boolean
     inDetail?: boolean
     import?: string[]

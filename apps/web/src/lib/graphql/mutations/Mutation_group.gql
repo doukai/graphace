@@ -12,5 +12,6 @@ mutation Mutation_group($id: ID, $name: String, $path: String, $deep: Int, $pare
     updateUserId
     updateTime
     createGroupId
+    syncGroupPolicy
   }
 }

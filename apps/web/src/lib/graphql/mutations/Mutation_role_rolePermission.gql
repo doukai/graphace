@@ -11,6 +11,7 @@ mutation Mutation_role_rolePermission($role_id: String, $role_rolePermission: [R
     updateUserId
     updateTime
     createGroupId
+    syncRolePolicy
     rolePermissionConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId roleIdType: $roleIdType permissionName: $permissionName permissionNameType: $permissionNameType) {
       totalCount
       edges {

@@ -12,6 +12,7 @@ mutation Mutation_group_subGroups($group_id: String, $group_subGroups: [GroupInp
     updateUserId
     updateTime
     createGroupId
+    syncGroupPolicy
     subGroupsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name path: $path deep: $deep parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm) {
       totalCount
       edges {
@@ -28,6 +29,7 @@ mutation Mutation_group_subGroups($group_id: String, $group_subGroups: [GroupInp
           updateUserId
           updateTime
           createGroupId
+          syncGroupPolicy
         }
       }
     }

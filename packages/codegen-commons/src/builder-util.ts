@@ -48,25 +48,37 @@ export function getObjectArrayComponent(typeName: string): string | undefined {
     return builderConfig?.objects?.find(objectConfig => objectConfig.name === typeName)?.arrayComponent;
 }
 
-export function inGraphQLField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
+export function inGraphQLField(typeName: string, fieldName: string, fieldTypeName: string, operationType?: 'query' | 'mutation' | 'subscription'): boolean {
+    const originalTypeName = typeName.lastIndexOf(connectionSuffix) === -1 ?
+        typeName :
+        typeName.substring(0, typeName.lastIndexOf(connectionSuffix));
     const originalFieldTypeName = fieldTypeName.lastIndexOf(connectionSuffix) === -1 ?
         fieldTypeName :
         fieldTypeName.substring(0, fieldTypeName.lastIndexOf(connectionSuffix));
     return !(builderConfig?.objects || [])
-        .filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any')
+        .filter(objectConfig => objectConfig.name === originalTypeName || objectConfig.name === 'any')
         .flatMap(objectConfig => objectConfig.fields || [])
-        .filter(fieldConfig => fieldConfig.inGraphQL === false || fieldConfig.ignore === true)
+        .filter(fieldConfig =>
+            fieldConfig.inGraphQL === false ||
+            (operationType === 'query' && fieldConfig.inQuery === false) ||
+            (operationType === 'mutation' && fieldConfig.inMutation === false) ||
+            (operationType === 'subscription' && fieldConfig.inSubscription === false) ||
+            fieldConfig.ignore === true
+        )
         .some(fieldConfig => fieldConfig.name === fieldName) &&
         builderConfig?.objects?.find(objectConfig => objectConfig.name === originalFieldTypeName)?.ignore !== true &&
         builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true;
 }
 
 export function inListField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
+    const originalTypeName = typeName.lastIndexOf(connectionSuffix) === -1 ?
+        typeName :
+        typeName.substring(0, typeName.lastIndexOf(connectionSuffix));
     const originalFieldTypeName = fieldTypeName.lastIndexOf(connectionSuffix) === -1 ?
         fieldTypeName :
         fieldTypeName.substring(0, fieldTypeName.lastIndexOf(connectionSuffix));
     return !(builderConfig?.objects || [])
-        .filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any')
+        .filter(objectConfig => objectConfig.name === originalTypeName || objectConfig.name === 'any')
         .flatMap(objectConfig => objectConfig.fields || [])
         .filter(fieldConfig => fieldConfig.inList === false || fieldConfig.ignore === true)
         .some(fieldConfig => fieldConfig.name === fieldName) &&
@@ -75,11 +87,14 @@ export function inListField(typeName: string, fieldName: string, fieldTypeName: 
 }
 
 export function inDetailField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
+    const originalTypeName = typeName.lastIndexOf(connectionSuffix) === -1 ?
+        typeName :
+        typeName.substring(0, typeName.lastIndexOf(connectionSuffix));
     const originalFieldTypeName = fieldTypeName.lastIndexOf(connectionSuffix) === -1 ?
         fieldTypeName :
         fieldTypeName.substring(0, fieldTypeName.lastIndexOf(connectionSuffix));
     return !(builderConfig?.objects || [])
-        .filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any')
+        .filter(objectConfig => objectConfig.name === originalTypeName || objectConfig.name === 'any')
         .flatMap(objectConfig => objectConfig.fields || [])
         .filter(fieldConfig => fieldConfig.inDetail === false || fieldConfig.ignore === true)
         .some(fieldConfig => fieldConfig.name === fieldName) &&

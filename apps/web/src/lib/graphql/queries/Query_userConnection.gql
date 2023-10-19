@@ -7,8 +7,6 @@ query Query_userConnection($id: StringExpression, $name: StringExpression, $last
         name
         lastName
         login
-        salt
-        hash
         email
         phones
         disable

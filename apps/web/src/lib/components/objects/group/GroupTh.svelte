@@ -3,8 +3,8 @@
 	import { tippy } from '@graphace/ui/components/tippy';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel } from '@steeze-ui/heroicons';
-	import { StringInput, IntInput } from '@graphace/ui-graphql/components/input';
-	import type { StringExpression, IntExpression } from '~/lib/types/schema';
+	import { StringInput } from '@graphace/ui-graphql/components/input';
+	import type { StringExpression } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 	import type { GroupExpression } from '$houdini';
 	import OperatorSelect from '@graphace/ui-graphql/components/input/OperatorSelect.svelte';
@@ -15,12 +15,8 @@
 
 	let _expression: {
 		name: StringExpression;
-		path: StringExpression;
-		deep: IntExpression;
 	} = {
 		name: {},
-		path: {},
-		deep: {},
 	};
 
 	let content: HTMLElement;
@@ -35,16 +31,6 @@
 		} else {
 			expression = { ...expression, name: undefined };
 		}
-		if (_expression.path.val || (_expression.path.in && _expression.path.in.length > 0)) {
-			expression = { ...expression, path: _expression.path };
-		} else {
-			expression = { ...expression, path: undefined };
-		}
-		if (_expression.deep.val || (_expression.deep.in && _expression.deep.in.length > 0)) {
-			expression = { ...expression, deep: _expression.deep };
-		} else {
-			expression = { ...expression, deep: undefined };
-		}
 
 		if (Object.keys(expression).length > 0) {
 			dispatch('filter');
@@ -56,8 +42,6 @@
 
 	const clear = (): void => {
 		_expression.name = {};
-		_expression.path = {};
-		_expression.deep = {};
 		expression = undefined;
 		dispatch('filter');
 		tippyElement._tippy.hide();
@@ -65,14 +49,6 @@
 	const nameOprChange = (): void => {
 		_expression.name.in = [];
 		_expression.name.val = undefined;
-	};
-	const pathOprChange = (): void => {
-		_expression.path.in = [];
-		_expression.path.val = undefined;
-	};
-	const deepOprChange = (): void => {
-		_expression.deep.in = [];
-		_expression.deep.val = undefined;
 	};
 </script>
 <div class="hidden">
@@ -100,56 +76,6 @@
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{name}
 					bind:value={_expression.name.val}
-				/>
-			{/if}
-			{/if}
-			{#if auth('Group::path::*')}
-			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
-					{$LL.graphql.objects.Group.fields.path.name()}
-				</button>
-				<OperatorSelect
-					className="join-item w-2/3"
-					bind:value={_expression.path.opr}
-					on:change={(e) => pathOprChange()}
-				/>
-			</div>
-			{#if _expression.path.opr === 'IN' || _expression.path.opr === 'NIN' || _expression.path.opr === 'BT' || _expression.path.opr === 'NBT'}
-				<StringInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					{name}
-					bind:value={_expression.path.in}
-				/>
-			{:else}
-				<StringInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					{name}
-					bind:value={_expression.path.val}
-				/>
-			{/if}
-			{/if}
-			{#if auth('Group::deep::*')}
-			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
-					{$LL.graphql.objects.Group.fields.deep.name()}
-				</button>
-				<OperatorSelect
-					className="join-item w-2/3"
-					bind:value={_expression.deep.opr}
-					on:change={(e) => deepOprChange()}
-				/>
-			</div>
-			{#if _expression.deep.opr === 'IN' || _expression.deep.opr === 'NIN' || _expression.deep.opr === 'BT' || _expression.deep.opr === 'NBT'}
-				<IntInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					{name}
-					bind:value={_expression.deep.in}
-				/>
-			{:else}
-				<IntInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					{name}
-					bind:value={_expression.deep.val}
 				/>
 			{/if}
 			{/if}

@@ -11,6 +11,7 @@ mutation Mutation_role_groups($role_id: String, $role_groups: [GroupInput], $fir
     updateUserId
     updateTime
     createGroupId
+    syncRolePolicy
     groupsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name path: $path deep: $deep parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm) {
       totalCount
       edges {
@@ -27,6 +28,7 @@ mutation Mutation_role_groups($role_id: String, $role_groups: [GroupInput], $fir
           updateUserId
           updateTime
           createGroupId
+          syncGroupPolicy
         }
       }
     }

@@ -11,6 +11,7 @@ mutation Mutation_role_realm($role_id: String, $role_realm: RealmInput, $id: Str
     updateUserId
     updateTime
     createGroupId
+    syncRolePolicy
     realm(id: $id name: $name groupBy: $groupBy) {
       id
       name

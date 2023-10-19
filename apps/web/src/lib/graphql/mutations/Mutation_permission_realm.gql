@@ -13,6 +13,7 @@ mutation Mutation_permission_realm($permission_name: String, $permission_realm: 
     updateUserId
     updateTime
     createGroupId
+    syncPermissionPolicy
     realm(id: $id name: $name includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupBy: $groupBy) {
       id
       name

@@ -143,6 +143,7 @@ type Group implements Meta {
   subGroups(after: ID, before: ID, deep: IntExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): [Group]
   subGroupsAggregate(deep: IntExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): Group
   subGroupsConnection(deep: IntExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): GroupConnection
+  syncGroupPolicy: Boolean
   updateTime: Timestamp
   updateUserId: String
   userGroup: [UserGroup]
@@ -882,6 +883,7 @@ type Permission implements Meta {
   roles(after: ID, before: ID, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): [Role]
   rolesAggregate(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
   rolesConnection(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): RoleConnection
+  syncPermissionPolicy: Boolean
   type: String!
   typeCount: Int
   typeMax: String
@@ -1167,6 +1169,17 @@ input PermissionTypeExpression {
   val: PermissionType
 }
 
+type Policy {
+  id: Int!
+  ptype: String
+  v0: String
+  v1: String
+  v2: String
+  v3: String
+  v4: String
+  v5: String
+}
+
 input Property {
   name: String!
   required: [String]
@@ -1202,6 +1215,7 @@ type Query implements Meta {
   permission(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [PermissionExpression], field: StringExpression, groupBy: [String!], includeDeprecated: Boolean = false, name: StringExpression, permissionType: PermissionTypeExpression, realm: RealmExpression, realmId: IntExpression, rolePermission: RolePermissionExpression, roles: RoleExpression, type: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Permission
   permissionConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [PermissionExpression], field: StringExpression, first: Int, groupBy: [String!], includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, permissionType: PermissionTypeExpression, realm: RealmExpression, realmId: IntExpression, rolePermission: RolePermissionExpression, roles: RoleExpression, type: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): PermissionConnection
   permissionList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, exs: [PermissionExpression], field: StringExpression, first: Int, groupBy: [String!], includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, permissionType: PermissionTypeExpression, realm: RealmExpression, realmId: IntExpression, rolePermission: RolePermissionExpression, roles: RoleExpression, type: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): [Permission]
+  policyList: [Policy]
   realm(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RealmExpression], groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Realm
   realmConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RealmExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RealmOrderBy, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): RealmConnection
   realmId: Int
@@ -1495,6 +1509,7 @@ type Role implements Meta {
   rolePermission: [RolePermission]
   rolePermissionAggregate(first: Int, groupBy: [String!], id: StringExpression, last: Int, offset: Int, orderBy: RolePermissionOrderBy, permissionName: StringExpression, permissionNameType: PermissionExpression, roleId: IntExpression, roleIdType: RoleExpression): RolePermission
   rolePermissionConnection(first: Int, groupBy: [String!], id: StringExpression, last: Int, offset: Int, orderBy: RolePermissionOrderBy, permissionName: StringExpression, permissionNameType: PermissionExpression, roleId: IntExpression, roleIdType: RoleExpression): RolePermissionConnection
+  syncRolePolicy: Boolean
   updateTime: Timestamp
   updateUserId: String
   userRole: [UserRole]
@@ -2445,6 +2460,7 @@ type User implements Meta {
   saltCount: Int
   saltMax: String
   saltMin: String
+  syncUserPolicy: Boolean
   updateTime: Timestamp
   updateUserId: String
   userGroup: [UserGroup]

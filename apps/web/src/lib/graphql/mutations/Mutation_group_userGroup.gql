@@ -12,6 +12,7 @@ mutation Mutation_group_userGroup($group_id: String, $group_userGroup: [UserGrou
     updateUserId
     updateTime
     createGroupId
+    syncGroupPolicy
     userGroupConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id userId: $userId userIdType: $userIdType groupId: $groupId groupIdType: $groupIdType) {
       totalCount
       edges {

@@ -45,3 +45,19 @@
 		{/if}
 	{/each}
 {/each}
+{#if auth('Query::policyList::READ')}
+	<li>
+		<a
+			href={null}
+			on:click|preventDefault={(e) => {
+				init(`/${$locale}/policy`);
+			}}
+			class={$page.url.pathname === `/${$locale}/policy` ||
+			$page.url.pathname.startsWith(`/${$locale}/policy/`)
+				? 'active'
+				: ''}
+		>
+			<span>{$LL.graphql.objects.Policy.name()}</span>
+		</a>
+	</li>
+{/if}

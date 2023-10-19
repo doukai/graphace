@@ -15,7 +15,6 @@ query Query_groupConnection($id: StringExpression, $name: StringExpression, $pat
         updateUserId
         updateTime
         createGroupId
-        parentId
       }
     }
   }

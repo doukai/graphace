@@ -11,6 +11,7 @@ mutation Mutation_role_roleComposite($role_id: String, $role_roleComposite: [Rol
     updateUserId
     updateTime
     createGroupId
+    syncRolePolicy
     roleCompositeConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId roleIdType: $roleIdType compositeId: $compositeId compositeIdType: $compositeIdType) {
       totalCount
       edges {

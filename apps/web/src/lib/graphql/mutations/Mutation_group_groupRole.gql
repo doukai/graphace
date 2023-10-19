@@ -12,6 +12,7 @@ mutation Mutation_group_groupRole($group_id: String, $group_groupRole: [GroupRol
     updateUserId
     updateTime
     createGroupId
+    syncGroupPolicy
     groupRoleConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id roleId: $roleId roleIdType: $roleIdType groupId: $groupId groupIdType: $groupIdType) {
       totalCount
       edges {

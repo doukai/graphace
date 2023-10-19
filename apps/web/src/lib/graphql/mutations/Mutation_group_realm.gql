@@ -12,6 +12,7 @@ mutation Mutation_group_realm($group_id: String, $group_realm: RealmInput, $id: 
     updateUserId
     updateTime
     createGroupId
+    syncGroupPolicy
     realm(id: $id name: $name groupBy: $groupBy) {
       id
       name

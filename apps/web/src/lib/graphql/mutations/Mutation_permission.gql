@@ -13,5 +13,6 @@ mutation Mutation_permission($name: ID, $field: String, $type: String, $permissi
     updateUserId
     updateTime
     createGroupId
+    syncPermissionPolicy
   }
 }

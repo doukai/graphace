@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons/types';
-	import { ObjectTd, StringTh, StringTd, IntTh, IntTd } from '@graphace/ui-graphql/components/table';
+	import { ObjectTd, StringTh, StringTd } from '@graphace/ui-graphql/components/table';
 	import { Table, TableHead, TableEmpty } from '@graphace/ui/components/table';
 	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -86,12 +86,6 @@
 			{#if auth('Group::name::*')}
 			<td>{$LL.graphql.objects.Group.fields.name.name()}</td>
 			{/if}
-			{#if auth('Group::path::*')}
-			<td>{$LL.graphql.objects.Group.fields.path.name()}</td>
-			{/if}
-			{#if auth('Group::deep::*')}
-			<td>{$LL.graphql.objects.Group.fields.deep.name()}</td>
-			{/if}
 			{#if auth('Group::parent::*')}
 			<td>{$LL.graphql.objects.Group.fields.parent.name()}</td>
 			{/if}
@@ -126,22 +120,6 @@
 							bind:value={node.name}
 							readonly
 							errors={errors[row]?.iterms?.name}
-						/>
-						{/if}
-						{#if auth('Group::path::*')}
-						<StringTd
-							name="path"
-							bind:value={node.path}
-							readonly
-							errors={errors[row]?.iterms?.path}
-						/>
-						{/if}
-						{#if auth('Group::deep::*')}
-						<IntTd
-							name="deep"
-							bind:value={node.deep}
-							readonly
-							errors={errors[row]?.iterms?.deep}
 						/>
 						{/if}
 						{#if auth('Group::parent::*')}
@@ -197,7 +175,7 @@
 				{/if}
 			{/each}
 		{:else}
-			<TableEmpty cols={8 + 2}/>
+			<TableEmpty cols={6 + 2}/>
 		{/if}
 	</tbody>
 </Table>

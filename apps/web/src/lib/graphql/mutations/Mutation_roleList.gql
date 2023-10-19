@@ -11,5 +11,6 @@ mutation Mutation_roleList($id: ID, $name: String, $description: String, $users:
     updateUserId
     updateTime
     createGroupId
+    syncRolePolicy
   }
 }

@@ -122,6 +122,7 @@ export type Group = Meta & {
   groupRole?: Maybe<Array<Maybe<GroupRole>>>;
   groupRoleAggregate?: Maybe<GroupRole>;
   groupRoleConnection?: Maybe<GroupRoleConnection>;
+  syncGroupPolicy?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -1695,6 +1696,7 @@ export type Permission = Meta & {
   rolePermission?: Maybe<Array<Maybe<RolePermission>>>;
   rolePermissionAggregate?: Maybe<RolePermission>;
   rolePermissionConnection?: Maybe<RolePermissionConnection>;
+  syncPermissionPolicy?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -2106,6 +2108,18 @@ export type PermissionTypeExpression = {
   in?: InputMaybe<Array<InputMaybe<PermissionType>>>;
 };
 
+export type Policy = {
+  __typename?: 'Policy';
+  id: Scalars['Int'];
+  ptype?: Maybe<Scalars['String']>;
+  v0?: Maybe<Scalars['String']>;
+  v1?: Maybe<Scalars['String']>;
+  v2?: Maybe<Scalars['String']>;
+  v3?: Maybe<Scalars['String']>;
+  v4?: Maybe<Scalars['String']>;
+  v5?: Maybe<Scalars['String']>;
+};
+
 export type Property = {
   name: Scalars['String'];
   validation?: InputMaybe<ValidationInput>;
@@ -2169,6 +2183,7 @@ export type Query = Meta & {
   rolePermissionConnection?: Maybe<RolePermissionConnection>;
   current?: Maybe<CurrentUser>;
   currentPermissionList?: Maybe<Array<Maybe<Scalars['String']>>>;
+  policyList?: Maybe<Array<Maybe<Policy>>>;
 };
 
 
@@ -3308,6 +3323,7 @@ export type Role = Meta & {
   rolePermission?: Maybe<Array<Maybe<RolePermission>>>;
   rolePermissionAggregate?: Maybe<RolePermission>;
   rolePermissionConnection?: Maybe<RolePermissionConnection>;
+  syncRolePolicy?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -5599,6 +5615,7 @@ export type User = Meta & {
   userRole?: Maybe<Array<Maybe<UserRole>>>;
   userRoleAggregate?: Maybe<UserRole>;
   userRoleConnection?: Maybe<UserRoleConnection>;
+  syncUserPolicy?: Maybe<Scalars['Boolean']>;
 };
 
 
