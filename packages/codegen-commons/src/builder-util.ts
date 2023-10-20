@@ -102,6 +102,22 @@ export function inDetailField(typeName: string, fieldName: string, fieldTypeName
         builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true;
 }
 
+export function inRouteField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
+    const originalTypeName = typeName.lastIndexOf(connectionSuffix) === -1 ?
+        typeName :
+        typeName.substring(0, typeName.lastIndexOf(connectionSuffix));
+    const originalFieldTypeName = fieldTypeName.lastIndexOf(connectionSuffix) === -1 ?
+        fieldTypeName :
+        fieldTypeName.substring(0, fieldTypeName.lastIndexOf(connectionSuffix));
+    return !(builderConfig?.objects || [])
+        .filter(objectConfig => objectConfig.name === originalTypeName || objectConfig.name === 'any')
+        .flatMap(objectConfig => objectConfig.fields || [])
+        .filter(fieldConfig => fieldConfig.inRoute === false || fieldConfig.ignore === true)
+        .some(fieldConfig => fieldConfig.name === fieldName) &&
+        builderConfig?.objects?.find(objectConfig => objectConfig.name === originalFieldTypeName)?.ignore !== true &&
+        builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true;
+}
+
 export function componentFields(
     typeName: string,
     fields: {

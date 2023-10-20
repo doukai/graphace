@@ -28,6 +28,7 @@ export type FieldConfig = {
     inSubscription?: boolean
     inList?: boolean
     inDetail?: boolean
+    inRoute?: boolean
     import?: string[]
     arrayImport?: string[]
     component?: string
