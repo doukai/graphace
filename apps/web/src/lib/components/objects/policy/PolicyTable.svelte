@@ -57,23 +57,23 @@
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading rows={10} cols={6} />
+		<TableLoading rows={10} cols={7} />
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
 				{#each nodes as node}
 					<tr class="hover">
-						<td>{node?.ptype}</td>
-						<td>{node?.v0}</td>
-						<td>{node?.v1}</td>
-						<td>{node?.v2}</td>
-						<td>{node?.v3}</td>
-						<td>{node?.v4}</td>
-						<td>{node?.v5}</td>
+						<td>{node?.ptype || ''}</td>
+						<td>{node?.v0 || ''}</td>
+						<td>{node?.v1 || ''}</td>
+						<td>{node?.v2 || ''}</td>
+						<td>{node?.v3 || ''}</td>
+						<td>{node?.v4 || ''}</td>
+						<td>{node?.v5 || ''}</td>
 					</tr>
 				{/each}
 			{:else}
-				<TableEmpty cols={6} />
+				<TableEmpty cols={7} />
 			{/if}
 		</tbody>
 	{/if}

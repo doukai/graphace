@@ -27,6 +27,7 @@
 			}
 		});
 	};
+	$:console.log(nodes)
 </script>
 
 <Card>

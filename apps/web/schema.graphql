@@ -1170,7 +1170,7 @@ input PermissionTypeExpression {
 }
 
 type Policy {
-  id: Int!
+  id: String
   ptype: String
   v0: String
   v1: String
