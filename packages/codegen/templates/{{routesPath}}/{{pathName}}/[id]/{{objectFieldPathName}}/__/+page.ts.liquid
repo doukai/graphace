@@ -3,8 +3,14 @@ import type { LayoutLoad } from '$types';
 import { {% if connectionField %}load_Query_{{ objectFieldTypeName | camelCase }}Connection{% else %}load_Query_{{ objectFieldTypeName | camelCase }}List{% endif %} } from '$houdini';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
+	{%- if pairField %}
+    const notBelongToParent = { not: true, {{ pairField.name }}: { {{ idName }}: { val: event.params.id } } };
+	{%- endif %}
     return {
         id: event.params.{{ idName }},
-        ...(await {% if connectionField %}load_Query_{{ objectFieldTypeName | camelCase }}Connection({ event, variables: { first: 10 } })){% else %}load_Query_{{ objectFieldTypeName | camelCase }}List({ event })){% endif %}
+        {%- if pairField %}
+        notBelongToParent,
+        {%- endif %}
+        ...(await {% if connectionField %}load_Query_{{ objectFieldTypeName | camelCase }}Connection({ event, variables: { first: 10{% if pairField %}, ...notBelongToParent{% endif %} } })){% else %}load_Query_{{ objectFieldTypeName | camelCase }}List({ event{% if pairField %}, variables: { ...notBelongToParent }{% endif %} })){% endif %}
     };
 }

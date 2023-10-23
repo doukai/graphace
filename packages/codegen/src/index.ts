@@ -2,7 +2,7 @@ import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
 import * as changeCase from "change-case";
 import { assertObjectType, isEnumType, isListType, isObjectType, type GraphQLSchema, isNonNullType, assertEnumType } from 'graphql';
-import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getScalarNames, getEnumNames, getEnumValues, isAggregate, initConfig, inRouteObject, inGraphQLField, inListField, inDetailField, componentFields, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, inComponentEnum, isInnerEnum, getObjectNames, getBaseScalarNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName } from 'graphace-codegen-commons';
+import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getScalarNames, getEnumNames, getEnumValues, isAggregate, initConfig, inRouteObject, inGraphQLField, inListField, inDetailField, componentFields, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, inComponentEnum, isInnerEnum, getObjectNames, getBaseScalarNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField } from 'graphace-codegen-commons';
 import type { Template } from 'graphace-codegen-commons';
 import { buildFileContent } from "./builder.js";
 
@@ -662,7 +662,8 @@ const renders: Record<Template, Render> = {
                             isNonNullType: isNonNullType(objectField.type),
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName()
+                            subscriptionTypeName: getSubscriptionTypeName(),
+                            pairField: getPairField(type, objectField)
                         }),
                     };
                 }
@@ -690,7 +691,8 @@ const renders: Record<Template, Render> = {
                             schemaTypesPath: config.schemaTypesPath,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName()
+                            subscriptionTypeName: getSubscriptionTypeName(),
+                            pairField: getPairField(type, objectField)
                         }),
                     };
                 }
@@ -841,7 +843,8 @@ const renders: Record<Template, Render> = {
                             schemaTypesPath: config.schemaTypesPath,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName()
+                            subscriptionTypeName: getSubscriptionTypeName(),
+                            pairField: getPairField(type, objectField)
                         }),
                     };
                 }
@@ -868,7 +871,8 @@ const renders: Record<Template, Render> = {
                             connectionField: connectionField,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName()
+                            subscriptionTypeName: getSubscriptionTypeName(),
+                            pairField: getPairField(type, objectField)
                         }),
                     };
                 }

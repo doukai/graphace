@@ -17,6 +17,7 @@
 	$: Query_permissionConnection = data.Query_permissionConnection as Query_permissionConnectionStore;
 	$: nodes = $Query_permissionConnection.data?.permissionConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_permissionConnection.data?.permissionConnection?.totalCount || 0;
+	const notBelongToParent = data.notBelongToParent;
 	const Mutation_permission = new Mutation_permissionStore();
 	const Mutation_role_permissions = new Mutation_role_permissionsStore();
 	let errors: Record<number, Errors> = {};
@@ -105,6 +106,7 @@
 		{nodes}
 		{totalCount}
 		{errors}
+		args={ { ...notBelongToParent } }
 		isFetching={$Query_permissionConnection.fetching}
 		on:fetch={fetch}
 		on:mutation={mutation}

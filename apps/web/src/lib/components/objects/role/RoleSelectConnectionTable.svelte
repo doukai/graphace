@@ -67,7 +67,6 @@
 	};
 
 	export const queryPage = () => {
-		alert(JSON.stringify(args))
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {

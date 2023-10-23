@@ -17,6 +17,7 @@
 	$: Query_groupConnection = data.Query_groupConnection as Query_groupConnectionStore;
 	$: nodes = $Query_groupConnection.data?.groupConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_groupConnection.data?.groupConnection?.totalCount || 0;
+	const notBelongToParent = data.notBelongToParent;
 	const Mutation_group = new Mutation_groupStore();
 	const Mutation_group_subGroups = new Mutation_group_subGroupsStore();
 	let errors: Record<number, Errors> = {};
@@ -105,6 +106,7 @@
 		{nodes}
 		{totalCount}
 		{errors}
+		args={ { ...notBelongToParent } }
 		isFetching={$Query_groupConnection.fetching}
 		on:fetch={fetch}
 		on:mutation={mutation}

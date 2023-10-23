@@ -17,6 +17,7 @@
 	$: Query_userConnection = data.Query_userConnection as Query_userConnectionStore;
 	$: nodes = $Query_userConnection.data?.userConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_userConnection.data?.userConnection?.totalCount || 0;
+	const notBelongToParent = data.notBelongToParent;
 	const Mutation_user = new Mutation_userStore();
 	const Mutation_group_users = new Mutation_group_usersStore();
 	let errors: Record<number, Errors> = {};
@@ -105,6 +106,7 @@
 		{nodes}
 		{totalCount}
 		{errors}
+		args={ { ...notBelongToParent } }
 		isFetching={$Query_userConnection.fetching}
 		on:fetch={fetch}
 		on:mutation={mutation}

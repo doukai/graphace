@@ -3,8 +3,10 @@ import type { LayoutLoad } from '$types';
 import { load_Query_groupConnection } from '$houdini';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
+    const notBelongToParent = { not: true, users: { id: { val: event.params.id } } };
     return {
         id: event.params.id,
-        ...(await load_Query_groupConnection({ event, variables: { first: 10 } }))
+        notBelongToParent,
+        ...(await load_Query_groupConnection({ event, variables: { first: 10, ...notBelongToParent } }))
     };
 }

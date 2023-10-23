@@ -45,8 +45,8 @@
 	export let showSelectButton = false;
 	export let args: QueryGroupConnectionArgs = {};
 	export let orderBy: GroupOrderBy = {};
-	export let after: string | undefined;
-	export let before: string | undefined;
+	export let after: string | undefined = undefined;
+	export let before: string | undefined = undefined;
 	export let pageNumber: number = 1;
 	export let pageSize: number = 10;
 

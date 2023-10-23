@@ -26,6 +26,9 @@
 	$: Query_{{ objectFieldTypeName | camelCase }}List = data.Query_{{ objectFieldTypeName | camelCase }}List as Query_{{ objectFieldTypeName | camelCase }}ListStore;
 	$: nodes = $Query_{{ objectFieldTypeName | camelCase }}List.data?.{{ objectFieldTypeName | camelCase }}List;
 	{%- endif %}
+	{%- if pairField %}
+	const notBelongToParent = data.notBelongToParent;
+	{%- endif %}
 	const Mutation_{{ objectFieldTypeName | camelCase }} = new Mutation_{{ objectFieldTypeName | camelCase }}Store();
 	const Mutation_{{ name | camelCase }}_{{ objectFieldName }} = new Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store();
 	let errors: Record<number, Errors> = {};
@@ -127,6 +130,9 @@
 		{nodes}
 		{totalCount}
 		{errors}
+		{%- if pairField %}
+		args={ { ...notBelongToParent } }
+		{%- endif %}
 		isFetching={$Query_{{ objectFieldTypeName | camelCase }}Connection.fetching}
 		on:fetch={fetch}
 		on:mutation={mutation}
@@ -139,6 +145,9 @@
 		showBackButton={$canBack}
 		{nodes}
 		{errors}
+		{%- if pairField %}
+		args={ { ...notBelongToParent } }
+		{%- endif %}
 		isFetching={$Query_{{ objectFieldTypeName | camelCase }}List.fetching}
 		on:fetch={fetch}
 		on:mutation={mutation}

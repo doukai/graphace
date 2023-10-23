@@ -1,5 +1,5 @@
 import * as changeCase from "change-case";
-import { assertEnumType, assertScalarType, isEnumType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLEnumValue, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType, type GraphQLSchema, assertObjectType } from 'graphql';
+import { assertEnumType, assertScalarType, isEnumType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLEnumValue, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType, type GraphQLSchema, assertObjectType, GraphQLObjectType } from 'graphql';
 
 export const aggregateSuffix = ["Count", "Sum", "Avg", "Max", "Min", "Aggregate"];
 export const connectionSuffix = "Connection";
@@ -200,6 +200,17 @@ export const getIDFieldName = (type: GraphQLNamedType): string | undefined => {
             .filter(field => isScalarType(getFieldType(field.type)))
             .find(field => assertScalarType(getFieldType(field.type)).name === 'ID')
         return idField?.name;
+    }
+    return undefined;
+}
+
+export const getPairField = (type: GraphQLObjectType, field: GraphQLField<any, any, any>): GraphQLField<any, any, any> | undefined => {
+    const fieldType = getFieldType(field.type);
+    if (isObjectType(fieldType)) {
+        const pairField = Object.values(fieldType.getFields())
+            .filter(field => !isAggregate(field.name))
+            .find(field => getFieldType(field.type).name === type.name);
+        return pairField;
     }
     return undefined;
 }
