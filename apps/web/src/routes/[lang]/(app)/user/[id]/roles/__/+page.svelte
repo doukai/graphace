@@ -5,8 +5,13 @@
 	import { Card } from '@graphace/ui/components/card';
 	import RoleSelectConnectionTable from '~/lib/components/objects/role/RoleSelectConnectionTable.svelte';
 	import type { Role, QueryRoleConnectionArgs, MutationRoleArgs } from '~/lib/types/schema';
-	import { Query_roleConnectionStore, Mutation_roleStore, Mutation_user_rolesStore } from '$houdini';
+	import {
+		Query_roleConnectionStore,
+		Mutation_roleStore,
+		Mutation_user_rolesStore
+	} from '$houdini';
 	import type { PageData } from './$houdini';
+	import { Operator } from '$houdini';
 	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
@@ -28,13 +33,12 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		Query_roleConnection.fetch({ variables: event.detail.args })
-			.then((result) => {
-				event.detail.then(result.data?.roleConnection?.edges?.map((edge) => edge?.node));
-				if (result.errors) {
-					event.detail.catch(result.errors);
-				}
-			});
+		Query_roleConnection.fetch({ variables: event.detail.args }).then((result) => {
+			event.detail.then(result.data?.roleConnection?.edges?.map((edge) => edge?.node));
+			if (result.errors) {
+				event.detail.catch(result.errors);
+			}
+		});
 	};
 
 	const mutation = (
@@ -44,19 +48,20 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id || event.detail.args.where?.id?.val || undefined);
+		const row = nodes
+			?.map((node) => node?.id)
+			?.indexOf(event.detail.args.id || event.detail.args.where?.id?.val || undefined);
 		validateMutation('Role', event.detail.args, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_role.mutate(event.detail.args)
-					.then((result) => {
-						event.detail.then(result?.data?.role);
-						if (result.errors) {
-							event.detail.catch(result.errors);
-						}
-					});
+				Mutation_role.mutate(event.detail.args).then((result) => {
+					event.detail.then(result?.data?.role);
+					if (result.errors) {
+						event.detail.catch(result.errors);
+					}
+				});
 			})
 			.catch((validErrors) => {
 				if (row !== -1 && row !== undefined) {
@@ -80,13 +85,12 @@
 						user_id: id,
 						user_roles: event.detail.selected,
 						mergeToList: ['roles']
-					})
-						.then((result) => {
-							event.detail.then();
-							if (result.errors) {
-								event.detail.catch(result.errors);
-							}
-						});
+					}).then((result) => {
+						event.detail.then();
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
+					});
 				}
 			})
 			.catch((validErrors) => {
@@ -106,6 +110,7 @@
 		{totalCount}
 		{errors}
 		isFetching={$Query_roleConnection.fetching}
+		args={{ users: { id: { opr: Operator.NEQ, val: id } } }}
 		on:fetch={fetch}
 		on:mutation={mutation}
 		on:select={select}

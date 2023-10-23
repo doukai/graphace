@@ -57,8 +57,8 @@
 
 	export let args: QueryRoleConnectionArgs = {};
 	export let orderBy: RoleOrderBy = {};
-	export let after: string | undefined;
-	export let before: string | undefined;
+	export let after: string | undefined =undefined;
+	export let before: string | undefined =undefined;
 	export let pageNumber: number = 1;
 	export let pageSize: number = 10;
 
