@@ -1,6 +1,2 @@
-import SearchInput from "./SearchInput.svelte";
-import AutoComplete from "./AutoComplete.svelte";
-
-export {
-    SearchInput, AutoComplete
-}
+export * from "./SearchInput.svelte";
+export * from "./AutoComplete.svelte";

@@ -1,28 +1,28 @@
 {
-  "name": "graphace-codegen",
-  "version": "0.0.1",
-  "scripts": {
-    "build": "microbundle"
-  },
-  "devDependencies": {
-    "microbundle": "^0.15.1"
-  },
-  "dependencies": {
-    "@graphql-codegen/plugin-helpers": "^4.2.0",
-    "@graphql-codegen/schema-ast": "^3.0.1",
-    "@graphql-codegen/visitor-plugin-common": "3.1.1",
-    "change-case": "^4.1.2",
-    "graphace-codegen-commons": "workspace:*",
-    "graphql": "^16.6.0"
-  },
-  "source": "src/index.ts",
-  "exports": {
-    "require": "./dist/index.cjs",
-    "default": "./dist/index.modern.js"
-  },
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.module.js",
-  "types": "./dist/index.d.ts",
-  "unpkg": "./dist/index.umd.js",
-  "type": "module"
+	"name": "graphace-codegen",
+	"version": "0.0.1",
+	"scripts": {
+		"build": "microbundle"
+	},
+	"devDependencies": {
+		"microbundle": "^0.15.1"
+	},
+	"dependencies": {
+		"@graphql-codegen/plugin-helpers": "^4.2.0",
+		"@graphql-codegen/schema-ast": "^3.0.1",
+		"@graphql-codegen/visitor-plugin-common": "3.1.1",
+		"change-case": "^4.1.2",
+		"graphace-codegen-commons": "workspace:*",
+		"graphql": "^16.6.0"
+	},
+	"source": "src/index.ts",
+	"exports": {
+		"require": "./dist/index.cjs",
+		"default": "./dist/index.modern.js"
+	},
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.module.js",
+	"types": "./dist/index.d.ts",
+	"unpkg": "./dist/index.umd.js",
+	"type": "module"
 }

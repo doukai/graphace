@@ -1,19 +1,23 @@
 {
-  "name": "@graphace/commons",
-  "version": "0.0.1",
-  "description": "graphace commons module",
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "lint": "prettier --check --ignore-path=../../.prettierignore . && eslint \".\"",
-    "format": "prettier --write --ignore-path=../../.prettierignore ."
-  },
-  "devDependencies": {
-    "eslint-config-custom": "workspace:*"
-  },
-  "peerDependencies": {
-    "@types/lodash": "^4.14.195",
-    "lodash": "^4.17.21"
-  }
+	"name": "@graphace/commons",
+	"version": "0.0.1",
+	"description": "graphace commons module",
+	"type": "module",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"clean": "rimraf dist",
+		"build": "tsc",
+		"watch:build": "tsc --watch",
+		"lint": "prettier --check --ignore-path=../../.prettierignore . && eslint \".\"",
+		"format": "prettier --write --ignore-path=../../.prettierignore ."
+	},
+	"devDependencies": {
+		"typescript": "^4.9.5",
+		"eslint-config-custom": "workspace:*"
+	},
+	"peerDependencies": {
+		"@types/lodash": "^4.14.195",
+		"lodash": "^4.17.21"
+	}
 }

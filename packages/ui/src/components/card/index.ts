@@ -1,5 +1,1 @@
-import Card from "./Card.svelte";
-
-export {
-    Card
-}
+export * from "./Card.svelte";

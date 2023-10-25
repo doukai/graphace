@@ -1,7 +1,3 @@
-import Form from "./Form.svelte";
-import FormItem from "./FormItem.svelte";
-import FormLoading from "./FormLoading.svelte";
-
-export {
-    Form, FormItem, FormLoading
-}
+export * from "./Form.svelte";
+export * from "./FormItem.svelte";
+export * from "./FormLoading.svelte";

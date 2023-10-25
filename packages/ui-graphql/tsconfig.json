@@ -1,27 +1,14 @@
 {
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "rootDirs": [
-      "./src"
-    ],
-    "outDir": "./dist",
-    "baseUrl": ".",
-    "paths": {
-      "~/*": [
-        "./src/*"
-      ],
-      "@graphace/commons/*": [
-        "../../packages/commons/src/*"
-      ],
-      "@graphace/graphql/*": [
-        "../../packages/graphql/src/*"
-      ],
-      "@graphace/ui/*": [
-        "../../packages/ui/src/*"
-      ],
-      "$i18n/*": [
-        "./src/i18n/*"
-      ]
-    }
-  },
+	"extends": "../../tsconfig.json",
+	"compilerOptions": {
+		"rootDirs": ["./src"],
+		"baseUrl": ".",
+		"paths": {
+			"~/*": ["./src/*"],
+			"@graphace/commons/*": ["../../packages/commons/src/*"],
+			"@graphace/graphql/*": ["../../packages/graphql/src/*"],
+			"@graphace/ui/*": ["../../packages/ui/src/*"],
+			"$i18n/*": ["./src/i18n/*"]
+		}
+	}
 }
