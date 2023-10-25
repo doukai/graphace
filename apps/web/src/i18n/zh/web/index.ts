@@ -4,7 +4,7 @@ const zh: NamespaceWebTranslation = {
     welcome: "Welcome to {name}",
     localeName: { en: "英文", zh: "中文" },
     login: {
-        detail: "全栈GraphQL开发平台, 基于GraphQL Svelte 响应式Java",
+        detail: "多式联运平台",
         account: "账号",
         login: "登录",
         password: "密码",

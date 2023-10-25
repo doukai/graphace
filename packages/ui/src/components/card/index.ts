@@ -1,1 +1,5 @@
-export * from "./Card.svelte";
+import Card from "./Card.svelte";
+
+export {
+    Card
+}

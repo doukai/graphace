@@ -1,2 +1,6 @@
-export * from './MenuLoading.svelte';
-export * from './MenuTreeLoading.svelte';
+import MenuLoading from "./MenuLoading.svelte";
+import MenuTreeLoading from "./MenuTreeLoading.svelte";
+
+export {
+    MenuLoading, MenuTreeLoading
+}

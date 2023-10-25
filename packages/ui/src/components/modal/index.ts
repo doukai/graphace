@@ -1,3 +1,7 @@
-export * from "./Modal.svelte";
-export * from "./ModalActions.svelte";
-export * from "./ModalContent.svelte";
+import Modal from "./Modal.svelte";
+import ModalActions from "./ModalActions.svelte";
+import ModalContent from "./ModalContent.svelte";
+
+export {
+    Modal, ModalActions, ModalContent
+}

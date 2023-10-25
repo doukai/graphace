@@ -3,6 +3,7 @@
 	import type { NamespaceWebTranslation } from '$i18n/i18n-types';
 	import type { Errors } from '@graphace/commons/types';
 	import { nanoid } from 'nanoid';
+	import logo from '$lib/assets/logo.png';
 
 	export let errors: Record<string, Errors> = {};
 	export let authErrorCodes: number[] = [];
@@ -16,14 +17,17 @@
 	const passwordId = nanoid();
 </script>
 
-<div class="hero min-h-[calc(100vh-4rem)] bg-base-200">
+<div
+	class="hero min-h-[calc(100vh-4rem)] bg-base-200"
+	style="background-image: url(../../../../static/login.webp);"
+>
 	<div class="hero-content flex-col lg:flex-row-reverse">
 		<div class="text-center lg:text-left">
 			<div class="font-title inline-flex text-5xl font-bold">
-				<span>Graph</span>
-				<span class="uppercase text-[#E535AB]">ACE</span>
+				<span class="uppercase text-info">G</span>
+				<span class="uppercase text-info">Top</span>
 			</div>
-			<p class="py-6">{$LL.web.login.detail()}</p>
+			<p class="py-6 text-info text-xl">{$LL.web.login.detail()}</p>
 		</div>
 		<div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
 			<div class="card-body">
