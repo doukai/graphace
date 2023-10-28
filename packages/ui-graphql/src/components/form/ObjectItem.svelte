@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons';
+	import { FormItem } from '@graphace/ui';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Link } from '@steeze-ui/heroicons';
-	import { FormItem } from '@graphace/ui/components/form';
 	import LL from '~/i18n/i18n-svelte';
 
 	export let path: string;

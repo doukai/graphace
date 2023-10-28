@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons';
 	import { nanoid } from 'nanoid';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus, PlusSmall, MinusSmall } from '@steeze-ui/heroicons';

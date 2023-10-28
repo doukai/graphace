@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { NumberExpression, Sort } from '@graphace/graphql/types';
+	import type { NumberExpression, Sort } from '@graphace/graphql';
 	import NumberTh from './NumberTh.svelte';
 
 	export let name: string;

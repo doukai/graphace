@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons';
 	import NumberItem from './NumberInput.svelte';
 
 	export let value: number | (number | null | undefined)[] | null | undefined;

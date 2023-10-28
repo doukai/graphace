@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { tippy } from '@graphace/ui/components/tippy';
+	import type { BooleanExpression, Sort } from '@graphace/graphql';
+	import { tippy, Toggle, ToggleList } from '@graphace/ui';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel, BarsArrowDown, BarsArrowUp } from '@steeze-ui/heroicons';
-	import { Toggle, ToggleList } from '@graphace/ui/components/input';
-	import type { BooleanExpression, Sort } from '@graphace/graphql/types';
 	import LL from '$i18n/i18n-svelte';
 	import OperatorSelect from '../input/OperatorSelect.svelte';
 

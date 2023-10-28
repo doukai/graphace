@@ -8,7 +8,8 @@
 	import {{ objectFieldTypeName }}Table from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}Table.svelte';
 	{%- endif %}
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors, GraphQLError } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons';
+	import type { GraphQLError } from '@graphace/graphql';
 	import type { {{ mutationTypeName }}{{ objectFieldTypeName }}Args, {% if connectionField %}{{ queryTypeName }}{{ objectFieldTypeName }}ConnectionArgs{% else %}{{ queryTypeName }}{{ objectFieldTypeName }}ListArgs{% endif %}, {{ objectFieldTypeName }} } from '~/{{ schemaTypesPath }}';
 	import { Query_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ objectFieldTypeName | camelCase }}Store, Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store } from '$houdini';
 	import type { PageData } from './$houdini';

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { __Field, __Type } from '@graphace/graphql/types';
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons';
+	import type { __Field, __Type } from '@graphace/graphql';
 	import NumberTd from './NumberTd.svelte';
 
 	export let value: number | (number | null | undefined)[] | null | undefined;

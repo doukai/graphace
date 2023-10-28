@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons';
 	import StringTd from './StringTd.svelte';
 
 	export let value: string | (string | null | undefined)[] | null | undefined;

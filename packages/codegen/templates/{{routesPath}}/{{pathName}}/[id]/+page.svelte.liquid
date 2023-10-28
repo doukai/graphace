@@ -4,7 +4,8 @@
 	import { Card } from '@graphace/ui/components/card';
 	import {{ name }}Form from '~/{{ formPath }}/{{ name | paramCase }}/{{ name }}Form.svelte';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors, GraphQLError } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons';
+	import type { GraphQLError } from '@graphace/graphql';
 	import { Query_{{ name | camelCase }}Store, Mutation_{{ name | camelCase }}Store } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { {{ mutationTypeName }}{{ name }}Args, {{ name }} } from '~/{{ schemaTypesPath }}';

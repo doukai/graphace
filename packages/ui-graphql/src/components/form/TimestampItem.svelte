@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons';
 	import DateTimeItem from './DateTimeItem.svelte';
 
 	export let value: string | (string | null | undefined)[] | null | undefined;

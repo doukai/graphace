@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Errors } from '@graphace/commons/types';
+	import type { Errors } from '@graphace/commons';
 	import { nanoid } from 'nanoid';
 	export let name: string;
 	export let value: boolean | null | undefined;

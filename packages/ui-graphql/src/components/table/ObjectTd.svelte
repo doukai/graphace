@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import type { Errors } from '@graphace/commons';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Link } from '@steeze-ui/heroicons';
-	import type { Errors } from '@graphace/commons/types';
 	import LL from '$i18n/i18n-svelte';
 
 	export let path: string;

@@ -1,33 +1,8 @@
-import type { Error, Errors } from '@graphace/commons/types';
+import type { Error, Errors, Language } from '../';
 import type Ajv from 'ajv';
 import type { AnySchemaObject, ErrorObject } from 'ajv';
 import localize from 'ajv-i18n';
 import * as changeCase from "change-case";
-
-export type Language =
-    | "en"
-    | "ar"
-    | "ca"
-    | "cs"
-    | "de"
-    | "es"
-    | "fi"
-    | "fr"
-    | "hu"
-    | "id"
-    | "it"
-    | "ja"
-    | "ko"
-    | "nb"
-    | "nl"
-    | "pl"
-    | "pt-BR"
-    | "ru"
-    | "sk"
-    | "sv"
-    | "th"
-    | "zh"
-    | "zh-TW";
 
 function buildErrors(errors: ErrorObject[]): Record<string, Errors> {
     const instancePathErrors: Record<string, Error[]> = {};

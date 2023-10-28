@@ -1,3 +1,4 @@
+export * from "./GraphQLError";
 export * from "./__Schema";
 export * from "./__Type";
 export * from "./__Directive";

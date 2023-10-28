@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { tippy } from '@graphace/ui/components/tippy';
-	import type { Errors } from '@graphace/commons/types';
-	import { TimeInput, TimeInputList } from '@graphace/ui/components/input';
+	import type { Errors } from '@graphace/commons';
+	import { tippy, TimeInput, TimeInputList } from '@graphace/ui';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';

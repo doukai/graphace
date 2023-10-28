@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { Errors } from '@graphace/commons/types';
-	import { NumberInput, NumberInputList } from '@graphace/ui/components/input';
+	import type { Errors } from '@graphace/commons';
+	import { NumberInput, NumberInputList } from '@graphace/ui';
 
 	export let value: number | (number | null | undefined)[] | null | undefined;
 	export let list: boolean = false;

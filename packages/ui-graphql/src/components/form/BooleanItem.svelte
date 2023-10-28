@@ -1,7 +1,6 @@
 <script lang="ts">
-	import type { Errors } from '@graphace/commons/types';
-	import { FormItem } from '@graphace/ui/components/form';
-	import { Toggle, ToggleList } from '@graphace/ui/components/input';
+	import type { Errors } from '@graphace/commons';
+	import { FormItem, Toggle, ToggleList } from '@graphace/ui';
 
 	export let value: boolean | (boolean | null | undefined)[] | null | undefined;
 	export let list: boolean = false;

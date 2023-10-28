@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { tippy } from '@graphace/ui/components/tippy';
-	import type { Errors } from '@graphace/commons/types';
-	import { DateTimeInput, DateTimeInputList } from '@graphace/ui/components/input';
+	import type { Errors } from '@graphace/commons';
+	import { tippy, DateTimeInput, DateTimeInputList } from '@graphace/ui';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
@@ -54,7 +53,10 @@
 				</button>
 			</div>
 			<div class="tooltip" data-tip={$LL.uiGraphql.table.td.clear()}>
-				<button class="btn btn-square btn-outline btn-error" on:click|preventDefault={(e) => clean()}>
+				<button
+					class="btn btn-square btn-outline btn-error"
+					on:click|preventDefault={(e) => clean()}
+				>
 					<Icon src={XMark} class="h-5 w-5" />
 				</button>
 			</div>

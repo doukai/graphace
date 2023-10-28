@@ -1,7 +1,6 @@
 <script lang="ts">
-	import type { Errors } from '@graphace/commons/types';
-	import { FormItem } from '@graphace/ui/components/form';
-	import { DateInput, DateInputList } from '@graphace/ui/components/input';
+	import type { Errors } from '@graphace/commons';
+	import { FormItem, DateInput, DateInputList } from '@graphace/ui';
 
 	export let value: string | (string | null | undefined)[] | null | undefined;
 	export let list: boolean = false;

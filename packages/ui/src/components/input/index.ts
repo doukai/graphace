@@ -1,4 +1,4 @@
--import Input from "./Input.svelte";
+import Input from "./Input.svelte";
 import InputList from "./InputList.svelte";
 import NumberInput from "./NumberInput.svelte";
 import NumberInputList from "./NumberInputList.svelte";

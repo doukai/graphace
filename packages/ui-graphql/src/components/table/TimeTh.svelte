@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { tippy } from '@graphace/ui/components/tippy';
+	import type { StringExpression, Sort } from '@graphace/graphql';
+	import { tippy, TimeInput, TimeInputList } from '@graphace/ui';
+	import OperatorSelect from '../input/OperatorSelect.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel, BarsArrowDown, BarsArrowUp } from '@steeze-ui/heroicons';
-	import { TimeInput, TimeInputList } from '@graphace/ui/components/input';
-	import type { StringExpression, Sort } from '@graphace/graphql/types';
 	import LL from '$i18n/i18n-svelte';
-	import OperatorSelect from '../input/OperatorSelect.svelte';
 
 	export let name: string;
 	export let expression: StringExpression | null | undefined;
