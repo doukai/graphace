@@ -1,14 +1,12 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors, GraphQLError } from '@graphace/commons/types';
-	import { Form } from '@graphace/ui/components/form';
-	import { StringItem, ObjectItem } from '@graphace/ui-graphql/components/form';
-	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
-	import { notifications } from '@graphace/ui/components/Notifications.svelte';
+	import type { Errors } from '@graphace/commons';
+	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
+	import { Form, messageBoxs, notifications } from '@graphace/ui';
+	import { StringItem, ObjectItem } from '@graphace/ui-graphql';
 	import LL from '$i18n/i18n-svelte';
 	import type { Role, RoleInput } from '~/lib/types/schema';
-	import { auth } from '@graphace/commons/stores/useAuth';
+	import { auth } from '@graphace/commons';
 
 	export let node: RoleInput = {};
 	export let errors: Record<string, Errors> = {};

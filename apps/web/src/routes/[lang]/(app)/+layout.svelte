@@ -1,16 +1,13 @@
 <script lang="ts">
 	import '../../../app.css';
 	import { onMount } from 'svelte';
-	import { to, PageType, init, history } from '~/lib/stores/useNavigate';
-	import { SideBar, Breadcrumbs } from '@graphace/ui/components';
+	import { SideBar, Breadcrumbs, NavBar, Notifications, MessageBoxs } from '@graphace/ui';
 	import ObjectsMenu from '~/lib/components/menu/ObjectsMenu.svelte';
 	import UserMenu from '~/lib/components/menu/UserMenu.svelte';
-	import { NavBar } from '@graphace/ui/components/navbar';
-	import Notifications from '@graphace/ui/components/Notifications.svelte';
-	import MessageBoxs from '@graphace/ui/components/MessageBoxs.svelte';
-	import Iconify from '@iconify/svelte';
 	import { LocaleSelect, ThemeSelect } from '~/lib/components/select';
+	import { to, PageType, init, history } from '~/lib/stores/useNavigate';
 	import { Search } from '~/lib/components/input';
+	import Iconify from '@iconify/svelte';
 	import { setLocale } from '$i18n/i18n-svelte';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';

@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { Errors } from '@graphace/commons/types';
-	import { ObjectTd, StringTh, StringTd } from '@graphace/ui-graphql/components/table';
-	import { Table, TableHead, TableEmpty } from '@graphace/ui/components/table';
-	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
+	import type { Errors } from '@graphace/commons';
+	import { Table, TableHead, TableEmpty, messageBoxs } from '@graphace/ui';
+	import { ObjectTd, StringTh, StringTd } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	import type { RoleInput } from '~/lib/types/schema';
-	import { auth } from '@graphace/commons/stores/useAuth';
+	import { auth } from '@graphace/commons';
 
 	export let nodes: (RoleInput | null | undefined)[] | null | undefined;
 	export let errors: Record<number, Errors> = {};

@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
-	import type { Errors, GraphQLError } from '@graphace/commons/types';
-	import { Card } from '@graphace/ui/components/card';
+	import { type Errors, updateNodeParam, updateErrorsParam, getNodeParam, getErrorsParam } from '@graphace/commons';
+	import type { GraphQLError } from '@graphace/graphql';
+	import { Card } from '@graphace/ui';
 	import RealmSelectConnectionTable from '~/lib/components/objects/realm/RealmSelectConnectionTable.svelte';
 	import type { Realm, QueryRealmConnectionArgs, MutationRealmArgs } from '~/lib/types/schema';
 	import { Query_realmConnectionStore, Mutation_realmStore } from '$houdini';
-	import { updateNodeParam, updateErrorsParam, getNodeParam, getErrorsParam } from '@graphace/commons/utils/url-util';
 	import type { PageData } from './$houdini';
 	import { validateMutation } from '~/lib/utils';
 	import { locale } from '$i18n/i18n-svelte';

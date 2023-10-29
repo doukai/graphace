@@ -1,3 +1,3 @@
-import zh from '@graphace/ui/i18n/zh/index';
+import { zh } from '@graphace/ui';
 
 export default zh.ui;

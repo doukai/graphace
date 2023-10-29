@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { Errors, GraphQLError } from '@graphace/commons/types';
-	import { StringTh, StringTd } from '@graphace/ui-graphql/components/table';
-	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
-	import { notifications } from '@graphace/ui/components/Notifications.svelte';
+	import type { Errors } from '@graphace/commons';
+	import type { GraphQLError } from '@graphace/graphql';
+	import { Table, TableHead, TableLoading, TableEmpty, notifications } from '@graphace/ui';
+	import { StringTh, StringTd } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ArchiveBoxArrowDown } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
@@ -13,7 +13,7 @@
 		QueryGroupListArgs,
 		GroupInput
 	} from '~/lib/types/schema';
-	import { auth } from '@graphace/commons/stores/useAuth';
+	import { auth } from '@graphace/commons';
 
 	export let nodes: (Group | null | undefined)[] | null | undefined;
 	export let isFetching: boolean;

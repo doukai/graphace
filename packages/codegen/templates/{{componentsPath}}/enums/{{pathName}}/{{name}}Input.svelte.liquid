@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { Errors } from '@graphace/commons/types';
-	import { EnumInput } from '@graphace/ui-graphql/components/input';
+	import type { Errors } from '@graphace/commons';
+	import { EnumInput } from '@graphace/ui-graphql';
 	import LL from '$i18n/i18n-svelte';
 
 	export let value: string | (string | null | undefined)[] | null | undefined;

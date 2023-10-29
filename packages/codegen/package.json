@@ -2,8 +2,7 @@
 	"name": "graphace-codegen",
 	"version": "0.0.2",
 	"scripts": {
-		"build": "microbundle",
-		"publish:local": "pnpm publish --no-git-checks --registry http://localhost:4873/"
+		"build": "microbundle"
 	},
 	"devDependencies": {
 		"microbundle": "^0.15.1"

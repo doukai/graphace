@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
-	import type { Errors, GraphQLError } from '@graphace/commons/types';
-	import { Card } from '@graphace/ui/components/card';
+	import type { Errors } from '@graphace/commons';
+	import type { GraphQLError } from '@graphace/graphql';
+	import { Card } from '@graphace/ui';
 	import GroupConnectionTable from '~/lib/components/objects/group/GroupConnectionTable.svelte';
 	import type { Group, QueryGroupConnectionArgs, MutationGroupArgs } from '~/lib/types/schema';
 	import { Query_groupConnectionStore, Mutation_groupStore } from '$houdini';

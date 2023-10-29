@@ -4,7 +4,7 @@ import type { UserConfig } from 'vite';
 import 'dotenv/config';
 
 const config: UserConfig = {
-	plugins: [houdini(), sveltekit()],
+    plugins: [houdini(), sveltekit()],
 
     resolve: {
         alias: {

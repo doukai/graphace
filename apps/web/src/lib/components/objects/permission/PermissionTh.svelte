@@ -1,15 +1,14 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { tippy } from '@graphace/ui/components/tippy';
+	import { tippy } from '@graphace/ui';
+	import { OperatorSelect, IDInput, StringInput } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel } from '@steeze-ui/heroicons';
-	import { IDInput, StringInput } from '@graphace/ui-graphql/components/input';
 	import PermissionTypeInput from '~/lib/components/enums/permission-type/PermissionTypeInput.svelte';
 	import type { IDExpression, StringExpression } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 	import type { PermissionTypeExpression, PermissionExpression } from '$houdini';
-	import OperatorSelect from '@graphace/ui-graphql/components/input/OperatorSelect.svelte';
-	import { auth } from '@graphace/commons/stores/useAuth';
+	import { auth } from '@graphace/commons';
 
 	export let name: string;
 	export let expression: PermissionExpression | null | undefined;

@@ -1,18 +1,17 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { tippy } from '@graphace/ui/components/tippy';
+	import { tippy } from '@graphace/ui';
+	import { OperatorSelect, {% for scalar in scalars %}{{ scalar }}Input{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel } from '@steeze-ui/heroicons';
-	import { {% for scalar in scalars %}{{ scalar }}Input{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql/components/input';
 	{%- for enum in enums %}
 	import {{ enum }}Input from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Input.svelte';
 	{%- endfor %}
 	import type { {% for scalar in scalars %}{{ scalar }}Expression{% if forloop.last == false %}, {% endif %}{% endfor %} } from '~/{{ schemaTypesPath }}';
 	import LL from '$i18n/i18n-svelte';
 	import type { {% for enum in enums %}{{ enum }}Expression, {% endfor %}{{ name }}Expression } from '$houdini';
-	import OperatorSelect from '@graphace/ui-graphql/components/input/OperatorSelect.svelte';
 	{%- if useAuth %}
-	import { auth } from '@graphace/commons/stores/useAuth';
+	import { auth } from '@graphace/commons';
 	{%- endif %}
 
 	export let name: string;

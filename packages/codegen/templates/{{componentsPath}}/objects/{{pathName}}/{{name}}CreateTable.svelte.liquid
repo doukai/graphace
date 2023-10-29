@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { Errors } from '@graphace/commons/types';
-	import { ObjectTd, {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql/components/table';
+	import type { Errors } from '@graphace/commons';
+	import { Table, TableHead, TableEmpty, messageBoxs } from '@graphace/ui';
+	import { ObjectTd, {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql';
 	{%- if imports %}
 	{%- for import in imports %}
 	{{ import }}
@@ -11,14 +12,12 @@
 	import {{ enum }}Th from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Th.svelte';
 	import {{ enum }}Td from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Td.svelte';
 	{%- endfor %}
-	import { Table, TableHead, TableEmpty } from '@graphace/ui/components/table';
-	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	{%- if useAuth %}
-	import { auth } from '@graphace/commons/stores/useAuth';
+	import { auth } from '@graphace/commons';
 	{%- endif %}
 
 	export let nodes: ({{ name }}Input | null | undefined)[] | null | undefined;

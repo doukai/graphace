@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { StringExpression, Sort } from '@graphace/graphql/types';
-	import { EnumTh } from '@graphace/ui-graphql/components/table';
+	import type { StringExpression, Sort } from '@graphace/graphql';
+	import { EnumTh } from '@graphace/ui-graphql';
 	import LL from '$i18n/i18n-svelte';
 
 	export let name: string;

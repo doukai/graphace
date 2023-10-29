@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
-	import { Card } from '@graphace/ui/components/card';
+	import type { Errors } from '@graphace/commons';
+	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql';
+	import { Card } from '@graphace/ui';
 	import UserForm from '~/lib/components/objects/user/UserForm.svelte';
-	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors, GraphQLError } from '@graphace/commons/types';
+	import type { GraphQLError } from '@graphace/graphql';
 	import { Query_userStore, Mutation_userStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { MutationUserArgs, User } from '~/lib/types/schema';

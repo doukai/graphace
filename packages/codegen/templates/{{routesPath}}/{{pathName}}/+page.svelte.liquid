@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
-	import { Card } from '@graphace/ui/components/card';
+	import { Card } from '@graphace/ui';
 	{%- if connectionField %}
 	import {{ name }}ConnectionTable from '~/{{ tablePath }}/{{ name | paramCase }}/{{ name }}ConnectionTable.svelte';
 	{%- else %}

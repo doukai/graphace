@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
-	import type { Errors, GraphQLError } from '@graphace/commons/types';
-	import { Card } from '@graphace/ui/components/card';
+	import type { Errors } from '@graphace/commons';
+	import type { GraphQLError } from '@graphace/graphql';
+	import { Card } from '@graphace/ui';
 	import RealmSelectConnectionTable from '~/lib/components/objects/realm/RealmSelectConnectionTable.svelte';
 	import type { Realm, QueryRealmConnectionArgs, MutationRealmArgs } from '~/lib/types/schema';
 	import { Query_realmConnectionStore, Mutation_realmStore, Mutation_user_realmStore } from '$houdini';

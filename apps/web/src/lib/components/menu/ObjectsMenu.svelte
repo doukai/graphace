@@ -6,7 +6,7 @@
 	import type { NamespaceGraphqlTranslation } from '$i18n/i18n-types';
 	import { locale } from '~/i18n/i18n-svelte';
 	import pages from '~/lib/data/pages.json';
-	import { auth } from '@graphace/commons/stores/useAuth';
+	import { auth } from '@graphace/commons';
 
 	const menus = pages.map((page) => {
 		return {

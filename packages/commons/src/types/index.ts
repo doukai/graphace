@@ -1,3 +1,3 @@
-export * from "./Error"
-export * from "./JsonWebToken"
-export * from "./Language"
+export * from "./Error.js"
+export * from "./JsonWebToken.js"
+export * from "./Language.js"

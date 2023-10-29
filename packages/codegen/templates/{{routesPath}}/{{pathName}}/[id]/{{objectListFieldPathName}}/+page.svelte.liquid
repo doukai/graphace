@@ -1,15 +1,14 @@
 <script lang="ts">
 	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
-	import { Card } from '@graphace/ui/components/card';
+	import type { Errors } from '@graphace/commons';
+	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
+	import { Card } from '@graphace/ui';
 	{%- if connectionField %}
 	import {{ objectFieldTypeName }}ConnectionTable from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}ConnectionTable.svelte';
 	{%- else %}
 	import {{ objectFieldTypeName }}Table from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}Table.svelte';
 	{%- endif %}
-	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors } from '@graphace/commons';
-	import type { GraphQLError } from '@graphace/graphql';
 	import type { {{ mutationTypeName }}{{ objectFieldTypeName }}Args, {% if connectionField %}{{ queryTypeName }}{{ objectFieldTypeName }}ConnectionArgs{% else %}{{ queryTypeName }}{{ objectFieldTypeName }}ListArgs{% endif %}, {{ objectFieldTypeName }} } from '~/{{ schemaTypesPath }}';
 	import { Query_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ objectFieldTypeName | camelCase }}Store, Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store } from '$houdini';
 	import type { PageData } from './$houdini';

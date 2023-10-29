@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../../../app.css';
-	import { NavBar } from '@graphace/ui/components/navbar';
+	import { NavBar } from '@graphace/ui';
 	import { LocaleSelect, ThemeSelect } from '~/lib/components/select';
 	import { setLocale } from '$i18n/i18n-svelte';
 	import type { LayoutData } from './$types';

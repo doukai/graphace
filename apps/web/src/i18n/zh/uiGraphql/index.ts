@@ -1,3 +1,3 @@
-import zh from '@graphace/ui-graphql/i18n/zh/index';
+import { zh } from '@graphace/ui-graphql';
 
 export default zh.uiGraphql;

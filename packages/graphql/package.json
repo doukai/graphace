@@ -12,7 +12,6 @@
 		"clean": "rimraf dist",
 		"build": "tsc",
 		"watch:build": "tsc --watch",
-		"publish:local": "pnpm publish --no-git-checks --registry http://localhost:4873/",
 		"lint": "prettier --check --ignore-path=../../.prettierignore . && eslint \".\"",
 		"format": "prettier --write --ignore-path=../../.prettierignore ."
 	},

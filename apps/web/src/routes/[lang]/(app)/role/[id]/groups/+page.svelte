@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
-	import { Card } from '@graphace/ui/components/card';
+	import type { Errors } from '@graphace/commons';
+	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
+	import { Card } from '@graphace/ui';
 	import GroupConnectionTable from '~/lib/components/objects/group/GroupConnectionTable.svelte';
-	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors, GraphQLError } from '@graphace/commons/types';
 	import type { MutationGroupArgs, QueryGroupConnectionArgs, Group } from '~/lib/types/schema';
 	import { Query_role_groupsStore, Mutation_groupStore, Mutation_role_groupsStore } from '$houdini';
 	import type { PageData } from './$houdini';

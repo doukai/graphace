@@ -5,8 +5,7 @@
 		"build": "microbundle"
 	},
 	"devDependencies": {
-		"microbundle": "^0.15.1",
-		"publish:local": "pnpm publish --no-git-checks --registry http://localhost:4873/"
+		"microbundle": "^0.15.1"
 	},
 	"dependencies": {
 		"@graphql-codegen/plugin-helpers": "^4.2.0",

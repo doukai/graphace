@@ -2,7 +2,8 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
-	import { {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql/components/table';
+	import { Table, TableHead, TableLoading, TableEmpty, notifications } from '@graphace/ui';
+	import { {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql';
 	{%- if imports %}
 	{%- for import in imports %}
 	{{ import }}
@@ -12,8 +13,6 @@
 	import {{ enum }}Th from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Th.svelte';
 	import {{ enum }}Td from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Td.svelte';
 	{%- endfor %}
-	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
-	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ArchiveBoxArrowDown } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
@@ -24,7 +23,7 @@
 		{{ name }}Input
 	} from '~/{{ schemaTypesPath }}';
 	{%- if useAuth %}
-	import { auth } from '@graphace/commons/stores/useAuth';
+	import { auth } from '@graphace/commons';
 	{%- endif %}
 
 	export let nodes: ({{ name }} | null | undefined)[] | null | undefined;

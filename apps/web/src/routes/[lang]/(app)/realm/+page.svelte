@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
-	import { Card } from '@graphace/ui/components/card';
+	import { Card } from '@graphace/ui';
 	import RealmConnectionTable from '~/lib/components/objects/realm/RealmConnectionTable.svelte';
 	import type { Realm, QueryRealmConnectionArgs, MutationRealmArgs } from '~/lib/types/schema';
 	import { Query_realmConnectionStore, Mutation_realmStore } from '$houdini';
@@ -27,12 +27,13 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		Query_realmConnection.fetch({ variables: event.detail.args }).then((result) => {
-			event.detail.then(result.data?.realmConnection?.edges?.map((edge) => edge?.node));
-			if (result.errors) {
-				event.detail.catch(result.errors);
-			}
-		});
+		Query_realmConnection.fetch({ variables: event.detail.args })
+			.then((result) => {
+				event.detail.then(result.data?.realmConnection?.edges?.map((edge) => edge?.node));
+				if (result.errors) {
+					event.detail.catch(result.errors);
+				}
+			});
 	};
 
 	const mutation = (
@@ -42,20 +43,19 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		const row = nodes
-			?.map((node) => node?.id)
-			?.indexOf(event.detail.args.id || event.detail.args.where?.id?.val || undefined);
+		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id || event.detail.args.where?.id?.val || undefined);
 		validateMutation('Realm', event.detail.args, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_realm.mutate(event.detail.args).then((result) => {
-					event.detail.then(result?.data?.realm);
-					if (result.errors) {
-						event.detail.catch(result.errors);
-					}
-				});
+				Mutation_realm.mutate(event.detail.args)
+					.then((result) => {
+						event.detail.then(result?.data?.realm);
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						}
+					});
 			})
 			.catch((validErrors) => {
 				if (row !== -1 && row !== undefined) {
@@ -76,7 +76,7 @@
 		to(`./realm/_`);
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string; name: string }>) => {
+	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
 		to(`./realm/${event.detail.path}`);
 	};
 </script>

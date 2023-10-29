@@ -1,8 +1,7 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
-import type { Errors } from '@graphace/commons/types';
+import { type Errors, getNode, getErrors } from '@graphace/commons';
 import type { MutationRealmArgs } from '~/lib/types/schema';
-import { getNode, getErrors } from '@graphace/commons/utils/url-util';
 import { load_Query_realmConnection } from '$houdini';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {

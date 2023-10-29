@@ -2,7 +2,7 @@
 
 type Locales = import('./i18n/i18n-types').Locales
 type TranslationFunctions = import('$i18n/i18n-types').TranslationFunctions
-type JsonWebToken = import('@graphace/commons/types').JsonWebToken
+type JsonWebToken = import('@graphace/commons').JsonWebToken
 
 // See https://kit.svelte.dev/docs/typescript
 // for information about these interfaces

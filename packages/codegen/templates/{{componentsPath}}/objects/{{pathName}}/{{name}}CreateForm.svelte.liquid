@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
 	import type { Errors } from '@graphace/commons';
-	import type { GraphQLError } from '@graphace/graphql';
-	import { Form } from '@graphace/ui/components/form';
-	import { {% for scalar in scalars %}{{ scalar }}Item, {% endfor %}ObjectItem } from '@graphace/ui-graphql/components/form';
+	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
+	import { Form, messageBoxs, notifications } from '@graphace/ui';
+	import { {% for scalar in scalars %}{{ scalar }}Item, {% endfor %}ObjectItem } from '@graphace/ui-graphql';
 	{%- if imports %}
 	{%- for import in imports %}
 	{{ import }}
@@ -13,12 +12,10 @@
 	{%- for enum in enums %}
 	import {{ enum }}Item from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Item.svelte';
 	{%- endfor %}
-	import { messageBoxs } from '@graphace/ui/components/MessageBoxs.svelte';
-	import { notifications } from '@graphace/ui/components/Notifications.svelte';
 	import LL from '$i18n/i18n-svelte';
 	import type { {{ name }}, {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	{%- if useAuth %}
-	import { auth } from '@graphace/commons/stores/useAuth';
+	import { auth } from '@graphace/commons';
 	{%- endif %}
 
 	export let node: {{ name }}Input = {};

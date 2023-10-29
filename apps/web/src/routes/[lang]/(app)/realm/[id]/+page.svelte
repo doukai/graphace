@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
-	import { Card } from '@graphace/ui/components/card';
+	import type { Errors } from '@graphace/commons';
+	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql';
+	import { Card } from '@graphace/ui';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
-	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql/types';
-	import type { Errors, GraphQLError } from '@graphace/commons/types';
+	import type { GraphQLError } from '@graphace/graphql';
 	import { Query_realmStore, Mutation_realmStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { MutationRealmArgs, Realm } from '~/lib/types/schema';

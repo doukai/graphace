@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { replaceLocaleInUrl } from '@graphace/commons';
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
 	import { invalidateAll } from '$app/navigation';
@@ -6,7 +7,6 @@
 	import type { Locales } from '$i18n/i18n-types';
 	import { locales } from '$i18n/i18n-util';
 	import { loadLocaleAsync } from '$i18n/i18n-util.async';
-	import { replaceLocaleInUrl } from '@graphace/commons/utils/url-util';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import Iconify from '@iconify/svelte';
 	import { Language, ChevronDown } from '@steeze-ui/heroicons';
