@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
-	import type { GraphQLError } from '@graphace/commons/types';
-	import { Card } from '@graphace/ui/components/card';
+	import type { GraphQLError } from '@graphace/graphql';
+	import { Card } from '@graphace/ui';
 	import PolicyTable from '~/lib/components/objects/policy/PolicyTable.svelte';
 	import type { Query_policyListStore } from '$houdini';
 	import type { Policy } from '~/lib/types/schema';
@@ -27,7 +27,7 @@
 			}
 		});
 	};
-	$:console.log(nodes)
+	$: console.log(nodes);
 </script>
 
 <Card>

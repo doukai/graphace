@@ -2,130 +2,144 @@
 /* eslint-disable */
 import type { BaseTranslation as BaseTranslationType, LocalizedString } from 'typesafe-i18n'
 
-export type BaseTranslation = BaseTranslationType
+export type BaseTranslation = BaseTranslationType & DisallowNamespaces
 export type BaseLocale = 'en'
 
 export type Locales =
 	| 'en'
 	| 'zh'
 
-export type Translation = RootTranslation
+export type Translation = RootTranslation & DisallowNamespaces
 
-export type Translations = RootTranslation
+export type Translations = RootTranslation &
+{
+	uiGraphql: NamespaceUiGraphqlTranslation
+}
 
-type RootTranslation = {
-	uiGraphql: {
-		table: {
+type RootTranslation = {}
+
+export type NamespaceUiGraphqlTranslation = {
+	table: {
+		/**
+		 * R​e​m​o​v​e​ ​r​o​w​?
+		 */
+		removeModalTitle: string
+		/**
+		 * E​d​i​t
+		 */
+		editBtn: string
+		/**
+		 * R​e​m​o​v​e
+		 */
+		removeBtn: string
+		/**
+		 * C​a​n​c​e​l
+		 */
+		cancelBtn: string
+		th: {
 			/**
-			 * R​e​m​o​v​e​ ​r​o​w​?
+			 * f​i​l​t​e​r
 			 */
-			removeModalTitle: string
+			filter: string
 			/**
-			 * E​d​i​t
+			 * c​a​n​c​e​l
 			 */
-			editBtn: string
+			cancel: string
 			/**
-			 * R​e​m​o​v​e
+			 * N​o​ ​S​o​r​t
 			 */
-			removeBtn: string
+			noSort: string
 			/**
-			 * C​a​n​c​e​l
+			 * A​S​C
 			 */
-			cancelBtn: string
-			th: {
-				/**
-				 * f​i​l​t​e​r
-				 */
-				filter: string
-				/**
-				 * c​a​n​c​e​l
-				 */
-				cancel: string
-				/**
-				 * N​o​ ​S​o​r​t
-				 */
-				noSort: string
-				/**
-				 * A​S​C
-				 */
-				asc: string
-				/**
-				 * D​E​S​C
-				 */
-				desc: string
-				/**
-				 * E​q​u​a​l​s
-				 */
-				eq: string
-				/**
-				 * N​o​t​ ​E​q​u​a​l​s
-				 */
-				neq: string
-				/**
-				 * L​i​k​e
-				 */
-				lk: string
-				/**
-				 * N​o​t​ ​L​i​k​e
-				 */
-				nlk: string
-				/**
-				 * G​r​e​a​t​e​r​ ​T​h​a​n
-				 */
-				gt: string
-				/**
-				 * G​r​e​a​t​e​r​ ​E​q​u​a​l​s
-				 */
-				gte: string
-				/**
-				 * L​e​s​s​ ​T​h​a​n
-				 */
-				lt: string
-				/**
-				 * L​e​s​s​ ​E​q​u​a​l​s
-				 */
-				lte: string
-				/**
-				 * I​s​ ​N​u​l​l
-				 */
-				nil: string
-				/**
-				 * N​o​t​ ​N​u​l​l
-				 */
-				nnil: string
-				/**
-				 * I​n
-				 */
-				'in': string
-				/**
-				 * N​o​t​ ​I​n
-				 */
-				nin: string
-				/**
-				 * B​e​t​w​e​e​n
-				 */
-				bt: string
-				/**
-				 * N​o​t​ ​B​e​t​w​e​e​n
-				 */
-				nbt: string
-				/**
-				 * F​i​l​t​e​r​.​.
-				 */
-				filterPlaceholder: string
-			}
-			td: {
-				/**
-				 * s​a​v​e
-				 */
-				save: string
-				/**
-				 * c​l​e​a​r
-				 */
-				clear: string
-			}
+			asc: string
+			/**
+			 * D​E​S​C
+			 */
+			desc: string
+			/**
+			 * E​q​u​a​l​s
+			 */
+			eq: string
+			/**
+			 * N​o​t​ ​E​q​u​a​l​s
+			 */
+			neq: string
+			/**
+			 * L​i​k​e
+			 */
+			lk: string
+			/**
+			 * N​o​t​ ​L​i​k​e
+			 */
+			nlk: string
+			/**
+			 * G​r​e​a​t​e​r​ ​T​h​a​n
+			 */
+			gt: string
+			/**
+			 * G​r​e​a​t​e​r​ ​E​q​u​a​l​s
+			 */
+			gte: string
+			/**
+			 * L​e​s​s​ ​T​h​a​n
+			 */
+			lt: string
+			/**
+			 * L​e​s​s​ ​E​q​u​a​l​s
+			 */
+			lte: string
+			/**
+			 * I​s​ ​N​u​l​l
+			 */
+			nil: string
+			/**
+			 * N​o​t​ ​N​u​l​l
+			 */
+			nnil: string
+			/**
+			 * I​n
+			 */
+			'in': string
+			/**
+			 * N​o​t​ ​I​n
+			 */
+			nin: string
+			/**
+			 * B​e​t​w​e​e​n
+			 */
+			bt: string
+			/**
+			 * N​o​t​ ​B​e​t​w​e​e​n
+			 */
+			nbt: string
+			/**
+			 * F​i​l​t​e​r​.​.
+			 */
+			filterPlaceholder: string
+		}
+		td: {
+			/**
+			 * s​a​v​e
+			 */
+			save: string
+			/**
+			 * c​l​e​a​r
+			 */
+			clear: string
 		}
 	}
+}
+
+export type Namespaces =
+	| 'uiGraphql'
+
+type DisallowNamespaces = {
+	/**
+	 * reserved for 'uiGraphql'-namespace\
+	 * you need to use the `./uiGraphql/index.ts` file instead
+	 */
+	uiGraphql?: "[typesafe-i18n] reserved for 'uiGraphql'-namespace. You need to use the `./uiGraphql/index.ts` file instead."
 }
 
 export type TranslationFunctions = {

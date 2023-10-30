@@ -15,7 +15,6 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			'~': path.resolve('./src/lib'),
-			$i18n: 'src/lib/i18n'
 		}
 	}
 };

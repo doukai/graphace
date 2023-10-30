@@ -26,7 +26,7 @@
 		{{ name }}Input
 	} from '~/{{ schemaTypesPath }}';
 	{%- if useAuth %}
-	import { auth } from '@graphace/common';
+	import { auth } from '@graphace/commons';
 	{%- endif %}
 
 	export let nodes: ({{ name }} | null | undefined)[] | null | undefined;

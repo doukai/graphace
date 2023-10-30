@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { Errors, GraphQLError } from '@graphace/commons/types';
-	import { Table, TableHead, TableLoading, TableEmpty } from '@graphace/ui/components/table';
-	import { notifications } from '@graphace/ui/components/Notifications.svelte';
+	import type { Errors } from '@graphace/commons';
+	import type { GraphQLError } from '@graphace/graphql';
+	import { Table, TableHead, TableLoading, TableEmpty, notifications } from '@graphace/ui';
 	import LL from '$i18n/i18n-svelte';
 	import type { Policy } from '~/lib/types/schema';
 

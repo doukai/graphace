@@ -1,14 +1,6 @@
 {
-	"extends": "../../tsconfig.json",
+	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
-		"rootDirs": ["./src"],
-		"baseUrl": ".",
-		"paths": {
-			"~/*": ["./src/*"],
-			"@graphace/commons/*": ["../../packages/commons/src/*"],
-			"@graphace/graphql/*": ["../../packages/graphql/src/*"],
-			"@graphace/ui/*": ["../../packages/ui/src/*"],
-			"$i18n/*": ["./src/i18n/*"]
-		}
+		"outDir": "dist"
 	}
 }

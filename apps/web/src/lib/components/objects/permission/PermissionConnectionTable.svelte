@@ -17,7 +17,7 @@
 		QueryPermissionConnectionArgs,
 		PermissionInput
 	} from '~/lib/types/schema';
-	import { auth } from '@graphace/common';
+	import { auth } from '@graphace/commons';
 
 	export let nodes: (Permission | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;

@@ -1,0 +1,247 @@
+import type { BaseTranslation as BaseTranslationType, LocalizedString, RequiredParams } from 'typesafe-i18n';
+export type BaseTranslation = BaseTranslationType & DisallowNamespaces;
+export type BaseLocale = 'en';
+export type Locales = 'en' | 'zh';
+export type Translation = RootTranslation & DisallowNamespaces;
+export type Translations = RootTranslation & {
+    ui: NamespaceUiTranslation;
+};
+type RootTranslation = {};
+export type NamespaceUiTranslation = {
+    menu: {
+        /**
+         * M​e​n​u
+         */
+        menu: string;
+        /**
+         * O​p​e​n​ ​M​e​n​u
+         */
+        open: string;
+    };
+    cursor: {
+        /**
+         * S​i​z​e
+         */
+        size: string;
+        /**
+         * P​r​e​v​i​o​u​s
+         */
+        previous: string;
+        /**
+         * N​e​x​t
+         */
+        next: string;
+    };
+    pagination: {
+        /**
+         * S​i​z​e
+         */
+        size: string;
+        /**
+         * {​t​o​t​a​l​}​ ​r​e​s​u​l​t​s
+         * @param {number} total
+         */
+        total: RequiredParams<'total'>;
+        /**
+         * P​a​g​e​ ​{​c​u​r​r​e​n​t​}
+         * @param {number} current
+         */
+        current: RequiredParams<'current'>;
+        /**
+         * P​r​e​v​i​o​u​s
+         */
+        previous: string;
+        /**
+         * N​e​x​t
+         */
+        next: string;
+    };
+    searchInput: {
+        /**
+         * S​e​a​r​c​h
+         */
+        placeholder: string;
+    };
+    inputList: {
+        /**
+         * A​d​d
+         */
+        add: string;
+        /**
+         * R​e​m​o​v​e
+         */
+        remove: string;
+    };
+    table: {
+        /**
+         * n​o​ ​r​e​s​u​l​t
+         */
+        empty: string;
+    };
+    messageBox: {
+        /**
+         * C​a​n​c​e​l
+         */
+        cancel: string;
+        /**
+         * C​o​n​f​i​r​m
+         */
+        confirm: string;
+    };
+    button: {
+        /**
+         * S​e​a​r​c​h
+         */
+        search: string;
+        /**
+         * C​r​e​a​t​e
+         */
+        create: string;
+        /**
+         * R​e​m​o​v​e
+         */
+        remove: string;
+        /**
+         * U​n​b​i​n​d
+         */
+        unbind: string;
+        /**
+         * S​a​v​e
+         */
+        save: string;
+        /**
+         * B​a​c​k
+         */
+        back: string;
+        /**
+         * S​e​l​e​c​t
+         */
+        select: string;
+    };
+};
+export type Namespaces = 'ui';
+type DisallowNamespaces = {
+    /**
+     * reserved for 'ui'-namespace\
+     * you need to use the `./ui/index.ts` file instead
+     */
+    ui?: "[typesafe-i18n] reserved for 'ui'-namespace. You need to use the `./ui/index.ts` file instead.";
+};
+export type TranslationFunctions = {
+    ui: {
+        menu: {
+            /**
+             * Menu
+             */
+            menu: () => LocalizedString;
+            /**
+             * Open Menu
+             */
+            open: () => LocalizedString;
+        };
+        cursor: {
+            /**
+             * Size
+             */
+            size: () => LocalizedString;
+            /**
+             * Previous
+             */
+            previous: () => LocalizedString;
+            /**
+             * Next
+             */
+            next: () => LocalizedString;
+        };
+        pagination: {
+            /**
+             * Size
+             */
+            size: () => LocalizedString;
+            /**
+             * {total} results
+             */
+            total: (arg: {
+                total: number;
+            }) => LocalizedString;
+            /**
+             * Page {current}
+             */
+            current: (arg: {
+                current: number;
+            }) => LocalizedString;
+            /**
+             * Previous
+             */
+            previous: () => LocalizedString;
+            /**
+             * Next
+             */
+            next: () => LocalizedString;
+        };
+        searchInput: {
+            /**
+             * Search
+             */
+            placeholder: () => LocalizedString;
+        };
+        inputList: {
+            /**
+             * Add
+             */
+            add: () => LocalizedString;
+            /**
+             * Remove
+             */
+            remove: () => LocalizedString;
+        };
+        table: {
+            /**
+             * no result
+             */
+            empty: () => LocalizedString;
+        };
+        messageBox: {
+            /**
+             * Cancel
+             */
+            cancel: () => LocalizedString;
+            /**
+             * Confirm
+             */
+            confirm: () => LocalizedString;
+        };
+        button: {
+            /**
+             * Search
+             */
+            search: () => LocalizedString;
+            /**
+             * Create
+             */
+            create: () => LocalizedString;
+            /**
+             * Remove
+             */
+            remove: () => LocalizedString;
+            /**
+             * Unbind
+             */
+            unbind: () => LocalizedString;
+            /**
+             * Save
+             */
+            save: () => LocalizedString;
+            /**
+             * Back
+             */
+            back: () => LocalizedString;
+            /**
+             * Select
+             */
+            select: () => LocalizedString;
+        };
+    };
+};
+export type Formatters = {};
+export {};

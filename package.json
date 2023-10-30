@@ -8,10 +8,7 @@
 			"apps/*",
 			"packages/*"
 		],
-		"nohoist": [
-			"**/typesafe-i18n",
-			"**/typesafe-i18n/**"
-		]
+		"nohoist": []
 	},
 	"scripts": {
 		"build": "turbo run build",

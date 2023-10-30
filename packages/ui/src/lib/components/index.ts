@@ -9,11 +9,13 @@ export * from "./search";
 export * from "./table";
 export * from "./tippy";
 import MessageBoxs from "./MessageBoxs.svelte";
+import messageBoxs from "./MessageBoxs.svelte";
 import Notifications from "./Notifications.svelte";
+import notifications from "./Notifications.svelte";
 import SideBar from "./SideBar.svelte";
 import Breadcrumbs from "./Breadcrumbs.svelte";
 import Collapse from "./Collapse.svelte";
 
 export {
-    MessageBoxs, Notifications, SideBar, Breadcrumbs, Collapse
+    MessageBoxs, messageBoxs, Notifications, notifications, SideBar, Breadcrumbs, Collapse
 }

@@ -2,9 +2,13 @@
 	"extends": "../../tsconfig.json",
 	"compilerOptions": {
 		"outDir": "dist",
+		"rootDirs": [
+			"./src"
+		],
 		"paths": {
-			"~/*": ["./src/*"],
-			"@graphace/commons/*": ["../../packages/commons/src/*"]
+			"~/*": [
+				"./src/*"
+			]
 		}
 	}
 }

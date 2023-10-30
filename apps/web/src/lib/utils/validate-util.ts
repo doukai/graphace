@@ -2,7 +2,8 @@ import Ajv from 'ajv';
 import addFormats from "ajv-formats"
 import { PUBLIC_SCHEMA_URL } from '$env/static/public';
 import { env } from '$env/dynamic/public';
-import type { Errors, Language, validate as _validate, validateAsync as _validateAsync, objectNameToUri } from '@graphace/commons';
+import type { Errors, Language } from '@graphace/commons';
+import { validate as _validate, validateAsync as _validateAsync, objectNameToUri } from '@graphace/commons';
 
 export const ajv = addFormats(new Ajv({ loadSchema: loadSchema, allErrors: true, messages: false }));
 

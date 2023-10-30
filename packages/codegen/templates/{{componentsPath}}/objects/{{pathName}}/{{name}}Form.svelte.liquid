@@ -15,7 +15,7 @@
 	import LL from '$i18n/i18n-svelte';
 	import type { {{ name }}, {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	{%- if useAuth %}
-	import { auth } from '@graphace/common';
+	import { auth } from '@graphace/commons';
 	{%- endif %}
 
 	export let node: {{ name }} | null | undefined;

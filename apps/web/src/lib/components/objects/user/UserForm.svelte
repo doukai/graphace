@@ -6,7 +6,7 @@
 	import { StringItem, BooleanItem, ObjectItem } from '@graphace/ui-graphql';
 	import LL from '$i18n/i18n-svelte';
 	import type { User, UserInput } from '~/lib/types/schema';
-	import { auth } from '@graphace/common';
+	import { auth } from '@graphace/commons';
 
 	export let node: User | null | undefined;
 	export let isFetching: boolean;

@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "concurrently --kill-others \"vite dev\" \"typesafe-i18n\"",
-		"build": "vite build",
+		"build": "tsx src/i18n/import.ts && vite build",
 		"package": "vite package",
 		"preview": "vite preview",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
@@ -14,7 +14,7 @@
 		"houdini:generate": "houdini generate",
 		"houdini:pull-schema": "houdini pull-schema",
 		"graphql-codegen": "graphql-codegen",
-		"i18n:import": "tsx --tsconfig tsconfig.build.json src/i18n/import.ts",
+		"i18n:import": "tsx src/i18n/import.ts",
 		"typesafe-i18n": "typesafe-i18n"
 	},
 	"dependencies": {

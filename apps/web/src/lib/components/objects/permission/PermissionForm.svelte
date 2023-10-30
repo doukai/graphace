@@ -7,7 +7,7 @@
 	import PermissionTypeItem from '~/lib/components/enums/permission-type/PermissionTypeItem.svelte';
 	import LL from '$i18n/i18n-svelte';
 	import type { Permission, PermissionInput } from '~/lib/types/schema';
-	import { auth } from '@graphace/common';
+	import { auth } from '@graphace/commons';
 
 	export let node: Permission | null | undefined;
 	export let isFetching: boolean;

@@ -4,7 +4,7 @@
 	import { FormItem } from '@graphace/ui';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Link } from '@steeze-ui/heroicons';
-	import LL from '~/i18n/i18n-svelte';
+	import LL from '$i18n/i18n-svelte';
 
 	export let path: string;
 	export let name: string;
