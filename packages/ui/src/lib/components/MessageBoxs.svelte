@@ -93,8 +93,11 @@
 </script>
 
 <script lang="ts">
+	import { getContext } from 'svelte';
+	import type { Readable } from 'svelte/store';
+	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { Modal, ModalContent, ModalActions } from './modal';
-	import LL from '$i18n/i18n-svelte';
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	const buttonClassName = (buttonType: string | undefined) => {
 		if (buttonType) {
