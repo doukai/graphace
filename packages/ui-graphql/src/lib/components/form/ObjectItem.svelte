@@ -1,15 +1,18 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
+	import type { Readable } from 'svelte/store';
+	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons';
 	import { FormItem } from '@graphace/ui';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Link } from '@steeze-ui/heroicons';
-	import LL from '$i18n/i18n-svelte';
 
 	export let path: string;
 	export let name: string;
 	export let label: string;
 	export let errors: Errors | undefined = undefined;
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	const dispatch = createEventDispatcher<{
 		gotoField: { path: string; name: string };

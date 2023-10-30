@@ -1,10 +1,13 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { createEventDispatcher } from 'svelte';
-	import LL from '$i18n/i18n-svelte';
+	import type { Readable } from 'svelte/store';
+	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	export let pageSizeOptions: number[] = [10, 20, 30];
 	export let pageSize: number = 10;
 	export let pageNumber: number = 1;
 	export let totalCount: number = 0;
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
 	const dispatch = createEventDispatcher<{
 		pageChange: {};
 		sizeChange: {};

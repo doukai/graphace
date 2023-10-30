@@ -1,7 +1,10 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
+	import type { Readable } from 'svelte/store';
+	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Bars4 } from '@steeze-ui/heroicons';
-	import LL from '$i18n/i18n-svelte';
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let showMenuButton: boolean = true;
 

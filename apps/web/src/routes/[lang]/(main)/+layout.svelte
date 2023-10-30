@@ -3,11 +3,14 @@
 	import { NavBar } from '@graphace/ui';
 	import { LocaleSelect, ThemeSelect } from '~/lib/components/select';
 	import { setLocale } from '$i18n/i18n-svelte';
+	import { setContext } from 'svelte';
 	import type { LayoutData } from './$types';
+	import LL from '$i18n/i18n-svelte';
 
 	export let data: LayoutData;
 	// at the very top, set the locale before you access the store and before the actual rendering takes place
 	setLocale(data.locale);
+	setContext('LL', LL);
 </script>
 
 <svelte:head>

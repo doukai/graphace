@@ -1,14 +1,17 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { createEventDispatcher } from 'svelte';
+	import type { Readable } from 'svelte/store';
+	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Trash, ArrowUturnLeft, Link, InboxArrowDown, ArchiveBoxXMark } from '@steeze-ui/heroicons';
-	import LL from '$i18n/i18n-svelte';
 	export let title: string;
 	export let showSaveButton: boolean = true;
 	export let showRemoveButton: boolean = true;
 	export let showUnbindButton: boolean = false;
 	export let showBackButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	const dispatch = createEventDispatcher<{
 		save: {};

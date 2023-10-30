@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../../../app.css';
 	import { onMount } from 'svelte';
+	import { setContext } from 'svelte';
 	import { SideBar, Breadcrumbs, NavBar, Notifications, MessageBoxs } from '@graphace/ui';
 	import ObjectsMenu from '~/lib/components/menu/ObjectsMenu.svelte';
 	import UserMenu from '~/lib/components/menu/UserMenu.svelte';
@@ -16,6 +17,7 @@
 	export let data: LayoutData;
 	// at the very top, set the locale before you access the store and before the actual rendering takes place
 	setLocale(data.locale);
+	setContext('LL', LL);
 
 	let drawersidebar: HTMLDivElement;
 	let drawerSidebarScrollY = 0;

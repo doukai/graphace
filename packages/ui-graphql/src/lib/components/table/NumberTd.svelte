@@ -1,11 +1,14 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
+	import type { Readable } from 'svelte/store';
+	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons';
 	import type { __Field, __Type } from '@graphace/graphql';
 	import { tippy, NumberInput, NumberInputList } from '@graphace/ui';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
-	import LL from '$i18n/i18n-svelte';
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let value: number | (number | null | undefined)[] | null | undefined;
 	export let list: boolean = false;

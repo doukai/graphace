@@ -1,11 +1,14 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
+	import type { Readable } from 'svelte/store';
+	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { createEventDispatcher } from 'svelte';
 	import type { BooleanExpression, Sort } from '@graphace/graphql';
 	import { tippy, Toggle, ToggleList } from '@graphace/ui';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel, BarsArrowDown, BarsArrowUp } from '@steeze-ui/heroicons';
-	import LL from '$i18n/i18n-svelte';
 	import OperatorSelect from '../input/OperatorSelect.svelte';
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let name: string;
 	export let expression: BooleanExpression | null | undefined;

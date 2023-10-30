@@ -583,11 +583,6 @@ export type NamespaceUiGraphqlTranslation = {
 }
 
 export type NamespaceWebTranslation = {
-	/**
-	 * W​e​l​c​o​m​e​ ​t​o​ ​{​n​a​m​e​}
-	 * @param {string} name
-	 */
-	welcome: RequiredParams<'name'>
 	login: {
 		/**
 		 * F​u​l​l​-​s​t​a​c​k​ ​G​r​a​p​h​Q​L​ ​d​e​v​e​l​o​p​m​e​n​t​ ​p​l​a​t​f​o​r​m​,​ ​p​o​w​e​r​e​d​ ​b​y​ ​G​r​a​p​h​Q​L​ ​S​v​e​l​t​e​ ​a​n​d​ ​R​e​a​c​t​o​r​ ​J​a​v​a
@@ -609,16 +604,6 @@ export type NamespaceWebTranslation = {
 		 * F​o​r​g​o​t​ ​p​a​s​s​w​o​r​d​?
 		 */
 		forgot: string
-	}
-	localeName: {
-		/**
-		 * E​n​g​l​i​s​h
-		 */
-		en: string
-		/**
-		 * C​h​i​n​e​s​e
-		 */
-		zh: string
 	}
 	message: {
 		/**
@@ -1444,10 +1429,6 @@ export type TranslationFunctions = {
 		}
 	}
 	web: {
-		/**
-		 * Welcome to {name}
-		 */
-		welcome: (arg: { name: string }) => LocalizedString
 		login: {
 			/**
 			 * Full-stack GraphQL development platform, powered by GraphQL Svelte and Reactor Java
@@ -1469,16 +1450,6 @@ export type TranslationFunctions = {
 			 * Forgot password?
 			 */
 			forgot: () => LocalizedString
-		}
-		localeName: {
-			/**
-			 * English
-			 */
-			en: () => LocalizedString
-			/**
-			 * Chinese
-			 */
-			zh: () => LocalizedString
 		}
 		message: {
 			/**

@@ -1,9 +1,11 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
+	import type { Readable } from 'svelte/store';
+	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import type { Errors } from '@graphace/commons';
 	import { nanoid } from 'nanoid';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus, PlusSmall, MinusSmall } from '@steeze-ui/heroicons';
-	import LL from '$i18n/i18n-svelte';
 	export let name: string;
 	export let value: (number | null | undefined)[] | null | undefined;
 	export let placeholder: string = '';
@@ -12,6 +14,7 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let id: string = nanoid();
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	const addItem = (index: number) => {
 		if (!value) {

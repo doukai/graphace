@@ -1,10 +1,13 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
+	import type { Readable } from 'svelte/store';
+	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { createEventDispatcher } from 'svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { MagnifyingGlass } from '@steeze-ui/heroicons';
-	import LL from '$i18n/i18n-svelte';
 	export let name: string | undefined = undefined;
 	export let value: string | undefined = undefined;
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
 	const dispatch = createEventDispatcher<{
 		search: { value: string | undefined };
 	}>();

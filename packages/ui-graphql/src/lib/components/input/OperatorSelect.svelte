@@ -1,6 +1,9 @@
 <script lang="ts">
-	import LL from '$i18n/i18n-svelte';
+	import { getContext } from 'svelte';
+	import type { Readable } from 'svelte/store';
+	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	export let className: string = '';
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let value:
 		| 'EQ'
