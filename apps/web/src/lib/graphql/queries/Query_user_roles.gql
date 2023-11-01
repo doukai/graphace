@@ -43,10 +43,6 @@ query Query_user_roles($user_id: StringExpression, $first: Int, $last: Int, $off
             name
             description
           }
-          permissions(first: 3) {
-            name
-            description
-          }
           realm {
             name
             description

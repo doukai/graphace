@@ -31,10 +31,6 @@ mutation Mutation_role_rolePermission($role_id: String, $role_rolePermission: [R
             name
             description
           }
-          permissionNameType {
-            name
-            description
-          }
         }
       }
     }

@@ -1,0 +1,96 @@
+<script context="module" lang="ts">
+	export type {{ name }}Tree = NodeTree<{{ name }}>;
+</script>
+
+<script lang="ts">
+	import { graphql, {{ name }}NodesQuery$input, Operator } from '$houdini';
+	import { type NodeTree, buildTree } from '@graphace/commons';
+	import { notifications, MenuTreeLoading } from '@graphace/ui';
+	import {{ name }}TreeMenu from './{{ name }}TreeMenu.svelte';
+	import type { {{ name }} } from '~/lib/types/schema';
+	import LL from '$i18n/i18n-svelte';
+	export let nodeTrees: {{ name }}Tree[] | null | undefined = undefined;
+	export let parent: {{ name }} | null | undefined = undefined;
+	export let currentDeep = 0;
+	export let deeps = 2;
+	export let {{ name | camelCase }}Name: string | null | undefined = undefined;
+	export let active{{ name }}Id: string | null | undefined = undefined;
+
+	const {{ name }}NodesQuery = graphql(`
+		query {{ name }}NodesQuery($path: StringExpression, $deep: IntExpression, $name: StringExpression) {
+			{{ name | camelCase }}List(deep: $deep, path: $path, name: $name) {
+				{{ idName }}
+				name
+				path
+				deep
+				parentId
+			}
+		}
+	`);
+
+	$: if (currentDeep === 0) {
+		queryNodes({{ name | camelCase }}Name);
+	}
+
+	$: if (parent?.{{ idName }} === active{{ name }}Id) {
+		queryNodes({{ name | camelCase }}Name);
+	}
+
+	$: if (!nodeTrees || parent?.{{ idName }} === active{{ name }}Id) {
+		nodeTrees = buildTree(
+			${{ name }}NodesQuery.data?.{{ name | camelCase }}List,
+			(current, parent) => current?.parentId + '' === parent?.{{ idName }},
+			parent
+		);
+	}
+
+	const queryNodes = ({{ name | camelCase }}Name?: string | null | undefined) => {
+		let variables: {{ name }}NodesQuery$input;
+		if ({{ name | camelCase }}Name) {
+			variables = {
+				deep: undefined,
+				path: undefined,
+				name: { opr: Operator.LK, val: `%${% raw %}{{% endraw %}{{ name | camelCase }}Name}%` }
+			};
+		} else {
+			variables = {
+				deep: { opr: Operator.LT, val: currentDeep + deeps },
+				path: { opr: Operator.LK, val: `${(parent?.path || '') + (parent?.{{ idName }} || '') + '/'}%` },
+				name: undefined
+			};
+		}
+		{{ name }}NodesQuery.fetch({ variables }).catch((errors) => {
+			console.error(errors);
+			notifications.error($LL.web.message.requestFailed());
+		});
+	};
+</script>
+
+<ul class={currentDeep ? '' : 'menu'}>
+	{#if nodeTrees}
+		{#each nodeTrees as nodeTree}
+			<li>
+				<a
+					class={nodeTree.node.{{ idName }} === active{{ name }}Id ? 'active' : ''}
+					href={null}
+					on:click|preventDefault={(e) => {
+						active{{ name }}Id = nodeTree.node.{{ idName }};
+					}}
+				>
+					{nodeTree.node.name}
+				</a>
+				{#if ${{ name }}NodesQuery.fetching}
+					<MenuTreeLoading />
+				{:else if nodeTree.children}
+					<{{ name }}TreeMenu
+						bind:active{{ name }}Id
+						nodeTrees={nodeTree.children}
+						currentDeep={currentDeep + 1}
+						parent={nodeTree.node}
+						{deeps}
+					/>
+				{/if}
+			</li>
+		{/each}
+	{/if}
+</ul>

@@ -30,10 +30,6 @@ query Query_role_rolePermission($role_id: StringExpression, $first: Int, $last: 
             name
             description
           }
-          permissionNameType {
-            name
-            description
-          }
         }
       }
     }

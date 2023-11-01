@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { Card } from '@graphace/ui/components/card';
+	import { Card, SearchInput } from '@graphace/ui';
 	import GroupTreeMenu from '~/lib/components/objects/group/GroupTreeMenu.svelte';
-	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
 
 	export let currentDeep = 0;
 	export let deeps = 2;

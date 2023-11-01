@@ -28,6 +28,9 @@ const zh: NamespaceGraphqlTranslation = {
 				name: {
 					name: '名称',
 				},
+				description: {
+					name: '描述',
+				},
 				parent: {
 					name: '上级',
 				},
@@ -61,7 +64,7 @@ const zh: NamespaceGraphqlTranslation = {
 					name: '权限类型',
 				},
 				description: {
-					name: '说明',
+					name: '描述',
 				},
 				roles: {
 					name: '角色',
@@ -102,6 +105,9 @@ const zh: NamespaceGraphqlTranslation = {
 			fields: {
 				name: {
 					name: '租户名',
+				},
+				description: {
+					name: '描述',
 				}
 			}
 		},
@@ -112,7 +118,7 @@ const zh: NamespaceGraphqlTranslation = {
 					name: '角色名',
 				},
 				description: {
-					name: '说明',
+					name: '描述',
 				},
 				users: {
 					name: '用户',
@@ -136,6 +142,9 @@ const zh: NamespaceGraphqlTranslation = {
 			fields: {
 				name: {
 					name: '姓名',
+				},
+				description: {
+					name: '描述',
 				},
 				lastName: {
 					name: '姓氏',

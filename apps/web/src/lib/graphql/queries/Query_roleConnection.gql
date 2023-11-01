@@ -26,10 +26,6 @@ query Query_roleConnection($id: StringExpression, $name: StringExpression, $desc
           name
           description
         }
-        permissions(first: 3) {
-          name
-          description
-        }
         realm {
           name
           description

@@ -32,10 +32,6 @@ query Query_permission_rolePermission($permission_name: StringExpression, $first
             name
             description
           }
-          permissionNameType {
-            name
-            description
-          }
         }
       }
     }

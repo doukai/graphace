@@ -394,6 +394,66 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}TreeMenu.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldType.name));
+                return {
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        idName: getIDFieldName(type),
+                        scalars: getScalarNames(fields),
+                        enums: getEnumNames(fields),
+                        objects: getObjectNames(fields),
+                        imports: componentFieldImports(typeName, fields),
+                        fields: componentFields(typeName, fields),
+                        cols: fields?.length,
+                        schemaTypesPath: config.schemaTypesPath,
+                        enumsPath: `${config.componentsPath}/enums`,
+                        objectsPath: `${config.componentsPath}/objects`,
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName(),
+                        useAuth: config.useAuth
+                    }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
+    },
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}TreeCard.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldType.name));
+                return {
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        idName: getIDFieldName(type),
+                        scalars: getScalarNames(fields),
+                        enums: getEnumNames(fields),
+                        objects: getObjectNames(fields),
+                        imports: componentFieldImports(typeName, fields),
+                        fields: componentFields(typeName, fields),
+                        cols: fields?.length,
+                        schemaTypesPath: config.schemaTypesPath,
+                        enumsPath: `${config.componentsPath}/enums`,
+                        objectsPath: `${config.componentsPath}/objects`,
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName(),
+                        useAuth: config.useAuth
+                    }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
+    },
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Th.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {

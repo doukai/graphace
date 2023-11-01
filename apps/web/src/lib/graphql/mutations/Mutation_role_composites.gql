@@ -40,10 +40,6 @@ mutation Mutation_role_composites($role_id: String, $role_composites: [RoleInput
             name
             description
           }
-          permissions(first: 3) {
-            name
-            description
-          }
           realm {
             name
             description

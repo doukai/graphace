@@ -40,10 +40,6 @@ query Query_group_roles($group_id: StringExpression, $first: Int, $last: Int, $o
             name
             description
           }
-          permissions(first: 3) {
-            name
-            description
-          }
           realm {
             name
             description

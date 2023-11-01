@@ -33,10 +33,6 @@ mutation Mutation_permission_rolePermission($permission_name: String, $permissio
             name
             description
           }
-          permissionNameType {
-            name
-            description
-          }
         }
       }
     }

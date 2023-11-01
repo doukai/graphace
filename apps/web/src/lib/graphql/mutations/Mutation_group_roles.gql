@@ -42,10 +42,6 @@ mutation Mutation_group_roles($group_id: String, $group_roles: [RoleInput], $fir
             name
             description
           }
-          permissions(first: 3) {
-            name
-            description
-          }
           realm {
             name
             description

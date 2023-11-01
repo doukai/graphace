@@ -1,0 +1,28 @@
+<script lang="ts">
+	import { Card, SearchInput } from '@graphace/ui';
+	import {{ name }}TreeMenu from '~/lib/components/objects/{{ name | camelCase }}/{{ name }}TreeMenu.svelte';
+
+	export let currentDeep = 0;
+	export let deeps = 2;
+	export let showSearchInput: boolean = true;
+	export let active{{ name }}Id: string | null | undefined = undefined;
+	export let {{ name | camelCase }}Name: string | undefined = undefined;
+</script>
+
+<Card>
+	{#if showSearchInput}
+		<SearchInput
+			on:search={(e) => {
+				active{{ name }}Id = undefined;
+				if (e.detail.value) {
+					{{ name | camelCase }}Name = e.detail.value;
+				} else {
+					{{ name | camelCase }}Name = undefined;
+				}
+			}}
+		/>
+	{/if}
+	<div class="divider" />
+
+	<{{ name }}TreeMenu bind:active{{ name }}Id bind:{{ name | camelCase }}Name {currentDeep} {deeps} />
+</Card>

@@ -38,10 +38,6 @@ query Query_role_composites($role_id: StringExpression, $first: Int, $last: Int,
             name
             description
           }
-          permissions(first: 3) {
-            name
-            description
-          }
           realm {
             name
             description

@@ -4,9 +4,8 @@
 
 <script lang="ts">
 	import { graphql, GroupNodesQuery$input, Operator } from '$houdini';
-	import { type NodeTree, buildTree } from '@graphace/commons/utils/tree-util';
-	import { notifications } from '@graphace/ui/components/Notifications.svelte';
-	import MenuTreeLoading from '@graphace/ui/components/menu/MenuTreeLoading.svelte';
+	import { type NodeTree, buildTree } from '@graphace/commons';
+	import { notifications, MenuTreeLoading } from '@graphace/ui';
 	import GroupTreeMenu from './GroupTreeMenu.svelte';
 	import type { Group } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
@@ -24,9 +23,7 @@
 				name
 				path
 				deep
-				parent {
-					id
-				}
+				parentId
 			}
 		}
 	`);
@@ -42,7 +39,7 @@
 	$: if (!nodeTrees || parent?.id === activeGroupId) {
 		nodeTrees = buildTree(
 			$GroupNodesQuery.data?.groupList,
-			(current, parent) => current?.parent?.id === parent?.id,
+			(current, parent) => current?.parentId + '' === parent?.id,
 			parent
 		);
 	}

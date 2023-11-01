@@ -42,10 +42,6 @@ mutation Mutation_permission_roles($permission_name: String, $permission_roles: 
             name
             description
           }
-          permissions(first: 3) {
-            name
-            description
-          }
           realm {
             name
             description

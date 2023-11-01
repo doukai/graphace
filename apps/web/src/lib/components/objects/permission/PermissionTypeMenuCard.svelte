@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { Card } from '@graphace/ui/components/card';
 	import PermissionTypeMenu from '~/lib/components/objects/permission/PermissionTypeMenu.svelte';
-	import SearchInput from '@graphace/ui/components/search/SearchInput.svelte';
+	import { Card, SearchInput } from '@graphace/ui';
 
 	export let showSearchInput: boolean = true;
 	export let activeTypeName: string | null | undefined = undefined;

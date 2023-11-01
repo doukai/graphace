@@ -428,6 +428,60 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         );
 
         generateOptions.push(
+            ...targetComponentObjectTypes
+                .filter(type => assertObjectType(type).getInterfaces().some(interfaceType => interfaceType.name === "TreeStruct"))
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}TreeMenu.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .filter(type => assertObjectType(type).getInterfaces().some(interfaceType => interfaceType.name === "TreeStruct"))
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}TreeCard.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
             ...targetComponentEnumTypes
                 .map(type => {
                     const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Item.svelte';

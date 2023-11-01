@@ -23,10 +23,6 @@ query Query_role($id: StringExpression, $name: StringExpression, $description: S
       name
       description
     }
-    permissions(first: 3) {
-      name
-      description
-    }
     realm {
       name
       description

@@ -92,7 +92,7 @@
 	<ObjectItem name="composites" namedStruct={ node.composites } path="_/composites" label={$LL.graphql.objects.Role.fields.composites.name()} errors={errors.composites} on:gotoField />
 	{/if}
 	{#if auth('Role::permissions::*')}
-	<ObjectItem name="permissions" namedStruct={ node.permissions } path="_/permissions" label={$LL.graphql.objects.Role.fields.permissions.name()} errors={errors.permissions} on:gotoField />
+	<ObjectItem name="permissions"  path="_/permissions" label={$LL.graphql.objects.Role.fields.permissions.name()} errors={errors.permissions} on:gotoField />
 	{/if}
 	{#if auth('Role::realm::*')}
 	<ObjectItem name="realm" namedStruct={ node.realm } path="_/realm" label={$LL.graphql.objects.Role.fields.realm.name()} errors={errors.realm} on:gotoField />

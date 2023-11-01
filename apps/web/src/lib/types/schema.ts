@@ -1716,7 +1716,7 @@ export type PageInfo = {
   endCursor: Scalars['String'];
 };
 
-export type Permission = NamedStruct & Meta & {
+export type Permission = Meta & {
   __typename?: 'Permission';
   name: Scalars['ID'];
   description?: Maybe<Scalars['String']>;

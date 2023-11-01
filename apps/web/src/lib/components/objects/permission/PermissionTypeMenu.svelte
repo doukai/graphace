@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { graphql, Operator } from '$houdini';
-	import { notifications } from '@graphace/ui/components/Notifications.svelte';
+	import { graphql } from '$houdini';
+	import { notifications } from '@graphace/ui';
 	import LL from '$i18n/i18n-svelte';
 
 	export let typeName: string | null | undefined;

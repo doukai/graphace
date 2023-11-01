@@ -40,10 +40,6 @@ query Query_permission_roles($permission_name: StringExpression, $first: Int, $l
             name
             description
           }
-          permissions(first: 3) {
-            name
-            description
-          }
           realm {
             name
             description
