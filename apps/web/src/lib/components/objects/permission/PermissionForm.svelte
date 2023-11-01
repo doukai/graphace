@@ -127,6 +127,9 @@
 			{#if auth('Permission::name::*')}
 			<IDItem label={$LL.graphql.objects.Permission.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
 			{/if}
+			{#if auth('Permission::description::*')}
+			<StringItem label={$LL.graphql.objects.Permission.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
+			{/if}
 			{#if auth('Permission::field::*')}
 			<StringItem label={$LL.graphql.objects.Permission.fields.field.name()} name="field" bind:value={node.field} errors={errors.field} />
 			{/if}
@@ -136,14 +139,11 @@
 			{#if auth('Permission::permissionType::*')}
 			<PermissionTypeItem label={$LL.graphql.objects.Permission.fields.permissionType.name()} name="permissionType" bind:value={node.permissionType} errors={errors.permissionType} />
 			{/if}
-			{#if auth('Permission::description::*')}
-			<StringItem label={$LL.graphql.objects.Permission.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
-			{/if}
 			{#if auth('Permission::roles::*')}
-			<ObjectItem name="roles" path={`${node.name}/roles`} label={$LL.graphql.objects.Permission.fields.roles.name()} errors={errors.roles} on:gotoField />
+			<ObjectItem name="roles" namedStruct={ node.roles } path={`${node.name}/roles`} label={$LL.graphql.objects.Permission.fields.roles.name()} errors={errors.roles} on:gotoField />
 			{/if}
 			{#if auth('Permission::realm::*')}
-			<ObjectItem name="realm" path={`${node.name}/realm`} label={$LL.graphql.objects.Permission.fields.realm.name()} errors={errors.realm} on:gotoField />
+			<ObjectItem name="realm" namedStruct={ node.realm } path={`${node.name}/realm`} label={$LL.graphql.objects.Permission.fields.realm.name()} errors={errors.realm} on:gotoField />
 			{/if}
 		{/if}
 	{/if}

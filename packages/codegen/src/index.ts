@@ -2,7 +2,7 @@ import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
 import * as changeCase from "change-case";
 import { assertObjectType, isEnumType, isListType, isObjectType, type GraphQLSchema, isNonNullType, assertEnumType } from 'graphql';
-import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getScalarNames, getEnumNames, getEnumValues, isAggregate, initConfig, inRouteObject, inGraphQLField, inListField, inDetailField, componentFields, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, inComponentEnum, isInnerEnum, getObjectNames, getBaseScalarNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField } from 'graphace-codegen-commons';
+import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getNamedFields, getScalarNames, getEnumNames, getEnumValues, isAggregate, initConfig, inRouteObject, inGraphQLField, inListField, inDetailField, componentFields, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, inComponentEnum, isInnerEnum, getObjectNames, getBaseScalarNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField } from 'graphace-codegen-commons';
 import type { Template } from 'graphace-codegen-commons';
 import { buildFileContent } from "./builder.js";
 
@@ -85,7 +85,8 @@ const renders: Record<Template, Render> = {
                         idName: idFieldName,
                         args: field.args,
                         isConnection: isConnection(field.name),
-                        fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
+                        fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
+                        namedFields: getNamedFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
                     }),
                 };
             }
@@ -113,6 +114,7 @@ const renders: Record<Template, Render> = {
                         isListType: isListType(subField?.type),
                         connectionField: getConnectionField(fieldType, subField?.name),
                         fields: getScalarFields(subField)?.filter(field => inGraphQLField(subFieldType.name, field.name, getFieldType(field.type).name, 'query')),
+                        namedFields: getNamedFields(subField)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
                     }
                 }
                 return {
@@ -122,6 +124,7 @@ const renders: Record<Template, Render> = {
                         args: field.args,
                         isConnection: isConnection(field.name),
                         fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
+                        namedFields: getNamedFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         objectField: objectField
                     }),
                 };
@@ -144,7 +147,8 @@ const renders: Record<Template, Render> = {
                         name: field.name,
                         idName: idFieldName,
                         args: field.args,
-                        fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation'))
+                        fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
+                        namedFields: getNamedFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation'))
                     }),
                 };
             }
@@ -172,6 +176,7 @@ const renders: Record<Template, Render> = {
                         isListType: isListType(subField?.type),
                         connectionField: getConnectionField(fieldType, subField?.name),
                         fields: getScalarFields(subField)?.filter(field => inGraphQLField(subFieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
+                        namedFields: getNamedFields(subField)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation'))
                     }
                 }
                 return {
@@ -180,6 +185,7 @@ const renders: Record<Template, Render> = {
                         idName: idFieldName,
                         args: field.args,
                         fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
+                        namedFields: getNamedFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
                         objectField: objectField
                     }),
                 };

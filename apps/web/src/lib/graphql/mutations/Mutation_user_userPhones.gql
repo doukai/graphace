@@ -2,6 +2,7 @@ mutation Mutation_user_userPhones($user_id: String, $user_userPhones: [UserPhone
   user(where: {id: {val: $user_id}}  userPhones: $user_userPhones) @mergeToList(arguments: $mergeToList) {
     id
     name
+    description
     lastName
     login
     email
@@ -31,6 +32,10 @@ mutation Mutation_user_userPhones($user_id: String, $user_userPhones: [UserPhone
           updateUserId
           updateTime
           createGroupId
+          userIdType {
+            name
+            description
+          }
         }
       }
     }

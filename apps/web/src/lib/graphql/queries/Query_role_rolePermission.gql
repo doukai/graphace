@@ -26,6 +26,14 @@ query Query_role_rolePermission($role_id: StringExpression, $first: Int, $last: 
           updateUserId
           updateTime
           createGroupId
+          roleIdType {
+            name
+            description
+          }
+          permissionNameType {
+            name
+            description
+          }
         }
       }
     }

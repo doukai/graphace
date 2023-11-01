@@ -1,10 +1,10 @@
 mutation Mutation_permission_rolePermission($permission_name: String, $permission_rolePermission: [RolePermissionInput], $first: Int, $last: Int, $offset: Int, $orderBy: RolePermissionOrderBy, $groupBy: [String!], $id: StringExpression, $roleId: IntExpression, $roleIdType: RoleExpression, $permissionName: StringExpression, $permissionNameType: PermissionExpression, $mergeToList: [String]) {
   permission(where: {name: {val: $permission_name}}  rolePermission: $permission_rolePermission) @mergeToList(arguments: $mergeToList) {
     name
+    description
     field
     type
     permissionType
-    description
     isDeprecated
     version
     realmId
@@ -29,6 +29,14 @@ mutation Mutation_permission_rolePermission($permission_name: String, $permissio
           updateUserId
           updateTime
           createGroupId
+          roleIdType {
+            name
+            description
+          }
+          permissionNameType {
+            name
+            description
+          }
         }
       }
     }

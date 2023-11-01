@@ -1,10 +1,10 @@
-mutation Mutation_permissionList($name: ID, $field: String, $type: String, $permissionType: PermissionType, $description: String, $roles: [RoleInput], $realm: RealmInput, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $rolePermission: [RolePermissionInput], $list: [PermissionInput], $where: PermissionExpression, $mergeToList: [String]) {
-  permissionList(name: $name field: $field type: $type permissionType: $permissionType description: $description roles: $roles realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId rolePermission: $rolePermission list: $list where: $where) @mergeToList(arguments: $mergeToList) {
+mutation Mutation_permissionList($name: ID, $description: String, $field: String, $type: String, $permissionType: PermissionType, $roles: [RoleInput], $realm: RealmInput, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $rolePermission: [RolePermissionInput], $list: [PermissionInput], $where: PermissionExpression, $mergeToList: [String]) {
+  permissionList(name: $name description: $description field: $field type: $type permissionType: $permissionType roles: $roles realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId rolePermission: $rolePermission list: $list where: $where) @mergeToList(arguments: $mergeToList) {
     name
+    description
     field
     type
     permissionType
-    description
     isDeprecated
     version
     realmId
@@ -14,5 +14,13 @@ mutation Mutation_permissionList($name: ID, $field: String, $type: String, $perm
     updateTime
     createGroupId
     syncPermissionPolicy
+    roles(first: 3) {
+      name
+      description
+    }
+    realm {
+      name
+      description
+    }
   }
 }

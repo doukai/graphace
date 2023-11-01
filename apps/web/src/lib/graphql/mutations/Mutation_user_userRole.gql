@@ -2,6 +2,7 @@ mutation Mutation_user_userRole($user_id: String, $user_userRole: [UserRoleInput
   user(where: {id: {val: $user_id}}  userRole: $user_userRole) @mergeToList(arguments: $mergeToList) {
     id
     name
+    description
     lastName
     login
     email
@@ -31,6 +32,14 @@ mutation Mutation_user_userRole($user_id: String, $user_userRole: [UserRoleInput
           updateUserId
           updateTime
           createGroupId
+          userIdType {
+            name
+            description
+          }
+          roleIdType {
+            name
+            description
+          }
         }
       }
     }

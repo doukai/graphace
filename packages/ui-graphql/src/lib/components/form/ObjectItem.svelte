@@ -11,6 +11,11 @@
 	export let path: string;
 	export let name: string;
 	export let label: string;
+	export let namedStruct:
+		| { name: string; description: string | null | undefined }
+		| ({ name: string; description: string | null | undefined } | null | undefined)[]
+		| null
+		| undefined = undefined;
 	export let errors: Errors | undefined = undefined;
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
@@ -22,14 +27,57 @@
 <FormItem {label} let:id>
 	<div {id} class="justify-start">
 		<div class="tooltip" data-tip={$LL.uiGraphql.table.editBtn()}>
-			<button
-				class="btn btn-square btn-outline {errors ? 'btn-error' : ''}"
-				on:click|preventDefault={(e) => {
-					dispatch('gotoField', { path, name });
-				}}
-			>
-				<Icon src={Link} class="h-5 w-5" />
-			</button>
+			{#if namedStruct}
+				{#if Array.isArray(namedStruct)}
+					{#if namedStruct.length > 0}
+						<a
+							class="group link inline-flex"
+							href={null}
+							on:click|preventDefault={(e) => {
+								dispatch('gotoField', { path, name });
+							}}
+						>
+							{#if namedStruct && namedStruct.length > 3}
+								{namedStruct
+									.map((item) => item.name)
+									.slice(0, 3)
+									.join(',')
+									.concat('...')}
+							{:else}
+								{namedStruct.map((item) => item.name).join(',')}
+							{/if}
+						</a>
+					{:else}
+						<button
+							class="btn btn-square btn-outline {errors ? 'btn-error' : ''}"
+							on:click|preventDefault={(e) => {
+								dispatch('gotoField', { path, name });
+							}}
+						>
+							<Icon src={Link} class="h-5 w-5" />
+						</button>
+					{/if}
+				{:else}
+					<a
+						class="group link inline-flex"
+						href={null}
+						on:click|preventDefault={(e) => {
+							dispatch('gotoField', { path, name });
+						}}
+					>
+						{namedStruct.name}
+					</a>
+				{/if}
+			{:else}
+				<button
+					class="btn btn-square btn-outline {errors ? 'btn-error' : ''}"
+					on:click|preventDefault={(e) => {
+						dispatch('gotoField', { path, name });
+					}}
+				>
+					<Icon src={Link} class="h-5 w-5" />
+				</button>
+			{/if}
 		</div>
 	</div>
 	{#if errors?.errors}

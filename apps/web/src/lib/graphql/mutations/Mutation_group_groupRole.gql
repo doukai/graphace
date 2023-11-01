@@ -2,6 +2,7 @@ mutation Mutation_group_groupRole($group_id: String, $group_groupRole: [GroupRol
   group(where: {id: {val: $group_id}}  groupRole: $group_groupRole) @mergeToList(arguments: $mergeToList) {
     id
     name
+    description
     path
     deep
     isDeprecated
@@ -28,6 +29,14 @@ mutation Mutation_group_groupRole($group_id: String, $group_groupRole: [GroupRol
           updateUserId
           updateTime
           createGroupId
+          roleIdType {
+            name
+            description
+          }
+          groupIdType {
+            name
+            description
+          }
         }
       }
     }

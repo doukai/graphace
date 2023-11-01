@@ -28,6 +28,9 @@ const en: BaseTranslation = {
 				name: {
 					name: 'name',
 				},
+				description: {
+					name: 'description',
+				},
 				parent: {
 					name: 'parent',
 				},
@@ -51,6 +54,9 @@ const en: BaseTranslation = {
 				name: {
 					name: 'name',
 				},
+				description: {
+					name: 'description',
+				},
 				field: {
 					name: 'field',
 				},
@@ -59,9 +65,6 @@ const en: BaseTranslation = {
 				},
 				permissionType: {
 					name: 'permissionType',
-				},
-				description: {
-					name: 'description',
 				},
 				roles: {
 					name: 'roles',
@@ -102,6 +105,9 @@ const en: BaseTranslation = {
 			fields: {
 				name: {
 					name: 'name',
+				},
+				description: {
+					name: 'description',
 				}
 			}
 		},
@@ -136,6 +142,9 @@ const en: BaseTranslation = {
 			fields: {
 				name: {
 					name: 'name',
+				},
+				description: {
+					name: 'description',
 				},
 				lastName: {
 					name: 'lastName',

@@ -169,9 +169,8 @@
 	const unbindRows = (selectedIdList: (string | null)[]) => {
 		dispatch('parentMutation', {
 			args: selectedIdList
-				.map((id) => nodes?.find((node) => node?.{{ idName }} === id))
-				.map((node) => {
-					return { ...node, isDeprecated: true };
+				.map((id) => {
+					return { where: { {{ idName }}: { val: id } }, isDeprecated: true };
 				}),
 			then: (data) => {
 				notifications.success($LL.web.message.unbindSuccess());
@@ -324,7 +323,7 @@
 								errors={errors[row]?.iterms?.{{ field.fieldName }}}
 							/>
 							{%- else %}
-							<ObjectTd name="{{ field.fieldName }}" errors={errors[row]?.iterms?.{{ field.fieldName }}} path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} on:gotoField />
+							<ObjectTd name="{{ field.fieldName }}" {% if field.isNamed %}namedStruct={ node.{{ field.fieldName }} }{% endif %} errors={errors[row]?.iterms?.{{ field.fieldName }}} path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} on:gotoField />
 							{%- endif %}
 							{%- endif %}
 							{%- if useAuth %}

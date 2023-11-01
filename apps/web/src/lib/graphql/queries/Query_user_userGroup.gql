@@ -2,6 +2,7 @@ query Query_user_userGroup($user_id: StringExpression, $first: Int, $last: Int, 
   user(id: $user_id)  {
     id
     name
+    description
     lastName
     login
     email
@@ -30,6 +31,14 @@ query Query_user_userGroup($user_id: StringExpression, $first: Int, $last: Int, 
           updateUserId
           updateTime
           createGroupId
+          userIdType {
+            name
+            description
+          }
+          groupIdType {
+            name
+            description
+          }
         }
       }
     }

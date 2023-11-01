@@ -101,14 +101,14 @@
 		let args: QueryPermissionConnectionArgs = {};
 		if (searchValue) {
 			args.cond = 'OR';
+			args.description = { opr: 'LK', val: `%${searchValue}%` };
 			args.field = { opr: 'LK', val: `%${searchValue}%` };
 			args.type = { opr: 'LK', val: `%${searchValue}%` };
-			args.description = { opr: 'LK', val: `%${searchValue}%` };
 		} else {
 			args.cond = undefined;
+			args.description = undefined;
 			args.field = undefined;
 			args.type = undefined;
-			args.description = undefined;
 		}
 		
 		if (after) {
@@ -161,8 +161,8 @@
 	on:select={(e) =>
 		dispatch('select', {
 			selected: Array.isArray(selectedIdList)
-				? selectedIdList.flatMap(id => nodes?.find(node => node?.name == id)).map((node) => ({ ...node, where: { name: { val: node?.name } } }))
-				: { ...nodes?.find(node => node?.name == selectedIdList), where: { name: { val: selectedIdList } } },
+				? selectedIdList.map((id) => ({ where: { name: { val: id } } }))
+				: { where: { name: { val: selectedIdList } } },
 			then: () => {
 				notifications.success($LL.web.message.saveSuccess());
 				dispatch('back');
@@ -202,6 +202,14 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
+			{#if auth('Permission::description::*')}
+			<StringTh
+				name={$LL.graphql.objects.Permission.fields.description.name()}
+				bind:expression={args.description}
+				bind:sort={orderBy.description}
+				on:filter={(e) => query()}
+			/>
+			{/if}
 			{#if auth('Permission::field::*')}
 			<StringTh
 				name={$LL.graphql.objects.Permission.fields.field.name()}
@@ -223,14 +231,6 @@
 				name={$LL.graphql.objects.Permission.fields.permissionType.name()}
 				bind:expression={args.permissionType}
 				bind:sort={orderBy.permissionType}
-				on:filter={(e) => query()}
-			/>
-			{/if}
-			{#if auth('Permission::description::*')}
-			<StringTh
-				name={$LL.graphql.objects.Permission.fields.description.name()}
-				bind:expression={args.description}
-				bind:sort={orderBy.description}
 				on:filter={(e) => query()}
 			/>
 			{/if}
@@ -262,6 +262,15 @@
 								errors={errors[row]?.iterms?.name}
 							/>
 							{/if}
+							{#if auth('Permission::description::*')}
+							<StringTd
+								name="description"
+								bind:value={node.description}
+								on:save={(e) => updateField({ description: node?.description, where: { name: { val: node?.name } } })}
+								readonly={!auth('Permission::description::WRITE')}
+								errors={errors[row]?.iterms?.description}
+							/>
+							{/if}
 							{#if auth('Permission::field::*')}
 							<StringTd
 								name="field"
@@ -287,15 +296,6 @@
 								on:save={(e) => updateField({ permissionType: node?.permissionType, where: { name: { val: node?.name } } })}
 								readonly={!auth('Permission::permissionType::WRITE')}
 								errors={errors[row]?.iterms?.permissionType}
-							/>
-							{/if}
-							{#if auth('Permission::description::*')}
-							<StringTd
-								name="description"
-								bind:value={node.description}
-								on:save={(e) => updateField({ description: node?.description, where: { name: { val: node?.name } } })}
-								readonly={!auth('Permission::description::WRITE')}
-								errors={errors[row]?.iterms?.description}
 							/>
 							{/if}
 							<th class="z-10 hover:z-30 w-12">

@@ -87,6 +87,9 @@
 			{#if auth('Permission::name::*')}
 			<td>{$LL.graphql.objects.Permission.fields.name.name()}</td>
 			{/if}
+			{#if auth('Permission::description::*')}
+			<td>{$LL.graphql.objects.Permission.fields.description.name()}</td>
+			{/if}
 			{#if auth('Permission::field::*')}
 			<td>{$LL.graphql.objects.Permission.fields.field.name()}</td>
 			{/if}
@@ -95,9 +98,6 @@
 			{/if}
 			{#if auth('Permission::permissionType::*')}
 			<td>{$LL.graphql.objects.Permission.fields.permissionType.name()}</td>
-			{/if}
-			{#if auth('Permission::description::*')}
-			<td>{$LL.graphql.objects.Permission.fields.description.name()}</td>
 			{/if}
 			{#if auth('Permission::roles::*')}
 			<td>{$LL.graphql.objects.Permission.fields.roles.name()}</td>
@@ -126,6 +126,14 @@
 							errors={errors[row]?.iterms?.name}
 						/>
 						{/if}
+						{#if auth('Permission::description::*')}
+						<StringTd
+							name="description"
+							bind:value={node.description}
+							readonly
+							errors={errors[row]?.iterms?.description}
+						/>
+						{/if}
 						{#if auth('Permission::field::*')}
 						<StringTd
 							name="field"
@@ -150,19 +158,11 @@
 							errors={errors[row]?.iterms?.permissionType}
 						/>
 						{/if}
-						{#if auth('Permission::description::*')}
-						<StringTd
-							name="description"
-							bind:value={node.description}
-							readonly
-							errors={errors[row]?.iterms?.description}
-						/>
-						{/if}
 						{#if auth('Permission::roles::*')}
-						<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
+						<ObjectTd name="roles" namedStruct={ node.roles } errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
 						{/if}
 						{#if auth('Permission::realm::*')}
-						<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
+						<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
 						{/if}
 						{#if auth('Permission::*::WRITE')}
 						<th class="z-10 hover:z-30 w-24">

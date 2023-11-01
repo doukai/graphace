@@ -150,7 +150,7 @@
 			{%- if field.isScalarType or field.isEnumType %}
 			<{{ field.fieldType.name }}Item label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}}{% if field.isListType %} list{% endif %}{% if field.inMutationArgs == false %} readonly{% endif %} errors={errors.{{ field.fieldName }}} />
 			{%- else %}
-			<ObjectItem name="{{ field.fieldName }}" path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} errors={errors.{{ field.fieldName }}} on:gotoField />
+			<ObjectItem name="{{ field.fieldName }}" {% if field.isNamed %}namedStruct={ node.{{ field.fieldName }} }{% endif %} path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} errors={errors.{{ field.fieldName }}} on:gotoField />
 			{%- endif %}
 			{%- endif %}
 			{%- if useAuth %}

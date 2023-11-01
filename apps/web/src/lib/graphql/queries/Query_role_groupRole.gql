@@ -26,6 +26,14 @@ query Query_role_groupRole($role_id: StringExpression, $first: Int, $last: Int, 
           updateUserId
           updateTime
           createGroupId
+          roleIdType {
+            name
+            description
+          }
+          groupIdType {
+            name
+            description
+          }
         }
       }
     }

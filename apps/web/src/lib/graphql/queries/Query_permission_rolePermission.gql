@@ -1,10 +1,10 @@
 query Query_permission_rolePermission($permission_name: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RolePermissionOrderBy, $groupBy: [String!], $id: StringExpression, $roleId: IntExpression, $roleIdType: RoleExpression, $permissionName: StringExpression, $permissionNameType: PermissionExpression) {
   permission(name: $permission_name)  {
     name
+    description
     field
     type
     permissionType
-    description
     isDeprecated
     version
     realmId
@@ -28,6 +28,14 @@ query Query_permission_rolePermission($permission_name: StringExpression, $first
           updateUserId
           updateTime
           createGroupId
+          roleIdType {
+            name
+            description
+          }
+          permissionNameType {
+            name
+            description
+          }
         }
       }
     }

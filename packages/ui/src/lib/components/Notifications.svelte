@@ -1,5 +1,11 @@
 <script lang="ts" context="module">
-	import { writable, derived, type Writable } from 'svelte/store';
+	import {
+		writable,
+		derived,
+		type Writable,
+		type Unsubscriber,
+		type Subscriber
+	} from 'svelte/store';
 	import { nanoid } from 'nanoid';
 
 	type NotificationComponent = {
@@ -53,7 +59,19 @@
 		};
 	}
 
-	export const notifications = createNotificationStore();
+	export const notifications: {
+		subscribe: (
+			this: void,
+			run: Subscriber<NotificationComponent[]>,
+			invalidate?: (value?: NotificationComponent[]) => void
+		) => Unsubscriber;
+		send: (message: string, type: string, timeout?: number) => void;
+		default: (msg: string, timeout?: number) => void;
+		info: (msg: string, timeout?: number) => void;
+		success: (msg: string, timeout?: number) => void;
+		warning: (msg: string, timeout?: number) => void;
+		error: (msg: string, timeout?: number) => void;
+	} = createNotificationStore();
 </script>
 
 <script lang="ts">

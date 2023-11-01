@@ -1,7 +1,8 @@
-query Query_user_realm($user_id: StringExpression, $id: StringExpression, $name: StringExpression, $groupBy: [String!]) {
+query Query_user_realm($user_id: StringExpression, $id: StringExpression, $name: StringExpression, $description: StringExpression, $groupBy: [String!]) {
   user(id: $user_id)  {
     id
     name
+    description
     lastName
     login
     email
@@ -15,9 +16,10 @@ query Query_user_realm($user_id: StringExpression, $id: StringExpression, $name:
     updateUserId
     updateTime
     createGroupId
-    realm(id: $id name: $name groupBy: $groupBy)  {
+    realm(id: $id name: $name description: $description groupBy: $groupBy)  {
       id
       name
+      description
       isDeprecated
       version
       realmId

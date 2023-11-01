@@ -55,6 +55,36 @@ export const getScalarFields = (field?: GraphQLField<any, any, any>): GraphQLFie
     return undefined;
 }
 
+export const getNamedFields = (field?: GraphQLField<any, any, any>): GraphQLField<any, any, any>[] | undefined => {
+    if (field?.type) {
+        const fieldType = getFieldType(field.type);
+        if (isConnection(field.name)) {
+            if (isObjectType(fieldType)) {
+                const edgesType = getFieldType(fieldType.getFields().edges.type);
+                if (isObjectType(edgesType)) {
+                    const nodeType = getFieldType(edgesType.getFields().node.type);
+                    if (isObjectType(nodeType)) {
+                        return Object.values(nodeType.getFields())
+                            .filter(field => isObjectType(getFieldType(field.type)))
+                            .filter(field => !isAggregate(field.name))
+                            .filter(field => assertObjectType(getFieldType(field.type)).getInterfaces().some(interfaceType => interfaceType.name === "NamedStruct"))
+                            .map(field => ({ ...field, isListType: fieldTypeIsList(field.type) }));
+                    }
+                }
+            }
+        } else {
+            if (isObjectType(fieldType)) {
+                return Object.values(fieldType.getFields())
+                    .filter(field => isObjectType(getFieldType(field.type)))
+                    .filter(field => !isAggregate(field.name))
+                    .filter(field => assertObjectType(getFieldType(field.type)).getInterfaces().some(interfaceType => interfaceType.name === "NamedStruct"))
+                    .map(field => ({ ...field, isListType: fieldTypeIsList(field.type) }));
+            }
+        }
+    }
+    return undefined;
+}
+
 export const getObjectFields = (type: GraphQLNamedType): GraphQLField<any, any, any>[] | undefined => {
     if (isObjectType(type)) {
         return Object.values(type.getFields())
@@ -230,7 +260,8 @@ export const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): { fiel
                     isNonNullType: isNonNullType(field.type),
                     isListType: fieldTypeIsList(field.type),
                     inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),
-                    inMutationArgs: fieldInMutationArgs(schema, type.name, field.name)
+                    inMutationArgs: fieldInMutationArgs(schema, type.name, field.name),
+                    isNamed: isObjectType(getFieldType(field.type)) && assertObjectType(getFieldType(field.type)).getInterfaces().some(interfaceType => interfaceType.name === 'NamedStruct')
                 }
             });
     }

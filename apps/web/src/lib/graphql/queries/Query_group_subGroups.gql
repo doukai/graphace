@@ -1,7 +1,8 @@
-query Query_group_subGroups($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: GroupOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $path: StringExpression, $deep: IntExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression) {
+query Query_group_subGroups($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: GroupOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $path: StringExpression, $deep: IntExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression) {
   group(id: $group_id)  {
     id
     name
+    description
     path
     deep
     isDeprecated
@@ -12,12 +13,13 @@ query Query_group_subGroups($group_id: StringExpression, $first: Int, $last: Int
     updateUserId
     updateTime
     createGroupId
-    subGroupsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name path: $path deep: $deep parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm)  {
+    subGroupsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name description: $description path: $path deep: $deep parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm)  {
       totalCount
       edges {
         node {
           id
           name
+          description
           path
           deep
           isDeprecated
@@ -28,6 +30,26 @@ query Query_group_subGroups($group_id: StringExpression, $first: Int, $last: Int
           updateUserId
           updateTime
           createGroupId
+          parent {
+            name
+            description
+          }
+          subGroups(first: 3) {
+            name
+            description
+          }
+          users(first: 3) {
+            name
+            description
+          }
+          roles(first: 3) {
+            name
+            description
+          }
+          realm {
+            name
+            description
+          }
         }
       }
     }

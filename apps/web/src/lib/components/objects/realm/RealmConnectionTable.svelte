@@ -98,9 +98,11 @@
 		if (searchValue) {
 			args.cond = 'OR';
 			args.name = { opr: 'LK', val: `%${searchValue}%` };
+			args.description = { opr: 'LK', val: `%${searchValue}%` };
 		} else {
 			args.cond = undefined;
 			args.name = undefined;
+			args.description = undefined;
 		}
 		
 		if (after) {
@@ -175,9 +177,8 @@
 	const unbindRows = (selectedIdList: (string | null)[]) => {
 		dispatch('parentMutation', {
 			args: selectedIdList
-				.map((id) => nodes?.find((node) => node?.id === id))
-				.map((node) => {
-					return { ...node, isDeprecated: true };
+				.map((id) => {
+					return { where: { id: { val: id } }, isDeprecated: true };
 				}),
 			then: (data) => {
 				notifications.success($LL.web.message.unbindSuccess());
@@ -259,13 +260,21 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
+			{#if auth('Realm::description::*')}
+			<StringTh
+				name={$LL.graphql.objects.Realm.fields.description.name()}
+				bind:expression={args.description}
+				bind:sort={orderBy.description}
+				on:filter={(e) => query()}
+			/>
+			{/if}
 			{#if auth('Realm::*::WRITE')}
 			<th />
 			{/if}
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading rows={pageSize} cols={1 + 2}/>
+		<TableLoading rows={pageSize} cols={2 + 2}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
@@ -284,6 +293,15 @@
 								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
 								readonly={!auth('Realm::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
+							/>
+							{/if}
+							{#if auth('Realm::description::*')}
+							<StringTd
+								name="description"
+								bind:value={node.description}
+								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
+								readonly={!auth('Realm::description::WRITE')}
+								errors={errors[row]?.iterms?.description}
 							/>
 							{/if}
 							{#if auth('Realm::*::WRITE')}
@@ -361,7 +379,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={1 + 2}/>
+				<TableEmpty cols={2 + 2}/>
 			{/if}
 		</tbody>
 	{/if}

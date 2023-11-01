@@ -1,7 +1,8 @@
-mutation Mutation_groupList($id: ID, $name: String, $path: String, $deep: Int, $parent: GroupInput, $subGroups: [GroupInput], $users: [UserInput], $roles: [RoleInput], $realm: RealmInput, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $parentId: Int, $userGroup: [UserGroupInput], $groupRole: [GroupRoleInput], $list: [GroupInput], $where: GroupExpression, $mergeToList: [String]) {
-  groupList(id: $id name: $name path: $path deep: $deep parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId parentId: $parentId userGroup: $userGroup groupRole: $groupRole list: $list where: $where) @mergeToList(arguments: $mergeToList) {
+mutation Mutation_groupList($id: ID, $name: String, $description: String, $path: String, $deep: Int, $parent: GroupInput, $subGroups: [GroupInput], $users: [UserInput], $roles: [RoleInput], $realm: RealmInput, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $parentId: Int, $userGroup: [UserGroupInput], $groupRole: [GroupRoleInput], $list: [GroupInput], $where: GroupExpression, $mergeToList: [String]) {
+  groupList(id: $id name: $name description: $description path: $path deep: $deep parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId parentId: $parentId userGroup: $userGroup groupRole: $groupRole list: $list where: $where) @mergeToList(arguments: $mergeToList) {
     id
     name
+    description
     path
     deep
     isDeprecated
@@ -13,5 +14,25 @@ mutation Mutation_groupList($id: ID, $name: String, $path: String, $deep: Int, $
     updateTime
     createGroupId
     syncGroupPolicy
+    parent {
+      name
+      description
+    }
+    subGroups(first: 3) {
+      name
+      description
+    }
+    users(first: 3) {
+      name
+      description
+    }
+    roles(first: 3) {
+      name
+      description
+    }
+    realm {
+      name
+      description
+    }
   }
 }

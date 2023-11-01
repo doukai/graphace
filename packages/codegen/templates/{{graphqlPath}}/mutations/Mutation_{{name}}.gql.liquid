@@ -4,10 +4,20 @@ mutation Mutation_{{ name }}
   {%- endif %} {
   {{ name }}
     {%- if args and args.length > 0 %}({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %}){%- if args and args.length > 0 %} @mergeToList(arguments: $mergeToList){% endif %}{% endif %}
-    {%- if fields %} {
+    {%- if fields or namedFields %} {
+    {%- if fields %}
     {%- for field in fields %}
     {{ field.name }}
     {%- endfor %}
-  }
     {%- endif %}
+    {%- if namedFields %}
+    {%- for field in namedFields %}
+    {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
+      name
+      description
+    }
+    {%- endfor %}
+    {%- endif %}
+  }
+  {%- endif %}
 }

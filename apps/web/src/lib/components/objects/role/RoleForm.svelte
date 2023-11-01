@@ -130,19 +130,19 @@
 			<StringItem label={$LL.graphql.objects.Role.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
 			{/if}
 			{#if auth('Role::users::*')}
-			<ObjectItem name="users" path={`${node.id}/users`} label={$LL.graphql.objects.Role.fields.users.name()} errors={errors.users} on:gotoField />
+			<ObjectItem name="users" namedStruct={ node.users } path={`${node.id}/users`} label={$LL.graphql.objects.Role.fields.users.name()} errors={errors.users} on:gotoField />
 			{/if}
 			{#if auth('Role::groups::*')}
-			<ObjectItem name="groups" path={`${node.id}/groups`} label={$LL.graphql.objects.Role.fields.groups.name()} errors={errors.groups} on:gotoField />
+			<ObjectItem name="groups" namedStruct={ node.groups } path={`${node.id}/groups`} label={$LL.graphql.objects.Role.fields.groups.name()} errors={errors.groups} on:gotoField />
 			{/if}
 			{#if auth('Role::composites::*')}
-			<ObjectItem name="composites" path={`${node.id}/composites`} label={$LL.graphql.objects.Role.fields.composites.name()} errors={errors.composites} on:gotoField />
+			<ObjectItem name="composites" namedStruct={ node.composites } path={`${node.id}/composites`} label={$LL.graphql.objects.Role.fields.composites.name()} errors={errors.composites} on:gotoField />
 			{/if}
 			{#if auth('Role::permissions::*')}
-			<ObjectItem name="permissions" path={`${node.id}/permissions`} label={$LL.graphql.objects.Role.fields.permissions.name()} errors={errors.permissions} on:gotoField />
+			<ObjectItem name="permissions" namedStruct={ node.permissions } path={`${node.id}/permissions`} label={$LL.graphql.objects.Role.fields.permissions.name()} errors={errors.permissions} on:gotoField />
 			{/if}
 			{#if auth('Role::realm::*')}
-			<ObjectItem name="realm" path={`${node.id}/realm`} label={$LL.graphql.objects.Role.fields.realm.name()} errors={errors.realm} on:gotoField />
+			<ObjectItem name="realm" namedStruct={ node.realm } path={`${node.id}/realm`} label={$LL.graphql.objects.Role.fields.realm.name()} errors={errors.realm} on:gotoField />
 			{/if}
 		{/if}
 	{/if}

@@ -7,20 +7,38 @@ query Query_{{ name }}
     {%- if isConnection %} {
     totalCount
     edges {
-      node
-        {%- if fields %} {
+      node {
+        {%- if fields %}
         {%- for field in fields %}
         {{ field.name }}
         {%- endfor %}
-      }
         {%- endif %}
+        {%- if namedFields %}
+        {%- for field in namedFields %}
+        {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
+          name
+          description
+        }
+        {%- endfor %}
+        {%- endif %}
+      }
     }
   }
     {%- else %}
-    {%- if fields %} {
+    {%- if fields or namedFields %} {
+    {%- if fields %}
     {%- for field in fields %}
     {{ field.name }}
     {%- endfor %}
+    {%- endif %}
+    {%- if namedFields %}
+    {%- for field in namedFields %}
+    {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
+      name
+      description
+    }
+    {%- endfor %}
+    {%- endif %}
   }
     {%- endif %}
     {%- endif %}

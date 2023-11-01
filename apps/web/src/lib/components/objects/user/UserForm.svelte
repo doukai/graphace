@@ -120,11 +120,14 @@
 	on:back
 >
 	{#if isFetching}
-		<FormLoading rows={9} />
+		<FormLoading rows={10} />
 	{:else}
 		{#if node}
 			{#if auth('User::name::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
+			{/if}
+			{#if auth('User::description::*')}
+			<StringItem label={$LL.graphql.objects.User.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
 			{/if}
 			{#if auth('User::lastName::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.lastName.name()} name="lastName" bind:value={node.lastName} errors={errors.lastName} />
@@ -142,13 +145,13 @@
 			<BooleanItem label={$LL.graphql.objects.User.fields.disable.name()} name="disable" bind:value={node.disable} errors={errors.disable} />
 			{/if}
 			{#if auth('User::groups::*')}
-			<ObjectItem name="groups" path={`${node.id}/groups`} label={$LL.graphql.objects.User.fields.groups.name()} errors={errors.groups} on:gotoField />
+			<ObjectItem name="groups" namedStruct={ node.groups } path={`${node.id}/groups`} label={$LL.graphql.objects.User.fields.groups.name()} errors={errors.groups} on:gotoField />
 			{/if}
 			{#if auth('User::roles::*')}
-			<ObjectItem name="roles" path={`${node.id}/roles`} label={$LL.graphql.objects.User.fields.roles.name()} errors={errors.roles} on:gotoField />
+			<ObjectItem name="roles" namedStruct={ node.roles } path={`${node.id}/roles`} label={$LL.graphql.objects.User.fields.roles.name()} errors={errors.roles} on:gotoField />
 			{/if}
 			{#if auth('User::realm::*')}
-			<ObjectItem name="realm" path={`${node.id}/realm`} label={$LL.graphql.objects.User.fields.realm.name()} errors={errors.realm} on:gotoField />
+			<ObjectItem name="realm" namedStruct={ node.realm } path={`${node.id}/realm`} label={$LL.graphql.objects.User.fields.realm.name()} errors={errors.realm} on:gotoField />
 			{/if}
 		{/if}
 	{/if}

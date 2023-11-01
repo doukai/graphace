@@ -1,7 +1,8 @@
-mutation Mutation_group_parent($group_id: String, $group_parent: GroupInput, $id: StringExpression, $name: StringExpression, $path: StringExpression, $deep: IntExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $groupBy: [String!], $mergeToList: [String]) {
+mutation Mutation_group_parent($group_id: String, $group_parent: GroupInput, $id: StringExpression, $name: StringExpression, $description: StringExpression, $path: StringExpression, $deep: IntExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $groupBy: [String!], $mergeToList: [String]) {
   group(where: {id: {val: $group_id}}  parent: $group_parent) @mergeToList(arguments: $mergeToList) {
     id
     name
+    description
     path
     deep
     isDeprecated
@@ -13,9 +14,10 @@ mutation Mutation_group_parent($group_id: String, $group_parent: GroupInput, $id
     updateTime
     createGroupId
     syncGroupPolicy
-    parent(id: $id name: $name path: $path deep: $deep parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm groupBy: $groupBy) {
+    parent(id: $id name: $name description: $description path: $path deep: $deep parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm groupBy: $groupBy) {
       id
       name
+      description
       path
       deep
       isDeprecated
@@ -27,6 +29,26 @@ mutation Mutation_group_parent($group_id: String, $group_parent: GroupInput, $id
       updateTime
       createGroupId
       syncGroupPolicy
+      parent {
+        name
+        description
+      }
+      subGroups(first: 3) {
+        name
+        description
+      }
+      users(first: 3) {
+        name
+        description
+      }
+      roles(first: 3) {
+        name
+        description
+      }
+      realm {
+        name
+        description
+      }
     }
   }
 }

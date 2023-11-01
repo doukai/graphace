@@ -182,9 +182,8 @@
 	const unbindRows = (selectedIdList: (string | null)[]) => {
 		dispatch('parentMutation', {
 			args: selectedIdList
-				.map((id) => nodes?.find((node) => node?.id === id))
-				.map((node) => {
-					return { ...node, isDeprecated: true };
+				.map((id) => {
+					return { where: { id: { val: id } }, isDeprecated: true };
 				}),
 			then: (data) => {
 				notifications.success($LL.web.message.unbindSuccess());
@@ -346,19 +345,19 @@
 							/>
 							{/if}
 							{#if auth('Role::users::*')}
-							<ObjectTd name="users" errors={errors[row]?.iterms?.users} path={`${node.id}/users`} on:gotoField />
+							<ObjectTd name="users" namedStruct={ node.users } errors={errors[row]?.iterms?.users} path={`${node.id}/users`} on:gotoField />
 							{/if}
 							{#if auth('Role::groups::*')}
-							<ObjectTd name="groups" errors={errors[row]?.iterms?.groups} path={`${node.id}/groups`} on:gotoField />
+							<ObjectTd name="groups" namedStruct={ node.groups } errors={errors[row]?.iterms?.groups} path={`${node.id}/groups`} on:gotoField />
 							{/if}
 							{#if auth('Role::composites::*')}
-							<ObjectTd name="composites" errors={errors[row]?.iterms?.composites} path={`${node.id}/composites`} on:gotoField />
+							<ObjectTd name="composites" namedStruct={ node.composites } errors={errors[row]?.iterms?.composites} path={`${node.id}/composites`} on:gotoField />
 							{/if}
 							{#if auth('Role::permissions::*')}
-							<ObjectTd name="permissions" errors={errors[row]?.iterms?.permissions} path={`${node.id}/permissions`} on:gotoField />
+							<ObjectTd name="permissions" namedStruct={ node.permissions } errors={errors[row]?.iterms?.permissions} path={`${node.id}/permissions`} on:gotoField />
 							{/if}
 							{#if auth('Role::realm::*')}
-							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+							<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
 							{/if}
 							{#if auth('Role::*::WRITE')}
 							<th class="z-10 hover:z-30 w-24">

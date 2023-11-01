@@ -73,6 +73,12 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				description: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n
+					 */
+					name: string
+				}
 				parent: {
 					/**
 					 * p​a​r​e​n​t
@@ -117,6 +123,12 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				description: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n
+					 */
+					name: string
+				}
 				field: {
 					/**
 					 * f​i​e​l​d
@@ -132,12 +144,6 @@ export type NamespaceGraphqlTranslation = {
 				permissionType: {
 					/**
 					 * p​e​r​m​i​s​s​i​o​n​T​y​p​e
-					 */
-					name: string
-				}
-				description: {
-					/**
-					 * d​e​s​c​r​i​p​t​i​o​n
 					 */
 					name: string
 				}
@@ -217,6 +223,12 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				description: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n
+					 */
+					name: string
+				}
 			}
 		}
 		Role: {
@@ -278,6 +290,12 @@ export type NamespaceGraphqlTranslation = {
 				name: {
 					/**
 					 * n​a​m​e
+					 */
+					name: string
+				}
+				description: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n
 					 */
 					name: string
 				}
@@ -924,6 +942,12 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
+					description: {
+						/**
+						 * description
+						 */
+						name: () => LocalizedString
+					}
 					parent: {
 						/**
 						 * parent
@@ -968,6 +992,12 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
+					description: {
+						/**
+						 * description
+						 */
+						name: () => LocalizedString
+					}
 					field: {
 						/**
 						 * field
@@ -983,12 +1013,6 @@ export type TranslationFunctions = {
 					permissionType: {
 						/**
 						 * permissionType
-						 */
-						name: () => LocalizedString
-					}
-					description: {
-						/**
-						 * description
 						 */
 						name: () => LocalizedString
 					}
@@ -1068,6 +1092,12 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
+					description: {
+						/**
+						 * description
+						 */
+						name: () => LocalizedString
+					}
 				}
 			}
 			Role: {
@@ -1129,6 +1159,12 @@ export type TranslationFunctions = {
 					name: {
 						/**
 						 * name
+						 */
+						name: () => LocalizedString
+					}
+					description: {
+						/**
+						 * description
 						 */
 						name: () => LocalizedString
 					}

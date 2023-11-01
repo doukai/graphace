@@ -14,8 +14,10 @@
 
 	let _expression: {
 		name: StringExpression;
+		description: StringExpression;
 	} = {
-		name: {}
+		name: {},
+		description: {}
 	};
 
 	let content: HTMLElement;
@@ -30,6 +32,11 @@
 		} else {
 			expression = { ...expression, name: undefined };
 		}
+		if (_expression.description.val || (_expression.description.in && _expression.description.in.length > 0)) {
+			expression = { ...expression, description: _expression.description };
+		} else {
+			expression = { ...expression, description: undefined };
+		}
 
 		if (Object.keys(expression).length > 0) {
 			dispatch('filter');
@@ -41,6 +48,7 @@
 
 	const clear = (): void => {
 		_expression.name = {};
+		_expression.description = {};
 		expression = undefined;
 		dispatch('filter');
 		tippyElement._tippy.hide();
@@ -48,6 +56,10 @@
 	const nameOprChange = (): void => {
 		_expression.name.in = [];
 		_expression.name.val = undefined;
+	};
+	const descriptionOprChange = (): void => {
+		_expression.description.in = [];
+		_expression.description.val = undefined;
 	};
 </script>
 <div class="hidden">
@@ -75,6 +87,31 @@
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{name}
 					bind:value={_expression.name.val}
+				/>
+			{/if}
+			{/if}
+			{#if auth('Realm::description::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-1/3">
+					{$LL.graphql.objects.Realm.fields.description.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-2/3"
+					bind:value={_expression.description.opr}
+					on:change={(e) => descriptionOprChange()}
+				/>
+			</div>
+			{#if _expression.description.opr === 'IN' || _expression.description.opr === 'NIN' || _expression.description.opr === 'BT' || _expression.description.opr === 'NBT'}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.description.in}
+				/>
+			{:else}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.description.val}
 				/>
 			{/if}
 			{/if}

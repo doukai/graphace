@@ -1,10 +1,10 @@
 mutation Mutation_permission_roles($permission_name: String, $permission_roles: [RoleInput], $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $groups: GroupExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $userRole: UserRoleExpression, $groupRole: GroupRoleExpression, $roleComposite: RoleCompositeExpression, $rolePermission: RolePermissionExpression, $mergeToList: [String]) {
   permission(where: {name: {val: $permission_name}}  roles: $permission_roles) @mergeToList(arguments: $mergeToList) {
     name
+    description
     field
     type
     permissionType
-    description
     isDeprecated
     version
     realmId
@@ -30,6 +30,26 @@ mutation Mutation_permission_roles($permission_name: String, $permission_roles: 
           updateTime
           createGroupId
           syncRolePolicy
+          users(first: 3) {
+            name
+            description
+          }
+          groups(first: 3) {
+            name
+            description
+          }
+          composites(first: 3) {
+            name
+            description
+          }
+          permissions(first: 3) {
+            name
+            description
+          }
+          realm {
+            name
+            description
+          }
         }
       }
     }

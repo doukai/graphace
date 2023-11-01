@@ -27,6 +27,12 @@ mutation Mutation_{{ name }}_{{ objectField.name }}
           {%- for field in objectField.fields %}
           {{ field.name }}
           {%- endfor %}
+          {%- for field in objectField.namedFields %}
+          {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
+            name
+            description
+          }
+          {%- endfor %}
         }
       }
     }
@@ -37,6 +43,12 @@ mutation Mutation_{{ name }}_{{ objectField.name }}
     {%- endif %}{% if objectField.args and objectField.args.length > 0 %}{% endif %} {
       {%- for field in objectField.fields %}
       {{ field.name }}
+      {%- endfor %}
+      {%- for field in objectField.namedFields %}
+      {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
+        name
+        description
+      }
       {%- endfor %}
     }
     {%- endif %}

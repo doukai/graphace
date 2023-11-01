@@ -80,14 +80,14 @@
 		let args: QueryPermissionListArgs = {};
 		if (searchValue) {
 			args.cond = 'OR';
+			args.description = { opr: 'LK', val: `%${searchValue}%` };
 			args.field = { opr: 'LK', val: `%${searchValue}%` };
 			args.type = { opr: 'LK', val: `%${searchValue}%` };
-			args.description = { opr: 'LK', val: `%${searchValue}%` };
 		} else {
 			args.cond = undefined;
+			args.description = undefined;
 			args.field = undefined;
 			args.type = undefined;
-			args.description = undefined;
 		}
 
 		dispatch('fetch', {
@@ -151,9 +151,8 @@
 	const unbindRows = (selectedIdList: (string | null)[]) => {
 		dispatch('parentMutation', {
 			args: selectedIdList
-				.map((id) => nodes?.find((node) => node?.name === id))
-				.map((node) => {
-					return { ...node, isDeprecated: true };
+				.map((id) => {
+					return { where: { name: { val: id } }, isDeprecated: true };
 				}),
 			then: (data) => {
 				notifications.success($LL.web.message.unbindSuccess());
@@ -235,6 +234,14 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
+			{#if auth('Permission::description::*')}
+			<StringTh
+				name={$LL.graphql.objects.Permission.fields.description.name()}
+				bind:expression={args.description}
+				bind:sort={orderBy.description}
+				on:filter={(e) => query()}
+			/>
+			{/if}
 			{#if auth('Permission::field::*')}
 			<StringTh
 				name={$LL.graphql.objects.Permission.fields.field.name()}
@@ -256,14 +263,6 @@
 				name={$LL.graphql.objects.Permission.fields.permissionType.name()}
 				bind:expression={args.permissionType}
 				bind:sort={orderBy.permissionType}
-				on:filter={(e) => query()}
-			/>
-			{/if}
-			{#if auth('Permission::description::*')}
-			<StringTh
-				name={$LL.graphql.objects.Permission.fields.description.name()}
-				bind:expression={args.description}
-				bind:sort={orderBy.description}
 				on:filter={(e) => query()}
 			/>
 			{/if}
@@ -305,6 +304,15 @@
 								errors={errors[row]?.iterms?.name}
 							/>
 							{/if}
+							{#if auth('Permission::description::*')}
+							<StringTd
+								name="description"
+								bind:value={node.description}
+								on:save={(e) => updateField({ description: node?.description, where: { name: { val: node?.name } } })}
+								readonly={!auth('Permission::description::WRITE')}
+								errors={errors[row]?.iterms?.description}
+							/>
+							{/if}
 							{#if auth('Permission::field::*')}
 							<StringTd
 								name="field"
@@ -332,20 +340,11 @@
 								errors={errors[row]?.iterms?.permissionType}
 							/>
 							{/if}
-							{#if auth('Permission::description::*')}
-							<StringTd
-								name="description"
-								bind:value={node.description}
-								on:save={(e) => updateField({ description: node?.description, where: { name: { val: node?.name } } })}
-								readonly={!auth('Permission::description::WRITE')}
-								errors={errors[row]?.iterms?.description}
-							/>
-							{/if}
 							{#if auth('Permission::roles::*')}
-							<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path={`${node.name}/roles`} on:gotoField />
+							<ObjectTd name="roles" namedStruct={ node.roles } errors={errors[row]?.iterms?.roles} path={`${node.name}/roles`} on:gotoField />
 							{/if}
 							{#if auth('Permission::realm::*')}
-							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.name}/realm`} on:gotoField />
+							<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path={`${node.name}/realm`} on:gotoField />
 							{/if}
 							{#if auth('Permission::*::WRITE')}
 							<th class="z-10 hover:z-30 w-24">

@@ -79,4 +79,7 @@
 	{#if auth('Realm::name::*')}
 	<StringItem label={$LL.graphql.objects.Realm.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
 	{/if}
+	{#if auth('Realm::description::*')}
+	<StringItem label={$LL.graphql.objects.Realm.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
+	{/if}
 </Form>

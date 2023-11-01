@@ -27,6 +27,14 @@ mutation Mutation_role_roleComposite($role_id: String, $role_roleComposite: [Rol
           updateUserId
           updateTime
           createGroupId
+          roleIdType {
+            name
+            description
+          }
+          compositeIdType {
+            name
+            description
+          }
         }
       }
     }

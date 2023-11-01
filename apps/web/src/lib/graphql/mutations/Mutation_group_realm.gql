@@ -1,7 +1,8 @@
-mutation Mutation_group_realm($group_id: String, $group_realm: RealmInput, $id: StringExpression, $name: StringExpression, $groupBy: [String!], $mergeToList: [String]) {
+mutation Mutation_group_realm($group_id: String, $group_realm: RealmInput, $id: StringExpression, $name: StringExpression, $description: StringExpression, $groupBy: [String!], $mergeToList: [String]) {
   group(where: {id: {val: $group_id}}  realm: $group_realm) @mergeToList(arguments: $mergeToList) {
     id
     name
+    description
     path
     deep
     isDeprecated
@@ -13,9 +14,10 @@ mutation Mutation_group_realm($group_id: String, $group_realm: RealmInput, $id: 
     updateTime
     createGroupId
     syncGroupPolicy
-    realm(id: $id name: $name groupBy: $groupBy) {
+    realm(id: $id name: $name description: $description groupBy: $groupBy) {
       id
       name
+      description
       isDeprecated
       version
       realmId

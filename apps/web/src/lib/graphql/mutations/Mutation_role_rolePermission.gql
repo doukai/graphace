@@ -27,6 +27,14 @@ mutation Mutation_role_rolePermission($role_id: String, $role_rolePermission: [R
           updateUserId
           updateTime
           createGroupId
+          roleIdType {
+            name
+            description
+          }
+          permissionNameType {
+            name
+            description
+          }
         }
       }
     }

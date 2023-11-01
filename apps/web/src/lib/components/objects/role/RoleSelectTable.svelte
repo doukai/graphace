@@ -125,8 +125,8 @@
 	on:select={(e) =>
 		dispatch('select', {
 			selected: Array.isArray(selectedIdList)
-				? selectedIdList.flatMap(id => nodes?.find(node => node?.id == id)).map((node) => ({ ...node, where: { id: { val: node?.id } } }))
-				: { ...nodes?.find(node => node?.id == selectedIdList), where: { id: { val: selectedIdList } } },
+				? selectedIdList.map((id) => ({ where: { id: { val: id } } }))
+				: { where: { id: { val: selectedIdList } } },
 			then: () => {
 				notifications.success($LL.web.message.saveSuccess());
 				dispatch('back');

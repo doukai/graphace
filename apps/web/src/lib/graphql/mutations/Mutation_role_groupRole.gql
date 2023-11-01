@@ -27,6 +27,14 @@ mutation Mutation_role_groupRole($role_id: String, $role_groupRole: [GroupRoleIn
           updateUserId
           updateTime
           createGroupId
+          roleIdType {
+            name
+            description
+          }
+          groupIdType {
+            name
+            description
+          }
         }
       }
     }

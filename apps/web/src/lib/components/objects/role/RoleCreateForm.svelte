@@ -83,18 +83,18 @@
 	<StringItem label={$LL.graphql.objects.Role.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
 	{/if}
 	{#if auth('Role::users::*')}
-	<ObjectItem name="users" path="_/users" label={$LL.graphql.objects.Role.fields.users.name()} errors={errors.users} on:gotoField />
+	<ObjectItem name="users" namedStruct={ node.users } path="_/users" label={$LL.graphql.objects.Role.fields.users.name()} errors={errors.users} on:gotoField />
 	{/if}
 	{#if auth('Role::groups::*')}
-	<ObjectItem name="groups" path="_/groups" label={$LL.graphql.objects.Role.fields.groups.name()} errors={errors.groups} on:gotoField />
+	<ObjectItem name="groups" namedStruct={ node.groups } path="_/groups" label={$LL.graphql.objects.Role.fields.groups.name()} errors={errors.groups} on:gotoField />
 	{/if}
 	{#if auth('Role::composites::*')}
-	<ObjectItem name="composites" path="_/composites" label={$LL.graphql.objects.Role.fields.composites.name()} errors={errors.composites} on:gotoField />
+	<ObjectItem name="composites" namedStruct={ node.composites } path="_/composites" label={$LL.graphql.objects.Role.fields.composites.name()} errors={errors.composites} on:gotoField />
 	{/if}
 	{#if auth('Role::permissions::*')}
-	<ObjectItem name="permissions" path="_/permissions" label={$LL.graphql.objects.Role.fields.permissions.name()} errors={errors.permissions} on:gotoField />
+	<ObjectItem name="permissions" namedStruct={ node.permissions } path="_/permissions" label={$LL.graphql.objects.Role.fields.permissions.name()} errors={errors.permissions} on:gotoField />
 	{/if}
 	{#if auth('Role::realm::*')}
-	<ObjectItem name="realm" path="_/realm" label={$LL.graphql.objects.Role.fields.realm.name()} errors={errors.realm} on:gotoField />
+	<ObjectItem name="realm" namedStruct={ node.realm } path="_/realm" label={$LL.graphql.objects.Role.fields.realm.name()} errors={errors.realm} on:gotoField />
 	{/if}
 </Form>

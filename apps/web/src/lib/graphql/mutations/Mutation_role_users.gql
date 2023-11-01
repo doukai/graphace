@@ -1,4 +1,4 @@
-mutation Mutation_role_users($role_id: String, $role_users: [UserInput], $first: Int, $last: Int, $offset: Int, $orderBy: UserOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $lastName: StringExpression, $login: StringExpression, $salt: StringExpression, $hash: StringExpression, $email: StringExpression, $phones: StringExpression, $disable: BooleanExpression, $groups: GroupExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $userPhones: UserPhonesExpression, $userGroup: UserGroupExpression, $userRole: UserRoleExpression, $mergeToList: [String]) {
+mutation Mutation_role_users($role_id: String, $role_users: [UserInput], $first: Int, $last: Int, $offset: Int, $orderBy: UserOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $lastName: StringExpression, $login: StringExpression, $salt: StringExpression, $hash: StringExpression, $email: StringExpression, $phones: StringExpression, $disable: BooleanExpression, $groups: GroupExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $userPhones: UserPhonesExpression, $userGroup: UserGroupExpression, $userRole: UserRoleExpression, $mergeToList: [String]) {
   role(where: {id: {val: $role_id}}  users: $role_users) @mergeToList(arguments: $mergeToList) {
     id
     name
@@ -12,12 +12,13 @@ mutation Mutation_role_users($role_id: String, $role_users: [UserInput], $first:
     updateTime
     createGroupId
     syncRolePolicy
-    usersConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name lastName: $lastName login: $login salt: $salt hash: $hash email: $email phones: $phones disable: $disable groups: $groups roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userPhones: $userPhones userGroup: $userGroup userRole: $userRole) {
+    usersConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name description: $description lastName: $lastName login: $login salt: $salt hash: $hash email: $email phones: $phones disable: $disable groups: $groups roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userPhones: $userPhones userGroup: $userGroup userRole: $userRole) {
       totalCount
       edges {
         node {
           id
           name
+          description
           lastName
           login
           email
@@ -32,6 +33,18 @@ mutation Mutation_role_users($role_id: String, $role_users: [UserInput], $first:
           updateTime
           createGroupId
           syncUserPolicy
+          groups(first: 3) {
+            name
+            description
+          }
+          roles(first: 3) {
+            name
+            description
+          }
+          realm {
+            name
+            description
+          }
         }
       }
     }

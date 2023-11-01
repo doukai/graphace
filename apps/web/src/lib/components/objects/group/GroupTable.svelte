@@ -81,9 +81,11 @@
 		if (searchValue) {
 			args.cond = 'OR';
 			args.name = { opr: 'LK', val: `%${searchValue}%` };
+			args.description = { opr: 'LK', val: `%${searchValue}%` };
 		} else {
 			args.cond = undefined;
 			args.name = undefined;
+			args.description = undefined;
 		}
 
 		dispatch('fetch', {
@@ -147,9 +149,8 @@
 	const unbindRows = (selectedIdList: (string | null)[]) => {
 		dispatch('parentMutation', {
 			args: selectedIdList
-				.map((id) => nodes?.find((node) => node?.id === id))
-				.map((node) => {
-					return { ...node, isDeprecated: true };
+				.map((id) => {
+					return { where: { id: { val: id } }, isDeprecated: true };
 				}),
 			then: (data) => {
 				notifications.success($LL.web.message.unbindSuccess());
@@ -231,6 +232,14 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
+			{#if auth('Group::description::*')}
+			<StringTh
+				name={$LL.graphql.objects.Group.fields.description.name()}
+				bind:expression={args.description}
+				bind:sort={orderBy.description}
+				on:filter={(e) => query()}
+			/>
+			{/if}
 			{#if auth('Group::parent::*')}
 			<GroupTh
 				name={$LL.graphql.objects.Group.fields.parent.name()}
@@ -270,7 +279,7 @@
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading rows={10} cols={6 + 2}/>
+		<TableLoading rows={10} cols={7 + 2}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
@@ -291,20 +300,29 @@
 								errors={errors[row]?.iterms?.name}
 							/>
 							{/if}
+							{#if auth('Group::description::*')}
+							<StringTd
+								name="description"
+								bind:value={node.description}
+								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
+								readonly={!auth('Group::description::WRITE')}
+								errors={errors[row]?.iterms?.description}
+							/>
+							{/if}
 							{#if auth('Group::parent::*')}
-							<ObjectTd name="parent" errors={errors[row]?.iterms?.parent} path={`${node.id}/parent`} on:gotoField />
+							<ObjectTd name="parent" namedStruct={ node.parent } errors={errors[row]?.iterms?.parent} path={`${node.id}/parent`} on:gotoField />
 							{/if}
 							{#if auth('Group::subGroups::*')}
-							<ObjectTd name="subGroups" errors={errors[row]?.iterms?.subGroups} path={`${node.id}/sub-groups`} on:gotoField />
+							<ObjectTd name="subGroups" namedStruct={ node.subGroups } errors={errors[row]?.iterms?.subGroups} path={`${node.id}/sub-groups`} on:gotoField />
 							{/if}
 							{#if auth('Group::users::*')}
-							<ObjectTd name="users" errors={errors[row]?.iterms?.users} path={`${node.id}/users`} on:gotoField />
+							<ObjectTd name="users" namedStruct={ node.users } errors={errors[row]?.iterms?.users} path={`${node.id}/users`} on:gotoField />
 							{/if}
 							{#if auth('Group::roles::*')}
-							<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path={`${node.id}/roles`} on:gotoField />
+							<ObjectTd name="roles" namedStruct={ node.roles } errors={errors[row]?.iterms?.roles} path={`${node.id}/roles`} on:gotoField />
 							{/if}
 							{#if auth('Group::realm::*')}
-							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+							<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
 							{/if}
 							{#if auth('Group::*::WRITE')}
 							<th class="z-10 hover:z-30 w-24">
@@ -381,7 +399,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={6 + 2}/>
+				<TableEmpty cols={7 + 2}/>
 			{/if}
 		</tbody>
 	{/if}

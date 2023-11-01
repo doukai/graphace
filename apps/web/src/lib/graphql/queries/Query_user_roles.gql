@@ -2,6 +2,7 @@ query Query_user_roles($user_id: StringExpression, $first: Int, $last: Int, $off
   user(id: $user_id)  {
     id
     name
+    description
     lastName
     login
     email
@@ -30,6 +31,26 @@ query Query_user_roles($user_id: StringExpression, $first: Int, $last: Int, $off
           updateUserId
           updateTime
           createGroupId
+          users(first: 3) {
+            name
+            description
+          }
+          groups(first: 3) {
+            name
+            description
+          }
+          composites(first: 3) {
+            name
+            description
+          }
+          permissions(first: 3) {
+            name
+            description
+          }
+          realm {
+            name
+            description
+          }
         }
       }
     }

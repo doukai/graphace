@@ -2,6 +2,7 @@ query Query_group_roles($group_id: StringExpression, $first: Int, $last: Int, $o
   group(id: $group_id)  {
     id
     name
+    description
     path
     deep
     isDeprecated
@@ -27,6 +28,26 @@ query Query_group_roles($group_id: StringExpression, $first: Int, $last: Int, $o
           updateUserId
           updateTime
           createGroupId
+          users(first: 3) {
+            name
+            description
+          }
+          groups(first: 3) {
+            name
+            description
+          }
+          composites(first: 3) {
+            name
+            description
+          }
+          permissions(first: 3) {
+            name
+            description
+          }
+          realm {
+            name
+            description
+          }
         }
       }
     }

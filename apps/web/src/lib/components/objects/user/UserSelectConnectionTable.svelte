@@ -100,6 +100,7 @@
 		if (searchValue) {
 			args.cond = 'OR';
 			args.name = { opr: 'LK', val: `%${searchValue}%` };
+			args.description = { opr: 'LK', val: `%${searchValue}%` };
 			args.lastName = { opr: 'LK', val: `%${searchValue}%` };
 			args.login = { opr: 'LK', val: `%${searchValue}%` };
 			args.email = { opr: 'LK', val: `%${searchValue}%` };
@@ -107,6 +108,7 @@
 		} else {
 			args.cond = undefined;
 			args.name = undefined;
+			args.description = undefined;
 			args.lastName = undefined;
 			args.login = undefined;
 			args.email = undefined;
@@ -163,8 +165,8 @@
 	on:select={(e) =>
 		dispatch('select', {
 			selected: Array.isArray(selectedIdList)
-				? selectedIdList.flatMap(id => nodes?.find(node => node?.id == id)).map((node) => ({ ...node, where: { id: { val: node?.id } } }))
-				: { ...nodes?.find(node => node?.id == selectedIdList), where: { id: { val: selectedIdList } } },
+				? selectedIdList.map((id) => ({ where: { id: { val: id } } }))
+				: { where: { id: { val: selectedIdList } } },
 			then: () => {
 				notifications.success($LL.web.message.saveSuccess());
 				dispatch('back');
@@ -201,6 +203,14 @@
 				name={$LL.graphql.objects.User.fields.name.name()}
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
+				on:filter={(e) => query()}
+			/>
+			{/if}
+			{#if auth('User::description::*')}
+			<StringTh
+				name={$LL.graphql.objects.User.fields.description.name()}
+				bind:expression={args.description}
+				bind:sort={orderBy.description}
 				on:filter={(e) => query()}
 			/>
 			{/if}
@@ -247,7 +257,7 @@
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading rows={pageSize} cols={9 + 2}/>
+		<TableLoading rows={pageSize} cols={10 + 2}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
@@ -270,6 +280,15 @@
 								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
 								readonly={!auth('User::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
+							/>
+							{/if}
+							{#if auth('User::description::*')}
+							<StringTd
+								name="description"
+								bind:value={node.description}
+								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
+								readonly={!auth('User::description::WRITE')}
+								errors={errors[row]?.iterms?.description}
 							/>
 							{/if}
 							{#if auth('User::lastName::*')}
@@ -348,7 +367,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={9 + 2}/>
+				<TableEmpty cols={10 + 2}/>
 			{/if}
 		</tbody>
 	{/if}

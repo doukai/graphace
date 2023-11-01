@@ -101,6 +101,7 @@
 		if (searchValue) {
 			args.cond = 'OR';
 			args.name = { opr: 'LK', val: `%${searchValue}%` };
+			args.description = { opr: 'LK', val: `%${searchValue}%` };
 			args.lastName = { opr: 'LK', val: `%${searchValue}%` };
 			args.login = { opr: 'LK', val: `%${searchValue}%` };
 			args.email = { opr: 'LK', val: `%${searchValue}%` };
@@ -108,6 +109,7 @@
 		} else {
 			args.cond = undefined;
 			args.name = undefined;
+			args.description = undefined;
 			args.lastName = undefined;
 			args.login = undefined;
 			args.email = undefined;
@@ -186,9 +188,8 @@
 	const unbindRows = (selectedIdList: (string | null)[]) => {
 		dispatch('parentMutation', {
 			args: selectedIdList
-				.map((id) => nodes?.find((node) => node?.id === id))
-				.map((node) => {
-					return { ...node, isDeprecated: true };
+				.map((id) => {
+					return { where: { id: { val: id } }, isDeprecated: true };
 				}),
 			then: (data) => {
 				notifications.success($LL.web.message.unbindSuccess());
@@ -270,6 +271,14 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
+			{#if auth('User::description::*')}
+			<StringTh
+				name={$LL.graphql.objects.User.fields.description.name()}
+				bind:expression={args.description}
+				bind:sort={orderBy.description}
+				on:filter={(e) => query()}
+			/>
+			{/if}
 			{#if auth('User::lastName::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.lastName.name()}
@@ -336,7 +345,7 @@
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading rows={pageSize} cols={9 + 2}/>
+		<TableLoading rows={pageSize} cols={10 + 2}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
@@ -355,6 +364,15 @@
 								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
 								readonly={!auth('User::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
+							/>
+							{/if}
+							{#if auth('User::description::*')}
+							<StringTd
+								name="description"
+								bind:value={node.description}
+								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
+								readonly={!auth('User::description::WRITE')}
+								errors={errors[row]?.iterms?.description}
 							/>
 							{/if}
 							{#if auth('User::lastName::*')}
@@ -404,13 +422,13 @@
 							/>
 							{/if}
 							{#if auth('User::groups::*')}
-							<ObjectTd name="groups" errors={errors[row]?.iterms?.groups} path={`${node.id}/groups`} on:gotoField />
+							<ObjectTd name="groups" namedStruct={ node.groups } errors={errors[row]?.iterms?.groups} path={`${node.id}/groups`} on:gotoField />
 							{/if}
 							{#if auth('User::roles::*')}
-							<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path={`${node.id}/roles`} on:gotoField />
+							<ObjectTd name="roles" namedStruct={ node.roles } errors={errors[row]?.iterms?.roles} path={`${node.id}/roles`} on:gotoField />
 							{/if}
 							{#if auth('User::realm::*')}
-							<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+							<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
 							{/if}
 							{#if auth('User::*::WRITE')}
 							<th class="z-10 hover:z-30 w-24">
@@ -487,7 +505,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={9 + 2}/>
+				<TableEmpty cols={10 + 2}/>
 			{/if}
 		</tbody>
 	{/if}

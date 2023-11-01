@@ -79,19 +79,22 @@
 	{#if auth('Group::name::*')}
 	<StringItem label={$LL.graphql.objects.Group.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
 	{/if}
+	{#if auth('Group::description::*')}
+	<StringItem label={$LL.graphql.objects.Group.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
+	{/if}
 	{#if auth('Group::parent::*')}
-	<ObjectItem name="parent" path="_/parent" label={$LL.graphql.objects.Group.fields.parent.name()} errors={errors.parent} on:gotoField />
+	<ObjectItem name="parent" namedStruct={ node.parent } path="_/parent" label={$LL.graphql.objects.Group.fields.parent.name()} errors={errors.parent} on:gotoField />
 	{/if}
 	{#if auth('Group::subGroups::*')}
-	<ObjectItem name="subGroups" path="_/sub-groups" label={$LL.graphql.objects.Group.fields.subGroups.name()} errors={errors.subGroups} on:gotoField />
+	<ObjectItem name="subGroups" namedStruct={ node.subGroups } path="_/sub-groups" label={$LL.graphql.objects.Group.fields.subGroups.name()} errors={errors.subGroups} on:gotoField />
 	{/if}
 	{#if auth('Group::users::*')}
-	<ObjectItem name="users" path="_/users" label={$LL.graphql.objects.Group.fields.users.name()} errors={errors.users} on:gotoField />
+	<ObjectItem name="users" namedStruct={ node.users } path="_/users" label={$LL.graphql.objects.Group.fields.users.name()} errors={errors.users} on:gotoField />
 	{/if}
 	{#if auth('Group::roles::*')}
-	<ObjectItem name="roles" path="_/roles" label={$LL.graphql.objects.Group.fields.roles.name()} errors={errors.roles} on:gotoField />
+	<ObjectItem name="roles" namedStruct={ node.roles } path="_/roles" label={$LL.graphql.objects.Group.fields.roles.name()} errors={errors.roles} on:gotoField />
 	{/if}
 	{#if auth('Group::realm::*')}
-	<ObjectItem name="realm" path="_/realm" label={$LL.graphql.objects.Group.fields.realm.name()} errors={errors.realm} on:gotoField />
+	<ObjectItem name="realm" namedStruct={ node.realm } path="_/realm" label={$LL.graphql.objects.Group.fields.realm.name()} errors={errors.realm} on:gotoField />
 	{/if}
 </Form>

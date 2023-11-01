@@ -66,10 +66,11 @@ export type FuncExpression = {
   in?: InputMaybe<Array<InputMaybe<Func>>>;
 };
 
-export type Group = Meta & {
+export type Group = TreeStruct & NamedStruct & Meta & {
   __typename?: 'Group';
   id?: Maybe<Scalars['ID']>;
   name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
   path?: Maybe<Scalars['String']>;
   deep?: Maybe<Scalars['Int']>;
   parent?: Maybe<Group>;
@@ -91,6 +92,9 @@ export type Group = Meta & {
   nameCount?: Maybe<Scalars['Int']>;
   nameMax?: Maybe<Scalars['String']>;
   nameMin?: Maybe<Scalars['String']>;
+  descriptionCount?: Maybe<Scalars['Int']>;
+  descriptionMax?: Maybe<Scalars['String']>;
+  descriptionMin?: Maybe<Scalars['String']>;
   pathCount?: Maybe<Scalars['Int']>;
   pathMax?: Maybe<Scalars['String']>;
   pathMin?: Maybe<Scalars['String']>;
@@ -129,6 +133,7 @@ export type Group = Meta & {
 export type GroupParentArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -143,6 +148,7 @@ export type GroupParentArgs = {
 export type GroupSubGroupsArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -163,6 +169,7 @@ export type GroupSubGroupsArgs = {
 export type GroupUsersArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -228,6 +235,7 @@ export type GroupRolesArgs = {
 export type GroupRealmArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
@@ -240,6 +248,7 @@ export type GroupSubGroupsAggregateArgs = {
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -258,6 +267,7 @@ export type GroupSubGroupsConnectionArgs = {
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -276,6 +286,7 @@ export type GroupUsersAggregateArgs = {
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -308,6 +319,7 @@ export type GroupUsersConnectionArgs = {
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -455,6 +467,7 @@ export type GroupConnection = {
 export type GroupConnectionQueryArguments = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -488,6 +501,7 @@ export type GroupConnectionQueryArguments = {
 export type GroupConnectionSubscriptionArguments = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -527,6 +541,7 @@ export type GroupEdge = {
 export type GroupExpression = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -553,6 +568,7 @@ export type GroupExpression = {
 export type GroupInput = {
   id?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   path?: InputMaybe<Scalars['String']>;
   deep?: InputMaybe<Scalars['Int']>;
   parent?: InputMaybe<GroupInput>;
@@ -577,6 +593,7 @@ export type GroupInput = {
 export type GroupListMutationArguments = {
   id?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   path?: InputMaybe<Scalars['String']>;
   deep?: InputMaybe<Scalars['Int']>;
   parent?: InputMaybe<GroupInput>;
@@ -602,6 +619,7 @@ export type GroupListMutationArguments = {
 export type GroupListQueryArguments = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -635,6 +653,7 @@ export type GroupListQueryArguments = {
 export type GroupListSubscriptionArguments = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -668,6 +687,7 @@ export type GroupListSubscriptionArguments = {
 export type GroupMutationArguments = {
   id?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   path?: InputMaybe<Scalars['String']>;
   deep?: InputMaybe<Scalars['Int']>;
   parent?: InputMaybe<GroupInput>;
@@ -692,6 +712,7 @@ export type GroupMutationArguments = {
 export type GroupOrderBy = {
   id?: InputMaybe<Sort>;
   name?: InputMaybe<Sort>;
+  description?: InputMaybe<Sort>;
   path?: InputMaybe<Sort>;
   deep?: InputMaybe<Sort>;
   isDeprecated?: InputMaybe<Sort>;
@@ -708,6 +729,7 @@ export type GroupOrderBy = {
 export type GroupQueryArguments = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -791,6 +813,7 @@ export type GroupRoleRoleIdTypeArgs = {
 export type GroupRoleGroupIdTypeArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -1057,6 +1080,7 @@ export type GroupRoleSubscriptionArguments = {
 export type GroupSubscriptionArguments = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -1177,6 +1201,7 @@ export type Mutation = Meta & {
 export type MutationUserArgs = {
   id?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
   login?: InputMaybe<Scalars['String']>;
   salt?: InputMaybe<Scalars['String']>;
@@ -1205,6 +1230,7 @@ export type MutationUserArgs = {
 export type MutationUserListArgs = {
   id?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
   login?: InputMaybe<Scalars['String']>;
   salt?: InputMaybe<Scalars['String']>;
@@ -1285,6 +1311,7 @@ export type MutationRoleListArgs = {
 export type MutationGroupArgs = {
   id?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   path?: InputMaybe<Scalars['String']>;
   deep?: InputMaybe<Scalars['Int']>;
   parent?: InputMaybe<GroupInput>;
@@ -1310,6 +1337,7 @@ export type MutationGroupArgs = {
 export type MutationGroupListArgs = {
   id?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   path?: InputMaybe<Scalars['String']>;
   deep?: InputMaybe<Scalars['Int']>;
   parent?: InputMaybe<GroupInput>;
@@ -1336,6 +1364,7 @@ export type MutationGroupListArgs = {
 export type MutationRealmArgs = {
   id?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -1351,6 +1380,7 @@ export type MutationRealmArgs = {
 export type MutationRealmListArgs = {
   id?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -1366,10 +1396,10 @@ export type MutationRealmListArgs = {
 
 export type MutationPermissionArgs = {
   name?: InputMaybe<Scalars['ID']>;
+  description?: InputMaybe<Scalars['String']>;
   field?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Scalars['String']>;
   permissionType?: InputMaybe<PermissionType>;
-  description?: InputMaybe<Scalars['String']>;
   roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
   realm?: InputMaybe<RealmInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
@@ -1387,10 +1417,10 @@ export type MutationPermissionArgs = {
 
 export type MutationPermissionListArgs = {
   name?: InputMaybe<Scalars['ID']>;
+  description?: InputMaybe<Scalars['String']>;
   field?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Scalars['String']>;
   permissionType?: InputMaybe<PermissionType>;
-  description?: InputMaybe<Scalars['String']>;
   roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
   realm?: InputMaybe<RealmInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
@@ -1637,6 +1667,21 @@ export type Mutation_Login_Arguments = {
   password: Scalars['String'];
 };
 
+export type NamedStruct = {
+  name?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+};
+
+export type NamedStructExpression = {
+  name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
+};
+
+export type NamedStructInput = {
+  name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+};
+
 export type Operator =
   | 'EQ'
   | 'NEQ'
@@ -1671,13 +1716,13 @@ export type PageInfo = {
   endCursor: Scalars['String'];
 };
 
-export type Permission = Meta & {
+export type Permission = NamedStruct & Meta & {
   __typename?: 'Permission';
   name: Scalars['ID'];
+  description?: Maybe<Scalars['String']>;
   field: Scalars['String'];
   type: Scalars['String'];
   permissionType: PermissionType;
-  description?: Maybe<Scalars['String']>;
   roles?: Maybe<Array<Maybe<Role>>>;
   realm?: Maybe<Realm>;
   isDeprecated?: Maybe<Scalars['Boolean']>;
@@ -1691,15 +1736,15 @@ export type Permission = Meta & {
   nameCount?: Maybe<Scalars['Int']>;
   nameMax?: Maybe<Scalars['String']>;
   nameMin?: Maybe<Scalars['String']>;
+  descriptionCount?: Maybe<Scalars['Int']>;
+  descriptionMax?: Maybe<Scalars['String']>;
+  descriptionMin?: Maybe<Scalars['String']>;
   fieldCount?: Maybe<Scalars['Int']>;
   fieldMax?: Maybe<Scalars['String']>;
   fieldMin?: Maybe<Scalars['String']>;
   typeCount?: Maybe<Scalars['Int']>;
   typeMax?: Maybe<Scalars['String']>;
   typeMin?: Maybe<Scalars['String']>;
-  descriptionCount?: Maybe<Scalars['Int']>;
-  descriptionMax?: Maybe<Scalars['String']>;
-  descriptionMin?: Maybe<Scalars['String']>;
   rolesAggregate?: Maybe<Role>;
   rolesConnection?: Maybe<RoleConnection>;
   realmIdCount?: Maybe<Scalars['Int']>;
@@ -1748,6 +1793,7 @@ export type PermissionRolesArgs = {
 export type PermissionRealmArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -1854,10 +1900,10 @@ export type PermissionConnection = {
 
 export type PermissionConnectionQueryArguments = {
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   field?: InputMaybe<StringExpression>;
   type?: InputMaybe<StringExpression>;
   permissionType?: InputMaybe<PermissionTypeExpression>;
-  description?: InputMaybe<StringExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
@@ -1883,10 +1929,10 @@ export type PermissionConnectionQueryArguments = {
 
 export type PermissionConnectionSubscriptionArguments = {
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   field?: InputMaybe<StringExpression>;
   type?: InputMaybe<StringExpression>;
   permissionType?: InputMaybe<PermissionTypeExpression>;
-  description?: InputMaybe<StringExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
@@ -1918,10 +1964,10 @@ export type PermissionEdge = {
 
 export type PermissionExpression = {
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   field?: InputMaybe<StringExpression>;
   type?: InputMaybe<StringExpression>;
   permissionType?: InputMaybe<PermissionTypeExpression>;
-  description?: InputMaybe<StringExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
@@ -1940,10 +1986,10 @@ export type PermissionExpression = {
 
 export type PermissionInput = {
   name?: InputMaybe<Scalars['ID']>;
+  description?: InputMaybe<Scalars['String']>;
   field?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Scalars['String']>;
   permissionType?: InputMaybe<PermissionType>;
-  description?: InputMaybe<Scalars['String']>;
   roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
   realm?: InputMaybe<RealmInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
@@ -1960,10 +2006,10 @@ export type PermissionInput = {
 
 export type PermissionListMutationArguments = {
   name?: InputMaybe<Scalars['ID']>;
+  description?: InputMaybe<Scalars['String']>;
   field?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Scalars['String']>;
   permissionType?: InputMaybe<PermissionType>;
-  description?: InputMaybe<Scalars['String']>;
   roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
   realm?: InputMaybe<RealmInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
@@ -1981,10 +2027,10 @@ export type PermissionListMutationArguments = {
 
 export type PermissionListQueryArguments = {
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   field?: InputMaybe<StringExpression>;
   type?: InputMaybe<StringExpression>;
   permissionType?: InputMaybe<PermissionTypeExpression>;
-  description?: InputMaybe<StringExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
@@ -2010,10 +2056,10 @@ export type PermissionListQueryArguments = {
 
 export type PermissionListSubscriptionArguments = {
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   field?: InputMaybe<StringExpression>;
   type?: InputMaybe<StringExpression>;
   permissionType?: InputMaybe<PermissionTypeExpression>;
-  description?: InputMaybe<StringExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
@@ -2039,10 +2085,10 @@ export type PermissionListSubscriptionArguments = {
 
 export type PermissionMutationArguments = {
   name?: InputMaybe<Scalars['ID']>;
+  description?: InputMaybe<Scalars['String']>;
   field?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Scalars['String']>;
   permissionType?: InputMaybe<PermissionType>;
-  description?: InputMaybe<Scalars['String']>;
   roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
   realm?: InputMaybe<RealmInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
@@ -2059,10 +2105,10 @@ export type PermissionMutationArguments = {
 
 export type PermissionOrderBy = {
   name?: InputMaybe<Sort>;
+  description?: InputMaybe<Sort>;
   field?: InputMaybe<Sort>;
   type?: InputMaybe<Sort>;
   permissionType?: InputMaybe<Sort>;
-  description?: InputMaybe<Sort>;
   isDeprecated?: InputMaybe<Sort>;
   version?: InputMaybe<Sort>;
   realmId?: InputMaybe<Sort>;
@@ -2075,10 +2121,10 @@ export type PermissionOrderBy = {
 
 export type PermissionQueryArguments = {
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   field?: InputMaybe<StringExpression>;
   type?: InputMaybe<StringExpression>;
   permissionType?: InputMaybe<PermissionTypeExpression>;
-  description?: InputMaybe<StringExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
@@ -2098,10 +2144,10 @@ export type PermissionQueryArguments = {
 
 export type PermissionSubscriptionArguments = {
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   field?: InputMaybe<StringExpression>;
   type?: InputMaybe<StringExpression>;
   permissionType?: InputMaybe<PermissionTypeExpression>;
-  description?: InputMaybe<StringExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
@@ -2211,6 +2257,7 @@ export type Query = Meta & {
 export type QueryUserArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -2242,6 +2289,7 @@ export type QueryUserArgs = {
 export type QueryUserListArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -2279,6 +2327,7 @@ export type QueryUserListArgs = {
 export type QueryUserConnectionArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -2412,6 +2461,7 @@ export type QueryRoleConnectionArgs = {
 export type QueryGroupArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -2440,6 +2490,7 @@ export type QueryGroupArgs = {
 export type QueryGroupListArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -2474,6 +2525,7 @@ export type QueryGroupListArgs = {
 export type QueryGroupConnectionArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -2508,6 +2560,7 @@ export type QueryGroupConnectionArgs = {
 export type QueryRealmArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -2526,6 +2579,7 @@ export type QueryRealmArgs = {
 export type QueryRealmListArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -2550,6 +2604,7 @@ export type QueryRealmListArgs = {
 export type QueryRealmConnectionArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -2573,10 +2628,10 @@ export type QueryRealmConnectionArgs = {
 
 export type QueryPermissionArgs = {
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   field?: InputMaybe<StringExpression>;
   type?: InputMaybe<StringExpression>;
   permissionType?: InputMaybe<PermissionTypeExpression>;
-  description?: InputMaybe<StringExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
@@ -2597,10 +2652,10 @@ export type QueryPermissionArgs = {
 
 export type QueryPermissionListArgs = {
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   field?: InputMaybe<StringExpression>;
   type?: InputMaybe<StringExpression>;
   permissionType?: InputMaybe<PermissionTypeExpression>;
-  description?: InputMaybe<StringExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
@@ -2627,10 +2682,10 @@ export type QueryPermissionListArgs = {
 
 export type QueryPermissionConnectionArgs = {
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   field?: InputMaybe<StringExpression>;
   type?: InputMaybe<StringExpression>;
   permissionType?: InputMaybe<PermissionTypeExpression>;
-  description?: InputMaybe<StringExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
@@ -3101,10 +3156,11 @@ export type QueryRolePermissionConnectionArgs = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-export type Realm = Meta & {
+export type Realm = Meta & NamedStruct & {
   __typename?: 'Realm';
   id?: Maybe<Scalars['ID']>;
   name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
   isDeprecated?: Maybe<Scalars['Boolean']>;
   version?: Maybe<Scalars['Int']>;
   realmId?: Maybe<Scalars['Int']>;
@@ -3119,6 +3175,9 @@ export type Realm = Meta & {
   nameCount?: Maybe<Scalars['Int']>;
   nameMax?: Maybe<Scalars['String']>;
   nameMin?: Maybe<Scalars['String']>;
+  descriptionCount?: Maybe<Scalars['Int']>;
+  descriptionMax?: Maybe<Scalars['String']>;
+  descriptionMin?: Maybe<Scalars['String']>;
 };
 
 export type RealmConnection = {
@@ -3131,6 +3190,7 @@ export type RealmConnection = {
 export type RealmConnectionQueryArguments = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -3154,6 +3214,7 @@ export type RealmConnectionQueryArguments = {
 export type RealmConnectionSubscriptionArguments = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -3183,6 +3244,7 @@ export type RealmEdge = {
 export type RealmExpression = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -3199,6 +3261,7 @@ export type RealmExpression = {
 export type RealmInput = {
   id?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -3213,6 +3276,7 @@ export type RealmInput = {
 export type RealmListMutationArguments = {
   id?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -3228,6 +3292,7 @@ export type RealmListMutationArguments = {
 export type RealmListQueryArguments = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -3251,6 +3316,7 @@ export type RealmListQueryArguments = {
 export type RealmListSubscriptionArguments = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -3274,6 +3340,7 @@ export type RealmListSubscriptionArguments = {
 export type RealmMutationArguments = {
   id?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -3288,6 +3355,7 @@ export type RealmMutationArguments = {
 export type RealmOrderBy = {
   id?: InputMaybe<Sort>;
   name?: InputMaybe<Sort>;
+  description?: InputMaybe<Sort>;
   isDeprecated?: InputMaybe<Sort>;
   version?: InputMaybe<Sort>;
   realmId?: InputMaybe<Sort>;
@@ -3301,6 +3369,7 @@ export type RealmOrderBy = {
 export type RealmQueryArguments = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -3318,6 +3387,7 @@ export type RealmQueryArguments = {
 export type RealmSubscriptionArguments = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -3332,7 +3402,7 @@ export type RealmSubscriptionArguments = {
   exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
 };
 
-export type Role = Meta & {
+export type Role = NamedStruct & Meta & {
   __typename?: 'Role';
   id?: Maybe<Scalars['ID']>;
   name: Scalars['String'];
@@ -3391,6 +3461,7 @@ export type Role = Meta & {
 export type RoleUsersArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -3425,6 +3496,7 @@ export type RoleUsersArgs = {
 export type RoleGroupsArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -3463,10 +3535,10 @@ export type RoleCompositesArgs = {
 
 export type RolePermissionsArgs = {
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   field?: InputMaybe<StringExpression>;
   type?: InputMaybe<StringExpression>;
   permissionType?: InputMaybe<PermissionTypeExpression>;
-  description?: InputMaybe<StringExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
@@ -3482,6 +3554,7 @@ export type RolePermissionsArgs = {
 export type RoleRealmArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
@@ -3494,6 +3567,7 @@ export type RoleUsersAggregateArgs = {
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -3526,6 +3600,7 @@ export type RoleUsersConnectionArgs = {
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -3558,6 +3633,7 @@ export type RoleGroupsAggregateArgs = {
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -3576,6 +3652,7 @@ export type RoleGroupsConnectionArgs = {
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -3627,10 +3704,10 @@ export type RolePermissionsAggregateArgs = {
   orderBy?: InputMaybe<PermissionOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   field?: InputMaybe<StringExpression>;
   type?: InputMaybe<StringExpression>;
   permissionType?: InputMaybe<PermissionTypeExpression>;
-  description?: InputMaybe<StringExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
 };
@@ -3643,10 +3720,10 @@ export type RolePermissionsConnectionArgs = {
   orderBy?: InputMaybe<PermissionOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   field?: InputMaybe<StringExpression>;
   type?: InputMaybe<StringExpression>;
   permissionType?: InputMaybe<PermissionTypeExpression>;
-  description?: InputMaybe<StringExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
 };
@@ -4399,10 +4476,10 @@ export type RolePermissionRoleIdTypeArgs = {
 
 export type RolePermissionPermissionNameTypeArgs = {
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   field?: InputMaybe<StringExpression>;
   type?: InputMaybe<StringExpression>;
   permissionType?: InputMaybe<PermissionTypeExpression>;
-  description?: InputMaybe<StringExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
@@ -4779,6 +4856,7 @@ export type Subscription = Meta & {
 export type SubscriptionUserArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -4810,6 +4888,7 @@ export type SubscriptionUserArgs = {
 export type SubscriptionUserListArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -4847,6 +4926,7 @@ export type SubscriptionUserListArgs = {
 export type SubscriptionUserConnectionArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -4980,6 +5060,7 @@ export type SubscriptionRoleConnectionArgs = {
 export type SubscriptionGroupArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -5008,6 +5089,7 @@ export type SubscriptionGroupArgs = {
 export type SubscriptionGroupListArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -5042,6 +5124,7 @@ export type SubscriptionGroupListArgs = {
 export type SubscriptionGroupConnectionArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -5076,6 +5159,7 @@ export type SubscriptionGroupConnectionArgs = {
 export type SubscriptionRealmArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -5094,6 +5178,7 @@ export type SubscriptionRealmArgs = {
 export type SubscriptionRealmListArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -5118,6 +5203,7 @@ export type SubscriptionRealmListArgs = {
 export type SubscriptionRealmConnectionArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -5141,10 +5227,10 @@ export type SubscriptionRealmConnectionArgs = {
 
 export type SubscriptionPermissionArgs = {
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   field?: InputMaybe<StringExpression>;
   type?: InputMaybe<StringExpression>;
   permissionType?: InputMaybe<PermissionTypeExpression>;
-  description?: InputMaybe<StringExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
@@ -5165,10 +5251,10 @@ export type SubscriptionPermissionArgs = {
 
 export type SubscriptionPermissionListArgs = {
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   field?: InputMaybe<StringExpression>;
   type?: InputMaybe<StringExpression>;
   permissionType?: InputMaybe<PermissionTypeExpression>;
-  description?: InputMaybe<StringExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
@@ -5195,10 +5281,10 @@ export type SubscriptionPermissionListArgs = {
 
 export type SubscriptionPermissionConnectionArgs = {
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   field?: InputMaybe<StringExpression>;
   type?: InputMaybe<StringExpression>;
   permissionType?: InputMaybe<PermissionTypeExpression>;
-  description?: InputMaybe<StringExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
@@ -5669,10 +5755,26 @@ export type SubscriptionRolePermissionConnectionArgs = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-export type User = Meta & {
+export type TreeStruct = {
+  path?: Maybe<Scalars['String']>;
+  deep?: Maybe<Scalars['Int']>;
+};
+
+export type TreeStructExpression = {
+  path?: InputMaybe<StringExpression>;
+  deep?: InputMaybe<IntExpression>;
+};
+
+export type TreeStructInput = {
+  path?: InputMaybe<Scalars['String']>;
+  deep?: InputMaybe<Scalars['Int']>;
+};
+
+export type User = NamedStruct & Meta & {
   __typename?: 'User';
   id?: Maybe<Scalars['ID']>;
   name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
   lastName?: Maybe<Scalars['String']>;
   login: Scalars['String'];
   salt?: Maybe<Scalars['String']>;
@@ -5697,6 +5799,9 @@ export type User = Meta & {
   nameCount?: Maybe<Scalars['Int']>;
   nameMax?: Maybe<Scalars['String']>;
   nameMin?: Maybe<Scalars['String']>;
+  descriptionCount?: Maybe<Scalars['Int']>;
+  descriptionMax?: Maybe<Scalars['String']>;
+  descriptionMin?: Maybe<Scalars['String']>;
   lastNameCount?: Maybe<Scalars['Int']>;
   lastNameMax?: Maybe<Scalars['String']>;
   lastNameMin?: Maybe<Scalars['String']>;
@@ -5748,6 +5853,7 @@ export type UserPhonesArgs = {
 export type UserGroupsArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -5787,6 +5893,7 @@ export type UserRolesArgs = {
 export type UserRealmArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
@@ -5799,6 +5906,7 @@ export type UserGroupsAggregateArgs = {
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -5817,6 +5925,7 @@ export type UserGroupsConnectionArgs = {
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -5952,6 +6061,7 @@ export type UserConnection = {
 export type UserConnectionQueryArguments = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -5988,6 +6098,7 @@ export type UserConnectionQueryArguments = {
 export type UserConnectionSubscriptionArguments = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -6030,6 +6141,7 @@ export type UserEdge = {
 export type UserExpression = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -6090,6 +6202,7 @@ export type UserGroup = Meta & {
 export type UserGroupUserIdTypeArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -6118,6 +6231,7 @@ export type UserGroupUserIdTypeArgs = {
 export type UserGroupGroupIdTypeArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parent?: InputMaybe<GroupExpression>;
@@ -6384,6 +6498,7 @@ export type UserGroupSubscriptionArguments = {
 export type UserInput = {
   id?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
   login?: InputMaybe<Scalars['String']>;
   salt?: InputMaybe<Scalars['String']>;
@@ -6411,6 +6526,7 @@ export type UserInput = {
 export type UserListMutationArguments = {
   id?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
   login?: InputMaybe<Scalars['String']>;
   salt?: InputMaybe<Scalars['String']>;
@@ -6439,6 +6555,7 @@ export type UserListMutationArguments = {
 export type UserListQueryArguments = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -6475,6 +6592,7 @@ export type UserListQueryArguments = {
 export type UserListSubscriptionArguments = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -6511,6 +6629,7 @@ export type UserListSubscriptionArguments = {
 export type UserMutationArguments = {
   id?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
   login?: InputMaybe<Scalars['String']>;
   salt?: InputMaybe<Scalars['String']>;
@@ -6538,6 +6657,7 @@ export type UserMutationArguments = {
 export type UserOrderBy = {
   id?: InputMaybe<Sort>;
   name?: InputMaybe<Sort>;
+  description?: InputMaybe<Sort>;
   lastName?: InputMaybe<Sort>;
   login?: InputMaybe<Sort>;
   salt?: InputMaybe<Sort>;
@@ -6585,6 +6705,7 @@ export type UserPhones = Meta & {
 export type UserPhonesUserIdTypeArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -6844,6 +6965,7 @@ export type UserPhonesSubscriptionArguments = {
 export type UserQueryArguments = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -6905,6 +7027,7 @@ export type UserRole = Meta & {
 export type UserRoleUserIdTypeArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;
@@ -7199,6 +7322,7 @@ export type UserRoleSubscriptionArguments = {
 export type UserSubscriptionArguments = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
   lastName?: InputMaybe<StringExpression>;
   login?: InputMaybe<StringExpression>;
   salt?: InputMaybe<StringExpression>;

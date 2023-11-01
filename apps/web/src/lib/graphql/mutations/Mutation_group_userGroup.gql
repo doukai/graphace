@@ -2,6 +2,7 @@ mutation Mutation_group_userGroup($group_id: String, $group_userGroup: [UserGrou
   group(where: {id: {val: $group_id}}  userGroup: $group_userGroup) @mergeToList(arguments: $mergeToList) {
     id
     name
+    description
     path
     deep
     isDeprecated
@@ -28,6 +29,14 @@ mutation Mutation_group_userGroup($group_id: String, $group_userGroup: [UserGrou
           updateUserId
           updateTime
           createGroupId
+          userIdType {
+            name
+            description
+          }
+          groupIdType {
+            name
+            description
+          }
         }
       }
     }

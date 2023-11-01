@@ -2,6 +2,7 @@ mutation Mutation_user_roles($user_id: String, $user_roles: [RoleInput], $first:
   user(where: {id: {val: $user_id}}  roles: $user_roles) @mergeToList(arguments: $mergeToList) {
     id
     name
+    description
     lastName
     login
     email
@@ -32,6 +33,26 @@ mutation Mutation_user_roles($user_id: String, $user_roles: [RoleInput], $first:
           updateTime
           createGroupId
           syncRolePolicy
+          users(first: 3) {
+            name
+            description
+          }
+          groups(first: 3) {
+            name
+            description
+          }
+          composites(first: 3) {
+            name
+            description
+          }
+          permissions(first: 3) {
+            name
+            description
+          }
+          realm {
+            name
+            description
+          }
         }
       }
     }

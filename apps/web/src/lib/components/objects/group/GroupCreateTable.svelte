@@ -85,6 +85,9 @@
 			{#if auth('Group::name::*')}
 			<td>{$LL.graphql.objects.Group.fields.name.name()}</td>
 			{/if}
+			{#if auth('Group::description::*')}
+			<td>{$LL.graphql.objects.Group.fields.description.name()}</td>
+			{/if}
 			{#if auth('Group::parent::*')}
 			<td>{$LL.graphql.objects.Group.fields.parent.name()}</td>
 			{/if}
@@ -121,20 +124,28 @@
 							errors={errors[row]?.iterms?.name}
 						/>
 						{/if}
+						{#if auth('Group::description::*')}
+						<StringTd
+							name="description"
+							bind:value={node.description}
+							readonly
+							errors={errors[row]?.iterms?.description}
+						/>
+						{/if}
 						{#if auth('Group::parent::*')}
-						<ObjectTd name="parent" errors={errors[row]?.iterms?.parent} path="_/parent" on:gotoField />
+						<ObjectTd name="parent" namedStruct={ node.parent } errors={errors[row]?.iterms?.parent} path="_/parent" on:gotoField />
 						{/if}
 						{#if auth('Group::subGroups::*')}
-						<ObjectTd name="subGroups" errors={errors[row]?.iterms?.subGroups} path="_/sub-groups" on:gotoField />
+						<ObjectTd name="subGroups" namedStruct={ node.subGroups } errors={errors[row]?.iterms?.subGroups} path="_/sub-groups" on:gotoField />
 						{/if}
 						{#if auth('Group::users::*')}
-						<ObjectTd name="users" errors={errors[row]?.iterms?.users} path="_/users" on:gotoField />
+						<ObjectTd name="users" namedStruct={ node.users } errors={errors[row]?.iterms?.users} path="_/users" on:gotoField />
 						{/if}
 						{#if auth('Group::roles::*')}
-						<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
+						<ObjectTd name="roles" namedStruct={ node.roles } errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
 						{/if}
 						{#if auth('Group::realm::*')}
-						<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
+						<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
 						{/if}
 						{#if auth('Group::*::WRITE')}
 						<th class="z-10 hover:z-30 w-24">
@@ -174,7 +185,7 @@
 				{/if}
 			{/each}
 		{:else}
-			<TableEmpty cols={6 + 2}/>
+			<TableEmpty cols={7 + 2}/>
 		{/if}
 	</tbody>
 </Table>

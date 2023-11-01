@@ -1,7 +1,8 @@
-query Query_group_realm($group_id: StringExpression, $id: StringExpression, $name: StringExpression, $groupBy: [String!]) {
+query Query_group_realm($group_id: StringExpression, $id: StringExpression, $name: StringExpression, $description: StringExpression, $groupBy: [String!]) {
   group(id: $group_id)  {
     id
     name
+    description
     path
     deep
     isDeprecated
@@ -12,9 +13,10 @@ query Query_group_realm($group_id: StringExpression, $id: StringExpression, $nam
     updateUserId
     updateTime
     createGroupId
-    realm(id: $id name: $name groupBy: $groupBy)  {
+    realm(id: $id name: $name description: $description groupBy: $groupBy)  {
       id
       name
+      description
       isDeprecated
       version
       realmId

@@ -89,12 +89,30 @@
 		};
 	}
 
-	export const messageBoxs = createMessageBoxStore();
+	export const messageBoxs: {
+		subscribe: (
+			this: void,
+			run: Subscriber<MessageBoxComponent[]>,
+			invalidate?: (value?: MessageBoxComponent[]) => void
+		) => Unsubscriber;
+		open: ({
+			title,
+			content,
+			buttonName,
+			buttonType,
+			cancel,
+			confirm,
+			button1,
+			button2,
+			button3
+		}: MessageBoxProps) => void;
+		close: () => void;
+	} = createMessageBoxStore();
 </script>
 
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import type { Readable } from 'svelte/store';
+	import type { Readable, Subscriber, Unsubscriber } from 'svelte/store';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { Modal, ModalContent, ModalActions } from './modal';
 	const LL = getContext('LL') as Readable<TranslationFunctions>;

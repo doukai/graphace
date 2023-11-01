@@ -10,8 +10,12 @@
 
 	export let path: string;
 	export let name: string;
+	export let namedStruct:
+		| { name: string; description: string | null | undefined }
+		| ({ name: string; description: string | null | undefined } | null | undefined)[]
+		| null
+		| undefined = undefined;
 	export let errors: Errors | undefined = undefined;
-	let blur = false;
 
 	const dispatch = createEventDispatcher<{
 		gotoField: { path: string; name: string };
@@ -24,15 +28,57 @@
 		data-tip={errors?.errors?.map((error) => error.message).join(', ')}
 	>
 		<div class="tooltip hover:z-30" data-tip={$LL.uiGraphql.table.editBtn()}>
-			<button
-				class="btn btn-square btn-xs btn-ghost"
-				on:click|preventDefault={(e) => {
-					dispatch('gotoField', { path, name });
-				}}
-				on:blur={() => (blur = true)}
-			>
-				<Icon src={Link} class="h-5 w-5" />
-			</button>
+			{#if namedStruct}
+				{#if Array.isArray(namedStruct)}
+					{#if namedStruct.length > 0}
+						<a
+							class="group link inline-flex"
+							href={null}
+							on:click|preventDefault={(e) => {
+								dispatch('gotoField', { path, name });
+							}}
+						>
+							{#if namedStruct && namedStruct.length > 3}
+								{namedStruct
+									.map((item) => item.name)
+									.slice(0, 3)
+									.join(',')
+									.concat('...')}
+							{:else}
+								{namedStruct.map((item) => item.name).join(',')}
+							{/if}
+						</a>
+					{:else}
+						<button
+							class="btn btn-square btn-xs btn-ghost"
+							on:click|preventDefault={(e) => {
+								dispatch('gotoField', { path, name });
+							}}
+						>
+							<Icon src={Link} class="h-5 w-5" />
+						</button>
+					{/if}
+				{:else}
+					<a
+						class="group link inline-flex"
+						href={null}
+						on:click|preventDefault={(e) => {
+							dispatch('gotoField', { path, name });
+						}}
+					>
+						{namedStruct.name}
+					</a>
+				{/if}
+			{:else}
+				<button
+					class="btn btn-square btn-xs btn-ghost"
+					on:click|preventDefault={(e) => {
+						dispatch('gotoField', { path, name });
+					}}
+				>
+					<Icon src={Link} class="h-5 w-5" />
+				</button>
+			{/if}
 		</div>
 	</div>
 </td>

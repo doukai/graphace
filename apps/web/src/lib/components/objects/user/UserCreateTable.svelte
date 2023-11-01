@@ -85,6 +85,9 @@
 			{#if auth('User::name::*')}
 			<td>{$LL.graphql.objects.User.fields.name.name()}</td>
 			{/if}
+			{#if auth('User::description::*')}
+			<td>{$LL.graphql.objects.User.fields.description.name()}</td>
+			{/if}
 			{#if auth('User::lastName::*')}
 			<td>{$LL.graphql.objects.User.fields.lastName.name()}</td>
 			{/if}
@@ -130,6 +133,14 @@
 							errors={errors[row]?.iterms?.name}
 						/>
 						{/if}
+						{#if auth('User::description::*')}
+						<StringTd
+							name="description"
+							bind:value={node.description}
+							readonly
+							errors={errors[row]?.iterms?.description}
+						/>
+						{/if}
 						{#if auth('User::lastName::*')}
 						<StringTd
 							name="lastName"
@@ -172,13 +183,13 @@
 						/>
 						{/if}
 						{#if auth('User::groups::*')}
-						<ObjectTd name="groups" errors={errors[row]?.iterms?.groups} path="_/groups" on:gotoField />
+						<ObjectTd name="groups" namedStruct={ node.groups } errors={errors[row]?.iterms?.groups} path="_/groups" on:gotoField />
 						{/if}
 						{#if auth('User::roles::*')}
-						<ObjectTd name="roles" errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
+						<ObjectTd name="roles" namedStruct={ node.roles } errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
 						{/if}
 						{#if auth('User::realm::*')}
-						<ObjectTd name="realm" errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
+						<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
 						{/if}
 						{#if auth('User::*::WRITE')}
 						<th class="z-10 hover:z-30 w-24">
@@ -218,7 +229,7 @@
 				{/if}
 			{/each}
 		{:else}
-			<TableEmpty cols={9 + 2}/>
+			<TableEmpty cols={10 + 2}/>
 		{/if}
 	</tbody>
 </Table>

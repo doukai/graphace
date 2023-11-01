@@ -85,6 +85,9 @@
 			{#if auth('Realm::name::*')}
 			<td>{$LL.graphql.objects.Realm.fields.name.name()}</td>
 			{/if}
+			{#if auth('Realm::description::*')}
+			<td>{$LL.graphql.objects.Realm.fields.description.name()}</td>
+			{/if}
 			<th />
 		</tr>
 	</thead>
@@ -104,6 +107,14 @@
 							bind:value={node.name}
 							readonly
 							errors={errors[row]?.iterms?.name}
+						/>
+						{/if}
+						{#if auth('Realm::description::*')}
+						<StringTd
+							name="description"
+							bind:value={node.description}
+							readonly
+							errors={errors[row]?.iterms?.description}
 						/>
 						{/if}
 						{#if auth('Realm::*::WRITE')}
@@ -144,7 +155,7 @@
 				{/if}
 			{/each}
 		{:else}
-			<TableEmpty cols={1 + 2}/>
+			<TableEmpty cols={2 + 2}/>
 		{/if}
 	</tbody>
 </Table>

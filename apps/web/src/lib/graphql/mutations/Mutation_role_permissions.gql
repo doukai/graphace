@@ -1,4 +1,4 @@
-mutation Mutation_role_permissions($role_id: String, $role_permissions: [PermissionInput], $first: Int, $last: Int, $offset: Int, $orderBy: PermissionOrderBy, $groupBy: [String!], $name: StringExpression, $field: StringExpression, $type: StringExpression, $permissionType: PermissionTypeExpression, $description: StringExpression, $roles: RoleExpression, $realm: RealmExpression, $mergeToList: [String]) {
+mutation Mutation_role_permissions($role_id: String, $role_permissions: [PermissionInput], $first: Int, $last: Int, $offset: Int, $orderBy: PermissionOrderBy, $groupBy: [String!], $name: StringExpression, $description: StringExpression, $field: StringExpression, $type: StringExpression, $permissionType: PermissionTypeExpression, $roles: RoleExpression, $realm: RealmExpression, $mergeToList: [String]) {
   role(where: {id: {val: $role_id}}  permissions: $role_permissions) @mergeToList(arguments: $mergeToList) {
     id
     name
@@ -12,15 +12,15 @@ mutation Mutation_role_permissions($role_id: String, $role_permissions: [Permiss
     updateTime
     createGroupId
     syncRolePolicy
-    permissionsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy name: $name field: $field type: $type permissionType: $permissionType description: $description roles: $roles realm: $realm) {
+    permissionsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy name: $name description: $description field: $field type: $type permissionType: $permissionType roles: $roles realm: $realm) {
       totalCount
       edges {
         node {
           name
+          description
           field
           type
           permissionType
-          description
           isDeprecated
           version
           realmId
@@ -30,6 +30,14 @@ mutation Mutation_role_permissions($role_id: String, $role_permissions: [Permiss
           updateTime
           createGroupId
           syncPermissionPolicy
+          roles(first: 3) {
+            name
+            description
+          }
+          realm {
+            name
+            description
+          }
         }
       }
     }
