@@ -1,6 +1,6 @@
 {
 	"name": "@graphace/ui-graphql",
-	"version": "0.0.1",
+	"version": "0.0.11",
 	"description": "Graphql components for use in svelte websites",
 	"type": "module",
 	"main": "./dist/index.js",

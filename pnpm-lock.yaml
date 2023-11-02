@@ -1,4 +1,4 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
 
 settings:
   autoInstallPeers: true
@@ -400,9 +400,24 @@ importers:
       '@sveltejs/package':
         specifier: ^2.0.0
         version: 2.0.0(svelte@3.59.1)(typescript@4.9.5)
+      '@tailwindcss/typography':
+        specifier: ^0.5.9
+        version: 0.5.9(tailwindcss@3.3.2)
+      autoprefixer:
+        specifier: ^10.4.14
+        version: 10.4.14(postcss@8.4.24)
+      daisyui:
+        specifier: ^3.0.25
+        version: 3.0.25(postcss@8.4.24)(ts-node@10.9.1)
       eslint-config-custom:
         specifier: workspace:*
         version: link:../eslint-config-custom
+      postcss:
+        specifier: ^8.4.24
+        version: 8.4.24
+      postcss-load-config:
+        specifier: ^3.1.4
+        version: 3.1.4(postcss@8.4.24)(ts-node@10.9.1)
       publint:
         specifier: ^0.1.9
         version: 0.1.9
@@ -412,6 +427,9 @@ importers:
       svelte-check:
         specifier: ^3.4.3
         version: 3.4.3(@babel/core@7.23.2)(postcss-load-config@3.1.4)(postcss@8.4.24)(svelte@3.59.1)
+      tailwindcss:
+        specifier: ^3.3.2
+        version: 3.3.2(ts-node@10.9.1)
       tslib:
         specifier: ^2.5.3
         version: 2.5.3
@@ -461,9 +479,24 @@ importers:
       '@sveltejs/package':
         specifier: ^2.0.0
         version: 2.0.0(svelte@3.59.1)(typescript@4.9.5)
+      '@tailwindcss/typography':
+        specifier: ^0.5.9
+        version: 0.5.9(tailwindcss@3.3.2)
+      autoprefixer:
+        specifier: ^10.4.14
+        version: 10.4.14(postcss@8.4.24)
+      daisyui:
+        specifier: ^3.0.25
+        version: 3.0.25(postcss@8.4.24)(ts-node@10.9.1)
       eslint-config-custom:
         specifier: workspace:*
         version: link:../eslint-config-custom
+      postcss:
+        specifier: ^8.4.24
+        version: 8.4.24
+      postcss-load-config:
+        specifier: ^3.1.4
+        version: 3.1.4(postcss@8.4.24)(ts-node@10.9.1)
       publint:
         specifier: ^0.1.9
         version: 0.1.9
@@ -473,6 +506,9 @@ importers:
       svelte-check:
         specifier: ^3.4.3
         version: 3.4.3(@babel/core@7.23.2)(postcss-load-config@3.1.4)(postcss@8.4.24)(svelte@3.59.1)
+      tailwindcss:
+        specifier: ^3.3.2
+        version: 3.3.2(ts-node@10.9.1)
       tslib:
         specifier: ^2.5.3
         version: 2.5.3
@@ -9798,7 +9834,7 @@ packages:
     dependencies:
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.0.8
+      minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
     dev: true
@@ -9819,7 +9855,7 @@ packages:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.0.8
+      minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
     dev: true
