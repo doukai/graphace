@@ -1,4 +1,4 @@
-query Query_group_parent($group_id: StringExpression, $id: StringExpression, $name: StringExpression, $description: StringExpression, $path: StringExpression, $deep: IntExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $groupBy: [String!]) {
+query Query_group_parent($group_id: StringExpression, $id: StringExpression, $name: StringExpression, $description: StringExpression, $path: StringExpression, $deep: IntExpression, $parentId: StringExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $groupBy: [String!]) {
   group(id: $group_id)  {
     id
     name
@@ -13,7 +13,7 @@ query Query_group_parent($group_id: StringExpression, $id: StringExpression, $na
     updateUserId
     updateTime
     createGroupId
-    parent(id: $id name: $name description: $description path: $path deep: $deep parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm groupBy: $groupBy)  {
+    parent(id: $id name: $name description: $description path: $path deep: $deep parentId: $parentId parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm groupBy: $groupBy)  {
       id
       name
       description

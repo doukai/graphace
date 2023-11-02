@@ -33,8 +33,14 @@
 
 	const save = (): void => {
 		if (node) {
+			let args = { ...node };
+			args.parent = undefined;
+			args.subGroups = undefined;
+			args.users = undefined;
+			args.roles = undefined;
+			args.realm = undefined;
 			dispatch('mutation', {
-				args: node,
+				args: args,
 				then: (data) => {
 					node = data;
 					notifications.success($LL.web.message.saveSuccess());

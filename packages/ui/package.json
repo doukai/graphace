@@ -1,6 +1,6 @@
 {
 	"name": "@graphace/ui",
-	"version": "0.0.7",
+	"version": "0.0.1",
 	"description": "Components for use in svelte websites",
 	"type": "module",
 	"main": "./dist/index.js",
@@ -17,7 +17,6 @@
 		"dist"
 	],
 	"scripts": {
-		"dev": "typesafe-i18n",
 		"clean": "rimraf dist",
 		"build": "tsx src/lib/i18n/export.ts && vite build && npm run package",
 		"preview": "vite preview",

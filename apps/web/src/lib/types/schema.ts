@@ -73,6 +73,7 @@ export type Group = TreeStruct & NamedStruct & Meta & {
   description?: Maybe<Scalars['String']>;
   path?: Maybe<Scalars['String']>;
   deep?: Maybe<Scalars['Int']>;
+  parentId?: Maybe<Scalars['String']>;
   parent?: Maybe<Group>;
   subGroups?: Maybe<Array<Maybe<Group>>>;
   users?: Maybe<Array<Maybe<User>>>;
@@ -98,6 +99,9 @@ export type Group = TreeStruct & NamedStruct & Meta & {
   pathCount?: Maybe<Scalars['Int']>;
   pathMax?: Maybe<Scalars['String']>;
   pathMin?: Maybe<Scalars['String']>;
+  parentIdCount?: Maybe<Scalars['Int']>;
+  parentIdMax?: Maybe<Scalars['String']>;
+  parentIdMin?: Maybe<Scalars['String']>;
   deepCount?: Maybe<Scalars['Int']>;
   deepSum?: Maybe<Scalars['Int']>;
   deepAvg?: Maybe<Scalars['Int']>;
@@ -109,12 +113,6 @@ export type Group = TreeStruct & NamedStruct & Meta & {
   usersConnection?: Maybe<UserConnection>;
   rolesAggregate?: Maybe<Role>;
   rolesConnection?: Maybe<RoleConnection>;
-  parentId?: Maybe<Scalars['Int']>;
-  parentIdCount?: Maybe<Scalars['Int']>;
-  parentIdSum?: Maybe<Scalars['Int']>;
-  parentIdAvg?: Maybe<Scalars['Int']>;
-  parentIdMax?: Maybe<Scalars['Int']>;
-  parentIdMin?: Maybe<Scalars['Int']>;
   realmIdCount?: Maybe<Scalars['Int']>;
   realmIdSum?: Maybe<Scalars['Int']>;
   realmIdAvg?: Maybe<Scalars['Int']>;
@@ -136,6 +134,7 @@ export type GroupParentArgs = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -151,6 +150,7 @@ export type GroupSubGroupsArgs = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -251,6 +251,7 @@ export type GroupSubGroupsAggregateArgs = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -270,6 +271,7 @@ export type GroupSubGroupsConnectionArgs = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -470,6 +472,7 @@ export type GroupConnectionQueryArguments = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -483,7 +486,6 @@ export type GroupConnectionQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
   orderBy?: InputMaybe<GroupOrderBy>;
@@ -504,6 +506,7 @@ export type GroupConnectionSubscriptionArguments = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -517,7 +520,6 @@ export type GroupConnectionSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
   orderBy?: InputMaybe<GroupOrderBy>;
@@ -544,6 +546,7 @@ export type GroupExpression = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -557,7 +560,6 @@ export type GroupExpression = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -571,6 +573,7 @@ export type GroupInput = {
   description?: InputMaybe<Scalars['String']>;
   path?: InputMaybe<Scalars['String']>;
   deep?: InputMaybe<Scalars['Int']>;
+  parentId?: InputMaybe<Scalars['String']>;
   parent?: InputMaybe<GroupInput>;
   subGroups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
   users?: InputMaybe<Array<InputMaybe<UserInput>>>;
@@ -584,7 +587,6 @@ export type GroupInput = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  parentId?: InputMaybe<Scalars['Int']>;
   userGroup?: InputMaybe<Array<InputMaybe<UserGroupInput>>>;
   groupRole?: InputMaybe<Array<InputMaybe<GroupRoleInput>>>;
   where?: InputMaybe<GroupExpression>;
@@ -596,6 +598,7 @@ export type GroupListMutationArguments = {
   description?: InputMaybe<Scalars['String']>;
   path?: InputMaybe<Scalars['String']>;
   deep?: InputMaybe<Scalars['Int']>;
+  parentId?: InputMaybe<Scalars['String']>;
   parent?: InputMaybe<GroupInput>;
   subGroups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
   users?: InputMaybe<Array<InputMaybe<UserInput>>>;
@@ -609,7 +612,6 @@ export type GroupListMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  parentId?: InputMaybe<Scalars['Int']>;
   userGroup?: InputMaybe<Array<InputMaybe<UserGroupInput>>>;
   groupRole?: InputMaybe<Array<InputMaybe<GroupRoleInput>>>;
   list?: InputMaybe<Array<InputMaybe<GroupInput>>>;
@@ -622,6 +624,7 @@ export type GroupListQueryArguments = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -635,7 +638,6 @@ export type GroupListQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
   orderBy?: InputMaybe<GroupOrderBy>;
@@ -656,6 +658,7 @@ export type GroupListSubscriptionArguments = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -669,7 +672,6 @@ export type GroupListSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
   orderBy?: InputMaybe<GroupOrderBy>;
@@ -690,6 +692,7 @@ export type GroupMutationArguments = {
   description?: InputMaybe<Scalars['String']>;
   path?: InputMaybe<Scalars['String']>;
   deep?: InputMaybe<Scalars['Int']>;
+  parentId?: InputMaybe<Scalars['String']>;
   parent?: InputMaybe<GroupInput>;
   subGroups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
   users?: InputMaybe<Array<InputMaybe<UserInput>>>;
@@ -703,7 +706,6 @@ export type GroupMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  parentId?: InputMaybe<Scalars['Int']>;
   userGroup?: InputMaybe<Array<InputMaybe<UserGroupInput>>>;
   groupRole?: InputMaybe<Array<InputMaybe<GroupRoleInput>>>;
   where?: InputMaybe<GroupExpression>;
@@ -715,6 +717,7 @@ export type GroupOrderBy = {
   description?: InputMaybe<Sort>;
   path?: InputMaybe<Sort>;
   deep?: InputMaybe<Sort>;
+  parentId?: InputMaybe<Sort>;
   isDeprecated?: InputMaybe<Sort>;
   version?: InputMaybe<Sort>;
   realmId?: InputMaybe<Sort>;
@@ -723,7 +726,6 @@ export type GroupOrderBy = {
   updateUserId?: InputMaybe<Sort>;
   updateTime?: InputMaybe<Sort>;
   createGroupId?: InputMaybe<Sort>;
-  parentId?: InputMaybe<Sort>;
 };
 
 export type GroupQueryArguments = {
@@ -732,6 +734,7 @@ export type GroupQueryArguments = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -745,7 +748,6 @@ export type GroupQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
@@ -816,6 +818,7 @@ export type GroupRoleGroupIdTypeArgs = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -829,7 +832,6 @@ export type GroupRoleGroupIdTypeArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
@@ -1083,6 +1085,7 @@ export type GroupSubscriptionArguments = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -1096,7 +1099,6 @@ export type GroupSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
@@ -1314,6 +1316,7 @@ export type MutationGroupArgs = {
   description?: InputMaybe<Scalars['String']>;
   path?: InputMaybe<Scalars['String']>;
   deep?: InputMaybe<Scalars['Int']>;
+  parentId?: InputMaybe<Scalars['String']>;
   parent?: InputMaybe<GroupInput>;
   subGroups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
   users?: InputMaybe<Array<InputMaybe<UserInput>>>;
@@ -1327,7 +1330,6 @@ export type MutationGroupArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  parentId?: InputMaybe<Scalars['Int']>;
   userGroup?: InputMaybe<Array<InputMaybe<UserGroupInput>>>;
   groupRole?: InputMaybe<Array<InputMaybe<GroupRoleInput>>>;
   where?: InputMaybe<GroupExpression>;
@@ -1340,6 +1342,7 @@ export type MutationGroupListArgs = {
   description?: InputMaybe<Scalars['String']>;
   path?: InputMaybe<Scalars['String']>;
   deep?: InputMaybe<Scalars['Int']>;
+  parentId?: InputMaybe<Scalars['String']>;
   parent?: InputMaybe<GroupInput>;
   subGroups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
   users?: InputMaybe<Array<InputMaybe<UserInput>>>;
@@ -1353,7 +1356,6 @@ export type MutationGroupListArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  parentId?: InputMaybe<Scalars['Int']>;
   userGroup?: InputMaybe<Array<InputMaybe<UserGroupInput>>>;
   groupRole?: InputMaybe<Array<InputMaybe<GroupRoleInput>>>;
   list?: InputMaybe<Array<InputMaybe<GroupInput>>>;
@@ -2464,6 +2466,7 @@ export type QueryGroupArgs = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -2477,7 +2480,6 @@ export type QueryGroupArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
@@ -2493,6 +2495,7 @@ export type QueryGroupListArgs = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -2506,7 +2509,6 @@ export type QueryGroupListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
   orderBy?: InputMaybe<GroupOrderBy>;
@@ -2528,6 +2530,7 @@ export type QueryGroupConnectionArgs = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -2541,7 +2544,6 @@ export type QueryGroupConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
   orderBy?: InputMaybe<GroupOrderBy>;
@@ -3499,6 +3501,7 @@ export type RoleGroupsArgs = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -3636,6 +3639,7 @@ export type RoleGroupsAggregateArgs = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -3655,6 +3659,7 @@ export type RoleGroupsConnectionArgs = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -5063,6 +5068,7 @@ export type SubscriptionGroupArgs = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -5076,7 +5082,6 @@ export type SubscriptionGroupArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
@@ -5092,6 +5097,7 @@ export type SubscriptionGroupListArgs = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -5105,7 +5111,6 @@ export type SubscriptionGroupListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
   orderBy?: InputMaybe<GroupOrderBy>;
@@ -5127,6 +5132,7 @@ export type SubscriptionGroupConnectionArgs = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -5140,7 +5146,6 @@ export type SubscriptionGroupConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
   orderBy?: InputMaybe<GroupOrderBy>;
@@ -5756,18 +5761,24 @@ export type SubscriptionRolePermissionConnectionArgs = {
 };
 
 export type TreeStruct = {
+  name?: Maybe<Scalars['String']>;
   path?: Maybe<Scalars['String']>;
   deep?: Maybe<Scalars['Int']>;
+  parentId?: Maybe<Scalars['String']>;
 };
 
 export type TreeStructExpression = {
+  name?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
 };
 
 export type TreeStructInput = {
+  name?: InputMaybe<Scalars['String']>;
   path?: InputMaybe<Scalars['String']>;
   deep?: InputMaybe<Scalars['Int']>;
+  parentId?: InputMaybe<Scalars['String']>;
 };
 
 export type User = NamedStruct & Meta & {
@@ -5856,6 +5867,7 @@ export type UserGroupsArgs = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -5909,6 +5921,7 @@ export type UserGroupsAggregateArgs = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -5928,6 +5941,7 @@ export type UserGroupsConnectionArgs = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -6234,6 +6248,7 @@ export type UserGroupGroupIdTypeArgs = {
   description?: InputMaybe<StringExpression>;
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
   parent?: InputMaybe<GroupExpression>;
   subGroups?: InputMaybe<GroupExpression>;
   users?: InputMaybe<UserExpression>;
@@ -6247,7 +6262,6 @@ export type UserGroupGroupIdTypeArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  parentId?: InputMaybe<IntExpression>;
   userGroup?: InputMaybe<UserGroupExpression>;
   groupRole?: InputMaybe<GroupRoleExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
