@@ -33,6 +33,49 @@ const renders: Record<Template, Render> = {
             content: buildFileContent(config.template,
                 {
                     lang: config.i18nDefault,
+                    i18nDescription: config.i18nDescription,
+                    objects: Object.values(schema.getTypeMap())
+                        .filter(type => inRouteObject(type.name))
+                        .filter(type => isObjectType(type))
+                        .filter(type => !isOperationType(type.name))
+                        .filter(type => !isConnection(type.name))
+                        .filter(type => !isEdge(type.name))
+                        .filter(type => !isPageInfo(type.name))
+                        .filter(type => !isIntrospection(type.name))
+                        .map(type => assertObjectType(type))
+                        .map(objectType => {
+                            return {
+                                ...assertObjectType(objectType),
+                                fields: Object.values(objectType.getFields())
+                                    .filter(field => inListField(objectType.name, field.name, getFieldType(field.type).name) || inDetailField(objectType.name, field.name, getFieldType(field.type).name))
+                                    .filter(field => !isConnection(getFieldType(field.type).name))
+                                    .filter(field => !isEdge(getFieldType(field.type).name))
+                                    .filter(field => !isAggregate(field.name))
+                                    .filter(field => !isPageInfo(getFieldType(field.type).name))
+                                    .filter(field => !isIntrospection(getFieldType(field.type).name))
+                            };
+                        }),
+                    enums: Object.values(schema.getTypeMap())
+                        .filter(type => inComponentEnum(type.name))
+                        .filter(type => isEnumType(type))
+                        .filter(type => !isIntrospection(type.name))
+                        .filter(type => !isInnerEnum(type.name))
+                        .map(type => assertEnumType(type))
+                        .map(enumType => {
+                            return {
+                                ...enumType,
+                                values: enumType.getValues()
+                            }
+                        })
+                }
+            ),
+        };
+    },
+    '{{i18nPath}}/{{i18nDescription}}/graphql/index.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        return {
+            content: buildFileContent(config.template,
+                {
+                    lang: config.i18nDescription,
                     objects: Object.values(schema.getTypeMap())
                         .filter(type => inRouteObject(type.name))
                         .filter(type => isObjectType(type))

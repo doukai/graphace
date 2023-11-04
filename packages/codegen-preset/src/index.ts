@@ -21,6 +21,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         const routesPath = `${options.baseOutputDir}/${options.presetConfig.routesPath || _routesPath}`;
         const i18nPath = `${options.baseOutputDir}/${options.presetConfig.i18nPath || _i18nPath}`;
         const i18nDefault = `${options.presetConfig.i18nDefault || _i18nDefault}`;
+        const i18nDescription = options.presetConfig.i18nDescription;
 
         const queryFields = options.schemaAst?.getQueryType()?.getFields() || [];
 
@@ -96,6 +97,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                     dataPath: options.presetConfig.dataPath || _dataPath,
                     i18nPath: options.presetConfig.i18nPath || _i18nPath,
                     i18nDefault: options.presetConfig.i18nDefault || _i18nDefault,
+                    i18nDescription: options.presetConfig.i18nDescription,
                     builder: options.presetConfig.builder,
                     useAuth: options.presetConfig.useAuth,
                     template: i18nTemplate,
@@ -105,6 +107,34 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 skipDocumentsValidation: true,
             }
         );
+
+        if (i18nDescription && i18nDefault !== i18nDescription) {
+            const i18nTemplate = '{{i18nPath}}/{{i18nDescription}}/graphql/index.ts';
+            const i18nScope = { i18nPath, i18nDescription };
+            generateOptions.push(
+                {
+                    filename: buildPath(i18nTemplate, i18nScope),
+                    documents: options.documents,
+                    plugins: options.plugins,
+                    pluginMap: options.pluginMap,
+                    config: {
+                        graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                        componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                        routesPath: options.presetConfig.graphqlPath || _routesPath,
+                        dataPath: options.presetConfig.dataPath || _dataPath,
+                        i18nPath: options.presetConfig.i18nPath || _i18nPath,
+                        i18nDefault: options.presetConfig.i18nDefault || _i18nDefault,
+                        i18nDescription: options.presetConfig.i18nDescription,
+                        builder: options.presetConfig.builder,
+                        useAuth: options.presetConfig.useAuth,
+                        template: i18nTemplate,
+                    },
+                    schema: options.schema,
+                    schemaAst: options.schemaAst,
+                    skipDocumentsValidation: true,
+                }
+            );
+        }
 
         generateOptions.push(
             ...targetQueryFields

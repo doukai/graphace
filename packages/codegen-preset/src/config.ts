@@ -1,4 +1,4 @@
-import type { BuilderConfig } from "graphace-codegen-commons/types/types";
+import type { BuilderConfig } from "graphace-codegen-commons";
 export interface GraphacePresetConfig {
 
   graphqlPath?: string;
@@ -12,6 +12,8 @@ export interface GraphacePresetConfig {
   i18nPath?: string;
 
   i18nDefault?: string;
+
+  i18nDescription?: string;
 
   builder?: BuilderConfig;
 

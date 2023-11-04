@@ -1,15 +1,15 @@
-import type { BaseTranslation } from '../../i18n-types';
+import type { NamespaceGraphqlTranslation } from '../../i18n-types';
 
-const {{ lang }}: BaseTranslation = {
+const {{ lang }}: NamespaceGraphqlTranslation = {
 {%- if objects %}
 	objects: {
 {%- for object in objects %}
 		{{ object.name }}: {
-			name: '{%- if lang == i18nDescription -%}{{ object.description }}{%- else -%}{{ object.name }}{%- endif -%}',
+			name: '{{ object.description }}',
 			fields: {
 {%- for field in object.fields %}
 				{{ field.name }}: {
-					name: '{%- if lang == i18nDescription -%}{{ field.description }}{%- else -%}{{ field.name }}{%- endif -%}',
+					name: '{{ field.description }}',
 				}{%- if forloop.last == false -%},{%- endif %}
 {%- endfor %}
 			}
@@ -21,11 +21,11 @@ const {{ lang }}: BaseTranslation = {
 	enums: {
 {%- for enum in enums %}
 		{{ enum.name }}: {
-			name: '{%- if lang == i18nDescription -%}{{ enum.description }}{%- else -%}{{ enum.name }}{%- endif -%}',
+			name: '{{ enum.description }}',
 			values: {
 {%- for value in enum.values %}
 				{{ value.name }}: {
-					name: '{%- if lang == i18nDescription -%}{{ value.description }}{%- else -%}{{ value.name }}{%- endif -%}',
+					name: '{{ value.description }}',
 				}{%- if forloop.last == false -%},{%- endif %}
 {%- endfor %}
 			}
