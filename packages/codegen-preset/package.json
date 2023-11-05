@@ -1,6 +1,6 @@
 {
 	"name": "graphace-codegen-preset",
-	"version": "0.0.10",
+	"version": "0.0.12",
 	"scripts": {
 		"build": "microbundle"
 	},
