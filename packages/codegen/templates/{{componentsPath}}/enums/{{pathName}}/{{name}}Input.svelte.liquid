@@ -16,7 +16,7 @@
 	$: enums = [
 		{%- if enumValues %}
 		{%- for enumValue in enumValues %}
-		{ name: $LL.graphql.enums.{{ name }}.values.{{ enumValue.name }}.name(), value: '{{ enumValue.value }}'{% if enumValue.description %}, description: {{ enumValue.description }}{% endif %} }{% if forloop.last == false %},{% endif %}
+		{ name: $LL.graphql.enums.{{ name }}.values.{{ enumValue.name }}.name(), value: '{{ enumValue.value }}'{% if enumValue.description %}, description: '{{ enumValue.description }}'{% endif %} }{% if forloop.last == false %},{% endif %}
 		{%- endfor %}
 		{%- endif %}
 	];
