@@ -1,5 +1,7 @@
 import { detectLocale, i18n, isLocale } from '$i18n/i18n-util';
 import { redirect } from '@sveltejs/kit';
+import { browser } from '$app/environment';
+import { goto } from '$app/navigation';
 import { loadAllLocales } from '$i18n/i18n-util.sync';
 import type { Handle, RequestEvent } from '@sveltejs/kit';
 import { initAcceptLanguageHeaderDetector } from 'typesafe-i18n/detectors';
@@ -37,7 +39,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const loginPathName = `/${locale}/login`;
 	if (!token && event.url.pathname !== loginPathName) {
-		throw redirect(307, loginPathName);
+		if (browser) {
+			goto(loginPathName);
+		} else {
+			throw redirect(307, loginPathName);
+		}
 	} else {
 		setSession(event, { token, locale });
 		if (!event.locals.jwt && token) {
@@ -48,7 +54,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// replace html lang attribute with correct language
 	const response = await resolve(event, { transformPageChunk: ({ html }) => html.replace('%lang%', locale) });
 	if (response.status === 401 && event.url.pathname !== loginPathName || event.request.headers.get('Content-Type') === 'application/json' && response.headers.get('Content-Type') !== 'application/json') {
-		throw redirect(307, loginPathName);
+		if (browser) {
+			goto(loginPathName);
+		} else {
+			throw redirect(307, loginPathName);
+		}
 	}
 	return response;
 }

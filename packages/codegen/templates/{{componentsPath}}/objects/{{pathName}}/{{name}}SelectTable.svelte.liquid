@@ -149,10 +149,10 @@
 			selected: Array.isArray(selectedIdList)
 				? mutate 
 					? selectedIdList.map((id) => ({ where: { {{ idName }}: { val: id } } }))
-					: selectedIdList.flatMap((id) => nodes?.find((node) => node?.{{ idName }} === id)).map((node) => ({ ...node, {{ idName }}: undefined, where: { {{ idName }}: { val: node?.{{ idName }} } } }))
+					: selectedIdList.flatMap((id) => nodes?.find((node) => node?.{{ idName }} === id)).map((node) => ({ {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.fieldName != idName %}{{ field.fieldName }}: node?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: node?.{{ idName }} } } }))
 				: mutate 
 					? { where: { {{ idName }}: { val: selectedIdList } } }
-					: nodes?.filter((node) => node?.{{ idName }} === selectedIdList)?.map((node) => ({ ...node, {{ idName }}: undefined, where: { {{ idName }}: { val: node?.{{ idName }} } } })),
+					: nodes?.filter((node) => node?.{{ idName }} === selectedIdList)?.map((node) => ({ {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.fieldName != idName %}{{ field.fieldName }}: node?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: node?.{{ idName }} } } }))[0],
 			then: () => {
 				notifications.success($LL.web.message.saveSuccess());
 				dispatch('back');
@@ -271,10 +271,10 @@
 														selected: multipleSelect 
 																	? mutate
 																		? [{ where: { {{ idName }}: { val: node.{{ idName }} } } }] 
-																		: [{ ...node, {{ idName }}: undefined, where: { {{ idName }}: { val: node.{{ idName }} } } }] 
+																		: [{ {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.fieldName != idName %}{{ field.fieldName }}: node?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: node.{{ idName }} } } }] 
 																	: mutate 
 																		? { where: { {{ idName }}: { val: node.{{ idName }} } } }
-																		: { ...node, {{ idName }}: undefined, where: { {{ idName }}: { val: node.{{ idName }} } } },
+																		: { {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.fieldName != idName %}{{ field.fieldName }}: node?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: node.{{ idName }} } } },
 														then: () => {
 															notifications.success($LL.web.message.saveSuccess());
 															dispatch('back');
