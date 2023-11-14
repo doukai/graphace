@@ -31,7 +31,7 @@
 				{#if Array.isArray(namedStruct)}
 					{#if namedStruct.length > 0}
 						<a
-							class="group link inline-flex"
+							class="group link inline-flex {errors ? 'link-error' : ''}"
 							href={null}
 							on:click|preventDefault={(e) => {
 								dispatch('gotoField', { path, name });
@@ -59,7 +59,7 @@
 					{/if}
 				{:else}
 					<a
-						class="group link inline-flex"
+						class="group link inline-flex {errors ? 'link-error' : ''}"
 						href={null}
 						on:click|preventDefault={(e) => {
 							dispatch('gotoField', { path, name });
@@ -84,6 +84,17 @@
 		<label for={id} class="label">
 			{#each errors.errors as error}
 				<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+			{/each}
+		</label>
+	{/if}
+	{#if errors?.iterms}
+		<label for={id} class="label">
+			{#each Object.values(errors?.iterms) as itermErrors}
+				{#if itermErrors?.errors}
+					{#each itermErrors.errors as error}
+						<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+					{/each}
+				{/if}
 			{/each}
 		</label>
 	{/if}

@@ -32,6 +32,7 @@
 	export let errors: Record<number, Errors> = {};
 	export let multipleSelect: boolean = true;
 	export let showBackButton: boolean = true;
+	export let mutate: boolean | undefined = true;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -178,8 +179,12 @@
 	on:select={(e) =>
 		dispatch('select', {
 			selected: Array.isArray(selectedIdList)
-				? selectedIdList.map((id) => ({ where: { {{ idName }}: { val: id } } }))
-				: { where: { {{ idName }}: { val: selectedIdList } } },
+				? mutate 
+					? selectedIdList.map((id) => ({ where: { {{ idName }}: { val: id } } }))
+					: selectedIdList.flatMap((id) => nodes?.find((node) => node?.{{ idName }} === id)).map((node) => ({ ...node, {{ idName }}: undefined, where: { {{ idName }}: { val: node?.{{ idName }} } } }))
+				: mutate 
+					? { where: { {{ idName }}: { val: selectedIdList } } }
+					: nodes?.filter((node) => node?.{{ idName }} === selectedIdList)?.map((node) => ({ ...node, {{ idName }}: undefined, where: { {{ idName }}: { val: node?.{{ idName }} } } })),
 			then: () => {
 				notifications.success($LL.web.message.saveSuccess());
 				dispatch('back');
@@ -295,7 +300,13 @@
 											on:click|preventDefault={(e) => {
 												if (node && node.{{ idName }}) {
 													dispatch('select', {
-														selected: multipleSelect ? [{ ...node, where: { {{ idName }}: { val: node.{{ idName }} } } }] : { ...node, where: { {{ idName }}: { val: node.{{ idName }} } } },
+														selected: multipleSelect 
+																	? mutate
+																		? [{ where: { {{ idName }}: { val: node.{{ idName }} } } }] 
+																		: [{ ...node, {{ idName }}: undefined, where: { {{ idName }}: { val: node.{{ idName }} } } }] 
+																	: mutate 
+																		? { where: { {{ idName }}: { val: node.{{ idName }} } } }
+																		: { ...node, {{ idName }}: undefined, where: { {{ idName }}: { val: node.{{ idName }} } } },
 														then: () => {
 															notifications.success($LL.web.message.saveSuccess());
 															dispatch('back');

@@ -25,7 +25,10 @@
 <td>
 	<div
 		class={errors ? 'tooltip tooltip-open tooltip-error hover:z-30' : ''}
-		data-tip={errors?.errors?.map((error) => error.message).join(', ')}
+		data-tip={errors?.errors?.map((error) => error.message).join(', ') ||
+			Object.values(errors.iterms)
+				.flatMap((error) => error.errors)
+				.join(', ')}
 	>
 		<div class="tooltip hover:z-30" data-tip={$LL.uiGraphql.table.editBtn()}>
 			{#if namedStruct}

@@ -59,7 +59,7 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: {{ objectFieldTypeName }}Args;
+			args: {{ mutationTypeName }}{{ objectFieldTypeName }}Args;
 			then: (data: {{ objectFieldTypeName }} | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
@@ -87,7 +87,7 @@
 
 	const select = (
 		event: CustomEvent<{
-			selected: {{ objectFieldTypeName }}Args | null | undefined | ({{ mutationTypeName }}{{ objectFieldTypeName }}Args | null | undefined)[];
+			selected: {{ mutationTypeName }}{{ objectFieldTypeName }}Args | null | undefined | ({{ mutationTypeName }}{{ objectFieldTypeName }}Args | null | undefined)[];
 			then: () => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
@@ -112,6 +112,7 @@
 	{%- if connectionField %}
 	<{{ objectFieldTypeName }}SelectConnectionTable
 		multipleSelect={false}
+		mutate={false}
 		showBackButton={$canBack}
 		{nodes}
 		{totalCount}
@@ -125,6 +126,7 @@
 	{%- else %}
 	<{{ objectFieldTypeName }}SelectTable
 		multipleSelect={false}
+		mutate={false}
 		showBackButton={$canBack}
 		{nodes}
 		{errors}
