@@ -1,4 +1,4 @@
-mutation Mutation_role_composites($role_id: String, $role_composites: [RoleInput], $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $groups: GroupExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $mergeToList: [String]) {
+mutation Mutation_role_composites($role_id: String, $role_composites: [RoleInput], $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!], $after: ID, $before: ID, $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $groups: GroupExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $mergeToList: [String]) {
   role(where: {id: {val: $role_id}}  composites: $role_composites) @mergeToList(arguments: $mergeToList) {
     id
     name
@@ -12,7 +12,7 @@ mutation Mutation_role_composites($role_id: String, $role_composites: [RoleInput
     updateTime
     createGroupId
     syncRolePolicy
-    compositesConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm) {
+    compositesConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy after: $after before: $before id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm) {
       totalCount
       edges {
         node {

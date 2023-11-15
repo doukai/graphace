@@ -90,6 +90,7 @@
 
 <Card>
 	<RoleSelectConnectionTable
+		mutate={false}
 		showBackButton={$canBack}
 		{nodes}
 		{totalCount}

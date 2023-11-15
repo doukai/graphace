@@ -90,6 +90,7 @@
 
 <Card>
 	<GroupSelectConnectionTable
+		mutate={false}
 		showBackButton={$canBack}
 		{nodes}
 		{totalCount}

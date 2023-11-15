@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { graphql, Operator, PermissionType, PermissionTypeFieldsQuery$result } from '$houdini';
-	import { Table, TableLoading, TableEmpty } from '@graphace/ui/components/table';
-	import AutoComplete from '@graphace/ui/components/search/AutoComplete.svelte';
+	import { Table, TableLoading, TableEmpty, AutoComplete } from '@graphace/ui';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Link, ArrowUturnLeft } from '@steeze-ui/heroicons';
-	import { notifications } from '@graphace/ui/components/Notifications.svelte';
+	import { notifications } from '@graphace/ui';
 	import LL from '$i18n/i18n-svelte';
 	import { createEventDispatcher } from 'svelte';
 

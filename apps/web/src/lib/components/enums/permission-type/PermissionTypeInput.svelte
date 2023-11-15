@@ -14,8 +14,8 @@
 	export let className: string = '';
 
 	$: enums = [
-		{ name: $LL.graphql.enums.PermissionType.values.READ.name(), value: 'READ' },
-		{ name: $LL.graphql.enums.PermissionType.values.WRITE.name(), value: 'WRITE' }
+		{ name: $LL.graphql.enums.PermissionType.values.READ.name(), value: 'READ', description: '读取' },
+		{ name: $LL.graphql.enums.PermissionType.values.WRITE.name(), value: 'WRITE', description: '写入' }
 	];
 </script>
 

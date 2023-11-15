@@ -25,13 +25,13 @@
 </script>
 
 <FormItem {label} let:id>
-	<div {id} class="justify-start">
+	<div {id} class="justify-start h-full flex items-center">
 		<div class="tooltip" data-tip={$LL.uiGraphql.table.editBtn()}>
 			{#if namedStruct}
 				{#if Array.isArray(namedStruct)}
-					{#if namedStruct.length > 0}
+					{#if namedStruct.length > 0 && namedStruct.some((item) => item.name)}
 						<a
-							class="group link inline-flex {errors ? 'link-error' : ''}"
+							class="link {errors ? 'link-error' : ''}"
 							href={null}
 							on:click|preventDefault={(e) => {
 								dispatch('gotoField', { path, name });
@@ -57,9 +57,9 @@
 							<Icon src={Link} class="h-5 w-5" />
 						</button>
 					{/if}
-				{:else}
+				{:else if namedStruct.name}
 					<a
-						class="group link inline-flex {errors ? 'link-error' : ''}"
+						class="link {errors ? 'link-error' : ''}"
 						href={null}
 						on:click|preventDefault={(e) => {
 							dispatch('gotoField', { path, name });
@@ -67,6 +67,15 @@
 					>
 						{namedStruct.name}
 					</a>
+				{:else}
+					<button
+						class="btn btn-square btn-outline {errors ? 'btn-error' : ''}"
+						on:click|preventDefault={(e) => {
+							dispatch('gotoField', { path, name });
+						}}
+					>
+						<Icon src={Link} class="h-5 w-5" />
+					</button>
 				{/if}
 			{:else}
 				<button
@@ -80,21 +89,12 @@
 			{/if}
 		</div>
 	</div>
-	{#if errors?.errors}
+	{#if errors}
 		<label for={id} class="label">
-			{#each errors.errors as error}
+			{#each (errors?.errors || [])
+				.concat((errors?.iterms ? Object.values(errors?.iterms) : []).flatMap((error) => error.errors))
+				?.slice(0, 2) as error}
 				<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
-			{/each}
-		</label>
-	{/if}
-	{#if errors?.iterms}
-		<label for={id} class="label">
-			{#each Object.values(errors?.iterms) as itermErrors}
-				{#if itermErrors?.errors}
-					{#each itermErrors.errors as error}
-						<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
-					{/each}
-				{/if}
 			{/each}
 		</label>
 	{/if}

@@ -1,4 +1,4 @@
-query Query_group_subGroups($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: GroupOrderBy, $groupBy: [String!], $id: StringExpression, $name: StringExpression, $description: StringExpression, $path: StringExpression, $deep: IntExpression, $parentId: StringExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression) {
+query Query_group_subGroups($group_id: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: GroupOrderBy, $groupBy: [String!], $after: ID, $before: ID, $id: StringExpression, $name: StringExpression, $description: StringExpression, $path: StringExpression, $deep: IntExpression, $parentId: StringExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression) {
   group(id: $group_id)  {
     id
     name
@@ -13,7 +13,7 @@ query Query_group_subGroups($group_id: StringExpression, $first: Int, $last: Int
     updateUserId
     updateTime
     createGroupId
-    subGroupsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy id: $id name: $name description: $description path: $path deep: $deep parentId: $parentId parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm)  {
+    subGroupsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy after: $after before: $before id: $id name: $name description: $description path: $path deep: $deep parentId: $parentId parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm)  {
       totalCount
       edges {
         node {

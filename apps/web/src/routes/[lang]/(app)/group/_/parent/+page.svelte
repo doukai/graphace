@@ -25,9 +25,6 @@
 		}>
 	) => {
 		node = event.detail.args;
-	};
-
-	const save = (event: CustomEvent<{}> ) => {
 		ot({
 			node: updateNodeParam($page.url, node),
 			errors: updateErrorsParam($page.url, errors)
@@ -59,5 +56,5 @@
 </script>
 
 <Card>
-	<GroupCreateForm showGotoSelectButton={true} showBackButton={$canBack} {node} {errors} on:mutation={mutation} on:save={save} on:back={back} on:gotoField={gotoField} on:gotoSelect={gotoSelect} />
+	<GroupCreateForm showGotoSelectButton={true} showBackButton={$canBack} {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} on:gotoSelect={gotoSelect} />
 </Card>

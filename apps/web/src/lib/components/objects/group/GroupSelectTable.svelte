@@ -20,6 +20,7 @@
 	export let errors: Record<number, Errors> = {};
 	export let multipleSelect: boolean = true;
 	export let showBackButton: boolean = true;
+	export let mutate: boolean | undefined = true;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -125,8 +126,12 @@
 	on:select={(e) =>
 		dispatch('select', {
 			selected: Array.isArray(selectedIdList)
-				? selectedIdList.map((id) => ({ where: { id: { val: id } } }))
-				: { where: { id: { val: selectedIdList } } },
+				? mutate 
+					? selectedIdList.map((id) => ({ where: { id: { val: id } } }))
+					: selectedIdList.flatMap((id) => nodes?.find((node) => node?.id === id)).map((node) => ({ name: node?.name, description: node?.description, where: { id: { val: node?.id } } }))
+				: mutate 
+					? { where: { id: { val: selectedIdList } } }
+					: nodes?.filter((node) => node?.id === selectedIdList)?.map((node) => ({ name: node?.name, description: node?.description, where: { id: { val: node?.id } } }))[0],
 			then: () => {
 				notifications.success($LL.web.message.saveSuccess());
 				dispatch('back');
@@ -220,7 +225,13 @@
 											on:click|preventDefault={(e) => {
 												if (node && node.id) {
 													dispatch('select', {
-														selected: multipleSelect ? [{ ...node, where: { id: { val: node.id } } }] : { ...node, where: { id: { val: node.id } } },
+														selected: multipleSelect 
+																	? mutate
+																		? [{ where: { id: { val: node.id } } }] 
+																		: [{ name: node?.name, description: node?.description, where: { id: { val: node.id } } }] 
+																	: mutate 
+																		? { where: { id: { val: node.id } } }
+																		: { name: node?.name, description: node?.description, where: { id: { val: node.id } } },
 														then: () => {
 															notifications.success($LL.web.message.saveSuccess());
 															dispatch('back');

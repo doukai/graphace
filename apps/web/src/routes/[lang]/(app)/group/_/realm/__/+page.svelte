@@ -38,7 +38,7 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: RealmArgs;
+			args: MutationRealmArgs;
 			then: (data: Realm | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
@@ -66,7 +66,7 @@
 
 	const select = (
 		event: CustomEvent<{
-			selected: RealmArgs | null | undefined | (MutationRealmArgs | null | undefined)[];
+			selected: MutationRealmArgs | null | undefined | (MutationRealmArgs | null | undefined)[];
 			then: () => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
@@ -90,6 +90,7 @@
 <Card>
 	<RealmSelectConnectionTable
 		multipleSelect={false}
+		mutate={false}
 		showBackButton={$canBack}
 		{nodes}
 		{totalCount}

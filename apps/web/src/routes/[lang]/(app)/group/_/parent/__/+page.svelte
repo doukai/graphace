@@ -38,7 +38,7 @@
 
 	const mutation = (
 		event: CustomEvent<{
-			args: GroupArgs;
+			args: MutationGroupArgs;
 			then: (data: Group | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
@@ -66,7 +66,7 @@
 
 	const select = (
 		event: CustomEvent<{
-			selected: GroupArgs | null | undefined | (MutationGroupArgs | null | undefined)[];
+			selected: MutationGroupArgs | null | undefined | (MutationGroupArgs | null | undefined)[];
 			then: () => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
@@ -90,6 +90,7 @@
 <Card>
 	<GroupSelectConnectionTable
 		multipleSelect={false}
+		mutate={false}
 		showBackButton={$canBack}
 		{nodes}
 		{totalCount}

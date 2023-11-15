@@ -6,11 +6,19 @@
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let items:
-		| { value: any | null | undefined; label: string | null | undefined }[]
+		| {
+				value: any | null | undefined;
+				label: string | null | undefined;
+				node?: any | null | undefined;
+		  }[]
 		| null
 		| undefined = [];
 	export let selectedItem:
-		| { value: any | null | undefined; label: string | null | undefined }
+		| {
+				value: any | null | undefined;
+				label: string | null | undefined;
+				node?: any | null | undefined;
+		  }
 		| null
 		| undefined = undefined;
 	export let name: string | undefined = undefined;
@@ -21,7 +29,7 @@
 		search: { searchValue: string | null | undefined };
 	}>();
 
-	$: dispatch('search', { searchValue });
+	dispatch('search', { searchValue });
 </script>
 
 <div class="dropdown">

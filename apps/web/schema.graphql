@@ -97,16 +97,21 @@ input FuncExpression {
   val: Func
 }
 
+"""组"""
 type Group implements Meta & NamedStruct & TreeStruct {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
+
+  """层级"""
   deep: Int
   deepAvg: Int
   deepCount: Int
   deepMax: Int
   deepMin: Int
   deepSum: Int
+
+  """描述"""
   description: String
   descriptionCount: Int
   descriptionMax: String
@@ -114,24 +119,36 @@ type Group implements Meta & NamedStruct & TreeStruct {
   groupRole: [GroupRole]
   groupRoleAggregate(first: Int, groupBy: [String!], groupId: IntExpression, groupIdType: GroupExpression, id: StringExpression, last: Int, offset: Int, orderBy: GroupRoleOrderBy, roleId: IntExpression, roleIdType: RoleExpression): GroupRole
   groupRoleConnection(first: Int, groupBy: [String!], groupId: IntExpression, groupIdType: GroupExpression, id: StringExpression, last: Int, offset: Int, orderBy: GroupRoleOrderBy, roleId: IntExpression, roleIdType: RoleExpression): GroupRoleConnection
+
+  """ID"""
   id: ID
   idCount: Int
   idMax: Int
   idMin: Int
   isDeprecated: Boolean
+
+  """名称"""
   name: String!
   nameCount: Int
   nameMax: String
   nameMin: String
+
+  """上级"""
   parent(deep: IntExpression, description: StringExpression, groupBy: [String!], id: StringExpression, name: StringExpression, parent: GroupExpression, parentId: StringExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): Group
+
+  """上级ID"""
   parentId: String
   parentIdCount: Int
   parentIdMax: String
   parentIdMin: String
+
+  """路径"""
   path: String
   pathCount: Int
   pathMax: String
   pathMin: String
+
+  """租户"""
   realm(description: StringExpression, groupBy: [String!], id: StringExpression, name: StringExpression): Realm
   realmId: Int
   realmIdAvg: Int
@@ -139,21 +156,27 @@ type Group implements Meta & NamedStruct & TreeStruct {
   realmIdMax: Int
   realmIdMin: Int
   realmIdSum: Int
+
+  """角色"""
   roles(after: ID, before: ID, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): [Role]
   rolesAggregate(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
-  rolesConnection(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): RoleConnection
+  rolesConnection(after: ID, before: ID, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): RoleConnection
+
+  """下级"""
   subGroups(after: ID, before: ID, deep: IntExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: StringExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): [Group]
   subGroupsAggregate(deep: IntExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: StringExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): Group
-  subGroupsConnection(deep: IntExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: StringExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): GroupConnection
+  subGroupsConnection(after: ID, before: ID, deep: IntExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: StringExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): GroupConnection
   syncGroupPolicy: Boolean
   updateTime: Timestamp
   updateUserId: String
   userGroup: [UserGroup]
   userGroupAggregate(first: Int, groupBy: [String!], groupId: IntExpression, groupIdType: GroupExpression, id: StringExpression, last: Int, offset: Int, orderBy: UserGroupOrderBy, userId: IntExpression, userIdType: UserExpression): UserGroup
   userGroupConnection(first: Int, groupBy: [String!], groupId: IntExpression, groupIdType: GroupExpression, id: StringExpression, last: Int, offset: Int, orderBy: UserGroupOrderBy, userId: IntExpression, userIdType: UserExpression): UserGroupConnection
+
+  """用户"""
   users(after: ID, before: ID, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, first: Int, groupBy: [String!], groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, userPhones: UserPhonesExpression, userRole: UserRoleExpression, version: IntExpression): [User]
   usersAggregate(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, first: Int, groupBy: [String!], groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, userPhones: UserPhonesExpression, userRole: UserRoleExpression, version: IntExpression): User
-  usersConnection(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, first: Int, groupBy: [String!], groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, userPhones: UserPhonesExpression, userRole: UserRoleExpression, version: IntExpression): UserConnection
+  usersConnection(after: ID, before: ID, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, first: Int, groupBy: [String!], groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, userPhones: UserPhonesExpression, userRole: UserRoleExpression, version: IntExpression): UserConnection
   version: Int
 }
 
@@ -894,24 +917,35 @@ type PageInfo {
   startCursor: String!
 }
 
+"""权限"""
 type Permission implements Meta {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
+
+  """描述"""
   description: String
   descriptionCount: Int
   descriptionMax: String
   descriptionMin: String
+
+  """字段"""
   field: String!
   fieldCount: Int
   fieldMax: String
   fieldMin: String
   isDeprecated: Boolean
+
+  """名称"""
   name: ID!
   nameCount: Int
   nameMax: String
   nameMin: String
+
+  """权限类型"""
   permissionType: PermissionType!
+
+  """租户"""
   realm(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Realm
   realmId: Int
   realmIdAvg: Int
@@ -922,10 +956,14 @@ type Permission implements Meta {
   rolePermission: [RolePermission]
   rolePermissionAggregate(first: Int, groupBy: [String!], id: StringExpression, last: Int, offset: Int, orderBy: RolePermissionOrderBy, permissionName: StringExpression, permissionNameType: PermissionExpression, roleId: IntExpression, roleIdType: RoleExpression): RolePermission
   rolePermissionConnection(first: Int, groupBy: [String!], id: StringExpression, last: Int, offset: Int, orderBy: RolePermissionOrderBy, permissionName: StringExpression, permissionNameType: PermissionExpression, roleId: IntExpression, roleIdType: RoleExpression): RolePermissionConnection
+
+  """角色"""
   roles(after: ID, before: ID, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): [Role]
   rolesAggregate(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): Role
-  rolesConnection(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): RoleConnection
+  rolesConnection(after: ID, before: ID, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], groupRole: GroupRoleExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleComposite: RoleCompositeExpression, rolePermission: RolePermissionExpression, updateTime: StringExpression, updateUserId: StringExpression, userRole: UserRoleExpression, users: UserExpression, version: IntExpression): RoleConnection
   syncPermissionPolicy: Boolean
+
+  """实体"""
   type: String!
   typeCount: Int
   typeMax: String
@@ -1207,8 +1245,12 @@ input PermissionSubscriptionArguments {
   version: IntExpression
 }
 
+"""权限类型"""
 enum PermissionType {
+  """读取"""
   READ
+
+  """写入"""
   WRITE
 }
 
@@ -1295,19 +1337,26 @@ type Query implements Meta {
   version: Int
 }
 
+"""租户"""
 type Realm implements Meta & NamedStruct {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
+
+  """描述"""
   description: String
   descriptionCount: Int
   descriptionMax: String
   descriptionMin: String
+
+  """ID"""
   id: ID
   idCount: Int
   idMax: Int
   idMin: Int
   isDeprecated: Boolean
+
+  """名称"""
   name: String!
   nameCount: Int
   nameMax: String
@@ -1538,13 +1587,17 @@ input RealmSubscriptionArguments {
   version: IntExpression
 }
 
+"""角色"""
 type Role implements Meta & NamedStruct {
+  """组合"""
   composites(after: ID, before: ID, composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], groups: GroupExpression, id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, users: UserExpression): [Role]
   compositesAggregate(composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], groups: GroupExpression, id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, users: UserExpression): Role
-  compositesConnection(composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], groups: GroupExpression, id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, users: UserExpression): RoleConnection
+  compositesConnection(after: ID, before: ID, composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], groups: GroupExpression, id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, users: UserExpression): RoleConnection
   createGroupId: String
   createTime: Timestamp
   createUserId: String
+
+  """描述"""
   description: String
   descriptionCount: Int
   descriptionMax: String
@@ -1552,21 +1605,31 @@ type Role implements Meta & NamedStruct {
   groupRole: [GroupRole]
   groupRoleAggregate(first: Int, groupBy: [String!], groupId: IntExpression, groupIdType: GroupExpression, id: StringExpression, last: Int, offset: Int, orderBy: GroupRoleOrderBy, roleId: IntExpression, roleIdType: RoleExpression): GroupRole
   groupRoleConnection(first: Int, groupBy: [String!], groupId: IntExpression, groupIdType: GroupExpression, id: StringExpression, last: Int, offset: Int, orderBy: GroupRoleOrderBy, roleId: IntExpression, roleIdType: RoleExpression): GroupRoleConnection
+
+  """组"""
   groups(after: ID, before: ID, deep: IntExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: StringExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): [Group]
   groupsAggregate(deep: IntExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: StringExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): Group
-  groupsConnection(deep: IntExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: StringExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): GroupConnection
+  groupsConnection(after: ID, before: ID, deep: IntExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: StringExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): GroupConnection
+
+  """ID"""
   id: ID
   idCount: Int
   idMax: Int
   idMin: Int
   isDeprecated: Boolean
+
+  """名称"""
   name: String!
   nameCount: Int
   nameMax: String
   nameMin: String
+
+  """权限"""
   permissions(after: ID, before: ID, description: StringExpression, field: StringExpression, first: Int, groupBy: [String!], last: Int, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, permissionType: PermissionTypeExpression, realm: RealmExpression, roles: RoleExpression, type: StringExpression): [Permission]
   permissionsAggregate(description: StringExpression, field: StringExpression, first: Int, groupBy: [String!], last: Int, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, permissionType: PermissionTypeExpression, realm: RealmExpression, roles: RoleExpression, type: StringExpression): Permission
-  permissionsConnection(description: StringExpression, field: StringExpression, first: Int, groupBy: [String!], last: Int, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, permissionType: PermissionTypeExpression, realm: RealmExpression, roles: RoleExpression, type: StringExpression): PermissionConnection
+  permissionsConnection(after: ID, before: ID, description: StringExpression, field: StringExpression, first: Int, groupBy: [String!], last: Int, name: StringExpression, offset: Int, orderBy: PermissionOrderBy, permissionType: PermissionTypeExpression, realm: RealmExpression, roles: RoleExpression, type: StringExpression): PermissionConnection
+
+  """租户"""
   realm(description: StringExpression, groupBy: [String!], id: StringExpression, name: StringExpression): Realm
   realmId: Int
   realmIdAvg: Int
@@ -1586,9 +1649,11 @@ type Role implements Meta & NamedStruct {
   userRole: [UserRole]
   userRoleAggregate(first: Int, groupBy: [String!], id: StringExpression, last: Int, offset: Int, orderBy: UserRoleOrderBy, roleId: IntExpression, roleIdType: RoleExpression, userId: IntExpression, userIdType: UserExpression): UserRole
   userRoleConnection(first: Int, groupBy: [String!], id: StringExpression, last: Int, offset: Int, orderBy: UserRoleOrderBy, roleId: IntExpression, roleIdType: RoleExpression, userId: IntExpression, userIdType: UserExpression): UserRoleConnection
+
+  """用户"""
   users(after: ID, before: ID, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, first: Int, groupBy: [String!], groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, userPhones: UserPhonesExpression, userRole: UserRoleExpression, version: IntExpression): [User]
   usersAggregate(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, first: Int, groupBy: [String!], groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, userPhones: UserPhonesExpression, userRole: UserRoleExpression, version: IntExpression): User
-  usersConnection(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, first: Int, groupBy: [String!], groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, userPhones: UserPhonesExpression, userRole: UserRoleExpression, version: IntExpression): UserConnection
+  usersConnection(after: ID, before: ID, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, first: Int, groupBy: [String!], groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, userPhones: UserPhonesExpression, userRole: UserRoleExpression, version: IntExpression): UserConnection
   version: Int
 }
 
@@ -2525,44 +2590,67 @@ input TreeStructInput {
   path: String
 }
 
+"""用户"""
 type User implements Meta & NamedStruct {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
+
+  """描述"""
   description: String
   descriptionCount: Int
   descriptionMax: String
   descriptionMin: String
+
+  """禁用"""
   disable: Boolean
+
+  """邮箱"""
   email: String
   emailCount: Int
   emailMax: String
   emailMin: String
+
+  """组"""
   groups(after: ID, before: ID, deep: IntExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: StringExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): [Group]
   groupsAggregate(deep: IntExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: StringExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): Group
-  groupsConnection(deep: IntExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: StringExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): GroupConnection
+  groupsConnection(after: ID, before: ID, deep: IntExpression, description: StringExpression, first: Int, groupBy: [String!], id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: StringExpression, path: StringExpression, realm: RealmExpression, roles: RoleExpression, subGroups: GroupExpression, users: UserExpression): GroupConnection
+
+  """哈希"""
   hash: String
   hashCount: Int
   hashMax: String
   hashMin: String
+
+  """ID"""
   id: ID
   idCount: Int
   idMax: Int
   idMin: Int
   isDeprecated: Boolean
+
+  """姓氏"""
   lastName: String
   lastNameCount: Int
   lastNameMax: String
   lastNameMin: String
+
+  """账号"""
   login: String!
   loginCount: Int
   loginMax: String
   loginMin: String
+
+  """姓名"""
   name: String!
   nameCount: Int
   nameMax: String
   nameMin: String
+
+  """手机号"""
   phones(first: Int, in: [String], last: Int, offset: Int, opr: Operator = EQ, sort: Sort, val: String): [String]
+
+  """租户"""
   realm(description: StringExpression, groupBy: [String!], id: StringExpression, name: StringExpression): Realm
   realmId: Int
   realmIdAvg: Int
@@ -2570,9 +2658,13 @@ type User implements Meta & NamedStruct {
   realmIdMax: Int
   realmIdMin: Int
   realmIdSum: Int
+
+  """角色"""
   roles(after: ID, before: ID, composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], groups: GroupExpression, id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, users: UserExpression): [Role]
   rolesAggregate(composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], groups: GroupExpression, id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, users: UserExpression): Role
-  rolesConnection(composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], groups: GroupExpression, id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, users: UserExpression): RoleConnection
+  rolesConnection(after: ID, before: ID, composites: RoleExpression, description: StringExpression, first: Int, groupBy: [String!], groups: GroupExpression, id: StringExpression, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, users: UserExpression): RoleConnection
+
+  """盐"""
   salt: String
   saltCount: Int
   saltMax: String

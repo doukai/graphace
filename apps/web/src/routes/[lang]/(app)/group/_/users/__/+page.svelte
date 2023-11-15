@@ -90,6 +90,7 @@
 
 <Card>
 	<UserSelectConnectionTable
+		mutate={false}
 		showBackButton={$canBack}
 		{nodes}
 		{totalCount}

@@ -66,18 +66,30 @@ export type FuncExpression = {
   in?: InputMaybe<Array<InputMaybe<Func>>>;
 };
 
+/** 组 */
 export type Group = TreeStruct & NamedStruct & Meta & {
   __typename?: 'Group';
+  /** ID */
   id?: Maybe<Scalars['ID']>;
+  /** 名称 */
   name: Scalars['String'];
+  /** 描述 */
   description?: Maybe<Scalars['String']>;
+  /** 路径 */
   path?: Maybe<Scalars['String']>;
+  /** 层级 */
   deep?: Maybe<Scalars['Int']>;
+  /** 上级ID */
   parentId?: Maybe<Scalars['String']>;
+  /** 上级 */
   parent?: Maybe<Group>;
+  /** 下级 */
   subGroups?: Maybe<Array<Maybe<Group>>>;
+  /** 用户 */
   users?: Maybe<Array<Maybe<User>>>;
+  /** 角色 */
   roles?: Maybe<Array<Maybe<Role>>>;
+  /** 租户 */
   realm?: Maybe<Realm>;
   isDeprecated?: Maybe<Scalars['Boolean']>;
   version?: Maybe<Scalars['Int']>;
@@ -128,6 +140,7 @@ export type Group = TreeStruct & NamedStruct & Meta & {
 };
 
 
+/** 组 */
 export type GroupParentArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
@@ -144,6 +157,7 @@ export type GroupParentArgs = {
 };
 
 
+/** 组 */
 export type GroupSubGroupsArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
@@ -166,6 +180,7 @@ export type GroupSubGroupsArgs = {
 };
 
 
+/** 组 */
 export type GroupUsersArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
@@ -201,6 +216,7 @@ export type GroupUsersArgs = {
 };
 
 
+/** 组 */
 export type GroupRolesArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
@@ -232,6 +248,7 @@ export type GroupRolesArgs = {
 };
 
 
+/** 组 */
 export type GroupRealmArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
@@ -240,6 +257,7 @@ export type GroupRealmArgs = {
 };
 
 
+/** 组 */
 export type GroupSubGroupsAggregateArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -260,12 +278,15 @@ export type GroupSubGroupsAggregateArgs = {
 };
 
 
+/** 组 */
 export type GroupSubGroupsConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<GroupOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -280,6 +301,7 @@ export type GroupSubGroupsConnectionArgs = {
 };
 
 
+/** 组 */
 export type GroupUsersAggregateArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -313,12 +335,15 @@ export type GroupUsersAggregateArgs = {
 };
 
 
+/** 组 */
 export type GroupUsersConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<UserOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -346,6 +371,7 @@ export type GroupUsersConnectionArgs = {
 };
 
 
+/** 组 */
 export type GroupRolesAggregateArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -375,12 +401,15 @@ export type GroupRolesAggregateArgs = {
 };
 
 
+/** 组 */
 export type GroupRolesConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RoleOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -404,6 +433,7 @@ export type GroupRolesConnectionArgs = {
 };
 
 
+/** 组 */
 export type GroupUserGroupAggregateArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -418,6 +448,7 @@ export type GroupUserGroupAggregateArgs = {
 };
 
 
+/** 组 */
 export type GroupUserGroupConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -432,6 +463,7 @@ export type GroupUserGroupConnectionArgs = {
 };
 
 
+/** 组 */
 export type GroupGroupRoleAggregateArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -446,6 +478,7 @@ export type GroupGroupRoleAggregateArgs = {
 };
 
 
+/** 组 */
 export type GroupGroupRoleConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -1718,14 +1751,22 @@ export type PageInfo = {
   endCursor: Scalars['String'];
 };
 
+/** 权限 */
 export type Permission = Meta & {
   __typename?: 'Permission';
+  /** 名称 */
   name: Scalars['ID'];
+  /** 描述 */
   description?: Maybe<Scalars['String']>;
+  /** 字段 */
   field: Scalars['String'];
+  /** 实体 */
   type: Scalars['String'];
+  /** 权限类型 */
   permissionType: PermissionType;
+  /** 角色 */
   roles?: Maybe<Array<Maybe<Role>>>;
+  /** 租户 */
   realm?: Maybe<Realm>;
   isDeprecated?: Maybe<Scalars['Boolean']>;
   version?: Maybe<Scalars['Int']>;
@@ -1761,6 +1802,7 @@ export type Permission = Meta & {
 };
 
 
+/** 权限 */
 export type PermissionRolesArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
@@ -1792,6 +1834,7 @@ export type PermissionRolesArgs = {
 };
 
 
+/** 权限 */
 export type PermissionRealmArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
@@ -1808,6 +1851,7 @@ export type PermissionRealmArgs = {
 };
 
 
+/** 权限 */
 export type PermissionRolesAggregateArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -1837,12 +1881,15 @@ export type PermissionRolesAggregateArgs = {
 };
 
 
+/** 权限 */
 export type PermissionRolesConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RoleOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -1866,6 +1913,7 @@ export type PermissionRolesConnectionArgs = {
 };
 
 
+/** 权限 */
 export type PermissionRolePermissionAggregateArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -1880,6 +1928,7 @@ export type PermissionRolePermissionAggregateArgs = {
 };
 
 
+/** 权限 */
 export type PermissionRolePermissionConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -2167,8 +2216,11 @@ export type PermissionSubscriptionArguments = {
   exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
 };
 
+/** 权限类型 */
 export type PermissionType =
+  /** 读取 */
   | 'READ'
+  /** 写入 */
   | 'WRITE';
 
 export type PermissionTypeExpression = {
@@ -3158,10 +3210,14 @@ export type QueryRolePermissionConnectionArgs = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
+/** 租户 */
 export type Realm = Meta & NamedStruct & {
   __typename?: 'Realm';
+  /** ID */
   id?: Maybe<Scalars['ID']>;
+  /** 名称 */
   name: Scalars['String'];
+  /** 描述 */
   description?: Maybe<Scalars['String']>;
   isDeprecated?: Maybe<Scalars['Boolean']>;
   version?: Maybe<Scalars['Int']>;
@@ -3404,15 +3460,24 @@ export type RealmSubscriptionArguments = {
   exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
 };
 
+/** 角色 */
 export type Role = NamedStruct & Meta & {
   __typename?: 'Role';
+  /** ID */
   id?: Maybe<Scalars['ID']>;
+  /** 名称 */
   name: Scalars['String'];
+  /** 描述 */
   description?: Maybe<Scalars['String']>;
+  /** 用户 */
   users?: Maybe<Array<Maybe<User>>>;
+  /** 组 */
   groups?: Maybe<Array<Maybe<Group>>>;
+  /** 组合 */
   composites?: Maybe<Array<Maybe<Role>>>;
+  /** 权限 */
   permissions?: Maybe<Array<Maybe<Permission>>>;
+  /** 租户 */
   realm?: Maybe<Realm>;
   isDeprecated?: Maybe<Scalars['Boolean']>;
   version?: Maybe<Scalars['Int']>;
@@ -3460,6 +3525,7 @@ export type Role = NamedStruct & Meta & {
 };
 
 
+/** 角色 */
 export type RoleUsersArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
@@ -3495,6 +3561,7 @@ export type RoleUsersArgs = {
 };
 
 
+/** 角色 */
 export type RoleGroupsArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
@@ -3517,6 +3584,7 @@ export type RoleGroupsArgs = {
 };
 
 
+/** 角色 */
 export type RoleCompositesArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
@@ -3536,6 +3604,7 @@ export type RoleCompositesArgs = {
 };
 
 
+/** 角色 */
 export type RolePermissionsArgs = {
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -3554,6 +3623,7 @@ export type RolePermissionsArgs = {
 };
 
 
+/** 角色 */
 export type RoleRealmArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
@@ -3562,6 +3632,7 @@ export type RoleRealmArgs = {
 };
 
 
+/** 角色 */
 export type RoleUsersAggregateArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -3595,12 +3666,15 @@ export type RoleUsersAggregateArgs = {
 };
 
 
+/** 角色 */
 export type RoleUsersConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<UserOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -3628,6 +3702,7 @@ export type RoleUsersConnectionArgs = {
 };
 
 
+/** 角色 */
 export type RoleGroupsAggregateArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -3648,12 +3723,15 @@ export type RoleGroupsAggregateArgs = {
 };
 
 
+/** 角色 */
 export type RoleGroupsConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<GroupOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -3668,6 +3746,7 @@ export type RoleGroupsConnectionArgs = {
 };
 
 
+/** 角色 */
 export type RoleCompositesAggregateArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -3685,12 +3764,15 @@ export type RoleCompositesAggregateArgs = {
 };
 
 
+/** 角色 */
 export type RoleCompositesConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RoleOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -3702,6 +3784,7 @@ export type RoleCompositesConnectionArgs = {
 };
 
 
+/** 角色 */
 export type RolePermissionsAggregateArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -3718,12 +3801,15 @@ export type RolePermissionsAggregateArgs = {
 };
 
 
+/** 角色 */
 export type RolePermissionsConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<PermissionOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
   field?: InputMaybe<StringExpression>;
@@ -3734,6 +3820,7 @@ export type RolePermissionsConnectionArgs = {
 };
 
 
+/** 角色 */
 export type RoleUserRoleAggregateArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -3748,6 +3835,7 @@ export type RoleUserRoleAggregateArgs = {
 };
 
 
+/** 角色 */
 export type RoleUserRoleConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -3762,6 +3850,7 @@ export type RoleUserRoleConnectionArgs = {
 };
 
 
+/** 角色 */
 export type RoleGroupRoleAggregateArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -3776,6 +3865,7 @@ export type RoleGroupRoleAggregateArgs = {
 };
 
 
+/** 角色 */
 export type RoleGroupRoleConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -3790,6 +3880,7 @@ export type RoleGroupRoleConnectionArgs = {
 };
 
 
+/** 角色 */
 export type RoleRoleCompositeAggregateArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -3804,6 +3895,7 @@ export type RoleRoleCompositeAggregateArgs = {
 };
 
 
+/** 角色 */
 export type RoleRoleCompositeConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -3818,6 +3910,7 @@ export type RoleRoleCompositeConnectionArgs = {
 };
 
 
+/** 角色 */
 export type RoleRolePermissionAggregateArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -3832,6 +3925,7 @@ export type RoleRolePermissionAggregateArgs = {
 };
 
 
+/** 角色 */
 export type RoleRolePermissionConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -5781,20 +5875,34 @@ export type TreeStructInput = {
   parentId?: InputMaybe<Scalars['String']>;
 };
 
+/** 用户 */
 export type User = NamedStruct & Meta & {
   __typename?: 'User';
+  /** ID */
   id?: Maybe<Scalars['ID']>;
+  /** 姓名 */
   name: Scalars['String'];
+  /** 描述 */
   description?: Maybe<Scalars['String']>;
+  /** 姓氏 */
   lastName?: Maybe<Scalars['String']>;
+  /** 账号 */
   login: Scalars['String'];
+  /** 盐 */
   salt?: Maybe<Scalars['String']>;
+  /** 哈希 */
   hash?: Maybe<Scalars['String']>;
+  /** 邮箱 */
   email?: Maybe<Scalars['String']>;
+  /** 手机号 */
   phones?: Maybe<Array<Maybe<Scalars['String']>>>;
+  /** 禁用 */
   disable?: Maybe<Scalars['Boolean']>;
+  /** 组 */
   groups?: Maybe<Array<Maybe<Group>>>;
+  /** 角色 */
   roles?: Maybe<Array<Maybe<Role>>>;
+  /** 租户 */
   realm?: Maybe<Realm>;
   isDeprecated?: Maybe<Scalars['Boolean']>;
   version?: Maybe<Scalars['Int']>;
@@ -5850,6 +5958,7 @@ export type User = NamedStruct & Meta & {
 };
 
 
+/** 用户 */
 export type UserPhonesArgs = {
   opr?: InputMaybe<Operator>;
   val?: InputMaybe<Scalars['String']>;
@@ -5861,6 +5970,7 @@ export type UserPhonesArgs = {
 };
 
 
+/** 用户 */
 export type UserGroupsArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
@@ -5883,6 +5993,7 @@ export type UserGroupsArgs = {
 };
 
 
+/** 用户 */
 export type UserRolesArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
@@ -5902,6 +6013,7 @@ export type UserRolesArgs = {
 };
 
 
+/** 用户 */
 export type UserRealmArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
@@ -5910,6 +6022,7 @@ export type UserRealmArgs = {
 };
 
 
+/** 用户 */
 export type UserGroupsAggregateArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -5930,12 +6043,15 @@ export type UserGroupsAggregateArgs = {
 };
 
 
+/** 用户 */
 export type UserGroupsConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<GroupOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -5950,6 +6066,7 @@ export type UserGroupsConnectionArgs = {
 };
 
 
+/** 用户 */
 export type UserRolesAggregateArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -5967,12 +6084,15 @@ export type UserRolesAggregateArgs = {
 };
 
 
+/** 用户 */
 export type UserRolesConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RoleOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -5984,6 +6104,7 @@ export type UserRolesConnectionArgs = {
 };
 
 
+/** 用户 */
 export type UserUserPhonesAggregateArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -5997,6 +6118,7 @@ export type UserUserPhonesAggregateArgs = {
 };
 
 
+/** 用户 */
 export type UserUserPhonesConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -6010,6 +6132,7 @@ export type UserUserPhonesConnectionArgs = {
 };
 
 
+/** 用户 */
 export type UserUserGroupAggregateArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -6024,6 +6147,7 @@ export type UserUserGroupAggregateArgs = {
 };
 
 
+/** 用户 */
 export type UserUserGroupConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -6038,6 +6162,7 @@ export type UserUserGroupConnectionArgs = {
 };
 
 
+/** 用户 */
 export type UserUserRoleAggregateArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -6052,6 +6177,7 @@ export type UserUserRoleAggregateArgs = {
 };
 
 
+/** 用户 */
 export type UserUserRoleConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
