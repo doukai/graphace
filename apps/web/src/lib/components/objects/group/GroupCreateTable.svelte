@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons';
 	import { Table, TableHead, TableEmpty, messageBoxs } from '@graphace/ui';
-	import { ObjectTd, StringTh, StringTd } from '@graphace/ui-graphql';
+	import { ObjectTd, StringTh, StringTd, IntTh, IntTd } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
@@ -88,6 +88,15 @@
 			{#if auth('Group::description::*')}
 			<td>{$LL.graphql.objects.Group.fields.description.name()}</td>
 			{/if}
+			{#if auth('Group::path::*')}
+			<td>{$LL.graphql.objects.Group.fields.path.name()}</td>
+			{/if}
+			{#if auth('Group::deep::*')}
+			<td>{$LL.graphql.objects.Group.fields.deep.name()}</td>
+			{/if}
+			{#if auth('Group::parentId::*')}
+			<td>{$LL.graphql.objects.Group.fields.parentId.name()}</td>
+			{/if}
 			{#if auth('Group::parent::*')}
 			<td>{$LL.graphql.objects.Group.fields.parent.name()}</td>
 			{/if}
@@ -130,6 +139,30 @@
 							bind:value={node.description}
 							readonly
 							errors={errors[row]?.iterms?.description}
+						/>
+						{/if}
+						{#if auth('Group::path::*')}
+						<StringTd
+							name="path"
+							bind:value={node.path}
+							readonly
+							errors={errors[row]?.iterms?.path}
+						/>
+						{/if}
+						{#if auth('Group::deep::*')}
+						<IntTd
+							name="deep"
+							bind:value={node.deep}
+							readonly
+							errors={errors[row]?.iterms?.deep}
+						/>
+						{/if}
+						{#if auth('Group::parentId::*')}
+						<StringTd
+							name="parentId"
+							bind:value={node.parentId}
+							readonly
+							errors={errors[row]?.iterms?.parentId}
 						/>
 						{/if}
 						{#if auth('Group::parent::*')}
@@ -185,7 +218,7 @@
 				{/if}
 			{/each}
 		{:else}
-			<TableEmpty cols={7 + 2}/>
+			<TableEmpty cols={10 + 2}/>
 		{/if}
 	</tbody>
 </Table>

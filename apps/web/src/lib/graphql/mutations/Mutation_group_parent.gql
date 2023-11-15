@@ -5,6 +5,7 @@ mutation Mutation_group_parent($group_id: String, $group_parent: GroupInput, $id
     description
     path
     deep
+    parentId
     isDeprecated
     version
     realmId
@@ -20,6 +21,7 @@ mutation Mutation_group_parent($group_id: String, $group_parent: GroupInput, $id
       description
       path
       deep
+      parentId
       isDeprecated
       version
       realmId

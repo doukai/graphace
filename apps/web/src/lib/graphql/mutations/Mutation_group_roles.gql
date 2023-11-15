@@ -5,6 +5,7 @@ mutation Mutation_group_roles($group_id: String, $group_roles: [RoleInput], $fir
     description
     path
     deep
+    parentId
     isDeprecated
     version
     realmId

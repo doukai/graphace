@@ -20,6 +20,7 @@ query Query_role_groups($role_id: StringExpression, $first: Int, $last: Int, $of
           description
           path
           deep
+          parentId
           isDeprecated
           version
           realmId

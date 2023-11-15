@@ -79,6 +79,24 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				path: {
+					/**
+					 * p​a​t​h
+					 */
+					name: string
+				}
+				deep: {
+					/**
+					 * d​e​e​p
+					 */
+					name: string
+				}
+				parentId: {
+					/**
+					 * p​a​r​e​n​t​I​d
+					 */
+					name: string
+				}
 				parent: {
 					/**
 					 * p​a​r​e​n​t
@@ -270,74 +288,6 @@ export type NamespaceGraphqlTranslation = {
 				permissions: {
 					/**
 					 * p​e​r​m​i​s​s​i​o​n​s
-					 */
-					name: string
-				}
-				realm: {
-					/**
-					 * r​e​a​l​m
-					 */
-					name: string
-				}
-			}
-		}
-		User: {
-			/**
-			 * U​s​e​r
-			 */
-			name: string
-			fields: {
-				name: {
-					/**
-					 * n​a​m​e
-					 */
-					name: string
-				}
-				description: {
-					/**
-					 * d​e​s​c​r​i​p​t​i​o​n
-					 */
-					name: string
-				}
-				lastName: {
-					/**
-					 * l​a​s​t​N​a​m​e
-					 */
-					name: string
-				}
-				login: {
-					/**
-					 * l​o​g​i​n
-					 */
-					name: string
-				}
-				email: {
-					/**
-					 * e​m​a​i​l
-					 */
-					name: string
-				}
-				phones: {
-					/**
-					 * p​h​o​n​e​s
-					 */
-					name: string
-				}
-				disable: {
-					/**
-					 * d​i​s​a​b​l​e
-					 */
-					name: string
-				}
-				groups: {
-					/**
-					 * g​r​o​u​p​s
-					 */
-					name: string
-				}
-				roles: {
-					/**
-					 * r​o​l​e​s
 					 */
 					name: string
 				}
@@ -948,6 +898,24 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
+					path: {
+						/**
+						 * path
+						 */
+						name: () => LocalizedString
+					}
+					deep: {
+						/**
+						 * deep
+						 */
+						name: () => LocalizedString
+					}
+					parentId: {
+						/**
+						 * parentId
+						 */
+						name: () => LocalizedString
+					}
 					parent: {
 						/**
 						 * parent
@@ -1139,74 +1107,6 @@ export type TranslationFunctions = {
 					permissions: {
 						/**
 						 * permissions
-						 */
-						name: () => LocalizedString
-					}
-					realm: {
-						/**
-						 * realm
-						 */
-						name: () => LocalizedString
-					}
-				}
-			}
-			User: {
-				/**
-				 * User
-				 */
-				name: () => LocalizedString
-				fields: {
-					name: {
-						/**
-						 * name
-						 */
-						name: () => LocalizedString
-					}
-					description: {
-						/**
-						 * description
-						 */
-						name: () => LocalizedString
-					}
-					lastName: {
-						/**
-						 * lastName
-						 */
-						name: () => LocalizedString
-					}
-					login: {
-						/**
-						 * login
-						 */
-						name: () => LocalizedString
-					}
-					email: {
-						/**
-						 * email
-						 */
-						name: () => LocalizedString
-					}
-					phones: {
-						/**
-						 * phones
-						 */
-						name: () => LocalizedString
-					}
-					disable: {
-						/**
-						 * disable
-						 */
-						name: () => LocalizedString
-					}
-					groups: {
-						/**
-						 * groups
-						 */
-						name: () => LocalizedString
-					}
-					roles: {
-						/**
-						 * roles
 						 */
 						name: () => LocalizedString
 					}

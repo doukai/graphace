@@ -5,6 +5,7 @@ query Query_group_subGroups($group_id: StringExpression, $first: Int, $last: Int
     description
     path
     deep
+    parentId
     isDeprecated
     version
     realmId
@@ -22,6 +23,7 @@ query Query_group_subGroups($group_id: StringExpression, $first: Int, $last: Int
           description
           path
           deep
+          parentId
           isDeprecated
           version
           realmId

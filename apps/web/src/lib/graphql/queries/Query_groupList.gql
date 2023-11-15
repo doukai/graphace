@@ -5,6 +5,7 @@ query Query_groupList($id: StringExpression, $name: StringExpression, $descripti
     description
     path
     deep
+    parentId
     isDeprecated
     version
     realmId

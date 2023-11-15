@@ -31,6 +31,15 @@ const zh: NamespaceGraphqlTranslation = {
 				description: {
 					name: '描述',
 				},
+				path: {
+					name: '路径',
+				},
+				deep: {
+					name: '层级',
+				},
+				parentId: {
+					name: '上级ID',
+				},
 				parent: {
 					name: '上级',
 				},

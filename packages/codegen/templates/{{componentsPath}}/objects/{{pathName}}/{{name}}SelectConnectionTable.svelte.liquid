@@ -32,7 +32,6 @@
 	export let errors: Record<number, Errors> = {};
 	export let multipleSelect: boolean = true;
 	export let showBackButton: boolean = true;
-	export let mutate: boolean | undefined = true;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -179,12 +178,8 @@
 	on:select={(e) =>
 		dispatch('select', {
 			selected: Array.isArray(selectedIdList)
-				? mutate 
-					? selectedIdList.map((id) => ({ where: { {{ idName }}: { val: id } } }))
-					: selectedIdList.flatMap((id) => nodes?.find((node) => node?.{{ idName }} === id)).map((node) => ({ {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.fieldName != idName %}{{ field.fieldName }}: node?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: node?.{{ idName }} } } }))
-				: mutate 
-					? { where: { {{ idName }}: { val: selectedIdList } } }
-					: nodes?.filter((node) => node?.{{ idName }} === selectedIdList)?.map((node) => ({ {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.fieldName != idName %}{{ field.fieldName }}: node?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: node?.{{ idName }} } } }))[0],
+				? selectedIdList.flatMap((id) => nodes?.find((node) => node?.{{ idName }} === id)).map((node) => ({ {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.fieldName != idName %}{{ field.fieldName }}: node?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: node?.{{ idName }} } } }))
+				: nodes?.filter((node) => node?.{{ idName }} === selectedIdList)?.map((node) => ({ {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.fieldName != idName %}{{ field.fieldName }}: node?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: node?.{{ idName }} } } }))[0],
 			then: () => {
 				notifications.success($LL.web.message.saveSuccess());
 				dispatch('back');
@@ -301,12 +296,8 @@
 												if (node && node.{{ idName }}) {
 													dispatch('select', {
 														selected: multipleSelect 
-																	? mutate
-																		? [{ where: { {{ idName }}: { val: node.{{ idName }} } } }] 
-																		: [{ {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.fieldName != idName %}{{ field.fieldName }}: node?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: node.{{ idName }} } } }] 
-																	: mutate 
-																		? { where: { {{ idName }}: { val: node.{{ idName }} } } }
-																		: { {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.fieldName != idName %}{{ field.fieldName }}: node?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: node.{{ idName }} } } },
+																	? [{ {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.fieldName != idName %}{{ field.fieldName }}: node?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: node.{{ idName }} } } }] 
+																	: { {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.fieldName != idName %}{{ field.fieldName }}: node?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: node.{{ idName }} } } },
 														then: () => {
 															notifications.success($LL.web.message.saveSuccess());
 															dispatch('back');

@@ -3,7 +3,7 @@
 	import type { Errors } from '@graphace/commons';
 	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
 	import { Form, messageBoxs, notifications } from '@graphace/ui';
-	import { StringItem, ObjectItem } from '@graphace/ui-graphql';
+	import { StringItem, IntItem, ObjectItem } from '@graphace/ui-graphql';
 	import LL from '$i18n/i18n-svelte';
 	import type { Group, GroupInput } from '~/lib/types/schema';
 	import { auth } from '@graphace/commons';
@@ -81,6 +81,15 @@
 	{/if}
 	{#if auth('Group::description::*')}
 	<StringItem label={$LL.graphql.objects.Group.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
+	{/if}
+	{#if auth('Group::path::*')}
+	<StringItem label={$LL.graphql.objects.Group.fields.path.name()} name="path" bind:value={node.path} errors={errors.path} />
+	{/if}
+	{#if auth('Group::deep::*')}
+	<IntItem label={$LL.graphql.objects.Group.fields.deep.name()} name="deep" bind:value={node.deep} errors={errors.deep} />
+	{/if}
+	{#if auth('Group::parentId::*')}
+	<StringItem label={$LL.graphql.objects.Group.fields.parentId.name()} name="parentId" bind:value={node.parentId} errors={errors.parentId} />
 	{/if}
 	{#if auth('Group::parent::*')}
 	<ObjectItem name="parent" namedStruct={ node.parent } path="_/parent" label={$LL.graphql.objects.Group.fields.parent.name()} errors={errors.parent} on:gotoField />

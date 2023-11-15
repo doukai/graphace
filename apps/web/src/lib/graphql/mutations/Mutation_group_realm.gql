@@ -5,6 +5,7 @@ mutation Mutation_group_realm($group_id: String, $group_realm: RealmInput, $id: 
     description
     path
     deep
+    parentId
     isDeprecated
     version
     realmId

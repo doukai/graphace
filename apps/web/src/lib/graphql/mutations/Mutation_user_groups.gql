@@ -26,6 +26,7 @@ mutation Mutation_user_groups($user_id: String, $user_groups: [GroupInput], $fir
           description
           path
           deep
+          parentId
           isDeprecated
           version
           realmId

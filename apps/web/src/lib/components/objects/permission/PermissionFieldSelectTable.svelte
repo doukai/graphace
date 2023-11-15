@@ -8,6 +8,7 @@
 	import { createEventDispatcher } from 'svelte';
 
 	export let showBackButton: boolean = true;
+	export let showSelectButton: boolean = false;
 	export let roleId: string | null | undefined = undefined;
 	export let typeName: string | null | undefined = undefined;
 
@@ -21,6 +22,8 @@
 	let selectAllWrite: boolean;
 	let fieldReadList: (string | null | undefined)[] | null | undefined = [];
 	let fieldWriteList: (string | null | undefined)[] | null | undefined = [];
+
+	$: showSelectButton = (fieldReadList?.length || 0) > 0 || (fieldWriteList?.length || 0) > 0;
 
 	const PermissionTypeListQuery = graphql(`
 		query PermissionTypeListQuery($type: StringExpression, $first: Int) {
@@ -160,24 +163,26 @@
 			/>
 		</div>
 		<div class="flex space-x-1">
-			<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.select()}>
+			{#if showSelectButton}
+				<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.select()}>
+					<button
+						class="btn btn-secondary btn-square md:hidden"
+						on:click|preventDefault={() => {
+							mutation();
+						}}
+					>
+						<Icon src={Link} class="h-6 w-6" solid />
+					</button>
+				</div>
 				<button
-					class="btn btn-secondary btn-square md:hidden"
+					class="hidden md:flex btn btn-secondary"
 					on:click|preventDefault={() => {
 						mutation();
 					}}
 				>
-					<Icon src={Link} class="h-6 w-6" solid />
+					{$LL.ui.button.select()}
 				</button>
-			</div>
-			<button
-				class="hidden md:flex btn btn-secondary"
-				on:click|preventDefault={() => {
-					mutation();
-				}}
-			>
-				{$LL.ui.button.select()}
-			</button>
+			{/if}
 			{#if showBackButton}
 				<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.back()}>
 					<button

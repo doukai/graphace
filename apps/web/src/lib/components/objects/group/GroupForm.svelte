@@ -3,8 +3,7 @@
 	import type { Errors } from '@graphace/commons';
 	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
 	import { Form, FormLoading, messageBoxs, notifications } from '@graphace/ui';
-	import { StringItem, ObjectItem } from '@graphace/ui-graphql';
-	import GroupAutoComplete from './GroupAutoComplete.svelte';
+	import { StringItem, IntItem, ObjectItem } from '@graphace/ui-graphql';
 	import LL from '$i18n/i18n-svelte';
 	import type { Group, GroupInput } from '~/lib/types/schema';
 	import { auth } from '@graphace/commons';
@@ -35,6 +34,7 @@
 	const save = (): void => {
 		if (node) {
 			let args = { ...node };
+			args.parent = undefined;
 			args.subGroups = undefined;
 			args.users = undefined;
 			args.roles = undefined;
@@ -126,66 +126,39 @@
 	on:back
 >
 	{#if isFetching}
-		<FormLoading rows={7} />
-	{:else if node}
-		{#if auth('Group::name::*')}
-			<StringItem
-				label={$LL.graphql.objects.Group.fields.name.name()}
-				name="name"
-				bind:value={node.name}
-				errors={errors.name}
-			/>
-		{/if}
-		{#if auth('Group::description::*')}
-			<StringItem
-				label={$LL.graphql.objects.Group.fields.description.name()}
-				name="description"
-				bind:value={node.description}
-				errors={errors.description}
-			/>
-		{/if}
-		{#if auth('Group::parent::*')}
-			<GroupAutoComplete bind:value={node.parent}/>
-		{/if}
-		{#if auth('Group::subGroups::*')}
-			<ObjectItem
-				name="subGroups"
-				namedStruct={node.subGroups}
-				path={`${node.id}/sub-groups`}
-				label={$LL.graphql.objects.Group.fields.subGroups.name()}
-				errors={errors.subGroups}
-				on:gotoField
-			/>
-		{/if}
-		{#if auth('Group::users::*')}
-			<ObjectItem
-				name="users"
-				namedStruct={node.users}
-				path={`${node.id}/users`}
-				label={$LL.graphql.objects.Group.fields.users.name()}
-				errors={errors.users}
-				on:gotoField
-			/>
-		{/if}
-		{#if auth('Group::roles::*')}
-			<ObjectItem
-				name="roles"
-				namedStruct={node.roles}
-				path={`${node.id}/roles`}
-				label={$LL.graphql.objects.Group.fields.roles.name()}
-				errors={errors.roles}
-				on:gotoField
-			/>
-		{/if}
-		{#if auth('Group::realm::*')}
-			<ObjectItem
-				name="realm"
-				namedStruct={node.realm}
-				path={`${node.id}/realm`}
-				label={$LL.graphql.objects.Group.fields.realm.name()}
-				errors={errors.realm}
-				on:gotoField
-			/>
+		<FormLoading rows={10} />
+	{:else}
+		{#if node}
+			{#if auth('Group::name::*')}
+			<StringItem label={$LL.graphql.objects.Group.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
+			{/if}
+			{#if auth('Group::description::*')}
+			<StringItem label={$LL.graphql.objects.Group.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
+			{/if}
+			{#if auth('Group::path::*')}
+			<StringItem label={$LL.graphql.objects.Group.fields.path.name()} name="path" bind:value={node.path} errors={errors.path} />
+			{/if}
+			{#if auth('Group::deep::*')}
+			<IntItem label={$LL.graphql.objects.Group.fields.deep.name()} name="deep" bind:value={node.deep} errors={errors.deep} />
+			{/if}
+			{#if auth('Group::parentId::*')}
+			<StringItem label={$LL.graphql.objects.Group.fields.parentId.name()} name="parentId" bind:value={node.parentId} errors={errors.parentId} />
+			{/if}
+			{#if auth('Group::parent::*')}
+			<ObjectItem name="parent" namedStruct={ node.parent } path={`${node.id}/parent`} label={$LL.graphql.objects.Group.fields.parent.name()} errors={errors.parent} on:gotoField />
+			{/if}
+			{#if auth('Group::subGroups::*')}
+			<ObjectItem name="subGroups" namedStruct={ node.subGroups } path={`${node.id}/sub-groups`} label={$LL.graphql.objects.Group.fields.subGroups.name()} errors={errors.subGroups} on:gotoField />
+			{/if}
+			{#if auth('Group::users::*')}
+			<ObjectItem name="users" namedStruct={ node.users } path={`${node.id}/users`} label={$LL.graphql.objects.Group.fields.users.name()} errors={errors.users} on:gotoField />
+			{/if}
+			{#if auth('Group::roles::*')}
+			<ObjectItem name="roles" namedStruct={ node.roles } path={`${node.id}/roles`} label={$LL.graphql.objects.Group.fields.roles.name()} errors={errors.roles} on:gotoField />
+			{/if}
+			{#if auth('Group::realm::*')}
+			<ObjectItem name="realm" namedStruct={ node.realm } path={`${node.id}/realm`} label={$LL.graphql.objects.Group.fields.realm.name()} errors={errors.realm} on:gotoField />
+			{/if}
 		{/if}
 	{/if}
 </Form>

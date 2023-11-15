@@ -31,6 +31,15 @@ const en: BaseTranslation = {
 				description: {
 					name: 'description',
 				},
+				path: {
+					name: 'path',
+				},
+				deep: {
+					name: 'deep',
+				},
+				parentId: {
+					name: 'parentId',
+				},
 				parent: {
 					name: 'parent',
 				},
@@ -131,41 +140,6 @@ const en: BaseTranslation = {
 				},
 				permissions: {
 					name: 'permissions',
-				},
-				realm: {
-					name: 'realm',
-				}
-			}
-		},
-		User: {
-			name: 'User',
-			fields: {
-				name: {
-					name: 'name',
-				},
-				description: {
-					name: 'description',
-				},
-				lastName: {
-					name: 'lastName',
-				},
-				login: {
-					name: 'login',
-				},
-				email: {
-					name: 'email',
-				},
-				phones: {
-					name: 'phones',
-				},
-				disable: {
-					name: 'disable',
-				},
-				groups: {
-					name: 'groups',
-				},
-				roles: {
-					name: 'roles',
 				},
 				realm: {
 					name: 'realm',

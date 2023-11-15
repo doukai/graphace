@@ -5,6 +5,7 @@ query Query_group_users($group_id: StringExpression, $first: Int, $last: Int, $o
     description
     path
     deep
+    parentId
     isDeprecated
     version
     realmId

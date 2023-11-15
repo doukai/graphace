@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { tippy } from '@graphace/ui';
-	import { OperatorSelect, StringInput } from '@graphace/ui-graphql';
+	import { OperatorSelect, StringInput, IntInput } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel } from '@steeze-ui/heroicons';
-	import type { StringExpression } from '~/lib/types/schema';
+	import type { StringExpression, IntExpression } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 	import type { GroupExpression } from '$houdini';
 	import { auth } from '@graphace/commons';
@@ -15,9 +15,15 @@
 	let _expression: {
 		name: StringExpression;
 		description: StringExpression;
+		path: StringExpression;
+		deep: IntExpression;
+		parentId: StringExpression;
 	} = {
 		name: {},
 		description: {},
+		path: {},
+		deep: {},
+		parentId: {},
 	};
 
 	let content: HTMLElement;
@@ -37,6 +43,21 @@
 		} else {
 			expression = { ...expression, description: undefined };
 		}
+		if (_expression.path.val || (_expression.path.in && _expression.path.in.length > 0)) {
+			expression = { ...expression, path: _expression.path };
+		} else {
+			expression = { ...expression, path: undefined };
+		}
+		if (_expression.deep.val || (_expression.deep.in && _expression.deep.in.length > 0)) {
+			expression = { ...expression, deep: _expression.deep };
+		} else {
+			expression = { ...expression, deep: undefined };
+		}
+		if (_expression.parentId.val || (_expression.parentId.in && _expression.parentId.in.length > 0)) {
+			expression = { ...expression, parentId: _expression.parentId };
+		} else {
+			expression = { ...expression, parentId: undefined };
+		}
 
 		if (Object.keys(expression).length > 0) {
 			dispatch('filter');
@@ -49,6 +70,9 @@
 	const clear = (): void => {
 		_expression.name = {};
 		_expression.description = {};
+		_expression.path = {};
+		_expression.deep = {};
+		_expression.parentId = {};
 		expression = undefined;
 		dispatch('filter');
 		tippyElement._tippy.hide();
@@ -60,6 +84,18 @@
 	const descriptionOprChange = (): void => {
 		_expression.description.in = [];
 		_expression.description.val = undefined;
+	};
+	const pathOprChange = (): void => {
+		_expression.path.in = [];
+		_expression.path.val = undefined;
+	};
+	const deepOprChange = (): void => {
+		_expression.deep.in = [];
+		_expression.deep.val = undefined;
+	};
+	const parentIdOprChange = (): void => {
+		_expression.parentId.in = [];
+		_expression.parentId.val = undefined;
 	};
 </script>
 <div class="hidden">
@@ -112,6 +148,81 @@
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{name}
 					bind:value={_expression.description.val}
+				/>
+			{/if}
+			{/if}
+			{#if auth('Group::path::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-1/3">
+					{$LL.graphql.objects.Group.fields.path.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-2/3"
+					bind:value={_expression.path.opr}
+					on:change={(e) => pathOprChange()}
+				/>
+			</div>
+			{#if _expression.path.opr === 'IN' || _expression.path.opr === 'NIN' || _expression.path.opr === 'BT' || _expression.path.opr === 'NBT'}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.path.in}
+				/>
+			{:else}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.path.val}
+				/>
+			{/if}
+			{/if}
+			{#if auth('Group::deep::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-1/3">
+					{$LL.graphql.objects.Group.fields.deep.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-2/3"
+					bind:value={_expression.deep.opr}
+					on:change={(e) => deepOprChange()}
+				/>
+			</div>
+			{#if _expression.deep.opr === 'IN' || _expression.deep.opr === 'NIN' || _expression.deep.opr === 'BT' || _expression.deep.opr === 'NBT'}
+				<IntInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.deep.in}
+				/>
+			{:else}
+				<IntInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.deep.val}
+				/>
+			{/if}
+			{/if}
+			{#if auth('Group::parentId::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-1/3">
+					{$LL.graphql.objects.Group.fields.parentId.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-2/3"
+					bind:value={_expression.parentId.opr}
+					on:change={(e) => parentIdOprChange()}
+				/>
+			</div>
+			{#if _expression.parentId.opr === 'IN' || _expression.parentId.opr === 'NIN' || _expression.parentId.opr === 'BT' || _expression.parentId.opr === 'NBT'}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.parentId.in}
+				/>
+			{:else}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.parentId.val}
 				/>
 			{/if}
 			{/if}

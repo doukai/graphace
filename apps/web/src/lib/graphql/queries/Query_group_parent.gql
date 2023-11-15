@@ -5,6 +5,7 @@ query Query_group_parent($group_id: StringExpression, $id: StringExpression, $na
     description
     path
     deep
+    parentId
     isDeprecated
     version
     realmId
@@ -19,6 +20,7 @@ query Query_group_parent($group_id: StringExpression, $id: StringExpression, $na
       description
       path
       deep
+      parentId
       isDeprecated
       version
       realmId

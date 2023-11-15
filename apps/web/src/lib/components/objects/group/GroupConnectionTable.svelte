@@ -3,7 +3,7 @@
 	import type { Errors } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Table, TableHead, TableLoading, TableEmpty, Pagination, messageBoxs, notifications } from '@graphace/ui';
-	import { ObjectTd, StringTh, StringTd } from '@graphace/ui-graphql';
+	import { ObjectTd, StringTh, StringTd, IntTh, IntTd } from '@graphace/ui-graphql';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import UserTh from '~/lib/components/objects/user/UserTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
@@ -103,10 +103,14 @@
 			args.cond = 'OR';
 			args.name = { opr: 'LK', val: `%${searchValue}%` };
 			args.description = { opr: 'LK', val: `%${searchValue}%` };
+			args.path = { opr: 'LK', val: `%${searchValue}%` };
+			args.parentId = { opr: 'LK', val: `%${searchValue}%` };
 		} else {
 			args.cond = undefined;
 			args.name = undefined;
 			args.description = undefined;
+			args.path = undefined;
+			args.parentId = undefined;
 		}
 		
 		if (after) {
@@ -272,6 +276,30 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
+			{#if auth('Group::path::*')}
+			<StringTh
+				name={$LL.graphql.objects.Group.fields.path.name()}
+				bind:expression={args.path}
+				bind:sort={orderBy.path}
+				on:filter={(e) => query()}
+			/>
+			{/if}
+			{#if auth('Group::deep::*')}
+			<IntTh
+				name={$LL.graphql.objects.Group.fields.deep.name()}
+				bind:expression={args.deep}
+				bind:sort={orderBy.deep}
+				on:filter={(e) => query()}
+			/>
+			{/if}
+			{#if auth('Group::parentId::*')}
+			<StringTh
+				name={$LL.graphql.objects.Group.fields.parentId.name()}
+				bind:expression={args.parentId}
+				bind:sort={orderBy.parentId}
+				on:filter={(e) => query()}
+			/>
+			{/if}
 			{#if auth('Group::parent::*')}
 			<GroupTh
 				name={$LL.graphql.objects.Group.fields.parent.name()}
@@ -313,7 +341,7 @@
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading rows={pageSize} cols={7 + 2}/>
+		<TableLoading rows={pageSize} cols={10 + 2}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
@@ -341,6 +369,33 @@
 								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
 								readonly={!auth('Group::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
+							/>
+							{/if}
+							{#if auth('Group::path::*')}
+							<StringTd
+								name="path"
+								bind:value={node.path}
+								on:save={(e) => updateField({ path: node?.path, where: { id: { val: node?.id } } })}
+								readonly={!auth('Group::path::WRITE')}
+								errors={errors[row]?.iterms?.path}
+							/>
+							{/if}
+							{#if auth('Group::deep::*')}
+							<IntTd
+								name="deep"
+								bind:value={node.deep}
+								on:save={(e) => updateField({ deep: node?.deep, where: { id: { val: node?.id } } })}
+								readonly={!auth('Group::deep::WRITE')}
+								errors={errors[row]?.iterms?.deep}
+							/>
+							{/if}
+							{#if auth('Group::parentId::*')}
+							<StringTd
+								name="parentId"
+								bind:value={node.parentId}
+								on:save={(e) => updateField({ parentId: node?.parentId, where: { id: { val: node?.id } } })}
+								readonly={!auth('Group::parentId::WRITE')}
+								errors={errors[row]?.iterms?.parentId}
 							/>
 							{/if}
 							{#if auth('Group::parent::*')}
@@ -433,7 +488,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={7 + 2}/>
+				<TableEmpty cols={10 + 2}/>
 			{/if}
 		</tbody>
 	{/if}

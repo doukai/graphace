@@ -5,6 +5,7 @@ mutation Mutation_group($id: ID, $name: String, $description: String, $path: Str
     description
     path
     deep
+    parentId
     isDeprecated
     version
     realmId

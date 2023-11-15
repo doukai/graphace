@@ -3,7 +3,7 @@
 	import type { Errors } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Table, TableHead, TableLoading, TableEmpty, Pagination, notifications } from '@graphace/ui';
-	import { StringTh, StringTd } from '@graphace/ui-graphql';
+	import { StringTh, StringTd, IntTh, IntTd } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ArchiveBoxArrowDown } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
@@ -21,7 +21,6 @@
 	export let errors: Record<number, Errors> = {};
 	export let multipleSelect: boolean = true;
 	export let showBackButton: boolean = true;
-	export let mutate: boolean | undefined = true;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -102,10 +101,14 @@
 			args.cond = 'OR';
 			args.name = { opr: 'LK', val: `%${searchValue}%` };
 			args.description = { opr: 'LK', val: `%${searchValue}%` };
+			args.path = { opr: 'LK', val: `%${searchValue}%` };
+			args.parentId = { opr: 'LK', val: `%${searchValue}%` };
 		} else {
 			args.cond = undefined;
 			args.name = undefined;
 			args.description = undefined;
+			args.path = undefined;
+			args.parentId = undefined;
 		}
 		
 		if (after) {
@@ -158,12 +161,8 @@
 	on:select={(e) =>
 		dispatch('select', {
 			selected: Array.isArray(selectedIdList)
-				? mutate 
-					? selectedIdList.map((id) => ({ where: { id: { val: id } } }))
-					: selectedIdList.flatMap((id) => nodes?.find((node) => node?.id === id)).map((node) => ({ name: node?.name, description: node?.description, where: { id: { val: node?.id } } }))
-				: mutate 
-					? { where: { id: { val: selectedIdList } } }
-					: nodes?.filter((node) => node?.id === selectedIdList)?.map((node) => ({ name: node?.name, description: node?.description, where: { id: { val: node?.id } } }))[0],
+				? selectedIdList.flatMap((id) => nodes?.find((node) => node?.id === id)).map((node) => ({ name: node?.name, description: node?.description, path: node?.path, deep: node?.deep, parentId: node?.parentId, where: { id: { val: node?.id } } }))
+				: nodes?.filter((node) => node?.id === selectedIdList)?.map((node) => ({ name: node?.name, description: node?.description, path: node?.path, deep: node?.deep, parentId: node?.parentId, where: { id: { val: node?.id } } }))[0],
 			then: () => {
 				notifications.success($LL.web.message.saveSuccess());
 				dispatch('back');
@@ -211,11 +210,35 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
+			{#if auth('Group::path::*')}
+			<StringTh
+				name={$LL.graphql.objects.Group.fields.path.name()}
+				bind:expression={args.path}
+				bind:sort={orderBy.path}
+				on:filter={(e) => query()}
+			/>
+			{/if}
+			{#if auth('Group::deep::*')}
+			<IntTh
+				name={$LL.graphql.objects.Group.fields.deep.name()}
+				bind:expression={args.deep}
+				bind:sort={orderBy.deep}
+				on:filter={(e) => query()}
+			/>
+			{/if}
+			{#if auth('Group::parentId::*')}
+			<StringTh
+				name={$LL.graphql.objects.Group.fields.parentId.name()}
+				bind:expression={args.parentId}
+				bind:sort={orderBy.parentId}
+				on:filter={(e) => query()}
+			/>
+			{/if}
 			<th />
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading rows={pageSize} cols={7 + 2}/>
+		<TableLoading rows={pageSize} cols={10 + 2}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
@@ -249,6 +272,33 @@
 								errors={errors[row]?.iterms?.description}
 							/>
 							{/if}
+							{#if auth('Group::path::*')}
+							<StringTd
+								name="path"
+								bind:value={node.path}
+								on:save={(e) => updateField({ path: node?.path, where: { id: { val: node?.id } } })}
+								readonly={!auth('Group::path::WRITE')}
+								errors={errors[row]?.iterms?.path}
+							/>
+							{/if}
+							{#if auth('Group::deep::*')}
+							<IntTd
+								name="deep"
+								bind:value={node.deep}
+								on:save={(e) => updateField({ deep: node?.deep, where: { id: { val: node?.id } } })}
+								readonly={!auth('Group::deep::WRITE')}
+								errors={errors[row]?.iterms?.deep}
+							/>
+							{/if}
+							{#if auth('Group::parentId::*')}
+							<StringTd
+								name="parentId"
+								bind:value={node.parentId}
+								on:save={(e) => updateField({ parentId: node?.parentId, where: { id: { val: node?.id } } })}
+								readonly={!auth('Group::parentId::WRITE')}
+								errors={errors[row]?.iterms?.parentId}
+							/>
+							{/if}
 							<th class="z-10 hover:z-30 w-12">
 								<div class="flex space-x-1">
 									<div class="tooltip" data-tip={$LL.web.components.table.selectBtn()}>
@@ -258,12 +308,8 @@
 												if (node && node.id) {
 													dispatch('select', {
 														selected: multipleSelect 
-																	? mutate
-																		? [{ where: { id: { val: node.id } } }] 
-																		: [{ name: node?.name, description: node?.description, where: { id: { val: node.id } } }] 
-																	: mutate 
-																		? { where: { id: { val: node.id } } }
-																		: { name: node?.name, description: node?.description, where: { id: { val: node.id } } },
+																	? [{ name: node?.name, description: node?.description, path: node?.path, deep: node?.deep, parentId: node?.parentId, where: { id: { val: node.id } } }] 
+																	: { name: node?.name, description: node?.description, path: node?.path, deep: node?.deep, parentId: node?.parentId, where: { id: { val: node.id } } },
 														then: () => {
 															notifications.success($LL.web.message.saveSuccess());
 															dispatch('back');
@@ -285,7 +331,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={7 + 2}/>
+				<TableEmpty cols={10 + 2}/>
 			{/if}
 		</tbody>
 	{/if}

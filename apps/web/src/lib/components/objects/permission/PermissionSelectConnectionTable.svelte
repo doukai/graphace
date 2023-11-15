@@ -23,7 +23,6 @@
 	export let errors: Record<number, Errors> = {};
 	export let multipleSelect: boolean = true;
 	export let showBackButton: boolean = true;
-	export let mutate: boolean | undefined = true;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -162,12 +161,8 @@
 	on:select={(e) =>
 		dispatch('select', {
 			selected: Array.isArray(selectedIdList)
-				? mutate 
-					? selectedIdList.map((id) => ({ where: { name: { val: id } } }))
-					: selectedIdList.flatMap((id) => nodes?.find((node) => node?.name === id)).map((node) => ({ description: node?.description, field: node?.field, type: node?.type, permissionType: node?.permissionType, where: { name: { val: node?.name } } }))
-				: mutate 
-					? { where: { name: { val: selectedIdList } } }
-					: nodes?.filter((node) => node?.name === selectedIdList)?.map((node) => ({ description: node?.description, field: node?.field, type: node?.type, permissionType: node?.permissionType, where: { name: { val: node?.name } } }))[0],
+				? selectedIdList.flatMap((id) => nodes?.find((node) => node?.name === id)).map((node) => ({ description: node?.description, field: node?.field, type: node?.type, permissionType: node?.permissionType, where: { name: { val: node?.name } } }))
+				: nodes?.filter((node) => node?.name === selectedIdList)?.map((node) => ({ description: node?.description, field: node?.field, type: node?.type, permissionType: node?.permissionType, where: { name: { val: node?.name } } }))[0],
 			then: () => {
 				notifications.success($LL.web.message.saveSuccess());
 				dispatch('back');
@@ -312,12 +307,8 @@
 												if (node && node.name) {
 													dispatch('select', {
 														selected: multipleSelect 
-																	? mutate
-																		? [{ where: { name: { val: node.name } } }] 
-																		: [{ description: node?.description, field: node?.field, type: node?.type, permissionType: node?.permissionType, where: { name: { val: node.name } } }] 
-																	: mutate 
-																		? { where: { name: { val: node.name } } }
-																		: { description: node?.description, field: node?.field, type: node?.type, permissionType: node?.permissionType, where: { name: { val: node.name } } },
+																	? [{ description: node?.description, field: node?.field, type: node?.type, permissionType: node?.permissionType, where: { name: { val: node.name } } }] 
+																	: { description: node?.description, field: node?.field, type: node?.type, permissionType: node?.permissionType, where: { name: { val: node.name } } },
 														then: () => {
 															notifications.success($LL.web.message.saveSuccess());
 															dispatch('back');

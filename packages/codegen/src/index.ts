@@ -14,7 +14,7 @@ const renders: Record<Template, Render> = {
             content: buildFileContent(config.template,
                 {
                     objects: Object.values(schema.getTypeMap())
-                        .filter(type => inRouteObject(type.name))
+                        // .filter(type => inRouteObject(type.name))
                         .filter(type => isObjectType(type))
                         .filter(type => !isOperationType(type.name))
                         .filter(type => !isConnection(type.name))
@@ -765,6 +765,7 @@ const renders: Record<Template, Render> = {
                             connectionField: connectionField,
                             objectFieldName: objectField.name,
                             objectFieldTypeName: objectFieldType.name,
+                            objectFieldTypeIdName: getIDFieldName(objectFieldType),
                             objectFieldTypeFields: getFields(schema, objectFieldType),
                             tablePath: `${config.componentsPath}/objects`,
                             schemaTypesPath: config.schemaTypesPath,
@@ -946,6 +947,7 @@ const renders: Record<Template, Render> = {
                             component: getObjectArrayComponent(typeName),
                             objectFieldName: objectField.name,
                             objectFieldTypeName: objectFieldType.name,
+                            objectFieldTypeIdName: getIDFieldName(objectFieldType),
                             objectFieldTypeFields: getFields(schema, objectFieldType),
                             connectionField: connectionField,
                             tablePath: `${config.componentsPath}/objects`,
@@ -1107,6 +1109,7 @@ const renders: Record<Template, Render> = {
                             connectionField: connectionField,
                             objectFieldName: objectField.name,
                             objectFieldTypeName: objectFieldType.name,
+                            objectFieldTypeIdName: getIDFieldName(objectFieldType),
                             objectFieldTypeFields: getFields(schema, objectFieldType),
                             tablePath: `${config.componentsPath}/objects`,
                             schemaTypesPath: config.schemaTypesPath,
@@ -1286,6 +1289,7 @@ const renders: Record<Template, Render> = {
                             component: getObjectArrayComponent(typeName),
                             objectFieldName: objectField.name,
                             objectFieldTypeName: objectFieldType.name,
+                            objectFieldTypeIdName: getIDFieldName(objectFieldType),
                             objectFieldTypeFields: getFields(schema, objectFieldType),
                             connectionField: connectionField,
                             tablePath: `${config.componentsPath}/objects`,
