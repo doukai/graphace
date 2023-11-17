@@ -7,31 +7,49 @@
 				"name": "Group",
 				"tags": "Group",
 				"href": "/group",
-				"permissions": ["Group::*::*"]
+				"permissions": [
+					"Group::*::*"
+				]
 			},
 			{
 				"name": "Permission",
 				"tags": "Permission",
 				"href": "/permission",
-				"permissions": ["Permission::*::*"]
+				"permissions": [
+					"Permission::*::*"
+				]
 			},
 			{
 				"name": "Realm",
 				"tags": "Realm",
 				"href": "/realm",
-				"permissions": ["Realm::*::*"]
+				"permissions": [
+					"Realm::*::*"
+				]
 			},
 			{
 				"name": "Role",
 				"tags": "Role",
 				"href": "/role",
-				"permissions": ["Role::*::*"]
+				"permissions": [
+					"Role::*::*"
+				]
 			},
 			{
 				"name": "User",
 				"tags": "User",
 				"href": "/user",
-				"permissions": ["User::*::*"]
+				"permissions": [
+					"User::*::*"
+				]
+			},
+			{
+				"name": "Policy",
+				"tags": "Policy",
+				"href": "/policy",
+				"permissions": [
+					"Query::policyList::READ"
+				]
 			}
 		]
 	}

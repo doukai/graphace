@@ -1,7 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import { browser } from '$app/environment';
 import { goto } from '$app/navigation';
-import { PUBLIC_GRAPHQL_URL } from '$env/static/public';
+import { env } from '$env/dynamic/public';
 import { HoudiniClient } from '$houdini';
 import type { ClientPlugin } from '$houdini'
 
@@ -23,7 +23,7 @@ const authPlugin: ClientPlugin = () => {
 }
 
 export default new HoudiniClient({
-	url: PUBLIC_GRAPHQL_URL,
+	url: browser ? `/${env.PUBLIC_GRAPHQL_PATH || 'graphql'}` : env.PUBLIC_GRAPHQL_URL,
 	plugins: [
 		authPlugin
 	],

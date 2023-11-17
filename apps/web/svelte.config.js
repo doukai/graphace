@@ -1,4 +1,5 @@
-import adapter from '@sveltejs/adapter-auto';
+// import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-node';
 import preprocess from 'svelte-preprocess';
 import path from 'path';
 
@@ -9,7 +10,13 @@ const config = {
   preprocess: preprocess(),
 
   kit: {
-    adapter: adapter(),
+    adapter: adapter({
+      // default options are shown
+      out: 'build'
+    }),
+    csrf: {
+      checkOrigin: false,
+    },
     alias: {
       '~': path.resolve('./src'),
       $i18n: 'src/i18n',

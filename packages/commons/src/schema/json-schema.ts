@@ -1,7 +1,7 @@
 import type { Error, Errors, Language } from '../';
-import type Ajv from 'ajv';
-import type { AnySchemaObject, ErrorObject } from 'ajv';
+import type { ErrorObject } from 'ajv';
 import localize from 'ajv-i18n';
+import type { AnyValidateFunction } from 'ajv/dist/types';
 import * as changeCase from "change-case";
 
 function buildErrors(errors: ErrorObject[]): Record<string, Errors> {
@@ -70,12 +70,7 @@ function removeEmpty(data: object | object[]): object {
     }
 }
 
-export async function validate(ajv: Ajv, loadSchema: (uri: string) => Promise<AnySchemaObject>, uri: string, data: object, locale: Language = "en"): Promise<object> {
-    let validate = ajv.getSchema(uri);
-    if (!validate) {
-        const schema = await loadSchema(uri);
-        validate = await ajv.compileAsync(schema);
-    }
+export async function execute(validate: AnyValidateFunction<unknown> | undefined, data: object, locale: Language = "en"): Promise<object> {
     return new Promise((resolve: (data: object) => void, reject: (errors: Record<string, Errors>) => void) => {
         if (validate) {
             // const validateData = removeEmpty(data);
@@ -83,7 +78,6 @@ export async function validate(ajv: Ajv, loadSchema: (uri: string) => Promise<An
             if (!valid) {
                 localize[locale](validate.errors);
                 if (validate.errors) {
-                    console.error(ajv.errorsText(validate.errors, { separator: '\n' }));
                     reject(buildErrors(validate.errors));
                 } else {
                     throw new Error('validate errors undefined');
@@ -97,19 +91,13 @@ export async function validate(ajv: Ajv, loadSchema: (uri: string) => Promise<An
     });
 }
 
-export async function validateAsync(ajv: Ajv, loadSchema: (uri: string) => Promise<AnySchemaObject>, uri: string, data: object, locale: Language = "en"): Promise<Record<string, Errors> | undefined> {
-    let validate = ajv.getSchema(uri);
-    if (!validate) {
-        const schema = await loadSchema(uri);
-        validate = await ajv.compileAsync(schema);
-    }
+export async function executeAsync(validate: AnyValidateFunction<unknown> | undefined, data: object, locale: Language = "en"): Promise<Record<string, Errors> | undefined> {
     if (validate) {
         // const validateData = removeEmpty(data);
         const valid = validate(data);
         if (!valid) {
             localize[locale](validate.errors);
             if (validate.errors) {
-                console.error(ajv.errorsText(validate.errors, { separator: '\n' }));
                 return buildErrors(validate.errors);
             } else {
                 throw new Error('validate errors undefined');
