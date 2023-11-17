@@ -11,6 +11,9 @@
 		},
 		"dev": {
 			"cache": false
+		},
+		"publish:yalc": {
+			"dependsOn": ["^publish:yalc"]
 		}
 	}
 }

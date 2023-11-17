@@ -24,7 +24,7 @@ export async function getValidate(uri: string): Promise<AnyValidateFunction<unkn
 
 export async function validateMutation(objectName: string, data: object, locale: Language = "en"): Promise<object> {
     const uri = objectNameToUri(env.PUBLIC_MUTATION_TYPE_NAME || 'Mutation', objectName, data);
-    let validate = await getValidate(uri);
+    const validate = await getValidate(uri);
     if (Array.isArray(data)) {
         return execute(validate, { list: data }, locale);
     }
@@ -32,11 +32,11 @@ export async function validateMutation(objectName: string, data: object, locale:
 }
 
 export async function validate(uri: string, data: object, locale: Language = "en"): Promise<object> {
-    let validate = await getValidate(uri);
+    const validate = await getValidate(uri);
     return execute(validate, data, locale);
 }
 
 export async function validateAsync(uri: string, data: object, locale: Language = "en"): Promise<Record<string, Errors> | undefined> {
-    let validate = await getValidate(uri);
+    const validate = await getValidate(uri);
     return executeAsync(validate, data, locale);
 }

@@ -3,18 +3,16 @@
 	"version": "0.0.1",
 	"description": "The user interface for Graphoenix",
 	"private": true,
-	"workspaces": {
-		"packages": [
-			"apps/*",
-			"packages/*"
-		],
-		"nohoist": []
-	},
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
 	"scripts": {
 		"build": "turbo run build",
 		"dev": "turbo run dev --parallel",
 		"build:packages": "turbo run build --filter=./packages/*",
 		"publish:local": "pnpm publish --no-git-checks --registry http://localhost:4873/ --filter=./packages/*",
+		"publish:yalc": "turbo run publish:yalc --filter=./packages/*",
 		"daemon:clean": "turbo daemon clean",
 		"login": "turbo login",
 		"clean": "npx npkill",

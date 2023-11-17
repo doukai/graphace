@@ -2,7 +2,8 @@
 	"name": "graphace-codegen",
 	"version": "0.0.20",
 	"scripts": {
-		"build": "microbundle"
+		"build": "microbundle",
+		"publish:yalc": "yalc publish"
 	},
 	"devDependencies": {
 		"microbundle": "^0.15.1"
