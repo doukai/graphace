@@ -15,7 +15,8 @@
 		"houdini:pull-schema": "houdini pull-schema",
 		"graphql-codegen": "graphql-codegen",
 		"i18n:import": "tsx src/i18n/import.ts",
-		"typesafe-i18n": "typesafe-i18n"
+		"typesafe-i18n": "typesafe-i18n",
+		"clean:yalc": "yalc remove --all"
 	},
 	"dependencies": {
 		"@graphace/commons": "workspace:*",

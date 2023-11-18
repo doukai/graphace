@@ -17,6 +17,7 @@
 		"login": "turbo login",
 		"clean": "npx npkill",
 		"clean:dist": "turbo run clean",
+		"clean:yalc": "turbo run clean:yalc",
 		"lint": "turbo run lint",
 		"format": "prettier --write ."
 	},
