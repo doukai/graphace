@@ -23,5 +23,8 @@
 		"typescript": "^4.9.5",
 		"@graphace/commons": "workspace:*"
 	},
-	"peerDependencies": {}
+	"peerDependencies": {},
+	"publishConfig": {
+		"access": "public"
+	}
 }

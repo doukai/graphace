@@ -55,5 +55,8 @@
 		"date-fns": "^2.30.0",
 		"nanoid": "^4.0.2",
 		"svelte": "^3.59.1"
+	},
+	"publishConfig": {
+		"access": "public"
 	}
 }
