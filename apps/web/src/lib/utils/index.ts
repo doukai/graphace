@@ -1,1 +1,2 @@
-export * from './validate-util'
+export * from './validate-util';
+export * from './auth-util';

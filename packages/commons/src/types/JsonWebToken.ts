@@ -6,7 +6,7 @@ export interface JsonWebToken {
     family_name?: string | undefined
     groups?: string[] | undefined
     roles?: string[] | undefined
-    permissions?: string[] | undefined
+    permission_types?: string[] | undefined
     is_root?: boolean | undefined
     iat?: number
     exp?: number
