@@ -1,0 +1,3 @@
+query Query_currentPermissionNameList($types: [String]) {
+  currentPermissionNameList(types: $types) 
+}

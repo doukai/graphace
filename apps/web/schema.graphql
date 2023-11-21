@@ -1295,7 +1295,8 @@ type Query implements Meta {
   createTime: Timestamp
   createUserId: String
   current: CurrentUser
-  currentPermissionList: [String]
+  currentPermissionNameList(types: [String]): [String]
+  currentPermissionTypeList: [String]
   group(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, deep: IntExpression, description: StringExpression, exs: [GroupExpression], groupBy: [String!], groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, not: Boolean = false, parent: GroupExpression, parentId: StringExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): Group
   groupConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, deep: IntExpression, description: StringExpression, exs: [GroupExpression], first: Int, groupBy: [String!], groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, not: Boolean = false, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: StringExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): GroupConnection
   groupList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, deep: IntExpression, description: StringExpression, exs: [GroupExpression], first: Int, groupBy: [String!], groupRole: GroupRoleExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, not: Boolean = false, offset: Int, orderBy: GroupOrderBy, parent: GroupExpression, parentId: StringExpression, path: StringExpression, realm: RealmExpression, realmId: IntExpression, roles: RoleExpression, subGroups: GroupExpression, updateTime: StringExpression, updateUserId: StringExpression, userGroup: UserGroupExpression, users: UserExpression, version: IntExpression): [Group]
@@ -1335,6 +1336,10 @@ type Query implements Meta {
   userRoleConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [UserRoleExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, not: Boolean = false, offset: Int, orderBy: UserRoleOrderBy, realmId: IntExpression, roleId: IntExpression, roleIdType: RoleExpression, updateTime: StringExpression, updateUserId: StringExpression, userId: IntExpression, userIdType: UserExpression, version: IntExpression): UserRoleConnection
   userRoleList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [UserRoleExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, not: Boolean = false, offset: Int, orderBy: UserRoleOrderBy, realmId: IntExpression, roleId: IntExpression, roleIdType: RoleExpression, updateTime: StringExpression, updateUserId: StringExpression, userId: IntExpression, userIdType: UserExpression, version: IntExpression): [UserRole]
   version: Int
+}
+
+input Query_currentPermissionNameList_Arguments {
+  types: [String]
 }
 
 """租户"""

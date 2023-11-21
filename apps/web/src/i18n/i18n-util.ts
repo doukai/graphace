@@ -16,7 +16,10 @@ export const locales: Locales[] = [
 ]
 
 export const namespaces: Namespaces[] = [
-	'uiGraphql'
+	'graphql',
+	'ui',
+	'uiGraphql',
+	'web'
 ]
 
 export const isLocale = (locale: string): locale is Locales => locales.includes(locale as Locales)

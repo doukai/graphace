@@ -2303,7 +2303,8 @@ export type Query = Meta & {
   rolePermissionList?: Maybe<Array<Maybe<RolePermission>>>;
   rolePermissionConnection?: Maybe<RolePermissionConnection>;
   current?: Maybe<CurrentUser>;
-  currentPermissionList?: Maybe<Array<Maybe<Scalars['String']>>>;
+  currentPermissionTypeList?: Maybe<Array<Maybe<Scalars['String']>>>;
+  currentPermissionNameList?: Maybe<Array<Maybe<Scalars['String']>>>;
   policyList?: Maybe<Array<Maybe<Policy>>>;
 };
 
@@ -3208,6 +3209,15 @@ export type QueryRolePermissionConnectionArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryCurrentPermissionNameListArgs = {
+  types?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type Query_CurrentPermissionNameList_Arguments = {
+  types?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 /** 租户 */

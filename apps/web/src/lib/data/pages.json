@@ -1,56 +1,74 @@
 [
-	{
-		"name": "Objects",
-		"icon": "material-symbols:data-object",
-		"items": [
-			{
-				"name": "Group",
-				"tags": "Group",
-				"href": "/group",
-				"permissions": [
-					"Group::*::*"
-				]
-			},
-			{
-				"name": "Permission",
-				"tags": "Permission",
-				"href": "/permission",
-				"permissions": [
-					"Permission::*::*"
-				]
-			},
-			{
-				"name": "Realm",
-				"tags": "Realm",
-				"href": "/realm",
-				"permissions": [
-					"Realm::*::*"
-				]
-			},
-			{
-				"name": "Role",
-				"tags": "Role",
-				"href": "/role",
-				"permissions": [
-					"Role::*::*"
-				]
-			},
-			{
-				"name": "User",
-				"tags": "User",
-				"href": "/user",
-				"permissions": [
-					"User::*::*"
-				]
-			},
-			{
-				"name": "Policy",
-				"tags": "Policy",
-				"href": "/policy",
-				"permissions": [
-					"Query::policyList::READ"
-				]
-			}
-		]
-	}
+  {
+    "name": "Objects",
+    "icon": "material-symbols:data-object",
+    "items": [
+	    {
+        "name": "Group",
+        "tags": "Group",
+        "href": "/group",
+        "permissions": ["Group::*::*"]
+	    },
+	    {
+        "name": "GroupRole",
+        "tags": "GroupRole",
+        "href": "/group-role",
+        "permissions": ["GroupRole::*::*"]
+	    },
+	    {
+        "name": "Permission",
+        "tags": "Permission",
+        "href": "/permission",
+        "permissions": ["Permission::*::*"]
+	    },
+	    {
+        "name": "Realm",
+        "tags": "Realm",
+        "href": "/realm",
+        "permissions": ["Realm::*::*"]
+	    },
+	    {
+        "name": "Role",
+        "tags": "Role",
+        "href": "/role",
+        "permissions": ["Role::*::*"]
+	    },
+	    {
+        "name": "RoleComposite",
+        "tags": "RoleComposite",
+        "href": "/role-composite",
+        "permissions": ["RoleComposite::*::*"]
+	    },
+	    {
+        "name": "RolePermission",
+        "tags": "RolePermission",
+        "href": "/role-permission",
+        "permissions": ["RolePermission::*::*"]
+	    },
+	    {
+        "name": "User",
+        "tags": "User",
+        "href": "/user",
+        "permissions": ["User::*::*"]
+	    },
+	    {
+        "name": "UserGroup",
+        "tags": "UserGroup",
+        "href": "/user-group",
+        "permissions": ["UserGroup::*::*"]
+	    },
+	    {
+        "name": "UserPhones",
+        "tags": "UserPhones",
+        "href": "/user-phones",
+        "permissions": ["UserPhones::*::*"]
+	    },
+	    {
+        "name": "UserRole",
+        "tags": "UserRole",
+        "href": "/user-role",
+        "permissions": ["UserRole::*::*"]
+	    }
+    ]
+  }
 ]
