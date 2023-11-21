@@ -13,7 +13,7 @@
 		QueryUserConnectionArgs,
 		UserInput
 	} from '~/lib/types/schema';
-	import { auth } from '@graphace/commons';
+	import { permissions } from '~/lib/utils/auth-util';
 
 	export let nodes: (User | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;
@@ -198,7 +198,7 @@
 					</label>
 				{/if}
 			</th>
-			{#if auth('User::name::*')}
+			{#if await $permissions.auth('User::name::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.name.name()}
 				bind:expression={args.name}
@@ -206,7 +206,7 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if auth('User::description::*')}
+			{#if await $permissions.auth('User::description::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.description.name()}
 				bind:expression={args.description}
@@ -214,7 +214,7 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if auth('User::lastName::*')}
+			{#if await $permissions.auth('User::lastName::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.lastName.name()}
 				bind:expression={args.lastName}
@@ -222,7 +222,7 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if auth('User::login::*')}
+			{#if await $permissions.auth('User::login::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.login.name()}
 				bind:expression={args.login}
@@ -230,7 +230,7 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if auth('User::email::*')}
+			{#if await $permissions.auth('User::email::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.email.name()}
 				bind:expression={args.email}
@@ -238,14 +238,14 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if auth('User::phones::*')}
+			{#if await $permissions.auth('User::phones::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.phones.name()}
 				bind:expression={args.phones}
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if auth('User::disable::*')}
+			{#if await $permissions.auth('User::disable::*')}
 			<BooleanTh
 				name={$LL.graphql.objects.User.fields.disable.name()}
 				bind:expression={args.disable}
@@ -273,67 +273,67 @@
 									{/if}
 								</label>
 							</th>
-							{#if auth('User::name::*')}
+							{#if await $permissions.auth('User::name::*')}
 							<StringTd
 								name="name"
 								bind:value={node.name}
 								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
-								readonly={!auth('User::name::WRITE')}
+								readonly={!await $permissions.auth('User::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
 							{/if}
-							{#if auth('User::description::*')}
+							{#if await $permissions.auth('User::description::*')}
 							<StringTd
 								name="description"
 								bind:value={node.description}
 								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
-								readonly={!auth('User::description::WRITE')}
+								readonly={!await $permissions.auth('User::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>
 							{/if}
-							{#if auth('User::lastName::*')}
+							{#if await $permissions.auth('User::lastName::*')}
 							<StringTd
 								name="lastName"
 								bind:value={node.lastName}
 								on:save={(e) => updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } })}
-								readonly={!auth('User::lastName::WRITE')}
+								readonly={!await $permissions.auth('User::lastName::WRITE')}
 								errors={errors[row]?.iterms?.lastName}
 							/>
 							{/if}
-							{#if auth('User::login::*')}
+							{#if await $permissions.auth('User::login::*')}
 							<StringTd
 								name="login"
 								bind:value={node.login}
 								on:save={(e) => updateField({ login: node?.login, where: { id: { val: node?.id } } })}
-								readonly={!auth('User::login::WRITE')}
+								readonly={!await $permissions.auth('User::login::WRITE')}
 								errors={errors[row]?.iterms?.login}
 							/>
 							{/if}
-							{#if auth('User::email::*')}
+							{#if await $permissions.auth('User::email::*')}
 							<StringTd
 								name="email"
 								bind:value={node.email}
 								on:save={(e) => updateField({ email: node?.email, where: { id: { val: node?.id } } })}
-								readonly={!auth('User::email::WRITE')}
+								readonly={!await $permissions.auth('User::email::WRITE')}
 								errors={errors[row]?.iterms?.email}
 							/>
 							{/if}
-							{#if auth('User::phones::*')}
+							{#if await $permissions.auth('User::phones::*')}
 							<StringTd
 								name="phones"
 								bind:value={node.phones}
 								list
 								on:save={(e) => updateField({ phones: node?.phones, where: { id: { val: node?.id } } })}
-								readonly={!auth('User::phones::WRITE')}
+								readonly={!await $permissions.auth('User::phones::WRITE')}
 								errors={errors[row]?.iterms?.phones}
 							/>
 							{/if}
-							{#if auth('User::disable::*')}
+							{#if await $permissions.auth('User::disable::*')}
 							<BooleanTd
 								name="disable"
 								bind:value={node.disable}
 								on:save={(e) => updateField({ disable: node?.disable, where: { id: { val: node?.id } } })}
-								readonly={!auth('User::disable::WRITE')}
+								readonly={!await $permissions.auth('User::disable::WRITE')}
 								errors={errors[row]?.iterms?.disable}
 							/>
 							{/if}

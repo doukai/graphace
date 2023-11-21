@@ -15,7 +15,7 @@
 	import LL from '$i18n/i18n-svelte';
 	import type { {{ name }}, {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	{%- if useAuth %}
-	import { auth } from '@graphace/commons';
+	import { permissions } from '~/lib/utils/auth-util';
 	{%- endif %}
 
 	export let node: {{ name }} | null | undefined;
@@ -102,9 +102,9 @@
 <Form
 	title={$LL.graphql.objects.{{ name }}.name()}
 	{%- if useAuth %}
-	showRemoveButton={auth('{{ name }}::*::WRITE') && showRemoveButton}
-	showUnbindButton={auth('{{ name }}::*::WRITE') && showUnbindButton}
-	showGotoSelectButton={auth('{{ name }}::*::WRITE') && showGotoSelectButton}
+	showRemoveButton={await $permissions.auth('{{ name }}::*::WRITE') && showRemoveButton}
+	showUnbindButton={await $permissions.auth('{{ name }}::*::WRITE') && showUnbindButton}
+	showGotoSelectButton={await $permissions.auth('{{ name }}::*::WRITE') && showGotoSelectButton}
 	{%- else %}
 	{showRemoveButton}
 	{showUnbindButton}
@@ -150,7 +150,7 @@
 			{%- if fields %}
 			{%- for field in fields %}
 			{%- if useAuth %}
-			{#if auth('{{ name }}::{{ field.fieldName }}::*')}
+			{#if await $permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 			{%- endif %}
 			{%- if field.component %}
 			{{ field.component }}

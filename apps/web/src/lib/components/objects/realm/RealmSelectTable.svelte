@@ -13,7 +13,7 @@
 		QueryRealmListArgs,
 		RealmInput
 	} from '~/lib/types/schema';
-	import { auth } from '@graphace/commons';
+	import { permissions } from '~/lib/utils/auth-util';
 
 	export let nodes: (Realm | null | undefined)[] | null | undefined;
 	export let isFetching: boolean;
@@ -158,7 +158,7 @@
 					</label>
 				{/if}
 			</th>
-			{#if auth('Realm::name::*')}
+			{#if await $permissions.auth('Realm::name::*')}
 			<StringTh
 				name={$LL.graphql.objects.Realm.fields.name.name()}
 				bind:expression={args.name}
@@ -166,7 +166,7 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if auth('Realm::description::*')}
+			{#if await $permissions.auth('Realm::description::*')}
 			<StringTh
 				name={$LL.graphql.objects.Realm.fields.description.name()}
 				bind:expression={args.description}
@@ -194,21 +194,21 @@
 									{/if}
 								</label>
 							</th>
-							{#if auth('Realm::name::*')}
+							{#if await $permissions.auth('Realm::name::*')}
 							<StringTd
 								name="name"
 								bind:value={node.name}
 								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
-								readonly={!auth('Realm::name::WRITE')}
+								readonly={!await $permissions.auth('Realm::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
 							{/if}
-							{#if auth('Realm::description::*')}
+							{#if await $permissions.auth('Realm::description::*')}
 							<StringTd
 								name="description"
 								bind:value={node.description}
 								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
-								readonly={!auth('Realm::description::WRITE')}
+								readonly={!await $permissions.auth('Realm::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>
 							{/if}

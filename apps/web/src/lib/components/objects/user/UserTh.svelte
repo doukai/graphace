@@ -7,7 +7,7 @@
 	import type { StringExpression, BooleanExpression } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 	import type { UserExpression } from '$houdini';
-	import { auth } from '@graphace/commons';
+	import { permissions } from '~/lib/utils/auth-util';
 
 	export let name: string;
 	export let expression: UserExpression | null | undefined;
@@ -125,7 +125,7 @@
 <div class="hidden">
 	<div class="space-y-2" bind:this={content}>
 		<div class="grid grid-cols-2 gap-2">
-			{#if auth('User::name::*')}
+			{#if await $permissions.auth('User::name::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.User.fields.name.name()}
@@ -150,7 +150,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if auth('User::description::*')}
+			{#if await $permissions.auth('User::description::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.User.fields.description.name()}
@@ -175,7 +175,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if auth('User::lastName::*')}
+			{#if await $permissions.auth('User::lastName::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.User.fields.lastName.name()}
@@ -200,7 +200,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if auth('User::login::*')}
+			{#if await $permissions.auth('User::login::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.User.fields.login.name()}
@@ -225,7 +225,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if auth('User::email::*')}
+			{#if await $permissions.auth('User::email::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.User.fields.email.name()}
@@ -250,7 +250,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if auth('User::phones::*')}
+			{#if await $permissions.auth('User::phones::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.User.fields.phones.name()}
@@ -275,7 +275,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if auth('User::disable::*')}
+			{#if await $permissions.auth('User::disable::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.User.fields.disable.name()}

@@ -7,7 +7,7 @@
 	import type { StringExpression } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 	import type { RoleExpression } from '$houdini';
-	import { auth } from '@graphace/commons';
+	import { permissions } from '~/lib/utils/auth-util';
 
 	export let name: string;
 	export let expression: RoleExpression | null | undefined;
@@ -65,7 +65,7 @@
 <div class="hidden">
 	<div class="space-y-2" bind:this={content}>
 		<div class="grid grid-cols-2 gap-2">
-			{#if auth('Role::name::*')}
+			{#if await $permissions.auth('Role::name::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.Role.fields.name.name()}
@@ -90,7 +90,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if auth('Role::description::*')}
+			{#if await $permissions.auth('Role::description::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.Role.fields.description.name()}

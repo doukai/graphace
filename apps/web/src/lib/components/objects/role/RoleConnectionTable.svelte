@@ -18,7 +18,7 @@
 		QueryRoleConnectionArgs,
 		RoleInput
 	} from '~/lib/types/schema';
-	import { auth } from '@graphace/commons';
+	import { permissions } from '~/lib/utils/auth-util';
 
 	export let nodes: (Role | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;
@@ -199,10 +199,10 @@
 
 <TableHead
 	title={$LL.graphql.objects.Role.name()}
-	showRemoveButton={auth('Role::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
-	showUnbindButton={auth('Role::*::WRITE') && showUnbindButton && selectedIdList.length > 0}
-	showSaveButton={auth('Role::*::WRITE') && showSaveButton}
-	showGotoSelectButton={auth('Role::*::WRITE') && showGotoSelectButton}
+	showRemoveButton={await $permissions.auth('Role::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
+	showUnbindButton={await $permissions.auth('Role::*::WRITE') && showUnbindButton && selectedIdList.length > 0}
+	showSaveButton={await $permissions.auth('Role::*::WRITE') && showSaveButton}
+	showGotoSelectButton={await $permissions.auth('Role::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	on:create
 	on:search={(e) => search(e.detail.value)}
@@ -257,7 +257,7 @@
 					/>
 				</label>
 			</th>
-			{#if auth('Role::name::*')}
+			{#if await $permissions.auth('Role::name::*')}
 			<StringTh
 				name={$LL.graphql.objects.Role.fields.name.name()}
 				bind:expression={args.name}
@@ -265,7 +265,7 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if auth('Role::description::*')}
+			{#if await $permissions.auth('Role::description::*')}
 			<StringTh
 				name={$LL.graphql.objects.Role.fields.description.name()}
 				bind:expression={args.description}
@@ -273,42 +273,42 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if auth('Role::users::*')}
+			{#if await $permissions.auth('Role::users::*')}
 			<UserTh
 				name={$LL.graphql.objects.Role.fields.users.name()}
 				bind:expression={args.users}
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if auth('Role::groups::*')}
+			{#if await $permissions.auth('Role::groups::*')}
 			<GroupTh
 				name={$LL.graphql.objects.Role.fields.groups.name()}
 				bind:expression={args.groups}
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if auth('Role::composites::*')}
+			{#if await $permissions.auth('Role::composites::*')}
 			<RoleTh
 				name={$LL.graphql.objects.Role.fields.composites.name()}
 				bind:expression={args.composites}
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if auth('Role::permissions::*')}
+			{#if await $permissions.auth('Role::permissions::*')}
 			<PermissionTh
 				name={$LL.graphql.objects.Role.fields.permissions.name()}
 				bind:expression={args.permissions}
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if auth('Role::realm::*')}
+			{#if await $permissions.auth('Role::realm::*')}
 			<RealmTh
 				name={$LL.graphql.objects.Role.fields.realm.name()}
 				bind:expression={args.realm}
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if auth('Role::*::WRITE')}
+			{#if await $permissions.auth('Role::*::WRITE')}
 			<th />
 			{/if}
 		</tr>
@@ -326,40 +326,40 @@
 									<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
 								</label>
 							</th>
-							{#if auth('Role::name::*')}
+							{#if await $permissions.auth('Role::name::*')}
 							<StringTd
 								name="name"
 								bind:value={node.name}
 								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
-								readonly={!auth('Role::name::WRITE')}
+								readonly={!await $permissions.auth('Role::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
 							{/if}
-							{#if auth('Role::description::*')}
+							{#if await $permissions.auth('Role::description::*')}
 							<StringTd
 								name="description"
 								bind:value={node.description}
 								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
-								readonly={!auth('Role::description::WRITE')}
+								readonly={!await $permissions.auth('Role::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>
 							{/if}
-							{#if auth('Role::users::*')}
+							{#if await $permissions.auth('Role::users::*')}
 							<ObjectTd name="users" namedStruct={ node.users } errors={errors[row]?.iterms?.users} path={`${node.id}/users`} on:gotoField />
 							{/if}
-							{#if auth('Role::groups::*')}
+							{#if await $permissions.auth('Role::groups::*')}
 							<ObjectTd name="groups" namedStruct={ node.groups } errors={errors[row]?.iterms?.groups} path={`${node.id}/groups`} on:gotoField />
 							{/if}
-							{#if auth('Role::composites::*')}
+							{#if await $permissions.auth('Role::composites::*')}
 							<ObjectTd name="composites" namedStruct={ node.composites } errors={errors[row]?.iterms?.composites} path={`${node.id}/composites`} on:gotoField />
 							{/if}
-							{#if auth('Role::permissions::*')}
+							{#if await $permissions.auth('Role::permissions::*')}
 							<ObjectTd name="permissions"  errors={errors[row]?.iterms?.permissions} path={`${node.id}/permissions`} on:gotoField />
 							{/if}
-							{#if auth('Role::realm::*')}
+							{#if await $permissions.auth('Role::realm::*')}
 							<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
 							{/if}
-							{#if auth('Role::*::WRITE')}
+							{#if await $permissions.auth('Role::*::WRITE')}
 							<th class="z-10 hover:z-30 w-24">
 								<div class="flex space-x-1">
 									<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>

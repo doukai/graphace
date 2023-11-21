@@ -7,7 +7,7 @@
 	import type { StringExpression, IntExpression } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 	import type { GroupExpression } from '$houdini';
-	import { auth } from '@graphace/commons';
+	import { permissions } from '~/lib/utils/auth-util';
 
 	export let name: string;
 	export let expression: GroupExpression | null | undefined;
@@ -101,7 +101,7 @@
 <div class="hidden">
 	<div class="space-y-2" bind:this={content}>
 		<div class="grid grid-cols-2 gap-2">
-			{#if auth('Group::name::*')}
+			{#if await $permissions.auth('Group::name::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.Group.fields.name.name()}
@@ -126,7 +126,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if auth('Group::description::*')}
+			{#if await $permissions.auth('Group::description::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.Group.fields.description.name()}
@@ -151,7 +151,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if auth('Group::path::*')}
+			{#if await $permissions.auth('Group::path::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.Group.fields.path.name()}
@@ -176,7 +176,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if auth('Group::deep::*')}
+			{#if await $permissions.auth('Group::deep::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.Group.fields.deep.name()}
@@ -201,7 +201,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if auth('Group::parentId::*')}
+			{#if await $permissions.auth('Group::parentId::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.Group.fields.parentId.name()}

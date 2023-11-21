@@ -6,7 +6,7 @@
 	import { StringItem, ObjectItem } from '@graphace/ui-graphql';
 	import LL from '$i18n/i18n-svelte';
 	import type { Realm, RealmInput } from '~/lib/types/schema';
-	import { auth } from '@graphace/commons';
+	import { permissions } from '~/lib/utils/auth-util';
 
 	export let node: RealmInput = {};
 	export let errors: Record<string, Errors> = {};
@@ -59,8 +59,8 @@
 
 <Form
 	title={$LL.graphql.objects.Realm.name()}
-	showRemoveButton={auth('Realm::*::WRITE') && showRemoveButton && node !== undefined && node !== null && Object.keys(node).length > 0}
-	showGotoSelectButton={auth('Realm::*::WRITE') && showGotoSelectButton}
+	showRemoveButton={await $permissions.auth('Realm::*::WRITE') && showRemoveButton && node !== undefined && node !== null && Object.keys(node).length > 0}
+	showGotoSelectButton={await $permissions.auth('Realm::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	on:save={(e) => save()}
 	on:remove={(e) =>
@@ -76,10 +76,10 @@
 	on:gotoSelect
 	on:back
 >
-	{#if auth('Realm::name::*')}
+	{#if await $permissions.auth('Realm::name::*')}
 	<StringItem label={$LL.graphql.objects.Realm.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
 	{/if}
-	{#if auth('Realm::description::*')}
+	{#if await $permissions.auth('Realm::description::*')}
 	<StringItem label={$LL.graphql.objects.Realm.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
 	{/if}
 </Form>

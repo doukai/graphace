@@ -11,7 +11,7 @@
 	import LL from '$i18n/i18n-svelte';
 	import type { {% for enum in enums %}{{ enum }}Expression, {% endfor %}{{ name }}Expression } from '$houdini';
 	{%- if useAuth %}
-	import { auth } from '@graphace/commons';
+	import { permissions } from '~/lib/utils/auth-util';
 	{%- endif %}
 
 	export let name: string;
@@ -94,7 +94,7 @@
 		{%- for field in fields %}
 		{%- if field.isScalarType or field.isEnumType %}
 			{%- if useAuth %}
-			{#if auth('{{ name }}::{{ field.fieldName }}::*')}
+			{#if await $permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 			{%- endif %}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">

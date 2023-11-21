@@ -6,7 +6,7 @@
 	import { StringItem, IntItem, ObjectItem } from '@graphace/ui-graphql';
 	import LL from '$i18n/i18n-svelte';
 	import type { Group, GroupInput } from '~/lib/types/schema';
-	import { auth } from '@graphace/commons';
+	import { permissions } from '~/lib/utils/auth-util';
 
 	export let node: Group | null | undefined;
 	export let isFetching: boolean;
@@ -89,9 +89,9 @@
 
 <Form
 	title={$LL.graphql.objects.Group.name()}
-	showRemoveButton={auth('Group::*::WRITE') && showRemoveButton}
-	showUnbindButton={auth('Group::*::WRITE') && showUnbindButton}
-	showGotoSelectButton={auth('Group::*::WRITE') && showGotoSelectButton}
+	showRemoveButton={await $permissions.auth('Group::*::WRITE') && showRemoveButton}
+	showUnbindButton={await $permissions.auth('Group::*::WRITE') && showUnbindButton}
+	showGotoSelectButton={await $permissions.auth('Group::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	on:save={(e) => save()}
 	on:remove={(e) =>
@@ -129,34 +129,34 @@
 		<FormLoading rows={10} />
 	{:else}
 		{#if node}
-			{#if auth('Group::name::*')}
+			{#if await $permissions.auth('Group::name::*')}
 			<StringItem label={$LL.graphql.objects.Group.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
 			{/if}
-			{#if auth('Group::description::*')}
+			{#if await $permissions.auth('Group::description::*')}
 			<StringItem label={$LL.graphql.objects.Group.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
 			{/if}
-			{#if auth('Group::path::*')}
+			{#if await $permissions.auth('Group::path::*')}
 			<StringItem label={$LL.graphql.objects.Group.fields.path.name()} name="path" bind:value={node.path} errors={errors.path} />
 			{/if}
-			{#if auth('Group::deep::*')}
+			{#if await $permissions.auth('Group::deep::*')}
 			<IntItem label={$LL.graphql.objects.Group.fields.deep.name()} name="deep" bind:value={node.deep} errors={errors.deep} />
 			{/if}
-			{#if auth('Group::parentId::*')}
+			{#if await $permissions.auth('Group::parentId::*')}
 			<StringItem label={$LL.graphql.objects.Group.fields.parentId.name()} name="parentId" bind:value={node.parentId} errors={errors.parentId} />
 			{/if}
-			{#if auth('Group::parent::*')}
+			{#if await $permissions.auth('Group::parent::*')}
 			<ObjectItem name="parent" namedStruct={ node.parent } path={`${node.id}/parent`} label={$LL.graphql.objects.Group.fields.parent.name()} errors={errors.parent} on:gotoField />
 			{/if}
-			{#if auth('Group::subGroups::*')}
+			{#if await $permissions.auth('Group::subGroups::*')}
 			<ObjectItem name="subGroups" namedStruct={ node.subGroups } path={`${node.id}/sub-groups`} label={$LL.graphql.objects.Group.fields.subGroups.name()} errors={errors.subGroups} on:gotoField />
 			{/if}
-			{#if auth('Group::users::*')}
+			{#if await $permissions.auth('Group::users::*')}
 			<ObjectItem name="users" namedStruct={ node.users } path={`${node.id}/users`} label={$LL.graphql.objects.Group.fields.users.name()} errors={errors.users} on:gotoField />
 			{/if}
-			{#if auth('Group::roles::*')}
+			{#if await $permissions.auth('Group::roles::*')}
 			<ObjectItem name="roles" namedStruct={ node.roles } path={`${node.id}/roles`} label={$LL.graphql.objects.Group.fields.roles.name()} errors={errors.roles} on:gotoField />
 			{/if}
-			{#if auth('Group::realm::*')}
+			{#if await $permissions.auth('Group::realm::*')}
 			<ObjectItem name="realm" namedStruct={ node.realm } path={`${node.id}/realm`} label={$LL.graphql.objects.Group.fields.realm.name()} errors={errors.realm} on:gotoField />
 			{/if}
 		{/if}

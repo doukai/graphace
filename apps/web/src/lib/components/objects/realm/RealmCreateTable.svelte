@@ -7,7 +7,7 @@
 	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	import type { RealmInput } from '~/lib/types/schema';
-	import { auth } from '@graphace/commons';
+	import { permissions } from '~/lib/utils/auth-util';
 
 	export let nodes: (RealmInput | null | undefined)[] | null | undefined;
 	export let errors: Record<number, Errors> = {};
@@ -43,9 +43,9 @@
 
 <TableHead
 	title={$LL.graphql.objects.Realm.name()}
-	showRemoveButton={auth('Realm::*::WRITE') && showRemoveButton && selectedRowList.length > 0}
-	showSaveButton={auth('Realm::*::WRITE') && showSaveButton}
-	showGotoSelectButton={auth('Realm::*::WRITE') && showGotoSelectButton}
+	showRemoveButton={await $permissions.auth('Realm::*::WRITE') && showRemoveButton && selectedRowList.length > 0}
+	showSaveButton={await $permissions.auth('Realm::*::WRITE') && showSaveButton}
+	showGotoSelectButton={await $permissions.auth('Realm::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	showSearchInput={false}
 	on:create
@@ -82,10 +82,10 @@
 					/>
 				</label>
 			</th>
-			{#if auth('Realm::name::*')}
+			{#if await $permissions.auth('Realm::name::*')}
 			<td>{$LL.graphql.objects.Realm.fields.name.name()}</td>
 			{/if}
-			{#if auth('Realm::description::*')}
+			{#if await $permissions.auth('Realm::description::*')}
 			<td>{$LL.graphql.objects.Realm.fields.description.name()}</td>
 			{/if}
 			<th />
@@ -101,7 +101,7 @@
 								<input type="checkbox" class="checkbox" bind:group={selectedRowList} value={row} />
 							</label>
 						</th>
-						{#if auth('Realm::name::*')}
+						{#if await $permissions.auth('Realm::name::*')}
 						<StringTd
 							name="name"
 							bind:value={node.name}
@@ -109,7 +109,7 @@
 							errors={errors[row]?.iterms?.name}
 						/>
 						{/if}
-						{#if auth('Realm::description::*')}
+						{#if await $permissions.auth('Realm::description::*')}
 						<StringTd
 							name="description"
 							bind:value={node.description}
@@ -117,7 +117,7 @@
 							errors={errors[row]?.iterms?.description}
 						/>
 						{/if}
-						{#if auth('Realm::*::WRITE')}
+						{#if await $permissions.auth('Realm::*::WRITE')}
 						<th class="z-10 hover:z-30 w-24">
 							<div class="flex space-x-1">
 								<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>

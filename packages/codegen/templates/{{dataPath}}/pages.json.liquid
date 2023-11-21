@@ -9,7 +9,7 @@
         "name": "{{ object.name }}",
         "tags": "{{ object.name }}",
         "href": "/{{ object.name | paramCase }}"{%- if useAuth %},
-        "permissions": ["{{ object.name }}::*::*"]{%- endif %}
+        "authPermissions": ["{{ object.name }}::*::*"]{%- endif %}
 	    }{%- if forloop.last == false -%},{%- endif %}
 {%- endfor %}
 {%- endif %}

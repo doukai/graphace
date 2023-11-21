@@ -7,7 +7,7 @@
 	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	import type { UserInput } from '~/lib/types/schema';
-	import { auth } from '@graphace/commons';
+	import { permissions } from '~/lib/utils/auth-util';
 
 	export let nodes: (UserInput | null | undefined)[] | null | undefined;
 	export let errors: Record<number, Errors> = {};
@@ -43,9 +43,9 @@
 
 <TableHead
 	title={$LL.graphql.objects.User.name()}
-	showRemoveButton={auth('User::*::WRITE') && showRemoveButton && selectedRowList.length > 0}
-	showSaveButton={auth('User::*::WRITE') && showSaveButton}
-	showGotoSelectButton={auth('User::*::WRITE') && showGotoSelectButton}
+	showRemoveButton={await $permissions.auth('User::*::WRITE') && showRemoveButton && selectedRowList.length > 0}
+	showSaveButton={await $permissions.auth('User::*::WRITE') && showSaveButton}
+	showGotoSelectButton={await $permissions.auth('User::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	showSearchInput={false}
 	on:create
@@ -82,34 +82,34 @@
 					/>
 				</label>
 			</th>
-			{#if auth('User::name::*')}
+			{#if await $permissions.auth('User::name::*')}
 			<td>{$LL.graphql.objects.User.fields.name.name()}</td>
 			{/if}
-			{#if auth('User::description::*')}
+			{#if await $permissions.auth('User::description::*')}
 			<td>{$LL.graphql.objects.User.fields.description.name()}</td>
 			{/if}
-			{#if auth('User::lastName::*')}
+			{#if await $permissions.auth('User::lastName::*')}
 			<td>{$LL.graphql.objects.User.fields.lastName.name()}</td>
 			{/if}
-			{#if auth('User::login::*')}
+			{#if await $permissions.auth('User::login::*')}
 			<td>{$LL.graphql.objects.User.fields.login.name()}</td>
 			{/if}
-			{#if auth('User::email::*')}
+			{#if await $permissions.auth('User::email::*')}
 			<td>{$LL.graphql.objects.User.fields.email.name()}</td>
 			{/if}
-			{#if auth('User::phones::*')}
+			{#if await $permissions.auth('User::phones::*')}
 			<td>{$LL.graphql.objects.User.fields.phones.name()}</td>
 			{/if}
-			{#if auth('User::disable::*')}
+			{#if await $permissions.auth('User::disable::*')}
 			<td>{$LL.graphql.objects.User.fields.disable.name()}</td>
 			{/if}
-			{#if auth('User::groups::*')}
+			{#if await $permissions.auth('User::groups::*')}
 			<td>{$LL.graphql.objects.User.fields.groups.name()}</td>
 			{/if}
-			{#if auth('User::roles::*')}
+			{#if await $permissions.auth('User::roles::*')}
 			<td>{$LL.graphql.objects.User.fields.roles.name()}</td>
 			{/if}
-			{#if auth('User::realm::*')}
+			{#if await $permissions.auth('User::realm::*')}
 			<td>{$LL.graphql.objects.User.fields.realm.name()}</td>
 			{/if}
 			<th />
@@ -125,7 +125,7 @@
 								<input type="checkbox" class="checkbox" bind:group={selectedRowList} value={row} />
 							</label>
 						</th>
-						{#if auth('User::name::*')}
+						{#if await $permissions.auth('User::name::*')}
 						<StringTd
 							name="name"
 							bind:value={node.name}
@@ -133,7 +133,7 @@
 							errors={errors[row]?.iterms?.name}
 						/>
 						{/if}
-						{#if auth('User::description::*')}
+						{#if await $permissions.auth('User::description::*')}
 						<StringTd
 							name="description"
 							bind:value={node.description}
@@ -141,7 +141,7 @@
 							errors={errors[row]?.iterms?.description}
 						/>
 						{/if}
-						{#if auth('User::lastName::*')}
+						{#if await $permissions.auth('User::lastName::*')}
 						<StringTd
 							name="lastName"
 							bind:value={node.lastName}
@@ -149,7 +149,7 @@
 							errors={errors[row]?.iterms?.lastName}
 						/>
 						{/if}
-						{#if auth('User::login::*')}
+						{#if await $permissions.auth('User::login::*')}
 						<StringTd
 							name="login"
 							bind:value={node.login}
@@ -157,7 +157,7 @@
 							errors={errors[row]?.iterms?.login}
 						/>
 						{/if}
-						{#if auth('User::email::*')}
+						{#if await $permissions.auth('User::email::*')}
 						<StringTd
 							name="email"
 							bind:value={node.email}
@@ -165,7 +165,7 @@
 							errors={errors[row]?.iterms?.email}
 						/>
 						{/if}
-						{#if auth('User::phones::*')}
+						{#if await $permissions.auth('User::phones::*')}
 						<StringTd
 							name="phones"
 							bind:value={node.phones}
@@ -174,7 +174,7 @@
 							errors={errors[row]?.iterms?.phones}
 						/>
 						{/if}
-						{#if auth('User::disable::*')}
+						{#if await $permissions.auth('User::disable::*')}
 						<BooleanTd
 							name="disable"
 							bind:value={node.disable}
@@ -182,16 +182,16 @@
 							errors={errors[row]?.iterms?.disable}
 						/>
 						{/if}
-						{#if auth('User::groups::*')}
+						{#if await $permissions.auth('User::groups::*')}
 						<ObjectTd name="groups" namedStruct={ node.groups } errors={errors[row]?.iterms?.groups} path="_/groups" on:gotoField />
 						{/if}
-						{#if auth('User::roles::*')}
+						{#if await $permissions.auth('User::roles::*')}
 						<ObjectTd name="roles" namedStruct={ node.roles } errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
 						{/if}
-						{#if auth('User::realm::*')}
+						{#if await $permissions.auth('User::realm::*')}
 						<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
 						{/if}
-						{#if auth('User::*::WRITE')}
+						{#if await $permissions.auth('User::*::WRITE')}
 						<th class="z-10 hover:z-30 w-24">
 							<div class="flex space-x-1">
 								<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>

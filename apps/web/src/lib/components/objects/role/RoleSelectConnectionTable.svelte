@@ -13,7 +13,7 @@
 		QueryRoleConnectionArgs,
 		RoleInput
 	} from '~/lib/types/schema';
-	import { auth } from '@graphace/commons';
+	import { permissions } from '~/lib/utils/auth-util';
 
 	export let nodes: (Role | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;
@@ -190,7 +190,7 @@
 					</label>
 				{/if}
 			</th>
-			{#if auth('Role::name::*')}
+			{#if await $permissions.auth('Role::name::*')}
 			<StringTh
 				name={$LL.graphql.objects.Role.fields.name.name()}
 				bind:expression={args.name}
@@ -198,7 +198,7 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if auth('Role::description::*')}
+			{#if await $permissions.auth('Role::description::*')}
 			<StringTh
 				name={$LL.graphql.objects.Role.fields.description.name()}
 				bind:expression={args.description}
@@ -226,21 +226,21 @@
 									{/if}
 								</label>
 							</th>
-							{#if auth('Role::name::*')}
+							{#if await $permissions.auth('Role::name::*')}
 							<StringTd
 								name="name"
 								bind:value={node.name}
 								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
-								readonly={!auth('Role::name::WRITE')}
+								readonly={!await $permissions.auth('Role::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
 							{/if}
-							{#if auth('Role::description::*')}
+							{#if await $permissions.auth('Role::description::*')}
 							<StringTd
 								name="description"
 								bind:value={node.description}
 								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
-								readonly={!auth('Role::description::WRITE')}
+								readonly={!await $permissions.auth('Role::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>
 							{/if}

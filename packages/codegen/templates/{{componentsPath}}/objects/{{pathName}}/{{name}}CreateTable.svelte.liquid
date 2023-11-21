@@ -17,7 +17,7 @@
 	import LL from '$i18n/i18n-svelte';
 	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	{%- if useAuth %}
-	import { auth } from '@graphace/commons';
+	import { permissions } from '~/lib/utils/auth-util';
 	{%- endif %}
 
 	export let nodes: ({{ name }}Input | null | undefined)[] | null | undefined;
@@ -55,9 +55,9 @@
 <TableHead
 	title={$LL.graphql.objects.{{ name }}.name()}
 	{%- if useAuth %}
-	showRemoveButton={auth('{{ name }}::*::WRITE') && showRemoveButton && selectedRowList.length > 0}
-	showSaveButton={auth('{{ name }}::*::WRITE') && showSaveButton}
-	showGotoSelectButton={auth('{{ name }}::*::WRITE') && showGotoSelectButton}
+	showRemoveButton={await $permissions.auth('{{ name }}::*::WRITE') && showRemoveButton && selectedRowList.length > 0}
+	showSaveButton={await $permissions.auth('{{ name }}::*::WRITE') && showSaveButton}
+	showGotoSelectButton={await $permissions.auth('{{ name }}::*::WRITE') && showGotoSelectButton}
 	{%- else %}
 	showRemoveButton={showRemoveButton && selectedRowList.length > 0}
 	{showSaveButton}
@@ -102,7 +102,7 @@
 			{%- if fields %}
 			{%- for field in fields %}
 			{%- if useAuth %}
-			{#if auth('{{ name }}::{{ field.fieldName }}::*')}
+			{#if await $permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 			{%- endif %}
 			{%- if field.inMutationArgs %}
 			<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
@@ -128,7 +128,7 @@
 						{%- if fields %}
 						{%- for field in fields %}
 						{%- if useAuth %}
-						{#if auth('{{ name }}::{{ field.fieldName }}::*')}
+						{#if await $permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 						{%- endif %}
 						{%- if field.inMutationArgs %}
 						{%- if field.component %}
@@ -155,7 +155,7 @@
 						{%- endfor %}
 						{%- endif %}
 						{%- if useAuth %}
-						{#if auth('{{ name }}::*::WRITE')}
+						{#if await $permissions.auth('{{ name }}::*::WRITE')}
 						{%- endif %}
 						<th class="z-10 hover:z-30 w-24">
 							<div class="flex space-x-1">

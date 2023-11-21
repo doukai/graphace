@@ -6,7 +6,7 @@
 	import { StringItem, ObjectItem } from '@graphace/ui-graphql';
 	import LL from '$i18n/i18n-svelte';
 	import type { Realm, RealmInput } from '~/lib/types/schema';
-	import { auth } from '@graphace/commons';
+	import { permissions } from '~/lib/utils/auth-util';
 
 	export let node: Realm | null | undefined;
 	export let isFetching: boolean;
@@ -84,9 +84,9 @@
 
 <Form
 	title={$LL.graphql.objects.Realm.name()}
-	showRemoveButton={auth('Realm::*::WRITE') && showRemoveButton}
-	showUnbindButton={auth('Realm::*::WRITE') && showUnbindButton}
-	showGotoSelectButton={auth('Realm::*::WRITE') && showGotoSelectButton}
+	showRemoveButton={await $permissions.auth('Realm::*::WRITE') && showRemoveButton}
+	showUnbindButton={await $permissions.auth('Realm::*::WRITE') && showUnbindButton}
+	showGotoSelectButton={await $permissions.auth('Realm::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	on:save={(e) => save()}
 	on:remove={(e) =>
@@ -124,10 +124,10 @@
 		<FormLoading rows={2} />
 	{:else}
 		{#if node}
-			{#if auth('Realm::name::*')}
+			{#if await $permissions.auth('Realm::name::*')}
 			<StringItem label={$LL.graphql.objects.Realm.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
 			{/if}
-			{#if auth('Realm::description::*')}
+			{#if await $permissions.auth('Realm::description::*')}
 			<StringItem label={$LL.graphql.objects.Realm.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
 			{/if}
 		{/if}
