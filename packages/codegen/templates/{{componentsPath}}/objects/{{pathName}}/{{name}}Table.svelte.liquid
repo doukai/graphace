@@ -187,10 +187,10 @@
 <TableHead
 	title={$LL.graphql.objects.{{ name }}.name()}
 	{%- if useAuth %}
-	showRemoveButton={await $permissions.auth('{{ name }}::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
-	showUnbindButton={await $permissions.auth('{{ name }}::*::WRITE') && showUnbindButton && selectedIdList.length > 0}
-	showSaveButton={await $permissions.auth('{{ name }}::*::WRITE') && showSaveButton}
-	showGotoSelectButton={await $permissions.auth('{{ name }}::*::WRITE') && showGotoSelectButton}
+	showRemoveButton={permissions.auth('{{ name }}::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
+	showUnbindButton={permissions.auth('{{ name }}::*::WRITE') && showUnbindButton && selectedIdList.length > 0}
+	showSaveButton={permissions.auth('{{ name }}::*::WRITE') && showSaveButton}
+	showGotoSelectButton={permissions.auth('{{ name }}::*::WRITE') && showGotoSelectButton}
 	{%- else %}
 	showRemoveButton={showRemoveButton && selectedIdList.length > 0}
 	showUnbindButton={showUnbindButton && selectedIdList.length > 0}
@@ -254,7 +254,7 @@
 			{%- if fields %}
 			{%- for field in fields %}
 			{%- if useAuth %}
-			{#if await $permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
+			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 			{%- endif %}
 			{%- if field.inQueryArgs %}
 			{%- if field.isScalarType or field.isEnumType %}
@@ -300,7 +300,7 @@
 							{%- if fields %}
 							{%- for field in fields %}
 							{%- if useAuth %}
-							{#if await $permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
+							{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 							{%- endif %}
 							{%- if field.component %}
 							{{ field.component }}
@@ -315,7 +315,7 @@
 								{%- if field.inMutationArgs and field.fieldName != idName %}
 								on:save={(e) => updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } })}
 								{%- if useAuth %}
-								readonly={!await $permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE')}
+								readonly={!permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE')}
 								{%- endif %}
 								{%- else %}
 								readonly
@@ -332,7 +332,7 @@
 							{%- endfor %}
 							{%- endif %}
 							{%- if useAuth %}
-							{#if await $permissions.auth('{{ name }}::*::WRITE')}
+							{#if permissions.auth('{{ name }}::*::WRITE')}
 							{%- endif %}
 							<th class="z-10 hover:z-30 w-24">
 								<div class="flex space-x-1">

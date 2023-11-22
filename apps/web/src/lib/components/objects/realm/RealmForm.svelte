@@ -84,9 +84,9 @@
 
 <Form
 	title={$LL.graphql.objects.Realm.name()}
-	showRemoveButton={await $permissions.auth('Realm::*::WRITE') && showRemoveButton}
-	showUnbindButton={await $permissions.auth('Realm::*::WRITE') && showUnbindButton}
-	showGotoSelectButton={await $permissions.auth('Realm::*::WRITE') && showGotoSelectButton}
+	showRemoveButton={permissions.auth('Realm::*::WRITE') && showRemoveButton}
+	showUnbindButton={permissions.auth('Realm::*::WRITE') && showUnbindButton}
+	showGotoSelectButton={permissions.auth('Realm::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	on:save={(e) => save()}
 	on:remove={(e) =>
@@ -124,10 +124,10 @@
 		<FormLoading rows={2} />
 	{:else}
 		{#if node}
-			{#if await $permissions.auth('Realm::name::*')}
+			{#if permissions.auth('Realm::name::*')}
 			<StringItem label={$LL.graphql.objects.Realm.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
 			{/if}
-			{#if await $permissions.auth('Realm::description::*')}
+			{#if permissions.auth('Realm::description::*')}
 			<StringItem label={$LL.graphql.objects.Realm.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
 			{/if}
 		{/if}

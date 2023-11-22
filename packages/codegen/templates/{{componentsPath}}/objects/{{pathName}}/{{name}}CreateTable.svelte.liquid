@@ -55,9 +55,9 @@
 <TableHead
 	title={$LL.graphql.objects.{{ name }}.name()}
 	{%- if useAuth %}
-	showRemoveButton={await $permissions.auth('{{ name }}::*::WRITE') && showRemoveButton && selectedRowList.length > 0}
-	showSaveButton={await $permissions.auth('{{ name }}::*::WRITE') && showSaveButton}
-	showGotoSelectButton={await $permissions.auth('{{ name }}::*::WRITE') && showGotoSelectButton}
+	showRemoveButton={permissions.auth('{{ name }}::*::WRITE') && showRemoveButton && selectedRowList.length > 0}
+	showSaveButton={permissions.auth('{{ name }}::*::WRITE') && showSaveButton}
+	showGotoSelectButton={permissions.auth('{{ name }}::*::WRITE') && showGotoSelectButton}
 	{%- else %}
 	showRemoveButton={showRemoveButton && selectedRowList.length > 0}
 	{showSaveButton}
@@ -102,7 +102,7 @@
 			{%- if fields %}
 			{%- for field in fields %}
 			{%- if useAuth %}
-			{#if await $permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
+			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 			{%- endif %}
 			{%- if field.inMutationArgs %}
 			<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
@@ -128,7 +128,7 @@
 						{%- if fields %}
 						{%- for field in fields %}
 						{%- if useAuth %}
-						{#if await $permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
+						{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 						{%- endif %}
 						{%- if field.inMutationArgs %}
 						{%- if field.component %}
@@ -155,7 +155,7 @@
 						{%- endfor %}
 						{%- endif %}
 						{%- if useAuth %}
-						{#if await $permissions.auth('{{ name }}::*::WRITE')}
+						{#if permissions.auth('{{ name }}::*::WRITE')}
 						{%- endif %}
 						<th class="z-10 hover:z-30 w-24">
 							<div class="flex space-x-1">

@@ -101,7 +101,7 @@
 <div class="hidden">
 	<div class="space-y-2" bind:this={content}>
 		<div class="grid grid-cols-2 gap-2">
-			{#if await $permissions.auth('Group::name::*')}
+			{#if permissions.auth('Group::name::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.Group.fields.name.name()}
@@ -126,7 +126,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if await $permissions.auth('Group::description::*')}
+			{#if permissions.auth('Group::description::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.Group.fields.description.name()}
@@ -151,7 +151,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if await $permissions.auth('Group::path::*')}
+			{#if permissions.auth('Group::path::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.Group.fields.path.name()}
@@ -176,7 +176,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if await $permissions.auth('Group::deep::*')}
+			{#if permissions.auth('Group::deep::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.Group.fields.deep.name()}
@@ -201,7 +201,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if await $permissions.auth('Group::parentId::*')}
+			{#if permissions.auth('Group::parentId::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.Group.fields.parentId.name()}

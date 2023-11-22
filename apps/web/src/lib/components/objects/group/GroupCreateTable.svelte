@@ -43,9 +43,9 @@
 
 <TableHead
 	title={$LL.graphql.objects.Group.name()}
-	showRemoveButton={await $permissions.auth('Group::*::WRITE') && showRemoveButton && selectedRowList.length > 0}
-	showSaveButton={await $permissions.auth('Group::*::WRITE') && showSaveButton}
-	showGotoSelectButton={await $permissions.auth('Group::*::WRITE') && showGotoSelectButton}
+	showRemoveButton={permissions.auth('Group::*::WRITE') && showRemoveButton && selectedRowList.length > 0}
+	showSaveButton={permissions.auth('Group::*::WRITE') && showSaveButton}
+	showGotoSelectButton={permissions.auth('Group::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	showSearchInput={false}
 	on:create
@@ -82,34 +82,34 @@
 					/>
 				</label>
 			</th>
-			{#if await $permissions.auth('Group::name::*')}
+			{#if permissions.auth('Group::name::*')}
 			<td>{$LL.graphql.objects.Group.fields.name.name()}</td>
 			{/if}
-			{#if await $permissions.auth('Group::description::*')}
+			{#if permissions.auth('Group::description::*')}
 			<td>{$LL.graphql.objects.Group.fields.description.name()}</td>
 			{/if}
-			{#if await $permissions.auth('Group::path::*')}
+			{#if permissions.auth('Group::path::*')}
 			<td>{$LL.graphql.objects.Group.fields.path.name()}</td>
 			{/if}
-			{#if await $permissions.auth('Group::deep::*')}
+			{#if permissions.auth('Group::deep::*')}
 			<td>{$LL.graphql.objects.Group.fields.deep.name()}</td>
 			{/if}
-			{#if await $permissions.auth('Group::parentId::*')}
+			{#if permissions.auth('Group::parentId::*')}
 			<td>{$LL.graphql.objects.Group.fields.parentId.name()}</td>
 			{/if}
-			{#if await $permissions.auth('Group::parent::*')}
+			{#if permissions.auth('Group::parent::*')}
 			<td>{$LL.graphql.objects.Group.fields.parent.name()}</td>
 			{/if}
-			{#if await $permissions.auth('Group::subGroups::*')}
+			{#if permissions.auth('Group::subGroups::*')}
 			<td>{$LL.graphql.objects.Group.fields.subGroups.name()}</td>
 			{/if}
-			{#if await $permissions.auth('Group::users::*')}
+			{#if permissions.auth('Group::users::*')}
 			<td>{$LL.graphql.objects.Group.fields.users.name()}</td>
 			{/if}
-			{#if await $permissions.auth('Group::roles::*')}
+			{#if permissions.auth('Group::roles::*')}
 			<td>{$LL.graphql.objects.Group.fields.roles.name()}</td>
 			{/if}
-			{#if await $permissions.auth('Group::realm::*')}
+			{#if permissions.auth('Group::realm::*')}
 			<td>{$LL.graphql.objects.Group.fields.realm.name()}</td>
 			{/if}
 			<th />
@@ -125,7 +125,7 @@
 								<input type="checkbox" class="checkbox" bind:group={selectedRowList} value={row} />
 							</label>
 						</th>
-						{#if await $permissions.auth('Group::name::*')}
+						{#if permissions.auth('Group::name::*')}
 						<StringTd
 							name="name"
 							bind:value={node.name}
@@ -133,7 +133,7 @@
 							errors={errors[row]?.iterms?.name}
 						/>
 						{/if}
-						{#if await $permissions.auth('Group::description::*')}
+						{#if permissions.auth('Group::description::*')}
 						<StringTd
 							name="description"
 							bind:value={node.description}
@@ -141,7 +141,7 @@
 							errors={errors[row]?.iterms?.description}
 						/>
 						{/if}
-						{#if await $permissions.auth('Group::path::*')}
+						{#if permissions.auth('Group::path::*')}
 						<StringTd
 							name="path"
 							bind:value={node.path}
@@ -149,7 +149,7 @@
 							errors={errors[row]?.iterms?.path}
 						/>
 						{/if}
-						{#if await $permissions.auth('Group::deep::*')}
+						{#if permissions.auth('Group::deep::*')}
 						<IntTd
 							name="deep"
 							bind:value={node.deep}
@@ -157,7 +157,7 @@
 							errors={errors[row]?.iterms?.deep}
 						/>
 						{/if}
-						{#if await $permissions.auth('Group::parentId::*')}
+						{#if permissions.auth('Group::parentId::*')}
 						<StringTd
 							name="parentId"
 							bind:value={node.parentId}
@@ -165,22 +165,22 @@
 							errors={errors[row]?.iterms?.parentId}
 						/>
 						{/if}
-						{#if await $permissions.auth('Group::parent::*')}
+						{#if permissions.auth('Group::parent::*')}
 						<ObjectTd name="parent" namedStruct={ node.parent } errors={errors[row]?.iterms?.parent} path="_/parent" on:gotoField />
 						{/if}
-						{#if await $permissions.auth('Group::subGroups::*')}
+						{#if permissions.auth('Group::subGroups::*')}
 						<ObjectTd name="subGroups" namedStruct={ node.subGroups } errors={errors[row]?.iterms?.subGroups} path="_/sub-groups" on:gotoField />
 						{/if}
-						{#if await $permissions.auth('Group::users::*')}
+						{#if permissions.auth('Group::users::*')}
 						<ObjectTd name="users" namedStruct={ node.users } errors={errors[row]?.iterms?.users} path="_/users" on:gotoField />
 						{/if}
-						{#if await $permissions.auth('Group::roles::*')}
+						{#if permissions.auth('Group::roles::*')}
 						<ObjectTd name="roles" namedStruct={ node.roles } errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
 						{/if}
-						{#if await $permissions.auth('Group::realm::*')}
+						{#if permissions.auth('Group::realm::*')}
 						<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
 						{/if}
-						{#if await $permissions.auth('Group::*::WRITE')}
+						{#if permissions.auth('Group::*::WRITE')}
 						<th class="z-10 hover:z-30 w-24">
 							<div class="flex space-x-1">
 								<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>

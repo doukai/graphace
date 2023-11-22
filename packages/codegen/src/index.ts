@@ -619,7 +619,8 @@ const renders: Record<Template, Render> = {
                         schemaTypesPath: config.schemaTypesPath,
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
-                        subscriptionTypeName: getSubscriptionTypeName()
+                        subscriptionTypeName: getSubscriptionTypeName(),
+                        useAuth: config.useAuth
                     }),
                 };
             }
@@ -640,7 +641,8 @@ const renders: Record<Template, Render> = {
                         connectionField: connectionField,
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
-                        subscriptionTypeName: getSubscriptionTypeName()
+                        subscriptionTypeName: getSubscriptionTypeName(),
+                        useAuth: config.useAuth
                     }),
                 };
             }
@@ -663,7 +665,8 @@ const renders: Record<Template, Render> = {
                         schemaTypesPath: config.schemaTypesPath,
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
-                        subscriptionTypeName: getSubscriptionTypeName()
+                        subscriptionTypeName: getSubscriptionTypeName(),
+                        useAuth: config.useAuth
                     }),
                 };
             }
@@ -682,7 +685,8 @@ const renders: Record<Template, Render> = {
                         idName: getIDFieldName(type),
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
-                        subscriptionTypeName: getSubscriptionTypeName()
+                        subscriptionTypeName: getSubscriptionTypeName(),
+                        useAuth: config.useAuth
                     }),
                 };
             }
@@ -712,7 +716,8 @@ const renders: Record<Template, Render> = {
                             isNonNullType: isNonNullType(objectField.type),
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName()
+                            subscriptionTypeName: getSubscriptionTypeName(),
+                            useAuth: config.useAuth
                         }),
                     };
                 }
@@ -738,7 +743,8 @@ const renders: Record<Template, Render> = {
                             schemaTypesPath: config.schemaTypesPath,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName()
+                            subscriptionTypeName: getSubscriptionTypeName(),
+                            useAuth: config.useAuth
                         }),
                     };
                 }
@@ -773,7 +779,8 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
-                            pairField: getPairField(type, objectField)
+                            pairField: getPairField(type, objectField),
+                            useAuth: config.useAuth
                         }),
                     };
                 }
@@ -802,7 +809,8 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
-                            pairField: getPairField(type, objectField)
+                            pairField: getPairField(type, objectField),
+                            useAuth: config.useAuth
                         }),
                     };
                 }
@@ -834,7 +842,8 @@ const renders: Record<Template, Render> = {
                             schemaTypesPath: config.schemaTypesPath,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName()
+                            subscriptionTypeName: getSubscriptionTypeName(),
+                            useAuth: config.useAuth
                         }),
                     };
                 }
@@ -861,7 +870,8 @@ const renders: Record<Template, Render> = {
                             connectionField: connectionField,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName()
+                            subscriptionTypeName: getSubscriptionTypeName(),
+                            useAuth: config.useAuth
                         }),
                     };
                 }
@@ -893,7 +903,8 @@ const renders: Record<Template, Render> = {
                             schemaTypesPath: config.schemaTypesPath,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName()
+                            subscriptionTypeName: getSubscriptionTypeName(),
+                            useAuth: config.useAuth
                         }),
                     };
                 }
@@ -921,7 +932,8 @@ const renders: Record<Template, Render> = {
                             schemaTypesPath: config.schemaTypesPath,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName()
+                            subscriptionTypeName: getSubscriptionTypeName(),
+                            useAuth: config.useAuth
                         }),
                     };
                 }
@@ -955,7 +967,8 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
-                            pairField: getPairField(type, objectField)
+                            pairField: getPairField(type, objectField),
+                            useAuth: config.useAuth
                         }),
                     };
                 }
@@ -983,7 +996,8 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
-                            pairField: getPairField(type, objectField)
+                            pairField: getPairField(type, objectField),
+                            useAuth: config.useAuth
                         }),
                     };
                 }
@@ -1007,7 +1021,8 @@ const renders: Record<Template, Render> = {
                         schemaTypesPath: config.schemaTypesPath,
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
-                        subscriptionTypeName: getSubscriptionTypeName()
+                        subscriptionTypeName: getSubscriptionTypeName(),
+                        useAuth: config.useAuth
                     }),
                 };
             }
@@ -1027,7 +1042,8 @@ const renders: Record<Template, Render> = {
                         schemaTypesPath: config.schemaTypesPath,
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
-                        subscriptionTypeName: getSubscriptionTypeName()
+                        subscriptionTypeName: getSubscriptionTypeName(),
+                        useAuth: config.useAuth
                     }),
                 };
             }
@@ -1056,7 +1072,8 @@ const renders: Record<Template, Render> = {
                             schemaTypesPath: config.schemaTypesPath,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName()
+                            subscriptionTypeName: getSubscriptionTypeName(),
+                            useAuth: config.useAuth
                         }),
                     };
                 }
@@ -1082,7 +1099,8 @@ const renders: Record<Template, Render> = {
                             schemaTypesPath: config.schemaTypesPath,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName()
+                            subscriptionTypeName: getSubscriptionTypeName(),
+                            useAuth: config.useAuth
                         }),
                     };
                 }
@@ -1116,7 +1134,8 @@ const renders: Record<Template, Render> = {
                             isNonNullType: isNonNullType(objectField.type),
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName()
+                            subscriptionTypeName: getSubscriptionTypeName(),
+                            useAuth: config.useAuth
                         }),
                     };
                 }
@@ -1144,7 +1163,8 @@ const renders: Record<Template, Render> = {
                             schemaTypesPath: config.schemaTypesPath,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName()
+                            subscriptionTypeName: getSubscriptionTypeName(),
+                            useAuth: config.useAuth
                         }),
                     };
                 }
@@ -1176,7 +1196,8 @@ const renders: Record<Template, Render> = {
                             schemaTypesPath: config.schemaTypesPath,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName()
+                            subscriptionTypeName: getSubscriptionTypeName(),
+                            useAuth: config.useAuth
                         }),
                     };
                 }
@@ -1203,7 +1224,8 @@ const renders: Record<Template, Render> = {
                             connectionField: connectionField,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName()
+                            subscriptionTypeName: getSubscriptionTypeName(),
+                            useAuth: config.useAuth
                         }),
                     };
                 }
@@ -1235,7 +1257,8 @@ const renders: Record<Template, Render> = {
                             schemaTypesPath: config.schemaTypesPath,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName()
+                            subscriptionTypeName: getSubscriptionTypeName(),
+                            useAuth: config.useAuth
                         }),
                     };
                 }
@@ -1263,7 +1286,8 @@ const renders: Record<Template, Render> = {
                             schemaTypesPath: config.schemaTypesPath,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName()
+                            subscriptionTypeName: getSubscriptionTypeName(),
+                            useAuth: config.useAuth
                         }),
                     };
                 }
@@ -1296,7 +1320,8 @@ const renders: Record<Template, Render> = {
                             schemaTypesPath: config.schemaTypesPath,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName()
+                            subscriptionTypeName: getSubscriptionTypeName(),
+                            useAuth: config.useAuth
                         }),
                     };
                 }
@@ -1323,7 +1348,8 @@ const renders: Record<Template, Render> = {
                             connectionField: connectionField,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName()
+                            subscriptionTypeName: getSubscriptionTypeName(),
+                            useAuth: config.useAuth
                         }),
                     };
                 }

@@ -87,9 +87,9 @@
 
 <Form
 	title={$LL.graphql.objects.User.name()}
-	showRemoveButton={await $permissions.auth('User::*::WRITE') && showRemoveButton}
-	showUnbindButton={await $permissions.auth('User::*::WRITE') && showUnbindButton}
-	showGotoSelectButton={await $permissions.auth('User::*::WRITE') && showGotoSelectButton}
+	showRemoveButton={permissions.auth('User::*::WRITE') && showRemoveButton}
+	showUnbindButton={permissions.auth('User::*::WRITE') && showUnbindButton}
+	showGotoSelectButton={permissions.auth('User::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	on:save={(e) => save()}
 	on:remove={(e) =>
@@ -127,34 +127,34 @@
 		<FormLoading rows={10} />
 	{:else}
 		{#if node}
-			{#if await $permissions.auth('User::name::*')}
+			{#if permissions.auth('User::name::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
 			{/if}
-			{#if await $permissions.auth('User::description::*')}
+			{#if permissions.auth('User::description::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
 			{/if}
-			{#if await $permissions.auth('User::lastName::*')}
+			{#if permissions.auth('User::lastName::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.lastName.name()} name="lastName" bind:value={node.lastName} errors={errors.lastName} />
 			{/if}
-			{#if await $permissions.auth('User::login::*')}
+			{#if permissions.auth('User::login::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.login.name()} name="login" bind:value={node.login} errors={errors.login} />
 			{/if}
-			{#if await $permissions.auth('User::email::*')}
+			{#if permissions.auth('User::email::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.email.name()} name="email" bind:value={node.email} errors={errors.email} />
 			{/if}
-			{#if await $permissions.auth('User::phones::*')}
+			{#if permissions.auth('User::phones::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.phones.name()} name="phones" bind:value={node.phones} list errors={errors.phones} />
 			{/if}
-			{#if await $permissions.auth('User::disable::*')}
+			{#if permissions.auth('User::disable::*')}
 			<BooleanItem label={$LL.graphql.objects.User.fields.disable.name()} name="disable" bind:value={node.disable} errors={errors.disable} />
 			{/if}
-			{#if await $permissions.auth('User::groups::*')}
+			{#if permissions.auth('User::groups::*')}
 			<ObjectItem name="groups" namedStruct={ node.groups } path={`${node.id}/groups`} label={$LL.graphql.objects.User.fields.groups.name()} errors={errors.groups} on:gotoField />
 			{/if}
-			{#if await $permissions.auth('User::roles::*')}
+			{#if permissions.auth('User::roles::*')}
 			<ObjectItem name="roles" namedStruct={ node.roles } path={`${node.id}/roles`} label={$LL.graphql.objects.User.fields.roles.name()} errors={errors.roles} on:gotoField />
 			{/if}
-			{#if await $permissions.auth('User::realm::*')}
+			{#if permissions.auth('User::realm::*')}
 			<ObjectItem name="realm" namedStruct={ node.realm } path={`${node.id}/realm`} label={$LL.graphql.objects.User.fields.realm.name()} errors={errors.realm} on:gotoField />
 			{/if}
 		{/if}

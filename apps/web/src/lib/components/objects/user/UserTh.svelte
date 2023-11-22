@@ -125,7 +125,7 @@
 <div class="hidden">
 	<div class="space-y-2" bind:this={content}>
 		<div class="grid grid-cols-2 gap-2">
-			{#if await $permissions.auth('User::name::*')}
+			{#if permissions.auth('User::name::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.User.fields.name.name()}
@@ -150,7 +150,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if await $permissions.auth('User::description::*')}
+			{#if permissions.auth('User::description::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.User.fields.description.name()}
@@ -175,7 +175,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if await $permissions.auth('User::lastName::*')}
+			{#if permissions.auth('User::lastName::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.User.fields.lastName.name()}
@@ -200,7 +200,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if await $permissions.auth('User::login::*')}
+			{#if permissions.auth('User::login::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.User.fields.login.name()}
@@ -225,7 +225,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if await $permissions.auth('User::email::*')}
+			{#if permissions.auth('User::email::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.User.fields.email.name()}
@@ -250,7 +250,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if await $permissions.auth('User::phones::*')}
+			{#if permissions.auth('User::phones::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.User.fields.phones.name()}
@@ -275,7 +275,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if await $permissions.auth('User::disable::*')}
+			{#if permissions.auth('User::disable::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.User.fields.disable.name()}

@@ -168,10 +168,10 @@
 
 <TableHead
 	title={$LL.graphql.objects.Permission.name()}
-	showRemoveButton={await $permissions.auth('Permission::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
-	showUnbindButton={await $permissions.auth('Permission::*::WRITE') && showUnbindButton && selectedIdList.length > 0}
-	showSaveButton={await $permissions.auth('Permission::*::WRITE') && showSaveButton}
-	showGotoSelectButton={await $permissions.auth('Permission::*::WRITE') && showGotoSelectButton}
+	showRemoveButton={permissions.auth('Permission::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
+	showUnbindButton={permissions.auth('Permission::*::WRITE') && showUnbindButton && selectedIdList.length > 0}
+	showSaveButton={permissions.auth('Permission::*::WRITE') && showSaveButton}
+	showGotoSelectButton={permissions.auth('Permission::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	on:create
 	on:search={(e) => search(e.detail.value)}
@@ -226,7 +226,7 @@
 					/>
 				</label>
 			</th>
-			{#if await $permissions.auth('Permission::name::*')}
+			{#if permissions.auth('Permission::name::*')}
 			<IDTh
 				name={$LL.graphql.objects.Permission.fields.name.name()}
 				bind:expression={args.name}
@@ -234,7 +234,7 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if await $permissions.auth('Permission::description::*')}
+			{#if permissions.auth('Permission::description::*')}
 			<StringTh
 				name={$LL.graphql.objects.Permission.fields.description.name()}
 				bind:expression={args.description}
@@ -242,7 +242,7 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if await $permissions.auth('Permission::field::*')}
+			{#if permissions.auth('Permission::field::*')}
 			<StringTh
 				name={$LL.graphql.objects.Permission.fields.field.name()}
 				bind:expression={args.field}
@@ -250,7 +250,7 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if await $permissions.auth('Permission::type::*')}
+			{#if permissions.auth('Permission::type::*')}
 			<StringTh
 				name={$LL.graphql.objects.Permission.fields.type.name()}
 				bind:expression={args.type}
@@ -258,7 +258,7 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if await $permissions.auth('Permission::permissionType::*')}
+			{#if permissions.auth('Permission::permissionType::*')}
 			<PermissionTypeTh
 				name={$LL.graphql.objects.Permission.fields.permissionType.name()}
 				bind:expression={args.permissionType}
@@ -266,14 +266,14 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if await $permissions.auth('Permission::roles::*')}
+			{#if permissions.auth('Permission::roles::*')}
 			<RoleTh
 				name={$LL.graphql.objects.Permission.fields.roles.name()}
 				bind:expression={args.roles}
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if await $permissions.auth('Permission::realm::*')}
+			{#if permissions.auth('Permission::realm::*')}
 			<RealmTh
 				name={$LL.graphql.objects.Permission.fields.realm.name()}
 				bind:expression={args.realm}
@@ -296,7 +296,7 @@
 									<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.name} />
 								</label>
 							</th>
-							{#if await $permissions.auth('Permission::name::*')}
+							{#if permissions.auth('Permission::name::*')}
 							<IDTd
 								name="name"
 								bind:value={node.name}
@@ -304,49 +304,49 @@
 								errors={errors[row]?.iterms?.name}
 							/>
 							{/if}
-							{#if await $permissions.auth('Permission::description::*')}
+							{#if permissions.auth('Permission::description::*')}
 							<StringTd
 								name="description"
 								bind:value={node.description}
 								on:save={(e) => updateField({ description: node?.description, where: { name: { val: node?.name } } })}
-								readonly={!await $permissions.auth('Permission::description::WRITE')}
+								readonly={!permissions.auth('Permission::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>
 							{/if}
-							{#if await $permissions.auth('Permission::field::*')}
+							{#if permissions.auth('Permission::field::*')}
 							<StringTd
 								name="field"
 								bind:value={node.field}
 								on:save={(e) => updateField({ field: node?.field, where: { name: { val: node?.name } } })}
-								readonly={!await $permissions.auth('Permission::field::WRITE')}
+								readonly={!permissions.auth('Permission::field::WRITE')}
 								errors={errors[row]?.iterms?.field}
 							/>
 							{/if}
-							{#if await $permissions.auth('Permission::type::*')}
+							{#if permissions.auth('Permission::type::*')}
 							<StringTd
 								name="type"
 								bind:value={node.type}
 								on:save={(e) => updateField({ type: node?.type, where: { name: { val: node?.name } } })}
-								readonly={!await $permissions.auth('Permission::type::WRITE')}
+								readonly={!permissions.auth('Permission::type::WRITE')}
 								errors={errors[row]?.iterms?.type}
 							/>
 							{/if}
-							{#if await $permissions.auth('Permission::permissionType::*')}
+							{#if permissions.auth('Permission::permissionType::*')}
 							<PermissionTypeTd
 								name="permissionType"
 								bind:value={node.permissionType}
 								on:save={(e) => updateField({ permissionType: node?.permissionType, where: { name: { val: node?.name } } })}
-								readonly={!await $permissions.auth('Permission::permissionType::WRITE')}
+								readonly={!permissions.auth('Permission::permissionType::WRITE')}
 								errors={errors[row]?.iterms?.permissionType}
 							/>
 							{/if}
-							{#if await $permissions.auth('Permission::roles::*')}
+							{#if permissions.auth('Permission::roles::*')}
 							<ObjectTd name="roles" namedStruct={ node.roles } errors={errors[row]?.iterms?.roles} path={`${node.name}/roles`} on:gotoField />
 							{/if}
-							{#if await $permissions.auth('Permission::realm::*')}
+							{#if permissions.auth('Permission::realm::*')}
 							<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path={`${node.name}/realm`} on:gotoField />
 							{/if}
-							{#if await $permissions.auth('Permission::*::WRITE')}
+							{#if permissions.auth('Permission::*::WRITE')}
 							<th class="z-10 hover:z-30 w-24">
 								<div class="flex space-x-1">
 									<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>

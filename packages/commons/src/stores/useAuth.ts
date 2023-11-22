@@ -25,22 +25,25 @@ export function createPermissions(getTypePermissionList: (types: string[]) => Pr
     return {
         subscribe,
         update,
-        set: async (...authTypes: string[]) => {
-            const $typePermissionRecord = get(typePermissionRecord);
-            const types = authTypes.filter(type => !Object.keys($typePermissionRecord).includes(type));
-            if (types.length > 0) {
-                const typePermissionList = await getTypePermissionList(types);
-                set(
-                    typePermissionList.reduce((pre, cur) => {
-                        const type = cur.split("::")[0];
-                        if (pre[type]) {
-                            pre[type] = [...pre[type], cur]
-                        } else {
-                            pre[type] = [cur]
-                        }
-                        return pre;
-                    }, $typePermissionRecord)
-                )
+        getTypes: async (...authTypes: string[]) => {
+            const $jwt = get(jwt);
+            if (!$jwt?.is_root) {
+                const $typePermissionRecord = get(typePermissionRecord);
+                const types = authTypes.filter(type => !Object.keys($typePermissionRecord).includes(type));
+                if (types.length > 0) {
+                    const typePermissionList = await getTypePermissionList(types);
+                    set(
+                        typePermissionList.reduce((pre, cur) => {
+                            const type = cur.split("::")[0];
+                            if (pre[type]) {
+                                pre[type] = [...pre[type], cur]
+                            } else {
+                                pre[type] = [cur]
+                            }
+                            return pre;
+                        }, $typePermissionRecord)
+                    )
+                }
             }
         },
         auth: (...authPermissions: string[]) => {

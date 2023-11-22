@@ -194,10 +194,10 @@
 
 <TableHead
 	title={$LL.graphql.objects.Realm.name()}
-	showRemoveButton={await $permissions.auth('Realm::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
-	showUnbindButton={await $permissions.auth('Realm::*::WRITE') && showUnbindButton && selectedIdList.length > 0}
-	showSaveButton={await $permissions.auth('Realm::*::WRITE') && showSaveButton}
-	showGotoSelectButton={await $permissions.auth('Realm::*::WRITE') && showGotoSelectButton}
+	showRemoveButton={permissions.auth('Realm::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
+	showUnbindButton={permissions.auth('Realm::*::WRITE') && showUnbindButton && selectedIdList.length > 0}
+	showSaveButton={permissions.auth('Realm::*::WRITE') && showSaveButton}
+	showGotoSelectButton={permissions.auth('Realm::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	on:create
 	on:search={(e) => search(e.detail.value)}
@@ -252,7 +252,7 @@
 					/>
 				</label>
 			</th>
-			{#if await $permissions.auth('Realm::name::*')}
+			{#if permissions.auth('Realm::name::*')}
 			<StringTh
 				name={$LL.graphql.objects.Realm.fields.name.name()}
 				bind:expression={args.name}
@@ -260,7 +260,7 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if await $permissions.auth('Realm::description::*')}
+			{#if permissions.auth('Realm::description::*')}
 			<StringTh
 				name={$LL.graphql.objects.Realm.fields.description.name()}
 				bind:expression={args.description}
@@ -268,7 +268,7 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if await $permissions.auth('Realm::*::WRITE')}
+			{#if permissions.auth('Realm::*::WRITE')}
 			<th />
 			{/if}
 		</tr>
@@ -286,25 +286,25 @@
 									<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
 								</label>
 							</th>
-							{#if await $permissions.auth('Realm::name::*')}
+							{#if permissions.auth('Realm::name::*')}
 							<StringTd
 								name="name"
 								bind:value={node.name}
 								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
-								readonly={!await $permissions.auth('Realm::name::WRITE')}
+								readonly={!permissions.auth('Realm::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
 							{/if}
-							{#if await $permissions.auth('Realm::description::*')}
+							{#if permissions.auth('Realm::description::*')}
 							<StringTd
 								name="description"
 								bind:value={node.description}
 								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
-								readonly={!await $permissions.auth('Realm::description::WRITE')}
+								readonly={!permissions.auth('Realm::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>
 							{/if}
-							{#if await $permissions.auth('Realm::*::WRITE')}
+							{#if permissions.auth('Realm::*::WRITE')}
 							<th class="z-10 hover:z-30 w-24">
 								<div class="flex space-x-1">
 									<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>

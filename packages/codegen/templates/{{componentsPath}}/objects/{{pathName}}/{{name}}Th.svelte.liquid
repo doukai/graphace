@@ -94,7 +94,7 @@
 		{%- for field in fields %}
 		{%- if field.isScalarType or field.isEnumType %}
 			{%- if useAuth %}
-			{#if await $permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
+			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 			{%- endif %}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">

@@ -7,7 +7,6 @@
 	import { locale } from '~/i18n/i18n-svelte';
 	import pages from '~/lib/data/pages.json';
 	import { permissions } from '~/lib/utils/auth-util';
-	import { onMount } from 'svelte';
 
 	const menus = pages.map((page) => {
 		return {
@@ -20,8 +19,6 @@
 			})
 		};
 	});
-
-	onMount(async () => await permissions.set(''));
 </script>
 
 {#each menus as { name, icon, items }}

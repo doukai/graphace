@@ -1,8 +1,14 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
 import { {% if connectionField %}load_Query_{{ objectFieldTypeName | camelCase }}Connection{% else %}load_Query_{{ objectFieldTypeName | camelCase }}List{% endif %} } from '$houdini';
+{%- if useAuth %}
+import { permissions } from '~/lib/utils/auth-util';
+{%- endif %}
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
+    {%- if useAuth %}
+    await permissions.getTypes('{{ objectFieldTypeName }}');
+    {%- endif %}
 	{%- if pairField %}
     const notBelongToParent = { not: true, {{ pairField.name }}: { {{ idName }}: { val: event.params.id } } };
 	{%- endif %}
@@ -11,6 +17,6 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         {%- if pairField %}
         notBelongToParent,
         {%- endif %}
-        ...(await {% if connectionField %}load_Query_{{ objectFieldTypeName | camelCase }}Connection({ event, variables: { first: 10{% if pairField %}, ...notBelongToParent{% endif %} } })){% else %}load_Query_{{ objectFieldTypeName | camelCase }}List({ event{% if pairField %}, variables: { ...notBelongToParent }{% endif %} } })){% endif %}
+        ...(await {% if connectionField %}load_Query_{{ objectFieldTypeName | camelCase }}Connection({ event, variables: { first: 10{% if pairField %}, exs: [notBelongToParent]{% endif %} } })){% else %}load_Query_{{ objectFieldTypeName | camelCase }}List({ event{% if pairField %}, variables: { exs: [notBelongToParent] }{% endif %} } })){% endif %}
     };
 }

@@ -190,7 +190,7 @@
 					</label>
 				{/if}
 			</th>
-			{#if await $permissions.auth('Role::name::*')}
+			{#if permissions.auth('Role::name::*')}
 			<StringTh
 				name={$LL.graphql.objects.Role.fields.name.name()}
 				bind:expression={args.name}
@@ -198,7 +198,7 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if await $permissions.auth('Role::description::*')}
+			{#if permissions.auth('Role::description::*')}
 			<StringTh
 				name={$LL.graphql.objects.Role.fields.description.name()}
 				bind:expression={args.description}
@@ -226,21 +226,21 @@
 									{/if}
 								</label>
 							</th>
-							{#if await $permissions.auth('Role::name::*')}
+							{#if permissions.auth('Role::name::*')}
 							<StringTd
 								name="name"
 								bind:value={node.name}
 								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
-								readonly={!await $permissions.auth('Role::name::WRITE')}
+								readonly={!permissions.auth('Role::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
 							{/if}
-							{#if await $permissions.auth('Role::description::*')}
+							{#if permissions.auth('Role::description::*')}
 							<StringTd
 								name="description"
 								bind:value={node.description}
 								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
-								readonly={!await $permissions.auth('Role::description::WRITE')}
+								readonly={!permissions.auth('Role::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>
 							{/if}

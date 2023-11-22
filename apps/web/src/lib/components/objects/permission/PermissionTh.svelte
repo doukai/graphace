@@ -102,7 +102,7 @@
 <div class="hidden">
 	<div class="space-y-2" bind:this={content}>
 		<div class="grid grid-cols-2 gap-2">
-			{#if await $permissions.auth('Permission::name::*')}
+			{#if permissions.auth('Permission::name::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.Permission.fields.name.name()}
@@ -127,7 +127,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if await $permissions.auth('Permission::description::*')}
+			{#if permissions.auth('Permission::description::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.Permission.fields.description.name()}
@@ -152,7 +152,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if await $permissions.auth('Permission::field::*')}
+			{#if permissions.auth('Permission::field::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.Permission.fields.field.name()}
@@ -177,7 +177,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if await $permissions.auth('Permission::type::*')}
+			{#if permissions.auth('Permission::type::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.Permission.fields.type.name()}
@@ -202,7 +202,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if await $permissions.auth('Permission::permissionType::*')}
+			{#if permissions.auth('Permission::permissionType::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.Permission.fields.permissionType.name()}

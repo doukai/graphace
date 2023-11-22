@@ -132,7 +132,7 @@
 		{totalCount}
 		{errors}
 		{%- if pairField %}
-		args={ { ...notBelongToParent } }
+		args={ { exs: [notBelongToParent] } }
 		{%- endif %}
 		isFetching={$Query_{{ objectFieldTypeName | camelCase }}Connection.fetching}
 		on:fetch={fetch}
@@ -147,7 +147,7 @@
 		{nodes}
 		{errors}
 		{%- if pairField %}
-		args={ { ...notBelongToParent } }
+		args={ { exs: [notBelongToParent] } }
 		{%- endif %}
 		isFetching={$Query_{{ objectFieldTypeName | camelCase }}List.fetching}
 		on:fetch={fetch}

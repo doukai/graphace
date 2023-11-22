@@ -70,8 +70,8 @@
 <Form
 	title={$LL.graphql.objects.{{ name }}.name()}
 	{%- if useAuth %}
-	showRemoveButton={await $permissions.auth('{{ name }}::*::WRITE') && showRemoveButton && node !== undefined && node !== null && Object.keys(node).length > 0}
-	showGotoSelectButton={await $permissions.auth('{{ name }}::*::WRITE') && showGotoSelectButton}
+	showRemoveButton={permissions.auth('{{ name }}::*::WRITE') && showRemoveButton && node !== undefined && node !== null && Object.keys(node).length > 0}
+	showGotoSelectButton={permissions.auth('{{ name }}::*::WRITE') && showGotoSelectButton}
 	{%- else %}
 	showRemoveButton={showRemoveButton && node !== undefined && node !== null && Object.keys(node).length > 0}
 	{showGotoSelectButton}
@@ -94,7 +94,7 @@
 	{%- if fields %}
 	{%- for field in fields %}
 	{%- if useAuth %}
-	{#if await $permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
+	{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 	{%- endif %}
 	{%- if field.inMutationArgs %}
 	{%- if field.component %}

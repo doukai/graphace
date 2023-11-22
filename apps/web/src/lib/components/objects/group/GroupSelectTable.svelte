@@ -162,7 +162,7 @@
 					</label>
 				{/if}
 			</th>
-			{#if await $permissions.auth('Group::name::*')}
+			{#if permissions.auth('Group::name::*')}
 			<StringTh
 				name={$LL.graphql.objects.Group.fields.name.name()}
 				bind:expression={args.name}
@@ -170,7 +170,7 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if await $permissions.auth('Group::description::*')}
+			{#if permissions.auth('Group::description::*')}
 			<StringTh
 				name={$LL.graphql.objects.Group.fields.description.name()}
 				bind:expression={args.description}
@@ -178,7 +178,7 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if await $permissions.auth('Group::path::*')}
+			{#if permissions.auth('Group::path::*')}
 			<StringTh
 				name={$LL.graphql.objects.Group.fields.path.name()}
 				bind:expression={args.path}
@@ -186,7 +186,7 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if await $permissions.auth('Group::deep::*')}
+			{#if permissions.auth('Group::deep::*')}
 			<IntTh
 				name={$LL.graphql.objects.Group.fields.deep.name()}
 				bind:expression={args.deep}
@@ -194,7 +194,7 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if await $permissions.auth('Group::parentId::*')}
+			{#if permissions.auth('Group::parentId::*')}
 			<StringTh
 				name={$LL.graphql.objects.Group.fields.parentId.name()}
 				bind:expression={args.parentId}
@@ -222,48 +222,48 @@
 									{/if}
 								</label>
 							</th>
-							{#if await $permissions.auth('Group::name::*')}
+							{#if permissions.auth('Group::name::*')}
 							<StringTd
 								name="name"
 								bind:value={node.name}
 								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
-								readonly={!await $permissions.auth('Group::name::WRITE')}
+								readonly={!permissions.auth('Group::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
 							{/if}
-							{#if await $permissions.auth('Group::description::*')}
+							{#if permissions.auth('Group::description::*')}
 							<StringTd
 								name="description"
 								bind:value={node.description}
 								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
-								readonly={!await $permissions.auth('Group::description::WRITE')}
+								readonly={!permissions.auth('Group::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>
 							{/if}
-							{#if await $permissions.auth('Group::path::*')}
+							{#if permissions.auth('Group::path::*')}
 							<StringTd
 								name="path"
 								bind:value={node.path}
 								on:save={(e) => updateField({ path: node?.path, where: { id: { val: node?.id } } })}
-								readonly={!await $permissions.auth('Group::path::WRITE')}
+								readonly={!permissions.auth('Group::path::WRITE')}
 								errors={errors[row]?.iterms?.path}
 							/>
 							{/if}
-							{#if await $permissions.auth('Group::deep::*')}
+							{#if permissions.auth('Group::deep::*')}
 							<IntTd
 								name="deep"
 								bind:value={node.deep}
 								on:save={(e) => updateField({ deep: node?.deep, where: { id: { val: node?.id } } })}
-								readonly={!await $permissions.auth('Group::deep::WRITE')}
+								readonly={!permissions.auth('Group::deep::WRITE')}
 								errors={errors[row]?.iterms?.deep}
 							/>
 							{/if}
-							{#if await $permissions.auth('Group::parentId::*')}
+							{#if permissions.auth('Group::parentId::*')}
 							<StringTd
 								name="parentId"
 								bind:value={node.parentId}
 								on:save={(e) => updateField({ parentId: node?.parentId, where: { id: { val: node?.id } } })}
-								readonly={!await $permissions.auth('Group::parentId::WRITE')}
+								readonly={!permissions.auth('Group::parentId::WRITE')}
 								errors={errors[row]?.iterms?.parentId}
 							/>
 							{/if}

@@ -215,7 +215,7 @@
 			{%- for field in fields %}
 			{%- if field.isScalarType or field.isEnumType %}
 			{%- if useAuth %}
-			{#if await $permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
+			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 			{%- endif %}
 			{%- if field.inQueryArgs %}
 			<{{ field.fieldType.name }}Th
@@ -259,7 +259,7 @@
 							{%- for field in fields %}
 							{%- if field.isScalarType or field.isEnumType %}
 							{%- if useAuth %}
-							{#if await $permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
+							{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 							{%- endif %}
 							{%- if field.component %}
 							{{ field.component }}
@@ -273,7 +273,7 @@
 								{%- if field.inMutationArgs and field.fieldName != idName %}
 								on:save={(e) => updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } })}
 								{%- if useAuth %}
-								readonly={!await $permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE')}
+								readonly={!permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE')}
 								{%- endif %}
 								{%- else %}
 								readonly

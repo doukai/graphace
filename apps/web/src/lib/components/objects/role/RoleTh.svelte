@@ -65,7 +65,7 @@
 <div class="hidden">
 	<div class="space-y-2" bind:this={content}>
 		<div class="grid grid-cols-2 gap-2">
-			{#if await $permissions.auth('Role::name::*')}
+			{#if permissions.auth('Role::name::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.Role.fields.name.name()}
@@ -90,7 +90,7 @@
 				/>
 			{/if}
 			{/if}
-			{#if await $permissions.auth('Role::description::*')}
+			{#if permissions.auth('Role::description::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
 					{$LL.graphql.objects.Role.fields.description.name()}

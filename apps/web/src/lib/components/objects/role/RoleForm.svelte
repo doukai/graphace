@@ -88,9 +88,9 @@
 
 <Form
 	title={$LL.graphql.objects.Role.name()}
-	showRemoveButton={await $permissions.auth('Role::*::WRITE') && showRemoveButton}
-	showUnbindButton={await $permissions.auth('Role::*::WRITE') && showUnbindButton}
-	showGotoSelectButton={await $permissions.auth('Role::*::WRITE') && showGotoSelectButton}
+	showRemoveButton={permissions.auth('Role::*::WRITE') && showRemoveButton}
+	showUnbindButton={permissions.auth('Role::*::WRITE') && showUnbindButton}
+	showGotoSelectButton={permissions.auth('Role::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	on:save={(e) => save()}
 	on:remove={(e) =>
@@ -128,25 +128,25 @@
 		<FormLoading rows={7} />
 	{:else}
 		{#if node}
-			{#if await $permissions.auth('Role::name::*')}
+			{#if permissions.auth('Role::name::*')}
 			<StringItem label={$LL.graphql.objects.Role.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
 			{/if}
-			{#if await $permissions.auth('Role::description::*')}
+			{#if permissions.auth('Role::description::*')}
 			<StringItem label={$LL.graphql.objects.Role.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
 			{/if}
-			{#if await $permissions.auth('Role::users::*')}
+			{#if permissions.auth('Role::users::*')}
 			<ObjectItem name="users" namedStruct={ node.users } path={`${node.id}/users`} label={$LL.graphql.objects.Role.fields.users.name()} errors={errors.users} on:gotoField />
 			{/if}
-			{#if await $permissions.auth('Role::groups::*')}
+			{#if permissions.auth('Role::groups::*')}
 			<ObjectItem name="groups" namedStruct={ node.groups } path={`${node.id}/groups`} label={$LL.graphql.objects.Role.fields.groups.name()} errors={errors.groups} on:gotoField />
 			{/if}
-			{#if await $permissions.auth('Role::composites::*')}
+			{#if permissions.auth('Role::composites::*')}
 			<ObjectItem name="composites" namedStruct={ node.composites } path={`${node.id}/composites`} label={$LL.graphql.objects.Role.fields.composites.name()} errors={errors.composites} on:gotoField />
 			{/if}
-			{#if await $permissions.auth('Role::permissions::*')}
+			{#if permissions.auth('Role::permissions::*')}
 			<ObjectItem name="permissions"  path={`${node.id}/permissions`} label={$LL.graphql.objects.Role.fields.permissions.name()} errors={errors.permissions} on:gotoField />
 			{/if}
-			{#if await $permissions.auth('Role::realm::*')}
+			{#if permissions.auth('Role::realm::*')}
 			<ObjectItem name="realm" namedStruct={ node.realm } path={`${node.id}/realm`} label={$LL.graphql.objects.Role.fields.realm.name()} errors={errors.realm} on:gotoField />
 			{/if}
 		{/if}

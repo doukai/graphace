@@ -45,9 +45,9 @@
 
 <TableHead
 	title={$LL.graphql.objects.Permission.name()}
-	showRemoveButton={await $permissions.auth('Permission::*::WRITE') && showRemoveButton && selectedRowList.length > 0}
-	showSaveButton={await $permissions.auth('Permission::*::WRITE') && showSaveButton}
-	showGotoSelectButton={await $permissions.auth('Permission::*::WRITE') && showGotoSelectButton}
+	showRemoveButton={permissions.auth('Permission::*::WRITE') && showRemoveButton && selectedRowList.length > 0}
+	showSaveButton={permissions.auth('Permission::*::WRITE') && showSaveButton}
+	showGotoSelectButton={permissions.auth('Permission::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	showSearchInput={false}
 	on:create
@@ -84,25 +84,25 @@
 					/>
 				</label>
 			</th>
-			{#if await $permissions.auth('Permission::name::*')}
+			{#if permissions.auth('Permission::name::*')}
 			<td>{$LL.graphql.objects.Permission.fields.name.name()}</td>
 			{/if}
-			{#if await $permissions.auth('Permission::description::*')}
+			{#if permissions.auth('Permission::description::*')}
 			<td>{$LL.graphql.objects.Permission.fields.description.name()}</td>
 			{/if}
-			{#if await $permissions.auth('Permission::field::*')}
+			{#if permissions.auth('Permission::field::*')}
 			<td>{$LL.graphql.objects.Permission.fields.field.name()}</td>
 			{/if}
-			{#if await $permissions.auth('Permission::type::*')}
+			{#if permissions.auth('Permission::type::*')}
 			<td>{$LL.graphql.objects.Permission.fields.type.name()}</td>
 			{/if}
-			{#if await $permissions.auth('Permission::permissionType::*')}
+			{#if permissions.auth('Permission::permissionType::*')}
 			<td>{$LL.graphql.objects.Permission.fields.permissionType.name()}</td>
 			{/if}
-			{#if await $permissions.auth('Permission::roles::*')}
+			{#if permissions.auth('Permission::roles::*')}
 			<td>{$LL.graphql.objects.Permission.fields.roles.name()}</td>
 			{/if}
-			{#if await $permissions.auth('Permission::realm::*')}
+			{#if permissions.auth('Permission::realm::*')}
 			<td>{$LL.graphql.objects.Permission.fields.realm.name()}</td>
 			{/if}
 			<th />
@@ -118,7 +118,7 @@
 								<input type="checkbox" class="checkbox" bind:group={selectedRowList} value={row} />
 							</label>
 						</th>
-						{#if await $permissions.auth('Permission::name::*')}
+						{#if permissions.auth('Permission::name::*')}
 						<IDTd
 							name="name"
 							bind:value={node.name}
@@ -126,7 +126,7 @@
 							errors={errors[row]?.iterms?.name}
 						/>
 						{/if}
-						{#if await $permissions.auth('Permission::description::*')}
+						{#if permissions.auth('Permission::description::*')}
 						<StringTd
 							name="description"
 							bind:value={node.description}
@@ -134,7 +134,7 @@
 							errors={errors[row]?.iterms?.description}
 						/>
 						{/if}
-						{#if await $permissions.auth('Permission::field::*')}
+						{#if permissions.auth('Permission::field::*')}
 						<StringTd
 							name="field"
 							bind:value={node.field}
@@ -142,7 +142,7 @@
 							errors={errors[row]?.iterms?.field}
 						/>
 						{/if}
-						{#if await $permissions.auth('Permission::type::*')}
+						{#if permissions.auth('Permission::type::*')}
 						<StringTd
 							name="type"
 							bind:value={node.type}
@@ -150,7 +150,7 @@
 							errors={errors[row]?.iterms?.type}
 						/>
 						{/if}
-						{#if await $permissions.auth('Permission::permissionType::*')}
+						{#if permissions.auth('Permission::permissionType::*')}
 						<PermissionTypeTd
 							name="permissionType"
 							bind:value={node.permissionType}
@@ -158,13 +158,13 @@
 							errors={errors[row]?.iterms?.permissionType}
 						/>
 						{/if}
-						{#if await $permissions.auth('Permission::roles::*')}
+						{#if permissions.auth('Permission::roles::*')}
 						<ObjectTd name="roles" namedStruct={ node.roles } errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
 						{/if}
-						{#if await $permissions.auth('Permission::realm::*')}
+						{#if permissions.auth('Permission::realm::*')}
 						<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
 						{/if}
-						{#if await $permissions.auth('Permission::*::WRITE')}
+						{#if permissions.auth('Permission::*::WRITE')}
 						<th class="z-10 hover:z-30 w-24">
 							<div class="flex space-x-1">
 								<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>

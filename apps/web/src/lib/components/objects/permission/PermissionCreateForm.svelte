@@ -60,8 +60,8 @@
 
 <Form
 	title={$LL.graphql.objects.Permission.name()}
-	showRemoveButton={await $permissions.auth('Permission::*::WRITE') && showRemoveButton && node !== undefined && node !== null && Object.keys(node).length > 0}
-	showGotoSelectButton={await $permissions.auth('Permission::*::WRITE') && showGotoSelectButton}
+	showRemoveButton={permissions.auth('Permission::*::WRITE') && showRemoveButton && node !== undefined && node !== null && Object.keys(node).length > 0}
+	showGotoSelectButton={permissions.auth('Permission::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
 	on:save={(e) => save()}
 	on:remove={(e) =>
@@ -77,25 +77,25 @@
 	on:gotoSelect
 	on:back
 >
-	{#if await $permissions.auth('Permission::name::*')}
+	{#if permissions.auth('Permission::name::*')}
 	<IDItem label={$LL.graphql.objects.Permission.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
 	{/if}
-	{#if await $permissions.auth('Permission::description::*')}
+	{#if permissions.auth('Permission::description::*')}
 	<StringItem label={$LL.graphql.objects.Permission.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
 	{/if}
-	{#if await $permissions.auth('Permission::field::*')}
+	{#if permissions.auth('Permission::field::*')}
 	<StringItem label={$LL.graphql.objects.Permission.fields.field.name()} name="field" bind:value={node.field} errors={errors.field} />
 	{/if}
-	{#if await $permissions.auth('Permission::type::*')}
+	{#if permissions.auth('Permission::type::*')}
 	<StringItem label={$LL.graphql.objects.Permission.fields.type.name()} name="type" bind:value={node.type} errors={errors.type} />
 	{/if}
-	{#if await $permissions.auth('Permission::permissionType::*')}
+	{#if permissions.auth('Permission::permissionType::*')}
 	<PermissionTypeItem label={$LL.graphql.objects.Permission.fields.permissionType.name()} name="permissionType" bind:value={node.permissionType} errors={errors.permissionType} />
 	{/if}
-	{#if await $permissions.auth('Permission::roles::*')}
+	{#if permissions.auth('Permission::roles::*')}
 	<ObjectItem name="roles" namedStruct={ node.roles } path="_/roles" label={$LL.graphql.objects.Permission.fields.roles.name()} errors={errors.roles} on:gotoField />
 	{/if}
-	{#if await $permissions.auth('Permission::realm::*')}
+	{#if permissions.auth('Permission::realm::*')}
 	<ObjectItem name="realm" namedStruct={ node.realm } path="_/realm" label={$LL.graphql.objects.Permission.fields.realm.name()} errors={errors.realm} on:gotoField />
 	{/if}
 </Form>

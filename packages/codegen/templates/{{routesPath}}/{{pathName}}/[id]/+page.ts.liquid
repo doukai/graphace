@@ -1,8 +1,14 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
 import { load_Query_{{ name | camelCase }} } from '$houdini';
+{%- if useAuth %}
+import { permissions } from '~/lib/utils/auth-util';
+{%- endif %}
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
+    {%- if useAuth %}
+    await permissions.getTypes('{{ name }}');
+    {%- endif %}
     return {
         ...(await load_Query_{{ name | camelCase }}({ event, variables: { {{ idName }}: { val: event.params.id } } }))
     };

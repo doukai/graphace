@@ -3,8 +3,14 @@ import type { LayoutLoad } from '$types';
 import { type Errors, getNode, getErrors } from '@graphace/commons';
 import type { {{ mutationTypeName }}{{ objectFieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
 import { {% if connectionField %}load_Query_{{ objectFieldTypeName | camelCase }}Connection{% else %}load_Query_{{ objectFieldTypeName | camelCase }}List{% endif %} } from '$houdini';
+{%- if useAuth %}
+import { permissions } from '~/lib/utils/auth-util';
+{%- endif %}
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
+    {%- if useAuth %}
+    await permissions.getTypes('{{ objectFieldTypeName }}');
+    {%- endif %}
     const node: {{ mutationTypeName }}{{ objectFieldTypeName }}Args = getNode(event.url) || {};
 	const errors: Record<string, Errors> = getErrors(event.url) || {};
     return {

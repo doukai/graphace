@@ -107,7 +107,7 @@
 		{nodes}
 		{totalCount}
 		{errors}
-		args={ { ...notBelongToParent } }
+		args={ { exs: [notBelongToParent] } }
 		isFetching={$Query_userConnection.fetching}
 		on:fetch={fetch}
 		on:mutation={mutation}
