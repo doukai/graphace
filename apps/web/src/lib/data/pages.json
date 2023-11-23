@@ -32,6 +32,14 @@
 				"tags": "User",
 				"href": "/user",
 				"authPermissions": ["User::*::*"]
+			},
+			{
+				"name": "Policy",
+				"tags": "Policy",
+				"href": "/policy",
+				"authPermissions": [
+					"Query::policyList::READ"
+				]
 			}
 		]
 	}

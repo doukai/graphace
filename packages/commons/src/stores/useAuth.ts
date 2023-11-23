@@ -55,7 +55,7 @@ export function createPermissions(getTypePermissionList: (types: string[]) => Pr
                         return $jwt?.permission_types?.includes(authType);
                     } else {
                         const $typePermissionRecord = get(typePermissionRecord);
-                        return $typePermissionRecord[authType].map(permissions => permissions.split("::"))
+                        return ($typePermissionRecord[authType] || []).map(permissions => permissions.split("::"))
                             .some(parts =>
                                 (authParts[0] === '*' || authParts[0] === parts[0]) &&
                                 (authParts[1] === '*' || authParts[1] === parts[1]) &&
