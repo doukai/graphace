@@ -22,26 +22,28 @@
 </script>
 
 {#each menus as { name, icon, items }}
-	<li class="menu-title flex flex-row gap-4">
-		<span class="text-base-content"><Iconify class="w-5 h-5" {icon} /></span>
-		<span>{name}</span>
-	</li>
-	{#each items as { href, objectKey, authPermissions }}
-		{#if permissions.auth(...authPermissions)}
-			<li>
-				<a
-					href={null}
-					on:click|preventDefault={(e) => {
-						init(`/${$locale}${href}`);
-					}}
-					class={$page.url.pathname === `/${$locale}${href}` ||
-					$page.url.pathname.startsWith(`/${$locale}${href}/`)
-						? 'active'
-						: ''}
-				>
-					<span>{$LL.graphql.objects[objectKey].name()}</span>
-				</a>
-			</li>
-		{/if}
-	{/each}
+	{#if items && items.length > 0}
+		<li class="menu-title flex flex-row gap-4">
+			<span class="text-base-content"><Iconify class="w-5 h-5" {icon} /></span>
+			<span>{name}</span>
+		</li>
+		{#each items as { href, objectKey, authPermissions }}
+			{#if permissions.auth(...authPermissions)}
+				<li>
+					<a
+						href={null}
+						on:click|preventDefault={(e) => {
+							init(`/${$locale}${href}`);
+						}}
+						class={$page.url.pathname === `/${$locale}${href}` ||
+						$page.url.pathname.startsWith(`/${$locale}${href}/`)
+							? 'active'
+							: ''}
+					>
+						<span>{$LL.graphql.objects[objectKey].name()}</span>
+					</a>
+				</li>
+			{/if}
+		{/each}
+	{/if}
 {/each}
