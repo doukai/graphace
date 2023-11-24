@@ -112,7 +112,6 @@
 <Card>
 	{%- if connectionField %}
 	<{{ objectFieldTypeName }}SelectConnectionTable
-		mutate={false}
 		showBackButton={$canBack}
 		{nodes}
 		{totalCount}
@@ -125,7 +124,6 @@
 	/>
 	{%- else %}
 	<{{ objectFieldTypeName }}SelectTable
-		mutate={false}
 		showBackButton={$canBack}
 		{nodes}
 		{errors}

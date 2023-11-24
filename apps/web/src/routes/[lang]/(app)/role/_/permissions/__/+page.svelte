@@ -90,7 +90,6 @@
 
 <Card>
 	<PermissionSelectConnectionTable
-		mutate={false}
 		showBackButton={$canBack}
 		{nodes}
 		{totalCount}

@@ -112,7 +112,6 @@
 	{%- if connectionField %}
 	<{{ objectFieldTypeName }}SelectConnectionTable
 		multipleSelect={false}
-		mutate={false}
 		showBackButton={$canBack}
 		{nodes}
 		{totalCount}
@@ -126,7 +125,6 @@
 	{%- else %}
 	<{{ objectFieldTypeName }}SelectTable
 		multipleSelect={false}
-		mutate={false}
 		showBackButton={$canBack}
 		{nodes}
 		{errors}

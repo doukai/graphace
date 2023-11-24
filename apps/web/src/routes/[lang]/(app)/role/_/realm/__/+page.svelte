@@ -90,7 +90,6 @@
 <Card>
 	<RealmSelectConnectionTable
 		multipleSelect={false}
-		mutate={false}
 		showBackButton={$canBack}
 		{nodes}
 		{totalCount}
