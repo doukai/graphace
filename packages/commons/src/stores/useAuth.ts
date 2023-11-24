@@ -18,30 +18,58 @@ export const isRoot: Readable<boolean | undefined> = derived(
     ($jwt) => $jwt?.is_root
 );
 
-export function createPermissions(getTypePermissionList: (types: string[]) => Promise<string[]>) {
+export function createPermissions(
+    getTypePermissionList: (types: string[]) => Promise<(string | null)[]>,
+    queryTypeName: string | undefined,
+    mutationTypeName: string | undefined,
+    subscriptionTypeName: string | undefined
+) {
     const typePermissionRecord: Writable<Record<string, string[]>> = writable({});
     const { subscribe, set, update } = typePermissionRecord;
 
     return {
         subscribe,
         update,
+        set: (typePermissionList: (string | null)[]) => {
+            const $typePermissionRecord = get(typePermissionRecord);
+            set(
+                typePermissionList.reduce((pre, cur) => {
+                    if (cur) {
+                        const type = cur.split("::")[0];
+                        if (pre[type]) {
+                            pre[type] = [...pre[type], cur]
+                        } else {
+                            pre[type] = [cur]
+                        }
+                    }
+                    return pre;
+                }, $typePermissionRecord)
+            )
+        },
         getTypes: async (...authTypes: string[]) => {
             const $jwt = get(jwt);
-            if (!$jwt?.is_root) {
+            if ($jwt && !$jwt?.is_root) {
                 const $typePermissionRecord = get(typePermissionRecord);
-                const types = authTypes.filter(type => !Object.keys($typePermissionRecord).includes(type));
+                const types = [
+                    queryTypeName || 'Query',
+                    mutationTypeName || 'Mutation',
+                    subscriptionTypeName || 'Subscription',
+                    ...authTypes
+                ].filter(type => !Object.keys($typePermissionRecord).includes(type));
                 if (types.length > 0) {
                     const typePermissionList = await getTypePermissionList(types);
                     set(
                         typePermissionList.reduce((pre, cur) => {
-                            const type = cur.split("::")[0];
-                            if (pre[type]) {
-                                pre[type] = [...pre[type], cur]
-                            } else {
-                                pre[type] = [cur]
+                            if (cur) {
+                                const type = cur.split("::")[0];
+                                if (pre[type]) {
+                                    pre[type] = [...pre[type], cur]
+                                } else {
+                                    pre[type] = [cur]
+                                }
                             }
                             return pre;
-                        }, $typePermissionRecord)
+                        }, { ...$typePermissionRecord, ...Object.fromEntries(types.map(type => [type, []])) })
                     )
                 }
             }
