@@ -3,6 +3,7 @@ import type { LayoutLoad } from '$types';
 import { type Errors, getNode, getErrors } from '@graphace/commons';
 import { load_Query_role_realm } from '$houdini';
 import type { MutationRealmArgs } from '~/lib/types/schema';
+import { permissions } from '~/lib/utils/auth-util';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     await permissions.getTypes('Realm');

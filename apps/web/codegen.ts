@@ -102,7 +102,7 @@ const config: CodegenConfig = {
                         },
                         {
                             name: 'User',
-                            // inRoute: false,
+                            inRoute: false,
                             fields: [
                                 {
                                     name: 'salt',
@@ -124,10 +124,10 @@ const config: CodegenConfig = {
                         {
                             name: 'Role',
                             fields: [
-                                // {
-                                //     name: 'permissions',
-                                //     inRoute: false
-                                // },
+                                {
+                                    name: 'permissions',
+                                    inRoute: false
+                                },
                                 {
                                     name: 'syncRolePolicy',
                                     inQuery: false,

@@ -1,6 +1,9 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
 import { {% if connectionField %}load_Query_{{ objectFieldTypeName | camelCase }}Connection{% else %}load_Query_{{ objectFieldTypeName | camelCase }}List{% endif %} } from '$houdini';
+{%- if useAuth %}
+import { permissions } from '~/lib/utils/auth-util';
+{%- endif %}
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     {%- if useAuth %}
