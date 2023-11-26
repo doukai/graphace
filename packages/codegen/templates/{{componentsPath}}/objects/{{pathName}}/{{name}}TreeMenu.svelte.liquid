@@ -1,16 +1,12 @@
-<script context="module" lang="ts">
-	export type {{ name }}Tree = NodeTree<{{ name }}>;
-</script>
-
 <script lang="ts">
 	import { graphql, {{ name }}NodesQuery$input, Operator } from '$houdini';
-	import { type NodeTree, buildTree } from '@graphace/commons';
+	import { NodeTree, TreeStruct, buildTree } from '@graphace/graphql';
 	import { notifications, MenuTreeLoading } from '@graphace/ui';
 	import {{ name }}TreeMenu from './{{ name }}TreeMenu.svelte';
 	import type { {{ name }} } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
-	export let nodeTrees: {{ name }}Tree[] | null | undefined = undefined;
-	export let parent: {{ name }} | null | undefined = undefined;
+	export let nodeTrees: NodeTree[] | null | undefined = undefined;
+	export let parent: TreeStruct | null | undefined = undefined;
 	export let currentDeep = 0;
 	export let deeps = 2;
 	export let {{ name | camelCase }}Name: string | null | undefined = undefined;
@@ -39,7 +35,6 @@
 	$: if (!nodeTrees || parent?.{{ idName }} === active{{ name }}Id) {
 		nodeTrees = buildTree(
 			${{ name }}NodesQuery.data?.{{ name | camelCase }}List,
-			(current, parent) => current?.parentId + '' === parent?.{{ idName }},
 			parent
 		);
 	}

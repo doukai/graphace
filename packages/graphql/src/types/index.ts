@@ -15,3 +15,6 @@ export * from "./Edge.js";
 export * from "./PageInfo.js";
 export * from "./Operator.js";
 export * from "./Sort.js";
+export * from "./NamedStruct.js";
+export * from "./TreeStruct.js";
+export * from "./NodeTree.js";

@@ -64,6 +64,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 }
 
 export const handleError: HandleServerError = async ({ error, event }) => {
+	const { headers } = event.request;
+	headers.delete('Accept');
 	const [, lang] = event.url.pathname.split('/');
 	const locale = isLocale(lang) ? (lang as Locales) : getPreferredLocale(event);
 	const loginPathName = `/${locale}/login`;
@@ -71,7 +73,7 @@ export const handleError: HandleServerError = async ({ error, event }) => {
 	if (browser) {
 		goto(loginPathName);
 	} else {
-		throw redirect(307, loginPathName);
+		throw redirect(303, loginPathName);
 	}
 };
 

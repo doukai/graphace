@@ -4,17 +4,15 @@
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons';
+	import type { NamedStruct } from '@graphace/graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Link } from '@steeze-ui/heroicons';
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let path: string;
 	export let name: string;
-	export let namedStruct:
-		| { name: string; description: string | null | undefined }
-		| ({ name: string; description: string | null | undefined } | null | undefined)[]
-		| null
-		| undefined = undefined;
+	export let namedStruct: NamedStruct | (NamedStruct | null | undefined)[] | null | undefined =
+		undefined;
 	export let errors: Errors | undefined = undefined;
 
 	const dispatch = createEventDispatcher<{

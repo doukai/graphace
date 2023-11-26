@@ -1,16 +1,11 @@
-<script context="module" lang="ts">
-	export type GroupTree = NodeTree<Group>;
-</script>
-
 <script lang="ts">
 	import { graphql, GroupNodesQuery$input, Operator } from '$houdini';
-	import { type NodeTree, buildTree } from '@graphace/commons';
+	import { NodeTree, TreeStruct, buildTree } from '@graphace/graphql';
 	import { notifications, MenuTreeLoading } from '@graphace/ui';
 	import GroupTreeMenu from './GroupTreeMenu.svelte';
-	import type { Group } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
-	export let nodeTrees: GroupTree[] | null | undefined = undefined;
-	export let parent: Group | null | undefined = undefined;
+	export let nodeTrees: NodeTree[] | null | undefined = undefined;
+	export let parent: TreeStruct | null | undefined = undefined;
 	export let currentDeep = 0;
 	export let deeps = 2;
 	export let groupName: string | null | undefined = undefined;
@@ -37,11 +32,7 @@
 	}
 
 	$: if (!nodeTrees || parent?.id === activeGroupId) {
-		nodeTrees = buildTree(
-			$GroupNodesQuery.data?.groupList,
-			(current, parent) => current?.parentId + '' === parent?.id,
-			parent
-		);
+		nodeTrees = buildTree($GroupNodesQuery.data?.groupList, parent);
 	}
 
 	const queryNodes = (groupName?: string | null | undefined) => {
@@ -71,13 +62,13 @@
 		{#each nodeTrees as nodeTree}
 			<li>
 				<a
-					class={nodeTree.node.id === activeGroupId ? 'active' : ''}
+					class={nodeTree.node?.id === activeGroupId ? 'active' : ''}
 					href={null}
 					on:click|preventDefault={(e) => {
-						activeGroupId = nodeTree.node.id;
+						activeGroupId = nodeTree.node?.id;
 					}}
 				>
-					{nodeTree.node.name}
+					{nodeTree.node?.name}
 				</a>
 				{#if $GroupNodesQuery.fetching}
 					<MenuTreeLoading />

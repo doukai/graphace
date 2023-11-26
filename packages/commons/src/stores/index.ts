@@ -1,1 +1,1 @@
-export * from "./useAuth.js"
+export * from "./useAuth.js";
