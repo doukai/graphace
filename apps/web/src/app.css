@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --sms-selected-bg: none;
+    --sms-text-color: none;
+    --sms-focus-border: 2;
+}

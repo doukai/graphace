@@ -17,6 +17,9 @@
 	export let errors: Errors | undefined = undefined;
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
+	let _namedStruct = namedStruct;
+	namedStruct = undefined;
+
 	const dispatch = createEventDispatcher<{
 		gotoField: { path: string; name: string };
 	}>();
@@ -25,9 +28,9 @@
 <FormItem {label} let:id>
 	<div {id} class="justify-start h-full flex items-center">
 		<div class="tooltip" data-tip={$LL.uiGraphql.table.editBtn()}>
-			{#if namedStruct}
-				{#if Array.isArray(namedStruct)}
-					{#if namedStruct.length > 0 && namedStruct.some((item) => item.name)}
+			{#if _namedStruct}
+				{#if Array.isArray(_namedStruct)}
+					{#if _namedStruct.length > 0 && _namedStruct.some((item) => item.name)}
 						<a
 							class="link {errors ? 'link-error' : ''}"
 							href={null}
@@ -35,14 +38,14 @@
 								dispatch('gotoField', { path, name });
 							}}
 						>
-							{#if namedStruct && namedStruct.length > 3}
-								{namedStruct
+							{#if _namedStruct && _namedStruct.length > 3}
+								{_namedStruct
 									.map((item) => item.name)
 									.slice(0, 3)
 									.join(',')
 									.concat('...')}
 							{:else}
-								{namedStruct.map((item) => item.name).join(',')}
+								{_namedStruct.map((item) => item.name).join(',')}
 							{/if}
 						</a>
 					{:else}
@@ -55,7 +58,7 @@
 							<Icon src={Link} class="h-5 w-5" />
 						</button>
 					{/if}
-				{:else if namedStruct.name}
+				{:else if _namedStruct.name}
 					<a
 						class="link {errors ? 'link-error' : ''}"
 						href={null}
@@ -63,7 +66,7 @@
 							dispatch('gotoField', { path, name });
 						}}
 					>
-						{namedStruct.name}
+						{_namedStruct.name}
 					</a>
 				{:else}
 					<button

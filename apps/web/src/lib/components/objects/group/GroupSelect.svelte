@@ -12,14 +12,14 @@
 	let options: ObjectOption[] = [];
 	let selected: ObjectOption[] = [];
 	if (list && Array.isArray(value)) {
-		value = value.map((item) => ({ where: { id: { val: item?.id } } }));
+		value = value.map((item) => ({ ...item, id: undefined, where: { id: { val: item?.id } } }));
 		selected = value?.map((item) => ({
 			label: item?.name || '',
-			value: item?.id
+			value: item
 		}));
 	} else if (!list && !Array.isArray(value) && value) {
-		value = { where: { id: { val: value.id } } };
-		selected = [{ label: value?.name || '', value: value?.id }];
+		value = { ...value, id: undefined, where: { id: { val: value.id } } };
+		selected = [{ label: value?.name || '', value: value }];
 	}
 
 	const GroupNodesQuery = graphql(`
@@ -27,6 +27,10 @@
 			groupList(name: $name) {
 				id
 				name
+				description
+				path
+				deep
+				parentId
 			}
 		}
 	`);
@@ -34,7 +38,7 @@
 	$: options =
 		$GroupNodesQuery.data?.groupList?.map((item) => ({
 			label: item?.name || '',
-			value: item?.id
+			value: { ...item, id: undefined, where: { id: { val: item?.id } } }
 		})) || [];
 
 	$: if (searchText) {
@@ -60,19 +64,23 @@
 	bind:selected
 	bind:options
 	bind:searchText
+	outerDivClass="input input-bordered"
+	liSelectedClass="badge badge-primary"
 	{loading}
 	on:change={(e) => {
 		if (e.detail.type === 'add') {
 			if (list && Array.isArray(value)) {
-				value = [...value, { where: { id: { val: e.detail.option.value } } }];
+				value = [...value, e.detail.option.value];
 			} else if (list) {
-				value = [{ where: { id: { val: e.detail.option.value } } }];
+				value = [e.detail.option.value];
 			} else {
-				value = { where: { id: { val: e.detail.option.value } } };
+				value = e.detail.option.value;
 			}
 		} else if (e.detail.type === 'remove') {
 			if (list && Array.isArray(value)) {
-				value = [...value.filter((item) => item?.where?.id?.val !== e.detail.option.value)];
+				value = [
+					...value.filter((item) => item?.where?.id?.val !== e.detail.option.value?.where?.id?.val)
+				];
 			} else {
 				value = undefined;
 			}
