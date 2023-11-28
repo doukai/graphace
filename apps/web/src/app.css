@@ -3,7 +3,5 @@
 @tailwind utilities;
 
 :root {
-    --sms-selected-bg: none;
-    --sms-text-color: none;
-    --sms-focus-border: 2;
+    --sms-border-radius: var(--rounded-btn, 0.5rem);
 }

@@ -91,3 +91,16 @@
 		}
 	}}
 />
+
+<style>
+	:global(div.multiselect > ul.selected > li) {
+		background: hsl(var(--p) / var(--tw-bg-opacity)) !important;
+		color: hsl(var(--pc) / var(--tw-text-opacity)) !important;
+	}
+	:global(div.multiselect:focus-within) {
+		border: var(
+			--sms-focus-border,
+			1px solid var(--sms-active-color, hsl(var(--bc) / var(--tw-border-opacity)))
+		) !important;
+	}
+</style>
