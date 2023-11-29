@@ -400,6 +400,7 @@
 							{/if}
 							{#if permissions.auth('Group::parent::*')}
 							<ObjectTd name="parent" namedStruct={ node.parent } errors={errors[row]?.iterms?.parent} path={`${node.id}/parent`} on:gotoField />
+							
 							{/if}
 							{#if permissions.auth('Group::subGroups::*')}
 							<ObjectTd name="subGroups" namedStruct={ node.subGroups } errors={errors[row]?.iterms?.subGroups} path={`${node.id}/sub-groups`} on:gotoField />

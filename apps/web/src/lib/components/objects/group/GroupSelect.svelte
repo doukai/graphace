@@ -1,11 +1,14 @@
 <script lang="ts">
 	import MultiSelect, { ObjectOption } from 'svelte-multiselect';
 	import { graphql, GroupInput, Operator } from '$houdini';
-	import { notifications } from '@graphace/ui';
 	import LL from '$i18n/i18n-svelte';
 
 	export let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean | undefined = false;
+	export let id: string | null = null;
+	export let name: string;
+	export let disabled = false;
+	export let placeholder: string | null | undefined = undefined;
 
 	let searchText: string = '';
 	let loading: boolean = false;
@@ -43,29 +46,33 @@
 
 	$: if (searchText) {
 		loading = true;
-		GroupNodesQuery.fetch({ variables: { name: { opr: Operator.LK, val: `%${searchText}%` } } })
-			.catch((errors) => {
-				console.error(errors);
-				notifications.error($LL.web.message.requestFailed());
-			})
-			.finally(() => (loading = false));
+		GroupNodesQuery.fetch({
+			variables: { name: { opr: Operator.LK, val: `%${searchText}%` } }
+		}).finally(() => (loading = false));
 	} else {
-		GroupNodesQuery.fetch({ variables: { name: undefined } })
-			.catch((errors) => {
-				console.error(errors);
-				notifications.error($LL.web.message.requestFailed());
-			})
-			.finally(() => (loading = false));
+		GroupNodesQuery.fetch({ variables: { name: undefined } }).finally(() => (loading = false));
 	}
 </script>
 
 <MultiSelect
 	maxSelect={list ? undefined : 1}
+	allowEmpty
+	{id}
+	{name}
+	{disabled}
+	{placeholder}
 	bind:selected
 	bind:options
 	bind:searchText
 	outerDivClass="input input-bordered"
 	liSelectedClass="badge badge-primary"
+	createOptionMsg={$LL.web.components.multiSelect.createOptionMsg()}
+	defaultDisabledTitle={$LL.web.components.multiSelect.defaultDisabledTitle()}
+	disabledInputTitle={$LL.web.components.multiSelect.disabledInputTitle()}
+	duplicateOptionMsg={$LL.web.components.multiSelect.duplicateOptionMsg()}
+	noMatchingOptionsMsg={$LL.web.components.multiSelect.noMatchingOptionsMsg()}
+	removeAllTitle={$LL.web.components.multiSelect.removeAllTitle()}
+	removeBtnTitle={$LL.web.components.multiSelect.removeBtnTitle()}
 	{loading}
 	on:change={(e) => {
 		if (e.detail.type === 'add') {

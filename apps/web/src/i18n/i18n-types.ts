@@ -798,6 +798,36 @@ export type NamespaceWebTranslation = {
 			 */
 			logout: string
 		}
+		multiSelect: {
+			/**
+			 * C​r​e​a​t​e​ ​t​h​i​s​ ​o​p​t​i​o​n​.​.​.
+			 */
+			createOptionMsg: string
+			/**
+			 * T​h​i​s​ ​o​p​t​i​o​n​ ​i​s​ ​d​i​s​a​b​l​e​d
+			 */
+			defaultDisabledTitle: string
+			/**
+			 * T​h​i​s​ ​i​n​p​u​t​ ​i​s​ ​d​i​s​a​b​l​e​d
+			 */
+			disabledInputTitle: string
+			/**
+			 * T​h​i​s​ ​o​p​t​i​o​n​ ​i​s​ ​a​l​r​e​a​d​y​ ​s​e​l​e​c​t​e​d
+			 */
+			duplicateOptionMsg: string
+			/**
+			 * N​o​ ​m​a​t​c​h​i​n​g​ ​o​p​t​i​o​n​s
+			 */
+			noMatchingOptionsMsg: string
+			/**
+			 * R​e​m​o​v​e​ ​a​l​l
+			 */
+			removeAllTitle: string
+			/**
+			 * R​e​m​o​v​e
+			 */
+			removeBtnTitle: string
+		}
 	}
 	errors: {
 		/**
@@ -1609,6 +1639,36 @@ export type TranslationFunctions = {
 				 * Logout
 				 */
 				logout: () => LocalizedString
+			}
+			multiSelect: {
+				/**
+				 * Create this option...
+				 */
+				createOptionMsg: () => LocalizedString
+				/**
+				 * This option is disabled
+				 */
+				defaultDisabledTitle: () => LocalizedString
+				/**
+				 * This input is disabled
+				 */
+				disabledInputTitle: () => LocalizedString
+				/**
+				 * This option is already selected
+				 */
+				duplicateOptionMsg: () => LocalizedString
+				/**
+				 * No matching options
+				 */
+				noMatchingOptionsMsg: () => LocalizedString
+				/**
+				 * Remove all
+				 */
+				removeAllTitle: () => LocalizedString
+				/**
+				 * Remove
+				 */
+				removeBtnTitle: () => LocalizedString
 			}
 		}
 		errors: {
