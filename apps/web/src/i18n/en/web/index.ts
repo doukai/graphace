@@ -74,15 +74,6 @@ const en: BaseTranslation = {
             profile: "Profile",
             settings: "Settings",
             logout: "Logout"
-        },
-        multiSelect: {
-            createOptionMsg: "Create this option...",
-            defaultDisabledTitle: "This option is disabled",
-            disabledInputTitle: "This input is disabled",
-            duplicateOptionMsg: "This option is already selected",
-            noMatchingOptionsMsg: "No matching options",
-            removeAllTitle: "Remove all",
-            removeBtnTitle: "Remove"
         }
     },
     errors: {
