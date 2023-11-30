@@ -1,13 +1,16 @@
 <script lang="ts">
+	import type { Errors } from '@graphace/commons';
 	import type { ObjectOption } from 'svelte-multiselect';
 	import { graphql, GroupInput, Operator } from '$houdini';
 	import { ObjectMultiSelect } from '@graphace/ui-graphql';
 
 	export let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
+	export let errors: Errors | undefined = undefined;
 	export let list: boolean | undefined = false;
 	export let id: string | null = null;
 	export let name: string;
 	export let disabled = false;
+	export let readonly = false;
 	export let placeholder: string | null | undefined = undefined;
 
 	let searchText: string = '';
@@ -59,7 +62,9 @@
 	{id}
 	{name}
 	{disabled}
+	{readonly}
 	{placeholder}
+	{errors}
 	bind:selected
 	bind:options
 	bind:searchText

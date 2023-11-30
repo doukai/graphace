@@ -87,18 +87,18 @@
 				{#if value && value.length > 0}
 					{#if value && value.length > 3}
 						{value
-							.filter((item) => item)
+							.filter((item) => item?.name)
 							.slice(0, 3)
 							.join(',')
 							.concat('...')}
 					{:else}
-						{value.filter((item) => item).join(',')}
+						{value.filter((item) => item?.name).join(',')}
 					{/if}
 				{:else}
 					<Icon src={Minus} class="h-5 w-5" />
 				{/if}
 			{:else if value}
-				{value}
+				{value?.name}
 			{:else}
 				<Icon src={Minus} class="h-5 w-5" />
 			{/if}

@@ -4,7 +4,7 @@
 	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
 	import { Form, FormLoading, messageBoxs, notifications } from '@graphace/ui';
 	import { StringItem, IntItem, ObjectItem } from '@graphace/ui-graphql';
-	import GroupSelect from './GroupSelect.svelte';
+	import GroupSelectItem from './GroupSelectItem.svelte';
 	import LL from '$i18n/i18n-svelte';
 	import type { Group, GroupInput } from '~/lib/types/schema';
 	import { permissions } from '~/lib/utils/auth-util';
@@ -171,7 +171,12 @@
 		{/if}
 		{#if permissions.auth('Group::parent::*')}
 			<!-- <ObjectItem name="parent" namedStruct={ node.parent } path={`${node.id}/parent`} label={$LL.graphql.objects.Group.fields.parent.name()} errors={errors.parent} on:gotoField /> -->
-			<GroupSelect bind:value={node.parent} />
+			<GroupSelectItem
+				name="parent"
+				label={$LL.graphql.objects.Group.fields.parent.name()}
+				errors={errors.parent}
+				bind:value={node.parent}
+			/>
 		{/if}
 		{#if permissions.auth('Group::subGroups::*')}
 			<!-- <ObjectItem
@@ -182,7 +187,13 @@
 				errors={errors.subGroups}
 				on:gotoField
 			/> -->
-			<GroupSelect bind:value={node.subGroups} list />
+			<GroupSelectItem
+				name="parent"
+				label={$LL.graphql.objects.Group.fields.parent.name()}
+				errors={errors.parent}
+				bind:value={node.subGroups}
+				list
+			/>
 		{/if}
 		{#if permissions.auth('Group::users::*')}
 			<ObjectItem

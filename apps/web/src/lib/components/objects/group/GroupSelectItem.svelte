@@ -15,24 +15,5 @@
 </script>
 
 <FormItem {label} let:id>
-	{#if readonly}
-		<input
-			type="text"
-			{id}
-			{name}
-			{placeholder}
-			class="input input-bordered {errors?.errors ? 'input-error' : ''}"
-			value={Array.isArray(value) ? value.map((item) => item?.name).join(', ') : value?.name}
-			readonly
-		/>
-	{:else}
-		<GroupSelect {id} {name} {list} {disabled} {placeholder} bind:value />
-	{/if}
-	{#if errors?.errors}
-		<label for={id} class="label">
-			{#each errors.errors as error}
-				<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
-			{/each}
-		</label>
-	{/if}
+	<GroupSelect {id} {name} {list} {disabled} {readonly} {placeholder} {errors} bind:value />
 </FormItem>
