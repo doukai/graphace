@@ -1,7 +1,7 @@
 <script lang="ts">
-	import MultiSelect, { ObjectOption } from 'svelte-multiselect';
+	import type { ObjectOption } from 'svelte-multiselect';
 	import { graphql, GroupInput, Operator } from '$houdini';
-	import LL from '$i18n/i18n-svelte';
+	import { ObjectMultiSelect } from '@graphace/ui-graphql';
 
 	export let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean | undefined = false;
@@ -54,9 +54,8 @@
 	}
 </script>
 
-<MultiSelect
-	maxSelect={list ? undefined : 1}
-	allowEmpty
+<ObjectMultiSelect
+	{list}
 	{id}
 	{name}
 	{disabled}
@@ -64,15 +63,6 @@
 	bind:selected
 	bind:options
 	bind:searchText
-	outerDivClass="input input-bordered"
-	liSelectedClass="badge badge-primary"
-	createOptionMsg={$LL.web.components.multiSelect.createOptionMsg()}
-	defaultDisabledTitle={$LL.web.components.multiSelect.defaultDisabledTitle()}
-	disabledInputTitle={$LL.web.components.multiSelect.disabledInputTitle()}
-	duplicateOptionMsg={$LL.web.components.multiSelect.duplicateOptionMsg()}
-	noMatchingOptionsMsg={$LL.web.components.multiSelect.noMatchingOptionsMsg()}
-	removeAllTitle={$LL.web.components.multiSelect.removeAllTitle()}
-	removeBtnTitle={$LL.web.components.multiSelect.removeBtnTitle()}
 	{loading}
 	on:change={(e) => {
 		if (e.detail.type === 'add') {
@@ -98,16 +88,3 @@
 		}
 	}}
 />
-
-<style>
-	:global(div.multiselect > ul.selected > li) {
-		background: hsl(var(--p) / var(--tw-bg-opacity)) !important;
-		color: hsl(var(--pc) / var(--tw-text-opacity)) !important;
-	}
-	:global(div.multiselect:focus-within) {
-		border: var(
-			--sms-focus-border,
-			1px solid var(--sms-active-color, hsl(var(--bc) / var(--tw-border-opacity)))
-		) !important;
-	}
-</style>
