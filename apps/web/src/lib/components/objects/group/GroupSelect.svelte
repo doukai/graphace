@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons';
 	import type { ObjectOption } from 'svelte-multiselect';
 	import { graphql, GroupInput, Operator } from '$houdini';
@@ -12,22 +13,34 @@
 	export let disabled = false;
 	export let readonly = false;
 	export let placeholder: string | null | undefined = undefined;
+	export let className: string = '';
+
+	const dispatch = createEventDispatcher<{
+		change: {
+			value: GroupInput | (GroupInput | null | undefined)[] | null | undefined;
+		};
+	}>();
 
 	let searchText: string = '';
 	let loading: boolean = false;
 	let options: ObjectOption[] = [];
 	let selected: ObjectOption[] = [];
-	if (list && Array.isArray(value)) {
+	if (Array.isArray(value)) {
 		value = value.map((item) => ({ ...item, id: undefined, where: { id: { val: item?.id } } }));
+	} else if (value) {
+		value = { ...value, id: undefined, where: { id: { val: value.id } } };
+	}
+
+	$: if (Array.isArray(value)) {
 		selected = value?.map((item) => ({
 			label: item?.name || '',
 			value: item
 		}));
-	} else if (!list && !Array.isArray(value) && value) {
-		value = { ...value, id: undefined, where: { id: { val: value.id } } };
+	} else if (value) {
 		selected = [{ label: value?.name || '', value: value }];
+	} else {
+		selected = [];
 	}
-
 	const GroupNodesQuery = graphql(`
 		query GroupNameListQuery($name: StringExpression) {
 			groupList(name: $name) {
@@ -65,6 +78,7 @@
 	{readonly}
 	{placeholder}
 	{errors}
+	{className}
 	bind:selected
 	bind:options
 	bind:searchText
@@ -87,9 +101,8 @@
 				value = undefined;
 			}
 		} else if (e.detail.type === 'removeAll') {
-			if (list && Array.isArray(value)) {
-				value = undefined;
-			}
+			value = undefined;
 		}
+		dispatch('change', { value });
 	}}
 />

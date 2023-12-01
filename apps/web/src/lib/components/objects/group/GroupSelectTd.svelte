@@ -43,7 +43,7 @@
 
 <div class="hidden">
 	<div class="flex items-start space-x-1" bind:this={content}>
-		<GroupSelect {name} {list} {disabled} {placeholder} bind:value />
+		<GroupSelect {name} {list} {disabled} {readonly} {placeholder} bind:value />
 		{#if !readonly && !disabled}
 			<div class="tooltip" data-tip={$LL.uiGraphql.table.td.save()}>
 				<button class="btn btn-square btn-primary" on:click|preventDefault={(e) => mutation()}>

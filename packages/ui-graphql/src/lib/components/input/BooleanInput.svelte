@@ -8,10 +8,11 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let errors: Errors | undefined = undefined;
+	export let className: string = '';
 </script>
 
 {#if Array.isArray(value) || (list && (value === null || value === undefined))}
 	<ToggleList {name} bind:value {errors} {readonly} {disabled} />
 {:else}
-	<Toggle {name} bind:value {errors} {readonly} {disabled} />
+	<Toggle {name} bind:value {errors} {readonly} {disabled} {className} />
 {/if}

@@ -17,6 +17,7 @@
 	export let options: ObjectOption[] = [];
 	export let selected: ObjectOption[] = [];
 	export let errors: Errors | undefined = undefined;
+	export let className: string = '';
 </script>
 
 <div class="form-control w-full">
@@ -26,7 +27,7 @@
 			{id}
 			{name}
 			{placeholder}
-			class="input input-bordered"
+			class="input input-bordered {className}"
 			value={selected.map((item) => item?.label).join(', ')}
 			readonly
 		/>
@@ -42,6 +43,7 @@
 			bind:options
 			bind:searchText
 			outerDivClass="input input-bordered"
+			inputClass={className}
 			liSelectedClass="badge badge-primary"
 			createOptionMsg={$LL.uiGraphql.multiSelect.createOptionMsg()}
 			defaultDisabledTitle={$LL.uiGraphql.multiSelect.defaultDisabledTitle()}
@@ -67,6 +69,7 @@
 	:global(div.multiselect) {
 		border: 1pt solid hsl(var(--bc) / var(--tw-border-opacity)) !important;
 		border-radius: var(--rounded-btn, 0.5rem) !important;
+		background: hsl(var(--b1) / var(--tw-bg-opacity)) !important;
 	}
 	:global(div.multiselect > ul.selected > li) {
 		background: hsl(var(--p) / var(--tw-bg-opacity)) !important;

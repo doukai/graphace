@@ -9,10 +9,11 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
+	export let className: string = '';
 </script>
 
 {#if Array.isArray(value) || (list && (value === null || value === undefined))}
 	<TimeInputList {placeholder} {name} bind:value {errors} {readonly} {disabled} />
 {:else}
-	<TimeInput {placeholder} {name} bind:value {errors} {readonly} {disabled} />
+	<TimeInput {placeholder} {name} bind:value {errors} {readonly} {disabled} {className} />
 {/if}

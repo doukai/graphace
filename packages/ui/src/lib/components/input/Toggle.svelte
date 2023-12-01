@@ -7,6 +7,7 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let id: string = nanoid();
+	export let className: string = '';
 </script>
 
 <div class="form-control">
@@ -14,7 +15,7 @@
 		type="checkbox"
 		{id}
 		{name}
-		class="toggle my-3"
+		class="toggle my-3 {className}"
 		bind:checked={value}
 		{readonly}
 		{disabled}

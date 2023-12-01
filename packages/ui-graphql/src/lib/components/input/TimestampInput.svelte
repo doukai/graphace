@@ -9,6 +9,7 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
+	export let className: string = '';
 </script>
 
-<DateTimeInput bind:value {list} {name} {errors} {placeholder} {readonly} {disabled} />
+<DateTimeInput bind:value {list} {name} {errors} {placeholder} {readonly} {disabled} {className} />
