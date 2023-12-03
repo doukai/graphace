@@ -147,9 +147,14 @@
 					/>
 				</div>
 				{#if _expression.id.opr === 'IN' || _expression.id.opr === 'NIN' || _expression.id.opr === 'BT' || _expression.id.opr === 'NBT'}
-					<GroupSelect {name} list={true} bind:value />
+					<GroupSelect
+						{name}
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						list={true}
+						bind:value
+					/>
 				{:else}
-					<GroupSelect {name} bind:value />
+					<GroupSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value />
 				{/if}
 			</div>
 		{/if}

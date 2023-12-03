@@ -8,32 +8,84 @@
 	import {{ enum }}Input from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Input.svelte';
 	{%- endfor %}
 	import type { {% for scalar in scalars %}{{ scalar }}Expression{% if forloop.last == false %}, {% endif %}{% endfor %} } from '~/{{ schemaTypesPath }}';
+	{%- if isNamedStruct %}
+	import {{ name }}Select from '~/{{ objectsPath }}/{{ name | paramCase }}/{{ name }}Select.svelte';
+	{%- endif %}
+	{%- if namedStructObjectNames %}
+	{%- for namedStructType in namedStructObjectNames %}
+	{%- if namedStructType != name %}
+	import {{ namedStructType }}Select from '~/{{ objectsPath }}/{{ namedStructType | paramCase }}/{{ namedStructType }}Select.svelte';
+	{%- endif %}
+	{%- endfor %}
+	{%- endif %}
 	import LL from '$i18n/i18n-svelte';
-	import type { {% for enum in enums %}{{ enum }}Expression, {% endfor %}{{ name }}Expression } from '$houdini';
+	import type { {% if isNamedStruct %}{{ name }}Input,{% endif %}{% for enum in enums %}{{ enum }}Expression, {% endfor %}{{ name }}Expression } from '$houdini';
 	{%- if useAuth %}
 	import { permissions } from '~/lib/utils/auth-util';
 	{%- endif %}
 
 	export let name: string;
 	export let expression: {{ name }}Expression | null | undefined;
+	{%- if isNamedStruct %}
+	let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
+	{%- endif %}
+	{%- if fields %}
+	{%- for field in fields %}
+	{%- if field.fieldTypeIsNamedStruct %}
+	let {{ field.fieldName }}: {{ field.fieldType.name }}Input | ({{ field.fieldType.name }}Input | null | undefined)[] | null | undefined = undefined;
+	{%- endif %}
+	{%- endfor %}
+	{%- endif %}
 
 	let _expression: {
+		{%- if isNamedStruct %}
+		{{ idName }}: StringExpression;
+		{%- endif %}
 		{%- if fields %}
 		{%- for field in fields %}
 		{%- if field.isScalarType or field.isEnumType %}
 		{{ field.fieldName }}: {{ field.fieldType.name }}Expression;
 		{%- endif %}
+		{%- if field.fieldTypeIsNamedStruct %}
+		{{ field.fieldName }}: { {{ fieldTypeIdName }}: StringExpression };
+		{%- endif %}
 		{%- endfor %}
 		{%- endif %}
 	} = {
+		{%- if isNamedStruct %}
+		{{ idName }}: {},
+		{%- endif %}
 		{%- if fields %}
 		{%- for field in fields %}
 		{%- if field.isScalarType or field.isEnumType %}
 		{{ field.fieldName }}: {}{% if forloop.last == false %},{% endif %}
 		{%- endif %}
+		{%- if field.fieldTypeIsNamedStruct %}
+		{{ field.fieldName }}: { id: {} }{% if forloop.last == false %},{% endif %}
+		{%- endif %}
 		{%- endfor %}
 		{%- endif %}
 	};
+	
+	{%- if isNamedStruct %}
+	$: if (Array.isArray(value)) {
+		_expression.{{ idName }}.in = value?.map((item) => item?.where?.{{ idName }}?.val);
+	} else if (value) {
+		_expression.{{ idName }}.val = value?.where?.{{ idName }}?.val;
+	}
+	{%- endif %}
+
+	{%- if fields %}
+	{%- for field in fields %}
+	{%- if field.fieldTypeIsNamedStruct %}
+	$: if (Array.isArray({{ field.fieldName }})) {
+		_expression.{{ field.fieldName }}.{{ fieldTypeIdName }}.in = {{ field.fieldName }}?.map((item) => item?.where?.{{ fieldTypeIdName }}?.val);
+	} else if ({{ field.fieldName }}) {
+		_expression.{{ field.fieldName }}.{{ fieldTypeIdName }}.val = {{ field.fieldName }}?.where?.{{ fieldTypeIdName }}?.val;
+	}
+	{%- endif %}
+	{%- endfor %}
+	{%- endif %}
 
 	let content: HTMLElement;
 	let tippyElement: any;
@@ -42,6 +94,13 @@
 	}>();
 
 	const filter = (): void => {
+		{%- if isNamedStruct %}
+		if (_expression.{{ idName }}.val || (_expression.{{ idName }}.in && _expression.{{ idName }}.in.length > 0)) {
+			expression = { ...expression, {{ idName }}: _expression.{{ idName }} };
+		} else {
+			expression = { ...expression, {{ idName }}: undefined };
+		}
+		{%- endif %}
 		{%- if fields %}
 		{%- for field in fields %}
 		{%- if field.isScalarType or field.isEnumType %}
@@ -51,22 +110,37 @@
 			expression = { ...expression, {{ field.fieldName }}: undefined };
 		}
 		{%- endif %}
+		{%- if field.fieldTypeIsNamedStruct %}
+		if (
+			_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}?.val ||
+			(_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}?.in && _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}?.in.length > 0)
+		) {
+			expression = { ...expression, {{ field.fieldName }}: _expression.{{ field.fieldName }} };
+		} else {
+			expression = { ...expression, {{ field.fieldName }}: undefined };
+		}
+		{%- endif %}
 		{%- endfor %}
 		{%- endif %}
-
-		if (Object.keys(expression).length > 0) {
-			dispatch('filter');
-		} else {
+		
+		if (Object.values(expression).filter((item) => item).length === 0) {
 			expression = undefined;
 		}
+		dispatch('filter');
 		tippyElement._tippy.hide();
 	};
 
 	const clear = (): void => {
+		{%- if isNamedStruct %}
+		_expression.{{ idName }} = {};
+		{%- endif %}
 		{%- if fields %}
 		{%- for field in fields %}
 		{%- if field.isScalarType or field.isEnumType %}
 		_expression.{{ field.fieldName }} = {};
+		{%- endif %}
+		{%- if field.fieldTypeIsNamedStruct %}
+		_expression.{{ field.fieldName }} = { {{ field.fieldTypeIdName }}: {} };
 		{%- endif %}
 		{%- endfor %}
 		{%- endif %}
@@ -74,6 +148,14 @@
 		dispatch('filter');
 		tippyElement._tippy.hide();
 	};
+
+	
+	{%- if isNamedStruct %}
+	const {{ idName }}OprChange = (): void => {
+		_expression.{{ idName }}.in = [];
+		_expression.{{ idName }}.val = undefined;
+	};	
+	{%- endif %}
 
 	{%- if fields %}
 	{%- for field in fields %}
@@ -84,6 +166,13 @@
 	};
 	
 	{%- endif %}
+	{%- if field.fieldTypeIsNamedStruct %}
+	const {{ field.fieldName }}OprChange = (): void => {
+		_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.in = [];
+		_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.val = undefined;
+	};
+
+	{%- endif %}
 	{%- endfor %}
 	{%- endif %}
 </script>
@@ -91,6 +180,36 @@
 	<div class="space-y-2" bind:this={content}>
 		{%- if fields %}
 		<div class="grid grid-cols-2 gap-2">
+		{%- if isNamedStruct %}
+			{%- if useAuth %}
+			{#if permissions.auth('{{ name }}::{{ idName }}::*')}
+			{%- endif %}
+				<div class="flex space-x-2">
+					<div class="join">
+						<button class="btn btn-active btn-ghost join-item w-16">
+							{$LL.graphql.objects.{{ name }}.fields.{{ idName }}.name()}
+						</button>
+						<OperatorSelect
+							className="join-item w-32"
+							bind:value={_expression.{{ idName }}.opr}
+							on:change={(e) => {{ idName }}OprChange()}
+						/>
+					</div>
+					{#if _expression.{{ idName }}.opr === 'IN' || _expression.{{ idName }}.opr === 'NIN' || _expression.{{ idName }}.opr === 'BT' || _expression.{{ idName }}.opr === 'NBT'}
+						<{{ name }}Select
+							{name}
+							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+							list={true}
+							bind:value
+						/>
+					{:else}
+						<{{ name }}Select {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value />
+					{/if}
+				</div>
+			{%- if useAuth %}
+			{/if}
+			{%- endif %}
+		{%- endif %}
 		{%- for field in fields %}
 		{%- if field.isScalarType or field.isEnumType %}
 			{%- if useAuth %}
@@ -123,6 +242,36 @@
 					bind:value={_expression.{{ field.fieldName }}.val}
 				/>
 			{/if}
+			{%- if useAuth %}
+			{/if}
+			{%- endif %}
+		{%- endif %}
+		{%- if field.fieldTypeIsNamedStruct %}
+			{%- if useAuth %}
+			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
+			{%- endif %}
+				<div class="flex space-x-2">
+					<div class="join">
+						<button class="btn btn-active btn-ghost join-item w-16">
+							{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+						</button>
+						<OperatorSelect
+							className="join-item w-32"
+							bind:value={_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr}
+							on:change={(e) => {{ field.fieldName }}OprChange()}
+						/>
+					</div>
+					{#if _expression.{{ field.fieldName }}.opr === 'IN' || _expression.{{ field.fieldName }}.opr === 'NIN' || _expression.{{ field.fieldName }}.opr === 'BT' || _expression.{{ field.fieldName }}.opr === 'NBT'}
+						<{{ field.fieldType.name }}Select
+							{name}
+							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+							list={true}
+							bind:{ {{{{ field.fieldName }}}} }
+						/>
+					{:else}
+						<{{ field.fieldType.name }}Select {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value={ {{{{ field.fieldName }}}} } />
+					{/if}
+				</div>
 			{%- if useAuth %}
 			{/if}
 			{%- endif %}

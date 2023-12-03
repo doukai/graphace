@@ -2,7 +2,7 @@ import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
 import * as changeCase from "change-case";
 import { assertObjectType, isEnumType, isObjectType, type GraphQLSchema, isNonNullType, assertEnumType } from 'graphql';
-import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getNamedFields, getScalarNames, getEnumNames, getEnumValues, isAggregate, initConfig, inRouteObject, inGraphQLField, inListField, inDetailField, componentFields, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, inComponentEnum, isInnerEnum, getObjectNames, getBaseScalarNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField, fieldTypeIsList } from 'graphace-codegen-commons';
+import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getNamedFields, getScalarNames, getEnumNames, getEnumValues, isAggregate, initConfig, inRouteObject, inGraphQLField, inListField, inDetailField, componentFields, getSelectComponentFieldImports, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, getNamedStructObjectNames, inComponentEnum, isInnerEnum, getObjectNames, getBaseScalarNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField, fieldTypeIsList } from 'graphace-codegen-commons';
 import type { Template } from 'graphace-codegen-commons';
 import { buildFileContent } from "./builder.js";
 
@@ -250,10 +250,12 @@ const renders: Record<Template, Render> = {
                         scalars: getScalarNames(fields),
                         enums: getEnumNames(fields),
                         imports: componentFieldImports(typeName, fields),
+                        selectImports: getSelectComponentFieldImports(fields),
                         fields: componentFields(typeName, fields),
                         rows: fields?.length,
                         schemaTypesPath: config.schemaTypesPath,
                         enumsPath: `${config.componentsPath}/enums`,
+                        objectsPath: `${config.componentsPath}/objects`,
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
                         subscriptionTypeName: getSubscriptionTypeName(),
@@ -278,10 +280,12 @@ const renders: Record<Template, Render> = {
                         scalars: getScalarNames(fields),
                         enums: getEnumNames(fields),
                         imports: componentFieldImports(typeName, fields),
+                        selectImports: getSelectComponentFieldImports(fields),
                         fields: componentFields(typeName, fields),
                         rows: fields?.length,
                         schemaTypesPath: config.schemaTypesPath,
                         enumsPath: `${config.componentsPath}/enums`,
+                        objectsPath: `${config.componentsPath}/objects`,
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
                         subscriptionTypeName: getSubscriptionTypeName(),
@@ -307,6 +311,7 @@ const renders: Record<Template, Render> = {
                         enums: getEnumNames(fields),
                         objects: getObjectNames(fields),
                         imports: componentFieldImports(typeName, fields),
+                        selectImports: getSelectComponentFieldImports(fields),
                         fields: componentFields(typeName, fields),
                         cols: fields?.length,
                         schemaTypesPath: config.schemaTypesPath,
@@ -337,6 +342,7 @@ const renders: Record<Template, Render> = {
                         enums: getEnumNames(fields),
                         objects: getObjectNames(fields),
                         imports: componentFieldImports(typeName, fields),
+                        selectImports: getSelectComponentFieldImports(fields),
                         fields: componentFields(typeName, fields),
                         cols: fields?.length,
                         schemaTypesPath: config.schemaTypesPath,
@@ -506,15 +512,18 @@ const renders: Record<Template, Render> = {
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
+                        isNamedStruct: type.getInterfaces().some(interfaceType => interfaceType.name === 'NamedStruct'),
                         idName: getIDFieldName(type),
                         scalars: getScalarNames(fields),
                         baseScalars: getBaseScalarNames(fields),
                         enums: getEnumNames(fields),
                         imports: componentFieldImports(typeName, fields),
+                        namedStructObjectNames: getNamedStructObjectNames(fields),
                         fields: componentFields(typeName, fields),
                         cols: fields?.length,
                         schemaTypesPath: config.schemaTypesPath,
                         enumsPath: `${config.componentsPath}/enums`,
+                        objectsPath: `${config.componentsPath}/objects`,
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
                         subscriptionTypeName: getSubscriptionTypeName(),

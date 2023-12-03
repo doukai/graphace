@@ -16,6 +16,11 @@
 	{%- for object in objects %}
 	import {{ object }}Th from '~/{{ objectsPath }}/{{ object | paramCase }}/{{ object }}Th.svelte';
 	{%- endfor %}
+	{%- if selectImports %}
+	{%- for selectType in selectImports %}
+	import {{ selectType }}SelectTd from '~/{{ objectsPath }}/{{ selectType | paramCase }}/{{ selectType }}SelectTd.svelte';
+	{%- endfor %}
+	{%- endif %}
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
@@ -361,7 +366,18 @@
 								errors={errors[row]?.iterms?.{{ field.fieldName }}}
 							/>
 							{%- else %}
+							{%- if field.select %}
+							<{{ field.fieldType.name }}SelectTd
+								name="{{ field.fieldName }}"
+								bind:value={node.{{ field.fieldName }}}
+								errors={errors[row]?.iterms?.{{ field.fieldName }}}
+								readonly={!permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE')}
+								on:save={(e) =>
+									updateField({ parent: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } })}
+							/>
+							{%- else %}
 							<ObjectTd name="{{ field.fieldName }}" {% if field.isNamed %}namedStruct={ node.{{ field.fieldName }} }{% endif %} errors={errors[row]?.iterms?.{{ field.fieldName }}} path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} on:gotoField />
+							{%- endif %}
 							{%- endif %}
 							{%- endif %}
 							{%- if useAuth %}

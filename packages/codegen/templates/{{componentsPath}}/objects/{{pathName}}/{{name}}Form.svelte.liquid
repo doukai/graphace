@@ -12,6 +12,11 @@
 	{%- for enum in enums %}
 	import {{ enum }}Item from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Item.svelte';
 	{%- endfor %}
+	{%- if selectImports %}
+	{%- for selectType in selectImports %}
+	import {{ selectType }}SelectItem from '~/{{ objectsPath }}/{{ selectType | paramCase }}/{{ selectType }}SelectItem.svelte';
+	{%- endfor %}
+	{%- endif %}
 	import LL from '$i18n/i18n-svelte';
 	import type { {{ name }}, {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	{%- if useAuth %}
@@ -44,13 +49,6 @@
 	const save = (): void => {
 		if (node) {
 			let args = { ...node };
-			{%- if fields %}
-			{%- for field in fields %}
-			{%- if field.isNamed %}
-			args.{{ field.fieldName }} = undefined;
-			{%- endif %}
-			{%- endfor %}
-			{%- endif %}
 			dispatch('mutation', {
 				args: args,
 				then: (data) => {
@@ -158,7 +156,16 @@
 			{%- if field.isScalarType or field.isEnumType %}
 			<{{ field.fieldType.name }}Item label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}}{% if field.isListType %} list{% endif %}{% if field.inMutationArgs == false %} readonly{% endif %} errors={errors.{{ field.fieldName }}} />
 			{%- else %}
+			{%- if field.select %}
+			<{{ field.fieldType.name }}SelectItem
+				name="{{ field.fieldName }}"
+				label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+				errors={errors.{{ field.fieldName }}}
+				bind:value={node.{{ field.fieldName }}}
+			/>
+			{%- else %}
 			<ObjectItem name="{{ field.fieldName }}" {% if field.isNamed %}namedStruct={ node.{{ field.fieldName }} }{% endif %} path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} errors={errors.{{ field.fieldName }}} on:gotoField />
+			{%- endif %}
 			{%- endif %}
 			{%- endif %}
 			{%- if useAuth %}

@@ -13,7 +13,7 @@
 	export let active{{ name }}Id: string | null | undefined = undefined;
 
 	const {{ name }}NodesQuery = graphql(`
-		query {{ name }}NodesQuery($path: StringExpression, $deep: IntExpression, $name: StringExpression) {
+		query {{ name }}NodesQuery($path: StringExpression, $deep: IntExpression, $name: StringExpression) @load {
 			{{ name | camelCase }}List(deep: $deep, path: $path, name: $name) {
 				{{ idName }}
 				name

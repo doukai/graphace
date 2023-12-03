@@ -224,6 +224,26 @@ export const getObjectNames = (
     return objectNames?.filter((objectName, index) => objectNames.indexOf(objectName) == index);
 }
 
+export const getNamedStructObjectNames = (
+    fields: {
+        fieldName: string,
+        fieldType: GraphQLNamedType,
+        isScalarType: boolean,
+        isEnumType: boolean,
+        isObjectType: boolean,
+        isNonNullType: boolean,
+        isListType: boolean,
+        inQueryArgs: boolean,
+        inMutationArgs: boolean
+    }[] | undefined
+): string[] | undefined => {
+    const objectNames = fields?.map(field => field.fieldType)
+        .filter(type => isObjectType(type))
+        .filter(type => assertObjectType(type)?.getInterfaces().some(interfaceType => interfaceType.name === "NamedStruct"))
+        .map(type => type.name);
+    return objectNames?.filter((objectName, index) => objectNames.indexOf(objectName) == index);
+}
+
 export const getIDFieldName = (type: GraphQLNamedType): string | undefined => {
     if (isObjectType(type) || isInputObjectType(type)) {
         const idField = Object.values(type.getFields())
@@ -245,7 +265,20 @@ export const getPairField = (type: GraphQLObjectType, field: GraphQLField<any, a
     return undefined;
 }
 
-export const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): { fieldName: string, fieldType: GraphQLNamedType, isScalarType: boolean, isEnumType: boolean, isObjectType: boolean, isNonNullType: boolean, isListType: boolean, inQueryArgs: boolean, inMutationArgs: boolean }[] | undefined => {
+export const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): {
+    fieldName: string,
+    fieldType: GraphQLNamedType,
+    fieldTypeIdName: string,
+    fieldTypeIsNamedStruct: boolean,
+    isScalarType: boolean,
+    isEnumType: boolean,
+    isObjectType: boolean,
+    isNonNullType: boolean,
+    isListType: boolean,
+    inQueryArgs: boolean,
+    inMutationArgs: boolean,
+    isNamed: boolean
+}[] | undefined => {
     if (isObjectType(type) || isInputObjectType(type)) {
         return Object.values(type.getFields())
             .filter(field => !isAggregate(field.name))
@@ -254,6 +287,8 @@ export const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): { fiel
                 return {
                     fieldName: field.name,
                     fieldType: getFieldType(field.type),
+                    fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
+                    fieldTypeIsNamedStruct: assertObjectType(getFieldType(field.type))?.getInterfaces().some(interfaceType => interfaceType.name === "NamedStruct") || false,
                     isScalarType: isScalarType(getFieldType(field.type)),
                     isEnumType: isEnumType(getFieldType(field.type)),
                     isObjectType: isObjectType(getFieldType(field.type)),
@@ -261,7 +296,7 @@ export const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): { fiel
                     isListType: fieldTypeIsList(field.type),
                     inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),
                     inMutationArgs: fieldInMutationArgs(schema, type.name, field.name),
-                    isNamed: isObjectType(getFieldType(field.type)) && assertObjectType(getFieldType(field.type)).getInterfaces().some(interfaceType => interfaceType.name === 'NamedStruct')
+                    isNamed: isObjectType(getFieldType(field.type)) && assertObjectType(getFieldType(field.type)).getInterfaces().some(interfaceType => interfaceType.name === 'NamedStruct') || false
                 }
             });
     }

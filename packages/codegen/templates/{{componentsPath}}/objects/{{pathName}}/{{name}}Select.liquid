@@ -3,9 +3,9 @@
 	import type { Errors } from '@graphace/commons';
 	import { ObjectMultiSelect } from '@graphace/ui-graphql';
 	import type { ObjectOption } from 'svelte-multiselect';
-	import { graphql, GroupInput, Operator } from '$houdini';
+	import { graphql, {{ name }}Input, Operator } from '$houdini';
 
-	export let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
+	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
 	export let list: boolean | undefined = false;
 	export let id: string | null = null;
@@ -17,7 +17,7 @@
 
 	const dispatch = createEventDispatcher<{
 		change: {
-			value: GroupInput | (GroupInput | null | undefined)[] | null | undefined;
+			value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined;
 		};
 	}>();
 
@@ -26,9 +26,9 @@
 	let options: ObjectOption[] = [];
 	let selected: ObjectOption[] = [];
 	if (Array.isArray(value)) {
-		value = value.map((item) => ({ ...item, id: undefined, where: { id: { val: item?.id } } }));
+		value = value.map((item) => ({ {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.fieldName != idName %}{{ field.fieldName }}: item?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: item?.{{ idName }} } } }));
 	} else if (value) {
-		value = { ...value, id: undefined, where: { id: { val: value.id } } };
+		value = { {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.fieldName != idName %}{{ field.fieldName }}: value.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: value.{{ idName }} } } };
 	}
 
 	$: if (Array.isArray(value)) {
@@ -41,10 +41,10 @@
 	} else {
 		selected = [];
 	}
-	const GroupNameListQuery = graphql(`
-		query GroupNameListQuery($name: StringExpression) @load {
-			groupList(name: $name) {
-				id
+	const {{ name }}NameListQuery = graphql(`
+		query {{ name }}NameListQuery($name: StringExpression) @load {
+			{{ name | camelCase }}List(name: $name) {
+				{{ idName }}
 				name
 				description
 				path
@@ -55,18 +55,18 @@
 	`);
 
 	$: options =
-		$GroupNameListQuery.data?.groupList?.map((item) => ({
+		${{ name }}NameListQuery.data?.{{ name | camelCase }}List?.map((item) => ({
 			label: item?.name || '',
-			value: { ...item, id: undefined, where: { id: { val: item?.id } } }
+			value: { {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.fieldName != idName %}{{ field.fieldName }}: item?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: item?.{{ idName }} } } }
 		})) || [];
 
 	$: if (searchText) {
 		loading = true;
-		GroupNameListQuery.fetch({
+		{{ name }}NameListQuery.fetch({
 			variables: { name: { opr: Operator.LK, val: `%${searchText}%` } }
 		}).finally(() => (loading = false));
 	} else {
-		GroupNameListQuery.fetch({ variables: { name: undefined } }).finally(() => (loading = false));
+		{{ name }}NameListQuery.fetch({ variables: { name: undefined } }).finally(() => (loading = false));
 	}
 </script>
 
@@ -95,7 +95,7 @@
 		} else if (e.detail.type === 'remove') {
 			if (list && Array.isArray(value)) {
 				value = [
-					...value.filter((item) => item?.where?.id?.val !== e.detail.option.value?.where?.id?.val)
+					...value.filter((item) => item?.where?.{{ idName }}?.val !== e.detail.option.value?.where?.{{ idName }}?.val)
 				];
 			} else {
 				value = undefined;

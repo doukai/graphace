@@ -123,17 +123,22 @@ export function componentFields(
     fields: {
         fieldName: string,
         fieldType: GraphQLNamedType,
+        fieldTypeIdName: string,
+        fieldTypeIsNamedStruct: boolean,
         isScalarType: boolean,
         isEnumType: boolean,
         isObjectType: boolean,
         isNonNullType: boolean,
         isListType: boolean,
         inQueryArgs: boolean,
-        inMutationArgs: boolean
+        inMutationArgs: boolean,
+        select?: boolean
     }[] | undefined
 ): {
     fieldName: string,
     fieldType: GraphQLNamedType,
+    fieldTypeIdName: string,
+    fieldTypeIsNamedStruct: boolean,
     isScalarType: boolean,
     isEnumType: boolean,
     isObjectType: boolean,
@@ -141,6 +146,7 @@ export function componentFields(
     isListType: boolean,
     inQueryArgs: boolean,
     inMutationArgs: boolean,
+    select?: boolean,
     component?: string
 }[] | undefined {
     return fields?.map(field => {
@@ -153,16 +159,42 @@ export function componentFieldImports(
     fields: {
         fieldName: string,
         fieldType: GraphQLNamedType,
+        fieldTypeIdName: string,
+        fieldTypeIsNamedStruct: boolean,
         isScalarType: boolean,
         isEnumType: boolean,
         isObjectType: boolean,
         isNonNullType: boolean,
         isListType: boolean,
         inQueryArgs: boolean,
-        inMutationArgs: boolean
+        inMutationArgs: boolean,
+        select?: boolean
     }[] | undefined
 ): string[] | undefined {
     return fields?.flatMap(field => field.isListType ? getFieldArrayImport(typeName, field) || [] : getFieldImport(typeName, field) || []);
+}
+
+export function getSelectComponentFieldImports(
+    fields: {
+        fieldName: string,
+        fieldType: GraphQLNamedType,
+        fieldTypeIdName: string,
+        fieldTypeIsNamedStruct: boolean,
+        isScalarType: boolean,
+        isEnumType: boolean,
+        isObjectType: boolean,
+        isNonNullType: boolean,
+        isListType: boolean,
+        inQueryArgs: boolean,
+        inMutationArgs: boolean,
+        select?: boolean
+    }[] | undefined
+): string[] | undefined {
+    const selectTypes = fields?.filter(field => field.select).map(field => field.fieldType.name);
+    if (selectTypes) {
+        return Array.from(new Set(selectTypes));
+    }
+    return undefined;
 }
 
 export function getFieldImport(
@@ -170,13 +202,16 @@ export function getFieldImport(
     field: {
         fieldName: string,
         fieldType: GraphQLNamedType,
+        fieldTypeIdName: string,
+        fieldTypeIsNamedStruct: boolean,
         isScalarType: boolean,
         isEnumType: boolean,
         isObjectType: boolean,
         isNonNullType: boolean,
         isListType: boolean,
         inQueryArgs: boolean,
-        inMutationArgs: boolean
+        inMutationArgs: boolean,
+        select?: boolean
     }): string[] | undefined {
     const fieldImport = (builderConfig?.objects || []).filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any').flatMap(objectConfig => objectConfig.fields || [])?.find(fieldConfig => fieldConfig.name === field.fieldName)?.import;
     if (fieldImport) {
@@ -196,13 +231,16 @@ export function getFieldArrayImport(
     field: {
         fieldName: string,
         fieldType: GraphQLNamedType,
+        fieldTypeIdName: string,
+        fieldTypeIsNamedStruct: boolean,
         isScalarType: boolean,
         isEnumType: boolean,
         isObjectType: boolean,
         isNonNullType: boolean,
         isListType: boolean,
         inQueryArgs: boolean,
-        inMutationArgs: boolean
+        inMutationArgs: boolean,
+        select?: boolean
     }): string[] | undefined {
     const fieldImport = (builderConfig?.objects || []).filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any').flatMap(objectConfig => objectConfig.fields || [])?.find(fieldConfig => fieldConfig.name === field.fieldName)?.arrayImport;
     if (fieldImport) {
@@ -222,13 +260,16 @@ export function getFieldComponent(
     field: {
         fieldName: string,
         fieldType: GraphQLNamedType,
+        fieldTypeIdName: string,
+        fieldTypeIsNamedStruct: boolean,
         isScalarType: boolean,
         isEnumType: boolean,
         isObjectType: boolean,
         isNonNullType: boolean,
         isListType: boolean,
         inQueryArgs: boolean,
-        inMutationArgs: boolean
+        inMutationArgs: boolean,
+        select?: boolean
     }): string | undefined {
     const fieldComponent = (builderConfig?.objects || []).filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any').flatMap(objectConfig => objectConfig.fields || [])?.find(fieldConfig => fieldConfig.name === field.fieldName)?.component;
     if (fieldComponent) {
@@ -248,13 +289,16 @@ export function getFieldArrayComponent(
     field: {
         fieldName: string,
         fieldType: GraphQLNamedType,
+        fieldTypeIdName: string,
+        fieldTypeIsNamedStruct: boolean,
         isScalarType: boolean,
         isEnumType: boolean,
         isObjectType: boolean,
         isNonNullType: boolean,
         isListType: boolean,
         inQueryArgs: boolean,
-        inMutationArgs: boolean
+        inMutationArgs: boolean,
+        select?: boolean
     }): string | undefined {
     const fieldArrayComponent = (builderConfig?.objects || []).filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any').flatMap(objectConfig => objectConfig.fields || [])?.find(fieldConfig => fieldConfig.name === field.fieldName)?.arrayComponent;
     if (fieldArrayComponent) {

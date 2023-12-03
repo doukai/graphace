@@ -12,7 +12,7 @@
 	export let activeGroupId: string | null | undefined = undefined;
 
 	const GroupNodesQuery = graphql(`
-		query GroupNodesQuery($path: StringExpression, $deep: IntExpression, $name: StringExpression) {
+		query GroupNodesQuery($path: StringExpression, $deep: IntExpression, $name: StringExpression) @load {
 			groupList(deep: $deep, path: $path, name: $name) {
 				id
 				name

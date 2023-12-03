@@ -29,6 +29,7 @@ export type FieldConfig = {
     inList?: boolean
     inDetail?: boolean
     inRoute?: boolean
+    select?: boolean
     import?: string[]
     arrayImport?: string[]
     component?: string
