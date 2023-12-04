@@ -118,27 +118,35 @@ export function inRouteField(typeName: string, fieldName: string, fieldTypeName:
         builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true;
 }
 
+export function isSelectField(fieldName: string, fieldTypeName: string): boolean {
+    return (builderConfig?.objects || [])
+        .filter(objectConfig => objectConfig.name === fieldTypeName || objectConfig.name === 'any')
+        .flatMap(objectConfig => objectConfig.fields || [])
+        .find(fieldConfig => fieldConfig.name === fieldName)?.select ||
+        builderConfig?.objects?.find(objectConfig => objectConfig.name === fieldTypeName)?.select ||
+        false
+}
+
 export function componentFields(
     typeName: string,
     fields: {
         fieldName: string,
         fieldType: GraphQLNamedType,
         fieldTypeIdName: string,
-        fieldTypeIsNamedStruct: boolean,
+        isNamed: boolean,
         isScalarType: boolean,
         isEnumType: boolean,
         isObjectType: boolean,
         isNonNullType: boolean,
         isListType: boolean,
         inQueryArgs: boolean,
-        inMutationArgs: boolean,
-        select?: boolean
+        inMutationArgs: boolean
     }[] | undefined
 ): {
     fieldName: string,
     fieldType: GraphQLNamedType,
     fieldTypeIdName: string,
-    fieldTypeIsNamedStruct: boolean,
+    isNamed: boolean,
     isScalarType: boolean,
     isEnumType: boolean,
     isObjectType: boolean,
@@ -147,10 +155,24 @@ export function componentFields(
     inQueryArgs: boolean,
     inMutationArgs: boolean,
     select?: boolean,
-    component?: string
+    component?: string,
+    inQuery?: boolean,
+    inMutation?: boolean,
+    inSubscription?: boolean
 }[] | undefined {
     return fields?.map(field => {
-        return { ...field, component: field.isListType ? getFieldArrayComponent(typeName, field) : getFieldComponent(typeName, field) };
+        return {
+            ...field,
+            select: (builderConfig?.objects || [])
+                .filter(objectConfig => objectConfig.name === field.fieldType.name || objectConfig.name === 'any')
+                .flatMap(objectConfig => objectConfig.fields || [])
+                .find(fieldConfig => fieldConfig.name === field.fieldName)?.select ||
+                builderConfig?.objects?.find(objectConfig => objectConfig.name === field.fieldType.name)?.select,
+            component: field.isListType ? getFieldArrayComponent(typeName, field) : getFieldComponent(typeName, field),
+            inQuery: inGraphQLField(typeName, field.fieldName, field.fieldType.name, 'query'),
+            inMutation: inGraphQLField(typeName, field.fieldName, field.fieldType.name, 'mutation'),
+            inSubscription: inGraphQLField(typeName, field.fieldName, field.fieldType.name, 'subscription')
+        };
     });
 }
 
@@ -160,7 +182,7 @@ export function componentFieldImports(
         fieldName: string,
         fieldType: GraphQLNamedType,
         fieldTypeIdName: string,
-        fieldTypeIsNamedStruct: boolean,
+        isNamed: boolean,
         isScalarType: boolean,
         isEnumType: boolean,
         isObjectType: boolean,
@@ -179,7 +201,7 @@ export function getSelectComponentFieldImports(
         fieldName: string,
         fieldType: GraphQLNamedType,
         fieldTypeIdName: string,
-        fieldTypeIsNamedStruct: boolean,
+        isNamed: boolean,
         isScalarType: boolean,
         isEnumType: boolean,
         isObjectType: boolean,
@@ -190,7 +212,7 @@ export function getSelectComponentFieldImports(
         select?: boolean
     }[] | undefined
 ): string[] | undefined {
-    const selectTypes = fields?.filter(field => field.select).map(field => field.fieldType.name);
+    const selectTypes = fields?.filter(field => field.select || builderConfig?.objects?.find(objectConfig => objectConfig.name === field.fieldType.name)?.select).map(field => field.fieldType.name);
     if (selectTypes) {
         return Array.from(new Set(selectTypes));
     }
@@ -203,7 +225,7 @@ export function getFieldImport(
         fieldName: string,
         fieldType: GraphQLNamedType,
         fieldTypeIdName: string,
-        fieldTypeIsNamedStruct: boolean,
+        isNamed: boolean,
         isScalarType: boolean,
         isEnumType: boolean,
         isObjectType: boolean,
@@ -232,7 +254,7 @@ export function getFieldArrayImport(
         fieldName: string,
         fieldType: GraphQLNamedType,
         fieldTypeIdName: string,
-        fieldTypeIsNamedStruct: boolean,
+        isNamed: boolean,
         isScalarType: boolean,
         isEnumType: boolean,
         isObjectType: boolean,
@@ -261,7 +283,7 @@ export function getFieldComponent(
         fieldName: string,
         fieldType: GraphQLNamedType,
         fieldTypeIdName: string,
-        fieldTypeIsNamedStruct: boolean,
+        isNamed: boolean,
         isScalarType: boolean,
         isEnumType: boolean,
         isObjectType: boolean,
@@ -290,7 +312,7 @@ export function getFieldArrayComponent(
         fieldName: string,
         fieldType: GraphQLNamedType,
         fieldTypeIdName: string,
-        fieldTypeIsNamedStruct: boolean,
+        isNamed: boolean,
         isScalarType: boolean,
         isEnumType: boolean,
         isObjectType: boolean,

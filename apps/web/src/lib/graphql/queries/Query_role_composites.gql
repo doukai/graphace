@@ -26,17 +26,52 @@ query Query_role_composites($role_id: StringExpression, $first: Int, $last: Int,
           updateUserId
           updateTime
           createGroupId
-          users(first: 3) {
+          users {
+            id
             name
             description
+            lastName
+            login
+            email
+            phones
+            disable
+            isDeprecated
+            version
+            realmId
+            createUserId
+            createTime
+            updateUserId
+            updateTime
+            createGroupId
           }
-          groups(first: 3) {
+          groups {
+            id
             name
             description
+            path
+            deep
+            parentId
+            isDeprecated
+            version
+            realmId
+            createUserId
+            createTime
+            updateUserId
+            updateTime
+            createGroupId
           }
-          composites(first: 3) {
+          composites {
+            id
             name
             description
+            isDeprecated
+            version
+            realmId
+            createUserId
+            createTime
+            updateUserId
+            updateTime
+            createGroupId
           }
           realm {
             name

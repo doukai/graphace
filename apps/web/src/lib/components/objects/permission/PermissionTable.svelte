@@ -8,6 +8,7 @@
 	import PermissionTypeTd from '~/lib/components/enums/permission-type/PermissionTypeTd.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
+	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
@@ -341,7 +342,15 @@
 							/>
 							{/if}
 							{#if permissions.auth('Permission::roles::*')}
-							<ObjectTd name="roles" namedStruct={ node.roles } errors={errors[row]?.iterms?.roles} path={`${node.name}/roles`} on:gotoField />
+							<RoleSelectTd
+								name="roles"
+								bind:value={node.roles}
+								list
+								errors={errors[row]?.iterms?.roles}
+								readonly={!permissions.auth('Permission::roles::WRITE')}
+								on:save={(e) =>
+									updateField({ roles: node?.roles, where: { name: { val: node?.name } } })}
+							/>
 							{/if}
 							{#if permissions.auth('Permission::realm::*')}
 							<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path={`${node.name}/realm`} on:gotoField />

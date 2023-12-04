@@ -9,6 +9,9 @@
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import PermissionTh from '~/lib/components/objects/permission/PermissionTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
+	import UserSelectTd from '~/lib/components/objects/user/UserSelectTd.svelte';
+	import GroupSelectTd from '~/lib/components/objects/group/GroupSelectTd.svelte';
+	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
@@ -345,13 +348,37 @@
 							/>
 							{/if}
 							{#if permissions.auth('Role::users::*')}
-							<ObjectTd name="users" namedStruct={ node.users } errors={errors[row]?.iterms?.users} path={`${node.id}/users`} on:gotoField />
+							<UserSelectTd
+								name="users"
+								bind:value={node.users}
+								list
+								errors={errors[row]?.iterms?.users}
+								readonly={!permissions.auth('Role::users::WRITE')}
+								on:save={(e) =>
+									updateField({ users: node?.users, where: { id: { val: node?.id } } })}
+							/>
 							{/if}
 							{#if permissions.auth('Role::groups::*')}
-							<ObjectTd name="groups" namedStruct={ node.groups } errors={errors[row]?.iterms?.groups} path={`${node.id}/groups`} on:gotoField />
+							<GroupSelectTd
+								name="groups"
+								bind:value={node.groups}
+								list
+								errors={errors[row]?.iterms?.groups}
+								readonly={!permissions.auth('Role::groups::WRITE')}
+								on:save={(e) =>
+									updateField({ groups: node?.groups, where: { id: { val: node?.id } } })}
+							/>
 							{/if}
 							{#if permissions.auth('Role::composites::*')}
-							<ObjectTd name="composites" namedStruct={ node.composites } errors={errors[row]?.iterms?.composites} path={`${node.id}/composites`} on:gotoField />
+							<RoleSelectTd
+								name="composites"
+								bind:value={node.composites}
+								list
+								errors={errors[row]?.iterms?.composites}
+								readonly={!permissions.auth('Role::composites::WRITE')}
+								on:save={(e) =>
+									updateField({ composites: node?.composites, where: { id: { val: node?.id } } })}
+							/>
 							{/if}
 							{#if permissions.auth('Role::permissions::*')}
 							<ObjectTd name="permissions"  errors={errors[row]?.iterms?.permissions} path={`${node.id}/permissions`} on:gotoField />

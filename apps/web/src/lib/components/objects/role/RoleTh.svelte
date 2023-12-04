@@ -5,20 +5,64 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel } from '@steeze-ui/heroicons';
 	import type { StringExpression } from '~/lib/types/schema';
+	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
+	import UserSelect from '~/lib/components/objects/user/UserSelect.svelte';
+	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
+	import RealmSelect from '~/lib/components/objects/realm/RealmSelect.svelte';
 	import LL from '$i18n/i18n-svelte';
-	import type { RoleExpression } from '$houdini';
+	import type { RoleInput, UserInput, GroupInput, RealmInput, RoleExpression } from '$houdini';
 	import { permissions } from '~/lib/utils/auth-util';
 
 	export let name: string;
 	export let expression: RoleExpression | null | undefined;
+	let value: RoleInput | (RoleInput | null | undefined)[] | null | undefined = undefined;
+	let users: UserInput | (UserInput | null | undefined)[] | null | undefined = undefined;
+	let groups: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
+	let composites: RoleInput | (RoleInput | null | undefined)[] | null | undefined = undefined;
+	let realm: RealmInput | (RealmInput | null | undefined)[] | null | undefined = undefined;
 
 	let _expression: {
+		id: StringExpression;
 		name: StringExpression;
 		description: StringExpression;
+		users: { id: StringExpression };
+		groups: { id: StringExpression };
+		composites: { id: StringExpression };
+		realm: { id: StringExpression };
 	} = {
+		id: {},
 		name: {},
 		description: {},
+		users: { id: {} },
+		groups: { id: {} },
+		composites: { id: {} },
+		realm: { id: {} }
 	};
+	$: if (Array.isArray(value)) {
+		_expression.id.in = value?.map((item) => item?.where?.id?.val);
+	} else if (value) {
+		_expression.id.val = value?.where?.id?.val;
+	}
+	$: if (Array.isArray(users)) {
+		_expression.users.id.in = users?.map((item) => item?.where?.id?.val);
+	} else if (users) {
+		_expression.users.id.val = users?.where?.id?.val;
+	}
+	$: if (Array.isArray(groups)) {
+		_expression.groups.id.in = groups?.map((item) => item?.where?.id?.val);
+	} else if (groups) {
+		_expression.groups.id.val = groups?.where?.id?.val;
+	}
+	$: if (Array.isArray(composites)) {
+		_expression.composites.id.in = composites?.map((item) => item?.where?.id?.val);
+	} else if (composites) {
+		_expression.composites.id.val = composites?.where?.id?.val;
+	}
+	$: if (Array.isArray(realm)) {
+		_expression.realm.id.in = realm?.map((item) => item?.where?.id?.val);
+	} else if (realm) {
+		_expression.realm.id.val = realm?.where?.id?.val;
+	}
 
 	let content: HTMLElement;
 	let tippyElement: any;
@@ -27,6 +71,11 @@
 	}>();
 
 	const filter = (): void => {
+		if (_expression.id.val || (_expression.id.in && _expression.id.in.length > 0)) {
+			expression = { ...expression, id: _expression.id };
+		} else {
+			expression = { ...expression, id: undefined };
+		}
 		if (_expression.name.val || (_expression.name.in && _expression.name.in.length > 0)) {
 			expression = { ...expression, name: _expression.name };
 		} else {
@@ -37,21 +86,61 @@
 		} else {
 			expression = { ...expression, description: undefined };
 		}
-
-		if (Object.keys(expression).length > 0) {
-			dispatch('filter');
+		if (
+			_expression.users.id?.val ||
+			(_expression.users.id?.in && _expression.users.id?.in.length > 0)
+		) {
+			expression = { ...expression, users: _expression.users };
 		} else {
+			expression = { ...expression, users: undefined };
+		}
+		if (
+			_expression.groups.id?.val ||
+			(_expression.groups.id?.in && _expression.groups.id?.in.length > 0)
+		) {
+			expression = { ...expression, groups: _expression.groups };
+		} else {
+			expression = { ...expression, groups: undefined };
+		}
+		if (
+			_expression.composites.id?.val ||
+			(_expression.composites.id?.in && _expression.composites.id?.in.length > 0)
+		) {
+			expression = { ...expression, composites: _expression.composites };
+		} else {
+			expression = { ...expression, composites: undefined };
+		}
+		if (
+			_expression.realm.id?.val ||
+			(_expression.realm.id?.in && _expression.realm.id?.in.length > 0)
+		) {
+			expression = { ...expression, realm: _expression.realm };
+		} else {
+			expression = { ...expression, realm: undefined };
+		}
+		
+		if (Object.values(expression).filter((item) => item).length === 0) {
 			expression = undefined;
 		}
+		dispatch('filter');
 		tippyElement._tippy.hide();
 	};
 
 	const clear = (): void => {
+		_expression.id = {};
 		_expression.name = {};
 		_expression.description = {};
+		_expression.users = { id: {} };
+		_expression.groups = { id: {} };
+		_expression.composites = { id: {} };
+		_expression.realm = { id: {} };
 		expression = undefined;
 		dispatch('filter');
 		tippyElement._tippy.hide();
+	};
+	const idOprChange = (): void => {
+		_expression.id.in = [];
+		_expression.id.val = undefined;
 	};
 	const nameOprChange = (): void => {
 		_expression.name.in = [];
@@ -61,10 +150,48 @@
 		_expression.description.in = [];
 		_expression.description.val = undefined;
 	};
+	const usersOprChange = (): void => {
+		_expression.users.id.in = [];
+		_expression.users.id.val = undefined;
+	};
+	const groupsOprChange = (): void => {
+		_expression.groups.id.in = [];
+		_expression.groups.id.val = undefined;
+	};
+	const compositesOprChange = (): void => {
+		_expression.composites.id.in = [];
+		_expression.composites.id.val = undefined;
+	};
+	const realmOprChange = (): void => {
+		_expression.realm.id.in = [];
+		_expression.realm.id.val = undefined;
+	};
 </script>
 <div class="hidden">
 	<div class="space-y-2" bind:this={content}>
 		<div class="grid grid-cols-2 gap-2">
+			{#if permissions.auth('Role::id::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-16">
+					{$LL.graphql.objects.Role.fields.id.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-32"
+					bind:value={_expression.id.opr}
+					on:change={(e) => idOprChange()}
+				/>
+			</div>
+			{#if _expression.id.opr === 'IN' || _expression.id.opr === 'NIN' || _expression.id.opr === 'BT' || _expression.id.opr === 'NBT'}
+				<RoleSelect
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					list
+					bind:value
+				/>
+			{:else}
+				<RoleSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value />
+			{/if}
+			{/if}
 			{#if permissions.auth('Role::name::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
@@ -113,6 +240,94 @@
 					{name}
 					bind:value={_expression.description.val}
 				/>
+			{/if}
+			{/if}
+			{#if permissions.auth('Role::users::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-16">
+					{$LL.graphql.objects.Role.fields.users.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-32"
+					bind:value={_expression.users.id.opr}
+					on:change={(e) => usersOprChange()}
+				/>
+			</div>
+			{#if _expression.users.id.opr === 'IN' || _expression.users.id.opr === 'NIN' || _expression.users.id.opr === 'BT' || _expression.users.id.opr === 'NBT'}
+				<UserSelect
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					list
+					bind:value={ users }
+				/>
+			{:else}
+				<UserSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value={ users } />
+			{/if}
+			{/if}
+			{#if permissions.auth('Role::groups::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-16">
+					{$LL.graphql.objects.Role.fields.groups.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-32"
+					bind:value={_expression.groups.id.opr}
+					on:change={(e) => groupsOprChange()}
+				/>
+			</div>
+			{#if _expression.groups.id.opr === 'IN' || _expression.groups.id.opr === 'NIN' || _expression.groups.id.opr === 'BT' || _expression.groups.id.opr === 'NBT'}
+				<GroupSelect
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					list
+					bind:value={ groups }
+				/>
+			{:else}
+				<GroupSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value={ groups } />
+			{/if}
+			{/if}
+			{#if permissions.auth('Role::composites::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-16">
+					{$LL.graphql.objects.Role.fields.composites.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-32"
+					bind:value={_expression.composites.id.opr}
+					on:change={(e) => compositesOprChange()}
+				/>
+			</div>
+			{#if _expression.composites.id.opr === 'IN' || _expression.composites.id.opr === 'NIN' || _expression.composites.id.opr === 'BT' || _expression.composites.id.opr === 'NBT'}
+				<RoleSelect
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					list
+					bind:value={ composites }
+				/>
+			{:else}
+				<RoleSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value={ composites } />
+			{/if}
+			{/if}
+			{#if permissions.auth('Role::realm::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-16">
+					{$LL.graphql.objects.Role.fields.realm.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-32"
+					bind:value={_expression.realm.id.opr}
+					on:change={(e) => realmOprChange()}
+				/>
+			</div>
+			{#if _expression.realm.id.opr === 'IN' || _expression.realm.id.opr === 'NIN' || _expression.realm.id.opr === 'BT' || _expression.realm.id.opr === 'NBT'}
+				<RealmSelect
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					list
+					bind:value={ realm }
+				/>
+			{:else}
+				<RealmSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value={ realm } />
 			{/if}
 			{/if}
 		</div>

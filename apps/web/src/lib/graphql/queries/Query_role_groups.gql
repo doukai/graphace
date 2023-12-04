@@ -30,20 +30,67 @@ query Query_role_groups($role_id: StringExpression, $first: Int, $last: Int, $of
           updateTime
           createGroupId
           parent {
+            id
             name
             description
+            path
+            deep
+            parentId
+            isDeprecated
+            version
+            realmId
+            createUserId
+            createTime
+            updateUserId
+            updateTime
+            createGroupId
           }
-          subGroups(first: 3) {
+          subGroups {
+            id
             name
             description
+            path
+            deep
+            parentId
+            isDeprecated
+            version
+            realmId
+            createUserId
+            createTime
+            updateUserId
+            updateTime
+            createGroupId
           }
-          users(first: 3) {
+          users {
+            id
             name
             description
+            lastName
+            login
+            email
+            phones
+            disable
+            isDeprecated
+            version
+            realmId
+            createUserId
+            createTime
+            updateUserId
+            updateTime
+            createGroupId
           }
-          roles(first: 3) {
+          roles {
+            id
             name
             description
+            isDeprecated
+            version
+            realmId
+            createUserId
+            createTime
+            updateUserId
+            updateTime
+            createGroupId
           }
           realm {
             name

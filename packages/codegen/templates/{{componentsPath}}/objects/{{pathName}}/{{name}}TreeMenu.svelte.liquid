@@ -1,16 +1,21 @@
 <script lang="ts">
 	import { graphql, {{ name }}NodesQuery$input, Operator } from '$houdini';
+    import type { {{ name }}NodesQueryVariables } from './$houdini'
 	import { NodeTree, TreeStruct, buildTree } from '@graphace/graphql';
 	import { notifications, MenuTreeLoading } from '@graphace/ui';
 	import {{ name }}TreeMenu from './{{ name }}TreeMenu.svelte';
-	import type { {{ name }} } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
+
 	export let nodeTrees: NodeTree[] | null | undefined = undefined;
 	export let parent: TreeStruct | null | undefined = undefined;
 	export let currentDeep = 0;
 	export let deeps = 2;
 	export let {{ name | camelCase }}Name: string | null | undefined = undefined;
 	export let active{{ name }}Id: string | null | undefined = undefined;
+
+    export const _{{ name }}NodesQueryVariables: {{ name }}NodesQueryVariables = ({ props }) => {
+        return { deep: { opr: Operator.LT, val: currentDeep + deeps }, path: { opr: Operator.LK, val: `${(parent?.path || '') + (parent?.{{ idName }} || '') + '/'}%` }, name: undefined }
+    }
 
 	const {{ name }}NodesQuery = graphql(`
 		query {{ name }}NodesQuery($path: StringExpression, $deep: IntExpression, $name: StringExpression) @load {

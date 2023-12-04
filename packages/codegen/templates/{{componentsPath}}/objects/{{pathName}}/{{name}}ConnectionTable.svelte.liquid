@@ -370,10 +370,13 @@
 							<{{ field.fieldType.name }}SelectTd
 								name="{{ field.fieldName }}"
 								bind:value={node.{{ field.fieldName }}}
+								{%- if field.isListType %}
+								list
+								{%- endif %}
 								errors={errors[row]?.iterms?.{{ field.fieldName }}}
 								readonly={!permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE')}
 								on:save={(e) =>
-									updateField({ parent: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } })}
+									updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } })}
 							/>
 							{%- else %}
 							<ObjectTd name="{{ field.fieldName }}" {% if field.isNamed %}namedStruct={ node.{{ field.fieldName }} }{% endif %} errors={errors[row]?.iterms?.{{ field.fieldName }}} path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} on:gotoField />

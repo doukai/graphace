@@ -12,6 +12,7 @@ export type ObjectConfig = {
     ignore?: boolean
     inRoute?: boolean
     inComponent?: boolean
+    select?: boolean
     import?: string[]
     arrayImport?: string[]
     component?: string

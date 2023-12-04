@@ -2,13 +2,13 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons';
 	import { tippy } from '@graphace/ui';
-	import GroupSelect from './GroupSelect.svelte';
-	import type { GroupInput } from '$houdini';
+	import RoleSelect from './RoleSelect.svelte';
+	import type { RoleInput } from '$houdini';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 
-	export let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
+	export let value: RoleInput | (RoleInput | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;
 	export let name: string;
 	export let errors: Errors | undefined = undefined;
@@ -43,7 +43,7 @@
 
 <div class="hidden">
 	<div class="flex items-start space-x-1" bind:this={content}>
-		<GroupSelect {name} {list} {disabled} {readonly} {placeholder} bind:value />
+		<RoleSelect {name} {list} {disabled} {readonly} {placeholder} bind:value />
 		{#if !readonly && !disabled}
 			<div class="tooltip" data-tip={$LL.uiGraphql.table.td.save()}>
 				<button class="btn btn-square btn-primary" on:click|preventDefault={(e) => mutation()}>

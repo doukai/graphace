@@ -3,10 +3,10 @@
 	import type { Errors } from '@graphace/commons';
 	import { ObjectMultiSelect } from '@graphace/ui-graphql';
 	import type { ObjectOption } from 'svelte-multiselect';
-	import { graphql, GroupInput, Operator } from '$houdini';
-    import type { GroupNameListQueryVariables } from './$houdini'
+	import { graphql, UserInput, Operator } from '$houdini';
+    import type { UserNameListQueryVariables } from './$houdini'
 
-	export let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
+	export let value: UserInput | (UserInput | null | undefined)[] | null | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
 	export let list: boolean | undefined = false;
 	export let id: string | null = null;
@@ -18,7 +18,7 @@
 
 	const dispatch = createEventDispatcher<{
 		change: {
-			value: GroupInput | (GroupInput | null | undefined)[] | null | undefined;
+			value: UserInput | (UserInput | null | undefined)[] | null | undefined;
 		};
 	}>();
 
@@ -27,9 +27,9 @@
 	let options: ObjectOption[] = [];
 	let selected: ObjectOption[] = [];
 	if (Array.isArray(value)) {
-		value = value.map((item) => ({ name: item?.name, description: item?.description, path: item?.path, deep: item?.deep, parentId: item?.parentId, isDeprecated: item?.isDeprecated, version: item?.version, realmId: item?.realmId, createUserId: item?.createUserId, createTime: item?.createTime, updateUserId: item?.updateUserId, updateTime: item?.updateTime, createGroupId: item?.createGroupId, where: { id: { val: item?.id } } }));
+		value = value.map((item) => ({ name: item?.name, description: item?.description, lastName: item?.lastName, login: item?.login, email: item?.email, phones: item?.phones, disable: item?.disable, isDeprecated: item?.isDeprecated, version: item?.version, realmId: item?.realmId, createUserId: item?.createUserId, createTime: item?.createTime, updateUserId: item?.updateUserId, updateTime: item?.updateTime, createGroupId: item?.createGroupId, where: { id: { val: item?.id } } }));
 	} else if (value) {
-		value = { name: value.name, description: value.description, path: value.path, deep: value.deep, parentId: value.parentId, isDeprecated: value.isDeprecated, version: value.version, realmId: value.realmId, createUserId: value.createUserId, createTime: value.createTime, updateUserId: value.updateUserId, updateTime: value.updateTime, createGroupId: value.createGroupId, where: { id: { val: value.id } } };
+		value = { name: value.name, description: value.description, lastName: value.lastName, login: value.login, email: value.email, phones: value.phones, disable: value.disable, isDeprecated: value.isDeprecated, version: value.version, realmId: value.realmId, createUserId: value.createUserId, createTime: value.createTime, updateUserId: value.updateUserId, updateTime: value.updateTime, createGroupId: value.createGroupId, where: { id: { val: value.id } } };
 	}
 
 	$: if (Array.isArray(value)) {
@@ -43,19 +43,21 @@
 		selected = [];
 	}
 
-    export const _GroupNameListQueryVariables: GroupNameListQueryVariables = ({ props }) => {
+    export const _UserNameListQueryVariables: UserNameListQueryVariables = ({ props }) => {
         return { name: undefined }
     }
 
-	const GroupNameListQuery = graphql(`
-		query GroupNameListQuery($name: StringExpression) @load {
-			groupList(name: $name) {
+	const UserNameListQuery = graphql(`
+		query UserNameListQuery($name: StringExpression) @load {
+			userList(name: $name) {
 				id
 				name
 				description
-				path
-				deep
-				parentId
+				lastName
+				login
+				email
+				phones
+				disable
 				isDeprecated
 				version
 				realmId
@@ -69,18 +71,18 @@
 	`);
 
 	$: options =
-		$GroupNameListQuery.data?.groupList?.map((item) => ({
+		$UserNameListQuery.data?.userList?.map((item) => ({
 			label: item?.name || '',
-			value: { name: item?.name, description: item?.description, path: item?.path, deep: item?.deep, parentId: item?.parentId, isDeprecated: item?.isDeprecated, version: item?.version, realmId: item?.realmId, createUserId: item?.createUserId, createTime: item?.createTime, updateUserId: item?.updateUserId, updateTime: item?.updateTime, createGroupId: item?.createGroupId, where: { id: { val: item?.id } } }
+			value: { name: item?.name, description: item?.description, lastName: item?.lastName, login: item?.login, email: item?.email, phones: item?.phones, disable: item?.disable, isDeprecated: item?.isDeprecated, version: item?.version, realmId: item?.realmId, createUserId: item?.createUserId, createTime: item?.createTime, updateUserId: item?.updateUserId, updateTime: item?.updateTime, createGroupId: item?.createGroupId, where: { id: { val: item?.id } } }
 		})) || [];
 
 	$: if (searchText) {
 		loading = true;
-		GroupNameListQuery.fetch({
+		UserNameListQuery.fetch({
 			variables: { name: { opr: Operator.LK, val: `%${searchText}%` } }
 		}).finally(() => (loading = false));
 	} else {
-		GroupNameListQuery.fetch({ variables: { name: undefined } }).finally(() => (loading = false));
+		UserNameListQuery.fetch({ variables: { name: undefined } }).finally(() => (loading = false));
 	}
 </script>
 

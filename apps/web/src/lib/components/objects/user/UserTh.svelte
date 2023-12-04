@@ -5,14 +5,23 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel } from '@steeze-ui/heroicons';
 	import type { StringExpression, BooleanExpression } from '~/lib/types/schema';
+	import UserSelect from '~/lib/components/objects/user/UserSelect.svelte';
+	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
+	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
+	import RealmSelect from '~/lib/components/objects/realm/RealmSelect.svelte';
 	import LL from '$i18n/i18n-svelte';
-	import type { UserExpression } from '$houdini';
+	import type { UserInput, GroupInput, RoleInput, RealmInput, UserExpression } from '$houdini';
 	import { permissions } from '~/lib/utils/auth-util';
 
 	export let name: string;
 	export let expression: UserExpression | null | undefined;
+	let value: UserInput | (UserInput | null | undefined)[] | null | undefined = undefined;
+	let groups: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
+	let roles: RoleInput | (RoleInput | null | undefined)[] | null | undefined = undefined;
+	let realm: RealmInput | (RealmInput | null | undefined)[] | null | undefined = undefined;
 
 	let _expression: {
+		id: StringExpression;
 		name: StringExpression;
 		description: StringExpression;
 		lastName: StringExpression;
@@ -20,7 +29,11 @@
 		email: StringExpression;
 		phones: StringExpression;
 		disable: BooleanExpression;
+		groups: { id: StringExpression };
+		roles: { id: StringExpression };
+		realm: { id: StringExpression };
 	} = {
+		id: {},
 		name: {},
 		description: {},
 		lastName: {},
@@ -28,7 +41,30 @@
 		email: {},
 		phones: {},
 		disable: {},
+		groups: { id: {} },
+		roles: { id: {} },
+		realm: { id: {} }
 	};
+	$: if (Array.isArray(value)) {
+		_expression.id.in = value?.map((item) => item?.where?.id?.val);
+	} else if (value) {
+		_expression.id.val = value?.where?.id?.val;
+	}
+	$: if (Array.isArray(groups)) {
+		_expression.groups.id.in = groups?.map((item) => item?.where?.id?.val);
+	} else if (groups) {
+		_expression.groups.id.val = groups?.where?.id?.val;
+	}
+	$: if (Array.isArray(roles)) {
+		_expression.roles.id.in = roles?.map((item) => item?.where?.id?.val);
+	} else if (roles) {
+		_expression.roles.id.val = roles?.where?.id?.val;
+	}
+	$: if (Array.isArray(realm)) {
+		_expression.realm.id.in = realm?.map((item) => item?.where?.id?.val);
+	} else if (realm) {
+		_expression.realm.id.val = realm?.where?.id?.val;
+	}
 
 	let content: HTMLElement;
 	let tippyElement: any;
@@ -37,6 +73,11 @@
 	}>();
 
 	const filter = (): void => {
+		if (_expression.id.val || (_expression.id.in && _expression.id.in.length > 0)) {
+			expression = { ...expression, id: _expression.id };
+		} else {
+			expression = { ...expression, id: undefined };
+		}
 		if (_expression.name.val || (_expression.name.in && _expression.name.in.length > 0)) {
 			expression = { ...expression, name: _expression.name };
 		} else {
@@ -72,16 +113,40 @@
 		} else {
 			expression = { ...expression, disable: undefined };
 		}
-
-		if (Object.keys(expression).length > 0) {
-			dispatch('filter');
+		if (
+			_expression.groups.id?.val ||
+			(_expression.groups.id?.in && _expression.groups.id?.in.length > 0)
+		) {
+			expression = { ...expression, groups: _expression.groups };
 		} else {
+			expression = { ...expression, groups: undefined };
+		}
+		if (
+			_expression.roles.id?.val ||
+			(_expression.roles.id?.in && _expression.roles.id?.in.length > 0)
+		) {
+			expression = { ...expression, roles: _expression.roles };
+		} else {
+			expression = { ...expression, roles: undefined };
+		}
+		if (
+			_expression.realm.id?.val ||
+			(_expression.realm.id?.in && _expression.realm.id?.in.length > 0)
+		) {
+			expression = { ...expression, realm: _expression.realm };
+		} else {
+			expression = { ...expression, realm: undefined };
+		}
+		
+		if (Object.values(expression).filter((item) => item).length === 0) {
 			expression = undefined;
 		}
+		dispatch('filter');
 		tippyElement._tippy.hide();
 	};
 
 	const clear = (): void => {
+		_expression.id = {};
 		_expression.name = {};
 		_expression.description = {};
 		_expression.lastName = {};
@@ -89,9 +154,16 @@
 		_expression.email = {};
 		_expression.phones = {};
 		_expression.disable = {};
+		_expression.groups = { id: {} };
+		_expression.roles = { id: {} };
+		_expression.realm = { id: {} };
 		expression = undefined;
 		dispatch('filter');
 		tippyElement._tippy.hide();
+	};
+	const idOprChange = (): void => {
+		_expression.id.in = [];
+		_expression.id.val = undefined;
 	};
 	const nameOprChange = (): void => {
 		_expression.name.in = [];
@@ -121,10 +193,44 @@
 		_expression.disable.in = [];
 		_expression.disable.val = undefined;
 	};
+	const groupsOprChange = (): void => {
+		_expression.groups.id.in = [];
+		_expression.groups.id.val = undefined;
+	};
+	const rolesOprChange = (): void => {
+		_expression.roles.id.in = [];
+		_expression.roles.id.val = undefined;
+	};
+	const realmOprChange = (): void => {
+		_expression.realm.id.in = [];
+		_expression.realm.id.val = undefined;
+	};
 </script>
 <div class="hidden">
 	<div class="space-y-2" bind:this={content}>
 		<div class="grid grid-cols-2 gap-2">
+			{#if permissions.auth('User::id::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-16">
+					{$LL.graphql.objects.User.fields.id.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-32"
+					bind:value={_expression.id.opr}
+					on:change={(e) => idOprChange()}
+				/>
+			</div>
+			{#if _expression.id.opr === 'IN' || _expression.id.opr === 'NIN' || _expression.id.opr === 'BT' || _expression.id.opr === 'NBT'}
+				<UserSelect
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					list
+					bind:value
+				/>
+			{:else}
+				<UserSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value />
+			{/if}
+			{/if}
 			{#if permissions.auth('User::name::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-1/3">
@@ -296,6 +402,72 @@
 					{name}
 					bind:value={_expression.disable.val}
 				/>
+			{/if}
+			{/if}
+			{#if permissions.auth('User::groups::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-16">
+					{$LL.graphql.objects.User.fields.groups.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-32"
+					bind:value={_expression.groups.id.opr}
+					on:change={(e) => groupsOprChange()}
+				/>
+			</div>
+			{#if _expression.groups.id.opr === 'IN' || _expression.groups.id.opr === 'NIN' || _expression.groups.id.opr === 'BT' || _expression.groups.id.opr === 'NBT'}
+				<GroupSelect
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					list
+					bind:value={ groups }
+				/>
+			{:else}
+				<GroupSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value={ groups } />
+			{/if}
+			{/if}
+			{#if permissions.auth('User::roles::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-16">
+					{$LL.graphql.objects.User.fields.roles.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-32"
+					bind:value={_expression.roles.id.opr}
+					on:change={(e) => rolesOprChange()}
+				/>
+			</div>
+			{#if _expression.roles.id.opr === 'IN' || _expression.roles.id.opr === 'NIN' || _expression.roles.id.opr === 'BT' || _expression.roles.id.opr === 'NBT'}
+				<RoleSelect
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					list
+					bind:value={ roles }
+				/>
+			{:else}
+				<RoleSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value={ roles } />
+			{/if}
+			{/if}
+			{#if permissions.auth('User::realm::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-16">
+					{$LL.graphql.objects.User.fields.realm.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-32"
+					bind:value={_expression.realm.id.opr}
+					on:change={(e) => realmOprChange()}
+				/>
+			</div>
+			{#if _expression.realm.id.opr === 'IN' || _expression.realm.id.opr === 'NIN' || _expression.realm.id.opr === 'BT' || _expression.realm.id.opr === 'NBT'}
+				<RealmSelect
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					list
+					bind:value={ realm }
+				/>
+			{:else}
+				<RealmSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value={ realm } />
 			{/if}
 			{/if}
 		</div>

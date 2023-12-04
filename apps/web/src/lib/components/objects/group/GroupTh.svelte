@@ -5,42 +5,77 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel } from '@steeze-ui/heroicons';
 	import type { StringExpression, IntExpression } from '~/lib/types/schema';
+	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
+	import UserSelect from '~/lib/components/objects/user/UserSelect.svelte';
+	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
+	import RealmSelect from '~/lib/components/objects/realm/RealmSelect.svelte';
 	import LL from '$i18n/i18n-svelte';
-	import type { GroupInput, GroupExpression } from '$houdini';
-	import GroupSelect from './GroupSelect.svelte';
+	import type { GroupInput, UserInput, RoleInput, RealmInput, GroupExpression } from '$houdini';
 	import { permissions } from '~/lib/utils/auth-util';
 
 	export let name: string;
 	export let expression: GroupExpression | null | undefined;
 	let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
 	let parent: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
+	let subGroups: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
+	let users: UserInput | (UserInput | null | undefined)[] | null | undefined = undefined;
+	let roles: RoleInput | (RoleInput | null | undefined)[] | null | undefined = undefined;
+	let realm: RealmInput | (RealmInput | null | undefined)[] | null | undefined = undefined;
 
 	let _expression: {
 		id: StringExpression;
+		name: StringExpression;
 		description: StringExpression;
 		path: StringExpression;
 		deep: IntExpression;
 		parentId: StringExpression;
 		parent: { id: StringExpression };
+		subGroups: { id: StringExpression };
+		users: { id: StringExpression };
+		roles: { id: StringExpression };
+		realm: { id: StringExpression };
 	} = {
 		id: {},
+		name: {},
 		description: {},
 		path: {},
 		deep: {},
 		parentId: {},
-		parent: { id: {} }
+		parent: { id: {} },
+		subGroups: { id: {} },
+		users: { id: {} },
+		roles: { id: {} },
+		realm: { id: {} }
 	};
-
 	$: if (Array.isArray(value)) {
 		_expression.id.in = value?.map((item) => item?.where?.id?.val);
 	} else if (value) {
 		_expression.id.val = value?.where?.id?.val;
 	}
-
 	$: if (Array.isArray(parent)) {
 		_expression.parent.id.in = parent?.map((item) => item?.where?.id?.val);
 	} else if (parent) {
 		_expression.parent.id.val = parent?.where?.id?.val;
+	}
+	$: if (Array.isArray(subGroups)) {
+		_expression.subGroups.id.in = subGroups?.map((item) => item?.where?.id?.val);
+	} else if (subGroups) {
+		_expression.subGroups.id.val = subGroups?.where?.id?.val;
+	}
+	$: if (Array.isArray(users)) {
+		_expression.users.id.in = users?.map((item) => item?.where?.id?.val);
+	} else if (users) {
+		_expression.users.id.val = users?.where?.id?.val;
+	}
+	$: if (Array.isArray(roles)) {
+		_expression.roles.id.in = roles?.map((item) => item?.where?.id?.val);
+	} else if (roles) {
+		_expression.roles.id.val = roles?.where?.id?.val;
+	}
+	$: if (Array.isArray(realm)) {
+		_expression.realm.id.in = realm?.map((item) => item?.where?.id?.val);
+	} else if (realm) {
+		_expression.realm.id.val = realm?.where?.id?.val;
 	}
 
 	let content: HTMLElement;
@@ -55,10 +90,12 @@
 		} else {
 			expression = { ...expression, id: undefined };
 		}
-		if (
-			_expression.description.val ||
-			(_expression.description.in && _expression.description.in.length > 0)
-		) {
+		if (_expression.name.val || (_expression.name.in && _expression.name.in.length > 0)) {
+			expression = { ...expression, name: _expression.name };
+		} else {
+			expression = { ...expression, name: undefined };
+		}
+		if (_expression.description.val || (_expression.description.in && _expression.description.in.length > 0)) {
 			expression = { ...expression, description: _expression.description };
 		} else {
 			expression = { ...expression, description: undefined };
@@ -73,15 +110,11 @@
 		} else {
 			expression = { ...expression, deep: undefined };
 		}
-		if (
-			_expression.parentId.val ||
-			(_expression.parentId.in && _expression.parentId.in.length > 0)
-		) {
+		if (_expression.parentId.val || (_expression.parentId.in && _expression.parentId.in.length > 0)) {
 			expression = { ...expression, parentId: _expression.parentId };
 		} else {
 			expression = { ...expression, parentId: undefined };
 		}
-		console.log(_expression);
 		if (
 			_expression.parent.id?.val ||
 			(_expression.parent.id?.in && _expression.parent.id?.in.length > 0)
@@ -90,7 +123,39 @@
 		} else {
 			expression = { ...expression, parent: undefined };
 		}
-
+		if (
+			_expression.subGroups.id?.val ||
+			(_expression.subGroups.id?.in && _expression.subGroups.id?.in.length > 0)
+		) {
+			expression = { ...expression, subGroups: _expression.subGroups };
+		} else {
+			expression = { ...expression, subGroups: undefined };
+		}
+		if (
+			_expression.users.id?.val ||
+			(_expression.users.id?.in && _expression.users.id?.in.length > 0)
+		) {
+			expression = { ...expression, users: _expression.users };
+		} else {
+			expression = { ...expression, users: undefined };
+		}
+		if (
+			_expression.roles.id?.val ||
+			(_expression.roles.id?.in && _expression.roles.id?.in.length > 0)
+		) {
+			expression = { ...expression, roles: _expression.roles };
+		} else {
+			expression = { ...expression, roles: undefined };
+		}
+		if (
+			_expression.realm.id?.val ||
+			(_expression.realm.id?.in && _expression.realm.id?.in.length > 0)
+		) {
+			expression = { ...expression, realm: _expression.realm };
+		} else {
+			expression = { ...expression, realm: undefined };
+		}
+		
 		if (Object.values(expression).filter((item) => item).length === 0) {
 			expression = undefined;
 		}
@@ -99,20 +164,28 @@
 	};
 
 	const clear = (): void => {
-		value = undefined;
 		_expression.id = {};
+		_expression.name = {};
 		_expression.description = {};
 		_expression.path = {};
 		_expression.deep = {};
 		_expression.parentId = {};
 		_expression.parent = { id: {} };
+		_expression.subGroups = { id: {} };
+		_expression.users = { id: {} };
+		_expression.roles = { id: {} };
+		_expression.realm = { id: {} };
 		expression = undefined;
 		dispatch('filter');
 		tippyElement._tippy.hide();
 	};
-	const nameOprChange = (): void => {
+	const idOprChange = (): void => {
 		_expression.id.in = [];
 		_expression.id.val = undefined;
+	};
+	const nameOprChange = (): void => {
+		_expression.name.in = [];
+		_expression.name.val = undefined;
 	};
 	const descriptionOprChange = (): void => {
 		_expression.description.in = [];
@@ -130,157 +203,288 @@
 		_expression.parentId.in = [];
 		_expression.parentId.val = undefined;
 	};
+	const parentOprChange = (): void => {
+		_expression.parent.id.in = [];
+		_expression.parent.id.val = undefined;
+	};
+	const subGroupsOprChange = (): void => {
+		_expression.subGroups.id.in = [];
+		_expression.subGroups.id.val = undefined;
+	};
+	const usersOprChange = (): void => {
+		_expression.users.id.in = [];
+		_expression.users.id.val = undefined;
+	};
+	const rolesOprChange = (): void => {
+		_expression.roles.id.in = [];
+		_expression.roles.id.val = undefined;
+	};
+	const realmOprChange = (): void => {
+		_expression.realm.id.in = [];
+		_expression.realm.id.val = undefined;
+	};
 </script>
-
 <div class="hidden">
 	<div class="space-y-2" bind:this={content}>
-		{#if permissions.auth('Group::name::*')}
-			<div class="flex space-x-2">
-				<div class="join">
-					<button class="btn btn-active btn-ghost join-item w-16">
-						{$LL.graphql.objects.Group.fields.name.name()}
-					</button>
-					<OperatorSelect
-						className="join-item w-32"
-						bind:value={_expression.id.opr}
-						on:change={(e) => nameOprChange()}
-					/>
-				</div>
-				{#if _expression.id.opr === 'IN' || _expression.id.opr === 'NIN' || _expression.id.opr === 'BT' || _expression.id.opr === 'NBT'}
-					<GroupSelect
-						{name}
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						list={true}
-						bind:value
-					/>
-				{:else}
-					<GroupSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value />
-				{/if}
+		<div class="grid grid-cols-2 gap-2">
+			{#if permissions.auth('Group::id::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-16">
+					{$LL.graphql.objects.Group.fields.id.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-32"
+					bind:value={_expression.id.opr}
+					on:change={(e) => idOprChange()}
+				/>
 			</div>
-		{/if}
-		{#if permissions.auth('Group::description::*')}
-			<div class="flex space-x-2">
-				<div class="join">
-					<button class="btn btn-active btn-ghost join-item w-16">
-						{$LL.graphql.objects.Group.fields.description.name()}
-					</button>
-					<OperatorSelect
-						className="join-item w-32"
-						bind:value={_expression.description.opr}
-						on:change={(e) => descriptionOprChange()}
-					/>
-				</div>
-				{#if _expression.description.opr === 'IN' || _expression.description.opr === 'NIN' || _expression.description.opr === 'BT' || _expression.description.opr === 'NBT'}
-					<StringInput
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						{name}
-						bind:value={_expression.description.in}
-					/>
-				{:else}
-					<StringInput
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						{name}
-						bind:value={_expression.description.val}
-					/>
-				{/if}
+			{#if _expression.id.opr === 'IN' || _expression.id.opr === 'NIN' || _expression.id.opr === 'BT' || _expression.id.opr === 'NBT'}
+				<GroupSelect
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					list
+					bind:value
+				/>
+			{:else}
+				<GroupSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value />
+			{/if}
+			{/if}
+			{#if permissions.auth('Group::name::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-1/3">
+					{$LL.graphql.objects.Group.fields.name.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-2/3"
+					bind:value={_expression.name.opr}
+					on:change={(e) => nameOprChange()}
+				/>
 			</div>
-		{/if}
-		{#if permissions.auth('Group::path::*')}
-			<div class="flex space-x-2">
-				<div class="join">
-					<button class="btn btn-active btn-ghost join-item w-16">
-						{$LL.graphql.objects.Group.fields.path.name()}
-					</button>
-					<OperatorSelect
-						className="join-item w-32"
-						bind:value={_expression.path.opr}
-						on:change={(e) => pathOprChange()}
-					/>
-				</div>
-				{#if _expression.path.opr === 'IN' || _expression.path.opr === 'NIN' || _expression.path.opr === 'BT' || _expression.path.opr === 'NBT'}
-					<StringInput
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						{name}
-						bind:value={_expression.path.in}
-					/>
-				{:else}
-					<StringInput
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						{name}
-						bind:value={_expression.path.val}
-					/>
-				{/if}
+			{#if _expression.name.opr === 'IN' || _expression.name.opr === 'NIN' || _expression.name.opr === 'BT' || _expression.name.opr === 'NBT'}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.name.in}
+				/>
+			{:else}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.name.val}
+				/>
+			{/if}
+			{/if}
+			{#if permissions.auth('Group::description::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-1/3">
+					{$LL.graphql.objects.Group.fields.description.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-2/3"
+					bind:value={_expression.description.opr}
+					on:change={(e) => descriptionOprChange()}
+				/>
 			</div>
-		{/if}
-		{#if permissions.auth('Group::deep::*')}
-			<div class="flex space-x-2">
-				<div class="join">
-					<button class="btn btn-active btn-ghost join-item w-16">
-						{$LL.graphql.objects.Group.fields.deep.name()}
-					</button>
-					<OperatorSelect
-						className="join-item w-32"
-						bind:value={_expression.deep.opr}
-						on:change={(e) => deepOprChange()}
-					/>
-				</div>
-				{#if _expression.deep.opr === 'IN' || _expression.deep.opr === 'NIN' || _expression.deep.opr === 'BT' || _expression.deep.opr === 'NBT'}
-					<IntInput
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						{name}
-						bind:value={_expression.deep.in}
-					/>
-				{:else}
-					<IntInput
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						{name}
-						bind:value={_expression.deep.val}
-					/>
-				{/if}
+			{#if _expression.description.opr === 'IN' || _expression.description.opr === 'NIN' || _expression.description.opr === 'BT' || _expression.description.opr === 'NBT'}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.description.in}
+				/>
+			{:else}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.description.val}
+				/>
+			{/if}
+			{/if}
+			{#if permissions.auth('Group::path::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-1/3">
+					{$LL.graphql.objects.Group.fields.path.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-2/3"
+					bind:value={_expression.path.opr}
+					on:change={(e) => pathOprChange()}
+				/>
 			</div>
-		{/if}
-		{#if permissions.auth('Group::parentId::*')}
-			<div class="flex space-x-2">
-				<div class="join">
-					<button class="btn btn-active btn-ghost join-item w-16">
-						{$LL.graphql.objects.Group.fields.parentId.name()}
-					</button>
-					<OperatorSelect
-						className="join-item w-32"
-						bind:value={_expression.parentId.opr}
-						on:change={(e) => parentIdOprChange()}
-					/>
-				</div>
-				{#if _expression.parentId.opr === 'IN' || _expression.parentId.opr === 'NIN' || _expression.parentId.opr === 'BT' || _expression.parentId.opr === 'NBT'}
-					<StringInput
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						{name}
-						bind:value={_expression.parentId.in}
-					/>
-				{:else}
-					<StringInput
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						{name}
-						bind:value={_expression.parentId.val}
-					/>
-				{/if}
+			{#if _expression.path.opr === 'IN' || _expression.path.opr === 'NIN' || _expression.path.opr === 'BT' || _expression.path.opr === 'NBT'}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.path.in}
+				/>
+			{:else}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.path.val}
+				/>
+			{/if}
+			{/if}
+			{#if permissions.auth('Group::deep::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-1/3">
+					{$LL.graphql.objects.Group.fields.deep.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-2/3"
+					bind:value={_expression.deep.opr}
+					on:change={(e) => deepOprChange()}
+				/>
 			</div>
-		{/if}
-		{#if permissions.auth('Group::parent::*')}
-			<div class="flex space-x-2">
-				<div class="join">
-					<button class="btn btn-active btn-ghost join-item w-16">
-						{$LL.graphql.objects.Group.fields.parent.name()}
-					</button>
-					<OperatorSelect className="join-item w-32" bind:value={_expression.parent.id.opr} />
-				</div>
-				{#if _expression.parent.id.opr === 'IN' || _expression.parent.id.opr === 'NIN' || _expression.parent.id.opr === 'BT' || _expression.parent.id.opr === 'NBT'}
-					<GroupSelect {name} list={true} bind:value={parent} />
-				{:else}
-					<GroupSelect {name} bind:value={parent} />
-				{/if}
+			{#if _expression.deep.opr === 'IN' || _expression.deep.opr === 'NIN' || _expression.deep.opr === 'BT' || _expression.deep.opr === 'NBT'}
+				<IntInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.deep.in}
+				/>
+			{:else}
+				<IntInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.deep.val}
+				/>
+			{/if}
+			{/if}
+			{#if permissions.auth('Group::parentId::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-1/3">
+					{$LL.graphql.objects.Group.fields.parentId.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-2/3"
+					bind:value={_expression.parentId.opr}
+					on:change={(e) => parentIdOprChange()}
+				/>
 			</div>
-		{/if}
+			{#if _expression.parentId.opr === 'IN' || _expression.parentId.opr === 'NIN' || _expression.parentId.opr === 'BT' || _expression.parentId.opr === 'NBT'}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.parentId.in}
+				/>
+			{:else}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.parentId.val}
+				/>
+			{/if}
+			{/if}
+			{#if permissions.auth('Group::parent::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-16">
+					{$LL.graphql.objects.Group.fields.parent.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-32"
+					bind:value={_expression.parent.id.opr}
+					on:change={(e) => parentOprChange()}
+				/>
+			</div>
+			{#if _expression.parent.id.opr === 'IN' || _expression.parent.id.opr === 'NIN' || _expression.parent.id.opr === 'BT' || _expression.parent.id.opr === 'NBT'}
+				<GroupSelect
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					list
+					bind:value={ parent }
+				/>
+			{:else}
+				<GroupSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value={ parent } />
+			{/if}
+			{/if}
+			{#if permissions.auth('Group::subGroups::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-16">
+					{$LL.graphql.objects.Group.fields.subGroups.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-32"
+					bind:value={_expression.subGroups.id.opr}
+					on:change={(e) => subGroupsOprChange()}
+				/>
+			</div>
+			{#if _expression.subGroups.id.opr === 'IN' || _expression.subGroups.id.opr === 'NIN' || _expression.subGroups.id.opr === 'BT' || _expression.subGroups.id.opr === 'NBT'}
+				<GroupSelect
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					list
+					bind:value={ subGroups }
+				/>
+			{:else}
+				<GroupSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value={ subGroups } />
+			{/if}
+			{/if}
+			{#if permissions.auth('Group::users::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-16">
+					{$LL.graphql.objects.Group.fields.users.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-32"
+					bind:value={_expression.users.id.opr}
+					on:change={(e) => usersOprChange()}
+				/>
+			</div>
+			{#if _expression.users.id.opr === 'IN' || _expression.users.id.opr === 'NIN' || _expression.users.id.opr === 'BT' || _expression.users.id.opr === 'NBT'}
+				<UserSelect
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					list
+					bind:value={ users }
+				/>
+			{:else}
+				<UserSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value={ users } />
+			{/if}
+			{/if}
+			{#if permissions.auth('Group::roles::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-16">
+					{$LL.graphql.objects.Group.fields.roles.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-32"
+					bind:value={_expression.roles.id.opr}
+					on:change={(e) => rolesOprChange()}
+				/>
+			</div>
+			{#if _expression.roles.id.opr === 'IN' || _expression.roles.id.opr === 'NIN' || _expression.roles.id.opr === 'BT' || _expression.roles.id.opr === 'NBT'}
+				<RoleSelect
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					list
+					bind:value={ roles }
+				/>
+			{:else}
+				<RoleSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value={ roles } />
+			{/if}
+			{/if}
+			{#if permissions.auth('Group::realm::*')}
+			<div class="join">
+				<button class="btn btn-active btn-ghost join-item w-16">
+					{$LL.graphql.objects.Group.fields.realm.name()}
+				</button>
+				<OperatorSelect
+					className="join-item w-32"
+					bind:value={_expression.realm.id.opr}
+					on:change={(e) => realmOprChange()}
+				/>
+			</div>
+			{#if _expression.realm.id.opr === 'IN' || _expression.realm.id.opr === 'NIN' || _expression.realm.id.opr === 'BT' || _expression.realm.id.opr === 'NBT'}
+				<RealmSelect
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					list
+					bind:value={ realm }
+				/>
+			{:else}
+				<RealmSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value={ realm } />
+			{/if}
+			{/if}
+		</div>
 		<div class="flex justify-center space-x-2">
 			<div class="tooltip" data-tip={$LL.uiGraphql.table.th.filter()}>
 				<button class="btn btn-square btn-primary" on:click={(e) => filter()}>

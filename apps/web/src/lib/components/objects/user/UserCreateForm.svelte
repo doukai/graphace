@@ -4,6 +4,8 @@
 	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
 	import { Form, messageBoxs, notifications } from '@graphace/ui';
 	import { StringItem, BooleanItem, ObjectItem } from '@graphace/ui-graphql';
+	import GroupSelectItem from '~/lib/components/objects/group/GroupSelectItem.svelte';
+	import RoleSelectItem from '~/lib/components/objects/role/RoleSelectItem.svelte';
 	import LL from '$i18n/i18n-svelte';
 	import type { User, UserInput } from '~/lib/types/schema';
 	import { permissions } from '~/lib/utils/auth-util';
@@ -98,10 +100,22 @@
 	<BooleanItem label={$LL.graphql.objects.User.fields.disable.name()} name="disable" bind:value={node.disable} errors={errors.disable} />
 	{/if}
 	{#if permissions.auth('User::groups::*')}
-	<ObjectItem name="groups" namedStruct={ node.groups } path="_/groups" label={$LL.graphql.objects.User.fields.groups.name()} errors={errors.groups} on:gotoField />
+	<GroupSelectItem
+		name="groups"
+		label={$LL.graphql.objects.User.fields.groups.name()}
+		errors={errors.groups}
+		bind:value={node.groups}
+		list
+	/>
 	{/if}
 	{#if permissions.auth('User::roles::*')}
-	<ObjectItem name="roles" namedStruct={ node.roles } path="_/roles" label={$LL.graphql.objects.User.fields.roles.name()} errors={errors.roles} on:gotoField />
+	<RoleSelectItem
+		name="roles"
+		label={$LL.graphql.objects.User.fields.roles.name()}
+		errors={errors.roles}
+		bind:value={node.roles}
+		list
+	/>
 	{/if}
 	{#if permissions.auth('User::realm::*')}
 	<ObjectItem name="realm" namedStruct={ node.realm } path="_/realm" label={$LL.graphql.objects.User.fields.realm.name()} errors={errors.realm} on:gotoField />

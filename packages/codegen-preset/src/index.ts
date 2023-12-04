@@ -166,7 +166,12 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             ...targetQueryFields
                 .filter(field => !fieldTypeIsList(field.type))
                 .filter(field => !isConnection(getFieldType(field.type).name))
-                .flatMap(field => getObjectFields(getFieldType(field.type))?.map(objectField => { return { name: field.name, objectFieldName: objectField.name } }) || [])
+                .flatMap(field => {
+                    const fieldType = getFieldType(field.type);
+                    return getObjectFields(getFieldType(field.type))
+                        ?.filter(field => inRouteField(fieldType.name, field.name, getFieldType(field.type).name))
+                        ?.map(objectField => { return { name: field.name, objectFieldName: objectField.name } }) || []
+                })
                 .map(objectField => {
                     const { name, objectFieldName } = objectField;
                     const template = '{{graphqlPath}}/queries/Query_{{name}}_{{objectFieldName}}.gql';
@@ -222,7 +227,12 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         generateOptions.push(
             ...targetMutationFields
                 .filter(field => !fieldTypeIsList(field.type))
-                .flatMap(field => getObjectFields(getFieldType(field.type))?.map(objectField => { return { name: field.name, objectFieldName: objectField.name } }) || [])
+                .flatMap(field => {
+                    const fieldType = getFieldType(field.type);
+                    return getObjectFields(getFieldType(field.type))
+                        ?.filter(field => inRouteField(fieldType.name, field.name, getFieldType(field.type).name))
+                        ?.map(objectField => { return { name: field.name, objectFieldName: objectField.name } }) || []
+                })
                 .map(objectField => {
                     const { name, objectFieldName } = objectField;
                     const template = '{{graphqlPath}}/mutations/Mutation_{{name}}_{{objectFieldName}}.gql';
@@ -560,6 +570,87 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         schemaAst: options.schemaAst,
                         skipDocumentsValidation: true,
 
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .filter(type => assertObjectType(type).getInterfaces().some(interfaceType => interfaceType.name === "NamedStruct"))
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Select.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .filter(type => assertObjectType(type).getInterfaces().some(interfaceType => interfaceType.name === "NamedStruct"))
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectTd.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .filter(type => assertObjectType(type).getInterfaces().some(interfaceType => interfaceType.name === "NamedStruct"))
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectItem.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
                     };
                 })
         );

@@ -114,6 +114,9 @@
 		label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 		errors={errors.{{ field.fieldName }}}
 		bind:value={node.{{ field.fieldName }}}
+		{%- if field.isListType %}
+		list
+		{%- endif %}
 	/>
 	{%- else %}
 	<ObjectItem name="{{ field.fieldName }}" {% if field.isNamed %}namedStruct={ node.{{ field.fieldName }} }{% endif %} path="_/{{ field.fieldName | paramCase }}" label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} errors={errors.{{ field.fieldName }}} on:gotoField />

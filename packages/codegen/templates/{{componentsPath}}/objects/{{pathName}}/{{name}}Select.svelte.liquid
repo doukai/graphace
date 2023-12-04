@@ -4,6 +4,7 @@
 	import { ObjectMultiSelect } from '@graphace/ui-graphql';
 	import type { ObjectOption } from 'svelte-multiselect';
 	import { graphql, {{ name }}Input, Operator } from '$houdini';
+    import type { {{ name }}NameListQueryVariables } from './$houdini'
 
 	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
@@ -26,9 +27,9 @@
 	let options: ObjectOption[] = [];
 	let selected: ObjectOption[] = [];
 	if (Array.isArray(value)) {
-		value = value.map((item) => ({ {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.fieldName != idName %}{{ field.fieldName }}: item?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: item?.{{ idName }} } } }));
+		value = value.map((item) => ({ {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.inQuery and field.fieldName != idName %}{{ field.fieldName }}: item?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: item?.{{ idName }} } } }));
 	} else if (value) {
-		value = { {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.fieldName != idName %}{{ field.fieldName }}: value.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: value.{{ idName }} } } };
+		value = { {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.inQuery and field.fieldName != idName %}{{ field.fieldName }}: value.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: value.{{ idName }} } } };
 	}
 
 	$: if (Array.isArray(value)) {
@@ -41,15 +42,21 @@
 	} else {
 		selected = [];
 	}
+
+    export const _{{ name }}NameListQueryVariables: {{ name }}NameListQueryVariables = ({ props }) => {
+        return { name: undefined }
+    }
+
 	const {{ name }}NameListQuery = graphql(`
 		query {{ name }}NameListQuery($name: StringExpression) @load {
 			{{ name | camelCase }}List(name: $name) {
-				{{ idName }}
-				name
-				description
-				path
-				deep
-				parentId
+				{%- if fields %}
+				{%- for field in fields %}
+				{%- if field.isObjectType == false and field.inQuery %}
+				{{ field.fieldName }}
+				{%- endif %}
+				{%- endfor %}
+				{%- endif %}
 			}
 		}
 	`);
@@ -57,7 +64,7 @@
 	$: options =
 		${{ name }}NameListQuery.data?.{{ name | camelCase }}List?.map((item) => ({
 			label: item?.name || '',
-			value: { {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.fieldName != idName %}{{ field.fieldName }}: item?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: item?.{{ idName }} } } }
+			value: { {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.inQuery and field.fieldName != idName %}{{ field.fieldName }}: item?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: item?.{{ idName }} } } }
 		})) || [];
 
 	$: if (searchText) {
