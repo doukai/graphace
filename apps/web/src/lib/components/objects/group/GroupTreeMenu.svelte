@@ -39,13 +39,13 @@
 
 	// $: treeStructs = $GroupNodesQuery.data?.groupList;
 
-	$: if (currentDeep == 0 && !treeStructs) {
-		queryNodes(groupName);
-	}
+	// $: if (currentDeep == 0 && !treeStructs) {
+	// 	// queryNodes(groupName);
+	// }
 
-	// $: nodeTrees = buildTree(treeStructs, parent);
+	$: nodeTrees = buildTree(treeStructs, parent);
 
-	$: if (parent && parent?.id === activeGroupId) {
+	$: if (parent && activeGroupId && parent?.id === activeGroupId) {
 		queryNodes(groupName);
 	}
 
@@ -77,6 +77,9 @@
 					href={null}
 					on:click|preventDefault={(e) => {
 						activeGroupId = nodeTree.node?.id;
+						// if (parent?.id === activeGroupId) {
+						// 	// queryNodes(groupName);
+						// }
 					}}
 				>
 					{nodeTree.node?.name}

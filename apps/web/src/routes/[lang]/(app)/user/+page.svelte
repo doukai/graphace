@@ -1,20 +1,13 @@
 <script lang="ts">
 	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
-	import { browser } from '$app/environment';
 	import type { Errors } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card } from '@graphace/ui';
 	import UserConnectionTable from '~/lib/components/objects/user/UserConnectionTable.svelte';
 	import GroupTreeCard from '~/lib/components/objects/group/GroupTreeCard.svelte';
 	import type { User, QueryUserConnectionArgs, MutationUserArgs } from '~/lib/types/schema';
-	import {
-		Query_userConnectionStore,
-		Query_userConnection$result,
-		Mutation_userStore,
-		GroupNodesQuery,
-		GroupNodesQuery$result
-	} from '$houdini';
+	import { Query_userConnectionStore, Mutation_userStore, GroupNodesQueryStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -22,12 +15,10 @@
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.User.name());
-	$: Query_userConnection = data.Query_userConnection;
-	$: userConnectionData = $Query_userConnection?.data;
-	$: nodes = userConnectionData?.userConnection?.edges?.map((edge) => edge?.node);
-	$: totalCount = userConnectionData?.userConnection?.totalCount || 0;
-	$: isFetching = $Query_userConnection?.fetching || false;
-	// $: groupList = browser ? undefined : data?.group.groupList;
+	$: Query_userConnection = data.Query_userConnection as Query_userConnectionStore;
+	$: nodes = $Query_userConnection.data?.userConnection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $Query_userConnection.data?.userConnection?.totalCount || 0;
+	$: GroupNodesQuery = data.GroupNodesQuery as GroupNodesQueryStore;
 
 	const Mutation_user = new Mutation_userStore();
 	let errors: Record<number, Errors> = {};
@@ -109,7 +100,7 @@
 
 <div class="flex xl:items-start xl:flex-row xl:gap-2">
 	<div class="hidden xl:flex xl:basis-1/6">
-		<GroupTreeCard bind:activeGroupId={groupId} />
+		<GroupTreeCard treeStructs={$GroupNodesQuery.data?.groupList} bind:activeGroupId={groupId} />
 	</div>
 	<div class="w-full xl:basis-5/6">
 		<Card>
@@ -120,7 +111,7 @@
 				{nodes}
 				{totalCount}
 				{errors}
-				{isFetching}
+				isFetching={$Query_userConnection.fetching}
 				on:fetch={fetch}
 				on:mutation={mutation}
 				on:edit={edit}
