@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { graphql, GroupNodesQuery$input, Operator } from '$houdini';
+	import { graphql, GroupNodesQuery$input, Operator, GroupNodesQueryStore } from '$houdini';
 	import type { GroupNodesQueryVariables } from './$houdini';
 	import { NodeTree, TreeStruct, buildTree } from '@graphace/graphql';
 	import { notifications, MenuTreeLoading } from '@graphace/ui';
@@ -7,14 +7,20 @@
 	import LL from '$i18n/i18n-svelte';
 
 	export let nodeTrees: NodeTree[] | null | undefined = undefined;
+	export let treeStructs: (TreeStruct | null | undefined)[] | null | undefined = undefined;
 	export let parent: TreeStruct | null | undefined = undefined;
-	export let currentDeep = 0;
-	export let deeps = 2;
+	export let currentDeep: number = 0;
+	export let deeps: number = 2;
 	export let groupName: string | null | undefined = undefined;
 	export let activeGroupId: string | null | undefined = undefined;
 
 	export const _GroupNodesQueryVariables: GroupNodesQueryVariables = ({ props }) => {
 		return {
+			deep: { opr: Operator.LT, val: props.currentDeep + props.deeps },
+			path: {
+				opr: Operator.LK,
+				val: `${(props.parent?.path || '') + (props.parent?.id || '') + '/'}%`
+			}
 		};
 	};
 
@@ -31,17 +37,17 @@
 		}
 	`);
 
-	// $: if (currentDeep === 0) {
-	// 	queryNodes(groupName);
-	// }
+	// $: treeStructs = $GroupNodesQuery.data?.groupList;
 
-	// $: if (parent?.id === activeGroupId) {
-	// 	queryNodes(groupName);
-	// }
+	$: if (currentDeep == 0 && !treeStructs) {
+		queryNodes(groupName);
+	}
 
-	// $: if (!nodeTrees || parent?.id === activeGroupId) {
-	// 	nodeTrees = buildTree($GroupNodesQuery.data?.groupList, parent);
-	// }
+	// $: nodeTrees = buildTree(treeStructs, parent);
+
+	$: if (parent && parent?.id === activeGroupId) {
+		queryNodes(groupName);
+	}
 
 	const queryNodes = (groupName?: string | null | undefined) => {
 		let variables: GroupNodesQuery$input;
@@ -58,10 +64,7 @@
 				name: undefined
 			};
 		}
-		GroupNodesQuery.fetch({ variables }).catch((errors) => {
-			console.error(errors);
-			notifications.error($LL.web.message.requestFailed());
-		});
+		GroupNodesQuery.fetch({ variables });
 	};
 </script>
 
@@ -70,13 +73,13 @@
 		{#each nodeTrees as nodeTree}
 			<li>
 				<a
-					class={nodeTree.node.id === activeGroupId ? 'active' : ''}
+					class={nodeTree.node?.id === activeGroupId ? 'active' : ''}
 					href={null}
 					on:click|preventDefault={(e) => {
-						activeGroupId = nodeTree.node.id;
+						activeGroupId = nodeTree.node?.id;
 					}}
 				>
-					{nodeTree.node.name}
+					{nodeTree.node?.name}
 				</a>
 				{#if $GroupNodesQuery.fetching}
 					<MenuTreeLoading />

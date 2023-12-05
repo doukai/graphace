@@ -1,7 +1,9 @@
 <script lang="ts">
+	import type { TreeStruct } from '@graphace/graphql';
 	import { Card, SearchInput } from '@graphace/ui';
 	import GroupTreeMenu from '~/lib/components/objects/group/GroupTreeMenu.svelte';
 
+	export let treeStructs: (TreeStruct | null | undefined)[] | null | undefined = undefined;
 	export let currentDeep = 0;
 	export let deeps = 2;
 	export let showSearchInput: boolean = true;
@@ -24,5 +26,5 @@
 	{/if}
 	<div class="divider" />
 
-	<GroupTreeMenu bind:activeGroupId bind:groupName {currentDeep} {deeps} />
+	<GroupTreeMenu bind:activeGroupId bind:groupName {treeStructs} {currentDeep} {deeps} />
 </Card>

@@ -76,8 +76,6 @@
 		RealmNameListQuery.fetch({
 			variables: { name: { opr: Operator.LK, val: `%${searchText}%` } }
 		}).finally(() => (loading = false));
-	} else {
-		RealmNameListQuery.fetch({ variables: { name: undefined } }).finally(() => (loading = false));
 	}
 </script>
 
@@ -115,5 +113,15 @@
 			value = undefined;
 		}
 		dispatch('change', { value });
+	}}
+	on:open={(e) => {
+		if (searchText) {
+			loading = true;
+			RealmNameListQuery.fetch({
+				variables: { name: { opr: Operator.LK, val: `%${searchText}%` } }
+			}).finally(() => (loading = false));
+		} else {
+			RealmNameListQuery.fetch({ variables: { name: undefined } }).finally(() => (loading = false));
+		}
 	}}
 />

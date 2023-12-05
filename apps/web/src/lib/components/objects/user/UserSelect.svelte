@@ -81,8 +81,6 @@
 		UserNameListQuery.fetch({
 			variables: { name: { opr: Operator.LK, val: `%${searchText}%` } }
 		}).finally(() => (loading = false));
-	} else {
-		UserNameListQuery.fetch({ variables: { name: undefined } }).finally(() => (loading = false));
 	}
 </script>
 
@@ -120,5 +118,15 @@
 			value = undefined;
 		}
 		dispatch('change', { value });
+	}}
+	on:open={(e) => {
+		if (searchText) {
+			loading = true;
+			UserNameListQuery.fetch({
+				variables: { name: { opr: Operator.LK, val: `%${searchText}%` } }
+			}).finally(() => (loading = false));
+		} else {
+			UserNameListQuery.fetch({ variables: { name: undefined } }).finally(() => (loading = false));
+		}
 	}}
 />

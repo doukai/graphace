@@ -1,13 +1,20 @@
 <script lang="ts">
 	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
+	import { browser } from '$app/environment';
 	import type { Errors } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card } from '@graphace/ui';
 	import UserConnectionTable from '~/lib/components/objects/user/UserConnectionTable.svelte';
 	import GroupTreeCard from '~/lib/components/objects/group/GroupTreeCard.svelte';
 	import type { User, QueryUserConnectionArgs, MutationUserArgs } from '~/lib/types/schema';
-	import { Query_userConnectionStore, Mutation_userStore } from '$houdini';
+	import {
+		Query_userConnectionStore,
+		Query_userConnection$result,
+		Mutation_userStore,
+		GroupNodesQuery,
+		GroupNodesQuery$result
+	} from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -15,21 +22,25 @@
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.User.name());
-	$: Query_userConnection = data.Query_userConnection as Query_userConnectionStore;
-	$: nodes = $Query_userConnection.data?.userConnection?.edges?.map((edge) => edge?.node);
-	$: totalCount = $Query_userConnection.data?.userConnection?.totalCount || 0;
+	$: Query_userConnection = data.Query_userConnection;
+	$: userConnectionData = $Query_userConnection?.data;
+	$: nodes = userConnectionData?.userConnection?.edges?.map((edge) => edge?.node);
+	$: totalCount = userConnectionData?.userConnection?.totalCount || 0;
+	$: isFetching = $Query_userConnection?.fetching || false;
+	// $: groupList = browser ? undefined : data?.group.groupList;
+
 	const Mutation_user = new Mutation_userStore();
 	let errors: Record<number, Errors> = {};
 	let args: QueryUserConnectionArgs = {};
 	let groupId: string | null | undefined = undefined;
 
-	$: if (groupId) {
-		args.groups = { id: { val: groupId } };
-		Query_userConnection.fetch({ variables: { ...args, first: 10 } });
-	} else {
-		args.groups = undefined;
-		Query_userConnection.fetch({ variables: { ...args, first: 10 } });
-	}
+	// $: if (groupId) {
+	// 	args.groups = { id: { val: groupId } };
+	// 	Query_userConnection.fetch({ variables: { ...args, first: 10 } });
+	// } else {
+	// 	args.groups = undefined;
+	// 	Query_userConnection.fetch({ variables: { ...args, first: 10 } });
+	// }
 
 	const fetch = (
 		event: CustomEvent<{
@@ -38,7 +49,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		Query_userConnection.fetch({ variables: event.detail.args }).then((result) => {
+		Query_userConnection?.fetch({ variables: event.detail.args }).then((result) => {
 			event.detail.then(result.data?.userConnection?.edges?.map((edge) => edge?.node));
 			if (result.errors) {
 				event.detail.catch(result.errors);
@@ -109,7 +120,7 @@
 				{nodes}
 				{totalCount}
 				{errors}
-				isFetching={$Query_userConnection.fetching}
+				{isFetching}
 				on:fetch={fetch}
 				on:mutation={mutation}
 				on:edit={edit}

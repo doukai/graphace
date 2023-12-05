@@ -54,6 +54,8 @@
 			removeBtnTitle={$LL.uiGraphql.multiSelect.removeBtnTitle()}
 			{loading}
 			on:change
+			on:open
+			on:close
 		/>
 	{/if}
 	{#if errors?.errors}
