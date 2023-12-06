@@ -26,5 +26,5 @@
 	{/if}
 	<div class="divider" />
 
-	<GroupTreeMenu bind:activeGroupId bind:groupName {treeStructs} {currentDeep} {deeps} />
+	<GroupTreeMenu bind:activeGroupId bind:groupName {treeStructs} {currentDeep} {deeps} on:change />
 </Card>

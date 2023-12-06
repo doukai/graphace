@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import { graphql, GroupNodesQuery$input, Operator } from '$houdini';
 	import { NodeTree, TreeStruct, buildTree } from '@graphace/graphql';
 	import { MenuTreeLoading } from '@graphace/ui';
@@ -11,6 +12,12 @@
 	export let deeps = 2;
 	export let groupName: string | null | undefined = undefined;
 	export let activeGroupId: string | null | undefined = undefined;
+
+	const dispatch = createEventDispatcher<{
+		change: {
+			activeId: string | null | undefined;
+		};
+	}>();
 
 	const GroupNodesQuery = graphql(`
 		query GroupNodesQuery($path: StringExpression, $deep: IntExpression, $name: StringExpression) {
@@ -62,7 +69,12 @@
 					class={nodeTree.node?.id === activeGroupId ? 'active' : ''}
 					href={null}
 					on:click|preventDefault={(e) => {
-						activeGroupId = nodeTree.node?.id;
+						if (activeGroupId === nodeTree.node?.id) {
+							activeGroupId = undefined;
+						} else {
+							activeGroupId = nodeTree.node?.id;
+						}
+						dispatch('change', { activeId: activeGroupId });
 					}}
 				>
 					{nodeTree.node?.name}
@@ -76,6 +88,7 @@
 						currentDeep={currentDeep + 1}
 						parent={nodeTree.node}
 						{deeps}
+						on:change
 					/>
 				{/if}
 			</li>

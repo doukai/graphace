@@ -12,10 +12,20 @@ mutation Mutation_{{ name }}
     {%- endif %}
     {%- if namedFields %}
     {%- for field in namedFields %}
+    {%- if field.select %}
+    {{ field.name }} {
+      {%- if field.fields %}
+      {%- for field in field.fields %}
+      {{ field.name }}
+      {%- endfor %}
+      {%- endif %}
+    }
+    {%- else %}
     {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
       name
       description
     }
+    {%- endif %}
     {%- endfor %}
     {%- endif %}
   }

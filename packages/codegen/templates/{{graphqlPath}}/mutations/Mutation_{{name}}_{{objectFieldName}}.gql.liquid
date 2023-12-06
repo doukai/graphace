@@ -28,10 +28,20 @@ mutation Mutation_{{ name }}_{{ objectField.name }}
           {{ field.name }}
           {%- endfor %}
           {%- for field in objectField.namedFields %}
+          {%- if field.select %}
+          {{ field.name }} {
+            {%- if field.fields %}
+            {%- for field in field.fields %}
+            {{ field.name }}
+            {%- endfor %}
+            {%- endif %}
+          }
+          {%- else %}
           {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
             name
             description
           }
+          {%- endif %}
           {%- endfor %}
         }
       }
@@ -45,10 +55,20 @@ mutation Mutation_{{ name }}_{{ objectField.name }}
       {{ field.name }}
       {%- endfor %}
       {%- for field in objectField.namedFields %}
+      {%- if field.select %}
+      {{ field.name }} {
+        {%- if field.fields %}
+        {%- for field in field.fields %}
+        {{ field.name }}
+        {%- endfor %}
+        {%- endif %}
+      }
+      {%- else %}
       {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
         name
         description
       }
+      {%- endif %}
       {%- endfor %}
     }
     {%- endif %}

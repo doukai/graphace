@@ -25,14 +25,6 @@
 	let args: QueryUserConnectionArgs = {};
 	let groupId: string | null | undefined = undefined;
 
-	// $: if (groupId) {
-	// 	args.groups = { id: { val: groupId } };
-	// 	Query_userConnection.fetch({ variables: { ...args, first: 10 } });
-	// } else {
-	// 	args.groups = undefined;
-	// 	Query_userConnection.fetch({ variables: { ...args, first: 10 } });
-	// }
-
 	const fetch = (
 		event: CustomEvent<{
 			args: QueryUserConnectionArgs;
@@ -100,7 +92,19 @@
 
 <div class="flex xl:items-start xl:flex-row xl:gap-2">
 	<div class="hidden xl:flex xl:basis-1/6">
-		<GroupTreeCard treeStructs={$GroupNodesQuery.data?.groupList} bind:activeGroupId={groupId} />
+		<GroupTreeCard
+			treeStructs={$GroupNodesQuery.data?.groupList}
+			bind:activeGroupId={groupId}
+			on:change={(e) => {
+				console.log(e.detail.activeId);
+				if (e.detail.activeId) {
+					args.groups = { id: { val: e.detail.activeId } };
+				} else {
+					args.groups = undefined;
+				}
+				Query_userConnection.fetch({ variables: { ...args, first: 10 } });
+			}}
+		/>
 	</div>
 	<div class="w-full xl:basis-5/6">
 		<Card>
