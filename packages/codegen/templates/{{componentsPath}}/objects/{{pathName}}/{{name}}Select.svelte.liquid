@@ -4,7 +4,6 @@
 	import { ObjectMultiSelect } from '@graphace/ui-graphql';
 	import type { ObjectOption } from 'svelte-multiselect';
 	import { graphql, {{ name }}Input, Operator } from '$houdini';
-    import type { {{ name }}NameListQueryVariables } from './$houdini'
 
 	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
@@ -43,12 +42,8 @@
 		selected = [];
 	}
 
-    export const _{{ name }}NameListQueryVariables: {{ name }}NameListQueryVariables = ({ props }) => {
-        return { name: undefined }
-    }
-
 	const {{ name }}NameListQuery = graphql(`
-		query {{ name }}NameListQuery($name: StringExpression) @load {
+		query {{ name }}NameListQuery($name: StringExpression) {
 			{{ name | camelCase }}List(name: $name) {
 				{%- if fields %}
 				{%- for field in fields %}

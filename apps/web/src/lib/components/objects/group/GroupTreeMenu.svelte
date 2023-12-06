@@ -1,32 +1,19 @@
 <script lang="ts">
-	import { graphql, GroupNodesQuery$input, Operator, GroupNodesQueryStore } from '$houdini';
-	import type { GroupNodesQueryVariables } from './$houdini';
+	import { graphql, GroupNodesQuery$input, Operator } from '$houdini';
 	import { NodeTree, TreeStruct, buildTree } from '@graphace/graphql';
-	import { notifications, MenuTreeLoading } from '@graphace/ui';
+	import { MenuTreeLoading } from '@graphace/ui';
 	import GroupTreeMenu from './GroupTreeMenu.svelte';
-	import LL from '$i18n/i18n-svelte';
 
 	export let nodeTrees: NodeTree[] | null | undefined = undefined;
 	export let treeStructs: (TreeStruct | null | undefined)[] | null | undefined = undefined;
 	export let parent: TreeStruct | null | undefined = undefined;
-	export let currentDeep: number = 0;
-	export let deeps: number = 2;
+	export let currentDeep = 0;
+	export let deeps = 2;
 	export let groupName: string | null | undefined = undefined;
 	export let activeGroupId: string | null | undefined = undefined;
 
-	export const _GroupNodesQueryVariables: GroupNodesQueryVariables = ({ props }) => {
-		return {
-			deep: { opr: Operator.LT, val: props.currentDeep + props.deeps },
-			path: {
-				opr: Operator.LK,
-				val: `${(props.parent?.path || '') + (props.parent?.id || '') + '/'}%`
-			}
-		};
-	};
-
 	const GroupNodesQuery = graphql(`
-		query GroupNodesQuery($path: StringExpression, $deep: IntExpression, $name: StringExpression)
-		@load {
+		query GroupNodesQuery($path: StringExpression, $deep: IntExpression, $name: StringExpression) {
 			groupList(deep: $deep, path: $path, name: $name) {
 				id
 				name
@@ -37,13 +24,9 @@
 		}
 	`);
 
-	// $: treeStructs = $GroupNodesQuery.data?.groupList;
-
-	// $: if (currentDeep == 0 && !treeStructs) {
-	// 	// queryNodes(groupName);
-	// }
-
-	$: nodeTrees = buildTree(treeStructs, parent);
+	$: if (treeStructs) {
+		nodeTrees = buildTree(treeStructs, parent);
+	}
 
 	$: if (parent && activeGroupId && parent?.id === activeGroupId) {
 		queryNodes(groupName);
@@ -64,7 +47,10 @@
 				name: undefined
 			};
 		}
-		GroupNodesQuery.fetch({ variables });
+		GroupNodesQuery.fetch({ variables }).then((result) => {
+			treeStructs = result.data?.groupList;
+			nodeTrees = buildTree(treeStructs, parent);
+		});
 	};
 </script>
 
@@ -77,9 +63,6 @@
 					href={null}
 					on:click|preventDefault={(e) => {
 						activeGroupId = nodeTree.node?.id;
-						// if (parent?.id === activeGroupId) {
-						// 	// queryNodes(groupName);
-						// }
 					}}
 				>
 					{nodeTree.node?.name}

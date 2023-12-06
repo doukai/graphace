@@ -1,24 +1,19 @@
 <script lang="ts">
 	import { graphql, {{ name }}NodesQuery$input, Operator } from '$houdini';
-    import type { {{ name }}NodesQueryVariables } from './$houdini'
 	import { NodeTree, TreeStruct, buildTree } from '@graphace/graphql';
-	import { notifications, MenuTreeLoading } from '@graphace/ui';
+	import { MenuTreeLoading } from '@graphace/ui';
 	import {{ name }}TreeMenu from './{{ name }}TreeMenu.svelte';
-	import LL from '$i18n/i18n-svelte';
 
 	export let nodeTrees: NodeTree[] | null | undefined = undefined;
+	export let treeStructs: (TreeStruct | null | undefined)[] | null | undefined = undefined;
 	export let parent: TreeStruct | null | undefined = undefined;
 	export let currentDeep = 0;
 	export let deeps = 2;
 	export let {{ name | camelCase }}Name: string | null | undefined = undefined;
 	export let active{{ name }}Id: string | null | undefined = undefined;
 
-    export const _{{ name }}NodesQueryVariables: {{ name }}NodesQueryVariables = ({ props }) => {
-        return { deep: { opr: Operator.LT, val: currentDeep + deeps }, path: { opr: Operator.LK, val: `${(parent?.path || '') + (parent?.{{ idName }} || '') + '/'}%` }, name: undefined }
-    }
-
 	const {{ name }}NodesQuery = graphql(`
-		query {{ name }}NodesQuery($path: StringExpression, $deep: IntExpression, $name: StringExpression) @load {
+		query {{ name }}NodesQuery($path: StringExpression, $deep: IntExpression, $name: StringExpression) {
 			{{ name | camelCase }}List(deep: $deep, path: $path, name: $name) {
 				{{ idName }}
 				name
@@ -29,19 +24,12 @@
 		}
 	`);
 
-	$: if (currentDeep === 0) {
-		queryNodes({{ name | camelCase }}Name);
-	}
+	$: treeStructs = $GroupNodesQuery.data?.groupList;
 
-	$: if (parent?.{{ idName }} === active{{ name }}Id) {
-		queryNodes({{ name | camelCase }}Name);
-	}
+	$: nodeTrees = buildTree(treeStructs, parent);
 
-	$: if (!nodeTrees || parent?.{{ idName }} === active{{ name }}Id) {
-		nodeTrees = buildTree(
-			${{ name }}NodesQuery.data?.{{ name | camelCase }}List,
-			parent
-		);
+	$: if (parent && activeGroupId && parent?.id === activeGroupId) {
+		queryNodes(groupName);
 	}
 
 	const queryNodes = ({{ name | camelCase }}Name?: string | null | undefined) => {
@@ -59,10 +47,7 @@
 				name: undefined
 			};
 		}
-		{{ name }}NodesQuery.fetch({ variables }).catch((errors) => {
-			console.error(errors);
-			notifications.error($LL.web.message.requestFailed());
-		});
+		{{ name }}NodesQuery.fetch({ variables });
 	};
 </script>
 
@@ -71,13 +56,13 @@
 		{#each nodeTrees as nodeTree}
 			<li>
 				<a
-					class={nodeTree.node.{{ idName }} === active{{ name }}Id ? 'active' : ''}
+					class={nodeTree.node?.{{ idName }} === active{{ name }}Id ? 'active' : ''}
 					href={null}
 					on:click|preventDefault={(e) => {
-						active{{ name }}Id = nodeTree.node.{{ idName }};
+						active{{ name }}Id = nodeTree.node?.{{ idName }};
 					}}
 				>
-					{nodeTree.node.name}
+					{nodeTree.node?.name}
 				</a>
 				{#if ${{ name }}NodesQuery.fetching}
 					<MenuTreeLoading />

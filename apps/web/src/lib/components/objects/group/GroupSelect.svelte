@@ -4,7 +4,6 @@
 	import { ObjectMultiSelect } from '@graphace/ui-graphql';
 	import type { ObjectOption } from 'svelte-multiselect';
 	import { graphql, GroupInput, Operator } from '$houdini';
-    import type { GroupNameListQueryVariables } from './$houdini'
 
 	export let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
@@ -27,7 +26,7 @@
 	let options: ObjectOption[] = [];
 	let selected: ObjectOption[] = [];
 	if (Array.isArray(value)) {
-		value = value.map((item) => ({ name: item?.name, description: item?.description, path: item?.path, deep: item?.deep, parentId: item?.parentId, isDeprecated: item?.isDeprecated, version: item?.version, realmId: item?.realmId, createUserId: item?.createUserId, createTime: item?.createTime, updateUserId: item?.updateUserId, updateTime: item?.updateTime, createGroupId: item?.createGroupId, where: { id: { val: item?.id } } }));
+		value = [...value.map((item) => ({ name: item?.name, description: item?.description, path: item?.path, deep: item?.deep, parentId: item?.parentId, isDeprecated: item?.isDeprecated, version: item?.version, realmId: item?.realmId, createUserId: item?.createUserId, createTime: item?.createTime, updateUserId: item?.updateUserId, updateTime: item?.updateTime, createGroupId: item?.createGroupId, where: { id: { val: item?.id } } }))];
 	} else if (value) {
 		value = { name: value.name, description: value.description, path: value.path, deep: value.deep, parentId: value.parentId, isDeprecated: value.isDeprecated, version: value.version, realmId: value.realmId, createUserId: value.createUserId, createTime: value.createTime, updateUserId: value.updateUserId, updateTime: value.updateTime, createGroupId: value.createGroupId, where: { id: { val: value.id } } };
 	}
@@ -43,12 +42,8 @@
 		selected = [];
 	}
 
-    export const _GroupNameListQueryVariables: GroupNameListQueryVariables = ({ props }) => {
-        return { name: undefined }
-    }
-
 	const GroupNameListQuery = graphql(`
-		query GroupNameListQuery($name: StringExpression) @load {
+		query GroupNameListQuery($name: StringExpression) {
 			groupList(name: $name) {
 				id
 				name

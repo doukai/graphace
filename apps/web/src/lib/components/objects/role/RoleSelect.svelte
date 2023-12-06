@@ -4,7 +4,6 @@
 	import { ObjectMultiSelect } from '@graphace/ui-graphql';
 	import type { ObjectOption } from 'svelte-multiselect';
 	import { graphql, RoleInput, Operator } from '$houdini';
-    import type { RoleNameListQueryVariables } from './$houdini'
 
 	export let value: RoleInput | (RoleInput | null | undefined)[] | null | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
@@ -43,12 +42,8 @@
 		selected = [];
 	}
 
-    export const _RoleNameListQueryVariables: RoleNameListQueryVariables = ({ props }) => {
-        return { name: undefined }
-    }
-
 	const RoleNameListQuery = graphql(`
-		query RoleNameListQuery($name: StringExpression) @load {
+		query RoleNameListQuery($name: StringExpression) {
 			roleList(name: $name) {
 				id
 				name

@@ -4,7 +4,6 @@
 	import { ObjectMultiSelect } from '@graphace/ui-graphql';
 	import type { ObjectOption } from 'svelte-multiselect';
 	import { graphql, RealmInput, Operator } from '$houdini';
-    import type { RealmNameListQueryVariables } from './$houdini'
 
 	export let value: RealmInput | (RealmInput | null | undefined)[] | null | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
@@ -43,12 +42,8 @@
 		selected = [];
 	}
 
-    export const _RealmNameListQueryVariables: RealmNameListQueryVariables = ({ props }) => {
-        return { name: undefined }
-    }
-
 	const RealmNameListQuery = graphql(`
-		query RealmNameListQuery($name: StringExpression) @load {
+		query RealmNameListQuery($name: StringExpression) {
 			realmList(name: $name) {
 				id
 				name

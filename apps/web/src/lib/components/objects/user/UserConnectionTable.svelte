@@ -147,6 +147,7 @@
 				args,
 				then: (data) => {
 					notifications.success($LL.web.message.saveSuccess());
+				query();
 				},
 				catch: (errors) => {
 					console.error(errors);
@@ -161,7 +162,7 @@
 			args: { where: { id: { val: id } }, isDeprecated: true },
 			then: (data) => {
 				notifications.success($LL.web.message.removeSuccess());
-				query();
+				// query();
 			},
 			catch: (errors) => {
 				console.error(errors);

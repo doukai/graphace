@@ -4,7 +4,6 @@
 	import { ObjectMultiSelect } from '@graphace/ui-graphql';
 	import type { ObjectOption } from 'svelte-multiselect';
 	import { graphql, UserInput, Operator } from '$houdini';
-    import type { UserNameListQueryVariables } from './$houdini'
 
 	export let value: UserInput | (UserInput | null | undefined)[] | null | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
@@ -43,12 +42,8 @@
 		selected = [];
 	}
 
-    export const _UserNameListQueryVariables: UserNameListQueryVariables = ({ props }) => {
-        return { name: undefined }
-    }
-
 	const UserNameListQuery = graphql(`
-		query UserNameListQuery($name: StringExpression) @load {
+		query UserNameListQuery($name: StringExpression) {
 			userList(name: $name) {
 				id
 				name

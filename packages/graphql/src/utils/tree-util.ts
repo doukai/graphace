@@ -15,10 +15,9 @@ export function buildTree(
             return nodes.reduce((pre, cur) => {
                 if (pre.some((item: TreeStruct | null | undefined) => item?.parentId === cur?.id)) {
                     pre = pre.filter((item: TreeStruct | null | undefined) => item?.parentId !== cur?.id);
-                } else {
-                    if (!pre.some((item: TreeStruct | null | undefined) => item?.parentId === cur?.id)) {
-                        pre.push(cur);
-                    }
+                }
+                if (!pre.some((item: TreeStruct | null | undefined) => item?.id === cur?.parentId)) {
+                    pre.push(cur);
                 }
                 return pre;
             }, [] as (TreeStruct | null | undefined)[])
