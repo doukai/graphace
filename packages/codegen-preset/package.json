@@ -1,6 +1,6 @@
 {
 	"name": "graphace-codegen-preset",
-	"version": "0.0.13",
+	"version": "0.0.14",
 	"scripts": {
 		"build": "microbundle",
 		"publish:yalc": "yalc publish"
