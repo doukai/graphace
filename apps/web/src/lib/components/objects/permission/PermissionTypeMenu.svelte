@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { graphql } from '$houdini';
-	import { notifications } from '@graphace/ui';
 	import LL from '$i18n/i18n-svelte';
 
+	export let typeNames: (string | null | undefined)[] | null | undefined;
+	export let totalCount: number;
 	export let typeName: string | null | undefined;
 	export let activeTypeName: string | null | undefined;
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
+	let pageCount: number = 0;
 
 	const PermissionTypesQuery = graphql(`
 		query PermissionTypesQuery($type: StringExpression, $first: Int, $offset: Int) {
@@ -21,30 +23,17 @@
 		}
 	`);
 
-	$: typeNames = $PermissionTypesQuery.data?.permissionConnection?.edges?.map(
-		(edge) => edge?.node?.type
-	);
-
-	$: totalCount = $PermissionTypesQuery.data?.permissionConnection?.totalCount || 0;
-
-	$: if (!activeTypeName && typeNames && typeNames?.length > 0) {
-		activeTypeName = typeNames[0];
-	}
-
-	$: pageCount =
-		totalCount % pageSize == 0 ? ~~(totalCount / pageSize) : ~~(totalCount / pageSize) + 1;
-
-	$: queryPage(typeName);
-
-	const queryPage = (typeName?: string | null | undefined) => {
+	const queryPage = () => {
 		let variables = {
 			first: pageSize,
 			offset: (pageNumber - 1) * pageSize,
 			type: typeName ? { val: typeName } : undefined
 		};
-		PermissionTypesQuery.fetch({ variables }).catch((errors) => {
-			console.error(errors);
-			notifications.error($LL.web.message.requestFailed());
+		PermissionTypesQuery.fetch({ variables }).then((result) => {
+			typeNames = result.data?.permissionConnection?.edges?.map((edge) => edge?.node?.type);
+			totalCount = result.data?.permissionConnection?.totalCount || 0;
+			pageCount =
+				totalCount % pageSize == 0 ? ~~(totalCount / pageSize) : ~~(totalCount / pageSize) + 1;
 		});
 	};
 </script>

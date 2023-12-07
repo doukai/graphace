@@ -130,11 +130,14 @@
 		});
 	};
 
-	const updateField = (args: RoleInput | null | undefined) => {
+	const updateField = (args: RoleInput | null | undefined, row?: number) => {
 		if (args) {
 			dispatch('mutation', {
 				args,
 				then: (data) => {
+					if (nodes && row) {
+						nodes[row] = data;
+					}
 					notifications.success($LL.web.message.saveSuccess());
 				},
 				catch: (errors) => {
@@ -230,7 +233,7 @@
 							<StringTd
 								name="name"
 								bind:value={node.name}
-								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Role::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
@@ -239,7 +242,7 @@
 							<StringTd
 								name="description"
 								bind:value={node.description}
-								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Role::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>

@@ -2,15 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
-	import {
-		Table,
-		TableHead,
-		TableLoading,
-		TableEmpty,
-		Pagination,
-		messageBoxs,
-		notifications
-	} from '@graphace/ui';
+	import { Table, TableHead, TableLoading, TableEmpty, Pagination, messageBoxs, notifications } from '@graphace/ui';
 	import { ObjectTd, StringTh, StringTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
@@ -20,7 +12,12 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
-	import type { User, UserOrderBy, QueryUserConnectionArgs, UserInput } from '~/lib/types/schema';
+	import type {
+		User,
+		UserOrderBy,
+		QueryUserConnectionArgs,
+		UserInput
+	} from '~/lib/types/schema';
 	import { permissions } from '~/lib/utils/auth-util';
 
 	export let nodes: (User | null | undefined)[] | null | undefined;
@@ -120,7 +117,7 @@
 			args.email = undefined;
 			args.phones = undefined;
 		}
-
+		
 		if (after) {
 			args.after = after;
 			args.first = pageSize;
@@ -149,11 +146,10 @@
 			dispatch('mutation', {
 				args,
 				then: (data) => {
-					notifications.success($LL.web.message.saveSuccess());
 					if (nodes && row) {
 						nodes[row] = data;
 					}
-					// query();
+					notifications.success($LL.web.message.saveSuccess());
 				},
 				catch: (errors) => {
 					console.error(errors);
@@ -196,9 +192,10 @@
 
 	const unbindRows = (selectedIdList: (string | null)[]) => {
 		dispatch('parentMutation', {
-			args: selectedIdList.map((id) => {
-				return { where: { id: { val: id } }, isDeprecated: true };
-			}),
+			args: selectedIdList
+				.map((id) => {
+					return { where: { id: { val: id } }, isDeprecated: true };
+				}),
 			then: (data) => {
 				notifications.success($LL.web.message.unbindSuccess());
 				query();
@@ -213,12 +210,8 @@
 
 <TableHead
 	title={$LL.graphql.objects.User.name()}
-	showRemoveButton={permissions.auth('User::*::WRITE') &&
-		showRemoveButton &&
-		selectedIdList.length > 0}
-	showUnbindButton={permissions.auth('User::*::WRITE') &&
-		showUnbindButton &&
-		selectedIdList.length > 0}
+	showRemoveButton={permissions.auth('User::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
+	showUnbindButton={permissions.auth('User::*::WRITE') && showUnbindButton && selectedIdList.length > 0}
 	showSaveButton={permissions.auth('User::*::WRITE') && showSaveButton}
 	showGotoSelectButton={permissions.auth('User::*::WRITE') && showGotoSelectButton}
 	{showBackButton}
@@ -276,88 +269,88 @@
 				</label>
 			</th>
 			{#if permissions.auth('User::name::*')}
-				<StringTh
-					name={$LL.graphql.objects.User.fields.name.name()}
-					bind:expression={args.name}
-					bind:sort={orderBy.name}
-					on:filter={(e) => query()}
-				/>
+			<StringTh
+				name={$LL.graphql.objects.User.fields.name.name()}
+				bind:expression={args.name}
+				bind:sort={orderBy.name}
+				on:filter={(e) => query()}
+			/>
 			{/if}
 			{#if permissions.auth('User::description::*')}
-				<StringTh
-					name={$LL.graphql.objects.User.fields.description.name()}
-					bind:expression={args.description}
-					bind:sort={orderBy.description}
-					on:filter={(e) => query()}
-				/>
+			<StringTh
+				name={$LL.graphql.objects.User.fields.description.name()}
+				bind:expression={args.description}
+				bind:sort={orderBy.description}
+				on:filter={(e) => query()}
+			/>
 			{/if}
 			{#if permissions.auth('User::lastName::*')}
-				<StringTh
-					name={$LL.graphql.objects.User.fields.lastName.name()}
-					bind:expression={args.lastName}
-					bind:sort={orderBy.lastName}
-					on:filter={(e) => query()}
-				/>
+			<StringTh
+				name={$LL.graphql.objects.User.fields.lastName.name()}
+				bind:expression={args.lastName}
+				bind:sort={orderBy.lastName}
+				on:filter={(e) => query()}
+			/>
 			{/if}
 			{#if permissions.auth('User::login::*')}
-				<StringTh
-					name={$LL.graphql.objects.User.fields.login.name()}
-					bind:expression={args.login}
-					bind:sort={orderBy.login}
-					on:filter={(e) => query()}
-				/>
+			<StringTh
+				name={$LL.graphql.objects.User.fields.login.name()}
+				bind:expression={args.login}
+				bind:sort={orderBy.login}
+				on:filter={(e) => query()}
+			/>
 			{/if}
 			{#if permissions.auth('User::email::*')}
-				<StringTh
-					name={$LL.graphql.objects.User.fields.email.name()}
-					bind:expression={args.email}
-					bind:sort={orderBy.email}
-					on:filter={(e) => query()}
-				/>
+			<StringTh
+				name={$LL.graphql.objects.User.fields.email.name()}
+				bind:expression={args.email}
+				bind:sort={orderBy.email}
+				on:filter={(e) => query()}
+			/>
 			{/if}
 			{#if permissions.auth('User::phones::*')}
-				<StringTh
-					name={$LL.graphql.objects.User.fields.phones.name()}
-					bind:expression={args.phones}
-					on:filter={(e) => query()}
-				/>
+			<StringTh
+				name={$LL.graphql.objects.User.fields.phones.name()}
+				bind:expression={args.phones}
+				on:filter={(e) => query()}
+			/>
 			{/if}
 			{#if permissions.auth('User::disable::*')}
-				<BooleanTh
-					name={$LL.graphql.objects.User.fields.disable.name()}
-					bind:expression={args.disable}
-					bind:sort={orderBy.disable}
-					on:filter={(e) => query()}
-				/>
+			<BooleanTh
+				name={$LL.graphql.objects.User.fields.disable.name()}
+				bind:expression={args.disable}
+				bind:sort={orderBy.disable}
+				on:filter={(e) => query()}
+			/>
 			{/if}
 			{#if permissions.auth('User::groups::*')}
-				<GroupTh
-					name={$LL.graphql.objects.User.fields.groups.name()}
-					bind:expression={args.groups}
-					on:filter={(e) => query()}
-				/>
+			<GroupTh
+				name={$LL.graphql.objects.User.fields.groups.name()}
+				bind:expression={args.groups}
+				on:filter={(e) => query()}
+			/>
 			{/if}
 			{#if permissions.auth('User::roles::*')}
-				<RoleTh
-					name={$LL.graphql.objects.User.fields.roles.name()}
-					bind:expression={args.roles}
-					on:filter={(e) => query()}
-				/>
+			<RoleTh
+				name={$LL.graphql.objects.User.fields.roles.name()}
+				bind:expression={args.roles}
+				on:filter={(e) => query()}
+			/>
 			{/if}
 			{#if permissions.auth('User::realm::*')}
-				<RealmTh
-					name={$LL.graphql.objects.User.fields.realm.name()}
-					bind:expression={args.realm}
-					on:filter={(e) => query()}
-				/>
+			<RealmTh
+				name={$LL.graphql.objects.User.fields.realm.name()}
+				bind:expression={args.realm}
+				on:filter={(e) => query()}
+			/>
 			{/if}
 			{#if permissions.auth('User::*::WRITE')}
-				<th />
+			<th />
 			{/if}
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading rows={pageSize} cols={10 + 2} />
+		<TableLoading rows={pageSize} cols={10 + 2}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
@@ -366,195 +359,174 @@
 						<tr class="hover">
 							<th class="z-10 w-12">
 								<label>
-									<input
-										type="checkbox"
-										class="checkbox"
-										bind:group={selectedIdList}
-										value={node.id}
-									/>
+									<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
 								</label>
 							</th>
 							{#if permissions.auth('User::name::*')}
-								<StringTd
-									name="name"
-									bind:value={node.name}
-									on:save={(e) =>
-										updateField({ name: node?.name, where: { id: { val: node?.id } } })}
-									readonly={!permissions.auth('User::name::WRITE')}
-									errors={errors[row]?.iterms?.name}
-								/>
+							<StringTd
+								name="name"
+								bind:value={node.name}
+								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } }, row)}
+								readonly={!permissions.auth('User::name::WRITE')}
+								errors={errors[row]?.iterms?.name}
+							/>
 							{/if}
 							{#if permissions.auth('User::description::*')}
-								<StringTd
-									name="description"
-									bind:value={node.description}
-									on:save={(e) =>
-										updateField({
-											description: node?.description,
-											where: { id: { val: node?.id } }
-										})}
-									readonly={!permissions.auth('User::description::WRITE')}
-									errors={errors[row]?.iterms?.description}
-								/>
+							<StringTd
+								name="description"
+								bind:value={node.description}
+								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } }, row)}
+								readonly={!permissions.auth('User::description::WRITE')}
+								errors={errors[row]?.iterms?.description}
+							/>
 							{/if}
 							{#if permissions.auth('User::lastName::*')}
-								<StringTd
-									name="lastName"
-									bind:value={node.lastName}
-									on:save={(e) =>
-										updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } })}
-									readonly={!permissions.auth('User::lastName::WRITE')}
-									errors={errors[row]?.iterms?.lastName}
-								/>
+							<StringTd
+								name="lastName"
+								bind:value={node.lastName}
+								on:save={(e) => updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } }, row)}
+								readonly={!permissions.auth('User::lastName::WRITE')}
+								errors={errors[row]?.iterms?.lastName}
+							/>
 							{/if}
 							{#if permissions.auth('User::login::*')}
-								<StringTd
-									name="login"
-									bind:value={node.login}
-									on:save={(e) =>
-										updateField({ login: node?.login, where: { id: { val: node?.id } } })}
-									readonly={!permissions.auth('User::login::WRITE')}
-									errors={errors[row]?.iterms?.login}
-								/>
+							<StringTd
+								name="login"
+								bind:value={node.login}
+								on:save={(e) => updateField({ login: node?.login, where: { id: { val: node?.id } } }, row)}
+								readonly={!permissions.auth('User::login::WRITE')}
+								errors={errors[row]?.iterms?.login}
+							/>
 							{/if}
 							{#if permissions.auth('User::email::*')}
-								<StringTd
-									name="email"
-									bind:value={node.email}
-									on:save={(e) =>
-										updateField({ email: node?.email, where: { id: { val: node?.id } } })}
-									readonly={!permissions.auth('User::email::WRITE')}
-									errors={errors[row]?.iterms?.email}
-								/>
+							<StringTd
+								name="email"
+								bind:value={node.email}
+								on:save={(e) => updateField({ email: node?.email, where: { id: { val: node?.id } } }, row)}
+								readonly={!permissions.auth('User::email::WRITE')}
+								errors={errors[row]?.iterms?.email}
+							/>
 							{/if}
 							{#if permissions.auth('User::phones::*')}
-								<StringTd
-									name="phones"
-									bind:value={node.phones}
-									list
-									on:save={(e) =>
-										updateField({ phones: node?.phones, where: { id: { val: node?.id } } })}
-									readonly={!permissions.auth('User::phones::WRITE')}
-									errors={errors[row]?.iterms?.phones}
-								/>
+							<StringTd
+								name="phones"
+								bind:value={node.phones}
+								list
+								on:save={(e) => updateField({ phones: node?.phones, where: { id: { val: node?.id } } }, row)}
+								readonly={!permissions.auth('User::phones::WRITE')}
+								errors={errors[row]?.iterms?.phones}
+							/>
 							{/if}
 							{#if permissions.auth('User::disable::*')}
-								<BooleanTd
-									name="disable"
-									bind:value={node.disable}
-									on:save={(e) =>
-										updateField({ disable: node?.disable, where: { id: { val: node?.id } } })}
-									readonly={!permissions.auth('User::disable::WRITE')}
-									errors={errors[row]?.iterms?.disable}
-								/>
+							<BooleanTd
+								name="disable"
+								bind:value={node.disable}
+								on:save={(e) => updateField({ disable: node?.disable, where: { id: { val: node?.id } } }, row)}
+								readonly={!permissions.auth('User::disable::WRITE')}
+								errors={errors[row]?.iterms?.disable}
+							/>
 							{/if}
 							{#if permissions.auth('User::groups::*')}
-								<GroupSelectTd
-									name="groups"
-									bind:value={node.groups}
-									list
-									errors={errors[row]?.iterms?.groups}
-									readonly={!permissions.auth('User::groups::WRITE')}
-									on:save={(e) =>
-										updateField({ groups: node?.groups, where: { id: { val: node?.id } } }, row)}
-								/>
+							<GroupSelectTd
+								name="groups"
+								bind:value={node.groups}
+								list
+								errors={errors[row]?.iterms?.groups}
+								readonly={!permissions.auth('User::groups::WRITE')}
+								on:save={(e) =>
+									updateField({ groups: node?.groups, where: { id: { val: node?.id } } }, row)}
+							/>
 							{/if}
 							{#if permissions.auth('User::roles::*')}
-								<RoleSelectTd
-									name="roles"
-									bind:value={node.roles}
-									list
-									errors={errors[row]?.iterms?.roles}
-									readonly={!permissions.auth('User::roles::WRITE')}
-									on:save={(e) =>
-										updateField({ roles: node?.roles, where: { id: { val: node?.id } } })}
-								/>
+							<RoleSelectTd
+								name="roles"
+								bind:value={node.roles}
+								list
+								errors={errors[row]?.iterms?.roles}
+								readonly={!permissions.auth('User::roles::WRITE')}
+								on:save={(e) =>
+									updateField({ roles: node?.roles, where: { id: { val: node?.id } } }, row)}
+							/>
 							{/if}
 							{#if permissions.auth('User::realm::*')}
-								<ObjectTd
-									name="realm"
-									namedStruct={node.realm}
-									errors={errors[row]?.iterms?.realm}
-									path={`${node.id}/realm`}
-									on:gotoField
-								/>
+							<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
 							{/if}
 							{#if permissions.auth('User::*::WRITE')}
-								<th class="z-10 hover:z-30 w-24">
-									<div class="flex space-x-1">
-										<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
+							<th class="z-10 hover:z-30 w-24">
+								<div class="flex space-x-1">
+									<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
+										<button
+											class="btn btn-square btn-ghost btn-xs"
+											on:click|preventDefault={(e) => {
+												if (node && node.id) {
+													dispatch('edit', { id: node.id });
+												}
+											}}
+										>
+											<Icon src={PencilSquare} solid />
+										</button>
+									</div>
+									{#if showUnbindButton}
+										<div class="tooltip" data-tip={$LL.web.components.table.unbindBtn()}>
 											<button
 												class="btn btn-square btn-ghost btn-xs"
 												on:click|preventDefault={(e) => {
-													if (node && node.id) {
-														dispatch('edit', { id: node.id });
-													}
-												}}
-											>
-												<Icon src={PencilSquare} solid />
-											</button>
-										</div>
-										{#if showUnbindButton}
-											<div class="tooltip" data-tip={$LL.web.components.table.unbindBtn()}>
-												<button
-													class="btn btn-square btn-ghost btn-xs"
-													on:click|preventDefault={(e) => {
-														messageBoxs.open({
-															title: $LL.web.components.table.unbindModalTitle(),
-															buttonName: $LL.web.components.table.unbindBtn(),
-															buttonType: 'error',
-															confirm: () => {
-																if (node?.id) {
-																	unbindRows([node.id]);
-																}
-																return true;
-															},
-															button1: {
-																name: $LL.web.components.table.removeBtn(),
-																className: 'btn-error',
-																onClick: () => {
-																	if (node?.id) {
-																		removeRow(node.id);
-																	}
-																	return true;
-																}
+													messageBoxs.open({
+														title: $LL.web.components.table.unbindModalTitle(),
+														buttonName: $LL.web.components.table.unbindBtn(),
+														buttonType: 'error',
+														confirm: () => {
+															if (node?.id) {
+																unbindRows([node.id]);
 															}
-														});
-													}}
-												>
-													<Icon src={ArchiveBoxXMark} solid />
-												</button>
-											</div>
-										{:else}
-											<div class="tooltip" data-tip={$LL.web.components.table.removeBtn()}>
-												<button
-													class="btn btn-square btn-ghost btn-xs"
-													on:click|preventDefault={(e) => {
-														messageBoxs.open({
-															title: $LL.web.components.table.removeModalTitle(),
-															buttonName: $LL.web.components.table.removeBtn(),
-															buttonType: 'error',
-															confirm: () => {
+															return true;
+														},
+														button1: {
+															name: $LL.web.components.table.removeBtn(),
+															className: 'btn-error',
+															onClick: () => {
 																if (node?.id) {
 																	removeRow(node.id);
 																}
 																return true;
 															}
-														});
-													}}
-												>
-													<Icon src={Trash} solid />
-												</button>
-											</div>
-										{/if}
-									</div>
-								</th>
+														}
+													});
+												}}
+											>
+												<Icon src={ArchiveBoxXMark} solid />
+											</button>
+										</div>
+									{:else}
+										<div class="tooltip" data-tip={$LL.web.components.table.removeBtn()}>
+											<button
+												class="btn btn-square btn-ghost btn-xs"
+												on:click|preventDefault={(e) => {
+													messageBoxs.open({
+														title: $LL.web.components.table.removeModalTitle(),
+														buttonName: $LL.web.components.table.removeBtn(),
+														buttonType: 'error',
+														confirm: () => {
+															if (node?.id) {
+																removeRow(node.id);
+															}
+															return true;
+														}
+													});
+												}}
+											>
+												<Icon src={Trash} solid />
+											</button>
+										</div>
+									{/if}
+								</div>
+							</th>
 							{/if}
 						</tr>
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={10 + 2} />
+				<TableEmpty cols={10 + 2}/>
 			{/if}
 		</tbody>
 	{/if}

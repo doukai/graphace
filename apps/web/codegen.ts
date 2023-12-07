@@ -126,10 +126,10 @@ const config: CodegenConfig = {
                             name: 'Role',
                             select: true,
                             fields: [
-                                {
-                                    name: 'permissions',
-                                    inRoute: false
-                                },
+                                // {
+                                //     name: 'permissions',
+                                //     inRoute: false
+                                // },
                                 {
                                     name: 'syncRolePolicy',
                                     inQuery: false,

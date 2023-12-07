@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { graphql, Operator, PermissionType, PermissionTypeFieldsQuery$result } from '$houdini';
+	import { graphql, Operator, PermissionType, ValueOf } from '$houdini';
 	import { Table, TableLoading, TableEmpty, AutoComplete } from '@graphace/ui';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Link, ArrowUturnLeft } from '@steeze-ui/heroicons';
@@ -11,12 +11,39 @@
 	export let showSelectButton: boolean = false;
 	export let roleId: string | null | undefined = undefined;
 	export let typeName: string | null | undefined = undefined;
+	export let typeNames: (string | null | undefined)[] | null | undefined;
 
 	const dispatch = createEventDispatcher<{
 		back: {};
 	}>();
 
-	let result: PermissionTypeFieldsQuery$result | null | undefined;
+	let permissionList:
+		| ({
+				readonly type: string;
+				readonly field: string;
+		  } | null)[]
+		| null
+		| undefined;
+
+	let permissions:
+		| ({
+				readonly name: string;
+				readonly permissionType: ValueOf<{
+					readonly READ: 'READ';
+					readonly WRITE: 'WRITE';
+				}>;
+		  } | null)[]
+		| null
+		| undefined;
+
+	let items:
+		| {
+				value: any | null | undefined;
+				label: string | null | undefined;
+				node?: any | null | undefined;
+		  }[]
+		| null
+		| undefined = [];
 
 	let selectAllRead: boolean;
 	let selectAllWrite: boolean;
@@ -76,25 +103,24 @@
 		}
 	`);
 
-	$: if (typeName) {
-		query(typeName);
-	}
-
 	let selectedItem:
 		| { value: string | null | undefined; label: string | null | undefined }
 		| null
 		| undefined = undefined;
+
 	$: typeName = selectedItem?.value;
 
-	$: result = $PermissionTypeFieldsQuery.data;
 	$: permissionNameList = fieldReadList?.concat(fieldWriteList);
-	$: items = $PermissionTypeListQuery.data?.permissionList?.map((permission) => ({
-		value: permission?.type,
-		label: permission?.type
-	}));
 
-	$: if (!items) {
-		PermissionTypeListQuery.fetch({ variables: { first: 10 } });
+	$: if (typeNames) {
+		items = typeNames.map((typeName) => ({
+			value: typeName,
+			label: typeName
+		}));
+	}
+
+	$: if (typeName) {
+		query(typeName);
 	}
 
 	const query = (typeName?: string | null | undefined) => {
@@ -104,12 +130,14 @@
 		};
 		PermissionTypeFieldsQuery.fetch({ variables })
 			.then((result) => {
+				permissionList = result.data?.permissionList;
+				permissions = result.data?.role?.permissions;
 				fieldReadList =
-					result.data?.role?.permissions
+					permissions
 						?.filter((permission) => permission?.permissionType === PermissionType.READ)
 						.map((permission) => permission?.name) || [];
 				fieldWriteList =
-					result.data?.role?.permissions
+					permissions
 						?.filter((permission) => permission?.permissionType === PermissionType.WRITE)
 						.map((permission) => permission?.name) || [];
 			})
@@ -122,7 +150,7 @@
 	const mutation = () => {
 		let variables = {
 			roleId: parseInt(roleId || ''),
-			removeNameList: result?.role?.permissions
+			removeNameList: permissions
 				?.map((permission) => permission?.name)
 				.filter((name) => name && !permissionNameList?.includes(name)),
 			insertList: permissionNameList?.map((name) => ({
@@ -132,6 +160,7 @@
 		};
 		PermissionTypeFieldsMutation.mutate(variables)
 			.then(() => {
+				notifications.success($LL.web.message.saveSuccess());
 				query(typeName);
 			})
 			.catch((errors) => {
@@ -156,9 +185,14 @@
 							: undefined,
 						first: 10
 					};
-					PermissionTypeListQuery.fetch({ variables });
+					PermissionTypeListQuery.fetch({ variables }).then((result) => {
+						items = result.data?.permissionList?.map((permission) => ({
+							value: permission?.type,
+							label: permission?.type
+						}));
+					});
 				}}
-				bind:items
+				{items}
 				bind:selectedItem
 			/>
 		</div>
@@ -219,9 +253,9 @@
 							class="checkbox"
 							bind:checked={selectAllRead}
 							on:change={() => {
-								if (result?.permissionList && result?.permissionList.length > 0) {
+								if (permissionList && permissionList.length > 0) {
 									fieldReadList = selectAllRead
-										? result?.permissionList.map(
+										? permissionList.map(
 												(node) => node?.type + '::' + node?.field + '::' + PermissionType.READ
 										  )
 										: [];
@@ -240,9 +274,9 @@
 							class="checkbox"
 							bind:checked={selectAllWrite}
 							on:change={() => {
-								if (result?.permissionList && result?.permissionList.length > 0) {
+								if (permissionList && permissionList.length > 0) {
 									fieldWriteList = selectAllWrite
-										? result?.permissionList.map(
+										? permissionList.map(
 												(node) => node?.type + '::' + node?.field + '::' + PermissionType.WRITE
 										  )
 										: [];
@@ -259,8 +293,8 @@
 		<TableLoading rows={10} cols={2 + 2} />
 	{:else}
 		<tbody>
-			{#if result?.permissionList && result?.permissionList.length > 0}
-				{#each result?.permissionList as node}
+			{#if permissionList && permissionList.length > 0}
+				{#each permissionList as node}
 					{#if node}
 						<tr class="hover">
 							<td>{node.field}</td>

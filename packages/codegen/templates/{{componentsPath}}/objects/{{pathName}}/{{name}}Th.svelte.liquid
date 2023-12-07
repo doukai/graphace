@@ -19,6 +19,7 @@
 	{%- endfor %}
 	{%- endif %}
 	import LL from '$i18n/i18n-svelte';
+	import { Operator } from '$houdini';
 	import type { {% if isNamedStruct %}{{ name }}Input, {% endif %}{% if namedStructObjectNames %}{% for namedStructType in namedStructObjectNames %}{% if namedStructType != name %}{{ namedStructType }}Input, {% endif %}{% endfor %}{% endif %}{% for enum in enums %}{{ enum }}Expression, {% endfor %}{{ name }}Expression } from '$houdini';
 	{%- if useAuth %}
 	import { permissions } from '~/lib/utils/auth-util';
@@ -53,15 +54,15 @@
 		{%- endif %}
 	} = {
 		{%- if isNamedStruct %}
-		{{ idName }}: {},
+		{{ idName }}: { opr: Operator.EQ },
 		{%- endif %}
 		{%- if fields %}
 		{%- for field in fields %}
 		{%- if field.isScalarType or field.isEnumType %}
-		{{ field.fieldName }}: {}{% if forloop.last == false %},{% endif %}
+		{{ field.fieldName }}: { opr: Operator.EQ }{% if forloop.last == false %},{% endif %}
 		{%- endif %}
 		{%- if field.isNamed %}
-		{{ field.fieldName }}: { id: {} }{% if forloop.last == false %},{% endif %}
+		{{ field.fieldName }}: { id: { opr: Operator.EQ } }{% if forloop.last == false %},{% endif %}
 		{%- endif %}
 		{%- endfor %}
 		{%- endif %}
@@ -132,15 +133,15 @@
 
 	const clear = (): void => {
 		{%- if isNamedStruct %}
-		_expression.{{ idName }} = {};
+		_expression.{{ idName }} = { opr: Operator.EQ };
 		{%- endif %}
 		{%- if fields %}
 		{%- for field in fields %}
 		{%- if field.isScalarType or field.isEnumType %}
-		_expression.{{ field.fieldName }} = {};
+		_expression.{{ field.fieldName }} = { opr: Operator.EQ };
 		{%- endif %}
 		{%- if field.isNamed %}
-		_expression.{{ field.fieldName }} = { {{ field.fieldTypeIdName }}: {} };
+		_expression.{{ field.fieldName }} = { {{ field.fieldTypeIdName }}: { opr: Operator.EQ } };
 		{%- endif %}
 		{%- endfor %}
 		{%- endif %}
@@ -186,7 +187,7 @@
 			{%- endif %}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-16">
-					{$LL.graphql.objects.{{ name }}.fields.{{ idName }}.name()}
+					{$LL.graphql.objects.{{ name }}.name()}
 				</button>
 				<OperatorSelect
 					className="join-item w-32"
@@ -214,11 +215,11 @@
 			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 			{%- endif %}
 			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
+				<button class="btn btn-active btn-ghost join-item w-16">
 					{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 				</button>
 				<OperatorSelect
-					className="join-item w-2/3"
+					className="join-item w-32"
 					bind:value={_expression.{{ field.fieldName }}.opr}
 					on:change={(e) => {{ field.fieldName }}OprChange()}
 				/>

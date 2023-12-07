@@ -102,11 +102,14 @@
 		});
 	};
 
-	const updateField = (args: GroupInput | null | undefined) => {
+	const updateField = (args: GroupInput | null | undefined, row?: number) => {
 		if (args) {
 			dispatch('mutation', {
 				args,
 				then: (data) => {
+					if (nodes && row) {
+						nodes[row] = data;
+					}
 					notifications.success($LL.web.message.saveSuccess());
 				},
 				catch: (errors) => {
@@ -226,7 +229,7 @@
 							<StringTd
 								name="name"
 								bind:value={node.name}
-								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Group::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
@@ -235,7 +238,7 @@
 							<StringTd
 								name="description"
 								bind:value={node.description}
-								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Group::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>
@@ -244,7 +247,7 @@
 							<StringTd
 								name="path"
 								bind:value={node.path}
-								on:save={(e) => updateField({ path: node?.path, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ path: node?.path, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Group::path::WRITE')}
 								errors={errors[row]?.iterms?.path}
 							/>
@@ -253,7 +256,7 @@
 							<IntTd
 								name="deep"
 								bind:value={node.deep}
-								on:save={(e) => updateField({ deep: node?.deep, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ deep: node?.deep, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Group::deep::WRITE')}
 								errors={errors[row]?.iterms?.deep}
 							/>
@@ -262,7 +265,7 @@
 							<StringTd
 								name="parentId"
 								bind:value={node.parentId}
-								on:save={(e) => updateField({ parentId: node?.parentId, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ parentId: node?.parentId, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Group::parentId::WRITE')}
 								errors={errors[row]?.iterms?.parentId}
 							/>

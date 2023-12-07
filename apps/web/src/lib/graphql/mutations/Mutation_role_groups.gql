@@ -32,20 +32,71 @@ mutation Mutation_role_groups($role_id: String, $role_groups: [GroupInput], $fir
           createGroupId
           syncGroupPolicy
           parent {
+            id
             name
             description
+            path
+            deep
+            parentId
+            isDeprecated
+            version
+            realmId
+            createUserId
+            createTime
+            updateUserId
+            updateTime
+            createGroupId
+            syncGroupPolicy
           }
-          subGroups(first: 3) {
+          subGroups {
+            id
             name
             description
+            path
+            deep
+            parentId
+            isDeprecated
+            version
+            realmId
+            createUserId
+            createTime
+            updateUserId
+            updateTime
+            createGroupId
+            syncGroupPolicy
           }
-          users(first: 3) {
+          users {
+            id
             name
             description
+            lastName
+            login
+            email
+            phones
+            disable
+            isDeprecated
+            version
+            realmId
+            createUserId
+            createTime
+            updateUserId
+            updateTime
+            createGroupId
+            syncUserPolicy
           }
-          roles(first: 3) {
+          roles {
+            id
             name
             description
+            isDeprecated
+            version
+            realmId
+            createUserId
+            createTime
+            updateUserId
+            updateTime
+            createGroupId
+            syncRolePolicy
           }
           realm {
             name

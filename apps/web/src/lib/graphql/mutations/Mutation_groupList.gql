@@ -16,20 +16,71 @@ mutation Mutation_groupList($id: ID, $name: String, $description: String, $path:
     createGroupId
     syncGroupPolicy
     parent {
+      id
       name
       description
+      path
+      deep
+      parentId
+      isDeprecated
+      version
+      realmId
+      createUserId
+      createTime
+      updateUserId
+      updateTime
+      createGroupId
+      syncGroupPolicy
     }
-    subGroups(first: 3) {
+    subGroups {
+      id
       name
       description
+      path
+      deep
+      parentId
+      isDeprecated
+      version
+      realmId
+      createUserId
+      createTime
+      updateUserId
+      updateTime
+      createGroupId
+      syncGroupPolicy
     }
-    users(first: 3) {
+    users {
+      id
       name
       description
+      lastName
+      login
+      email
+      phones
+      disable
+      isDeprecated
+      version
+      realmId
+      createUserId
+      createTime
+      updateUserId
+      updateTime
+      createGroupId
+      syncUserPolicy
     }
-    roles(first: 3) {
+    roles {
+      id
       name
       description
+      isDeprecated
+      version
+      realmId
+      createUserId
+      createTime
+      updateUserId
+      updateTime
+      createGroupId
+      syncRolePolicy
     }
     realm {
       name

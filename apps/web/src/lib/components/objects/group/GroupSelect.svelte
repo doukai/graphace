@@ -26,7 +26,7 @@
 	let options: ObjectOption[] = [];
 	let selected: ObjectOption[] = [];
 	if (Array.isArray(value)) {
-		value = [...value.map((item) => ({ name: item?.name, description: item?.description, path: item?.path, deep: item?.deep, parentId: item?.parentId, isDeprecated: item?.isDeprecated, version: item?.version, realmId: item?.realmId, createUserId: item?.createUserId, createTime: item?.createTime, updateUserId: item?.updateUserId, updateTime: item?.updateTime, createGroupId: item?.createGroupId, where: { id: { val: item?.id } } }))];
+		value = value.map((item) => ({ name: item?.name, description: item?.description, path: item?.path, deep: item?.deep, parentId: item?.parentId, isDeprecated: item?.isDeprecated, version: item?.version, realmId: item?.realmId, createUserId: item?.createUserId, createTime: item?.createTime, updateUserId: item?.updateUserId, updateTime: item?.updateTime, createGroupId: item?.createGroupId, where: { id: { val: item?.id } } }));
 	} else if (value) {
 		value = { name: value.name, description: value.description, path: value.path, deep: value.deep, parentId: value.parentId, isDeprecated: value.isDeprecated, version: value.version, realmId: value.realmId, createUserId: value.createUserId, createTime: value.createTime, updateUserId: value.updateUserId, updateTime: value.updateTime, createGroupId: value.createGroupId, where: { id: { val: value.id } } };
 	}

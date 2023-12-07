@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import { graphql, {{ name }}NodesQuery$input, Operator } from '$houdini';
 	import { NodeTree, TreeStruct, buildTree } from '@graphace/graphql';
 	import { MenuTreeLoading } from '@graphace/ui';
@@ -12,6 +13,12 @@
 	export let {{ name | camelCase }}Name: string | null | undefined = undefined;
 	export let active{{ name }}Id: string | null | undefined = undefined;
 
+	const dispatch = createEventDispatcher<{
+		change: {
+			activeId: string | null | undefined;
+		};
+	}>();
+
 	const {{ name }}NodesQuery = graphql(`
 		query {{ name }}NodesQuery($path: StringExpression, $deep: IntExpression, $name: StringExpression) {
 			{{ name | camelCase }}List(deep: $deep, path: $path, name: $name) {
@@ -24,12 +31,12 @@
 		}
 	`);
 
-	$: treeStructs = $GroupNodesQuery.data?.groupList;
+	$: if (treeStructs) {
+		nodeTrees = buildTree(treeStructs, parent);
+	}
 
-	$: nodeTrees = buildTree(treeStructs, parent);
-
-	$: if (parent && activeGroupId && parent?.id === activeGroupId) {
-		queryNodes(groupName);
+	$: if (parent && active{{ name }}Id && parent?.{{ idName }} === active{{ name }}Id) {
+		queryNodes({{ name | camelCase }}Name);
 	}
 
 	const queryNodes = ({{ name | camelCase }}Name?: string | null | undefined) => {
@@ -47,7 +54,10 @@
 				name: undefined
 			};
 		}
-		{{ name }}NodesQuery.fetch({ variables });
+		{{ name }}NodesQuery.fetch({ variables }).then((result) => {
+			treeStructs = result.data?.{{ name | camelCase }}List;
+			nodeTrees = buildTree(treeStructs, parent);
+		});
 	};
 </script>
 
@@ -59,7 +69,12 @@
 					class={nodeTree.node?.{{ idName }} === active{{ name }}Id ? 'active' : ''}
 					href={null}
 					on:click|preventDefault={(e) => {
-						active{{ name }}Id = nodeTree.node?.{{ idName }};
+						if (active{{ name }}Id === nodeTree.node?.{{ idName }}) {
+							active{{ name }}Id = undefined;
+						} else {
+							active{{ name }}Id = nodeTree.node?.{{ idName }};
+						}
+						dispatch('change', { activeId: active{{ name }}Id });
 					}}
 				>
 					{nodeTree.node?.name}
@@ -73,6 +88,7 @@
 						currentDeep={currentDeep + 1}
 						parent={nodeTree.node}
 						{deeps}
+						on:change
 					/>
 				{/if}
 			</li>

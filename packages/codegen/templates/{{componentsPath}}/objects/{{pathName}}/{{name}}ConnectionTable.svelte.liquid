@@ -157,11 +157,14 @@
 		});
 	};
 
-	const updateField = (args: {{ name }}Input | null | undefined) => {
+	const updateField = (args: {{ name }}Input | null | undefined, row?: number) => {
 		if (args) {
 			dispatch('mutation', {
 				args,
 				then: (data) => {
+					if (nodes && row) {
+						nodes[row] = data;
+					}
 					notifications.success($LL.web.message.saveSuccess());
 				},
 				catch: (errors) => {
@@ -356,7 +359,7 @@
 								list
 								{%- endif %}
 								{%- if field.inMutationArgs and field.fieldName != idName %}
-								on:save={(e) => updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } })}
+								on:save={(e) => updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }, row)}
 								{%- if useAuth %}
 								readonly={!permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE')}
 								{%- endif %}
@@ -376,7 +379,7 @@
 								errors={errors[row]?.iterms?.{{ field.fieldName }}}
 								readonly={!permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE')}
 								on:save={(e) =>
-									updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } })}
+									updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }, row)}
 							/>
 							{%- else %}
 							<ObjectTd name="{{ field.fieldName }}" {% if field.isNamed %}namedStruct={ node.{{ field.fieldName }} }{% endif %} errors={errors[row]?.iterms?.{{ field.fieldName }}} path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} on:gotoField />

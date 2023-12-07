@@ -24,7 +24,7 @@
 
 	let mutation = (): void => {
 		if (Array.isArray(value)) {
-			value = [...value.filter((item) => item)];
+			value = value.filter((item) => item);
 		}
 		dispatch('save');
 		tippyElement._tippy.hide();
@@ -70,7 +70,7 @@
 		<a
 			class="group link inline-flex"
 			href={null}
-			use:tippy={{
+			use:tippy={ {
 				content,
 				placement: 'bottom',
 				interactive: true,
@@ -80,7 +80,7 @@
 				theme: 'daisy',
 				maxWidth: 'none',
 				appendTo: () => document.body
-			}}
+			} }
 			bind:this={tippyElement}
 		>
 			{#if Array.isArray(value) || (list && (value === null || value === undefined))}

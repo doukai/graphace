@@ -7,7 +7,7 @@
 	import PermissionFieldSelectTable from '~/lib/components/objects/permission/PermissionFieldSelectTable.svelte';
 	import PermissionTypeMenuCard from '~/lib/components/objects/permission/PermissionTypeMenuCard.svelte';
 	import type { MutationPermissionArgs, Permission } from '~/lib/types/schema';
-	import { Mutation_role_permissionsStore } from '$houdini';
+	import { PermissionTypesQueryStore, Mutation_role_permissionsStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validateMutation } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -15,6 +15,7 @@
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Role.fields.permissions.name());
+	$: PermissionTypesQuery = data.PermissionTypesQuery as PermissionTypesQueryStore;
 	$: id = data.id as string;
 	const Mutation_role_permissions = new Mutation_role_permissionsStore();
 	let errors: Record<number, Errors> = {};
@@ -77,12 +78,21 @@
 
 <div class="flex xl:items-start xl:flex-row xl:gap-2">
 	<div class="hidden xl:flex xl:basis-1/6">
-		<PermissionTypeMenuCard bind:activeTypeName={typeName} />
+		<PermissionTypeMenuCard
+			bind:activeTypeName={typeName}
+			typeNames={$PermissionTypesQuery.data?.permissionConnection?.edges?.map(
+				(edge) => edge?.node?.type
+			)}
+			totalCount={$PermissionTypesQuery.data?.permissionConnection?.totalCount || 0}
+		/>
 	</div>
 	<div class="w-full xl:basis-5/6">
 		<Card>
 			<PermissionFieldSelectTable
 				showBackButton={$canBack}
+				typeNames={$PermissionTypesQuery.data?.permissionConnection?.edges?.map(
+					(edge) => edge?.node?.type
+				)}
 				bind:roleId={id}
 				bind:typeName
 				on:parentMutation={parentMutation}

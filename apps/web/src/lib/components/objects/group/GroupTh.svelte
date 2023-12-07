@@ -10,6 +10,7 @@
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import RealmSelect from '~/lib/components/objects/realm/RealmSelect.svelte';
 	import LL from '$i18n/i18n-svelte';
+	import { Operator } from '$houdini';
 	import type { GroupInput, UserInput, RoleInput, RealmInput, GroupExpression } from '$houdini';
 	import { permissions } from '~/lib/utils/auth-util';
 
@@ -35,17 +36,17 @@
 		roles: { id: StringExpression };
 		realm: { id: StringExpression };
 	} = {
-		id: {},
-		name: {},
-		description: {},
-		path: {},
-		deep: {},
-		parentId: {},
-		parent: { id: {} },
-		subGroups: { id: {} },
-		users: { id: {} },
-		roles: { id: {} },
-		realm: { id: {} }
+		id: { opr: Operator.EQ },
+		name: { opr: Operator.EQ },
+		description: { opr: Operator.EQ },
+		path: { opr: Operator.EQ },
+		deep: { opr: Operator.EQ },
+		parentId: { opr: Operator.EQ },
+		parent: { id: { opr: Operator.EQ } },
+		subGroups: { id: { opr: Operator.EQ } },
+		users: { id: { opr: Operator.EQ } },
+		roles: { id: { opr: Operator.EQ } },
+		realm: { id: { opr: Operator.EQ } }
 	};
 	$: if (Array.isArray(value)) {
 		_expression.id.in = value?.map((item) => item?.where?.id?.val);
@@ -164,17 +165,17 @@
 	};
 
 	const clear = (): void => {
-		_expression.id = {};
-		_expression.name = {};
-		_expression.description = {};
-		_expression.path = {};
-		_expression.deep = {};
-		_expression.parentId = {};
-		_expression.parent = { id: {} };
-		_expression.subGroups = { id: {} };
-		_expression.users = { id: {} };
-		_expression.roles = { id: {} };
-		_expression.realm = { id: {} };
+		_expression.id = { opr: Operator.EQ };
+		_expression.name = { opr: Operator.EQ };
+		_expression.description = { opr: Operator.EQ };
+		_expression.path = { opr: Operator.EQ };
+		_expression.deep = { opr: Operator.EQ };
+		_expression.parentId = { opr: Operator.EQ };
+		_expression.parent = { id: { opr: Operator.EQ } };
+		_expression.subGroups = { id: { opr: Operator.EQ } };
+		_expression.users = { id: { opr: Operator.EQ } };
+		_expression.roles = { id: { opr: Operator.EQ } };
+		_expression.realm = { id: { opr: Operator.EQ } };
 		expression = undefined;
 		dispatch('filter');
 		tippyElement._tippy.hide();
@@ -230,7 +231,7 @@
 			{#if permissions.auth('Group::id::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-16">
-					{$LL.graphql.objects.Group.fields.id.name()}
+					{$LL.graphql.objects.Group.name()}
 				</button>
 				<OperatorSelect
 					className="join-item w-32"
@@ -251,11 +252,11 @@
 			{/if}
 			{#if permissions.auth('Group::name::*')}
 			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
+				<button class="btn btn-active btn-ghost join-item w-16">
 					{$LL.graphql.objects.Group.fields.name.name()}
 				</button>
 				<OperatorSelect
-					className="join-item w-2/3"
+					className="join-item w-32"
 					bind:value={_expression.name.opr}
 					on:change={(e) => nameOprChange()}
 				/>
@@ -276,11 +277,11 @@
 			{/if}
 			{#if permissions.auth('Group::description::*')}
 			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
+				<button class="btn btn-active btn-ghost join-item w-16">
 					{$LL.graphql.objects.Group.fields.description.name()}
 				</button>
 				<OperatorSelect
-					className="join-item w-2/3"
+					className="join-item w-32"
 					bind:value={_expression.description.opr}
 					on:change={(e) => descriptionOprChange()}
 				/>
@@ -301,11 +302,11 @@
 			{/if}
 			{#if permissions.auth('Group::path::*')}
 			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
+				<button class="btn btn-active btn-ghost join-item w-16">
 					{$LL.graphql.objects.Group.fields.path.name()}
 				</button>
 				<OperatorSelect
-					className="join-item w-2/3"
+					className="join-item w-32"
 					bind:value={_expression.path.opr}
 					on:change={(e) => pathOprChange()}
 				/>
@@ -326,11 +327,11 @@
 			{/if}
 			{#if permissions.auth('Group::deep::*')}
 			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
+				<button class="btn btn-active btn-ghost join-item w-16">
 					{$LL.graphql.objects.Group.fields.deep.name()}
 				</button>
 				<OperatorSelect
-					className="join-item w-2/3"
+					className="join-item w-32"
 					bind:value={_expression.deep.opr}
 					on:change={(e) => deepOprChange()}
 				/>
@@ -351,11 +352,11 @@
 			{/if}
 			{#if permissions.auth('Group::parentId::*')}
 			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
+				<button class="btn btn-active btn-ghost join-item w-16">
 					{$LL.graphql.objects.Group.fields.parentId.name()}
 				</button>
 				<OperatorSelect
-					className="join-item w-2/3"
+					className="join-item w-32"
 					bind:value={_expression.parentId.opr}
 					on:change={(e) => parentIdOprChange()}
 				/>

@@ -103,11 +103,14 @@
 		});
 	};
 
-	const updateField = (args: PermissionInput | null | undefined) => {
+	const updateField = (args: PermissionInput | null | undefined, row?: number) => {
 		if (args) {
 			dispatch('mutation', {
 				args,
 				then: (data) => {
+					if (nodes && row) {
+						nodes[row] = data;
+					}
 					notifications.success($LL.web.message.saveSuccess());
 				},
 				catch: (errors) => {
@@ -309,7 +312,7 @@
 							<StringTd
 								name="description"
 								bind:value={node.description}
-								on:save={(e) => updateField({ description: node?.description, where: { name: { val: node?.name } } })}
+								on:save={(e) => updateField({ description: node?.description, where: { name: { val: node?.name } } }, row)}
 								readonly={!permissions.auth('Permission::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>
@@ -318,7 +321,7 @@
 							<StringTd
 								name="field"
 								bind:value={node.field}
-								on:save={(e) => updateField({ field: node?.field, where: { name: { val: node?.name } } })}
+								on:save={(e) => updateField({ field: node?.field, where: { name: { val: node?.name } } }, row)}
 								readonly={!permissions.auth('Permission::field::WRITE')}
 								errors={errors[row]?.iterms?.field}
 							/>
@@ -327,7 +330,7 @@
 							<StringTd
 								name="type"
 								bind:value={node.type}
-								on:save={(e) => updateField({ type: node?.type, where: { name: { val: node?.name } } })}
+								on:save={(e) => updateField({ type: node?.type, where: { name: { val: node?.name } } }, row)}
 								readonly={!permissions.auth('Permission::type::WRITE')}
 								errors={errors[row]?.iterms?.type}
 							/>
@@ -336,7 +339,7 @@
 							<PermissionTypeTd
 								name="permissionType"
 								bind:value={node.permissionType}
-								on:save={(e) => updateField({ permissionType: node?.permissionType, where: { name: { val: node?.name } } })}
+								on:save={(e) => updateField({ permissionType: node?.permissionType, where: { name: { val: node?.name } } }, row)}
 								readonly={!permissions.auth('Permission::permissionType::WRITE')}
 								errors={errors[row]?.iterms?.permissionType}
 							/>
@@ -349,7 +352,7 @@
 								errors={errors[row]?.iterms?.roles}
 								readonly={!permissions.auth('Permission::roles::WRITE')}
 								on:save={(e) =>
-									updateField({ roles: node?.roles, where: { name: { val: node?.name } } })}
+									updateField({ roles: node?.roles, where: { name: { val: node?.name } } }, row)}
 							/>
 							{/if}
 							{#if permissions.auth('Permission::realm::*')}

@@ -26,5 +26,5 @@
 	{/if}
 	<div class="divider" />
 
-	<{{ name }}TreeMenu bind:active{{ name }}Id bind:{{ name | camelCase }}Name {treeStructs} {currentDeep} {deeps} />
+	<{{ name }}TreeMenu bind:active{{ name }}Id bind:{{ name | camelCase }}Name {treeStructs} {currentDeep} {deeps} on:change />
 </Card>

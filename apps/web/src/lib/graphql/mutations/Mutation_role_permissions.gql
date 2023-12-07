@@ -1,0 +1,55 @@
+mutation Mutation_role_permissions($role_id: String, $role_permissions: [PermissionInput], $first: Int, $last: Int, $offset: Int, $orderBy: PermissionOrderBy, $groupBy: [String!], $after: ID, $before: ID, $name: StringExpression, $description: StringExpression, $field: StringExpression, $type: StringExpression, $permissionType: PermissionTypeExpression, $roles: RoleExpression, $realm: RealmExpression, $mergeToList: [String]) {
+  role(where: {id: {val: $role_id}}  permissions: $role_permissions) @mergeToList(arguments: $mergeToList) {
+    id
+    name
+    description
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    syncRolePolicy
+    permissionsConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy after: $after before: $before name: $name description: $description field: $field type: $type permissionType: $permissionType roles: $roles realm: $realm) {
+      totalCount
+      edges {
+        node {
+          name
+          description
+          field
+          type
+          permissionType
+          isDeprecated
+          version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
+          syncPermissionPolicy
+          roles {
+            id
+            name
+            description
+            isDeprecated
+            version
+            realmId
+            createUserId
+            createTime
+            updateUserId
+            updateTime
+            createGroupId
+            syncRolePolicy
+          }
+          realm {
+            name
+            description
+          }
+        }
+      }
+    }
+  }
+}

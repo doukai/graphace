@@ -138,11 +138,14 @@
 		});
 	};
 
-	const updateField = (args: UserInput | null | undefined) => {
+	const updateField = (args: UserInput | null | undefined, row?: number) => {
 		if (args) {
 			dispatch('mutation', {
 				args,
 				then: (data) => {
+					if (nodes && row) {
+						nodes[row] = data;
+					}
 					notifications.success($LL.web.message.saveSuccess());
 				},
 				catch: (errors) => {
@@ -277,7 +280,7 @@
 							<StringTd
 								name="name"
 								bind:value={node.name}
-								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
@@ -286,7 +289,7 @@
 							<StringTd
 								name="description"
 								bind:value={node.description}
-								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>
@@ -295,7 +298,7 @@
 							<StringTd
 								name="lastName"
 								bind:value={node.lastName}
-								on:save={(e) => updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::lastName::WRITE')}
 								errors={errors[row]?.iterms?.lastName}
 							/>
@@ -304,7 +307,7 @@
 							<StringTd
 								name="login"
 								bind:value={node.login}
-								on:save={(e) => updateField({ login: node?.login, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ login: node?.login, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::login::WRITE')}
 								errors={errors[row]?.iterms?.login}
 							/>
@@ -313,7 +316,7 @@
 							<StringTd
 								name="email"
 								bind:value={node.email}
-								on:save={(e) => updateField({ email: node?.email, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ email: node?.email, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::email::WRITE')}
 								errors={errors[row]?.iterms?.email}
 							/>
@@ -323,7 +326,7 @@
 								name="phones"
 								bind:value={node.phones}
 								list
-								on:save={(e) => updateField({ phones: node?.phones, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ phones: node?.phones, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::phones::WRITE')}
 								errors={errors[row]?.iterms?.phones}
 							/>
@@ -332,7 +335,7 @@
 							<BooleanTd
 								name="disable"
 								bind:value={node.disable}
-								on:save={(e) => updateField({ disable: node?.disable, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ disable: node?.disable, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::disable::WRITE')}
 								errors={errors[row]?.iterms?.disable}
 							/>

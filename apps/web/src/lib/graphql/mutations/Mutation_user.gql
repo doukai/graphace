@@ -17,13 +17,36 @@ mutation Mutation_user($id: ID, $name: String, $description: String, $lastName: 
     updateTime
     createGroupId
     syncUserPolicy
-    groups(first: 3) {
+    groups {
+      id
       name
       description
+      path
+      deep
+      parentId
+      isDeprecated
+      version
+      realmId
+      createUserId
+      createTime
+      updateUserId
+      updateTime
+      createGroupId
+      syncGroupPolicy
     }
-    roles(first: 3) {
+    roles {
+      id
       name
       description
+      isDeprecated
+      version
+      realmId
+      createUserId
+      createTime
+      updateUserId
+      updateTime
+      createGroupId
+      syncRolePolicy
     }
     realm {
       name

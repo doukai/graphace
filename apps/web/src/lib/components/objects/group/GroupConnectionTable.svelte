@@ -139,11 +139,14 @@
 		});
 	};
 
-	const updateField = (args: GroupInput | null | undefined) => {
+	const updateField = (args: GroupInput | null | undefined, row?: number) => {
 		if (args) {
 			dispatch('mutation', {
 				args,
 				then: (data) => {
+					if (nodes && row) {
+						nodes[row] = data;
+					}
 					notifications.success($LL.web.message.saveSuccess());
 				},
 				catch: (errors) => {
@@ -360,7 +363,7 @@
 							<StringTd
 								name="name"
 								bind:value={node.name}
-								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Group::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
@@ -369,7 +372,7 @@
 							<StringTd
 								name="description"
 								bind:value={node.description}
-								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Group::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>
@@ -378,7 +381,7 @@
 							<StringTd
 								name="path"
 								bind:value={node.path}
-								on:save={(e) => updateField({ path: node?.path, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ path: node?.path, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Group::path::WRITE')}
 								errors={errors[row]?.iterms?.path}
 							/>
@@ -387,7 +390,7 @@
 							<IntTd
 								name="deep"
 								bind:value={node.deep}
-								on:save={(e) => updateField({ deep: node?.deep, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ deep: node?.deep, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Group::deep::WRITE')}
 								errors={errors[row]?.iterms?.deep}
 							/>
@@ -396,7 +399,7 @@
 							<StringTd
 								name="parentId"
 								bind:value={node.parentId}
-								on:save={(e) => updateField({ parentId: node?.parentId, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ parentId: node?.parentId, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Group::parentId::WRITE')}
 								errors={errors[row]?.iterms?.parentId}
 							/>
@@ -408,7 +411,7 @@
 								errors={errors[row]?.iterms?.parent}
 								readonly={!permissions.auth('Group::parent::WRITE')}
 								on:save={(e) =>
-									updateField({ parent: node?.parent, where: { id: { val: node?.id } } })}
+									updateField({ parent: node?.parent, where: { id: { val: node?.id } } }, row)}
 							/>
 							{/if}
 							{#if permissions.auth('Group::subGroups::*')}
@@ -419,7 +422,7 @@
 								errors={errors[row]?.iterms?.subGroups}
 								readonly={!permissions.auth('Group::subGroups::WRITE')}
 								on:save={(e) =>
-									updateField({ subGroups: node?.subGroups, where: { id: { val: node?.id } } })}
+									updateField({ subGroups: node?.subGroups, where: { id: { val: node?.id } } }, row)}
 							/>
 							{/if}
 							{#if permissions.auth('Group::users::*')}
@@ -430,7 +433,7 @@
 								errors={errors[row]?.iterms?.users}
 								readonly={!permissions.auth('Group::users::WRITE')}
 								on:save={(e) =>
-									updateField({ users: node?.users, where: { id: { val: node?.id } } })}
+									updateField({ users: node?.users, where: { id: { val: node?.id } } }, row)}
 							/>
 							{/if}
 							{#if permissions.auth('Group::roles::*')}
@@ -441,7 +444,7 @@
 								errors={errors[row]?.iterms?.roles}
 								readonly={!permissions.auth('Group::roles::WRITE')}
 								on:save={(e) =>
-									updateField({ roles: node?.roles, where: { id: { val: node?.id } } })}
+									updateField({ roles: node?.roles, where: { id: { val: node?.id } } }, row)}
 							/>
 							{/if}
 							{#if permissions.auth('Group::realm::*')}

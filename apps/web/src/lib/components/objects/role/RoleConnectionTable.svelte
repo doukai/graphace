@@ -136,11 +136,14 @@
 		});
 	};
 
-	const updateField = (args: RoleInput | null | undefined) => {
+	const updateField = (args: RoleInput | null | undefined, row?: number) => {
 		if (args) {
 			dispatch('mutation', {
 				args,
 				then: (data) => {
+					if (nodes && row) {
+						nodes[row] = data;
+					}
 					notifications.success($LL.web.message.saveSuccess());
 				},
 				catch: (errors) => {
@@ -333,7 +336,7 @@
 							<StringTd
 								name="name"
 								bind:value={node.name}
-								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Role::name::WRITE')}
 								errors={errors[row]?.iterms?.name}
 							/>
@@ -342,7 +345,7 @@
 							<StringTd
 								name="description"
 								bind:value={node.description}
-								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } })}
+								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Role::description::WRITE')}
 								errors={errors[row]?.iterms?.description}
 							/>
@@ -355,7 +358,7 @@
 								errors={errors[row]?.iterms?.users}
 								readonly={!permissions.auth('Role::users::WRITE')}
 								on:save={(e) =>
-									updateField({ users: node?.users, where: { id: { val: node?.id } } })}
+									updateField({ users: node?.users, where: { id: { val: node?.id } } }, row)}
 							/>
 							{/if}
 							{#if permissions.auth('Role::groups::*')}
@@ -366,7 +369,7 @@
 								errors={errors[row]?.iterms?.groups}
 								readonly={!permissions.auth('Role::groups::WRITE')}
 								on:save={(e) =>
-									updateField({ groups: node?.groups, where: { id: { val: node?.id } } })}
+									updateField({ groups: node?.groups, where: { id: { val: node?.id } } }, row)}
 							/>
 							{/if}
 							{#if permissions.auth('Role::composites::*')}
@@ -377,7 +380,7 @@
 								errors={errors[row]?.iterms?.composites}
 								readonly={!permissions.auth('Role::composites::WRITE')}
 								on:save={(e) =>
-									updateField({ composites: node?.composites, where: { id: { val: node?.id } } })}
+									updateField({ composites: node?.composites, where: { id: { val: node?.id } } }, row)}
 							/>
 							{/if}
 							{#if permissions.auth('Role::permissions::*')}

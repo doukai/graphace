@@ -10,6 +10,7 @@
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import RealmSelect from '~/lib/components/objects/realm/RealmSelect.svelte';
 	import LL from '$i18n/i18n-svelte';
+	import { Operator } from '$houdini';
 	import type { UserInput, GroupInput, RoleInput, RealmInput, UserExpression } from '$houdini';
 	import { permissions } from '~/lib/utils/auth-util';
 
@@ -33,17 +34,17 @@
 		roles: { id: StringExpression };
 		realm: { id: StringExpression };
 	} = {
-		id: {},
-		name: {},
-		description: {},
-		lastName: {},
-		login: {},
-		email: {},
-		phones: {},
-		disable: {},
-		groups: { id: {} },
-		roles: { id: {} },
-		realm: { id: {} }
+		id: { opr: Operator.EQ },
+		name: { opr: Operator.EQ },
+		description: { opr: Operator.EQ },
+		lastName: { opr: Operator.EQ },
+		login: { opr: Operator.EQ },
+		email: { opr: Operator.EQ },
+		phones: { opr: Operator.EQ },
+		disable: { opr: Operator.EQ },
+		groups: { id: { opr: Operator.EQ } },
+		roles: { id: { opr: Operator.EQ } },
+		realm: { id: { opr: Operator.EQ } }
 	};
 	$: if (Array.isArray(value)) {
 		_expression.id.in = value?.map((item) => item?.where?.id?.val);
@@ -146,17 +147,17 @@
 	};
 
 	const clear = (): void => {
-		_expression.id = {};
-		_expression.name = {};
-		_expression.description = {};
-		_expression.lastName = {};
-		_expression.login = {};
-		_expression.email = {};
-		_expression.phones = {};
-		_expression.disable = {};
-		_expression.groups = { id: {} };
-		_expression.roles = { id: {} };
-		_expression.realm = { id: {} };
+		_expression.id = { opr: Operator.EQ };
+		_expression.name = { opr: Operator.EQ };
+		_expression.description = { opr: Operator.EQ };
+		_expression.lastName = { opr: Operator.EQ };
+		_expression.login = { opr: Operator.EQ };
+		_expression.email = { opr: Operator.EQ };
+		_expression.phones = { opr: Operator.EQ };
+		_expression.disable = { opr: Operator.EQ };
+		_expression.groups = { id: { opr: Operator.EQ } };
+		_expression.roles = { id: { opr: Operator.EQ } };
+		_expression.realm = { id: { opr: Operator.EQ } };
 		expression = undefined;
 		dispatch('filter');
 		tippyElement._tippy.hide();
@@ -212,7 +213,7 @@
 			{#if permissions.auth('User::id::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-16">
-					{$LL.graphql.objects.User.fields.id.name()}
+					{$LL.graphql.objects.User.name()}
 				</button>
 				<OperatorSelect
 					className="join-item w-32"
@@ -233,11 +234,11 @@
 			{/if}
 			{#if permissions.auth('User::name::*')}
 			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
+				<button class="btn btn-active btn-ghost join-item w-16">
 					{$LL.graphql.objects.User.fields.name.name()}
 				</button>
 				<OperatorSelect
-					className="join-item w-2/3"
+					className="join-item w-32"
 					bind:value={_expression.name.opr}
 					on:change={(e) => nameOprChange()}
 				/>
@@ -258,11 +259,11 @@
 			{/if}
 			{#if permissions.auth('User::description::*')}
 			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
+				<button class="btn btn-active btn-ghost join-item w-16">
 					{$LL.graphql.objects.User.fields.description.name()}
 				</button>
 				<OperatorSelect
-					className="join-item w-2/3"
+					className="join-item w-32"
 					bind:value={_expression.description.opr}
 					on:change={(e) => descriptionOprChange()}
 				/>
@@ -283,11 +284,11 @@
 			{/if}
 			{#if permissions.auth('User::lastName::*')}
 			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
+				<button class="btn btn-active btn-ghost join-item w-16">
 					{$LL.graphql.objects.User.fields.lastName.name()}
 				</button>
 				<OperatorSelect
-					className="join-item w-2/3"
+					className="join-item w-32"
 					bind:value={_expression.lastName.opr}
 					on:change={(e) => lastNameOprChange()}
 				/>
@@ -308,11 +309,11 @@
 			{/if}
 			{#if permissions.auth('User::login::*')}
 			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
+				<button class="btn btn-active btn-ghost join-item w-16">
 					{$LL.graphql.objects.User.fields.login.name()}
 				</button>
 				<OperatorSelect
-					className="join-item w-2/3"
+					className="join-item w-32"
 					bind:value={_expression.login.opr}
 					on:change={(e) => loginOprChange()}
 				/>
@@ -333,11 +334,11 @@
 			{/if}
 			{#if permissions.auth('User::email::*')}
 			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
+				<button class="btn btn-active btn-ghost join-item w-16">
 					{$LL.graphql.objects.User.fields.email.name()}
 				</button>
 				<OperatorSelect
-					className="join-item w-2/3"
+					className="join-item w-32"
 					bind:value={_expression.email.opr}
 					on:change={(e) => emailOprChange()}
 				/>
@@ -358,11 +359,11 @@
 			{/if}
 			{#if permissions.auth('User::phones::*')}
 			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
+				<button class="btn btn-active btn-ghost join-item w-16">
 					{$LL.graphql.objects.User.fields.phones.name()}
 				</button>
 				<OperatorSelect
-					className="join-item w-2/3"
+					className="join-item w-32"
 					bind:value={_expression.phones.opr}
 					on:change={(e) => phonesOprChange()}
 				/>
@@ -383,11 +384,11 @@
 			{/if}
 			{#if permissions.auth('User::disable::*')}
 			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
+				<button class="btn btn-active btn-ghost join-item w-16">
 					{$LL.graphql.objects.User.fields.disable.name()}
 				</button>
 				<OperatorSelect
-					className="join-item w-2/3"
+					className="join-item w-32"
 					bind:value={_expression.disable.opr}
 					on:change={(e) => disableOprChange()}
 				/>

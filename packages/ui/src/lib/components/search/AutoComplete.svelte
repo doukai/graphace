@@ -29,7 +29,9 @@
 		search: { searchValue: string | null | undefined };
 	}>();
 
-	dispatch('search', { searchValue });
+	$: if (searchValue) {
+		dispatch('search', { searchValue });
+	}
 </script>
 
 <div class="dropdown">
@@ -39,6 +41,11 @@
 		{name}
 		{placeholder}
 		bind:value={searchValue}
+		on:blur={(e) => {
+			if (!searchValue) {
+				dispatch('search', { searchValue });
+			}
+		}}
 	/>
 	{#if items && items.length > 0}
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->

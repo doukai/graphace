@@ -9,6 +9,7 @@
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import RealmSelect from '~/lib/components/objects/realm/RealmSelect.svelte';
 	import LL from '$i18n/i18n-svelte';
+	import { Operator } from '$houdini';
 	import type { RoleInput, RealmInput, PermissionTypeExpression, PermissionExpression } from '$houdini';
 	import { permissions } from '~/lib/utils/auth-util';
 
@@ -26,13 +27,13 @@
 		roles: { id: StringExpression };
 		realm: { id: StringExpression };
 	} = {
-		name: {},
-		description: {},
-		field: {},
-		type: {},
-		permissionType: {},
-		roles: { id: {} },
-		realm: { id: {} }
+		name: { opr: Operator.EQ },
+		description: { opr: Operator.EQ },
+		field: { opr: Operator.EQ },
+		type: { opr: Operator.EQ },
+		permissionType: { opr: Operator.EQ },
+		roles: { id: { opr: Operator.EQ } },
+		realm: { id: { opr: Operator.EQ } }
 	};
 	$: if (Array.isArray(roles)) {
 		_expression.roles.id.in = roles?.map((item) => item?.where?.id?.val);
@@ -102,13 +103,13 @@
 	};
 
 	const clear = (): void => {
-		_expression.name = {};
-		_expression.description = {};
-		_expression.field = {};
-		_expression.type = {};
-		_expression.permissionType = {};
-		_expression.roles = { id: {} };
-		_expression.realm = { id: {} };
+		_expression.name = { opr: Operator.EQ };
+		_expression.description = { opr: Operator.EQ };
+		_expression.field = { opr: Operator.EQ };
+		_expression.type = { opr: Operator.EQ };
+		_expression.permissionType = { opr: Operator.EQ };
+		_expression.roles = { id: { opr: Operator.EQ } };
+		_expression.realm = { id: { opr: Operator.EQ } };
 		expression = undefined;
 		dispatch('filter');
 		tippyElement._tippy.hide();
@@ -147,11 +148,11 @@
 		<div class="grid grid-cols-2 gap-2">
 			{#if permissions.auth('Permission::name::*')}
 			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
+				<button class="btn btn-active btn-ghost join-item w-16">
 					{$LL.graphql.objects.Permission.fields.name.name()}
 				</button>
 				<OperatorSelect
-					className="join-item w-2/3"
+					className="join-item w-32"
 					bind:value={_expression.name.opr}
 					on:change={(e) => nameOprChange()}
 				/>
@@ -172,11 +173,11 @@
 			{/if}
 			{#if permissions.auth('Permission::description::*')}
 			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
+				<button class="btn btn-active btn-ghost join-item w-16">
 					{$LL.graphql.objects.Permission.fields.description.name()}
 				</button>
 				<OperatorSelect
-					className="join-item w-2/3"
+					className="join-item w-32"
 					bind:value={_expression.description.opr}
 					on:change={(e) => descriptionOprChange()}
 				/>
@@ -197,11 +198,11 @@
 			{/if}
 			{#if permissions.auth('Permission::field::*')}
 			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
+				<button class="btn btn-active btn-ghost join-item w-16">
 					{$LL.graphql.objects.Permission.fields.field.name()}
 				</button>
 				<OperatorSelect
-					className="join-item w-2/3"
+					className="join-item w-32"
 					bind:value={_expression.field.opr}
 					on:change={(e) => fieldOprChange()}
 				/>
@@ -222,11 +223,11 @@
 			{/if}
 			{#if permissions.auth('Permission::type::*')}
 			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
+				<button class="btn btn-active btn-ghost join-item w-16">
 					{$LL.graphql.objects.Permission.fields.type.name()}
 				</button>
 				<OperatorSelect
-					className="join-item w-2/3"
+					className="join-item w-32"
 					bind:value={_expression.type.opr}
 					on:change={(e) => typeOprChange()}
 				/>
@@ -247,11 +248,11 @@
 			{/if}
 			{#if permissions.auth('Permission::permissionType::*')}
 			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-1/3">
+				<button class="btn btn-active btn-ghost join-item w-16">
 					{$LL.graphql.objects.Permission.fields.permissionType.name()}
 				</button>
 				<OperatorSelect
-					className="join-item w-2/3"
+					className="join-item w-32"
 					bind:value={_expression.permissionType.opr}
 					on:change={(e) => permissionTypeOprChange()}
 				/>
