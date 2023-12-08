@@ -118,9 +118,9 @@ export function inRouteField(typeName: string, fieldName: string, fieldTypeName:
         builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true;
 }
 
-export function isSelectField(fieldName: string, fieldTypeName: string): boolean {
+export function isSelectField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
     return (builderConfig?.objects || [])
-        .filter(objectConfig => objectConfig.name === fieldTypeName || objectConfig.name === 'any')
+        .filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any')
         .flatMap(objectConfig => objectConfig.fields || [])
         .find(fieldConfig => fieldConfig.name === fieldName)?.select ||
         builderConfig?.objects?.find(objectConfig => objectConfig.name === fieldTypeName)?.select ||
@@ -164,7 +164,7 @@ export function componentFields(
         return {
             ...field,
             select: (builderConfig?.objects || [])
-                .filter(objectConfig => objectConfig.name === field.fieldType.name || objectConfig.name === 'any')
+                .filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any')
                 .flatMap(objectConfig => objectConfig.fields || [])
                 .find(fieldConfig => fieldConfig.name === field.fieldName)?.select ||
                 builderConfig?.objects?.find(objectConfig => objectConfig.name === field.fieldType.name)?.select,
@@ -197,6 +197,7 @@ export function componentFieldImports(
 }
 
 export function getSelectComponentFieldImports(
+    typeName: string,
     fields: {
         fieldName: string,
         fieldType: GraphQLNamedType,
@@ -212,7 +213,14 @@ export function getSelectComponentFieldImports(
         select?: boolean
     }[] | undefined
 ): string[] | undefined {
-    const selectTypes = fields?.filter(field => field.select || builderConfig?.objects?.find(objectConfig => objectConfig.name === field.fieldType.name)?.select).map(field => field.fieldType.name);
+    const selectTypes = fields
+        ?.filter(field =>
+            (builderConfig?.objects || [])
+                .filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any')
+                .flatMap(objectConfig => objectConfig.fields || [])
+                .find(fieldConfig => fieldConfig.name === field.fieldName)?.select ||
+            builderConfig?.objects?.find(objectConfig => objectConfig.name === field.fieldType.name)?.select)
+        .map(field => field.fieldType.name);
     if (selectTypes) {
         return Array.from(new Set(selectTypes));
     }

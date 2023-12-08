@@ -135,7 +135,7 @@ const renders: Record<Template, Render> = {
                                 const fieldType = getFieldType(field.type);
                                 return {
                                     ...field,
-                                    select: isSelectField(field.name, getFieldType(field.type).name),
+                                    select: isSelectField(fieldType.name, field.name, getFieldType(field.type).name),
                                     fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
                                 }
                             })
@@ -171,7 +171,7 @@ const renders: Record<Template, Render> = {
                                 const fieldType = getFieldType(field.type);
                                 return {
                                     ...field,
-                                    select: isSelectField(field.name, getFieldType(field.type).name),
+                                    select: isSelectField(subFieldType.name, field.name, getFieldType(field.type).name),
                                     fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
                                 }
                             })
@@ -214,7 +214,7 @@ const renders: Record<Template, Render> = {
                                 const fieldType = getFieldType(field.type);
                                 return {
                                     ...field,
-                                    select: isSelectField(field.name, getFieldType(field.type).name),
+                                    select: isSelectField(fieldType.name, field.name, getFieldType(field.type).name),
                                     fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation'))
                                 }
                             })
@@ -250,7 +250,7 @@ const renders: Record<Template, Render> = {
                                 const fieldType = getFieldType(field.type);
                                 return {
                                     ...field,
-                                    select: isSelectField(field.name, getFieldType(field.type).name),
+                                    select: isSelectField(subFieldType.name, field.name, getFieldType(field.type).name),
                                     fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation'))
                                 }
                             })
@@ -284,7 +284,7 @@ const renders: Record<Template, Render> = {
                         scalars: getScalarNames(fields),
                         enums: getEnumNames(fields),
                         imports: componentFieldImports(typeName, fields),
-                        selectImports: getSelectComponentFieldImports(fields),
+                        selectImports: getSelectComponentFieldImports(typeName, fields),
                         fields: componentFields(typeName, fields),
                         rows: fields?.length,
                         schemaTypesPath: config.schemaTypesPath,
@@ -314,7 +314,7 @@ const renders: Record<Template, Render> = {
                         scalars: getScalarNames(fields),
                         enums: getEnumNames(fields),
                         imports: componentFieldImports(typeName, fields),
-                        selectImports: getSelectComponentFieldImports(fields),
+                        selectImports: getSelectComponentFieldImports(typeName, fields),
                         fields: componentFields(typeName, fields),
                         rows: fields?.length,
                         schemaTypesPath: config.schemaTypesPath,
@@ -345,7 +345,7 @@ const renders: Record<Template, Render> = {
                         enums: getEnumNames(fields),
                         objects: getObjectNames(fields),
                         imports: componentFieldImports(typeName, fields),
-                        selectImports: getSelectComponentFieldImports(fields),
+                        selectImports: getSelectComponentFieldImports(typeName, fields),
                         fields: componentFields(typeName, fields),
                         cols: fields?.length,
                         schemaTypesPath: config.schemaTypesPath,
@@ -376,7 +376,7 @@ const renders: Record<Template, Render> = {
                         enums: getEnumNames(fields),
                         objects: getObjectNames(fields),
                         imports: componentFieldImports(typeName, fields),
-                        selectImports: getSelectComponentFieldImports(fields),
+                        selectImports: getSelectComponentFieldImports(typeName, fields),
                         fields: componentFields(typeName, fields),
                         cols: fields?.length,
                         schemaTypesPath: config.schemaTypesPath,
