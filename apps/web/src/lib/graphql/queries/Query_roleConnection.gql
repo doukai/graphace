@@ -1,5 +1,5 @@
-query Query_roleConnection($id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $groups: GroupExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $userRole: UserRoleExpression, $groupRole: GroupRoleExpression, $roleComposite: RoleCompositeExpression, $rolePermission: RolePermissionExpression, $orderBy: RoleOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [RoleExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
-  roleConnection(id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userRole: $userRole groupRole: $groupRole roleComposite: $roleComposite rolePermission: $rolePermission orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before)  {
+query Query_roleConnection($id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $groups: GroupExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $roleUserRelation: RoleUserRelationExpression, $groupRoleRelation: GroupRoleRelationExpression, $roleCompositeRelation: RoleCompositeRelationExpression, $permissionRoleRelation: PermissionRoleRelationExpression, $orderBy: RoleOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [RoleExpression], $first: Int, $last: Int, $offset: Int) {
+  roleConnection(id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId roleUserRelation: $roleUserRelation groupRoleRelation: $groupRoleRelation roleCompositeRelation: $roleCompositeRelation permissionRoleRelation: $permissionRoleRelation orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset)  {
     totalCount
     edges {
       node {
@@ -14,57 +14,6 @@ query Query_roleConnection($id: StringExpression, $name: StringExpression, $desc
         updateUserId
         updateTime
         createGroupId
-        users {
-          id
-          name
-          description
-          lastName
-          login
-          email
-          phones
-          disable
-          isDeprecated
-          version
-          realmId
-          createUserId
-          createTime
-          updateUserId
-          updateTime
-          createGroupId
-        }
-        groups {
-          id
-          name
-          description
-          path
-          deep
-          parentId
-          isDeprecated
-          version
-          realmId
-          createUserId
-          createTime
-          updateUserId
-          updateTime
-          createGroupId
-        }
-        composites {
-          id
-          name
-          description
-          isDeprecated
-          version
-          realmId
-          createUserId
-          createTime
-          updateUserId
-          updateTime
-          createGroupId
-        }
-        realm {
-          name
-          description
-        }
       }
     }
   }

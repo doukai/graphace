@@ -81,26 +81,6 @@ const config: CodegenConfig = {
                             ]
                         },
                         {
-                            name: 'UserGroup',
-                            ignore: true
-                        },
-                        {
-                            name: 'UserRole',
-                            ignore: true
-                        },
-                        {
-                            name: 'RoleComposite',
-                            ignore: true
-                        },
-                        {
-                            name: 'RolePermission',
-                            ignore: true
-                        },
-                        {
-                            name: 'GroupRole',
-                            ignore: true
-                        },
-                        {
                             name: 'User',
                             inRoute: false,
                             select: true,
@@ -140,10 +120,6 @@ const config: CodegenConfig = {
                             ]
                         },
                         {
-                            name: 'UserPhones',
-                            ignore: true
-                        },
-                        {
                             name: 'Group',
                             select: true,
                             fields: [
@@ -171,6 +147,30 @@ const config: CodegenConfig = {
                                     inDetail: false
                                 }
                             ]
+                        },
+                        {
+                            name: 'GroupUserRelation',
+                            ignore: true
+                        },
+                        {
+                            name: 'RoleUserRelation',
+                            ignore: true
+                        },
+                        {
+                            name: 'RoleCompositeRelation',
+                            ignore: true
+                        },
+                        {
+                            name: 'PermissionRoleRelation',
+                            ignore: true
+                        },
+                        {
+                            name: 'GroupRoleRelation',
+                            ignore: true
+                        },
+                        {
+                            name: 'UserPhonesRelation',
+                            ignore: true
                         }
                     ]
                 },

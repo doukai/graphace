@@ -353,7 +353,7 @@
 							<ObjectTd name="permissions"  errors={errors[row]?.iterms?.permissions} path={`${node.id}/permissions`} on:gotoField />
 							{/if}
 							{#if permissions.auth('Role::realm::*')}
-							<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+							<ObjectTd name="realm"  errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
 							{/if}
 							{#if permissions.auth('Role::*::WRITE')}
 							<th class="z-10 hover:z-30 w-24">

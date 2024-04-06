@@ -1,5 +1,5 @@
-mutation Mutation_role_realm($role_id: String, $role_realm: RealmInput, $id: StringExpression, $name: StringExpression, $description: StringExpression, $groupBy: [String!], $mergeToList: [String]) {
-  role(where: {id: {val: $role_id}}  realm: $role_realm) @mergeToList(arguments: $mergeToList) {
+mutation Mutation_role_realm($role_id: String, $role_realm: RealmInput, $id: StringExpression, $name: StringExpression, $description: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $groupBy: [String!]) {
+  role(where: {id: {val: $role_id}}  realm: $role_realm) {
     id
     name
     description
@@ -12,7 +12,7 @@ mutation Mutation_role_realm($role_id: String, $role_realm: RealmInput, $id: Str
     updateTime
     createGroupId
     syncRolePolicy
-    realm(id: $id name: $name description: $description groupBy: $groupBy) {
+    realm(id: $id name: $name description: $description includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupBy: $groupBy) {
       id
       name
       description

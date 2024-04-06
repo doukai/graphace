@@ -21,7 +21,7 @@ export type Scalars = {
 export type BooleanExpression = {
   opr?: InputMaybe<Operator>;
   val?: InputMaybe<Scalars['Boolean']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
+  arr?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
   skipNull?: InputMaybe<Scalars['Boolean']>;
 };
 
@@ -32,7 +32,7 @@ export type Conditional =
 export type ConditionalExpression = {
   opr?: InputMaybe<Operator>;
   val?: InputMaybe<Conditional>;
-  in?: InputMaybe<Array<InputMaybe<Conditional>>>;
+  arr?: InputMaybe<Array<InputMaybe<Conditional>>>;
 };
 
 export type CurrentUser = {
@@ -49,7 +49,7 @@ export type CurrentUser = {
 export type FloatExpression = {
   opr?: InputMaybe<Operator>;
   val?: InputMaybe<Scalars['Float']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  arr?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
   skipNull?: InputMaybe<Scalars['Boolean']>;
 };
 
@@ -63,11 +63,11 @@ export type Func =
 export type FuncExpression = {
   opr?: InputMaybe<Operator>;
   val?: InputMaybe<Func>;
-  in?: InputMaybe<Array<InputMaybe<Func>>>;
+  arr?: InputMaybe<Array<InputMaybe<Func>>>;
 };
 
 /** 组 */
-export type Group = TreeStruct & NamedStruct & Meta & {
+export type Group = {
   __typename?: 'Group';
   /** ID */
   id?: Maybe<Scalars['ID']>;
@@ -99,6 +99,18 @@ export type Group = TreeStruct & NamedStruct & Meta & {
   updateUserId?: Maybe<Scalars['String']>;
   updateTime?: Maybe<Scalars['Timestamp']>;
   createGroupId?: Maybe<Scalars['String']>;
+  groupUserRelation?: Maybe<Array<Maybe<GroupUserRelation>>>;
+  groupRoleRelation?: Maybe<Array<Maybe<GroupRoleRelation>>>;
+  subGroupsAggregate?: Maybe<Group>;
+  subGroupsConnection?: Maybe<GroupConnection>;
+  usersAggregate?: Maybe<User>;
+  usersConnection?: Maybe<UserConnection>;
+  rolesAggregate?: Maybe<Role>;
+  rolesConnection?: Maybe<RoleConnection>;
+  groupUserRelationAggregate?: Maybe<GroupUserRelation>;
+  groupUserRelationConnection?: Maybe<GroupUserRelationConnection>;
+  groupRoleRelationAggregate?: Maybe<GroupRoleRelation>;
+  groupRoleRelationConnection?: Maybe<GroupRoleRelationConnection>;
   idCount?: Maybe<Scalars['Int']>;
   idMax?: Maybe<Scalars['Int']>;
   idMin?: Maybe<Scalars['Int']>;
@@ -119,23 +131,6 @@ export type Group = TreeStruct & NamedStruct & Meta & {
   deepAvg?: Maybe<Scalars['Int']>;
   deepMax?: Maybe<Scalars['Int']>;
   deepMin?: Maybe<Scalars['Int']>;
-  subGroupsAggregate?: Maybe<Group>;
-  subGroupsConnection?: Maybe<GroupConnection>;
-  usersAggregate?: Maybe<User>;
-  usersConnection?: Maybe<UserConnection>;
-  rolesAggregate?: Maybe<Role>;
-  rolesConnection?: Maybe<RoleConnection>;
-  realmIdCount?: Maybe<Scalars['Int']>;
-  realmIdSum?: Maybe<Scalars['Int']>;
-  realmIdAvg?: Maybe<Scalars['Int']>;
-  realmIdMax?: Maybe<Scalars['Int']>;
-  realmIdMin?: Maybe<Scalars['Int']>;
-  userGroup?: Maybe<Array<Maybe<UserGroup>>>;
-  userGroupAggregate?: Maybe<UserGroup>;
-  userGroupConnection?: Maybe<UserGroupConnection>;
-  groupRole?: Maybe<Array<Maybe<GroupRole>>>;
-  groupRoleAggregate?: Maybe<GroupRole>;
-  groupRoleConnection?: Maybe<GroupRoleConnection>;
   syncGroupPolicy?: Maybe<Scalars['Boolean']>;
 };
 
@@ -153,6 +148,14 @@ export type GroupParentArgs = {
   users?: InputMaybe<UserExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
@@ -170,13 +173,21 @@ export type GroupSubGroupsArgs = {
   users?: InputMaybe<UserExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GroupOrderBy>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
-  orderBy?: InputMaybe<GroupOrderBy>;
 };
 
 
@@ -203,16 +214,16 @@ export type GroupUsersArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserOrderBy>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
-  orderBy?: InputMaybe<UserOrderBy>;
 };
 
 
@@ -234,17 +245,17 @@ export type GroupRolesArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleOrderBy>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
-  orderBy?: InputMaybe<RoleOrderBy>;
 };
 
 
@@ -253,17 +264,20 @@ export type GroupRealmArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 组 */
 export type GroupSubGroupsAggregateArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -275,18 +289,26 @@ export type GroupSubGroupsAggregateArgs = {
   users?: InputMaybe<UserExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GroupOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 组 */
 export type GroupSubGroupsConnectionArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -298,16 +320,26 @@ export type GroupSubGroupsConnectionArgs = {
   users?: InputMaybe<UserExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GroupOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 组 */
 export type GroupUsersAggregateArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<UserOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -329,21 +361,19 @@ export type GroupUsersAggregateArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 组 */
 export type GroupUsersConnectionArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<UserOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -365,19 +395,19 @@ export type GroupUsersConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 组 */
 export type GroupRolesAggregateArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -394,22 +424,20 @@ export type GroupRolesAggregateArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 组 */
 export type GroupRolesConnectionArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -426,70 +454,107 @@ export type GroupRolesConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 组 */
-export type GroupUserGroupAggregateArgs = {
+export type GroupGroupUserRelationAggregateArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<UserGroupOrderBy>;
+  orderBy?: InputMaybe<GroupUserRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
 };
 
 
 /** 组 */
-export type GroupUserGroupConnectionArgs = {
+export type GroupGroupUserRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<UserGroupOrderBy>;
+  orderBy?: InputMaybe<GroupUserRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
 };
 
 
 /** 组 */
-export type GroupGroupRoleAggregateArgs = {
+export type GroupGroupRoleRelationAggregateArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GroupRoleOrderBy>;
+  orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
 };
 
 
 /** 组 */
-export type GroupGroupRoleConnectionArgs = {
+export type GroupGroupRoleRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GroupRoleOrderBy>;
+  orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
 };
 
 export type GroupConnection = {
@@ -519,8 +584,8 @@ export type GroupConnectionQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   orderBy?: InputMaybe<GroupOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -553,8 +618,8 @@ export type GroupConnectionSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   orderBy?: InputMaybe<GroupOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -593,8 +658,8 @@ export type GroupExpression = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
@@ -620,8 +685,8 @@ export type GroupInput = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  userGroup?: InputMaybe<Array<InputMaybe<UserGroupInput>>>;
-  groupRole?: InputMaybe<Array<InputMaybe<GroupRoleInput>>>;
+  groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
+  groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
   where?: InputMaybe<GroupExpression>;
 };
 
@@ -645,8 +710,8 @@ export type GroupListMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  userGroup?: InputMaybe<Array<InputMaybe<UserGroupInput>>>;
-  groupRole?: InputMaybe<Array<InputMaybe<GroupRoleInput>>>;
+  groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
+  groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
   list?: InputMaybe<Array<InputMaybe<GroupInput>>>;
   where?: InputMaybe<GroupExpression>;
 };
@@ -671,8 +736,8 @@ export type GroupListQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   orderBy?: InputMaybe<GroupOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -705,8 +770,8 @@ export type GroupListSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   orderBy?: InputMaybe<GroupOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -739,8 +804,8 @@ export type GroupMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  userGroup?: InputMaybe<Array<InputMaybe<UserGroupInput>>>;
-  groupRole?: InputMaybe<Array<InputMaybe<GroupRoleInput>>>;
+  groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
+  groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
   where?: InputMaybe<GroupExpression>;
 };
 
@@ -781,21 +846,21 @@ export type GroupQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
 };
 
-export type GroupRole = Meta & {
-  __typename?: 'GroupRole';
+export type GroupRoleRelation = {
+  __typename?: 'GroupRoleRelation';
   id?: Maybe<Scalars['ID']>;
-  roleId?: Maybe<Scalars['Int']>;
-  roleIdType?: Maybe<Role>;
-  groupId?: Maybe<Scalars['Int']>;
-  groupIdType?: Maybe<Group>;
+  roleRef?: Maybe<Scalars['String']>;
+  role?: Maybe<Role>;
+  groupRef?: Maybe<Scalars['String']>;
+  group?: Maybe<Group>;
   isDeprecated?: Maybe<Scalars['Boolean']>;
   version?: Maybe<Scalars['Int']>;
   realmId?: Maybe<Scalars['Int']>;
@@ -807,20 +872,16 @@ export type GroupRole = Meta & {
   idCount?: Maybe<Scalars['Int']>;
   idMax?: Maybe<Scalars['Int']>;
   idMin?: Maybe<Scalars['Int']>;
-  roleIdCount?: Maybe<Scalars['Int']>;
-  roleIdSum?: Maybe<Scalars['Int']>;
-  roleIdAvg?: Maybe<Scalars['Int']>;
-  roleIdMax?: Maybe<Scalars['Int']>;
-  roleIdMin?: Maybe<Scalars['Int']>;
-  groupIdCount?: Maybe<Scalars['Int']>;
-  groupIdSum?: Maybe<Scalars['Int']>;
-  groupIdAvg?: Maybe<Scalars['Int']>;
-  groupIdMax?: Maybe<Scalars['Int']>;
-  groupIdMin?: Maybe<Scalars['Int']>;
+  roleRefCount?: Maybe<Scalars['Int']>;
+  roleRefMax?: Maybe<Scalars['String']>;
+  roleRefMin?: Maybe<Scalars['String']>;
+  groupRefCount?: Maybe<Scalars['Int']>;
+  groupRefMax?: Maybe<Scalars['String']>;
+  groupRefMin?: Maybe<Scalars['String']>;
 };
 
 
-export type GroupRoleRoleIdTypeArgs = {
+export type GroupRoleRelationRoleArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -837,15 +898,15 @@ export type GroupRoleRoleIdTypeArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
-export type GroupRoleGroupIdTypeArgs = {
+export type GroupRoleRelationGroupArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -865,24 +926,24 @@ export type GroupRoleGroupIdTypeArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
-export type GroupRoleConnection = {
-  __typename?: 'GroupRoleConnection';
+export type GroupRoleRelationConnection = {
+  __typename?: 'GroupRoleRelationConnection';
   totalCount?: Maybe<Scalars['Int']>;
   pageInfo?: Maybe<PageInfo>;
-  edges?: Maybe<Array<Maybe<GroupRoleEdge>>>;
+  edges?: Maybe<Array<Maybe<GroupRoleRelationEdge>>>;
 };
 
-export type GroupRoleConnectionQueryArguments = {
+export type GroupRoleRelationConnectionQueryArguments = {
   id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -891,11 +952,11 @@ export type GroupRoleConnectionQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<GroupRoleOrderBy>;
+  orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<GroupRoleExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -903,12 +964,12 @@ export type GroupRoleConnectionQueryArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-export type GroupRoleConnectionSubscriptionArguments = {
+export type GroupRoleRelationConnectionSubscriptionArguments = {
   id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -917,11 +978,11 @@ export type GroupRoleConnectionSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<GroupRoleOrderBy>;
+  orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<GroupRoleExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -929,18 +990,18 @@ export type GroupRoleConnectionSubscriptionArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-export type GroupRoleEdge = {
-  __typename?: 'GroupRoleEdge';
-  node?: Maybe<GroupRole>;
+export type GroupRoleRelationEdge = {
+  __typename?: 'GroupRoleRelationEdge';
+  node?: Maybe<GroupRoleRelation>;
   cursor?: Maybe<Scalars['ID']>;
 };
 
-export type GroupRoleExpression = {
+export type GroupRoleRelationExpression = {
   id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -951,15 +1012,15 @@ export type GroupRoleExpression = {
   createGroupId?: InputMaybe<StringExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<GroupRoleExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
 };
 
-export type GroupRoleInput = {
+export type GroupRoleRelationInput = {
   id?: InputMaybe<Scalars['ID']>;
-  roleId?: InputMaybe<Scalars['Int']>;
-  roleIdType?: InputMaybe<RoleInput>;
-  groupId?: InputMaybe<Scalars['Int']>;
-  groupIdType?: InputMaybe<GroupInput>;
+  roleRef?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<RoleInput>;
+  groupRef?: InputMaybe<Scalars['String']>;
+  group?: InputMaybe<GroupInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -968,15 +1029,15 @@ export type GroupRoleInput = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  where?: InputMaybe<GroupRoleExpression>;
+  where?: InputMaybe<GroupRoleRelationExpression>;
 };
 
-export type GroupRoleListMutationArguments = {
+export type GroupRoleRelationListMutationArguments = {
   id?: InputMaybe<Scalars['ID']>;
-  roleId?: InputMaybe<Scalars['Int']>;
-  roleIdType?: InputMaybe<RoleInput>;
-  groupId?: InputMaybe<Scalars['Int']>;
-  groupIdType?: InputMaybe<GroupInput>;
+  roleRef?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<RoleInput>;
+  groupRef?: InputMaybe<Scalars['String']>;
+  group?: InputMaybe<GroupInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -985,16 +1046,16 @@ export type GroupRoleListMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  list?: InputMaybe<Array<InputMaybe<GroupRoleInput>>>;
-  where?: InputMaybe<GroupRoleExpression>;
+  list?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
+  where?: InputMaybe<GroupRoleRelationExpression>;
 };
 
-export type GroupRoleListQueryArguments = {
+export type GroupRoleRelationListQueryArguments = {
   id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -1003,11 +1064,11 @@ export type GroupRoleListQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<GroupRoleOrderBy>;
+  orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<GroupRoleExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -1015,12 +1076,12 @@ export type GroupRoleListQueryArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-export type GroupRoleListSubscriptionArguments = {
+export type GroupRoleRelationListSubscriptionArguments = {
   id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -1029,11 +1090,11 @@ export type GroupRoleListSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<GroupRoleOrderBy>;
+  orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<GroupRoleExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -1041,12 +1102,12 @@ export type GroupRoleListSubscriptionArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-export type GroupRoleMutationArguments = {
+export type GroupRoleRelationMutationArguments = {
   id?: InputMaybe<Scalars['ID']>;
-  roleId?: InputMaybe<Scalars['Int']>;
-  roleIdType?: InputMaybe<RoleInput>;
-  groupId?: InputMaybe<Scalars['Int']>;
-  groupIdType?: InputMaybe<GroupInput>;
+  roleRef?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<RoleInput>;
+  groupRef?: InputMaybe<Scalars['String']>;
+  group?: InputMaybe<GroupInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -1055,13 +1116,13 @@ export type GroupRoleMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  where?: InputMaybe<GroupRoleExpression>;
+  where?: InputMaybe<GroupRoleRelationExpression>;
 };
 
-export type GroupRoleOrderBy = {
+export type GroupRoleRelationOrderBy = {
   id?: InputMaybe<Sort>;
-  roleId?: InputMaybe<Sort>;
-  groupId?: InputMaybe<Sort>;
+  roleRef?: InputMaybe<Sort>;
+  groupRef?: InputMaybe<Sort>;
   isDeprecated?: InputMaybe<Sort>;
   version?: InputMaybe<Sort>;
   realmId?: InputMaybe<Sort>;
@@ -1072,12 +1133,12 @@ export type GroupRoleOrderBy = {
   createGroupId?: InputMaybe<Sort>;
 };
 
-export type GroupRoleQueryArguments = {
+export type GroupRoleRelationQueryArguments = {
   id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -1089,15 +1150,15 @@ export type GroupRoleQueryArguments = {
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<GroupRoleExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
 };
 
-export type GroupRoleSubscriptionArguments = {
+export type GroupRoleRelationSubscriptionArguments = {
   id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -1109,7 +1170,7 @@ export type GroupRoleSubscriptionArguments = {
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<GroupRoleExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
 };
 
 export type GroupSubscriptionArguments = {
@@ -1132,25 +1193,348 @@ export type GroupSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
 };
 
+export type GroupUserRelation = {
+  __typename?: 'GroupUserRelation';
+  id?: Maybe<Scalars['ID']>;
+  userRef?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
+  groupRef?: Maybe<Scalars['String']>;
+  group?: Maybe<Group>;
+  isDeprecated?: Maybe<Scalars['Boolean']>;
+  version?: Maybe<Scalars['Int']>;
+  realmId?: Maybe<Scalars['Int']>;
+  createUserId?: Maybe<Scalars['String']>;
+  createTime?: Maybe<Scalars['Timestamp']>;
+  updateUserId?: Maybe<Scalars['String']>;
+  updateTime?: Maybe<Scalars['Timestamp']>;
+  createGroupId?: Maybe<Scalars['String']>;
+  idCount?: Maybe<Scalars['Int']>;
+  idMax?: Maybe<Scalars['Int']>;
+  idMin?: Maybe<Scalars['Int']>;
+  userRefCount?: Maybe<Scalars['Int']>;
+  userRefMax?: Maybe<Scalars['String']>;
+  userRefMin?: Maybe<Scalars['String']>;
+  groupRefCount?: Maybe<Scalars['Int']>;
+  groupRefMax?: Maybe<Scalars['String']>;
+  groupRefMin?: Maybe<Scalars['String']>;
+};
+
+
+export type GroupUserRelationUserArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
+  lastName?: InputMaybe<StringExpression>;
+  login?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
+  email?: InputMaybe<StringExpression>;
+  phones?: InputMaybe<StringExpression>;
+  disable?: InputMaybe<BooleanExpression>;
+  groups?: InputMaybe<GroupExpression>;
+  roles?: InputMaybe<RoleExpression>;
+  realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+
+export type GroupUserRelationGroupArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
+  path?: InputMaybe<StringExpression>;
+  deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
+  parent?: InputMaybe<GroupExpression>;
+  subGroups?: InputMaybe<GroupExpression>;
+  users?: InputMaybe<UserExpression>;
+  roles?: InputMaybe<RoleExpression>;
+  realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type GroupUserRelationConnection = {
+  __typename?: 'GroupUserRelationConnection';
+  totalCount?: Maybe<Scalars['Int']>;
+  pageInfo?: Maybe<PageInfo>;
+  edges?: Maybe<Array<Maybe<GroupUserRelationEdge>>>;
+};
+
+export type GroupUserRelationConnectionQueryArguments = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<GroupUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+export type GroupUserRelationConnectionSubscriptionArguments = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<GroupUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+export type GroupUserRelationEdge = {
+  __typename?: 'GroupUserRelationEdge';
+  node?: Maybe<GroupUserRelation>;
+  cursor?: Maybe<Scalars['ID']>;
+};
+
+export type GroupUserRelationExpression = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
+};
+
+export type GroupUserRelationInput = {
+  id?: InputMaybe<Scalars['ID']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  groupRef?: InputMaybe<Scalars['String']>;
+  group?: InputMaybe<GroupInput>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  where?: InputMaybe<GroupUserRelationExpression>;
+};
+
+export type GroupUserRelationListMutationArguments = {
+  id?: InputMaybe<Scalars['ID']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  groupRef?: InputMaybe<Scalars['String']>;
+  group?: InputMaybe<GroupInput>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  list?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
+  where?: InputMaybe<GroupUserRelationExpression>;
+};
+
+export type GroupUserRelationListQueryArguments = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<GroupUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+export type GroupUserRelationListSubscriptionArguments = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<GroupUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+export type GroupUserRelationMutationArguments = {
+  id?: InputMaybe<Scalars['ID']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  groupRef?: InputMaybe<Scalars['String']>;
+  group?: InputMaybe<GroupInput>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  where?: InputMaybe<GroupUserRelationExpression>;
+};
+
+export type GroupUserRelationOrderBy = {
+  id?: InputMaybe<Sort>;
+  userRef?: InputMaybe<Sort>;
+  groupRef?: InputMaybe<Sort>;
+  isDeprecated?: InputMaybe<Sort>;
+  version?: InputMaybe<Sort>;
+  realmId?: InputMaybe<Sort>;
+  createUserId?: InputMaybe<Sort>;
+  createTime?: InputMaybe<Sort>;
+  updateUserId?: InputMaybe<Sort>;
+  updateTime?: InputMaybe<Sort>;
+  createGroupId?: InputMaybe<Sort>;
+};
+
+export type GroupUserRelationQueryArguments = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
+};
+
+export type GroupUserRelationSubscriptionArguments = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
+};
+
 export type IdExpression = {
   opr?: InputMaybe<Operator>;
   val?: InputMaybe<Scalars['ID']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  arr?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   skipNull?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type IntExpression = {
   opr?: InputMaybe<Operator>;
   val?: InputMaybe<Scalars['Int']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  arr?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   skipNull?: InputMaybe<Scalars['Boolean']>;
 };
 
@@ -1160,11 +1544,41 @@ export type Invoke = {
   parameters?: InputMaybe<Array<InputMaybe<InvokeParameter>>>;
   returnClassName?: InputMaybe<Scalars['String']>;
   thrownTypes?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  async?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type InvokeParameter = {
   name?: InputMaybe<Scalars['String']>;
   className?: InputMaybe<Scalars['String']>;
+};
+
+export type JsonSchema = {
+  minLength?: InputMaybe<Scalars['Int']>;
+  maxLength?: InputMaybe<Scalars['Int']>;
+  pattern?: InputMaybe<Scalars['String']>;
+  format?: InputMaybe<Scalars['String']>;
+  contentMediaType?: InputMaybe<Scalars['String']>;
+  contentEncoding?: InputMaybe<Scalars['String']>;
+  minimum?: InputMaybe<Scalars['Float']>;
+  exclusiveMinimum?: InputMaybe<Scalars['Float']>;
+  maximum?: InputMaybe<Scalars['Float']>;
+  exclusiveMaximum?: InputMaybe<Scalars['Float']>;
+  multipleOf?: InputMaybe<Scalars['Float']>;
+  const?: InputMaybe<Scalars['String']>;
+  enum?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  items?: InputMaybe<JsonSchema>;
+  minItems?: InputMaybe<Scalars['Int']>;
+  maxItems?: InputMaybe<Scalars['Int']>;
+  uniqueItems?: InputMaybe<Scalars['Boolean']>;
+  allOf?: InputMaybe<Array<InputMaybe<JsonSchema>>>;
+  anyOf?: InputMaybe<Array<InputMaybe<JsonSchema>>>;
+  oneOf?: InputMaybe<Array<InputMaybe<JsonSchema>>>;
+  not?: InputMaybe<JsonSchema>;
+  properties?: InputMaybe<Array<InputMaybe<Property>>>;
+  if?: InputMaybe<JsonSchema>;
+  then?: InputMaybe<JsonSchema>;
+  else?: InputMaybe<JsonSchema>;
+  dependentRequired?: InputMaybe<Array<InputMaybe<Property>>>;
 };
 
 export type Meta = {
@@ -1197,16 +1611,8 @@ export type MetaInput = {
   createGroupId?: InputMaybe<Scalars['String']>;
 };
 
-export type Mutation = Meta & {
+export type Mutation = {
   __typename?: 'Mutation';
-  isDeprecated?: Maybe<Scalars['Boolean']>;
-  version?: Maybe<Scalars['Int']>;
-  realmId?: Maybe<Scalars['Int']>;
-  createUserId?: Maybe<Scalars['String']>;
-  createTime?: Maybe<Scalars['Timestamp']>;
-  updateUserId?: Maybe<Scalars['String']>;
-  updateTime?: Maybe<Scalars['Timestamp']>;
-  createGroupId?: Maybe<Scalars['String']>;
   user?: Maybe<User>;
   userList?: Maybe<Array<Maybe<User>>>;
   role?: Maybe<Role>;
@@ -1217,18 +1623,18 @@ export type Mutation = Meta & {
   realmList?: Maybe<Array<Maybe<Realm>>>;
   permission?: Maybe<Permission>;
   permissionList?: Maybe<Array<Maybe<Permission>>>;
-  userPhones?: Maybe<UserPhones>;
-  userPhonesList?: Maybe<Array<Maybe<UserPhones>>>;
-  userGroup?: Maybe<UserGroup>;
-  userGroupList?: Maybe<Array<Maybe<UserGroup>>>;
-  userRole?: Maybe<UserRole>;
-  userRoleList?: Maybe<Array<Maybe<UserRole>>>;
-  groupRole?: Maybe<GroupRole>;
-  groupRoleList?: Maybe<Array<Maybe<GroupRole>>>;
-  roleComposite?: Maybe<RoleComposite>;
-  roleCompositeList?: Maybe<Array<Maybe<RoleComposite>>>;
-  rolePermission?: Maybe<RolePermission>;
-  rolePermissionList?: Maybe<Array<Maybe<RolePermission>>>;
+  userPhonesRelation?: Maybe<UserPhonesRelation>;
+  userPhonesRelationList?: Maybe<Array<Maybe<UserPhonesRelation>>>;
+  groupUserRelation?: Maybe<GroupUserRelation>;
+  groupUserRelationList?: Maybe<Array<Maybe<GroupUserRelation>>>;
+  roleUserRelation?: Maybe<RoleUserRelation>;
+  roleUserRelationList?: Maybe<Array<Maybe<RoleUserRelation>>>;
+  groupRoleRelation?: Maybe<GroupRoleRelation>;
+  groupRoleRelationList?: Maybe<Array<Maybe<GroupRoleRelation>>>;
+  roleCompositeRelation?: Maybe<RoleCompositeRelation>;
+  roleCompositeRelationList?: Maybe<Array<Maybe<RoleCompositeRelation>>>;
+  permissionRoleRelation?: Maybe<PermissionRoleRelation>;
+  permissionRoleRelationList?: Maybe<Array<Maybe<PermissionRoleRelation>>>;
   login?: Maybe<Scalars['String']>;
 };
 
@@ -1255,9 +1661,9 @@ export type MutationUserArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  userPhones?: InputMaybe<Array<InputMaybe<UserPhonesInput>>>;
-  userGroup?: InputMaybe<Array<InputMaybe<UserGroupInput>>>;
-  userRole?: InputMaybe<Array<InputMaybe<UserRoleInput>>>;
+  userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
+  groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
+  roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
   where?: InputMaybe<UserExpression>;
 };
 
@@ -1284,9 +1690,9 @@ export type MutationUserListArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  userPhones?: InputMaybe<Array<InputMaybe<UserPhonesInput>>>;
-  userGroup?: InputMaybe<Array<InputMaybe<UserGroupInput>>>;
-  userRole?: InputMaybe<Array<InputMaybe<UserRoleInput>>>;
+  userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
+  groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
+  roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
   list?: InputMaybe<Array<InputMaybe<UserInput>>>;
   where?: InputMaybe<UserExpression>;
 };
@@ -1309,10 +1715,10 @@ export type MutationRoleArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  userRole?: InputMaybe<Array<InputMaybe<UserRoleInput>>>;
-  groupRole?: InputMaybe<Array<InputMaybe<GroupRoleInput>>>;
-  roleComposite?: InputMaybe<Array<InputMaybe<RoleCompositeInput>>>;
-  rolePermission?: InputMaybe<Array<InputMaybe<RolePermissionInput>>>;
+  roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
+  groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
+  roleCompositeRelation?: InputMaybe<Array<InputMaybe<RoleCompositeRelationInput>>>;
+  permissionRoleRelation?: InputMaybe<Array<InputMaybe<PermissionRoleRelationInput>>>;
   where?: InputMaybe<RoleExpression>;
 };
 
@@ -1334,10 +1740,10 @@ export type MutationRoleListArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  userRole?: InputMaybe<Array<InputMaybe<UserRoleInput>>>;
-  groupRole?: InputMaybe<Array<InputMaybe<GroupRoleInput>>>;
-  roleComposite?: InputMaybe<Array<InputMaybe<RoleCompositeInput>>>;
-  rolePermission?: InputMaybe<Array<InputMaybe<RolePermissionInput>>>;
+  roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
+  groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
+  roleCompositeRelation?: InputMaybe<Array<InputMaybe<RoleCompositeRelationInput>>>;
+  permissionRoleRelation?: InputMaybe<Array<InputMaybe<PermissionRoleRelationInput>>>;
   list?: InputMaybe<Array<InputMaybe<RoleInput>>>;
   where?: InputMaybe<RoleExpression>;
 };
@@ -1363,8 +1769,8 @@ export type MutationGroupArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  userGroup?: InputMaybe<Array<InputMaybe<UserGroupInput>>>;
-  groupRole?: InputMaybe<Array<InputMaybe<GroupRoleInput>>>;
+  groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
+  groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
   where?: InputMaybe<GroupExpression>;
 };
 
@@ -1389,8 +1795,8 @@ export type MutationGroupListArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  userGroup?: InputMaybe<Array<InputMaybe<UserGroupInput>>>;
-  groupRole?: InputMaybe<Array<InputMaybe<GroupRoleInput>>>;
+  groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
+  groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
   list?: InputMaybe<Array<InputMaybe<GroupInput>>>;
   where?: InputMaybe<GroupExpression>;
 };
@@ -1445,7 +1851,7 @@ export type MutationPermissionArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  rolePermission?: InputMaybe<Array<InputMaybe<RolePermissionInput>>>;
+  permissionRoleRelation?: InputMaybe<Array<InputMaybe<PermissionRoleRelationInput>>>;
   where?: InputMaybe<PermissionExpression>;
 };
 
@@ -1466,17 +1872,17 @@ export type MutationPermissionListArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  rolePermission?: InputMaybe<Array<InputMaybe<RolePermissionInput>>>;
+  permissionRoleRelation?: InputMaybe<Array<InputMaybe<PermissionRoleRelationInput>>>;
   list?: InputMaybe<Array<InputMaybe<PermissionInput>>>;
   where?: InputMaybe<PermissionExpression>;
 };
 
 
-export type MutationUserPhonesArgs = {
+export type MutationUserPhonesRelationArgs = {
   id?: InputMaybe<Scalars['ID']>;
-  userId?: InputMaybe<Scalars['Int']>;
-  userIdType?: InputMaybe<UserInput>;
-  phone?: InputMaybe<Scalars['String']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  phonesRef?: InputMaybe<Scalars['String']>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -1485,15 +1891,15 @@ export type MutationUserPhonesArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  where?: InputMaybe<UserPhonesExpression>;
+  where?: InputMaybe<UserPhonesRelationExpression>;
 };
 
 
-export type MutationUserPhonesListArgs = {
+export type MutationUserPhonesRelationListArgs = {
   id?: InputMaybe<Scalars['ID']>;
-  userId?: InputMaybe<Scalars['Int']>;
-  userIdType?: InputMaybe<UserInput>;
-  phone?: InputMaybe<Scalars['String']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  phonesRef?: InputMaybe<Scalars['String']>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -1502,17 +1908,17 @@ export type MutationUserPhonesListArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  list?: InputMaybe<Array<InputMaybe<UserPhonesInput>>>;
-  where?: InputMaybe<UserPhonesExpression>;
+  list?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
+  where?: InputMaybe<UserPhonesRelationExpression>;
 };
 
 
-export type MutationUserGroupArgs = {
+export type MutationGroupUserRelationArgs = {
   id?: InputMaybe<Scalars['ID']>;
-  userId?: InputMaybe<Scalars['Int']>;
-  userIdType?: InputMaybe<UserInput>;
-  groupId?: InputMaybe<Scalars['Int']>;
-  groupIdType?: InputMaybe<GroupInput>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  groupRef?: InputMaybe<Scalars['String']>;
+  group?: InputMaybe<GroupInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -1521,16 +1927,16 @@ export type MutationUserGroupArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  where?: InputMaybe<UserGroupExpression>;
+  where?: InputMaybe<GroupUserRelationExpression>;
 };
 
 
-export type MutationUserGroupListArgs = {
+export type MutationGroupUserRelationListArgs = {
   id?: InputMaybe<Scalars['ID']>;
-  userId?: InputMaybe<Scalars['Int']>;
-  userIdType?: InputMaybe<UserInput>;
-  groupId?: InputMaybe<Scalars['Int']>;
-  groupIdType?: InputMaybe<GroupInput>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  groupRef?: InputMaybe<Scalars['String']>;
+  group?: InputMaybe<GroupInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -1539,17 +1945,17 @@ export type MutationUserGroupListArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  list?: InputMaybe<Array<InputMaybe<UserGroupInput>>>;
-  where?: InputMaybe<UserGroupExpression>;
+  list?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
+  where?: InputMaybe<GroupUserRelationExpression>;
 };
 
 
-export type MutationUserRoleArgs = {
+export type MutationRoleUserRelationArgs = {
   id?: InputMaybe<Scalars['ID']>;
-  userId?: InputMaybe<Scalars['Int']>;
-  userIdType?: InputMaybe<UserInput>;
-  roleId?: InputMaybe<Scalars['Int']>;
-  roleIdType?: InputMaybe<RoleInput>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  roleRef?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<RoleInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -1558,16 +1964,16 @@ export type MutationUserRoleArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  where?: InputMaybe<UserRoleExpression>;
+  where?: InputMaybe<RoleUserRelationExpression>;
 };
 
 
-export type MutationUserRoleListArgs = {
+export type MutationRoleUserRelationListArgs = {
   id?: InputMaybe<Scalars['ID']>;
-  userId?: InputMaybe<Scalars['Int']>;
-  userIdType?: InputMaybe<UserInput>;
-  roleId?: InputMaybe<Scalars['Int']>;
-  roleIdType?: InputMaybe<RoleInput>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  roleRef?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<RoleInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -1576,17 +1982,17 @@ export type MutationUserRoleListArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  list?: InputMaybe<Array<InputMaybe<UserRoleInput>>>;
-  where?: InputMaybe<UserRoleExpression>;
+  list?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
+  where?: InputMaybe<RoleUserRelationExpression>;
 };
 
 
-export type MutationGroupRoleArgs = {
+export type MutationGroupRoleRelationArgs = {
   id?: InputMaybe<Scalars['ID']>;
-  roleId?: InputMaybe<Scalars['Int']>;
-  roleIdType?: InputMaybe<RoleInput>;
-  groupId?: InputMaybe<Scalars['Int']>;
-  groupIdType?: InputMaybe<GroupInput>;
+  roleRef?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<RoleInput>;
+  groupRef?: InputMaybe<Scalars['String']>;
+  group?: InputMaybe<GroupInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -1595,16 +2001,16 @@ export type MutationGroupRoleArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  where?: InputMaybe<GroupRoleExpression>;
+  where?: InputMaybe<GroupRoleRelationExpression>;
 };
 
 
-export type MutationGroupRoleListArgs = {
+export type MutationGroupRoleRelationListArgs = {
   id?: InputMaybe<Scalars['ID']>;
-  roleId?: InputMaybe<Scalars['Int']>;
-  roleIdType?: InputMaybe<RoleInput>;
-  groupId?: InputMaybe<Scalars['Int']>;
-  groupIdType?: InputMaybe<GroupInput>;
+  roleRef?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<RoleInput>;
+  groupRef?: InputMaybe<Scalars['String']>;
+  group?: InputMaybe<GroupInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -1613,17 +2019,17 @@ export type MutationGroupRoleListArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  list?: InputMaybe<Array<InputMaybe<GroupRoleInput>>>;
-  where?: InputMaybe<GroupRoleExpression>;
+  list?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
+  where?: InputMaybe<GroupRoleRelationExpression>;
 };
 
 
-export type MutationRoleCompositeArgs = {
+export type MutationRoleCompositeRelationArgs = {
   id?: InputMaybe<Scalars['ID']>;
-  roleId?: InputMaybe<Scalars['Int']>;
-  roleIdType?: InputMaybe<RoleInput>;
-  compositeId?: InputMaybe<Scalars['Int']>;
-  compositeIdType?: InputMaybe<RoleInput>;
+  roleRef?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<RoleInput>;
+  compositeRef?: InputMaybe<Scalars['String']>;
+  composite?: InputMaybe<RoleInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -1632,16 +2038,16 @@ export type MutationRoleCompositeArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  where?: InputMaybe<RoleCompositeExpression>;
+  where?: InputMaybe<RoleCompositeRelationExpression>;
 };
 
 
-export type MutationRoleCompositeListArgs = {
+export type MutationRoleCompositeRelationListArgs = {
   id?: InputMaybe<Scalars['ID']>;
-  roleId?: InputMaybe<Scalars['Int']>;
-  roleIdType?: InputMaybe<RoleInput>;
-  compositeId?: InputMaybe<Scalars['Int']>;
-  compositeIdType?: InputMaybe<RoleInput>;
+  roleRef?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<RoleInput>;
+  compositeRef?: InputMaybe<Scalars['String']>;
+  composite?: InputMaybe<RoleInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -1650,17 +2056,17 @@ export type MutationRoleCompositeListArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  list?: InputMaybe<Array<InputMaybe<RoleCompositeInput>>>;
-  where?: InputMaybe<RoleCompositeExpression>;
+  list?: InputMaybe<Array<InputMaybe<RoleCompositeRelationInput>>>;
+  where?: InputMaybe<RoleCompositeRelationExpression>;
 };
 
 
-export type MutationRolePermissionArgs = {
+export type MutationPermissionRoleRelationArgs = {
   id?: InputMaybe<Scalars['ID']>;
-  roleId?: InputMaybe<Scalars['Int']>;
-  roleIdType?: InputMaybe<RoleInput>;
-  permissionName?: InputMaybe<Scalars['String']>;
-  permissionNameType?: InputMaybe<PermissionInput>;
+  roleRef?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<RoleInput>;
+  permissionRef?: InputMaybe<Scalars['String']>;
+  permission?: InputMaybe<PermissionInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -1669,16 +2075,16 @@ export type MutationRolePermissionArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  where?: InputMaybe<RolePermissionExpression>;
+  where?: InputMaybe<PermissionRoleRelationExpression>;
 };
 
 
-export type MutationRolePermissionListArgs = {
+export type MutationPermissionRoleRelationListArgs = {
   id?: InputMaybe<Scalars['ID']>;
-  roleId?: InputMaybe<Scalars['Int']>;
-  roleIdType?: InputMaybe<RoleInput>;
-  permissionName?: InputMaybe<Scalars['String']>;
-  permissionNameType?: InputMaybe<PermissionInput>;
+  roleRef?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<RoleInput>;
+  permissionRef?: InputMaybe<Scalars['String']>;
+  permission?: InputMaybe<PermissionInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -1687,8 +2093,8 @@ export type MutationRolePermissionListArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  list?: InputMaybe<Array<InputMaybe<RolePermissionInput>>>;
-  where?: InputMaybe<RolePermissionExpression>;
+  list?: InputMaybe<Array<InputMaybe<PermissionRoleRelationInput>>>;
+  where?: InputMaybe<PermissionRoleRelationExpression>;
 };
 
 
@@ -1710,11 +2116,29 @@ export type NamedStruct = {
 export type NamedStructExpression = {
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
 };
 
 export type NamedStructInput = {
   name?: InputMaybe<Scalars['String']>;
   description?: InputMaybe<Scalars['String']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
 };
 
 export type Operator =
@@ -1740,7 +2164,7 @@ export type Operator =
 export type OperatorExpression = {
   opr?: InputMaybe<Operator>;
   val?: InputMaybe<Operator>;
-  in?: InputMaybe<Array<InputMaybe<Operator>>>;
+  arr?: InputMaybe<Array<InputMaybe<Operator>>>;
 };
 
 export type PageInfo = {
@@ -1752,7 +2176,7 @@ export type PageInfo = {
 };
 
 /** 权限 */
-export type Permission = Meta & {
+export type Permission = {
   __typename?: 'Permission';
   /** 名称 */
   name: Scalars['ID'];
@@ -1776,6 +2200,11 @@ export type Permission = Meta & {
   updateUserId?: Maybe<Scalars['String']>;
   updateTime?: Maybe<Scalars['Timestamp']>;
   createGroupId?: Maybe<Scalars['String']>;
+  permissionRoleRelation?: Maybe<Array<Maybe<PermissionRoleRelation>>>;
+  rolesAggregate?: Maybe<Role>;
+  rolesConnection?: Maybe<RoleConnection>;
+  permissionRoleRelationAggregate?: Maybe<PermissionRoleRelation>;
+  permissionRoleRelationConnection?: Maybe<PermissionRoleRelationConnection>;
   nameCount?: Maybe<Scalars['Int']>;
   nameMax?: Maybe<Scalars['String']>;
   nameMin?: Maybe<Scalars['String']>;
@@ -1788,16 +2217,6 @@ export type Permission = Meta & {
   typeCount?: Maybe<Scalars['Int']>;
   typeMax?: Maybe<Scalars['String']>;
   typeMin?: Maybe<Scalars['String']>;
-  rolesAggregate?: Maybe<Role>;
-  rolesConnection?: Maybe<RoleConnection>;
-  realmIdCount?: Maybe<Scalars['Int']>;
-  realmIdSum?: Maybe<Scalars['Int']>;
-  realmIdAvg?: Maybe<Scalars['Int']>;
-  realmIdMax?: Maybe<Scalars['Int']>;
-  realmIdMin?: Maybe<Scalars['Int']>;
-  rolePermission?: Maybe<Array<Maybe<RolePermission>>>;
-  rolePermissionAggregate?: Maybe<RolePermission>;
-  rolePermissionConnection?: Maybe<RolePermissionConnection>;
   syncPermissionPolicy?: Maybe<Scalars['Boolean']>;
 };
 
@@ -1820,17 +2239,17 @@ export type PermissionRolesArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleOrderBy>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
-  orderBy?: InputMaybe<RoleOrderBy>;
 };
 
 
@@ -1853,11 +2272,6 @@ export type PermissionRealmArgs = {
 
 /** 权限 */
 export type PermissionRolesAggregateArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -1874,22 +2288,20 @@ export type PermissionRolesAggregateArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 权限 */
 export type PermissionRolesConnectionArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -1906,40 +2318,61 @@ export type PermissionRolesConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 权限 */
-export type PermissionRolePermissionAggregateArgs = {
+export type PermissionPermissionRoleRelationAggregateArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  permissionRef?: InputMaybe<StringExpression>;
+  permission?: InputMaybe<PermissionExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<RolePermissionOrderBy>;
+  orderBy?: InputMaybe<PermissionRoleRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  permissionName?: InputMaybe<StringExpression>;
-  permissionNameType?: InputMaybe<PermissionExpression>;
 };
 
 
 /** 权限 */
-export type PermissionRolePermissionConnectionArgs = {
+export type PermissionPermissionRoleRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  permissionRef?: InputMaybe<StringExpression>;
+  permission?: InputMaybe<PermissionExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<RolePermissionOrderBy>;
+  orderBy?: InputMaybe<PermissionRoleRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  permissionName?: InputMaybe<StringExpression>;
-  permissionNameType?: InputMaybe<PermissionExpression>;
 };
 
 export type PermissionConnection = {
@@ -1965,7 +2398,7 @@ export type PermissionConnectionQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   orderBy?: InputMaybe<PermissionOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -1994,7 +2427,7 @@ export type PermissionConnectionSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   orderBy?: InputMaybe<PermissionOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -2029,7 +2462,7 @@ export type PermissionExpression = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
@@ -2051,7 +2484,7 @@ export type PermissionInput = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  rolePermission?: InputMaybe<Array<InputMaybe<RolePermissionInput>>>;
+  permissionRoleRelation?: InputMaybe<Array<InputMaybe<PermissionRoleRelationInput>>>;
   where?: InputMaybe<PermissionExpression>;
 };
 
@@ -2071,7 +2504,7 @@ export type PermissionListMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  rolePermission?: InputMaybe<Array<InputMaybe<RolePermissionInput>>>;
+  permissionRoleRelation?: InputMaybe<Array<InputMaybe<PermissionRoleRelationInput>>>;
   list?: InputMaybe<Array<InputMaybe<PermissionInput>>>;
   where?: InputMaybe<PermissionExpression>;
 };
@@ -2092,7 +2525,7 @@ export type PermissionListQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   orderBy?: InputMaybe<PermissionOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -2121,7 +2554,7 @@ export type PermissionListSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   orderBy?: InputMaybe<PermissionOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -2150,7 +2583,7 @@ export type PermissionMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  rolePermission?: InputMaybe<Array<InputMaybe<RolePermissionInput>>>;
+  permissionRoleRelation?: InputMaybe<Array<InputMaybe<PermissionRoleRelationInput>>>;
   where?: InputMaybe<PermissionExpression>;
 };
 
@@ -2186,11 +2619,325 @@ export type PermissionQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
+};
+
+export type PermissionRoleRelation = {
+  __typename?: 'PermissionRoleRelation';
+  id?: Maybe<Scalars['ID']>;
+  roleRef?: Maybe<Scalars['String']>;
+  role?: Maybe<Role>;
+  permissionRef?: Maybe<Scalars['String']>;
+  permission?: Maybe<Permission>;
+  isDeprecated?: Maybe<Scalars['Boolean']>;
+  version?: Maybe<Scalars['Int']>;
+  realmId?: Maybe<Scalars['Int']>;
+  createUserId?: Maybe<Scalars['String']>;
+  createTime?: Maybe<Scalars['Timestamp']>;
+  updateUserId?: Maybe<Scalars['String']>;
+  updateTime?: Maybe<Scalars['Timestamp']>;
+  createGroupId?: Maybe<Scalars['String']>;
+  idCount?: Maybe<Scalars['Int']>;
+  idMax?: Maybe<Scalars['Int']>;
+  idMin?: Maybe<Scalars['Int']>;
+  roleRefCount?: Maybe<Scalars['Int']>;
+  roleRefMax?: Maybe<Scalars['String']>;
+  roleRefMin?: Maybe<Scalars['String']>;
+  permissionRefCount?: Maybe<Scalars['Int']>;
+  permissionRefMax?: Maybe<Scalars['String']>;
+  permissionRefMin?: Maybe<Scalars['String']>;
+};
+
+
+export type PermissionRoleRelationRoleArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
+  users?: InputMaybe<UserExpression>;
+  groups?: InputMaybe<GroupExpression>;
+  composites?: InputMaybe<RoleExpression>;
+  permissions?: InputMaybe<PermissionExpression>;
+  realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+
+export type PermissionRoleRelationPermissionArgs = {
+  name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
+  field?: InputMaybe<StringExpression>;
+  type?: InputMaybe<StringExpression>;
+  permissionType?: InputMaybe<PermissionTypeExpression>;
+  roles?: InputMaybe<RoleExpression>;
+  realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type PermissionRoleRelationConnection = {
+  __typename?: 'PermissionRoleRelationConnection';
+  totalCount?: Maybe<Scalars['Int']>;
+  pageInfo?: Maybe<PageInfo>;
+  edges?: Maybe<Array<Maybe<PermissionRoleRelationEdge>>>;
+};
+
+export type PermissionRoleRelationConnectionQueryArguments = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  permissionRef?: InputMaybe<StringExpression>;
+  permission?: InputMaybe<PermissionExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<PermissionRoleRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<PermissionRoleRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+export type PermissionRoleRelationConnectionSubscriptionArguments = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  permissionRef?: InputMaybe<StringExpression>;
+  permission?: InputMaybe<PermissionExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<PermissionRoleRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<PermissionRoleRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+export type PermissionRoleRelationEdge = {
+  __typename?: 'PermissionRoleRelationEdge';
+  node?: Maybe<PermissionRoleRelation>;
+  cursor?: Maybe<Scalars['ID']>;
+};
+
+export type PermissionRoleRelationExpression = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  permissionRef?: InputMaybe<StringExpression>;
+  permission?: InputMaybe<PermissionExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<PermissionRoleRelationExpression>>>;
+};
+
+export type PermissionRoleRelationInput = {
+  id?: InputMaybe<Scalars['ID']>;
+  roleRef?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<RoleInput>;
+  permissionRef?: InputMaybe<Scalars['String']>;
+  permission?: InputMaybe<PermissionInput>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  where?: InputMaybe<PermissionRoleRelationExpression>;
+};
+
+export type PermissionRoleRelationListMutationArguments = {
+  id?: InputMaybe<Scalars['ID']>;
+  roleRef?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<RoleInput>;
+  permissionRef?: InputMaybe<Scalars['String']>;
+  permission?: InputMaybe<PermissionInput>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  list?: InputMaybe<Array<InputMaybe<PermissionRoleRelationInput>>>;
+  where?: InputMaybe<PermissionRoleRelationExpression>;
+};
+
+export type PermissionRoleRelationListQueryArguments = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  permissionRef?: InputMaybe<StringExpression>;
+  permission?: InputMaybe<PermissionExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<PermissionRoleRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<PermissionRoleRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+export type PermissionRoleRelationListSubscriptionArguments = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  permissionRef?: InputMaybe<StringExpression>;
+  permission?: InputMaybe<PermissionExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<PermissionRoleRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<PermissionRoleRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+export type PermissionRoleRelationMutationArguments = {
+  id?: InputMaybe<Scalars['ID']>;
+  roleRef?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<RoleInput>;
+  permissionRef?: InputMaybe<Scalars['String']>;
+  permission?: InputMaybe<PermissionInput>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  where?: InputMaybe<PermissionRoleRelationExpression>;
+};
+
+export type PermissionRoleRelationOrderBy = {
+  id?: InputMaybe<Sort>;
+  roleRef?: InputMaybe<Sort>;
+  permissionRef?: InputMaybe<Sort>;
+  isDeprecated?: InputMaybe<Sort>;
+  version?: InputMaybe<Sort>;
+  realmId?: InputMaybe<Sort>;
+  createUserId?: InputMaybe<Sort>;
+  createTime?: InputMaybe<Sort>;
+  updateUserId?: InputMaybe<Sort>;
+  updateTime?: InputMaybe<Sort>;
+  createGroupId?: InputMaybe<Sort>;
+};
+
+export type PermissionRoleRelationQueryArguments = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  permissionRef?: InputMaybe<StringExpression>;
+  permission?: InputMaybe<PermissionExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<PermissionRoleRelationExpression>>>;
+};
+
+export type PermissionRoleRelationSubscriptionArguments = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  permissionRef?: InputMaybe<StringExpression>;
+  permission?: InputMaybe<PermissionExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<PermissionRoleRelationExpression>>>;
 };
 
 export type PermissionSubscriptionArguments = {
@@ -2209,7 +2956,7 @@ export type PermissionSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
@@ -2226,7 +2973,7 @@ export type PermissionType =
 export type PermissionTypeExpression = {
   opr?: InputMaybe<Operator>;
   val?: InputMaybe<PermissionType>;
-  in?: InputMaybe<Array<InputMaybe<PermissionType>>>;
+  arr?: InputMaybe<Array<InputMaybe<PermissionType>>>;
 };
 
 export type Policy = {
@@ -2243,7 +2990,7 @@ export type Policy = {
 
 export type Property = {
   name: Scalars['String'];
-  validation?: InputMaybe<ValidationInput>;
+  validation?: InputMaybe<JsonSchema>;
   required?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
@@ -2256,19 +3003,11 @@ export type Protocol =
 export type ProtocolExpression = {
   opr?: InputMaybe<Operator>;
   val?: InputMaybe<Protocol>;
-  in?: InputMaybe<Array<InputMaybe<Protocol>>>;
+  arr?: InputMaybe<Array<InputMaybe<Protocol>>>;
 };
 
-export type Query = Meta & {
+export type Query = {
   __typename?: 'Query';
-  isDeprecated?: Maybe<Scalars['Boolean']>;
-  version?: Maybe<Scalars['Int']>;
-  realmId?: Maybe<Scalars['Int']>;
-  createUserId?: Maybe<Scalars['String']>;
-  createTime?: Maybe<Scalars['Timestamp']>;
-  updateUserId?: Maybe<Scalars['String']>;
-  updateTime?: Maybe<Scalars['Timestamp']>;
-  createGroupId?: Maybe<Scalars['String']>;
   user?: Maybe<User>;
   userList?: Maybe<Array<Maybe<User>>>;
   userConnection?: Maybe<UserConnection>;
@@ -2284,28 +3023,29 @@ export type Query = Meta & {
   permission?: Maybe<Permission>;
   permissionList?: Maybe<Array<Maybe<Permission>>>;
   permissionConnection?: Maybe<PermissionConnection>;
-  userPhones?: Maybe<UserPhones>;
-  userPhonesList?: Maybe<Array<Maybe<UserPhones>>>;
-  userPhonesConnection?: Maybe<UserPhonesConnection>;
-  userGroup?: Maybe<UserGroup>;
-  userGroupList?: Maybe<Array<Maybe<UserGroup>>>;
-  userGroupConnection?: Maybe<UserGroupConnection>;
-  userRole?: Maybe<UserRole>;
-  userRoleList?: Maybe<Array<Maybe<UserRole>>>;
-  userRoleConnection?: Maybe<UserRoleConnection>;
-  groupRole?: Maybe<GroupRole>;
-  groupRoleList?: Maybe<Array<Maybe<GroupRole>>>;
-  groupRoleConnection?: Maybe<GroupRoleConnection>;
-  roleComposite?: Maybe<RoleComposite>;
-  roleCompositeList?: Maybe<Array<Maybe<RoleComposite>>>;
-  roleCompositeConnection?: Maybe<RoleCompositeConnection>;
-  rolePermission?: Maybe<RolePermission>;
-  rolePermissionList?: Maybe<Array<Maybe<RolePermission>>>;
-  rolePermissionConnection?: Maybe<RolePermissionConnection>;
+  userPhonesRelation?: Maybe<UserPhonesRelation>;
+  userPhonesRelationList?: Maybe<Array<Maybe<UserPhonesRelation>>>;
+  userPhonesRelationConnection?: Maybe<UserPhonesRelationConnection>;
+  groupUserRelation?: Maybe<GroupUserRelation>;
+  groupUserRelationList?: Maybe<Array<Maybe<GroupUserRelation>>>;
+  groupUserRelationConnection?: Maybe<GroupUserRelationConnection>;
+  roleUserRelation?: Maybe<RoleUserRelation>;
+  roleUserRelationList?: Maybe<Array<Maybe<RoleUserRelation>>>;
+  roleUserRelationConnection?: Maybe<RoleUserRelationConnection>;
+  groupRoleRelation?: Maybe<GroupRoleRelation>;
+  groupRoleRelationList?: Maybe<Array<Maybe<GroupRoleRelation>>>;
+  groupRoleRelationConnection?: Maybe<GroupRoleRelationConnection>;
+  roleCompositeRelation?: Maybe<RoleCompositeRelation>;
+  roleCompositeRelationList?: Maybe<Array<Maybe<RoleCompositeRelation>>>;
+  roleCompositeRelationConnection?: Maybe<RoleCompositeRelationConnection>;
+  permissionRoleRelation?: Maybe<PermissionRoleRelation>;
+  permissionRoleRelationList?: Maybe<Array<Maybe<PermissionRoleRelation>>>;
+  permissionRoleRelationConnection?: Maybe<PermissionRoleRelationConnection>;
   current?: Maybe<CurrentUser>;
   currentPermissionTypeList?: Maybe<Array<Maybe<Scalars['String']>>>;
-  currentPermissionNameList?: Maybe<Array<Maybe<Scalars['String']>>>;
+  currentPermissionNameListByTypes?: Maybe<Array<Maybe<Scalars['String']>>>;
   policyList?: Maybe<Array<Maybe<Policy>>>;
+  jsonSchema?: Maybe<Scalars['String']>;
 };
 
 
@@ -2331,9 +3071,9 @@ export type QueryUserArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
@@ -2363,9 +3103,9 @@ export type QueryUserListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
   orderBy?: InputMaybe<UserOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -2401,9 +3141,9 @@ export type QueryUserConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
   orderBy?: InputMaybe<UserOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -2412,8 +3152,6 @@ export type QueryUserConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -2434,10 +3172,10 @@ export type QueryRoleArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
@@ -2462,10 +3200,10 @@ export type QueryRoleListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   orderBy?: InputMaybe<RoleOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -2496,10 +3234,10 @@ export type QueryRoleConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   orderBy?: InputMaybe<RoleOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -2508,8 +3246,6 @@ export type QueryRoleConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -2533,8 +3269,8 @@ export type QueryGroupArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
@@ -2562,8 +3298,8 @@ export type QueryGroupListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   orderBy?: InputMaybe<GroupOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -2597,8 +3333,8 @@ export type QueryGroupConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   orderBy?: InputMaybe<GroupOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -2607,8 +3343,6 @@ export type QueryGroupConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -2676,8 +3410,6 @@ export type QueryRealmConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -2697,7 +3429,7 @@ export type QueryPermissionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
@@ -2721,7 +3453,7 @@ export type QueryPermissionListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   orderBy?: InputMaybe<PermissionOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -2751,7 +3483,7 @@ export type QueryPermissionConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   orderBy?: InputMaybe<PermissionOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -2760,16 +3492,14 @@ export type QueryPermissionConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
 };
 
 
-export type QueryUserPhonesArgs = {
+export type QueryUserPhonesRelationArgs = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  phone?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  phonesRef?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -2781,15 +3511,15 @@ export type QueryUserPhonesArgs = {
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserPhonesExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
 };
 
 
-export type QueryUserPhonesListArgs = {
+export type QueryUserPhonesRelationListArgs = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  phone?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  phonesRef?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -2798,11 +3528,11 @@ export type QueryUserPhonesListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserPhonesOrderBy>;
+  orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserPhonesExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -2811,11 +3541,11 @@ export type QueryUserPhonesListArgs = {
 };
 
 
-export type QueryUserPhonesConnectionArgs = {
+export type QueryUserPhonesRelationConnectionArgs = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  phone?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  phonesRef?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -2824,11 +3554,57 @@ export type QueryUserPhonesConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserPhonesOrderBy>;
+  orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserPhonesExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryGroupUserRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
+};
+
+
+export type QueryGroupUserRelationListArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<GroupUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -2837,12 +3613,12 @@ export type QueryUserPhonesConnectionArgs = {
 };
 
 
-export type QueryUserGroupArgs = {
+export type QueryGroupUserRelationConnectionArgs = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -2851,19 +3627,23 @@ export type QueryUserGroupArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<GroupUserRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserGroupExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
-export type QueryUserGroupListArgs = {
+export type QueryRoleUserRelationArgs = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -2872,11 +3652,32 @@ export type QueryUserGroupListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserGroupOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserGroupExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
+};
+
+
+export type QueryRoleUserRelationListArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<RoleUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -2885,12 +3686,12 @@ export type QueryUserGroupListArgs = {
 };
 
 
-export type QueryUserGroupConnectionArgs = {
+export type QueryRoleUserRelationConnectionArgs = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -2899,11 +3700,57 @@ export type QueryUserGroupConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserGroupOrderBy>;
+  orderBy?: InputMaybe<RoleUserRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserGroupExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryGroupRoleRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
+};
+
+
+export type QueryGroupRoleRelationListArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -2912,12 +3759,12 @@ export type QueryUserGroupConnectionArgs = {
 };
 
 
-export type QueryUserRoleArgs = {
+export type QueryGroupRoleRelationConnectionArgs = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -2926,19 +3773,23 @@ export type QueryUserRoleArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserRoleExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
-export type QueryUserRoleListArgs = {
+export type QueryRoleCompositeRelationArgs = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  compositeRef?: InputMaybe<StringExpression>;
+  composite?: InputMaybe<RoleExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -2947,11 +3798,32 @@ export type QueryUserRoleListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserRoleOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserRoleExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
+};
+
+
+export type QueryRoleCompositeRelationListArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  compositeRef?: InputMaybe<StringExpression>;
+  composite?: InputMaybe<RoleExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -2960,12 +3832,12 @@ export type QueryUserRoleListArgs = {
 };
 
 
-export type QueryUserRoleConnectionArgs = {
+export type QueryRoleCompositeRelationConnectionArgs = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  compositeRef?: InputMaybe<StringExpression>;
+  composite?: InputMaybe<RoleExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -2974,11 +3846,57 @@ export type QueryUserRoleConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserRoleOrderBy>;
+  orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserRoleExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryPermissionRoleRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  permissionRef?: InputMaybe<StringExpression>;
+  permission?: InputMaybe<PermissionExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<PermissionRoleRelationExpression>>>;
+};
+
+
+export type QueryPermissionRoleRelationListArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  permissionRef?: InputMaybe<StringExpression>;
+  permission?: InputMaybe<PermissionExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<PermissionRoleRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<PermissionRoleRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -2987,12 +3905,12 @@ export type QueryUserRoleConnectionArgs = {
 };
 
 
-export type QueryGroupRoleArgs = {
+export type QueryPermissionRoleRelationConnectionArgs = {
   id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  permissionRef?: InputMaybe<StringExpression>;
+  permission?: InputMaybe<PermissionExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -3001,227 +3919,36 @@ export type QueryGroupRoleArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<PermissionRoleRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<GroupRoleExpression>>>;
-};
-
-
-export type QueryGroupRoleListArgs = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<GroupRoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<GroupRoleExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<PermissionRoleRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
 };
 
 
-export type QueryGroupRoleConnectionArgs = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<GroupRoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<GroupRoleExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type QueryRoleCompositeArgs = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  compositeId?: InputMaybe<IntExpression>;
-  compositeIdType?: InputMaybe<RoleExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RoleCompositeExpression>>>;
-};
-
-
-export type QueryRoleCompositeListArgs = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  compositeId?: InputMaybe<IntExpression>;
-  compositeIdType?: InputMaybe<RoleExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<RoleCompositeOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RoleCompositeExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type QueryRoleCompositeConnectionArgs = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  compositeId?: InputMaybe<IntExpression>;
-  compositeIdType?: InputMaybe<RoleExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<RoleCompositeOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RoleCompositeExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type QueryRolePermissionArgs = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  permissionName?: InputMaybe<StringExpression>;
-  permissionNameType?: InputMaybe<PermissionExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RolePermissionExpression>>>;
-};
-
-
-export type QueryRolePermissionListArgs = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  permissionName?: InputMaybe<StringExpression>;
-  permissionNameType?: InputMaybe<PermissionExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<RolePermissionOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RolePermissionExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type QueryRolePermissionConnectionArgs = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  permissionName?: InputMaybe<StringExpression>;
-  permissionNameType?: InputMaybe<PermissionExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<RolePermissionOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RolePermissionExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type QueryCurrentPermissionNameListArgs = {
+export type QueryCurrentPermissionNameListByTypesArgs = {
   types?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
-export type Query_CurrentPermissionNameList_Arguments = {
+
+export type QueryJsonSchemaArgs = {
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export type Query_CurrentPermissionNameListByTypes_Arguments = {
   types?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type Query_JsonSchema_Arguments = {
+  name?: InputMaybe<Scalars['String']>;
 };
 
 /** 租户 */
-export type Realm = Meta & NamedStruct & {
+export type Realm = {
   __typename?: 'Realm';
   /** ID */
   id?: Maybe<Scalars['ID']>;
@@ -3471,7 +4198,7 @@ export type RealmSubscriptionArguments = {
 };
 
 /** 角色 */
-export type Role = NamedStruct & Meta & {
+export type Role = {
   __typename?: 'Role';
   /** ID */
   id?: Maybe<Scalars['ID']>;
@@ -3497,6 +4224,26 @@ export type Role = NamedStruct & Meta & {
   updateUserId?: Maybe<Scalars['String']>;
   updateTime?: Maybe<Scalars['Timestamp']>;
   createGroupId?: Maybe<Scalars['String']>;
+  roleUserRelation?: Maybe<Array<Maybe<RoleUserRelation>>>;
+  groupRoleRelation?: Maybe<Array<Maybe<GroupRoleRelation>>>;
+  roleCompositeRelation?: Maybe<Array<Maybe<RoleCompositeRelation>>>;
+  permissionRoleRelation?: Maybe<Array<Maybe<PermissionRoleRelation>>>;
+  usersAggregate?: Maybe<User>;
+  usersConnection?: Maybe<UserConnection>;
+  groupsAggregate?: Maybe<Group>;
+  groupsConnection?: Maybe<GroupConnection>;
+  compositesAggregate?: Maybe<Role>;
+  compositesConnection?: Maybe<RoleConnection>;
+  permissionsAggregate?: Maybe<Permission>;
+  permissionsConnection?: Maybe<PermissionConnection>;
+  roleUserRelationAggregate?: Maybe<RoleUserRelation>;
+  roleUserRelationConnection?: Maybe<RoleUserRelationConnection>;
+  groupRoleRelationAggregate?: Maybe<GroupRoleRelation>;
+  groupRoleRelationConnection?: Maybe<GroupRoleRelationConnection>;
+  roleCompositeRelationAggregate?: Maybe<RoleCompositeRelation>;
+  roleCompositeRelationConnection?: Maybe<RoleCompositeRelationConnection>;
+  permissionRoleRelationAggregate?: Maybe<PermissionRoleRelation>;
+  permissionRoleRelationConnection?: Maybe<PermissionRoleRelationConnection>;
   idCount?: Maybe<Scalars['Int']>;
   idMax?: Maybe<Scalars['Int']>;
   idMin?: Maybe<Scalars['Int']>;
@@ -3506,31 +4253,6 @@ export type Role = NamedStruct & Meta & {
   descriptionCount?: Maybe<Scalars['Int']>;
   descriptionMax?: Maybe<Scalars['String']>;
   descriptionMin?: Maybe<Scalars['String']>;
-  usersAggregate?: Maybe<User>;
-  usersConnection?: Maybe<UserConnection>;
-  groupsAggregate?: Maybe<Group>;
-  groupsConnection?: Maybe<GroupConnection>;
-  compositesAggregate?: Maybe<Role>;
-  compositesConnection?: Maybe<RoleConnection>;
-  permissionsAggregate?: Maybe<Permission>;
-  permissionsConnection?: Maybe<PermissionConnection>;
-  realmIdCount?: Maybe<Scalars['Int']>;
-  realmIdSum?: Maybe<Scalars['Int']>;
-  realmIdAvg?: Maybe<Scalars['Int']>;
-  realmIdMax?: Maybe<Scalars['Int']>;
-  realmIdMin?: Maybe<Scalars['Int']>;
-  userRole?: Maybe<Array<Maybe<UserRole>>>;
-  userRoleAggregate?: Maybe<UserRole>;
-  userRoleConnection?: Maybe<UserRoleConnection>;
-  groupRole?: Maybe<Array<Maybe<GroupRole>>>;
-  groupRoleAggregate?: Maybe<GroupRole>;
-  groupRoleConnection?: Maybe<GroupRoleConnection>;
-  roleComposite?: Maybe<Array<Maybe<RoleComposite>>>;
-  roleCompositeAggregate?: Maybe<RoleComposite>;
-  roleCompositeConnection?: Maybe<RoleCompositeConnection>;
-  rolePermission?: Maybe<Array<Maybe<RolePermission>>>;
-  rolePermissionAggregate?: Maybe<RolePermission>;
-  rolePermissionConnection?: Maybe<RolePermissionConnection>;
   syncRolePolicy?: Maybe<Scalars['Boolean']>;
 };
 
@@ -3558,16 +4280,16 @@ export type RoleUsersArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserOrderBy>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
-  orderBy?: InputMaybe<UserOrderBy>;
 };
 
 
@@ -3584,13 +4306,21 @@ export type RoleGroupsArgs = {
   users?: InputMaybe<UserExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GroupOrderBy>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
-  orderBy?: InputMaybe<GroupOrderBy>;
 };
 
 
@@ -3604,13 +4334,21 @@ export type RoleCompositesArgs = {
   composites?: InputMaybe<RoleExpression>;
   permissions?: InputMaybe<PermissionExpression>;
   realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleOrderBy>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
-  orderBy?: InputMaybe<RoleOrderBy>;
 };
 
 
@@ -3623,13 +4361,21 @@ export type RolePermissionsArgs = {
   permissionType?: InputMaybe<PermissionTypeExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<PermissionOrderBy>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
-  orderBy?: InputMaybe<PermissionOrderBy>;
 };
 
 
@@ -3638,17 +4384,20 @@ export type RoleRealmArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 角色 */
 export type RoleUsersAggregateArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<UserOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -3670,21 +4419,19 @@ export type RoleUsersAggregateArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 角色 */
 export type RoleUsersConnectionArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<UserOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -3706,19 +4453,19 @@ export type RoleUsersConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 角色 */
 export type RoleGroupsAggregateArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -3730,18 +4477,24 @@ export type RoleGroupsAggregateArgs = {
   users?: InputMaybe<UserExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GroupOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 角色 */
 export type RoleGroupsConnectionArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -3753,16 +4506,24 @@ export type RoleGroupsConnectionArgs = {
   users?: InputMaybe<UserExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GroupOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 角色 */
 export type RoleCompositesAggregateArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -3771,18 +4532,28 @@ export type RoleCompositesAggregateArgs = {
   composites?: InputMaybe<RoleExpression>;
   permissions?: InputMaybe<PermissionExpression>;
   realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 角色 */
 export type RoleCompositesConnectionArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -3791,16 +4562,28 @@ export type RoleCompositesConnectionArgs = {
   composites?: InputMaybe<RoleExpression>;
   permissions?: InputMaybe<PermissionExpression>;
   realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 角色 */
 export type RolePermissionsAggregateArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<PermissionOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
   field?: InputMaybe<StringExpression>;
@@ -3808,18 +4591,24 @@ export type RolePermissionsAggregateArgs = {
   permissionType?: InputMaybe<PermissionTypeExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<PermissionOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 角色 */
 export type RolePermissionsConnectionArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<PermissionOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
   field?: InputMaybe<StringExpression>;
@@ -3827,135 +4616,212 @@ export type RolePermissionsConnectionArgs = {
   permissionType?: InputMaybe<PermissionTypeExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<PermissionOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 角色 */
-export type RoleUserRoleAggregateArgs = {
+export type RoleRoleUserRelationAggregateArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<UserRoleOrderBy>;
+  orderBy?: InputMaybe<RoleUserRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
 };
 
 
 /** 角色 */
-export type RoleUserRoleConnectionArgs = {
+export type RoleRoleUserRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<UserRoleOrderBy>;
+  orderBy?: InputMaybe<RoleUserRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
 };
 
 
 /** 角色 */
-export type RoleGroupRoleAggregateArgs = {
+export type RoleGroupRoleRelationAggregateArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GroupRoleOrderBy>;
+  orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
 };
 
 
 /** 角色 */
-export type RoleGroupRoleConnectionArgs = {
+export type RoleGroupRoleRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GroupRoleOrderBy>;
+  orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
 };
 
 
 /** 角色 */
-export type RoleRoleCompositeAggregateArgs = {
+export type RoleRoleCompositeRelationAggregateArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  compositeRef?: InputMaybe<StringExpression>;
+  composite?: InputMaybe<RoleExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<RoleCompositeOrderBy>;
+  orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  compositeId?: InputMaybe<IntExpression>;
-  compositeIdType?: InputMaybe<RoleExpression>;
 };
 
 
 /** 角色 */
-export type RoleRoleCompositeConnectionArgs = {
+export type RoleRoleCompositeRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  compositeRef?: InputMaybe<StringExpression>;
+  composite?: InputMaybe<RoleExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<RoleCompositeOrderBy>;
+  orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  compositeId?: InputMaybe<IntExpression>;
-  compositeIdType?: InputMaybe<RoleExpression>;
 };
 
 
 /** 角色 */
-export type RoleRolePermissionAggregateArgs = {
+export type RolePermissionRoleRelationAggregateArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  permissionRef?: InputMaybe<StringExpression>;
+  permission?: InputMaybe<PermissionExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<RolePermissionOrderBy>;
+  orderBy?: InputMaybe<PermissionRoleRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  permissionName?: InputMaybe<StringExpression>;
-  permissionNameType?: InputMaybe<PermissionExpression>;
 };
 
 
 /** 角色 */
-export type RoleRolePermissionConnectionArgs = {
+export type RolePermissionRoleRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  permissionRef?: InputMaybe<StringExpression>;
+  permission?: InputMaybe<PermissionExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<RolePermissionOrderBy>;
+  orderBy?: InputMaybe<PermissionRoleRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  permissionName?: InputMaybe<StringExpression>;
-  permissionNameType?: InputMaybe<PermissionExpression>;
 };
 
-export type RoleComposite = Meta & {
-  __typename?: 'RoleComposite';
+export type RoleCompositeRelation = {
+  __typename?: 'RoleCompositeRelation';
   id?: Maybe<Scalars['ID']>;
-  roleId?: Maybe<Scalars['Int']>;
-  roleIdType?: Maybe<Role>;
-  compositeId?: Maybe<Scalars['Int']>;
-  compositeIdType?: Maybe<Role>;
+  roleRef?: Maybe<Scalars['String']>;
+  role?: Maybe<Role>;
+  compositeRef?: Maybe<Scalars['String']>;
+  composite?: Maybe<Role>;
   isDeprecated?: Maybe<Scalars['Boolean']>;
   version?: Maybe<Scalars['Int']>;
   realmId?: Maybe<Scalars['Int']>;
@@ -3967,20 +4833,16 @@ export type RoleComposite = Meta & {
   idCount?: Maybe<Scalars['Int']>;
   idMax?: Maybe<Scalars['Int']>;
   idMin?: Maybe<Scalars['Int']>;
-  roleIdCount?: Maybe<Scalars['Int']>;
-  roleIdSum?: Maybe<Scalars['Int']>;
-  roleIdAvg?: Maybe<Scalars['Int']>;
-  roleIdMax?: Maybe<Scalars['Int']>;
-  roleIdMin?: Maybe<Scalars['Int']>;
-  compositeIdCount?: Maybe<Scalars['Int']>;
-  compositeIdSum?: Maybe<Scalars['Int']>;
-  compositeIdAvg?: Maybe<Scalars['Int']>;
-  compositeIdMax?: Maybe<Scalars['Int']>;
-  compositeIdMin?: Maybe<Scalars['Int']>;
+  roleRefCount?: Maybe<Scalars['Int']>;
+  roleRefMax?: Maybe<Scalars['String']>;
+  roleRefMin?: Maybe<Scalars['String']>;
+  compositeRefCount?: Maybe<Scalars['Int']>;
+  compositeRefMax?: Maybe<Scalars['String']>;
+  compositeRefMin?: Maybe<Scalars['String']>;
 };
 
 
-export type RoleCompositeRoleIdTypeArgs = {
+export type RoleCompositeRelationRoleArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -3997,15 +4859,15 @@ export type RoleCompositeRoleIdTypeArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
-export type RoleCompositeCompositeIdTypeArgs = {
+export type RoleCompositeRelationCompositeArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -4022,26 +4884,26 @@ export type RoleCompositeCompositeIdTypeArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
-export type RoleCompositeConnection = {
-  __typename?: 'RoleCompositeConnection';
+export type RoleCompositeRelationConnection = {
+  __typename?: 'RoleCompositeRelationConnection';
   totalCount?: Maybe<Scalars['Int']>;
   pageInfo?: Maybe<PageInfo>;
-  edges?: Maybe<Array<Maybe<RoleCompositeEdge>>>;
+  edges?: Maybe<Array<Maybe<RoleCompositeRelationEdge>>>;
 };
 
-export type RoleCompositeConnectionQueryArguments = {
+export type RoleCompositeRelationConnectionQueryArguments = {
   id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  compositeId?: InputMaybe<IntExpression>;
-  compositeIdType?: InputMaybe<RoleExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  compositeRef?: InputMaybe<StringExpression>;
+  composite?: InputMaybe<RoleExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -4050,11 +4912,11 @@ export type RoleCompositeConnectionQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<RoleCompositeOrderBy>;
+  orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RoleCompositeExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -4062,12 +4924,12 @@ export type RoleCompositeConnectionQueryArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-export type RoleCompositeConnectionSubscriptionArguments = {
+export type RoleCompositeRelationConnectionSubscriptionArguments = {
   id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  compositeId?: InputMaybe<IntExpression>;
-  compositeIdType?: InputMaybe<RoleExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  compositeRef?: InputMaybe<StringExpression>;
+  composite?: InputMaybe<RoleExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -4076,11 +4938,11 @@ export type RoleCompositeConnectionSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<RoleCompositeOrderBy>;
+  orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RoleCompositeExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -4088,18 +4950,18 @@ export type RoleCompositeConnectionSubscriptionArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-export type RoleCompositeEdge = {
-  __typename?: 'RoleCompositeEdge';
-  node?: Maybe<RoleComposite>;
+export type RoleCompositeRelationEdge = {
+  __typename?: 'RoleCompositeRelationEdge';
+  node?: Maybe<RoleCompositeRelation>;
   cursor?: Maybe<Scalars['ID']>;
 };
 
-export type RoleCompositeExpression = {
+export type RoleCompositeRelationExpression = {
   id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  compositeId?: InputMaybe<IntExpression>;
-  compositeIdType?: InputMaybe<RoleExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  compositeRef?: InputMaybe<StringExpression>;
+  composite?: InputMaybe<RoleExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -4110,15 +4972,15 @@ export type RoleCompositeExpression = {
   createGroupId?: InputMaybe<StringExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RoleCompositeExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
 };
 
-export type RoleCompositeInput = {
+export type RoleCompositeRelationInput = {
   id?: InputMaybe<Scalars['ID']>;
-  roleId?: InputMaybe<Scalars['Int']>;
-  roleIdType?: InputMaybe<RoleInput>;
-  compositeId?: InputMaybe<Scalars['Int']>;
-  compositeIdType?: InputMaybe<RoleInput>;
+  roleRef?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<RoleInput>;
+  compositeRef?: InputMaybe<Scalars['String']>;
+  composite?: InputMaybe<RoleInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -4127,15 +4989,15 @@ export type RoleCompositeInput = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  where?: InputMaybe<RoleCompositeExpression>;
+  where?: InputMaybe<RoleCompositeRelationExpression>;
 };
 
-export type RoleCompositeListMutationArguments = {
+export type RoleCompositeRelationListMutationArguments = {
   id?: InputMaybe<Scalars['ID']>;
-  roleId?: InputMaybe<Scalars['Int']>;
-  roleIdType?: InputMaybe<RoleInput>;
-  compositeId?: InputMaybe<Scalars['Int']>;
-  compositeIdType?: InputMaybe<RoleInput>;
+  roleRef?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<RoleInput>;
+  compositeRef?: InputMaybe<Scalars['String']>;
+  composite?: InputMaybe<RoleInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -4144,16 +5006,16 @@ export type RoleCompositeListMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  list?: InputMaybe<Array<InputMaybe<RoleCompositeInput>>>;
-  where?: InputMaybe<RoleCompositeExpression>;
+  list?: InputMaybe<Array<InputMaybe<RoleCompositeRelationInput>>>;
+  where?: InputMaybe<RoleCompositeRelationExpression>;
 };
 
-export type RoleCompositeListQueryArguments = {
+export type RoleCompositeRelationListQueryArguments = {
   id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  compositeId?: InputMaybe<IntExpression>;
-  compositeIdType?: InputMaybe<RoleExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  compositeRef?: InputMaybe<StringExpression>;
+  composite?: InputMaybe<RoleExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -4162,11 +5024,11 @@ export type RoleCompositeListQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<RoleCompositeOrderBy>;
+  orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RoleCompositeExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -4174,12 +5036,12 @@ export type RoleCompositeListQueryArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-export type RoleCompositeListSubscriptionArguments = {
+export type RoleCompositeRelationListSubscriptionArguments = {
   id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  compositeId?: InputMaybe<IntExpression>;
-  compositeIdType?: InputMaybe<RoleExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  compositeRef?: InputMaybe<StringExpression>;
+  composite?: InputMaybe<RoleExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -4188,11 +5050,11 @@ export type RoleCompositeListSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<RoleCompositeOrderBy>;
+  orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RoleCompositeExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -4200,12 +5062,12 @@ export type RoleCompositeListSubscriptionArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-export type RoleCompositeMutationArguments = {
+export type RoleCompositeRelationMutationArguments = {
   id?: InputMaybe<Scalars['ID']>;
-  roleId?: InputMaybe<Scalars['Int']>;
-  roleIdType?: InputMaybe<RoleInput>;
-  compositeId?: InputMaybe<Scalars['Int']>;
-  compositeIdType?: InputMaybe<RoleInput>;
+  roleRef?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<RoleInput>;
+  compositeRef?: InputMaybe<Scalars['String']>;
+  composite?: InputMaybe<RoleInput>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -4214,13 +5076,13 @@ export type RoleCompositeMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  where?: InputMaybe<RoleCompositeExpression>;
+  where?: InputMaybe<RoleCompositeRelationExpression>;
 };
 
-export type RoleCompositeOrderBy = {
+export type RoleCompositeRelationOrderBy = {
   id?: InputMaybe<Sort>;
-  roleId?: InputMaybe<Sort>;
-  compositeId?: InputMaybe<Sort>;
+  roleRef?: InputMaybe<Sort>;
+  compositeRef?: InputMaybe<Sort>;
   isDeprecated?: InputMaybe<Sort>;
   version?: InputMaybe<Sort>;
   realmId?: InputMaybe<Sort>;
@@ -4231,12 +5093,12 @@ export type RoleCompositeOrderBy = {
   createGroupId?: InputMaybe<Sort>;
 };
 
-export type RoleCompositeQueryArguments = {
+export type RoleCompositeRelationQueryArguments = {
   id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  compositeId?: InputMaybe<IntExpression>;
-  compositeIdType?: InputMaybe<RoleExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  compositeRef?: InputMaybe<StringExpression>;
+  composite?: InputMaybe<RoleExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -4248,15 +5110,15 @@ export type RoleCompositeQueryArguments = {
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RoleCompositeExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
 };
 
-export type RoleCompositeSubscriptionArguments = {
+export type RoleCompositeRelationSubscriptionArguments = {
   id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  compositeId?: InputMaybe<IntExpression>;
-  compositeIdType?: InputMaybe<RoleExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  compositeRef?: InputMaybe<StringExpression>;
+  composite?: InputMaybe<RoleExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -4268,7 +5130,7 @@ export type RoleCompositeSubscriptionArguments = {
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RoleCompositeExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
 };
 
 export type RoleConnection = {
@@ -4295,10 +5157,10 @@ export type RoleConnectionQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   orderBy?: InputMaybe<RoleOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -4328,10 +5190,10 @@ export type RoleConnectionSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   orderBy?: InputMaybe<RoleOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -4367,10 +5229,10 @@ export type RoleExpression = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
@@ -4393,10 +5255,10 @@ export type RoleInput = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  userRole?: InputMaybe<Array<InputMaybe<UserRoleInput>>>;
-  groupRole?: InputMaybe<Array<InputMaybe<GroupRoleInput>>>;
-  roleComposite?: InputMaybe<Array<InputMaybe<RoleCompositeInput>>>;
-  rolePermission?: InputMaybe<Array<InputMaybe<RolePermissionInput>>>;
+  roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
+  groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
+  roleCompositeRelation?: InputMaybe<Array<InputMaybe<RoleCompositeRelationInput>>>;
+  permissionRoleRelation?: InputMaybe<Array<InputMaybe<PermissionRoleRelationInput>>>;
   where?: InputMaybe<RoleExpression>;
 };
 
@@ -4417,10 +5279,10 @@ export type RoleListMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  userRole?: InputMaybe<Array<InputMaybe<UserRoleInput>>>;
-  groupRole?: InputMaybe<Array<InputMaybe<GroupRoleInput>>>;
-  roleComposite?: InputMaybe<Array<InputMaybe<RoleCompositeInput>>>;
-  rolePermission?: InputMaybe<Array<InputMaybe<RolePermissionInput>>>;
+  roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
+  groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
+  roleCompositeRelation?: InputMaybe<Array<InputMaybe<RoleCompositeRelationInput>>>;
+  permissionRoleRelation?: InputMaybe<Array<InputMaybe<PermissionRoleRelationInput>>>;
   list?: InputMaybe<Array<InputMaybe<RoleInput>>>;
   where?: InputMaybe<RoleExpression>;
 };
@@ -4442,10 +5304,10 @@ export type RoleListQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   orderBy?: InputMaybe<RoleOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -4475,10 +5337,10 @@ export type RoleListSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   orderBy?: InputMaybe<RoleOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -4508,10 +5370,10 @@ export type RoleMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  userRole?: InputMaybe<Array<InputMaybe<UserRoleInput>>>;
-  groupRole?: InputMaybe<Array<InputMaybe<GroupRoleInput>>>;
-  roleComposite?: InputMaybe<Array<InputMaybe<RoleCompositeInput>>>;
-  rolePermission?: InputMaybe<Array<InputMaybe<RolePermissionInput>>>;
+  roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
+  groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
+  roleCompositeRelation?: InputMaybe<Array<InputMaybe<RoleCompositeRelationInput>>>;
+  permissionRoleRelation?: InputMaybe<Array<InputMaybe<PermissionRoleRelationInput>>>;
   where?: InputMaybe<RoleExpression>;
 };
 
@@ -4527,322 +5389,6 @@ export type RoleOrderBy = {
   updateUserId?: InputMaybe<Sort>;
   updateTime?: InputMaybe<Sort>;
   createGroupId?: InputMaybe<Sort>;
-};
-
-export type RolePermission = Meta & {
-  __typename?: 'RolePermission';
-  id?: Maybe<Scalars['ID']>;
-  roleId?: Maybe<Scalars['Int']>;
-  roleIdType?: Maybe<Role>;
-  permissionName?: Maybe<Scalars['String']>;
-  permissionNameType?: Maybe<Permission>;
-  isDeprecated?: Maybe<Scalars['Boolean']>;
-  version?: Maybe<Scalars['Int']>;
-  realmId?: Maybe<Scalars['Int']>;
-  createUserId?: Maybe<Scalars['String']>;
-  createTime?: Maybe<Scalars['Timestamp']>;
-  updateUserId?: Maybe<Scalars['String']>;
-  updateTime?: Maybe<Scalars['Timestamp']>;
-  createGroupId?: Maybe<Scalars['String']>;
-  idCount?: Maybe<Scalars['Int']>;
-  idMax?: Maybe<Scalars['Int']>;
-  idMin?: Maybe<Scalars['Int']>;
-  permissionNameCount?: Maybe<Scalars['Int']>;
-  permissionNameMax?: Maybe<Scalars['String']>;
-  permissionNameMin?: Maybe<Scalars['String']>;
-  roleIdCount?: Maybe<Scalars['Int']>;
-  roleIdSum?: Maybe<Scalars['Int']>;
-  roleIdAvg?: Maybe<Scalars['Int']>;
-  roleIdMax?: Maybe<Scalars['Int']>;
-  roleIdMin?: Maybe<Scalars['Int']>;
-};
-
-
-export type RolePermissionRoleIdTypeArgs = {
-  id?: InputMaybe<StringExpression>;
-  name?: InputMaybe<StringExpression>;
-  description?: InputMaybe<StringExpression>;
-  users?: InputMaybe<UserExpression>;
-  groups?: InputMaybe<GroupExpression>;
-  composites?: InputMaybe<RoleExpression>;
-  permissions?: InputMaybe<PermissionExpression>;
-  realm?: InputMaybe<RealmExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-};
-
-
-export type RolePermissionPermissionNameTypeArgs = {
-  name?: InputMaybe<StringExpression>;
-  description?: InputMaybe<StringExpression>;
-  field?: InputMaybe<StringExpression>;
-  type?: InputMaybe<StringExpression>;
-  permissionType?: InputMaybe<PermissionTypeExpression>;
-  roles?: InputMaybe<RoleExpression>;
-  realm?: InputMaybe<RealmExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-};
-
-export type RolePermissionConnection = {
-  __typename?: 'RolePermissionConnection';
-  totalCount?: Maybe<Scalars['Int']>;
-  pageInfo?: Maybe<PageInfo>;
-  edges?: Maybe<Array<Maybe<RolePermissionEdge>>>;
-};
-
-export type RolePermissionConnectionQueryArguments = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  permissionName?: InputMaybe<StringExpression>;
-  permissionNameType?: InputMaybe<PermissionExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<RolePermissionOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RolePermissionExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-export type RolePermissionConnectionSubscriptionArguments = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  permissionName?: InputMaybe<StringExpression>;
-  permissionNameType?: InputMaybe<PermissionExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<RolePermissionOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RolePermissionExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-export type RolePermissionEdge = {
-  __typename?: 'RolePermissionEdge';
-  node?: Maybe<RolePermission>;
-  cursor?: Maybe<Scalars['ID']>;
-};
-
-export type RolePermissionExpression = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  permissionName?: InputMaybe<StringExpression>;
-  permissionNameType?: InputMaybe<PermissionExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RolePermissionExpression>>>;
-};
-
-export type RolePermissionInput = {
-  id?: InputMaybe<Scalars['ID']>;
-  roleId?: InputMaybe<Scalars['Int']>;
-  roleIdType?: InputMaybe<RoleInput>;
-  permissionName?: InputMaybe<Scalars['String']>;
-  permissionNameType?: InputMaybe<PermissionInput>;
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<Scalars['Int']>;
-  realmId?: InputMaybe<Scalars['Int']>;
-  createUserId?: InputMaybe<Scalars['String']>;
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  updateUserId?: InputMaybe<Scalars['String']>;
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  createGroupId?: InputMaybe<Scalars['String']>;
-  where?: InputMaybe<RolePermissionExpression>;
-};
-
-export type RolePermissionListMutationArguments = {
-  id?: InputMaybe<Scalars['ID']>;
-  roleId?: InputMaybe<Scalars['Int']>;
-  roleIdType?: InputMaybe<RoleInput>;
-  permissionName?: InputMaybe<Scalars['String']>;
-  permissionNameType?: InputMaybe<PermissionInput>;
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<Scalars['Int']>;
-  realmId?: InputMaybe<Scalars['Int']>;
-  createUserId?: InputMaybe<Scalars['String']>;
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  updateUserId?: InputMaybe<Scalars['String']>;
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  createGroupId?: InputMaybe<Scalars['String']>;
-  list?: InputMaybe<Array<InputMaybe<RolePermissionInput>>>;
-  where?: InputMaybe<RolePermissionExpression>;
-};
-
-export type RolePermissionListQueryArguments = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  permissionName?: InputMaybe<StringExpression>;
-  permissionNameType?: InputMaybe<PermissionExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<RolePermissionOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RolePermissionExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-export type RolePermissionListSubscriptionArguments = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  permissionName?: InputMaybe<StringExpression>;
-  permissionNameType?: InputMaybe<PermissionExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<RolePermissionOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RolePermissionExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-export type RolePermissionMutationArguments = {
-  id?: InputMaybe<Scalars['ID']>;
-  roleId?: InputMaybe<Scalars['Int']>;
-  roleIdType?: InputMaybe<RoleInput>;
-  permissionName?: InputMaybe<Scalars['String']>;
-  permissionNameType?: InputMaybe<PermissionInput>;
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<Scalars['Int']>;
-  realmId?: InputMaybe<Scalars['Int']>;
-  createUserId?: InputMaybe<Scalars['String']>;
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  updateUserId?: InputMaybe<Scalars['String']>;
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  createGroupId?: InputMaybe<Scalars['String']>;
-  where?: InputMaybe<RolePermissionExpression>;
-};
-
-export type RolePermissionOrderBy = {
-  id?: InputMaybe<Sort>;
-  roleId?: InputMaybe<Sort>;
-  permissionName?: InputMaybe<Sort>;
-  isDeprecated?: InputMaybe<Sort>;
-  version?: InputMaybe<Sort>;
-  realmId?: InputMaybe<Sort>;
-  createUserId?: InputMaybe<Sort>;
-  createTime?: InputMaybe<Sort>;
-  updateUserId?: InputMaybe<Sort>;
-  updateTime?: InputMaybe<Sort>;
-  createGroupId?: InputMaybe<Sort>;
-};
-
-export type RolePermissionQueryArguments = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  permissionName?: InputMaybe<StringExpression>;
-  permissionNameType?: InputMaybe<PermissionExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RolePermissionExpression>>>;
-};
-
-export type RolePermissionSubscriptionArguments = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  permissionName?: InputMaybe<StringExpression>;
-  permissionNameType?: InputMaybe<PermissionExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RolePermissionExpression>>>;
 };
 
 export type RoleQueryArguments = {
@@ -4862,10 +5408,10 @@ export type RoleQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
@@ -4889,14 +5435,336 @@ export type RoleSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
+};
+
+export type RoleUserRelation = {
+  __typename?: 'RoleUserRelation';
+  id?: Maybe<Scalars['ID']>;
+  userRef?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
+  roleRef?: Maybe<Scalars['String']>;
+  role?: Maybe<Role>;
+  isDeprecated?: Maybe<Scalars['Boolean']>;
+  version?: Maybe<Scalars['Int']>;
+  realmId?: Maybe<Scalars['Int']>;
+  createUserId?: Maybe<Scalars['String']>;
+  createTime?: Maybe<Scalars['Timestamp']>;
+  updateUserId?: Maybe<Scalars['String']>;
+  updateTime?: Maybe<Scalars['Timestamp']>;
+  createGroupId?: Maybe<Scalars['String']>;
+  idCount?: Maybe<Scalars['Int']>;
+  idMax?: Maybe<Scalars['Int']>;
+  idMin?: Maybe<Scalars['Int']>;
+  userRefCount?: Maybe<Scalars['Int']>;
+  userRefMax?: Maybe<Scalars['String']>;
+  userRefMin?: Maybe<Scalars['String']>;
+  roleRefCount?: Maybe<Scalars['Int']>;
+  roleRefMax?: Maybe<Scalars['String']>;
+  roleRefMin?: Maybe<Scalars['String']>;
+};
+
+
+export type RoleUserRelationUserArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
+  lastName?: InputMaybe<StringExpression>;
+  login?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
+  email?: InputMaybe<StringExpression>;
+  phones?: InputMaybe<StringExpression>;
+  disable?: InputMaybe<BooleanExpression>;
+  groups?: InputMaybe<GroupExpression>;
+  roles?: InputMaybe<RoleExpression>;
+  realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+
+export type RoleUserRelationRoleArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
+  users?: InputMaybe<UserExpression>;
+  groups?: InputMaybe<GroupExpression>;
+  composites?: InputMaybe<RoleExpression>;
+  permissions?: InputMaybe<PermissionExpression>;
+  realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type RoleUserRelationConnection = {
+  __typename?: 'RoleUserRelationConnection';
+  totalCount?: Maybe<Scalars['Int']>;
+  pageInfo?: Maybe<PageInfo>;
+  edges?: Maybe<Array<Maybe<RoleUserRelationEdge>>>;
+};
+
+export type RoleUserRelationConnectionQueryArguments = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<RoleUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+export type RoleUserRelationConnectionSubscriptionArguments = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<RoleUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+export type RoleUserRelationEdge = {
+  __typename?: 'RoleUserRelationEdge';
+  node?: Maybe<RoleUserRelation>;
+  cursor?: Maybe<Scalars['ID']>;
+};
+
+export type RoleUserRelationExpression = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
+};
+
+export type RoleUserRelationInput = {
+  id?: InputMaybe<Scalars['ID']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  roleRef?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<RoleInput>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  where?: InputMaybe<RoleUserRelationExpression>;
+};
+
+export type RoleUserRelationListMutationArguments = {
+  id?: InputMaybe<Scalars['ID']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  roleRef?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<RoleInput>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  list?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
+  where?: InputMaybe<RoleUserRelationExpression>;
+};
+
+export type RoleUserRelationListQueryArguments = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<RoleUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+export type RoleUserRelationListSubscriptionArguments = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<RoleUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+export type RoleUserRelationMutationArguments = {
+  id?: InputMaybe<Scalars['ID']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  roleRef?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<RoleInput>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  where?: InputMaybe<RoleUserRelationExpression>;
+};
+
+export type RoleUserRelationOrderBy = {
+  id?: InputMaybe<Sort>;
+  userRef?: InputMaybe<Sort>;
+  roleRef?: InputMaybe<Sort>;
+  isDeprecated?: InputMaybe<Sort>;
+  version?: InputMaybe<Sort>;
+  realmId?: InputMaybe<Sort>;
+  createUserId?: InputMaybe<Sort>;
+  createTime?: InputMaybe<Sort>;
+  updateUserId?: InputMaybe<Sort>;
+  updateTime?: InputMaybe<Sort>;
+  createGroupId?: InputMaybe<Sort>;
+};
+
+export type RoleUserRelationQueryArguments = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
+};
+
+export type RoleUserRelationSubscriptionArguments = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
 };
 
 export type Sort =
@@ -4906,26 +5774,18 @@ export type Sort =
 export type SortExpression = {
   opr?: InputMaybe<Operator>;
   val?: InputMaybe<Sort>;
-  in?: InputMaybe<Array<InputMaybe<Sort>>>;
+  arr?: InputMaybe<Array<InputMaybe<Sort>>>;
 };
 
 export type StringExpression = {
   opr?: InputMaybe<Operator>;
   val?: InputMaybe<Scalars['String']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  arr?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   skipNull?: InputMaybe<Scalars['Boolean']>;
 };
 
-export type Subscription = Meta & {
+export type Subscription = {
   __typename?: 'Subscription';
-  isDeprecated?: Maybe<Scalars['Boolean']>;
-  version?: Maybe<Scalars['Int']>;
-  realmId?: Maybe<Scalars['Int']>;
-  createUserId?: Maybe<Scalars['String']>;
-  createTime?: Maybe<Scalars['Timestamp']>;
-  updateUserId?: Maybe<Scalars['String']>;
-  updateTime?: Maybe<Scalars['Timestamp']>;
-  createGroupId?: Maybe<Scalars['String']>;
   user?: Maybe<User>;
   userList?: Maybe<Array<Maybe<User>>>;
   userConnection?: Maybe<UserConnection>;
@@ -4941,24 +5801,24 @@ export type Subscription = Meta & {
   permission?: Maybe<Permission>;
   permissionList?: Maybe<Array<Maybe<Permission>>>;
   permissionConnection?: Maybe<PermissionConnection>;
-  userPhones?: Maybe<UserPhones>;
-  userPhonesList?: Maybe<Array<Maybe<UserPhones>>>;
-  userPhonesConnection?: Maybe<UserPhonesConnection>;
-  userGroup?: Maybe<UserGroup>;
-  userGroupList?: Maybe<Array<Maybe<UserGroup>>>;
-  userGroupConnection?: Maybe<UserGroupConnection>;
-  userRole?: Maybe<UserRole>;
-  userRoleList?: Maybe<Array<Maybe<UserRole>>>;
-  userRoleConnection?: Maybe<UserRoleConnection>;
-  groupRole?: Maybe<GroupRole>;
-  groupRoleList?: Maybe<Array<Maybe<GroupRole>>>;
-  groupRoleConnection?: Maybe<GroupRoleConnection>;
-  roleComposite?: Maybe<RoleComposite>;
-  roleCompositeList?: Maybe<Array<Maybe<RoleComposite>>>;
-  roleCompositeConnection?: Maybe<RoleCompositeConnection>;
-  rolePermission?: Maybe<RolePermission>;
-  rolePermissionList?: Maybe<Array<Maybe<RolePermission>>>;
-  rolePermissionConnection?: Maybe<RolePermissionConnection>;
+  userPhonesRelation?: Maybe<UserPhonesRelation>;
+  userPhonesRelationList?: Maybe<Array<Maybe<UserPhonesRelation>>>;
+  userPhonesRelationConnection?: Maybe<UserPhonesRelationConnection>;
+  groupUserRelation?: Maybe<GroupUserRelation>;
+  groupUserRelationList?: Maybe<Array<Maybe<GroupUserRelation>>>;
+  groupUserRelationConnection?: Maybe<GroupUserRelationConnection>;
+  roleUserRelation?: Maybe<RoleUserRelation>;
+  roleUserRelationList?: Maybe<Array<Maybe<RoleUserRelation>>>;
+  roleUserRelationConnection?: Maybe<RoleUserRelationConnection>;
+  groupRoleRelation?: Maybe<GroupRoleRelation>;
+  groupRoleRelationList?: Maybe<Array<Maybe<GroupRoleRelation>>>;
+  groupRoleRelationConnection?: Maybe<GroupRoleRelationConnection>;
+  roleCompositeRelation?: Maybe<RoleCompositeRelation>;
+  roleCompositeRelationList?: Maybe<Array<Maybe<RoleCompositeRelation>>>;
+  roleCompositeRelationConnection?: Maybe<RoleCompositeRelationConnection>;
+  permissionRoleRelation?: Maybe<PermissionRoleRelation>;
+  permissionRoleRelationList?: Maybe<Array<Maybe<PermissionRoleRelation>>>;
+  permissionRoleRelationConnection?: Maybe<PermissionRoleRelationConnection>;
 };
 
 
@@ -4984,9 +5844,9 @@ export type SubscriptionUserArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
@@ -5016,9 +5876,9 @@ export type SubscriptionUserListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
   orderBy?: InputMaybe<UserOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -5054,9 +5914,9 @@ export type SubscriptionUserConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
   orderBy?: InputMaybe<UserOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -5065,8 +5925,6 @@ export type SubscriptionUserConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -5087,10 +5945,10 @@ export type SubscriptionRoleArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
@@ -5115,10 +5973,10 @@ export type SubscriptionRoleListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   orderBy?: InputMaybe<RoleOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -5149,10 +6007,10 @@ export type SubscriptionRoleConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   orderBy?: InputMaybe<RoleOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -5161,8 +6019,6 @@ export type SubscriptionRoleConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -5186,8 +6042,8 @@ export type SubscriptionGroupArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
@@ -5215,8 +6071,8 @@ export type SubscriptionGroupListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   orderBy?: InputMaybe<GroupOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -5250,8 +6106,8 @@ export type SubscriptionGroupConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   orderBy?: InputMaybe<GroupOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -5260,8 +6116,6 @@ export type SubscriptionGroupConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -5329,8 +6183,6 @@ export type SubscriptionRealmConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -5350,7 +6202,7 @@ export type SubscriptionPermissionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
@@ -5374,7 +6226,7 @@ export type SubscriptionPermissionListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   orderBy?: InputMaybe<PermissionOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -5404,7 +6256,7 @@ export type SubscriptionPermissionConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
   orderBy?: InputMaybe<PermissionOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -5413,16 +6265,14 @@ export type SubscriptionPermissionConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
 };
 
 
-export type SubscriptionUserPhonesArgs = {
+export type SubscriptionUserPhonesRelationArgs = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  phone?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  phonesRef?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -5434,15 +6284,15 @@ export type SubscriptionUserPhonesArgs = {
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserPhonesExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
 };
 
 
-export type SubscriptionUserPhonesListArgs = {
+export type SubscriptionUserPhonesRelationListArgs = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  phone?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  phonesRef?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -5451,11 +6301,11 @@ export type SubscriptionUserPhonesListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserPhonesOrderBy>;
+  orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserPhonesExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5464,11 +6314,11 @@ export type SubscriptionUserPhonesListArgs = {
 };
 
 
-export type SubscriptionUserPhonesConnectionArgs = {
+export type SubscriptionUserPhonesRelationConnectionArgs = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  phone?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  phonesRef?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -5477,11 +6327,57 @@ export type SubscriptionUserPhonesConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserPhonesOrderBy>;
+  orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserPhonesExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type SubscriptionGroupUserRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
+};
+
+
+export type SubscriptionGroupUserRelationListArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<GroupUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5490,12 +6386,12 @@ export type SubscriptionUserPhonesConnectionArgs = {
 };
 
 
-export type SubscriptionUserGroupArgs = {
+export type SubscriptionGroupUserRelationConnectionArgs = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -5504,19 +6400,23 @@ export type SubscriptionUserGroupArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<GroupUserRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserGroupExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
-export type SubscriptionUserGroupListArgs = {
+export type SubscriptionRoleUserRelationArgs = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -5525,11 +6425,32 @@ export type SubscriptionUserGroupListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserGroupOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserGroupExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
+};
+
+
+export type SubscriptionRoleUserRelationListArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<RoleUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5538,12 +6459,12 @@ export type SubscriptionUserGroupListArgs = {
 };
 
 
-export type SubscriptionUserGroupConnectionArgs = {
+export type SubscriptionRoleUserRelationConnectionArgs = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -5552,11 +6473,57 @@ export type SubscriptionUserGroupConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserGroupOrderBy>;
+  orderBy?: InputMaybe<RoleUserRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserGroupExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type SubscriptionGroupRoleRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
+};
+
+
+export type SubscriptionGroupRoleRelationListArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5565,12 +6532,12 @@ export type SubscriptionUserGroupConnectionArgs = {
 };
 
 
-export type SubscriptionUserRoleArgs = {
+export type SubscriptionGroupRoleRelationConnectionArgs = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -5579,19 +6546,23 @@ export type SubscriptionUserRoleArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserRoleExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
-export type SubscriptionUserRoleListArgs = {
+export type SubscriptionRoleCompositeRelationArgs = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  compositeRef?: InputMaybe<StringExpression>;
+  composite?: InputMaybe<RoleExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -5600,11 +6571,32 @@ export type SubscriptionUserRoleListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserRoleOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserRoleExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
+};
+
+
+export type SubscriptionRoleCompositeRelationListArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  compositeRef?: InputMaybe<StringExpression>;
+  composite?: InputMaybe<RoleExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5613,12 +6605,12 @@ export type SubscriptionUserRoleListArgs = {
 };
 
 
-export type SubscriptionUserRoleConnectionArgs = {
+export type SubscriptionRoleCompositeRelationConnectionArgs = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  compositeRef?: InputMaybe<StringExpression>;
+  composite?: InputMaybe<RoleExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -5627,11 +6619,57 @@ export type SubscriptionUserRoleConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserRoleOrderBy>;
+  orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserRoleExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type SubscriptionPermissionRoleRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  permissionRef?: InputMaybe<StringExpression>;
+  permission?: InputMaybe<PermissionExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<PermissionRoleRelationExpression>>>;
+};
+
+
+export type SubscriptionPermissionRoleRelationListArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  permissionRef?: InputMaybe<StringExpression>;
+  permission?: InputMaybe<PermissionExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<PermissionRoleRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<PermissionRoleRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5640,12 +6678,12 @@ export type SubscriptionUserRoleConnectionArgs = {
 };
 
 
-export type SubscriptionGroupRoleArgs = {
+export type SubscriptionPermissionRoleRelationConnectionArgs = {
   id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  permissionRef?: InputMaybe<StringExpression>;
+  permission?: InputMaybe<PermissionExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -5654,214 +6692,14 @@ export type SubscriptionGroupRoleArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<PermissionRoleRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<GroupRoleExpression>>>;
-};
-
-
-export type SubscriptionGroupRoleListArgs = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<GroupRoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<GroupRoleExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<PermissionRoleRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type SubscriptionGroupRoleConnectionArgs = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<GroupRoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<GroupRoleExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type SubscriptionRoleCompositeArgs = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  compositeId?: InputMaybe<IntExpression>;
-  compositeIdType?: InputMaybe<RoleExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RoleCompositeExpression>>>;
-};
-
-
-export type SubscriptionRoleCompositeListArgs = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  compositeId?: InputMaybe<IntExpression>;
-  compositeIdType?: InputMaybe<RoleExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<RoleCompositeOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RoleCompositeExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type SubscriptionRoleCompositeConnectionArgs = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  compositeId?: InputMaybe<IntExpression>;
-  compositeIdType?: InputMaybe<RoleExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<RoleCompositeOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RoleCompositeExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type SubscriptionRolePermissionArgs = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  permissionName?: InputMaybe<StringExpression>;
-  permissionNameType?: InputMaybe<PermissionExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RolePermissionExpression>>>;
-};
-
-
-export type SubscriptionRolePermissionListArgs = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  permissionName?: InputMaybe<StringExpression>;
-  permissionNameType?: InputMaybe<PermissionExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<RolePermissionOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RolePermissionExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type SubscriptionRolePermissionConnectionArgs = {
-  id?: InputMaybe<StringExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  permissionName?: InputMaybe<StringExpression>;
-  permissionNameType?: InputMaybe<PermissionExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<RolePermissionOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<RolePermissionExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
 };
 
 export type TreeStruct = {
@@ -5876,6 +6714,16 @@ export type TreeStructExpression = {
   path?: InputMaybe<StringExpression>;
   deep?: InputMaybe<IntExpression>;
   parentId?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
 };
 
 export type TreeStructInput = {
@@ -5883,10 +6731,18 @@ export type TreeStructInput = {
   path?: InputMaybe<Scalars['String']>;
   deep?: InputMaybe<Scalars['Int']>;
   parentId?: InputMaybe<Scalars['String']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
 };
 
 /** 用户 */
-export type User = NamedStruct & Meta & {
+export type User = {
   __typename?: 'User';
   /** ID */
   id?: Maybe<Scalars['ID']>;
@@ -5922,6 +6778,19 @@ export type User = NamedStruct & Meta & {
   updateUserId?: Maybe<Scalars['String']>;
   updateTime?: Maybe<Scalars['Timestamp']>;
   createGroupId?: Maybe<Scalars['String']>;
+  userPhonesRelation?: Maybe<Array<Maybe<UserPhonesRelation>>>;
+  groupUserRelation?: Maybe<Array<Maybe<GroupUserRelation>>>;
+  roleUserRelation?: Maybe<Array<Maybe<RoleUserRelation>>>;
+  groupsAggregate?: Maybe<Group>;
+  groupsConnection?: Maybe<GroupConnection>;
+  rolesAggregate?: Maybe<Role>;
+  rolesConnection?: Maybe<RoleConnection>;
+  userPhonesRelationAggregate?: Maybe<UserPhonesRelation>;
+  userPhonesRelationConnection?: Maybe<UserPhonesRelationConnection>;
+  groupUserRelationAggregate?: Maybe<GroupUserRelation>;
+  groupUserRelationConnection?: Maybe<GroupUserRelationConnection>;
+  roleUserRelationAggregate?: Maybe<RoleUserRelation>;
+  roleUserRelationConnection?: Maybe<RoleUserRelationConnection>;
   idCount?: Maybe<Scalars['Int']>;
   idMax?: Maybe<Scalars['Int']>;
   idMin?: Maybe<Scalars['Int']>;
@@ -5946,24 +6815,6 @@ export type User = NamedStruct & Meta & {
   emailCount?: Maybe<Scalars['Int']>;
   emailMax?: Maybe<Scalars['String']>;
   emailMin?: Maybe<Scalars['String']>;
-  groupsAggregate?: Maybe<Group>;
-  groupsConnection?: Maybe<GroupConnection>;
-  rolesAggregate?: Maybe<Role>;
-  rolesConnection?: Maybe<RoleConnection>;
-  realmIdCount?: Maybe<Scalars['Int']>;
-  realmIdSum?: Maybe<Scalars['Int']>;
-  realmIdAvg?: Maybe<Scalars['Int']>;
-  realmIdMax?: Maybe<Scalars['Int']>;
-  realmIdMin?: Maybe<Scalars['Int']>;
-  userPhones?: Maybe<Array<Maybe<UserPhones>>>;
-  userPhonesAggregate?: Maybe<UserPhones>;
-  userPhonesConnection?: Maybe<UserPhonesConnection>;
-  userGroup?: Maybe<Array<Maybe<UserGroup>>>;
-  userGroupAggregate?: Maybe<UserGroup>;
-  userGroupConnection?: Maybe<UserGroupConnection>;
-  userRole?: Maybe<Array<Maybe<UserRole>>>;
-  userRoleAggregate?: Maybe<UserRole>;
-  userRoleConnection?: Maybe<UserRoleConnection>;
   syncUserPolicy?: Maybe<Scalars['Boolean']>;
 };
 
@@ -5972,11 +6823,13 @@ export type User = NamedStruct & Meta & {
 export type UserPhonesArgs = {
   opr?: InputMaybe<Operator>;
   val?: InputMaybe<Scalars['String']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  arr?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   sort?: InputMaybe<Sort>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -5993,13 +6846,21 @@ export type UserGroupsArgs = {
   users?: InputMaybe<UserExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GroupOrderBy>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
-  orderBy?: InputMaybe<GroupOrderBy>;
 };
 
 
@@ -6013,13 +6874,21 @@ export type UserRolesArgs = {
   composites?: InputMaybe<RoleExpression>;
   permissions?: InputMaybe<PermissionExpression>;
   realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleOrderBy>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
-  orderBy?: InputMaybe<RoleOrderBy>;
 };
 
 
@@ -6028,17 +6897,20 @@ export type UserRealmArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 用户 */
 export type UserGroupsAggregateArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -6050,18 +6922,24 @@ export type UserGroupsAggregateArgs = {
   users?: InputMaybe<UserExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GroupOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 用户 */
 export type UserGroupsConnectionArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -6073,16 +6951,24 @@ export type UserGroupsConnectionArgs = {
   users?: InputMaybe<UserExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GroupOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 用户 */
 export type UserRolesAggregateArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -6091,18 +6977,24 @@ export type UserRolesAggregateArgs = {
   composites?: InputMaybe<RoleExpression>;
   permissions?: InputMaybe<PermissionExpression>;
   realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 用户 */
 export type UserRolesConnectionArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -6111,94 +7003,155 @@ export type UserRolesConnectionArgs = {
   composites?: InputMaybe<RoleExpression>;
   permissions?: InputMaybe<PermissionExpression>;
   realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
 /** 用户 */
-export type UserUserPhonesAggregateArgs = {
+export type UserUserPhonesRelationAggregateArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  phonesRef?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<UserPhonesOrderBy>;
+  orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  phone?: InputMaybe<StringExpression>;
 };
 
 
 /** 用户 */
-export type UserUserPhonesConnectionArgs = {
+export type UserUserPhonesRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  phonesRef?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<UserPhonesOrderBy>;
+  orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  phone?: InputMaybe<StringExpression>;
 };
 
 
 /** 用户 */
-export type UserUserGroupAggregateArgs = {
+export type UserGroupUserRelationAggregateArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<UserGroupOrderBy>;
+  orderBy?: InputMaybe<GroupUserRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
 };
 
 
 /** 用户 */
-export type UserUserGroupConnectionArgs = {
+export type UserGroupUserRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<UserGroupOrderBy>;
+  orderBy?: InputMaybe<GroupUserRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
 };
 
 
 /** 用户 */
-export type UserUserRoleAggregateArgs = {
+export type UserRoleUserRelationAggregateArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<UserRoleOrderBy>;
+  orderBy?: InputMaybe<RoleUserRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
 };
 
 
 /** 用户 */
-export type UserUserRoleConnectionArgs = {
+export type UserRoleUserRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<UserRoleOrderBy>;
+  orderBy?: InputMaybe<RoleUserRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
 };
 
 export type UserConnection = {
@@ -6230,9 +7183,9 @@ export type UserConnectionQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
   orderBy?: InputMaybe<UserOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -6267,9 +7220,9 @@ export type UserConnectionSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
   orderBy?: InputMaybe<UserOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -6310,339 +7263,12 @@ export type UserExpression = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
-};
-
-export type UserGroup = Meta & {
-  __typename?: 'UserGroup';
-  id?: Maybe<Scalars['ID']>;
-  userId?: Maybe<Scalars['Int']>;
-  userIdType?: Maybe<User>;
-  groupId?: Maybe<Scalars['Int']>;
-  groupIdType?: Maybe<Group>;
-  isDeprecated?: Maybe<Scalars['Boolean']>;
-  version?: Maybe<Scalars['Int']>;
-  realmId?: Maybe<Scalars['Int']>;
-  createUserId?: Maybe<Scalars['String']>;
-  createTime?: Maybe<Scalars['Timestamp']>;
-  updateUserId?: Maybe<Scalars['String']>;
-  updateTime?: Maybe<Scalars['Timestamp']>;
-  createGroupId?: Maybe<Scalars['String']>;
-  idCount?: Maybe<Scalars['Int']>;
-  idMax?: Maybe<Scalars['Int']>;
-  idMin?: Maybe<Scalars['Int']>;
-  userIdCount?: Maybe<Scalars['Int']>;
-  userIdSum?: Maybe<Scalars['Int']>;
-  userIdAvg?: Maybe<Scalars['Int']>;
-  userIdMax?: Maybe<Scalars['Int']>;
-  userIdMin?: Maybe<Scalars['Int']>;
-  groupIdCount?: Maybe<Scalars['Int']>;
-  groupIdSum?: Maybe<Scalars['Int']>;
-  groupIdAvg?: Maybe<Scalars['Int']>;
-  groupIdMax?: Maybe<Scalars['Int']>;
-  groupIdMin?: Maybe<Scalars['Int']>;
-};
-
-
-export type UserGroupUserIdTypeArgs = {
-  id?: InputMaybe<StringExpression>;
-  name?: InputMaybe<StringExpression>;
-  description?: InputMaybe<StringExpression>;
-  lastName?: InputMaybe<StringExpression>;
-  login?: InputMaybe<StringExpression>;
-  salt?: InputMaybe<StringExpression>;
-  hash?: InputMaybe<StringExpression>;
-  email?: InputMaybe<StringExpression>;
-  phones?: InputMaybe<StringExpression>;
-  disable?: InputMaybe<BooleanExpression>;
-  groups?: InputMaybe<GroupExpression>;
-  roles?: InputMaybe<RoleExpression>;
-  realm?: InputMaybe<RealmExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-};
-
-
-export type UserGroupGroupIdTypeArgs = {
-  id?: InputMaybe<StringExpression>;
-  name?: InputMaybe<StringExpression>;
-  description?: InputMaybe<StringExpression>;
-  path?: InputMaybe<StringExpression>;
-  deep?: InputMaybe<IntExpression>;
-  parentId?: InputMaybe<StringExpression>;
-  parent?: InputMaybe<GroupExpression>;
-  subGroups?: InputMaybe<GroupExpression>;
-  users?: InputMaybe<UserExpression>;
-  roles?: InputMaybe<RoleExpression>;
-  realm?: InputMaybe<RealmExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-};
-
-export type UserGroupConnection = {
-  __typename?: 'UserGroupConnection';
-  totalCount?: Maybe<Scalars['Int']>;
-  pageInfo?: Maybe<PageInfo>;
-  edges?: Maybe<Array<Maybe<UserGroupEdge>>>;
-};
-
-export type UserGroupConnectionQueryArguments = {
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserGroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserGroupExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-export type UserGroupConnectionSubscriptionArguments = {
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserGroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserGroupExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-export type UserGroupEdge = {
-  __typename?: 'UserGroupEdge';
-  node?: Maybe<UserGroup>;
-  cursor?: Maybe<Scalars['ID']>;
-};
-
-export type UserGroupExpression = {
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserGroupExpression>>>;
-};
-
-export type UserGroupInput = {
-  id?: InputMaybe<Scalars['ID']>;
-  userId?: InputMaybe<Scalars['Int']>;
-  userIdType?: InputMaybe<UserInput>;
-  groupId?: InputMaybe<Scalars['Int']>;
-  groupIdType?: InputMaybe<GroupInput>;
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<Scalars['Int']>;
-  realmId?: InputMaybe<Scalars['Int']>;
-  createUserId?: InputMaybe<Scalars['String']>;
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  updateUserId?: InputMaybe<Scalars['String']>;
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  createGroupId?: InputMaybe<Scalars['String']>;
-  where?: InputMaybe<UserGroupExpression>;
-};
-
-export type UserGroupListMutationArguments = {
-  id?: InputMaybe<Scalars['ID']>;
-  userId?: InputMaybe<Scalars['Int']>;
-  userIdType?: InputMaybe<UserInput>;
-  groupId?: InputMaybe<Scalars['Int']>;
-  groupIdType?: InputMaybe<GroupInput>;
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<Scalars['Int']>;
-  realmId?: InputMaybe<Scalars['Int']>;
-  createUserId?: InputMaybe<Scalars['String']>;
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  updateUserId?: InputMaybe<Scalars['String']>;
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  createGroupId?: InputMaybe<Scalars['String']>;
-  list?: InputMaybe<Array<InputMaybe<UserGroupInput>>>;
-  where?: InputMaybe<UserGroupExpression>;
-};
-
-export type UserGroupListQueryArguments = {
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserGroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserGroupExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-export type UserGroupListSubscriptionArguments = {
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserGroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserGroupExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-export type UserGroupMutationArguments = {
-  id?: InputMaybe<Scalars['ID']>;
-  userId?: InputMaybe<Scalars['Int']>;
-  userIdType?: InputMaybe<UserInput>;
-  groupId?: InputMaybe<Scalars['Int']>;
-  groupIdType?: InputMaybe<GroupInput>;
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<Scalars['Int']>;
-  realmId?: InputMaybe<Scalars['Int']>;
-  createUserId?: InputMaybe<Scalars['String']>;
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  updateUserId?: InputMaybe<Scalars['String']>;
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  createGroupId?: InputMaybe<Scalars['String']>;
-  where?: InputMaybe<UserGroupExpression>;
-};
-
-export type UserGroupOrderBy = {
-  id?: InputMaybe<Sort>;
-  userId?: InputMaybe<Sort>;
-  groupId?: InputMaybe<Sort>;
-  isDeprecated?: InputMaybe<Sort>;
-  version?: InputMaybe<Sort>;
-  realmId?: InputMaybe<Sort>;
-  createUserId?: InputMaybe<Sort>;
-  createTime?: InputMaybe<Sort>;
-  updateUserId?: InputMaybe<Sort>;
-  updateTime?: InputMaybe<Sort>;
-  createGroupId?: InputMaybe<Sort>;
-};
-
-export type UserGroupQueryArguments = {
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserGroupExpression>>>;
-};
-
-export type UserGroupSubscriptionArguments = {
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  groupId?: InputMaybe<IntExpression>;
-  groupIdType?: InputMaybe<GroupExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserGroupExpression>>>;
 };
 
 export type UserInput = {
@@ -6667,9 +7293,9 @@ export type UserInput = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  userPhones?: InputMaybe<Array<InputMaybe<UserPhonesInput>>>;
-  userGroup?: InputMaybe<Array<InputMaybe<UserGroupInput>>>;
-  userRole?: InputMaybe<Array<InputMaybe<UserRoleInput>>>;
+  userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
+  groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
+  roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
   where?: InputMaybe<UserExpression>;
 };
 
@@ -6695,9 +7321,9 @@ export type UserListMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  userPhones?: InputMaybe<Array<InputMaybe<UserPhonesInput>>>;
-  userGroup?: InputMaybe<Array<InputMaybe<UserGroupInput>>>;
-  userRole?: InputMaybe<Array<InputMaybe<UserRoleInput>>>;
+  userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
+  groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
+  roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
   list?: InputMaybe<Array<InputMaybe<UserInput>>>;
   where?: InputMaybe<UserExpression>;
 };
@@ -6724,9 +7350,9 @@ export type UserListQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
   orderBy?: InputMaybe<UserOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -6761,9 +7387,9 @@ export type UserListSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
   orderBy?: InputMaybe<UserOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -6798,9 +7424,9 @@ export type UserMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  userPhones?: InputMaybe<Array<InputMaybe<UserPhonesInput>>>;
-  userGroup?: InputMaybe<Array<InputMaybe<UserGroupInput>>>;
-  userRole?: InputMaybe<Array<InputMaybe<UserRoleInput>>>;
+  userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
+  groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
+  roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
   where?: InputMaybe<UserExpression>;
 };
 
@@ -6824,12 +7450,12 @@ export type UserOrderBy = {
   createGroupId?: InputMaybe<Sort>;
 };
 
-export type UserPhones = Meta & {
-  __typename?: 'UserPhones';
+export type UserPhonesRelation = {
+  __typename?: 'UserPhonesRelation';
   id?: Maybe<Scalars['ID']>;
-  userId?: Maybe<Scalars['Int']>;
-  userIdType?: Maybe<User>;
-  phone?: Maybe<Scalars['String']>;
+  userRef?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
+  phonesRef?: Maybe<Scalars['String']>;
   isDeprecated?: Maybe<Scalars['Boolean']>;
   version?: Maybe<Scalars['Int']>;
   realmId?: Maybe<Scalars['Int']>;
@@ -6841,18 +7467,16 @@ export type UserPhones = Meta & {
   idCount?: Maybe<Scalars['Int']>;
   idMax?: Maybe<Scalars['Int']>;
   idMin?: Maybe<Scalars['Int']>;
-  phoneCount?: Maybe<Scalars['Int']>;
-  phoneMax?: Maybe<Scalars['String']>;
-  phoneMin?: Maybe<Scalars['String']>;
-  userIdCount?: Maybe<Scalars['Int']>;
-  userIdSum?: Maybe<Scalars['Int']>;
-  userIdAvg?: Maybe<Scalars['Int']>;
-  userIdMax?: Maybe<Scalars['Int']>;
-  userIdMin?: Maybe<Scalars['Int']>;
+  userRefCount?: Maybe<Scalars['Int']>;
+  userRefMax?: Maybe<Scalars['String']>;
+  userRefMin?: Maybe<Scalars['String']>;
+  phonesRefCount?: Maybe<Scalars['Int']>;
+  phonesRefMax?: Maybe<Scalars['String']>;
+  phonesRefMin?: Maybe<Scalars['String']>;
 };
 
 
-export type UserPhonesUserIdTypeArgs = {
+export type UserPhonesRelationUserArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   description?: InputMaybe<StringExpression>;
@@ -6874,24 +7498,24 @@ export type UserPhonesUserIdTypeArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
-export type UserPhonesConnection = {
-  __typename?: 'UserPhonesConnection';
+export type UserPhonesRelationConnection = {
+  __typename?: 'UserPhonesRelationConnection';
   totalCount?: Maybe<Scalars['Int']>;
   pageInfo?: Maybe<PageInfo>;
-  edges?: Maybe<Array<Maybe<UserPhonesEdge>>>;
+  edges?: Maybe<Array<Maybe<UserPhonesRelationEdge>>>;
 };
 
-export type UserPhonesConnectionQueryArguments = {
+export type UserPhonesRelationConnectionQueryArguments = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  phone?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  phonesRef?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -6900,11 +7524,11 @@ export type UserPhonesConnectionQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserPhonesOrderBy>;
+  orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserPhonesExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -6912,11 +7536,11 @@ export type UserPhonesConnectionQueryArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-export type UserPhonesConnectionSubscriptionArguments = {
+export type UserPhonesRelationConnectionSubscriptionArguments = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  phone?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  phonesRef?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -6925,11 +7549,11 @@ export type UserPhonesConnectionSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserPhonesOrderBy>;
+  orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserPhonesExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -6937,17 +7561,17 @@ export type UserPhonesConnectionSubscriptionArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-export type UserPhonesEdge = {
-  __typename?: 'UserPhonesEdge';
-  node?: Maybe<UserPhones>;
+export type UserPhonesRelationEdge = {
+  __typename?: 'UserPhonesRelationEdge';
+  node?: Maybe<UserPhonesRelation>;
   cursor?: Maybe<Scalars['ID']>;
 };
 
-export type UserPhonesExpression = {
+export type UserPhonesRelationExpression = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  phone?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  phonesRef?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -6958,14 +7582,14 @@ export type UserPhonesExpression = {
   createGroupId?: InputMaybe<StringExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserPhonesExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
 };
 
-export type UserPhonesInput = {
+export type UserPhonesRelationInput = {
   id?: InputMaybe<Scalars['ID']>;
-  userId?: InputMaybe<Scalars['Int']>;
-  userIdType?: InputMaybe<UserInput>;
-  phone?: InputMaybe<Scalars['String']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  phonesRef?: InputMaybe<Scalars['String']>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -6974,14 +7598,14 @@ export type UserPhonesInput = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  where?: InputMaybe<UserPhonesExpression>;
+  where?: InputMaybe<UserPhonesRelationExpression>;
 };
 
-export type UserPhonesListMutationArguments = {
+export type UserPhonesRelationListMutationArguments = {
   id?: InputMaybe<Scalars['ID']>;
-  userId?: InputMaybe<Scalars['Int']>;
-  userIdType?: InputMaybe<UserInput>;
-  phone?: InputMaybe<Scalars['String']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  phonesRef?: InputMaybe<Scalars['String']>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -6990,15 +7614,15 @@ export type UserPhonesListMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  list?: InputMaybe<Array<InputMaybe<UserPhonesInput>>>;
-  where?: InputMaybe<UserPhonesExpression>;
+  list?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
+  where?: InputMaybe<UserPhonesRelationExpression>;
 };
 
-export type UserPhonesListQueryArguments = {
+export type UserPhonesRelationListQueryArguments = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  phone?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  phonesRef?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -7007,11 +7631,11 @@ export type UserPhonesListQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserPhonesOrderBy>;
+  orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserPhonesExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -7019,11 +7643,11 @@ export type UserPhonesListQueryArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-export type UserPhonesListSubscriptionArguments = {
+export type UserPhonesRelationListSubscriptionArguments = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  phone?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  phonesRef?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -7032,11 +7656,11 @@ export type UserPhonesListSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserPhonesOrderBy>;
+  orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserPhonesExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -7044,11 +7668,11 @@ export type UserPhonesListSubscriptionArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-export type UserPhonesMutationArguments = {
+export type UserPhonesRelationMutationArguments = {
   id?: InputMaybe<Scalars['ID']>;
-  userId?: InputMaybe<Scalars['Int']>;
-  userIdType?: InputMaybe<UserInput>;
-  phone?: InputMaybe<Scalars['String']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  phonesRef?: InputMaybe<Scalars['String']>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -7057,13 +7681,13 @@ export type UserPhonesMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
-  where?: InputMaybe<UserPhonesExpression>;
+  where?: InputMaybe<UserPhonesRelationExpression>;
 };
 
-export type UserPhonesOrderBy = {
+export type UserPhonesRelationOrderBy = {
   id?: InputMaybe<Sort>;
-  userId?: InputMaybe<Sort>;
-  phone?: InputMaybe<Sort>;
+  userRef?: InputMaybe<Sort>;
+  phonesRef?: InputMaybe<Sort>;
   isDeprecated?: InputMaybe<Sort>;
   version?: InputMaybe<Sort>;
   realmId?: InputMaybe<Sort>;
@@ -7074,11 +7698,11 @@ export type UserPhonesOrderBy = {
   createGroupId?: InputMaybe<Sort>;
 };
 
-export type UserPhonesQueryArguments = {
+export type UserPhonesRelationQueryArguments = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  phone?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  phonesRef?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -7090,14 +7714,14 @@ export type UserPhonesQueryArguments = {
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserPhonesExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
 };
 
-export type UserPhonesSubscriptionArguments = {
+export type UserPhonesRelationSubscriptionArguments = {
   id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  phone?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  phonesRef?: InputMaybe<StringExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -7109,7 +7733,7 @@ export type UserPhonesSubscriptionArguments = {
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserPhonesExpression>>>;
+  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
 };
 
 export type UserQueryArguments = {
@@ -7134,339 +7758,13 @@ export type UserQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
-};
-
-export type UserRole = Meta & {
-  __typename?: 'UserRole';
-  id?: Maybe<Scalars['ID']>;
-  userId?: Maybe<Scalars['Int']>;
-  userIdType?: Maybe<User>;
-  roleId?: Maybe<Scalars['Int']>;
-  roleIdType?: Maybe<Role>;
-  isDeprecated?: Maybe<Scalars['Boolean']>;
-  version?: Maybe<Scalars['Int']>;
-  realmId?: Maybe<Scalars['Int']>;
-  createUserId?: Maybe<Scalars['String']>;
-  createTime?: Maybe<Scalars['Timestamp']>;
-  updateUserId?: Maybe<Scalars['String']>;
-  updateTime?: Maybe<Scalars['Timestamp']>;
-  createGroupId?: Maybe<Scalars['String']>;
-  idCount?: Maybe<Scalars['Int']>;
-  idMax?: Maybe<Scalars['Int']>;
-  idMin?: Maybe<Scalars['Int']>;
-  userIdCount?: Maybe<Scalars['Int']>;
-  userIdSum?: Maybe<Scalars['Int']>;
-  userIdAvg?: Maybe<Scalars['Int']>;
-  userIdMax?: Maybe<Scalars['Int']>;
-  userIdMin?: Maybe<Scalars['Int']>;
-  roleIdCount?: Maybe<Scalars['Int']>;
-  roleIdSum?: Maybe<Scalars['Int']>;
-  roleIdAvg?: Maybe<Scalars['Int']>;
-  roleIdMax?: Maybe<Scalars['Int']>;
-  roleIdMin?: Maybe<Scalars['Int']>;
-};
-
-
-export type UserRoleUserIdTypeArgs = {
-  id?: InputMaybe<StringExpression>;
-  name?: InputMaybe<StringExpression>;
-  description?: InputMaybe<StringExpression>;
-  lastName?: InputMaybe<StringExpression>;
-  login?: InputMaybe<StringExpression>;
-  salt?: InputMaybe<StringExpression>;
-  hash?: InputMaybe<StringExpression>;
-  email?: InputMaybe<StringExpression>;
-  phones?: InputMaybe<StringExpression>;
-  disable?: InputMaybe<BooleanExpression>;
-  groups?: InputMaybe<GroupExpression>;
-  roles?: InputMaybe<RoleExpression>;
-  realm?: InputMaybe<RealmExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-};
-
-
-export type UserRoleRoleIdTypeArgs = {
-  id?: InputMaybe<StringExpression>;
-  name?: InputMaybe<StringExpression>;
-  description?: InputMaybe<StringExpression>;
-  users?: InputMaybe<UserExpression>;
-  groups?: InputMaybe<GroupExpression>;
-  composites?: InputMaybe<RoleExpression>;
-  permissions?: InputMaybe<PermissionExpression>;
-  realm?: InputMaybe<RealmExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
-  groupRole?: InputMaybe<GroupRoleExpression>;
-  roleComposite?: InputMaybe<RoleCompositeExpression>;
-  rolePermission?: InputMaybe<RolePermissionExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-};
-
-export type UserRoleConnection = {
-  __typename?: 'UserRoleConnection';
-  totalCount?: Maybe<Scalars['Int']>;
-  pageInfo?: Maybe<PageInfo>;
-  edges?: Maybe<Array<Maybe<UserRoleEdge>>>;
-};
-
-export type UserRoleConnectionQueryArguments = {
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserRoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserRoleExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-export type UserRoleConnectionSubscriptionArguments = {
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserRoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserRoleExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-export type UserRoleEdge = {
-  __typename?: 'UserRoleEdge';
-  node?: Maybe<UserRole>;
-  cursor?: Maybe<Scalars['ID']>;
-};
-
-export type UserRoleExpression = {
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserRoleExpression>>>;
-};
-
-export type UserRoleInput = {
-  id?: InputMaybe<Scalars['ID']>;
-  userId?: InputMaybe<Scalars['Int']>;
-  userIdType?: InputMaybe<UserInput>;
-  roleId?: InputMaybe<Scalars['Int']>;
-  roleIdType?: InputMaybe<RoleInput>;
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<Scalars['Int']>;
-  realmId?: InputMaybe<Scalars['Int']>;
-  createUserId?: InputMaybe<Scalars['String']>;
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  updateUserId?: InputMaybe<Scalars['String']>;
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  createGroupId?: InputMaybe<Scalars['String']>;
-  where?: InputMaybe<UserRoleExpression>;
-};
-
-export type UserRoleListMutationArguments = {
-  id?: InputMaybe<Scalars['ID']>;
-  userId?: InputMaybe<Scalars['Int']>;
-  userIdType?: InputMaybe<UserInput>;
-  roleId?: InputMaybe<Scalars['Int']>;
-  roleIdType?: InputMaybe<RoleInput>;
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<Scalars['Int']>;
-  realmId?: InputMaybe<Scalars['Int']>;
-  createUserId?: InputMaybe<Scalars['String']>;
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  updateUserId?: InputMaybe<Scalars['String']>;
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  createGroupId?: InputMaybe<Scalars['String']>;
-  list?: InputMaybe<Array<InputMaybe<UserRoleInput>>>;
-  where?: InputMaybe<UserRoleExpression>;
-};
-
-export type UserRoleListQueryArguments = {
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserRoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserRoleExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-export type UserRoleListSubscriptionArguments = {
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  orderBy?: InputMaybe<UserRoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserRoleExpression>>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-export type UserRoleMutationArguments = {
-  id?: InputMaybe<Scalars['ID']>;
-  userId?: InputMaybe<Scalars['Int']>;
-  userIdType?: InputMaybe<UserInput>;
-  roleId?: InputMaybe<Scalars['Int']>;
-  roleIdType?: InputMaybe<RoleInput>;
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<Scalars['Int']>;
-  realmId?: InputMaybe<Scalars['Int']>;
-  createUserId?: InputMaybe<Scalars['String']>;
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  updateUserId?: InputMaybe<Scalars['String']>;
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  createGroupId?: InputMaybe<Scalars['String']>;
-  where?: InputMaybe<UserRoleExpression>;
-};
-
-export type UserRoleOrderBy = {
-  id?: InputMaybe<Sort>;
-  userId?: InputMaybe<Sort>;
-  roleId?: InputMaybe<Sort>;
-  isDeprecated?: InputMaybe<Sort>;
-  version?: InputMaybe<Sort>;
-  realmId?: InputMaybe<Sort>;
-  createUserId?: InputMaybe<Sort>;
-  createTime?: InputMaybe<Sort>;
-  updateUserId?: InputMaybe<Sort>;
-  updateTime?: InputMaybe<Sort>;
-  createGroupId?: InputMaybe<Sort>;
-};
-
-export type UserRoleQueryArguments = {
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserRoleExpression>>>;
-};
-
-export type UserRoleSubscriptionArguments = {
-  id?: InputMaybe<StringExpression>;
-  userId?: InputMaybe<IntExpression>;
-  userIdType?: InputMaybe<UserExpression>;
-  roleId?: InputMaybe<IntExpression>;
-  roleIdType?: InputMaybe<RoleExpression>;
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  version?: InputMaybe<IntExpression>;
-  realmId?: InputMaybe<IntExpression>;
-  createUserId?: InputMaybe<StringExpression>;
-  createTime?: InputMaybe<StringExpression>;
-  updateUserId?: InputMaybe<StringExpression>;
-  updateTime?: InputMaybe<StringExpression>;
-  createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<Scalars['Boolean']>;
-  cond?: InputMaybe<Conditional>;
-  exs?: InputMaybe<Array<InputMaybe<UserRoleExpression>>>;
 };
 
 export type UserSubscriptionArguments = {
@@ -7491,42 +7789,13 @@ export type UserSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  userPhones?: InputMaybe<UserPhonesExpression>;
-  userGroup?: InputMaybe<UserGroupExpression>;
-  userRole?: InputMaybe<UserRoleExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
-};
-
-export type ValidationInput = {
-  minLength?: InputMaybe<Scalars['Int']>;
-  maxLength?: InputMaybe<Scalars['Int']>;
-  pattern?: InputMaybe<Scalars['String']>;
-  format?: InputMaybe<Scalars['String']>;
-  contentMediaType?: InputMaybe<Scalars['String']>;
-  contentEncoding?: InputMaybe<Scalars['String']>;
-  minimum?: InputMaybe<Scalars['Float']>;
-  exclusiveMinimum?: InputMaybe<Scalars['Float']>;
-  maximum?: InputMaybe<Scalars['Float']>;
-  exclusiveMaximum?: InputMaybe<Scalars['Float']>;
-  multipleOf?: InputMaybe<Scalars['Float']>;
-  const?: InputMaybe<Scalars['String']>;
-  enum?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  items?: InputMaybe<ValidationInput>;
-  minItems?: InputMaybe<Scalars['Int']>;
-  maxItems?: InputMaybe<Scalars['Int']>;
-  uniqueItems?: InputMaybe<Scalars['Boolean']>;
-  allOf?: InputMaybe<Array<InputMaybe<ValidationInput>>>;
-  anyOf?: InputMaybe<Array<InputMaybe<ValidationInput>>>;
-  oneOf?: InputMaybe<Array<InputMaybe<ValidationInput>>>;
-  not?: InputMaybe<ValidationInput>;
-  properties?: InputMaybe<Array<InputMaybe<Property>>>;
-  if?: InputMaybe<ValidationInput>;
-  then?: InputMaybe<ValidationInput>;
-  else?: InputMaybe<ValidationInput>;
-  dependentRequired?: InputMaybe<Array<InputMaybe<Property>>>;
 };
 
 export type With = {

@@ -1,4 +1,4 @@
-query Query_permission_roles($permission_name: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!], $after: ID, $before: ID, $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $groups: GroupExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $userRole: UserRoleExpression, $groupRole: GroupRoleExpression, $roleComposite: RoleCompositeExpression, $rolePermission: RolePermissionExpression) {
+query Query_permission_roles($permission_name: StringExpression, $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $groups: GroupExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $roleUserRelation: RoleUserRelationExpression, $groupRoleRelation: GroupRoleRelationExpression, $roleCompositeRelation: RoleCompositeRelationExpression, $permissionRoleRelation: PermissionRoleRelationExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!]) {
   permission(name: $permission_name)  {
     name
     description
@@ -13,7 +13,7 @@ query Query_permission_roles($permission_name: StringExpression, $first: Int, $l
     updateUserId
     updateTime
     createGroupId
-    rolesConnection(first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy after: $after before: $before id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userRole: $userRole groupRole: $groupRole roleComposite: $roleComposite rolePermission: $rolePermission)  {
+    rolesConnection(id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId roleUserRelation: $roleUserRelation groupRoleRelation: $groupRoleRelation roleCompositeRelation: $roleCompositeRelation permissionRoleRelation: $permissionRoleRelation first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy)  {
       totalCount
       edges {
         node {
@@ -28,57 +28,6 @@ query Query_permission_roles($permission_name: StringExpression, $first: Int, $l
           updateUserId
           updateTime
           createGroupId
-          users {
-            id
-            name
-            description
-            lastName
-            login
-            email
-            phones
-            disable
-            isDeprecated
-            version
-            realmId
-            createUserId
-            createTime
-            updateUserId
-            updateTime
-            createGroupId
-          }
-          groups {
-            id
-            name
-            description
-            path
-            deep
-            parentId
-            isDeprecated
-            version
-            realmId
-            createUserId
-            createTime
-            updateUserId
-            updateTime
-            createGroupId
-          }
-          composites {
-            id
-            name
-            description
-            isDeprecated
-            version
-            realmId
-            createUserId
-            createTime
-            updateUserId
-            updateTime
-            createGroupId
-          }
-          realm {
-            name
-            description
-          }
         }
       }
     }

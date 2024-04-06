@@ -448,7 +448,7 @@
 							/>
 							{/if}
 							{#if permissions.auth('Group::realm::*')}
-							<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+							<ObjectTd name="realm"  errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
 							{/if}
 							{#if permissions.auth('Group::*::WRITE')}
 							<th class="z-10 hover:z-30 w-24">

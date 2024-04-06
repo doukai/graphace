@@ -166,7 +166,7 @@
 			/>
 			{/if}
 			{#if permissions.auth('User::realm::*')}
-			<ObjectItem name="realm" namedStruct={ node.realm } path={`${node.id}/realm`} label={$LL.graphql.objects.User.fields.realm.name()} errors={errors.realm} on:gotoField />
+			<ObjectItem name="realm"  path={`${node.id}/realm`} label={$LL.graphql.objects.User.fields.realm.name()} errors={errors.realm} on:gotoField />
 			{/if}
 		{/if}
 	{/if}

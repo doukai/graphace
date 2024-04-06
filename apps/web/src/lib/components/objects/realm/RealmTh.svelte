@@ -5,30 +5,21 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel } from '@steeze-ui/heroicons';
 	import type { StringExpression } from '~/lib/types/schema';
-	import RealmSelect from '~/lib/components/objects/realm/RealmSelect.svelte';
 	import LL from '$i18n/i18n-svelte';
 	import { Operator } from '$houdini';
-	import type { RealmInput, RealmExpression } from '$houdini';
+	import type { RealmExpression } from '$houdini';
 	import { permissions } from '~/lib/utils/auth-util';
 
 	export let name: string;
 	export let expression: RealmExpression | null | undefined;
-	let value: RealmInput | (RealmInput | null | undefined)[] | null | undefined = undefined;
 
 	let _expression: {
-		id: StringExpression;
 		name: StringExpression;
 		description: StringExpression;
 	} = {
-		id: { opr: Operator.EQ },
 		name: { opr: Operator.EQ },
 		description: { opr: Operator.EQ }
 	};
-	$: if (Array.isArray(value)) {
-		_expression.id.in = value?.map((item) => item?.where?.id?.val);
-	} else if (value) {
-		_expression.id.val = value?.where?.id?.val;
-	}
 
 	let content: HTMLElement;
 	let tippyElement: any;
@@ -37,11 +28,6 @@
 	}>();
 
 	const filter = (): void => {
-		if (_expression.id.val || (_expression.id.in && _expression.id.in.length > 0)) {
-			expression = { ...expression, id: _expression.id };
-		} else {
-			expression = { ...expression, id: undefined };
-		}
 		if (_expression.name.val || (_expression.name.in && _expression.name.in.length > 0)) {
 			expression = { ...expression, name: _expression.name };
 		} else {
@@ -61,16 +47,11 @@
 	};
 
 	const clear = (): void => {
-		_expression.id = { opr: Operator.EQ };
 		_expression.name = { opr: Operator.EQ };
 		_expression.description = { opr: Operator.EQ };
 		expression = undefined;
 		dispatch('filter');
 		tippyElement._tippy.hide();
-	};
-	const idOprChange = (): void => {
-		_expression.id.in = [];
-		_expression.id.val = undefined;
 	};
 	const nameOprChange = (): void => {
 		_expression.name.in = [];
@@ -84,28 +65,6 @@
 <div class="hidden">
 	<div class="space-y-2" bind:this={content}>
 		<div class="grid grid-cols-2 gap-2">
-			{#if permissions.auth('Realm::id::*')}
-			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-16">
-					{$LL.graphql.objects.Realm.name()}
-				</button>
-				<OperatorSelect
-					className="join-item w-32"
-					bind:value={_expression.id.opr}
-					on:change={(e) => idOprChange()}
-				/>
-			</div>
-			{#if _expression.id.opr === 'IN' || _expression.id.opr === 'NIN' || _expression.id.opr === 'BT' || _expression.id.opr === 'NBT'}
-				<RealmSelect
-					{name}
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					list
-					bind:value
-				/>
-			{:else}
-				<RealmSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value />
-			{/if}
-			{/if}
 			{#if permissions.auth('Realm::name::*')}
 			<div class="join">
 				<button class="btn btn-active btn-ghost join-item w-16">

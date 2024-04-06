@@ -6,17 +6,13 @@
 	import { Check, XMark, Funnel } from '@steeze-ui/heroicons';
 	import PermissionTypeInput from '~/lib/components/enums/permission-type/PermissionTypeInput.svelte';
 	import type { IDExpression, StringExpression } from '~/lib/types/schema';
-	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
-	import RealmSelect from '~/lib/components/objects/realm/RealmSelect.svelte';
 	import LL from '$i18n/i18n-svelte';
 	import { Operator } from '$houdini';
-	import type { RoleInput, RealmInput, PermissionTypeExpression, PermissionExpression } from '$houdini';
+	import type { PermissionTypeExpression, PermissionExpression } from '$houdini';
 	import { permissions } from '~/lib/utils/auth-util';
 
 	export let name: string;
 	export let expression: PermissionExpression | null | undefined;
-	let roles: RoleInput | (RoleInput | null | undefined)[] | null | undefined = undefined;
-	let realm: RealmInput | (RealmInput | null | undefined)[] | null | undefined = undefined;
 
 	let _expression: {
 		name: IDExpression;
@@ -24,27 +20,13 @@
 		field: StringExpression;
 		type: StringExpression;
 		permissionType: PermissionTypeExpression;
-		roles: { id: StringExpression };
-		realm: { id: StringExpression };
 	} = {
 		name: { opr: Operator.EQ },
 		description: { opr: Operator.EQ },
 		field: { opr: Operator.EQ },
 		type: { opr: Operator.EQ },
 		permissionType: { opr: Operator.EQ },
-		roles: { id: { opr: Operator.EQ } },
-		realm: { id: { opr: Operator.EQ } }
 	};
-	$: if (Array.isArray(roles)) {
-		_expression.roles.id.in = roles?.map((item) => item?.where?.id?.val);
-	} else if (roles) {
-		_expression.roles.id.val = roles?.where?.id?.val;
-	}
-	$: if (Array.isArray(realm)) {
-		_expression.realm.id.in = realm?.map((item) => item?.where?.id?.val);
-	} else if (realm) {
-		_expression.realm.id.val = realm?.where?.id?.val;
-	}
 
 	let content: HTMLElement;
 	let tippyElement: any;
@@ -78,22 +60,6 @@
 		} else {
 			expression = { ...expression, permissionType: undefined };
 		}
-		if (
-			_expression.roles.id?.val ||
-			(_expression.roles.id?.in && _expression.roles.id?.in.length > 0)
-		) {
-			expression = { ...expression, roles: _expression.roles };
-		} else {
-			expression = { ...expression, roles: undefined };
-		}
-		if (
-			_expression.realm.id?.val ||
-			(_expression.realm.id?.in && _expression.realm.id?.in.length > 0)
-		) {
-			expression = { ...expression, realm: _expression.realm };
-		} else {
-			expression = { ...expression, realm: undefined };
-		}
 		
 		if (Object.values(expression).filter((item) => item).length === 0) {
 			expression = undefined;
@@ -108,8 +74,6 @@
 		_expression.field = { opr: Operator.EQ };
 		_expression.type = { opr: Operator.EQ };
 		_expression.permissionType = { opr: Operator.EQ };
-		_expression.roles = { id: { opr: Operator.EQ } };
-		_expression.realm = { id: { opr: Operator.EQ } };
 		expression = undefined;
 		dispatch('filter');
 		tippyElement._tippy.hide();
@@ -133,14 +97,6 @@
 	const permissionTypeOprChange = (): void => {
 		_expression.permissionType.in = [];
 		_expression.permissionType.val = undefined;
-	};
-	const rolesOprChange = (): void => {
-		_expression.roles.id.in = [];
-		_expression.roles.id.val = undefined;
-	};
-	const realmOprChange = (): void => {
-		_expression.realm.id.in = [];
-		_expression.realm.id.val = undefined;
 	};
 </script>
 <div class="hidden">
@@ -269,50 +225,6 @@
 					{name}
 					bind:value={_expression.permissionType.val}
 				/>
-			{/if}
-			{/if}
-			{#if permissions.auth('Permission::roles::*')}
-			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-16">
-					{$LL.graphql.objects.Permission.fields.roles.name()}
-				</button>
-				<OperatorSelect
-					className="join-item w-32"
-					bind:value={_expression.roles.id.opr}
-					on:change={(e) => rolesOprChange()}
-				/>
-			</div>
-			{#if _expression.roles.id.opr === 'IN' || _expression.roles.id.opr === 'NIN' || _expression.roles.id.opr === 'BT' || _expression.roles.id.opr === 'NBT'}
-				<RoleSelect
-					{name}
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					list
-					bind:value={ roles }
-				/>
-			{:else}
-				<RoleSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value={ roles } />
-			{/if}
-			{/if}
-			{#if permissions.auth('Permission::realm::*')}
-			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-16">
-					{$LL.graphql.objects.Permission.fields.realm.name()}
-				</button>
-				<OperatorSelect
-					className="join-item w-32"
-					bind:value={_expression.realm.id.opr}
-					on:change={(e) => realmOprChange()}
-				/>
-			</div>
-			{#if _expression.realm.id.opr === 'IN' || _expression.realm.id.opr === 'NIN' || _expression.realm.id.opr === 'BT' || _expression.realm.id.opr === 'NBT'}
-				<RealmSelect
-					{name}
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					list
-					bind:value={ realm }
-				/>
-			{:else}
-				<RealmSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value={ realm } />
 			{/if}
 			{/if}
 		</div>

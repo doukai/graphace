@@ -183,13 +183,13 @@
 						/>
 						{/if}
 						{#if permissions.auth('User::groups::*')}
-						<ObjectTd name="groups" namedStruct={ node.groups } errors={errors[row]?.iterms?.groups} path="_/groups" on:gotoField />
+						<ObjectTd name="groups"  errors={errors[row]?.iterms?.groups} path="_/groups" on:gotoField />
 						{/if}
 						{#if permissions.auth('User::roles::*')}
-						<ObjectTd name="roles" namedStruct={ node.roles } errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
+						<ObjectTd name="roles"  errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
 						{/if}
 						{#if permissions.auth('User::realm::*')}
-						<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
+						<ObjectTd name="realm"  errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
 						{/if}
 						{#if permissions.auth('User::*::WRITE')}
 						<th class="z-10 hover:z-30 w-24">

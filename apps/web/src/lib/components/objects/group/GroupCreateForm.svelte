@@ -130,6 +130,6 @@
 	/>
 	{/if}
 	{#if permissions.auth('Group::realm::*')}
-	<ObjectItem name="realm" namedStruct={ node.realm } path="_/realm" label={$LL.graphql.objects.Group.fields.realm.name()} errors={errors.realm} on:gotoField />
+	<ObjectItem name="realm"  path="_/realm" label={$LL.graphql.objects.Group.fields.realm.name()} errors={errors.realm} on:gotoField />
 	{/if}
 </Form>
