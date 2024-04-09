@@ -1,10 +1,10 @@
 import Ajv from 'ajv';
 import addFormats from "ajv-formats"
+import type { AnyValidateFunction } from 'ajv/dist/types';
+import { execute, executeAsync, objectNameToUri } from '@graphace/commons';
+import type { Errors, Language } from '@graphace/commons';
 import { browser } from '$app/environment';
 import { env } from '$env/dynamic/public';
-import type { Errors, Language } from '@graphace/commons';
-import { execute, executeAsync, objectNameToUri } from '@graphace/commons';
-import type { AnyValidateFunction } from 'ajv/dist/types';
 
 export const ajv = addFormats(new Ajv({ loadSchema: loadSchema, allErrors: true, messages: false }));
 

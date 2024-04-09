@@ -1,12 +1,12 @@
-import { detectLocale, i18n, isLocale } from '$i18n/i18n-util';
 import { redirect } from '@sveltejs/kit';
-import { browser } from '$app/environment';
-import { goto } from '$app/navigation';
-import { loadAllLocales } from '$i18n/i18n-util.sync';
 import type { Handle, RequestEvent, HandleServerError } from '@sveltejs/kit';
 import { initAcceptLanguageHeaderDetector } from 'typesafe-i18n/detectors';
-import { setSession } from '$houdini'
 import jwt_decode from "jwt-decode";
+import { browser } from '$app/environment';
+import { goto } from '$app/navigation';
+import { setSession } from '$houdini';
+import { detectLocale, i18n, isLocale } from '$i18n/i18n-util';
+import { loadAllLocales } from '$i18n/i18n-util.sync';
 
 loadAllLocales();
 const L = i18n();
@@ -27,7 +27,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	// if slug is not a locale, use base locale (e.g. api endpoints)
-	const locale = isLocale(lang) ? (lang as Locales) : getPreferredLocale(event);
+	const locale: Locales = isLocale(lang) ? (lang as Locales) : getPreferredLocale(event);
 	const LL = L[locale];
 
 	// bind locale and translation functions to current request

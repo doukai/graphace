@@ -4,6 +4,35 @@ import localize from 'ajv-i18n';
 import type { AnyValidateFunction } from 'ajv/dist/types';
 import * as changeCase from "change-case";
 
+abstract class JsonSchema {
+    constructor() {
+        
+    }
+
+    public async  execute(validate: AnyValidateFunction<unknown> | undefined, data: object, locale: Language = "en"): Promise<object> {
+        return new Promise((resolve: (data: object) => void, reject: (errors: Record<string, Errors>) => void) => {
+            if (validate) {
+                // const validateData = removeEmpty(data);
+                const valid = this.getValidate(data);
+                if (!valid) {
+                    localize[locale](validate.errors);
+                    if (validate.errors) {
+                        reject(buildErrors(validate.errors));
+                    } else {
+                        throw new Error('validate errors undefined');
+                    }
+                } else {
+                    resolve(data);
+                }
+            } else {
+                throw new Error('validate undefined');
+            }
+        });
+    }
+
+     abstract getValidate(uri: string): Promise<AnyValidateFunction<unknown> | undefined>
+}
+
 function buildErrors(errors: ErrorObject[]): Record<string, Errors> {
     const instancePathErrors: Record<string, Error[]> = {};
     errors.map(error => {
