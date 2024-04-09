@@ -1,19 +1,19 @@
-import type { Error, Errors, Language } from '../';
+import type { Error, Errors, Language } from '..';
+import Ajv from 'ajv';
 import type { ErrorObject } from 'ajv';
+import type { AnySchemaObject, AnyValidateFunction } from 'ajv/lib/types';
+import addFormats from "ajv-formats"
 import localize from 'ajv-i18n';
-import type { AnyValidateFunction } from 'ajv/dist/types';
-import * as changeCase from "change-case";
 
-abstract class JsonSchema {
-    constructor() {
-        
-    }
+export default abstract class JsonSchema {
+    ajv: Ajv = addFormats(new Ajv({ loadSchema: this.loadSchema, allErrors: true, messages: false }));
 
-    public async  execute(validate: AnyValidateFunction<unknown> | undefined, data: object, locale: Language = "en"): Promise<object> {
-        return new Promise((resolve: (data: object) => void, reject: (errors: Record<string, Errors>) => void) => {
+    public async validate(keyRef: string, data: unknown, locale: Language = "en"): Promise<unknown> {
+        const validate = await this.getValidate(keyRef);
+        return new Promise((resolve: (data: unknown) => void, reject: (errors: Record<string, Errors>) => void) => {
             if (validate) {
                 // const validateData = removeEmpty(data);
-                const valid = this.getValidate(data);
+                const valid = validate(data);
                 if (!valid) {
                     localize[locale](validate.errors);
                     if (validate.errors) {
@@ -30,7 +30,36 @@ abstract class JsonSchema {
         });
     }
 
-     abstract getValidate(uri: string): Promise<AnyValidateFunction<unknown> | undefined>
+    async getErrors(keyRef: string, data: object, locale: Language = "en"): Promise<Record<string, Errors> | undefined> {
+        const validate = await this.getValidate(keyRef);
+        if (validate) {
+            // const validateData = removeEmpty(data);
+            const valid = validate(data);
+            if (!valid) {
+                localize[locale](validate.errors);
+                if (validate.errors) {
+                    return buildErrors(validate.errors);
+                } else {
+                    throw new Error('validate errors undefined');
+                }
+            } else {
+                return undefined;
+            }
+        } else {
+            throw new Error('validate undefined');
+        }
+    }
+
+    async getValidate(keyRef: string): Promise<AnyValidateFunction<unknown> | undefined> {
+        let validate = this.ajv.getSchema(keyRef);
+        if (!validate) {
+            const schema = await this.loadSchema(keyRef);
+            validate = await this.ajv.compileAsync(schema);
+        }
+        return validate;
+    }
+
+    abstract loadSchema(keyRef: string): Promise<AnySchemaObject>;
 }
 
 function buildErrors(errors: ErrorObject[]): Record<string, Errors> {
@@ -97,62 +126,4 @@ function removeEmpty(data: object | object[]): object {
                 })
         );
     }
-}
-
-export async function execute(validate: AnyValidateFunction<unknown> | undefined, data: object, locale: Language = "en"): Promise<object> {
-    return new Promise((resolve: (data: object) => void, reject: (errors: Record<string, Errors>) => void) => {
-        if (validate) {
-            // const validateData = removeEmpty(data);
-            const valid = validate(data);
-            if (!valid) {
-                localize[locale](validate.errors);
-                if (validate.errors) {
-                    reject(buildErrors(validate.errors));
-                } else {
-                    throw new Error('validate errors undefined');
-                }
-            } else {
-                resolve(data);
-            }
-        } else {
-            throw new Error('validate undefined');
-        }
-    });
-}
-
-export async function executeAsync(validate: AnyValidateFunction<unknown> | undefined, data: object, locale: Language = "en"): Promise<Record<string, Errors> | undefined> {
-    if (validate) {
-        // const validateData = removeEmpty(data);
-        const valid = validate(data);
-        if (!valid) {
-            localize[locale](validate.errors);
-            if (validate.errors) {
-                return buildErrors(validate.errors);
-            } else {
-                throw new Error('validate errors undefined');
-            }
-        } else {
-            return undefined;
-        }
-    } else {
-        throw new Error('validate undefined');
-    }
-}
-
-export function objectNameToFieldName(objectName: string): string {
-    return changeCase.camelCase(objectName);
-}
-
-export function objectNameToUri(operationTypeName: string, objectName: string, data: object | object[]): string {
-    const fieldName = objectNameToFieldName(objectName);
-    let uri = operationTypeName + "_" + fieldName;
-    if (Array.isArray(data)) {
-        uri += "List_Arguments";
-    } else {
-        uri += "_Arguments";
-        if (Object.keys(data).includes('where')) {
-            uri += "_update";
-        }
-    }
-    return uri;
 }
