@@ -1,8 +1,8 @@
 <script lang="ts">
-	import LL from '$i18n/i18n-svelte';
-	import type { NamespaceWebTranslation } from '$i18n/i18n-types';
 	import type { Errors } from '@graphace/commons';
 	import { nanoid } from 'nanoid';
+	import LL from '$i18n/i18n-svelte';
+	import type { NamespaceWebTranslation } from '$i18n/i18n-types';
 
 	export let errors: Record<string, Errors> = {};
 	export let authErrorCodes: number[] = [];

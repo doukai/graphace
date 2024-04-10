@@ -1,13 +1,13 @@
 import type { Error, Errors, Language } from '..';
 import Ajv from 'ajv';
-import type { ErrorObject } from 'ajv';
-import type { AnySchemaObject, AnyValidateFunction } from 'ajv/lib/types';
+import type { ErrorObject, SchemaObject, ValidateFunction } from 'ajv';
 import addFormats from "ajv-formats"
 import localize from 'ajv-i18n';
 
-export default abstract class JsonSchema {
+export abstract class JsonSchema {
     ajv: Ajv = addFormats(new Ajv({ loadSchema: this.loadSchema, allErrors: true, messages: false }));
-
+    public constructor() {
+    }
     public async validate(keyRef: string, data: unknown, locale: Language = "en"): Promise<unknown> {
         const validate = await this.getValidate(keyRef);
         return new Promise((resolve: (data: unknown) => void, reject: (errors: Record<string, Errors>) => void) => {
@@ -30,7 +30,7 @@ export default abstract class JsonSchema {
         });
     }
 
-    async getErrors(keyRef: string, data: object, locale: Language = "en"): Promise<Record<string, Errors> | undefined> {
+    public async getErrors(keyRef: string, data: object, locale: Language = "en"): Promise<Record<string, Errors> | undefined> {
         const validate = await this.getValidate(keyRef);
         if (validate) {
             // const validateData = removeEmpty(data);
@@ -50,7 +50,7 @@ export default abstract class JsonSchema {
         }
     }
 
-    async getValidate(keyRef: string): Promise<AnyValidateFunction<unknown> | undefined> {
+    private async getValidate(keyRef: string): Promise<ValidateFunction<unknown> | undefined> {
         let validate = this.ajv.getSchema(keyRef);
         if (!validate) {
             const schema = await this.loadSchema(keyRef);
@@ -59,7 +59,7 @@ export default abstract class JsonSchema {
         return validate;
     }
 
-    abstract loadSchema(keyRef: string): Promise<AnySchemaObject>;
+    protected abstract loadSchema(keyRef: string): Promise<SchemaObject>;
 }
 
 function buildErrors(errors: ErrorObject[]): Record<string, Errors> {

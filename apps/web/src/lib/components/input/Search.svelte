@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { onMount, createEventDispatcher } from 'svelte';
-	import { getOS } from '@graphace/commons';
-	import { init } from '~/lib/stores/useNavigate';
 	import Typeahead from 'svelte-typeahead';
 	import type TItem from 'svelte-typeahead';
 	import LL from '$i18n/i18n-svelte';
 	import type { NamespaceGraphqlTranslation } from '$i18n/i18n-types';
-	import { locale } from '~/i18n/i18n-svelte';
+	import { getOS } from '@graphace/commons';
+	import { init } from '~/lib/stores/useNavigate';
 	import pages from '~/lib/data/pages.json';
+	import { locale } from '~/i18n/i18n-svelte';
 
 	export let addScrollPaddingToNavbar: () => void = () => {};
 	export let removeScrollPaddingFromNavbar: () => void = () => {};
