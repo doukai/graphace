@@ -3,8 +3,7 @@
 	"pipeline": {
 		"build": {
 			"dependsOn": ["^build"],
-			"outputs": [".svelte-kit/**", ".vercel/**"],
-			"env": ["REACT_APP_GRAPHQL_URL", "REACT_APP_AUTH_SCHEME", "REACT_APP_AUTH_TOKEN"]
+			"outputs": [".svelte-kit/**", ".vercel/**"]
 		},
 		"lint": {
 			"outputs": []
