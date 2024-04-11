@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	type LocaleItem = {
+	export type LocaleItem = {
 		name: string;
 		flag: string | undefined;
 	};
@@ -7,10 +7,9 @@
 
 <script lang="ts">
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Language as Lang, ChevronDown } from '@steeze-ui/heroicons';
+	import { Language, ChevronDown } from '@steeze-ui/heroicons';
 	import Iconify from '@iconify/svelte';
 	import { replaceLocaleInUrl } from '@graphace/commons';
-	import type { Language } from '@graphace/commons';
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
 	import { invalidateAll } from '$app/navigation';
@@ -18,7 +17,7 @@
 	import type { Locales } from '~/i18n/i18n-types';
 	import { loadLocaleAsync } from '~/i18n/i18n-util.async';
 
-	export let locales: Record<Language, LocaleItem>;
+	export let locales: Record<string, LocaleItem>;
 
 	let currentLocale: string;
 
@@ -65,7 +64,7 @@
 <div title={locales[currentLocale].name} class="dropdown dropdown-end">
 	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 	<div tabindex="0" class="btn btn-ghost normal-case">
-		<Icon src={Lang} class="h-5 w-5 stroke-current" />
+		<Icon src={Language} class="h-5 w-5 stroke-current" />
 		<Icon src={ChevronDown} class="hidden h-2 w-2 fill-current opacity-60 sm:inline-block" />
 	</div>
 	<div

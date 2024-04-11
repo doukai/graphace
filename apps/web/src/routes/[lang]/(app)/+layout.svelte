@@ -1,17 +1,28 @@
 <script lang="ts">
 	import '../../../app.css';
-	import { onMount } from 'svelte';
-	import { setContext } from 'svelte';
-	import { SideBar, Breadcrumbs, NavBar, Notifications, MessageBoxs } from '@graphace/ui';
-	import ObjectsMenu from '~/lib/components/menu/ObjectsMenu.svelte';
-	import UserMenu from '~/lib/components/menu/UserMenu.svelte';
-	import { LocaleSelect, ThemeSelect } from '~/lib/components/select';
-	import { to, PageType, init, history } from '~/lib/stores/useNavigate';
-	import { Search } from '~/lib/components/input';
+	import { onMount, setContext } from 'svelte';
+	import {
+		SideBar,
+		Breadcrumbs,
+		NavBar,
+		Notifications,
+		MessageBoxs,
+		LocaleSelect,
+		ThemeSelect,
+		FuzzySearch,
+		to,
+		PageType,
+		init,
+		history
+	} from '@graphace/ui';
 	import Iconify from '@iconify/svelte';
 	import { setLocale } from '$i18n/i18n-svelte';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
+	import type { NamespaceGraphqlTranslation } from '$i18n/i18n-types';
+	import ObjectsMenu from '~/lib/components/menu/ObjectsMenu.svelte';
+	import UserMenu from '~/lib/components/menu/UserMenu.svelte';
+	import pages from '~/lib/data/pages.json';
 	import type { LayoutData } from './$types';
 
 	export let data: LayoutData;
@@ -49,6 +60,28 @@
 		navbarScrollPadding = '0rem';
 		document.documentElement.style.scrollPaddingTop = '0rem';
 	}
+
+	function onSelect(
+		select: CustomEvent<{
+			searched: string;
+			selected: string | number | Record<string, any>;
+			selectedIndex: number;
+			original: string | number | Record<string, any>;
+			originalIndex: number;
+		}>
+	) {
+		init('/' + $locale + searchIndex[select.detail.originalIndex].href);
+		closeDrawer();
+	}
+
+	let searchIndex = pages.flatMap((page) =>
+		page.items.map((item) => {
+			return {
+				...item,
+				name: $LL.graphql.objects[item.name as keyof NamespaceGraphqlTranslation['objects']].name()
+			};
+		})
+	);
 </script>
 
 <svelte:head>
@@ -79,9 +112,24 @@
 					<span class="uppercase text-[#E535AB]">ACE</span>
 				</div>
 			</a>
-			<Search {addScrollPaddingToNavbar} {removeScrollPaddingFromNavbar} slot="search" />
+			<FuzzySearch
+				label={$LL.web.components.search.label()}
+				placeholder={$LL.web.components.search.label()}
+				data={searchIndex}
+				limit={8}
+				on:focus={removeScrollPaddingFromNavbar}
+				on:blur={addScrollPaddingToNavbar}
+				on:select={onSelect}
+				slot="search"
+			/>
 			<ThemeSelect slot="option1" />
-			<LocaleSelect slot="option2" />
+			<LocaleSelect
+				locales={{
+					en: { name: 'English', flag: 'twemoji:flag-united-kingdom' },
+					zh: { name: '简体中文', flag: 'twemoji:flag-china' }
+				}}
+				slot="option2"
+			/>
 			<UserMenu slot="option3" />
 		</NavBar>
 		<main class="flex-1 max-w-[100vw] px-2 py-2 lg:max-w-[calc(100vw-20rem)]">
@@ -145,7 +193,15 @@
 						<span class="uppercase text-[#E535AB]">ACE</span>
 					</div>
 				</a>
-				<Search on:search={closeDrawer} on:focus={openDrawer} slot="search" />
+				<FuzzySearch
+					label={$LL.web.components.search.label()}
+					placeholder={$LL.web.components.search.label()}
+					data={searchIndex}
+					limit={8}
+					on:select={onSelect}
+					on:focus={openDrawer}
+					slot="search"
+				/>
 				<ObjectsMenu slot="items" />
 			</SideBar>
 			<div

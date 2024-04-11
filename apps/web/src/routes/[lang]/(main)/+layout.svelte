@@ -1,11 +1,10 @@
 <script lang="ts">
 	import '../../../app.css';
-	import { NavBar } from '@graphace/ui';
-	import { LocaleSelect, ThemeSelect } from '~/lib/components/select';
-	import { setLocale } from '$i18n/i18n-svelte';
 	import { setContext } from 'svelte';
-	import type { LayoutData } from './$types';
+	import { NavBar, LocaleSelect, ThemeSelect } from '@graphace/ui';
+	import { setLocale } from '$i18n/i18n-svelte';
 	import LL from '$i18n/i18n-svelte';
+	import type { LayoutData } from './$types';
 
 	export let data: LayoutData;
 	// at the very top, set the locale before you access the store and before the actual rendering takes place
@@ -24,7 +23,13 @@
 
 <NavBar showMenuButton={false}>
 	<ThemeSelect slot="option1" />
-	<LocaleSelect slot="option2" />
+	<LocaleSelect
+		locales={{
+			en: { name: 'English', flag: 'twemoji:flag-united-kingdom' },
+			zh: { name: '简体中文', flag: 'twemoji:flag-china' }
+		}}
+		slot="option2"
+	/>
 </NavBar>
 <main>
 	<slot />
