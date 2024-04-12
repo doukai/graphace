@@ -160,7 +160,7 @@
 	const removeRows = () => {
 		dispatch('mutation', {
 			args: {
-				where: { {{ idName }}: { opr: 'IN', in: selectedIdList } },
+				where: { {{ idName }}: { opr: 'IN', arr: selectedIdList } },
 				isDeprecated: true
 			},
 			then: (data) => {

@@ -1,4 +1,4 @@
 export type NamedStruct = {
-    name: string;
+    name?: string | null | undefined;
     description?: string | null | undefined;
 }

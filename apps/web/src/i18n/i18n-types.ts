@@ -299,6 +299,74 @@ export type NamespaceGraphqlTranslation = {
 				}
 			}
 		}
+		User: {
+			/**
+			 * U​s​e​r
+			 */
+			name: string
+			fields: {
+				name: {
+					/**
+					 * n​a​m​e
+					 */
+					name: string
+				}
+				description: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n
+					 */
+					name: string
+				}
+				lastName: {
+					/**
+					 * l​a​s​t​N​a​m​e
+					 */
+					name: string
+				}
+				login: {
+					/**
+					 * l​o​g​i​n
+					 */
+					name: string
+				}
+				email: {
+					/**
+					 * e​m​a​i​l
+					 */
+					name: string
+				}
+				phones: {
+					/**
+					 * p​h​o​n​e​s
+					 */
+					name: string
+				}
+				disable: {
+					/**
+					 * d​i​s​a​b​l​e
+					 */
+					name: string
+				}
+				groups: {
+					/**
+					 * g​r​o​u​p​s
+					 */
+					name: string
+				}
+				roles: {
+					/**
+					 * r​o​l​e​s
+					 */
+					name: string
+				}
+				realm: {
+					/**
+					 * r​e​a​l​m
+					 */
+					name: string
+				}
+			}
+		}
 	}
 	enums: {
 		PermissionType: {
@@ -664,130 +732,6 @@ export type NamespaceWebTranslation = {
 			 */
 			label: string
 		}
-		themeSelect: {
-			/**
-			 * T​h​e​m​e
-			 */
-			btn: string
-			themes: {
-				/**
-				 * l​i​g​h​t
-				 */
-				light: string
-				/**
-				 * d​a​r​k
-				 */
-				dark: string
-				/**
-				 * c​u​p​c​a​k​e
-				 */
-				cupcake: string
-				/**
-				 * b​u​m​b​l​e​b​e​e
-				 */
-				bumblebee: string
-				/**
-				 * e​m​e​r​a​l​d
-				 */
-				emerald: string
-				/**
-				 * c​o​r​p​o​r​a​t​e
-				 */
-				corporate: string
-				/**
-				 * s​y​n​t​h​w​a​v​e
-				 */
-				synthwave: string
-				/**
-				 * r​e​t​r​o
-				 */
-				retro: string
-				/**
-				 * c​y​b​e​r​p​u​n​k
-				 */
-				cyberpunk: string
-				/**
-				 * v​a​l​e​n​t​i​n​e
-				 */
-				valentine: string
-				/**
-				 * h​a​l​l​o​w​e​e​n
-				 */
-				halloween: string
-				/**
-				 * g​a​r​d​e​n
-				 */
-				garden: string
-				/**
-				 * f​o​r​e​s​t
-				 */
-				forest: string
-				/**
-				 * a​q​u​a
-				 */
-				aqua: string
-				/**
-				 * l​o​f​i
-				 */
-				lofi: string
-				/**
-				 * p​a​s​t​e​l
-				 */
-				pastel: string
-				/**
-				 * f​a​n​t​a​s​y
-				 */
-				fantasy: string
-				/**
-				 * w​i​r​e​f​r​a​m​e
-				 */
-				wireframe: string
-				/**
-				 * b​l​a​c​k
-				 */
-				black: string
-				/**
-				 * l​u​x​u​r​y
-				 */
-				luxury: string
-				/**
-				 * d​r​a​c​u​l​a
-				 */
-				dracula: string
-				/**
-				 * c​m​y​k
-				 */
-				cmyk: string
-				/**
-				 * a​u​t​u​m​n
-				 */
-				autumn: string
-				/**
-				 * b​u​s​i​n​e​s​s
-				 */
-				business: string
-				/**
-				 * a​c​i​d
-				 */
-				acid: string
-				/**
-				 * l​e​m​o​n​a​d​e
-				 */
-				lemonade: string
-				/**
-				 * n​i​g​h​t
-				 */
-				night: string
-				/**
-				 * c​o​f​f​e​e
-				 */
-				coffee: string
-				/**
-				 * w​i​n​t​e​r
-				 */
-				winter: string
-			}
-		}
 		table: {
 			/**
 			 * R​e​m​o​v​e​ ​r​o​w​?
@@ -1137,6 +1081,74 @@ export type TranslationFunctions = {
 					permissions: {
 						/**
 						 * permissions
+						 */
+						name: () => LocalizedString
+					}
+					realm: {
+						/**
+						 * realm
+						 */
+						name: () => LocalizedString
+					}
+				}
+			}
+			User: {
+				/**
+				 * User
+				 */
+				name: () => LocalizedString
+				fields: {
+					name: {
+						/**
+						 * name
+						 */
+						name: () => LocalizedString
+					}
+					description: {
+						/**
+						 * description
+						 */
+						name: () => LocalizedString
+					}
+					lastName: {
+						/**
+						 * lastName
+						 */
+						name: () => LocalizedString
+					}
+					login: {
+						/**
+						 * login
+						 */
+						name: () => LocalizedString
+					}
+					email: {
+						/**
+						 * email
+						 */
+						name: () => LocalizedString
+					}
+					phones: {
+						/**
+						 * phones
+						 */
+						name: () => LocalizedString
+					}
+					disable: {
+						/**
+						 * disable
+						 */
+						name: () => LocalizedString
+					}
+					groups: {
+						/**
+						 * groups
+						 */
+						name: () => LocalizedString
+					}
+					roles: {
+						/**
+						 * roles
 						 */
 						name: () => LocalizedString
 					}
@@ -1505,130 +1517,6 @@ export type TranslationFunctions = {
 				 * Search
 				 */
 				label: () => LocalizedString
-			}
-			themeSelect: {
-				/**
-				 * Theme
-				 */
-				btn: () => LocalizedString
-				themes: {
-					/**
-					 * light
-					 */
-					light: () => LocalizedString
-					/**
-					 * dark
-					 */
-					dark: () => LocalizedString
-					/**
-					 * cupcake
-					 */
-					cupcake: () => LocalizedString
-					/**
-					 * bumblebee
-					 */
-					bumblebee: () => LocalizedString
-					/**
-					 * emerald
-					 */
-					emerald: () => LocalizedString
-					/**
-					 * corporate
-					 */
-					corporate: () => LocalizedString
-					/**
-					 * synthwave
-					 */
-					synthwave: () => LocalizedString
-					/**
-					 * retro
-					 */
-					retro: () => LocalizedString
-					/**
-					 * cyberpunk
-					 */
-					cyberpunk: () => LocalizedString
-					/**
-					 * valentine
-					 */
-					valentine: () => LocalizedString
-					/**
-					 * halloween
-					 */
-					halloween: () => LocalizedString
-					/**
-					 * garden
-					 */
-					garden: () => LocalizedString
-					/**
-					 * forest
-					 */
-					forest: () => LocalizedString
-					/**
-					 * aqua
-					 */
-					aqua: () => LocalizedString
-					/**
-					 * lofi
-					 */
-					lofi: () => LocalizedString
-					/**
-					 * pastel
-					 */
-					pastel: () => LocalizedString
-					/**
-					 * fantasy
-					 */
-					fantasy: () => LocalizedString
-					/**
-					 * wireframe
-					 */
-					wireframe: () => LocalizedString
-					/**
-					 * black
-					 */
-					black: () => LocalizedString
-					/**
-					 * luxury
-					 */
-					luxury: () => LocalizedString
-					/**
-					 * dracula
-					 */
-					dracula: () => LocalizedString
-					/**
-					 * cmyk
-					 */
-					cmyk: () => LocalizedString
-					/**
-					 * autumn
-					 */
-					autumn: () => LocalizedString
-					/**
-					 * business
-					 */
-					business: () => LocalizedString
-					/**
-					 * acid
-					 */
-					acid: () => LocalizedString
-					/**
-					 * lemonade
-					 */
-					lemonade: () => LocalizedString
-					/**
-					 * night
-					 */
-					night: () => LocalizedString
-					/**
-					 * coffee
-					 */
-					coffee: () => LocalizedString
-					/**
-					 * winter
-					 */
-					winter: () => LocalizedString
-				}
 			}
 			table: {
 				/**
