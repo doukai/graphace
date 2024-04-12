@@ -14,5 +14,23 @@ mutation Mutation_permission($name: ID, $description: String, $field: String, $t
     updateTime
     createGroupId
     syncPermissionPolicy
+    roles {
+      id
+      name
+      description
+      isDeprecated
+      version
+      realmId
+      createUserId
+      createTime
+      updateUserId
+      updateTime
+      createGroupId
+      syncRolePolicy
+    }
+    realm {
+      name
+      description
+    }
   }
 }

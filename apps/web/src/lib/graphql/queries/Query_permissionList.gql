@@ -13,5 +13,22 @@ query Query_permissionList($name: StringExpression, $description: StringExpressi
     updateUserId
     updateTime
     createGroupId
+    roles {
+      id
+      name
+      description
+      isDeprecated
+      version
+      realmId
+      createUserId
+      createTime
+      updateUserId
+      updateTime
+      createGroupId
+    }
+    realm {
+      name
+      description
+    }
   }
 }

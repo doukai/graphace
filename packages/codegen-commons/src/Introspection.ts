@@ -7,6 +7,7 @@ export const edgeSuffix = "Edge";
 export const pageInfoName = "PageInfo";
 export const introspectionPrefix = "__";
 export const innerEnum = ["Operator", "Conditional", "Sort", "Func", "Protocol"];
+export const namedStructInterfaceName = "NamedStruct";
 
 export const isAggregate = (name?: string): boolean => { return aggregateSuffix.some(suffix => name?.slice(-suffix.length) === suffix) };
 export const isConnection = (name?: string): boolean => { return name?.slice(-connectionSuffix.length) === connectionSuffix };
@@ -27,6 +28,13 @@ export const fieldTypeIsList = (type: GraphQLOutputType): boolean => {
         return fieldTypeIsList(type.ofType);
     }
     return isListType(type);
+}
+
+export const fieldTypeIsNamedStruct = (type: GraphQLOutputType): boolean => {
+    if (isListType(type) || isNonNullType(type)) {
+        return fieldTypeIsNamedStruct(type.ofType);
+    }
+    return isObjectType(type) && assertObjectType(type).getInterfaces().some(interfaceType => interfaceType.name === namedStructInterfaceName) || false;
 }
 
 export const getScalarFields = (field?: GraphQLField<any, any, any>): GraphQLField<any, any, any>[] | undefined => {
@@ -67,7 +75,7 @@ export const getNamedFields = (field?: GraphQLField<any, any, any>): GraphQLFiel
                         return Object.values(nodeType.getFields())
                             .filter(field => isObjectType(getFieldType(field.type)))
                             .filter(field => !isAggregate(field.name))
-                            .filter(field => assertObjectType(getFieldType(field.type)).getInterfaces().some(interfaceType => interfaceType.name === "NamedStruct"))
+                            .filter(field => fieldTypeIsNamedStruct(field.type))
                             .map(field => ({ ...field, isListType: fieldTypeIsList(field.type) }));
                     }
                 }
@@ -77,7 +85,7 @@ export const getNamedFields = (field?: GraphQLField<any, any, any>): GraphQLFiel
                 return Object.values(fieldType.getFields())
                     .filter(field => isObjectType(getFieldType(field.type)))
                     .filter(field => !isAggregate(field.name))
-                    .filter(field => assertObjectType(getFieldType(field.type)).getInterfaces().some(interfaceType => interfaceType.name === "NamedStruct"))
+                    .filter(field => fieldTypeIsNamedStruct(field.type))
                     .map(field => ({ ...field, isListType: fieldTypeIsList(field.type) }));
             }
         }
@@ -234,13 +242,12 @@ export const getNamedStructObjectNames = (
         isNonNullType: boolean,
         isListType: boolean,
         inQueryArgs: boolean,
-        inMutationArgs: boolean
+        inMutationArgs: boolean,
+        isNamed: boolean
     }[] | undefined
 ): string[] | undefined => {
-    const objectNames = fields?.map(field => field.fieldType)
-        .filter(type => isObjectType(type))
-        .filter(type => assertObjectType(type)?.getInterfaces().some(interfaceType => interfaceType.name === "NamedStruct"))
-        .map(type => type.name);
+    const objectNames = fields?.filter(field => field.isNamed)
+        .map(field => field.fieldName);
     return objectNames?.filter((objectName, index) => objectNames.indexOf(objectName) == index);
 }
 
@@ -294,7 +301,7 @@ export const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): {
                     isListType: fieldTypeIsList(field.type),
                     inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),
                     inMutationArgs: fieldInMutationArgs(schema, type.name, field.name),
-                    isNamed: isObjectType(getFieldType(field.type)) && assertObjectType(getFieldType(field.type)).getInterfaces().some(interfaceType => interfaceType.name === 'NamedStruct') || false
+                    isNamed: fieldTypeIsNamedStruct(field.type)
                 }
             });
     }

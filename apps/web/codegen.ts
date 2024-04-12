@@ -82,7 +82,7 @@ const config: CodegenConfig = {
                         },
                         {
                             name: 'User',
-                            inRoute: false,
+                            // inRoute: false,
                             select: true,
                             fields: [
                                 {

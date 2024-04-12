@@ -67,7 +67,7 @@ export type FuncExpression = {
 };
 
 /** 组 */
-export type Group = {
+export type Group = Meta & NamedStruct & TreeStruct & {
   __typename?: 'Group';
   /** ID */
   id?: Maybe<Scalars['ID']>;
@@ -854,7 +854,7 @@ export type GroupQueryArguments = {
   exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
 };
 
-export type GroupRoleRelation = {
+export type GroupRoleRelation = Meta & {
   __typename?: 'GroupRoleRelation';
   id?: Maybe<Scalars['ID']>;
   roleRef?: Maybe<Scalars['String']>;
@@ -1201,7 +1201,7 @@ export type GroupSubscriptionArguments = {
   exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
 };
 
-export type GroupUserRelation = {
+export type GroupUserRelation = Meta & {
   __typename?: 'GroupUserRelation';
   id?: Maybe<Scalars['ID']>;
   userRef?: Maybe<Scalars['String']>;
@@ -2176,7 +2176,7 @@ export type PageInfo = {
 };
 
 /** 权限 */
-export type Permission = {
+export type Permission = Meta & {
   __typename?: 'Permission';
   /** 名称 */
   name: Scalars['ID'];
@@ -2626,7 +2626,7 @@ export type PermissionQueryArguments = {
   exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
 };
 
-export type PermissionRoleRelation = {
+export type PermissionRoleRelation = Meta & {
   __typename?: 'PermissionRoleRelation';
   id?: Maybe<Scalars['ID']>;
   roleRef?: Maybe<Scalars['String']>;
@@ -3948,7 +3948,7 @@ export type Query_JsonSchema_Arguments = {
 };
 
 /** 租户 */
-export type Realm = {
+export type Realm = Meta & NamedStruct & {
   __typename?: 'Realm';
   /** ID */
   id?: Maybe<Scalars['ID']>;
@@ -4198,7 +4198,7 @@ export type RealmSubscriptionArguments = {
 };
 
 /** 角色 */
-export type Role = {
+export type Role = Meta & NamedStruct & {
   __typename?: 'Role';
   /** ID */
   id?: Maybe<Scalars['ID']>;
@@ -4815,7 +4815,7 @@ export type RolePermissionRoleRelationConnectionArgs = {
   groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
-export type RoleCompositeRelation = {
+export type RoleCompositeRelation = Meta & {
   __typename?: 'RoleCompositeRelation';
   id?: Maybe<Scalars['ID']>;
   roleRef?: Maybe<Scalars['String']>;
@@ -5445,7 +5445,7 @@ export type RoleSubscriptionArguments = {
   exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
 };
 
-export type RoleUserRelation = {
+export type RoleUserRelation = Meta & {
   __typename?: 'RoleUserRelation';
   id?: Maybe<Scalars['ID']>;
   userRef?: Maybe<Scalars['String']>;
@@ -6742,7 +6742,7 @@ export type TreeStructInput = {
 };
 
 /** 用户 */
-export type User = {
+export type User = Meta & NamedStruct & {
   __typename?: 'User';
   /** ID */
   id?: Maybe<Scalars['ID']>;
@@ -7450,7 +7450,7 @@ export type UserOrderBy = {
   createGroupId?: InputMaybe<Sort>;
 };
 
-export type UserPhonesRelation = {
+export type UserPhonesRelation = Meta & {
   __typename?: 'UserPhonesRelation';
   id?: Maybe<Scalars['ID']>;
   userRef?: Maybe<Scalars['String']>;

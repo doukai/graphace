@@ -220,6 +220,7 @@ export function getSelectComponentFieldImports(
                 .flatMap(objectConfig => objectConfig.fields || [])
                 .find(fieldConfig => fieldConfig.name === field.fieldName)?.select ||
             builderConfig?.objects?.find(objectConfig => objectConfig.name === field.fieldType.name)?.select)
+        .filter(field => field.isNamed)
         .map(field => field.fieldType.name);
     if (selectTypes) {
         return Array.from(new Set(selectTypes));

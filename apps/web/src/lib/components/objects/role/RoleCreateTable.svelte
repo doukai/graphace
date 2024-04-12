@@ -133,19 +133,19 @@
 						/>
 						{/if}
 						{#if permissions.auth('Role::users::*')}
-						<ObjectTd name="users"  errors={errors[row]?.iterms?.users} path="_/users" on:gotoField />
+						<ObjectTd name="users" namedStruct={ node.users } errors={errors[row]?.iterms?.users} path="_/users" on:gotoField />
 						{/if}
 						{#if permissions.auth('Role::groups::*')}
-						<ObjectTd name="groups"  errors={errors[row]?.iterms?.groups} path="_/groups" on:gotoField />
+						<ObjectTd name="groups" namedStruct={ node.groups } errors={errors[row]?.iterms?.groups} path="_/groups" on:gotoField />
 						{/if}
 						{#if permissions.auth('Role::composites::*')}
-						<ObjectTd name="composites"  errors={errors[row]?.iterms?.composites} path="_/composites" on:gotoField />
+						<ObjectTd name="composites" namedStruct={ node.composites } errors={errors[row]?.iterms?.composites} path="_/composites" on:gotoField />
 						{/if}
 						{#if permissions.auth('Role::permissions::*')}
 						<ObjectTd name="permissions"  errors={errors[row]?.iterms?.permissions} path="_/permissions" on:gotoField />
 						{/if}
 						{#if permissions.auth('Role::realm::*')}
-						<ObjectTd name="realm"  errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
+						<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
 						{/if}
 						{#if permissions.auth('Role::*::WRITE')}
 						<th class="z-10 hover:z-30 w-24">

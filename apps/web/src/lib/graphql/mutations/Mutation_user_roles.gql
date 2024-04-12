@@ -33,6 +33,60 @@ mutation Mutation_user_roles($user_id: String, $user_roles: [RoleInput], $id: St
           updateTime
           createGroupId
           syncRolePolicy
+          users {
+            id
+            name
+            description
+            lastName
+            login
+            email
+            phones
+            disable
+            isDeprecated
+            version
+            realmId
+            createUserId
+            createTime
+            updateUserId
+            updateTime
+            createGroupId
+            syncUserPolicy
+          }
+          groups {
+            id
+            name
+            description
+            path
+            deep
+            parentId
+            isDeprecated
+            version
+            realmId
+            createUserId
+            createTime
+            updateUserId
+            updateTime
+            createGroupId
+            syncGroupPolicy
+          }
+          composites {
+            id
+            name
+            description
+            isDeprecated
+            version
+            realmId
+            createUserId
+            createTime
+            updateUserId
+            updateTime
+            createGroupId
+            syncRolePolicy
+          }
+          realm {
+            name
+            description
+          }
         }
       }
     }
