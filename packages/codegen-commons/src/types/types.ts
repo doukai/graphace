@@ -1,9 +1,8 @@
-import type { GraphQLNamedType } from "graphql"
-
 export type BuilderConfig = {
     objects?: ObjectConfig[]
     enums?: EnumConfig[]
     scalars?: ScalarConfig[]
+    packages?: PackageConfig[]
     queryTypeName?: string
     mutationTypeName?: string
     subscriptionTypeName?: string
@@ -56,6 +55,11 @@ export type ScalarConfig = {
     arrayImport?: string[]
     component?: string
     arrayComponent?: string
+}
+
+export type PackageConfig = {
+    name: string
+    types?: string[]
 }
 
 export type FieldInfo = {
