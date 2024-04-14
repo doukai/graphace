@@ -83,11 +83,6 @@
 			args.description = { opr: 'LK', val: `%${searchValue}%` };
 			args.field = { opr: 'LK', val: `%${searchValue}%` };
 			args.type = { opr: 'LK', val: `%${searchValue}%` };
-		} else {
-			args.cond = undefined;
-			args.description = undefined;
-			args.field = undefined;
-			args.type = undefined;
 		}
 
 		dispatch('fetch', {
@@ -136,7 +131,7 @@
 				: nodes?.filter((node) => node?.name === selectedIdList)?.map((node) => ({ description: node?.description, field: node?.field, type: node?.type, permissionType: node?.permissionType, where: { name: { val: node?.name } } }))[0],
 			then: () => {
 				notifications.success($LL.web.message.saveSuccess());
-				dispatch('back');
+				dispatch('back', {});
 			},
 			catch: (errors) => {
 				console.error(errors);
@@ -282,7 +277,7 @@
 																	: { description: node?.description, field: node?.field, type: node?.type, permissionType: node?.permissionType, where: { name: { val: node.name } } },
 														then: () => {
 															notifications.success($LL.web.message.saveSuccess());
-															dispatch('back');
+															dispatch('back', {});
 														},
 														catch: (errors) => {
 															console.error(errors);

@@ -42,7 +42,7 @@
 				then: (data) => {
 					node = data;
 					notifications.success($LL.web.message.saveSuccess());
-					dispatch('back');
+					dispatch('back', {});
 				},
 				catch: (errors) => {
 					console.error(errors);
@@ -58,7 +58,7 @@
 				args: { where: { id: { val: node.id } }, isDeprecated: true },
 				then: (data) => {
 					notifications.success($LL.web.message.removeSuccess());
-					dispatch('back');
+					dispatch('back', {});
 				},
 				catch: (errors) => {
 					console.error(errors);
@@ -74,7 +74,7 @@
 				args: null,
 				then: (data) => {
 					notifications.success($LL.web.message.unbindSuccess());
-					dispatch('back');
+					dispatch('back', {});
 				},
 				catch: (errors) => {
 					console.error(errors);
@@ -178,7 +178,7 @@
 			/>
 			{/if}
 			{#if permissions.auth('Group::realm::*')}
-			<ObjectItem name="realm" namedStruct={ node.realm } path={`${node.id}/realm`} label={$LL.graphql.objects.Group.fields.realm.name()} errors={errors.realm} on:gotoField />
+			<ObjectItem name="realm" namedStruct={node.realm} path={`${node.id}/realm`} label={$LL.graphql.objects.Group.fields.realm.name()} errors={errors.realm} on:gotoField />
 			{/if}
 		{/if}
 	{/if}

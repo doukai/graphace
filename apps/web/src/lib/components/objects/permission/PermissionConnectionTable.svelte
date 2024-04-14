@@ -61,14 +61,9 @@
 	export let pageSize: number = 10;
 
 	let selectAll: boolean;
-	export let selectedIdList: (string | null)[] = [];
+	export let selectedIdList: (string | null | undefined)[] = [];
 
-	export const query = () => {
-		pageNumber = 1;
-		queryPage();
-	};
-
-	export const queryPage = () => {
+	export const queryPage = (toPageNumber?: number | undefined) => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -82,7 +77,7 @@
 			args.before = before;
 			args.last = pageSize;
 		} else {
-			args.offset = (pageNumber - 1) * pageSize;
+			args.offset = ((toPageNumber || pageNumber) - 1) * pageSize;
 			args.first = pageSize;
 		}
 
@@ -105,11 +100,6 @@
 			args.description = { opr: 'LK', val: `%${searchValue}%` };
 			args.field = { opr: 'LK', val: `%${searchValue}%` };
 			args.type = { opr: 'LK', val: `%${searchValue}%` };
-		} else {
-			args.cond = undefined;
-			args.description = undefined;
-			args.field = undefined;
-			args.type = undefined;
 		}
 		
 		if (after) {
@@ -158,7 +148,7 @@
 			args: { where: { name: { val: id } }, isDeprecated: true },
 			then: (data) => {
 				notifications.success($LL.web.message.removeSuccess());
-				query();
+				queryPage(1);
 			},
 			catch: (errors) => {
 				console.error(errors);
@@ -175,7 +165,7 @@
 			},
 			then: (data) => {
 				notifications.success($LL.web.message.removeSuccess());
-				query();
+				queryPage(1);
 			},
 			catch: (errors) => {
 				console.error(errors);
@@ -184,7 +174,7 @@
 		});
 	};
 
-	const unbindRows = (selectedIdList: (string | null)[]) => {
+	const unbindRows = (selectedIdList: (string | null | undefined)[]) => {
 		dispatch('parentMutation', {
 			args: selectedIdList
 				.map((id) => {
@@ -192,7 +182,7 @@
 				}),
 			then: (data) => {
 				notifications.success($LL.web.message.unbindSuccess());
-				query();
+				queryPage(1);
 			},
 			catch: (errors) => {
 				console.error(errors);
@@ -256,7 +246,7 @@
 						bind:checked={selectAll}
 						on:change={(e) => {
 							if (nodes && nodes.length > 0) {
-								selectedIdList = selectAll ? nodes.map((node) => node?.name || null) : [];
+								selectedIdList = selectAll ? nodes.map((node) => node?.name) : [];
 							}
 						}}
 					/>
@@ -267,7 +257,7 @@
 				name={$LL.graphql.objects.Permission.fields.name.name()}
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Permission::description::*')}
@@ -275,7 +265,7 @@
 				name={$LL.graphql.objects.Permission.fields.description.name()}
 				bind:expression={args.description}
 				bind:sort={orderBy.description}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Permission::field::*')}
@@ -283,7 +273,7 @@
 				name={$LL.graphql.objects.Permission.fields.field.name()}
 				bind:expression={args.field}
 				bind:sort={orderBy.field}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Permission::type::*')}
@@ -291,7 +281,7 @@
 				name={$LL.graphql.objects.Permission.fields.type.name()}
 				bind:expression={args.type}
 				bind:sort={orderBy.type}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Permission::permissionType::*')}
@@ -299,21 +289,21 @@
 				name={$LL.graphql.objects.Permission.fields.permissionType.name()}
 				bind:expression={args.permissionType}
 				bind:sort={orderBy.permissionType}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Permission::roles::*')}
 			<RoleTh
 				name={$LL.graphql.objects.Permission.fields.roles.name()}
 				bind:expression={args.roles}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Permission::realm::*')}
 			<RealmTh
 				name={$LL.graphql.objects.Permission.fields.realm.name()}
 				bind:expression={args.realm}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Permission::*::WRITE')}
@@ -331,7 +321,7 @@
 						<tr class="hover">
 							<th class="z-10 w-12">
 								<label>
-									<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.name} />
+									<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={ node.name } />
 								</label>
 							</th>
 							{#if permissions.auth('Permission::name::*')}
@@ -390,7 +380,7 @@
 							/>
 							{/if}
 							{#if permissions.auth('Permission::realm::*')}
-							<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path={`${node.name}/realm`} on:gotoField />
+							<ObjectTd name="realm" namedStruct={node.realm} errors={errors[row]?.iterms?.realm} path={`${node.name}/realm`} on:gotoField />
 							{/if}
 							{#if permissions.auth('Permission::*::WRITE')}
 							<th class="z-10 hover:z-30 w-24">

@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql';
-	import { Card } from '@graphace/ui';
+	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import PermissionForm from '~/lib/components/objects/permission/PermissionForm.svelte';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Query_permissionStore, Mutation_permissionStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { MutationPermissionArgs, Permission } from '~/lib/types/schema';
-	import { validateMutation } from '~/lib/utils';
+	import { validate } from '~/lib/utils';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
@@ -26,7 +25,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Permission', event.detail.args, $locale)
+		validate('Mutation_permission_Arguments', event.detail.args, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_permission.mutate(event.detail.args)

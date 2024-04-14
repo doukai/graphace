@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { ot, to, canBack, urlName } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import { type Errors, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
 	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
-	import { Card } from '@graphace/ui';
+	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
 	import RealmCreateForm from '~/lib/components/objects/realm/RealmCreateForm.svelte';
 	import type { MutationRealmArgs, Realm } from '~/lib/types/schema';
 	import { Query_user_realmStore, Mutation_user_realmStore, Mutation_realmStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { validateMutation } from '~/lib/utils';
+	import { validate } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -30,7 +29,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Realm', event.detail.args, $locale)
+		validate('Mutation_realm_Arguments', event.detail.args, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_realm.mutate(event.detail.args)
@@ -53,7 +52,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('User', { where: { id: { val: user?.id }}, realm: event.detail.args }, $locale)
+		validate('Mutation_user_Arguments', { where: { id: { val: user?.id } }, realm: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_user_realm.mutate({

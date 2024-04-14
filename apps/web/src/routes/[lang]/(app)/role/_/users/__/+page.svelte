@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import { type Errors, updateNodeParam, updateErrorsParam, getNodeParam, getErrorsParam } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
-	import { Card } from '@graphace/ui';
+	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import UserSelectConnectionTable from '~/lib/components/objects/user/UserSelectConnectionTable.svelte';
 	import type { User, QueryUserConnectionArgs, MutationUserArgs } from '~/lib/types/schema';
 	import { Query_userConnectionStore, Mutation_userStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { validateMutation } from '~/lib/utils';
+	import { validate } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -45,7 +44,7 @@
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id || event.detail.args.where?.id?.val || undefined);
-		validateMutation('User', event.detail.args, $locale)
+		validate('Mutation_user_Arguments', event.detail.args, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};

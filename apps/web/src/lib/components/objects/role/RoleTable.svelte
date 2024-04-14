@@ -59,7 +59,7 @@
 	export let orderBy: RoleOrderBy = {};
 
 	let selectAll: boolean;
-	export let selectedIdList: (string | null)[] = [];
+	export let selectedIdList: (string | null | undefined)[] = [];
 
 	export const query = () => {
 		if (Object.keys(orderBy).length > 0) {
@@ -86,10 +86,6 @@
 			args.cond = 'OR';
 			args.name = { opr: 'LK', val: `%${searchValue}%` };
 			args.description = { opr: 'LK', val: `%${searchValue}%` };
-		} else {
-			args.cond = undefined;
-			args.name = undefined;
-			args.description = undefined;
 		}
 
 		dispatch('fetch', {
@@ -139,7 +135,7 @@
 	const removeRows = () => {
 		dispatch('mutation', {
 			args: {
-				where: { id: { opr: 'IN', arr: selectedIdList } },
+				where: { id: { opr: 'IN', arr: selectedIdList} },
 				isDeprecated: true
 			},
 			then: (data) => {
@@ -153,11 +149,11 @@
 		});
 	};
 
-	const unbindRows = (selectedIdList: (string | null)[]) => {
+	const unbindRows = (selectedIdList: (string | null | undefined)[]) => {
 		dispatch('parentMutation', {
 			args: selectedIdList
 				.map((id) => {
-					return { where: { id: { val: id } }, isDeprecated: true };
+					return {where: { id: { val: id } }, isDeprecated: true};
 				}),
 			then: (data) => {
 				notifications.success($LL.web.message.unbindSuccess());
@@ -225,7 +221,7 @@
 						bind:checked={selectAll}
 						on:change={(e) => {
 							if (nodes && nodes.length > 0) {
-								selectedIdList = selectAll ? nodes.map((node) => node?.id || null) : [];
+								selectedIdList = selectAll ? nodes.map((node) => node?.id) : [];
 							}
 						}}
 					/>
@@ -324,7 +320,7 @@
 								errors={errors[row]?.iterms?.users}
 								readonly={!permissions.auth('Role::users::WRITE')}
 								on:save={(e) =>
-									updateField({ users: node?.users, where: { id: { val: node?.id } } }, row)}
+									updateField({ users: node?.users, where: { id: {val: node?.id } } }, row)}
 							/>
 							{/if}
 							{#if permissions.auth('Role::groups::*')}
@@ -335,7 +331,7 @@
 								errors={errors[row]?.iterms?.groups}
 								readonly={!permissions.auth('Role::groups::WRITE')}
 								on:save={(e) =>
-									updateField({ groups: node?.groups, where: { id: { val: node?.id } } }, row)}
+									updateField({ groups: node?.groups, where: { id: {val: node?.id } } }, row)}
 							/>
 							{/if}
 							{#if permissions.auth('Role::composites::*')}
@@ -346,14 +342,14 @@
 								errors={errors[row]?.iterms?.composites}
 								readonly={!permissions.auth('Role::composites::WRITE')}
 								on:save={(e) =>
-									updateField({ composites: node?.composites, where: { id: { val: node?.id } } }, row)}
+									updateField({ composites: node?.composites, where: { id: {val: node?.id } } }, row)}
 							/>
 							{/if}
 							{#if permissions.auth('Role::permissions::*')}
 							<ObjectTd name="permissions"  errors={errors[row]?.iterms?.permissions} path={`${node.id}/permissions`} on:gotoField />
 							{/if}
 							{#if permissions.auth('Role::realm::*')}
-							<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+							<ObjectTd name="realm" namedStruct={node.realm} errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
 							{/if}
 							{#if permissions.auth('Role::*::WRITE')}
 							<th class="z-10 hover:z-30 w-24">
@@ -363,7 +359,7 @@
 											class="btn btn-square btn-ghost btn-xs"
 											on:click|preventDefault={(e) => {
 												if (node && node.id) {
-													dispatch('edit', { id: node.id });
+													dispatch('edit', {id: node.id});
 												}
 											}}
 										>

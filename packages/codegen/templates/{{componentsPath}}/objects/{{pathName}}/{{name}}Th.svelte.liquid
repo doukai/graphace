@@ -33,7 +33,7 @@
 	{%- if fields %}
 	{%- for field in fields %}
 	{%- if field.isNamed %}
-	let {{ field.fieldName }}: {{ field.fieldType.name }}Input | ({{ field.fieldType.name }}Input | null | undefined)[] | null | undefined = undefined;
+	let {{ field.fieldName }}: {{ field.fieldTypeName }}Input | ({{ field.fieldTypeName }}Input | null | undefined)[] | null | undefined = undefined;
 	{%- endif %}
 	{%- endfor %}
 	{%- endif %}
@@ -45,7 +45,7 @@
 		{%- if fields %}
 		{%- for field in fields %}
 		{%- if field.isScalarType or field.isEnumType %}
-		{{ field.fieldName }}: {{ field.fieldType.name }}Expression;
+		{{ field.fieldName }}: {{ field.fieldTypeName }}Expression;
 		{%- endif %}
 		{%- if field.isNamed %}
 		{{ field.fieldName }}: { {{ field.fieldTypeIdName }}: StringExpression };
@@ -70,7 +70,7 @@
 	
 	{%- if isNamedStruct %}
 	$: if (Array.isArray(value)) {
-		_expression.{{ idName }}.in = value?.map((item) => item?.where?.{{ idName }}?.val);
+		_expression.{{ idName }}.arr = value?.map((item) => item?.where?.{{ idName }}?.val);
 	} else if (value) {
 		_expression.{{ idName }}.val = value?.where?.{{ idName }}?.val;
 	}
@@ -80,7 +80,7 @@
 	{%- for field in fields %}
 	{%- if field.isNamed %}
 	$: if (Array.isArray({{ field.fieldName }})) {
-		_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.in = {{ field.fieldName }}?.map((item) => item?.where?.{{ field.fieldTypeIdName }}?.val);
+		_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.arr = {{ field.fieldName }}?.map((item) => item?.where?.{{ field.fieldTypeIdName }}?.val);
 	} else if ({{ field.fieldName }}) {
 		_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.val = {{ field.fieldName }}?.where?.{{ field.fieldTypeIdName }}?.val;
 	}
@@ -96,7 +96,7 @@
 
 	const filter = (): void => {
 		{%- if isNamedStruct %}
-		if (_expression.{{ idName }}.val || (_expression.{{ idName }}.in && _expression.{{ idName }}.in.length > 0)) {
+		if (_expression.{{ idName }}.val || (_expression.{{ idName }}.arr && _expression.{{ idName }}.arr.length > 0)) {
 			expression = { ...expression, {{ idName }}: _expression.{{ idName }} };
 		} else {
 			expression = { ...expression, {{ idName }}: undefined };
@@ -105,16 +105,15 @@
 		{%- if fields %}
 		{%- for field in fields %}
 		{%- if field.isScalarType or field.isEnumType %}
-		if (_expression.{{ field.fieldName }}.val || (_expression.{{ field.fieldName }}.in && _expression.{{ field.fieldName }}.in.length > 0)) {
+		if (_expression.{{ field.fieldName }}.val || (_expression.{{ field.fieldName }}.arr && _expression.{{ field.fieldName }}.arr.length > 0)) {
 			expression = { ...expression, {{ field.fieldName }}: _expression.{{ field.fieldName }} };
 		} else {
 			expression = { ...expression, {{ field.fieldName }}: undefined };
 		}
 		{%- endif %}
 		{%- if field.isNamed %}
-		if (
-			_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}?.val ||
-			(_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}?.in && _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}?.in.length > 0)
+		if (_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}?.val ||
+			(_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}?.arr && _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}?.arr.length > 0)
 		) {
 			expression = { ...expression, {{ field.fieldName }}: _expression.{{ field.fieldName }} };
 		} else {
@@ -127,7 +126,7 @@
 		if (Object.values(expression).filter((item) => item).length === 0) {
 			expression = undefined;
 		}
-		dispatch('filter');
+		dispatch('filter', {});
 		tippyElement._tippy.hide();
 	};
 
@@ -146,14 +145,14 @@
 		{%- endfor %}
 		{%- endif %}
 		expression = undefined;
-		dispatch('filter');
+		dispatch('filter', {});
 		tippyElement._tippy.hide();
 	};
 
 	
 	{%- if isNamedStruct %}
 	const {{ idName }}OprChange = (): void => {
-		_expression.{{ idName }}.in = [];
+		_expression.{{ idName }}.arr = [];
 		_expression.{{ idName }}.val = undefined;
 	};	
 	{%- endif %}
@@ -162,14 +161,14 @@
 	{%- for field in fields %}
 	{%- if field.isScalarType or field.isEnumType %}
 	const {{ field.fieldName }}OprChange = (): void => {
-		_expression.{{ field.fieldName }}.in = [];
+		_expression.{{ field.fieldName }}.arr = [];
 		_expression.{{ field.fieldName }}.val = undefined;
 	};
 	
 	{%- endif %}
 	{%- if field.isNamed %}
 	const {{ field.fieldName }}OprChange = (): void => {
-		_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.in = [];
+		_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.arr = [];
 		_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.val = undefined;
 	};
 
@@ -225,16 +224,16 @@
 				/>
 			</div>
 			{#if _expression.{{ field.fieldName }}.opr === 'IN' || _expression.{{ field.fieldName }}.opr === 'NIN' || _expression.{{ field.fieldName }}.opr === 'BT' || _expression.{{ field.fieldName }}.opr === 'NBT'}
-				<{{ field.fieldType.name }}Input
-					{%- if field.fieldType.name != "Boolean" %}
+				<{{ field.fieldTypeName }}Input
+					{%- if field.fieldTypeName != "Boolean" %}
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{%- endif %}
 					{name}
-					bind:value={_expression.{{ field.fieldName }}.in}
+					bind:value={_expression.{{ field.fieldName }}.arr}
 				/>
 			{:else}
-				<{{ field.fieldType.name }}Input
-					{%- if field.fieldType.name != "Boolean" %}
+				<{{ field.fieldTypeName }}Input
+					{%- if field.fieldTypeName != "Boolean" %}
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{%- endif %}
 					{name}
@@ -260,14 +259,14 @@
 				/>
 			</div>
 			{#if _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr === 'IN' || _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr === 'NIN' || _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr === 'BT' || _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr === 'NBT'}
-				<{{ field.fieldType.name }}Select
+				<{{ field.fieldTypeName }}Select
 					{name}
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					list
 					bind:value={ {{ field.fieldName }} }
 				/>
 			{:else}
-				<{{ field.fieldType.name }}Select {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value={ {{ field.fieldName }} } />
+				<{{ field.fieldTypeName }}Select {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value={ {{ field.fieldName }} } />
 			{/if}
 			{%- if useAuth %}
 			{/if}
@@ -295,7 +294,7 @@
 	<a
 		class="link group inline-flex"
 		href={null}
-		use:tippy={% raw %}{{{% endraw %}
+		use:tippy={% raw %}{{% endraw %}{
 			content,
 			placement: 'bottom',
 			interactive: true,
@@ -305,7 +304,7 @@
 			theme: 'daisy',
 			maxWidth: 'none',
 			appendTo: () => document.body
-		{% raw %}}}{% endraw %}
+		{% raw %}}{% endraw %}}
 		bind:this={tippyElement}
 	>
 		{name}

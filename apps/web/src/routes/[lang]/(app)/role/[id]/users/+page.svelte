@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons';
 	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
-	import { Card } from '@graphace/ui';
+	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import UserConnectionTable from '~/lib/components/objects/user/UserConnectionTable.svelte';
 	import type { MutationUserArgs, QueryUserConnectionArgs, User } from '~/lib/types/schema';
 	import { Query_role_usersStore, Mutation_userStore, Mutation_role_usersStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { validateMutation } from '~/lib/utils';
+	import { validate } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -49,7 +48,7 @@
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id || event.detail.args.where?.id?.val || undefined);
-		validateMutation('User', event.detail.args, $locale)
+		validate('Mutation_user_Arguments', event.detail.args, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
@@ -76,13 +75,12 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Role', { where: { id: { val: id }}, users: event.detail.args }, $locale)
+		validate('Mutation_role_Arguments', { where: { id: { val: id }}, users: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_role_users.mutate({
 					role_id: id,
-					role_users: event.detail.args,
-					mergeToList: ['users']
+					role_users: event.detail.args
 				})
 					.then((result) => {
 						event.detail.then(undefined);

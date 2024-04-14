@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { ot, to, canBack, urlName } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import { type Errors, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
 	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
-	import { Card } from '@graphace/ui';
+	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import GroupForm from '~/lib/components/objects/group/GroupForm.svelte';
 	import GroupCreateForm from '~/lib/components/objects/group/GroupCreateForm.svelte';
 	import type { MutationGroupArgs, Group } from '~/lib/types/schema';
 	import { Query_group_parentStore, Mutation_group_parentStore, Mutation_groupStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { validateMutation } from '~/lib/utils';
+	import { validate } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -30,7 +29,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Group', event.detail.args, $locale)
+		validate('Mutation_group_Arguments', event.detail.args, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_group.mutate(event.detail.args)
@@ -53,7 +52,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Group', { where: { id: { val: group?.id }}, parent: event.detail.args }, $locale)
+		validate('Mutation_group_Arguments', { where: { id: { val: group?.id } }, parent: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_group_parent.mutate({

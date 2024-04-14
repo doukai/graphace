@@ -32,7 +32,7 @@
 				args: node,
 				then: (data) => {
 					notifications.success($LL.web.message.saveSuccess());
-					dispatch('back');
+					dispatch('back', {});
 				},
 				catch: (errors) => {
 					console.error(errors);
@@ -48,7 +48,7 @@
 				args: {},
 				then: (data) => {
 					notifications.success($LL.web.message.removeSuccess());
-					dispatch('back');
+					dispatch('back', {});
 				},
 				catch: (errors) => {
 					console.error(errors);
@@ -118,6 +118,6 @@
 	/>
 	{/if}
 	{#if permissions.auth('User::realm::*')}
-	<ObjectItem name="realm" namedStruct={ node.realm } path="_/realm" label={$LL.graphql.objects.User.fields.realm.name()} errors={errors.realm} on:gotoField />
+	<ObjectItem name="realm" namedStruct={node.realm} path="_/realm" label={$LL.graphql.objects.User.fields.realm.name()} errors={errors.realm} on:gotoField />
 	{/if}
 </Form>

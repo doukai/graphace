@@ -75,14 +75,9 @@
 	export let pageSize: number = 10;
 
 	let selectAll: boolean;
-	export let selectedIdList: (string | null)[] = [];
+	export let selectedIdList: (string | null | undefined)[] = [];
 
-	export const query = () => {
-		pageNumber = 1;
-		queryPage();
-	};
-
-	export const queryPage = () => {
+	export const queryPage = (toPageNumber?: number | undefined) => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -96,7 +91,7 @@
 			args.before = before;
 			args.last = pageSize;
 		} else {
-			args.offset = (pageNumber - 1) * pageSize;
+			args.offset = ((toPageNumber || pageNumber) - 1) * pageSize;
 			args.first = pageSize;
 		}
 
@@ -118,17 +113,8 @@
 			args.cond = 'OR';
 			{%- if fields %}
 			{%- for field in fields %}
-			{%- if field.isScalarType and field.inQueryArgs and field.fieldType.name == 'String' %}
+			{%- if field.isScalarType and field.inQueryArgs and field.fieldTypeName == 'String' %}
 			args.{{ field.fieldName }} = { opr: 'LK', val: `%${searchValue}%` };
-			{%- endif %}
-			{%- endfor %}
-			{%- endif %}
-		} else {
-			args.cond = undefined;
-			{%- if fields %}
-			{%- for field in fields %}
-			{%- if field.isScalarType and field.inQueryArgs and field.fieldType.name == 'String' %}
-			args.{{ field.fieldName }} = undefined;
 			{%- endif %}
 			{%- endfor %}
 			{%- endif %}
@@ -180,7 +166,7 @@
 			args: { where: { {{ idName }}: { val: id } }, isDeprecated: true },
 			then: (data) => {
 				notifications.success($LL.web.message.removeSuccess());
-				query();
+				queryPage(1);
 			},
 			catch: (errors) => {
 				console.error(errors);
@@ -197,7 +183,7 @@
 			},
 			then: (data) => {
 				notifications.success($LL.web.message.removeSuccess());
-				query();
+				queryPage(1);
 			},
 			catch: (errors) => {
 				console.error(errors);
@@ -206,7 +192,7 @@
 		});
 	};
 
-	const unbindRows = (selectedIdList: (string | null)[]) => {
+	const unbindRows = (selectedIdList: (string | null | undefined)[]) => {
 		dispatch('parentMutation', {
 			args: selectedIdList
 				.map((id) => {
@@ -214,7 +200,7 @@
 				}),
 			then: (data) => {
 				notifications.success($LL.web.message.unbindSuccess());
-				query();
+				queryPage(1);
 			},
 			catch: (errors) => {
 				console.error(errors);
@@ -251,7 +237,7 @@
 				return true;
 			}
 		});
-	}}
+	{% raw %}}{% endraw %}}
 	on:unbind={(e) =>
 		messageBoxs.open({
 			title: $LL.web.components.table.unbindModalTitle(),
@@ -285,9 +271,9 @@
 						bind:checked={selectAll}
 						on:change={(e) => {
 							if (nodes && nodes.length > 0) {
-								selectedIdList = selectAll ? nodes.map((node) => node?.{{ idName }} || null) : [];
+								selectedIdList = selectAll ? nodes.map((node) => node?.{{ idName }}) : [];
 							}
-						}}
+						{% raw %}}{% endraw %}}
 					/>
 				</label>
 			</th>
@@ -298,19 +284,19 @@
 			{%- endif %}
 			{%- if field.inQueryArgs %}
 			{%- if field.isScalarType or field.isEnumType %}
-			<{{ field.fieldType.name }}Th
+			<{{ field.fieldTypeName }}Th
 				name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 				bind:expression={args.{{ field.fieldName }}}
 				{%- if field.isListType == false %}
 				bind:sort={orderBy.{{ field.fieldName }}}
 				{%- endif %}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{%- else %}
-			<{{ field.fieldType.name }}Th
+			<{{ field.fieldTypeName }}Th
 				name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 				bind:expression={args.{{ field.fieldName }}}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{%- endif %}
 			{%- else %}
@@ -340,7 +326,7 @@
 						<tr class="hover">
 							<th class="z-10 w-12">
 								<label>
-									<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.{{ idName }}} />
+									<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={ node.{{ idName }} } />
 								</label>
 							</th>
 							{%- if fields %}
@@ -352,7 +338,7 @@
 							{{ field.component }}
 							{%- else %}
 							{%- if field.isScalarType or field.isEnumType %}
-							<{{ field.fieldType.name }}Td
+							<{{ field.fieldTypeName }}Td
 								name="{{ field.fieldName }}"
 								bind:value={node.{{ field.fieldName }}}
 								{%- if field.isListType %}
@@ -370,19 +356,21 @@
 							/>
 							{%- else %}
 							{%- if field.select %}
-							<{{ field.fieldType.name }}SelectTd
+							<{{ field.fieldTypeName }}SelectTd
 								name="{{ field.fieldName }}"
 								bind:value={node.{{ field.fieldName }}}
 								{%- if field.isListType %}
 								list
 								{%- endif %}
 								errors={errors[row]?.iterms?.{{ field.fieldName }}}
+								{%- if useAuth %}
 								readonly={!permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE')}
+								{%- endif %}
 								on:save={(e) =>
 									updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }, row)}
 							/>
 							{%- else %}
-							<ObjectTd name="{{ field.fieldName }}" {% if field.isNamed %}namedStruct={ node.{{ field.fieldName }} }{% endif %} errors={errors[row]?.iterms?.{{ field.fieldName }}} path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} on:gotoField />
+							<ObjectTd name="{{ field.fieldName }}" {% if field.isNamed %}namedStruct={node.{{ field.fieldName }}}{% endif %} errors={errors[row]?.iterms?.{{ field.fieldName }}} path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} on:gotoField />
 							{%- endif %}
 							{%- endif %}
 							{%- endif %}
@@ -403,7 +391,7 @@
 												if (node && node.{{ idName }}) {
 													dispatch('edit', { id: node.{{ idName }} });
 												}
-											}}
+											{% raw %}}{% endraw %}}
 										>
 											<Icon src={PencilSquare} solid />
 										</button>
@@ -434,7 +422,7 @@
 															}
 														}
 													});
-												}}
+												{% raw %}}{% endraw %}}
 											>
 												<Icon src={ArchiveBoxXMark} solid />
 											</button>
@@ -455,7 +443,7 @@
 															return true;
 														}
 													});
-												}}
+												{% raw %}}{% endraw %}}
 											>
 												<Icon src={Trash} solid />
 											</button>

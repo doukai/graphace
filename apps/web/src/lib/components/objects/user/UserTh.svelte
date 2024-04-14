@@ -6,12 +6,12 @@
 	import { Check, XMark, Funnel } from '@steeze-ui/heroicons';
 	import type { StringExpression, BooleanExpression } from '~/lib/types/schema';
 	import UserSelect from '~/lib/components/objects/user/UserSelect.svelte';
-	import groupsSelect from '~/lib/components/objects/groups/groupsSelect.svelte';
-	import rolesSelect from '~/lib/components/objects/roles/rolesSelect.svelte';
-	import realmSelect from '~/lib/components/objects/realm/realmSelect.svelte';
+	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
+	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
+	import RealmSelect from '~/lib/components/objects/realm/RealmSelect.svelte';
 	import LL from '$i18n/i18n-svelte';
 	import { Operator } from '$houdini';
-	import type { UserInput, groupsInput, rolesInput, realmInput, UserExpression } from '$houdini';
+	import type { UserInput, GroupInput, RoleInput, RealmInput, UserExpression } from '$houdini';
 	import { permissions } from '~/lib/utils/auth-util';
 
 	export let name: string;
@@ -47,22 +47,22 @@
 		realm: { id: { opr: Operator.EQ } }
 	};
 	$: if (Array.isArray(value)) {
-		_expression.id.in = value?.map((item) => item?.where?.id?.val);
+		_expression.id.arr = value?.map((item) => item?.where?.id?.val);
 	} else if (value) {
 		_expression.id.val = value?.where?.id?.val;
 	}
 	$: if (Array.isArray(groups)) {
-		_expression.groups.id.in = groups?.map((item) => item?.where?.id?.val);
+		_expression.groups.id.arr = groups?.map((item) => item?.where?.id?.val);
 	} else if (groups) {
 		_expression.groups.id.val = groups?.where?.id?.val;
 	}
 	$: if (Array.isArray(roles)) {
-		_expression.roles.id.in = roles?.map((item) => item?.where?.id?.val);
+		_expression.roles.id.arr = roles?.map((item) => item?.where?.id?.val);
 	} else if (roles) {
 		_expression.roles.id.val = roles?.where?.id?.val;
 	}
 	$: if (Array.isArray(realm)) {
-		_expression.realm.id.in = realm?.map((item) => item?.where?.id?.val);
+		_expression.realm.id.arr = realm?.map((item) => item?.where?.id?.val);
 	} else if (realm) {
 		_expression.realm.id.val = realm?.where?.id?.val;
 	}
@@ -74,65 +74,62 @@
 	}>();
 
 	const filter = (): void => {
-		if (_expression.id.val || (_expression.id.in && _expression.id.in.length > 0)) {
+		if (_expression.id.val || (_expression.id.arr && _expression.id.arr.length > 0)) {
 			expression = { ...expression, id: _expression.id };
 		} else {
 			expression = { ...expression, id: undefined };
 		}
-		if (_expression.name.val || (_expression.name.in && _expression.name.in.length > 0)) {
+		if (_expression.name.val || (_expression.name.arr && _expression.name.arr.length > 0)) {
 			expression = { ...expression, name: _expression.name };
 		} else {
 			expression = { ...expression, name: undefined };
 		}
-		if (_expression.description.val || (_expression.description.in && _expression.description.in.length > 0)) {
+		if (_expression.description.val || (_expression.description.arr && _expression.description.arr.length > 0)) {
 			expression = { ...expression, description: _expression.description };
 		} else {
 			expression = { ...expression, description: undefined };
 		}
-		if (_expression.lastName.val || (_expression.lastName.in && _expression.lastName.in.length > 0)) {
+		if (_expression.lastName.val || (_expression.lastName.arr && _expression.lastName.arr.length > 0)) {
 			expression = { ...expression, lastName: _expression.lastName };
 		} else {
 			expression = { ...expression, lastName: undefined };
 		}
-		if (_expression.login.val || (_expression.login.in && _expression.login.in.length > 0)) {
+		if (_expression.login.val || (_expression.login.arr && _expression.login.arr.length > 0)) {
 			expression = { ...expression, login: _expression.login };
 		} else {
 			expression = { ...expression, login: undefined };
 		}
-		if (_expression.email.val || (_expression.email.in && _expression.email.in.length > 0)) {
+		if (_expression.email.val || (_expression.email.arr && _expression.email.arr.length > 0)) {
 			expression = { ...expression, email: _expression.email };
 		} else {
 			expression = { ...expression, email: undefined };
 		}
-		if (_expression.phones.val || (_expression.phones.in && _expression.phones.in.length > 0)) {
+		if (_expression.phones.val || (_expression.phones.arr && _expression.phones.arr.length > 0)) {
 			expression = { ...expression, phones: _expression.phones };
 		} else {
 			expression = { ...expression, phones: undefined };
 		}
-		if (_expression.disable.val || (_expression.disable.in && _expression.disable.in.length > 0)) {
+		if (_expression.disable.val || (_expression.disable.arr && _expression.disable.arr.length > 0)) {
 			expression = { ...expression, disable: _expression.disable };
 		} else {
 			expression = { ...expression, disable: undefined };
 		}
-		if (
-			_expression.groups.id?.val ||
-			(_expression.groups.id?.in && _expression.groups.id?.in.length > 0)
+		if (_expression.groups.id?.val ||
+			(_expression.groups.id?.arr && _expression.groups.id?.arr.length > 0)
 		) {
 			expression = { ...expression, groups: _expression.groups };
 		} else {
 			expression = { ...expression, groups: undefined };
 		}
-		if (
-			_expression.roles.id?.val ||
-			(_expression.roles.id?.in && _expression.roles.id?.in.length > 0)
+		if (_expression.roles.id?.val ||
+			(_expression.roles.id?.arr && _expression.roles.id?.arr.length > 0)
 		) {
 			expression = { ...expression, roles: _expression.roles };
 		} else {
 			expression = { ...expression, roles: undefined };
 		}
-		if (
-			_expression.realm.id?.val ||
-			(_expression.realm.id?.in && _expression.realm.id?.in.length > 0)
+		if (_expression.realm.id?.val ||
+			(_expression.realm.id?.arr && _expression.realm.id?.arr.length > 0)
 		) {
 			expression = { ...expression, realm: _expression.realm };
 		} else {
@@ -142,7 +139,7 @@
 		if (Object.values(expression).filter((item) => item).length === 0) {
 			expression = undefined;
 		}
-		dispatch('filter');
+		dispatch('filter', {});
 		tippyElement._tippy.hide();
 	};
 
@@ -159,51 +156,51 @@
 		_expression.roles = { id: { opr: Operator.EQ } };
 		_expression.realm = { id: { opr: Operator.EQ } };
 		expression = undefined;
-		dispatch('filter');
+		dispatch('filter', {});
 		tippyElement._tippy.hide();
 	};
 	const idOprChange = (): void => {
-		_expression.id.in = [];
+		_expression.id.arr = [];
 		_expression.id.val = undefined;
 	};
 	const nameOprChange = (): void => {
-		_expression.name.in = [];
+		_expression.name.arr = [];
 		_expression.name.val = undefined;
 	};
 	const descriptionOprChange = (): void => {
-		_expression.description.in = [];
+		_expression.description.arr = [];
 		_expression.description.val = undefined;
 	};
 	const lastNameOprChange = (): void => {
-		_expression.lastName.in = [];
+		_expression.lastName.arr = [];
 		_expression.lastName.val = undefined;
 	};
 	const loginOprChange = (): void => {
-		_expression.login.in = [];
+		_expression.login.arr = [];
 		_expression.login.val = undefined;
 	};
 	const emailOprChange = (): void => {
-		_expression.email.in = [];
+		_expression.email.arr = [];
 		_expression.email.val = undefined;
 	};
 	const phonesOprChange = (): void => {
-		_expression.phones.in = [];
+		_expression.phones.arr = [];
 		_expression.phones.val = undefined;
 	};
 	const disableOprChange = (): void => {
-		_expression.disable.in = [];
+		_expression.disable.arr = [];
 		_expression.disable.val = undefined;
 	};
 	const groupsOprChange = (): void => {
-		_expression.groups.id.in = [];
+		_expression.groups.id.arr = [];
 		_expression.groups.id.val = undefined;
 	};
 	const rolesOprChange = (): void => {
-		_expression.roles.id.in = [];
+		_expression.roles.id.arr = [];
 		_expression.roles.id.val = undefined;
 	};
 	const realmOprChange = (): void => {
-		_expression.realm.id.in = [];
+		_expression.realm.id.arr = [];
 		_expression.realm.id.val = undefined;
 	};
 </script>
@@ -247,7 +244,7 @@
 				<StringInput
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{name}
-					bind:value={_expression.name.in}
+					bind:value={_expression.name.arr}
 				/>
 			{:else}
 				<StringInput
@@ -272,7 +269,7 @@
 				<StringInput
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{name}
-					bind:value={_expression.description.in}
+					bind:value={_expression.description.arr}
 				/>
 			{:else}
 				<StringInput
@@ -297,7 +294,7 @@
 				<StringInput
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{name}
-					bind:value={_expression.lastName.in}
+					bind:value={_expression.lastName.arr}
 				/>
 			{:else}
 				<StringInput
@@ -322,7 +319,7 @@
 				<StringInput
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{name}
-					bind:value={_expression.login.in}
+					bind:value={_expression.login.arr}
 				/>
 			{:else}
 				<StringInput
@@ -347,7 +344,7 @@
 				<StringInput
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{name}
-					bind:value={_expression.email.in}
+					bind:value={_expression.email.arr}
 				/>
 			{:else}
 				<StringInput
@@ -372,7 +369,7 @@
 				<StringInput
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{name}
-					bind:value={_expression.phones.in}
+					bind:value={_expression.phones.arr}
 				/>
 			{:else}
 				<StringInput
@@ -396,7 +393,7 @@
 			{#if _expression.disable.opr === 'IN' || _expression.disable.opr === 'NIN' || _expression.disable.opr === 'BT' || _expression.disable.opr === 'NBT'}
 				<BooleanInput
 					{name}
-					bind:value={_expression.disable.in}
+					bind:value={_expression.disable.arr}
 				/>
 			{:else}
 				<BooleanInput

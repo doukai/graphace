@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { ot, to, canBack, urlName } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import { type Errors, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
 	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
-	import { Card } from '@graphace/ui';
+	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import {{ objectFieldTypeName }}Form from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}Form.svelte';
 	import {{ objectFieldTypeName }}CreateForm from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
 	import type { {{ mutationTypeName }}{{ objectFieldTypeName }}Args, {{ objectFieldTypeName }} } from '~/{{ schemaTypesPath }}';
 	import { Query_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ objectFieldTypeName | camelCase }}Store } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { validateMutation } from '~/lib/utils';
+	import { validate } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -30,7 +29,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('{{ objectFieldTypeName }}', event.detail.args, $locale)
+		validate('{{ mutationTypeName }}_{{ objectFieldTypeName | camelCase }}_Arguments', event.detail.args, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_{{ objectFieldTypeName | camelCase }}.mutate(event.detail.args)
@@ -53,7 +52,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('{{ name }}', { where: { {{ idName }}: { val: {{ name | camelCase }}?.{{ idName }} }}, {{ objectFieldName }}: event.detail.args }, $locale)
+		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { where: { {{ idName }}: { val: {{ name | camelCase }}?.{{ idName }} } }, {{ objectFieldName }}: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_{{ name | camelCase }}_{{ objectFieldName }}.mutate({

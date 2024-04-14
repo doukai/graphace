@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql';
-	import { Card } from '@graphace/ui';
+	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Query_realmStore, Mutation_realmStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import type { MutationRealmArgs, Realm } from '~/lib/types/schema';
-	import { validateMutation } from '~/lib/utils';
+	import { validate } from '~/lib/utils';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
@@ -26,7 +25,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Realm', event.detail.args, $locale)
+		validate('Mutation_realm_Arguments', event.detail.args, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_realm.mutate(event.detail.args)

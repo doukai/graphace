@@ -60,12 +60,7 @@
 		showSelectButton = false;
 	}
 
-	export const query = () => {
-		pageNumber = 1;
-		queryPage();
-	};
-
-	export const queryPage = () => {
+	export const queryPage = (toPageNumber?: number | undefined) => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -79,7 +74,7 @@
 			args.before = before;
 			args.last = pageSize;
 		} else {
-			args.offset = (pageNumber - 1) * pageSize;
+			args.offset = ((toPageNumber || pageNumber) - 1) * pageSize;
 			args.first = pageSize;
 		}
 
@@ -101,10 +96,6 @@
 			args.cond = 'OR';
 			args.name = { opr: 'LK', val: `%${searchValue}%` };
 			args.description = { opr: 'LK', val: `%${searchValue}%` };
-		} else {
-			args.cond = undefined;
-			args.name = undefined;
-			args.description = undefined;
 		}
 		
 		if (after) {
@@ -164,7 +155,7 @@
 				: nodes?.filter((node) => node?.id === selectedIdList)?.map((node) => ({ name: node?.name, description: node?.description, where: { id: { val: node?.id } } }))[0],
 			then: () => {
 				notifications.success($LL.web.message.saveSuccess());
-				dispatch('back');
+				dispatch('back', {});
 			},
 			catch: (errors) => {
 				console.error(errors);
@@ -198,7 +189,7 @@
 				name={$LL.graphql.objects.Role.fields.name.name()}
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Role::description::*')}
@@ -206,7 +197,7 @@
 				name={$LL.graphql.objects.Role.fields.description.name()}
 				bind:expression={args.description}
 				bind:sort={orderBy.description}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			<th />
@@ -260,7 +251,7 @@
 																	: { name: node?.name, description: node?.description, where: { id: { val: node.id } } },
 														then: () => {
 															notifications.success($LL.web.message.saveSuccess());
-															dispatch('back');
+															dispatch('back', {});
 														},
 														catch: (errors) => {
 															console.error(errors);

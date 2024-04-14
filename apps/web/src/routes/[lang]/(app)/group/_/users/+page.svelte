@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { ot, to, canBack, urlName } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import { type Errors, updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam, getPathParam } from '@graphace/commons';
 	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql';
-	import { Card } from '@graphace/ui';
+	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import UserCreateTable from '~/lib/components/objects/user/UserCreateTable.svelte';
 	import type { MutationUserArgs } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';

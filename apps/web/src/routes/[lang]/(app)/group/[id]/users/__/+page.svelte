@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
-	import { Card } from '@graphace/ui';
+	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import UserSelectConnectionTable from '~/lib/components/objects/user/UserSelectConnectionTable.svelte';
 	import type { User, QueryUserConnectionArgs, MutationUserArgs } from '~/lib/types/schema';
 	import { Query_userConnectionStore, Mutation_userStore, Mutation_group_usersStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { validateMutation } from '~/lib/utils';
+	import { validate } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -47,7 +46,7 @@
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id || event.detail.args.where?.id?.val || undefined);
-		validateMutation('User', event.detail.args, $locale)
+		validate('Mutation_user_Arguments', event.detail.args, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
@@ -74,14 +73,13 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Group', { where: { id: { val: id } }, users: event.detail.selected }, $locale)
+		validate('Mutation_group_Arguments', { where: { id: { val: id } }, users: event.detail.selected }, $locale)
 			.then((data) => {
 				errors = {};
 				if (Array.isArray(event.detail.selected)) {
 					Mutation_group_users.mutate({
 						group_id: id,
-						group_users: event.detail.selected,
-						mergeToList: ['users']
+						group_users: event.detail.selected
 					})
 						.then((result) => {
 							event.detail.then();
@@ -107,7 +105,7 @@
 		{nodes}
 		{totalCount}
 		{errors}
-		args={ { exs: [notBelongToParent] } }
+		args={{ exs: [notBelongToParent] }}
 		isFetching={$Query_userConnection.fetching}
 		on:fetch={fetch}
 		on:mutation={mutation}

@@ -25,7 +25,7 @@
 		description: { opr: Operator.EQ }
 	};
 	$: if (Array.isArray(value)) {
-		_expression.id.in = value?.map((item) => item?.where?.id?.val);
+		_expression.id.arr = value?.map((item) => item?.where?.id?.val);
 	} else if (value) {
 		_expression.id.val = value?.where?.id?.val;
 	}
@@ -37,17 +37,17 @@
 	}>();
 
 	const filter = (): void => {
-		if (_expression.id.val || (_expression.id.in && _expression.id.in.length > 0)) {
+		if (_expression.id.val || (_expression.id.arr && _expression.id.arr.length > 0)) {
 			expression = { ...expression, id: _expression.id };
 		} else {
 			expression = { ...expression, id: undefined };
 		}
-		if (_expression.name.val || (_expression.name.in && _expression.name.in.length > 0)) {
+		if (_expression.name.val || (_expression.name.arr && _expression.name.arr.length > 0)) {
 			expression = { ...expression, name: _expression.name };
 		} else {
 			expression = { ...expression, name: undefined };
 		}
-		if (_expression.description.val || (_expression.description.in && _expression.description.in.length > 0)) {
+		if (_expression.description.val || (_expression.description.arr && _expression.description.arr.length > 0)) {
 			expression = { ...expression, description: _expression.description };
 		} else {
 			expression = { ...expression, description: undefined };
@@ -56,7 +56,7 @@
 		if (Object.values(expression).filter((item) => item).length === 0) {
 			expression = undefined;
 		}
-		dispatch('filter');
+		dispatch('filter', {});
 		tippyElement._tippy.hide();
 	};
 
@@ -65,19 +65,19 @@
 		_expression.name = { opr: Operator.EQ };
 		_expression.description = { opr: Operator.EQ };
 		expression = undefined;
-		dispatch('filter');
+		dispatch('filter', {});
 		tippyElement._tippy.hide();
 	};
 	const idOprChange = (): void => {
-		_expression.id.in = [];
+		_expression.id.arr = [];
 		_expression.id.val = undefined;
 	};
 	const nameOprChange = (): void => {
-		_expression.name.in = [];
+		_expression.name.arr = [];
 		_expression.name.val = undefined;
 	};
 	const descriptionOprChange = (): void => {
-		_expression.description.in = [];
+		_expression.description.arr = [];
 		_expression.description.val = undefined;
 	};
 </script>
@@ -121,7 +121,7 @@
 				<StringInput
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{name}
-					bind:value={_expression.name.in}
+					bind:value={_expression.name.arr}
 				/>
 			{:else}
 				<StringInput
@@ -146,7 +146,7 @@
 				<StringInput
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{name}
-					bind:value={_expression.description.in}
+					bind:value={_expression.description.arr}
 				/>
 			{:else}
 				<StringInput

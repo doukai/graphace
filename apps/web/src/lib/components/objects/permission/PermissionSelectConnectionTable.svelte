@@ -62,12 +62,7 @@
 		showSelectButton = false;
 	}
 
-	export const query = () => {
-		pageNumber = 1;
-		queryPage();
-	};
-
-	export const queryPage = () => {
+	export const queryPage = (toPageNumber?: number | undefined) => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -81,7 +76,7 @@
 			args.before = before;
 			args.last = pageSize;
 		} else {
-			args.offset = (pageNumber - 1) * pageSize;
+			args.offset = ((toPageNumber || pageNumber) - 1) * pageSize;
 			args.first = pageSize;
 		}
 
@@ -104,11 +99,6 @@
 			args.description = { opr: 'LK', val: `%${searchValue}%` };
 			args.field = { opr: 'LK', val: `%${searchValue}%` };
 			args.type = { opr: 'LK', val: `%${searchValue}%` };
-		} else {
-			args.cond = undefined;
-			args.description = undefined;
-			args.field = undefined;
-			args.type = undefined;
 		}
 		
 		if (after) {
@@ -168,7 +158,7 @@
 				: nodes?.filter((node) => node?.name === selectedIdList)?.map((node) => ({ description: node?.description, field: node?.field, type: node?.type, permissionType: node?.permissionType, where: { name: { val: node?.name } } }))[0],
 			then: () => {
 				notifications.success($LL.web.message.saveSuccess());
-				dispatch('back');
+				dispatch('back', {});
 			},
 			catch: (errors) => {
 				console.error(errors);
@@ -202,7 +192,7 @@
 				name={$LL.graphql.objects.Permission.fields.name.name()}
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Permission::description::*')}
@@ -210,7 +200,7 @@
 				name={$LL.graphql.objects.Permission.fields.description.name()}
 				bind:expression={args.description}
 				bind:sort={orderBy.description}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Permission::field::*')}
@@ -218,7 +208,7 @@
 				name={$LL.graphql.objects.Permission.fields.field.name()}
 				bind:expression={args.field}
 				bind:sort={orderBy.field}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Permission::type::*')}
@@ -226,7 +216,7 @@
 				name={$LL.graphql.objects.Permission.fields.type.name()}
 				bind:expression={args.type}
 				bind:sort={orderBy.type}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Permission::permissionType::*')}
@@ -234,7 +224,7 @@
 				name={$LL.graphql.objects.Permission.fields.permissionType.name()}
 				bind:expression={args.permissionType}
 				bind:sort={orderBy.permissionType}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			<th />
@@ -314,7 +304,7 @@
 																	: { description: node?.description, field: node?.field, type: node?.type, permissionType: node?.permissionType, where: { name: { val: node.name } } },
 														then: () => {
 															notifications.success($LL.web.message.saveSuccess());
-															dispatch('back');
+															dispatch('back', {});
 														},
 														catch: (errors) => {
 															console.error(errors);

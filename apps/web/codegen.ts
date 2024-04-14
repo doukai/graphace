@@ -18,6 +18,7 @@ const config: CodegenConfig = {
         './src/lib/types/schema.ts': {
             plugins: ['typescript'],
             config: {
+                maybeValue: 'T | null | undefined',
                 enumsAsTypes: true,
                 namingConvention: {
                     enumValues: 'change-case-all#upperCase'
@@ -28,6 +29,7 @@ const config: CodegenConfig = {
             preset: 'graphace-codegen-preset',
             plugins: ['graphace-codegen'],
             presetConfig: {
+                useAuth: true,
                 builder: {
                     objects: [
                         {
@@ -173,8 +175,7 @@ const config: CodegenConfig = {
                             ignore: true
                         }
                     ]
-                },
-                useAuth: true
+                }
             }
 
         }

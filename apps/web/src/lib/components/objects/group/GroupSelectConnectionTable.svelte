@@ -60,12 +60,7 @@
 		showSelectButton = false;
 	}
 
-	export const query = () => {
-		pageNumber = 1;
-		queryPage();
-	};
-
-	export const queryPage = () => {
+	export const queryPage = (toPageNumber?: number | undefined) => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -79,7 +74,7 @@
 			args.before = before;
 			args.last = pageSize;
 		} else {
-			args.offset = (pageNumber - 1) * pageSize;
+			args.offset = ((toPageNumber || pageNumber) - 1) * pageSize;
 			args.first = pageSize;
 		}
 
@@ -103,12 +98,6 @@
 			args.description = { opr: 'LK', val: `%${searchValue}%` };
 			args.path = { opr: 'LK', val: `%${searchValue}%` };
 			args.parentId = { opr: 'LK', val: `%${searchValue}%` };
-		} else {
-			args.cond = undefined;
-			args.name = undefined;
-			args.description = undefined;
-			args.path = undefined;
-			args.parentId = undefined;
 		}
 		
 		if (after) {
@@ -168,7 +157,7 @@
 				: nodes?.filter((node) => node?.id === selectedIdList)?.map((node) => ({ name: node?.name, description: node?.description, path: node?.path, deep: node?.deep, parentId: node?.parentId, where: { id: { val: node?.id } } }))[0],
 			then: () => {
 				notifications.success($LL.web.message.saveSuccess());
-				dispatch('back');
+				dispatch('back', {});
 			},
 			catch: (errors) => {
 				console.error(errors);
@@ -202,7 +191,7 @@
 				name={$LL.graphql.objects.Group.fields.name.name()}
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Group::description::*')}
@@ -210,7 +199,7 @@
 				name={$LL.graphql.objects.Group.fields.description.name()}
 				bind:expression={args.description}
 				bind:sort={orderBy.description}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Group::path::*')}
@@ -218,7 +207,7 @@
 				name={$LL.graphql.objects.Group.fields.path.name()}
 				bind:expression={args.path}
 				bind:sort={orderBy.path}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Group::deep::*')}
@@ -226,7 +215,7 @@
 				name={$LL.graphql.objects.Group.fields.deep.name()}
 				bind:expression={args.deep}
 				bind:sort={orderBy.deep}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Group::parentId::*')}
@@ -234,7 +223,7 @@
 				name={$LL.graphql.objects.Group.fields.parentId.name()}
 				bind:expression={args.parentId}
 				bind:sort={orderBy.parentId}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			<th />
@@ -315,7 +304,7 @@
 																	: { name: node?.name, description: node?.description, path: node?.path, deep: node?.deep, parentId: node?.parentId, where: { id: { val: node.id } } },
 														then: () => {
 															notifications.success($LL.web.message.saveSuccess());
-															dispatch('back');
+															dispatch('back', {});
 														},
 														catch: (errors) => {
 															console.error(errors);

@@ -82,12 +82,6 @@
 			args.description = { opr: 'LK', val: `%${searchValue}%` };
 			args.path = { opr: 'LK', val: `%${searchValue}%` };
 			args.parentId = { opr: 'LK', val: `%${searchValue}%` };
-		} else {
-			args.cond = undefined;
-			args.name = undefined;
-			args.description = undefined;
-			args.path = undefined;
-			args.parentId = undefined;
 		}
 
 		dispatch('fetch', {
@@ -136,7 +130,7 @@
 				: nodes?.filter((node) => node?.id === selectedIdList)?.map((node) => ({ name: node?.name, description: node?.description, path: node?.path, deep: node?.deep, parentId: node?.parentId, where: { id: { val: node?.id } } }))[0],
 			then: () => {
 				notifications.success($LL.web.message.saveSuccess());
-				dispatch('back');
+				dispatch('back', {});
 			},
 			catch: (errors) => {
 				console.error(errors);
@@ -283,7 +277,7 @@
 																	: { name: node?.name, description: node?.description, path: node?.path, deep: node?.deep, parentId: node?.parentId, where: { id: { val: node.id } } },
 														then: () => {
 															notifications.success($LL.web.message.saveSuccess());
-															dispatch('back');
+															dispatch('back', {});
 														},
 														catch: (errors) => {
 															console.error(errors);

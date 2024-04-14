@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import { type Errors, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
 	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
-	import { Card } from '@graphace/ui';
+	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import UserCreateForm from '~/lib/components/objects/user/UserCreateForm.svelte';
 	import { Mutation_group_usersStore } from '$houdini';
 	import type { MutationUserArgs, User } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
-	import { validateMutation } from '~/lib/utils';
+	import { validate } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -27,13 +26,12 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Group', { id: id, users: [event.detail.args] }, $locale)
+		validate('Mutation_group_Arguments', { id: id, users: [event.detail.args] }, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_group_users.mutate({
 					group_id: id,
-					group_users: [event.detail.args],
-					mergeToList: ['users']
+					group_users: [event.detail.args]
 				})
 					.then((result) => {
 						event.detail.then(undefined);

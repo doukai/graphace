@@ -70,7 +70,7 @@
 	export let orderBy: {{ name }}OrderBy = {};
 
 	let selectAll: boolean;
-	export let selectedIdList: (string | null)[] = [];
+	export let selectedIdList: (string | null | undefined)[] = [];
 
 	export const query = () => {
 		if (Object.keys(orderBy).length > 0) {
@@ -97,17 +97,8 @@
 			args.cond = 'OR';
 			{%- if fields %}
 			{%- for field in fields %}
-			{%- if field.isScalarType and field.inQueryArgs and field.fieldType.name == 'String' %}
+			{%- if field.isScalarType and field.inQueryArgs and field.fieldTypeName == 'String' %}
 			args.{{ field.fieldName }} = { opr: 'LK', val: `%${searchValue}%` };
-			{%- endif %}
-			{%- endfor %}
-			{%- endif %}
-		} else {
-			args.cond = undefined;
-			{%- if fields %}
-			{%- for field in fields %}
-			{%- if field.isScalarType and field.inQueryArgs and field.fieldType.name == 'String' %}
-			args.{{ field.fieldName }} = undefined;
 			{%- endif %}
 			{%- endfor %}
 			{%- endif %}
@@ -160,7 +151,7 @@
 	const removeRows = () => {
 		dispatch('mutation', {
 			args: {
-				where: { {{ idName }}: { opr: 'IN', arr: selectedIdList } },
+				where: { {{ idName }}: { opr: 'IN', arr: selectedIdList} },
 				isDeprecated: true
 			},
 			then: (data) => {
@@ -174,11 +165,11 @@
 		});
 	};
 
-	const unbindRows = (selectedIdList: (string | null)[]) => {
+	const unbindRows = (selectedIdList: (string | null | undefined)[]) => {
 		dispatch('parentMutation', {
 			args: selectedIdList
 				.map((id) => {
-					return { where: { {{ idName }}: { val: id } }, isDeprecated: true };
+					return {where: { {{ idName }}: { val: id } }, isDeprecated: true};
 				}),
 			then: (data) => {
 				notifications.success($LL.web.message.unbindSuccess());
@@ -219,7 +210,7 @@
 				return true;
 			}
 		});
-	}}
+	{% raw %}}{% endraw %}}
 	on:unbind={(e) =>
 		messageBoxs.open({
 			title: $LL.web.components.table.unbindModalTitle(),
@@ -253,9 +244,9 @@
 						bind:checked={selectAll}
 						on:change={(e) => {
 							if (nodes && nodes.length > 0) {
-								selectedIdList = selectAll ? nodes.map((node) => node?.{{ idName }} || null) : [];
+								selectedIdList = selectAll ? nodes.map((node) => node?.{{ idName }}) : [];
 							}
-						}}
+						{% raw %}}{% endraw %}}
 					/>
 				</label>
 			</th>
@@ -266,7 +257,7 @@
 			{%- endif %}
 			{%- if field.inQueryArgs %}
 			{%- if field.isScalarType or field.isEnumType %}
-			<{{ field.fieldType.name }}Th
+			<{{ field.fieldTypeName }}Th
 				name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 				bind:expression={args.{{ field.fieldName }}}
 				{%- if field.isListType == false %}
@@ -275,7 +266,7 @@
 				on:filter={(e) => query()}
 			/>
 			{%- else %}
-			<{{ field.fieldType.name }}Th
+			<{{ field.fieldTypeName }}Th
 				name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 				bind:expression={args.{{ field.fieldName }}}
 				on:filter={(e) => query()}
@@ -314,7 +305,7 @@
 							{{ field.component }}
 							{%- else %}
 							{%- if field.isScalarType or field.isEnumType %}
-							<{{ field.fieldType.name }}Td
+							<{{ field.fieldTypeName }}Td
 								name="{{ field.fieldName }}"
 								bind:value={node.{{ field.fieldName }}}
 								{%- if field.isListType %}
@@ -332,19 +323,21 @@
 							/>
 							{%- else %}
 							{%- if field.select %}
-							<{{ field.fieldType.name }}SelectTd
+							<{{ field.fieldTypeName }}SelectTd
 								name="{{ field.fieldName }}"
 								bind:value={node.{{ field.fieldName }}}
 								{%- if field.isListType %}
 								list
 								{%- endif %}
 								errors={errors[row]?.iterms?.{{ field.fieldName }}}
+								{%- if useAuth %}
 								readonly={!permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE')}
+								{%- endif %}
 								on:save={(e) =>
-									updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }, row)}
+									updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: {val: node?.{{ idName }} } } }, row)}
 							/>
 							{%- else %}
-							<ObjectTd name="{{ field.fieldName }}" {% if field.isNamed %}namedStruct={ node.{{ field.fieldName }} }{% endif %} errors={errors[row]?.iterms?.{{ field.fieldName }}} path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} on:gotoField />
+							<ObjectTd name="{{ field.fieldName }}" {% if field.isNamed %}namedStruct={node.{{ field.fieldName }}}{% endif %} errors={errors[row]?.iterms?.{{ field.fieldName }}} path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} on:gotoField />
 							{%- endif %}
 							{%- endif %}
 							{%- endif %}
@@ -363,9 +356,9 @@
 											class="btn btn-square btn-ghost btn-xs"
 											on:click|preventDefault={(e) => {
 												if (node && node.{{ idName }}) {
-													dispatch('edit', { id: node.{{ idName }} });
+													dispatch('edit', {id: node.{{ idName }}});
 												}
-											}}
+											{% raw %}}{% endraw %}}
 										>
 											<Icon src={PencilSquare} solid />
 										</button>
@@ -396,7 +389,7 @@
 															}
 														}
 													});
-												}}
+												{% raw %}}{% endraw %}}
 											>
 												<Icon src={ArchiveBoxXMark} solid />
 											</button>
@@ -417,7 +410,7 @@
 															return true;
 														}
 													});
-												}}
+												{% raw %}}{% endraw %}}
 											>
 												<Icon src={Trash} solid />
 											</button>

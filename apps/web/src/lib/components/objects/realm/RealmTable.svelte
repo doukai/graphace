@@ -51,7 +51,7 @@
 	export let orderBy: RealmOrderBy = {};
 
 	let selectAll: boolean;
-	export let selectedIdList: (string | null)[] = [];
+	export let selectedIdList: (string | null | undefined)[] = [];
 
 	export const query = () => {
 		if (Object.keys(orderBy).length > 0) {
@@ -78,10 +78,6 @@
 			args.cond = 'OR';
 			args.name = { opr: 'LK', val: `%${searchValue}%` };
 			args.description = { opr: 'LK', val: `%${searchValue}%` };
-		} else {
-			args.cond = undefined;
-			args.name = undefined;
-			args.description = undefined;
 		}
 
 		dispatch('fetch', {
@@ -131,7 +127,7 @@
 	const removeRows = () => {
 		dispatch('mutation', {
 			args: {
-				where: { id: { opr: 'IN', arr: selectedIdList } },
+				where: { id: { opr: 'IN', arr: selectedIdList} },
 				isDeprecated: true
 			},
 			then: (data) => {
@@ -145,11 +141,11 @@
 		});
 	};
 
-	const unbindRows = (selectedIdList: (string | null)[]) => {
+	const unbindRows = (selectedIdList: (string | null | undefined)[]) => {
 		dispatch('parentMutation', {
 			args: selectedIdList
 				.map((id) => {
-					return { where: { id: { val: id } }, isDeprecated: true };
+					return {where: { id: { val: id } }, isDeprecated: true};
 				}),
 			then: (data) => {
 				notifications.success($LL.web.message.unbindSuccess());
@@ -217,7 +213,7 @@
 						bind:checked={selectAll}
 						on:change={(e) => {
 							if (nodes && nodes.length > 0) {
-								selectedIdList = selectAll ? nodes.map((node) => node?.id || null) : [];
+								selectedIdList = selectAll ? nodes.map((node) => node?.id) : [];
 							}
 						}}
 					/>
@@ -281,7 +277,7 @@
 											class="btn btn-square btn-ghost btn-xs"
 											on:click|preventDefault={(e) => {
 												if (node && node.id) {
-													dispatch('edit', { id: node.id });
+													dispatch('edit', {id: node.id});
 												}
 											}}
 										>

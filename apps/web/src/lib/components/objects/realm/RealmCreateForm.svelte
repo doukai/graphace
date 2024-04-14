@@ -30,7 +30,7 @@
 				args: node,
 				then: (data) => {
 					notifications.success($LL.web.message.saveSuccess());
-					dispatch('back');
+					dispatch('back', {});
 				},
 				catch: (errors) => {
 					console.error(errors);
@@ -46,7 +46,7 @@
 				args: {},
 				then: (data) => {
 					notifications.success($LL.web.message.removeSuccess());
-					dispatch('back');
+					dispatch('back', {});
 				},
 				catch: (errors) => {
 					console.error(errors);

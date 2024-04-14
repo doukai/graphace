@@ -26,7 +26,7 @@
 		if (Array.isArray(value)) {
 			value = value.filter((item) => item);
 		}
-		dispatch('save');
+		dispatch('save', {});
 		tippyElement._tippy.hide();
 	};
 
@@ -36,7 +36,7 @@
 		} else {
 			value = null;
 		}
-		dispatch('save');
+		dispatch('save', {});
 		tippyElement._tippy.hide();
 	};
 </script>
@@ -70,7 +70,7 @@
 		<a
 			class="group link inline-flex"
 			href={null}
-			use:tippy={ {
+			use:tippy={{
 				content,
 				placement: 'bottom',
 				interactive: true,
@@ -80,7 +80,7 @@
 				theme: 'daisy',
 				maxWidth: 'none',
 				appendTo: () => document.body
-			} }
+			}}
 			bind:this={tippyElement}
 		>
 			{#if Array.isArray(value) || (list && (value === null || value === undefined))}

@@ -104,7 +104,7 @@
 			value = undefined;
 		}
 		dispatch('change', { value });
-	}}
+	{% raw %}}{% endraw %}}
 	on:open={(e) => {
 		if (searchText) {
 			loading = true;
@@ -114,5 +114,5 @@
 		} else {
 			{{ name }}NameListQuery.fetch({ variables: { name: undefined } }).finally(() => (loading = false));
 		}
-	}}
+		{% raw %}}{% endraw %}}
 />

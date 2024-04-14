@@ -56,7 +56,7 @@
 	export let orderBy: UserOrderBy = {};
 
 	let selectAll: boolean;
-	export let selectedIdList: (string | null)[] = [];
+	export let selectedIdList: (string | null | undefined)[] = [];
 
 	export const query = () => {
 		if (Object.keys(orderBy).length > 0) {
@@ -87,14 +87,6 @@
 			args.login = { opr: 'LK', val: `%${searchValue}%` };
 			args.email = { opr: 'LK', val: `%${searchValue}%` };
 			args.phones = { opr: 'LK', val: `%${searchValue}%` };
-		} else {
-			args.cond = undefined;
-			args.name = undefined;
-			args.description = undefined;
-			args.lastName = undefined;
-			args.login = undefined;
-			args.email = undefined;
-			args.phones = undefined;
 		}
 
 		dispatch('fetch', {
@@ -144,7 +136,7 @@
 	const removeRows = () => {
 		dispatch('mutation', {
 			args: {
-				where: { id: { opr: 'IN', arr: selectedIdList } },
+				where: { id: { opr: 'IN', arr: selectedIdList} },
 				isDeprecated: true
 			},
 			then: (data) => {
@@ -158,11 +150,11 @@
 		});
 	};
 
-	const unbindRows = (selectedIdList: (string | null)[]) => {
+	const unbindRows = (selectedIdList: (string | null | undefined)[]) => {
 		dispatch('parentMutation', {
 			args: selectedIdList
 				.map((id) => {
-					return { where: { id: { val: id } }, isDeprecated: true };
+					return {where: { id: { val: id } }, isDeprecated: true};
 				}),
 			then: (data) => {
 				notifications.success($LL.web.message.unbindSuccess());
@@ -230,7 +222,7 @@
 						bind:checked={selectAll}
 						on:change={(e) => {
 							if (nodes && nodes.length > 0) {
-								selectedIdList = selectAll ? nodes.map((node) => node?.id || null) : [];
+								selectedIdList = selectAll ? nodes.map((node) => node?.id) : [];
 							}
 						}}
 					/>
@@ -400,7 +392,7 @@
 								errors={errors[row]?.iterms?.groups}
 								readonly={!permissions.auth('User::groups::WRITE')}
 								on:save={(e) =>
-									updateField({ groups: node?.groups, where: { id: { val: node?.id } } }, row)}
+									updateField({ groups: node?.groups, where: { id: {val: node?.id } } }, row)}
 							/>
 							{/if}
 							{#if permissions.auth('User::roles::*')}
@@ -411,11 +403,11 @@
 								errors={errors[row]?.iterms?.roles}
 								readonly={!permissions.auth('User::roles::WRITE')}
 								on:save={(e) =>
-									updateField({ roles: node?.roles, where: { id: { val: node?.id } } }, row)}
+									updateField({ roles: node?.roles, where: { id: {val: node?.id } } }, row)}
 							/>
 							{/if}
 							{#if permissions.auth('User::realm::*')}
-							<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+							<ObjectTd name="realm" namedStruct={node.realm} errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
 							{/if}
 							{#if permissions.auth('User::*::WRITE')}
 							<th class="z-10 hover:z-30 w-24">
@@ -425,7 +417,7 @@
 											class="btn btn-square btn-ghost btn-xs"
 											on:click|preventDefault={(e) => {
 												if (node && node.id) {
-													dispatch('edit', { id: node.id });
+													dispatch('edit', {id: node.id});
 												}
 											}}
 										>

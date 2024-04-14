@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { ot, to, urlName, canBack } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons';
 	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
-	import { Card } from '@graphace/ui';
+	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import RoleConnectionTable from '~/lib/components/objects/role/RoleConnectionTable.svelte';
 	import type { MutationRoleArgs, QueryRoleConnectionArgs, Role } from '~/lib/types/schema';
 	import { Query_role_compositesStore, Mutation_roleStore, Mutation_role_compositesStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { validateMutation } from '~/lib/utils';
+	import { validate } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -49,7 +48,7 @@
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id || event.detail.args.where?.id?.val || undefined);
-		validateMutation('Role', event.detail.args, $locale)
+		validate('Mutation_role_Arguments', event.detail.args, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
@@ -76,13 +75,12 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Role', { where: { id: { val: id }}, composites: event.detail.args }, $locale)
+		validate('Mutation_role_Arguments', { where: { id: { val: id }}, composites: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_role_composites.mutate({
 					role_id: id,
-					role_composites: event.detail.args,
-					mergeToList: ['composites']
+					role_composites: event.detail.args
 				})
 					.then((result) => {
 						event.detail.then(undefined);

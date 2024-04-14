@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import { type Errors, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
 	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
-	import { Card } from '@graphace/ui';
+	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import {{ objectFieldTypeName }}CreateForm from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
 	import { Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store } from '$houdini';
 	import type { {{ mutationTypeName }}{{ objectFieldTypeName }}Args, {{ objectFieldTypeName }} } from '~/{{ schemaTypesPath }}';
 	import type { PageData } from './$houdini';
-	import { validateMutation } from '~/lib/utils';
+	import { validate } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -27,13 +26,12 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('{{ name }}', { {{ idName }}: {{ idName }}, {{ objectFieldName }}: [event.detail.args] }, $locale)
+		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { {{ idName }}: {{ idName }}, {{ objectFieldName }}: [event.detail.args] }, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_{{ name | camelCase }}_{{ objectFieldName }}.mutate({
 					{{ name | camelCase }}_{{ idName }}: {{ idName }},
-					{{ name | camelCase }}_{{ objectFieldName }}: [event.detail.args],
-					mergeToList: ['{{ objectFieldName }}']
+					{{ name | camelCase }}_{{ objectFieldName }}: [event.detail.args]
 				})
 					.then((result) => {
 						event.detail.then(undefined);

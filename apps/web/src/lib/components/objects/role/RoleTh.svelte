@@ -6,13 +6,12 @@
 	import { Check, XMark, Funnel } from '@steeze-ui/heroicons';
 	import type { StringExpression } from '~/lib/types/schema';
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
-	import usersSelect from '~/lib/components/objects/users/usersSelect.svelte';
-	import groupsSelect from '~/lib/components/objects/groups/groupsSelect.svelte';
-	import compositesSelect from '~/lib/components/objects/composites/compositesSelect.svelte';
-	import realmSelect from '~/lib/components/objects/realm/realmSelect.svelte';
+	import UserSelect from '~/lib/components/objects/user/UserSelect.svelte';
+	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
+	import RealmSelect from '~/lib/components/objects/realm/RealmSelect.svelte';
 	import LL from '$i18n/i18n-svelte';
 	import { Operator } from '$houdini';
-	import type { RoleInput, usersInput, groupsInput, compositesInput, realmInput, RoleExpression } from '$houdini';
+	import type { RoleInput, UserInput, GroupInput, RealmInput, RoleExpression } from '$houdini';
 	import { permissions } from '~/lib/utils/auth-util';
 
 	export let name: string;
@@ -41,27 +40,27 @@
 		realm: { id: { opr: Operator.EQ } }
 	};
 	$: if (Array.isArray(value)) {
-		_expression.id.in = value?.map((item) => item?.where?.id?.val);
+		_expression.id.arr = value?.map((item) => item?.where?.id?.val);
 	} else if (value) {
 		_expression.id.val = value?.where?.id?.val;
 	}
 	$: if (Array.isArray(users)) {
-		_expression.users.id.in = users?.map((item) => item?.where?.id?.val);
+		_expression.users.id.arr = users?.map((item) => item?.where?.id?.val);
 	} else if (users) {
 		_expression.users.id.val = users?.where?.id?.val;
 	}
 	$: if (Array.isArray(groups)) {
-		_expression.groups.id.in = groups?.map((item) => item?.where?.id?.val);
+		_expression.groups.id.arr = groups?.map((item) => item?.where?.id?.val);
 	} else if (groups) {
 		_expression.groups.id.val = groups?.where?.id?.val;
 	}
 	$: if (Array.isArray(composites)) {
-		_expression.composites.id.in = composites?.map((item) => item?.where?.id?.val);
+		_expression.composites.id.arr = composites?.map((item) => item?.where?.id?.val);
 	} else if (composites) {
 		_expression.composites.id.val = composites?.where?.id?.val;
 	}
 	$: if (Array.isArray(realm)) {
-		_expression.realm.id.in = realm?.map((item) => item?.where?.id?.val);
+		_expression.realm.id.arr = realm?.map((item) => item?.where?.id?.val);
 	} else if (realm) {
 		_expression.realm.id.val = realm?.where?.id?.val;
 	}
@@ -73,48 +72,44 @@
 	}>();
 
 	const filter = (): void => {
-		if (_expression.id.val || (_expression.id.in && _expression.id.in.length > 0)) {
+		if (_expression.id.val || (_expression.id.arr && _expression.id.arr.length > 0)) {
 			expression = { ...expression, id: _expression.id };
 		} else {
 			expression = { ...expression, id: undefined };
 		}
-		if (_expression.name.val || (_expression.name.in && _expression.name.in.length > 0)) {
+		if (_expression.name.val || (_expression.name.arr && _expression.name.arr.length > 0)) {
 			expression = { ...expression, name: _expression.name };
 		} else {
 			expression = { ...expression, name: undefined };
 		}
-		if (_expression.description.val || (_expression.description.in && _expression.description.in.length > 0)) {
+		if (_expression.description.val || (_expression.description.arr && _expression.description.arr.length > 0)) {
 			expression = { ...expression, description: _expression.description };
 		} else {
 			expression = { ...expression, description: undefined };
 		}
-		if (
-			_expression.users.id?.val ||
-			(_expression.users.id?.in && _expression.users.id?.in.length > 0)
+		if (_expression.users.id?.val ||
+			(_expression.users.id?.arr && _expression.users.id?.arr.length > 0)
 		) {
 			expression = { ...expression, users: _expression.users };
 		} else {
 			expression = { ...expression, users: undefined };
 		}
-		if (
-			_expression.groups.id?.val ||
-			(_expression.groups.id?.in && _expression.groups.id?.in.length > 0)
+		if (_expression.groups.id?.val ||
+			(_expression.groups.id?.arr && _expression.groups.id?.arr.length > 0)
 		) {
 			expression = { ...expression, groups: _expression.groups };
 		} else {
 			expression = { ...expression, groups: undefined };
 		}
-		if (
-			_expression.composites.id?.val ||
-			(_expression.composites.id?.in && _expression.composites.id?.in.length > 0)
+		if (_expression.composites.id?.val ||
+			(_expression.composites.id?.arr && _expression.composites.id?.arr.length > 0)
 		) {
 			expression = { ...expression, composites: _expression.composites };
 		} else {
 			expression = { ...expression, composites: undefined };
 		}
-		if (
-			_expression.realm.id?.val ||
-			(_expression.realm.id?.in && _expression.realm.id?.in.length > 0)
+		if (_expression.realm.id?.val ||
+			(_expression.realm.id?.arr && _expression.realm.id?.arr.length > 0)
 		) {
 			expression = { ...expression, realm: _expression.realm };
 		} else {
@@ -124,7 +119,7 @@
 		if (Object.values(expression).filter((item) => item).length === 0) {
 			expression = undefined;
 		}
-		dispatch('filter');
+		dispatch('filter', {});
 		tippyElement._tippy.hide();
 	};
 
@@ -137,35 +132,35 @@
 		_expression.composites = { id: { opr: Operator.EQ } };
 		_expression.realm = { id: { opr: Operator.EQ } };
 		expression = undefined;
-		dispatch('filter');
+		dispatch('filter', {});
 		tippyElement._tippy.hide();
 	};
 	const idOprChange = (): void => {
-		_expression.id.in = [];
+		_expression.id.arr = [];
 		_expression.id.val = undefined;
 	};
 	const nameOprChange = (): void => {
-		_expression.name.in = [];
+		_expression.name.arr = [];
 		_expression.name.val = undefined;
 	};
 	const descriptionOprChange = (): void => {
-		_expression.description.in = [];
+		_expression.description.arr = [];
 		_expression.description.val = undefined;
 	};
 	const usersOprChange = (): void => {
-		_expression.users.id.in = [];
+		_expression.users.id.arr = [];
 		_expression.users.id.val = undefined;
 	};
 	const groupsOprChange = (): void => {
-		_expression.groups.id.in = [];
+		_expression.groups.id.arr = [];
 		_expression.groups.id.val = undefined;
 	};
 	const compositesOprChange = (): void => {
-		_expression.composites.id.in = [];
+		_expression.composites.id.arr = [];
 		_expression.composites.id.val = undefined;
 	};
 	const realmOprChange = (): void => {
-		_expression.realm.id.in = [];
+		_expression.realm.id.arr = [];
 		_expression.realm.id.val = undefined;
 	};
 </script>
@@ -209,7 +204,7 @@
 				<StringInput
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{name}
-					bind:value={_expression.name.in}
+					bind:value={_expression.name.arr}
 				/>
 			{:else}
 				<StringInput
@@ -234,7 +229,7 @@
 				<StringInput
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{name}
-					bind:value={_expression.description.in}
+					bind:value={_expression.description.arr}
 				/>
 			{:else}
 				<StringInput

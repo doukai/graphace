@@ -118,5 +118,5 @@
 		} else {
 			RealmNameListQuery.fetch({ variables: { name: undefined } }).finally(() => (loading = false));
 		}
-	}}
+		}}
 />

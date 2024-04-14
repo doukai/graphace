@@ -276,7 +276,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inDetailField(typeName, field.fieldName, field.fieldType.name));
+                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inDetailField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -306,7 +306,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inDetailField(typeName, field.fieldName, field.fieldType.name));
+                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inDetailField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -336,7 +336,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldType.name));
+                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -367,7 +367,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldType.name));
+                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -398,7 +398,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldType.name));
+                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -426,7 +426,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldType.name));
+                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -454,7 +454,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldType.name));
+                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -482,7 +482,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldType.name));
+                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -512,7 +512,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldType.name));
+                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -542,7 +542,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldType.name));
+                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -592,7 +592,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldType.name));
+                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -610,7 +610,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldType.name));
+                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,

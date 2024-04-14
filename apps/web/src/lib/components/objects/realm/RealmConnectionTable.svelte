@@ -56,14 +56,9 @@
 	export let pageSize: number = 10;
 
 	let selectAll: boolean;
-	export let selectedIdList: (string | null)[] = [];
+	export let selectedIdList: (string | null | undefined)[] = [];
 
-	export const query = () => {
-		pageNumber = 1;
-		queryPage();
-	};
-
-	export const queryPage = () => {
+	export const queryPage = (toPageNumber?: number | undefined) => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -77,7 +72,7 @@
 			args.before = before;
 			args.last = pageSize;
 		} else {
-			args.offset = (pageNumber - 1) * pageSize;
+			args.offset = ((toPageNumber || pageNumber) - 1) * pageSize;
 			args.first = pageSize;
 		}
 
@@ -99,10 +94,6 @@
 			args.cond = 'OR';
 			args.name = { opr: 'LK', val: `%${searchValue}%` };
 			args.description = { opr: 'LK', val: `%${searchValue}%` };
-		} else {
-			args.cond = undefined;
-			args.name = undefined;
-			args.description = undefined;
 		}
 		
 		if (after) {
@@ -151,7 +142,7 @@
 			args: { where: { id: { val: id } }, isDeprecated: true },
 			then: (data) => {
 				notifications.success($LL.web.message.removeSuccess());
-				query();
+				queryPage(1);
 			},
 			catch: (errors) => {
 				console.error(errors);
@@ -168,7 +159,7 @@
 			},
 			then: (data) => {
 				notifications.success($LL.web.message.removeSuccess());
-				query();
+				queryPage(1);
 			},
 			catch: (errors) => {
 				console.error(errors);
@@ -177,7 +168,7 @@
 		});
 	};
 
-	const unbindRows = (selectedIdList: (string | null)[]) => {
+	const unbindRows = (selectedIdList: (string | null | undefined)[]) => {
 		dispatch('parentMutation', {
 			args: selectedIdList
 				.map((id) => {
@@ -185,7 +176,7 @@
 				}),
 			then: (data) => {
 				notifications.success($LL.web.message.unbindSuccess());
-				query();
+				queryPage(1);
 			},
 			catch: (errors) => {
 				console.error(errors);
@@ -249,7 +240,7 @@
 						bind:checked={selectAll}
 						on:change={(e) => {
 							if (nodes && nodes.length > 0) {
-								selectedIdList = selectAll ? nodes.map((node) => node?.id || null) : [];
+								selectedIdList = selectAll ? nodes.map((node) => node?.id) : [];
 							}
 						}}
 					/>
@@ -260,7 +251,7 @@
 				name={$LL.graphql.objects.Realm.fields.name.name()}
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Realm::description::*')}
@@ -268,7 +259,7 @@
 				name={$LL.graphql.objects.Realm.fields.description.name()}
 				bind:expression={args.description}
 				bind:sort={orderBy.description}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Realm::*::WRITE')}
@@ -286,7 +277,7 @@
 						<tr class="hover">
 							<th class="z-10 w-12">
 								<label>
-									<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={node.id} />
+									<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={ node.id } />
 								</label>
 							</th>
 							{#if permissions.auth('Realm::name::*')}

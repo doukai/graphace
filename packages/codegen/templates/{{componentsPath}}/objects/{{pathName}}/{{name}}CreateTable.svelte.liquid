@@ -77,7 +77,7 @@
 				return true;
 			}
 		});
-	}}
+	{% raw %}}{% endraw %}}
 	on:gotoSelect
 	on:back
 />
@@ -95,7 +95,7 @@
 							if (nodes && nodes.length > 0) {
 								selectedRowList = selectAll ? nodes.map((node) => nodes?.indexOf(node)) : [];
 							}
-						}}
+						{% raw %}}{% endraw %}}
 					/>
 				</label>
 			</th>
@@ -135,7 +135,7 @@
 						{{ field.component }}
 						{%- else %}
 						{%- if field.isScalarType or field.isEnumType %}
-						<{{ field.fieldType.name }}Td
+						<{{ field.fieldTypeName }}Td
 							name="{{ field.fieldName }}"
 							bind:value={node.{{ field.fieldName }}}
 							{%- if field.isListType %}
@@ -145,7 +145,7 @@
 							errors={errors[row]?.iterms?.{{ field.fieldName }}}
 						/>
 						{%- else %}
-						<ObjectTd name="{{ field.fieldName }}" {% if field.isNamed %}namedStruct={ node.{{ field.fieldName }} }{% endif %} errors={errors[row]?.iterms?.{{ field.fieldName }}} path="_/{{ field.fieldName | paramCase }}" on:gotoField />
+						<ObjectTd name="{{ field.fieldName }}" {% if field.isNamed %}namedStruct={node.{{ field.fieldName }}}{% endif %} errors={errors[row]?.iterms?.{{ field.fieldName }}} path="_/{{ field.fieldName | paramCase }}" on:gotoField />
 						{%- endif %}
 						{%- endif %}
 						{%- endif %}
@@ -164,7 +164,7 @@
 										class="btn btn-square btn-ghost btn-xs"
 										on:click|preventDefault={(e) => {
 											dispatch('edit', { row });
-										}}
+										{% raw %}}{% endraw %}}
 									>
 										<Icon src={PencilSquare} solid />
 									</button>
@@ -182,7 +182,7 @@
 													return true;
 												}
 											});
-										}}
+										{% raw %}}{% endraw %}}
 									>
 										<Icon src={Trash} solid />
 									</button>

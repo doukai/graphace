@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
-	import { Card } from '@graphace/ui';
+	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import GroupSelectConnectionTable from '~/lib/components/objects/group/GroupSelectConnectionTable.svelte';
 	import type { Group, QueryGroupConnectionArgs, MutationGroupArgs } from '~/lib/types/schema';
 	import { Query_groupConnectionStore, Mutation_groupStore, Mutation_role_groupsStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { validateMutation } from '~/lib/utils';
+	import { validate } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -47,7 +46,7 @@
 		}>
 	) => {
 		const row = nodes?.map((node) => node?.id)?.indexOf(event.detail.args.id || event.detail.args.where?.id?.val || undefined);
-		validateMutation('Group', event.detail.args, $locale)
+		validate('Mutation_group_Arguments', event.detail.args, $locale)
 			.then((data) => {
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
@@ -74,14 +73,13 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Role', { where: { id: { val: id } }, groups: event.detail.selected }, $locale)
+		validate('Mutation_role_Arguments', { where: { id: { val: id } }, groups: event.detail.selected }, $locale)
 			.then((data) => {
 				errors = {};
 				if (Array.isArray(event.detail.selected)) {
 					Mutation_role_groups.mutate({
 						role_id: id,
-						role_groups: event.detail.selected,
-						mergeToList: ['groups']
+						role_groups: event.detail.selected
 					})
 						.then((result) => {
 							event.detail.then();
@@ -107,7 +105,7 @@
 		{nodes}
 		{totalCount}
 		{errors}
-		args={ { exs: [notBelongToParent] } }
+		args={{ exs: [notBelongToParent] }}
 		isFetching={$Query_groupConnection.fetching}
 		on:fetch={fetch}
 		on:mutation={mutation}

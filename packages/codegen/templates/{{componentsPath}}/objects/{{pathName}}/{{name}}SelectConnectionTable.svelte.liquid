@@ -71,12 +71,7 @@
 		showSelectButton = false;
 	}
 
-	export const query = () => {
-		pageNumber = 1;
-		queryPage();
-	};
-
-	export const queryPage = () => {
+	export const queryPage = (toPageNumber?: number | undefined) => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -90,7 +85,7 @@
 			args.before = before;
 			args.last = pageSize;
 		} else {
-			args.offset = (pageNumber - 1) * pageSize;
+			args.offset = ((toPageNumber || pageNumber) - 1) * pageSize;
 			args.first = pageSize;
 		}
 
@@ -112,17 +107,8 @@
 			args.cond = 'OR';
 			{%- if fields %}
 			{%- for field in fields %}
-			{%- if field.isScalarType and field.inQueryArgs and field.fieldType.name == 'String' %}
+			{%- if field.isScalarType and field.inQueryArgs and field.fieldTypeName == 'String' %}
 			args.{{ field.fieldName }} = { opr: 'LK', val: `%${searchValue}%` };
-			{%- endif %}
-			{%- endfor %}
-			{%- endif %}
-		} else {
-			args.cond = undefined;
-			{%- if fields %}
-			{%- for field in fields %}
-			{%- if field.isScalarType and field.inQueryArgs and field.fieldType.name == 'String' %}
-			args.{{ field.fieldName }} = undefined;
 			{%- endif %}
 			{%- endfor %}
 			{%- endif %}
@@ -185,7 +171,7 @@
 				: nodes?.filter((node) => node?.{{ idName }} === selectedIdList)?.map((node) => ({ {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.inQuery and field.fieldName != idName %}{{ field.fieldName }}: node?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: node?.{{ idName }} } } }))[0],
 			then: () => {
 				notifications.success($LL.web.message.saveSuccess());
-				dispatch('back');
+				dispatch('back', {});
 			},
 			catch: (errors) => {
 				console.error(errors);
@@ -209,7 +195,7 @@
 								if (nodes && nodes.length > 0) {
 									selectedIdList = selectAll ? nodes.map((node) => node?.{{ idName }}) : [];
 								}
-							}}
+							{% raw %}}{% endraw %}}
 						/>
 					</label>
 				{/if}
@@ -221,13 +207,13 @@
 			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 			{%- endif %}
 			{%- if field.inQueryArgs %}
-			<{{ field.fieldType.name }}Th
+			<{{ field.fieldTypeName }}Th
 				name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 				bind:expression={args.{{ field.fieldName }}}
 				{%- if field.isListType == false %}
 				bind:sort={orderBy.{{ field.fieldName }}}
 				{%- endif %}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{%- else %}
 			<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
@@ -267,7 +253,7 @@
 							{%- if field.component %}
 							{{ field.component }}
 							{%- else %}
-							<{{ field.fieldType.name }}Td
+							<{{ field.fieldTypeName }}Td
 								name="{{ field.fieldName }}"
 								bind:value={node.{{ field.fieldName }}}
 								{%- if field.isListType %}
@@ -303,7 +289,7 @@
 																	: { {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.inQuery and field.fieldName != idName %}{{ field.fieldName }}: node?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: node.{{ idName }} } } },
 														then: () => {
 															notifications.success($LL.web.message.saveSuccess());
-															dispatch('back');
+															dispatch('back', {});
 														},
 														catch: (errors) => {
 															console.error(errors);
@@ -311,7 +297,7 @@
 														}
 													});
 												}
-											}}
+											{% raw %}}{% endraw %}}
 										>
 											<Icon src={ArchiveBoxArrowDown} solid />
 										</button>

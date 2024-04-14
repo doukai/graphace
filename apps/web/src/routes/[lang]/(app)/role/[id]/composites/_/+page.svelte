@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { ot, to, urlName, canBack, PageType } from '~/lib/stores/useNavigate';
 	import { page } from '$app/stores';
 	import { type Errors, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
 	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
-	import { Card } from '@graphace/ui';
+	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import RoleCreateForm from '~/lib/components/objects/role/RoleCreateForm.svelte';
 	import { Mutation_role_compositesStore } from '$houdini';
 	import type { MutationRoleArgs, Role } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
-	import { validateMutation } from '~/lib/utils';
+	import { validate } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -27,13 +26,12 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validateMutation('Role', { id: id, composites: [event.detail.args] }, $locale)
+		validate('Mutation_role_Arguments', { id: id, composites: [event.detail.args] }, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_role_composites.mutate({
 					role_id: id,
-					role_composites: [event.detail.args],
-					mergeToList: ['composites']
+					role_composites: [event.detail.args]
 				})
 					.then((result) => {
 						event.detail.then(undefined);

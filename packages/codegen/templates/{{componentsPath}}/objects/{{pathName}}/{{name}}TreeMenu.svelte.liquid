@@ -45,7 +45,7 @@
 			variables = {
 				deep: undefined,
 				path: undefined,
-				name: { opr: Operator.LK, val: `%${% raw %}{{% endraw %}{{ name | camelCase }}Name}%` }
+				name: { opr: Operator.LK, val: {{ "`" | escape }}%${% raw %}{{% endraw %}{{ name | camelCase }}Name}%{{ "`" | escape }} }
 			};
 		} else {
 			variables = {
@@ -75,7 +75,7 @@
 							active{{ name }}Id = nodeTree.node?.{{ idName }};
 						}
 						dispatch('change', { activeId: active{{ name }}Id });
-					}}
+					{% raw %}}{% endraw %}}
 				>
 					{nodeTree.node?.name}
 				</a>

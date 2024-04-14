@@ -56,7 +56,7 @@
 	export let orderBy: PermissionOrderBy = {};
 
 	let selectAll: boolean;
-	export let selectedIdList: (string | null)[] = [];
+	export let selectedIdList: (string | null | undefined)[] = [];
 
 	export const query = () => {
 		if (Object.keys(orderBy).length > 0) {
@@ -84,11 +84,6 @@
 			args.description = { opr: 'LK', val: `%${searchValue}%` };
 			args.field = { opr: 'LK', val: `%${searchValue}%` };
 			args.type = { opr: 'LK', val: `%${searchValue}%` };
-		} else {
-			args.cond = undefined;
-			args.description = undefined;
-			args.field = undefined;
-			args.type = undefined;
 		}
 
 		dispatch('fetch', {
@@ -138,7 +133,7 @@
 	const removeRows = () => {
 		dispatch('mutation', {
 			args: {
-				where: { name: { opr: 'IN', arr: selectedIdList } },
+				where: { name: { opr: 'IN', arr: selectedIdList} },
 				isDeprecated: true
 			},
 			then: (data) => {
@@ -152,11 +147,11 @@
 		});
 	};
 
-	const unbindRows = (selectedIdList: (string | null)[]) => {
+	const unbindRows = (selectedIdList: (string | null | undefined)[]) => {
 		dispatch('parentMutation', {
 			args: selectedIdList
 				.map((id) => {
-					return { where: { name: { val: id } }, isDeprecated: true };
+					return {where: { name: { val: id } }, isDeprecated: true};
 				}),
 			then: (data) => {
 				notifications.success($LL.web.message.unbindSuccess());
@@ -224,7 +219,7 @@
 						bind:checked={selectAll}
 						on:change={(e) => {
 							if (nodes && nodes.length > 0) {
-								selectedIdList = selectAll ? nodes.map((node) => node?.name || null) : [];
+								selectedIdList = selectAll ? nodes.map((node) => node?.name) : [];
 							}
 						}}
 					/>
@@ -352,11 +347,11 @@
 								errors={errors[row]?.iterms?.roles}
 								readonly={!permissions.auth('Permission::roles::WRITE')}
 								on:save={(e) =>
-									updateField({ roles: node?.roles, where: { name: { val: node?.name } } }, row)}
+									updateField({ roles: node?.roles, where: { name: {val: node?.name } } }, row)}
 							/>
 							{/if}
 							{#if permissions.auth('Permission::realm::*')}
-							<ObjectTd name="realm" namedStruct={ node.realm } errors={errors[row]?.iterms?.realm} path={`${node.name}/realm`} on:gotoField />
+							<ObjectTd name="realm" namedStruct={node.realm} errors={errors[row]?.iterms?.realm} path={`${node.name}/realm`} on:gotoField />
 							{/if}
 							{#if permissions.auth('Permission::*::WRITE')}
 							<th class="z-10 hover:z-30 w-24">
@@ -366,7 +361,7 @@
 											class="btn btn-square btn-ghost btn-xs"
 											on:click|preventDefault={(e) => {
 												if (node && node.name) {
-													dispatch('edit', { id: node.name });
+													dispatch('edit', {id: node.name});
 												}
 											}}
 										>

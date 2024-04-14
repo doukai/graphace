@@ -121,5 +121,5 @@
 		} else {
 			GroupNameListQuery.fetch({ variables: { name: undefined } }).finally(() => (loading = false));
 		}
-	}}
+		}}
 />

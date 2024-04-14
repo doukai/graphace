@@ -60,12 +60,7 @@
 		showSelectButton = false;
 	}
 
-	export const query = () => {
-		pageNumber = 1;
-		queryPage();
-	};
-
-	export const queryPage = () => {
+	export const queryPage = (toPageNumber?: number | undefined) => {
 		if (Object.keys(orderBy).length > 0) {
 			args.orderBy = orderBy;
 		} else {
@@ -79,7 +74,7 @@
 			args.before = before;
 			args.last = pageSize;
 		} else {
-			args.offset = (pageNumber - 1) * pageSize;
+			args.offset = ((toPageNumber || pageNumber) - 1) * pageSize;
 			args.first = pageSize;
 		}
 
@@ -105,14 +100,6 @@
 			args.login = { opr: 'LK', val: `%${searchValue}%` };
 			args.email = { opr: 'LK', val: `%${searchValue}%` };
 			args.phones = { opr: 'LK', val: `%${searchValue}%` };
-		} else {
-			args.cond = undefined;
-			args.name = undefined;
-			args.description = undefined;
-			args.lastName = undefined;
-			args.login = undefined;
-			args.email = undefined;
-			args.phones = undefined;
 		}
 		
 		if (after) {
@@ -172,7 +159,7 @@
 				: nodes?.filter((node) => node?.id === selectedIdList)?.map((node) => ({ name: node?.name, description: node?.description, lastName: node?.lastName, login: node?.login, email: node?.email, phones: node?.phones, disable: node?.disable, where: { id: { val: node?.id } } }))[0],
 			then: () => {
 				notifications.success($LL.web.message.saveSuccess());
-				dispatch('back');
+				dispatch('back', {});
 			},
 			catch: (errors) => {
 				console.error(errors);
@@ -206,7 +193,7 @@
 				name={$LL.graphql.objects.User.fields.name.name()}
 				bind:expression={args.name}
 				bind:sort={orderBy.name}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('User::description::*')}
@@ -214,7 +201,7 @@
 				name={$LL.graphql.objects.User.fields.description.name()}
 				bind:expression={args.description}
 				bind:sort={orderBy.description}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('User::lastName::*')}
@@ -222,7 +209,7 @@
 				name={$LL.graphql.objects.User.fields.lastName.name()}
 				bind:expression={args.lastName}
 				bind:sort={orderBy.lastName}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('User::login::*')}
@@ -230,7 +217,7 @@
 				name={$LL.graphql.objects.User.fields.login.name()}
 				bind:expression={args.login}
 				bind:sort={orderBy.login}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('User::email::*')}
@@ -238,14 +225,14 @@
 				name={$LL.graphql.objects.User.fields.email.name()}
 				bind:expression={args.email}
 				bind:sort={orderBy.email}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('User::phones::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.phones.name()}
 				bind:expression={args.phones}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('User::disable::*')}
@@ -253,7 +240,7 @@
 				name={$LL.graphql.objects.User.fields.disable.name()}
 				bind:expression={args.disable}
 				bind:sort={orderBy.disable}
-				on:filter={(e) => query()}
+				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			<th />
@@ -353,7 +340,7 @@
 																	: { name: node?.name, description: node?.description, lastName: node?.lastName, login: node?.login, email: node?.email, phones: node?.phones, disable: node?.disable, where: { id: { val: node.id } } },
 														then: () => {
 															notifications.success($LL.web.message.saveSuccess());
-															dispatch('back');
+															dispatch('back', {});
 														},
 														catch: (errors) => {
 															console.error(errors);
