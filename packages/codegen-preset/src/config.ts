@@ -1,6 +1,5 @@
 import type { BuilderConfig } from "graphace-codegen-commons";
 export interface GraphacePresetConfig {
-
   graphqlPath?: string;
 
   componentsPath?: string;

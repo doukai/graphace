@@ -5,5 +5,5 @@ export type Error = {
 
 export type Errors = {
     errors?: Error[];
-    iterms?: Record<string, Errors>
+    iterms?: Record<string, Errors>;
 }

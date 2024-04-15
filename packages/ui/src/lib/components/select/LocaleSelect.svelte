@@ -15,11 +15,12 @@
 	import { invalidateAll } from '$app/navigation';
 	import { setLocale, locale } from '~/i18n/i18n-svelte';
 	import type { Locales } from '~/i18n/i18n-types';
+	import { baseLocale } from '~/i18n/i18n-util';
 	import { loadLocaleAsync } from '~/i18n/i18n-util.async';
 
 	export let locales: Record<string, LocaleItem>;
 
-	let currentLocale: string;
+	let currentLocale: string = baseLocale;
 
 	const switchLocale = async (newLocale: string, updateHistoryState = true) => {
 		if (!newLocale || $locale === newLocale) {

@@ -8,6 +8,7 @@ export const pageInfoName = "PageInfo";
 export const introspectionPrefix = "__";
 export const innerEnum = ["Operator", "Conditional", "Sort", "Func", "Protocol"];
 export const namedStructInterfaceName = "NamedStruct";
+export const treeStructInterfaceName = "TreeStruct";
 
 export const isAggregate = (name?: string): boolean => { return aggregateSuffix.some(suffix => name?.slice(-suffix.length) === suffix) };
 export const isConnection = (name?: string): boolean => { return name?.slice(-connectionSuffix.length) === connectionSuffix };
@@ -175,4 +176,12 @@ export const getEnumValues = (type: GraphQLNamedType): GraphQLEnumValue[] | unde
         return Object.values(type.getValues());
     }
     return undefined;
+}
+
+export const isNamedStruct = (type: GraphQLNamedType): boolean => {
+    return assertObjectType(type).getInterfaces().some(interfaceType => interfaceType.name === namedStructInterfaceName);
+}
+
+export const isTreeStruct = (type: GraphQLNamedType): boolean => {
+    return assertObjectType(type).getInterfaces().some(interfaceType => interfaceType.name === treeStructInterfaceName);
 }

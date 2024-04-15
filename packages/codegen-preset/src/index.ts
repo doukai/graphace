@@ -2,7 +2,7 @@ import type { Types } from "@graphql-codegen/plugin-helpers";
 import { assertObjectType, isEnumType, isObjectType } from "graphql";
 import type { GraphacePresetConfig } from "./config";
 import * as changeCase from "change-case";
-import { isOperationType, isAggregate, isConnection, isEdge, isPageInfo, isIntrospection, isInnerEnum, fieldTypeIsList, getFieldType, getObjectFields, getIDFieldName, initConfig, inGraphQLField, inComponentEnum, inComponentObject, inRouteObject, getQueryTypeName, getMutationTypeName, inRouteField } from 'graphace-codegen-commons'
+import { isOperationType, isAggregate, isConnection, isEdge, isPageInfo, isIntrospection, isInnerEnum, fieldTypeIsList, getFieldType, getObjectFields, getIDFieldName, initConfig, inGraphQLField, inComponentEnum, inComponentObject, inRouteObject, getQueryTypeName, getMutationTypeName, inRouteField, isTreeStruct, isNamedStruct } from 'graphace-codegen-commons'
 import { buildPath } from "./builder";
 
 const _graphqlPath = 'lib/graphql';
@@ -59,6 +59,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         const targetRouteObjectType = objectTypes
             .filter(type => inRouteObject(type.name));
 
+
         const pagesTemplate = '{{dataPath}}/pages.json';
         const pageScope = { dataPath };
         generateOptions.push(
@@ -81,60 +82,6 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 skipDocumentsValidation: true,
             }
         );
-
-        const i18nTemplate = '{{i18nPath}}/{{i18nDefault}}/graphql/index.ts';
-        const i18nScope = { i18nPath, i18nDefault };
-        generateOptions.push(
-            {
-                filename: buildPath(i18nTemplate, i18nScope),
-                documents: options.documents,
-                plugins: options.plugins,
-                pluginMap: options.pluginMap,
-                config: {
-                    graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                    componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                    routesPath: options.presetConfig.graphqlPath || _routesPath,
-                    dataPath: options.presetConfig.dataPath || _dataPath,
-                    i18nPath: options.presetConfig.i18nPath || _i18nPath,
-                    i18nDefault: options.presetConfig.i18nDefault || _i18nDefault,
-                    i18nDescription: options.presetConfig.i18nDescription,
-                    builder: options.presetConfig.builder,
-                    useAuth: options.presetConfig.useAuth,
-                    template: i18nTemplate,
-                },
-                schema: options.schema,
-                schemaAst: options.schemaAst,
-                skipDocumentsValidation: true,
-            }
-        );
-
-        if (i18nDescription && i18nDefault !== i18nDescription) {
-            const i18nTemplate = '{{i18nPath}}/{{i18nDescription}}/graphql/index.ts';
-            const i18nScope = { i18nPath, i18nDescription };
-            generateOptions.push(
-                {
-                    filename: buildPath(i18nTemplate, i18nScope),
-                    documents: options.documents,
-                    plugins: options.plugins,
-                    pluginMap: options.pluginMap,
-                    config: {
-                        graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                        componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                        routesPath: options.presetConfig.graphqlPath || _routesPath,
-                        dataPath: options.presetConfig.dataPath || _dataPath,
-                        i18nPath: options.presetConfig.i18nPath || _i18nPath,
-                        i18nDefault: options.presetConfig.i18nDefault || _i18nDefault,
-                        i18nDescription: options.presetConfig.i18nDescription,
-                        builder: options.presetConfig.builder,
-                        useAuth: options.presetConfig.useAuth,
-                        template: i18nTemplate,
-                    },
-                    schema: options.schema,
-                    schemaAst: options.schemaAst,
-                    skipDocumentsValidation: true,
-                }
-            );
-        }
 
         generateOptions.push(
             ...targetQueryFields
@@ -251,454 +198,6 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             template,
                             name,
                             objectFieldName
-                        },
-                        schema: options.schema,
-                        schemaAst: options.schemaAst,
-                        skipDocumentsValidation: true,
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .map(type => {
-                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Table.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        documents: options.documents,
-                        plugins: options.plugins,
-                        pluginMap: options.pluginMap,
-                        config: {
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                            routesPath: options.presetConfig.graphqlPath || _routesPath,
-                            builder: options.presetConfig.builder,
-                            useAuth: options.presetConfig.useAuth,
-                            template,
-                            name: type.name
-                        },
-                        schema: options.schema,
-                        schemaAst: options.schemaAst,
-                        skipDocumentsValidation: true,
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .map(type => {
-                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}ConnectionTable.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        documents: options.documents,
-                        plugins: options.plugins,
-                        pluginMap: options.pluginMap,
-                        config: {
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                            routesPath: options.presetConfig.graphqlPath || _routesPath,
-                            builder: options.presetConfig.builder,
-                            useAuth: options.presetConfig.useAuth,
-                            template,
-                            name: type.name
-                        },
-                        schema: options.schema,
-                        schemaAst: options.schemaAst,
-                        skipDocumentsValidation: true,
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .map(type => {
-                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}CreateTable.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        documents: options.documents,
-                        plugins: options.plugins,
-                        pluginMap: options.pluginMap,
-                        config: {
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                            routesPath: options.presetConfig.graphqlPath || _routesPath,
-                            builder: options.presetConfig.builder,
-                            useAuth: options.presetConfig.useAuth,
-                            template,
-                            name: type.name
-                        },
-                        schema: options.schema,
-                        schemaAst: options.schemaAst,
-                        skipDocumentsValidation: true,
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .map(type => {
-                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectTable.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        documents: options.documents,
-                        plugins: options.plugins,
-                        pluginMap: options.pluginMap,
-                        config: {
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                            routesPath: options.presetConfig.graphqlPath || _routesPath,
-                            builder: options.presetConfig.builder,
-                            useAuth: options.presetConfig.useAuth,
-                            template,
-                            name: type.name
-                        },
-                        schema: options.schema,
-                        schemaAst: options.schemaAst,
-                        skipDocumentsValidation: true,
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .map(type => {
-                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectConnectionTable.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        documents: options.documents,
-                        plugins: options.plugins,
-                        pluginMap: options.pluginMap,
-                        config: {
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                            routesPath: options.presetConfig.graphqlPath || _routesPath,
-                            builder: options.presetConfig.builder,
-                            useAuth: options.presetConfig.useAuth,
-                            template,
-                            name: type.name
-                        },
-                        schema: options.schema,
-                        schemaAst: options.schemaAst,
-                        skipDocumentsValidation: true,
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .map(type => {
-                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Form.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        documents: options.documents,
-                        plugins: options.plugins,
-                        pluginMap: options.pluginMap,
-                        config: {
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                            routesPath: options.presetConfig.graphqlPath || _routesPath,
-                            builder: options.presetConfig.builder,
-                            useAuth: options.presetConfig.useAuth,
-                            template,
-                            name: type.name
-                        },
-                        schema: options.schema,
-                        schemaAst: options.schemaAst,
-                        skipDocumentsValidation: true,
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .map(type => {
-                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}CreateForm.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        documents: options.documents,
-                        plugins: options.plugins,
-                        pluginMap: options.pluginMap,
-                        config: {
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                            routesPath: options.presetConfig.graphqlPath || _routesPath,
-                            builder: options.presetConfig.builder,
-                            useAuth: options.presetConfig.useAuth,
-                            template,
-                            name: type.name
-                        },
-                        schema: options.schema,
-                        schemaAst: options.schemaAst,
-                        skipDocumentsValidation: true,
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .map(type => {
-                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Th.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        documents: options.documents,
-                        plugins: options.plugins,
-                        pluginMap: options.pluginMap,
-                        config: {
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                            routesPath: options.presetConfig.graphqlPath || _routesPath,
-                            builder: options.presetConfig.builder,
-                            useAuth: options.presetConfig.useAuth,
-                            template,
-                            name: type.name
-                        },
-                        schema: options.schema,
-                        schemaAst: options.schemaAst,
-                        skipDocumentsValidation: true,
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .filter(type => assertObjectType(type).getInterfaces().some(interfaceType => interfaceType.name === "TreeStruct"))
-                .map(type => {
-                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}TreeMenu.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        documents: options.documents,
-                        plugins: options.plugins,
-                        pluginMap: options.pluginMap,
-                        config: {
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                            routesPath: options.presetConfig.graphqlPath || _routesPath,
-                            builder: options.presetConfig.builder,
-                            useAuth: options.presetConfig.useAuth,
-                            template,
-                            name: type.name
-                        },
-                        schema: options.schema,
-                        schemaAst: options.schemaAst,
-                        skipDocumentsValidation: true,
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .filter(type => assertObjectType(type).getInterfaces().some(interfaceType => interfaceType.name === "TreeStruct"))
-                .map(type => {
-                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}TreeCard.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        documents: options.documents,
-                        plugins: options.plugins,
-                        pluginMap: options.pluginMap,
-                        config: {
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                            routesPath: options.presetConfig.graphqlPath || _routesPath,
-                            builder: options.presetConfig.builder,
-                            useAuth: options.presetConfig.useAuth,
-                            template,
-                            name: type.name
-                        },
-                        schema: options.schema,
-                        schemaAst: options.schemaAst,
-                        skipDocumentsValidation: true,
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentEnumTypes
-                .map(type => {
-                    const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Item.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        documents: options.documents,
-                        plugins: options.plugins,
-                        pluginMap: options.pluginMap,
-                        config: {
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                            routesPath: options.presetConfig.graphqlPath || _routesPath,
-                            builder: options.presetConfig.builder,
-                            useAuth: options.presetConfig.useAuth,
-                            template,
-                            name: type.name
-                        },
-                        schema: options.schema,
-                        schemaAst: options.schemaAst,
-                        skipDocumentsValidation: true,
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentEnumTypes
-                .map(type => {
-                    const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Th.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        documents: options.documents,
-                        plugins: options.plugins,
-                        pluginMap: options.pluginMap,
-                        config: {
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                            routesPath: options.presetConfig.graphqlPath || _routesPath,
-                            builder: options.presetConfig.builder,
-                            useAuth: options.presetConfig.useAuth,
-                            template,
-                            name: type.name
-                        },
-                        schema: options.schema,
-                        schemaAst: options.schemaAst,
-                        skipDocumentsValidation: true,
-
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .filter(type => assertObjectType(type).getInterfaces().some(interfaceType => interfaceType.name === "NamedStruct"))
-                .map(type => {
-                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Select.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        documents: options.documents,
-                        plugins: options.plugins,
-                        pluginMap: options.pluginMap,
-                        config: {
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                            routesPath: options.presetConfig.graphqlPath || _routesPath,
-                            builder: options.presetConfig.builder,
-                            useAuth: options.presetConfig.useAuth,
-                            template,
-                            name: type.name
-                        },
-                        schema: options.schema,
-                        schemaAst: options.schemaAst,
-                        skipDocumentsValidation: true,
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .filter(type => assertObjectType(type).getInterfaces().some(interfaceType => interfaceType.name === "NamedStruct"))
-                .map(type => {
-                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectTd.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        documents: options.documents,
-                        plugins: options.plugins,
-                        pluginMap: options.pluginMap,
-                        config: {
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                            routesPath: options.presetConfig.graphqlPath || _routesPath,
-                            builder: options.presetConfig.builder,
-                            useAuth: options.presetConfig.useAuth,
-                            template,
-                            name: type.name
-                        },
-                        schema: options.schema,
-                        schemaAst: options.schemaAst,
-                        skipDocumentsValidation: true,
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .filter(type => assertObjectType(type).getInterfaces().some(interfaceType => interfaceType.name === "NamedStruct"))
-                .map(type => {
-                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectItem.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        documents: options.documents,
-                        plugins: options.plugins,
-                        pluginMap: options.pluginMap,
-                        config: {
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                            routesPath: options.presetConfig.graphqlPath || _routesPath,
-                            builder: options.presetConfig.builder,
-                            useAuth: options.presetConfig.useAuth,
-                            template,
-                            name: type.name
-                        },
-                        schema: options.schema,
-                        schemaAst: options.schemaAst,
-                        skipDocumentsValidation: true,
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentEnumTypes
-                .map(type => {
-                    const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        documents: options.documents,
-                        plugins: options.plugins,
-                        pluginMap: options.pluginMap,
-                        config: {
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                            routesPath: options.presetConfig.graphqlPath || _routesPath,
-                            builder: options.presetConfig.builder,
-                            useAuth: options.presetConfig.useAuth,
-                            template,
-                            name: type.name
-                        },
-                        schema: options.schema,
-                        schemaAst: options.schemaAst,
-                        skipDocumentsValidation: true,
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentEnumTypes
-                .map(type => {
-                    const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Input.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        documents: options.documents,
-                        plugins: options.plugins,
-                        pluginMap: options.pluginMap,
-                        config: {
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                            routesPath: options.presetConfig.graphqlPath || _routesPath,
-                            builder: options.presetConfig.builder,
-                            useAuth: options.presetConfig.useAuth,
-                            template,
-                            name: type.name
                         },
                         schema: options.schema,
                         schemaAst: options.schemaAst,
@@ -1663,6 +1162,508 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 })
         );
 
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Table.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}ConnectionTable.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}CreateTable.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectTable.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectConnectionTable.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Form.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}CreateForm.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Th.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .filter(type => isTreeStruct(type))
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}TreeMenu.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .filter(type => isTreeStruct(type))
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}TreeCard.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentEnumTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Item.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentEnumTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Th.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .filter(type => isNamedStruct(type))
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Select.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .filter(type => isNamedStruct(type))
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectTd.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .filter(type => isNamedStruct(type))
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectItem.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentEnumTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentEnumTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Input.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        const i18nTemplate = '{{i18nPath}}/{{i18nDefault}}/graphql/index.ts';
+        const i18nScope = { i18nPath, i18nDefault };
+        generateOptions.push(
+            {
+                filename: buildPath(i18nTemplate, i18nScope),
+                documents: options.documents,
+                plugins: options.plugins,
+                pluginMap: options.pluginMap,
+                config: {
+                    graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                    componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                    routesPath: options.presetConfig.graphqlPath || _routesPath,
+                    dataPath: options.presetConfig.dataPath || _dataPath,
+                    i18nPath: options.presetConfig.i18nPath || _i18nPath,
+                    i18nDefault: options.presetConfig.i18nDefault || _i18nDefault,
+                    i18nDescription: options.presetConfig.i18nDescription,
+                    builder: options.presetConfig.builder,
+                    useAuth: options.presetConfig.useAuth,
+                    template: i18nTemplate,
+                },
+                schema: options.schema,
+                schemaAst: options.schemaAst,
+                skipDocumentsValidation: true,
+            }
+        );
+
+        if (i18nDescription && i18nDefault !== i18nDescription) {
+            const i18nTemplate = '{{i18nPath}}/{{i18nDescription}}/graphql/index.ts';
+            const i18nScope = { i18nPath, i18nDescription };
+            generateOptions.push(
+                {
+                    filename: buildPath(i18nTemplate, i18nScope),
+                    documents: options.documents,
+                    plugins: options.plugins,
+                    pluginMap: options.pluginMap,
+                    config: {
+                        graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                        componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                        routesPath: options.presetConfig.graphqlPath || _routesPath,
+                        dataPath: options.presetConfig.dataPath || _dataPath,
+                        i18nPath: options.presetConfig.i18nPath || _i18nPath,
+                        i18nDefault: options.presetConfig.i18nDefault || _i18nDefault,
+                        i18nDescription: options.presetConfig.i18nDescription,
+                        builder: options.presetConfig.builder,
+                        useAuth: options.presetConfig.useAuth,
+                        template: i18nTemplate,
+                    },
+                    schema: options.schema,
+                    schemaAst: options.schemaAst,
+                    skipDocumentsValidation: true,
+                }
+            );
+        }
         return generateOptions;
     },
 };
