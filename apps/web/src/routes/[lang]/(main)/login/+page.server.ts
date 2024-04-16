@@ -22,10 +22,8 @@ export const actions = {
         `);
 
         if (login && password) {
-            console.log(login);
             const result = await loginMutation.mutate({ login, password }, { event });
             if (result.data?.login) {
-                console.log(result.data);
                 cookies.set('Authorization', "Bearer " + result.data?.login, { path: '/' });
                 const from = event.url.searchParams.get('from');
                 if (from) {
