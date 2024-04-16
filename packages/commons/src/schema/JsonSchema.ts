@@ -8,8 +8,18 @@ export abstract class JsonSchema {
     ajv: Ajv = addFormats(new Ajv({ loadSchema: this.loadSchema, allErrors: true, messages: false }));
     public constructor() {
     }
-    public async validate(keyRef: string, data: unknown, locale: Language = "en"): Promise<unknown> {
+
+    public validate = async (keyRef: string, data: unknown, locale: Language = "en"): Promise<unknown> => {
         const validate = await this.getValidate(keyRef);
+        return this.execute(validate, data, locale);
+    }
+
+    public validateSchema = async (schemaObject: SchemaObject, data: unknown, locale: Language = "en"): Promise<unknown> => {
+        const validate = await this.ajv.compileAsync(schemaObject);
+        return this.execute(validate, data, locale);
+    }
+
+    public execute = async (validate: ValidateFunction<unknown> | undefined, data: unknown, locale: Language = "en"): Promise<unknown> => {
         return new Promise((resolve: (data: unknown) => void, reject: (errors: Record<string, Errors>) => void) => {
             if (validate) {
                 // const validateData = removeEmpty(data);
@@ -30,8 +40,17 @@ export abstract class JsonSchema {
         });
     }
 
-    public async getErrors(keyRef: string, data: object, locale: Language = "en"): Promise<Record<string, Errors> | undefined> {
+    public getErrors = async (keyRef: string, data: unknown, locale: Language = "en"): Promise<Record<string, Errors> | undefined> => {
         const validate = await this.getValidate(keyRef);
+        return this.executeErrors(validate, data, locale);
+    }
+
+    public getSchemaErrors = async (schemaObject: SchemaObject, data: unknown, locale: Language = "en"): Promise<Record<string, Errors> | undefined> => {
+        const validate = await this.ajv.compileAsync(schemaObject);
+        return this.executeErrors(validate, data, locale);
+    }
+
+    public executeErrors = async (validate: ValidateFunction<unknown> | undefined, data: unknown, locale: Language = "en"): Promise<Record<string, Errors> | undefined> => {
         if (validate) {
             // const validateData = removeEmpty(data);
             const valid = validate(data);
@@ -50,7 +69,7 @@ export abstract class JsonSchema {
         }
     }
 
-    private async getValidate(keyRef: string): Promise<ValidateFunction<unknown> | undefined> {
+    public getValidate = async (keyRef: string): Promise<ValidateFunction<unknown> | undefined> => {
         let validate = this.ajv.getSchema(keyRef);
         if (!validate) {
             const schema = await this.loadSchema(keyRef);

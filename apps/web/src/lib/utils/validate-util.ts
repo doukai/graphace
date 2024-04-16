@@ -17,4 +17,4 @@ class GraphQLJsonSchema extends JsonSchema {
     }
 }
 
-export const { validate, getErrors } = new GraphQLJsonSchema();
+export const { validate, validateSchema, getErrors, getSchemaErrors } = new GraphQLJsonSchema();
