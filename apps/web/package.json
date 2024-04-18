@@ -11,12 +11,11 @@
 		"lint": "prettier --check --ignore-path=../../.prettierignore . && TIMING=1 eslint \"src\"",
 		"format": "prettier --write --ignore-path=../../.prettierignore .",
 		"generate": "concurrently --kill-others \"houdini generate\" \"graphql-codegen\" \"typesafe-i18n\"",
+		"graphql:codegen": "graphql-codegen",
 		"houdini:generate": "houdini generate",
 		"houdini:pull-schema": "houdini pull-schema",
-		"graphql-codegen": "graphql-codegen",
-		"i18n:import": "tsx src/i18n/import.ts",
-		"typesafe-i18n": "typesafe-i18n",
-		"clean:yalc": "yalc remove --all"
+		"i18n": "typesafe-i18n",
+		"i18n:import": "tsx src/i18n/import.ts"
 	},
 	"dependencies": {
 		"@graphace/commons": "workspace:*",

@@ -23,7 +23,7 @@ const authPlugin: ClientPlugin = () => {
 }
 
 export default new HoudiniClient({
-	url: browser ? `/${env.PUBLIC_GRAPHQL_PATH || 'graphql'}` : env.PUBLIC_GRAPHQL_URL,
+	url: browser ? 'graphql' : env.PUBLIC_GRAPHQL_URL,
 	plugins: [
 		authPlugin
 	],

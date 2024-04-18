@@ -20,7 +20,7 @@
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 	import type { NamespaceGraphqlTranslation } from '$i18n/i18n-types';
-	import ObjectsMenu from '~/lib/components/menu/ObjectsMenu.svelte';
+	import SideBarMenu from '~/lib/components/menu/SideBarMenu.svelte';
 	import UserMenu from '~/lib/components/menu/UserMenu.svelte';
 	import pages from '~/lib/data/pages.json';
 	import type { LayoutData } from './$types';
@@ -202,7 +202,7 @@
 					on:focus={openDrawer}
 					slot="search"
 				/>
-				<ObjectsMenu slot="items" />
+				<SideBarMenu slot="items" />
 			</SideBar>
 			<div
 				class="bg-base-100 pointer-events-none sticky bottom-0 flex h-40 [mask-image:linear-gradient(transparent,#000000)]"

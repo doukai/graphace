@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { init } from '~/lib/stores/useNavigate';
+	import { init } from '@graphace/ui';
 	import { page } from '$app/stores';
 	import Iconify from '@iconify/svelte';
 	import LL from '$i18n/i18n-svelte';

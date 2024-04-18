@@ -8,17 +8,15 @@
 		"packages/*"
 	],
 	"scripts": {
-		"build": "turbo run build",
 		"dev": "turbo run dev --parallel",
+		"build": "turbo run build",
 		"build:packages": "turbo run build --filter=./packages/*",
+		"publish": "pnpm publish --no-git-checks --filter=!eslint-config-custom",
 		"publish:packages": "pnpm publish --no-git-checks --filter=./packages/* --filter=!eslint-config-custom",
-		"publish:local": "pnpm publish --no-git-checks --registry http://localhost:4873/ --filter=./packages/* --filter=!eslint-config-custom",
-		"publish:yalc": "turbo run publish:yalc --filter=./packages/*",
-		"daemon:clean": "turbo daemon clean",
-		"login": "turbo login",
-		"clean": "npx npkill",
-		"clean:dist": "turbo run clean",
-		"clean:yalc": "turbo run clean:yalc",
+		"turbo:login": "turbo login",
+		"turbo:clean": "turbo run clean",
+		"turbo:daemon-clean": "turbo daemon clean",
+		"npkill": "npx npkill",
 		"lint": "turbo run lint",
 		"format": "prettier --write ."
 	},

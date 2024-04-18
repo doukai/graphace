@@ -1,49 +1,33 @@
-<script lang="ts">
-	import Iconify from '@iconify/svelte';
-	import { env } from '$env/dynamic/public';
-</script>
+<div class="hero text-base-content mx-auto">
+	<div class="hero-content text-center">
+		<div class="w-full max-w-md">
+			<h2 class="mb-2 mt-20 text-[clamp(2rem,8vw,5rem)] font-black md:text-6xl">Quick Start</h2>
+			<p class="mx-auto mt-5 w-full max-w-lg text-left">1. Import i18n translations:</p>
+			<div class="mx-auto my-2 w-full max-w-md">
+				<div class="mockup-code mx-auto w-full max-w-xs text-left shadow-lg sm:max-w-none">
+					<pre data-prefix="$"><code>pnpm run i18n:import</code></pre>
+				</div>
+			</div>
 
-<div class="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-	<a
-		class="card w-full p-6 card-compact bg-base-100 hover:bg-base-300 transition-all duration-200 hover:-translate-y-1 shadow-xl"
-		href={env.PUBLIC_SPECTAQL_URL}
-		target="_blank"
-	>
-		<div class={`text-xl font-semibold inline-block`}>SpectaQL</div>
-		<div class="divider mt-2" />
-		<div class="h-full w-full pb-6">
-			<p class="flex">
-				<Iconify class="w-12 h-12 inline-block mr-4" icon="icon-park:glasses-three" />
-				Autogenerate static GraphQL API documentation
-			</p>
+			<p class="mx-auto mt-5 w-full max-w-lg text-left">2. Set graphql server environments:</p>
+			<div class="my-2 w-full max-w-4xl">
+				<div
+					class="mockup-code mx-auto w-full max-w-xs text-left text-sm shadow-lg sm:max-w-none"
+				>
+<pre><code><span class="text-neutral-content text-opacity-40">// .env</span>
+  PUBLIC_GRAPHQL_URL=http://localhost:8080/graphql
+  AUTH_SCHEME=Basic
+  AUTH_TOKEN=root:root</code></pre>
+				</div>
+			</div>
+
+			<p class="mx-auto mt-5 w-full max-w-lg text-left">3. Generate componetns and start:</p>
+			<div class="mx-auto my-2 w-full max-w-md">
+				<div class="mockup-code mx-auto w-full max-w-xs text-left shadow-lg sm:max-w-none">
+					<pre data-prefix="$"><code>pnpm run graphql:codegen</code></pre>
+					<pre data-prefix="$"><code>pnpm run dev</code></pre>
+				</div>
+			</div>
 		</div>
-	</a>
-	<a
-		class="card w-full p-6 card-compact bg-base-100 hover:bg-base-300 transition-all duration-200 hover:-translate-y-1 shadow-xl"
-		href={env.PUBLIC_GRAPHIQL_URL}
-		target="_blank"
-	>
-		<div class={`text-xl font-semibold inline-block`}>GraphiQL</div>
-		<div class="divider mt-2" />
-		<div class="h-full w-full pb-6">
-			<p class="flex">
-				<Iconify class="w-12 h-12 inline-block mr-4" icon="logos:graphql" />
-				GraphiQL & the GraphQL LSP Reference Ecosystem for building browser & IDE tools
-			</p>
-		</div>
-	</a>
-	<a
-		class="card w-full p-6 card-compact bg-base-100 hover:bg-base-300 transition-all duration-200 hover:-translate-y-1 shadow-xl"
-		href={env.PUBLIC_YOYAGER_URL}
-		target="_blank"
-	>
-		<div class={`text-xl font-semibold inline-block`}>GraphQL Voyager</div>
-		<div class="divider mt-2" />
-		<div class="h-full w-full pb-6">
-			<p class="flex">
-				<Iconify class="w-12 h-12 inline-block mr-4" icon="twemoji:satellite" />
-				Represent any GraphQL API as an interactive graph
-			</p>
-		</div>
-	</a>
+	</div>
 </div>

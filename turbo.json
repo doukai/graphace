@@ -10,12 +10,6 @@
 		},
 		"dev": {
 			"cache": false
-		},
-		"publish:yalc": {
-			"dependsOn": ["^publish:yalc"]
-		},
-		"clean:yalc": {
-			"dependsOn": ["^clean:yalc"]
 		}
 	}
 }
