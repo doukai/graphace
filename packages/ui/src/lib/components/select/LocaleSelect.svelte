@@ -27,6 +27,8 @@
 			return;
 		}
 
+		currentLocale = newLocale;
+
 		// load new dictionary from server
 		await loadLocaleAsync(newLocale as Locales);
 
@@ -76,7 +78,7 @@
 			{#each Object.entries(locales) as locale}
 				<li>
 					<button
-						class:active={currentLocale == locale[0]}
+						class:active={currentLocale === locale[0]}
 						on:click={(e) => switchLocale(locale[0])}
 					>
 						<Iconify class="drop-shadow" icon={locale[1].flag} />
