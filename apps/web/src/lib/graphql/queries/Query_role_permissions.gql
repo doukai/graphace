@@ -1,0 +1,52 @@
+query Query_role_permissions($role_id: StringExpression, $name: StringExpression, $description: StringExpression, $field: StringExpression, $type: StringExpression, $permissionType: PermissionTypeExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: PermissionOrderBy, $groupBy: [String!]) {
+  role(id: $role_id)  {
+    id
+    name
+    description
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    permissionsConnection(name: $name description: $description field: $field type: $type permissionType: $permissionType roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy)  {
+      totalCount
+      edges {
+        node {
+          name
+          description
+          field
+          type
+          permissionType
+          isDeprecated
+          version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
+          roles {
+            id
+            name
+            description
+            isDeprecated
+            version
+            realmId
+            createUserId
+            createTime
+            updateUserId
+            updateTime
+            createGroupId
+          }
+          realm {
+            name
+            description
+          }
+        }
+      }
+    }
+  }
+}
