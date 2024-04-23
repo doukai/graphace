@@ -30,21 +30,26 @@
 			}
 		}
 	`);
+	
+	let _value = value;
+	if (Array.isArray(value)) {
+		value = value.map((item) => ({ where: { id: { val: item?.id } } }));
+	} else if (value) {
+		value = { where: { id: { val: value.id } } };
+	}
 
 	let searchText: string = '';
 	let loading: boolean = false;
 	let options: ObjectOption[] = [];
 	let selected: ObjectOption[] = [];
 
-	$: if (Array.isArray(value)) {
-		selected = value?.map((item) => ({
+	$: if (Array.isArray(_value)) {
+		selected = _value?.map((item) => ({
 			label: item?.name || '',
-			value: item
+			value: { where: { id: { val: item?.id } } }
 		}));
-		value = value.map((item) => ({ name: item?.name, description: item?.description, where: { id: { val: item?.id } } }));
-	} else if (value) {
-		selected = [{ label: value?.name || '', value: value }];
-		value = { name: value.name, description: value.description, where: { id: { val: value.id } } };
+	} else if (_value) {
+		selected = [{ label: _value?.name || '', value: { where: { id: { val: _value.id } } } }];
 	} else {
 		selected = [];
 	}
@@ -52,7 +57,7 @@
 	$: options =
 		$GroupNameListQuery.data?.groupList?.map((item) => ({
 			label: item?.name || '',
-			value: { name: item?.name, description: item?.description, where: { id: { val: item?.id } } }
+			value: { where: { id: { val: item?.id } } }
 		})) || [];
 
 	$: if (searchText) {

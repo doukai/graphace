@@ -1609,6 +1609,7 @@ export type MetaInput = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  where?: InputMaybe<MetaExpression>;
 };
 
 export type Mutation = {
