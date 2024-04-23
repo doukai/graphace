@@ -35,68 +35,21 @@ mutation Mutation_role_groups($role_id: String, $role_groups: [GroupInput], $id:
             id
             name
             description
-            path
-            deep
-            parentId
-            isDeprecated
-            version
-            realmId
-            createUserId
-            createTime
-            updateUserId
-            updateTime
-            createGroupId
-            syncGroupPolicy
           }
           subGroups {
             id
             name
             description
-            path
-            deep
-            parentId
-            isDeprecated
-            version
-            realmId
-            createUserId
-            createTime
-            updateUserId
-            updateTime
-            createGroupId
-            syncGroupPolicy
           }
           users {
             id
             name
             description
-            lastName
-            login
-            email
-            phones
-            disable
-            isDeprecated
-            version
-            realmId
-            createUserId
-            createTime
-            updateUserId
-            updateTime
-            createGroupId
-            syncUserPolicy
           }
           roles {
             id
             name
             description
-            isDeprecated
-            version
-            realmId
-            createUserId
-            createTime
-            updateUserId
-            updateTime
-            createGroupId
-            syncRolePolicy
           }
           realm {
             name

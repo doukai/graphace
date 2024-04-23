@@ -32,51 +32,16 @@ mutation Mutation_role_composites($role_id: String, $role_composites: [RoleInput
             id
             name
             description
-            lastName
-            login
-            email
-            phones
-            disable
-            isDeprecated
-            version
-            realmId
-            createUserId
-            createTime
-            updateUserId
-            updateTime
-            createGroupId
-            syncUserPolicy
           }
           groups {
             id
             name
             description
-            path
-            deep
-            parentId
-            isDeprecated
-            version
-            realmId
-            createUserId
-            createTime
-            updateUserId
-            updateTime
-            createGroupId
-            syncGroupPolicy
           }
           composites {
             id
             name
             description
-            isDeprecated
-            version
-            realmId
-            createUserId
-            createTime
-            updateUserId
-            updateTime
-            createGroupId
-            syncRolePolicy
           }
           realm {
             name

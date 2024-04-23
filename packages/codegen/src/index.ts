@@ -135,6 +135,7 @@ const renders: Record<Template, Render> = {
                                 const fieldType = getFieldType(field.type);
                                 return {
                                     ...field,
+                                    fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
                                     select: isSelectField(fieldType.name, field.name, getFieldType(field.type).name),
                                     fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
                                 }
@@ -171,6 +172,7 @@ const renders: Record<Template, Render> = {
                                 const fieldType = getFieldType(field.type);
                                 return {
                                     ...field,
+                                    fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
                                     select: isSelectField(subFieldType.name, field.name, getFieldType(field.type).name),
                                     fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
                                 }
@@ -214,6 +216,7 @@ const renders: Record<Template, Render> = {
                                 const fieldType = getFieldType(field.type);
                                 return {
                                     ...field,
+                                    fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
                                     select: isSelectField(fieldType.name, field.name, getFieldType(field.type).name),
                                     fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation'))
                                 }
@@ -250,6 +253,7 @@ const renders: Record<Template, Render> = {
                                 const fieldType = getFieldType(field.type);
                                 return {
                                     ...field,
+                                    fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
                                     select: isSelectField(subFieldType.name, field.name, getFieldType(field.type).name),
                                     fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation'))
                                 }

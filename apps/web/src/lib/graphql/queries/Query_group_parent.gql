@@ -33,64 +33,21 @@ query Query_group_parent($group_id: StringExpression, $id: StringExpression, $na
         id
         name
         description
-        path
-        deep
-        parentId
-        isDeprecated
-        version
-        realmId
-        createUserId
-        createTime
-        updateUserId
-        updateTime
-        createGroupId
       }
       subGroups {
         id
         name
         description
-        path
-        deep
-        parentId
-        isDeprecated
-        version
-        realmId
-        createUserId
-        createTime
-        updateUserId
-        updateTime
-        createGroupId
       }
       users {
         id
         name
         description
-        lastName
-        login
-        email
-        phones
-        disable
-        isDeprecated
-        version
-        realmId
-        createUserId
-        createTime
-        updateUserId
-        updateTime
-        createGroupId
       }
       roles {
         id
         name
         description
-        isDeprecated
-        version
-        realmId
-        createUserId
-        createTime
-        updateUserId
-        updateTime
-        createGroupId
       }
       realm {
         name

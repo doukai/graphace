@@ -18,48 +18,16 @@ query Query_roleConnection($id: StringExpression, $name: StringExpression, $desc
           id
           name
           description
-          lastName
-          login
-          email
-          phones
-          disable
-          isDeprecated
-          version
-          realmId
-          createUserId
-          createTime
-          updateUserId
-          updateTime
-          createGroupId
         }
         groups {
           id
           name
           description
-          path
-          deep
-          parentId
-          isDeprecated
-          version
-          realmId
-          createUserId
-          createTime
-          updateUserId
-          updateTime
-          createGroupId
         }
         composites {
           id
           name
           description
-          isDeprecated
-          version
-          realmId
-          createUserId
-          createTime
-          updateUserId
-          updateTime
-          createGroupId
         }
         realm {
           name

@@ -23,30 +23,11 @@ query Query_userConnection($id: StringExpression, $name: StringExpression, $desc
           id
           name
           description
-          path
-          deep
-          parentId
-          isDeprecated
-          version
-          realmId
-          createUserId
-          createTime
-          updateUserId
-          updateTime
-          createGroupId
         }
         roles {
           id
           name
           description
-          isDeprecated
-          version
-          realmId
-          createUserId
-          createTime
-          updateUserId
-          updateTime
-          createGroupId
         }
         realm {
           name

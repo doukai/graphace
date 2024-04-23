@@ -17,11 +17,9 @@ query Query_{{ name }}
         {%- for field in namedFields %}
         {%- if field.select %}
         {{ field.name }} {
-          {%- if field.fields %}
-          {%- for field in field.fields %}
-          {{ field.name }}
-          {%- endfor %}
-          {%- endif %}
+          {{ field.fieldTypeIdName }}
+          name
+          description
         }
         {%- else %}
         {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
@@ -45,11 +43,9 @@ query Query_{{ name }}
     {%- for field in namedFields %}
     {%- if field.select %}
     {{ field.name }} {
-      {%- if field.fields %}
-      {%- for field in field.fields %}
-      {{ field.name }}
-      {%- endfor %}
-      {%- endif %}
+      {{ field.fieldTypeIdName }}
+      name
+      description
     }
     {%- else %}
     {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {

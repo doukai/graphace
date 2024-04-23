@@ -21,52 +21,38 @@
 		};
 	}>();
 
+	const GroupNameListQuery = graphql(`
+		query GroupNameListQuery($name: StringExpression, $first: Int) {
+			groupList(name: $name, first: $first) {
+				id
+				name
+				description
+			}
+		}
+	`);
+
 	let searchText: string = '';
 	let loading: boolean = false;
 	let options: ObjectOption[] = [];
 	let selected: ObjectOption[] = [];
-	if (Array.isArray(value)) {
-		value = value.map((item) => ({ name: item?.name, description: item?.description, path: item?.path, deep: item?.deep, parentId: item?.parentId, isDeprecated: item?.isDeprecated, version: item?.version, realmId: item?.realmId, createUserId: item?.createUserId, createTime: item?.createTime, updateUserId: item?.updateUserId, updateTime: item?.updateTime, createGroupId: item?.createGroupId, where: { id: { val: item?.id } } }));
-	} else if (value) {
-		value = { name: value.name, description: value.description, path: value.path, deep: value.deep, parentId: value.parentId, isDeprecated: value.isDeprecated, version: value.version, realmId: value.realmId, createUserId: value.createUserId, createTime: value.createTime, updateUserId: value.updateUserId, updateTime: value.updateTime, createGroupId: value.createGroupId, where: { id: { val: value.id } } };
-	}
 
 	$: if (Array.isArray(value)) {
 		selected = value?.map((item) => ({
 			label: item?.name || '',
 			value: item
 		}));
+		value = value.map((item) => ({ name: item?.name, description: item?.description, where: { id: { val: item?.id } } }));
 	} else if (value) {
 		selected = [{ label: value?.name || '', value: value }];
+		value = { name: value.name, description: value.description, where: { id: { val: value.id } } };
 	} else {
 		selected = [];
 	}
 
-	const GroupNameListQuery = graphql(`
-		query GroupNameListQuery($name: StringExpression) {
-			groupList(name: $name) {
-				id
-				name
-				description
-				path
-				deep
-				parentId
-				isDeprecated
-				version
-				realmId
-				createUserId
-				createTime
-				updateUserId
-				updateTime
-				createGroupId
-			}
-		}
-	`);
-
 	$: options =
 		$GroupNameListQuery.data?.groupList?.map((item) => ({
 			label: item?.name || '',
-			value: { name: item?.name, description: item?.description, path: item?.path, deep: item?.deep, parentId: item?.parentId, isDeprecated: item?.isDeprecated, version: item?.version, realmId: item?.realmId, createUserId: item?.createUserId, createTime: item?.createTime, updateUserId: item?.updateUserId, updateTime: item?.updateTime, createGroupId: item?.createGroupId, where: { id: { val: item?.id } } }
+			value: { name: item?.name, description: item?.description, where: { id: { val: item?.id } } }
 		})) || [];
 
 	$: if (searchText) {
@@ -119,7 +105,7 @@
 				variables: { name: { opr: Operator.LK, val: `%${searchText}%` } }
 			}).finally(() => (loading = false));
 		} else {
-			GroupNameListQuery.fetch({ variables: { name: undefined } }).finally(() => (loading = false));
+			GroupNameListQuery.fetch({ variables: { name: undefined, first: 10 } }).finally(() => (loading = false));
 		}
-		}}
+	}}
 />

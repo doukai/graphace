@@ -18,15 +18,6 @@ mutation Mutation_permissionList($name: ID, $description: String, $field: String
       id
       name
       description
-      isDeprecated
-      version
-      realmId
-      createUserId
-      createTime
-      updateUserId
-      updateTime
-      createGroupId
-      syncRolePolicy
     }
     realm {
       name

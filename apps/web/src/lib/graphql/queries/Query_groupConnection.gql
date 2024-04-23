@@ -21,64 +21,21 @@ query Query_groupConnection($id: StringExpression, $name: StringExpression, $des
           id
           name
           description
-          path
-          deep
-          parentId
-          isDeprecated
-          version
-          realmId
-          createUserId
-          createTime
-          updateUserId
-          updateTime
-          createGroupId
         }
         subGroups {
           id
           name
           description
-          path
-          deep
-          parentId
-          isDeprecated
-          version
-          realmId
-          createUserId
-          createTime
-          updateUserId
-          updateTime
-          createGroupId
         }
         users {
           id
           name
           description
-          lastName
-          login
-          email
-          phones
-          disable
-          isDeprecated
-          version
-          realmId
-          createUserId
-          createTime
-          updateUserId
-          updateTime
-          createGroupId
         }
         roles {
           id
           name
           description
-          isDeprecated
-          version
-          realmId
-          createUserId
-          createTime
-          updateUserId
-          updateTime
-          createGroupId
         }
         realm {
           name

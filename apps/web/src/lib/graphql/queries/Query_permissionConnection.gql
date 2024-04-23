@@ -20,14 +20,6 @@ query Query_permissionConnection($name: StringExpression, $description: StringEx
           id
           name
           description
-          isDeprecated
-          version
-          realmId
-          createUserId
-          createTime
-          updateUserId
-          updateTime
-          createGroupId
         }
         realm {
           name

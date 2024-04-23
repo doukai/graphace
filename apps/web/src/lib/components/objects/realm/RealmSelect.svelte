@@ -21,49 +21,38 @@
 		};
 	}>();
 
+	const RealmNameListQuery = graphql(`
+		query RealmNameListQuery($name: StringExpression, $first: Int) {
+			realmList(name: $name, first: $first) {
+				id
+				name
+				description
+			}
+		}
+	`);
+
 	let searchText: string = '';
 	let loading: boolean = false;
 	let options: ObjectOption[] = [];
 	let selected: ObjectOption[] = [];
-	if (Array.isArray(value)) {
-		value = value.map((item) => ({ name: item?.name, description: item?.description, isDeprecated: item?.isDeprecated, version: item?.version, realmId: item?.realmId, createUserId: item?.createUserId, createTime: item?.createTime, updateUserId: item?.updateUserId, updateTime: item?.updateTime, createGroupId: item?.createGroupId, where: { id: { val: item?.id } } }));
-	} else if (value) {
-		value = { name: value.name, description: value.description, isDeprecated: value.isDeprecated, version: value.version, realmId: value.realmId, createUserId: value.createUserId, createTime: value.createTime, updateUserId: value.updateUserId, updateTime: value.updateTime, createGroupId: value.createGroupId, where: { id: { val: value.id } } };
-	}
 
 	$: if (Array.isArray(value)) {
 		selected = value?.map((item) => ({
 			label: item?.name || '',
 			value: item
 		}));
+		value = value.map((item) => ({ name: item?.name, description: item?.description, where: { id: { val: item?.id } } }));
 	} else if (value) {
 		selected = [{ label: value?.name || '', value: value }];
+		value = { name: value.name, description: value.description, where: { id: { val: value.id } } };
 	} else {
 		selected = [];
 	}
 
-	const RealmNameListQuery = graphql(`
-		query RealmNameListQuery($name: StringExpression) {
-			realmList(name: $name) {
-				id
-				name
-				description
-				isDeprecated
-				version
-				realmId
-				createUserId
-				createTime
-				updateUserId
-				updateTime
-				createGroupId
-			}
-		}
-	`);
-
 	$: options =
 		$RealmNameListQuery.data?.realmList?.map((item) => ({
 			label: item?.name || '',
-			value: { name: item?.name, description: item?.description, isDeprecated: item?.isDeprecated, version: item?.version, realmId: item?.realmId, createUserId: item?.createUserId, createTime: item?.createTime, updateUserId: item?.updateUserId, updateTime: item?.updateTime, createGroupId: item?.createGroupId, where: { id: { val: item?.id } } }
+			value: { name: item?.name, description: item?.description, where: { id: { val: item?.id } } }
 		})) || [];
 
 	$: if (searchText) {
@@ -116,7 +105,7 @@
 				variables: { name: { opr: Operator.LK, val: `%${searchText}%` } }
 			}).finally(() => (loading = false));
 		} else {
-			RealmNameListQuery.fetch({ variables: { name: undefined } }).finally(() => (loading = false));
+			RealmNameListQuery.fetch({ variables: { name: undefined, first: 10 } }).finally(() => (loading = false));
 		}
-		}}
+	}}
 />

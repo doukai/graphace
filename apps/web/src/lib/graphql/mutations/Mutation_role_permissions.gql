@@ -34,15 +34,6 @@ mutation Mutation_role_permissions($role_id: String, $role_permissions: [Permiss
             id
             name
             description
-            isDeprecated
-            version
-            realmId
-            createUserId
-            createTime
-            updateUserId
-            updateTime
-            createGroupId
-            syncRolePolicy
           }
           realm {
             name

@@ -21,32 +21,11 @@ mutation Mutation_userList($id: ID, $name: String, $description: String, $lastNa
       id
       name
       description
-      path
-      deep
-      parentId
-      isDeprecated
-      version
-      realmId
-      createUserId
-      createTime
-      updateUserId
-      updateTime
-      createGroupId
-      syncGroupPolicy
     }
     roles {
       id
       name
       description
-      isDeprecated
-      version
-      realmId
-      createUserId
-      createTime
-      updateUserId
-      updateTime
-      createGroupId
-      syncRolePolicy
     }
     realm {
       name

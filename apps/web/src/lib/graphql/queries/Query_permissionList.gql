@@ -17,14 +17,6 @@ query Query_permissionList($name: StringExpression, $description: StringExpressi
       id
       name
       description
-      isDeprecated
-      version
-      realmId
-      createUserId
-      createTime
-      updateUserId
-      updateTime
-      createGroupId
     }
     realm {
       name

@@ -37,32 +37,11 @@ mutation Mutation_role_users($role_id: String, $role_users: [UserInput], $id: St
             id
             name
             description
-            path
-            deep
-            parentId
-            isDeprecated
-            version
-            realmId
-            createUserId
-            createTime
-            updateUserId
-            updateTime
-            createGroupId
-            syncGroupPolicy
           }
           roles {
             id
             name
             description
-            isDeprecated
-            version
-            realmId
-            createUserId
-            createTime
-            updateUserId
-            updateTime
-            createGroupId
-            syncRolePolicy
           }
           realm {
             name

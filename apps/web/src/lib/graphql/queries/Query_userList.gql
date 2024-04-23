@@ -20,30 +20,11 @@ query Query_userList($id: StringExpression, $name: StringExpression, $descriptio
       id
       name
       description
-      path
-      deep
-      parentId
-      isDeprecated
-      version
-      realmId
-      createUserId
-      createTime
-      updateUserId
-      updateTime
-      createGroupId
     }
     roles {
       id
       name
       description
-      isDeprecated
-      version
-      realmId
-      createUserId
-      createTime
-      updateUserId
-      updateTime
-      createGroupId
     }
     realm {
       name

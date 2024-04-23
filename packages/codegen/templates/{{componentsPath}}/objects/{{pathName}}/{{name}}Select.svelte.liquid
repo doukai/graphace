@@ -21,45 +21,38 @@
 		};
 	}>();
 
+	const {{ name }}NameListQuery = graphql(`
+		query {{ name }}NameListQuery($name: StringExpression, $first: Int) {
+			{{ name | camelCase }}List(name: $name, first: $first) {
+				{{ idName }}
+				name
+				description
+			}
+		}
+	`);
+
 	let searchText: string = '';
 	let loading: boolean = false;
 	let options: ObjectOption[] = [];
 	let selected: ObjectOption[] = [];
-	if (Array.isArray(value)) {
-		value = value.map((item) => ({ {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.inQuery and field.fieldName != idName %}{{ field.fieldName }}: item?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: item?.{{ idName }} } } }));
-	} else if (value) {
-		value = { {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.inQuery and field.fieldName != idName %}{{ field.fieldName }}: value.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: value.{{ idName }} } } };
-	}
 
 	$: if (Array.isArray(value)) {
 		selected = value?.map((item) => ({
 			label: item?.name || '',
 			value: item
 		}));
+		value = value.map((item) => ({ name: item?.name, description: item?.description, where: { {{ idName }}: { val: item?.{{ idName }} } } }));
 	} else if (value) {
 		selected = [{ label: value?.name || '', value: value }];
+		value = { name: value.name, description: value.description, where: { {{ idName }}: { val: value.{{ idName }} } } };
 	} else {
 		selected = [];
 	}
 
-	const {{ name }}NameListQuery = graphql(`
-		query {{ name }}NameListQuery($name: StringExpression) {
-			{{ name | camelCase }}List(name: $name) {
-				{%- if fields %}
-				{%- for field in fields %}
-				{%- if field.isObjectType == false and field.inQuery %}
-				{{ field.fieldName }}
-				{%- endif %}
-				{%- endfor %}
-				{%- endif %}
-			}
-		}
-	`);
-
 	$: options =
 		${{ name }}NameListQuery.data?.{{ name | camelCase }}List?.map((item) => ({
 			label: item?.name || '',
-			value: { {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.inQuery and field.fieldName != idName %}{{ field.fieldName }}: item?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: item?.{{ idName }} } } }
+			value: { name: item?.name, description: item?.description, where: { {{ idName }}: { val: item?.{{ idName }} } } }
 		})) || [];
 
 	$: if (searchText) {
@@ -112,7 +105,7 @@
 				variables: { name: { opr: Operator.LK, val: `%${searchText}%` } }
 			}).finally(() => (loading = false));
 		} else {
-			{{ name }}NameListQuery.fetch({ variables: { name: undefined } }).finally(() => (loading = false));
+			{{ name }}NameListQuery.fetch({ variables: { name: undefined, first: 10 } }).finally(() => (loading = false));
 		}
-		{% raw %}}{% endraw %}}
+	{% raw %}}{% endraw %}}
 />

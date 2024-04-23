@@ -21,54 +21,38 @@
 		};
 	}>();
 
+	const UserNameListQuery = graphql(`
+		query UserNameListQuery($name: StringExpression, $first: Int) {
+			userList(name: $name, first: $first) {
+				id
+				name
+				description
+			}
+		}
+	`);
+
 	let searchText: string = '';
 	let loading: boolean = false;
 	let options: ObjectOption[] = [];
 	let selected: ObjectOption[] = [];
-	if (Array.isArray(value)) {
-		value = value.map((item) => ({ name: item?.name, description: item?.description, lastName: item?.lastName, login: item?.login, email: item?.email, phones: item?.phones, disable: item?.disable, isDeprecated: item?.isDeprecated, version: item?.version, realmId: item?.realmId, createUserId: item?.createUserId, createTime: item?.createTime, updateUserId: item?.updateUserId, updateTime: item?.updateTime, createGroupId: item?.createGroupId, where: { id: { val: item?.id } } }));
-	} else if (value) {
-		value = { name: value.name, description: value.description, lastName: value.lastName, login: value.login, email: value.email, phones: value.phones, disable: value.disable, isDeprecated: value.isDeprecated, version: value.version, realmId: value.realmId, createUserId: value.createUserId, createTime: value.createTime, updateUserId: value.updateUserId, updateTime: value.updateTime, createGroupId: value.createGroupId, where: { id: { val: value.id } } };
-	}
 
 	$: if (Array.isArray(value)) {
 		selected = value?.map((item) => ({
 			label: item?.name || '',
 			value: item
 		}));
+		value = value.map((item) => ({ name: item?.name, description: item?.description, where: { id: { val: item?.id } } }));
 	} else if (value) {
 		selected = [{ label: value?.name || '', value: value }];
+		value = { name: value.name, description: value.description, where: { id: { val: value.id } } };
 	} else {
 		selected = [];
 	}
 
-	const UserNameListQuery = graphql(`
-		query UserNameListQuery($name: StringExpression) {
-			userList(name: $name) {
-				id
-				name
-				description
-				lastName
-				login
-				email
-				phones
-				disable
-				isDeprecated
-				version
-				realmId
-				createUserId
-				createTime
-				updateUserId
-				updateTime
-				createGroupId
-			}
-		}
-	`);
-
 	$: options =
 		$UserNameListQuery.data?.userList?.map((item) => ({
 			label: item?.name || '',
-			value: { name: item?.name, description: item?.description, lastName: item?.lastName, login: item?.login, email: item?.email, phones: item?.phones, disable: item?.disable, isDeprecated: item?.isDeprecated, version: item?.version, realmId: item?.realmId, createUserId: item?.createUserId, createTime: item?.createTime, updateUserId: item?.updateUserId, updateTime: item?.updateTime, createGroupId: item?.createGroupId, where: { id: { val: item?.id } } }
+			value: { name: item?.name, description: item?.description, where: { id: { val: item?.id } } }
 		})) || [];
 
 	$: if (searchText) {
@@ -121,7 +105,7 @@
 				variables: { name: { opr: Operator.LK, val: `%${searchText}%` } }
 			}).finally(() => (loading = false));
 		} else {
-			UserNameListQuery.fetch({ variables: { name: undefined } }).finally(() => (loading = false));
+			UserNameListQuery.fetch({ variables: { name: undefined, first: 10 } }).finally(() => (loading = false));
 		}
-		}}
+	}}
 />

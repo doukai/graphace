@@ -38,30 +38,11 @@ query Query_group_users($group_id: StringExpression, $id: StringExpression, $nam
             id
             name
             description
-            path
-            deep
-            parentId
-            isDeprecated
-            version
-            realmId
-            createUserId
-            createTime
-            updateUserId
-            updateTime
-            createGroupId
           }
           roles {
             id
             name
             description
-            isDeprecated
-            version
-            realmId
-            createUserId
-            createTime
-            updateUserId
-            updateTime
-            createGroupId
           }
           realm {
             name

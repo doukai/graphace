@@ -35,30 +35,11 @@ query Query_role_users($role_id: StringExpression, $id: StringExpression, $name:
             id
             name
             description
-            path
-            deep
-            parentId
-            isDeprecated
-            version
-            realmId
-            createUserId
-            createTime
-            updateUserId
-            updateTime
-            createGroupId
           }
           roles {
             id
             name
             description
-            isDeprecated
-            version
-            realmId
-            createUserId
-            createTime
-            updateUserId
-            updateTime
-            createGroupId
           }
           realm {
             name
