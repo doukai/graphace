@@ -16,6 +16,7 @@
 	export let disabled = false;
 	export let placeholder: string = '';
 
+	let _value = value;
 	let content: HTMLElement;
 	let tippyElement: any;
 	const dispatch = createEventDispatcher<{
@@ -83,17 +84,17 @@
 			}{% raw %}}{% endraw %}
 			bind:this={tippyElement}
 		>
-			{#if Array.isArray(value) || (list && (value === null || value === undefined))}
-				{#if value && value.length > 0}
-					{#if value && value.length > 3}
-						{value
+			{#if Array.isArray(_value) || (list && (_value === null || _value === undefined))}
+				{#if _value && _value.length > 0}
+					{#if _value && _value.length > 3}
+						{_value
 							.filter((item) => item)
 							.map((item) => item?.name)
 							.slice(0, 3)
 							.join(',')
 							.concat('...')}
 					{:else}
-						{value
+						{_value
 							.filter((item) => item)
 							.map((item) => item?.name)
 							.join(',')}
@@ -101,8 +102,8 @@
 				{:else}
 					<Icon src={Minus} class="h-5 w-5" />
 				{/if}
-			{:else if value}
-				{value?.name}
+			{:else if _value}
+				{_value?.name}
 			{:else}
 				<Icon src={Minus} class="h-5 w-5" />
 			{/if}
