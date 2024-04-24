@@ -1117,7 +1117,6 @@ input MetaInput {
   updateTime: Timestamp
   updateUserId: String
   version: Int
-  where: MetaExpression
 }
 
 type Mutation {
