@@ -102,7 +102,7 @@ input FuncExpression {
 }
 
 """组"""
-type Group implements Meta & NamedStruct & TreeStruct {
+type Group {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -294,7 +294,7 @@ input GroupInput {
   groupRoleRelation: [GroupRoleRelationInput]
   groupUserRelation: [GroupUserRelationInput]
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   name: String
   parent: GroupInput
   parentId: String
@@ -319,7 +319,7 @@ input GroupListMutationArguments {
   groupRoleRelation: [GroupRoleRelationInput]
   groupUserRelation: [GroupUserRelationInput]
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   list: [GroupInput]
   name: String
   parent: GroupInput
@@ -413,7 +413,7 @@ input GroupMutationArguments {
   groupRoleRelation: [GroupRoleRelationInput]
   groupUserRelation: [GroupUserRelationInput]
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   name: String
   parent: GroupInput
   parentId: String
@@ -474,7 +474,7 @@ input GroupQueryArguments {
   version: IntExpression
 }
 
-type GroupRoleRelation implements Meta {
+type GroupRoleRelation {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -588,7 +588,7 @@ input GroupRoleRelationInput {
   group: GroupInput
   groupRef: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   realmId: Int
   role: RoleInput
   roleRef: String
@@ -605,7 +605,7 @@ input GroupRoleRelationListMutationArguments {
   group: GroupInput
   groupRef: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   list: [GroupRoleRelationInput]
   realmId: Int
   role: RoleInput
@@ -675,7 +675,7 @@ input GroupRoleRelationMutationArguments {
   group: GroupInput
   groupRef: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   realmId: Int
   role: RoleInput
   roleRef: String
@@ -767,7 +767,7 @@ input GroupSubscriptionArguments {
   version: IntExpression
 }
 
-type GroupUserRelation implements Meta {
+type GroupUserRelation {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -881,7 +881,7 @@ input GroupUserRelationInput {
   group: GroupInput
   groupRef: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   realmId: Int
   updateTime: Timestamp
   updateUserId: String
@@ -898,7 +898,7 @@ input GroupUserRelationListMutationArguments {
   group: GroupInput
   groupRef: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   list: [GroupUserRelationInput]
   realmId: Int
   updateTime: Timestamp
@@ -968,7 +968,7 @@ input GroupUserRelationMutationArguments {
   group: GroupInput
   groupRef: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   realmId: Int
   updateTime: Timestamp
   updateUserId: String
@@ -1120,29 +1120,29 @@ input MetaInput {
 }
 
 type Mutation {
-  group(createGroupId: String, createTime: Timestamp, createUserId: String, deep: Int, description: String, groupRoleRelation: [GroupRoleRelationInput], groupUserRelation: [GroupUserRelationInput], id: ID, isDeprecated: Boolean, name: String, parent: GroupInput, parentId: String, path: String, realm: RealmInput, realmId: Int, roles: [RoleInput], subGroups: [GroupInput], updateTime: Timestamp, updateUserId: String, users: [UserInput], version: Int, where: GroupExpression): Group
-  groupList(createGroupId: String, createTime: Timestamp, createUserId: String, deep: Int, description: String, groupRoleRelation: [GroupRoleRelationInput], groupUserRelation: [GroupUserRelationInput], id: ID, isDeprecated: Boolean, list: [GroupInput], name: String, parent: GroupInput, parentId: String, path: String, realm: RealmInput, realmId: Int, roles: [RoleInput], subGroups: [GroupInput], updateTime: Timestamp, updateUserId: String, users: [UserInput], version: Int, where: GroupExpression): [Group]
-  groupRoleRelation(createGroupId: String, createTime: Timestamp, createUserId: String, group: GroupInput, groupRef: String, id: ID, isDeprecated: Boolean, realmId: Int, role: RoleInput, roleRef: String, updateTime: Timestamp, updateUserId: String, version: Int, where: GroupRoleRelationExpression): GroupRoleRelation
-  groupRoleRelationList(createGroupId: String, createTime: Timestamp, createUserId: String, group: GroupInput, groupRef: String, id: ID, isDeprecated: Boolean, list: [GroupRoleRelationInput], realmId: Int, role: RoleInput, roleRef: String, updateTime: Timestamp, updateUserId: String, version: Int, where: GroupRoleRelationExpression): [GroupRoleRelation]
-  groupUserRelation(createGroupId: String, createTime: Timestamp, createUserId: String, group: GroupInput, groupRef: String, id: ID, isDeprecated: Boolean, realmId: Int, updateTime: Timestamp, updateUserId: String, user: UserInput, userRef: String, version: Int, where: GroupUserRelationExpression): GroupUserRelation
-  groupUserRelationList(createGroupId: String, createTime: Timestamp, createUserId: String, group: GroupInput, groupRef: String, id: ID, isDeprecated: Boolean, list: [GroupUserRelationInput], realmId: Int, updateTime: Timestamp, updateUserId: String, user: UserInput, userRef: String, version: Int, where: GroupUserRelationExpression): [GroupUserRelation]
+  group(createGroupId: String, createTime: Timestamp, createUserId: String, deep: Int, description: String, groupRoleRelation: [GroupRoleRelationInput], groupUserRelation: [GroupUserRelationInput], id: ID, isDeprecated: Boolean = false, name: String, parent: GroupInput, parentId: String, path: String, realm: RealmInput, realmId: Int, roles: [RoleInput], subGroups: [GroupInput], updateTime: Timestamp, updateUserId: String, users: [UserInput], version: Int, where: GroupExpression): Group
+  groupList(createGroupId: String, createTime: Timestamp, createUserId: String, deep: Int, description: String, groupRoleRelation: [GroupRoleRelationInput], groupUserRelation: [GroupUserRelationInput], id: ID, isDeprecated: Boolean = false, list: [GroupInput], name: String, parent: GroupInput, parentId: String, path: String, realm: RealmInput, realmId: Int, roles: [RoleInput], subGroups: [GroupInput], updateTime: Timestamp, updateUserId: String, users: [UserInput], version: Int, where: GroupExpression): [Group]
+  groupRoleRelation(createGroupId: String, createTime: Timestamp, createUserId: String, group: GroupInput, groupRef: String, id: ID, isDeprecated: Boolean = false, realmId: Int, role: RoleInput, roleRef: String, updateTime: Timestamp, updateUserId: String, version: Int, where: GroupRoleRelationExpression): GroupRoleRelation
+  groupRoleRelationList(createGroupId: String, createTime: Timestamp, createUserId: String, group: GroupInput, groupRef: String, id: ID, isDeprecated: Boolean = false, list: [GroupRoleRelationInput], realmId: Int, role: RoleInput, roleRef: String, updateTime: Timestamp, updateUserId: String, version: Int, where: GroupRoleRelationExpression): [GroupRoleRelation]
+  groupUserRelation(createGroupId: String, createTime: Timestamp, createUserId: String, group: GroupInput, groupRef: String, id: ID, isDeprecated: Boolean = false, realmId: Int, updateTime: Timestamp, updateUserId: String, user: UserInput, userRef: String, version: Int, where: GroupUserRelationExpression): GroupUserRelation
+  groupUserRelationList(createGroupId: String, createTime: Timestamp, createUserId: String, group: GroupInput, groupRef: String, id: ID, isDeprecated: Boolean = false, list: [GroupUserRelationInput], realmId: Int, updateTime: Timestamp, updateUserId: String, user: UserInput, userRef: String, version: Int, where: GroupUserRelationExpression): [GroupUserRelation]
   login(login: String!, password: String!): String
-  permission(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, field: String, isDeprecated: Boolean, name: ID, permissionRoleRelation: [PermissionRoleRelationInput], permissionType: PermissionType, realm: RealmInput, realmId: Int, roles: [RoleInput], type: String, updateTime: Timestamp, updateUserId: String, version: Int, where: PermissionExpression): Permission
-  permissionList(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, field: String, isDeprecated: Boolean, list: [PermissionInput], name: ID, permissionRoleRelation: [PermissionRoleRelationInput], permissionType: PermissionType, realm: RealmInput, realmId: Int, roles: [RoleInput], type: String, updateTime: Timestamp, updateUserId: String, version: Int, where: PermissionExpression): [Permission]
-  permissionRoleRelation(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, permission: PermissionInput, permissionRef: String, realmId: Int, role: RoleInput, roleRef: String, updateTime: Timestamp, updateUserId: String, version: Int, where: PermissionRoleRelationExpression): PermissionRoleRelation
-  permissionRoleRelationList(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, list: [PermissionRoleRelationInput], permission: PermissionInput, permissionRef: String, realmId: Int, role: RoleInput, roleRef: String, updateTime: Timestamp, updateUserId: String, version: Int, where: PermissionRoleRelationExpression): [PermissionRoleRelation]
-  realm(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, id: ID, isDeprecated: Boolean, name: String, realmId: Int, updateTime: Timestamp, updateUserId: String, version: Int, where: RealmExpression): Realm
-  realmList(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, id: ID, isDeprecated: Boolean, list: [RealmInput], name: String, realmId: Int, updateTime: Timestamp, updateUserId: String, version: Int, where: RealmExpression): [Realm]
-  role(composites: [RoleInput], createGroupId: String, createTime: Timestamp, createUserId: String, description: String, groupRoleRelation: [GroupRoleRelationInput], groups: [GroupInput], id: ID, isDeprecated: Boolean, name: String, permissionRoleRelation: [PermissionRoleRelationInput], permissions: [PermissionInput], realm: RealmInput, realmId: Int, roleCompositeRelation: [RoleCompositeRelationInput], roleUserRelation: [RoleUserRelationInput], updateTime: Timestamp, updateUserId: String, users: [UserInput], version: Int, where: RoleExpression): Role
-  roleCompositeRelation(composite: RoleInput, compositeRef: String, createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, realmId: Int, role: RoleInput, roleRef: String, updateTime: Timestamp, updateUserId: String, version: Int, where: RoleCompositeRelationExpression): RoleCompositeRelation
-  roleCompositeRelationList(composite: RoleInput, compositeRef: String, createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, list: [RoleCompositeRelationInput], realmId: Int, role: RoleInput, roleRef: String, updateTime: Timestamp, updateUserId: String, version: Int, where: RoleCompositeRelationExpression): [RoleCompositeRelation]
-  roleList(composites: [RoleInput], createGroupId: String, createTime: Timestamp, createUserId: String, description: String, groupRoleRelation: [GroupRoleRelationInput], groups: [GroupInput], id: ID, isDeprecated: Boolean, list: [RoleInput], name: String, permissionRoleRelation: [PermissionRoleRelationInput], permissions: [PermissionInput], realm: RealmInput, realmId: Int, roleCompositeRelation: [RoleCompositeRelationInput], roleUserRelation: [RoleUserRelationInput], updateTime: Timestamp, updateUserId: String, users: [UserInput], version: Int, where: RoleExpression): [Role]
-  roleUserRelation(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, realmId: Int, role: RoleInput, roleRef: String, updateTime: Timestamp, updateUserId: String, user: UserInput, userRef: String, version: Int, where: RoleUserRelationExpression): RoleUserRelation
-  roleUserRelationList(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, list: [RoleUserRelationInput], realmId: Int, role: RoleInput, roleRef: String, updateTime: Timestamp, updateUserId: String, user: UserInput, userRef: String, version: Int, where: RoleUserRelationExpression): [RoleUserRelation]
-  user(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, disable: Boolean, email: String, groupUserRelation: [GroupUserRelationInput], groups: [GroupInput], hash: String, id: ID, isDeprecated: Boolean, lastName: String, login: String, name: String, phones: [String], realm: RealmInput, realmId: Int, roleUserRelation: [RoleUserRelationInput], roles: [RoleInput], salt: String, updateTime: Timestamp, updateUserId: String, userPhonesRelation: [UserPhonesRelationInput], version: Int, where: UserExpression): User
-  userList(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, disable: Boolean, email: String, groupUserRelation: [GroupUserRelationInput], groups: [GroupInput], hash: String, id: ID, isDeprecated: Boolean, lastName: String, list: [UserInput], login: String, name: String, phones: [String], realm: RealmInput, realmId: Int, roleUserRelation: [RoleUserRelationInput], roles: [RoleInput], salt: String, updateTime: Timestamp, updateUserId: String, userPhonesRelation: [UserPhonesRelationInput], version: Int, where: UserExpression): [User]
-  userPhonesRelation(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, phonesRef: String, realmId: Int, updateTime: Timestamp, updateUserId: String, user: UserInput, userRef: String, version: Int, where: UserPhonesRelationExpression): UserPhonesRelation
-  userPhonesRelationList(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean, list: [UserPhonesRelationInput], phonesRef: String, realmId: Int, updateTime: Timestamp, updateUserId: String, user: UserInput, userRef: String, version: Int, where: UserPhonesRelationExpression): [UserPhonesRelation]
+  permission(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, field: String, isDeprecated: Boolean = false, name: ID, permissionRoleRelation: [PermissionRoleRelationInput], permissionType: PermissionType, realm: RealmInput, realmId: Int, roles: [RoleInput], type: String, updateTime: Timestamp, updateUserId: String, version: Int, where: PermissionExpression): Permission
+  permissionList(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, field: String, isDeprecated: Boolean = false, list: [PermissionInput], name: ID, permissionRoleRelation: [PermissionRoleRelationInput], permissionType: PermissionType, realm: RealmInput, realmId: Int, roles: [RoleInput], type: String, updateTime: Timestamp, updateUserId: String, version: Int, where: PermissionExpression): [Permission]
+  permissionRoleRelation(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean = false, permission: PermissionInput, permissionRef: String, realmId: Int, role: RoleInput, roleRef: String, updateTime: Timestamp, updateUserId: String, version: Int, where: PermissionRoleRelationExpression): PermissionRoleRelation
+  permissionRoleRelationList(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean = false, list: [PermissionRoleRelationInput], permission: PermissionInput, permissionRef: String, realmId: Int, role: RoleInput, roleRef: String, updateTime: Timestamp, updateUserId: String, version: Int, where: PermissionRoleRelationExpression): [PermissionRoleRelation]
+  realm(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, id: ID, isDeprecated: Boolean = false, name: String, realmId: Int, updateTime: Timestamp, updateUserId: String, version: Int, where: RealmExpression): Realm
+  realmList(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, id: ID, isDeprecated: Boolean = false, list: [RealmInput], name: String, realmId: Int, updateTime: Timestamp, updateUserId: String, version: Int, where: RealmExpression): [Realm]
+  role(composites: [RoleInput], createGroupId: String, createTime: Timestamp, createUserId: String, description: String, groupRoleRelation: [GroupRoleRelationInput], groups: [GroupInput], id: ID, isDeprecated: Boolean = false, name: String, permissionRoleRelation: [PermissionRoleRelationInput], permissions: [PermissionInput], realm: RealmInput, realmId: Int, roleCompositeRelation: [RoleCompositeRelationInput], roleUserRelation: [RoleUserRelationInput], updateTime: Timestamp, updateUserId: String, users: [UserInput], version: Int, where: RoleExpression): Role
+  roleCompositeRelation(composite: RoleInput, compositeRef: String, createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean = false, realmId: Int, role: RoleInput, roleRef: String, updateTime: Timestamp, updateUserId: String, version: Int, where: RoleCompositeRelationExpression): RoleCompositeRelation
+  roleCompositeRelationList(composite: RoleInput, compositeRef: String, createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean = false, list: [RoleCompositeRelationInput], realmId: Int, role: RoleInput, roleRef: String, updateTime: Timestamp, updateUserId: String, version: Int, where: RoleCompositeRelationExpression): [RoleCompositeRelation]
+  roleList(composites: [RoleInput], createGroupId: String, createTime: Timestamp, createUserId: String, description: String, groupRoleRelation: [GroupRoleRelationInput], groups: [GroupInput], id: ID, isDeprecated: Boolean = false, list: [RoleInput], name: String, permissionRoleRelation: [PermissionRoleRelationInput], permissions: [PermissionInput], realm: RealmInput, realmId: Int, roleCompositeRelation: [RoleCompositeRelationInput], roleUserRelation: [RoleUserRelationInput], updateTime: Timestamp, updateUserId: String, users: [UserInput], version: Int, where: RoleExpression): [Role]
+  roleUserRelation(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean = false, realmId: Int, role: RoleInput, roleRef: String, updateTime: Timestamp, updateUserId: String, user: UserInput, userRef: String, version: Int, where: RoleUserRelationExpression): RoleUserRelation
+  roleUserRelationList(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean = false, list: [RoleUserRelationInput], realmId: Int, role: RoleInput, roleRef: String, updateTime: Timestamp, updateUserId: String, user: UserInput, userRef: String, version: Int, where: RoleUserRelationExpression): [RoleUserRelation]
+  user(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, disable: Boolean, email: String, groupUserRelation: [GroupUserRelationInput], groups: [GroupInput], hash: String, id: ID, isDeprecated: Boolean = false, lastName: String, login: String, name: String, phones: [String], realm: RealmInput, realmId: Int, roleUserRelation: [RoleUserRelationInput], roles: [RoleInput], salt: String, updateTime: Timestamp, updateUserId: String, userPhonesRelation: [UserPhonesRelationInput], version: Int, where: UserExpression): User
+  userList(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, disable: Boolean, email: String, groupUserRelation: [GroupUserRelationInput], groups: [GroupInput], hash: String, id: ID, isDeprecated: Boolean = false, lastName: String, list: [UserInput], login: String, name: String, phones: [String], realm: RealmInput, realmId: Int, roleUserRelation: [RoleUserRelationInput], roles: [RoleInput], salt: String, updateTime: Timestamp, updateUserId: String, userPhonesRelation: [UserPhonesRelationInput], version: Int, where: UserExpression): [User]
+  userPhonesRelation(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean = false, phonesRef: String, realmId: Int, updateTime: Timestamp, updateUserId: String, user: UserInput, userRef: String, version: Int, where: UserPhonesRelationExpression): UserPhonesRelation
+  userPhonesRelationList(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean = false, list: [UserPhonesRelationInput], phonesRef: String, realmId: Int, updateTime: Timestamp, updateUserId: String, user: UserInput, userRef: String, version: Int, where: UserPhonesRelationExpression): [UserPhonesRelation]
 }
 
 input Mutation_login_Arguments {
@@ -1175,7 +1175,7 @@ input NamedStructInput {
   createTime: Timestamp
   createUserId: String
   description: String
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   name: String
   realmId: Int
   updateTime: Timestamp
@@ -1218,7 +1218,7 @@ type PageInfo {
 }
 
 """权限"""
-type Permission implements Meta {
+type Permission {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -1365,7 +1365,7 @@ input PermissionInput {
   createUserId: String
   description: String
   field: String
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   name: ID
   permissionRoleRelation: [PermissionRoleRelationInput]
   permissionType: PermissionType
@@ -1385,7 +1385,7 @@ input PermissionListMutationArguments {
   createUserId: String
   description: String
   field: String
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   list: [PermissionInput]
   name: ID
   permissionRoleRelation: [PermissionRoleRelationInput]
@@ -1464,7 +1464,7 @@ input PermissionMutationArguments {
   createUserId: String
   description: String
   field: String
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   name: ID
   permissionRoleRelation: [PermissionRoleRelationInput]
   permissionType: PermissionType
@@ -1517,7 +1517,7 @@ input PermissionQueryArguments {
   version: IntExpression
 }
 
-type PermissionRoleRelation implements Meta {
+type PermissionRoleRelation {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -1629,7 +1629,7 @@ input PermissionRoleRelationInput {
   createTime: Timestamp
   createUserId: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   permission: PermissionInput
   permissionRef: String
   realmId: Int
@@ -1646,7 +1646,7 @@ input PermissionRoleRelationListMutationArguments {
   createTime: Timestamp
   createUserId: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   list: [PermissionRoleRelationInput]
   permission: PermissionInput
   permissionRef: String
@@ -1716,7 +1716,7 @@ input PermissionRoleRelationMutationArguments {
   createTime: Timestamp
   createUserId: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   permission: PermissionInput
   permissionRef: String
   realmId: Int
@@ -1900,7 +1900,7 @@ input Query_jsonSchema_Arguments {
 }
 
 """租户"""
-type Realm implements Meta & NamedStruct {
+type Realm {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -2011,7 +2011,7 @@ input RealmInput {
   createUserId: String
   description: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   name: String
   realmId: Int
   updateTime: Timestamp
@@ -2026,7 +2026,7 @@ input RealmListMutationArguments {
   createUserId: String
   description: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   list: [RealmInput]
   name: String
   realmId: Int
@@ -2090,7 +2090,7 @@ input RealmMutationArguments {
   createUserId: String
   description: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   name: String
   realmId: Int
   updateTime: Timestamp
@@ -2150,7 +2150,7 @@ input RealmSubscriptionArguments {
 }
 
 """角色"""
-type Role implements Meta & NamedStruct {
+type Role {
   """组合"""
   composites(after: ID, before: ID, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, users: UserExpression, version: IntExpression): [Role]
   compositesAggregate(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], groupRoleRelation: GroupRoleRelationExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissionRoleRelation: PermissionRoleRelationExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleCompositeRelation: RoleCompositeRelationExpression, roleUserRelation: RoleUserRelationExpression, updateTime: StringExpression, updateUserId: StringExpression, users: UserExpression, version: IntExpression): Role
@@ -2214,7 +2214,7 @@ type Role implements Meta & NamedStruct {
   version: Int
 }
 
-type RoleCompositeRelation implements Meta {
+type RoleCompositeRelation {
   composite(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, groupBy: [String!], groupRoleRelation: GroupRoleRelationExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissionRoleRelation: PermissionRoleRelationExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleCompositeRelation: RoleCompositeRelationExpression, roleUserRelation: RoleUserRelationExpression, updateTime: StringExpression, updateUserId: StringExpression, users: UserExpression, version: IntExpression): Role
   compositeRef: String
   compositeRefCount: Int
@@ -2328,7 +2328,7 @@ input RoleCompositeRelationInput {
   createTime: Timestamp
   createUserId: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   realmId: Int
   role: RoleInput
   roleRef: String
@@ -2345,7 +2345,7 @@ input RoleCompositeRelationListMutationArguments {
   createTime: Timestamp
   createUserId: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   list: [RoleCompositeRelationInput]
   realmId: Int
   role: RoleInput
@@ -2415,7 +2415,7 @@ input RoleCompositeRelationMutationArguments {
   createTime: Timestamp
   createUserId: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   realmId: Int
   role: RoleInput
   roleRef: String
@@ -2591,7 +2591,7 @@ input RoleInput {
   groupRoleRelation: [GroupRoleRelationInput]
   groups: [GroupInput]
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   name: String
   permissionRoleRelation: [PermissionRoleRelationInput]
   permissions: [PermissionInput]
@@ -2615,7 +2615,7 @@ input RoleListMutationArguments {
   groupRoleRelation: [GroupRoleRelationInput]
   groups: [GroupInput]
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   list: [RoleInput]
   name: String
   permissionRoleRelation: [PermissionRoleRelationInput]
@@ -2706,7 +2706,7 @@ input RoleMutationArguments {
   groupRoleRelation: [GroupRoleRelationInput]
   groups: [GroupInput]
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   name: String
   permissionRoleRelation: [PermissionRoleRelationInput]
   permissions: [PermissionInput]
@@ -2789,7 +2789,7 @@ input RoleSubscriptionArguments {
   version: IntExpression
 }
 
-type RoleUserRelation implements Meta {
+type RoleUserRelation {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -2901,7 +2901,7 @@ input RoleUserRelationInput {
   createTime: Timestamp
   createUserId: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   realmId: Int
   role: RoleInput
   roleRef: String
@@ -2918,7 +2918,7 @@ input RoleUserRelationListMutationArguments {
   createTime: Timestamp
   createUserId: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   list: [RoleUserRelationInput]
   realmId: Int
   role: RoleInput
@@ -2988,7 +2988,7 @@ input RoleUserRelationMutationArguments {
   createTime: Timestamp
   createUserId: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   realmId: Int
   role: RoleInput
   roleRef: String
@@ -3141,7 +3141,7 @@ input TreeStructInput {
   createTime: Timestamp
   createUserId: String
   deep: Int
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   name: String
   parentId: String
   path: String
@@ -3152,7 +3152,7 @@ input TreeStructInput {
 }
 
 """用户"""
-type User implements Meta & NamedStruct {
+type User {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -3366,7 +3366,7 @@ input UserInput {
   groups: [GroupInput]
   hash: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   lastName: String
   login: String
   name: String
@@ -3394,7 +3394,7 @@ input UserListMutationArguments {
   groups: [GroupInput]
   hash: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   lastName: String
   list: [UserInput]
   login: String
@@ -3497,7 +3497,7 @@ input UserMutationArguments {
   groups: [GroupInput]
   hash: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   lastName: String
   login: String
   name: String
@@ -3534,7 +3534,7 @@ input UserOrderBy {
   version: Sort
 }
 
-type UserPhonesRelation implements Meta {
+type UserPhonesRelation {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -3642,7 +3642,7 @@ input UserPhonesRelationInput {
   createTime: Timestamp
   createUserId: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   phonesRef: String
   realmId: Int
   updateTime: Timestamp
@@ -3658,7 +3658,7 @@ input UserPhonesRelationListMutationArguments {
   createTime: Timestamp
   createUserId: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   list: [UserPhonesRelationInput]
   phonesRef: String
   realmId: Int
@@ -3725,7 +3725,7 @@ input UserPhonesRelationMutationArguments {
   createTime: Timestamp
   createUserId: String
   id: ID
-  isDeprecated: Boolean
+  isDeprecated: Boolean = false
   phonesRef: String
   realmId: Int
   updateTime: Timestamp

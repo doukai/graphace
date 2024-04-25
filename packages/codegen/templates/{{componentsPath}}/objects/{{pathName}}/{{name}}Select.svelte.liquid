@@ -33,9 +33,9 @@
 	
 	let _value = value;
 	if (Array.isArray(value)) {
-		value = value.map((item) => ({ where: { id: { val: item?.id } } }));
+		value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
 	} else if (value) {
-		value = { where: { id: { val: value.id } } };
+		value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
 	}
 
 	let searchText: string = '';
@@ -46,10 +46,10 @@
 	$: if (Array.isArray(_value)) {
 		selected = _value?.map((item) => ({
 			label: item?.name || '',
-			value: { where: { id: { val: item?.id } } }
+			value: { where: { {{ idName }}: { val: item?.{{ idName }} } } }
 		}));
 	} else if (_value) {
-		selected = [{ label: _value?.name || '', value: { where: { id: { val: _value.id } } } }];
+		selected = [{ label: _value?.name || '', value: { where: { {{ idName }}: { val: _value.{{ idName }} } } } }];
 	} else {
 		selected = [];
 	}
