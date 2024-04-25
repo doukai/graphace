@@ -24,24 +24,12 @@
 	}>();
 
 	let mutation = (): void => {
-		if (Array.isArray(value) && Array.isArray(_value)) {
-			value = [
-				...value,
-				..._value
-					.filter(
-						(_item) =>
-							!Array.isArray(value) ||
-							!value.map((item) => item?.where?.{{ idName }}?.val).includes(_item?.where?.{{ idName }}?.val)
-					)
-					.map((_item) => ({ where: _item?.where, isDeprecated: true }))
-			];
-		}
 		dispatch('save', {});
 		tippyElement._tippy.hide();
 	};
 
 	let clean = (): void => {
-		if (Array.isArray(value) && Array.isArray(_value)) {
+		if (Array.isArray(value)) {
 			value = [];
 		} else {
 			value = null;

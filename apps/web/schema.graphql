@@ -32,7 +32,7 @@ directive @jsonSchema(allOf: [JsonSchema], anyOf: [JsonSchema], const: String, c
 
 directive @map(anchor: Boolean, from: String!, to: String, with: With) on FIELD_DEFINITION
 
-directive @merge(arguments: [String]) on FIELD
+directive @merge on FIELD_DEFINITION
 
 directive @mutationBefore(field: String!, protocol: Protocol, target: String) on FIELD_DEFINITION
 
@@ -102,7 +102,7 @@ input FuncExpression {
 }
 
 """组"""
-type Group {
+type Group implements Meta & NamedStruct & TreeStruct {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -474,7 +474,7 @@ input GroupQueryArguments {
   version: IntExpression
 }
 
-type GroupRoleRelation {
+type GroupRoleRelation implements Meta {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -767,7 +767,7 @@ input GroupSubscriptionArguments {
   version: IntExpression
 }
 
-type GroupUserRelation {
+type GroupUserRelation implements Meta {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -1218,7 +1218,7 @@ type PageInfo {
 }
 
 """权限"""
-type Permission {
+type Permission implements Meta {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -1517,7 +1517,7 @@ input PermissionQueryArguments {
   version: IntExpression
 }
 
-type PermissionRoleRelation {
+type PermissionRoleRelation implements Meta {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -1900,7 +1900,7 @@ input Query_jsonSchema_Arguments {
 }
 
 """租户"""
-type Realm {
+type Realm implements Meta & NamedStruct {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -2150,7 +2150,7 @@ input RealmSubscriptionArguments {
 }
 
 """角色"""
-type Role {
+type Role implements Meta & NamedStruct {
   """组合"""
   composites(after: ID, before: ID, composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, users: UserExpression, version: IntExpression): [Role]
   compositesAggregate(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, first: Int, groupBy: [String!], groupRoleRelation: GroupRoleRelationExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: RoleOrderBy, permissionRoleRelation: PermissionRoleRelationExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleCompositeRelation: RoleCompositeRelationExpression, roleUserRelation: RoleUserRelationExpression, updateTime: StringExpression, updateUserId: StringExpression, users: UserExpression, version: IntExpression): Role
@@ -2214,7 +2214,7 @@ type Role {
   version: Int
 }
 
-type RoleCompositeRelation {
+type RoleCompositeRelation implements Meta {
   composite(composites: RoleExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, groupBy: [String!], groupRoleRelation: GroupRoleRelationExpression, groups: GroupExpression, id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, permissionRoleRelation: PermissionRoleRelationExpression, permissions: PermissionExpression, realm: RealmExpression, realmId: IntExpression, roleCompositeRelation: RoleCompositeRelationExpression, roleUserRelation: RoleUserRelationExpression, updateTime: StringExpression, updateUserId: StringExpression, users: UserExpression, version: IntExpression): Role
   compositeRef: String
   compositeRefCount: Int
@@ -2789,7 +2789,7 @@ input RoleSubscriptionArguments {
   version: IntExpression
 }
 
-type RoleUserRelation {
+type RoleUserRelation implements Meta {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -3152,7 +3152,7 @@ input TreeStructInput {
 }
 
 """用户"""
-type User {
+type User implements Meta & NamedStruct {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -3534,7 +3534,7 @@ input UserOrderBy {
   version: Sort
 }
 
-type UserPhonesRelation {
+type UserPhonesRelation implements Meta {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
