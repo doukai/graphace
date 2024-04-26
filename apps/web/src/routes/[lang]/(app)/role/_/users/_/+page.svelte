@@ -4,7 +4,7 @@
 	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import UserCreateForm from '~/lib/components/objects/user/UserCreateForm.svelte';
-	import type { MutationUserArgs, User } from '~/lib/types/schema';
+	import type { UserInput, MutationUserArgs } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import LL from '$i18n/i18n-svelte';
 
@@ -16,7 +16,7 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationUserArgs;
-			then: (data: User | null | undefined) => void;
+			then: (data: UserInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {

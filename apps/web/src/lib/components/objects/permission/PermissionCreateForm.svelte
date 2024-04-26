@@ -7,7 +7,7 @@
 	import PermissionTypeItem from '~/lib/components/enums/permission-type/PermissionTypeItem.svelte';
 	import RoleSelectItem from '~/lib/components/objects/role/RoleSelectItem.svelte';
 	import LL from '$i18n/i18n-svelte';
-	import type { Permission, PermissionInput } from '~/lib/types/schema';
+	import type { PermissionInput } from '~/lib/types/schema';
 	import { permissions } from '~/lib/utils/auth-util';
 
 	export let node: PermissionInput = {};
@@ -19,7 +19,7 @@
 	const dispatch = createEventDispatcher<{
 		mutation: {
 			args: PermissionInput;
-			then: (data: Permission | null | undefined) => void;
+			then: (data: PermissionInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		gotoSelect: {};

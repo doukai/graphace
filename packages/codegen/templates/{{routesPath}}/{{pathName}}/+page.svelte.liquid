@@ -8,7 +8,7 @@
 	{%- else %}
 	import {{ name }}Table from '~/{{ tablePath }}/{{ name | paramCase }}/{{ name }}Table.svelte';
 	{%- endif %}
-	import type { {{ name }}, {% if connectionField %}{{ queryTypeName }}{{ name }}ConnectionArgs{% else %}{{ queryTypeName }}{{ name }}ListArgs{% endif %}, {{ mutationTypeName }}{{ name }}Args } from '~/{{ schemaTypesPath }}';
+	import type { {{ name }}Input, {% if connectionField %}{{ queryTypeName }}{{ name }}ConnectionArgs{% else %}{{ queryTypeName }}{{ name }}ListArgs{% endif %}, {{ mutationTypeName }}{{ name }}Args } from '~/{{ schemaTypesPath }}';
 	import { {% if connectionField %}Query_{{ name | camelCase }}ConnectionStore{% else %}Query_{{ name | camelCase }}ListStore{% endif %}, Mutation_{{ name | camelCase }}Store } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/lib/utils';
@@ -35,7 +35,7 @@
 			{%- else %}
 			args: {{ queryTypeName }}{{ name }}ListArgs;
 			{%- endif %}
-			then: (data: ({{ name }} | null | undefined)[] | null | undefined) => void;
+			then: (data: ({{ name }}Input | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
@@ -59,7 +59,7 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: {{ mutationTypeName }}{{ name }}Args;
-			then: (data: {{ name }} | null | undefined) => void;
+			then: (data: {{ name }}Input | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {

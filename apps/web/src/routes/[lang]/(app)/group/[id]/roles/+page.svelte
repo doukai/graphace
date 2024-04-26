@@ -4,7 +4,7 @@
 	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import RoleConnectionTable from '~/lib/components/objects/role/RoleConnectionTable.svelte';
-	import type { MutationRoleArgs, QueryRoleConnectionArgs, Role } from '~/lib/types/schema';
+	import type { RoleInput, MutationRoleArgs, QueryRoleConnectionArgs } from '~/lib/types/schema';
 	import { Query_group_rolesStore, Mutation_roleStore, Mutation_group_rolesStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/lib/utils';
@@ -25,7 +25,7 @@
 	const fetch = (
 		event: CustomEvent<{
 			args: QueryRoleConnectionArgs;
-			then: (data: (Role | null | undefined)[] | null | undefined) => void;
+			then: (data: (RoleInput | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
@@ -43,7 +43,7 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationRoleArgs;
-			then: (data: Role | null | undefined) => void;
+			then: (data: RoleInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
@@ -71,7 +71,7 @@
 	const parentMutation = (
 		event: CustomEvent<{
 			args: MutationRoleArgs[];
-			then: (data: Role[] | null | undefined) => void;
+			then: (data: RoleInput[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {

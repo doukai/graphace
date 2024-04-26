@@ -8,14 +8,13 @@
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	import type {
-		Realm,
 		RealmOrderBy,
 		QueryRealmListArgs,
 		RealmInput
 	} from '~/lib/types/schema';
 	import { permissions } from '~/lib/utils/auth-util';
 
-	export let nodes: (Realm | null | undefined)[] | null | undefined;
+	export let nodes: (RealmInput | null | undefined)[] | null | undefined;
 	export let isFetching: boolean;
 	export let errors: Record<number, Errors> = {};
 	export let showSaveButton: boolean = true;
@@ -27,22 +26,22 @@
 	const dispatch = createEventDispatcher<{
 		fetch: {
 			args: QueryRealmListArgs;
-			then: (data: (Realm | null | undefined)[] | null | undefined) => void;
+			then: (data: (RealmInput | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		mutation: {
 			args: RealmInput;
-			then: (data: Realm | null | undefined) => void;
+			then: (data: RealmInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		parentMutation: {
 			args: RealmInput[];
-			then: (data: Realm[] | null | undefined) => void;
+			then: (data: RealmInput[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		edit: { id: string };
 		create: {};
-		save: { nodes: (Realm | null | undefined)[] | null | undefined };
+		save: { nodes: (RealmInput | null | undefined)[] | null | undefined };
 		gotoSelect: {};
 		back: {};
 	}>();
@@ -97,9 +96,7 @@
 			dispatch('mutation', {
 				args,
 				then: (data) => {
-					if (nodes && row) {
-						nodes[row] = data;
-					}
+					query();
 					notifications.success($LL.web.message.saveSuccess());
 				},
 				catch: (errors) => {

@@ -4,7 +4,7 @@
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import RoleSelectConnectionTable from '~/lib/components/objects/role/RoleSelectConnectionTable.svelte';
-	import type { Role, QueryRoleConnectionArgs, MutationRoleArgs } from '~/lib/types/schema';
+	import type { RoleInput, QueryRoleConnectionArgs, MutationRoleArgs } from '~/lib/types/schema';
 	import { Query_roleConnectionStore, Mutation_roleStore, Mutation_group_rolesStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/lib/utils';
@@ -25,7 +25,7 @@
 	const fetch = (
 		event: CustomEvent<{
 			args: QueryRoleConnectionArgs;
-			then: (data: (Role | null | undefined)[] | null | undefined) => void;
+			then: (data: (RoleInput | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
@@ -41,7 +41,7 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationRoleArgs;
-			then: (data: Role | null | undefined) => void;
+			then: (data: RoleInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {

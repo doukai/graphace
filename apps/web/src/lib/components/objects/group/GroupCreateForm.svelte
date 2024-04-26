@@ -8,7 +8,7 @@
 	import UserSelectItem from '~/lib/components/objects/user/UserSelectItem.svelte';
 	import RoleSelectItem from '~/lib/components/objects/role/RoleSelectItem.svelte';
 	import LL from '$i18n/i18n-svelte';
-	import type { Group, GroupInput } from '~/lib/types/schema';
+	import type { GroupInput } from '~/lib/types/schema';
 	import { permissions } from '~/lib/utils/auth-util';
 
 	export let node: GroupInput = {};
@@ -20,7 +20,7 @@
 	const dispatch = createEventDispatcher<{
 		mutation: {
 			args: GroupInput;
-			then: (data: Group | null | undefined) => void;
+			then: (data: GroupInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		gotoSelect: {};

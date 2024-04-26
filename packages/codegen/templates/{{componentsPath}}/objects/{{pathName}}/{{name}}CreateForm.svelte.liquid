@@ -18,7 +18,7 @@
 	{%- endfor %}
 	{%- endif %}
 	import LL from '$i18n/i18n-svelte';
-	import type { {{ name }}, {{ name }}Input } from '~/{{ schemaTypesPath }}';
+	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	{%- if useAuth %}
 	import { permissions } from '~/lib/utils/auth-util';
 	{%- endif %}
@@ -32,7 +32,7 @@
 	const dispatch = createEventDispatcher<{
 		mutation: {
 			args: {{ name }}Input;
-			then: (data: {{ name }} | null | undefined) => void;
+			then: (data: {{ name }}Input | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		gotoSelect: {};

@@ -15,14 +15,13 @@
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	import type {
-		Group,
 		GroupOrderBy,
 		QueryGroupListArgs,
 		GroupInput
 	} from '~/lib/types/schema';
 	import { permissions } from '~/lib/utils/auth-util';
 
-	export let nodes: (Group | null | undefined)[] | null | undefined;
+	export let nodes: (GroupInput | null | undefined)[] | null | undefined;
 	export let isFetching: boolean;
 	export let errors: Record<number, Errors> = {};
 	export let showSaveButton: boolean = true;
@@ -34,22 +33,22 @@
 	const dispatch = createEventDispatcher<{
 		fetch: {
 			args: QueryGroupListArgs;
-			then: (data: (Group | null | undefined)[] | null | undefined) => void;
+			then: (data: (GroupInput | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		mutation: {
 			args: GroupInput;
-			then: (data: Group | null | undefined) => void;
+			then: (data: GroupInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		parentMutation: {
 			args: GroupInput[];
-			then: (data: Group[] | null | undefined) => void;
+			then: (data: GroupInput[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		edit: { id: string };
 		create: {};
-		save: { nodes: (Group | null | undefined)[] | null | undefined };
+		save: { nodes: (GroupInput | null | undefined)[] | null | undefined };
 		gotoSelect: {};
 		back: {};
 	}>();
@@ -106,9 +105,7 @@
 			dispatch('mutation', {
 				args,
 				then: (data) => {
-					if (nodes && row) {
-						nodes[row] = data;
-					}
+					query();
 					notifications.success($LL.web.message.saveSuccess());
 				},
 				catch: (errors) => {

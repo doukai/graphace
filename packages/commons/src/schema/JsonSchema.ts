@@ -1,6 +1,7 @@
 import type { Error, Errors, Language } from '..';
 import Ajv from 'ajv';
-import type { ErrorObject, SchemaObject, ValidateFunction } from 'ajv';
+import type { ErrorObject } from 'ajv';
+import type { AnyValidateFunction, AnySchemaObject } from 'ajv/dist/types';
 import addFormats from "ajv-formats"
 import localize from 'ajv-i18n';
 
@@ -14,12 +15,12 @@ export abstract class JsonSchema {
         return this.execute(validate, data, locale);
     }
 
-    public validateSchema = async (schemaObject: SchemaObject, data: unknown, locale: Language = "en"): Promise<unknown> => {
+    public validateSchema = async (schemaObject: AnySchemaObject, data: unknown, locale: Language = "en"): Promise<unknown> => {
         const validate = await this.ajv.compileAsync(schemaObject);
         return this.execute(validate, data, locale);
     }
 
-    public execute = async (validate: ValidateFunction<unknown> | undefined, data: unknown, locale: Language = "en"): Promise<unknown> => {
+    public execute = async (validate: AnyValidateFunction<unknown> | undefined, data: unknown, locale: Language = "en"): Promise<unknown> => {
         return new Promise((resolve: (data: unknown) => void, reject: (errors: Record<string, Errors>) => void) => {
             if (validate) {
                 // const validateData = removeEmpty(data);
@@ -45,12 +46,12 @@ export abstract class JsonSchema {
         return this.executeErrors(validate, data, locale);
     }
 
-    public getSchemaErrors = async (schemaObject: SchemaObject, data: unknown, locale: Language = "en"): Promise<Record<string, Errors> | undefined> => {
+    public getSchemaErrors = async (schemaObject: AnySchemaObject, data: unknown, locale: Language = "en"): Promise<Record<string, Errors> | undefined> => {
         const validate = await this.ajv.compileAsync(schemaObject);
         return this.executeErrors(validate, data, locale);
     }
 
-    public executeErrors = async (validate: ValidateFunction<unknown> | undefined, data: unknown, locale: Language = "en"): Promise<Record<string, Errors> | undefined> => {
+    public executeErrors = async (validate: AnyValidateFunction<unknown> | undefined, data: unknown, locale: Language = "en"): Promise<Record<string, Errors> | undefined> => {
         if (validate) {
             // const validateData = removeEmpty(data);
             const valid = validate(data);
@@ -69,16 +70,17 @@ export abstract class JsonSchema {
         }
     }
 
-    public getValidate = async (keyRef: string): Promise<ValidateFunction<unknown> | undefined> => {
+    public getValidate = async (keyRef: string): Promise<AnyValidateFunction<unknown> | undefined> => {
         let validate = this.ajv.getSchema(keyRef);
         if (!validate) {
             const schema = await this.loadSchema(keyRef);
+            this.ajv.addSchema(schema, keyRef);
             validate = await this.ajv.compileAsync(schema);
         }
         return validate;
     }
 
-    protected abstract loadSchema(keyRef: string): Promise<SchemaObject>;
+    protected abstract loadSchema(keyRef: string): Promise<AnySchemaObject>;
 }
 
 function buildErrors(errors: ErrorObject[]): Record<string, Errors> {

@@ -4,7 +4,7 @@
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import RealmSelectConnectionTable from '~/lib/components/objects/realm/RealmSelectConnectionTable.svelte';
-	import type { Realm, QueryRealmConnectionArgs, MutationRealmArgs } from '~/lib/types/schema';
+	import type { RealmInput, QueryRealmConnectionArgs, MutationRealmArgs } from '~/lib/types/schema';
 	import { Query_realmConnectionStore, Mutation_realmStore, Mutation_group_realmStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/lib/utils';
@@ -24,7 +24,7 @@
 	const fetch = (
 		event: CustomEvent<{
 			args: QueryRealmConnectionArgs;
-			then: (data: (Realm | null | undefined)[] | null | undefined) => void;
+			then: (data: (RealmInput | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
@@ -40,7 +40,7 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationRealmArgs;
-			then: (data: Realm | null | undefined) => void;
+			then: (data: RealmInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {

@@ -13,14 +13,13 @@
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	import type {
-		Permission,
 		PermissionOrderBy,
 		QueryPermissionConnectionArgs,
 		PermissionInput
 	} from '~/lib/types/schema';
 	import { permissions } from '~/lib/utils/auth-util';
 
-	export let nodes: (Permission | null | undefined)[] | null | undefined;
+	export let nodes: (PermissionInput | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;
 	export let isFetching: boolean;
 	export let errors: Record<number, Errors> = {};
@@ -33,22 +32,22 @@
 	const dispatch = createEventDispatcher<{
 		fetch: {
 			args: QueryPermissionConnectionArgs;
-			then: (data: (Permission | null | undefined)[] | null | undefined) => void;
+			then: (data: (PermissionInput | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		mutation: {
 			args: PermissionInput;
-			then: (data: Permission | null | undefined) => void;
+			then: (data: PermissionInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		parentMutation: {
 			args: PermissionInput[];
-			then: (data: Permission[] | null | undefined) => void;
+			then: (data: PermissionInput[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		edit: { id: string };
 		create: {};
-		save: { nodes: (Permission | null | undefined)[] | null | undefined };
+		save: { nodes: (PermissionInput | null | undefined)[] | null | undefined };
 		gotoSelect: {};
 		back: {};
 	}>();
@@ -130,9 +129,7 @@
 			dispatch('mutation', {
 				args,
 				then: (data) => {
-					if (nodes && row) {
-						nodes[row] = data;
-					}
+					queryPage();
 					notifications.success($LL.web.message.saveSuccess());
 				},
 				catch: (errors) => {

@@ -5,9 +5,9 @@
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import RoleForm from '~/lib/components/objects/role/RoleForm.svelte';
 	import type { GraphQLError } from '@graphace/graphql';
+	import type { RoleInput, MutationRoleArgs } from '~/lib/types/schema';
 	import { Query_roleStore, Mutation_roleStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import type { MutationRoleArgs, Role } from '~/lib/types/schema';
 	import { validate } from '~/lib/utils';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -21,7 +21,7 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationRoleArgs;
-			then: (data: Role | null | undefined) => void;
+			then: (data: RoleInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {

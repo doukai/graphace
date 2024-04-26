@@ -28,8 +28,8 @@
 		"i18n:export": "tsx src/lib/i18n/export.ts"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^2.1.0",
-		"@sveltejs/kit": "^1.20.2",
+		"@sveltejs/adapter-auto": "^2.1.1",
+		"@sveltejs/kit": "^1.30.3",
 		"@sveltejs/package": "^2.0.0",
 		"eslint-config-custom": "workspace:*",
 		"publint": "^0.1.9",

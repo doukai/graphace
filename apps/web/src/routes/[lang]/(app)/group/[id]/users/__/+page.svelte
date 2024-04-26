@@ -4,7 +4,7 @@
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import UserSelectConnectionTable from '~/lib/components/objects/user/UserSelectConnectionTable.svelte';
-	import type { User, QueryUserConnectionArgs, MutationUserArgs } from '~/lib/types/schema';
+	import type { UserInput, QueryUserConnectionArgs, MutationUserArgs } from '~/lib/types/schema';
 	import { Query_userConnectionStore, Mutation_userStore, Mutation_group_usersStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/lib/utils';
@@ -25,7 +25,7 @@
 	const fetch = (
 		event: CustomEvent<{
 			args: QueryUserConnectionArgs;
-			then: (data: (User | null | undefined)[] | null | undefined) => void;
+			then: (data: (UserInput | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
@@ -41,7 +41,7 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationUserArgs;
-			then: (data: User | null | undefined) => void;
+			then: (data: UserInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {

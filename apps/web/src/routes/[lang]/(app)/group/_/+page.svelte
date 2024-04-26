@@ -4,8 +4,8 @@
 	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import GroupCreateForm from '~/lib/components/objects/group/GroupCreateForm.svelte';
+	import type { GroupInput, MutationGroupArgs } from '~/lib/types/schema';
 	import { Mutation_groupStore } from '$houdini';
-	import type { MutationGroupArgs, Group } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/lib/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -21,7 +21,7 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationGroupArgs;
-			then: (data: Group | null | undefined) => void;
+			then: (data: GroupInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {

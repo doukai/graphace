@@ -13,14 +13,13 @@
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	import type {
-		User,
 		UserOrderBy,
 		QueryUserListArgs,
 		UserInput
 	} from '~/lib/types/schema';
 	import { permissions } from '~/lib/utils/auth-util';
 
-	export let nodes: (User | null | undefined)[] | null | undefined;
+	export let nodes: (UserInput | null | undefined)[] | null | undefined;
 	export let isFetching: boolean;
 	export let errors: Record<number, Errors> = {};
 	export let showSaveButton: boolean = true;
@@ -32,22 +31,22 @@
 	const dispatch = createEventDispatcher<{
 		fetch: {
 			args: QueryUserListArgs;
-			then: (data: (User | null | undefined)[] | null | undefined) => void;
+			then: (data: (UserInput | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		mutation: {
 			args: UserInput;
-			then: (data: User | null | undefined) => void;
+			then: (data: UserInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		parentMutation: {
 			args: UserInput[];
-			then: (data: User[] | null | undefined) => void;
+			then: (data: UserInput[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		edit: { id: string };
 		create: {};
-		save: { nodes: (User | null | undefined)[] | null | undefined };
+		save: { nodes: (UserInput | null | undefined)[] | null | undefined };
 		gotoSelect: {};
 		back: {};
 	}>();
@@ -106,9 +105,7 @@
 			dispatch('mutation', {
 				args,
 				then: (data) => {
-					if (nodes && row) {
-						nodes[row] = data;
-					}
+					query();
 					notifications.success($LL.web.message.saveSuccess());
 				},
 				catch: (errors) => {

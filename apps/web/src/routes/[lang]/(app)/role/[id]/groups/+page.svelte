@@ -4,7 +4,7 @@
 	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import GroupConnectionTable from '~/lib/components/objects/group/GroupConnectionTable.svelte';
-	import type { MutationGroupArgs, QueryGroupConnectionArgs, Group } from '~/lib/types/schema';
+	import type { GroupInput, MutationGroupArgs, QueryGroupConnectionArgs } from '~/lib/types/schema';
 	import { Query_role_groupsStore, Mutation_groupStore, Mutation_role_groupsStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/lib/utils';
@@ -25,7 +25,7 @@
 	const fetch = (
 		event: CustomEvent<{
 			args: QueryGroupConnectionArgs;
-			then: (data: (Group | null | undefined)[] | null | undefined) => void;
+			then: (data: (GroupInput | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
@@ -43,7 +43,7 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationGroupArgs;
-			then: (data: Group | null | undefined) => void;
+			then: (data: GroupInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
@@ -71,7 +71,7 @@
 	const parentMutation = (
 		event: CustomEvent<{
 			args: MutationGroupArgs[];
-			then: (data: Group[] | null | undefined) => void;
+			then: (data: GroupInput[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {

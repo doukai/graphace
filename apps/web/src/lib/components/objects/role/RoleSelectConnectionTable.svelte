@@ -8,14 +8,13 @@
 	import { ArchiveBoxArrowDown } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	import type {
-		Role,
 		RoleOrderBy,
 		QueryRoleConnectionArgs,
 		RoleInput
 	} from '~/lib/types/schema';
 	import { permissions } from '~/lib/utils/auth-util';
 
-	export let nodes: (Role | null | undefined)[] | null | undefined;
+	export let nodes: (RoleInput | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;
 	export let isFetching: boolean;
 	export let errors: Record<number, Errors> = {};
@@ -25,12 +24,12 @@
 	const dispatch = createEventDispatcher<{
 		fetch: {
 			args: QueryRoleConnectionArgs;
-			then: (data: (Role | null | undefined)[] | null | undefined) => void;
+			then: (data: (RoleInput | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		mutation: {
 			args: RoleInput;
-			then: (data: Role | null | undefined) => void;
+			then: (data: RoleInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		select: {
@@ -126,9 +125,7 @@
 			dispatch('mutation', {
 				args,
 				then: (data) => {
-					if (nodes && row) {
-						nodes[row] = data;
-					}
+					queryPage();
 					notifications.success($LL.web.message.saveSuccess());
 				},
 				catch: (errors) => {

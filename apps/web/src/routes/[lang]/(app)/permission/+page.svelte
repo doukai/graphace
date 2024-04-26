@@ -4,7 +4,7 @@
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import PermissionConnectionTable from '~/lib/components/objects/permission/PermissionConnectionTable.svelte';
-	import type { Permission, QueryPermissionConnectionArgs, MutationPermissionArgs } from '~/lib/types/schema';
+	import type { PermissionInput, QueryPermissionConnectionArgs, MutationPermissionArgs } from '~/lib/types/schema';
 	import { Query_permissionConnectionStore, Mutation_permissionStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/lib/utils';
@@ -22,7 +22,7 @@
 	const fetch = (
 		event: CustomEvent<{
 			args: QueryPermissionConnectionArgs;
-			then: (data: (Permission | null | undefined)[] | null | undefined) => void;
+			then: (data: (PermissionInput | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
@@ -38,7 +38,7 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationPermissionArgs;
-			then: (data: Permission | null | undefined) => void;
+			then: (data: PermissionInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {

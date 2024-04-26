@@ -25,7 +25,6 @@
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	import type {
-		{{ name }},
 		{{ name }}OrderBy,
 		{{ queryTypeName }}{{ name }}ListArgs,
 		{{ name }}Input
@@ -34,7 +33,7 @@
 	import { permissions } from '~/lib/utils/auth-util';
 	{%- endif %}
 
-	export let nodes: ({{ name }} | null | undefined)[] | null | undefined;
+	export let nodes: ({{ name }}Input | null | undefined)[] | null | undefined;
 	export let isFetching: boolean;
 	export let errors: Record<number, Errors> = {};
 	export let showSaveButton: boolean = true;
@@ -46,22 +45,22 @@
 	const dispatch = createEventDispatcher<{
 		fetch: {
 			args: {{ queryTypeName }}{{ name }}ListArgs;
-			then: (data: ({{ name }} | null | undefined)[] | null | undefined) => void;
+			then: (data: ({{ name }}Input | null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		mutation: {
 			args: {{ name }}Input;
-			then: (data: {{ name }} | null | undefined) => void;
+			then: (data: {{ name }}Input | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		parentMutation: {
 			args: {{ name }}Input[];
-			then: (data: {{ name }}[] | null | undefined) => void;
+			then: (data: {{ name }}Input[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		edit: { id: string };
 		create: {};
-		save: { nodes: ({{ name }} | null | undefined)[] | null | undefined };
+		save: { nodes: ({{ name }}Input | null | undefined)[] | null | undefined };
 		gotoSelect: {};
 		back: {};
 	}>();
@@ -121,9 +120,7 @@
 			dispatch('mutation', {
 				args,
 				then: (data) => {
-					if (nodes && row) {
-						nodes[row] = data;
-					}
+					query();
 					notifications.success($LL.web.message.saveSuccess());
 				},
 				catch: (errors) => {

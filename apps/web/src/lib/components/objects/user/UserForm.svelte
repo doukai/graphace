@@ -7,10 +7,10 @@
 	import GroupSelectItem from '~/lib/components/objects/group/GroupSelectItem.svelte';
 	import RoleSelectItem from '~/lib/components/objects/role/RoleSelectItem.svelte';
 	import LL from '$i18n/i18n-svelte';
-	import type { User, UserInput } from '~/lib/types/schema';
+	import type { UserInput } from '~/lib/types/schema';
 	import { permissions } from '~/lib/utils/auth-util';
 
-	export let node: User | null | undefined;
+	export let node: UserInput | null | undefined;
 	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
 	export let showRemoveButton: boolean = true;
@@ -21,12 +21,12 @@
 	const dispatch = createEventDispatcher<{
 		mutation: {
 			args: UserInput;
-			then: (data: User | null | undefined) => void;
+			then: (data: UserInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		parentMutation: {
 			args: UserInput | null;
-			then: (data: User | null | undefined) => void;
+			then: (data: UserInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		gotoSelect: {};

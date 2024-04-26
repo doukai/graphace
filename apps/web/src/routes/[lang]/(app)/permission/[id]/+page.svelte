@@ -5,9 +5,9 @@
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import PermissionForm from '~/lib/components/objects/permission/PermissionForm.svelte';
 	import type { GraphQLError } from '@graphace/graphql';
+	import type { PermissionInput, MutationPermissionArgs } from '~/lib/types/schema';
 	import { Query_permissionStore, Mutation_permissionStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import type { MutationPermissionArgs, Permission } from '~/lib/types/schema';
 	import { validate } from '~/lib/utils';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -21,7 +21,7 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationPermissionArgs;
-			then: (data: Permission | null | undefined) => void;
+			then: (data: PermissionInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {

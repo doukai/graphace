@@ -64,12 +64,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 }
 
 export const handleError: HandleServerError = async ({ error, event }) => {
+	console.error(error);
 	const { headers } = event.request;
 	headers.delete('Accept');
 	const [, lang] = event.url.pathname.split('/');
 	const locale = isLocale(lang) ? (lang as Locales) : getPreferredLocale(event);
 	const loginPathName = `/${locale}/login`;
-	console.error(error);
 	if (browser) {
 		goto(loginPathName);
 	} else {

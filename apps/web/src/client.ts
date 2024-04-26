@@ -9,15 +9,17 @@ const authPlugin: ClientPlugin = () => {
 	return {
 		afterNetwork(ctx, { value, resolve }) {
 			if (value.errors?.map(error => error.extensions).some(extensions => extensions?.code == -40100)) {
+				const loginPathName = `/${ctx.session?.locale}}/login`;
+				console.error(value.errors);
 				if (browser) {
-					goto(`/${ctx.session?.locale}/login`);
+					goto(loginPathName);
 				} else {
-					throw redirect(307, `/${ctx.session?.locale}/login`);
+					throw redirect(307, loginPathName);
 				}
+			} else {
+				// keep the information flowing to the user
+				resolve(ctx, value);
 			}
-
-			// keep the information flowing to the user
-			resolve(ctx, value);
 		}
 	}
 }

@@ -7,10 +7,10 @@
 	import PermissionTypeItem from '~/lib/components/enums/permission-type/PermissionTypeItem.svelte';
 	import RoleSelectItem from '~/lib/components/objects/role/RoleSelectItem.svelte';
 	import LL from '$i18n/i18n-svelte';
-	import type { Permission, PermissionInput } from '~/lib/types/schema';
+	import type { PermissionInput } from '~/lib/types/schema';
 	import { permissions } from '~/lib/utils/auth-util';
 
-	export let node: Permission | null | undefined;
+	export let node: PermissionInput | null | undefined;
 	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
 	export let showRemoveButton: boolean = true;
@@ -21,12 +21,12 @@
 	const dispatch = createEventDispatcher<{
 		mutation: {
 			args: PermissionInput;
-			then: (data: Permission | null | undefined) => void;
+			then: (data: PermissionInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		parentMutation: {
 			args: PermissionInput | null;
-			then: (data: Permission | null | undefined) => void;
+			then: (data: PermissionInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		gotoSelect: {};

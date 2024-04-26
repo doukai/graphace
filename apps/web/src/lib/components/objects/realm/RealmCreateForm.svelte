@@ -5,7 +5,7 @@
 	import { Form, messageBoxs, notifications } from '@graphace/ui';
 	import { StringItem, ObjectItem } from '@graphace/ui-graphql';
 	import LL from '$i18n/i18n-svelte';
-	import type { Realm, RealmInput } from '~/lib/types/schema';
+	import type { RealmInput } from '~/lib/types/schema';
 	import { permissions } from '~/lib/utils/auth-util';
 
 	export let node: RealmInput = {};
@@ -17,7 +17,7 @@
 	const dispatch = createEventDispatcher<{
 		mutation: {
 			args: RealmInput;
-			then: (data: Realm | null | undefined) => void;
+			then: (data: RealmInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		gotoSelect: {};

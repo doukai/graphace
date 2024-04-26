@@ -5,10 +5,10 @@
 	import { Form, FormLoading, messageBoxs, notifications } from '@graphace/ui';
 	import { StringItem, ObjectItem } from '@graphace/ui-graphql';
 	import LL from '$i18n/i18n-svelte';
-	import type { Realm, RealmInput } from '~/lib/types/schema';
+	import type { RealmInput } from '~/lib/types/schema';
 	import { permissions } from '~/lib/utils/auth-util';
 
-	export let node: Realm | null | undefined;
+	export let node: RealmInput | null | undefined;
 	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
 	export let showRemoveButton: boolean = true;
@@ -19,12 +19,12 @@
 	const dispatch = createEventDispatcher<{
 		mutation: {
 			args: RealmInput;
-			then: (data: Realm | null | undefined) => void;
+			then: (data: RealmInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		parentMutation: {
 			args: RealmInput | null;
-			then: (data: Realm | null | undefined) => void;
+			then: (data: RealmInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		gotoSelect: {};

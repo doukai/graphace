@@ -5,9 +5,9 @@
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
 	import type { GraphQLError } from '@graphace/graphql';
+	import type { RealmInput, MutationRealmArgs } from '~/lib/types/schema';
 	import { Query_realmStore, Mutation_realmStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import type { MutationRealmArgs, Realm } from '~/lib/types/schema';
 	import { validate } from '~/lib/utils';
 	import { locale } from '$i18n/i18n-svelte';
 
@@ -21,7 +21,7 @@
 	const mutation = (
 		event: CustomEvent<{
 			args: MutationRealmArgs;
-			then: (data: Realm | null | undefined) => void;
+			then: (data: RealmInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {

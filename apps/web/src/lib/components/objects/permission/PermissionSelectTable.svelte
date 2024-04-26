@@ -10,14 +10,13 @@
 	import { ArchiveBoxArrowDown } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
 	import type {
-		Permission,
 		PermissionOrderBy,
 		QueryPermissionListArgs,
 		PermissionInput
 	} from '~/lib/types/schema';
 	import { permissions } from '~/lib/utils/auth-util';
 
-	export let nodes: (Permission | null | undefined)[] | null | undefined;
+	export let nodes: (PermissionInput | null | undefined)[] | null | undefined;
 	export let isFetching: boolean;
 	export let errors: Record<number, Errors> = {};
 	export let multipleSelect: boolean = true;
@@ -26,12 +25,12 @@
 	const dispatch = createEventDispatcher<{
 		fetch: {
 			args: QueryPermissionListArgs;
-			then: (data: (Permission | null | undefined)[] | null | undefined) => void;
+			then: (data: (PermissionInput| null | undefined)[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		mutation: {
 			args: PermissionInput;
-			then: (data: Permission | null | undefined) => void;
+			then: (data: PermissionInput | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
 		select: {
@@ -102,9 +101,7 @@
 			dispatch('mutation', {
 				args,
 				then: (data) => {
-					if (nodes && row) {
-						nodes[row] = data;
-					}
+					query();
 					notifications.success($LL.web.message.saveSuccess());
 				},
 				catch: (errors) => {
