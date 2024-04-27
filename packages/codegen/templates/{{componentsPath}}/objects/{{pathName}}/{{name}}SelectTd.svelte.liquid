@@ -2,6 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons';
 	import { tippy } from '@graphace/ui';
+	import type { ObjectOption } from 'svelte-multiselect';
 	import {{ name }}Select from './{{ name }}Select.svelte';
 	import type { {{ name }}Input } from '$houdini';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -16,7 +17,7 @@
 	export let disabled = false;
 	export let placeholder: string = '';
 
-	let _value = value;
+	let selected: ObjectOption[] = [];
 	let content: HTMLElement;
 	let tippyElement: any;
 	const dispatch = createEventDispatcher<{
@@ -34,6 +35,7 @@
 		} else {
 			value = null;
 		}
+		selected = [];
 		dispatch('save', {});
 		tippyElement._tippy.hide();
 	};
@@ -41,7 +43,7 @@
 
 <div class="hidden">
 	<div class="flex items-start space-x-1" bind:this={content}>
-		<{{ name }}Select {name} {list} {disabled} {readonly} {placeholder} bind:value />
+		<{{ name }}Select {name} {list} {disabled} {readonly} {placeholder} bind:value bind:selected />
 		{#if !readonly && !disabled}
 			<div class="tooltip" data-tip={$LL.uiGraphql.table.td.save()}>
 				<button class="btn btn-square btn-primary" on:click|preventDefault={(e) => mutation()}>
@@ -81,26 +83,22 @@
 			}{% raw %}}{% endraw %}
 			bind:this={tippyElement}
 		>
-			{#if Array.isArray(_value) || (list && (_value === null || _value === undefined))}
-				{#if _value && _value.length > 0}
-					{#if _value && _value.length > 3}
-						{_value
-							.filter((item) => item)
-							.map((item) => item?.name)
+			{#if list}
+				{#if selected && selected.length > 0}
+					{#if selected && selected.length > 3}
+						{selected
+							.map((item) => item?.label)
 							.slice(0, 3)
 							.join(',')
 							.concat('...')}
 					{:else}
-						{_value
-							.filter((item) => item)
-							.map((item) => item?.name)
-							.join(',')}
+						{selected.map((item) => item?.label).join(',')}
 					{/if}
 				{:else}
 					<Icon src={Minus} class="h-5 w-5" />
 				{/if}
-			{:else if _value}
-				{_value?.name}
+			{:else if selected[0]}
+				{selected[0].label}
 			{:else}
 				<Icon src={Minus} class="h-5 w-5" />
 			{/if}

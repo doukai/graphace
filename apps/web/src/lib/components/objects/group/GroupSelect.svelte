@@ -6,6 +6,7 @@
 	import { graphql, GroupInput, Operator } from '$houdini';
 
 	export let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
+	export let selected: ObjectOption[] = [];
 	export let errors: Errors | undefined = undefined;
 	export let list: boolean | undefined = false;
 	export let id: string | null = null;
@@ -31,28 +32,22 @@
 		}
 	`);
 	
-	let _value = value;
 	if (Array.isArray(value)) {
+		selected = value?.map((item) => ({
+			label: item?.name || '',
+			value: { where: { id: { val: item?.id } } }
+		}));
 		value = value.map((item) => ({ where: { id: { val: item?.id } } }));
 	} else if (value) {
+		selected = [{ label: value?.name || '', value: { where: { id: { val: value.id } } } }];
 		value = { where: { id: { val: value.id } } };
+	} else {
+		selected = [];
 	}
 
 	let searchText: string = '';
 	let loading: boolean = false;
 	let options: ObjectOption[] = [];
-	let selected: ObjectOption[] = [];
-
-	$: if (Array.isArray(_value)) {
-		selected = _value?.map((item) => ({
-			label: item?.name || '',
-			value: { where: { id: { val: item?.id } } }
-		}));
-	} else if (_value) {
-		selected = [{ label: _value?.name || '', value: { where: { id: { val: _value.id } } } }];
-	} else {
-		selected = [];
-	}
 
 	$: options =
 		$GroupNameListQuery.data?.groupList?.map((item) => ({

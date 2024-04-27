@@ -98,7 +98,9 @@
 			dispatch('mutation', {
 				args,
 				then: (data) => {
-					query();
+					if (nodes && row) {
+						nodes[row] = data;
+					}
 					notifications.success($LL.web.message.saveSuccess());
 				},
 				catch: (errors) => {
