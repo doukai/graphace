@@ -16,13 +16,11 @@ query Query_userList($id: StringExpression, $name: StringExpression, $descriptio
     updateUserId
     updateTime
     createGroupId
-    groups {
-      id
+    groups(first: 3) {
       name
       description
     }
-    roles {
-      id
+    roles(first: 3) {
       name
       description
     }

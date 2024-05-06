@@ -111,6 +111,15 @@
 			{%- endif %}
 			{%- endfor %}
 			{%- endif %}
+		} else {
+			args.cond = undefined;
+			{%- if fields %}
+			{%- for field in fields %}
+			{%- if field.isScalarType and field.inQueryArgs and field.fieldTypeName == 'String' %}
+			args.{{ field.fieldName }} = undefined;
+			{%- endif %}
+			{%- endfor %}
+			{%- endif %}
 		}
 		
 		if (after) {

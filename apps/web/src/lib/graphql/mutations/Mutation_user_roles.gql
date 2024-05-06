@@ -33,18 +33,15 @@ mutation Mutation_user_roles($user_id: String, $user_roles: [RoleInput], $id: St
           updateTime
           createGroupId
           syncRolePolicy
-          users {
-            id
+          users(first: 3) {
             name
             description
           }
-          groups {
-            id
+          groups(first: 3) {
             name
             description
           }
-          composites {
-            id
+          composites(first: 3) {
             name
             description
           }

@@ -14,8 +14,7 @@ mutation Mutation_permission($name: ID, $description: String, $field: String, $t
     updateTime
     createGroupId
     syncPermissionPolicy
-    roles {
-      id
+    roles(first: 3) {
       name
       description
     }

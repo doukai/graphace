@@ -19,13 +19,11 @@ query Query_userConnection($id: StringExpression, $name: StringExpression, $desc
         updateUserId
         updateTime
         createGroupId
-        groups {
-          id
+        groups(first: 3) {
           name
           description
         }
-        roles {
-          id
+        roles(first: 3) {
           name
           description
         }

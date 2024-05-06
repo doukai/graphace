@@ -99,6 +99,14 @@
 			args.login = { opr: 'LK', val: `%${searchValue}%` };
 			args.email = { opr: 'LK', val: `%${searchValue}%` };
 			args.phones = { opr: 'LK', val: `%${searchValue}%` };
+		} else {
+			args.cond = undefined;
+			args.name = undefined;
+			args.description = undefined;
+			args.lastName = undefined;
+			args.login = undefined;
+			args.email = undefined;
+			args.phones = undefined;
 		}
 		
 		if (after) {

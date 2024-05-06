@@ -29,18 +29,15 @@ query Query_group_roles($group_id: StringExpression, $id: StringExpression, $nam
           updateUserId
           updateTime
           createGroupId
-          users {
-            id
+          users(first: 3) {
             name
             description
           }
-          groups {
-            id
+          groups(first: 3) {
             name
             description
           }
-          composites {
-            id
+          composites(first: 3) {
             name
             description
           }

@@ -33,22 +33,18 @@ query Query_group_subGroups($group_id: StringExpression, $id: StringExpression, 
           updateTime
           createGroupId
           parent {
-            id
             name
             description
           }
-          subGroups {
-            id
+          subGroups(first: 3) {
             name
             description
           }
-          users {
-            id
+          users(first: 3) {
             name
             description
           }
-          roles {
-            id
+          roles(first: 3) {
             name
             description
           }

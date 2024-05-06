@@ -28,18 +28,15 @@ query Query_permission_roles($permission_name: StringExpression, $id: StringExpr
           updateUserId
           updateTime
           createGroupId
-          users {
-            id
+          users(first: 3) {
             name
             description
           }
-          groups {
-            id
+          groups(first: 3) {
             name
             description
           }
-          composites {
-            id
+          composites(first: 3) {
             name
             description
           }

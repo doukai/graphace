@@ -39,11 +39,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const loginPathName = `/${locale}/login`;
 	if (!token && event.url.pathname !== loginPathName) {
-		if (browser) {
-			goto(loginPathName);
-		} else {
-			throw redirect(307, loginPathName);
-		}
+		toLoginPage(loginPathName);
 	} else {
 		setSession(event, { token, locale });
 		if (!event.locals.jwt && token) {
@@ -52,15 +48,18 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	// replace html lang attribute with correct language
-	const response = await resolve(event, { transformPageChunk: ({ html }) => html.replace('%lang%', locale) });
-	if (event.url.pathname !== loginPathName && response.status === 401) {
-		if (browser) {
-			goto(loginPathName);
-		} else {
-			throw redirect(307, loginPathName);
+	try {
+		const response = await resolve(event, { transformPageChunk: ({ html }) => html.replace('%lang%', locale) });
+		if (!response) {
+			toLoginPage(loginPathName);
+		} else if (event.url.pathname !== loginPathName && response.status === 401) {
+			toLoginPage(loginPathName);
 		}
+		return response;
+	} catch (error) {
+		console.error(error);
+		toLoginPage(loginPathName);
 	}
-	return response;
 }
 
 export const handleError: HandleServerError = async ({ error, event }) => {
@@ -69,13 +68,16 @@ export const handleError: HandleServerError = async ({ error, event }) => {
 	headers.delete('Accept');
 	const [, lang] = event.url.pathname.split('/');
 	const locale = isLocale(lang) ? (lang as Locales) : getPreferredLocale(event);
-	const loginPathName = `/${locale}/login`;
+	toLoginPage(`/${locale}/login`);
+};
+
+const toLoginPage = (loginPathName: string) => {
 	if (browser) {
 		goto(loginPathName);
 	} else {
-		throw redirect(303, loginPathName);
+		throw redirect(307, loginPathName);
 	}
-};
+}
 
 const getPreferredLocale = ({ request }: RequestEvent): Locales => {
 	// detect the preferred language the user has configured in his browser

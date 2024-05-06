@@ -4,9 +4,6 @@
 	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
 	import { Form, FormLoading, messageBoxs, notifications } from '@graphace/ui';
 	import { StringItem, IntItem, ObjectItem } from '@graphace/ui-graphql';
-	import GroupSelectItem from '~/lib/components/objects/group/GroupSelectItem.svelte';
-	import UserSelectItem from '~/lib/components/objects/user/UserSelectItem.svelte';
-	import RoleSelectItem from '~/lib/components/objects/role/RoleSelectItem.svelte';
 	import LL from '$i18n/i18n-svelte';
 	import type { GroupInput } from '~/lib/types/schema';
 	import { permissions } from '~/lib/utils/auth-util';
@@ -143,39 +140,16 @@
 			<StringItem label={$LL.graphql.objects.Group.fields.parentId.name()} name="parentId" bind:value={node.parentId} errors={errors.parentId} />
 			{/if}
 			{#if permissions.auth('Group::parent::*')}
-			<GroupSelectItem
-				name="parent"
-				label={$LL.graphql.objects.Group.fields.parent.name()}
-				errors={errors.parent}
-				bind:value={node.parent}
-			/>
+			<ObjectItem name="parent" namedStruct={node.parent} path={`${node.id}/parent`} label={$LL.graphql.objects.Group.fields.parent.name()} errors={errors.parent} on:gotoField />
 			{/if}
 			{#if permissions.auth('Group::subGroups::*')}
-			<GroupSelectItem
-				name="subGroups"
-				label={$LL.graphql.objects.Group.fields.subGroups.name()}
-				errors={errors.subGroups}
-				bind:value={node.subGroups}
-				list
-			/>
+			<ObjectItem name="subGroups" namedStruct={node.subGroups} path={`${node.id}/sub-groups`} label={$LL.graphql.objects.Group.fields.subGroups.name()} errors={errors.subGroups} on:gotoField />
 			{/if}
 			{#if permissions.auth('Group::users::*')}
-			<UserSelectItem
-				name="users"
-				label={$LL.graphql.objects.Group.fields.users.name()}
-				errors={errors.users}
-				bind:value={node.users}
-				list
-			/>
+			<ObjectItem name="users" namedStruct={node.users} path={`${node.id}/users`} label={$LL.graphql.objects.Group.fields.users.name()} errors={errors.users} on:gotoField />
 			{/if}
 			{#if permissions.auth('Group::roles::*')}
-			<RoleSelectItem
-				name="roles"
-				label={$LL.graphql.objects.Group.fields.roles.name()}
-				errors={errors.roles}
-				bind:value={node.roles}
-				list
-			/>
+			<ObjectItem name="roles" namedStruct={node.roles} path={`${node.id}/roles`} label={$LL.graphql.objects.Group.fields.roles.name()} errors={errors.roles} on:gotoField />
 			{/if}
 			{#if permissions.auth('Group::realm::*')}
 			<ObjectItem name="realm" namedStruct={node.realm} path={`${node.id}/realm`} label={$LL.graphql.objects.Group.fields.realm.name()} errors={errors.realm} on:gotoField />

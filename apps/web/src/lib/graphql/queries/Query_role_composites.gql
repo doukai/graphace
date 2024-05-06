@@ -26,18 +26,15 @@ query Query_role_composites($role_id: StringExpression, $id: StringExpression, $
           updateUserId
           updateTime
           createGroupId
-          users {
-            id
+          users(first: 3) {
             name
             description
           }
-          groups {
-            id
+          groups(first: 3) {
             name
             description
           }
-          composites {
-            id
+          composites(first: 3) {
             name
             description
           }

@@ -16,22 +16,18 @@ mutation Mutation_group($id: ID, $name: String, $description: String, $path: Str
     createGroupId
     syncGroupPolicy
     parent {
-      id
       name
       description
     }
-    subGroups {
-      id
+    subGroups(first: 3) {
       name
       description
     }
-    users {
-      id
+    users(first: 3) {
       name
       description
     }
-    roles {
-      id
+    roles(first: 3) {
       name
       description
     }

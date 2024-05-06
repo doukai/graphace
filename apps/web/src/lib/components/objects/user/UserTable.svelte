@@ -7,8 +7,6 @@
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
-	import GroupSelectTd from '~/lib/components/objects/group/GroupSelectTd.svelte';
-	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import LL from '$i18n/i18n-svelte';
@@ -86,6 +84,14 @@
 			args.login = { opr: 'LK', val: `%${searchValue}%` };
 			args.email = { opr: 'LK', val: `%${searchValue}%` };
 			args.phones = { opr: 'LK', val: `%${searchValue}%` };
+		} else {
+			args.cond = undefined;
+			args.name = undefined;
+			args.description = undefined;
+			args.lastName = undefined;
+			args.login = undefined;
+			args.email = undefined;
+			args.phones = undefined;
 		}
 
 		dispatch('fetch', {
@@ -384,26 +390,10 @@
 							/>
 							{/if}
 							{#if permissions.auth('User::groups::*')}
-							<GroupSelectTd
-								name="groups"
-								bind:value={node.groups}
-								list
-								errors={errors[row]?.iterms?.groups}
-								readonly={!permissions.auth('User::groups::WRITE')}
-								on:save={(e) =>
-									updateField({ groups: node?.groups, where: { id: {val: node?.id } } }, row)}
-							/>
+							<ObjectTd name="groups" namedStruct={node.groups} errors={errors[row]?.iterms?.groups} path={`${node.id}/groups`} on:gotoField />
 							{/if}
 							{#if permissions.auth('User::roles::*')}
-							<RoleSelectTd
-								name="roles"
-								bind:value={node.roles}
-								list
-								errors={errors[row]?.iterms?.roles}
-								readonly={!permissions.auth('User::roles::WRITE')}
-								on:save={(e) =>
-									updateField({ roles: node?.roles, where: { id: {val: node?.id } } }, row)}
-							/>
+							<ObjectTd name="roles" namedStruct={node.roles} errors={errors[row]?.iterms?.roles} path={`${node.id}/roles`} on:gotoField />
 							{/if}
 							{#if permissions.auth('User::realm::*')}
 							<ObjectTd name="realm" namedStruct={node.realm} errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />

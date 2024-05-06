@@ -15,22 +15,18 @@ query Query_groupList($id: StringExpression, $name: StringExpression, $descripti
     updateTime
     createGroupId
     parent {
-      id
       name
       description
     }
-    subGroups {
-      id
+    subGroups(first: 3) {
       name
       description
     }
-    users {
-      id
+    users(first: 3) {
       name
       description
     }
-    roles {
-      id
+    roles(first: 3) {
       name
       description
     }

@@ -81,6 +81,12 @@
 			args.description = { opr: 'LK', val: `%${searchValue}%` };
 			args.path = { opr: 'LK', val: `%${searchValue}%` };
 			args.parentId = { opr: 'LK', val: `%${searchValue}%` };
+		} else {
+			args.cond = undefined;
+			args.name = undefined;
+			args.description = undefined;
+			args.path = undefined;
+			args.parentId = undefined;
 		}
 
 		dispatch('fetch', {

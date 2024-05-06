@@ -93,6 +93,10 @@
 			args.cond = 'OR';
 			args.name = { opr: 'LK', val: `%${searchValue}%` };
 			args.description = { opr: 'LK', val: `%${searchValue}%` };
+		} else {
+			args.cond = undefined;
+			args.name = undefined;
+			args.description = undefined;
 		}
 		
 		if (after) {

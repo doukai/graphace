@@ -82,6 +82,11 @@
 			args.description = { opr: 'LK', val: `%${searchValue}%` };
 			args.field = { opr: 'LK', val: `%${searchValue}%` };
 			args.type = { opr: 'LK', val: `%${searchValue}%` };
+		} else {
+			args.cond = undefined;
+			args.description = undefined;
+			args.field = undefined;
+			args.type = undefined;
 		}
 
 		dispatch('fetch', {

@@ -37,22 +37,18 @@ mutation Mutation_user_groups($user_id: String, $user_groups: [GroupInput], $id:
           createGroupId
           syncGroupPolicy
           parent {
-            id
             name
             description
           }
-          subGroups {
-            id
+          subGroups(first: 3) {
             name
             description
           }
-          users {
-            id
+          users(first: 3) {
             name
             description
           }
-          roles {
-            id
+          roles(first: 3) {
             name
             description
           }
