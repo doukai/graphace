@@ -1,4 +1,4 @@
-import { redirect } from '@sveltejs/kit';
+import { json, redirect } from '@sveltejs/kit';
 import type { Handle, RequestEvent, HandleServerError } from '@sveltejs/kit';
 import { initAcceptLanguageHeaderDetector } from 'typesafe-i18n/detectors';
 import jwt_decode from "jwt-decode";
@@ -34,7 +34,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.locale = locale;
 	event.locals.LL = LL;
 
-	const { cookies } = event;
+	const { cookies, request } = event;
 	const token = cookies.get('Authorization');
 
 	const loginPathName = `/${locale}/login`;
@@ -48,18 +48,14 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	// replace html lang attribute with correct language
-	try {
-		const response = await resolve(event, { transformPageChunk: ({ html }) => html.replace('%lang%', locale) });
-		if (!response) {
-			toLoginPage(loginPathName);
-		} else if (event.url.pathname !== loginPathName && response.status === 401) {
-			toLoginPage(loginPathName);
-		}
-		return response;
-	} catch (error) {
-		console.error(error);
+	const response = await resolve(event, { transformPageChunk: ({ html }) => html.replace('%lang%', locale) });
+	if (event.url.pathname === loginPathName && response && request.headers.get('Content-Type')?.includes('application/json') && response.status === 307) {
+		return json({ errors: [{ message: '-40100: unauthorized', extensions: { code: -40100 } }] }, { status: 401 });
+	}
+	if (event.url.pathname !== loginPathName && response && response.status === 401) {
 		toLoginPage(loginPathName);
 	}
+	return response;
 }
 
 export const handleError: HandleServerError = async ({ error, event }) => {

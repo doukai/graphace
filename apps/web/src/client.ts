@@ -10,7 +10,7 @@ const authPlugin: ClientPlugin = () => {
 		afterNetwork(ctx, { value, resolve }) {
 			if (value.errors?.map(error => error.extensions).some(extensions => extensions?.code == -40100)) {
 				console.error(value.errors);
-				const loginPathName = `/${ctx.session?.locale}}/login`;
+				const loginPathName = `/${ctx.session?.locale}/login`;
 				if (browser) {
 					goto(loginPathName);
 				} else {

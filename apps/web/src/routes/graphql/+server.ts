@@ -11,8 +11,9 @@ export const POST: RequestHandler = ({ cookies, request }) => {
             Authorization: cookies.get('Authorization'),
         },
         duplex: 'half'
-    }).catch((err) => {
-        console.log("Could not proxy graphql API request: ", err);
-        throw err;
-    });
+    })
+        .catch((error) => {
+            console.log("Could not proxy graphql API request: ", error);
+            throw error;
+        });
 };

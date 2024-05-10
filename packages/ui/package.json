@@ -30,7 +30,7 @@
 	"devDependencies": {
 		"eslint-config-custom": "workspace:*",
 		"@sveltejs/adapter-auto": "^2.1.1",
-		"@sveltejs/kit": "^1.30.3",
+		"@sveltejs/kit": "^1.30.4",
 		"@sveltejs/package": "^2.0.0",
 		"publint": "^0.1.9",
 		"svelte": "^3.59.1",
