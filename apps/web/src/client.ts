@@ -8,13 +8,15 @@ import type { ClientPlugin } from '$houdini'
 const authPlugin: ClientPlugin = () => {
 	return {
 		afterNetwork(ctx, { value, resolve }) {
-			if (value.errors?.map(error => error.extensions).some(extensions => extensions?.code == -40100)) {
+			if (value.errors) {
 				console.error(value.errors);
-				const loginPathName = `/${ctx.session?.locale}/login`;
-				if (browser) {
-					goto(loginPathName);
-				} else {
-					throw redirect(307, loginPathName);
+				if (value.errors?.map(error => error.extensions).some(extensions => extensions?.code == -40100)) {
+					const loginPathName = `/${ctx.session?.locale}/login`;
+					if (browser) {
+						goto(loginPathName);
+					} else {
+						throw redirect(307, loginPathName);
+					}
 				}
 			} else {
 				// keep the information flowing to the user

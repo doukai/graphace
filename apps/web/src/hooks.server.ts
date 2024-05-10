@@ -19,7 +19,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// redirect to base locale if no locale slug was found
 	if (!lang) {
 		const locale = getPreferredLocale(event);
-
 		return new Response(null, {
 			status: 302,
 			headers: { Location: `/${locale}` },
@@ -49,10 +48,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	// replace html lang attribute with correct language
 	const response = await resolve(event, { transformPageChunk: ({ html }) => html.replace('%lang%', locale) });
-	if (event.url.pathname === loginPathName && response && request.headers.get('Content-Type')?.includes('application/json') && response.status === 307) {
+	if (event.url.pathname === loginPathName && request.headers.get('Content-Type')?.includes('application/json') && response?.status === 307) {
 		return json({ errors: [{ message: '-40100: unauthorized', extensions: { code: -40100 } }] }, { status: 401 });
 	}
-	if (event.url.pathname !== loginPathName && response && response.status === 401) {
+	if (event.url.pathname !== loginPathName && response?.status === 401) {
 		toLoginPage(loginPathName);
 	}
 	return response;
