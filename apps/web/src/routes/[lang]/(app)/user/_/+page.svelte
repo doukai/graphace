@@ -1,7 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { type Errors, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
+	import {
+		type Errors,
+		updateNodeParam,
+		updateErrorsParam,
+		getChildPathParam
+	} from '@graphace/commons';
 	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
+	import { buildGraphQLErrors } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import UserCreateForm from '~/lib/components/objects/user/UserCreateForm.svelte';
 	import type { UserInput, MutationUserArgs } from '~/lib/types/schema';
@@ -27,13 +33,14 @@
 	) => {
 		validate('Mutation_user_Arguments', event.detail.args, $locale)
 			.then((data) => {
-				Mutation_user.mutate(event.detail.args)
-					.then((result) => {
-						event.detail.then(result?.data?.user);
-						if (result.errors) {
-							event.detail.catch(result.errors);
-						}
-					});
+				Mutation_user.mutate(event.detail.args).then((result) => {
+					// event.detail.then(result?.data?.user);
+					if (result.errors) {
+						debugger
+						errors = buildGraphQLErrors(result.errors);
+						event.detail.catch(result.errors);
+					}
+				});
 			})
 			.catch((validErrors) => {
 				errors = validErrors;
@@ -44,7 +51,7 @@
 		ot();
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
+	const gotoField = (event: CustomEvent<{ path: string; name: string }>) => {
 		to(`./${event.detail.path}`, {
 			node: updateNodeParam($page.url, node),
 			errors: updateErrorsParam($page.url, errors),
@@ -54,5 +61,13 @@
 </script>
 
 <Card>
-	<UserCreateForm showRemoveButton={false} showBackButton={$canBack} {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+	<UserCreateForm
+		showRemoveButton={false}
+		showBackButton={$canBack}
+		{node}
+		{errors}
+		on:mutation={mutation}
+		on:back={back}
+		on:gotoField={gotoField}
+	/>
 </Card>

@@ -18,10 +18,9 @@ const authPlugin: ClientPlugin = () => {
 						throw redirect(307, loginPathName);
 					}
 				}
-			} else {
-				// keep the information flowing to the user
-				resolve(ctx, value);
 			}
+			// keep the information flowing to the user
+			resolve(ctx, value);
 		}
 	}
 }
