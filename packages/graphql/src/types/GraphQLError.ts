@@ -1,4 +1,6 @@
 import type { Error, Errors } from '@graphace/commons';
+import { buildErrorsTree } from '@graphace/commons';
+
 export type GraphQLError = {
     message: string;
     locations?: ({ line: number | null | undefined, column: number | null | undefined })[] | null;
@@ -17,23 +19,8 @@ export function buildGraphQLErrors(errors: GraphQLError[]): Record<string, Error
     let errorsTree: Record<string, Errors> = {};
     Object.entries(pathErrors).forEach(
         ([path, errors]) => {
-            errorsTree = buildGraphQLErrorsTree(path.split('/').slice(1), errors, errorsTree);
+            errorsTree = buildErrorsTree(path.split('/').slice(1), errors, errorsTree);
         }
     );
-    return errorsTree;
-}
-
-function buildGraphQLErrorsTree(path: string[], errors: Error[], errorsTree: Record<string, Errors>): Record<string, Errors> {
-    if (path.length === 1) {
-        errorsTree[path[0]] = {
-            errors: [...errorsTree[path[0]]?.errors || [], ...errors],
-            iterms: errorsTree[path[0]]?.iterms
-        };
-    } else if (path.length > 1) {
-        errorsTree[path[0]] = {
-            errors: errorsTree[path[0]]?.errors,
-            iterms: { ...errorsTree[path[0]]?.iterms || {}, ...buildGraphQLErrorsTree(path.slice(1), errors, errorsTree[path[0]]?.iterms || {}) }
-        };
-    }
     return errorsTree;
 }

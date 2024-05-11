@@ -1,4 +1,5 @@
-import type { Error, Errors, Language } from '..';
+import type { Error, Errors, Language } from '../index.js';
+import { buildErrorsTree } from '../index.js';
 import Ajv from 'ajv';
 import type { ErrorObject } from 'ajv';
 import type { AnyValidateFunction, AnySchemaObject } from 'ajv/dist/types';
@@ -101,21 +102,6 @@ function buildErrors(errors: ErrorObject[]): Record<string, Errors> {
             errorsTree = buildErrorsTree(instancePath.split('/').slice(1), errors, errorsTree);
         }
     );
-    return errorsTree;
-}
-
-function buildErrorsTree(path: string[], errors: Error[], errorsTree: Record<string, Errors>): Record<string, Errors> {
-    if (path.length === 1) {
-        errorsTree[path[0]] = {
-            errors: [...errorsTree[path[0]]?.errors || [], ...errors],
-            iterms: errorsTree[path[0]]?.iterms
-        };
-    } else if (path.length > 1) {
-        errorsTree[path[0]] = {
-            errors: errorsTree[path[0]]?.errors,
-            iterms: { ...errorsTree[path[0]]?.iterms || {}, ...buildErrorsTree(path.slice(1), errors, errorsTree[path[0]]?.iterms || {}) }
-        };
-    }
     return errorsTree;
 }
 
