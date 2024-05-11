@@ -1,4 +1,5 @@
 export * from "./GraphQLError.js";
+export * from "./GraphQLErrorBuilder.js";
 export * from "./__Schema.js";
 export * from "./__Type.js";
 export * from "./__Directive.js";

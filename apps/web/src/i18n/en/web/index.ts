@@ -43,7 +43,9 @@ const en: BaseTranslation = {
         }
     },
     errors: {
-        "-40101": 'Authentication failed'
+        "-40101": 'Authentication failed',
+        "-40900": 'Resource has been updated',
+        "-40901": 'Existed unique values'
     }
 }
 

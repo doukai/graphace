@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { getContext } from 'svelte';
+	import { onMount, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import { themeChange } from 'theme-change';
 	import { Icon } from '@steeze-ui/svelte-icon';
