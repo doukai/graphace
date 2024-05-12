@@ -6,6 +6,7 @@
 	import { StringItem, ObjectItem } from '@graphace/ui-graphql';
 	import LL from '$i18n/i18n-svelte';
 	import type { RealmInput } from '~/lib/types/schema';
+	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/lib/utils/validate-util';
 	import { permissions } from '~/lib/utils/auth-util';
 
 	export let node: RealmInput | null | undefined;
@@ -41,9 +42,22 @@
 					notifications.success($LL.web.message.saveSuccess());
 					dispatch('back', {});
 				},
-				catch: (errors) => {
-					console.error(errors);
-					notifications.error($LL.web.message.saveFailed());
+				catch: (graphQLErrors) => {
+					console.error(graphQLErrors);
+					errors = buildGraphQLErrors(graphQLErrors);
+					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
+					if (globalError) {
+						messageBoxs.open({
+							title: $LL.web.message.saveFailed(),
+							content: globalError,
+							buttonName: $LL.ui.button.back(),
+							buttonType: 'neutral',
+							confirm: () => {
+								dispatch('back', {});
+								return true;
+							}
+						});
+					}
 				}
 			});
 		}
@@ -57,9 +71,22 @@
 					notifications.success($LL.web.message.removeSuccess());
 					dispatch('back', {});
 				},
-				catch: (errors) => {
-					console.error(errors);
-					notifications.error($LL.web.message.removeFailed());
+				catch: (graphQLErrors) => {
+					console.error(graphQLErrors);
+					errors = buildGraphQLErrors(graphQLErrors);
+					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
+					if (globalError) {
+						messageBoxs.open({
+							title: $LL.web.message.removeFailed(),
+							content: globalError,
+							buttonName: $LL.ui.button.back(),
+							buttonType: 'neutral',
+							confirm: () => {
+								dispatch('back', {});
+								return true;
+							}
+						});
+					}
 				}
 			});
 		}
@@ -73,9 +100,22 @@
 					notifications.success($LL.web.message.unbindSuccess());
 					dispatch('back', {});
 				},
-				catch: (errors) => {
-					console.error(errors);
-					notifications.error($LL.web.message.unbindFailed());
+				catch: (graphQLErrors) => {
+					console.error(graphQLErrors);
+					errors = buildGraphQLErrors(graphQLErrors);
+					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
+					if (globalError) {
+						messageBoxs.open({
+							title: $LL.web.message.unbindFailed(),
+							content: globalError,
+							buttonName: $LL.ui.button.back(),
+							buttonType: 'neutral',
+							confirm: () => {
+								dispatch('back', {});
+								return true;
+							}
+						});
+					}
 				}
 			});
 		}

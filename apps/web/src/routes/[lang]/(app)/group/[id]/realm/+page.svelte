@@ -34,9 +34,10 @@
 				errors = {};
 				Mutation_realm.mutate(event.detail.args)
 					.then((result) => {
-						event.detail.then(result?.data?.realm);
 						if (result.errors) {
 							event.detail.catch(result.errors);
+						} else {
+							event.detail.then(result?.data?.realm);
 						}
 					});
 			})
@@ -60,9 +61,10 @@
 					group_realm: event.detail.args
 				})
 					.then((result) => {
-						event.detail.then(result?.data?.group?.realm);
 						if (result.errors) {
 							event.detail.catch(result.errors);
+						} else {
+							event.detail.then(result?.data?.group?.realm);
 						}
 					});
 			})

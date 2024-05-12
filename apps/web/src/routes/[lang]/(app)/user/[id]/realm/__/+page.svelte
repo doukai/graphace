@@ -30,9 +30,10 @@
 	) => {
 		Query_realmConnection.fetch({ variables: event.detail.args })
 			.then((result) => {
-				event.detail.then(result.data?.realmConnection?.edges?.map((edge) => edge?.node));
 				if (result.errors) {
 					event.detail.catch(result.errors);
+				} else {
+					event.detail.then(result.data?.realmConnection?.edges?.map((edge) => edge?.node));
 				}
 			});
 	};
@@ -52,9 +53,10 @@
 				}
 				Mutation_realm.mutate(event.detail.args)
 					.then((result) => {
-						event.detail.then(result?.data?.realm);
 						if (result.errors) {
 							event.detail.catch(result.errors);
+						} else {
+							event.detail.then(result?.data?.realm);
 						}
 					});
 			})
@@ -81,9 +83,10 @@
 						user_realm: event.detail.selected
 					})
 						.then((result) => {
-							event.detail.then();
 							if (result.errors) {
 								event.detail.catch(result.errors);
+							} else {
+								event.detail.then();
 							}
 						});
 				}

@@ -1,7 +1,7 @@
 /// <reference types="@sveltejs/kit" />
 
-type Locales = import('./i18n/i18n-types').Locales
-type TranslationFunctions = import('$i18n/i18n-types').TranslationFunctions
+type Locales = import('./lib/i18n/i18n-types').Locales
+type TranslationFunctions = import('~/lib/i18n/i18n-types').TranslationFunctions
 type JsonWebToken = import('@graphace/commons').JsonWebToken
 
 // See https://kit.svelte.dev/docs/typescript

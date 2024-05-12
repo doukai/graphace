@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { getContext, createEventDispatcher } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	export let pageSizeOptions: number[] = [10, 20, 30];

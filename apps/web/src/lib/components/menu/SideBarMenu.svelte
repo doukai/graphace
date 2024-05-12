@@ -4,7 +4,7 @@
 	import Iconify from '@iconify/svelte';
 	import LL from '$i18n/i18n-svelte';
 	import type { NamespaceGraphqlTranslation } from '$i18n/i18n-types';
-	import { locale } from '~/i18n/i18n-svelte';
+	import { locale } from '$i18n/i18n-svelte';
 	import pages from '~/lib/data/pages.json';
 	import { permissions } from '~/lib/utils/auth-util';
 

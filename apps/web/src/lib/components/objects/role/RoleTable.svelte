@@ -17,6 +17,7 @@
 		QueryRoleListArgs,
 		RoleInput
 	} from '~/lib/types/schema';
+	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/lib/utils/validate-util';
 	import { permissions } from '~/lib/utils/auth-util';
 
 	export let nodes: (RoleInput | null | undefined)[] | null | undefined;
@@ -110,9 +111,22 @@
 					}
 					notifications.success($LL.web.message.saveSuccess());
 				},
-				catch: (errors) => {
-					console.error(errors);
-					notifications.error($LL.web.message.saveFailed());
+				catch: (graphQLErrors) => {
+					console.error(graphQLErrors);
+					errors = buildGraphQLErrors(graphQLErrors);
+					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
+					if (globalError) {
+						messageBoxs.open({
+							title: $LL.web.message.saveFailed(),
+							content: globalError,
+							buttonName: $LL.ui.button.back(),
+							buttonType: 'neutral',
+							confirm: () => {
+								query();
+								return true;
+							}
+						});
+					}
 				}
 			});
 		}
@@ -125,9 +139,22 @@
 				notifications.success($LL.web.message.removeSuccess());
 				query();
 			},
-			catch: (errors) => {
-				console.error(errors);
-				notifications.error($LL.web.message.removeFailed());
+			catch: (graphQLErrors) => {
+				console.error(graphQLErrors);
+				errors = buildGraphQLErrors(graphQLErrors);
+				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
+				if (globalError) {
+					messageBoxs.open({
+						title: $LL.web.message.removeFailed(),
+						content: globalError,
+						buttonName: $LL.ui.button.back(),
+						buttonType: 'neutral',
+						confirm: () => {
+							query();
+							return true;
+						}
+					});
+				}
 			}
 		});
 	}
@@ -142,9 +169,22 @@
 				notifications.success($LL.web.message.removeSuccess());
 				query();
 			},
-			catch: (errors) => {
-				console.error(errors);
-				notifications.error($LL.web.message.removeFailed());
+			catch: (graphQLErrors) => {
+				console.error(graphQLErrors);
+				errors = buildGraphQLErrors(graphQLErrors);
+				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
+				if (globalError) {
+					messageBoxs.open({
+						title: $LL.web.message.removeFailed(),
+						content: globalError,
+						buttonName: $LL.ui.button.back(),
+						buttonType: 'neutral',
+						confirm: () => {
+							query();
+							return true;
+						}
+					});
+				}
 			}
 		});
 	};
@@ -159,9 +199,22 @@
 				notifications.success($LL.web.message.unbindSuccess());
 				query();
 			},
-			catch: (errors) => {
-				console.error(errors);
-				notifications.error($LL.web.message.unbindFailed());
+			catch: (graphQLErrors) => {
+				console.error(graphQLErrors);
+				errors = buildGraphQLErrors(graphQLErrors);
+				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
+				if (globalError) {
+					messageBoxs.open({
+						title: $LL.web.message.unbindFailed(),
+						content: globalError,
+						buttonName: $LL.ui.button.back(),
+						buttonType: 'neutral',
+						confirm: () => {
+							query();
+							return true;
+						}
+					});
+				}
 			}
 		});
 	};

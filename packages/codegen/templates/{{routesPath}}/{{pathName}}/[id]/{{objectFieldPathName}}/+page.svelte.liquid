@@ -34,9 +34,10 @@
 				errors = {};
 				Mutation_{{ objectFieldTypeName | camelCase }}.mutate(event.detail.args)
 					.then((result) => {
-						event.detail.then(result?.data?.{{ objectFieldTypeName | camelCase }});
 						if (result.errors) {
 							event.detail.catch(result.errors);
+						} else {
+							event.detail.then(result?.data?.{{ objectFieldTypeName | camelCase }});
 						}
 					});
 			})
@@ -60,9 +61,10 @@
 					{{ name | camelCase }}_{{ objectFieldName }}: event.detail.args
 				})
 					.then((result) => {
-						event.detail.then(result?.data?.{{ name | camelCase }}?.{{ objectFieldName }});
 						if (result.errors) {
 							event.detail.catch(result.errors);
+						} else {
+							event.detail.then(result?.data?.{{ name | camelCase }}?.{{ objectFieldName }});
 						}
 					});
 			})

@@ -33,9 +33,10 @@
 			variables: { role_id: { val: role?.id }, ...event.detail.args }
 		})
 			.then((result) => {
-				event.detail.then(result.data?.role?.permissionsConnection?.edges?.map((edge) => edge?.node));
 				if (result.errors) {
 					event.detail.catch(result.errors);
+				} else {
+					event.detail.then(result.data?.role?.permissionsConnection?.edges?.map((edge) => edge?.node));
 				}
 			});
 	};
@@ -55,9 +56,10 @@
 				}
 				Mutation_permission.mutate(event.detail.args)
 					.then((result) => {
-						event.detail.then(result?.data?.permission);
 						if (result.errors) {
 							event.detail.catch(result.errors);
+						} else {
+							event.detail.then(result?.data?.permission);
 						}
 					});
 			})
@@ -83,9 +85,10 @@
 					role_permissions: event.detail.args
 				})
 					.then((result) => {
-						event.detail.then(undefined);
 						if (result.errors) {
 							event.detail.catch(result.errors);
+						} else {
+							event.detail.then(undefined);
 						}
 					});
 			})

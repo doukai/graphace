@@ -1,4 +1,5 @@
 // import adapter from '@sveltejs/adapter-auto';
+// import { vitePreprocess } from '@sveltejs/kit/vite';
 import adapter from '@sveltejs/adapter-node';
 import preprocess from 'svelte-preprocess';
 import path from 'path';
@@ -7,19 +8,19 @@ import path from 'path';
 const config = {
   // Consult https://github.com/sveltejs/svelte-preprocess
   // for more information about preprocessors
+	// preprocess: vitePreprocess(),
   preprocess: preprocess(),
-
   kit: {
     adapter: adapter({
       // default options are shown
-      out: 'build'
+      // out: 'build'
     }),
     csrf: {
       checkOrigin: false,
     },
     alias: {
       '~': path.resolve('./src'),
-      $i18n: 'src/i18n',
+      $i18n: 'src/lib/i18n',
       $houdini: path.resolve('.', '$houdini')
     }
   }

@@ -9,7 +9,7 @@ const _graphqlPath = 'lib/graphql';
 const _componentsPath = 'lib/components';
 const _dataPath = 'lib/data';
 const _routesPath = 'routes/[lang]/(app)';
-const _i18nPath = 'i18n';
+const _i18nPath = 'lib/i18n';
 const _i18nDefault = 'en';
 
 export const preset: Types.OutputPreset<GraphacePresetConfig> = {

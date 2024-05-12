@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
-	import { Table, TableHead, TableLoading, TableEmpty, notifications } from '@graphace/ui';
+	import { Table, TableHead, TableLoading, TableEmpty, messageBoxs, notifications } from '@graphace/ui';
 	import { StringTh, StringTd } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ArchiveBoxArrowDown } from '@steeze-ui/heroicons';
@@ -12,6 +12,7 @@
 		QueryRoleListArgs,
 		RoleInput
 	} from '~/lib/types/schema';
+	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/lib/utils/validate-util';
 	import { permissions } from '~/lib/utils/auth-util';
 
 	export let nodes: (RoleInput | null | undefined)[] | null | undefined;
@@ -107,9 +108,22 @@
 					}
 					notifications.success($LL.web.message.saveSuccess());
 				},
-				catch: (errors) => {
-					console.error(errors);
-					notifications.error($LL.web.message.saveFailed());
+				catch: (graphQLErrors) => {
+					console.error(graphQLErrors);
+					errors = buildGraphQLErrors(graphQLErrors);
+					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
+					if (globalError) {
+						messageBoxs.open({
+							title: $LL.web.message.saveFailed(),
+							content: globalError,
+							buttonName: $LL.ui.button.back(),
+							buttonType: 'neutral',
+							confirm: () => {
+								query();
+								return true;
+							}
+						});
+					}
 				}
 			});
 		}

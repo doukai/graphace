@@ -34,9 +34,10 @@
 					group_users: [event.detail.args]
 				})
 					.then((result) => {
-						event.detail.then(undefined);
 						if (result.errors) {
 							event.detail.catch(result.errors);
+						} else {
+							event.detail.then(undefined);
 						}
 					});
 			})

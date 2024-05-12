@@ -45,13 +45,14 @@
 		Query_{{ objectFieldTypeName | camelCase }}List.fetch({ variables: event.detail.args })
 		{%- endif %}
 			.then((result) => {
-			{%- if connectionField %}
-				event.detail.then(result.data?.{{ objectFieldTypeName | camelCase }}Connection?.edges?.map((edge) => edge?.node));
-			{%- else %}
-				event.detail.then(result.data?.{{ objectFieldTypeName | camelCase }}List);
-			{%- endif %}
 				if (result.errors) {
 					event.detail.catch(result.errors);
+				} else {
+				{%- if connectionField %}
+					event.detail.then(result.data?.{{ objectFieldTypeName | camelCase }}Connection?.edges?.map((edge) => edge?.node));
+				{%- else %}
+					event.detail.then(result.data?.{{ objectFieldTypeName | camelCase }}List);
+				{%- endif %}
 				}
 			});
 	};
@@ -71,9 +72,10 @@
 				}
 				Mutation_{{ objectFieldTypeName | camelCase }}.mutate(event.detail.args)
 					.then((result) => {
-						event.detail.then(result?.data?.{{ objectFieldTypeName | camelCase }});
 						if (result.errors) {
 							event.detail.catch(result.errors);
+						} else {
+							event.detail.then(result?.data?.{{ objectFieldTypeName | camelCase }});
 						}
 					});
 			})

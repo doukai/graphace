@@ -34,9 +34,10 @@
 				errors = {};
 				Mutation_group.mutate(event.detail.args)
 					.then((result) => {
-						event.detail.then(result?.data?.group);
 						if (result.errors) {
 							event.detail.catch(result.errors);
+						} else {
+							event.detail.then(result?.data?.group);
 						}
 					});
 			})
@@ -60,9 +61,10 @@
 					group_parent: event.detail.args
 				})
 					.then((result) => {
-						event.detail.then(result?.data?.group?.parent);
 						if (result.errors) {
 							event.detail.catch(result.errors);
+						} else {
+							event.detail.then(result?.data?.group?.parent);
 						}
 					});
 			})

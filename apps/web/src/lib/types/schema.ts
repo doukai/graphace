@@ -806,6 +806,7 @@ export type GroupMutationArguments = {
   createGroupId?: InputMaybe<Scalars['String']>;
   groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
   groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
+  input?: InputMaybe<GroupInput>;
   where?: InputMaybe<GroupExpression>;
 };
 
@@ -1116,6 +1117,7 @@ export type GroupRoleRelationMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<GroupRoleRelationInput>;
   where?: InputMaybe<GroupRoleRelationExpression>;
 };
 
@@ -1467,6 +1469,7 @@ export type GroupUserRelationMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<GroupUserRelationInput>;
   where?: InputMaybe<GroupUserRelationExpression>;
 };
 
@@ -1664,6 +1667,7 @@ export type MutationUserArgs = {
   userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
   groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
   roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
+  input?: InputMaybe<UserInput>;
   where?: InputMaybe<UserExpression>;
 };
 
@@ -1719,6 +1723,7 @@ export type MutationRoleArgs = {
   groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
   roleCompositeRelation?: InputMaybe<Array<InputMaybe<RoleCompositeRelationInput>>>;
   permissionRoleRelation?: InputMaybe<Array<InputMaybe<PermissionRoleRelationInput>>>;
+  input?: InputMaybe<RoleInput>;
   where?: InputMaybe<RoleExpression>;
 };
 
@@ -1771,6 +1776,7 @@ export type MutationGroupArgs = {
   createGroupId?: InputMaybe<Scalars['String']>;
   groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
   groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
+  input?: InputMaybe<GroupInput>;
   where?: InputMaybe<GroupExpression>;
 };
 
@@ -1814,6 +1820,7 @@ export type MutationRealmArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<RealmInput>;
   where?: InputMaybe<RealmExpression>;
 };
 
@@ -1852,6 +1859,7 @@ export type MutationPermissionArgs = {
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
   permissionRoleRelation?: InputMaybe<Array<InputMaybe<PermissionRoleRelationInput>>>;
+  input?: InputMaybe<PermissionInput>;
   where?: InputMaybe<PermissionExpression>;
 };
 
@@ -1891,6 +1899,7 @@ export type MutationUserPhonesRelationArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<UserPhonesRelationInput>;
   where?: InputMaybe<UserPhonesRelationExpression>;
 };
 
@@ -1927,6 +1936,7 @@ export type MutationGroupUserRelationArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<GroupUserRelationInput>;
   where?: InputMaybe<GroupUserRelationExpression>;
 };
 
@@ -1964,6 +1974,7 @@ export type MutationRoleUserRelationArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<RoleUserRelationInput>;
   where?: InputMaybe<RoleUserRelationExpression>;
 };
 
@@ -2001,6 +2012,7 @@ export type MutationGroupRoleRelationArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<GroupRoleRelationInput>;
   where?: InputMaybe<GroupRoleRelationExpression>;
 };
 
@@ -2038,6 +2050,7 @@ export type MutationRoleCompositeRelationArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<RoleCompositeRelationInput>;
   where?: InputMaybe<RoleCompositeRelationExpression>;
 };
 
@@ -2075,6 +2088,7 @@ export type MutationPermissionRoleRelationArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<PermissionRoleRelationInput>;
   where?: InputMaybe<PermissionRoleRelationExpression>;
 };
 
@@ -2584,6 +2598,7 @@ export type PermissionMutationArguments = {
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
   permissionRoleRelation?: InputMaybe<Array<InputMaybe<PermissionRoleRelationInput>>>;
+  input?: InputMaybe<PermissionInput>;
   where?: InputMaybe<PermissionExpression>;
 };
 
@@ -2883,6 +2898,7 @@ export type PermissionRoleRelationMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<PermissionRoleRelationInput>;
   where?: InputMaybe<PermissionRoleRelationExpression>;
 };
 
@@ -4166,6 +4182,7 @@ export type RealmMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<RealmInput>;
   where?: InputMaybe<RealmExpression>;
 };
 
@@ -5098,6 +5115,7 @@ export type RoleCompositeRelationMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<RoleCompositeRelationInput>;
   where?: InputMaybe<RoleCompositeRelationExpression>;
 };
 
@@ -5396,6 +5414,7 @@ export type RoleMutationArguments = {
   groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
   roleCompositeRelation?: InputMaybe<Array<InputMaybe<RoleCompositeRelationInput>>>;
   permissionRoleRelation?: InputMaybe<Array<InputMaybe<PermissionRoleRelationInput>>>;
+  input?: InputMaybe<RoleInput>;
   where?: InputMaybe<RoleExpression>;
 };
 
@@ -5732,6 +5751,7 @@ export type RoleUserRelationMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<RoleUserRelationInput>;
   where?: InputMaybe<RoleUserRelationExpression>;
 };
 
@@ -7471,6 +7491,7 @@ export type UserMutationArguments = {
   userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
   groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
   roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
+  input?: InputMaybe<UserInput>;
   where?: InputMaybe<UserExpression>;
 };
 
@@ -7725,6 +7746,7 @@ export type UserPhonesRelationMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<UserPhonesRelationInput>;
   where?: InputMaybe<UserPhonesRelationExpression>;
 };
 

@@ -16,6 +16,7 @@
 		QueryGroupConnectionArgs,
 		GroupInput
 	} from '~/lib/types/schema';
+	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/lib/utils/validate-util';
 	import { permissions } from '~/lib/utils/auth-util';
 
 	export let nodes: (GroupInput | null | undefined)[] | null | undefined;
@@ -140,9 +141,22 @@
 					}
 					notifications.success($LL.web.message.saveSuccess());
 				},
-				catch: (errors) => {
-					console.error(errors);
-					notifications.error($LL.web.message.saveFailed());
+				catch: (graphQLErrors) => {
+					console.error(graphQLErrors);
+					errors = buildGraphQLErrors(graphQLErrors);
+					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
+					if (globalError) {
+						messageBoxs.open({
+							title: $LL.web.message.saveFailed(),
+							content: globalError,
+							buttonName: $LL.ui.button.back(),
+							buttonType: 'neutral',
+							confirm: () => {
+								queryPage(1);
+								return true;
+							}
+						});
+					}
 				}
 			});
 		}
@@ -155,9 +169,22 @@
 				notifications.success($LL.web.message.removeSuccess());
 				queryPage(1);
 			},
-			catch: (errors) => {
-				console.error(errors);
-				notifications.error($LL.web.message.removeFailed());
+			catch: (graphQLErrors) => {
+				console.error(graphQLErrors);
+				errors = buildGraphQLErrors(graphQLErrors);
+				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
+				if (globalError) {
+					messageBoxs.open({
+						title: $LL.web.message.removeFailed(),
+						content: globalError,
+						buttonName: $LL.ui.button.back(),
+						buttonType: 'neutral',
+						confirm: () => {
+							queryPage(1);
+							return true;
+						}
+					});
+				}
 			}
 		});
 	};
@@ -172,9 +199,22 @@
 				notifications.success($LL.web.message.removeSuccess());
 				queryPage(1);
 			},
-			catch: (errors) => {
-				console.error(errors);
-				notifications.error($LL.web.message.removeFailed());
+			catch: (graphQLErrors) => {
+				console.error(graphQLErrors);
+				errors = buildGraphQLErrors(graphQLErrors);
+				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
+				if (globalError) {
+					messageBoxs.open({
+						title: $LL.web.message.removeFailed(),
+						content: globalError,
+						buttonName: $LL.ui.button.back(),
+						buttonType: 'neutral',
+						confirm: () => {
+							queryPage(1);
+							return true;
+						}
+					});
+				}
 			}
 		});
 	};
@@ -189,9 +229,22 @@
 				notifications.success($LL.web.message.unbindSuccess());
 				queryPage(1);
 			},
-			catch: (errors) => {
-				console.error(errors);
-				notifications.error($LL.web.message.unbindFailed());
+			catch: (graphQLErrors) => {
+				console.error(graphQLErrors);
+				errors = buildGraphQLErrors(graphQLErrors);
+				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
+				if (globalError) {
+					messageBoxs.open({
+						title: $LL.web.message.unbindFailed(),
+						content: globalError,
+						buttonName: $LL.ui.button.back(),
+						buttonType: 'neutral',
+						confirm: () => {
+							queryPage(1);
+							return true;
+						}
+					});
+				}
 			}
 		});
 	};

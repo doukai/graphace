@@ -45,13 +45,14 @@
 			variables: { {{ name | camelCase }}_{{ idName }}: { val: {{ name | camelCase }}?.{{ idName }} }, ...event.detail.args }
 		})
 			.then((result) => {
-				{%- if connectionField %}
-				event.detail.then(result.data?.{{ name | camelCase }}?.{{ objectFieldName }}Connection?.edges?.map((edge) => edge?.node));
-				{%- else %}
-				event.detail.then(result.data?.{{ name | camelCase }}?.{{ objectFieldName }});
-				{%- endif %}
 				if (result.errors) {
 					event.detail.catch(result.errors);
+				} else {
+					{%- if connectionField %}
+					event.detail.then(result.data?.{{ name | camelCase }}?.{{ objectFieldName }}Connection?.edges?.map((edge) => edge?.node));
+					{%- else %}
+					event.detail.then(result.data?.{{ name | camelCase }}?.{{ objectFieldName }});
+					{%- endif %}
 				}
 			});
 	};
@@ -71,9 +72,10 @@
 				}
 				Mutation_{{ objectFieldTypeName | camelCase }}.mutate(event.detail.args)
 					.then((result) => {
-						event.detail.then(result?.data?.{{ objectFieldTypeName | camelCase }});
 						if (result.errors) {
 							event.detail.catch(result.errors);
+						} else {
+							event.detail.then(result?.data?.{{ objectFieldTypeName | camelCase }});
 						}
 					});
 			})
@@ -99,9 +101,10 @@
 					{{ name | camelCase }}_{{ objectFieldName }}: event.detail.args
 				})
 					.then((result) => {
-						event.detail.then(undefined);
 						if (result.errors) {
 							event.detail.catch(result.errors);
+						} else {
+							event.detail.then(undefined);
 						}
 					});
 			})

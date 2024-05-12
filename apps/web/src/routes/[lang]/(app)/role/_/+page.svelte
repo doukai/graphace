@@ -29,9 +29,10 @@
 			.then((data) => {
 				Mutation_role.mutate(event.detail.args)
 					.then((result) => {
-						event.detail.then(result?.data?.role);
 						if (result.errors) {
 							event.detail.catch(result.errors);
+						} else {
+							event.detail.then(result?.data?.role);
 						}
 					});
 			})

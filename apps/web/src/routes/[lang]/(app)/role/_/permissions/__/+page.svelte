@@ -29,9 +29,10 @@
 	) => {
 		Query_permissionConnection.fetch({ variables: event.detail.args })
 			.then((result) => {
-				event.detail.then(result.data?.permissionConnection?.edges?.map((edge) => edge?.node));
 				if (result.errors) {
 					event.detail.catch(result.errors);
+				} else {
+					event.detail.then(result.data?.permissionConnection?.edges?.map((edge) => edge?.node));
 				}
 			});
 	};
@@ -51,9 +52,10 @@
 				}
 				Mutation_permission.mutate(event.detail.args)
 					.then((result) => {
-						event.detail.then(result?.data?.permission);
 						if (result.errors) {
 							event.detail.catch(result.errors);
+						} else {
+							event.detail.then(result?.data?.permission);
 						}
 					});
 			})

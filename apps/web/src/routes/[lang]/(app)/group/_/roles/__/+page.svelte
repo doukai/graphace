@@ -29,9 +29,10 @@
 	) => {
 		Query_roleConnection.fetch({ variables: event.detail.args })
 			.then((result) => {
-				event.detail.then(result.data?.roleConnection?.edges?.map((edge) => edge?.node));
 				if (result.errors) {
 					event.detail.catch(result.errors);
+				} else {
+					event.detail.then(result.data?.roleConnection?.edges?.map((edge) => edge?.node));
 				}
 			});
 	};
@@ -51,9 +52,10 @@
 				}
 				Mutation_role.mutate(event.detail.args)
 					.then((result) => {
-						event.detail.then(result?.data?.role);
 						if (result.errors) {
 							event.detail.catch(result.errors);
+						} else {
+							event.detail.then(result?.data?.role);
 						}
 					});
 			})

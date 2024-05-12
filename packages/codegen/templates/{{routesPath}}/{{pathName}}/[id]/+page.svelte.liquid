@@ -30,9 +30,10 @@
 				errors = {};
 				Mutation_{{ name | camelCase }}.mutate(event.detail.args)
 					.then((result) => {
-						event.detail.then(result?.data?.{{ name | camelCase }});
 						if (result.errors) {
 							event.detail.catch(result.errors);
+						} else {
+							event.detail.then(result?.data?.{{ name | camelCase }});
 						}
 					});
 			})

@@ -6,7 +6,8 @@ export abstract class GraphQLErrorBuilder {
 
     public buildGraphQLErrors = (errors: GraphQLError[]): Record<string, Errors> => {
         const pathErrors: Record<string, Error[]> = {};
-        errors.map(error => ({ ...error, message: this.loadMessage(error.extensions?.code) || error.message }))
+        errors.filter(error => error.path)
+            .map(error => ({ ...error, message: this.loadMessage(error.extensions?.code) || error.message }))
             .reduce((errors, error) => {
                 errors['/' + error.path?.join('/')] = [...errors['/' + error.path?.join('/')] || [], error];
                 return errors;
@@ -21,5 +22,18 @@ export abstract class GraphQLErrorBuilder {
         return errorsTree;
     }
 
-    protected abstract loadMessage(code: number | null | undefined): string;
+    public buildGlobalGraphQLErrors = (errors: GraphQLError[]): Error[] => {
+        return errors.filter(error => !error.path)
+            .map(error => ({ ...error, message: this.loadMessage(error.extensions?.code) || error.message }));
+    }
+
+    public buildGlobalGraphQLErrorMessage = (errors: GraphQLError[]): string | undefined => {
+        const globalErrors = this.buildGlobalGraphQLErrors(errors);
+        if (globalErrors.length > 0) {
+            return globalErrors.map(error => error.message).join('<br />');
+        }
+        return undefined;
+    }
+
+    protected abstract loadMessage(code: number | null | undefined): string | undefined;
 }

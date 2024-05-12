@@ -902,6 +902,14 @@ export type NamespaceWebTranslation = {
 		 * A​u​t​h​e​n​t​i​c​a​t​i​o​n​ ​f​a​i​l​e​d
 		 */
 		'-40101': string
+		/**
+		 * R​e​s​o​u​r​c​e​ ​h​a​s​ ​b​e​e​n​ ​u​p​d​a​t​e​d
+		 */
+		'-40900': string
+		/**
+		 * E​x​i​s​t​e​d​ ​u​n​i​q​u​e​ ​v​a​l​u​e​s
+		 */
+		'-40901': string
 	}
 }
 
@@ -1812,6 +1820,14 @@ export type TranslationFunctions = {
 			 * Authentication failed
 			 */
 			'-40101': () => LocalizedString
+			/**
+			 * Resource has been updated
+			 */
+			'-40900': () => LocalizedString
+			/**
+			 * Existed unique values
+			 */
+			'-40901': () => LocalizedString
 		}
 	}
 }

@@ -33,9 +33,10 @@
 			variables: { group_id: { val: group?.id }, ...event.detail.args }
 		})
 			.then((result) => {
-				event.detail.then(result.data?.group?.usersConnection?.edges?.map((edge) => edge?.node));
 				if (result.errors) {
 					event.detail.catch(result.errors);
+				} else {
+					event.detail.then(result.data?.group?.usersConnection?.edges?.map((edge) => edge?.node));
 				}
 			});
 	};
@@ -55,9 +56,10 @@
 				}
 				Mutation_user.mutate(event.detail.args)
 					.then((result) => {
-						event.detail.then(result?.data?.user);
 						if (result.errors) {
 							event.detail.catch(result.errors);
+						} else {
+							event.detail.then(result?.data?.user);
 						}
 					});
 			})
@@ -83,9 +85,10 @@
 					group_users: event.detail.args
 				})
 					.then((result) => {
-						event.detail.then(undefined);
 						if (result.errors) {
 							event.detail.catch(result.errors);
+						} else {
+							event.detail.then(undefined);
 						}
 					});
 			})
