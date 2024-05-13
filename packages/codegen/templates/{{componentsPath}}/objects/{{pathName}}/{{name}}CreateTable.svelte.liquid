@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
+	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import { Table, TableHead, TableEmpty, messageBoxs } from '@graphace/ui';
 	import { ObjectTd, {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql';
@@ -14,7 +15,7 @@
 	{%- endfor %}
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
-	import LL from '$i18n/i18n-svelte';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	{%- if useAuth %}
 	import { permissions } from '~/lib/utils/auth-util';
@@ -26,6 +27,7 @@
 	export let showSaveButton: boolean = true;
 	export let showBackButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	const dispatch = createEventDispatcher<{
 		edit: { row: number };
@@ -69,8 +71,8 @@
 	on:save={(e) => dispatch('save', { nodes })}
 	on:remove={(e) => {
 		messageBoxs.open({
-			title: $LL.web.components.table.removeModalTitle(),
-			buttonName: $LL.web.components.table.removeBtn(),
+			title: $LL.{{ appName }}.components.table.removeModalTitle(),
+			buttonName: $LL.{{ appName }}.components.table.removeBtn(),
 			buttonType: 'error',
 			confirm: () => {
 				removeRows();
@@ -159,7 +161,7 @@
 						{%- endif %}
 						<th class="z-10 hover:z-30 w-24">
 							<div class="flex space-x-1">
-								<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
+								<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.editBtn()}>
 									<button
 										class="btn btn-square btn-ghost btn-xs"
 										on:click|preventDefault={(e) => {
@@ -169,13 +171,13 @@
 										<Icon src={PencilSquare} solid />
 									</button>
 								</div>
-								<div class="tooltip" data-tip={$LL.web.components.table.removeBtn()}>
+								<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.removeBtn()}>
 									<button
 										class="btn btn-square btn-ghost btn-xs"
 										on:click|preventDefault={(e) => {
 											messageBoxs.open({
-												title: $LL.web.components.table.removeModalTitle(),
-												buttonName: $LL.web.components.table.removeBtn(),
+												title: $LL.{{ appName }}.components.table.removeModalTitle(),
+												buttonName: $LL.{{ appName }}.components.table.removeBtn(),
 												buttonType: 'error',
 												confirm: () => {
 													removeRow(row);

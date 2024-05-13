@@ -5,7 +5,8 @@ import * as changeCase from "change-case";
 import { isOperationType, isAggregate, isConnection, isEdge, isPageInfo, isIntrospection, isInnerEnum, fieldTypeIsList, getFieldType, getObjectFields, getIDFieldName, initConfig, inGraphQLField, inComponentEnum, inComponentObject, inRouteObject, getQueryTypeName, getMutationTypeName, inRouteField, isTreeStruct, isNamedStruct } from 'graphace-codegen-commons'
 import { buildPath } from "./builder";
 
-const _graphqlPath = 'lib/graphql';
+const _appName = 'web';
+const _graphqlPath = 'graphql';
 const _componentsPath = 'lib/components';
 const _dataPath = 'lib/data';
 const _routesPath = 'routes/[lang]/(app)';
@@ -69,6 +70,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 plugins: options.plugins,
                 pluginMap: options.pluginMap,
                 config: {
+                    appName: options.presetConfig.appName || _appName,
                     graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                     componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                     routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -94,6 +96,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -129,6 +132,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -156,6 +160,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -190,6 +195,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -217,6 +223,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -243,6 +250,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -269,6 +277,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -295,6 +304,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -334,6 +344,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -374,6 +385,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -414,6 +426,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -454,6 +467,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -494,6 +508,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -534,6 +549,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -574,6 +590,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -614,6 +631,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -654,6 +672,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -694,6 +713,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -721,6 +741,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -747,6 +768,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -786,6 +808,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -826,6 +849,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -866,6 +890,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -906,6 +931,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -946,6 +972,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -986,6 +1013,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1026,6 +1054,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1066,6 +1095,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1106,6 +1136,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1146,6 +1177,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1174,6 +1206,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1200,6 +1233,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1226,6 +1260,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1252,6 +1287,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1278,6 +1314,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1304,6 +1341,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1330,6 +1368,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1356,6 +1395,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1383,6 +1423,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1410,6 +1451,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1436,6 +1478,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1462,6 +1505,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1490,6 +1534,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1517,6 +1562,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1544,6 +1590,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1570,6 +1617,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1596,6 +1644,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         plugins: options.plugins,
                         pluginMap: options.pluginMap,
                         config: {
+                            appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1620,6 +1669,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 plugins: options.plugins,
                 pluginMap: options.pluginMap,
                 config: {
+                    appName: options.presetConfig.appName || _appName,
                     graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                     componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                     routesPath: options.presetConfig.graphqlPath || _routesPath,
@@ -1647,6 +1697,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                     plugins: options.plugins,
                     pluginMap: options.pluginMap,
                     config: {
+                        appName: options.presetConfig.appName || _appName,
                         graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
                         componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                         routesPath: options.presetConfig.graphqlPath || _routesPath,

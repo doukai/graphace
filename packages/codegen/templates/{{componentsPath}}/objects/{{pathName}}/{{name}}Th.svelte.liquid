@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
+	import type { Readable } from 'svelte/store';
 	import { tippy } from '@graphace/ui';
 	import { OperatorSelect, {% for scalar in scalars %}{{ scalar }}Input{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -18,7 +19,7 @@
 	{%- endif %}
 	{%- endfor %}
 	{%- endif %}
-	import LL from '$i18n/i18n-svelte';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { Operator } from '$houdini';
 	import type { {% if isNamedStruct %}{{ name }}Input, {% endif %}{% if namedStructObjectNames %}{% for namedStructType in namedStructObjectNames %}{% if namedStructType != name %}{{ namedStructType }}Input, {% endif %}{% endfor %}{% endif %}{% for enum in enums %}{{ enum }}Expression, {% endfor %}{{ name }}Expression } from '$houdini';
 	{%- if useAuth %}
@@ -27,6 +28,8 @@
 
 	export let name: string;
 	export let expression: {{ name }}Expression | null | undefined;
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	
 	{%- if isNamedStruct %}
 	let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
 	{%- endif %}

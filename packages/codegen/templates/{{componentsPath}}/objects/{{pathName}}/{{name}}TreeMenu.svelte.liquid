@@ -3,7 +3,6 @@
 	import { graphql, {{ name }}NodesQuery$input, Operator } from '$houdini';
 	import { NodeTree, TreeStruct, buildTree } from '@graphace/graphql';
 	import { MenuTreeLoading } from '@graphace/ui';
-	import {{ name }}TreeMenu from './{{ name }}TreeMenu.svelte';
 
 	export let nodeTrees: NodeTree[] | null | undefined = undefined;
 	export let treeStructs: (TreeStruct | null | undefined)[] | null | undefined = undefined;
@@ -82,7 +81,7 @@
 				{#if ${{ name }}NodesQuery.fetching}
 					<MenuTreeLoading />
 				{:else if nodeTree.children}
-					<{{ name }}TreeMenu
+					<svelte:self
 						bind:active{{ name }}Id
 						nodeTrees={nodeTree.children}
 						currentDeep={currentDeep + 1}

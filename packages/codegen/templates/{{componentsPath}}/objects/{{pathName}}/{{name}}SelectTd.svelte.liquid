@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
+	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import { tippy } from '@graphace/ui';
 	import type { ObjectOption } from 'svelte-multiselect';
@@ -7,7 +8,7 @@
 	import type { {{ name }}Input } from '$houdini';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
-	import LL from '$i18n/i18n-svelte';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
 
 	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;
@@ -16,6 +17,7 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	let selected: ObjectOption[] = [];
 	let content: HTMLElement;

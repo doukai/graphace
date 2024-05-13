@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
+	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Table, TableHead, TableLoading, TableEmpty, messageBoxs, notifications } from '@graphace/ui';
@@ -23,7 +24,7 @@
 	{%- endif %}
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
-	import LL from '$i18n/i18n-svelte';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type {
 		{{ name }}OrderBy,
 		{{ queryTypeName }}{{ name }}ListArgs,
@@ -42,6 +43,7 @@
 	export let showUnbindButton: boolean = false;
 	export let showBackButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -86,7 +88,7 @@
 			},
 			catch: (errors) => {
 				console.error(errors);
-				notifications.error($LL.web.message.requestFailed());
+				notifications.error($LL.{{ appName }}.message.requestFailed());
 			}
 		});
 	};
@@ -120,7 +122,7 @@
 			},
 			catch: (errors) => {
 				console.error(errors);
-				notifications.error($LL.web.message.requestFailed());
+				notifications.error($LL.{{ appName }}.message.requestFailed());
 			}
 		});
 	};
@@ -133,7 +135,7 @@
 					if (nodes && row) {
 						nodes[row] = data;
 					}
-					notifications.success($LL.web.message.saveSuccess());
+					notifications.success($LL.{{ appName }}.message.saveSuccess());
 				},
 				catch: (graphQLErrors) => {
 					console.error(graphQLErrors);
@@ -141,7 +143,7 @@
 					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
 					if (globalError) {
 						messageBoxs.open({
-							title: $LL.web.message.saveFailed(),
+							title: $LL.{{ appName }}.message.saveFailed(),
 							content: globalError,
 							buttonName: $LL.ui.button.back(),
 							buttonType: 'neutral',
@@ -160,7 +162,7 @@
 		dispatch('mutation', {
 			args: { where: { {{ idName }}: { val: id } }, isDeprecated: true },
 			then: (data) => {
-				notifications.success($LL.web.message.removeSuccess());
+				notifications.success($LL.{{ appName }}.message.removeSuccess());
 				query();
 			},
 			catch: (graphQLErrors) => {
@@ -169,7 +171,7 @@
 				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
 				if (globalError) {
 					messageBoxs.open({
-						title: $LL.web.message.removeFailed(),
+						title: $LL.{{ appName }}.message.removeFailed(),
 						content: globalError,
 						buttonName: $LL.ui.button.back(),
 						buttonType: 'neutral',
@@ -190,7 +192,7 @@
 				isDeprecated: true
 			},
 			then: (data) => {
-				notifications.success($LL.web.message.removeSuccess());
+				notifications.success($LL.{{ appName }}.message.removeSuccess());
 				query();
 			},
 			catch: (graphQLErrors) => {
@@ -199,7 +201,7 @@
 				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
 				if (globalError) {
 					messageBoxs.open({
-						title: $LL.web.message.removeFailed(),
+						title: $LL.{{ appName }}.message.removeFailed(),
 						content: globalError,
 						buttonName: $LL.ui.button.back(),
 						buttonType: 'neutral',
@@ -220,7 +222,7 @@
 					return {where: { {{ idName }}: { val: id } }, isDeprecated: true};
 				}),
 			then: (data) => {
-				notifications.success($LL.web.message.unbindSuccess());
+				notifications.success($LL.{{ appName }}.message.unbindSuccess());
 				query();
 			},
 			catch: (graphQLErrors) => {
@@ -229,7 +231,7 @@
 				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
 				if (globalError) {
 					messageBoxs.open({
-						title: $LL.web.message.unbindFailed(),
+						title: $LL.{{ appName }}.message.unbindFailed(),
 						content: globalError,
 						buttonName: $LL.ui.button.back(),
 						buttonType: 'neutral',
@@ -263,8 +265,8 @@
 	on:save={(e) => dispatch('save', { nodes })}
 	on:remove={(e) => {
 		messageBoxs.open({
-			title: $LL.web.components.table.removeModalTitle(),
-			buttonName: $LL.web.components.table.removeBtn(),
+			title: $LL.{{ appName }}.components.table.removeModalTitle(),
+			buttonName: $LL.{{ appName }}.components.table.removeBtn(),
 			buttonType: 'error',
 			confirm: () => {
 				removeRows();
@@ -274,15 +276,15 @@
 	{% raw %}}{% endraw %}}
 	on:unbind={(e) =>
 		messageBoxs.open({
-			title: $LL.web.components.table.unbindModalTitle(),
-			buttonName: $LL.web.components.table.unbindBtn(),
+			title: $LL.{{ appName }}.components.table.unbindModalTitle(),
+			buttonName: $LL.{{ appName }}.components.table.unbindBtn(),
 			buttonType: 'error',
 			confirm: () => {
 				unbindRows(selectedIdList);
 				return true;
 			},
 			button1: {
-				name: $LL.web.components.table.removeBtn(),
+				name: $LL.{{ appName }}.components.table.removeBtn(),
 				className: 'btn-error',
 				onClick: () => {
 					removeRows();
@@ -412,7 +414,7 @@
 							{%- endif %}
 							<th class="z-10 hover:z-30 w-24">
 								<div class="flex space-x-1">
-									<div class="tooltip" data-tip={$LL.web.components.table.editBtn()}>
+									<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.editBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
 											on:click|preventDefault={(e) => {
@@ -425,13 +427,13 @@
 										</button>
 									</div>
 									{#if showUnbindButton}
-										<div class="tooltip" data-tip={$LL.web.components.table.unbindBtn()}>
+										<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.unbindBtn()}>
 											<button
 												class="btn btn-square btn-ghost btn-xs"
 												on:click|preventDefault={(e) => {
 													messageBoxs.open({
-														title: $LL.web.components.table.unbindModalTitle(),
-														buttonName: $LL.web.components.table.unbindBtn(),
+														title: $LL.{{ appName }}.components.table.unbindModalTitle(),
+														buttonName: $LL.{{ appName }}.components.table.unbindBtn(),
 														buttonType: 'error',
 														confirm: () => {
 															if (node?.{{ idName }}) {
@@ -440,7 +442,7 @@
 															return true;
 														},
 														button1: {
-															name: $LL.web.components.table.removeBtn(),
+															name: $LL.{{ appName }}.components.table.removeBtn(),
 															className: 'btn-error',
 															onClick: () => {
 																if (node?.{{ idName }}) {
@@ -456,13 +458,13 @@
 											</button>
 										</div>
 									{:else}
-										<div class="tooltip" data-tip={$LL.web.components.table.removeBtn()}>
+										<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.removeBtn()}>
 											<button
 												class="btn btn-square btn-ghost btn-xs"
 												on:click|preventDefault={(e) => {
 													messageBoxs.open({
-														title: $LL.web.components.table.removeModalTitle(),
-														buttonName: $LL.web.components.table.removeBtn(),
+														title: $LL.{{ appName }}.components.table.removeModalTitle(),
+														buttonName: $LL.{{ appName }}.components.table.removeBtn(),
 														buttonType: 'error',
 														confirm: () => {
 															if (node?.{{ idName }}) {

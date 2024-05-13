@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -27,13 +27,7 @@ importers:
         specifier: ^1.10.3
         version: 1.10.3
 
-  apps/spectaql:
-    devDependencies:
-      spectaql:
-        specifier: ^2.3.0
-        version: 2.3.0
-
-  apps/web:
+  apps/graphence:
     dependencies:
       '@graphace/commons':
         specifier: workspace:*
@@ -144,9 +138,15 @@ importers:
       postcss-load-config:
         specifier: ^3.1.4
         version: 3.1.4(postcss@8.4.24)(ts-node@10.9.1)
+      publint:
+        specifier: ^0.1.9
+        version: 0.1.9
       svelte:
         specifier: ^3.59.1
         version: 3.59.1
+      svelte-boring-avatars:
+        specifier: ^1.2.6
+        version: 1.2.6
       svelte-check:
         specifier: ^3.4.3
         version: 3.4.3(@babel/core@7.23.2)(postcss-load-config@3.1.4)(postcss@8.4.24)(svelte@3.59.1)
@@ -170,7 +170,7 @@ importers:
         version: 10.9.1(@types/node@18.16.17)(typescript@4.9.5)
       tslib:
         specifier: ^2.5.3
-        version: 2.5.3
+        version: 2.6.2
       tsx:
         specifier: ^3.12.7
         version: 3.12.7
@@ -183,6 +183,12 @@ importers:
       vite:
         specifier: ^4.3.9
         version: 4.3.9(@types/node@18.16.17)
+
+  apps/spectaql:
+    devDependencies:
+      spectaql:
+        specifier: ^2.3.0
+        version: 2.3.0
 
   packages/codegen:
     dependencies:
@@ -2246,7 +2252,7 @@ packages:
       shell-quote: 1.8.1
       string-env-interpolation: 1.0.1
       ts-log: 2.2.5
-      tslib: 2.5.3
+      tslib: 2.6.2
       yaml: 1.10.2
       yargs: 17.7.2
     transitivePeerDependencies:
@@ -2354,7 +2360,7 @@ packages:
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
       '@whatwg-node/fetch': 0.8.8
       graphql: 16.6.0
-      tslib: 2.5.3
+      tslib: 2.6.2
     transitivePeerDependencies:
       - encoding
     dev: true
@@ -2380,7 +2386,7 @@ packages:
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
       globby: 11.1.0
       graphql: 16.6.0
-      tslib: 2.5.3
+      tslib: 2.6.2
       unixify: 1.0.0
     transitivePeerDependencies:
       - '@babel/core'
@@ -2477,7 +2483,7 @@ packages:
       graphql: 16.6.0
       is-glob: 4.0.3
       micromatch: 4.0.5
-      tslib: 2.5.3
+      tslib: 2.6.2
       unixify: 1.0.0
     transitivePeerDependencies:
       - '@babel/core'
@@ -2495,7 +2501,7 @@ packages:
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
       '@whatwg-node/fetch': 0.8.8
       graphql: 16.6.0
-      tslib: 2.5.3
+      tslib: 2.6.2
       value-or-promise: 1.0.12
     transitivePeerDependencies:
       - '@babel/core'
@@ -2513,7 +2519,7 @@ packages:
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
       globby: 11.1.0
       graphql: 16.6.0
-      tslib: 2.5.3
+      tslib: 2.6.2
       unixify: 1.0.0
     dev: true
 
@@ -2553,7 +2559,7 @@ packages:
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
       globby: 11.1.0
       graphql: 16.6.0
-      tslib: 2.5.3
+      tslib: 2.6.2
       unixify: 1.0.0
     dev: true
 
@@ -2564,7 +2570,7 @@ packages:
     dependencies:
       globby: 11.1.0
       graphql: 16.6.0
-      tslib: 2.5.3
+      tslib: 2.6.2
       unixify: 1.0.0
     dev: true
 
@@ -2577,7 +2583,7 @@ packages:
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
       graphql: 16.6.0
       p-limit: 3.1.0
-      tslib: 2.5.3
+      tslib: 2.6.2
     dev: true
 
   /@graphql-tools/merge@8.4.2(graphql@15.8.0):
@@ -2587,7 +2593,7 @@ packages:
     dependencies:
       '@graphql-tools/utils': 9.2.1(graphql@15.8.0)
       graphql: 15.8.0
-      tslib: 2.5.3
+      tslib: 2.6.2
     dev: true
 
   /@graphql-tools/merge@8.4.2(graphql@16.6.0):
@@ -2597,7 +2603,7 @@ packages:
     dependencies:
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
       graphql: 16.6.0
-      tslib: 2.5.3
+      tslib: 2.6.2
     dev: true
 
   /@graphql-tools/optimize@1.4.0(graphql@16.6.0):
@@ -2630,7 +2636,7 @@ packages:
       json-stable-stringify: 1.0.2
       lodash: 4.17.21
       scuid: 1.1.0
-      tslib: 2.5.3
+      tslib: 2.6.2
       yaml-ast-parser: 0.0.43
     transitivePeerDependencies:
       - '@types/node'
@@ -2661,7 +2667,7 @@ packages:
       '@graphql-tools/merge': 8.4.2(graphql@15.8.0)
       '@graphql-tools/utils': 9.2.1(graphql@15.8.0)
       graphql: 15.8.0
-      tslib: 2.5.3
+      tslib: 2.6.2
       value-or-promise: 1.0.12
     dev: true
 
@@ -2673,7 +2679,7 @@ packages:
       '@graphql-tools/merge': 8.4.2(graphql@16.6.0)
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
       graphql: 16.6.0
-      tslib: 2.5.3
+      tslib: 2.6.2
       value-or-promise: 1.0.12
     dev: true
 
@@ -2693,7 +2699,7 @@ packages:
       '@whatwg-node/fetch': 0.8.8
       graphql: 16.6.0
       isomorphic-ws: 5.0.0(ws@8.14.2)
-      tslib: 2.5.3
+      tslib: 2.6.2
       value-or-promise: 1.0.12
       ws: 8.14.2
     transitivePeerDependencies:
@@ -3806,7 +3812,7 @@ packages:
     resolution: {integrity: sha512-6t10qk83GOG8p0vKmaCr8eiilZwO171AvbROMtvvNiwrTly62t+7XkA8RdIIVbpMhCASAsxgAzdRSwh6nw/5Dg==}
     engines: {node: '>=4'}
     dependencies:
-      tslib: 2.5.3
+      tslib: 2.6.2
     dev: true
 
   /astral-regex@2.0.0:
@@ -4191,7 +4197,7 @@ packages:
       path-case: 3.0.4
       sentence-case: 3.0.4
       snake-case: 3.0.4
-      tslib: 2.5.3
+      tslib: 2.6.2
 
   /chardet@0.7.0:
     resolution: {integrity: sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==}
@@ -5874,7 +5880,7 @@ packages:
       jiti: 1.17.1
       minimatch: 4.2.3
       string-env-interpolation: 1.0.1
-      tslib: 2.5.3
+      tslib: 2.6.2
     transitivePeerDependencies:
       - '@types/node'
       - bufferutil
@@ -5901,7 +5907,7 @@ packages:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       graphql: 16.6.0
-      tslib: 2.5.3
+      tslib: 2.6.2
     dev: true
 
   /graphql-tag@2.12.6(graphql@16.6.0):
@@ -7227,7 +7233,7 @@ packages:
       sade: 1.8.1
       terser: 5.22.0
       tiny-glob: 0.2.9
-      tslib: 2.5.3
+      tslib: 2.6.2
       typescript: 4.9.5
     transitivePeerDependencies:
       - '@types/babel__core'
@@ -8533,7 +8539,7 @@ packages:
       ast-types: 0.16.1
       esprima: 4.0.1
       source-map: 0.6.1
-      tslib: 2.5.3
+      tslib: 2.6.2
     dev: true
 
   /rechoir@0.7.1:
@@ -8793,7 +8799,7 @@ packages:
   /rxjs@7.8.1:
     resolution: {integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==}
     dependencies:
-      tslib: 2.5.3
+      tslib: 2.6.2
     dev: true
 
   /sade@1.8.1:
@@ -9350,6 +9356,10 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
+  /svelte-boring-avatars@1.2.6:
+    resolution: {integrity: sha512-8+Z1DhsMUVI/V/5ik00Arw0PgbJcMdhTXq3YGqccBc5bYFeceCtMEMB0aWGhi8xFV+0aqZbWvS89Hcj16LlfHA==}
+    dev: true
+
   /svelte-check@3.4.3(@babel/core@7.23.2)(postcss-load-config@3.1.4)(postcss@8.4.24)(svelte@3.59.1):
     resolution: {integrity: sha512-O07soQFY3X0VDt+bcGc6D5naz0cLtjwnmNP9JsEBPVyMemFEqUhL2OdLqvkl5H/u8Jwm50EiAU4BPRn5iin/kg==}
     hasBin: true
@@ -9579,7 +9589,7 @@ packages:
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
-      chokidar: 3.5.3
+      chokidar: 3.6.0
       didyoumean: 1.2.2
       dlv: 1.1.3
       fast-glob: 3.3.1

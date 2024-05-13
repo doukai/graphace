@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
+	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
 	import { Form, FormLoading, messageBoxs, notifications } from '@graphace/ui';
@@ -17,7 +18,7 @@
 	import {{ selectType }}SelectItem from '~/{{ objectsPath }}/{{ selectType | paramCase }}/{{ selectType }}SelectItem.svelte';
 	{%- endfor %}
 	{%- endif %}
-	import LL from '$i18n/i18n-svelte';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/lib/utils/validate-util';
 	{%- if useAuth %}
@@ -31,6 +32,7 @@
 	export let showUnbindButton: boolean = false;
 	export let showGotoSelectButton: boolean = false;
 	export let showBackButton: boolean = true;
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	const dispatch = createEventDispatcher<{
 		mutation: {
@@ -54,7 +56,7 @@
 				args: args,
 				then: (data) => {
 					node = data;
-					notifications.success($LL.web.message.saveSuccess());
+					notifications.success($LL.{{ appName }}.message.saveSuccess());
 					dispatch('back', {});
 				},
 				catch: (graphQLErrors) => {
@@ -63,7 +65,7 @@
 					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
 					if (globalError) {
 						messageBoxs.open({
-							title: $LL.web.message.saveFailed(),
+							title: $LL.{{ appName }}.message.saveFailed(),
 							content: globalError,
 							buttonName: $LL.ui.button.back(),
 							buttonType: 'neutral',
@@ -83,7 +85,7 @@
 			dispatch('mutation', {
 				args: { where: { {{ idName }}: { val: node.{{ idName }} } }, isDeprecated: true },
 				then: (data) => {
-					notifications.success($LL.web.message.removeSuccess());
+					notifications.success($LL.{{ appName }}.message.removeSuccess());
 					dispatch('back', {});
 				},
 				catch: (graphQLErrors) => {
@@ -92,7 +94,7 @@
 					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
 					if (globalError) {
 						messageBoxs.open({
-							title: $LL.web.message.removeFailed(),
+							title: $LL.{{ appName }}.message.removeFailed(),
 							content: globalError,
 							buttonName: $LL.ui.button.back(),
 							buttonType: 'neutral',
@@ -112,7 +114,7 @@
 			dispatch('parentMutation', {
 				args: null,
 				then: (data) => {
-					notifications.success($LL.web.message.unbindSuccess());
+					notifications.success($LL.{{ appName }}.message.unbindSuccess());
 					dispatch('back', {});
 				},
 				catch: (graphQLErrors) => {
@@ -121,7 +123,7 @@
 					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
 					if (globalError) {
 						messageBoxs.open({
-							title: $LL.web.message.unbindFailed(),
+							title: $LL.{{ appName }}.message.unbindFailed(),
 							content: globalError,
 							buttonName: $LL.ui.button.back(),
 							buttonType: 'neutral',
@@ -152,8 +154,8 @@
 	on:save={(e) => save()}
 	on:remove={(e) =>
 		messageBoxs.open({
-			title: $LL.web.components.table.removeModalTitle(),
-			buttonName: $LL.web.components.table.removeBtn(),
+			title: $LL.{{ appName }}.components.table.removeModalTitle(),
+			buttonName: $LL.{{ appName }}.components.table.removeBtn(),
 			buttonType: 'error',
 			confirm: () => {
 				remove();
@@ -162,15 +164,15 @@
 		})}
 	on:unbind={(e) =>
 		messageBoxs.open({
-			title: $LL.web.components.table.unbindModalTitle(),
-			buttonName: $LL.web.components.table.unbindBtn(),
+			title: $LL.{{ appName }}.components.table.unbindModalTitle(),
+			buttonName: $LL.{{ appName }}.components.table.unbindBtn(),
 			buttonType: 'error',
 			confirm: () => {
 				unbind();
 				return true;
 			},
 			button1: {
-				name: $LL.web.components.table.removeBtn(),
+				name: $LL.{{ appName }}.components.table.removeBtn(),
 				className: 'btn-error',
 				onClick: () => {
 					remove();

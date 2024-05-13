@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
+	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Table, TableHead, TableLoading, TableEmpty, messageBoxs, notifications } from '@graphace/ui';
@@ -15,7 +16,7 @@
 	{%- endfor %}
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ArchiveBoxArrowDown } from '@steeze-ui/heroicons';
-	import LL from '$i18n/i18n-svelte';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type {
 		{{ name }}OrderBy,
 		{{ queryTypeName }}{{ name }}ListArgs,
@@ -31,6 +32,7 @@
 	export let errors: Record<number, Errors> = {};
 	export let multipleSelect: boolean = true;
 	export let showBackButton: boolean = true;
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -80,7 +82,7 @@
 			},
 			catch: (errors) => {
 				console.error(errors);
-				notifications.error($LL.web.message.requestFailed());
+				notifications.error($LL.{{ appName }}.message.requestFailed());
 			}
 		});
 	};
@@ -114,7 +116,7 @@
 			},
 			catch: (errors) => {
 				console.error(errors);
-				notifications.error($LL.web.message.requestFailed());
+				notifications.error($LL.{{ appName }}.message.requestFailed());
 			}
 		});
 	};
@@ -127,7 +129,7 @@
 					if (nodes && row) {
 						nodes[row] = data;
 					}
-					notifications.success($LL.web.message.saveSuccess());
+					notifications.success($LL.{{ appName }}.message.saveSuccess());
 				},
 				catch: (graphQLErrors) => {
 					console.error(graphQLErrors);
@@ -135,7 +137,7 @@
 					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
 					if (globalError) {
 						messageBoxs.open({
-							title: $LL.web.message.saveFailed(),
+							title: $LL.{{ appName }}.message.saveFailed(),
 							content: globalError,
 							buttonName: $LL.ui.button.back(),
 							buttonType: 'neutral',
@@ -165,12 +167,12 @@
 				? selectedIdList.flatMap((id) => nodes?.find((node) => node?.{{ idName }} === id)).map((node) => ({ {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.inQuery and field.fieldName != idName %}{{ field.fieldName }}: node?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: node?.{{ idName }} } } }))
 				: nodes?.filter((node) => node?.{{ idName }} === selectedIdList)?.map((node) => ({ {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.inQuery and field.fieldName != idName %}{{ field.fieldName }}: node?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: node?.{{ idName }} } } }))[0],
 			then: () => {
-				notifications.success($LL.web.message.saveSuccess());
+				notifications.success($LL.{{ appName }}.message.saveSuccess());
 				dispatch('back', {});
 			},
 			catch: (errors) => {
 				console.error(errors);
-				notifications.error($LL.web.message.saveFailed());
+				notifications.error($LL.{{ appName }}.message.saveFailed());
 			}
 		})}
 	on:back
@@ -273,7 +275,7 @@
 							{%- endif %}
 							<th class="z-10 hover:z-30 w-12">
 								<div class="flex space-x-1">
-									<div class="tooltip" data-tip={$LL.web.components.table.selectBtn()}>
+									<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.selectBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
 											on:click|preventDefault={(e) => {
@@ -283,12 +285,12 @@
 																	? [{ {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.inQuery and field.fieldName != idName %}{{ field.fieldName }}: node?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: node.{{ idName }} } } }] 
 																	: { {% if fields %}{% for field in fields %}{% if field.isObjectType == false and field.inQuery and field.fieldName != idName %}{{ field.fieldName }}: node?.{{ field.fieldName }}, {% endif %}{% endfor %}{% endif %}where: { {{ idName }}: { val: node.{{ idName }} } } },
 														then: () => {
-															notifications.success($LL.web.message.saveSuccess());
+															notifications.success($LL.{{ appName }}.message.saveSuccess());
 															dispatch('back', {});
 														},
 														catch: (errors) => {
 															console.error(errors);
-															notifications.error($LL.web.message.saveFailed());
+															notifications.error($LL.{{ appName }}.message.saveFailed());
 														}
 													});
 												}
