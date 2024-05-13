@@ -41,12 +41,6 @@ const zh: NamespaceGraphenceTranslation = {
             settings: "系统设置",
             logout: "退出"
         }
-    },
-    errors: {
-        "-40101": '认证失败',
-        "-40900": '数据已被更新',
-        "-40901": '数据重复',
-		"-99999": '访问异常'
     }
 }
 

@@ -3,7 +3,7 @@ import { JsonSchema } from '@graphace/commons';
 import { GraphQLErrorBuilder } from '@graphace/graphql';
 import { graphql } from '$houdini';
 import LL from '$i18n/i18n-svelte';
-import type { NamespaceGraphenceTranslation } from '$i18n/i18n-types';
+import type { NamespaceErrorsTranslation } from '$i18n/i18n-types';
 
 const LoadSchemaByNameQuery = graphql(`
     query LoadSchemaByName($name: String) {
@@ -24,8 +24,8 @@ class GraphQLJsonSchema extends JsonSchema {
 class I18nGraphQLErrorBuilder extends GraphQLErrorBuilder {
     loadMessage(code: number | null | undefined): string | undefined {
         if (code !== null && code !== undefined) {
-            const errorKey = '' + code as keyof NamespaceGraphenceTranslation['errors'];
-            const error = get(LL).graphence.errors[errorKey];
+            const errorCode = '' + code as keyof NamespaceErrorsTranslation['code'];
+            const error = get(LL).errors.code[errorCode];
             if (error) {
                 return error();
             }

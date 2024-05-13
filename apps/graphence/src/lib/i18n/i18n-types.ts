@@ -13,6 +13,7 @@ export type Translation = RootTranslation & DisallowNamespaces
 
 export type Translations = RootTranslation &
 {
+	errors: NamespaceErrorsTranslation,
 	graphence: NamespaceGraphenceTranslation,
 	graphql: NamespaceGraphqlTranslation,
 	ui: NamespaceUiTranslation,
@@ -20,6 +21,27 @@ export type Translations = RootTranslation &
 }
 
 type RootTranslation = {}
+
+export type NamespaceErrorsTranslation = {
+	code: {
+		/**
+		 * A​u​t​h​e​n​t​i​c​a​t​i​o​n​ ​f​a​i​l​e​d
+		 */
+		'-40101': string
+		/**
+		 * R​e​s​o​u​r​c​e​ ​h​a​s​ ​b​e​e​n​ ​u​p​d​a​t​e​d
+		 */
+		'-40900': string
+		/**
+		 * E​x​i​s​t​e​d​ ​u​n​i​q​u​e​ ​v​a​l​u​e​s
+		 */
+		'-40901': string
+		/**
+		 * R​e​q​u​e​t​ ​e​r​r​o​r
+		 */
+		'-99999': string
+	}
+}
 
 export type NamespaceGraphenceTranslation = {
 	login: {
@@ -145,24 +167,6 @@ export type NamespaceGraphenceTranslation = {
 			 */
 			logout: string
 		}
-	}
-	errors: {
-		/**
-		 * A​u​t​h​e​n​t​i​c​a​t​i​o​n​ ​f​a​i​l​e​d
-		 */
-		'-40101': string
-		/**
-		 * R​e​s​o​u​r​c​e​ ​h​a​s​ ​b​e​e​n​ ​u​p​d​a​t​e​d
-		 */
-		'-40900': string
-		/**
-		 * E​x​i​s​t​e​d​ ​u​n​i​q​u​e​ ​v​a​l​u​e​s
-		 */
-		'-40901': string
-		/**
-		 * R​e​q​u​e​t​ ​e​r​r​o​r
-		 */
-		'-99999': string
 	}
 }
 
@@ -918,12 +922,19 @@ export type NamespaceUiGraphqlTranslation = {
 }
 
 export type Namespaces =
+	| 'errors'
 	| 'graphence'
 	| 'graphql'
 	| 'ui'
 	| 'uiGraphql'
 
 type DisallowNamespaces = {
+	/**
+	 * reserved for 'errors'-namespace\
+	 * you need to use the `./errors/index.ts` file instead
+	 */
+	errors?: "[typesafe-i18n] reserved for 'errors'-namespace. You need to use the `./errors/index.ts` file instead."
+
 	/**
 	 * reserved for 'graphence'-namespace\
 	 * you need to use the `./graphence/index.ts` file instead
@@ -950,6 +961,26 @@ type DisallowNamespaces = {
 }
 
 export type TranslationFunctions = {
+	errors: {
+		code: {
+			/**
+			 * Authentication failed
+			 */
+			'-40101': () => LocalizedString
+			/**
+			 * Resource has been updated
+			 */
+			'-40900': () => LocalizedString
+			/**
+			 * Existed unique values
+			 */
+			'-40901': () => LocalizedString
+			/**
+			 * Requet error
+			 */
+			'-99999': () => LocalizedString
+		}
+	}
 	graphence: {
 		login: {
 			/**
@@ -1072,24 +1103,6 @@ export type TranslationFunctions = {
 				 */
 				logout: () => LocalizedString
 			}
-		}
-		errors: {
-			/**
-			 * Authentication failed
-			 */
-			'-40101': () => LocalizedString
-			/**
-			 * Resource has been updated
-			 */
-			'-40900': () => LocalizedString
-			/**
-			 * Existed unique values
-			 */
-			'-40901': () => LocalizedString
-			/**
-			 * Requet error
-			 */
-			'-99999': () => LocalizedString
 		}
 	}
 	graphql: {

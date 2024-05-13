@@ -12,6 +12,7 @@ export const load: LayoutLoad<{ locale: Locales, jwt: JsonWebToken }> = async ({
 	// you always need to call `setLocale` right before you access the `LL` store
 	await loadNamespaceAsync(locale, "graphence");
 	await loadNamespaceAsync(locale, "graphql");
+	await loadNamespaceAsync(locale, "errors");
 	await loadNamespaceAsync(locale, "ui");
 	await loadNamespaceAsync(locale, "uiGraphql");
 	setLocale(locale);
