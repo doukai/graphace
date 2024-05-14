@@ -2,9 +2,15 @@ import type { Error, Errors } from '@graphace/commons';
 import { buildErrorsTree } from '@graphace/commons';
 import type { GraphQLError } from '~/types/index.js';
 
+export type GraphQLErrorsFunction = (errors: GraphQLError[]) => Record<string, Errors>;
+
+export type GlobalGraphQLErrorsFunction = (errors: GraphQLError[]) => Error[];
+
+export type GlobalGraphQLErrorMessageFunction = (errors: GraphQLError[]) => string | undefined;
+
 export abstract class GraphQLErrorBuilder {
 
-    public buildGraphQLErrors = (errors: GraphQLError[]): Record<string, Errors> => {
+    public buildGraphQLErrors: GraphQLErrorsFunction = (errors: GraphQLError[]): Record<string, Errors> => {
         const pathErrors: Record<string, Error[]> = {};
         errors.filter(error => error.path)
             .map(error => ({ ...error, message: this.loadMessage(error.extensions?.code) || error.message }))
@@ -22,12 +28,12 @@ export abstract class GraphQLErrorBuilder {
         return errorsTree;
     }
 
-    public buildGlobalGraphQLErrors = (errors: GraphQLError[]): Error[] => {
+    public buildGlobalGraphQLErrors: GlobalGraphQLErrorsFunction = (errors: GraphQLError[]): Error[] => {
         return errors.filter(error => !error.path)
             .map(error => ({ ...error, message: this.loadMessage(error.extensions?.code) || error.message }));
     }
 
-    public buildGlobalGraphQLErrorMessage = (errors: GraphQLError[]): string | undefined => {
+    public buildGlobalGraphQLErrorMessage: GlobalGraphQLErrorMessageFunction = (errors: GraphQLError[]): string | undefined => {
         const globalErrors = this.buildGlobalGraphQLErrors(errors);
         if (globalErrors.length > 0) {
             return globalErrors.map(error => error.message).join('<br />');

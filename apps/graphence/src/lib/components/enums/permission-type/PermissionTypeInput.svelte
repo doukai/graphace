@@ -1,7 +1,9 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
+	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import { EnumInput } from '@graphace/ui-graphql';
-	import LL from '$i18n/i18n-svelte';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
 
 	export let value: string | (string | null | undefined)[] | null | undefined;
 	export let list: boolean = false;
@@ -12,6 +14,7 @@
 	export let placeholder: string = '';
 	export let containerClassName: string = '';
 	export let className: string = '';
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	$: enums = [
 		{ name: $LL.graphql.enums.PermissionType.values.READ.name(), value: 'READ', description: '读取' },

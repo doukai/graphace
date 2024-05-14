@@ -1,15 +1,12 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import type { Errors } from '@graphace/commons';
-	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
+	import type { Errors, PermissionsStore} from '@graphace/commons';
+	import type { GraphQLError, __Schema, __Type, __TypeKind, GlobalGraphQLErrorMessageFunction, GraphQLErrorsFunction } from '@graphace/graphql';
 	import { Form, FormLoading, messageBoxs, notifications } from '@graphace/ui';
 	import { StringItem, ObjectItem } from '@graphace/ui-graphql';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { RealmInput } from '~/lib/types/schema';
-	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/lib/utils/validate-util';
-	import { permissions } from '~/lib/utils/auth-util';
-
 	export let node: RealmInput | null | undefined;
 	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
@@ -18,6 +15,9 @@
 	export let showGotoSelectButton: boolean = false;
 	export let showBackButton: boolean = true;
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	const permissions = getContext('permissions') as PermissionsStore;
+	const buildGraphQLErrors = getContext('buildGraphQLErrors') as GraphQLErrorsFunction;
+	const buildGlobalGraphQLErrorMessage = getContext('buildGlobalGraphQLErrorMessage') as GlobalGraphQLErrorMessageFunction;
 
 	const dispatch = createEventDispatcher<{
 		mutation: {

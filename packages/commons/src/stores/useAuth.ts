@@ -1,4 +1,5 @@
-import { type Writable, type Readable, writable, derived, get } from 'svelte/store';
+import { writable, derived, get } from 'svelte/store';
+import type { Writable, Readable, Subscriber, Unsubscriber, Updater } from 'svelte/store';
 import type { JsonWebToken } from '~/types';
 
 export const jwt: Writable<JsonWebToken | undefined> = writable(undefined);
@@ -18,12 +19,20 @@ export const isRoot: Readable<boolean | undefined> = derived(
     ($jwt) => $jwt?.is_root
 );
 
+export type PermissionsStore = {
+    subscribe: (this: void, run: Subscriber<Record<string, string[]>>, invalidate?: ((value?: Record<string, string[]> | undefined) => void) | undefined) => Unsubscriber;
+    update: (this: void, updater: Updater<Record<string, string[]>>) => void;
+    set: (typePermissionList: (string | null)[]) => void;
+    getTypes: (...authTypes: string[]) => Promise<void>;
+    auth: (...authPermissions: string[]) => boolean;
+}
+
 export function createPermissions(
     getTypePermissionList: (types: string[]) => Promise<(string | null)[]>,
     queryTypeName: string | undefined,
     mutationTypeName: string | undefined,
     subscriptionTypeName: string | undefined
-) {
+): PermissionsStore {
     const typePermissionRecord: Writable<Record<string, string[]>> = writable({});
     const { subscribe, set, update } = typePermissionRecord;
 

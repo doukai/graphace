@@ -1,6 +1,7 @@
 import { jwt as jwtStore } from '@graphace/commons';
 import type { LayoutLoad } from './$types';
-import type { Locales } from '$i18n/i18n-types'
+import type { Locales } from '$i18n/i18n-types';
+import { namespaces } from '$i18n/i18n-util';
 import { loadLocaleAsync, loadNamespaceAsync } from '$i18n/i18n-util.async';
 import LL, { setLocale } from '$i18n/i18n-svelte';
 
@@ -10,11 +11,9 @@ export const load: LayoutLoad<{ locale: Locales, jwt: JsonWebToken }> = async ({
 
 	// if you need to output a localized string in a `load` function,
 	// you always need to call `setLocale` right before you access the `LL` store
-	await loadNamespaceAsync(locale, "graphence");
-	await loadNamespaceAsync(locale, "graphql");
-	await loadNamespaceAsync(locale, "errors");
-	await loadNamespaceAsync(locale, "ui");
-	await loadNamespaceAsync(locale, "uiGraphql");
+	for (let namespace of namespaces) {
+		await loadNamespaceAsync(locale, namespace);
+	}
 	setLocale(locale);
 
 	jwtStore.set(jwt);

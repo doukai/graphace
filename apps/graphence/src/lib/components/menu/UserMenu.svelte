@@ -2,7 +2,6 @@
 	import { getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import { jwt } from '@graphace/commons';
-
 	import Avatar from 'svelte-boring-avatars';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { locale } from '$i18n/i18n-svelte';

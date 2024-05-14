@@ -4,7 +4,7 @@ import { type Errors, getNode, getErrors } from '@graphace/commons';
 import { load_Query_{{ name | camelCase }}_{{ objectFieldName }} } from '$houdini';
 import type { {{ mutationTypeName }}{{ objectFieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
 {%- if useAuth %}
-import { permissions } from '~/lib/utils/auth-util';
+import { permissions } from '~/utils/auth-util';
 {%- endif %}
 
 export const load: LayoutLoad = async (event: LoadEvent) => {

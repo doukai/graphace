@@ -1,6 +1,6 @@
 import { type ServerLoadEvent, fail, redirect } from '@sveltejs/kit';
 import { graphql } from '$houdini'
-import { getSchemaErrors } from '~/lib/utils';
+import { getSchemaErrors } from '~/utils';
 import type { Actions } from './$types';
 
 export const actions = {

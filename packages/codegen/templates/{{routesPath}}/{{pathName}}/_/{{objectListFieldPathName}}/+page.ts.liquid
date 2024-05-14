@@ -3,7 +3,7 @@ import type { LayoutLoad } from '$types';
 import { type Errors, getNode, getErrors } from '@graphace/commons';
 import type { {{ mutationTypeName }}{{ objectFieldTypeName }}Args } from '~/lib/types/schema';
 {%- if useAuth %}
-import { permissions } from '~/lib/utils/auth-util';
+import { permissions } from '~/utils/auth-util';
 {%- endif %}
 
 export const load: LayoutLoad = async (event: LoadEvent) => {

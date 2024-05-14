@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import type { Errors } from '@graphace/commons';
+	import type { Errors, PermissionsStore} from '@graphace/commons';
 	import { Table, TableHead, TableEmpty, messageBoxs } from '@graphace/ui';
 	import { ObjectTd, IDTh, IDTd, StringTh, StringTd } from '@graphace/ui-graphql';
 	import PermissionTypeTh from '~/lib/components/enums/permission-type/PermissionTypeTh.svelte';
@@ -10,7 +10,6 @@
 	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { PermissionInput } from '~/lib/types/schema';
-	import { permissions } from '~/lib/utils/auth-util';
 
 	export let nodes: (PermissionInput | null | undefined)[] | null | undefined;
 	export let errors: Record<number, Errors> = {};
@@ -19,6 +18,7 @@
 	export let showBackButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	const permissions = getContext('permissions') as PermissionsStore;
 
 	const dispatch = createEventDispatcher<{
 		edit: { row: number };

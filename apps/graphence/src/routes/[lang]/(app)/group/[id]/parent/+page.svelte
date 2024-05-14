@@ -8,7 +8,7 @@
 	import type { GroupInput, MutationGroupArgs } from '~/lib/types/schema';
 	import { Query_group_parentStore, Mutation_group_parentStore, Mutation_groupStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { validate } from '~/lib/utils';
+	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 

@@ -7,7 +7,7 @@
 	import { Mutation_group_rolesStore } from '$houdini';
 	import type { RoleInput, MutationRoleArgs } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
-	import { validate } from '~/lib/utils';
+	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 

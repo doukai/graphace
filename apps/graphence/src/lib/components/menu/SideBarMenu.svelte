@@ -1,15 +1,16 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
+	import type { PermissionsStore } from '@graphace/commons';
 	import { init } from '@graphace/ui';
 	import { page } from '$app/stores';
 	import Iconify from '@iconify/svelte';
 	import type { NamespaceGraphqlTranslation, TranslationFunctions } from '$i18n/i18n-types';
 	import { locale } from '$i18n/i18n-svelte';
 	import pages from '~/lib/data/pages.json';
-	import { permissions } from '~/lib/utils/auth-util';
-	
+
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	const permissions = getContext('permissions') as PermissionsStore;
 
 	const menus = pages.map((page) => {
 		return {

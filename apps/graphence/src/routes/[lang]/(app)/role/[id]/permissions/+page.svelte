@@ -7,7 +7,7 @@
 	import type { PermissionInput, MutationPermissionArgs, QueryPermissionConnectionArgs } from '~/lib/types/schema';
 	import { Query_role_permissionsStore, Mutation_permissionStore, Mutation_role_permissionsStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { validate } from '~/lib/utils';
+	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 

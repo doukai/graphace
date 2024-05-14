@@ -1,7 +1,9 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
+	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import { EnumItem } from '@graphace/ui-graphql';
-	import LL from '$i18n/i18n-svelte';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
 
 	export let value: string | (string | null | undefined)[] | null | undefined;
 	export let list: boolean = false;
@@ -11,6 +13,7 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	$: enums = [
 		{%- if enumValues %}

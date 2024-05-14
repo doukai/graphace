@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import type { Errors } from '@graphace/commons';
-	import type { GraphQLError } from '@graphace/graphql';
+	import type { Errors, PermissionsStore} from '@graphace/commons';
+	import type { GraphQLError, GlobalGraphQLErrorMessageFunction, GraphQLErrorsFunction } from '@graphace/graphql';
 	import { Table, TableHead, TableLoading, TableEmpty, Pagination, messageBoxs, notifications } from '@graphace/ui';
 	import { StringTh, StringTd } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -13,8 +13,6 @@
 		QueryRoleConnectionArgs,
 		RoleInput
 	} from '~/lib/types/schema';
-	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/lib/utils/validate-util';
-	import { permissions } from '~/lib/utils/auth-util';
 
 	export let nodes: (RoleInput | null | undefined)[] | null | undefined;
 	export let totalCount: number = 0;
@@ -23,6 +21,9 @@
 	export let multipleSelect: boolean = true;
 	export let showBackButton: boolean = true;
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	const permissions = getContext('permissions') as PermissionsStore;
+	const buildGraphQLErrors = getContext('buildGraphQLErrors') as GraphQLErrorsFunction;
+	const buildGlobalGraphQLErrorMessage = getContext('buildGlobalGraphQLErrorMessage') as GlobalGraphQLErrorMessageFunction;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {

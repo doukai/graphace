@@ -1,4 +1,4 @@
-import { createPermissions } from '@graphace/commons';
+import { PermissionsStore, createPermissions } from '@graphace/commons';
 import { graphql } from '$houdini';
 import { env } from '$env/dynamic/public';
 
@@ -8,7 +8,7 @@ const CurrentPermissionNameListByTypesQuery = graphql(`
     }
 `);
 
-export const permissions = createPermissions(
+export const permissions: PermissionsStore = createPermissions(
     async (types: string[]) => {
         const response = await CurrentPermissionNameListByTypesQuery.fetch({ variables: { types } });
         return response.data?.currentPermissionNameListByTypes || [];

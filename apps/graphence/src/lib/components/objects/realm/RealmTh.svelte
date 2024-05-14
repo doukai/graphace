@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
-	import type { Readable } from 'svelte/store';
-	import { tippy } from '@graphace/ui';
+	import type { Readable } from 'svelte/store';import type { PermissionsStore } from '@graphace/commons';import { tippy } from '@graphace/ui';
 	import { OperatorSelect, StringInput } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel } from '@steeze-ui/heroicons';
@@ -10,11 +9,11 @@
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { Operator } from '$houdini';
 	import type { RealmInput, RealmExpression } from '$houdini';
-	import { permissions } from '~/lib/utils/auth-util';
 
 	export let name: string;
 	export let expression: RealmExpression | null | undefined;
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	const permissions = getContext('permissions') as PermissionsStore;
 	let value: RealmInput | (RealmInput | null | undefined)[] | null | undefined = undefined;
 
 	let _expression: {

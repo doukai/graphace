@@ -8,7 +8,7 @@
 	import type { PermissionInput, MutationPermissionArgs } from '~/lib/types/schema';
 	import { Query_permissionStore, Mutation_permissionStore } from '$houdini';
 	import type { PageData } from './$houdini';
-	import { validate } from '~/lib/utils';
+	import { validate } from '~/utils';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;

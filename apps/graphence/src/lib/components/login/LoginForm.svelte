@@ -3,7 +3,7 @@
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import { nanoid } from 'nanoid';
-	import type { NamespaceGraphqlTranslation, TranslationFunctions } from '$i18n/i18n-types';
+	import type { NamespaceErrorsTranslation, TranslationFunctions } from '$i18n/i18n-types';
 
 	export let errors: Record<string, Errors> = {};
 	export let authErrorCodes: number[] = [];
@@ -11,7 +11,7 @@
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	$: authErrorMessageKeys = authErrorCodes.map(
-		(code) => ('' + code) as keyof NamespaceGraphqlTranslation['errors']
+		(code) => ('' + code) as keyof NamespaceErrorsTranslation['code']
 	);
 
 	const accountId = nanoid();
@@ -73,11 +73,13 @@
 							</label>
 						{/if}
 						<div class="label">
-							<a href={null} class="label-text-alt link link-hover">{$LL.graphence.login.forgot()}</a>
+							<a href={null} class="label-text-alt link link-hover"
+								>{$LL.graphence.login.forgot()}</a
+							>
 						</div>
 						{#each authErrorMessageKeys as messageKey}
 							<p class="text-error text-center text-sm font-semibold">
-								{$LL.graphql.errors[messageKey]()}
+								{$LL.errors.code[messageKey]()}
 							</p>
 						{/each}
 					</div>

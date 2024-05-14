@@ -1,11 +1,14 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
+	import type { Readable } from 'svelte/store';
 	import type { StringExpression, Sort } from '@graphace/graphql';
 	import { EnumTh } from '@graphace/ui-graphql';
-	import LL from '$i18n/i18n-svelte';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
 
 	export let name: string;
 	export let expression: StringExpression | null | undefined;
 	export let sort: Sort | null | undefined = undefined;
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	$: enums = [
 		{%- if enumValues %}
