@@ -36,6 +36,9 @@ const zh: NamespaceGraphenceTranslation = {
             unbindBtn: "移除",
             selectBtn: "选择"
         },
+        sideBarMenu: {
+            modules: "模块"
+        },
         userMenu: {
             profile: "个人资料",
             settings: "系统设置",

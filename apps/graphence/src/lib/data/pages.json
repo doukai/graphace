@@ -1,7 +1,7 @@
 [
   {
-    "name": "Objects",
-    "icon": "material-symbols:data-object",
+    "name": "modules",
+    "icon": "material-symbols:view-module",
     "items": [
 	    {
         "name": "Group",

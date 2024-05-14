@@ -36,6 +36,9 @@ const en: BaseTranslation = {
             unbindBtn: "Unbind",
             selectBtn: "Select"
         },
+        sideBarMenu: {
+            modules: "Modules"
+        },
         userMenu: {
             profile: "Profile",
             settings: "Settings",

@@ -5,7 +5,11 @@
 	import { init } from '@graphace/ui';
 	import { page } from '$app/stores';
 	import Iconify from '@iconify/svelte';
-	import type { NamespaceGraphqlTranslation, TranslationFunctions } from '$i18n/i18n-types';
+	import type {
+		NamespaceGraphqlTranslation,
+		NamespaceGraphenceTranslation,
+		TranslationFunctions
+	} from '$i18n/i18n-types';
 	import { locale } from '$i18n/i18n-svelte';
 	import pages from '~/lib/data/pages.json';
 
@@ -15,6 +19,7 @@
 	const menus = pages.map((page) => {
 		return {
 			...page,
+			name: page.name as keyof NamespaceGraphenceTranslation['components']['sideBarMenu'],
 			items: page.items.map((item) => {
 				return {
 					...item,
@@ -25,11 +30,11 @@
 	});
 </script>
 
-{#each menus as { name, icon, items }}
+{#each menus as { name, icon, items }, i}
 	{#if items && items.length > 0}
 		<li class="menu-title flex flex-row gap-4">
 			<span class="text-base-content"><Iconify class="w-5 h-5" {icon} /></span>
-			<span>{name}</span>
+			<span>{$LL.graphence.components.sideBarMenu[name]()}</span>
 		</li>
 		{#each items as { href, objectKey, authPermissions }}
 			{#if permissions.auth(...authPermissions)}
@@ -49,5 +54,8 @@
 				</li>
 			{/if}
 		{/each}
+	{/if}
+	{#if i < menus.length - 1}
+		<div class="divider" />
 	{/if}
 {/each}

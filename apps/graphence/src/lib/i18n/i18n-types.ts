@@ -153,6 +153,12 @@ export type NamespaceGraphenceTranslation = {
 			 */
 			selectBtn: string
 		}
+		sideBarMenu: {
+			/**
+			 * M​o​d​u​l​e​s
+			 */
+			modules: string
+		}
 		userMenu: {
 			/**
 			 * P​r​o​f​i​l​e
@@ -1088,6 +1094,12 @@ export type TranslationFunctions = {
 				 * Select
 				 */
 				selectBtn: () => LocalizedString
+			}
+			sideBarMenu: {
+				/**
+				 * Modules
+				 */
+				modules: () => LocalizedString
 			}
 			userMenu: {
 				/**

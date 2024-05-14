@@ -1,6 +1,6 @@
-import type { Translation } from '../../i18n-types'
+import type { NamespaceUiTranslation } from '../../i18n-types'
 
-const zh: Translation = {
+const zh: NamespaceUiTranslation = {
 	menu: {
 		menu: "菜单",
 		open: "打开菜单"

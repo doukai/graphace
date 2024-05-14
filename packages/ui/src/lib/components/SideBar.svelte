@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Iconify from '@iconify/svelte';
 	export let drawerSidebarScrollY: number;
 	$: switchNavbarStyle = drawerSidebarScrollY > 40 ? true : false;
 </script>

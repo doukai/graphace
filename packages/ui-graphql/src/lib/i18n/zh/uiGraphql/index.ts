@@ -1,6 +1,6 @@
-import type { Translation } from '../../i18n-types'
+import type { NamespaceUiGraphqlTranslation } from '../../i18n-types'
 
-const zh: Translation = {
+const zh: NamespaceUiGraphqlTranslation = {
 	table: {
 		removeModalTitle: "确认删除?",
 		editBtn: "编辑",
