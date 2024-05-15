@@ -24,5 +24,5 @@
 	{/if}
 	<div class="divider" />
 
-	<PermissionTypeMenu bind:activeTypeName bind:typeName bind:typeNames {totalCount} />
+	<PermissionTypeMenu bind:activeTypeName bind:typeName bind:typeNames bind:totalCount on:fetch />
 </Card>

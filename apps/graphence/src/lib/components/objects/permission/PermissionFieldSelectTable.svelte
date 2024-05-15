@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import { Table, TableLoading, TableEmpty, AutoComplete } from '@graphace/ui';
-	import { graphql, Operator, PermissionType, ValueOf } from '$houdini';
+	import type { GraphQLError } from '@graphace/graphql';
+	import { Table, TableLoading, TableEmpty, AutoComplete, notifications } from '@graphace/ui';
+	import { graphql } from '$houdini';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Link, ArrowUturnLeft } from '@steeze-ui/heroicons';
-	import { notifications } from '@graphace/ui';
+	import type { Operator, PermissionType } from '~/lib/types/schema';
 
 	export let showBackButton: boolean = true;
 	export let showSelectButton: boolean = false;
@@ -13,52 +14,24 @@
 	export let typeName: string | null | undefined = undefined;
 	export let typeNames: (string | null | undefined)[] | null | undefined;
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
+
 	const dispatch = createEventDispatcher<{
+		fetch: {
+			args: {
+				first: number;
+				offset: number;
+				type: { opr: Operator; val: string } | undefined;
+			};
+			then: (
+				data:
+					| { typeNames: (string | null | undefined)[] | null | undefined; totalCount: number }
+					| null
+					| undefined
+			) => void;
+			catch: (errors: GraphQLError[]) => void;
+		};
 		back: {};
 	}>();
-
-	let permissionList:
-		| ({
-				readonly type: string;
-				readonly field: string;
-		  } | null)[]
-		| null
-		| undefined;
-
-	let permissions:
-		| ({
-				readonly name: string;
-				readonly permissionType: ValueOf<{
-					readonly READ: 'READ';
-					readonly WRITE: 'WRITE';
-				}>;
-		  } | null)[]
-		| null
-		| undefined;
-
-	let items:
-		| {
-				value: any | null | undefined;
-				label: string | null | undefined;
-				node?: any | null | undefined;
-		  }[]
-		| null
-		| undefined = [];
-
-	let selectAllRead: boolean;
-	let selectAllWrite: boolean;
-	let fieldReadList: (string | null | undefined)[] | null | undefined = [];
-	let fieldWriteList: (string | null | undefined)[] | null | undefined = [];
-
-	$: showSelectButton = (fieldReadList?.length || 0) > 0 || (fieldWriteList?.length || 0) > 0;
-
-	const PermissionTypeListQuery = graphql(`
-		query PermissionTypeListQuery($type: StringExpression, $first: Int) {
-			permissionList(type: $type, first: $first, groupBy: ["type"]) {
-				type
-			}
-		}
-	`);
 
 	const PermissionTypeFieldsQuery = graphql(`
 		query PermissionTypeFieldsQuery(
@@ -103,6 +76,26 @@
 		}
 	`);
 
+	let permissionList: ({ type: string; field: string } | null)[] | null | undefined;
+
+	let permissions: ({ name: string; permissionType: PermissionType } | null)[] | null | undefined;
+
+	let items:
+		| {
+				value: any | null | undefined;
+				label: string | null | undefined;
+				node?: any | null | undefined;
+		  }[]
+		| null
+		| undefined = [];
+
+	let selectAllRead: boolean;
+	let selectAllWrite: boolean;
+	let fieldReadList: (string | null | undefined)[] | null | undefined = [];
+	let fieldWriteList: (string | null | undefined)[] | null | undefined = [];
+
+	$: showSelectButton = (fieldReadList?.length || 0) > 0 || (fieldWriteList?.length || 0) > 0;
+
 	let selectedItem:
 		| { value: string | null | undefined; label: string | null | undefined }
 		| null
@@ -134,11 +127,11 @@
 				permissions = result.data?.role?.permissions;
 				fieldReadList =
 					permissions
-						?.filter((permission) => permission?.permissionType === PermissionType.READ)
+						?.filter((permission) => permission?.permissionType === 'READ')
 						.map((permission) => permission?.name) || [];
 				fieldWriteList =
 					permissions
-						?.filter((permission) => permission?.permissionType === PermissionType.WRITE)
+						?.filter((permission) => permission?.permissionType === 'WRITE')
 						.map((permission) => permission?.name) || [];
 			})
 			.catch((errors) => {
@@ -179,17 +172,18 @@
 			<AutoComplete
 				placeholder={$LL.graphql.objects.Permission.fields.type.name()}
 				on:search={(e) => {
-					let variables = {
-						type: e.detail.searchValue
-							? { opr: Operator.LK, val: `%${e.detail.searchValue}%` }
-							: undefined,
-						first: 10
-					};
-					PermissionTypeListQuery.fetch({ variables }).then((result) => {
-						items = result.data?.permissionList?.map((permission) => ({
-							value: permission?.type,
-							label: permission?.type
-						}));
+					dispatch('fetch', {
+						args: {
+							first: 10,
+							offset: 0,
+							type: e.detail.searchValue
+								? { opr: 'LK', val: `%${e.detail.searchValue}%` }
+								: undefined
+						},
+						then: (data) => {},
+						catch: (errors) => {
+							console.error(errors);
+						}
 					});
 				}}
 				{items}
@@ -255,9 +249,7 @@
 							on:change={() => {
 								if (permissionList && permissionList.length > 0) {
 									fieldReadList = selectAllRead
-										? permissionList.map(
-												(node) => node?.type + '::' + node?.field + '::' + PermissionType.READ
-										  )
+										? permissionList.map((node) => node?.type + '::' + node?.field + '::' + 'READ')
 										: [];
 								}
 							}}
@@ -276,9 +268,7 @@
 							on:change={() => {
 								if (permissionList && permissionList.length > 0) {
 									fieldWriteList = selectAllWrite
-										? permissionList.map(
-												(node) => node?.type + '::' + node?.field + '::' + PermissionType.WRITE
-										  )
+										? permissionList.map((node) => node?.type + '::' + node?.field + '::' + 'WRITE')
 										: [];
 								}
 							}}
@@ -304,7 +294,7 @@
 										type="checkbox"
 										class="checkbox"
 										bind:group={fieldReadList}
-										value={node?.type + '::' + node?.field + '::' + PermissionType.READ}
+										value={node?.type + '::' + node?.field + '::' + 'READ'}
 									/>
 								</label>
 							</td>
@@ -314,7 +304,7 @@
 										type="checkbox"
 										class="checkbox"
 										bind:group={fieldWriteList}
-										value={node?.type + '::' + node?.field + '::' + PermissionType.WRITE}
+										value={node?.type + '::' + node?.field + '::' + 'WRITE'}
 									/>
 								</label>
 							</td>

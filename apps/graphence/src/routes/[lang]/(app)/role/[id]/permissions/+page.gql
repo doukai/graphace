@@ -1,0 +1,10 @@
+query PermissionTypesQuery($type: StringExpression, $first: Int, $offset: Int) {
+	permissionConnection(type: $type, first: $first, offset: $offset, groupBy: ["type"]) {
+		totalCount
+		edges {
+			node {
+				type
+			}
+		}
+	}
+}

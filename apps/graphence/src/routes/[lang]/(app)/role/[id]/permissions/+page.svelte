@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons';
-	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
+	import type { GraphQLError, Operator, __Schema, __Type, __TypeKind } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import PermissionTypeMenuCard from '~/lib/components/objects/permission/PermissionTypeMenuCard.svelte';
 	import PermissionFieldSelectTable from '~/lib/components/objects/permission/PermissionFieldSelectTable.svelte';
@@ -19,6 +19,36 @@
 	const Mutation_role_permissions = new Mutation_role_permissionsStore();
 	let errors: Record<number, Errors> = {};
 	let typeName: string | null | undefined = undefined;
+
+	const fetch = (
+		event: CustomEvent<{
+			args: {
+				first: number;
+				offset: number;
+				type: { opr: Operator; val: string } | undefined;
+			};
+			then: (
+				data:
+					| { typeNames: (string | null | undefined)[] | null | undefined; totalCount: number }
+					| null
+					| undefined
+			) => void;
+			catch: (errors: GraphQLError[]) => void;
+		}>
+	) => {
+		PermissionTypesQuery.fetch({
+			variables: event.detail.args
+		}).then((result) => {
+			if (result.errors) {
+				event.detail.catch(result.errors);
+			} else {
+				event.detail.then({
+					typeNames: result.data?.permissionConnection?.edges?.map((edge) => edge?.node?.type),
+					totalCount: result.data?.permissionConnection?.totalCount || 0
+				});
+			}
+		});
+	};
 
 	const parentMutation = (
 		event: CustomEvent<{
@@ -76,16 +106,17 @@
 </script>
 
 <div class="flex xl:items-start xl:flex-row xl:gap-2">
-	<div class="hidden xl:flex xl:basis-1/6">
+	<div class="hidden xl:flex xl:basis-1/5">
 		<PermissionTypeMenuCard
 			bind:activeTypeName={typeName}
 			typeNames={$PermissionTypesQuery.data?.permissionConnection?.edges?.map(
 				(edge) => edge?.node?.type
 			)}
 			totalCount={$PermissionTypesQuery.data?.permissionConnection?.totalCount || 0}
+			on:fetch={fetch}
 		/>
 	</div>
-	<div class="w-full xl:basis-5/6">
+	<div class="w-full xl:basis-4/5">
 		<Card>
 			<PermissionFieldSelectTable
 				showBackButton={$canBack}
