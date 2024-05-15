@@ -25,7 +25,7 @@
 			args: {
 				first: number;
 				offset: number;
-				type: { opr: Operator; val: string } | undefined;
+				type: { opr?: Operator; val: string } | undefined;
 			};
 			then: (
 				data:
