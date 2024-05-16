@@ -1,37 +1,43 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import type { GraphQLError } from '@graphace/graphql';
 	import { Table, TableLoading, TableEmpty, AutoComplete, notifications } from '@graphace/ui';
 	import { graphql } from '$houdini';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Link, ArrowUturnLeft } from '@steeze-ui/heroicons';
-	import type { Operator, PermissionType } from '~/lib/types/schema';
+	import type { PermissionType } from '~/lib/types/schema';
+	import type { PermissionTypesQueryVariables } from './$houdini';
 
 	export let showBackButton: boolean = true;
 	export let showSelectButton: boolean = false;
 	export let roleId: string | null | undefined = undefined;
 	export let typeName: string | null | undefined = undefined;
-	export let typeNames: (string | null | undefined)[] | null | undefined;
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	const dispatch = createEventDispatcher<{
-		fetch: {
-			args: {
-				first: number;
-				offset: number;
-				type: { opr?: Operator; val: string } | undefined;
-			};
-			then: (
-				data:
-					| { typeNames: (string | null | undefined)[] | null | undefined; totalCount: number }
-					| null
-					| undefined
-			) => void;
-			catch: (errors: GraphQLError[]) => void;
-		};
 		back: {};
 	}>();
+
+	export const _PermissionTypesQueryVariables: PermissionTypesQueryVariables = ({ props }) => {
+		return { first: 10 };
+	};
+
+	const PermissionTypesQuery = graphql(`
+		query PermissionTypesQuery($type: StringExpression, $first: Int) @load {
+			permissionConnection(type: $type, first: $first, groupBy: ["type"]) {
+				totalCount
+				edges {
+					node {
+						type
+					}
+				}
+			}
+		}
+	`);
+
+	$: typeNames = $PermissionTypesQuery.data?.permissionConnection?.edges?.map(
+		(edge) => edge?.node?.type
+	);
 
 	const PermissionTypeFieldsQuery = graphql(`
 		query PermissionTypeFieldsQuery(
@@ -172,17 +178,12 @@
 			<AutoComplete
 				placeholder={$LL.graphql.objects.Permission.fields.type.name()}
 				on:search={(e) => {
-					dispatch('fetch', {
-						args: {
+					PermissionTypesQuery.fetch({
+						variables: {
 							first: 10,
-							offset: 0,
 							type: e.detail.searchValue
 								? { opr: 'LK', val: `%${e.detail.searchValue}%` }
 								: undefined
-						},
-						then: (data) => {},
-						catch: (errors) => {
-							console.error(errors);
 						}
 					});
 				}}

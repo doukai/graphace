@@ -1,46 +1,49 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	import type { GraphQLError } from '@graphace/graphql';
-	import type { Operator } from '~/lib/types/schema';
-	import LL from '$i18n/i18n-svelte';
+	import { getContext } from 'svelte';
+	import type { Readable } from 'svelte/store';
+	import { graphql } from '$houdini';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
+	import type { PermissionTypesPageQueryVariables } from './$houdini';
 
-	export let typeNames: (string | null | undefined)[] | null | undefined;
-	export let totalCount: number;
 	export let typeName: string | null | undefined;
 	export let activeTypeName: string | null | undefined;
-
-	const dispatch = createEventDispatcher<{
-		fetch: {
-			args: {
-				first: number;
-				offset: number;
-				type: { opr?: Operator; val: string } | undefined;
-			};
-			then: (
-				data:
-					| { typeNames: (string | null | undefined)[] | null | undefined; totalCount: number }
-					| null
-					| undefined
-			) => void;
-			catch: (errors: GraphQLError[]) => void;
-		};
-	}>();
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
+
+	export const _PermissionTypesPageQueryVariables: PermissionTypesPageQueryVariables = ({
+		props
+	}) => {
+		return { first: 10 };
+	};
+
+	const PermissionTypesPageQuery = graphql(`
+		query PermissionTypesPageQuery($type: StringExpression, $first: Int, $offset: Int) @load {
+			permissionConnection(type: $type, first: $first, offset: $offset, groupBy: ["type"]) {
+				totalCount
+				edges {
+					node {
+						type
+					}
+				}
+			}
+		}
+	`);
+
+	$: typeNames = $PermissionTypesPageQuery.data?.permissionConnection?.edges?.map(
+		(edge) => edge?.node?.type
+	);
+	$: totalCount = $PermissionTypesPageQuery.data?.permissionConnection?.totalCount || 0;
 	$: pageCount =
 		totalCount % pageSize == 0 ? ~~(totalCount / pageSize) : ~~(totalCount / pageSize) + 1;
 
 	const queryPage = () => {
-		dispatch('fetch', {
-			args: {
+		PermissionTypesPageQuery.fetch({
+			variables: {
 				first: pageSize,
 				offset: (pageNumber - 1) * pageSize,
 				type: typeName ? { val: typeName } : undefined
-			},
-			then: (data) => {},
-			catch: (errors) => {
-				console.error(errors);
 			}
 		});
 	};
