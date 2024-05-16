@@ -44,13 +44,5 @@
 	{/if}
 	<div class="divider" />
 
-	<GroupTreeMenu
-		bind:activeGroupId
-		bind:groupName
-		bind:queryNodes
-		treeStructs={$GroupRootNodesQuery.data?.groupList}
-		{currentDeep}
-		{deeps}
-		on:change
-	/>
+	<GroupTreeMenu bind:activeGroupId bind:groupName treeStructs={$GroupRootNodesQuery.data?.groupList} {currentDeep} {deeps} on:change bind:queryNodes />
 </Card>

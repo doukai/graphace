@@ -14,7 +14,7 @@ const renders: Record<Template, Render> = {
             content: buildFileContent(config.template,
                 {
                     objects: Object.values(schema.getTypeMap())
-                        .filter(type => inRouteObject(type.name))
+                        // .filter(type => inRouteObject(type.name))
                         .filter(type => isObjectType(type))
                         .filter(type => !isOperationType(type.name))
                         .filter(type => !isConnection(type.name))

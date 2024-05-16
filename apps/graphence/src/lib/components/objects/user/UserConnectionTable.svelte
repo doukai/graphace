@@ -8,6 +8,8 @@
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
+	import GroupSelectTd from '~/lib/components/objects/group/GroupSelectTd.svelte';
+	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
@@ -475,10 +477,26 @@
 							/>
 							{/if}
 							{#if permissions.auth('User::groups::*')}
-							<ObjectTd name="groups" namedStruct={node.groups} errors={errors[row]?.iterms?.groups} path={`${node.id}/groups`} on:gotoField />
+							<GroupSelectTd
+								name="groups"
+								bind:value={node.groups}
+								list
+								errors={errors[row]?.iterms?.groups}
+								readonly={!permissions.auth('User::groups::WRITE')}
+								on:save={(e) =>
+									updateField({ groups: node?.groups, where: { id: { val: node?.id } } }, row)}
+							/>
 							{/if}
 							{#if permissions.auth('User::roles::*')}
-							<ObjectTd name="roles" namedStruct={node.roles} errors={errors[row]?.iterms?.roles} path={`${node.id}/roles`} on:gotoField />
+							<RoleSelectTd
+								name="roles"
+								bind:value={node.roles}
+								list
+								errors={errors[row]?.iterms?.roles}
+								readonly={!permissions.auth('User::roles::WRITE')}
+								on:save={(e) =>
+									updateField({ roles: node?.roles, where: { id: { val: node?.id } } }, row)}
+							/>
 							{/if}
 							{#if permissions.auth('User::realm::*')}
 							<ObjectTd name="realm" namedStruct={node.realm} errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />

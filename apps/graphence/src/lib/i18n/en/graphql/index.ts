@@ -145,41 +145,6 @@ const en: BaseTranslation = {
 					name: 'realm',
 				}
 			}
-		},
-		User: {
-			name: 'User',
-			fields: {
-				name: {
-					name: 'name',
-				},
-				description: {
-					name: 'description',
-				},
-				lastName: {
-					name: 'lastName',
-				},
-				login: {
-					name: 'login',
-				},
-				email: {
-					name: 'email',
-				},
-				phones: {
-					name: 'phones',
-				},
-				disable: {
-					name: 'disable',
-				},
-				groups: {
-					name: 'groups',
-				},
-				roles: {
-					name: 'roles',
-				},
-				realm: {
-					name: 'realm',
-				}
-			}
 		}
 	},
 	enums: {

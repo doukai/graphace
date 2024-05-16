@@ -3,36 +3,46 @@
     "name": "modules",
     "icon": "material-symbols:view-module",
     "items": [
-	    {
+      {
         "name": "Group",
         "tags": "Group",
         "href": "/group",
-        "authPermissions": ["Group::*::*"]
-	    },
-	    {
+        "authPermissions": [
+          "Group::*::*"
+        ]
+      },
+      {
         "name": "Permission",
         "tags": "Permission",
         "href": "/permission",
-        "authPermissions": ["Permission::*::*"]
-	    },
-	    {
+        "authPermissions": [
+          "Permission::*::*"
+        ]
+      },
+      {
         "name": "Realm",
         "tags": "Realm",
         "href": "/realm",
-        "authPermissions": ["Realm::*::*"]
-	    },
-	    {
+        "authPermissions": [
+          "Realm::*::*"
+        ]
+      },
+      {
         "name": "Role",
         "tags": "Role",
         "href": "/role",
-        "authPermissions": ["Role::*::*"]
-	    },
-	    {
+        "authPermissions": [
+          "Role::*::*"
+        ]
+      },
+      {
         "name": "User",
         "tags": "User",
         "href": "/user",
-        "authPermissions": ["User::*::*"]
-	    }
+        "authPermissions": [
+          "User::*::*"
+        ]
+      }
     ]
   }
 ]

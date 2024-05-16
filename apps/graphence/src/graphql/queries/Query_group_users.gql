@@ -34,11 +34,13 @@ query Query_group_users($group_id: StringExpression, $id: StringExpression, $nam
           updateUserId
           updateTime
           createGroupId
-          groups(first: 3) {
+          groups {
+            id
             name
             description
           }
-          roles(first: 3) {
+          roles {
+            id
             name
             description
           }

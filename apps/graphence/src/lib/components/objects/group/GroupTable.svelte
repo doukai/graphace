@@ -9,6 +9,9 @@
 	import UserTh from '~/lib/components/objects/user/UserTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
+	import GroupSelectTd from '~/lib/components/objects/group/GroupSelectTd.svelte';
+	import UserSelectTd from '~/lib/components/objects/user/UserSelectTd.svelte';
+	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
@@ -423,16 +426,47 @@
 							/>
 							{/if}
 							{#if permissions.auth('Group::parent::*')}
-							<ObjectTd name="parent" namedStruct={node.parent} errors={errors[row]?.iterms?.parent} path={`${node.id}/parent`} on:gotoField />
+							<GroupSelectTd
+								name="parent"
+								bind:value={node.parent}
+								errors={errors[row]?.iterms?.parent}
+								readonly={!permissions.auth('Group::parent::WRITE')}
+								on:save={(e) =>
+									updateField({ parent: node?.parent, where: { id: {val: node?.id } } }, row)}
+							/>
 							{/if}
 							{#if permissions.auth('Group::subGroups::*')}
-							<ObjectTd name="subGroups" namedStruct={node.subGroups} errors={errors[row]?.iterms?.subGroups} path={`${node.id}/sub-groups`} on:gotoField />
+							<GroupSelectTd
+								name="subGroups"
+								bind:value={node.subGroups}
+								list
+								errors={errors[row]?.iterms?.subGroups}
+								readonly={!permissions.auth('Group::subGroups::WRITE')}
+								on:save={(e) =>
+									updateField({ subGroups: node?.subGroups, where: { id: {val: node?.id } } }, row)}
+							/>
 							{/if}
 							{#if permissions.auth('Group::users::*')}
-							<ObjectTd name="users" namedStruct={node.users} errors={errors[row]?.iterms?.users} path={`${node.id}/users`} on:gotoField />
+							<UserSelectTd
+								name="users"
+								bind:value={node.users}
+								list
+								errors={errors[row]?.iterms?.users}
+								readonly={!permissions.auth('Group::users::WRITE')}
+								on:save={(e) =>
+									updateField({ users: node?.users, where: { id: {val: node?.id } } }, row)}
+							/>
 							{/if}
 							{#if permissions.auth('Group::roles::*')}
-							<ObjectTd name="roles" namedStruct={node.roles} errors={errors[row]?.iterms?.roles} path={`${node.id}/roles`} on:gotoField />
+							<RoleSelectTd
+								name="roles"
+								bind:value={node.roles}
+								list
+								errors={errors[row]?.iterms?.roles}
+								readonly={!permissions.auth('Group::roles::WRITE')}
+								on:save={(e) =>
+									updateField({ roles: node?.roles, where: { id: {val: node?.id } } }, row)}
+							/>
 							{/if}
 							{#if permissions.auth('Group::realm::*')}
 							<ObjectTd name="realm" namedStruct={node.realm} errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />

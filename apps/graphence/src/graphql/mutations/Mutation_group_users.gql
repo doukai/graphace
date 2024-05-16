@@ -36,11 +36,13 @@ mutation Mutation_group_users($group_id: String, $group_users: [UserInput], $id:
           updateTime
           createGroupId
           syncUserPolicy
-          groups(first: 3) {
+          groups {
+            id
             name
             description
           }
-          roles(first: 3) {
+          roles {
+            id
             name
             description
           }

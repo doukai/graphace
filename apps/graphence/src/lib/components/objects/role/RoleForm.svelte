@@ -5,6 +5,9 @@
 	import type { GraphQLError, __Schema, __Type, __TypeKind, GlobalGraphQLErrorMessageFunction, GraphQLErrorsFunction } from '@graphace/graphql';
 	import { Form, FormLoading, messageBoxs, notifications } from '@graphace/ui';
 	import { StringItem, ObjectItem } from '@graphace/ui-graphql';
+	import UserSelectItem from '~/lib/components/objects/user/UserSelectItem.svelte';
+	import GroupSelectItem from '~/lib/components/objects/group/GroupSelectItem.svelte';
+	import RoleSelectItem from '~/lib/components/objects/role/RoleSelectItem.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { RoleInput } from '~/lib/types/schema';
 	export let node: RoleInput | null | undefined;
@@ -173,13 +176,31 @@
 			<StringItem label={$LL.graphql.objects.Role.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
 			{/if}
 			{#if permissions.auth('Role::users::*')}
-			<ObjectItem name="users" namedStruct={node.users} path={`${node.id}/users`} label={$LL.graphql.objects.Role.fields.users.name()} errors={errors.users} on:gotoField />
+			<UserSelectItem
+				name="users"
+				label={$LL.graphql.objects.Role.fields.users.name()}
+				errors={errors.users}
+				bind:value={node.users}
+				list
+			/>
 			{/if}
 			{#if permissions.auth('Role::groups::*')}
-			<ObjectItem name="groups" namedStruct={node.groups} path={`${node.id}/groups`} label={$LL.graphql.objects.Role.fields.groups.name()} errors={errors.groups} on:gotoField />
+			<GroupSelectItem
+				name="groups"
+				label={$LL.graphql.objects.Role.fields.groups.name()}
+				errors={errors.groups}
+				bind:value={node.groups}
+				list
+			/>
 			{/if}
 			{#if permissions.auth('Role::composites::*')}
-			<ObjectItem name="composites" namedStruct={node.composites} path={`${node.id}/composites`} label={$LL.graphql.objects.Role.fields.composites.name()} errors={errors.composites} on:gotoField />
+			<RoleSelectItem
+				name="composites"
+				label={$LL.graphql.objects.Role.fields.composites.name()}
+				errors={errors.composites}
+				bind:value={node.composites}
+				list
+			/>
 			{/if}
 			{#if permissions.auth('Role::permissions::*')}
 			<ObjectItem name="permissions"  path={`${node.id}/permissions`} label={$LL.graphql.objects.Role.fields.permissions.name()} errors={errors.permissions} on:gotoField />

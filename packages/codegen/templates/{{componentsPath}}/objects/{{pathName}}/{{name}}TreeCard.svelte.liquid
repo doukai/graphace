@@ -44,5 +44,5 @@
 	{/if}
 	<div class="divider" />
 
-	<{{ name }}TreeMenu bind:active{{ name }}Id bind:{{ name | camelCase }}Name {treeStructs} {currentDeep} {deeps} on:change bind:queryNodes />
+	<{{ name }}TreeMenu bind:active{{ name }}Id bind:{{ name | camelCase }}Name treeStructs={$GroupRootNodesQuery.data?.groupList} {currentDeep} {deeps} on:change bind:queryNodes />
 </Card>

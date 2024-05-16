@@ -6,6 +6,7 @@
 	import { Form, FormLoading, messageBoxs, notifications } from '@graphace/ui';
 	import { IDItem, StringItem, ObjectItem } from '@graphace/ui-graphql';
 	import PermissionTypeItem from '~/lib/components/enums/permission-type/PermissionTypeItem.svelte';
+	import RoleSelectItem from '~/lib/components/objects/role/RoleSelectItem.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { PermissionInput } from '~/lib/types/schema';
 	export let node: PermissionInput | null | undefined;
@@ -183,7 +184,13 @@
 			<PermissionTypeItem label={$LL.graphql.objects.Permission.fields.permissionType.name()} name="permissionType" bind:value={node.permissionType} errors={errors.permissionType} />
 			{/if}
 			{#if permissions.auth('Permission::roles::*')}
-			<ObjectItem name="roles" namedStruct={node.roles} path={`${node.name}/roles`} label={$LL.graphql.objects.Permission.fields.roles.name()} errors={errors.roles} on:gotoField />
+			<RoleSelectItem
+				name="roles"
+				label={$LL.graphql.objects.Permission.fields.roles.name()}
+				errors={errors.roles}
+				bind:value={node.roles}
+				list
+			/>
 			{/if}
 			{#if permissions.auth('Permission::realm::*')}
 			<ObjectItem name="realm" namedStruct={node.realm} path={`${node.name}/realm`} label={$LL.graphql.objects.Permission.fields.realm.name()} errors={errors.realm} on:gotoField />
