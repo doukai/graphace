@@ -5,6 +5,8 @@
 	export let showSearchInput: boolean = true;
 	export let activeTypeName: string | null | undefined = undefined;
 	export let typeName: string | null | undefined = undefined;
+
+	let queryPage: (typeName?: string | null | undefined) => void;
 </script>
 
 <Card>
@@ -13,14 +15,14 @@
 			on:search={(e) => {
 				activeTypeName = undefined;
 				if (e.detail.value) {
-					typeName = e.detail.value;
+					queryPage(e.detail.value);
 				} else {
-					typeName = undefined;
+					queryPage();
 				}
 			}}
 		/>
 	{/if}
 	<div class="divider" />
 
-	<PermissionTypeMenu bind:activeTypeName bind:typeName />
+	<PermissionTypeMenu bind:activeTypeName bind:typeName bind:queryPage />
 </Card>

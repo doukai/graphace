@@ -38,7 +38,7 @@
 		queryNodes({{ name | camelCase }}Name);
 	}
 
-	const queryNodes = ({{ name | camelCase }}Name?: string | null | undefined) => {
+	export const queryNodes = ({{ name | camelCase }}Name?: string | null | undefined) => {
 		let variables: {{ name }}NodesQuery$input;
 		if ({{ name | camelCase }}Name) {
 			variables = {

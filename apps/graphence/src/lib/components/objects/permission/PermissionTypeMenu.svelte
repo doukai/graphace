@@ -38,12 +38,12 @@
 	$: pageCount =
 		totalCount % pageSize == 0 ? ~~(totalCount / pageSize) : ~~(totalCount / pageSize) + 1;
 
-	const queryPage = () => {
+	export const queryPage = (typeName?: string | null | undefined) => {
 		PermissionTypesPageQuery.fetch({
 			variables: {
 				first: pageSize,
 				offset: (pageNumber - 1) * pageSize,
-				type: typeName ? { val: typeName } : undefined
+				type: typeName ? { opr: 'LK', val: `%${typeName}%` } : undefined
 			}
 		});
 	};
@@ -72,7 +72,7 @@
 		class="join-item btn {pageNumber - 1 ? '' : 'btn-disabled'}"
 		on:click={() => {
 			pageNumber = pageNumber - 1;
-			queryPage();
+			queryPage(typeName);
 		}}
 	>
 		«
@@ -84,7 +84,7 @@
 		class="join-item btn {pageNumber + 1 <= pageCount ? '' : 'btn-disabled'}"
 		on:click={() => {
 			pageNumber = pageNumber + 1;
-			queryPage();
+			queryPage(typeName);
 		}}
 	>
 		»

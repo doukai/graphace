@@ -1,14 +1,32 @@
 <script lang="ts">
-	import type { TreeStruct } from '@graphace/graphql';
 	import { Card, SearchInput } from '@graphace/ui';
 	import {{ name }}TreeMenu from '~/lib/components/objects/{{ name | camelCase }}/{{ name }}TreeMenu.svelte';
+	import { Operator, graphql } from '$houdini';
+	import type { {{ name }}RootNodesQueryVariables } from './$houdini';
 
-	export let treeStructs: (TreeStruct | null | undefined)[] | null | undefined = undefined;
 	export let currentDeep = 0;
 	export let deeps = 2;
 	export let showSearchInput: boolean = true;
 	export let active{{ name }}Id: string | null | undefined = undefined;
 	export let {{ name | camelCase }}Name: string | undefined = undefined;
+
+	export const _{{ name }}RootNodesQueryVariables: {{ name }}RootNodesQueryVariables = ({ props }) => {
+		return { deep: { opr: Operator.LT, val: deeps } };
+	};
+
+	const {{ name }}RootNodesQuery = graphql(`
+		query {{ name }}RootNodesQuery($deep: IntExpression) @load {
+			{{ name | camelCase }}List(deep: $deep) {
+				{{ idName }}
+				name
+				path
+				deep
+				parentId
+			}
+		}
+	`);
+
+	let queryNodes: ({{ name | camelCase }}Name?: string | null | undefined) => void;
 </script>
 
 <Card>
@@ -17,14 +35,14 @@
 			on:search={(e) => {
 				active{{ name }}Id = undefined;
 				if (e.detail.value) {
-					{{ name | camelCase }}Name = e.detail.value;
+					queryNodes(e.detail.value);
 				} else {
-					{{ name | camelCase }}Name = undefined;
+					queryNodes();
 				}
 			{% raw %}}{% endraw %}}
 		/>
 	{/if}
 	<div class="divider" />
 
-	<{{ name }}TreeMenu bind:active{{ name }}Id bind:{{ name | camelCase }}Name {treeStructs} {currentDeep} {deeps} on:change />
+	<{{ name }}TreeMenu bind:active{{ name }}Id bind:{{ name | camelCase }}Name {treeStructs} {currentDeep} {deeps} on:change bind:queryNodes />
 </Card>

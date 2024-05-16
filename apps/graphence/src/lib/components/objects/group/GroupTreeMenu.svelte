@@ -38,7 +38,7 @@
 		queryNodes(groupName);
 	}
 
-	const queryNodes = (groupName?: string | null | undefined) => {
+	export const queryNodes = (groupName?: string | null | undefined) => {
 		let variables: GroupNodesQuery$input;
 		if (groupName) {
 			variables = {
