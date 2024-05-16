@@ -19,7 +19,7 @@
 	<label tabindex="0" class="btn btn-ghost btn-circle avatar">
 		<div class="w-10 rounded-full">
 			<!-- svelte-ignore a11y-missing-attribute -->
-			<Avatar name={$jwt.full_name} {size} {square} {colors} variant="beam" />
+			<Avatar name={$jwt?.full_name} {size} {square} {colors} variant="beam" />
 		</div>
 	</label>
 	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
