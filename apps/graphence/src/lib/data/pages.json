@@ -42,6 +42,14 @@
         "authPermissions": [
           "User::*::*"
         ]
+      },
+      {
+        "name": "User",
+        "tags": "User",
+        "href": "/policy",
+        "authPermissions": [
+          "User::*::*"
+        ]
       }
     ]
   }

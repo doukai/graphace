@@ -110,19 +110,19 @@
 	on:back
 >
 	{#if permissions.auth('Group::name::*')}
-	<StringItem label={$LL.graphql.objects.Group.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
+	<StringItem label={$LL.graphql.objects.Group.fields.name.name()} name="name" bind:value={node.name} readonly={!permissions.auth('Group::name::WRITE')} errors={errors.name} />
 	{/if}
 	{#if permissions.auth('Group::description::*')}
-	<StringItem label={$LL.graphql.objects.Group.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
+	<StringItem label={$LL.graphql.objects.Group.fields.description.name()} name="description" bind:value={node.description} readonly={!permissions.auth('Group::description::WRITE')} errors={errors.description} />
 	{/if}
 	{#if permissions.auth('Group::path::*')}
-	<StringItem label={$LL.graphql.objects.Group.fields.path.name()} name="path" bind:value={node.path} errors={errors.path} />
+	<StringItem label={$LL.graphql.objects.Group.fields.path.name()} name="path" bind:value={node.path} readonly={!permissions.auth('Group::path::WRITE')} errors={errors.path} />
 	{/if}
 	{#if permissions.auth('Group::deep::*')}
-	<IntItem label={$LL.graphql.objects.Group.fields.deep.name()} name="deep" bind:value={node.deep} errors={errors.deep} />
+	<IntItem label={$LL.graphql.objects.Group.fields.deep.name()} name="deep" bind:value={node.deep} readonly={!permissions.auth('Group::deep::WRITE')} errors={errors.deep} />
 	{/if}
 	{#if permissions.auth('Group::parentId::*')}
-	<StringItem label={$LL.graphql.objects.Group.fields.parentId.name()} name="parentId" bind:value={node.parentId} errors={errors.parentId} />
+	<StringItem label={$LL.graphql.objects.Group.fields.parentId.name()} name="parentId" bind:value={node.parentId} readonly={!permissions.auth('Group::parentId::WRITE')} errors={errors.parentId} />
 	{/if}
 	{#if permissions.auth('Group::parent::*')}
 	<GroupSelectItem
@@ -130,6 +130,7 @@
 		label={$LL.graphql.objects.Group.fields.parent.name()}
 		errors={errors.parent}
 		bind:value={node.parent}
+		readonly={!permissions.auth('Group::parent::WRITE')}
 	/>
 	{/if}
 	{#if permissions.auth('Group::subGroups::*')}
@@ -138,6 +139,7 @@
 		label={$LL.graphql.objects.Group.fields.subGroups.name()}
 		errors={errors.subGroups}
 		bind:value={node.subGroups}
+		readonly={!permissions.auth('Group::subGroups::WRITE')}
 		list
 	/>
 	{/if}
@@ -147,6 +149,7 @@
 		label={$LL.graphql.objects.Group.fields.users.name()}
 		errors={errors.users}
 		bind:value={node.users}
+		readonly={!permissions.auth('Group::users::WRITE')}
 		list
 	/>
 	{/if}
@@ -156,6 +159,7 @@
 		label={$LL.graphql.objects.Group.fields.roles.name()}
 		errors={errors.roles}
 		bind:value={node.roles}
+		readonly={!permissions.auth('Group::roles::WRITE')}
 		list
 	/>
 	{/if}

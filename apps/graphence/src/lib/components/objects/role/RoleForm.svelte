@@ -170,10 +170,10 @@
 	{:else}
 		{#if node}
 			{#if permissions.auth('Role::name::*')}
-			<StringItem label={$LL.graphql.objects.Role.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
+			<StringItem label={$LL.graphql.objects.Role.fields.name.name()} name="name" bind:value={node.name} readonly={!permissions.auth('Role::name::WRITE')} errors={errors.name} />
 			{/if}
 			{#if permissions.auth('Role::description::*')}
-			<StringItem label={$LL.graphql.objects.Role.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
+			<StringItem label={$LL.graphql.objects.Role.fields.description.name()} name="description" bind:value={node.description} readonly={!permissions.auth('Role::description::WRITE')} errors={errors.description} />
 			{/if}
 			{#if permissions.auth('Role::users::*')}
 			<UserSelectItem
@@ -181,6 +181,7 @@
 				label={$LL.graphql.objects.Role.fields.users.name()}
 				errors={errors.users}
 				bind:value={node.users}
+				readonly={!permissions.auth('Role::users::WRITE')}
 				list
 			/>
 			{/if}
@@ -190,6 +191,7 @@
 				label={$LL.graphql.objects.Role.fields.groups.name()}
 				errors={errors.groups}
 				bind:value={node.groups}
+				readonly={!permissions.auth('Role::groups::WRITE')}
 				list
 			/>
 			{/if}
@@ -199,6 +201,7 @@
 				label={$LL.graphql.objects.Role.fields.composites.name()}
 				errors={errors.composites}
 				bind:value={node.composites}
+				readonly={!permissions.auth('Role::composites::WRITE')}
 				list
 			/>
 			{/if}

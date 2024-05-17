@@ -12,7 +12,8 @@ const config = {
 			Authorization(env) {
 				return `${env.AUTH_SCHEME} ${Buffer.from(env.AUTH_TOKEN).toString('base64')}`
 			}
-		}
+		},
+		interval: 0
 	},
 	scalars: {
 		// the name of the scalar we are configuring

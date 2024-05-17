@@ -67,18 +67,27 @@
 	const PermissionTypeFieldsMutation = graphql(`
 		mutation PermissionTypeFieldsMutation(
 			$roleRef: String
-			$removeNameList: [String]
+			$removedPermissionNameList: [String]
+			$permissionNameList: [String]
 			$insertList: [PermissionRoleRelationInput]
 		) {
 			removeList: permissionRoleRelationList(
 				isDeprecated: true
-				where: { roleRef: { val: $roleRef }, permissionRef: { opr: IN, arr: $removeNameList } }
+				where: {
+					roleRef: { val: $roleRef }
+					permissionRef: { opr: IN, arr: $removedPermissionNameList }
+				}
 			) {
 				id
 			}
 			insertList: permissionRoleRelationList(list: $insertList) {
 				id
 			}
+			syncPermissionRoleRelationPolicy(
+				roleId: $roleRef
+				permissionNameList: $permissionNameList
+				removedPermissionNameList: $removedPermissionNameList
+			)
 		}
 	`);
 
@@ -149,9 +158,10 @@
 	const mutation = () => {
 		let variables = {
 			roleRef: roleId,
-			removeNameList: permissions
+			removedPermissionNameList: permissions
 				?.map((permission) => permission?.name)
 				.filter((name) => name && !permissionNameList?.includes(name)),
+			permissionNameList: permissionNameList,
 			insertList: permissionNameList?.map((name) => ({
 				roleRef: roleId,
 				permissionRef: name

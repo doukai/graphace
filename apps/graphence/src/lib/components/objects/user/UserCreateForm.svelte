@@ -109,25 +109,25 @@
 	on:back
 >
 	{#if permissions.auth('User::name::*')}
-	<StringItem label={$LL.graphql.objects.User.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
+	<StringItem label={$LL.graphql.objects.User.fields.name.name()} name="name" bind:value={node.name} readonly={!permissions.auth('User::name::WRITE')} errors={errors.name} />
 	{/if}
 	{#if permissions.auth('User::description::*')}
-	<StringItem label={$LL.graphql.objects.User.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
+	<StringItem label={$LL.graphql.objects.User.fields.description.name()} name="description" bind:value={node.description} readonly={!permissions.auth('User::description::WRITE')} errors={errors.description} />
 	{/if}
 	{#if permissions.auth('User::lastName::*')}
-	<StringItem label={$LL.graphql.objects.User.fields.lastName.name()} name="lastName" bind:value={node.lastName} errors={errors.lastName} />
+	<StringItem label={$LL.graphql.objects.User.fields.lastName.name()} name="lastName" bind:value={node.lastName} readonly={!permissions.auth('User::lastName::WRITE')} errors={errors.lastName} />
 	{/if}
 	{#if permissions.auth('User::login::*')}
-	<StringItem label={$LL.graphql.objects.User.fields.login.name()} name="login" bind:value={node.login} errors={errors.login} />
+	<StringItem label={$LL.graphql.objects.User.fields.login.name()} name="login" bind:value={node.login} readonly={!permissions.auth('User::login::WRITE')} errors={errors.login} />
 	{/if}
 	{#if permissions.auth('User::email::*')}
-	<StringItem label={$LL.graphql.objects.User.fields.email.name()} name="email" bind:value={node.email} errors={errors.email} />
+	<StringItem label={$LL.graphql.objects.User.fields.email.name()} name="email" bind:value={node.email} readonly={!permissions.auth('User::email::WRITE')} errors={errors.email} />
 	{/if}
 	{#if permissions.auth('User::phones::*')}
-	<StringItem label={$LL.graphql.objects.User.fields.phones.name()} name="phones" bind:value={node.phones} list errors={errors.phones} />
+	<StringItem label={$LL.graphql.objects.User.fields.phones.name()} name="phones" bind:value={node.phones} readonly={!permissions.auth('User::phones::WRITE')} list errors={errors.phones} />
 	{/if}
 	{#if permissions.auth('User::disable::*')}
-	<BooleanItem label={$LL.graphql.objects.User.fields.disable.name()} name="disable" bind:value={node.disable} errors={errors.disable} />
+	<BooleanItem label={$LL.graphql.objects.User.fields.disable.name()} name="disable" bind:value={node.disable} readonly={!permissions.auth('User::disable::WRITE')} errors={errors.disable} />
 	{/if}
 	{#if permissions.auth('User::groups::*')}
 	<GroupSelectItem
@@ -135,6 +135,7 @@
 		label={$LL.graphql.objects.User.fields.groups.name()}
 		errors={errors.groups}
 		bind:value={node.groups}
+		readonly={!permissions.auth('User::groups::WRITE')}
 		list
 	/>
 	{/if}
@@ -144,6 +145,7 @@
 		label={$LL.graphql.objects.User.fields.roles.name()}
 		errors={errors.roles}
 		bind:value={node.roles}
+		readonly={!permissions.auth('User::roles::WRITE')}
 		list
 	/>
 	{/if}

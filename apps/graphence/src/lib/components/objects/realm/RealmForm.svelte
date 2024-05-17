@@ -167,10 +167,10 @@
 	{:else}
 		{#if node}
 			{#if permissions.auth('Realm::name::*')}
-			<StringItem label={$LL.graphql.objects.Realm.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
+			<StringItem label={$LL.graphql.objects.Realm.fields.name.name()} name="name" bind:value={node.name} readonly={!permissions.auth('Realm::name::WRITE')} errors={errors.name} />
 			{/if}
 			{#if permissions.auth('Realm::description::*')}
-			<StringItem label={$LL.graphql.objects.Realm.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
+			<StringItem label={$LL.graphql.objects.Realm.fields.description.name()} name="description" bind:value={node.description} readonly={!permissions.auth('Realm::description::WRITE')} errors={errors.description} />
 			{/if}
 		{/if}
 	{/if}

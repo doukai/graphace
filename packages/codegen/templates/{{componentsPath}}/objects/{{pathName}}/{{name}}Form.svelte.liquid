@@ -196,7 +196,7 @@
 			{{ field.component }}
 			{%- else %}
 			{%- if field.isScalarType or field.isEnumType %}
-			<{{ field.fieldTypeName }}Item label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}}{% if field.isListType %} list{% endif %}{% if field.inMutationArgs == false %} readonly{% endif %} errors={errors.{{ field.fieldName }}} />
+			<{{ field.fieldTypeName }}Item label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}}{% if useAuth %} readonly={!permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE')}{% endif %}{% if field.isListType %} list{% endif %}{% if field.inMutationArgs == false %} readonly{% endif %} errors={errors.{{ field.fieldName }}} />
 			{%- else %}
 			{%- if field.select %}
 			<{{ field.fieldTypeName }}SelectItem
@@ -204,6 +204,9 @@
 				label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 				errors={errors.{{ field.fieldName }}}
 				bind:value={node.{{ field.fieldName }}}
+				{%- if useAuth %}
+				readonly={!permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE')}
+				{%- endif %}
 				{%- if field.isListType %}
 				list
 				{%- endif %}

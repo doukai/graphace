@@ -109,19 +109,19 @@
 	on:back
 >
 	{#if permissions.auth('Permission::name::*')}
-	<IDItem label={$LL.graphql.objects.Permission.fields.name.name()} name="name" bind:value={node.name} errors={errors.name} />
+	<IDItem label={$LL.graphql.objects.Permission.fields.name.name()} name="name" bind:value={node.name} readonly={!permissions.auth('Permission::name::WRITE')} errors={errors.name} />
 	{/if}
 	{#if permissions.auth('Permission::description::*')}
-	<StringItem label={$LL.graphql.objects.Permission.fields.description.name()} name="description" bind:value={node.description} errors={errors.description} />
+	<StringItem label={$LL.graphql.objects.Permission.fields.description.name()} name="description" bind:value={node.description} readonly={!permissions.auth('Permission::description::WRITE')} errors={errors.description} />
 	{/if}
 	{#if permissions.auth('Permission::field::*')}
-	<StringItem label={$LL.graphql.objects.Permission.fields.field.name()} name="field" bind:value={node.field} errors={errors.field} />
+	<StringItem label={$LL.graphql.objects.Permission.fields.field.name()} name="field" bind:value={node.field} readonly={!permissions.auth('Permission::field::WRITE')} errors={errors.field} />
 	{/if}
 	{#if permissions.auth('Permission::type::*')}
-	<StringItem label={$LL.graphql.objects.Permission.fields.type.name()} name="type" bind:value={node.type} errors={errors.type} />
+	<StringItem label={$LL.graphql.objects.Permission.fields.type.name()} name="type" bind:value={node.type} readonly={!permissions.auth('Permission::type::WRITE')} errors={errors.type} />
 	{/if}
 	{#if permissions.auth('Permission::permissionType::*')}
-	<PermissionTypeItem label={$LL.graphql.objects.Permission.fields.permissionType.name()} name="permissionType" bind:value={node.permissionType} errors={errors.permissionType} />
+	<PermissionTypeItem label={$LL.graphql.objects.Permission.fields.permissionType.name()} name="permissionType" bind:value={node.permissionType} readonly={!permissions.auth('Permission::permissionType::WRITE')} errors={errors.permissionType} />
 	{/if}
 	{#if permissions.auth('Permission::roles::*')}
 	<RoleSelectItem
@@ -129,6 +129,7 @@
 		label={$LL.graphql.objects.Permission.fields.roles.name()}
 		errors={errors.roles}
 		bind:value={node.roles}
+		readonly={!permissions.auth('Permission::roles::WRITE')}
 		list
 	/>
 	{/if}
