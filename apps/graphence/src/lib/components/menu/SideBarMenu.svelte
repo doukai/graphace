@@ -36,8 +36,8 @@
 			<span class="text-base-content"><Iconify class="w-5 h-5" {icon} /></span>
 			<span>{$LL.graphence.components.sideBarMenu[name]()}</span>
 		</li>
-		{#each items as { href, objectKey, authPermissions }}
-			{#if permissions.auth(...authPermissions)}
+		{#each items as { href, objectKey, authPermissions, icon }}
+			{#if permissions.auth(...(authPermissions || []))}
 				<li>
 					<a
 						href={null}
@@ -49,6 +49,9 @@
 							? 'active'
 							: ''}
 					>
+						{#if icon}
+							<Iconify class="w-5 h-5" {icon} />
+						{/if}
 						<span>{$LL.graphql.objects[objectKey].name()}</span>
 					</a>
 				</li>
