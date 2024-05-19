@@ -19,10 +19,14 @@ export type Template =
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Select.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectTd.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectItem.svelte' |
+    '{{componentsPath}}/objects/{{pathName}}/index.ts' |
+    '{{componentsPath}}/objects/index.ts' |
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Item.svelte' |
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Th.svelte' |
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte' |
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Input.svelte' |
+    '{{componentsPath}}/enums/{{pathName}}/index.ts' |
+    '{{componentsPath}}/enums/index.ts' |
     '{{routesPath}}/{{pathName}}/+page.svelte' |
     '{{routesPath}}/{{pathName}}/+page.ts' |
     '{{routesPath}}/{{pathName}}/[id]/+page.svelte' |

@@ -1638,7 +1638,9 @@ export type Mutation = {
   roleCompositeRelationList?: Maybe<Array<Maybe<RoleCompositeRelation>>>;
   permissionRoleRelation?: Maybe<PermissionRoleRelation>;
   permissionRoleRelationList?: Maybe<Array<Maybe<PermissionRoleRelation>>>;
+  currentUserUpdate?: Maybe<User>;
   login?: Maybe<Scalars['String']>;
+  syncPermissionRoleRelationPolicy?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -2112,14 +2114,36 @@ export type MutationPermissionRoleRelationListArgs = {
 };
 
 
+export type MutationCurrentUserUpdateArgs = {
+  userInput?: InputMaybe<UserInput>;
+};
+
+
 export type MutationLoginArgs = {
   login: Scalars['String'];
   password: Scalars['String'];
 };
 
+
+export type MutationSyncPermissionRoleRelationPolicyArgs = {
+  roleId?: InputMaybe<Scalars['String']>;
+  permissionNameList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  removedPermissionNameList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type Mutation_CurrentUserUpdate_Arguments = {
+  userInput?: InputMaybe<UserInput>;
+};
+
 export type Mutation_Login_Arguments = {
   login: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type Mutation_SyncPermissionRoleRelationPolicy_Arguments = {
+  roleId?: InputMaybe<Scalars['String']>;
+  permissionNameList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  removedPermissionNameList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type NamedStruct = {
@@ -3058,6 +3082,7 @@ export type Query = {
   permissionRoleRelationList?: Maybe<Array<Maybe<PermissionRoleRelation>>>;
   permissionRoleRelationConnection?: Maybe<PermissionRoleRelationConnection>;
   current?: Maybe<CurrentUser>;
+  currentUser?: Maybe<User>;
   currentPermissionTypeList?: Maybe<Array<Maybe<Scalars['String']>>>;
   currentPermissionNameListByTypes?: Maybe<Array<Maybe<Scalars['String']>>>;
   policyList?: Maybe<Array<Maybe<Policy>>>;

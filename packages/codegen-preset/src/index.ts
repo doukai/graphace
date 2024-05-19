@@ -2,7 +2,7 @@ import type { Types } from "@graphql-codegen/plugin-helpers";
 import { assertObjectType, isEnumType, isObjectType } from "graphql";
 import type { GraphacePresetConfig } from "./config";
 import * as changeCase from "change-case";
-import { isOperationType, isAggregate, isConnection, isEdge, isPageInfo, isIntrospection, isInnerEnum, fieldTypeIsList, getFieldType, getObjectFields, getIDFieldName, initConfig, inGraphQLField, inComponentEnum, inComponentObject, inRouteObject, getQueryTypeName, getMutationTypeName, inRouteField, isTreeStruct, isNamedStruct } from 'graphace-codegen-commons'
+import { isOperationType, isAggregate, isConnection, isEdge, isPageInfo, isIntrospection, isInnerEnum, fieldTypeIsList, isInvokeField, getFieldType, getObjectFields, getIDFieldName, initConfig, inGraphQLField, inComponentEnum, inComponentObject, inRouteObject, getQueryTypeName, getMutationTypeName, inRouteField, isTreeStruct, isNamedStruct } from 'graphace-codegen-commons'
 import { buildPath } from "./builder";
 
 const _appName = 'web';
@@ -114,6 +114,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...targetQueryFields
+                .filter(field => !isInvokeField(field.name, getFieldType(field.type).name, fieldTypeIsList(field.type)))
                 .filter(field => !fieldTypeIsList(field.type))
                 .filter(field => !isConnection(getFieldType(field.type).name))
                 .flatMap(field => {
@@ -178,6 +179,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...targetMutationFields
+                .filter(field => !isInvokeField(field.name, getFieldType(field.type).name, fieldTypeIsList(field.type)))
                 .filter(field => !fieldTypeIsList(field.type))
                 .flatMap(field => {
                     const fieldType = getFieldType(field.type);
@@ -1607,6 +1609,57 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         );
 
         generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/index.ts';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            appName: options.presetConfig.appName || _appName,
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        const objectIndexTemplate = '{{componentsPath}}/objects/index.ts';
+        const objectIndexScope = { componentsPath };
+        generateOptions.push(
+            {
+                filename: buildPath(objectIndexTemplate, objectIndexScope),
+                documents: options.documents,
+                plugins: options.plugins,
+                pluginMap: options.pluginMap,
+                config: {
+                    appName: options.presetConfig.appName || _appName,
+                    graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                    componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                    routesPath: options.presetConfig.graphqlPath || _routesPath,
+                    dataPath: options.presetConfig.dataPath || _dataPath,
+                    builder: options.presetConfig.builder,
+                    useAuth: options.presetConfig.useAuth,
+                    template: objectIndexTemplate,
+                },
+                schema: options.schema,
+                schemaAst: options.schemaAst,
+                skipDocumentsValidation: true,
+            }
+        );
+
+        generateOptions.push(
             ...targetComponentEnumTypes
                 .map(type => {
                     const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte';
@@ -1658,6 +1711,57 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         skipDocumentsValidation: true,
                     };
                 })
+        );
+
+        generateOptions.push(
+            ...targetComponentEnumTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/enums/{{pathName}}/index.ts';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            appName: options.presetConfig.appName || _appName,
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        const enumIndexTemplate = '{{componentsPath}}/enums/index.ts';
+        const enumIndexScope = { componentsPath };
+        generateOptions.push(
+            {
+                filename: buildPath(enumIndexTemplate, enumIndexScope),
+                documents: options.documents,
+                plugins: options.plugins,
+                pluginMap: options.pluginMap,
+                config: {
+                    appName: options.presetConfig.appName || _appName,
+                    graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                    componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                    routesPath: options.presetConfig.graphqlPath || _routesPath,
+                    dataPath: options.presetConfig.dataPath || _dataPath,
+                    builder: options.presetConfig.builder,
+                    useAuth: options.presetConfig.useAuth,
+                    template: enumIndexTemplate,
+                },
+                schema: options.schema,
+                schemaAst: options.schemaAst,
+                skipDocumentsValidation: true,
+            }
         );
 
         const i18nTemplate = '{{i18nPath}}/{{i18nDefault}}/graphql/index.ts';

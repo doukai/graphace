@@ -2,6 +2,7 @@ import * as changeCase from "change-case";
 import { assertScalarType, assertObjectType, isEnumType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLEnumValue, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType, type GraphQLSchema, type GraphQLObjectType } from 'graphql';
 
 export const aggregateSuffix = ["Count", "Sum", "Avg", "Max", "Min", "Aggregate"];
+export const listSuffix = "List";
 export const connectionSuffix = "Connection";
 export const edgeSuffix = "Edge";
 export const pageInfoName = "PageInfo";

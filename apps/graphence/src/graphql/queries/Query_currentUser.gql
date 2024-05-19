@@ -1,0 +1,34 @@
+query Query_currentUser {
+  currentUser {
+    id
+    name
+    description
+    lastName
+    login
+    email
+    phones
+    disable
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    groups {
+      id
+      name
+      description
+    }
+    roles {
+      id
+      name
+      description
+    }
+    realm {
+      name
+      description
+    }
+  }
+}

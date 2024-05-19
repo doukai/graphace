@@ -57,6 +57,40 @@ const en: BaseTranslation = {
 				}
 			}
 		},
+		GroupRoleRelation: {
+			name: 'GroupRoleRelation',
+			fields: {
+				roleRef: {
+					name: 'roleRef',
+				},
+				role: {
+					name: 'role',
+				},
+				groupRef: {
+					name: 'groupRef',
+				},
+				group: {
+					name: 'group',
+				}
+			}
+		},
+		GroupUserRelation: {
+			name: 'GroupUserRelation',
+			fields: {
+				userRef: {
+					name: 'userRef',
+				},
+				user: {
+					name: 'user',
+				},
+				groupRef: {
+					name: 'groupRef',
+				},
+				group: {
+					name: 'group',
+				}
+			}
+		},
 		Permission: {
 			name: 'Permission',
 			fields: {
@@ -80,6 +114,23 @@ const en: BaseTranslation = {
 				},
 				realm: {
 					name: 'realm',
+				}
+			}
+		},
+		PermissionRoleRelation: {
+			name: 'PermissionRoleRelation',
+			fields: {
+				roleRef: {
+					name: 'roleRef',
+				},
+				role: {
+					name: 'role',
+				},
+				permissionRef: {
+					name: 'permissionRef',
+				},
+				permission: {
+					name: 'permission',
 				}
 			}
 		},
@@ -143,6 +194,89 @@ const en: BaseTranslation = {
 				},
 				realm: {
 					name: 'realm',
+				}
+			}
+		},
+		RoleCompositeRelation: {
+			name: 'RoleCompositeRelation',
+			fields: {
+				roleRef: {
+					name: 'roleRef',
+				},
+				role: {
+					name: 'role',
+				},
+				compositeRef: {
+					name: 'compositeRef',
+				},
+				composite: {
+					name: 'composite',
+				}
+			}
+		},
+		RoleUserRelation: {
+			name: 'RoleUserRelation',
+			fields: {
+				userRef: {
+					name: 'userRef',
+				},
+				user: {
+					name: 'user',
+				},
+				roleRef: {
+					name: 'roleRef',
+				},
+				role: {
+					name: 'role',
+				}
+			}
+		},
+		User: {
+			name: 'User',
+			fields: {
+				name: {
+					name: 'name',
+				},
+				description: {
+					name: 'description',
+				},
+				lastName: {
+					name: 'lastName',
+				},
+				login: {
+					name: 'login',
+				},
+				email: {
+					name: 'email',
+				},
+				phones: {
+					name: 'phones',
+				},
+				disable: {
+					name: 'disable',
+				},
+				groups: {
+					name: 'groups',
+				},
+				roles: {
+					name: 'roles',
+				},
+				realm: {
+					name: 'realm',
+				}
+			}
+		},
+		UserPhonesRelation: {
+			name: 'UserPhonesRelation',
+			fields: {
+				userRef: {
+					name: 'userRef',
+				},
+				user: {
+					name: 'user',
+				},
+				phonesRef: {
+					name: 'phonesRef',
 				}
 			}
 		}

@@ -18,6 +18,7 @@ export type ObjectConfig = {
     component?: string;
     arrayComponent?: string;
     fields?: FieldConfig[];
+    isContainer?: boolean;
 }
 
 export type FieldConfig = {

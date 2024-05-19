@@ -1,0 +1,3 @@
+mutation Mutation_syncPermissionRoleRelationPolicy($roleId: String, $permissionNameList: [String], $removedPermissionNameList: [String]) {
+  syncPermissionRoleRelationPolicy(roleId: $roleId permissionNameList: $permissionNameList removedPermissionNameList: $removedPermissionNameList)
+}

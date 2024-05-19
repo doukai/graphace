@@ -1,6 +1,7 @@
 import { isEnumType, isInputObjectType, isNonNullType, isObjectType, isScalarType, type GraphQLSchema, type GraphQLNamedType } from "graphql";
 import type { BuilderConfig, FieldInfo } from "./types/types";
-import { connectionSuffix, fieldInMutationArgs, fieldInQueryArgs, fieldTypeIsList, fieldTypeIsNamedStruct, getFieldType, getIDFieldName, isAggregate, isInnerEnum, isIntrospection } from "./introspection";
+import { listSuffix, connectionSuffix, fieldInMutationArgs, fieldInQueryArgs, fieldTypeIsList, fieldTypeIsNamedStruct, getFieldType, getIDFieldName, isAggregate, isInnerEnum, isIntrospection } from "./introspection";
+import * as changeCase from "change-case";
 
 let builderConfig: BuilderConfig | undefined = {};
 
@@ -84,6 +85,12 @@ export function inListField(typeName: string, fieldName: string, fieldTypeName: 
         .some(fieldConfig => fieldConfig.name === fieldName) &&
         builderConfig?.objects?.find(objectConfig => objectConfig.name === originalFieldTypeName)?.ignore !== true &&
         builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true;
+}
+
+export function isInvokeField(fieldName: string, fieldTypeName: string, fieldTypeIsList: boolean): boolean {
+    return fieldTypeIsList ?
+        changeCase.camelCase(fieldTypeName) + listSuffix !== fieldName :
+        changeCase.camelCase(fieldTypeName) !== fieldName;
 }
 
 export function inDetailField(typeName: string, fieldName: string, fieldTypeName: string): boolean {

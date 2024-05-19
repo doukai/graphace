@@ -1,0 +1,35 @@
+mutation Mutation_currentUserUpdate($userInput: UserInput) {
+  currentUserUpdate(userInput: $userInput) {
+    id
+    name
+    description
+    lastName
+    login
+    email
+    phones
+    disable
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    syncUserPolicy
+    groups {
+      id
+      name
+      description
+    }
+    roles {
+      id
+      name
+      description
+    }
+    realm {
+      name
+      description
+    }
+  }
+}

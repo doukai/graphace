@@ -2,7 +2,7 @@ import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
 import * as changeCase from "change-case";
 import { assertObjectType, isEnumType, isObjectType, type GraphQLSchema, isNonNullType, assertEnumType } from 'graphql';
-import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getNamedFields, getScalarNames, getEnumNames, getEnumValues, isAggregate, initConfig, inRouteObject, inGraphQLField, inListField, inDetailField, componentFields, getSelectComponentFieldImports, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, getNamedStructObjectNames, inComponentEnum, isInnerEnum, getObjectNames, getBaseScalarNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField, fieldTypeIsList, isSelectField } from 'graphace-codegen-commons';
+import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getNamedFields, getScalarNames, getEnumNames, getEnumValues, isAggregate, initConfig, inGraphQLField, inListField, inDetailField, componentFields, getSelectComponentFieldImports, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, getNamedStructObjectNames, inComponentEnum, isInnerEnum, getObjectNames, getBaseScalarNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField, fieldTypeIsList, isSelectField, isNamedStruct, isTreeStruct, inComponentObject } from 'graphace-codegen-commons';
 import type { Template } from 'graphace-codegen-commons';
 import { buildFileContent } from "./builder.js";
 
@@ -35,7 +35,7 @@ const renders: Record<Template, Render> = {
                     lang: config.i18nDefault,
                     i18nDescription: config.i18nDescription,
                     objects: Object.values(schema.getTypeMap())
-                        .filter(type => inRouteObject(type.name))
+                        // .filter(type => inRouteObject(type.name))
                         .filter(type => isObjectType(type))
                         .filter(type => !isOperationType(type.name))
                         .filter(type => !isConnection(type.name))
@@ -77,7 +77,7 @@ const renders: Record<Template, Render> = {
                 {
                     lang: config.i18nDescription,
                     objects: Object.values(schema.getTypeMap())
-                        .filter(type => inRouteObject(type.name))
+                        // .filter(type => inRouteObject(type.name))
                         .filter(type => isObjectType(type))
                         .filter(type => !isOperationType(type.name))
                         .filter(type => !isConnection(type.name))
@@ -640,6 +640,41 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
+    '{{componentsPath}}/objects/{{pathName}}/index.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                return {
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        isNamedStruct: isNamedStruct(type),
+                        isTreeStruct: isTreeStruct(type)
+                    }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
+    },
+    '{{componentsPath}}/objects/index.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        return {
+            content: buildFileContent(config.template,
+                {
+                    objects: Object.values(schema.getTypeMap())
+                        .filter(type => isObjectType(type))
+                        .filter(type => inComponentObject(type.name))
+                        .filter(type => !isOperationType(type.name))
+                        .filter(type => !isConnection(type.name))
+                        .filter(type => !isEdge(type.name))
+                        .filter(type => !isPageInfo(type.name))
+                        .filter(type => !isIntrospection(type.name))
+                        .filter(type => getIDFieldName(type))
+                        .map(type => assertObjectType(type))
+                }
+            ),
+        };
+    },
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Item.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
@@ -719,6 +754,35 @@ const renders: Record<Template, Render> = {
         }
         console.error(config);
         throw new Error(`${typeName} undefined`);
+    },
+    '{{componentsPath}}/enums/{{pathName}}/index.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isEnumType(type)) {
+                return {
+                    content: buildFileContent(config.template, {
+                        name: type?.name
+                    }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
+    },
+    '{{componentsPath}}/enums/index.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        return {
+            content: buildFileContent(config.template,
+                {
+                    enums: Object.values(schema.getTypeMap())
+                        .filter(type => isEnumType(type))
+                        .filter(type => inComponentEnum(type.name))
+                        .filter(type => !isIntrospection(type.name))
+                        .filter(type => !isInnerEnum(type.name))
+                        .map(type => assertEnumType(type))
+                }
+            ),
+        };
     },
     '{{routesPath}}/{{pathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
