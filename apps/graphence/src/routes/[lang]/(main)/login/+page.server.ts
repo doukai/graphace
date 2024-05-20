@@ -10,7 +10,7 @@ export const actions = {
         const login = data.get('login')?.toString() || undefined;
         const password = data.get('password')?.toString() || undefined;
         const errors = await getSchemaErrors({ "$id": "#Mutation_login_Arguments", "type": "object", "properties": { "login": { "type": "string" }, "password": { "type": "string" } }, "additionalProperties": true, "required": ["login", "password"] }, { login, password }, event.locals.locale);
-        
+
         if (errors) {
             return fail(400, { errors, logining: false });
         }
@@ -27,9 +27,9 @@ export const actions = {
                 cookies.set('Authorization', "Bearer " + result.data?.login, { path: '/' });
                 const from = event.url.searchParams.get('from');
                 if (from) {
-                    throw redirect(307, from);
+                    throw redirect(303, from);
                 } else {
-                    throw redirect(307, `/`);
+                    throw redirect(307, '/');
                 }
             } else {
                 if (result.errors) {

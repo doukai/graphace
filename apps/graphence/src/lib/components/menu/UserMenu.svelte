@@ -30,7 +30,9 @@
 		<li>
 			<a href={`/${$locale}/settings/account`}>{$LL.graphence.components.userMenu.profile()}</a>
 		</li>
-		<li><a href={undefined}>{$LL.graphence.components.userMenu.settings()}</a></li>
+		<li>
+			<a href={`/${$locale}/settings/password`}>{$LL.graphence.components.userMenu.password()}</a>
+		</li>
 		<div class="divider mt-0 mb-0" />
 		<li><a href={`/${$locale}/logout`}>{$LL.graphence.components.userMenu.logout()}</a></li>
 	</ul>

@@ -1,8 +1,10 @@
+import { get } from 'svelte/store';
 import { json, redirect } from '@sveltejs/kit';
 import type { Handle, RequestEvent, HandleServerError } from '@sveltejs/kit';
 import { initAcceptLanguageHeaderDetector } from 'typesafe-i18n/detectors';
 import jwt_decode from "jwt-decode";
 import { browser } from '$app/environment';
+import { page } from '$app/stores';
 import { goto } from '$app/navigation';
 import { setSession } from '$houdini';
 import { detectLocale, i18n, isLocale } from '$i18n/i18n-util';
@@ -68,9 +70,9 @@ export const handleError: HandleServerError = async ({ error, event }) => {
 
 const toLoginPage = (loginPathName: string) => {
 	if (browser) {
-		goto(loginPathName);
+		goto(loginPathName + `?from=${get(page).url.pathname}`);
 	} else {
-		throw redirect(307, loginPathName);
+		throw redirect(307, loginPathName + `?from=${get(page).url.pathname}`);
 	}
 }
 

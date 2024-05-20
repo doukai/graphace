@@ -1123,7 +1123,8 @@ input MetaInput {
 }
 
 type Mutation {
-  currentUserUpdate(userInput: UserInput): User
+  currentUserResetPassword(newPassword: String!, password: String!): User
+  currentUserUpdate(userInput: UserInput!): User
   group(createGroupId: String, createTime: Timestamp, createUserId: String, deep: Int, description: String, groupRoleRelation: [GroupRoleRelationInput], groupUserRelation: [GroupUserRelationInput], id: ID, input: GroupInput, isDeprecated: Boolean = false, name: String, parent: GroupInput, parentId: String, path: String, realm: RealmInput, realmId: Int, roles: [RoleInput], subGroups: [GroupInput], updateTime: Timestamp, updateUserId: String, users: [UserInput], version: Int, where: GroupExpression): Group
   groupList(createGroupId: String, createTime: Timestamp, createUserId: String, deep: Int, description: String, groupRoleRelation: [GroupRoleRelationInput], groupUserRelation: [GroupUserRelationInput], id: ID, isDeprecated: Boolean = false, list: [GroupInput], name: String, parent: GroupInput, parentId: String, path: String, realm: RealmInput, realmId: Int, roles: [RoleInput], subGroups: [GroupInput], updateTime: Timestamp, updateUserId: String, users: [UserInput], version: Int, where: GroupExpression): [Group]
   groupRoleRelation(createGroupId: String, createTime: Timestamp, createUserId: String, group: GroupInput, groupRef: String, id: ID, input: GroupRoleRelationInput, isDeprecated: Boolean = false, realmId: Int, role: RoleInput, roleRef: String, updateTime: Timestamp, updateUserId: String, version: Int, where: GroupRoleRelationExpression): GroupRoleRelation
@@ -1150,8 +1151,13 @@ type Mutation {
   userPhonesRelationList(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean = false, list: [UserPhonesRelationInput], phonesRef: String, realmId: Int, updateTime: Timestamp, updateUserId: String, user: UserInput, userRef: String, version: Int, where: UserPhonesRelationExpression): [UserPhonesRelation]
 }
 
+input Mutation_currentUserResetPassword_Arguments {
+  newPassword: String!
+  password: String!
+}
+
 input Mutation_currentUserUpdate_Arguments {
-  userInput: UserInput
+  userInput: UserInput!
 }
 
 input Mutation_login_Arguments {

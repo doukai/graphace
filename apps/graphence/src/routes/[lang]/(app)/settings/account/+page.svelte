@@ -9,11 +9,12 @@
 	import type { PageData } from './$houdini';
 	import { validate } from '~/utils';
 	import { locale } from '$i18n/i18n-svelte';
+	import LL from '$i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: Query_currentUser = data.Query_currentUser as Query_currentUserStore;
 	$: node = $Query_currentUser.data?.currentUser;
-	$: urlName($page.url, node?.name || '');
+	$: urlName($page.url, $LL.graphence.components.userMenu.profile());
 	const Mutation_currentUserUpdate = new Mutation_currentUserUpdateStore();
 	let errors: Record<string, Errors> = {};
 
@@ -24,7 +25,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		validate('Mutation_user_Arguments', event.detail.args, $locale)
+		validate('Mutation_currentUserUpdate_Arguments', { userInput: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
 				Mutation_currentUserUpdate.mutate({ userInput: event.detail.args }).then((result) => {

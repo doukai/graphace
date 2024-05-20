@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons';
-	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import RoleForm from '~/lib/components/objects/role/RoleForm.svelte';
 	import type { GraphQLError } from '@graphace/graphql';

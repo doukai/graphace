@@ -41,8 +41,14 @@ const zh: NamespaceGraphenceTranslation = {
         },
         userMenu: {
             profile: "个人资料",
-            settings: "系统设置",
+            password: "修改密码",
             logout: "退出"
+        },
+        resetPassword: {
+            password: "密码",
+            newPassword: "新密码",
+            repeatNewPassword: "重复新密码",
+            inconsistent: "两次输入不一致"
         }
     }
 }

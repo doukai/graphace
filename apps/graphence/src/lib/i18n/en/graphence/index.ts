@@ -41,8 +41,14 @@ const en: BaseTranslation = {
         },
         userMenu: {
             profile: "Profile",
-            settings: "Settings",
+            password: "Reset password",
             logout: "Logout"
+        },
+        resetPassword: {
+            password: "Original password",
+            newPassword: "New password",
+            repeatNewPassword: "Repeat new Password",
+            inconsistent: "Inconsistent"
         }
     }
 }

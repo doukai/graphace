@@ -165,13 +165,31 @@ export type NamespaceGraphenceTranslation = {
 			 */
 			profile: string
 			/**
-			 * S​e​t​t​i​n​g​s
+			 * R​e​s​e​t​ ​p​a​s​s​w​o​r​d
 			 */
-			settings: string
+			password: string
 			/**
 			 * L​o​g​o​u​t
 			 */
 			logout: string
+		}
+		resetPassword: {
+			/**
+			 * O​r​i​g​i​n​a​l​ ​p​a​s​s​w​o​r​d
+			 */
+			password: string
+			/**
+			 * N​e​w​ ​p​a​s​s​w​o​r​d
+			 */
+			newPassword: string
+			/**
+			 * R​e​p​e​a​t​ ​n​e​w​ ​P​a​s​s​w​o​r​d
+			 */
+			repeatNewPassword: string
+			/**
+			 * I​n​c​o​n​s​i​s​t​e​n​t
+			 */
+			inconsistent: string
 		}
 	}
 }
@@ -1293,13 +1311,31 @@ export type TranslationFunctions = {
 				 */
 				profile: () => LocalizedString
 				/**
-				 * Settings
+				 * Reset password
 				 */
-				settings: () => LocalizedString
+				password: () => LocalizedString
 				/**
 				 * Logout
 				 */
 				logout: () => LocalizedString
+			}
+			resetPassword: {
+				/**
+				 * Original password
+				 */
+				password: () => LocalizedString
+				/**
+				 * New password
+				 */
+				newPassword: () => LocalizedString
+				/**
+				 * Repeat new Password
+				 */
+				repeatNewPassword: () => LocalizedString
+				/**
+				 * Inconsistent
+				 */
+				inconsistent: () => LocalizedString
 			}
 		}
 	}

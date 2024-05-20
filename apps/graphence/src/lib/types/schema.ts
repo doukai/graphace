@@ -1639,6 +1639,7 @@ export type Mutation = {
   permissionRoleRelation?: Maybe<PermissionRoleRelation>;
   permissionRoleRelationList?: Maybe<Array<Maybe<PermissionRoleRelation>>>;
   currentUserUpdate?: Maybe<User>;
+  currentUserResetPassword?: Maybe<User>;
   login?: Maybe<Scalars['String']>;
   syncPermissionRoleRelationPolicy?: Maybe<Scalars['Boolean']>;
 };
@@ -2115,7 +2116,13 @@ export type MutationPermissionRoleRelationListArgs = {
 
 
 export type MutationCurrentUserUpdateArgs = {
-  userInput?: InputMaybe<UserInput>;
+  userInput: UserInput;
+};
+
+
+export type MutationCurrentUserResetPasswordArgs = {
+  password: Scalars['String'];
+  newPassword: Scalars['String'];
 };
 
 
@@ -2131,8 +2138,13 @@ export type MutationSyncPermissionRoleRelationPolicyArgs = {
   removedPermissionNameList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
+export type Mutation_CurrentUserResetPassword_Arguments = {
+  password: Scalars['String'];
+  newPassword: Scalars['String'];
+};
+
 export type Mutation_CurrentUserUpdate_Arguments = {
-  userInput?: InputMaybe<UserInput>;
+  userInput: UserInput;
 };
 
 export type Mutation_Login_Arguments = {
