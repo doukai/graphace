@@ -19,6 +19,7 @@ coverage
 
 # houdini
 $houdini
+schema.graphql
 
 # misc
 .DS_Store

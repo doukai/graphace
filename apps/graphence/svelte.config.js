@@ -1,5 +1,3 @@
-// import adapter from '@sveltejs/adapter-auto';
-// import { vitePreprocess } from '@sveltejs/kit/vite';
 import adapter from '@sveltejs/adapter-node';
 import preprocess from 'svelte-preprocess';
 import path from 'path';
@@ -12,7 +10,6 @@ const config = {
   preprocess: preprocess(),
   kit: {
     adapter: adapter({
-      // default options are shown
       // out: 'build'
     }),
     csrf: {
