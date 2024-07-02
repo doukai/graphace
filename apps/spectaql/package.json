@@ -12,6 +12,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "spectaql": "^2.3.0"
+    "spectaql": "^2.3.1"
   }
 }

@@ -1,7 +1,5 @@
-import { get } from 'svelte/store';
 import { redirect } from '@sveltejs/kit';
 import { browser } from '$app/environment';
-import { page } from '$app/stores';
 import { goto } from '$app/navigation';
 import { env } from '$env/dynamic/public';
 import { HoudiniClient } from '$houdini';
@@ -15,9 +13,9 @@ const authPlugin: ClientPlugin = () => {
 				if (value.errors?.map(error => error.extensions).some(extensions => extensions?.code == -40100)) {
 					const loginPathName = `/${ctx.session?.locale}/login`;
 					if (browser) {
-						goto(loginPathName + `?from=${get(page).url.pathname}`);
+						goto(loginPathName + `?from=${window.location.pathname}`);
 					} else {
-						throw redirect(307, loginPathName + `?from=${get(page).url.pathname}`);
+						throw redirect(307, loginPathName);
 					}
 				}
 			}

@@ -38,7 +38,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const loginPathName = `/${locale}/login`;
 	if (!token && event.url.pathname !== loginPathName) {
-		toLoginPage(loginPathName);
+		toLoginPage(loginPathName, event.url.pathname);
 	} else {
 		setSession(event, { token, locale });
 		if (!event.locals.jwt && token) {
@@ -52,7 +52,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		if (request.headers.get('Content-Type')?.includes('application/json')) {
 			return json({ errors: [{ message: '-40100: unauthorized', extensions: { code: -40100 } }] }, { status: 401 });
 		}
-		toLoginPage(loginPathName);
+		toLoginPage(loginPathName, event.url.pathname);
 	}
 	return response;
 }
@@ -66,11 +66,11 @@ export const handleError: HandleServerError = async ({ error, event }) => {
 	toLoginPage(`/${locale}/login`);
 };
 
-const toLoginPage = (loginPathName: string) => {
+const toLoginPage = (loginPathName: string, fromPathName?: string) => {
 	if (browser) {
-		goto(loginPathName + `?from=${window.location.pathname}`);
+		goto(loginPathName + `?from=${fromPathName}`);
 	} else {
-		throw redirect(307, loginPathName);
+		throw redirect(307, loginPathName + `?from=${fromPathName}`);
 	}
 }
 
