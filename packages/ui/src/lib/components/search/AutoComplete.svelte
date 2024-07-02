@@ -38,7 +38,7 @@
 		helpers: { isSelected }
 	} = createCombobox<typeof selectedItem>({
 		onSelectedChange: ({ curr, next }) => {
-			selectedItem = curr.value;
+			selectedItem = next.value;
 			return next;
 		}
 	});
@@ -78,6 +78,7 @@
 			use:melt={$menu}
 			transition:fly={{ duration: 150, y: -5 }}
 		>
+			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 			<div
 				class="flex max-h-full flex-col gap-0 overflow-y-auto bg-white px-2 py-2 text-black"
 				tabindex="0"
