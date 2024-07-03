@@ -199,6 +199,7 @@
 				}}
 				{items}
 				bind:selectedItem
+				multiple
 			/>
 		</div>
 		<div class="flex space-x-1">
