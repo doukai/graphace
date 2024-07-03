@@ -75,39 +75,31 @@
 
 	<div
 		use:melt={$root}
-		class="flex input input-bordered min-w-[280px] flex-row flex-wrap gap-2.5 rounded-md px-3 py-2 text-magnum-700 focus-within:ring focus-within:ring-magnum-400"
+		class="flex border-2 focus:ring-2 input-bordered flex-row flex-wrap gap-2.5 rounded-md px-3 py-2"
 	>
 		{#each $tags as t}
-			<div
-				use:melt={$tag(t)}
-				class="flex bg-primary items-center overflow-hidden rounded-md bg-magnum-200 text-magnum-900 [word-break:break-word] data-[disabled]:bg-magnum-300 data-[selected]:bg-magnum-400 data-[disabled]:hover:cursor-default data-[disabled]:focus:!outline-none data-[disabled]:focus:!ring-0"
-			>
+			<div use:melt={$tag(t)} class="flex bg-primary items-center overflow-hidden rounded-md">
 				<span
 					class="flex text-primary-content items-center border-r border-primary-content/10 px-1.5"
-					>{t.value}</span
 				>
-				<button
-					use:melt={$deleteTrigger(t)}
-					class="flex h-full items-center px-1 enabled:hover:bg-magnum-300"
-				>
+					{t.value}
+				</span>
+				<button use:melt={$deleteTrigger(t)} class="flex h-full items-center px-1">
 					<Icon src={XMark} class="size-3 bg-primary-content rounded-full" />
 				</button>
 			</div>
-			<div
-				use:melt={$edit(t)}
-				class="flex items-center overflow-hidden rounded-md px-1.5 [word-break:break-word] data-[invalid-edit]:focus:!ring-red-500"
-			>
+			<div use:melt={$edit(t)} class="flex items-center overflow-hidden rounded-md px-1.5">
 				{t.value}
 			</div>
 		{/each}
 		<input
 			use:melt={$input}
 			type="text"
-			class="min-w-[4.5rem] shrink grow basis-0 border-0 outline-none focus:!ring-0 data-[invalid]:text-red-500"
+			class="shrink grow basis-0 border-0 outline-none"
 			{name}
 			{placeholder}
 		/>
-		<div class="absolute right-2 top-1/2 z-10 -translate-y-1/2 text-magnum-900">
+		<div class="absolute right-2 top-1/2 z-10 -translate-y-1/2">
 			{#if $open}
 				<Icon src={ChevronUp} class="size-4" />
 			{:else}
@@ -117,7 +109,7 @@
 	</div>
 	{#if $open}
 		<ul
-			class="dropdown-content z-[50] menu p-2 shadow bg-base-100 rounded-box w-full max-h-80 flex-nowrap overflow-auto"
+			class="dropdown-content z-[50] menu shadow bg-base-100 rounded-box w-full max-h-80 flex-nowrap overflow-auto"
 			use:melt={$menu}
 			transition:fly={{ duration: 150, y: -5 }}
 		>
