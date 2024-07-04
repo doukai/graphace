@@ -9,9 +9,9 @@ import DateTimeInput from "./DateTimeInput.svelte";
 import TimestampInput from "./TimestampInput.svelte";
 import DateInput from "./DateInput.svelte";
 import TimeInput from "./TimeInput.svelte";
+import ObjectSelect from "./ObjectSelect.svelte";
 import OperatorSelect from "./OperatorSelect.svelte";
-import ObjectMultiSelect from "./ObjectMultiSelect.svelte";
 
 export {
-    StringInput, NumberInput, BooleanInput, EnumInput, IDInput, IntInput, FloatInput, DateTimeInput, TimestampInput, DateInput, TimeInput, OperatorSelect, ObjectMultiSelect
+    StringInput, NumberInput, BooleanInput, EnumInput, IDInput, IntInput, FloatInput, DateTimeInput, TimestampInput, DateInput, TimeInput, OperatorSelect, ObjectSelect
 }

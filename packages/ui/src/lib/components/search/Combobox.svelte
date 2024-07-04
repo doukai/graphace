@@ -78,7 +78,13 @@
 	};
 
 	$: if (!$open) {
-		$inputValue = '';
+		if (multiple) {
+			$inputValue = '';
+		} else {
+			if ($selected && !Array.isArray($selected)) {
+				$inputValue = $selected.label;
+			}
+		}
 	}
 
 	$: if ($touchedInput) {
@@ -90,21 +96,23 @@
 
 <div class="relative">
 	<div use:melt={$root} class="flex border flex-row flex-wrap gap-1 rounded-md px-3 py-3">
-		{#each $tags as t}
-			<div use:melt={$tag(t)} class="flex bg-neutral items-center overflow-hidden rounded-md">
-				<span
-					class="flex text-neutral-content items-center border-r border-neutral-content/10 px-1.5"
-				>
+		{#if multiple}
+			{#each $tags as t}
+				<div use:melt={$tag(t)} class="flex bg-neutral items-center overflow-hidden rounded-md">
+					<span
+						class="flex text-neutral-content items-center border-r border-neutral-content/10 px-1.5"
+					>
+						{t.value}
+					</span>
+					<button use:melt={$deleteTrigger(t)} class="flex h-full items-center px-1">
+						<Icon src={XMark} class="size-3 bg-neutral-content rounded-full" />
+					</button>
+				</div>
+				<div use:melt={$edit(t)} class="flex items-center overflow-hidden rounded-md px-1.5">
 					{t.value}
-				</span>
-				<button use:melt={$deleteTrigger(t)} class="flex h-full items-center px-1">
-					<Icon src={XMark} class="size-3 bg-neutral-content rounded-full" />
-				</button>
-			</div>
-			<div use:melt={$edit(t)} class="flex items-center overflow-hidden rounded-md px-1.5">
-				{t.value}
-			</div>
-		{/each}
+				</div>
+			{/each}
+		{/if}
 		<input
 			use:melt={$input}
 			type="text"

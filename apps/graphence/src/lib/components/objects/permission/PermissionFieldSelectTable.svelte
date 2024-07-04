@@ -188,7 +188,8 @@
 				{options}
 				on:change={(e) => {
 					if (!Array.isArray(e.detail.value)) {
-						query(e.detail.value.value);
+						typeName = e.detail.value.value;
+						query(typeName);
 					}
 				}}
 			/>
