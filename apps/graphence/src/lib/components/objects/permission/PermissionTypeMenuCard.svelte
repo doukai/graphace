@@ -24,5 +24,5 @@
 	{/if}
 	<div class="divider" />
 
-	<PermissionTypeMenu bind:activeTypeName bind:typeName bind:queryPage />
+	<PermissionTypeMenu bind:activeTypeName bind:typeName bind:queryPage on:query />
 </Card>

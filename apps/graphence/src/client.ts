@@ -13,7 +13,7 @@ const authPlugin: ClientPlugin = () => {
 				if (value.errors?.map(error => error.extensions).some(extensions => extensions?.code == -40100)) {
 					const loginPathName = `/${ctx.session?.locale}/login`;
 					if (browser) {
-						goto(loginPathName + `?from=${window.location.pathname}`);
+						goto(loginPathName);
 					} else {
 						throw redirect(307, loginPathName);
 					}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import { Table, TableLoading, TableEmpty, AutoComplete, notifications } from '@graphace/ui';
+	import { Table, TableLoading, TableEmpty, Combobox, notifications } from '@graphace/ui';
 	import { graphql } from '$houdini';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Link, ArrowUturnLeft } from '@steeze-ui/heroicons';
@@ -95,13 +95,12 @@
 
 	let permissions: ({ name: string; permissionType: PermissionType } | null)[] | null | undefined;
 
-	let items:
+	let options:
 		| {
 				value: any | null | undefined;
 				label: string | null | undefined;
 				node?: any | null | undefined;
 		  }[]
-		| null
 		| undefined = [];
 
 	let selectAllRead: boolean;
@@ -111,27 +110,16 @@
 
 	$: showSelectButton = (fieldReadList?.length || 0) > 0 || (fieldWriteList?.length || 0) > 0;
 
-	let selectedItem:
-		| { value: string | null | undefined; label: string | null | undefined }
-		| null
-		| undefined = undefined;
-
-	$: typeName = selectedItem?.value;
-
 	$: permissionNameList = fieldReadList?.concat(fieldWriteList);
 
 	$: if (typeNames) {
-		items = typeNames.map((typeName) => ({
+		options = typeNames.map((typeName) => ({
 			value: typeName,
 			label: typeName
 		}));
 	}
 
-	$: if (typeName) {
-		query(typeName);
-	}
-
-	const query = (typeName?: string | null | undefined) => {
+	export const query = (typeName?: string | null | undefined) => {
 		let variables = {
 			roleRef: { val: roleId },
 			type: typeName ? { val: typeName } : undefined
@@ -185,7 +173,7 @@
 	</div>
 	<div class="flex justify-between w-full md:w-auto space-x-1">
 		<div class="flex">
-			<AutoComplete
+			<Combobox
 				placeholder={$LL.graphql.objects.Permission.fields.type.name()}
 				on:search={(e) => {
 					PermissionTypesQuery.fetch({
@@ -197,9 +185,12 @@
 						}
 					});
 				}}
-				{items}
-				bind:selectedItem
-				multiple
+				{options}
+				on:change={(e) => {
+					if (!Array.isArray(e.detail.value)) {
+						query(e.detail.value.value);
+					}
+				}}
 			/>
 		</div>
 		<div class="flex space-x-1">

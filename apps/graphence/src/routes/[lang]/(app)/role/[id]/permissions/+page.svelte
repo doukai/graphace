@@ -10,7 +10,7 @@
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Role.fields.permissions.name());
 	$: id = data.id as string;
-	let typeName: string | null | undefined = undefined;
+	let query: (typeName?: string | null | undefined) => void;
 
 	const back = (event: CustomEvent<{}>) => {
 		ot();
@@ -19,15 +19,15 @@
 
 <div class="flex xl:items-start xl:flex-row xl:gap-2">
 	<div class="hidden xl:flex xl:basis-1/5">
-		<PermissionTypeMenuCard bind:activeTypeName={typeName} />
+		<PermissionTypeMenuCard on:query={(e) => query(e.detail.typeName)} />
 	</div>
 	<div class="w-full xl:basis-4/5">
 		<Card>
 			<PermissionFieldSelectTable
 				showBackButton={$canBack}
 				bind:roleId={id}
-				bind:typeName
 				on:back={back}
+				bind:query
 			/>
 		</Card>
 	</div>

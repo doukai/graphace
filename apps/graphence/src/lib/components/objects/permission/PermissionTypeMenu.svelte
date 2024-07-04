@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import { graphql } from '$houdini';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
@@ -8,6 +8,10 @@
 	export let typeName: string | null | undefined;
 	export let activeTypeName: string | null | undefined;
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
+
+	const dispatch = createEventDispatcher<{
+		query: { typeName?: string | null | undefined };
+	}>();
 
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
@@ -58,6 +62,7 @@
 					href={null}
 					on:click|preventDefault={(e) => {
 						activeTypeName = typeName;
+						dispatch('query', { typeName });
 					}}
 				>
 					{typeName}

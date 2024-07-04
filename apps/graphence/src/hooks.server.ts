@@ -68,9 +68,9 @@ export const handleError: HandleServerError = async ({ error, event }) => {
 
 const toLoginPage = (loginPathName: string, fromPathName?: string) => {
 	if (browser) {
-		goto(loginPathName + `?from=${fromPathName}`);
+		goto(loginPathName + (fromPathName ? '?from=' + fromPathName : ''));
 	} else {
-		throw redirect(307, loginPathName + `?from=${fromPathName}`);
+		throw redirect(307, loginPathName + (fromPathName ? '?from=' + fromPathName : ''));
 	}
 }
 
