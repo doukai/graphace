@@ -186,6 +186,7 @@
 					});
 				}}
 				{options}
+				loading={$PermissionTypesQuery.fetching}
 				on:change={(e) => {
 					if (!Array.isArray(e.detail.value)) {
 						typeName = e.detail.value.value;

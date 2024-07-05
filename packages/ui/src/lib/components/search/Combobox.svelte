@@ -98,7 +98,7 @@
 	}
 </script>
 
-<div class="relative input">
+<div class="relative">
 	<div
 		use:melt={$root}
 		class="flex border border-solid flex-row flex-wrap gap-1 rounded-md px-3 py-3"
