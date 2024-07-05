@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons';
-	import { ObjectMultiSelect } from '@graphace/ui-graphql';
-	import type { ObjectOption } from 'svelte-multiselect';
+	import type { Option } from '@graphace/ui';
+	import { ObjectSelect } from '@graphace/ui-graphql';
 	import { graphql, GroupInput, Operator } from '$houdini';
 
 	export let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
-	export let selected: ObjectOption[] = [];
+	export let selected: Option | Option[] | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
 	export let list: boolean | undefined = false;
 	export let id: string | null = null;
@@ -34,36 +34,27 @@
 	
 	if (Array.isArray(value)) {
 		selected = value?.map((item) => ({
-			label: item?.name || '',
-			value: { where: { id: { val: item?.id } } }
+			label: item?.name,
+			value: item?.id
 		}));
 		value = value.map((item) => ({ where: { id: { val: item?.id } } }));
 	} else if (value) {
-		selected = [{ label: value?.name || '', value: { where: { id: { val: value.id } } } }];
+		selected = { label: value.name, value: value.id };
 		value = { where: { id: { val: value.id } } };
-	} else {
-		selected = [];
 	}
 
 	let searchText: string = '';
 	let loading: boolean = false;
-	let options: ObjectOption[] = [];
+	let options: Option[] = [];
 
 	$: options =
 		$GroupNameListQuery.data?.groupList?.map((item) => ({
-			label: item?.name || '',
-			value: { where: { id: { val: item?.id } } }
+			label: item?.name,
+			value: item?.id
 		})) || [];
-
-	$: if (searchText) {
-		loading = true;
-		GroupNameListQuery.fetch({
-			variables: { name: { opr: Operator.LK, val: `%${searchText}%` } }
-		}).finally(() => (loading = false));
-	}
 </script>
 
-<ObjectMultiSelect
+<ObjectSelect
 	{list}
 	{id}
 	{name}
@@ -72,40 +63,30 @@
 	{placeholder}
 	{errors}
 	{className}
-	bind:selected
 	bind:options
-	bind:searchText
+	bind:value={selected}
 	{loading}
 	on:change={(e) => {
-		if (e.detail.type === 'add') {
-			if (list && Array.isArray(value)) {
-				value = [...value, e.detail.option.value];
-			} else if (list) {
-				value = [e.detail.option.value];
-			} else {
-				value = e.detail.option.value;
-			}
-		} else if (e.detail.type === 'remove') {
-			if (list && Array.isArray(value)) {
-				value = [
-					...value.filter((item) => item?.where?.id?.val !== e.detail.option.value?.where?.id?.val)
-				];
-			} else {
-				value = undefined;
-			}
-		} else if (e.detail.type === 'removeAll') {
+		if (Array.isArray(e.detail.value)) {
+			value = e.detail.value.map((item) => ({ where: { id: { val: item.value } } }));
+		} else if (e.detail.value && !Array.isArray(e.detail.value)) {
+			value = { where: { id: { val: e.detail.value.value } } };
+		} else {
 			value = undefined;
 		}
 		dispatch('change', { value });
 	}}
-	on:open={(e) => {
-		if (searchText) {
+	on:search={(e) => {
+		if (e.detail.searchValue) {
 			loading = true;
 			GroupNameListQuery.fetch({
-				variables: { name: { opr: Operator.LK, val: `%${searchText}%` } }
+				variables: { name: { opr: Operator.LK, val: `%${e.detail.searchValue}%` } }
 			}).finally(() => (loading = false));
 		} else {
-			GroupNameListQuery.fetch({ variables: { name: undefined, first: 10 } }).finally(() => (loading = false));
+			loading = true;
+			GroupNameListQuery.fetch({ variables: { name: undefined, first: 10 } }).finally(
+				() => (loading = false)
+			);
 		}
 	}}
 />

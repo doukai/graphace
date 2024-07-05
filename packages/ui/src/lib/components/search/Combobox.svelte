@@ -1,3 +1,11 @@
+<script lang="ts" context="module">
+	export type Option = {
+		value: any | null | undefined;
+		label: string | null | undefined;
+		node?: any | null | undefined;
+	};
+</script>
+
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
@@ -9,21 +17,17 @@
 	import { createEventDispatcher } from 'svelte';
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
-	type Option = {
-		value: any | null | undefined;
-		label: string | null | undefined;
-		node?: any | null | undefined;
-	};
-
 	export let options: Option[] | null | undefined = [];
 	export let value: Option | Option[] | null | undefined = undefined;
 	export let multiple: boolean = false;
 	export let name: string | undefined = undefined;
+	export let disabled = false;
 	export let placeholder: string = '';
+	export let loading: boolean = false;
 
 	const dispatch = createEventDispatcher<{
 		search: { searchValue: string | null | undefined };
-		update: { id: string; value: string };
+		update: { option: Option };
 		change: { value: Option | Option[] };
 	}>();
 
@@ -53,7 +57,7 @@
 		states: { tags }
 	} = createTagsInput({
 		update: async (tag: Tag) => {
-			dispatch('update', tag);
+			dispatch('update', { option: { value: tag.id, label: tag.value } });
 			return tag;
 		},
 		remove: async (t: Tag) => {
@@ -94,8 +98,11 @@
 	}
 </script>
 
-<div class="relative">
-	<div use:melt={$root} class="flex border flex-row flex-wrap gap-1 rounded-md px-3 py-3">
+<div class="relative input">
+	<div
+		use:melt={$root}
+		class="flex border border-solid flex-row flex-wrap gap-1 rounded-md px-3 py-3"
+	>
 		{#if multiple}
 			{#each $tags as t}
 				<div use:melt={$tag(t)} class="flex bg-neutral items-center overflow-hidden rounded-md">
@@ -104,7 +111,7 @@
 					>
 						{t.value}
 					</span>
-					<button use:melt={$deleteTrigger(t)} class="flex h-full items-center px-1">
+					<button use:melt={$deleteTrigger(t)} class="flex h-full items-center px-1" {disabled}>
 						<Icon src={XMark} class="size-3 bg-neutral-content rounded-full" />
 					</button>
 				</div>
@@ -116,9 +123,22 @@
 		<input
 			use:melt={$input}
 			type="text"
-			class="shrink grow basis-0 border-0 outline-none"
+			class="shrink grow bg-base-100 basis-0 border-0 outline-none"
+			on:focus={(e) => {
+				loading = true;
+				if ($touchedInput) {
+					debounce(() => {
+						dispatch('search', { searchValue: $inputValue });
+					});
+				} else {
+					debounce(() => {
+						dispatch('search', { searchValue: undefined });
+					});
+				}
+			}}
 			{name}
 			{placeholder}
+			{disabled}
 		/>
 	</div>
 	<div class="absolute right-2 top-1/2 z-10 -translate-y-1/2">
@@ -135,27 +155,37 @@
 		use:melt={$menu}
 		transition:fly={{ duration: 150, y: -5 }}
 	>
-		{#each options as item, index (index)}
-			<li
-				use:melt={$option({
-					value: item,
-					label: item.label
-				})}
-			>
-				<!-- svelte-ignore a11y-missing-attribute -->
-				<a class="flex">
-					{#if $isSelected(item)}
-						<Icon src={Check} class="size-4" />
-					{:else}
-						<div class="size-4" />
-					{/if}
-					{item.label}
-				</a>
+		{#if loading}
+			<li>
+				<div class="flex justify-center flex-nowrap">
+					<span class="loading loading-spinner loading-xs" />
+				</div>
 			</li>
 		{:else}
-			<li>
-				<span class="badge badge-ghost">{$LL.ui.table.empty()}</span>
-			</li>
-		{/each}
+			{#each options as op, index (index)}
+				<li
+					use:melt={$option({
+						value: op,
+						label: op.label
+					})}
+				>
+					<!-- svelte-ignore a11y-missing-attribute -->
+					<a class="flex">
+						{#if $isSelected(op)}
+							<Icon src={Check} class="size-4" />
+						{:else}
+							<div class="size-4" />
+						{/if}
+						{op.label}
+					</a>
+				</li>
+			{:else}
+				<li>
+					<div class="flex justify-center flex-nowrap">
+						<span class="badge badge-ghost">{$LL.ui.table.empty()}</span>
+					</div>
+				</li>
+			{/each}
+		{/if}
 	</ul>
 {/if}

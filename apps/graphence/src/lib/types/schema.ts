@@ -277,6 +277,56 @@ export type GroupRealmArgs = {
 
 
 /** 组 */
+export type GroupGroupUserRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GroupUserRelationOrderBy>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** 组 */
+export type GroupGroupRoleRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** 组 */
 export type GroupSubGroupsAggregateArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
@@ -635,7 +685,7 @@ export type GroupConnectionSubscriptionArguments = {
 export type GroupEdge = {
   __typename?: 'GroupEdge';
   node?: Maybe<Group>;
-  cursor?: Maybe<Scalars['ID']>;
+  cursor?: Maybe<Scalars['String']>;
 };
 
 export type GroupExpression = {
@@ -994,7 +1044,7 @@ export type GroupRoleRelationConnectionSubscriptionArguments = {
 export type GroupRoleRelationEdge = {
   __typename?: 'GroupRoleRelationEdge';
   node?: Maybe<GroupRoleRelation>;
-  cursor?: Maybe<Scalars['ID']>;
+  cursor?: Maybe<Scalars['String']>;
 };
 
 export type GroupRoleRelationExpression = {
@@ -1346,7 +1396,7 @@ export type GroupUserRelationConnectionSubscriptionArguments = {
 export type GroupUserRelationEdge = {
   __typename?: 'GroupUserRelationEdge';
   node?: Maybe<GroupUserRelation>;
-  cursor?: Maybe<Scalars['ID']>;
+  cursor?: Maybe<Scalars['String']>;
 };
 
 export type GroupUserRelationExpression = {
@@ -2321,6 +2371,31 @@ export type PermissionRealmArgs = {
 
 
 /** 权限 */
+export type PermissionPermissionRoleRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  permissionRef?: InputMaybe<StringExpression>;
+  permission?: InputMaybe<PermissionExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<PermissionRoleRelationOrderBy>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** 权限 */
 export type PermissionRolesAggregateArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
@@ -2493,7 +2568,7 @@ export type PermissionConnectionSubscriptionArguments = {
 export type PermissionEdge = {
   __typename?: 'PermissionEdge';
   node?: Maybe<Permission>;
-  cursor?: Maybe<Scalars['ID']>;
+  cursor?: Maybe<Scalars['String']>;
 };
 
 export type PermissionExpression = {
@@ -2811,7 +2886,7 @@ export type PermissionRoleRelationConnectionSubscriptionArguments = {
 export type PermissionRoleRelationEdge = {
   __typename?: 'PermissionRoleRelationEdge';
   node?: Maybe<PermissionRoleRelation>;
-  cursor?: Maybe<Scalars['ID']>;
+  cursor?: Maybe<Scalars['String']>;
 };
 
 export type PermissionRoleRelationExpression = {
@@ -4108,7 +4183,7 @@ export type RealmConnectionSubscriptionArguments = {
 export type RealmEdge = {
   __typename?: 'RealmEdge';
   node?: Maybe<Realm>;
-  cursor?: Maybe<Scalars['ID']>;
+  cursor?: Maybe<Scalars['String']>;
 };
 
 export type RealmExpression = {
@@ -4469,6 +4544,106 @@ export type RoleRealmArgs = {
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+
+/** 角色 */
+export type RoleRoleUserRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleUserRelationOrderBy>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** 角色 */
+export type RoleGroupRoleRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** 角色 */
+export type RoleRoleCompositeRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  compositeRef?: InputMaybe<StringExpression>;
+  composite?: InputMaybe<RoleExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** 角色 */
+export type RolePermissionRoleRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  permissionRef?: InputMaybe<StringExpression>;
+  permission?: InputMaybe<PermissionExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<PermissionRoleRelationOrderBy>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -5029,7 +5204,7 @@ export type RoleCompositeRelationConnectionSubscriptionArguments = {
 export type RoleCompositeRelationEdge = {
   __typename?: 'RoleCompositeRelationEdge';
   node?: Maybe<RoleCompositeRelation>;
-  cursor?: Maybe<Scalars['ID']>;
+  cursor?: Maybe<Scalars['String']>;
 };
 
 export type RoleCompositeRelationExpression = {
@@ -5286,7 +5461,7 @@ export type RoleConnectionSubscriptionArguments = {
 export type RoleEdge = {
   __typename?: 'RoleEdge';
   node?: Maybe<Role>;
-  cursor?: Maybe<Scalars['ID']>;
+  cursor?: Maybe<Scalars['String']>;
 };
 
 export type RoleExpression = {
@@ -5665,7 +5840,7 @@ export type RoleUserRelationConnectionSubscriptionArguments = {
 export type RoleUserRelationEdge = {
   __typename?: 'RoleUserRelationEdge';
   node?: Maybe<RoleUserRelation>;
-  cursor?: Maybe<Scalars['ID']>;
+  cursor?: Maybe<Scalars['String']>;
 };
 
 export type RoleUserRelationExpression = {
@@ -6929,8 +7104,8 @@ export type UserPhonesArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   sort?: InputMaybe<Sort>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -7007,6 +7182,80 @@ export type UserRealmArgs = {
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+
+/** 用户 */
+export type UserUserPhonesRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  phonesRef?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** 用户 */
+export type UserGroupUserRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  groupRef?: InputMaybe<StringExpression>;
+  group?: InputMaybe<GroupExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GroupUserRelationOrderBy>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** 用户 */
+export type UserRoleUserRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  roleRef?: InputMaybe<StringExpression>;
+  role?: InputMaybe<RoleExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RoleUserRelationOrderBy>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -7339,7 +7588,7 @@ export type UserConnectionSubscriptionArguments = {
 export type UserEdge = {
   __typename?: 'UserEdge';
   node?: Maybe<User>;
-  cursor?: Maybe<Scalars['ID']>;
+  cursor?: Maybe<Scalars['String']>;
 };
 
 export type UserExpression = {
@@ -7666,7 +7915,7 @@ export type UserPhonesRelationConnectionSubscriptionArguments = {
 export type UserPhonesRelationEdge = {
   __typename?: 'UserPhonesRelationEdge';
   node?: Maybe<UserPhonesRelation>;
-  cursor?: Maybe<Scalars['ID']>;
+  cursor?: Maybe<Scalars['String']>;
 };
 
 export type UserPhonesRelationExpression = {

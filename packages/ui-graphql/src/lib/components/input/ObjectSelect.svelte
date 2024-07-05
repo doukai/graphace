@@ -3,7 +3,7 @@
 	import type { Readable } from 'svelte/store';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import type { Errors } from '@graphace/commons';
-	import { Combobox } from '@graphace/ui';
+	import { Combobox, type Option } from '@graphace/ui';
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let list: boolean | undefined = false;
@@ -17,12 +17,6 @@
 	export let value: Option | Option[] | null | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
 	export let className: string = '';
-
-	type Option = {
-		value: any | null | undefined;
-		label: string | null | undefined;
-		node?: any | null | undefined;
-	};
 </script>
 
 <div class="form-control w-full">
@@ -40,6 +34,8 @@
 		<Combobox
 			{name}
 			{placeholder}
+			{disabled}
+			{loading}
 			multiple={list}
 			bind:value
 			bind:options
