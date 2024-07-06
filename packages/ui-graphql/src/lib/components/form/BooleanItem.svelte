@@ -12,7 +12,7 @@
 </script>
 
 <FormItem {label} let:id>
-	{#if Array.isArray(value) || (list && (value === null || value === undefined))}
+	{#if list}
 		<ToggleList {id} {name} bind:value {errors} {readonly} {disabled} />
 	{:else}
 		<Toggle {id} {name} bind:value {errors} {readonly} {disabled} />

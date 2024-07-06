@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
-	import { CheckboxGroup, Select } from '@graphace/ui';
+	import { Select } from '@graphace/ui';
 
 	export let value: string | (string | null | undefined)[] | null | undefined;
 	export let list: boolean = false;
@@ -14,8 +14,22 @@
 	export let className: string = '';
 </script>
 
-{#if Array.isArray(value) || (list && (value === null || value === undefined))}
-	<CheckboxGroup bind:value {containerClassName} items={enums} {errors} {readonly} {disabled} />
+{#if list}
+	<Select
+		{name}
+		bind:value
+		{errors}
+		{placeholder}
+		{containerClassName}
+		{className}
+		{readonly}
+		{disabled}
+		multiple
+	>
+		{#each enums as item}
+			<option value={item.value}>{item.name}</option>
+		{/each}
+	</Select>
 {:else}
 	<Select
 		{name}

@@ -11,8 +11,8 @@
 	export let className: string = '';
 </script>
 
-{#if Array.isArray(value) || (list && (value === null || value === undefined))}
-	<ToggleList {name} bind:value {errors} {readonly} {disabled} />
+{#if list}
+	<ToggleList {name} bind:value {errors} {readonly} {disabled} {className} />
 {:else}
 	<Toggle {name} bind:value {errors} {readonly} {disabled} {className} />
 {/if}

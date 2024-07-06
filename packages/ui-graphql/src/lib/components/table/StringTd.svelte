@@ -28,6 +28,7 @@
 			value = value.filter((item) => item);
 		}
 		dispatch('save');
+		$open = false;
 	};
 
 	let clean = (): void => {
@@ -37,6 +38,7 @@
 			value = null;
 		}
 		dispatch('save');
+		$open = false;
 	};
 
 	const {
@@ -81,21 +83,41 @@
 	<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
 	<div class="p-1 rounded-xl bg-base-100 shadow z-[50]" use:melt={$content}>
 		<div use:melt={$arrow} />
-		<div class="flex items-start space-x-1" transition:fade={{ duration: 100 }}>
+		<div class="flex items-center space-x-1" transition:fade={{ duration: 100 }}>
 			{#if list}
-				<InputList {placeholder} {name} bind:value {errors} {readonly} {disabled} />
+				<InputList
+					{placeholder}
+					{name}
+					bind:value
+					{errors}
+					{readonly}
+					{disabled}
+					className="md:input-sm"
+					addBtnClassName="md:btn-sm"
+				/>
 			{:else}
-				<Input {placeholder} {name} bind:value {errors} {readonly} {disabled} />
+				<Input
+					{placeholder}
+					{name}
+					bind:value
+					{errors}
+					{readonly}
+					{disabled}
+					className="md:input-sm"
+				/>
 			{/if}
 			{#if !readonly && !disabled}
-				<div class="tooltip" data-tip={$LL.uiGraphql.table.td.save()}>
-					<button class="btn btn-square btn-primary" on:click|preventDefault={(e) => mutation()}>
+				<div class="tooltip flex items-center" data-tip={$LL.uiGraphql.table.td.save()}>
+					<button
+						class="btn btn-square btn-primary md:btn-sm"
+						on:click|preventDefault={(e) => mutation()}
+					>
 						<Icon src={Check} class="h-5 w-5" />
 					</button>
 				</div>
-				<div class="tooltip" data-tip={$LL.uiGraphql.table.td.clear()}>
+				<div class="tooltip flex items-center" data-tip={$LL.uiGraphql.table.td.clear()}>
 					<button
-						class="btn btn-square btn-outline btn-error"
+						class="btn btn-square btn-outline btn-error md:btn-sm"
 						on:click|preventDefault={(e) => clean()}
 					>
 						<Icon src={XMark} class="h-5 w-5" />

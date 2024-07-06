@@ -3,8 +3,10 @@
 	import type { Readable } from 'svelte/store';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { createEventDispatcher } from 'svelte';
+	import { fade } from 'svelte/transition';
+	import { createPopover, melt } from '@melt-ui/svelte';
 	import type { NumberExpression, Sort } from '@graphace/graphql';
-	import { tippy, NumberInput, NumberInputList } from '@graphace/ui';
+	import { NumberInput, NumberInputList } from '@graphace/ui';
 	import OperatorSelect from '../input/OperatorSelect.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel, BarsArrowDown, BarsArrowUp } from '@steeze-ui/heroicons';
@@ -17,8 +19,6 @@
 	let _expression: NumberExpression = { opr: 'EQ', val: undefined, in: [] };
 	let _sort: Sort | undefined = undefined;
 
-	let content: HTMLElement;
-	let tippyElement: any;
 	const dispatch = createEventDispatcher<{
 		filter: {};
 	}>();
@@ -31,7 +31,7 @@
 		}
 		sort = _sort;
 		dispatch('filter');
-		tippyElement._tippy.hide();
+		$open = false;
 	};
 
 	const clear = (): void => {
@@ -42,66 +42,25 @@
 		expression = undefined;
 		sort = undefined;
 		dispatch('filter');
-		tippyElement._tippy.hide();
+		$open = false;
 	};
 
 	const oprChange = (): void => {
 		_expression.in = [];
 		_expression.val = undefined;
 	};
+
+	const {
+		elements: { trigger, content, arrow, close, overlay },
+		states: { open }
+	} = createPopover({
+		forceVisible: true,
+		preventScroll: true
+	});
 </script>
 
-<div class="hidden">
-	<div class="flex items-start space-x-1" bind:this={content}>
-		<OperatorSelect bind:value={_expression.opr} on:change={(e) => oprChange()} />
-		{#if _expression.opr === 'IN' || _expression.opr === 'NIN' || _expression.opr === 'BT' || _expression.opr === 'NBT'}
-			<NumberInputList
-				placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-				{name}
-				bind:value={_expression.in}
-			/>
-		{:else}
-			<NumberInput
-				placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-				{name}
-				bind:value={_expression.val}
-			/>
-		{/if}
-		<select class="select select-bordered" bind:value={_sort}>
-			<option value={undefined} selected>{$LL.uiGraphql.table.th.noSort()}</option>
-			<option value="ASC">{$LL.uiGraphql.table.th.asc()}</option>
-			<option value="DESC">{$LL.uiGraphql.table.th.desc()}</option>
-		</select>
-		<div class="tooltip" data-tip={$LL.uiGraphql.table.th.filter()}>
-			<button class="btn btn-square btn-primary" on:click|preventDefault={(e) => filter()}>
-				<Icon src={Check} class="h-5 w-5" />
-			</button>
-		</div>
-		<div class="tooltip" data-tip={$LL.uiGraphql.table.th.cancel()}>
-			<button class="btn btn-square btn-outline btn-error" on:click|preventDefault={(e) => clear()}>
-				<Icon src={XMark} class="h-5 w-5" />
-			</button>
-		</div>
-	</div>
-</div>
-
 <td>
-	<a
-		class="link group inline-flex"
-		href={null}
-		use:tippy={{
-			content,
-			placement: 'bottom',
-			interactive: true,
-			arrow: true,
-			trigger: 'click',
-			interactiveBorder: 30,
-			theme: 'daisy',
-			maxWidth: 'none',
-			appendTo: () => document.body
-		}}
-		bind:this={tippyElement}
-	>
+	<a class="link group inline-flex" href={null} use:melt={$trigger}>
 		{name}
 		{#if expression?.val || (expression?.in && expression.in.length > 0)}
 			<span class="ml-1 flex-none">
@@ -120,3 +79,54 @@
 		{/if}
 	</a>
 </td>
+
+{#if $open}
+	<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
+	<div class="p-1 rounded-xl bg-base-100 shadow z-[50]" use:melt={$content}>
+		<div use:melt={$arrow} />
+		<div class="flex items-center space-x-1" transition:fade={{ duration: 100 }}>
+			<OperatorSelect
+				bind:value={_expression.opr}
+				on:change={(e) => oprChange()}
+				className="md:select-sm"
+			/>
+			{#if _expression.opr === 'IN' || _expression.opr === 'NIN' || _expression.opr === 'BT' || _expression.opr === 'NBT'}
+				<NumberInputList
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.in}
+					className="md:input-sm"
+					addBtnClassName="md:btn-sm"
+				/>
+			{:else}
+				<NumberInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					{name}
+					bind:value={_expression.val}
+					className="md:input-sm"
+				/>
+			{/if}
+			<select class="select select-bordered md:select-sm" bind:value={_sort}>
+				<option value={undefined} selected>{$LL.uiGraphql.table.th.noSort()}</option>
+				<option value="ASC">{$LL.uiGraphql.table.th.asc()}</option>
+				<option value="DESC">{$LL.uiGraphql.table.th.desc()}</option>
+			</select>
+			<div class="tooltip flex items-center" data-tip={$LL.uiGraphql.table.th.filter()}>
+				<button
+					class="btn btn-square btn-primary md:btn-sm"
+					on:click|preventDefault={(e) => filter()}
+				>
+					<Icon src={Check} class="h-5 w-5" />
+				</button>
+			</div>
+			<div class="tooltip flex items-center" data-tip={$LL.uiGraphql.table.th.cancel()}>
+				<button
+					class="btn btn-square btn-outline btn-error md:btn-sm"
+					on:click|preventDefault={(e) => clear()}
+				>
+					<Icon src={XMark} class="h-5 w-5" />
+				</button>
+			</div>
+		</div>
+	</div>
+{/if}

@@ -15,7 +15,7 @@
 		type="checkbox"
 		{id}
 		{name}
-		class="toggle my-3 {className}"
+		class="toggle {className}"
 		bind:checked={value}
 		{readonly}
 		{disabled}

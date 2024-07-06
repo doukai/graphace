@@ -31,7 +31,7 @@
 			}
 		}
 	`);
-	
+
 	if (Array.isArray(value)) {
 		selected = value?.map((item) => ({
 			label: item?.name,
@@ -43,7 +43,6 @@
 		value = { where: { id: { val: value.id } } };
 	}
 
-	let searchText: string = '';
 	let loading: boolean = false;
 	let options: Option[] = [];
 
@@ -69,7 +68,7 @@
 	on:change={(e) => {
 		if (Array.isArray(e.detail.value)) {
 			value = e.detail.value.map((item) => ({ where: { id: { val: item.value } } }));
-		} else if (e.detail.value && !Array.isArray(e.detail.value)) {
+		} else if (e.detail.value) {
 			value = { where: { id: { val: e.detail.value.value } } };
 		} else {
 			value = undefined;

@@ -3,23 +3,23 @@
 	import type { Readable } from 'svelte/store';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { createEventDispatcher } from 'svelte';
+	import { fade } from 'svelte/transition';
+	import { createPopover, melt } from '@melt-ui/svelte';
 	import type { Errors } from '@graphace/commons';
-	import { tippy, CheckboxGroup, Select } from '@graphace/ui';
+	import { Select } from '@graphace/ui';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let value: string | (string | null | undefined)[] | null | undefined;
-	export let list: boolean = false;
 	export let enums: { name: string; value: string | null | undefined; description?: string }[];
+	export let list: boolean = false;
 	export let name: string;
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
 
-	let content: HTMLElement;
-	let tippyElement: any;
 	const dispatch = createEventDispatcher<{
 		save: {};
 	}>();
@@ -29,7 +29,7 @@
 			value = value.filter((item) => item);
 		}
 		dispatch('save');
-		tippyElement._tippy.hide();
+		$open = false;
 	};
 
 	let clean = (): void => {
@@ -39,63 +39,27 @@
 			value = null;
 		}
 		dispatch('save');
-		tippyElement._tippy.hide();
+		$open = false;
 	};
-</script>
 
-<div class="hidden">
-	<div class="flex items-start space-x-1" bind:this={content}>
-		{#if Array.isArray(value) || (list && (value === null || value === undefined))}
-			<CheckboxGroup bind:value items={enums} {errors} {readonly} {disabled} />
-		{:else}
-			<Select {name} bind:value {errors} {placeholder} {readonly} {disabled}>
-				{#each enums as item}
-					<option value={item.value}>{item.name}</option>
-				{/each}
-			</Select>
-		{/if}
-		{#if !readonly && !disabled}
-			<div class="tooltip" data-tip={$LL.uiGraphql.table.td.save()}>
-				<button class="btn btn-square btn-primary" on:click|preventDefault={(e) => mutation()}>
-					<Icon src={Check} class="h-5 w-5" />
-				</button>
-			</div>
-			<div class="tooltip" data-tip={$LL.uiGraphql.table.td.clear()}>
-				<button
-					class="btn btn-square btn-outline btn-error"
-					on:click|preventDefault={(e) => clean()}
-				>
-					<Icon src={XMark} class="h-5 w-5" />
-				</button>
-			</div>
-		{/if}
-	</div>
-</div>
+	const {
+		elements: { trigger, content, arrow, close, overlay },
+		states: { open }
+	} = createPopover({
+		forceVisible: true,
+		preventScroll: true
+	});
+</script>
 
 <td>
 	<div
 		class={errors ? 'tooltip tooltip-open tooltip-error hover:z-30' : ''}
 		data-tip={errors?.errors?.map((error) => error.message).join(', ')}
 	>
-		<a
-			class="group link inline-flex"
-			href={null}
-			use:tippy={{
-				content,
-				placement: 'bottom',
-				interactive: true,
-				arrow: true,
-				trigger: 'click',
-				interactiveBorder: 30,
-				theme: 'daisy',
-				maxWidth: 'none',
-				appendTo: () => document.body
-			}}
-			bind:this={tippyElement}
-		>
-			{#if Array.isArray(value) || (list && (value === null || value === undefined))}
-				{#if value && value.length > 0}
-					{#if value && value.length > 3}
+		<a class="group link inline-flex" href={null} use:melt={$trigger}>
+			{#if list}
+				{#if Array.isArray(value)}
+					{#if value.length > 3}
 						{value
 							.map((valueItem) => enums.find((item) => item.value === valueItem)?.name || valueItem)
 							.slice(0, 3)
@@ -117,3 +81,60 @@
 		</a>
 	</div>
 </td>
+
+{#if $open}
+	<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
+	<div class="p-1 rounded-xl bg-base-100 shadow z-[50]" use:melt={$content}>
+		<div use:melt={$arrow} />
+		<div class="flex items-center space-x-1" transition:fade={{ duration: 100 }}>
+			{#if list}
+				<Select
+					{name}
+					bind:value
+					{errors}
+					{placeholder}
+					{readonly}
+					{disabled}
+					className="md:select-sm"
+					multiple
+				>
+					{#each enums as item}
+						<option value={item.value}>{item.name}</option>
+					{/each}
+				</Select>
+			{:else}
+				<Select
+					{name}
+					bind:value
+					{errors}
+					{placeholder}
+					{readonly}
+					{disabled}
+					className="md:select-sm"
+				>
+					{#each enums as item}
+						<option value={item.value}>{item.name}</option>
+					{/each}
+				</Select>
+			{/if}
+			{#if !readonly && !disabled}
+				<div class="tooltip flex items-center" data-tip={$LL.uiGraphql.table.td.save()}>
+					<button
+						class="btn btn-square btn-primary md:btn-sm"
+						on:click|preventDefault={(e) => mutation()}
+					>
+						<Icon src={Check} class="h-5 w-5" />
+					</button>
+				</div>
+				<div class="tooltip flex items-center" data-tip={$LL.uiGraphql.table.td.clear()}>
+					<button
+						class="btn btn-square btn-outline btn-error md:btn-sm"
+						on:click|preventDefault={(e) => clean()}
+					>
+						<Icon src={XMark} class="h-5 w-5" />
+					</button>
+				</div>
+			{/if}
+		</div>
+	</div>
+{/if}

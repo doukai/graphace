@@ -11,9 +11,8 @@ import DateInputList from "./DateInputList.svelte";
 import TimeInput from "./TimeInput.svelte";
 import TimeInputList from "./TimeInputList.svelte";
 import Select from "./Select.svelte";
-import CheckboxGroup from "./CheckboxGroup.svelte";
 import Checkbox from "./Checkbox.svelte";
 
 export {
-    Input, NumberInput, Select, Toggle, InputList, NumberInputList, ToggleList, DateTimeInput, DateTimeInputList, DateInput, DateInputList, TimeInput, TimeInputList, CheckboxGroup, Checkbox
+    Input, NumberInput, Select, Toggle, InputList, NumberInputList, ToggleList, DateTimeInput, DateTimeInputList, DateInput, DateInputList, TimeInput, TimeInputList, Checkbox
 }

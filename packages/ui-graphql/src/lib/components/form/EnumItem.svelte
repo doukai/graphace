@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
-	import { FormItem, CheckboxGroup, Select } from '@graphace/ui';
+	import { FormItem, Select } from '@graphace/ui';
 
 	export let value: string | (string | null | undefined)[] | null | undefined;
 	export let list: boolean = false;
@@ -14,8 +14,12 @@
 </script>
 
 <FormItem {label} let:id>
-	{#if Array.isArray(value) || (list && (value === null || value === undefined))}
-		<CheckboxGroup bind:value items={enums} {errors} {readonly} {disabled} />
+	{#if list}
+		<Select {name} bind:value {errors} {placeholder} {readonly} {disabled} multiple>
+			{#each enums as item}
+				<option value={item.value}>{item.name}</option>
+			{/each}
+		</Select>
 	{:else}
 		<Select {name} bind:value {errors} {placeholder} {readonly} {disabled}>
 			{#each enums as item}

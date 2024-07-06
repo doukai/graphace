@@ -2,27 +2,30 @@
 	import type { Errors } from '@graphace/commons';
 	import { nanoid } from 'nanoid';
 	export let name: string;
-	export let value: string | null | undefined;
+	export let value: string | (string | null | undefined)[] | null | undefined;
 	export let placeholder: string = '';
 	export let containerClassName: string = '';
 	export let className: string = '';
 	export let errors: Errors | undefined = undefined;
+	export let multiple = false;
 	export let readonly = false;
 	export let disabled = false;
 	export let id: string = nanoid();
 </script>
 
 <div class={containerClassName ? containerClassName : 'form-control w-full'}>
-	{#if readonly}
-		<input
-			type="text"
+	{#if multiple}
+		<select
 			{id}
 			{name}
 			{placeholder}
-			class="input input-bordered {errors?.errors ? 'input-error' : ''} {className}"
+			class="select select-bordered {errors?.errors ? 'select-error' : ''} {className}"
 			bind:value
-			readonly
-		/>
+			disabled={disabled || readonly}
+			multiple
+		>
+			<slot />
+		</select>
 	{:else}
 		<select
 			{id}
@@ -30,7 +33,7 @@
 			{placeholder}
 			class="select select-bordered {errors?.errors ? 'select-error' : ''} {className}"
 			bind:value
-			{disabled}
+			disabled={disabled || readonly}
 		>
 			<slot />
 		</select>

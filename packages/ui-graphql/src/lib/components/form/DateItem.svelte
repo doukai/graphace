@@ -13,7 +13,7 @@
 </script>
 
 <FormItem {label} let:id>
-	{#if Array.isArray(value) || (list && (value === null || value === undefined))}
+	{#if list}
 		<DateInputList {placeholder} {id} {name} bind:value {errors} {readonly} {disabled} />
 	{:else}
 		<DateInput {placeholder} {id} {name} bind:value {errors} {readonly} {disabled} />

@@ -12,7 +12,7 @@
 	export let className: string = '';
 </script>
 
-{#if Array.isArray(value) || (list && (value === null || value === undefined))}
+{#if list}
 	<InputList {placeholder} {name} bind:value {errors} {readonly} {disabled} />
 {:else}
 	<Input {placeholder} {name} bind:value {errors} {readonly} {disabled} {className} />

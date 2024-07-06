@@ -10,6 +10,7 @@
 	export let value: (string | null | undefined)[] | null | undefined;
 	export let placeholder: string = '';
 	export let className: string = '';
+	export let addBtnClassName: string = '';
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
@@ -33,7 +34,7 @@
 <div class="w-full">
 	<div {id} class="{errors?.errors ? 'border-2 border-error p-1 rounded-xl' : ''} space-y-2">
 		{#each value || [] as item, index}
-			<div class="flex space-x-1">
+			<div class="flex items-center space-x-1">
 				<div class="form-control w-full">
 					<input
 						type="text"
@@ -62,9 +63,9 @@
 						</label>
 					{/if}
 				</div>
-				<div class="tooltip" data-tip={$LL.ui.inputList.add()}>
+				<div class="tooltip flex items-center" data-tip={$LL.ui.inputList.add()}>
 					<button
-						class="mt-3 btn btn-xs btn-square btn-outline"
+						class="btn btn-xs btn-square btn-outline"
 						on:click|preventDefault={(e) => {
 							addItem(index);
 						}}
@@ -72,9 +73,9 @@
 						<Icon src={PlusSmall} class="h-5 w-5" />
 					</button>
 				</div>
-				<div class="tooltip" data-tip={$LL.ui.inputList.remove()}>
+				<div class="tooltip flex items-center" data-tip={$LL.ui.inputList.remove()}>
 					<button
-						class="mt-3 btn btn-xs btn-square btn-outline"
+						class="btn btn-xs btn-square btn-outline"
 						on:click|preventDefault={(e) => {
 							removeItem(index);
 						}}
@@ -85,9 +86,9 @@
 			</div>
 		{/each}
 		{#if (value || []).length === 0}
-			<div class="tooltip" data-tip={$LL.ui.inputList.add()}>
+			<div class="tooltip flex items-center" data-tip={$LL.ui.inputList.add()}>
 				<button
-					class="btn btn-square btn-outline"
+					class="btn btn-square btn-outline {addBtnClassName}"
 					on:click|preventDefault={(e) => {
 						addItem(0);
 					}}
