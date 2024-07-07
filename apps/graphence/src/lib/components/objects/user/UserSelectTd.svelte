@@ -20,10 +20,11 @@
 	export let placeholder: string = '';
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
-	let selected: Option | Option[] | undefined;
 	const dispatch = createEventDispatcher<{
 		save: {};
 	}>();
+
+	let selected: Option | Option[] | undefined;
 
 	let mutation = (): void => {
 		dispatch('save', {});
@@ -50,7 +51,16 @@
 		preventScroll: true
 	});
 
-	$: console.log(selected);
+	if (Array.isArray(value)) {
+		selected = value?.map((item) => ({
+			label: item?.name,
+			value: item?.id
+		}));
+		value = value.map((item) => ({ where: { id: { val: item?.id } } }));
+	} else if (value) {
+		selected = { label: value.name, value: value.id };
+		value = { where: { id: { val: value.id } } };
+	}
 </script>
 
 <td>
@@ -89,16 +99,31 @@
 	<div class="p-1 rounded-xl bg-base-100 shadow z-[50]" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="flex items-start space-x-1" transition:fade={{ duration: 100 }}>
-			<UserSelect {name} {list} {disabled} {readonly} {placeholder} bind:value bind:selected />
+			<UserSelect
+				{name}
+				{list}
+				{disabled}
+				{readonly}
+				{placeholder}
+				className="md:input-xs"
+				containerClassName="max-w-96 md:textarea-sm"
+				tagClassName="md:badge-sm"
+				menuClassName="md:menu-sm"
+				bind:value
+				bind:selected
+			/>
 			{#if !readonly && !disabled}
-				<div class="tooltip" data-tip={$LL.uiGraphql.table.td.save()}>
-					<button class="btn btn-square btn-primary" on:click|preventDefault={(e) => mutation()}>
+				<div class="tooltip flex items-center" data-tip={$LL.uiGraphql.table.td.save()}>
+					<button
+						class="btn btn-square btn-primary md:btn-sm"
+						on:click|preventDefault={(e) => mutation()}
+					>
 						<Icon src={Check} class="h-5 w-5" />
 					</button>
 				</div>
-				<div class="tooltip" data-tip={$LL.uiGraphql.table.td.clear()}>
+				<div class="tooltip flex items-center" data-tip={$LL.uiGraphql.table.td.clear()}>
 					<button
-						class="btn btn-square btn-outline btn-error"
+						class="btn btn-square btn-outline btn-error md:btn-sm"
 						on:click|preventDefault={(e) => clean()}
 					>
 						<Icon src={XMark} class="h-5 w-5" />

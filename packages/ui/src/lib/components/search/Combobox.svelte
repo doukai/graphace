@@ -15,6 +15,10 @@
 	import { Check, ChevronUp, ChevronDown, XMark } from '@steeze-ui/heroicons';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { createEventDispatcher } from 'svelte';
+	export let className: string = '';
+	export let containerClassName: string = '';
+	export let tagClassName: string = '';
+	export let menuClassName: string = '';
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let options: Option[] | null | undefined = [];
@@ -101,18 +105,17 @@
 <div class="relative">
 	<div
 		use:melt={$root}
-		class="flex border border-solid flex-row flex-wrap gap-1 rounded-md px-3 py-3"
+		class="flex items-center textarea textarea-bordered flex-row flex-wrap gap-1 min-h-6 {containerClassName}"
 	>
 		{#if multiple}
 			{#each $tags as t}
-				<div use:melt={$tag(t)} class="flex bg-neutral items-center overflow-hidden rounded-md">
-					<span
-						class="flex text-neutral-content items-center border-r border-neutral-content/10 px-1.5"
-					>
-						{t.value}
-					</span>
-					<button use:melt={$deleteTrigger(t)} class="flex h-full items-center px-1" {disabled}>
-						<Icon src={XMark} class="size-3 bg-neutral-content rounded-full" />
+				<div
+					use:melt={$tag(t)}
+					class="flex badge badge-neutral items-center overflow-hidden {tagClassName}"
+				>
+					{t.value}
+					<button use:melt={$deleteTrigger(t)} {disabled}>
+						<Icon src={XMark} class="size-3" />
 					</button>
 				</div>
 				<div use:melt={$edit(t)} class="flex items-center overflow-hidden rounded-md px-1.5">
@@ -123,9 +126,8 @@
 		<input
 			use:melt={$input}
 			type="text"
-			class="shrink grow bg-base-100 basis-0 border-0 outline-none"
+			class="shrink grow bg-base-100 basis-0 border-0 outline-none {className}"
 			on:focus={(e) => {
-				loading = true;
 				if ($touchedInput) {
 					debounce(() => {
 						dispatch('search', { searchValue: $inputValue });
@@ -151,7 +153,7 @@
 </div>
 {#if $open}
 	<ul
-		class="z-[50] menu shadow bg-base-100 rounded-box w-full max-h-80 flex-nowrap overflow-auto"
+		class="z-[50] mt-3 menu shadow bg-base-100 rounded-xl w-full max-h-80 flex-nowrap overflow-auto {menuClassName}"
 		use:melt={$menu}
 		transition:fly={{ duration: 150, y: -5 }}
 	>

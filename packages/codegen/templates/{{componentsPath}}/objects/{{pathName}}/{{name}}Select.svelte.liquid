@@ -15,6 +15,9 @@
 	export let readonly = false;
 	export let placeholder: string | null | undefined = undefined;
 	export let className: string = '';
+	export let containerClassName: string = '';
+	export let tagClassName: string = '';
+	export let menuClassName: string = '';
 
 	const dispatch = createEventDispatcher<{
 		change: {
@@ -31,27 +34,14 @@
 			}
 		}
 	`);
-	
-	if (Array.isArray(value)) {
-		selected = value?.map((item) => ({
-			label: item?.name,
-			value: item?.{{ idName }}
-		}));
-		value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
-	} else if (value) {
-		selected = { label: value.name, value: value.{{ idName }} };
-		value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
-	}
-
-	let searchText: string = '';
-	let loading: boolean = false;
-	let options: Option[] = [];
 
 	$: options =
 		${{ name }}NameListQuery.data?.{{ name | camelCase }}List?.map((item) => ({
 			label: item?.name,
 			value: item?.{{ idName }}
 		})) || [];
+
+	$: loading = ${{ name }}NameListQuery.fetching;
 </script>
 
 <ObjectSelect
@@ -62,10 +52,13 @@
 	{readonly}
 	{placeholder}
 	{errors}
+	{loading}
 	{className}
+	{containerClassName}
+	{tagClassName}
+	{menuClassName}
 	bind:options
 	bind:value={selected}
-	{loading}
 	on:change={(e) => {
 		if (Array.isArray(e.detail.value)) {
 			value = e.detail.value.map((item) => ({ where: { {{ idName }}: { val: item.value } } }));
@@ -78,15 +71,11 @@
 	{% raw %}}{% endraw %}}
 	on:search={(e) => {
 		if (e.detail.searchValue) {
-			loading = true;
 			{{ name }}NameListQuery.fetch({
 				variables: { name: { opr: Operator.LK, val: `%${e.detail.searchValue}%` } }
-			}).finally(() => (loading = false));
+			});
 		} else {
-			loading = true;
-			{{ name }}NameListQuery.fetch({ variables: { name: undefined, first: 10 } }).finally(
-				() => (loading = false)
-			);
+			{{ name }}NameListQuery.fetch({ variables: { name: undefined, first: 10 } });
 		}
 	{% raw %}}{% endraw %}}
 />

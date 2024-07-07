@@ -17,6 +17,9 @@
 	export let value: Option | Option[] | null | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
 	export let className: string = '';
+	export let containerClassName: string = '';
+	export let tagClassName: string = '';
+	export let menuClassName: string = '';
 </script>
 
 <div class="form-control w-full">
@@ -37,6 +40,10 @@
 			{disabled}
 			{loading}
 			multiple={list}
+			{className}
+			{containerClassName}
+			{tagClassName}
+			{menuClassName}
 			bind:value
 			bind:options
 			on:search

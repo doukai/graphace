@@ -63,8 +63,10 @@
 							.slice(0, 3)
 							.join(',')
 							.concat('...')}
-					{:else}
+					{:else if value.length > 0}
 						{value.filter((item) => item).join(',')}
+					{:else}
+						<Icon src={Minus} class="h-5 w-5" />
 					{/if}
 				{:else}
 					<Icon src={Minus} class="h-5 w-5" />

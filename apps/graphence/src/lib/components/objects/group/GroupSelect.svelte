@@ -15,6 +15,9 @@
 	export let readonly = false;
 	export let placeholder: string | null | undefined = undefined;
 	export let className: string = '';
+	export let containerClassName: string = '';
+	export let tagClassName: string = '';
+	export let menuClassName: string = '';
 
 	const dispatch = createEventDispatcher<{
 		change: {
@@ -31,27 +34,14 @@
 			}
 		}
 	`);
-	
-	if (Array.isArray(value)) {
-		selected = value?.map((item) => ({
-			label: item?.name,
-			value: item?.id
-		}));
-		value = value.map((item) => ({ where: { id: { val: item?.id } } }));
-	} else if (value) {
-		selected = { label: value.name, value: value.id };
-		value = { where: { id: { val: value.id } } };
-	}
-
-	let searchText: string = '';
-	let loading: boolean = false;
-	let options: Option[] = [];
 
 	$: options =
 		$GroupNameListQuery.data?.groupList?.map((item) => ({
 			label: item?.name,
 			value: item?.id
 		})) || [];
+
+	$: loading = $GroupNameListQuery.fetching;
 </script>
 
 <ObjectSelect
@@ -62,10 +52,13 @@
 	{readonly}
 	{placeholder}
 	{errors}
+	{loading}
 	{className}
+	{containerClassName}
+	{tagClassName}
+	{menuClassName}
 	bind:options
 	bind:value={selected}
-	{loading}
 	on:change={(e) => {
 		if (Array.isArray(e.detail.value)) {
 			value = e.detail.value.map((item) => ({ where: { id: { val: item.value } } }));
@@ -78,15 +71,11 @@
 	}}
 	on:search={(e) => {
 		if (e.detail.searchValue) {
-			loading = true;
 			GroupNameListQuery.fetch({
 				variables: { name: { opr: Operator.LK, val: `%${e.detail.searchValue}%` } }
-			}).finally(() => (loading = false));
+			});
 		} else {
-			loading = true;
-			GroupNameListQuery.fetch({ variables: { name: undefined, first: 10 } }).finally(
-				() => (loading = false)
-			);
+			GroupNameListQuery.fetch({ variables: { name: undefined, first: 10 } });
 		}
 	}}
 />
