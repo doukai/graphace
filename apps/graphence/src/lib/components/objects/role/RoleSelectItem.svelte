@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
 	import { FormItem } from '@graphace/ui';
-	import type { Option } from '@graphace/ui';
 	import RoleSelect from './RoleSelect.svelte';
 	import type { RoleInput } from '$houdini';
 
@@ -14,16 +13,12 @@
 	export let disabled = false;
 	export let placeholder: string = '';
 	
-	let selected: Option | Option[] | undefined;
+	let selected: RoleInput | (RoleInput | null | undefined)[] | null | undefined = undefined;
+	selected = value;
 
 	if (Array.isArray(value)) {
-		selected = value?.map((item) => ({
-			label: item?.name,
-			value: item?.id
-		}));
 		value = value.map((item) => ({ where: { id: { val: item?.id } } }));
 	} else if (value) {
-		selected = { label: value.name, value: value.id };
 		value = { where: { id: { val: value.id } } };
 	}
 </script>
@@ -37,7 +32,15 @@
 		{readonly}
 		{placeholder}
 		{errors}
-		bind:value
-		bind:selected
+		bind:value={selected}
+		on:change={(e) => {
+			if (Array.isArray(e.detail.value)) {
+				value = e.detail.value.map((item) => ({ where: { id: { val: item?.id } } }));
+			} else if (e.detail.value && !Array.isArray(e.detail.value)) {
+				value = { where: { id: { val: e.detail.value.id } } };
+			} else {
+				value = undefined;
+			}
+		}}
 	/>
 </FormItem>

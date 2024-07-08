@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
-	import type { Readable } from 'svelte/store';import type { PermissionsStore } from '@graphace/commons';import { tippy } from '@graphace/ui';
+	import type { Readable } from 'svelte/store';
+	import { fade } from 'svelte/transition';
+	import { createPopover, melt } from '@melt-ui/svelte';
+	import type { PermissionsStore } from '@graphace/commons'; 
 	import { OperatorSelect, IDInput, StringInput } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel } from '@steeze-ui/heroicons';
@@ -37,18 +40,16 @@
 		realm: { id: { opr: Operator.EQ } }
 	};
 	$: if (Array.isArray(roles)) {
-		_expression.roles.id.arr = roles?.map((item) => item?.where?.id?.val);
+		_expression.roles.id.arr = roles?.map((item) => item?.id);
 	} else if (roles) {
-		_expression.roles.id.val = roles?.where?.id?.val;
+		_expression.roles.id.val = roles?.id;
 	}
 	$: if (Array.isArray(realm)) {
-		_expression.realm.id.arr = realm?.map((item) => item?.where?.id?.val);
+		_expression.realm.id.arr = realm?.map((item) => item?.id);
 	} else if (realm) {
-		_expression.realm.id.val = realm?.where?.id?.val;
+		_expression.realm.id.val = realm?.id;
 	}
-
-	let content: HTMLElement;
-	let tippyElement: any;
+	
 	const dispatch = createEventDispatcher<{
 		filter: {};
 	}>();
@@ -98,7 +99,7 @@
 			expression = undefined;
 		}
 		dispatch('filter', {});
-		tippyElement._tippy.hide();
+		$open = false;
 	};
 
 	const clear = (): void => {
@@ -108,10 +109,20 @@
 		_expression.type = { opr: Operator.EQ };
 		_expression.permissionType = { opr: Operator.EQ };
 		_expression.roles = { id: { opr: Operator.EQ } };
+		if (Array.isArray(roles)) {
+			roles = [];
+		} else if (roles) {
+			roles = undefined;
+		}
 		_expression.realm = { id: { opr: Operator.EQ } };
+		if (Array.isArray(realm)) {
+			realm = [];
+		} else if (realm) {
+			realm = undefined;
+		}
 		expression = undefined;
 		dispatch('filter', {});
-		tippyElement._tippy.hide();
+		$open = false;
 	};
 	const nameOprChange = (): void => {
 		_expression.name.arr = [];
@@ -136,217 +147,33 @@
 	const rolesOprChange = (): void => {
 		_expression.roles.id.arr = [];
 		_expression.roles.id.val = undefined;
+		if (Array.isArray(roles)) {
+			roles = [];
+		} else if (roles) {
+			roles = undefined;
+		}
 	};
 	const realmOprChange = (): void => {
 		_expression.realm.id.arr = [];
 		_expression.realm.id.val = undefined;
+		if (Array.isArray(realm)) {
+			realm = [];
+		} else if (realm) {
+			realm = undefined;
+		}
 	};
+
+	const {
+		elements: { trigger, content, arrow, close, overlay },
+		states: { open }
+	} = createPopover({
+		forceVisible: true,
+		preventScroll: true
+	});
 </script>
-<div class="hidden">
-	<div class="space-y-2" bind:this={content}>
-		<div class="grid grid-cols-2 gap-2">
-			{#if permissions.auth('Permission::name::*')}
-			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-16">
-					{$LL.graphql.objects.Permission.fields.name.name()}
-				</button>
-				<OperatorSelect
-					className="join-item w-32"
-					bind:value={_expression.name.opr}
-					on:change={(e) => nameOprChange()}
-				/>
-			</div>
-			{#if _expression.name.opr === 'IN' || _expression.name.opr === 'NIN' || _expression.name.opr === 'BT' || _expression.name.opr === 'NBT'}
-				<IDInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					{name}
-					bind:value={_expression.name.arr}
-				/>
-			{:else}
-				<IDInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					{name}
-					bind:value={_expression.name.val}
-				/>
-			{/if}
-			{/if}
-			{#if permissions.auth('Permission::description::*')}
-			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-16">
-					{$LL.graphql.objects.Permission.fields.description.name()}
-				</button>
-				<OperatorSelect
-					className="join-item w-32"
-					bind:value={_expression.description.opr}
-					on:change={(e) => descriptionOprChange()}
-				/>
-			</div>
-			{#if _expression.description.opr === 'IN' || _expression.description.opr === 'NIN' || _expression.description.opr === 'BT' || _expression.description.opr === 'NBT'}
-				<StringInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					{name}
-					bind:value={_expression.description.arr}
-				/>
-			{:else}
-				<StringInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					{name}
-					bind:value={_expression.description.val}
-				/>
-			{/if}
-			{/if}
-			{#if permissions.auth('Permission::field::*')}
-			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-16">
-					{$LL.graphql.objects.Permission.fields.field.name()}
-				</button>
-				<OperatorSelect
-					className="join-item w-32"
-					bind:value={_expression.field.opr}
-					on:change={(e) => fieldOprChange()}
-				/>
-			</div>
-			{#if _expression.field.opr === 'IN' || _expression.field.opr === 'NIN' || _expression.field.opr === 'BT' || _expression.field.opr === 'NBT'}
-				<StringInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					{name}
-					bind:value={_expression.field.arr}
-				/>
-			{:else}
-				<StringInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					{name}
-					bind:value={_expression.field.val}
-				/>
-			{/if}
-			{/if}
-			{#if permissions.auth('Permission::type::*')}
-			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-16">
-					{$LL.graphql.objects.Permission.fields.type.name()}
-				</button>
-				<OperatorSelect
-					className="join-item w-32"
-					bind:value={_expression.type.opr}
-					on:change={(e) => typeOprChange()}
-				/>
-			</div>
-			{#if _expression.type.opr === 'IN' || _expression.type.opr === 'NIN' || _expression.type.opr === 'BT' || _expression.type.opr === 'NBT'}
-				<StringInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					{name}
-					bind:value={_expression.type.arr}
-				/>
-			{:else}
-				<StringInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					{name}
-					bind:value={_expression.type.val}
-				/>
-			{/if}
-			{/if}
-			{#if permissions.auth('Permission::permissionType::*')}
-			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-16">
-					{$LL.graphql.objects.Permission.fields.permissionType.name()}
-				</button>
-				<OperatorSelect
-					className="join-item w-32"
-					bind:value={_expression.permissionType.opr}
-					on:change={(e) => permissionTypeOprChange()}
-				/>
-			</div>
-			{#if _expression.permissionType.opr === 'IN' || _expression.permissionType.opr === 'NIN' || _expression.permissionType.opr === 'BT' || _expression.permissionType.opr === 'NBT'}
-				<PermissionTypeInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					{name}
-					bind:value={_expression.permissionType.arr}
-				/>
-			{:else}
-				<PermissionTypeInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					{name}
-					bind:value={_expression.permissionType.val}
-				/>
-			{/if}
-			{/if}
-			{#if permissions.auth('Permission::roles::*')}
-			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-16">
-					{$LL.graphql.objects.Permission.fields.roles.name()}
-				</button>
-				<OperatorSelect
-					className="join-item w-32"
-					bind:value={_expression.roles.id.opr}
-					on:change={(e) => rolesOprChange()}
-				/>
-			</div>
-			{#if _expression.roles.id.opr === 'IN' || _expression.roles.id.opr === 'NIN' || _expression.roles.id.opr === 'BT' || _expression.roles.id.opr === 'NBT'}
-				<RoleSelect
-					{name}
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					list
-					bind:value={ roles }
-				/>
-			{:else}
-				<RoleSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value={ roles } />
-			{/if}
-			{/if}
-			{#if permissions.auth('Permission::realm::*')}
-			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-16">
-					{$LL.graphql.objects.Permission.fields.realm.name()}
-				</button>
-				<OperatorSelect
-					className="join-item w-32"
-					bind:value={_expression.realm.id.opr}
-					on:change={(e) => realmOprChange()}
-				/>
-			</div>
-			{#if _expression.realm.id.opr === 'IN' || _expression.realm.id.opr === 'NIN' || _expression.realm.id.opr === 'BT' || _expression.realm.id.opr === 'NBT'}
-				<RealmSelect
-					{name}
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					list
-					bind:value={ realm }
-				/>
-			{:else}
-				<RealmSelect {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value={ realm } />
-			{/if}
-			{/if}
-		</div>
-		<div class="flex justify-center space-x-2">
-			<div class="tooltip" data-tip={$LL.uiGraphql.table.th.filter()}>
-				<button class="btn btn-square btn-primary" on:click={(e) => filter()}>
-					<Icon src={Check} class="h-5 w-5" />
-				</button>
-			</div>
-			<div class="tooltip" data-tip={$LL.uiGraphql.table.th.cancel()}>
-				<button class="btn btn-square btn-outline btn-error" on:click={(e) => clear()}>
-					<Icon src={XMark} class="h-5 w-5" />
-				</button>
-			</div>
-		</div>
-	</div>
-</div>
 
 <td>
-	<a
-		class="link group inline-flex"
-		href={null}
-		use:tippy={{
-			content,
-			placement: 'bottom',
-			interactive: true,
-			arrow: true,
-			trigger: 'click',
-			interactiveBorder: 30,
-			theme: 'daisy',
-			maxWidth: 'none',
-			appendTo: () => document.body
-		}}
-		bind:this={tippyElement}
-	>
+	<a class="link group inline-flex" href={null} use:melt={$trigger}>
 		{name}
 		{#if expression && Object.keys(expression).length > 0}
 			<span class="flex-none">
@@ -355,3 +182,248 @@
 		{/if}
 	</a>
 </td>
+
+{#if $open}
+	<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
+	<div class="space-y-2 md:space-y-1 p-1 rounded-xl bg-base-100 shadow z-[50]" use:melt={$content}>
+		<div use:melt={$arrow} />
+		<div class="grid grid-cols-2 gap-2 md:gap-1 items-center" transition:fade={{ duration: 100 }}>
+			{#if permissions.auth('Permission::name::*')}
+			<!-- svelte-ignore a11y-label-has-associated-control -->
+			<div class="form-control">
+				<label class="input-group md:input-group-sm">
+					<span class="w-20 whitespace-nowrap">
+						{$LL.graphql.objects.Permission.fields.name.name()}
+					</span>
+					<OperatorSelect
+						className="md:select-sm"
+						bind:value={_expression.name.opr}
+						on:change={(e) => nameOprChange()}
+					/>
+				</label>
+			</div>
+			{#if _expression.name.opr === 'IN' || _expression.name.opr === 'NIN' || _expression.name.opr === 'BT' || _expression.name.opr === 'NBT'}
+				<IDInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					className="md:input-sm"
+					{name}
+					bind:value={_expression.name.arr}
+				/>
+			{:else}
+				<IDInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					className="md:input-sm"
+					{name}
+					bind:value={_expression.name.val}
+				/>
+			{/if}
+			{/if}
+			{#if permissions.auth('Permission::description::*')}
+			<!-- svelte-ignore a11y-label-has-associated-control -->
+			<div class="form-control">
+				<label class="input-group md:input-group-sm">
+					<span class="w-20 whitespace-nowrap">
+						{$LL.graphql.objects.Permission.fields.description.name()}
+					</span>
+					<OperatorSelect
+						className="md:select-sm"
+						bind:value={_expression.description.opr}
+						on:change={(e) => descriptionOprChange()}
+					/>
+				</label>
+			</div>
+			{#if _expression.description.opr === 'IN' || _expression.description.opr === 'NIN' || _expression.description.opr === 'BT' || _expression.description.opr === 'NBT'}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					className="md:input-sm"
+					{name}
+					bind:value={_expression.description.arr}
+				/>
+			{:else}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					className="md:input-sm"
+					{name}
+					bind:value={_expression.description.val}
+				/>
+			{/if}
+			{/if}
+			{#if permissions.auth('Permission::field::*')}
+			<!-- svelte-ignore a11y-label-has-associated-control -->
+			<div class="form-control">
+				<label class="input-group md:input-group-sm">
+					<span class="w-20 whitespace-nowrap">
+						{$LL.graphql.objects.Permission.fields.field.name()}
+					</span>
+					<OperatorSelect
+						className="md:select-sm"
+						bind:value={_expression.field.opr}
+						on:change={(e) => fieldOprChange()}
+					/>
+				</label>
+			</div>
+			{#if _expression.field.opr === 'IN' || _expression.field.opr === 'NIN' || _expression.field.opr === 'BT' || _expression.field.opr === 'NBT'}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					className="md:input-sm"
+					{name}
+					bind:value={_expression.field.arr}
+				/>
+			{:else}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					className="md:input-sm"
+					{name}
+					bind:value={_expression.field.val}
+				/>
+			{/if}
+			{/if}
+			{#if permissions.auth('Permission::type::*')}
+			<!-- svelte-ignore a11y-label-has-associated-control -->
+			<div class="form-control">
+				<label class="input-group md:input-group-sm">
+					<span class="w-20 whitespace-nowrap">
+						{$LL.graphql.objects.Permission.fields.type.name()}
+					</span>
+					<OperatorSelect
+						className="md:select-sm"
+						bind:value={_expression.type.opr}
+						on:change={(e) => typeOprChange()}
+					/>
+				</label>
+			</div>
+			{#if _expression.type.opr === 'IN' || _expression.type.opr === 'NIN' || _expression.type.opr === 'BT' || _expression.type.opr === 'NBT'}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					className="md:input-sm"
+					{name}
+					bind:value={_expression.type.arr}
+				/>
+			{:else}
+				<StringInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					className="md:input-sm"
+					{name}
+					bind:value={_expression.type.val}
+				/>
+			{/if}
+			{/if}
+			{#if permissions.auth('Permission::permissionType::*')}
+			<!-- svelte-ignore a11y-label-has-associated-control -->
+			<div class="form-control">
+				<label class="input-group md:input-group-sm">
+					<span class="w-20 whitespace-nowrap">
+						{$LL.graphql.objects.Permission.fields.permissionType.name()}
+					</span>
+					<OperatorSelect
+						className="md:select-sm"
+						bind:value={_expression.permissionType.opr}
+						on:change={(e) => permissionTypeOprChange()}
+					/>
+				</label>
+			</div>
+			{#if _expression.permissionType.opr === 'IN' || _expression.permissionType.opr === 'NIN' || _expression.permissionType.opr === 'BT' || _expression.permissionType.opr === 'NBT'}
+				<PermissionTypeInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					className="md:select-sm"
+					{name}
+					bind:value={_expression.permissionType.arr}
+				/>
+			{:else}
+				<PermissionTypeInput
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					className="md:select-sm"
+					{name}
+					bind:value={_expression.permissionType.val}
+				/>
+			{/if}
+			{/if}
+			{#if permissions.auth('Permission::roles::*')}
+			<!-- svelte-ignore a11y-label-has-associated-control -->
+			<div class="form-control">
+				<label class="input-group md:input-group-sm">
+					<span class="w-20 whitespace-nowrap">
+						{$LL.graphql.objects.Permission.fields.roles.name()}
+					</span>
+					<OperatorSelect
+						className="md:select-sm"
+						bind:value={_expression.roles.id.opr}
+						on:change={(e) => rolesOprChange()}
+					/>
+				</label>
+			</div>
+			{#if _expression.roles.id.opr === 'IN' || _expression.roles.id.opr === 'NIN' || _expression.roles.id.opr === 'BT' || _expression.roles.id.opr === 'NBT'}
+				<RoleSelect
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					list
+					bind:value={ roles }
+					className="md:input-xs"
+					containerClassName="md:textarea-sm md:px-1"
+					tagClassName="md:badge-sm"
+					menuClassName="md:mt-1 md:menu-sm"
+				/>
+			{:else}
+				<RoleSelect
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					bind:value={ roles }
+					className="md:input-xs"
+					containerClassName="md:textarea-sm md:px-1"
+					tagClassName="md:badge-sm"
+					menuClassName="md:mt-1 md:menu-sm"
+				/>
+			{/if}
+			{/if}
+			{#if permissions.auth('Permission::realm::*')}
+			<!-- svelte-ignore a11y-label-has-associated-control -->
+			<div class="form-control">
+				<label class="input-group md:input-group-sm">
+					<span class="w-20 whitespace-nowrap">
+						{$LL.graphql.objects.Permission.fields.realm.name()}
+					</span>
+					<OperatorSelect
+						className="md:select-sm"
+						bind:value={_expression.realm.id.opr}
+						on:change={(e) => realmOprChange()}
+					/>
+				</label>
+			</div>
+			{#if _expression.realm.id.opr === 'IN' || _expression.realm.id.opr === 'NIN' || _expression.realm.id.opr === 'BT' || _expression.realm.id.opr === 'NBT'}
+				<RealmSelect
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					list
+					bind:value={ realm }
+					className="md:input-xs"
+					containerClassName="md:textarea-sm md:px-1"
+					tagClassName="md:badge-sm"
+					menuClassName="md:mt-1 md:menu-sm"
+				/>
+			{:else}
+				<RealmSelect
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					bind:value={ realm }
+					className="md:input-xs"
+					containerClassName="md:textarea-sm md:px-1"
+					tagClassName="md:badge-sm"
+					menuClassName="md:mt-1 md:menu-sm"
+				/>
+			{/if}
+			{/if}
+		</div>
+		<div class="flex justify-center space-x-2">
+			<div class="tooltip" data-tip={$LL.uiGraphql.table.th.filter()}>
+				<button class="btn btn-square btn-primary md:btn-sm" on:click={(e) => filter()}>
+					<Icon src={Check} class="h-5 w-5" />
+				</button>
+			</div>
+			<div class="tooltip" data-tip={$LL.uiGraphql.table.th.cancel()}>
+				<button class="btn btn-square btn-outline btn-error md:btn-sm" on:click={(e) => clear()}>
+					<Icon src={XMark} class="h-5 w-5" />
+				</button>
+			</div>
+		</div>
+	</div>
+{/if}

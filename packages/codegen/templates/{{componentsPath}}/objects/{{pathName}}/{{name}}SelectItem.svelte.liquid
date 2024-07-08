@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
 	import { FormItem } from '@graphace/ui';
-	import type { Option } from '@graphace/ui';
 	import {{ name }}Select from './{{ name }}Select.svelte';
 	import type { {{ name }}Input } from '$houdini';
 
@@ -14,16 +13,12 @@
 	export let disabled = false;
 	export let placeholder: string = '';
 	
-	let selected: Option | Option[] | undefined;
+	let selected: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
+	selected = value;
 
 	if (Array.isArray(value)) {
-		selected = value?.map((item) => ({
-			label: item?.name,
-			value: item?.{{ idName }}
-		}));
 		value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
 	} else if (value) {
-		selected = { label: value.name, value: value.{{ idName }} };
 		value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
 	}
 </script>
@@ -37,7 +32,15 @@
 		{readonly}
 		{placeholder}
 		{errors}
-		bind:value
-		bind:selected
+		bind:value={selected}
+		on:change={(e) => {
+			if (Array.isArray(e.detail.value)) {
+				value = e.detail.value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
+			} else if (e.detail.value && !Array.isArray(e.detail.value)) {
+				value = { where: { {{ idName }}: { val: e.detail.value.{{ idName }} } } };
+			} else {
+				value = undefined;
+			}
+		{% raw %}}{% endraw %}}
 	/>
 </FormItem>

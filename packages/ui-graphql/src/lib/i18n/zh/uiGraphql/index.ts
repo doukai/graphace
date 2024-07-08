@@ -32,15 +32,6 @@ const zh: NamespaceUiGraphqlTranslation = {
 			save: "保存",
 			clear: "清除"
 		}
-	},
-	multiSelect: {
-		createOptionMsg: "新建项目",
-		defaultDisabledTitle: "已禁用",
-		disabledInputTitle: "禁止输入",
-		duplicateOptionMsg: "项目已存在",
-		noMatchingOptionsMsg: "无匹配项目",
-		removeAllTitle: "删除全部",
-		removeBtnTitle: "删除"
 	}
 }
 

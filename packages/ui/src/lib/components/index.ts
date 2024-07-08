@@ -9,7 +9,6 @@ export * from "./navbar";
 export * from "./search";
 export * from "./table";
 export * from "./stores";
-export * from "./tippy";
 import MessageBoxs from "./MessageBoxs.svelte";
 import { messageBoxs } from "./MessageBoxs.svelte";
 import Notifications from "./Notifications.svelte";

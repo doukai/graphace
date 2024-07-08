@@ -86,13 +86,7 @@
 	};
 
 	$: if (!$open) {
-		if (multiple) {
-			$inputValue = '';
-		} else {
-			if ($selected && !Array.isArray($selected)) {
-				$inputValue = $selected.label;
-			}
-		}
+		$inputValue = '';
 	}
 
 	$: if ($touchedInput) {
@@ -107,22 +101,20 @@
 		use:melt={$root}
 		class="flex items-center textarea textarea-bordered flex-row flex-wrap gap-1 min-h-6 {containerClassName}"
 	>
-		{#if multiple}
-			{#each $tags as t}
-				<div
-					use:melt={$tag(t)}
-					class="flex badge badge-neutral items-center overflow-hidden {tagClassName}"
-				>
-					{t.value}
-					<button use:melt={$deleteTrigger(t)} {disabled}>
-						<Icon src={XMark} class="size-3" />
-					</button>
-				</div>
-				<div use:melt={$edit(t)} class="flex items-center overflow-hidden rounded-md px-1.5">
-					{t.value}
-				</div>
-			{/each}
-		{/if}
+		{#each $tags as t}
+			<div
+				use:melt={$tag(t)}
+				class="flex badge badge-neutral items-center overflow-hidden {tagClassName}"
+			>
+				{t.value}
+				<button use:melt={$deleteTrigger(t)} {disabled}>
+					<Icon src={XMark} class="size-3" />
+				</button>
+			</div>
+			<div use:melt={$edit(t)} class="flex items-center overflow-hidden rounded-md px-1.5">
+				{t.value}
+			</div>
+		{/each}
 		<input
 			use:melt={$input}
 			type="text"
@@ -153,7 +145,7 @@
 </div>
 {#if $open}
 	<ul
-		class="z-[50] mt-3 menu shadow bg-base-100 rounded-xl w-full max-h-80 flex-nowrap overflow-auto {menuClassName}"
+		class="z-[50] mt-2 menu shadow bg-base-100 rounded-xl w-full max-h-80 flex-nowrap overflow-auto {menuClassName}"
 		use:melt={$menu}
 		transition:fly={{ duration: 150, y: -5 }}
 	>

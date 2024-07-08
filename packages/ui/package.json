@@ -42,8 +42,7 @@
 		"vite": "^4.5.3"
 	},
 	"dependencies": {
-		"@graphace/commons": "workspace:*",
-		"tippy.js": "^6.3.7"
+		"@graphace/commons": "workspace:*"
 	},
 	"peerDependencies": {
 		"@iconify/svelte": ">=3.1.0",

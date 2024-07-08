@@ -4,7 +4,6 @@
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
-	import type { Option } from '@graphace/ui';
 	import UserSelect from './UserSelect.svelte';
 	import type { UserInput } from '$houdini';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -24,7 +23,8 @@
 		save: {};
 	}>();
 
-	let selected: Option | Option[] | undefined;
+	let selected: UserInput | (UserInput | null | undefined)[] | null | undefined = undefined;
+	selected = value;
 
 	let mutation = (): void => {
 		dispatch('save', {});
@@ -52,13 +52,8 @@
 	});
 
 	if (Array.isArray(value)) {
-		selected = value?.map((item) => ({
-			label: item?.name,
-			value: item?.id
-		}));
 		value = value.map((item) => ({ where: { id: { val: item?.id } } }));
 	} else if (value) {
-		selected = { label: value.name, value: value.id };
 		value = { where: { id: { val: value.id } } };
 	}
 </script>
@@ -73,12 +68,12 @@
 				{#if Array.isArray(selected)}
 					{#if selected.length > 3}
 						{selected
-							.map((item) => item?.label)
+							.map((item) => item?.name)
 							.slice(0, 3)
 							.join(',')
 							.concat('...')}
 					{:else if selected.length > 0}
-						{selected.map((item) => item?.label).join(',')}
+						{selected.map((item) => item?.name).join(',')}
 					{:else}
 						<Icon src={Minus} class="h-5 w-5" />
 					{/if}
@@ -86,7 +81,7 @@
 					<Icon src={Minus} class="h-5 w-5" />
 				{/if}
 			{:else if selected}
-				{selected.label}
+				{selected.name}
 			{:else}
 				<Icon src={Minus} class="h-5 w-5" />
 			{/if}
@@ -106,11 +101,19 @@
 				{readonly}
 				{placeholder}
 				className="md:input-xs"
-				containerClassName="max-w-96 md:textarea-sm"
+				containerClassName="max-w-96 md:px-1 md:textarea-sm"
 				tagClassName="md:badge-sm"
-				menuClassName="md:menu-sm"
-				bind:value
-				bind:selected
+				menuClassName="md:mt-1 md:menu-sm"
+				bind:value={selected}
+				on:change={(e) => {
+					if (Array.isArray(e.detail.value)) {
+						value = e.detail.value.map((item) => ({ where: { id: { val: item?.id } } }));
+					} else if (e.detail.value && !Array.isArray(e.detail.value)) {
+						value = { where: { id: { val: e.detail.value.id } } };
+					} else {
+						value = undefined;
+					}
+				}}
 			/>
 			{#if !readonly && !disabled}
 				<div class="tooltip flex items-center" data-tip={$LL.uiGraphql.table.td.save()}>

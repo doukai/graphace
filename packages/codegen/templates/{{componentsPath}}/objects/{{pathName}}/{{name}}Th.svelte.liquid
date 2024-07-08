@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	{%- if useAuth -%}import type { PermissionsStore } from '@graphace/commons';{%- endif -%} 
-	import { tippy } from '@graphace/ui';
+	{%- if useAuth %}
+	import { fade } from 'svelte/transition';
+	import { createPopover, melt } from '@melt-ui/svelte';
+	import type { PermissionsStore } from '@graphace/commons';
+	{%- endif %} 
 	import { OperatorSelect, {% for scalar in scalars %}{{ scalar }}Input{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel } from '@steeze-ui/heroicons';
@@ -74,9 +77,9 @@
 	
 	{%- if isNamedStruct %}
 	$: if (Array.isArray(value)) {
-		_expression.{{ idName }}.arr = value?.map((item) => item?.where?.{{ idName }}?.val);
+		_expression.{{ idName }}.arr = value?.map((item) => item?.{{ idName }});
 	} else if (value) {
-		_expression.{{ idName }}.val = value?.where?.{{ idName }}?.val;
+		_expression.{{ idName }}.val = value?.{{ idName }};
 	}
 	{%- endif %}
 
@@ -84,16 +87,14 @@
 	{%- for field in fields %}
 	{%- if field.isNamed %}
 	$: if (Array.isArray({{ field.fieldName }})) {
-		_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.arr = {{ field.fieldName }}?.map((item) => item?.where?.{{ field.fieldTypeIdName }}?.val);
+		_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.arr = {{ field.fieldName }}?.map((item) => item?.{{ field.fieldTypeIdName }});
 	} else if ({{ field.fieldName }}) {
-		_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.val = {{ field.fieldName }}?.where?.{{ field.fieldTypeIdName }}?.val;
+		_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.val = {{ field.fieldName }}?.{{ field.fieldTypeIdName }};
 	}
 	{%- endif %}
 	{%- endfor %}
 	{%- endif %}
-
-	let content: HTMLElement;
-	let tippyElement: any;
+	
 	const dispatch = createEventDispatcher<{
 		filter: {};
 	}>();
@@ -131,12 +132,17 @@
 			expression = undefined;
 		}
 		dispatch('filter', {});
-		tippyElement._tippy.hide();
+		$open = false;
 	};
 
 	const clear = (): void => {
 		{%- if isNamedStruct %}
 		_expression.{{ idName }} = { opr: Operator.EQ };
+		if (Array.isArray(value)) {
+			value= [];
+		} else if (value) {
+			value = undefined;
+		}
 		{%- endif %}
 		{%- if fields %}
 		{%- for field in fields %}
@@ -145,12 +151,17 @@
 		{%- endif %}
 		{%- if field.isNamed %}
 		_expression.{{ field.fieldName }} = { {{ field.fieldTypeIdName }}: { opr: Operator.EQ } };
+		if (Array.isArray({{ field.fieldName }})) {
+			{{ field.fieldName }} = [];
+		} else if ({{ field.fieldName }}) {
+			{{ field.fieldName }} = undefined;
+		}
 		{%- endif %}
 		{%- endfor %}
 		{%- endif %}
 		expression = undefined;
 		dispatch('filter', {});
-		tippyElement._tippy.hide();
+		$open = false;
 	};
 
 	
@@ -158,6 +169,11 @@
 	const {{ idName }}OprChange = (): void => {
 		_expression.{{ idName }}.arr = [];
 		_expression.{{ idName }}.val = undefined;
+		if (Array.isArray(value)) {
+			value = [];
+		} else if (value) {
+			value = undefined;
+		}
 	};	
 	{%- endif %}
 
@@ -174,29 +190,59 @@
 	const {{ field.fieldName }}OprChange = (): void => {
 		_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.arr = [];
 		_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.val = undefined;
+		if (Array.isArray({{ field.fieldName }})) {
+			{{ field.fieldName }} = [];
+		} else if ({{ field.fieldName }}) {
+			{{ field.fieldName }} = undefined;
+		}
 	};
 
 	{%- endif %}
 	{%- endfor %}
 	{%- endif %}
+
+	const {
+		elements: { trigger, content, arrow, close, overlay },
+		states: { open }
+	} = createPopover({
+		forceVisible: true,
+		preventScroll: true
+	});
 </script>
-<div class="hidden">
-	<div class="space-y-2" bind:this={content}>
+
+<td>
+	<a class="link group inline-flex" href={null} use:melt={$trigger}>
+		{name}
+		{#if expression && Object.keys(expression).length > 0}
+			<span class="flex-none">
+				<Icon src={Funnel} class="h-5 w-5" />
+			</span>
+		{/if}
+	</a>
+</td>
+
+{#if $open}
+	<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
+	<div class="space-y-2 md:space-y-1 p-1 rounded-xl bg-base-100 shadow z-[50]" use:melt={$content}>
+		<div use:melt={$arrow} />
 		{%- if fields %}
-		<div class="grid grid-cols-2 gap-2">
+		<div class="grid grid-cols-2 gap-2 md:gap-1 items-center" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
 		{%- if isNamedStruct %}
 			{%- if useAuth %}
 			{#if permissions.auth('{{ name }}::{{ idName }}::*')}
 			{%- endif %}
-			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-16">
-					{$LL.graphql.objects.{{ name }}.name()}
-				</button>
-				<OperatorSelect
-					className="join-item w-32"
-					bind:value={_expression.{{ idName }}.opr}
-					on:change={(e) => {{ idName }}OprChange()}
-				/>
+			<!-- svelte-ignore a11y-label-has-associated-control -->
+			<div class="form-control">
+				<label class="input-group md:input-group-sm">
+					<span class="w-20 whitespace-nowrap">
+						{$LL.graphql.objects.{{ name }}.name()}
+					</span>
+					<OperatorSelect
+						className="md:select-sm"
+						bind:value={_expression.{{ idName }}.opr}
+						on:change={(e) => {{ idName }}OprChange()}
+					/>
+				</label>
 			</div>
 			{#if _expression.{{ idName }}.opr === 'IN' || _expression.{{ idName }}.opr === 'NIN' || _expression.{{ idName }}.opr === 'BT' || _expression.{{ idName }}.opr === 'NBT'}
 				<{{ name }}Select
@@ -204,9 +250,21 @@
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					list
 					bind:value
+					className="md:input-xs"
+					containerClassName="md:textarea-sm md:px-1"
+					tagClassName="md:badge-sm"
+					menuClassName="md:mt-1 md:menu-sm"
 				/>
 			{:else}
-				<{{ name }}Select {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value />
+				<{{ name }}Select
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					bind:value
+					className="md:input-xs"
+					containerClassName="md:textarea-sm md:px-1"
+					tagClassName="md:badge-sm"
+					menuClassName="md:mt-1 md:menu-sm"
+				/>
 			{/if}
 			{%- if useAuth %}
 			{/if}
@@ -217,28 +275,43 @@
 			{%- if useAuth %}
 			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 			{%- endif %}
-			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-16">
-					{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-				</button>
-				<OperatorSelect
-					className="join-item w-32"
-					bind:value={_expression.{{ field.fieldName }}.opr}
-					on:change={(e) => {{ field.fieldName }}OprChange()}
-				/>
+			<!-- svelte-ignore a11y-label-has-associated-control -->
+			<div class="form-control">
+				<label class="input-group md:input-group-sm">
+					<span class="w-20 whitespace-nowrap">
+						{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+					</span>
+					<OperatorSelect
+						className="md:select-sm"
+						bind:value={_expression.{{ field.fieldName }}.opr}
+						on:change={(e) => {{ field.fieldName }}OprChange()}
+					/>
+				</label>
 			</div>
 			{#if _expression.{{ field.fieldName }}.opr === 'IN' || _expression.{{ field.fieldName }}.opr === 'NIN' || _expression.{{ field.fieldName }}.opr === 'BT' || _expression.{{ field.fieldName }}.opr === 'NBT'}
 				<{{ field.fieldTypeName }}Input
-					{%- if field.fieldTypeName != "Boolean" %}
+					{%- if field.isEnumType %}
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					className="md:select-sm"
+					{%- elsif field.fieldTypeName == "Boolean" %}
+					className="md:toggle-sm"
+					{%- else %}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					className="md:input-sm"
 					{%- endif %}
 					{name}
 					bind:value={_expression.{{ field.fieldName }}.arr}
 				/>
 			{:else}
 				<{{ field.fieldTypeName }}Input
-					{%- if field.fieldTypeName != "Boolean" %}
+					{%- if field.isEnumType %}
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					className="md:select-sm"
+					{%- elsif field.fieldTypeName == "Boolean" %}
+					className="md:toggle-sm"
+					{%- else %}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					className="md:input-sm"
 					{%- endif %}
 					{name}
 					bind:value={_expression.{{ field.fieldName }}.val}
@@ -252,15 +325,18 @@
 			{%- if useAuth %}
 			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 			{%- endif %}
-			<div class="join">
-				<button class="btn btn-active btn-ghost join-item w-16">
-					{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-				</button>
-				<OperatorSelect
-					className="join-item w-32"
-					bind:value={_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr}
-					on:change={(e) => {{ field.fieldName }}OprChange()}
-				/>
+			<!-- svelte-ignore a11y-label-has-associated-control -->
+			<div class="form-control">
+				<label class="input-group md:input-group-sm">
+					<span class="w-20 whitespace-nowrap">
+						{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+					</span>
+					<OperatorSelect
+						className="md:select-sm"
+						bind:value={_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr}
+						on:change={(e) => {{ field.fieldName }}OprChange()}
+					/>
+				</label>
 			</div>
 			{#if _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr === 'IN' || _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr === 'NIN' || _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr === 'BT' || _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr === 'NBT'}
 				<{{ field.fieldTypeName }}Select
@@ -268,9 +344,21 @@
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					list
 					bind:value={ {{ field.fieldName }} }
+					className="md:input-xs"
+					containerClassName="md:textarea-sm md:px-1"
+					tagClassName="md:badge-sm"
+					menuClassName="md:mt-1 md:menu-sm"
 				/>
 			{:else}
-				<{{ field.fieldTypeName }}Select {name} placeholder={$LL.uiGraphql.table.th.filterPlaceholder()} bind:value={ {{ field.fieldName }} } />
+				<{{ field.fieldTypeName }}Select
+					{name}
+					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+					bind:value={ {{ field.fieldName }} }
+					className="md:input-xs"
+					containerClassName="md:textarea-sm md:px-1"
+					tagClassName="md:badge-sm"
+					menuClassName="md:mt-1 md:menu-sm"
+				/>
 			{/if}
 			{%- if useAuth %}
 			{/if}
@@ -281,41 +369,15 @@
 		{%- endif %}
 		<div class="flex justify-center space-x-2">
 			<div class="tooltip" data-tip={$LL.uiGraphql.table.th.filter()}>
-				<button class="btn btn-square btn-primary" on:click={(e) => filter()}>
+				<button class="btn btn-square btn-primary md:btn-sm" on:click={(e) => filter()}>
 					<Icon src={Check} class="h-5 w-5" />
 				</button>
 			</div>
 			<div class="tooltip" data-tip={$LL.uiGraphql.table.th.cancel()}>
-				<button class="btn btn-square btn-outline btn-error" on:click={(e) => clear()}>
+				<button class="btn btn-square btn-outline btn-error md:btn-sm" on:click={(e) => clear()}>
 					<Icon src={XMark} class="h-5 w-5" />
 				</button>
 			</div>
 		</div>
 	</div>
-</div>
-
-<td>
-	<a
-		class="link group inline-flex"
-		href={null}
-		use:tippy={% raw %}{{% endraw %}{
-			content,
-			placement: 'bottom',
-			interactive: true,
-			arrow: true,
-			trigger: 'click',
-			interactiveBorder: 30,
-			theme: 'daisy',
-			maxWidth: 'none',
-			appendTo: () => document.body
-		{% raw %}}{% endraw %}}
-		bind:this={tippyElement}
-	>
-		{name}
-		{#if expression && Object.keys(expression).length > 0}
-			<span class="flex-none">
-				<Icon src={Funnel} class="h-5 w-5" />
-			</span>
-		{/if}
-	</a>
-</td>
+{/if}

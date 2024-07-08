@@ -236,19 +236,4 @@
 			max-width: clamp(20rem, calc(100vw - 20rem - 4rem - 8rem), 80ch);
 		}
 	}
-	.tippy-box[data-theme='daisy'] {
-		@apply inline-block p-1 rounded-lg shadow-lg bg-base-200;
-	}
-	.tippy-box[data-theme~='daisy'][data-placement^='top'] > .tippy-arrow {
-		@apply -bottom-1.5 left-0 border-t-8 border-x-8 border-b-0 border-transparent border-t-base-200;
-	}
-	.tippy-box[data-theme~='daisy'][data-placement^='bottom'] > .tippy-arrow {
-		@apply -top-1.5 left-0 border-t-0 border-x-8 border-b-8 border-transparent border-b-base-200;
-	}
-	.tippy-box[data-theme~='daisy'][data-placement^='left'] > .tippy-arrow {
-		@apply -right-1.5 border-l-8 border-y-8 border-r-0 border-transparent border-l-base-200;
-	}
-	.tippy-box[data-theme~='daisy'][data-placement^='right'] > .tippy-arrow {
-		@apply -left-1.5 border-l-0 border-y-8 border-r-8 border-transparent border-r-base-200;
-	}
 </style>

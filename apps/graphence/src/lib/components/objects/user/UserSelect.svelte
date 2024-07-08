@@ -6,7 +6,6 @@
 	import { graphql, UserInput, Operator } from '$houdini';
 
 	export let value: UserInput | (UserInput | null | undefined)[] | null | undefined = undefined;
-	export let selected: Option | Option[] | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
 	export let list: boolean | undefined = false;
 	export let id: string | null = null;
@@ -42,6 +41,17 @@
 		})) || [];
 
 	$: loading = $UserNameListQuery.fetching;
+
+	let selected: Option | Option[] | undefined;
+
+	if (Array.isArray(value)) {
+		selected = value?.map((item) => ({
+			label: item?.name,
+			value: item?.id
+		}));
+	} else if (value) {
+		selected = { label: value.name, value: value.id };
+	}
 </script>
 
 <ObjectSelect
@@ -61,9 +71,9 @@
 	bind:value={selected}
 	on:change={(e) => {
 		if (Array.isArray(e.detail.value)) {
-			value = e.detail.value.map((item) => ({ where: { id: { val: item.value } } }));
+			value = e.detail.value.map((item) => ({ id: item.value, name: item.label }));
 		} else if (e.detail.value && !Array.isArray(e.detail.value)) {
-			value = { where: { id: { val: e.detail.value.value } } };
+			value = { id: e.detail.value.value, name: e.detail.value.label };
 		} else {
 			value = undefined;
 		}
