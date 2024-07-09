@@ -149,7 +149,7 @@
 </div>
 {#if $open}
 	<ul
-		class="menu shadow rounded-xl bg-base-100 w-full z-[50] mt-1 max-h-80 flex-nowrap overflow-auto {menuClassName}"
+		class="menu shadow rounded-xl bg-base-100 w-full z-[50] max-h-80 flex-nowrap overflow-auto {menuClassName}"
 		use:melt={$menu}
 		transition:fly={{ duration: 150, y: -5 }}
 	>

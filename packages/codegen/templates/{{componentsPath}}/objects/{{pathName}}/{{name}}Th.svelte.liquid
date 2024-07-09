@@ -230,9 +230,9 @@
 			{%- if useAuth %}
 			{#if permissions.auth('{{ name }}::{{ idName }}::*')}
 			{%- endif %}
-			<div class="flex justify-center space-x-2" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
+			<div class="flex items-center space-x-2" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.{{ name }}.name()}
@@ -276,9 +276,9 @@
 			{%- if useAuth %}
 			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 			{%- endif %}
-			<div class="flex justify-center space-x-2" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
+			<div class="flex items-center space-x-2" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
@@ -328,9 +328,9 @@
 			{%- if useAuth %}
 			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 			{%- endif %}
-			<div class="flex justify-center space-x-2" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
+			<div class="flex items-center space-x-2" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}

@@ -188,9 +188,9 @@
 	<div class="space-y-2 md:space-y-1 p-1 rounded-xl bg-base-100 shadow z-[50]" use:melt={$content}>
 		<div use:melt={$arrow} />
 			{#if permissions.auth('Permission::name::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.Permission.fields.name.name()}
@@ -220,9 +220,9 @@
 			</div>
 			{/if}
 			{#if permissions.auth('Permission::description::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.Permission.fields.description.name()}
@@ -252,9 +252,9 @@
 			</div>
 			{/if}
 			{#if permissions.auth('Permission::field::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.Permission.fields.field.name()}
@@ -284,9 +284,9 @@
 			</div>
 			{/if}
 			{#if permissions.auth('Permission::type::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.Permission.fields.type.name()}
@@ -316,9 +316,9 @@
 			</div>
 			{/if}
 			{#if permissions.auth('Permission::permissionType::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.Permission.fields.permissionType.name()}
@@ -348,9 +348,9 @@
 			</div>
 			{/if}
 			{#if permissions.auth('Permission::roles::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.Permission.fields.roles.name()}
@@ -387,9 +387,9 @@
 			</div>
 			{/if}
 			{#if permissions.auth('Permission::realm::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.Permission.fields.realm.name()}

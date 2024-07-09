@@ -118,9 +118,9 @@
 	<div class="space-y-2 md:space-y-1 p-1 rounded-xl bg-base-100 shadow z-[50]" use:melt={$content}>
 		<div use:melt={$arrow} />
 			{#if permissions.auth('Realm::id::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.Realm.name()}
@@ -157,9 +157,9 @@
 			</div>
 			{/if}
 			{#if permissions.auth('Realm::name::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.Realm.fields.name.name()}
@@ -189,9 +189,9 @@
 			</div>
 			{/if}
 			{#if permissions.auth('Realm::description::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.Realm.fields.description.name()}

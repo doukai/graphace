@@ -271,9 +271,9 @@
 	<div class="space-y-2 md:space-y-1 p-1 rounded-xl bg-base-100 shadow z-[50]" use:melt={$content}>
 		<div use:melt={$arrow} />
 			{#if permissions.auth('User::id::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.User.name()}
@@ -310,9 +310,9 @@
 			</div>
 			{/if}
 			{#if permissions.auth('User::name::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.User.fields.name.name()}
@@ -342,9 +342,9 @@
 			</div>
 			{/if}
 			{#if permissions.auth('User::description::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.User.fields.description.name()}
@@ -374,9 +374,9 @@
 			</div>
 			{/if}
 			{#if permissions.auth('User::lastName::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.User.fields.lastName.name()}
@@ -406,9 +406,9 @@
 			</div>
 			{/if}
 			{#if permissions.auth('User::login::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.User.fields.login.name()}
@@ -438,9 +438,9 @@
 			</div>
 			{/if}
 			{#if permissions.auth('User::email::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.User.fields.email.name()}
@@ -470,9 +470,9 @@
 			</div>
 			{/if}
 			{#if permissions.auth('User::phones::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.User.fields.phones.name()}
@@ -502,9 +502,9 @@
 			</div>
 			{/if}
 			{#if permissions.auth('User::disable::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.User.fields.disable.name()}
@@ -532,9 +532,9 @@
 			</div>
 			{/if}
 			{#if permissions.auth('User::groups::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.User.fields.groups.name()}
@@ -571,9 +571,9 @@
 			</div>
 			{/if}
 			{#if permissions.auth('User::roles::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.User.fields.roles.name()}
@@ -610,9 +610,9 @@
 			</div>
 			{/if}
 			{#if permissions.auth('User::realm::*')}
-			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control w-48">
+				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
 							{$LL.graphql.objects.User.fields.realm.name()}
