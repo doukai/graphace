@@ -328,13 +328,16 @@
 					<StringInput
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
+						addBtnClassName="md:btn-sm"
 						{name}
 						bind:value={_expression.name.arr}
+						list
 					/>
 				{:else}
 					<StringInput
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
+						addBtnClassName="md:btn-sm"
 						{name}
 						bind:value={_expression.name.val}
 					/>
@@ -360,13 +363,16 @@
 					<StringInput
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
+						addBtnClassName="md:btn-sm"
 						{name}
 						bind:value={_expression.description.arr}
+						list
 					/>
 				{:else}
 					<StringInput
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
+						addBtnClassName="md:btn-sm"
 						{name}
 						bind:value={_expression.description.val}
 					/>
@@ -392,13 +398,16 @@
 					<StringInput
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
+						addBtnClassName="md:btn-sm"
 						{name}
 						bind:value={_expression.lastName.arr}
+						list
 					/>
 				{:else}
 					<StringInput
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
+						addBtnClassName="md:btn-sm"
 						{name}
 						bind:value={_expression.lastName.val}
 					/>
@@ -424,13 +433,16 @@
 					<StringInput
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
+						addBtnClassName="md:btn-sm"
 						{name}
 						bind:value={_expression.login.arr}
+						list
 					/>
 				{:else}
 					<StringInput
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
+						addBtnClassName="md:btn-sm"
 						{name}
 						bind:value={_expression.login.val}
 					/>
@@ -456,13 +468,16 @@
 					<StringInput
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
+						addBtnClassName="md:btn-sm"
 						{name}
 						bind:value={_expression.email.arr}
+						list
 					/>
 				{:else}
 					<StringInput
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
+						addBtnClassName="md:btn-sm"
 						{name}
 						bind:value={_expression.email.val}
 					/>
@@ -488,13 +503,16 @@
 					<StringInput
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
+						addBtnClassName="md:btn-sm"
 						{name}
 						bind:value={_expression.phones.arr}
+						list
 					/>
 				{:else}
 					<StringInput
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
+						addBtnClassName="md:btn-sm"
 						{name}
 						bind:value={_expression.phones.val}
 					/>
@@ -519,12 +537,15 @@
 				{#if _expression.disable.opr === 'IN' || _expression.disable.opr === 'NIN' || _expression.disable.opr === 'BT' || _expression.disable.opr === 'NBT'}
 					<BooleanInput
 						className="md:toggle-sm"
+						addBtnClassName="md:btn-sm"
 						{name}
 						bind:value={_expression.disable.arr}
+						list
 					/>
 				{:else}
 					<BooleanInput
 						className="md:toggle-sm"
+						addBtnClassName="md:btn-sm"
 						{name}
 						bind:value={_expression.disable.val}
 					/>

@@ -11,6 +11,10 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let id: string = nanoid();
+
+	$: if (!value && multiple) {
+		value = [];
+	}
 </script>
 
 <div class={containerClassName ? containerClassName : 'form-control w-full'}>

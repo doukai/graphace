@@ -297,12 +297,15 @@
 						className="md:select-sm"
 						{%- elsif field.fieldTypeName == "Boolean" %}
 						className="md:toggle-sm"
+						addBtnClassName="md:btn-sm"
 						{%- else %}
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
+						addBtnClassName="md:btn-sm"
 						{%- endif %}
 						{name}
 						bind:value={_expression.{{ field.fieldName }}.arr}
+						list
 					/>
 				{:else}
 					<{{ field.fieldTypeName }}Input
@@ -311,9 +314,11 @@
 						className="md:select-sm"
 						{%- elsif field.fieldTypeName == "Boolean" %}
 						className="md:toggle-sm"
+						addBtnClassName="md:btn-sm"
 						{%- else %}
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
+						addBtnClassName="md:btn-sm"
 						{%- endif %}
 						{name}
 						bind:value={_expression.{{ field.fieldName }}.val}

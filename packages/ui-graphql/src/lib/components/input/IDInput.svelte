@@ -10,6 +10,17 @@
 	export let disabled = false;
 	export let placeholder: string = '';
 	export let className: string = '';
+	export let addBtnClassName: string = '';
 </script>
 
-<StringInput bind:value {list} {name} {errors} {placeholder} {readonly} {disabled} {className} />
+<StringInput
+	bind:value
+	{list}
+	{name}
+	{errors}
+	{placeholder}
+	{readonly}
+	{disabled}
+	{className}
+	{addBtnClassName}
+/>

@@ -10,10 +10,20 @@
 	export let disabled = false;
 	export let placeholder: string = '';
 	export let className: string = '';
+	export let addBtnClassName: string = '';
 </script>
 
 {#if list}
-	<NumberInputList {placeholder} {name} bind:value {errors} {readonly} {disabled} />
+	<NumberInputList
+		{placeholder}
+		{name}
+		bind:value
+		{errors}
+		{readonly}
+		{disabled}
+		{className}
+		{addBtnClassName}
+	/>
 {:else}
 	<NumberInput {placeholder} {name} bind:value {errors} {readonly} {disabled} {className} />
 {/if}

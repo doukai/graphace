@@ -299,14 +299,14 @@
 	on:back
 />
 <div class="divider" />
-<Table>
+<Table className="table-zebra md:table-sm">
 	<thead>
 		<tr class="z-20">
 			<th class="w-12">
 				<label>
 					<input
 						type="checkbox"
-						class="checkbox"
+						class="checkbox md:checkbox-sm"
 						bind:checked={selectAll}
 						on:change={(e) => {
 							if (nodes && nodes.length > 0) {
@@ -406,7 +406,7 @@
 						<tr class="hover">
 							<th class="z-10 w-12">
 								<label>
-									<input type="checkbox" class="checkbox" bind:group={selectedIdList} value={ node.id } />
+									<input type="checkbox" class="checkbox md:checkbox-sm" bind:group={selectedIdList} value={ node.id } />
 								</label>
 							</th>
 							{#if permissions.auth('Group::name::*')}

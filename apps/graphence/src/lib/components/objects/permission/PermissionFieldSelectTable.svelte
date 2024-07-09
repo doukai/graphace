@@ -240,7 +240,7 @@
 	</div>
 </div>
 <div class="divider" />
-<Table>
+<Table className="table-zebra md:table-sm">
 	<thead>
 		<tr class="z-20">
 			<td>{$LL.graphql.objects.Permission.fields.field.name()} </td>
@@ -249,7 +249,7 @@
 					<label>
 						<input
 							type="checkbox"
-							class="checkbox"
+							class="checkbox md:checkbox-sm"
 							bind:checked={selectAllRead}
 							on:change={() => {
 								if (permissionList && permissionList.length > 0) {
@@ -268,7 +268,7 @@
 					<label class="label cursor-pointer">
 						<input
 							type="checkbox"
-							class="checkbox"
+							class="checkbox md:checkbox-sm"
 							bind:checked={selectAllWrite}
 							on:change={() => {
 								if (permissionList && permissionList.length > 0) {
@@ -297,7 +297,7 @@
 								<label>
 									<input
 										type="checkbox"
-										class="checkbox"
+										class="checkbox md:checkbox-sm"
 										bind:group={fieldReadList}
 										value={node?.type + '::' + node?.field + '::' + 'READ'}
 									/>
@@ -307,7 +307,7 @@
 								<label>
 									<input
 										type="checkbox"
-										class="checkbox"
+										class="checkbox md:checkbox-sm"
 										bind:group={fieldWriteList}
 										value={node?.type + '::' + node?.field + '::' + 'WRITE'}
 									/>

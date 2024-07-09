@@ -298,13 +298,16 @@
 					<StringInput
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
+						addBtnClassName="md:btn-sm"
 						{name}
 						bind:value={_expression.name.arr}
+						list
 					/>
 				{:else}
 					<StringInput
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
+						addBtnClassName="md:btn-sm"
 						{name}
 						bind:value={_expression.name.val}
 					/>
@@ -330,13 +333,16 @@
 					<StringInput
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
+						addBtnClassName="md:btn-sm"
 						{name}
 						bind:value={_expression.description.arr}
+						list
 					/>
 				{:else}
 					<StringInput
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
+						addBtnClassName="md:btn-sm"
 						{name}
 						bind:value={_expression.description.val}
 					/>

@@ -9,10 +9,11 @@
 	export let disabled = false;
 	export let errors: Errors | undefined = undefined;
 	export let className: string = '';
+	export let addBtnClassName: string = '';
 </script>
 
 {#if list}
-	<ToggleList {name} bind:value {errors} {readonly} {disabled} {className} />
+	<ToggleList {name} bind:value {errors} {readonly} {disabled} {className} {addBtnClassName} />
 {:else}
 	<Toggle {name} bind:value {errors} {readonly} {disabled} {className} />
 {/if}
