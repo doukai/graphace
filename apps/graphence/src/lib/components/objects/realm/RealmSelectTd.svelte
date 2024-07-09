@@ -100,10 +100,10 @@
 				{disabled}
 				{readonly}
 				{placeholder}
-				className="md:input-xs"
-				containerClassName="max-w-96 md:px-1 md:textarea-sm"
+				className="md:input-sm"
+				containerClassName="max-w-xs"
 				tagClassName="md:badge-sm"
-				menuClassName="md:mt-1 md:menu-sm"
+				menuClassName="md:menu-sm"
 				bind:value={selected}
 				on:change={(e) => {
 					if (Array.isArray(e.detail.value)) {

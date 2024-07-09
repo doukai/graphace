@@ -117,105 +117,109 @@
 	<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
 	<div class="space-y-2 md:space-y-1 p-1 rounded-xl bg-base-100 shadow z-[50]" use:melt={$content}>
 		<div use:melt={$arrow} />
-		<div class="grid grid-cols-2 gap-2 md:gap-1 items-center" transition:fade={{ duration: 100 }}>
 			{#if permissions.auth('Realm::id::*')}
-			<!-- svelte-ignore a11y-label-has-associated-control -->
-			<div class="form-control">
-				<label class="input-group md:input-group-sm">
-					<span class="w-20 whitespace-nowrap">
-						{$LL.graphql.objects.Realm.name()}
-					</span>
-					<OperatorSelect
-						className="md:select-sm"
-						bind:value={_expression.id.opr}
-						on:change={(e) => idOprChange()}
+			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
+				<div class="form-control w-48">
+					<label class="input-group md:input-group-sm">
+						<span class="w-20 whitespace-nowrap">
+							{$LL.graphql.objects.Realm.name()}
+						</span>
+						<OperatorSelect
+							className="md:select-sm"
+							bind:value={_expression.id.opr}
+							on:change={(e) => idOprChange()}
+						/>
+					</label>
+				</div>
+				{#if _expression.id.opr === 'IN' || _expression.id.opr === 'NIN' || _expression.id.opr === 'BT' || _expression.id.opr === 'NBT'}
+					<RealmSelect
+						{name}
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						list
+						bind:value
+						className="md:input-sm"
+						containerClassName="max-w-xs"
+						tagClassName="md:badge-sm"
+						menuClassName="md:menu-sm"
 					/>
-				</label>
+				{:else}
+					<RealmSelect
+						{name}
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						bind:value
+						className="md:input-sm"
+						containerClassName="max-w-xs"
+						tagClassName="md:badge-sm"
+						menuClassName="md:menu-sm"
+					/>
+				{/if}
 			</div>
-			{#if _expression.id.opr === 'IN' || _expression.id.opr === 'NIN' || _expression.id.opr === 'BT' || _expression.id.opr === 'NBT'}
-				<RealmSelect
-					{name}
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					list
-					bind:value
-					className="md:input-xs"
-					containerClassName="md:textarea-sm md:px-1"
-					tagClassName="md:badge-sm"
-					menuClassName="md:mt-1 md:menu-sm"
-				/>
-			{:else}
-				<RealmSelect
-					{name}
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					bind:value
-					className="md:input-xs"
-					containerClassName="md:textarea-sm md:px-1"
-					tagClassName="md:badge-sm"
-					menuClassName="md:mt-1 md:menu-sm"
-				/>
-			{/if}
 			{/if}
 			{#if permissions.auth('Realm::name::*')}
-			<!-- svelte-ignore a11y-label-has-associated-control -->
-			<div class="form-control">
-				<label class="input-group md:input-group-sm">
-					<span class="w-20 whitespace-nowrap">
-						{$LL.graphql.objects.Realm.fields.name.name()}
-					</span>
-					<OperatorSelect
-						className="md:select-sm"
-						bind:value={_expression.name.opr}
-						on:change={(e) => nameOprChange()}
+			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
+				<div class="form-control w-48">
+					<label class="input-group md:input-group-sm">
+						<span class="w-20 whitespace-nowrap">
+							{$LL.graphql.objects.Realm.fields.name.name()}
+						</span>
+						<OperatorSelect
+							className="md:select-sm"
+							bind:value={_expression.name.opr}
+							on:change={(e) => nameOprChange()}
+						/>
+					</label>
+				</div>
+				{#if _expression.name.opr === 'IN' || _expression.name.opr === 'NIN' || _expression.name.opr === 'BT' || _expression.name.opr === 'NBT'}
+					<StringInput
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						className="md:input-sm"
+						{name}
+						bind:value={_expression.name.arr}
 					/>
-				</label>
+				{:else}
+					<StringInput
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						className="md:input-sm"
+						{name}
+						bind:value={_expression.name.val}
+					/>
+				{/if}
 			</div>
-			{#if _expression.name.opr === 'IN' || _expression.name.opr === 'NIN' || _expression.name.opr === 'BT' || _expression.name.opr === 'NBT'}
-				<StringInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					className="md:input-sm"
-					{name}
-					bind:value={_expression.name.arr}
-				/>
-			{:else}
-				<StringInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					className="md:input-sm"
-					{name}
-					bind:value={_expression.name.val}
-				/>
-			{/if}
 			{/if}
 			{#if permissions.auth('Realm::description::*')}
-			<!-- svelte-ignore a11y-label-has-associated-control -->
-			<div class="form-control">
-				<label class="input-group md:input-group-sm">
-					<span class="w-20 whitespace-nowrap">
-						{$LL.graphql.objects.Realm.fields.description.name()}
-					</span>
-					<OperatorSelect
-						className="md:select-sm"
-						bind:value={_expression.description.opr}
-						on:change={(e) => descriptionOprChange()}
+			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
+				<div class="form-control w-48">
+					<label class="input-group md:input-group-sm">
+						<span class="w-20 whitespace-nowrap">
+							{$LL.graphql.objects.Realm.fields.description.name()}
+						</span>
+						<OperatorSelect
+							className="md:select-sm"
+							bind:value={_expression.description.opr}
+							on:change={(e) => descriptionOprChange()}
+						/>
+					</label>
+				</div>
+				{#if _expression.description.opr === 'IN' || _expression.description.opr === 'NIN' || _expression.description.opr === 'BT' || _expression.description.opr === 'NBT'}
+					<StringInput
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						className="md:input-sm"
+						{name}
+						bind:value={_expression.description.arr}
 					/>
-				</label>
+				{:else}
+					<StringInput
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						className="md:input-sm"
+						{name}
+						bind:value={_expression.description.val}
+					/>
+				{/if}
 			</div>
-			{#if _expression.description.opr === 'IN' || _expression.description.opr === 'NIN' || _expression.description.opr === 'BT' || _expression.description.opr === 'NBT'}
-				<StringInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					className="md:input-sm"
-					{name}
-					bind:value={_expression.description.arr}
-				/>
-			{:else}
-				<StringInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					className="md:input-sm"
-					{name}
-					bind:value={_expression.description.val}
-				/>
 			{/if}
-			{/if}
-		</div>
 		<div class="flex justify-center space-x-2">
 			<div class="tooltip" data-tip={$LL.uiGraphql.table.th.filter()}>
 				<button class="btn btn-square btn-primary md:btn-sm" on:click={(e) => filter()}>

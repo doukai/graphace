@@ -306,380 +306,400 @@
 	<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
 	<div class="space-y-2 md:space-y-1 p-1 rounded-xl bg-base-100 shadow z-[50]" use:melt={$content}>
 		<div use:melt={$arrow} />
-		<div class="grid grid-cols-2 gap-2 md:gap-1 items-center" transition:fade={{ duration: 100 }}>
 			{#if permissions.auth('Group::id::*')}
-			<!-- svelte-ignore a11y-label-has-associated-control -->
-			<div class="form-control">
-				<label class="input-group md:input-group-sm">
-					<span class="w-20 whitespace-nowrap">
-						{$LL.graphql.objects.Group.name()}
-					</span>
-					<OperatorSelect
-						className="md:select-sm"
-						bind:value={_expression.id.opr}
-						on:change={(e) => idOprChange()}
+			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
+				<div class="form-control w-48">
+					<label class="input-group md:input-group-sm">
+						<span class="w-20 whitespace-nowrap">
+							{$LL.graphql.objects.Group.name()}
+						</span>
+						<OperatorSelect
+							className="md:select-sm"
+							bind:value={_expression.id.opr}
+							on:change={(e) => idOprChange()}
+						/>
+					</label>
+				</div>
+				{#if _expression.id.opr === 'IN' || _expression.id.opr === 'NIN' || _expression.id.opr === 'BT' || _expression.id.opr === 'NBT'}
+					<GroupSelect
+						{name}
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						list
+						bind:value
+						className="md:input-sm"
+						containerClassName="max-w-xs"
+						tagClassName="md:badge-sm"
+						menuClassName="md:menu-sm"
 					/>
-				</label>
+				{:else}
+					<GroupSelect
+						{name}
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						bind:value
+						className="md:input-sm"
+						containerClassName="max-w-xs"
+						tagClassName="md:badge-sm"
+						menuClassName="md:menu-sm"
+					/>
+				{/if}
 			</div>
-			{#if _expression.id.opr === 'IN' || _expression.id.opr === 'NIN' || _expression.id.opr === 'BT' || _expression.id.opr === 'NBT'}
-				<GroupSelect
-					{name}
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					list
-					bind:value
-					className="md:input-xs"
-					containerClassName="md:textarea-sm md:px-1"
-					tagClassName="md:badge-sm"
-					menuClassName="md:mt-1 md:menu-sm"
-				/>
-			{:else}
-				<GroupSelect
-					{name}
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					bind:value
-					className="md:input-xs"
-					containerClassName="md:textarea-sm md:px-1"
-					tagClassName="md:badge-sm"
-					menuClassName="md:mt-1 md:menu-sm"
-				/>
-			{/if}
 			{/if}
 			{#if permissions.auth('Group::name::*')}
-			<!-- svelte-ignore a11y-label-has-associated-control -->
-			<div class="form-control">
-				<label class="input-group md:input-group-sm">
-					<span class="w-20 whitespace-nowrap">
-						{$LL.graphql.objects.Group.fields.name.name()}
-					</span>
-					<OperatorSelect
-						className="md:select-sm"
-						bind:value={_expression.name.opr}
-						on:change={(e) => nameOprChange()}
+			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
+				<div class="form-control w-48">
+					<label class="input-group md:input-group-sm">
+						<span class="w-20 whitespace-nowrap">
+							{$LL.graphql.objects.Group.fields.name.name()}
+						</span>
+						<OperatorSelect
+							className="md:select-sm"
+							bind:value={_expression.name.opr}
+							on:change={(e) => nameOprChange()}
+						/>
+					</label>
+				</div>
+				{#if _expression.name.opr === 'IN' || _expression.name.opr === 'NIN' || _expression.name.opr === 'BT' || _expression.name.opr === 'NBT'}
+					<StringInput
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						className="md:input-sm"
+						{name}
+						bind:value={_expression.name.arr}
 					/>
-				</label>
+				{:else}
+					<StringInput
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						className="md:input-sm"
+						{name}
+						bind:value={_expression.name.val}
+					/>
+				{/if}
 			</div>
-			{#if _expression.name.opr === 'IN' || _expression.name.opr === 'NIN' || _expression.name.opr === 'BT' || _expression.name.opr === 'NBT'}
-				<StringInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					className="md:input-sm"
-					{name}
-					bind:value={_expression.name.arr}
-				/>
-			{:else}
-				<StringInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					className="md:input-sm"
-					{name}
-					bind:value={_expression.name.val}
-				/>
-			{/if}
 			{/if}
 			{#if permissions.auth('Group::description::*')}
-			<!-- svelte-ignore a11y-label-has-associated-control -->
-			<div class="form-control">
-				<label class="input-group md:input-group-sm">
-					<span class="w-20 whitespace-nowrap">
-						{$LL.graphql.objects.Group.fields.description.name()}
-					</span>
-					<OperatorSelect
-						className="md:select-sm"
-						bind:value={_expression.description.opr}
-						on:change={(e) => descriptionOprChange()}
+			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
+				<div class="form-control w-48">
+					<label class="input-group md:input-group-sm">
+						<span class="w-20 whitespace-nowrap">
+							{$LL.graphql.objects.Group.fields.description.name()}
+						</span>
+						<OperatorSelect
+							className="md:select-sm"
+							bind:value={_expression.description.opr}
+							on:change={(e) => descriptionOprChange()}
+						/>
+					</label>
+				</div>
+				{#if _expression.description.opr === 'IN' || _expression.description.opr === 'NIN' || _expression.description.opr === 'BT' || _expression.description.opr === 'NBT'}
+					<StringInput
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						className="md:input-sm"
+						{name}
+						bind:value={_expression.description.arr}
 					/>
-				</label>
+				{:else}
+					<StringInput
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						className="md:input-sm"
+						{name}
+						bind:value={_expression.description.val}
+					/>
+				{/if}
 			</div>
-			{#if _expression.description.opr === 'IN' || _expression.description.opr === 'NIN' || _expression.description.opr === 'BT' || _expression.description.opr === 'NBT'}
-				<StringInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					className="md:input-sm"
-					{name}
-					bind:value={_expression.description.arr}
-				/>
-			{:else}
-				<StringInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					className="md:input-sm"
-					{name}
-					bind:value={_expression.description.val}
-				/>
-			{/if}
 			{/if}
 			{#if permissions.auth('Group::path::*')}
-			<!-- svelte-ignore a11y-label-has-associated-control -->
-			<div class="form-control">
-				<label class="input-group md:input-group-sm">
-					<span class="w-20 whitespace-nowrap">
-						{$LL.graphql.objects.Group.fields.path.name()}
-					</span>
-					<OperatorSelect
-						className="md:select-sm"
-						bind:value={_expression.path.opr}
-						on:change={(e) => pathOprChange()}
+			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
+				<div class="form-control w-48">
+					<label class="input-group md:input-group-sm">
+						<span class="w-20 whitespace-nowrap">
+							{$LL.graphql.objects.Group.fields.path.name()}
+						</span>
+						<OperatorSelect
+							className="md:select-sm"
+							bind:value={_expression.path.opr}
+							on:change={(e) => pathOprChange()}
+						/>
+					</label>
+				</div>
+				{#if _expression.path.opr === 'IN' || _expression.path.opr === 'NIN' || _expression.path.opr === 'BT' || _expression.path.opr === 'NBT'}
+					<StringInput
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						className="md:input-sm"
+						{name}
+						bind:value={_expression.path.arr}
 					/>
-				</label>
+				{:else}
+					<StringInput
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						className="md:input-sm"
+						{name}
+						bind:value={_expression.path.val}
+					/>
+				{/if}
 			</div>
-			{#if _expression.path.opr === 'IN' || _expression.path.opr === 'NIN' || _expression.path.opr === 'BT' || _expression.path.opr === 'NBT'}
-				<StringInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					className="md:input-sm"
-					{name}
-					bind:value={_expression.path.arr}
-				/>
-			{:else}
-				<StringInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					className="md:input-sm"
-					{name}
-					bind:value={_expression.path.val}
-				/>
-			{/if}
 			{/if}
 			{#if permissions.auth('Group::deep::*')}
-			<!-- svelte-ignore a11y-label-has-associated-control -->
-			<div class="form-control">
-				<label class="input-group md:input-group-sm">
-					<span class="w-20 whitespace-nowrap">
-						{$LL.graphql.objects.Group.fields.deep.name()}
-					</span>
-					<OperatorSelect
-						className="md:select-sm"
-						bind:value={_expression.deep.opr}
-						on:change={(e) => deepOprChange()}
+			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
+				<div class="form-control w-48">
+					<label class="input-group md:input-group-sm">
+						<span class="w-20 whitespace-nowrap">
+							{$LL.graphql.objects.Group.fields.deep.name()}
+						</span>
+						<OperatorSelect
+							className="md:select-sm"
+							bind:value={_expression.deep.opr}
+							on:change={(e) => deepOprChange()}
+						/>
+					</label>
+				</div>
+				{#if _expression.deep.opr === 'IN' || _expression.deep.opr === 'NIN' || _expression.deep.opr === 'BT' || _expression.deep.opr === 'NBT'}
+					<IntInput
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						className="md:input-sm"
+						{name}
+						bind:value={_expression.deep.arr}
 					/>
-				</label>
+				{:else}
+					<IntInput
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						className="md:input-sm"
+						{name}
+						bind:value={_expression.deep.val}
+					/>
+				{/if}
 			</div>
-			{#if _expression.deep.opr === 'IN' || _expression.deep.opr === 'NIN' || _expression.deep.opr === 'BT' || _expression.deep.opr === 'NBT'}
-				<IntInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					className="md:input-sm"
-					{name}
-					bind:value={_expression.deep.arr}
-				/>
-			{:else}
-				<IntInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					className="md:input-sm"
-					{name}
-					bind:value={_expression.deep.val}
-				/>
-			{/if}
 			{/if}
 			{#if permissions.auth('Group::parentId::*')}
-			<!-- svelte-ignore a11y-label-has-associated-control -->
-			<div class="form-control">
-				<label class="input-group md:input-group-sm">
-					<span class="w-20 whitespace-nowrap">
-						{$LL.graphql.objects.Group.fields.parentId.name()}
-					</span>
-					<OperatorSelect
-						className="md:select-sm"
-						bind:value={_expression.parentId.opr}
-						on:change={(e) => parentIdOprChange()}
+			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
+				<div class="form-control w-48">
+					<label class="input-group md:input-group-sm">
+						<span class="w-20 whitespace-nowrap">
+							{$LL.graphql.objects.Group.fields.parentId.name()}
+						</span>
+						<OperatorSelect
+							className="md:select-sm"
+							bind:value={_expression.parentId.opr}
+							on:change={(e) => parentIdOprChange()}
+						/>
+					</label>
+				</div>
+				{#if _expression.parentId.opr === 'IN' || _expression.parentId.opr === 'NIN' || _expression.parentId.opr === 'BT' || _expression.parentId.opr === 'NBT'}
+					<StringInput
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						className="md:input-sm"
+						{name}
+						bind:value={_expression.parentId.arr}
 					/>
-				</label>
+				{:else}
+					<StringInput
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						className="md:input-sm"
+						{name}
+						bind:value={_expression.parentId.val}
+					/>
+				{/if}
 			</div>
-			{#if _expression.parentId.opr === 'IN' || _expression.parentId.opr === 'NIN' || _expression.parentId.opr === 'BT' || _expression.parentId.opr === 'NBT'}
-				<StringInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					className="md:input-sm"
-					{name}
-					bind:value={_expression.parentId.arr}
-				/>
-			{:else}
-				<StringInput
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					className="md:input-sm"
-					{name}
-					bind:value={_expression.parentId.val}
-				/>
-			{/if}
 			{/if}
 			{#if permissions.auth('Group::parent::*')}
-			<!-- svelte-ignore a11y-label-has-associated-control -->
-			<div class="form-control">
-				<label class="input-group md:input-group-sm">
-					<span class="w-20 whitespace-nowrap">
-						{$LL.graphql.objects.Group.fields.parent.name()}
-					</span>
-					<OperatorSelect
-						className="md:select-sm"
-						bind:value={_expression.parent.id.opr}
-						on:change={(e) => parentOprChange()}
+			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
+				<div class="form-control w-48">
+					<label class="input-group md:input-group-sm">
+						<span class="w-20 whitespace-nowrap">
+							{$LL.graphql.objects.Group.fields.parent.name()}
+						</span>
+						<OperatorSelect
+							className="md:select-sm"
+							bind:value={_expression.parent.id.opr}
+							on:change={(e) => parentOprChange()}
+						/>
+					</label>
+				</div>
+				{#if _expression.parent.id.opr === 'IN' || _expression.parent.id.opr === 'NIN' || _expression.parent.id.opr === 'BT' || _expression.parent.id.opr === 'NBT'}
+					<GroupSelect
+						{name}
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						list
+						bind:value={ parent }
+						className="md:input-sm"
+						containerClassName="max-w-xs"
+						tagClassName="md:badge-sm"
+						menuClassName="md:menu-sm"
 					/>
-				</label>
+				{:else}
+					<GroupSelect
+						{name}
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						bind:value={ parent }
+						className="md:input-sm"
+						containerClassName="max-w-xs"
+						tagClassName="md:badge-sm"
+						menuClassName="md:menu-sm"
+					/>
+				{/if}
 			</div>
-			{#if _expression.parent.id.opr === 'IN' || _expression.parent.id.opr === 'NIN' || _expression.parent.id.opr === 'BT' || _expression.parent.id.opr === 'NBT'}
-				<GroupSelect
-					{name}
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					list
-					bind:value={ parent }
-					className="md:input-xs"
-					containerClassName="md:textarea-sm md:px-1"
-					tagClassName="md:badge-sm"
-					menuClassName="md:mt-1 md:menu-sm"
-				/>
-			{:else}
-				<GroupSelect
-					{name}
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					bind:value={ parent }
-					className="md:input-xs"
-					containerClassName="md:textarea-sm md:px-1"
-					tagClassName="md:badge-sm"
-					menuClassName="md:mt-1 md:menu-sm"
-				/>
-			{/if}
 			{/if}
 			{#if permissions.auth('Group::subGroups::*')}
-			<!-- svelte-ignore a11y-label-has-associated-control -->
-			<div class="form-control">
-				<label class="input-group md:input-group-sm">
-					<span class="w-20 whitespace-nowrap">
-						{$LL.graphql.objects.Group.fields.subGroups.name()}
-					</span>
-					<OperatorSelect
-						className="md:select-sm"
-						bind:value={_expression.subGroups.id.opr}
-						on:change={(e) => subGroupsOprChange()}
+			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
+				<div class="form-control w-48">
+					<label class="input-group md:input-group-sm">
+						<span class="w-20 whitespace-nowrap">
+							{$LL.graphql.objects.Group.fields.subGroups.name()}
+						</span>
+						<OperatorSelect
+							className="md:select-sm"
+							bind:value={_expression.subGroups.id.opr}
+							on:change={(e) => subGroupsOprChange()}
+						/>
+					</label>
+				</div>
+				{#if _expression.subGroups.id.opr === 'IN' || _expression.subGroups.id.opr === 'NIN' || _expression.subGroups.id.opr === 'BT' || _expression.subGroups.id.opr === 'NBT'}
+					<GroupSelect
+						{name}
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						list
+						bind:value={ subGroups }
+						className="md:input-sm"
+						containerClassName="max-w-xs"
+						tagClassName="md:badge-sm"
+						menuClassName="md:menu-sm"
 					/>
-				</label>
+				{:else}
+					<GroupSelect
+						{name}
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						bind:value={ subGroups }
+						className="md:input-sm"
+						containerClassName="max-w-xs"
+						tagClassName="md:badge-sm"
+						menuClassName="md:menu-sm"
+					/>
+				{/if}
 			</div>
-			{#if _expression.subGroups.id.opr === 'IN' || _expression.subGroups.id.opr === 'NIN' || _expression.subGroups.id.opr === 'BT' || _expression.subGroups.id.opr === 'NBT'}
-				<GroupSelect
-					{name}
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					list
-					bind:value={ subGroups }
-					className="md:input-xs"
-					containerClassName="md:textarea-sm md:px-1"
-					tagClassName="md:badge-sm"
-					menuClassName="md:mt-1 md:menu-sm"
-				/>
-			{:else}
-				<GroupSelect
-					{name}
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					bind:value={ subGroups }
-					className="md:input-xs"
-					containerClassName="md:textarea-sm md:px-1"
-					tagClassName="md:badge-sm"
-					menuClassName="md:mt-1 md:menu-sm"
-				/>
-			{/if}
 			{/if}
 			{#if permissions.auth('Group::users::*')}
-			<!-- svelte-ignore a11y-label-has-associated-control -->
-			<div class="form-control">
-				<label class="input-group md:input-group-sm">
-					<span class="w-20 whitespace-nowrap">
-						{$LL.graphql.objects.Group.fields.users.name()}
-					</span>
-					<OperatorSelect
-						className="md:select-sm"
-						bind:value={_expression.users.id.opr}
-						on:change={(e) => usersOprChange()}
+			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
+				<div class="form-control w-48">
+					<label class="input-group md:input-group-sm">
+						<span class="w-20 whitespace-nowrap">
+							{$LL.graphql.objects.Group.fields.users.name()}
+						</span>
+						<OperatorSelect
+							className="md:select-sm"
+							bind:value={_expression.users.id.opr}
+							on:change={(e) => usersOprChange()}
+						/>
+					</label>
+				</div>
+				{#if _expression.users.id.opr === 'IN' || _expression.users.id.opr === 'NIN' || _expression.users.id.opr === 'BT' || _expression.users.id.opr === 'NBT'}
+					<UserSelect
+						{name}
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						list
+						bind:value={ users }
+						className="md:input-sm"
+						containerClassName="max-w-xs"
+						tagClassName="md:badge-sm"
+						menuClassName="md:menu-sm"
 					/>
-				</label>
+				{:else}
+					<UserSelect
+						{name}
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						bind:value={ users }
+						className="md:input-sm"
+						containerClassName="max-w-xs"
+						tagClassName="md:badge-sm"
+						menuClassName="md:menu-sm"
+					/>
+				{/if}
 			</div>
-			{#if _expression.users.id.opr === 'IN' || _expression.users.id.opr === 'NIN' || _expression.users.id.opr === 'BT' || _expression.users.id.opr === 'NBT'}
-				<UserSelect
-					{name}
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					list
-					bind:value={ users }
-					className="md:input-xs"
-					containerClassName="md:textarea-sm md:px-1"
-					tagClassName="md:badge-sm"
-					menuClassName="md:mt-1 md:menu-sm"
-				/>
-			{:else}
-				<UserSelect
-					{name}
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					bind:value={ users }
-					className="md:input-xs"
-					containerClassName="md:textarea-sm md:px-1"
-					tagClassName="md:badge-sm"
-					menuClassName="md:mt-1 md:menu-sm"
-				/>
-			{/if}
 			{/if}
 			{#if permissions.auth('Group::roles::*')}
-			<!-- svelte-ignore a11y-label-has-associated-control -->
-			<div class="form-control">
-				<label class="input-group md:input-group-sm">
-					<span class="w-20 whitespace-nowrap">
-						{$LL.graphql.objects.Group.fields.roles.name()}
-					</span>
-					<OperatorSelect
-						className="md:select-sm"
-						bind:value={_expression.roles.id.opr}
-						on:change={(e) => rolesOprChange()}
+			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
+				<div class="form-control w-48">
+					<label class="input-group md:input-group-sm">
+						<span class="w-20 whitespace-nowrap">
+							{$LL.graphql.objects.Group.fields.roles.name()}
+						</span>
+						<OperatorSelect
+							className="md:select-sm"
+							bind:value={_expression.roles.id.opr}
+							on:change={(e) => rolesOprChange()}
+						/>
+					</label>
+				</div>
+				{#if _expression.roles.id.opr === 'IN' || _expression.roles.id.opr === 'NIN' || _expression.roles.id.opr === 'BT' || _expression.roles.id.opr === 'NBT'}
+					<RoleSelect
+						{name}
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						list
+						bind:value={ roles }
+						className="md:input-sm"
+						containerClassName="max-w-xs"
+						tagClassName="md:badge-sm"
+						menuClassName="md:menu-sm"
 					/>
-				</label>
+				{:else}
+					<RoleSelect
+						{name}
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						bind:value={ roles }
+						className="md:input-sm"
+						containerClassName="max-w-xs"
+						tagClassName="md:badge-sm"
+						menuClassName="md:menu-sm"
+					/>
+				{/if}
 			</div>
-			{#if _expression.roles.id.opr === 'IN' || _expression.roles.id.opr === 'NIN' || _expression.roles.id.opr === 'BT' || _expression.roles.id.opr === 'NBT'}
-				<RoleSelect
-					{name}
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					list
-					bind:value={ roles }
-					className="md:input-xs"
-					containerClassName="md:textarea-sm md:px-1"
-					tagClassName="md:badge-sm"
-					menuClassName="md:mt-1 md:menu-sm"
-				/>
-			{:else}
-				<RoleSelect
-					{name}
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					bind:value={ roles }
-					className="md:input-xs"
-					containerClassName="md:textarea-sm md:px-1"
-					tagClassName="md:badge-sm"
-					menuClassName="md:mt-1 md:menu-sm"
-				/>
-			{/if}
 			{/if}
 			{#if permissions.auth('Group::realm::*')}
-			<!-- svelte-ignore a11y-label-has-associated-control -->
-			<div class="form-control">
-				<label class="input-group md:input-group-sm">
-					<span class="w-20 whitespace-nowrap">
-						{$LL.graphql.objects.Group.fields.realm.name()}
-					</span>
-					<OperatorSelect
-						className="md:select-sm"
-						bind:value={_expression.realm.id.opr}
-						on:change={(e) => realmOprChange()}
+			<div class="flex justify-center space-x-2" transition:fade={{ duration: 100 }}>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
+				<div class="form-control w-48">
+					<label class="input-group md:input-group-sm">
+						<span class="w-20 whitespace-nowrap">
+							{$LL.graphql.objects.Group.fields.realm.name()}
+						</span>
+						<OperatorSelect
+							className="md:select-sm"
+							bind:value={_expression.realm.id.opr}
+							on:change={(e) => realmOprChange()}
+						/>
+					</label>
+				</div>
+				{#if _expression.realm.id.opr === 'IN' || _expression.realm.id.opr === 'NIN' || _expression.realm.id.opr === 'BT' || _expression.realm.id.opr === 'NBT'}
+					<RealmSelect
+						{name}
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						list
+						bind:value={ realm }
+						className="md:input-sm"
+						containerClassName="max-w-xs"
+						tagClassName="md:badge-sm"
+						menuClassName="md:menu-sm"
 					/>
-				</label>
+				{:else}
+					<RealmSelect
+						{name}
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						bind:value={ realm }
+						className="md:input-sm"
+						containerClassName="max-w-xs"
+						tagClassName="md:badge-sm"
+						menuClassName="md:menu-sm"
+					/>
+				{/if}
 			</div>
-			{#if _expression.realm.id.opr === 'IN' || _expression.realm.id.opr === 'NIN' || _expression.realm.id.opr === 'BT' || _expression.realm.id.opr === 'NBT'}
-				<RealmSelect
-					{name}
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					list
-					bind:value={ realm }
-					className="md:input-xs"
-					containerClassName="md:textarea-sm md:px-1"
-					tagClassName="md:badge-sm"
-					menuClassName="md:mt-1 md:menu-sm"
-				/>
-			{:else}
-				<RealmSelect
-					{name}
-					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-					bind:value={ realm }
-					className="md:input-xs"
-					containerClassName="md:textarea-sm md:px-1"
-					tagClassName="md:badge-sm"
-					menuClassName="md:mt-1 md:menu-sm"
-				/>
 			{/if}
-			{/if}
-		</div>
 		<div class="flex justify-center space-x-2">
 			<div class="tooltip" data-tip={$LL.uiGraphql.table.th.filter()}>
 				<button class="btn btn-square btn-primary md:btn-sm" on:click={(e) => filter()}>

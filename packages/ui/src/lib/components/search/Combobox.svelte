@@ -99,26 +99,30 @@
 <div class="relative">
 	<div
 		use:melt={$root}
-		class="flex items-center textarea textarea-bordered flex-row flex-wrap gap-1 min-h-6 {containerClassName}"
+		class="textarea textarea-bordered flex flex-row flex-wrap items-center min-h-6 p-0 {containerClassName}"
 	>
 		{#each $tags as t}
 			<div
 				use:melt={$tag(t)}
-				class="flex badge badge-neutral items-center overflow-hidden {tagClassName}"
+				class="badge badge-neutral flex items-center ml-1 mt-1 mb-1 pl-1 pr-0 overflow-hidden {tagClassName}"
 			>
-				{t.value}
-				<button use:melt={$deleteTrigger(t)} {disabled}>
+				<span class="flex items-center border-r border-white/10">{t.value}</span>
+				<button
+					use:melt={$deleteTrigger(t)}
+					{disabled}
+					class="flex items-center h-full hover:bg-neutral-focus"
+				>
 					<Icon src={XMark} class="size-3" />
 				</button>
 			</div>
-			<div use:melt={$edit(t)} class="flex items-center overflow-hidden rounded-md px-1.5">
+			<div use:melt={$edit(t)} class="flex items-center rounded-md px-1.5 overflow-hidden">
 				{t.value}
 			</div>
 		{/each}
 		<input
 			use:melt={$input}
 			type="text"
-			class="shrink grow bg-base-100 basis-0 border-0 outline-none {className}"
+			class="input shrink grow basis-0 border-0 outline-none focus:outline-none {className}"
 			on:focus={(e) => {
 				if ($touchedInput) {
 					debounce(() => {
@@ -145,7 +149,7 @@
 </div>
 {#if $open}
 	<ul
-		class="z-[50] mt-2 menu shadow bg-base-100 rounded-xl w-full max-h-80 flex-nowrap overflow-auto {menuClassName}"
+		class="menu shadow rounded-xl bg-base-100 w-full z-[50] mt-1 max-h-80 flex-nowrap overflow-auto {menuClassName}"
 		use:melt={$menu}
 		transition:fly={{ duration: 150, y: -5 }}
 	>
