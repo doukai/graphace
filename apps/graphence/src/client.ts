@@ -13,7 +13,15 @@ const authPlugin: ClientPlugin = () => {
 				if (value.errors?.map(error => error.extensions).some(extensions => extensions?.code == -40100)) {
 					const loginPathName = `/${ctx.session?.locale}/login`;
 					if (browser) {
-						goto(loginPathName);
+						const queryString = window.location.search;
+						const urlParams = new URLSearchParams(queryString);
+						if (urlParams.has('from')) {
+							goto(loginPathName + '?from=' + urlParams.get('from'));
+						} else if (window.location.pathname !== loginPathName) {
+							goto(loginPathName + '?from=' + window.location.pathname);
+						} else {
+							goto(loginPathName);
+						}
 					} else {
 						throw redirect(307, loginPathName);
 					}
