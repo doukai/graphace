@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getContext, createEventDispatcher } from 'svelte';
 	import type { Readable } from 'svelte/store';
+	import { createPagination, melt } from '@melt-ui/svelte';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	export let pageSizeOptions: number[] = [10, 20, 30];
 	export let pageSize: number = 10;
@@ -14,6 +15,25 @@
 
 	$: pageCount =
 		totalCount % pageSize == 0 ? ~~(totalCount / pageSize) : ~~(totalCount / pageSize) + 1;
+
+	const {
+		elements: { root, pageTrigger, prevButton, nextButton },
+		states: { pages, range },
+		options: { perPage, count }
+	} = createPagination({
+		count: totalCount,
+		perPage: pageSize,
+		defaultPage: pageNumber,
+		siblingCount: 1,
+		onPageChange: (args) => {
+			pageNumber = args.next;
+			dispatch('pageChange');
+			return args.next;
+		}
+	});
+
+	$: $count = totalCount;
+	$: $perPage = pageSize;
 </script>
 
 <div class="hidden md:flex justify-between">
@@ -36,69 +56,25 @@
 			{$LL.ui.pagination.total({ total: totalCount })}
 		</span>
 	</div>
-	<div class="join">
+	<div class="join" use:melt={$root}>
 		<button
-			class="join-item btn {pageNumber - 1 ? '' : 'btn-disabled'}"
-			on:click={() => {
-				pageNumber = pageNumber - 1;
-				dispatch('pageChange');
-			}}
+			use:melt={$prevButton}
+			class="join-item btn data-[selected]:btn-active disabled:btn-disabled"
 		>
 			«
 		</button>
-		{#if pageNumber - 2 > 0}
-			<button
-				class="join-item btn"
-				on:click={() => {
-					pageNumber = pageNumber - 2;
-					dispatch('pageChange');
-				}}
-			>
-				{pageNumber - 2}
-			</button>
-		{/if}
-		{#if pageNumber - 1 > 0}
-			<button
-				class="join-item btn"
-				on:click={() => {
-					pageNumber = pageNumber - 1;
-					dispatch('pageChange');
-				}}
-			>
-				{pageNumber - 1}
-			</button>
-		{/if}
-		{#if totalCount > 0}
-			<button class="join-item btn btn-active">{pageNumber}</button>
-		{/if}
-		{#if pageNumber + 1 <= pageCount}
-			<button
-				class="join-item btn"
-				on:click={() => {
-					pageNumber = pageNumber + 1;
-					dispatch('pageChange');
-				}}
-			>
-				{pageNumber + 1}
-			</button>
-		{/if}
-		{#if pageNumber + 2 <= pageCount}
-			<button
-				class="join-item btn"
-				on:click={() => {
-					pageNumber = pageNumber + 2;
-					dispatch('pageChange');
-				}}
-			>
-				{pageNumber + 2}
-			</button>
-		{/if}
+		{#each $pages as page (page.key)}
+			{#if page.type === 'ellipsis'}
+				<button class="join-item btn btn-disabled">...</button>
+			{:else}
+				<button class="join-item btn data-[selected]:btn-active" use:melt={$pageTrigger(page)}>
+					{page.value}
+				</button>
+			{/if}
+		{/each}
 		<button
-			class="join-item btn {pageNumber + 1 <= pageCount ? '' : 'btn-disabled'}"
-			on:click={() => {
-				pageNumber = pageNumber + 1;
-				dispatch('pageChange');
-			}}
+			use:melt={$nextButton}
+			class="join-item btn data-[selected]:btn-active disabled:btn-disabled"
 		>
 			»
 		</button>
