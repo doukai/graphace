@@ -7,6 +7,7 @@
 	export let pageSize: number = 10;
 	export let pageNumber: number = 1;
 	export let totalCount: number = 0;
+	export let siblingCount: number = 1;
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 	const dispatch = createEventDispatcher<{
 		pageChange: {};
@@ -24,7 +25,7 @@
 		count: totalCount,
 		perPage: pageSize,
 		defaultPage: pageNumber,
-		siblingCount: 1,
+		siblingCount: siblingCount,
 		onPageChange: (args) => {
 			pageNumber = args.next;
 			dispatch('pageChange');
