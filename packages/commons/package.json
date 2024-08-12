@@ -1,6 +1,6 @@
 {
 	"name": "@graphace/commons",
-	"version": "0.0.12",
+	"version": "0.1.0",
 	"description": "graphace commons module",
 	"type": "module",
 	"main": "dist/index.js",

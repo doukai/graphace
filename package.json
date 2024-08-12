@@ -1,6 +1,6 @@
 {
 	"name": "graphace",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"description": "The user interface for Graphoenix",
 	"private": true,
 	"workspaces": [
@@ -11,8 +11,7 @@
 		"dev": "turbo run dev --parallel",
 		"build": "turbo run build",
 		"build:packages": "turbo run build --filter=./packages/*",
-		"publish": "pnpm publish --no-git-checks --filter=!eslint-config-custom",
-		"publish:packages": "pnpm publish --no-git-checks --filter=./packages/* --filter=!eslint-config-custom",
+		"publish": "pnpm publish --no-git-checks --filter=./packages/* --filter=!eslint-config-custom",
 		"turbo:login": "turbo login",
 		"turbo:clean": "turbo run clean",
 		"turbo:daemon-clean": "turbo daemon clean",
