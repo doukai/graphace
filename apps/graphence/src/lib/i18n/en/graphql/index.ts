@@ -57,40 +57,6 @@ const en: BaseTranslation = {
 				}
 			}
 		},
-		GroupRoleRelation: {
-			name: 'GroupRoleRelation',
-			fields: {
-				roleRef: {
-					name: 'roleRef',
-				},
-				role: {
-					name: 'role',
-				},
-				groupRef: {
-					name: 'groupRef',
-				},
-				group: {
-					name: 'group',
-				}
-			}
-		},
-		GroupUserRelation: {
-			name: 'GroupUserRelation',
-			fields: {
-				userRef: {
-					name: 'userRef',
-				},
-				user: {
-					name: 'user',
-				},
-				groupRef: {
-					name: 'groupRef',
-				},
-				group: {
-					name: 'group',
-				}
-			}
-		},
 		Permission: {
 			name: 'Permission',
 			fields: {
@@ -114,23 +80,6 @@ const en: BaseTranslation = {
 				},
 				realm: {
 					name: 'realm',
-				}
-			}
-		},
-		PermissionRoleRelation: {
-			name: 'PermissionRoleRelation',
-			fields: {
-				roleRef: {
-					name: 'roleRef',
-				},
-				role: {
-					name: 'role',
-				},
-				permissionRef: {
-					name: 'permissionRef',
-				},
-				permission: {
-					name: 'permission',
 				}
 			}
 		},
@@ -197,40 +146,6 @@ const en: BaseTranslation = {
 				}
 			}
 		},
-		RoleCompositeRelation: {
-			name: 'RoleCompositeRelation',
-			fields: {
-				roleRef: {
-					name: 'roleRef',
-				},
-				role: {
-					name: 'role',
-				},
-				compositeRef: {
-					name: 'compositeRef',
-				},
-				composite: {
-					name: 'composite',
-				}
-			}
-		},
-		RoleUserRelation: {
-			name: 'RoleUserRelation',
-			fields: {
-				userRef: {
-					name: 'userRef',
-				},
-				user: {
-					name: 'user',
-				},
-				roleRef: {
-					name: 'roleRef',
-				},
-				role: {
-					name: 'role',
-				}
-			}
-		},
 		User: {
 			name: 'User',
 			fields: {
@@ -263,20 +178,6 @@ const en: BaseTranslation = {
 				},
 				realm: {
 					name: 'realm',
-				}
-			}
-		},
-		UserPhonesRelation: {
-			name: 'UserPhonesRelation',
-			fields: {
-				userRef: {
-					name: 'userRef',
-				},
-				user: {
-					name: 'user',
-				},
-				phonesRef: {
-					name: 'phonesRef',
 				}
 			}
 		}

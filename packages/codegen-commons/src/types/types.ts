@@ -5,6 +5,7 @@ export type BuilderConfig = {
     queryTypeName?: string;
     mutationTypeName?: string;
     subscriptionTypeName?: string;
+    includeRelation?: boolean;
 }
 
 export type ObjectConfig = {

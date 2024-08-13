@@ -4,6 +4,7 @@ import { assertScalarType, assertObjectType, isEnumType, isInputObjectType, isLi
 export const aggregateSuffix = ["Count", "Sum", "Avg", "Max", "Min", "Aggregate"];
 export const listSuffix = "List";
 export const connectionSuffix = "Connection";
+export const relationSuffix = "Relation";
 export const edgeSuffix = "Edge";
 export const pageInfoName = "PageInfo";
 export const introspectionPrefix = "__";
@@ -13,6 +14,7 @@ export const treeStructInterfaceName = "TreeStruct";
 
 export const isAggregate = (name?: string): boolean => { return aggregateSuffix.some(suffix => name?.slice(-suffix.length) === suffix) };
 export const isConnection = (name?: string): boolean => { return name?.slice(-connectionSuffix.length) === connectionSuffix };
+export const isRelation = (name?: string): boolean => { return name?.slice(-relationSuffix.length) === relationSuffix };
 export const isEdge = (name?: string): boolean => { return name?.slice(-edgeSuffix.length) === edgeSuffix };
 export const isPageInfo = (name?: string): boolean => { return name === pageInfoName };
 export const isIntrospection = (name?: string): boolean | undefined => { return name?.startsWith(introspectionPrefix) };

@@ -150,35 +150,10 @@ const config: CodegenConfig = {
                                     inDetail: false
                                 }
                             ]
-                        },
-                        {
-                            name: 'GroupUserRelation',
-                            ignore: true
-                        },
-                        {
-                            name: 'RoleUserRelation',
-                            ignore: true
-                        },
-                        {
-                            name: 'RoleCompositeRelation',
-                            ignore: true
-                        },
-                        {
-                            name: 'PermissionRoleRelation',
-                            ignore: true
-                        },
-                        {
-                            name: 'GroupRoleRelation',
-                            ignore: true
-                        },
-                        {
-                            name: 'UserPhonesRelation',
-                            ignore: true
                         }
                     ]
                 }
             }
-
         }
     }
 }

@@ -3,7 +3,7 @@ import type { BuilderConfig, Template } from "graphace-codegen-commons";
 
 export interface GraphacePluginConfig extends RawTypesConfig {
   template: Template;
-  
+
   appName?: string;
 
   graphqlPath?: string;

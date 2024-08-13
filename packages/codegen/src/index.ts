@@ -2,9 +2,9 @@ import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
 import * as changeCase from "change-case";
 import { assertObjectType, isEnumType, isObjectType, type GraphQLSchema, isNonNullType, assertEnumType } from 'graphql';
-import { isOperationType, isConnection, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getNamedFields, getScalarNames, getEnumNames, getEnumValues, isAggregate, initConfig, inGraphQLField, inListField, inDetailField, componentFields, getSelectComponentFieldImports, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, getNamedStructObjectNames, inComponentEnum, isInnerEnum, getObjectNames, getBaseScalarNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField, fieldTypeIsList, isSelectField, isNamedStruct, isTreeStruct, inComponentObject } from 'graphace-codegen-commons';
+import { isOperationType, isConnection, isRelation, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getNamedFields, getScalarNames, getEnumNames, getEnumValues, isAggregate, initConfig, inGraphQLField, inListField, inDetailField, componentFields, getSelectComponentFieldImports, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, getNamedStructObjectNames, inComponentEnum, isInnerEnum, getObjectNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField, fieldTypeIsList, isSelectField, isNamedStruct, isTreeStruct, inComponentObject } from 'graphace-codegen-commons';
 import type { Template } from 'graphace-codegen-commons';
-import { buildFileContent } from "./builder.js";
+import { buildFileContent } from "./Builder.js";
 
 type Render = (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => Types.ComplexPluginOutput
 
@@ -14,7 +14,7 @@ const renders: Record<Template, Render> = {
             content: buildFileContent(config.template,
                 {
                     objects: Object.values(schema.getTypeMap())
-                        // .filter(type => inRouteObject(type.name))
+                        .filter(type => !isRelation(type.name) || config.builder?.includeRelation)
                         .filter(type => isObjectType(type))
                         .filter(type => !isOperationType(type.name))
                         .filter(type => !isConnection(type.name))
@@ -35,7 +35,7 @@ const renders: Record<Template, Render> = {
                     lang: config.i18nDefault,
                     i18nDescription: config.i18nDescription,
                     objects: Object.values(schema.getTypeMap())
-                        // .filter(type => inRouteObject(type.name))
+                        .filter(type => !isRelation(type.name) || config.builder?.includeRelation)
                         .filter(type => isObjectType(type))
                         .filter(type => !isOperationType(type.name))
                         .filter(type => !isConnection(type.name))
@@ -77,7 +77,7 @@ const renders: Record<Template, Render> = {
                 {
                     lang: config.i18nDescription,
                     objects: Object.values(schema.getTypeMap())
-                        // .filter(type => inRouteObject(type.name))
+                        .filter(type => !isRelation(type.name) || config.builder?.includeRelation)
                         .filter(type => isObjectType(type))
                         .filter(type => !isOperationType(type.name))
                         .filter(type => !isConnection(type.name))

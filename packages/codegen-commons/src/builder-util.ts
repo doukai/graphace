@@ -1,6 +1,6 @@
 import { isEnumType, isInputObjectType, isNonNullType, isObjectType, isScalarType, type GraphQLSchema, type GraphQLNamedType } from "graphql";
 import type { BuilderConfig, FieldInfo } from "./types/types";
-import { listSuffix, connectionSuffix, fieldInMutationArgs, fieldInQueryArgs, fieldTypeIsList, fieldTypeIsNamedStruct, getFieldType, getIDFieldName, isAggregate, isInnerEnum, isIntrospection } from "./introspection";
+import { listSuffix, connectionSuffix, fieldInMutationArgs, fieldInQueryArgs, fieldTypeIsList, fieldTypeIsNamedStruct, getFieldType, getIDFieldName, isAggregate, isInnerEnum, isIntrospection, isRelation } from "./introspection";
 import * as changeCase from "change-case";
 
 let builderConfig: BuilderConfig | undefined = {};
@@ -25,12 +25,12 @@ export function inComponentEnum(typeName: string): boolean {
 
 export function inComponentObject(typeName: string): boolean {
     const objectConfig = builderConfig?.objects?.find(objectConfig => objectConfig.name === typeName);
-    return objectConfig?.inComponent !== false && objectConfig?.ignore !== true;
+    return objectConfig?.inComponent !== false && objectConfig?.ignore !== true && (!isRelation(typeName) || (builderConfig?.includeRelation || false));
 }
 
 export function inRouteObject(typeName: string): boolean {
     const objectConfig = builderConfig?.objects?.find(objectConfig => objectConfig.name === typeName);
-    return objectConfig?.inRoute !== false && objectConfig?.ignore !== true;
+    return objectConfig?.inRoute !== false && objectConfig?.ignore !== true && (!isRelation(typeName) || (builderConfig?.includeRelation || false));
 }
 
 export function getObjectImports(typeName: string): string[] | undefined {
@@ -68,7 +68,8 @@ export function inGraphQLField(typeName: string, fieldName: string, fieldTypeNam
         )
         .some(fieldConfig => fieldConfig.name === fieldName) &&
         builderConfig?.objects?.find(objectConfig => objectConfig.name === originalFieldTypeName)?.ignore !== true &&
-        builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true;
+        builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true &&
+        (!isRelation(originalFieldTypeName) || (builderConfig?.includeRelation || false));
 }
 
 export function inListField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
@@ -84,7 +85,8 @@ export function inListField(typeName: string, fieldName: string, fieldTypeName: 
         .filter(fieldConfig => fieldConfig.inList === false || fieldConfig.ignore === true)
         .some(fieldConfig => fieldConfig.name === fieldName) &&
         builderConfig?.objects?.find(objectConfig => objectConfig.name === originalFieldTypeName)?.ignore !== true &&
-        builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true;
+        builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true &&
+        (!isRelation(originalFieldTypeName) || (builderConfig?.includeRelation || false));
 }
 
 export function isInvokeField(fieldName: string, fieldTypeName: string, fieldTypeIsList: boolean): boolean {
@@ -106,7 +108,8 @@ export function inDetailField(typeName: string, fieldName: string, fieldTypeName
         .filter(fieldConfig => fieldConfig.inDetail === false || fieldConfig.ignore === true)
         .some(fieldConfig => fieldConfig.name === fieldName) &&
         builderConfig?.objects?.find(objectConfig => objectConfig.name === originalFieldTypeName)?.ignore !== true &&
-        builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true;
+        builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true &&
+        (!isRelation(originalFieldTypeName) || (builderConfig?.includeRelation || false));
 }
 
 export function inRouteField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
@@ -122,7 +125,8 @@ export function inRouteField(typeName: string, fieldName: string, fieldTypeName:
         .filter(fieldConfig => fieldConfig.inRoute === false || fieldConfig.ignore === true)
         .some(fieldConfig => fieldConfig.name === fieldName) &&
         builderConfig?.objects?.find(objectConfig => objectConfig.name === originalFieldTypeName)?.ignore !== true &&
-        builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true;
+        builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true &&
+        (!isRelation(originalFieldTypeName) || (builderConfig?.includeRelation || false));
 }
 
 export function isSelectField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
