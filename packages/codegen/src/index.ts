@@ -285,7 +285,7 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         idName: getIDFieldName(type),
-                        scalars: getScalarNames(fields),
+                        scalars: new Set([...getScalarNames(fields) || [], 'String']),
                         enums: getEnumNames(fields),
                         imports: componentFieldImports(typeName, fields),
                         selectImports: getSelectComponentFieldImports(typeName, fields),
@@ -316,7 +316,7 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         idName: getIDFieldName(type),
-                        scalars: getScalarNames(fields),
+                        scalars: new Set([...getScalarNames(fields) || [], 'String']),
                         enums: getEnumNames(fields),
                         imports: componentFieldImports(typeName, fields),
                         selectImports: getSelectComponentFieldImports(typeName, fields),
@@ -347,7 +347,7 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         idName: getIDFieldName(type),
-                        scalars: getScalarNames(fields),
+                        scalars: new Set([...getScalarNames(fields) || [], 'String']),
                         enums: getEnumNames(fields),
                         objects: getObjectNames(fields),
                         imports: componentFieldImports(typeName, fields),
@@ -379,7 +379,7 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         idName: getIDFieldName(type),
-                        scalars: getScalarNames(fields),
+                        scalars: new Set([...getScalarNames(fields) || [], 'String']),
                         enums: getEnumNames(fields),
                         objects: getObjectNames(fields),
                         imports: componentFieldImports(typeName, fields),
@@ -411,7 +411,7 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         idName: getIDFieldName(type),
-                        scalars: getScalarNames(fields),
+                        scalars: new Set([...getScalarNames(fields) || [], 'String']),
                         enums: getEnumNames(fields),
                         imports: componentFieldImports(typeName, fields),
                         fields: componentFields(typeName, fields),
@@ -440,7 +440,7 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         idName: getIDFieldName(type),
-                        scalars: getScalarNames(fields),
+                        scalars: new Set([...getScalarNames(fields) || [], 'String']),
                         enums: getEnumNames(fields),
                         imports: componentFieldImports(typeName, fields),
                         fields: componentFields(typeName, fields),
@@ -469,7 +469,7 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         idName: getIDFieldName(type),
-                        scalars: getScalarNames(fields),
+                        scalars: new Set([...getScalarNames(fields) || [], 'String']),
                         enums: getEnumNames(fields),
                         imports: componentFieldImports(typeName, fields),
                         fields: componentFields(typeName, fields),
@@ -498,7 +498,7 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         idName: getIDFieldName(type),
-                        scalars: getScalarNames(fields),
+                        scalars: new Set([...getScalarNames(fields) || [], 'String']),
                         enums: getEnumNames(fields),
                         objects: getObjectNames(fields),
                         imports: componentFieldImports(typeName, fields),
@@ -529,7 +529,7 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         idName: getIDFieldName(type),
-                        scalars: getScalarNames(fields),
+                        scalars: new Set([...getScalarNames(fields) || [], 'String']),
                         enums: getEnumNames(fields),
                         objects: getObjectNames(fields),
                         imports: componentFieldImports(typeName, fields),
@@ -561,8 +561,7 @@ const renders: Record<Template, Render> = {
                         name: type?.name,
                         isNamedStruct: type.getInterfaces().some(interfaceType => interfaceType.name === 'NamedStruct'),
                         idName: getIDFieldName(type),
-                        scalars: getScalarNames(fields),
-                        baseScalars: getBaseScalarNames(fields),
+                        scalars: new Set([...getScalarNames(fields) || [], 'String']),
                         enums: getEnumNames(fields),
                         imports: componentFieldImports(typeName, fields),
                         namedStructObjectNames: getNamedStructObjectNames(fields),
