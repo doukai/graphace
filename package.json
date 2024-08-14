@@ -12,12 +12,11 @@
 		"build": "turbo run build",
 		"build:packages": "turbo run build --filter=./packages/*",
 		"publish": "pnpm publish --no-git-checks --filter=./packages/* --filter=!eslint-config-custom",
-		"turbo:login": "turbo login",
-		"turbo:clean": "turbo run clean",
-		"turbo:daemon-clean": "turbo daemon clean",
-		"npkill": "npx npkill",
 		"lint": "turbo run lint",
-		"format": "prettier --write ."
+		"clean": "turbo daemon clean",
+		"login": "turbo login",
+		"format": "prettier --write .",
+		"npkill": "npx npkill"
 	},
 	"devDependencies": {
 		"eslint": "^8.57.0",
