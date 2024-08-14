@@ -5,11 +5,11 @@ const {{ lang }}: NamespaceGraphqlTranslation = {
 	objects: {
 {%- for object in objects %}
 		{{ object.name }}: {
-			name: '{{ object.description || object.name }}',
+			name: '{{ object.description | default: object.name }}',
 			fields: {
 {%- for field in object.fields %}
 				{{ field.name }}: {
-					name: '{{ field.description || field.name }}',
+					name: '{{ field.description | default: field.name }}',
 				}{%- if forloop.last == false -%},{%- endif %}
 {%- endfor %}
 			}
@@ -21,11 +21,11 @@ const {{ lang }}: NamespaceGraphqlTranslation = {
 	enums: {
 {%- for enum in enums %}
 		{{ enum.name }}: {
-			name: '{{ enum.description || enum.name }}',
+			name: '{{ enum.description | default: enum.name }}',
 			values: {
 {%- for value in enum.values %}
 				{{ value.name }}: {
-					name: '{{ value.description || value.name }}',
+					name: '{{ value.description | default: value.name }}',
 				}{%- if forloop.last == false -%},{%- endif %}
 {%- endfor %}
 			}
