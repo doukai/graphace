@@ -16,6 +16,7 @@
 		"dist"
 	],
 	"scripts": {
+		"prepare": "tsx src/lib/i18n/import.ts && houdini pull-schema && graphql-codegen && svelte-kit sync",
 		"dev": "concurrently --kill-others \"vite dev\" \"typesafe-i18n\"",
 		"build": "tsx src/lib/i18n/import.ts && vite build",
 		"build:package": "tsx src/lib/i18n/export.ts && vite build && npm run package",

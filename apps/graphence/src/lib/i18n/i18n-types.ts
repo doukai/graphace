@@ -302,70 +302,6 @@ export type NamespaceGraphqlTranslation = {
 				}
 			}
 		}
-		GroupRoleRelation: {
-			/**
-			 * G​r​o​u​p​R​o​l​e​R​e​l​a​t​i​o​n
-			 */
-			name: string
-			fields: {
-				roleRef: {
-					/**
-					 * r​o​l​e​R​e​f
-					 */
-					name: string
-				}
-				role: {
-					/**
-					 * r​o​l​e
-					 */
-					name: string
-				}
-				groupRef: {
-					/**
-					 * g​r​o​u​p​R​e​f
-					 */
-					name: string
-				}
-				group: {
-					/**
-					 * g​r​o​u​p
-					 */
-					name: string
-				}
-			}
-		}
-		GroupUserRelation: {
-			/**
-			 * G​r​o​u​p​U​s​e​r​R​e​l​a​t​i​o​n
-			 */
-			name: string
-			fields: {
-				userRef: {
-					/**
-					 * u​s​e​r​R​e​f
-					 */
-					name: string
-				}
-				user: {
-					/**
-					 * u​s​e​r
-					 */
-					name: string
-				}
-				groupRef: {
-					/**
-					 * g​r​o​u​p​R​e​f
-					 */
-					name: string
-				}
-				group: {
-					/**
-					 * g​r​o​u​p
-					 */
-					name: string
-				}
-			}
-		}
 		Permission: {
 			/**
 			 * P​e​r​m​i​s​s​i​o​n
@@ -411,38 +347,6 @@ export type NamespaceGraphqlTranslation = {
 				realm: {
 					/**
 					 * r​e​a​l​m
-					 */
-					name: string
-				}
-			}
-		}
-		PermissionRoleRelation: {
-			/**
-			 * P​e​r​m​i​s​s​i​o​n​R​o​l​e​R​e​l​a​t​i​o​n
-			 */
-			name: string
-			fields: {
-				roleRef: {
-					/**
-					 * r​o​l​e​R​e​f
-					 */
-					name: string
-				}
-				role: {
-					/**
-					 * r​o​l​e
-					 */
-					name: string
-				}
-				permissionRef: {
-					/**
-					 * p​e​r​m​i​s​s​i​o​n​R​e​f
-					 */
-					name: string
-				}
-				permission: {
-					/**
-					 * p​e​r​m​i​s​s​i​o​n
 					 */
 					name: string
 				}
@@ -568,70 +472,6 @@ export type NamespaceGraphqlTranslation = {
 				}
 			}
 		}
-		RoleCompositeRelation: {
-			/**
-			 * R​o​l​e​C​o​m​p​o​s​i​t​e​R​e​l​a​t​i​o​n
-			 */
-			name: string
-			fields: {
-				roleRef: {
-					/**
-					 * r​o​l​e​R​e​f
-					 */
-					name: string
-				}
-				role: {
-					/**
-					 * r​o​l​e
-					 */
-					name: string
-				}
-				compositeRef: {
-					/**
-					 * c​o​m​p​o​s​i​t​e​R​e​f
-					 */
-					name: string
-				}
-				composite: {
-					/**
-					 * c​o​m​p​o​s​i​t​e
-					 */
-					name: string
-				}
-			}
-		}
-		RoleUserRelation: {
-			/**
-			 * R​o​l​e​U​s​e​r​R​e​l​a​t​i​o​n
-			 */
-			name: string
-			fields: {
-				userRef: {
-					/**
-					 * u​s​e​r​R​e​f
-					 */
-					name: string
-				}
-				user: {
-					/**
-					 * u​s​e​r
-					 */
-					name: string
-				}
-				roleRef: {
-					/**
-					 * r​o​l​e​R​e​f
-					 */
-					name: string
-				}
-				role: {
-					/**
-					 * r​o​l​e
-					 */
-					name: string
-				}
-			}
-		}
 		User: {
 			/**
 			 * U​s​e​r
@@ -695,32 +535,6 @@ export type NamespaceGraphqlTranslation = {
 				realm: {
 					/**
 					 * r​e​a​l​m
-					 */
-					name: string
-				}
-			}
-		}
-		UserPhonesRelation: {
-			/**
-			 * U​s​e​r​P​h​o​n​e​s​R​e​l​a​t​i​o​n
-			 */
-			name: string
-			fields: {
-				userRef: {
-					/**
-					 * u​s​e​r​R​e​f
-					 */
-					name: string
-				}
-				user: {
-					/**
-					 * u​s​e​r
-					 */
-					name: string
-				}
-				phonesRef: {
-					/**
-					 * p​h​o​n​e​s​R​e​f
 					 */
 					name: string
 				}
@@ -1417,70 +1231,6 @@ export type TranslationFunctions = {
 					}
 				}
 			}
-			GroupRoleRelation: {
-				/**
-				 * GroupRoleRelation
-				 */
-				name: () => LocalizedString
-				fields: {
-					roleRef: {
-						/**
-						 * roleRef
-						 */
-						name: () => LocalizedString
-					}
-					role: {
-						/**
-						 * role
-						 */
-						name: () => LocalizedString
-					}
-					groupRef: {
-						/**
-						 * groupRef
-						 */
-						name: () => LocalizedString
-					}
-					group: {
-						/**
-						 * group
-						 */
-						name: () => LocalizedString
-					}
-				}
-			}
-			GroupUserRelation: {
-				/**
-				 * GroupUserRelation
-				 */
-				name: () => LocalizedString
-				fields: {
-					userRef: {
-						/**
-						 * userRef
-						 */
-						name: () => LocalizedString
-					}
-					user: {
-						/**
-						 * user
-						 */
-						name: () => LocalizedString
-					}
-					groupRef: {
-						/**
-						 * groupRef
-						 */
-						name: () => LocalizedString
-					}
-					group: {
-						/**
-						 * group
-						 */
-						name: () => LocalizedString
-					}
-				}
-			}
 			Permission: {
 				/**
 				 * Permission
@@ -1526,38 +1276,6 @@ export type TranslationFunctions = {
 					realm: {
 						/**
 						 * realm
-						 */
-						name: () => LocalizedString
-					}
-				}
-			}
-			PermissionRoleRelation: {
-				/**
-				 * PermissionRoleRelation
-				 */
-				name: () => LocalizedString
-				fields: {
-					roleRef: {
-						/**
-						 * roleRef
-						 */
-						name: () => LocalizedString
-					}
-					role: {
-						/**
-						 * role
-						 */
-						name: () => LocalizedString
-					}
-					permissionRef: {
-						/**
-						 * permissionRef
-						 */
-						name: () => LocalizedString
-					}
-					permission: {
-						/**
-						 * permission
 						 */
 						name: () => LocalizedString
 					}
@@ -1683,70 +1401,6 @@ export type TranslationFunctions = {
 					}
 				}
 			}
-			RoleCompositeRelation: {
-				/**
-				 * RoleCompositeRelation
-				 */
-				name: () => LocalizedString
-				fields: {
-					roleRef: {
-						/**
-						 * roleRef
-						 */
-						name: () => LocalizedString
-					}
-					role: {
-						/**
-						 * role
-						 */
-						name: () => LocalizedString
-					}
-					compositeRef: {
-						/**
-						 * compositeRef
-						 */
-						name: () => LocalizedString
-					}
-					composite: {
-						/**
-						 * composite
-						 */
-						name: () => LocalizedString
-					}
-				}
-			}
-			RoleUserRelation: {
-				/**
-				 * RoleUserRelation
-				 */
-				name: () => LocalizedString
-				fields: {
-					userRef: {
-						/**
-						 * userRef
-						 */
-						name: () => LocalizedString
-					}
-					user: {
-						/**
-						 * user
-						 */
-						name: () => LocalizedString
-					}
-					roleRef: {
-						/**
-						 * roleRef
-						 */
-						name: () => LocalizedString
-					}
-					role: {
-						/**
-						 * role
-						 */
-						name: () => LocalizedString
-					}
-				}
-			}
 			User: {
 				/**
 				 * User
@@ -1810,32 +1464,6 @@ export type TranslationFunctions = {
 					realm: {
 						/**
 						 * realm
-						 */
-						name: () => LocalizedString
-					}
-				}
-			}
-			UserPhonesRelation: {
-				/**
-				 * UserPhonesRelation
-				 */
-				name: () => LocalizedString
-				fields: {
-					userRef: {
-						/**
-						 * userRef
-						 */
-						name: () => LocalizedString
-					}
-					user: {
-						/**
-						 * user
-						 */
-						name: () => LocalizedString
-					}
-					phonesRef: {
-						/**
-						 * phonesRef
 						 */
 						name: () => LocalizedString
 					}
