@@ -33,7 +33,7 @@ const en_uiGraphql = {
 			save: 'save',
 			clear: 'clear',
 		},
-	}
+	},
 } satisfies BaseTranslation
 
 export default en_uiGraphql

@@ -33,7 +33,7 @@ const zh_uiGraphql = {
 			save: '保存',
 			clear: '清除',
 		},
-	}
+	},
 } satisfies NamespaceUiGraphqlTranslation
 
 export default zh_uiGraphql
