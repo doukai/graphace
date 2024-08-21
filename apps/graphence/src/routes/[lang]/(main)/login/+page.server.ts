@@ -24,7 +24,7 @@ export const actions = {
         if (login && password) {
             const result = await loginMutation.mutate({ login, password }, { event });
             if (result.data?.login) {
-                cookies.set('Authorization', "Bearer " + result.data?.login, { path: '/' });
+                cookies.set('Authorization', "Bearer " + result.data?.login, { path: '/', secure: false });
                 const from = event.url.searchParams.get('from');
                 if (from) {
                     throw redirect(303, from);
