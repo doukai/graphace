@@ -38,11 +38,18 @@ export default new HoudiniClient({
 	plugins: [
 		authPlugin
 	],
-	fetchParams({ session }) {
+	fetchParams({ session, document }) {
+		if (document.name === 'Mutation_singleFile' || document.name === 'Mutation_multipleFile') {
+			return {
+				headers: {
+					Authorizatdion: `${session?.token}`,
+				},
+			}
+		}
 		return {
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `${session?.token}`,
+				Authorizatdion: `${session?.token}`,
 			},
 		}
 	}

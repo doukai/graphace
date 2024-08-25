@@ -14,8 +14,10 @@ export type Scalars = {
   BigInteger: any;
   Date: any;
   DateTime: any;
+  File: any;
   Time: any;
   Timestamp: any;
+  Upload: any;
 };
 
 export type BooleanExpression = {
@@ -1692,6 +1694,10 @@ export type Mutation = {
   currentUserResetPassword?: Maybe<User>;
   login?: Maybe<Scalars['String']>;
   syncPermissionRoleRelationPolicy?: Maybe<Scalars['Boolean']>;
+  singleFile?: Maybe<Scalars['String']>;
+  multipleFile?: Maybe<Array<Maybe<Scalars['String']>>>;
+  singleUpload?: Maybe<Scalars['String']>;
+  multipleUpload?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 
@@ -2186,6 +2192,26 @@ export type MutationSyncPermissionRoleRelationPolicyArgs = {
   roleId?: InputMaybe<Scalars['String']>;
   permissionNameList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   removedPermissionNameList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type MutationSingleFileArgs = {
+  file?: InputMaybe<Scalars['File']>;
+};
+
+
+export type MutationMultipleFileArgs = {
+  files?: InputMaybe<Array<InputMaybe<Scalars['File']>>>;
+};
+
+
+export type MutationSingleUploadArgs = {
+  upload?: InputMaybe<Scalars['Upload']>;
+};
+
+
+export type MutationMultipleUploadArgs = {
+  uploads?: InputMaybe<Array<InputMaybe<Scalars['Upload']>>>;
 };
 
 export type Mutation_CurrentUserResetPassword_Arguments = {

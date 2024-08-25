@@ -1,0 +1,3 @@
+mutation Mutation_singleFile($file: File) {
+  singleFile(file: $file)
+}

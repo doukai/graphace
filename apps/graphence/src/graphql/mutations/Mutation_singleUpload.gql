@@ -1,0 +1,3 @@
+mutation Mutation_singleUpload($upload: Upload) {
+  singleUpload(upload: $upload)
+}

@@ -1,0 +1,3 @@
+mutation Mutation_multipleFile($files: [File]) {
+  multipleFile(files: $files)
+}

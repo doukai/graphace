@@ -1,0 +1,25 @@
+mutation Mutation_roleUserRelation($id: ID, $userRef: String, $user: UserInput, $roleRef: String, $role: RoleInput, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $input: RoleUserRelationInput, $where: RoleUserRelationExpression) {
+  roleUserRelation(id: $id userRef: $userRef user: $user roleRef: $roleRef role: $role isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId input: $input where: $where) {
+    id
+    userRef
+    roleRef
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    user {
+      id
+      name
+      description
+    }
+    role {
+      id
+      name
+      description
+    }
+  }
+}

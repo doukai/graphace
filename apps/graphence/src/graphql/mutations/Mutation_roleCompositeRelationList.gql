@@ -1,0 +1,25 @@
+mutation Mutation_roleCompositeRelationList($id: ID, $roleRef: String, $role: RoleInput, $compositeRef: String, $composite: RoleInput, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $list: [RoleCompositeRelationInput], $where: RoleCompositeRelationExpression) {
+  roleCompositeRelationList(id: $id roleRef: $roleRef role: $role compositeRef: $compositeRef composite: $composite isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId list: $list where: $where) {
+    id
+    roleRef
+    compositeRef
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    role {
+      id
+      name
+      description
+    }
+    composite {
+      id
+      name
+      description
+    }
+  }
+}

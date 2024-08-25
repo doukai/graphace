@@ -21,4 +21,7 @@ declare namespace App {
 
 	interface Platform {
 	}
+	interface Metadata {
+		'enctype': string
+	}
 }

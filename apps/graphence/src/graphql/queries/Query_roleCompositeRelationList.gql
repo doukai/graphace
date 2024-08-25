@@ -1,0 +1,25 @@
+query Query_roleCompositeRelationList($id: StringExpression, $roleRef: StringExpression, $role: RoleExpression, $compositeRef: StringExpression, $composite: RoleExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $orderBy: RoleCompositeRelationOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [RoleCompositeRelationExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
+  roleCompositeRelationList(id: $id roleRef: $roleRef role: $role compositeRef: $compositeRef composite: $composite includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before)  {
+    id
+    roleRef
+    compositeRef
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    role {
+      id
+      name
+      description
+    }
+    composite {
+      id
+      name
+      description
+    }
+  }
+}

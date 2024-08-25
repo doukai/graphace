@@ -1,0 +1,48 @@
+mutation Mutation_roleUserRelation_role($roleUserRelation_id: String, $roleUserRelation_role: RoleInput, $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $groups: GroupExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $roleUserRelation: RoleUserRelationExpression, $groupRoleRelation: GroupRoleRelationExpression, $roleCompositeRelation: RoleCompositeRelationExpression, $permissionRoleRelation: PermissionRoleRelationExpression, $groupBy: [String!]) {
+  roleUserRelation(where: { id: { val: $roleUserRelation_id } }  role: $roleUserRelation_role) @merge {
+    id
+    userRef
+    roleRef
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    role(id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId roleUserRelation: $roleUserRelation groupRoleRelation: $groupRoleRelation roleCompositeRelation: $roleCompositeRelation permissionRoleRelation: $permissionRoleRelation groupBy: $groupBy) {
+      id
+      name
+      description
+      isDeprecated
+      version
+      realmId
+      createUserId
+      createTime
+      updateUserId
+      updateTime
+      createGroupId
+      syncRolePolicy
+      users {
+        id
+        name
+        description
+      }
+      groups {
+        id
+        name
+        description
+      }
+      composites {
+        id
+        name
+        description
+      }
+      realm {
+        name
+        description
+      }
+    }
+  }
+}

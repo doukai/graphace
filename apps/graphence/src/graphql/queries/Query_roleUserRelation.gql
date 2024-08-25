@@ -1,0 +1,25 @@
+query Query_roleUserRelation($id: StringExpression, $userRef: StringExpression, $user: UserExpression, $roleRef: StringExpression, $role: RoleExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [RoleUserRelationExpression]) {
+  roleUserRelation(id: $id userRef: $userRef user: $user roleRef: $roleRef role: $role includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupBy: $groupBy not: $not cond: $cond exs: $exs)  {
+    id
+    userRef
+    roleRef
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    user {
+      id
+      name
+      description
+    }
+    role {
+      id
+      name
+      description
+    }
+  }
+}

@@ -1,0 +1,20 @@
+query Query_userPhonesRelationList($id: StringExpression, $userRef: StringExpression, $user: UserExpression, $phonesRef: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $orderBy: UserPhonesRelationOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [UserPhonesRelationExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
+  userPhonesRelationList(id: $id userRef: $userRef user: $user phonesRef: $phonesRef includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before)  {
+    id
+    userRef
+    phonesRef
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    user {
+      id
+      name
+      description
+    }
+  }
+}

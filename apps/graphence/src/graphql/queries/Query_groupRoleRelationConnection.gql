@@ -1,0 +1,30 @@
+query Query_groupRoleRelationConnection($id: StringExpression, $roleRef: StringExpression, $role: RoleExpression, $groupRef: StringExpression, $group: GroupExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $orderBy: GroupRoleRelationOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [GroupRoleRelationExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
+  groupRoleRelationConnection(id: $id roleRef: $roleRef role: $role groupRef: $groupRef group: $group includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before)  {
+    totalCount
+    edges {
+      node {
+        id
+        roleRef
+        groupRef
+        isDeprecated
+        version
+        realmId
+        createUserId
+        createTime
+        updateUserId
+        updateTime
+        createGroupId
+        role {
+          id
+          name
+          description
+        }
+        group {
+          id
+          name
+          description
+        }
+      }
+    }
+  }
+}

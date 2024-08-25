@@ -1,0 +1,25 @@
+query Query_permissionRoleRelationConnection($id: StringExpression, $roleRef: StringExpression, $role: RoleExpression, $permissionRef: StringExpression, $permission: PermissionExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $orderBy: PermissionRoleRelationOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [PermissionRoleRelationExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
+  permissionRoleRelationConnection(id: $id roleRef: $roleRef role: $role permissionRef: $permissionRef permission: $permission includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before)  {
+    totalCount
+    edges {
+      node {
+        id
+        roleRef
+        permissionRef
+        isDeprecated
+        version
+        realmId
+        createUserId
+        createTime
+        updateUserId
+        updateTime
+        createGroupId
+        role {
+          id
+          name
+          description
+        }
+      }
+    }
+  }
+}

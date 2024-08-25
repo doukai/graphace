@@ -1,0 +1,40 @@
+mutation Mutation_permissionRoleRelation_permission($permissionRoleRelation_id: String, $permissionRoleRelation_permission: PermissionInput, $name: StringExpression, $description: StringExpression, $field: StringExpression, $type: StringExpression, $permissionType: PermissionTypeExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $permissionRoleRelation: PermissionRoleRelationExpression, $groupBy: [String!]) {
+  permissionRoleRelation(where: { id: { val: $permissionRoleRelation_id } }  permission: $permissionRoleRelation_permission) @merge {
+    id
+    roleRef
+    permissionRef
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    permission(name: $name description: $description field: $field type: $type permissionType: $permissionType roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId permissionRoleRelation: $permissionRoleRelation groupBy: $groupBy) {
+      name
+      description
+      field
+      type
+      permissionType
+      isDeprecated
+      version
+      realmId
+      createUserId
+      createTime
+      updateUserId
+      updateTime
+      createGroupId
+      syncPermissionPolicy
+      roles {
+        id
+        name
+        description
+      }
+      realm {
+        name
+        description
+      }
+    }
+  }
+}

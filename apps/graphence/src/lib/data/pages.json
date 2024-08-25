@@ -1,50 +1,38 @@
 [
-	{
-		"name": "modules",
-		"icon": "mdi:view-module",
-		"items": [
-			{
-				"icon": "mdi:home-account",
-				"name": "Realm",
-				"tags": "Realm",
-				"href": "/realm",
-				"authPermissions": ["Realm::*::*"]
-			},
-			{
-				"icon": "mdi:account-group",
-				"name": "Group",
-				"tags": "Group",
-				"href": "/group",
-				"authPermissions": ["Group::*::*"]
-			},
-			{
-				"icon": "mdi:account",
-				"name": "User",
-				"tags": "User",
-				"href": "/user",
-				"authPermissions": ["User::*::*"]
-			},
-			{
-				"icon": "mdi:account-key",
-				"name": "Role",
-				"tags": "Role",
-				"href": "/role",
-				"authPermissions": ["Role::*::*"]
-			},
-			{
-				"icon": "mdi:key",
-				"name": "Permission",
-				"tags": "Permission",
-				"href": "/permission",
-				"authPermissions": ["Permission::*::*"]
-			},
-			{
-				"icon": "mdi:shield-account",
-				"name": "Policy",
-				"tags": "policy",
-				"href": "/policy",
-				"authPermissions": ["Role::*::*"]
-			}
-		]
-	}
+  {
+    "name": "modules",
+    "icon": "material-symbols:view-module",
+    "items": [
+	    {
+        "name": "Group",
+        "tags": "Group",
+        "href": "/group",
+        "authPermissions": ["Group::*::*"]
+	    },
+	    {
+        "name": "Permission",
+        "tags": "Permission",
+        "href": "/permission",
+        "authPermissions": ["Permission::*::*"]
+	    },
+	    {
+        "name": "Realm",
+        "tags": "Realm",
+        "href": "/realm",
+        "authPermissions": ["Realm::*::*"]
+	    },
+	    {
+        "name": "Role",
+        "tags": "Role",
+        "href": "/role",
+        "authPermissions": ["Role::*::*"]
+	    },
+	    {
+        "name": "User",
+        "tags": "User",
+        "href": "/user",
+        "authPermissions": ["User::*::*"]
+	    }
+    ]
+  }
 ]
