@@ -14,7 +14,6 @@ export type Scalars = {
   BigInteger: any;
   Date: any;
   DateTime: any;
-  File: any;
   Time: any;
   Timestamp: any;
   Upload: any;
@@ -46,6 +45,601 @@ export type CurrentUser = {
   realmId?: Maybe<Scalars['Int']>;
   groups?: Maybe<Array<Maybe<Scalars['String']>>>;
   roles?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export type File = Meta & {
+  __typename?: 'File';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  contentType?: Maybe<Scalars['String']>;
+  content?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+  isDeprecated?: Maybe<Scalars['Boolean']>;
+  version?: Maybe<Scalars['Int']>;
+  realmId?: Maybe<Scalars['Int']>;
+  createUserId?: Maybe<Scalars['String']>;
+  createTime?: Maybe<Scalars['Timestamp']>;
+  updateUserId?: Maybe<Scalars['String']>;
+  updateTime?: Maybe<Scalars['Timestamp']>;
+  createGroupId?: Maybe<Scalars['String']>;
+  idCount?: Maybe<Scalars['Int']>;
+  idMax?: Maybe<Scalars['String']>;
+  idMin?: Maybe<Scalars['String']>;
+  nameCount?: Maybe<Scalars['Int']>;
+  nameMax?: Maybe<Scalars['String']>;
+  nameMin?: Maybe<Scalars['String']>;
+  contentTypeCount?: Maybe<Scalars['Int']>;
+  contentTypeMax?: Maybe<Scalars['String']>;
+  contentTypeMin?: Maybe<Scalars['String']>;
+  contentCount?: Maybe<Scalars['Int']>;
+  contentMax?: Maybe<Scalars['String']>;
+  contentMin?: Maybe<Scalars['String']>;
+  urlCount?: Maybe<Scalars['Int']>;
+  urlMax?: Maybe<Scalars['String']>;
+  urlMin?: Maybe<Scalars['String']>;
+};
+
+export type FileConnection = {
+  __typename?: 'FileConnection';
+  totalCount?: Maybe<Scalars['Int']>;
+  pageInfo?: Maybe<PageInfo>;
+  edges?: Maybe<Array<Maybe<FileEdge>>>;
+};
+
+export type FileConnectionQueryArguments = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+export type FileConnectionSubscriptionArguments = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+export type FileEdge = {
+  __typename?: 'FileEdge';
+  node?: Maybe<File>;
+  cursor?: Maybe<Scalars['String']>;
+};
+
+export type FileExpression = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+};
+
+export type FileInput = {
+  id?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
+  contentType?: InputMaybe<Scalars['String']>;
+  content?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  where?: InputMaybe<FileExpression>;
+};
+
+export type FileListMutationArguments = {
+  id?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
+  contentType?: InputMaybe<Scalars['String']>;
+  content?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  list?: InputMaybe<Array<InputMaybe<FileInput>>>;
+  where?: InputMaybe<FileExpression>;
+};
+
+export type FileListQueryArguments = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+export type FileListSubscriptionArguments = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+export type FileMutationArguments = {
+  id?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
+  contentType?: InputMaybe<Scalars['String']>;
+  content?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<FileInput>;
+  where?: InputMaybe<FileExpression>;
+};
+
+export type FileOrderBy = {
+  id?: InputMaybe<Sort>;
+  name?: InputMaybe<Sort>;
+  contentType?: InputMaybe<Sort>;
+  content?: InputMaybe<Sort>;
+  url?: InputMaybe<Sort>;
+  isDeprecated?: InputMaybe<Sort>;
+  version?: InputMaybe<Sort>;
+  realmId?: InputMaybe<Sort>;
+  createUserId?: InputMaybe<Sort>;
+  createTime?: InputMaybe<Sort>;
+  updateUserId?: InputMaybe<Sort>;
+  updateTime?: InputMaybe<Sort>;
+  createGroupId?: InputMaybe<Sort>;
+};
+
+export type FileQueryArguments = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+};
+
+export type FileSubscriptionArguments = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+};
+
+export type FileUserRelation = Meta & {
+  __typename?: 'FileUserRelation';
+  id?: Maybe<Scalars['ID']>;
+  userRef?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
+  fileRef?: Maybe<Scalars['String']>;
+  file?: Maybe<File>;
+  isDeprecated?: Maybe<Scalars['Boolean']>;
+  version?: Maybe<Scalars['Int']>;
+  realmId?: Maybe<Scalars['Int']>;
+  createUserId?: Maybe<Scalars['String']>;
+  createTime?: Maybe<Scalars['Timestamp']>;
+  updateUserId?: Maybe<Scalars['String']>;
+  updateTime?: Maybe<Scalars['Timestamp']>;
+  createGroupId?: Maybe<Scalars['String']>;
+  idCount?: Maybe<Scalars['Int']>;
+  idMax?: Maybe<Scalars['Int']>;
+  idMin?: Maybe<Scalars['Int']>;
+  userRefCount?: Maybe<Scalars['Int']>;
+  userRefMax?: Maybe<Scalars['String']>;
+  userRefMin?: Maybe<Scalars['String']>;
+  fileRefCount?: Maybe<Scalars['Int']>;
+  fileRefMax?: Maybe<Scalars['String']>;
+  fileRefMin?: Maybe<Scalars['String']>;
+};
+
+
+export type FileUserRelationUserArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
+  lastName?: InputMaybe<StringExpression>;
+  login?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
+  email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
+  phones?: InputMaybe<StringExpression>;
+  disable?: InputMaybe<BooleanExpression>;
+  groups?: InputMaybe<GroupExpression>;
+  roles?: InputMaybe<RoleExpression>;
+  realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+
+export type FileUserRelationFileArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type FileUserRelationConnection = {
+  __typename?: 'FileUserRelationConnection';
+  totalCount?: Maybe<Scalars['Int']>;
+  pageInfo?: Maybe<PageInfo>;
+  edges?: Maybe<Array<Maybe<FileUserRelationEdge>>>;
+};
+
+export type FileUserRelationConnectionQueryArguments = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+export type FileUserRelationConnectionSubscriptionArguments = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+export type FileUserRelationEdge = {
+  __typename?: 'FileUserRelationEdge';
+  node?: Maybe<FileUserRelation>;
+  cursor?: Maybe<Scalars['String']>;
+};
+
+export type FileUserRelationExpression = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+};
+
+export type FileUserRelationInput = {
+  id?: InputMaybe<Scalars['ID']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  fileRef?: InputMaybe<Scalars['String']>;
+  file?: InputMaybe<FileInput>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  where?: InputMaybe<FileUserRelationExpression>;
+};
+
+export type FileUserRelationListMutationArguments = {
+  id?: InputMaybe<Scalars['ID']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  fileRef?: InputMaybe<Scalars['String']>;
+  file?: InputMaybe<FileInput>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  list?: InputMaybe<Array<InputMaybe<FileUserRelationInput>>>;
+  where?: InputMaybe<FileUserRelationExpression>;
+};
+
+export type FileUserRelationListQueryArguments = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+export type FileUserRelationListSubscriptionArguments = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+export type FileUserRelationMutationArguments = {
+  id?: InputMaybe<Scalars['ID']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  fileRef?: InputMaybe<Scalars['String']>;
+  file?: InputMaybe<FileInput>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<FileUserRelationInput>;
+  where?: InputMaybe<FileUserRelationExpression>;
+};
+
+export type FileUserRelationOrderBy = {
+  id?: InputMaybe<Sort>;
+  userRef?: InputMaybe<Sort>;
+  fileRef?: InputMaybe<Sort>;
+  isDeprecated?: InputMaybe<Sort>;
+  version?: InputMaybe<Sort>;
+  realmId?: InputMaybe<Sort>;
+  createUserId?: InputMaybe<Sort>;
+  createTime?: InputMaybe<Sort>;
+  updateUserId?: InputMaybe<Sort>;
+  updateTime?: InputMaybe<Sort>;
+  createGroupId?: InputMaybe<Sort>;
+};
+
+export type FileUserRelationQueryArguments = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+};
+
+export type FileUserRelationSubscriptionArguments = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
 };
 
 export type FloatExpression = {
@@ -203,6 +797,7 @@ export type GroupUsersArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -216,6 +811,7 @@ export type GroupUsersArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -400,6 +996,7 @@ export type GroupUsersAggregateArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -413,6 +1010,7 @@ export type GroupUsersAggregateArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -434,6 +1032,7 @@ export type GroupUsersConnectionArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -447,6 +1046,7 @@ export type GroupUsersConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -1291,6 +1891,7 @@ export type GroupUserRelationUserArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -1304,6 +1905,7 @@ export type GroupUserRelationUserArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -1690,14 +2292,16 @@ export type Mutation = {
   roleCompositeRelationList?: Maybe<Array<Maybe<RoleCompositeRelation>>>;
   permissionRoleRelation?: Maybe<PermissionRoleRelation>;
   permissionRoleRelationList?: Maybe<Array<Maybe<PermissionRoleRelation>>>;
+  fileUserRelation?: Maybe<FileUserRelation>;
+  fileUserRelationList?: Maybe<Array<Maybe<FileUserRelation>>>;
   currentUserUpdate?: Maybe<User>;
   currentUserResetPassword?: Maybe<User>;
   login?: Maybe<Scalars['String']>;
   syncPermissionRoleRelationPolicy?: Maybe<Scalars['Boolean']>;
-  singleFile?: Maybe<Scalars['String']>;
-  multipleFile?: Maybe<Array<Maybe<Scalars['String']>>>;
-  singleUpload?: Maybe<Scalars['String']>;
-  multipleUpload?: Maybe<Array<Maybe<Scalars['String']>>>;
+  file?: Maybe<File>;
+  fileList?: Maybe<Array<Maybe<File>>>;
+  singleUpload?: Maybe<File>;
+  multipleUpload?: Maybe<Array<Maybe<File>>>;
 };
 
 
@@ -1710,6 +2314,7 @@ export type MutationUserArgs = {
   salt?: InputMaybe<Scalars['String']>;
   hash?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
+  avatar?: InputMaybe<FileInput>;
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   disable?: InputMaybe<Scalars['Boolean']>;
   groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
@@ -1723,6 +2328,7 @@ export type MutationUserArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  fileUserRelation?: InputMaybe<Array<InputMaybe<FileUserRelationInput>>>;
   userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
   groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
   roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
@@ -1740,6 +2346,7 @@ export type MutationUserListArgs = {
   salt?: InputMaybe<Scalars['String']>;
   hash?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
+  avatar?: InputMaybe<FileInput>;
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   disable?: InputMaybe<Scalars['Boolean']>;
   groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
@@ -1753,6 +2360,7 @@ export type MutationUserListArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  fileUserRelation?: InputMaybe<Array<InputMaybe<FileUserRelationInput>>>;
   userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
   groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
   roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
@@ -2171,6 +2779,44 @@ export type MutationPermissionRoleRelationListArgs = {
 };
 
 
+export type MutationFileUserRelationArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  fileRef?: InputMaybe<Scalars['String']>;
+  file?: InputMaybe<FileInput>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<FileUserRelationInput>;
+  where?: InputMaybe<FileUserRelationExpression>;
+};
+
+
+export type MutationFileUserRelationListArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  fileRef?: InputMaybe<Scalars['String']>;
+  file?: InputMaybe<FileInput>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  list?: InputMaybe<Array<InputMaybe<FileUserRelationInput>>>;
+  where?: InputMaybe<FileUserRelationExpression>;
+};
+
+
 export type MutationCurrentUserUpdateArgs = {
   userInput: UserInput;
 };
@@ -2195,23 +2841,51 @@ export type MutationSyncPermissionRoleRelationPolicyArgs = {
 };
 
 
-export type MutationSingleFileArgs = {
-  file?: InputMaybe<Scalars['File']>;
+export type MutationFileArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
+  contentType?: InputMaybe<Scalars['String']>;
+  content?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<FileInput>;
+  where?: InputMaybe<FileExpression>;
 };
 
 
-export type MutationMultipleFileArgs = {
-  files?: InputMaybe<Array<InputMaybe<Scalars['File']>>>;
+export type MutationFileListArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
+  contentType?: InputMaybe<Scalars['String']>;
+  content?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  list?: InputMaybe<Array<InputMaybe<FileInput>>>;
+  where?: InputMaybe<FileExpression>;
 };
 
 
 export type MutationSingleUploadArgs = {
-  upload?: InputMaybe<Scalars['Upload']>;
+  file?: InputMaybe<Scalars['Upload']>;
 };
 
 
 export type MutationMultipleUploadArgs = {
-  uploads?: InputMaybe<Array<InputMaybe<Scalars['Upload']>>>;
+  files?: InputMaybe<Array<InputMaybe<Scalars['Upload']>>>;
 };
 
 export type Mutation_CurrentUserResetPassword_Arguments = {
@@ -2226,6 +2900,14 @@ export type Mutation_CurrentUserUpdate_Arguments = {
 export type Mutation_Login_Arguments = {
   login: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type Mutation_MultipleUpload_Arguments = {
+  files?: InputMaybe<Array<InputMaybe<Scalars['Upload']>>>;
+};
+
+export type Mutation_SingleUpload_Arguments = {
+  file?: InputMaybe<Scalars['Upload']>;
 };
 
 export type Mutation_SyncPermissionRoleRelationPolicy_Arguments = {
@@ -3194,12 +3876,18 @@ export type Query = {
   permissionRoleRelation?: Maybe<PermissionRoleRelation>;
   permissionRoleRelationList?: Maybe<Array<Maybe<PermissionRoleRelation>>>;
   permissionRoleRelationConnection?: Maybe<PermissionRoleRelationConnection>;
+  fileUserRelation?: Maybe<FileUserRelation>;
+  fileUserRelationList?: Maybe<Array<Maybe<FileUserRelation>>>;
+  fileUserRelationConnection?: Maybe<FileUserRelationConnection>;
   current?: Maybe<CurrentUser>;
   currentUser?: Maybe<User>;
   currentPermissionTypeList?: Maybe<Array<Maybe<Scalars['String']>>>;
   currentPermissionNameListByTypes?: Maybe<Array<Maybe<Scalars['String']>>>;
   policyList?: Maybe<Array<Maybe<Policy>>>;
   jsonSchema?: Maybe<Scalars['String']>;
+  file?: Maybe<File>;
+  fileList?: Maybe<Array<Maybe<File>>>;
+  fileConnection?: Maybe<FileConnection>;
 };
 
 
@@ -3212,6 +3900,7 @@ export type QueryUserArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -3225,6 +3914,7 @@ export type QueryUserArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -3244,6 +3934,7 @@ export type QueryUserListArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -3257,6 +3948,7 @@ export type QueryUserListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -3282,6 +3974,7 @@ export type QueryUserConnectionArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -3295,6 +3988,7 @@ export type QueryUserConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -4106,6 +4800,81 @@ export type QueryPermissionRoleRelationConnectionArgs = {
 };
 
 
+export type QueryFileUserRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+};
+
+
+export type QueryFileUserRelationListArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryFileUserRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
 export type QueryCurrentPermissionNameListByTypesArgs = {
   types?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
@@ -4113,6 +4882,81 @@ export type QueryCurrentPermissionNameListByTypesArgs = {
 
 export type QueryJsonSchemaArgs = {
   name?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryFileArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+};
+
+
+export type QueryFileListArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryFileConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
 };
 
 export type Query_CurrentPermissionNameListByTypes_Arguments = {
@@ -4444,6 +5288,7 @@ export type RoleUsersArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -4457,6 +5302,7 @@ export type RoleUsersArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -4683,6 +5529,7 @@ export type RoleUsersAggregateArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -4696,6 +5543,7 @@ export type RoleUsersAggregateArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -4717,6 +5565,7 @@ export type RoleUsersConnectionArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -4730,6 +5579,7 @@ export type RoleUsersConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -5760,6 +6610,7 @@ export type RoleUserRelationUserArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -5773,6 +6624,7 @@ export type RoleUserRelationUserArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -6099,6 +6951,12 @@ export type Subscription = {
   permissionRoleRelation?: Maybe<PermissionRoleRelation>;
   permissionRoleRelationList?: Maybe<Array<Maybe<PermissionRoleRelation>>>;
   permissionRoleRelationConnection?: Maybe<PermissionRoleRelationConnection>;
+  fileUserRelation?: Maybe<FileUserRelation>;
+  fileUserRelationList?: Maybe<Array<Maybe<FileUserRelation>>>;
+  fileUserRelationConnection?: Maybe<FileUserRelationConnection>;
+  file?: Maybe<File>;
+  fileList?: Maybe<Array<Maybe<File>>>;
+  fileConnection?: Maybe<FileConnection>;
 };
 
 
@@ -6111,6 +6969,7 @@ export type SubscriptionUserArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -6124,6 +6983,7 @@ export type SubscriptionUserArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -6143,6 +7003,7 @@ export type SubscriptionUserListArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -6156,6 +7017,7 @@ export type SubscriptionUserListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -6181,6 +7043,7 @@ export type SubscriptionUserConnectionArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -6194,6 +7057,7 @@ export type SubscriptionUserConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -7004,6 +7868,156 @@ export type SubscriptionPermissionRoleRelationConnectionArgs = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
+
+export type SubscriptionFileUserRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+};
+
+
+export type SubscriptionFileUserRelationListArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type SubscriptionFileUserRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type SubscriptionFileArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+};
+
+
+export type SubscriptionFileListArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type SubscriptionFileConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
 export type TreeStruct = {
   name?: Maybe<Scalars['String']>;
   path?: Maybe<Scalars['String']>;
@@ -7062,6 +8076,8 @@ export type User = Meta & NamedStruct & {
   hash?: Maybe<Scalars['String']>;
   /** 邮箱 */
   email?: Maybe<Scalars['String']>;
+  /** 头像 */
+  avatar?: Maybe<File>;
   /** 手机号 */
   phones?: Maybe<Array<Maybe<Scalars['String']>>>;
   /** 禁用 */
@@ -7080,6 +8096,7 @@ export type User = Meta & NamedStruct & {
   updateUserId?: Maybe<Scalars['String']>;
   updateTime?: Maybe<Scalars['Timestamp']>;
   createGroupId?: Maybe<Scalars['String']>;
+  fileUserRelation?: Maybe<Array<Maybe<FileUserRelation>>>;
   userPhonesRelation?: Maybe<Array<Maybe<UserPhonesRelation>>>;
   groupUserRelation?: Maybe<Array<Maybe<GroupUserRelation>>>;
   roleUserRelation?: Maybe<Array<Maybe<RoleUserRelation>>>;
@@ -7118,6 +8135,25 @@ export type User = Meta & NamedStruct & {
   emailMax?: Maybe<Scalars['String']>;
   emailMin?: Maybe<Scalars['String']>;
   syncUserPolicy?: Maybe<Scalars['Boolean']>;
+};
+
+
+/** 用户 */
+export type UserAvatarArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
@@ -7208,6 +8244,31 @@ export type UserRealmArgs = {
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+
+/** 用户 */
+export type UserFileUserRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<FileUserRelationOrderBy>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -7546,6 +8607,7 @@ export type UserConnectionQueryArguments = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -7559,6 +8621,7 @@ export type UserConnectionQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -7583,6 +8646,7 @@ export type UserConnectionSubscriptionArguments = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -7596,6 +8660,7 @@ export type UserConnectionSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -7626,6 +8691,7 @@ export type UserExpression = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -7639,6 +8705,7 @@ export type UserExpression = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -7656,6 +8723,7 @@ export type UserInput = {
   salt?: InputMaybe<Scalars['String']>;
   hash?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
+  avatar?: InputMaybe<FileInput>;
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   disable?: InputMaybe<Scalars['Boolean']>;
   groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
@@ -7669,6 +8737,7 @@ export type UserInput = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  fileUserRelation?: InputMaybe<Array<InputMaybe<FileUserRelationInput>>>;
   userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
   groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
   roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
@@ -7684,6 +8753,7 @@ export type UserListMutationArguments = {
   salt?: InputMaybe<Scalars['String']>;
   hash?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
+  avatar?: InputMaybe<FileInput>;
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   disable?: InputMaybe<Scalars['Boolean']>;
   groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
@@ -7697,6 +8767,7 @@ export type UserListMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  fileUserRelation?: InputMaybe<Array<InputMaybe<FileUserRelationInput>>>;
   userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
   groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
   roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
@@ -7713,6 +8784,7 @@ export type UserListQueryArguments = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -7726,6 +8798,7 @@ export type UserListQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -7750,6 +8823,7 @@ export type UserListSubscriptionArguments = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -7763,6 +8837,7 @@ export type UserListSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -7787,6 +8862,7 @@ export type UserMutationArguments = {
   salt?: InputMaybe<Scalars['String']>;
   hash?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
+  avatar?: InputMaybe<FileInput>;
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   disable?: InputMaybe<Scalars['Boolean']>;
   groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
@@ -7800,6 +8876,7 @@ export type UserMutationArguments = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  fileUserRelation?: InputMaybe<Array<InputMaybe<FileUserRelationInput>>>;
   userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
   groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
   roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
@@ -7862,6 +8939,7 @@ export type UserPhonesRelationUserArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -7875,6 +8953,7 @@ export type UserPhonesRelationUserArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -8123,6 +9202,7 @@ export type UserQueryArguments = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -8136,6 +9216,7 @@ export type UserQueryArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -8154,6 +9235,7 @@ export type UserSubscriptionArguments = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -8167,6 +9249,7 @@ export type UserSubscriptionArguments = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;

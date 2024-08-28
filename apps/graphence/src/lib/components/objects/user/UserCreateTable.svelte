@@ -99,6 +99,9 @@
 			{#if permissions.auth('User::email::*')}
 			<td>{$LL.graphql.objects.User.fields.email.name()}</td>
 			{/if}
+			{#if permissions.auth('User::avatar::*')}
+			<td>{$LL.graphql.objects.User.fields.avatar.name()}</td>
+			{/if}
 			{#if permissions.auth('User::phones::*')}
 			<td>{$LL.graphql.objects.User.fields.phones.name()}</td>
 			{/if}
@@ -167,6 +170,9 @@
 							errors={errors[row]?.iterms?.email}
 						/>
 						{/if}
+						{#if permissions.auth('User::avatar::*')}
+						<ObjectTd name="avatar"  errors={errors[row]?.iterms?.avatar} path="_/avatar" on:gotoField />
+						{/if}
 						{#if permissions.auth('User::phones::*')}
 						<StringTd
 							name="phones"
@@ -231,7 +237,7 @@
 				{/if}
 			{/each}
 		{:else}
-			<TableEmpty cols={10 + 2}/>
+			<TableEmpty cols={11 + 2}/>
 		{/if}
 	</tbody>
 </Table>

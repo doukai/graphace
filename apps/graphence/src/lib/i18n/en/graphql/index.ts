@@ -22,6 +22,23 @@ const en: BaseTranslation = {
 				}
 			}
 		},
+		File: {
+			name: 'File',
+			fields: {
+				name: {
+					name: 'name',
+				},
+				contentType: {
+					name: 'contentType',
+				},
+				content: {
+					name: 'content',
+				},
+				url: {
+					name: 'url',
+				}
+			}
+		},
 		Group: {
 			name: 'Group',
 			fields: {
@@ -163,6 +180,9 @@ const en: BaseTranslation = {
 				},
 				email: {
 					name: 'email',
+				},
+				avatar: {
+					name: 'avatar',
 				},
 				phones: {
 					name: 'phones',

@@ -1,0 +1,20 @@
+mutation Mutation_fileUserRelation($id: ID, $userRef: String, $user: UserInput, $fileRef: String, $file: FileInput, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $input: FileUserRelationInput, $where: FileUserRelationExpression) {
+  fileUserRelation(id: $id userRef: $userRef user: $user fileRef: $fileRef file: $file isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId input: $input where: $where) {
+    id
+    userRef
+    fileRef
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    user {
+      id
+      name
+      description
+    }
+  }
+}

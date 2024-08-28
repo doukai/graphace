@@ -4,6 +4,12 @@
     "icon": "material-symbols:view-module",
     "items": [
 	    {
+        "name": "File",
+        "tags": "File",
+        "href": "/file",
+        "authPermissions": ["File::*::*"]
+	    },
+	    {
         "name": "Group",
         "tags": "Group",
         "href": "/group",

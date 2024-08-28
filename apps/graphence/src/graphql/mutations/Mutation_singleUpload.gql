@@ -1,3 +1,17 @@
-mutation Mutation_singleUpload($upload: Upload) {
-  singleUpload(upload: $upload)
+mutation Mutation_singleUpload($file: Upload) {
+  singleUpload(file: $file) {
+    id
+    name
+    contentType
+    content
+    url
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+  }
 }

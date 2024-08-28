@@ -5,6 +5,7 @@
 	import type { GraphQLError, GlobalGraphQLErrorMessageFunction, GraphQLErrorsFunction } from '@graphace/graphql';
 	import { Table, TableHead, TableLoading, TableEmpty, messageBoxs, notifications } from '@graphace/ui';
 	import { ObjectTd, StringTh, StringTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql';
+	import FileTh from '~/lib/components/objects/file/FileTh.svelte';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
@@ -331,6 +332,13 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
+			{#if permissions.auth('User::avatar::*')}
+			<FileTh
+				name={$LL.graphql.objects.User.fields.avatar.name()}
+				bind:expression={args.avatar}
+				on:filter={(e) => query()}
+			/>
+			{/if}
 			{#if permissions.auth('User::phones::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.phones.name()}
@@ -371,7 +379,7 @@
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading rows={10} cols={10 + 2}/>
+		<TableLoading rows={10} cols={11 + 2}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
@@ -427,6 +435,9 @@
 								readonly={!permissions.auth('User::email::WRITE')}
 								errors={errors[row]?.iterms?.email}
 							/>
+							{/if}
+							{#if permissions.auth('User::avatar::*')}
+							<ObjectTd name="avatar"  errors={errors[row]?.iterms?.avatar} path={`${node.id}/avatar`} on:gotoField />
 							{/if}
 							{#if permissions.auth('User::phones::*')}
 							<StringTd
@@ -547,7 +558,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={10 + 2}/>
+				<TableEmpty cols={11 + 2}/>
 			{/if}
 		</tbody>
 	{/if}

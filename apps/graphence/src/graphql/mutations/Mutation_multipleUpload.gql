@@ -1,3 +1,17 @@
-mutation Mutation_multipleUpload($uploads: [Upload]) {
-  multipleUpload(uploads: $uploads)
+mutation Mutation_multipleUpload($files: [Upload]) {
+  multipleUpload(files: $files) {
+    id
+    name
+    contentType
+    content
+    url
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+  }
 }

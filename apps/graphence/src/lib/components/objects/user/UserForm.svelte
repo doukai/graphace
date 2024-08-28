@@ -165,7 +165,7 @@
 	on:back
 >
 	{#if isFetching}
-		<FormLoading rows={10} />
+		<FormLoading rows={11} />
 	{:else}
 		{#if node}
 			{#if permissions.auth('User::name::*')}
@@ -182,6 +182,9 @@
 			{/if}
 			{#if permissions.auth('User::email::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.email.name()} name="email" bind:value={node.email} readonly={!permissions.auth('User::email::WRITE')} errors={errors.email} />
+			{/if}
+			{#if permissions.auth('User::avatar::*')}
+			<ObjectItem name="avatar"  path={`${node.id}/avatar`} label={$LL.graphql.objects.User.fields.avatar.name()} errors={errors.avatar} on:gotoField />
 			{/if}
 			{#if permissions.auth('User::phones::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.phones.name()} name="phones" bind:value={node.phones} readonly={!permissions.auth('User::phones::WRITE')} list errors={errors.phones} />
