@@ -4,7 +4,7 @@
 	import type { Errors, PermissionsStore} from '@graphace/commons';
 	import type { GraphQLError, GlobalGraphQLErrorMessageFunction, GraphQLErrorsFunction } from '@graphace/graphql';
 	import { Form, FormLoading, messageBoxs, notifications } from '@graphace/ui';
-	import { StringItem, BooleanItem, ObjectItem } from '@graphace/ui-graphql';
+	import { StringItem, BooleanItem,FileItem, ObjectItem } from '@graphace/ui-graphql';
 	import GroupSelectItem from '~/lib/components/objects/group/GroupSelectItem.svelte';
 	import RoleSelectItem from '~/lib/components/objects/role/RoleSelectItem.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
@@ -168,6 +168,7 @@
 		<FormLoading rows={11} />
 	{:else}
 		{#if node}
+			<FileItem label={$LL.graphql.objects.User.fields.avatar.name()} name="name" bind:value={node.avatar} errors={errors.name} on:upload/>
 			{#if permissions.auth('User::name::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.name.name()} name="name" bind:value={node.name} readonly={!permissions.auth('User::name::WRITE')} errors={errors.name} />
 			{/if}

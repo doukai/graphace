@@ -6,7 +6,7 @@
 	import UserForm from '~/lib/components/objects/user/UserForm.svelte';
 	import type { GraphQLError } from '@graphace/graphql';
 	import type { UserInput, MutationUserArgs } from '~/lib/types/schema';
-	import { Query_userStore, Mutation_userStore } from '$houdini';
+	import { Query_userStore, Mutation_userStore, Mutation_singleUploadStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/utils';
 	import { locale } from '$i18n/i18n-svelte';
@@ -16,6 +16,7 @@
 	$: node = $Query_user.data?.user;
 	$: urlName($page.url, node?.name || '');
 	const Mutation_user = new Mutation_userStore();
+	const Mutation_singleUpload = new Mutation_singleUploadStore();
 	let errors: Record<string, Errors> = {};
 
 	const mutation = (
@@ -28,14 +29,13 @@
 		validate('Mutation_user_Arguments', event.detail.args, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_user.mutate(event.detail.args)
-					.then((result) => {
-						if (result.errors) {
-							event.detail.catch(result.errors);
-						} else {
-							event.detail.then(result?.data?.user);
-						}
-					});
+				Mutation_user.mutate(event.detail.args).then((result) => {
+					if (result.errors) {
+						event.detail.catch(result.errors);
+					} else {
+						event.detail.then(result?.data?.user);
+					}
+				});
 			})
 			.catch((validErrors) => {
 				errors = validErrors;
@@ -46,7 +46,7 @@
 		ot();
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
+	const gotoField = (event: CustomEvent<{ path: string; name: string }>) => {
 		to(`./${event.detail.path}`);
 	};
 </script>
@@ -60,5 +60,10 @@
 		on:mutation={mutation}
 		on:back={back}
 		on:gotoField={gotoField}
+		on:upload={(e) => {
+			Mutation_singleUpload.mutate({ file: e.detail.file }).then((data) =>
+				e.detail.then(data.data.singleUpload)
+			);
+		}}
 	/>
 </Card>

@@ -16,6 +16,10 @@ query Query_user($id: StringExpression, $name: StringExpression, $description: S
     updateUserId
     updateTime
     createGroupId
+    avatar {
+      id
+      name
+    }
     groups {
       id
       name

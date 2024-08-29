@@ -234,6 +234,38 @@ export type NamespaceGraphqlTranslation = {
 				}
 			}
 		}
+		File: {
+			/**
+			 * F​i​l​e
+			 */
+			name: string
+			fields: {
+				name: {
+					/**
+					 * n​a​m​e
+					 */
+					name: string
+				}
+				contentType: {
+					/**
+					 * c​o​n​t​e​n​t​T​y​p​e
+					 */
+					name: string
+				}
+				content: {
+					/**
+					 * c​o​n​t​e​n​t
+					 */
+					name: string
+				}
+				url: {
+					/**
+					 * u​r​l
+					 */
+					name: string
+				}
+			}
+		}
 		Group: {
 			/**
 			 * G​r​o​u​p
@@ -505,6 +537,12 @@ export type NamespaceGraphqlTranslation = {
 				email: {
 					/**
 					 * e​m​a​i​l
+					 */
+					name: string
+				}
+				avatar: {
+					/**
+					 * a​v​a​t​a​r
 					 */
 					name: string
 				}
@@ -1163,6 +1201,38 @@ export type TranslationFunctions = {
 					}
 				}
 			}
+			File: {
+				/**
+				 * File
+				 */
+				name: () => LocalizedString
+				fields: {
+					name: {
+						/**
+						 * name
+						 */
+						name: () => LocalizedString
+					}
+					contentType: {
+						/**
+						 * contentType
+						 */
+						name: () => LocalizedString
+					}
+					content: {
+						/**
+						 * content
+						 */
+						name: () => LocalizedString
+					}
+					url: {
+						/**
+						 * url
+						 */
+						name: () => LocalizedString
+					}
+				}
+			}
 			Group: {
 				/**
 				 * Group
@@ -1434,6 +1504,12 @@ export type TranslationFunctions = {
 					email: {
 						/**
 						 * email
+						 */
+						name: () => LocalizedString
+					}
+					avatar: {
+						/**
+						 * avatar
 						 */
 						name: () => LocalizedString
 					}

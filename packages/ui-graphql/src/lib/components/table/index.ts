@@ -20,8 +20,9 @@ import TimeTh from "./TimeTh.svelte";
 import TimeTd from "./TimeTd.svelte";
 import EnumTh from "./EnumTh.svelte";
 import EnumTd from "./EnumTd.svelte";
+import FileTd from "./FileTd.svelte";
 import ObjectTd from "./ObjectTd.svelte";
 
 export {
-    StringTh, StringTd, IDTh, IDTd, NumberTh, NumberTd, IntTh, IntTd, FloatTh, FloatTd, BooleanTh, BooleanTd, DateTimeTh, DateTimeTd, TimestampTd, TimestampTh, DateTh, DateTd, TimeTh, TimeTd, EnumTh, EnumTd, ObjectTd
+    StringTh, StringTd, IDTh, IDTd, NumberTh, NumberTd, IntTh, IntTd, FloatTh, FloatTd, BooleanTh, BooleanTd, DateTimeTh, DateTimeTd, TimestampTd, TimestampTh, DateTh, DateTd, TimeTh, TimeTd, EnumTh, EnumTd, FileTd, ObjectTd
 }

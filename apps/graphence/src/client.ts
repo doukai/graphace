@@ -39,7 +39,7 @@ export default new HoudiniClient({
 		authPlugin
 	],
 	fetchParams({ session, document }) {
-		if (document.name === 'Mutation_singleFile' || document.name === 'Mutation_multipleFile') {
+		if (document.name === 'Mutation_singleUpload' || document.name === 'Mutation_multipleUpload') {
 			return {
 				headers: {
 					Authorizatdion: `${session?.token}`,

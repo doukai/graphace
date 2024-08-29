@@ -164,6 +164,9 @@ const zh: NamespaceGraphqlTranslation = {
 				email: {
 					name: '邮箱',
 				},
+				avatar: {
+					name: '头像',
+				},
 				phones: {
 					name: '手机号',
 				},

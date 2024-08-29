@@ -17,6 +17,10 @@ mutation Mutation_user($id: ID, $name: String, $description: String, $lastName: 
     updateTime
     createGroupId
     syncUserPolicy
+    avatar {
+      id
+      name
+    }
     groups {
       id
       name
