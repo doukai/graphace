@@ -16,15 +16,20 @@ const config = {
 		interval: 0
 	},
 	scalars: {
-		// the name of the scalar we are configuring
 		Timestamp: {
-			// the corresponding typescript type
 			type: 'string',
-			// turn the api's response into that type
 			unmarshal(val) {
 				return val
 			},
-			// turn the value into something the API can use
+			marshal(date) {
+				return date
+			}
+		},
+		Upload: {
+			type: 'string',
+			unmarshal(val) {
+				return val
+			},
 			marshal(date) {
 				return date
 			}
