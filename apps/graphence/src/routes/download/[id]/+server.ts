@@ -7,7 +7,10 @@ export const GET: RequestHandler = ({ cookies, request, params }) => {
         {
             // propagate the request method and body
             method: request.method,
-            headers: headers,
+            headers: {
+                ...headers,
+                Authorization: cookies.get('Authorization'),
+            },
             body: request.body,
             duplex: 'half'
         })
