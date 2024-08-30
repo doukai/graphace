@@ -10,6 +10,8 @@
 	export let value: FileInfo | null | undefined;
 	export let placeholder: string = '';
 	export let className: string = '';
+	export let linkClassName: string = '';
+	export let addBtnClassName: string = '';
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
@@ -27,11 +29,11 @@
 
 <div class="form-control w-full">
 	{#if value}
-		<div class="input input-bordered flex items-center justify-between w-full {className}">
+		<div class="input input-bordered flex items-center justify-between w-full {linkClassName}">
 			<a href={downloadUrl + '/' + value.id} class="link" download>{value.name}</a>
-			<div class="tooltip" data-tip={$LL.ui.inputList.remove()}>
+			<div class="tooltip flex iterms-center ml-1" data-tip={$LL.ui.inputList.remove()}>
 				<button
-					class="btn btn-xs btn-square btn-outline"
+					class="btn btn-xs btn-square btn-outline {addBtnClassName}"
 					on:click|preventDefault={(e) => {
 						value = null;
 					}}

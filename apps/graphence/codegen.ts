@@ -19,6 +19,15 @@ const config: CodegenConfig = {
             plugins: ['typescript'],
             config: {
                 maybeValue: 'T | null | undefined',
+                scalars: {
+                    BigInteger: 'number',
+                    BigDecimal: 'number',
+                    DateTime: 'string',
+                    Date: 'string',
+                    Time: 'string',
+                    Timestamp: 'string',
+                    Upload: 'string',
+                },
                 enumsAsTypes: true,
                 namingConvention: {
                     enumValues: 'change-case-all#upperCase'
@@ -30,6 +39,7 @@ const config: CodegenConfig = {
             plugins: ['graphace-codegen'],
             presetConfig: {
                 appName: 'graphence',
+                i18nDescription: 'zh',
                 useAuth: true,
                 builder: {
                     objects: [
@@ -85,7 +95,7 @@ const config: CodegenConfig = {
                         },
                         {
                             name: 'User',
-                            inRoute: false,
+                            // inRoute: false,
                             select: true,
                             fields: [
                                 {

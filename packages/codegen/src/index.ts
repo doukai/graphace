@@ -2,7 +2,7 @@ import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
 import * as changeCase from "change-case";
 import { assertObjectType, isEnumType, isObjectType, type GraphQLSchema, isNonNullType, assertEnumType } from 'graphql';
-import { isOperationType, isConnection, isRelation, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getNamedFields, getScalarNames, getEnumNames, getEnumValues, isAggregate, initConfig, inGraphQLField, inListField, inDetailField, componentFields, getSelectComponentFieldImports, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, getNamedStructObjectNames, inComponentEnum, isInnerEnum, getObjectNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField, fieldTypeIsList, isSelectField, isNamedStruct, isTreeStruct, inComponentObject } from 'graphace-codegen-commons';
+import { isOperationType, isConnection, isRelation, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getFileFields, getNamedFields, getScalarNames, getEnumNames, getEnumValues, isAggregate, initConfig, inGraphQLField, inListField, inDetailField, componentFields, getSelectComponentFieldImports, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, getNamedStructObjectNames, inComponentEnum, isInnerEnum, getObjectNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField, fieldTypeIsList, isSelectField, isNamedStruct, isTreeStruct, inComponentObject, hasFileField } from 'graphace-codegen-commons';
 import type { Template } from 'graphace-codegen-commons';
 import { buildFileContent } from "./Builder.js";
 
@@ -129,6 +129,7 @@ const renders: Record<Template, Render> = {
                         args: field.args,
                         isConnection: isConnection(field.name),
                         fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
+                        fileFields: getFileFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         namedFields: getNamedFields(field)
                             ?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
                             .map(field => {
@@ -167,6 +168,7 @@ const renders: Record<Template, Render> = {
                         isListType: fieldTypeIsList(subField?.type),
                         connectionField: getConnectionField(fieldType, subField?.name),
                         fields: getScalarFields(subField)?.filter(field => inGraphQLField(subFieldType.name, field.name, getFieldType(field.type).name, 'query')),
+                        fileFields: getFileFields(subField)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         namedFields: getNamedFields(subField)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
                             .map(field => {
                                 const fieldType = getFieldType(field.type);
@@ -186,6 +188,7 @@ const renders: Record<Template, Render> = {
                         args: field.args,
                         isConnection: isConnection(field.name),
                         fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
+                        fileFields: getFileFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         namedFields: getNamedFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         objectField: objectField
                     }),
@@ -210,6 +213,7 @@ const renders: Record<Template, Render> = {
                         idName: idFieldName,
                         args: field.args,
                         fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
+                        fileFields: getFileFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
                         namedFields: getNamedFields(field)
                             ?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation'))
                             .map(field => {
@@ -248,6 +252,7 @@ const renders: Record<Template, Render> = {
                         isListType: fieldTypeIsList(subField?.type),
                         connectionField: getConnectionField(fieldType, subField?.name),
                         fields: getScalarFields(subField)?.filter(field => inGraphQLField(subFieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
+                        fileFields: getFileFields(subField)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
                         namedFields: getNamedFields(subField)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation'))
                             .map(field => {
                                 const fieldType = getFieldType(field.type);
@@ -266,6 +271,7 @@ const renders: Record<Template, Render> = {
                         idName: idFieldName,
                         args: field.args,
                         fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
+                        fileFields: getFileFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
                         namedFields: getNamedFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
                         objectField: objectField
                     }),
@@ -297,6 +303,7 @@ const renders: Record<Template, Render> = {
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
                         subscriptionTypeName: getSubscriptionTypeName(),
+                        hasFileField: hasFileField(type),
                         useAuth: config.useAuth,
                         appName: config.appName
                     }),
@@ -328,6 +335,7 @@ const renders: Record<Template, Render> = {
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
                         subscriptionTypeName: getSubscriptionTypeName(),
+                        hasFileField: hasFileField(type),
                         useAuth: config.useAuth,
                         appName: config.appName
                     }),
@@ -360,6 +368,7 @@ const renders: Record<Template, Render> = {
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
                         subscriptionTypeName: getSubscriptionTypeName(),
+                        hasFileField: hasFileField(type),
                         useAuth: config.useAuth,
                         appName: config.appName
                     }),
@@ -392,6 +401,7 @@ const renders: Record<Template, Render> = {
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
                         subscriptionTypeName: getSubscriptionTypeName(),
+                        hasFileField: hasFileField(type),
                         useAuth: config.useAuth,
                         appName: config.appName
                     }),
@@ -421,6 +431,7 @@ const renders: Record<Template, Render> = {
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
                         subscriptionTypeName: getSubscriptionTypeName(),
+                        hasFileField: hasFileField(type),
                         useAuth: config.useAuth,
                         appName: config.appName
                     }),
@@ -450,6 +461,7 @@ const renders: Record<Template, Render> = {
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
                         subscriptionTypeName: getSubscriptionTypeName(),
+                        hasFileField: hasFileField(type),
                         useAuth: config.useAuth,
                         appName: config.appName
                     }),
@@ -479,6 +491,7 @@ const renders: Record<Template, Render> = {
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
                         subscriptionTypeName: getSubscriptionTypeName(),
+                        hasFileField: hasFileField(type),
                         useAuth: config.useAuth,
                         appName: config.appName
                     }),
@@ -510,6 +523,7 @@ const renders: Record<Template, Render> = {
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
                         subscriptionTypeName: getSubscriptionTypeName(),
+                        hasFileField: hasFileField(type),
                         useAuth: config.useAuth,
                         appName: config.appName
                     }),
@@ -541,6 +555,7 @@ const renders: Record<Template, Render> = {
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
                         subscriptionTypeName: getSubscriptionTypeName(),
+                        hasFileField: hasFileField(type),
                         useAuth: config.useAuth,
                         appName: config.appName
                     }),
@@ -573,6 +588,7 @@ const renders: Record<Template, Render> = {
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
                         subscriptionTypeName: getSubscriptionTypeName(),
+                        hasFileField: hasFileField(type),
                         useAuth: config.useAuth,
                         appName: config.appName
                     }),
@@ -801,6 +817,7 @@ const renders: Record<Template, Render> = {
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
                         subscriptionTypeName: getSubscriptionTypeName(),
+                        hasFileField: hasFileField(type),
                         useAuth: config.useAuth
                     }),
                 };
@@ -823,6 +840,7 @@ const renders: Record<Template, Render> = {
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
                         subscriptionTypeName: getSubscriptionTypeName(),
+                        hasFileField: hasFileField(type),
                         useAuth: config.useAuth
                     }),
                 };
@@ -847,6 +865,7 @@ const renders: Record<Template, Render> = {
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
                         subscriptionTypeName: getSubscriptionTypeName(),
+                        hasFileField: hasFileField(type),
                         useAuth: config.useAuth
                     }),
                 };
@@ -867,6 +886,7 @@ const renders: Record<Template, Render> = {
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
                         subscriptionTypeName: getSubscriptionTypeName(),
+                        hasFileField: hasFileField(type),
                         useAuth: config.useAuth
                     }),
                 };
@@ -899,6 +919,7 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
+                            hasFileField: hasFileField(objectFieldType),
                             useAuth: config.useAuth
                         }),
                     };
@@ -927,6 +948,7 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
+                            hasFileField: hasFileField(objectFieldType),
                             useAuth: config.useAuth
                         }),
                     };
@@ -962,6 +984,7 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
+                            hasFileField: hasFileField(objectFieldType),
                             pairField: getPairField(type, objectField),
                             useAuth: config.useAuth
                         }),
@@ -993,6 +1016,7 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
+                            hasFileField: hasFileField(objectFieldType),
                             pairField: getPairField(type, objectField),
                             useAuth: config.useAuth
                         }),
@@ -1028,6 +1052,7 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
+                            hasFileField: hasFileField(objectFieldType),
                             useAuth: config.useAuth
                         }),
                     };
@@ -1057,6 +1082,7 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
+                            hasFileField: hasFileField(objectFieldType),
                             useAuth: config.useAuth
                         }),
                     };
@@ -1091,6 +1117,7 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
+                            hasFileField: hasFileField(objectFieldType),
                             useAuth: config.useAuth
                         }),
                     };
@@ -1121,6 +1148,7 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
+                            hasFileField: hasFileField(objectFieldType),
                             useAuth: config.useAuth
                         }),
                     };
@@ -1155,6 +1183,7 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
+                            hasFileField: hasFileField(objectFieldType),
                             pairField: getPairField(type, objectField),
                             useAuth: config.useAuth
                         }),
@@ -1185,6 +1214,7 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
+                            hasFileField: hasFileField(objectFieldType),
                             pairField: getPairField(type, objectField),
                             useAuth: config.useAuth
                         }),
@@ -1211,6 +1241,7 @@ const renders: Record<Template, Render> = {
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
                         subscriptionTypeName: getSubscriptionTypeName(),
+                        hasFileField: hasFileField(type),
                         useAuth: config.useAuth
                     }),
                 };
@@ -1232,6 +1263,7 @@ const renders: Record<Template, Render> = {
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
                         subscriptionTypeName: getSubscriptionTypeName(),
+                        hasFileField: hasFileField(type),
                         useAuth: config.useAuth
                     }),
                 };
@@ -1263,6 +1295,7 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
+                            hasFileField: hasFileField(objectFieldType),
                             useAuth: config.useAuth
                         }),
                     };
@@ -1291,6 +1324,7 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
+                            hasFileField: hasFileField(objectFieldType),
                             useAuth: config.useAuth
                         }),
                     };
@@ -1326,6 +1360,7 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
+                            hasFileField: hasFileField(objectFieldType),
                             useAuth: config.useAuth
                         }),
                     };
@@ -1356,6 +1391,7 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
+                            hasFileField: hasFileField(objectFieldType),
                             useAuth: config.useAuth
                         }),
                     };
@@ -1390,6 +1426,7 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
+                            hasFileField: hasFileField(objectFieldType),
                             useAuth: config.useAuth
                         }),
                     };
@@ -1419,6 +1456,7 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
+                            hasFileField: hasFileField(objectFieldType),
                             useAuth: config.useAuth
                         }),
                     };
@@ -1453,6 +1491,7 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
+                            hasFileField: hasFileField(objectFieldType),
                             useAuth: config.useAuth
                         }),
                     };
@@ -1483,6 +1522,7 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
+                            hasFileField: hasFileField(objectFieldType),
                             useAuth: config.useAuth
                         }),
                     };
@@ -1517,6 +1557,7 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
+                            hasFileField: hasFileField(objectFieldType),
                             useAuth: config.useAuth
                         }),
                     };
@@ -1546,6 +1587,7 @@ const renders: Record<Template, Render> = {
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
                             subscriptionTypeName: getSubscriptionTypeName(),
+                            hasFileField: hasFileField(objectFieldType),
                             useAuth: config.useAuth
                         }),
                     };

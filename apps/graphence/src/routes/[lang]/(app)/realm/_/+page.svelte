@@ -55,5 +55,13 @@
 </script>
 
 <Card>
-	<RealmCreateForm showRemoveButton={false} showBackButton={$canBack} {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+	<RealmCreateForm
+		showRemoveButton={false}
+		showBackButton={$canBack}
+		{node}
+		{errors}
+		on:mutation={mutation}
+		on:back={back}
+		on:gotoField={gotoField}
+	/>
 </Card>

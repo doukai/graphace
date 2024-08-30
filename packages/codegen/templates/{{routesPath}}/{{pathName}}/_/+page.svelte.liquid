@@ -5,7 +5,7 @@
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import {{ name }}CreateForm from '~/{{ formPath }}/{{ name | paramCase }}/{{ name }}CreateForm.svelte';
 	import type { {{ name }}Input, {{ mutationTypeName }}{{ name }}Args } from '~/{{ schemaTypesPath }}';
-	import { Mutation_{{ name | camelCase }}Store } from '$houdini';
+	import { Mutation_{{ name | camelCase }}Store{% if hasFileField %}, Mutation_singleUploadStore{% endif %} } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -17,6 +17,9 @@
 	$: errors = data.errors as Record<number, Errors>;
 
 	const Mutation_{{ name | camelCase }} = new Mutation_{{ name | camelCase }}Store();
+	{%- if hasFileField %}
+	const Mutation_singleUpload = new Mutation_singleUploadStore();
+	{%- endif %}
 
 	const mutation = (
 		event: CustomEvent<{
@@ -55,5 +58,20 @@
 </script>
 
 <Card>
-	<{{ name }}CreateForm showRemoveButton={false} showBackButton={$canBack} {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+	<{{ name }}CreateForm
+		showRemoveButton={false}
+		showBackButton={$canBack}
+		{node}
+		{errors}
+		on:mutation={mutation}
+		on:back={back}
+		on:gotoField={gotoField}
+		{%- if hasFileField %}
+		on:upload={(e) => {
+			Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
+				e.detail.then(result.data?.singleUpload)
+			);
+		}}
+		{%- endif %}
+	/>
 </Card>

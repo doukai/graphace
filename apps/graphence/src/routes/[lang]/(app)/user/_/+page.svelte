@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { type Errors, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
-	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
+	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import UserCreateForm from '~/lib/components/objects/user/UserCreateForm.svelte';
 	import type { UserInput, MutationUserArgs } from '~/lib/types/schema';
-	import { Mutation_userStore } from '$houdini';
+	import { Mutation_userStore, Mutation_singleUploadStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -17,6 +17,7 @@
 	$: errors = data.errors as Record<number, Errors>;
 
 	const Mutation_user = new Mutation_userStore();
+	const Mutation_singleUpload = new Mutation_singleUploadStore();
 
 	const mutation = (
 		event: CustomEvent<{
@@ -55,5 +56,18 @@
 </script>
 
 <Card>
-	<UserCreateForm showRemoveButton={false} showBackButton={$canBack} {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+	<UserCreateForm
+		showRemoveButton={false}
+		showBackButton={$canBack}
+		{node}
+		{errors}
+		on:mutation={mutation}
+		on:back={back}
+		on:gotoField={gotoField}
+		on:upload={(e) => {
+			Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
+				e.detail.then(result.data?.singleUpload)
+			);
+		}}
+	/>
 </Card>

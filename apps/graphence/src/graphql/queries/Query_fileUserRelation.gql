@@ -16,5 +16,9 @@ query Query_fileUserRelation($id: StringExpression, $userRef: StringExpression, 
       name
       description
     }
+    file {
+      id
+      name
+    }
   }
 }

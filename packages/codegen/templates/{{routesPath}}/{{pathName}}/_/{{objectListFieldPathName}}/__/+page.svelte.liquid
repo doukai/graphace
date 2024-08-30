@@ -9,7 +9,7 @@
 	import {{ objectFieldTypeName }}SelectTable from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}SelectTable.svelte';
 	{%- endif %}
 	import type { {{ objectFieldTypeName }}Input, {% if connectionField %}{{ queryTypeName }}{{ objectFieldTypeName }}ConnectionArgs{% else %}{{ queryTypeName }}{{ objectFieldTypeName }}ListArgs{% endif %}, {{ mutationTypeName }}{{ objectFieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
-	import { {% if connectionField %}Query_{{ objectFieldTypeName | camelCase }}ConnectionStore{% else %}Query_{{ objectFieldTypeName | camelCase }}ListStore{% endif %}, Mutation_{{ objectFieldTypeName | camelCase }}Store } from '$houdini';
+	import { {% if connectionField %}Query_{{ objectFieldTypeName | camelCase }}ConnectionStore{% else %}Query_{{ objectFieldTypeName | camelCase }}ListStore{% endif %}, Mutation_{{ objectFieldTypeName | camelCase }}Store{% if hasFileField %}, Mutation_singleUploadStore{% endif %} } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -28,6 +28,9 @@
 	$: nodes = $Query_{{ objectFieldTypeName | camelCase }}List.data?.{{ objectFieldTypeName | camelCase }}List;
 	{%- endif %}
 	const Mutation_{{ objectFieldTypeName | camelCase }} = new Mutation_{{ objectFieldTypeName | camelCase }}Store();
+	{%- if hasFileField %}
+	const Mutation_singleUpload = new Mutation_singleUploadStore();
+	{%- endif %}
 
 	const fetch = (
 		event: CustomEvent<{
@@ -122,6 +125,13 @@
 		on:mutation={mutation}
 		on:select={select}
 		on:back={back}
+		{%- if hasFileField %}
+		on:upload={(e) => {
+			Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
+				e.detail.then(result.data?.singleUpload)
+			);
+		}}
+		{%- endif %}
 	/>
 	{%- else %}
 	<{{ objectFieldTypeName }}SelectTable
@@ -133,6 +143,13 @@
 		on:mutation={mutation}
 		on:select={select}
 		on:back={back}
+		{%- if hasFileField %}
+		on:upload={(e) => {
+			Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
+				e.detail.then(result.data?.singleUpload)
+			);
+		}}
+		{%- endif %}
 	/>
 	{%- endif %}
 </Card>

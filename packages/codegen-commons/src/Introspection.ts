@@ -97,6 +97,36 @@ export const getNamedFields = (field?: GraphQLField<any, any, any>): GraphQLFiel
     return undefined;
 }
 
+export const getFileFields = (field?: GraphQLField<any, any, any>): GraphQLField<any, any, any>[] | undefined => {
+    if (field?.type) {
+        const fieldType = getFieldType(field.type);
+        if (isConnection(field.name)) {
+            if (isObjectType(fieldType)) {
+                const edgesType = getFieldType(fieldType.getFields().edges.type);
+                if (isObjectType(edgesType)) {
+                    const nodeType = getFieldType(edgesType.getFields().node.type);
+                    if (isObjectType(nodeType)) {
+                        return Object.values(nodeType.getFields())
+                            .filter(field => isObjectType(getFieldType(field.type)))
+                            .filter(field => !isAggregate(field.name))
+                            .filter(field => getFieldType(field.type).name === 'File')
+                            .map(field => ({ ...field, isListType: fieldTypeIsList(field.type) }));
+                    }
+                }
+            }
+        } else {
+            if (isObjectType(fieldType)) {
+                return Object.values(fieldType.getFields())
+                    .filter(field => isObjectType(getFieldType(field.type)))
+                    .filter(field => !isAggregate(field.name))
+                    .filter(field => getFieldType(field.type).name === 'File')
+                    .map(field => ({ ...field, isListType: fieldTypeIsList(field.type) }));
+            }
+        }
+    }
+    return undefined;
+}
+
 export const getObjectFields = (type: GraphQLNamedType): GraphQLField<any, any, any>[] | undefined => {
     if (isObjectType(type)) {
         return Object.values(type.getFields())
@@ -145,6 +175,15 @@ export const getIDFieldName = (type: GraphQLNamedType): string | undefined => {
         return idField?.name;
     }
     return undefined;
+}
+
+export const hasFileField = (type: GraphQLNamedType): boolean => {
+    if (isObjectType(type)) {
+        return Object.values(type.getFields())
+            .filter(field => isObjectType(getFieldType(field.type)))
+            .some(field => assertObjectType(getFieldType(field.type)).name === 'File' || assertObjectType(getFieldType(field.type)).name === 'FileConnection')
+    }
+    return false;
 }
 
 export const getPairField = (type: GraphQLObjectType, field: GraphQLField<any, any, any>): GraphQLField<any, any, any> | undefined => {

@@ -4,7 +4,7 @@
 	import type { Errors, PermissionsStore} from '@graphace/commons';
 	import type { GraphQLError, GlobalGraphQLErrorMessageFunction, GraphQLErrorsFunction } from '@graphace/graphql';
 	import { Table, TableHead, TableLoading, TableEmpty, Pagination, messageBoxs, notifications } from '@graphace/ui';
-	import { ObjectTd, StringTh, StringTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql';
+	import { ObjectTd, StringTh, StringTd, BooleanTh, BooleanTd, FileTd } from '@graphace/ui-graphql';
 	import FileTh from '~/lib/components/objects/file/FileTh.svelte';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
@@ -359,10 +359,10 @@
 				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
-			{#if permissions.auth('User::avatar::*')}
+			{#if permissions.auth('User::files::*')}
 			<FileTh
-				name={$LL.graphql.objects.User.fields.avatar.name()}
-				bind:expression={args.avatar}
+				name={$LL.graphql.objects.User.fields.files.name()}
+				bind:expression={args.files}
 				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
@@ -465,8 +465,16 @@
 								errors={errors[row]?.iterms?.email}
 							/>
 							{/if}
-							{#if permissions.auth('User::avatar::*')}
-							<ObjectTd name="avatar"  errors={errors[row]?.iterms?.avatar} path={`${node.id}/avatar`} on:gotoField />
+							{#if permissions.auth('User::files::*')}
+							<FileTd
+								name="files"
+								bind:value={node.files}
+								list
+								on:save={(e) => updateField({ files: node?.files, where: { id: { val: node?.id } } }, row)}
+								readonly={!permissions.auth('User::files::WRITE')}
+								errors={errors[row]?.iterms?.files}
+								on:upload
+							/>
 							{/if}
 							{#if permissions.auth('User::phones::*')}
 							<StringTd

@@ -42,6 +42,12 @@ query Query_{{ name }}_{{ objectField.name }}
               }
               {%- endif %}
               {%- endfor %}
+              {%- for field in objectField.fileFields %}
+              {{ field.name }} {
+                id
+                name
+              }
+              {%- endfor %}
             }
           }
         }
@@ -63,6 +69,12 @@ query Query_{{ name }}_{{ objectField.name }}
             description
           }
           {%- endif %}
+          {%- endfor %}
+          {%- for field in objectField.fileFields %}
+          {{ field.name }} {
+            id
+            name
+          }
           {%- endfor %}
         }
         {%- endif %}
@@ -100,6 +112,12 @@ query Query_{{ name }}_{{ objectField.name }}
           }
           {%- endif %}
           {%- endfor %}
+          {%- for field in objectField.fileFields %}
+          {{ field.name }} {
+            id
+            name
+          }
+          {%- endfor %}
         }
       }
     }
@@ -124,6 +142,12 @@ query Query_{{ name }}_{{ objectField.name }}
         description
       }
       {%- endif %}
+      {%- endfor %}
+      {%- for field in objectField.fileFields %}
+      {{ field.name }} {
+        id
+        name
+      }
       {%- endfor %}
     }
     {%- endif %}

@@ -540,9 +540,9 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				avatar: {
+				files: {
 					/**
-					 * a​v​a​t​a​r
+					 * f​i​l​e​s
 					 */
 					name: string
 				}
@@ -1507,9 +1507,9 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					avatar: {
+					files: {
 						/**
-						 * avatar
+						 * files
 						 */
 						name: () => LocalizedString
 					}

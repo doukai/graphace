@@ -16,5 +16,9 @@ mutation Mutation_fileUserRelationList($id: ID, $userRef: String, $user: UserInp
       name
       description
     }
+    file {
+      id
+      name
+    }
   }
 }

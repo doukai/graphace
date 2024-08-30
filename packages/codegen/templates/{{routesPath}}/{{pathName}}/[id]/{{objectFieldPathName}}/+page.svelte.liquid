@@ -6,7 +6,7 @@
 	import {{ objectFieldTypeName }}Form from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}Form.svelte';
 	import {{ objectFieldTypeName }}CreateForm from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
 	import type { {{ objectFieldTypeName }}Input, {{ mutationTypeName }}{{ objectFieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
-	import { Query_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ objectFieldTypeName | camelCase }}Store } from '$houdini';
+	import { Query_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ objectFieldTypeName | camelCase }}Store{% if hasFileField %}, Mutation_singleUploadStore{% endif %} } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -21,6 +21,9 @@
 	$: errors = data.errors as Record<string, Errors>;
 	const Mutation_{{ name | camelCase }}_{{ objectFieldName }} = new Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store();
 	const Mutation_{{ objectFieldTypeName | camelCase }} = new Mutation_{{ objectFieldTypeName | camelCase }}Store();
+	{%- if hasFileField %}
+	const Mutation_singleUpload = new Mutation_singleUploadStore();
+	{%- endif %}
 
 	const mutation = (
 		event: CustomEvent<{
@@ -111,6 +114,13 @@
 			on:gotoField={gotoField}
 			on:gotoSelect={gotoSelect}
 			on:back={back}
+			{%- if hasFileField %}
+			on:upload={(e) => {
+				Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
+					e.detail.then(result.data?.singleUpload)
+				);
+			}}
+			{%- endif %}
 		/>
 	{:else}
 		<{{ objectFieldTypeName }}CreateForm
@@ -122,6 +132,13 @@
 			on:gotoField={gotoField}
 			on:gotoSelect={gotoSelect}
 			on:back={back}
+			{%- if hasFileField %}
+			on:upload={(e) => {
+				Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
+					e.detail.then(result.data?.singleUpload)
+				);
+			}}
+			{%- endif %}
 		/>
 	{/if}
 </Card>

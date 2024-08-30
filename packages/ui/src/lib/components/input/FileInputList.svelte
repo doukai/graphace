@@ -10,6 +10,7 @@
 	export let value: (FileInfo | null | undefined)[] | null | undefined;
 	export let placeholder: string = '';
 	export let className: string = '';
+	export let linkClassName: string = '';
 	export let addBtnClassName: string = '';
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
@@ -45,16 +46,16 @@
 			<div class="flex items-center space-x-1">
 				<div class="form-control w-full">
 					{#if item}
-						<div class="input input-bordered flex items-center w-full {className}">
-							<a href={downloadUrl + '/' + item.id} class="link" download>{item.name}</a>
+						<div class="input input-bordered flex items-center w-full {linkClassName}">
+							<a href={downloadUrl + '/' + item.id} class="link max-w-72" download>{item.name}</a>
 						</div>
 					{:else}
 						<input
-							type="text"
+							type="file"
 							id={id + index}
 							{name}
 							{placeholder}
-							class="file-input file-input-bordered {errors?.iterms && errors.iterms[index]
+							class="file-input file-input-bordered max-w-72 {errors?.iterms && errors.iterms[index]
 								? 'file-input-error'
 								: ''} {className}"
 							on:change={(e) => {

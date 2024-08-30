@@ -1,4 +1,4 @@
-import type { NamespaceGraphqlTranslation } from '../../i18n-types'
+import type { NamespaceGraphqlTranslation } from '../../i18n-types';
 
 const zh: NamespaceGraphqlTranslation = {
 	objects: {
@@ -15,15 +15,32 @@ const zh: NamespaceGraphqlTranslation = {
 					name: '账号',
 				},
 				groups: {
-					name: '组织',
+					name: '组',
 				},
 				roles: {
 					name: '角色',
 				}
 			}
 		},
+		File: {
+			name: '文件',
+			fields: {
+				name: {
+					name: '文件名',
+				},
+				contentType: {
+					name: '类型',
+				},
+				content: {
+					name: '内容',
+				},
+				url: {
+					name: 'URL',
+				}
+			}
+		},
 		Group: {
-			name: '组织',
+			name: '组',
 			fields: {
 				name: {
 					name: '名称',
@@ -63,6 +80,9 @@ const zh: NamespaceGraphqlTranslation = {
 				name: {
 					name: '名称',
 				},
+				description: {
+					name: '描述',
+				},
 				field: {
 					name: '字段',
 				},
@@ -71,9 +91,6 @@ const zh: NamespaceGraphqlTranslation = {
 				},
 				permissionType: {
 					name: '权限类型',
-				},
-				description: {
-					name: '描述',
 				},
 				roles: {
 					name: '角色',
@@ -84,28 +101,28 @@ const zh: NamespaceGraphqlTranslation = {
 			}
 		},
 		Policy: {
-			name: '策略',
+			name: 'Policy',
 			fields: {
 				ptype: {
-					name: '类型',
+					name: 'ptype',
 				},
 				v0: {
-					name: '参数0',
+					name: 'v0',
 				},
 				v1: {
-					name: '参数1',
+					name: 'v1',
 				},
 				v2: {
-					name: '参数2',
+					name: 'v2',
 				},
 				v3: {
-					name: '参数3',
+					name: 'v3',
 				},
 				v4: {
-					name: '参数4',
+					name: 'v4',
 				},
 				v5: {
-					name: '参数5',
+					name: 'v5',
 				}
 			}
 		},
@@ -113,7 +130,7 @@ const zh: NamespaceGraphqlTranslation = {
 			name: '租户',
 			fields: {
 				name: {
-					name: '租户名',
+					name: '名称',
 				},
 				description: {
 					name: '描述',
@@ -124,7 +141,7 @@ const zh: NamespaceGraphqlTranslation = {
 			name: '角色',
 			fields: {
 				name: {
-					name: '角色名',
+					name: '名称',
 				},
 				description: {
 					name: '描述',
@@ -132,11 +149,11 @@ const zh: NamespaceGraphqlTranslation = {
 				users: {
 					name: '用户',
 				},
+				groups: {
+					name: '组',
+				},
 				composites: {
 					name: '组合',
-				},
-				groups: {
-					name: '组织',
 				},
 				permissions: {
 					name: '权限',
@@ -164,8 +181,8 @@ const zh: NamespaceGraphqlTranslation = {
 				email: {
 					name: '邮箱',
 				},
-				avatar: {
-					name: '头像',
+				files: {
+					name: '文件',
 				},
 				phones: {
 					name: '手机号',
@@ -174,7 +191,7 @@ const zh: NamespaceGraphqlTranslation = {
 					name: '禁用',
 				},
 				groups: {
-					name: '组织',
+					name: '组',
 				},
 				roles: {
 					name: '角色',
@@ -190,10 +207,10 @@ const zh: NamespaceGraphqlTranslation = {
 			name: '权限类型',
 			values: {
 				READ: {
-					name: '读',
+					name: '读取',
 				},
 				WRITE: {
-					name: '写',
+					name: '写入',
 				}
 			}
 		}

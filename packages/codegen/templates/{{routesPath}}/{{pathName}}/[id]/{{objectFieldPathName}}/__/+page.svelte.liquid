@@ -9,7 +9,7 @@
 	import {{ objectFieldTypeName }}SelectTable from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}SelectTable.svelte';
 	{%- endif %}
 	import type { {{ objectFieldTypeName }}Input, {% if connectionField %}{{ queryTypeName }}{{ objectFieldTypeName }}ConnectionArgs{% else %}{{ queryTypeName }}{{ objectFieldTypeName }}ListArgs{% endif %}, {{ mutationTypeName }}{{ objectFieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
-	import { {% if connectionField %}Query_{{ objectFieldTypeName | camelCase }}ConnectionStore{% else %}Query_{{ objectFieldTypeName | camelCase }}ListStore{% endif %}, Mutation_{{ objectFieldTypeName | camelCase }}Store, Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store } from '$houdini';
+	import { {% if connectionField %}Query_{{ objectFieldTypeName | camelCase }}ConnectionStore{% else %}Query_{{ objectFieldTypeName | camelCase }}ListStore{% endif %}, Mutation_{{ objectFieldTypeName | camelCase }}Store, Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store{% if hasFileField %}, Mutation_singleUploadStore{% endif %} } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -31,6 +31,9 @@
 	{%- endif %}
 	const Mutation_{{ objectFieldTypeName | camelCase }} = new Mutation_{{ objectFieldTypeName | camelCase }}Store();
 	const Mutation_{{ name | camelCase }}_{{ objectFieldName }} = new Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store();
+	{%- if hasFileField %}
+	const Mutation_singleUpload = new Mutation_singleUploadStore();
+	{%- endif %}
 	let errors: Record<number, Errors> = {};
 
 	const fetch = (
@@ -141,6 +144,13 @@
 		on:mutation={mutation}
 		on:select={select}
 		on:back={back}
+		{%- if hasFileField %}
+		on:upload={(e) => {
+			Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
+				e.detail.then(result.data?.singleUpload)
+			);
+		}}
+		{%- endif %}
 	/>
 	{%- else %}
 	<{{ objectFieldTypeName }}SelectTable
@@ -156,6 +166,13 @@
 		on:mutation={mutation}
 		on:select={select}
 		on:back={back}
+		{%- if hasFileField %}
+		on:upload={(e) => {
+			Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
+				e.detail.then(result.data?.singleUpload)
+			);
+		}}
+		{%- endif %}
 	/>
 	{%- endif %}
 </Card>

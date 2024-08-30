@@ -25,6 +25,12 @@ mutation Mutation_{{ name }}
     }
     {%- endif %}
     {%- endfor %}
+    {%- for field in fileFields %}
+    {{ field.name }} {
+      id
+      name
+    }
+    {%- endfor %}
     {%- endif %}
   }
   {%- endif %}

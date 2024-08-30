@@ -3,6 +3,9 @@
 	import { type Errors, updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam, getPathParam } from '@graphace/commons';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import {{ objectFieldTypeName }}CreateTable from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateTable.svelte';
+	{%- if hasFileField %}
+	import { Mutation_singleUploadStore } from '$houdini';
+	{%- endif %}
 	import type { {{ mutationTypeName }}{{ objectFieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
 	import type { PageData } from './$houdini';
 	import LL from '$i18n/i18n-svelte';
@@ -10,6 +13,9 @@
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.{{ name }}.fields.{{ objectFieldName }}.name());
 	$: nodes = data.nodes as ({{ mutationTypeName }}{{ objectFieldTypeName }}Args | null | undefined)[];
+	{%- if hasFileField %}
+	const Mutation_singleUpload = new Mutation_singleUploadStore();
+	{%- endif %}
 	$: errors = data.errors as Record<number, Errors>;
 
 	const edit = (
@@ -80,5 +86,12 @@
 		on:gotoField={gotoField}
 		on:gotoSelect={gotoSelect}
 		on:back={back}
+		{%- if hasFileField %}
+		on:upload={(e) => {
+			Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
+				e.detail.then(result.data?.singleUpload)
+			);
+		}}
+	{%- endif %}
 	/>
 </Card>

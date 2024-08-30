@@ -42,15 +42,16 @@ export default new HoudiniClient({
 		if (document.name === 'Mutation_singleUpload' || document.name === 'Mutation_multipleUpload') {
 			return {
 				headers: {
-					Authorizatdion: `${session?.token}`,
+					Authorization: `${session?.token}`,
 				},
 			}
-		}
-		return {
-			headers: {
-				'Content-Type': 'application/json',
-				Authorizatdion: `${session?.token}`,
-			},
+		} else {
+			return {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `${session?.token}`,
+				},
+			}
 		}
 	}
 });

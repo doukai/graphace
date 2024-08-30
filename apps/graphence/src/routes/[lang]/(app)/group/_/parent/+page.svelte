@@ -52,5 +52,14 @@
 </script>
 
 <Card>
-	<GroupCreateForm showGotoSelectButton={true} showBackButton={$canBack} {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} on:gotoSelect={gotoSelect} />
+	<GroupCreateForm
+		showGotoSelectButton={true}
+		showBackButton={$canBack}
+		{node}
+		{errors}
+		on:mutation={mutation}
+		on:back={back}
+		on:gotoField={gotoField}
+		on:gotoSelect={gotoSelect}
+	/>
 </Card>

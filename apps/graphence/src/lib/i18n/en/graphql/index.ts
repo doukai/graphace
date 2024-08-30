@@ -181,8 +181,8 @@ const en: BaseTranslation = {
 				email: {
 					name: 'email',
 				},
-				avatar: {
-					name: 'avatar',
+				files: {
+					name: 'files',
 				},
 				phones: {
 					name: 'phones',

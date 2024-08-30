@@ -64,13 +64,27 @@ input ConditionalExpression {
   val: Conditional
 }
 
+"""当前用户"""
 type CurrentUser {
+  """组"""
   groups: [String]
+
+  """ID"""
   id: String
+
+  """姓氏"""
   lastName: String
+
+  """账号"""
   login: String
+
+  """姓名"""
   name: String
+
+  """租户ID"""
   realmId: Int
+
+  """角色"""
   roles: [String]
 }
 
@@ -78,11 +92,15 @@ scalar Date
 
 scalar DateTime
 
+"""文件"""
 type File implements Meta {
+  """内容"""
   content: String
   contentCount: Int
   contentMax: String
   contentMin: String
+
+  """类型"""
   contentType: String
   contentTypeCount: Int
   contentTypeMax: String
@@ -90,11 +108,15 @@ type File implements Meta {
   createGroupId: String
   createTime: Timestamp
   createUserId: String
+
+  """ID"""
   id: ID
   idCount: Int
   idMax: String
   idMin: String
   isDeprecated: Boolean
+
+  """文件名"""
   name: String
   nameCount: Int
   nameMax: String
@@ -102,6 +124,8 @@ type File implements Meta {
   realmId: Int
   updateTime: Timestamp
   updateUserId: String
+
+  """URL"""
   url: String
   urlCount: Int
   urlMax: String
@@ -369,7 +393,7 @@ type FileUserRelation implements Meta {
   realmId: Int
   updateTime: Timestamp
   updateUserId: String
-  user(avatar: FileExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, fileUserRelation: FileUserRelationExpression, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, lastName: StringExpression, login: StringExpression, name: StringExpression, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): User
+  user(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, fileUserRelation: FileUserRelationExpression, files: FileExpression, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, lastName: StringExpression, login: StringExpression, name: StringExpression, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): User
   userRef: String
   userRefCount: Int
   userRefMax: String
@@ -711,9 +735,9 @@ type Group implements Meta & NamedStruct & TreeStruct {
   updateUserId: String
 
   """用户"""
-  users(after: ID, avatar: FileExpression, before: ID, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, fileUserRelation: FileUserRelationExpression, first: Int, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): [User]
-  usersAggregate(avatar: FileExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, fileUserRelation: FileUserRelationExpression, first: Int, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): User
-  usersConnection(avatar: FileExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, fileUserRelation: FileUserRelationExpression, first: Int, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): UserConnection
+  users(after: ID, before: ID, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, fileUserRelation: FileUserRelationExpression, files: FileExpression, first: Int, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): [User]
+  usersAggregate(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, fileUserRelation: FileUserRelationExpression, files: FileExpression, first: Int, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): User
+  usersConnection(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, fileUserRelation: FileUserRelationExpression, files: FileExpression, first: Int, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): UserConnection
   version: Int
 }
 
@@ -1324,7 +1348,7 @@ type GroupUserRelation implements Meta {
   realmId: Int
   updateTime: Timestamp
   updateUserId: String
-  user(avatar: FileExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, fileUserRelation: FileUserRelationExpression, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, lastName: StringExpression, login: StringExpression, name: StringExpression, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): User
+  user(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, fileUserRelation: FileUserRelationExpression, files: FileExpression, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, lastName: StringExpression, login: StringExpression, name: StringExpression, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): User
   userRef: String
   userRefCount: Int
   userRefMax: String
@@ -1689,8 +1713,8 @@ type Mutation {
   roleUserRelationList(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean = false, list: [RoleUserRelationInput], realmId: Int, role: RoleInput, roleRef: String, updateTime: Timestamp, updateUserId: String, user: UserInput, userRef: String, version: Int, where: RoleUserRelationExpression): [RoleUserRelation]
   singleUpload(file: Upload): File
   syncPermissionRoleRelationPolicy(permissionNameList: [String], removedPermissionNameList: [String], roleId: String): Boolean
-  user(avatar: FileInput, createGroupId: String, createTime: Timestamp, createUserId: String, description: String, disable: Boolean, email: String, fileUserRelation: [FileUserRelationInput], groupUserRelation: [GroupUserRelationInput], groups: [GroupInput], hash: String, id: ID, input: UserInput, isDeprecated: Boolean = false, lastName: String, login: String, name: String, phones: [String], realm: RealmInput, realmId: Int, roleUserRelation: [RoleUserRelationInput], roles: [RoleInput], salt: String, updateTime: Timestamp, updateUserId: String, userPhonesRelation: [UserPhonesRelationInput], version: Int, where: UserExpression): User
-  userList(avatar: FileInput, createGroupId: String, createTime: Timestamp, createUserId: String, description: String, disable: Boolean, email: String, fileUserRelation: [FileUserRelationInput], groupUserRelation: [GroupUserRelationInput], groups: [GroupInput], hash: String, id: ID, isDeprecated: Boolean = false, lastName: String, list: [UserInput], login: String, name: String, phones: [String], realm: RealmInput, realmId: Int, roleUserRelation: [RoleUserRelationInput], roles: [RoleInput], salt: String, updateTime: Timestamp, updateUserId: String, userPhonesRelation: [UserPhonesRelationInput], version: Int, where: UserExpression): [User]
+  user(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, disable: Boolean, email: String, fileUserRelation: [FileUserRelationInput], files: [FileInput], groupUserRelation: [GroupUserRelationInput], groups: [GroupInput], hash: String, id: ID, input: UserInput, isDeprecated: Boolean = false, lastName: String, login: String, name: String, phones: [String], realm: RealmInput, realmId: Int, roleUserRelation: [RoleUserRelationInput], roles: [RoleInput], salt: String, updateTime: Timestamp, updateUserId: String, userPhonesRelation: [UserPhonesRelationInput], version: Int, where: UserExpression): User
+  userList(createGroupId: String, createTime: Timestamp, createUserId: String, description: String, disable: Boolean, email: String, fileUserRelation: [FileUserRelationInput], files: [FileInput], groupUserRelation: [GroupUserRelationInput], groups: [GroupInput], hash: String, id: ID, isDeprecated: Boolean = false, lastName: String, list: [UserInput], login: String, name: String, phones: [String], realm: RealmInput, realmId: Int, roleUserRelation: [RoleUserRelationInput], roles: [RoleInput], salt: String, updateTime: Timestamp, updateUserId: String, userPhonesRelation: [UserPhonesRelationInput], version: Int, where: UserExpression): [User]
   userPhonesRelation(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, input: UserPhonesRelationInput, isDeprecated: Boolean = false, phonesRef: String, realmId: Int, updateTime: Timestamp, updateUserId: String, user: UserInput, userRef: String, version: Int, where: UserPhonesRelationExpression): UserPhonesRelation
   userPhonesRelationList(createGroupId: String, createTime: Timestamp, createUserId: String, id: ID, isDeprecated: Boolean = false, list: [UserPhonesRelationInput], phonesRef: String, realmId: Int, updateTime: Timestamp, updateUserId: String, user: UserInput, userRef: String, version: Int, where: UserPhonesRelationExpression): [UserPhonesRelation]
 }
@@ -2465,9 +2489,9 @@ type Query {
   roleUserRelation(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleUserRelationExpression], groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, not: Boolean = false, realmId: IntExpression, role: RoleExpression, roleRef: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, user: UserExpression, userRef: StringExpression, version: IntExpression): RoleUserRelation
   roleUserRelationConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleUserRelationExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, not: Boolean = false, offset: Int, orderBy: RoleUserRelationOrderBy, realmId: IntExpression, role: RoleExpression, roleRef: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, user: UserExpression, userRef: StringExpression, version: IntExpression): RoleUserRelationConnection
   roleUserRelationList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleUserRelationExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, not: Boolean = false, offset: Int, orderBy: RoleUserRelationOrderBy, realmId: IntExpression, role: RoleExpression, roleRef: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, user: UserExpression, userRef: StringExpression, version: IntExpression): [RoleUserRelation]
-  user(avatar: FileExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, exs: [UserExpression], fileUserRelation: FileUserRelationExpression, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, lastName: StringExpression, login: StringExpression, name: StringExpression, not: Boolean = false, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): User
-  userConnection(after: ID, avatar: FileExpression, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, exs: [UserExpression], fileUserRelation: FileUserRelationExpression, first: Int, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, not: Boolean = false, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): UserConnection
-  userList(after: ID, avatar: FileExpression, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, exs: [UserExpression], fileUserRelation: FileUserRelationExpression, first: Int, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, not: Boolean = false, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): [User]
+  user(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, exs: [UserExpression], fileUserRelation: FileUserRelationExpression, files: FileExpression, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, lastName: StringExpression, login: StringExpression, name: StringExpression, not: Boolean = false, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): User
+  userConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, exs: [UserExpression], fileUserRelation: FileUserRelationExpression, files: FileExpression, first: Int, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, not: Boolean = false, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): UserConnection
+  userList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, exs: [UserExpression], fileUserRelation: FileUserRelationExpression, files: FileExpression, first: Int, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, not: Boolean = false, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): [User]
   userPhonesRelation(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [UserPhonesRelationExpression], groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, not: Boolean = false, phonesRef: StringExpression, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, user: UserExpression, userRef: StringExpression, version: IntExpression): UserPhonesRelation
   userPhonesRelationConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [UserPhonesRelationExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, not: Boolean = false, offset: Int, orderBy: UserPhonesRelationOrderBy, phonesRef: StringExpression, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, user: UserExpression, userRef: StringExpression, version: IntExpression): UserPhonesRelationConnection
   userPhonesRelationList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [UserPhonesRelationExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, not: Boolean = false, offset: Int, orderBy: UserPhonesRelationOrderBy, phonesRef: StringExpression, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, user: UserExpression, userRef: StringExpression, version: IntExpression): [UserPhonesRelation]
@@ -2791,9 +2815,9 @@ type Role implements Meta & NamedStruct {
   updateUserId: String
 
   """用户"""
-  users(after: ID, avatar: FileExpression, before: ID, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, fileUserRelation: FileUserRelationExpression, first: Int, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): [User]
-  usersAggregate(avatar: FileExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, fileUserRelation: FileUserRelationExpression, first: Int, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): User
-  usersConnection(avatar: FileExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, fileUserRelation: FileUserRelationExpression, first: Int, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): UserConnection
+  users(after: ID, before: ID, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, fileUserRelation: FileUserRelationExpression, files: FileExpression, first: Int, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): [User]
+  usersAggregate(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, fileUserRelation: FileUserRelationExpression, files: FileExpression, first: Int, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): User
+  usersConnection(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, fileUserRelation: FileUserRelationExpression, files: FileExpression, first: Int, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): UserConnection
   version: Int
 }
 
@@ -3391,7 +3415,7 @@ type RoleUserRelation implements Meta {
   roleRefMin: String
   updateTime: Timestamp
   updateUserId: String
-  user(avatar: FileExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, fileUserRelation: FileUserRelationExpression, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, lastName: StringExpression, login: StringExpression, name: StringExpression, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): User
+  user(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, fileUserRelation: FileUserRelationExpression, files: FileExpression, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, lastName: StringExpression, login: StringExpression, name: StringExpression, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): User
   userRef: String
   userRefCount: Int
   userRefMax: String
@@ -3692,9 +3716,9 @@ type Subscription {
   roleUserRelation(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleUserRelationExpression], groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, not: Boolean = false, realmId: IntExpression, role: RoleExpression, roleRef: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, user: UserExpression, userRef: StringExpression, version: IntExpression): RoleUserRelation
   roleUserRelationConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleUserRelationExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, not: Boolean = false, offset: Int, orderBy: RoleUserRelationOrderBy, realmId: IntExpression, role: RoleExpression, roleRef: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, user: UserExpression, userRef: StringExpression, version: IntExpression): RoleUserRelationConnection
   roleUserRelationList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [RoleUserRelationExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, not: Boolean = false, offset: Int, orderBy: RoleUserRelationOrderBy, realmId: IntExpression, role: RoleExpression, roleRef: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, user: UserExpression, userRef: StringExpression, version: IntExpression): [RoleUserRelation]
-  user(avatar: FileExpression, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, exs: [UserExpression], fileUserRelation: FileUserRelationExpression, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, lastName: StringExpression, login: StringExpression, name: StringExpression, not: Boolean = false, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): User
-  userConnection(after: ID, avatar: FileExpression, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, exs: [UserExpression], fileUserRelation: FileUserRelationExpression, first: Int, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, not: Boolean = false, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): UserConnection
-  userList(after: ID, avatar: FileExpression, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, exs: [UserExpression], fileUserRelation: FileUserRelationExpression, first: Int, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, not: Boolean = false, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): [User]
+  user(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, exs: [UserExpression], fileUserRelation: FileUserRelationExpression, files: FileExpression, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, lastName: StringExpression, login: StringExpression, name: StringExpression, not: Boolean = false, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): User
+  userConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, exs: [UserExpression], fileUserRelation: FileUserRelationExpression, files: FileExpression, first: Int, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, not: Boolean = false, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): UserConnection
+  userList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, exs: [UserExpression], fileUserRelation: FileUserRelationExpression, files: FileExpression, first: Int, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, lastName: StringExpression, login: StringExpression, name: StringExpression, not: Boolean = false, offset: Int, orderBy: UserOrderBy, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): [User]
   userPhonesRelation(cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [UserPhonesRelationExpression], groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, not: Boolean = false, phonesRef: StringExpression, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, user: UserExpression, userRef: StringExpression, version: IntExpression): UserPhonesRelation
   userPhonesRelationConnection(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [UserPhonesRelationExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, not: Boolean = false, offset: Int, orderBy: UserPhonesRelationOrderBy, phonesRef: StringExpression, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, user: UserExpression, userRef: StringExpression, version: IntExpression): UserPhonesRelationConnection
   userPhonesRelationList(after: ID, before: ID, cond: Conditional = AND, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, exs: [UserPhonesRelationExpression], first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, not: Boolean = false, offset: Int, orderBy: UserPhonesRelationOrderBy, phonesRef: StringExpression, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, user: UserExpression, userRef: StringExpression, version: IntExpression): [UserPhonesRelation]
@@ -3747,8 +3771,6 @@ scalar Upload
 
 """用户"""
 type User implements Meta & NamedStruct {
-  """头像"""
-  avatar(content: StringExpression, contentType: StringExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, url: StringExpression, version: IntExpression): File
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -3768,6 +3790,9 @@ type User implements Meta & NamedStruct {
   emailMax: String
   emailMin: String
   fileUserRelation(after: ID, before: ID, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, file: FileExpression, fileRef: StringExpression, first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: FileUserRelationOrderBy, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, user: UserExpression, userRef: StringExpression, version: IntExpression): [FileUserRelation]
+
+  """文件"""
+  files(after: ID, before: ID, content: StringExpression, contentType: StringExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, first: Int, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, last: Int, name: StringExpression, offset: Int, orderBy: FileOrderBy, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, url: StringExpression, version: IntExpression): [File]
   groupUserRelation(after: ID, before: ID, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, first: Int, group: GroupExpression, groupBy: [String!], groupRef: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: GroupUserRelationOrderBy, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, user: UserExpression, userRef: StringExpression, version: IntExpression): [GroupUserRelation]
   groupUserRelationAggregate(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, first: Int, group: GroupExpression, groupBy: [String!], groupRef: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: GroupUserRelationOrderBy, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, user: UserExpression, userRef: StringExpression, version: IntExpression): GroupUserRelation
   groupUserRelationConnection(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, first: Int, group: GroupExpression, groupBy: [String!], groupRef: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, last: Int, offset: Int, orderBy: GroupUserRelationOrderBy, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, user: UserExpression, userRef: StringExpression, version: IntExpression): GroupUserRelationConnection
@@ -3845,7 +3870,6 @@ type UserConnection {
 
 input UserConnectionQueryArguments {
   after: ID
-  avatar: FileExpression
   before: ID
   cond: Conditional = AND
   createGroupId: StringExpression
@@ -3856,6 +3880,7 @@ input UserConnectionQueryArguments {
   email: StringExpression
   exs: [UserExpression]
   fileUserRelation: FileUserRelationExpression
+  files: FileExpression
   first: Int
   groupBy: [String!]
   groupUserRelation: GroupUserRelationExpression
@@ -3884,7 +3909,6 @@ input UserConnectionQueryArguments {
 
 input UserConnectionSubscriptionArguments {
   after: ID
-  avatar: FileExpression
   before: ID
   cond: Conditional = AND
   createGroupId: StringExpression
@@ -3895,6 +3919,7 @@ input UserConnectionSubscriptionArguments {
   email: StringExpression
   exs: [UserExpression]
   fileUserRelation: FileUserRelationExpression
+  files: FileExpression
   first: Int
   groupBy: [String!]
   groupUserRelation: GroupUserRelationExpression
@@ -3927,7 +3952,6 @@ type UserEdge {
 }
 
 input UserExpression {
-  avatar: FileExpression
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -3937,6 +3961,7 @@ input UserExpression {
   email: StringExpression
   exs: [UserExpression]
   fileUserRelation: FileUserRelationExpression
+  files: FileExpression
   groupUserRelation: GroupUserRelationExpression
   groups: GroupExpression
   hash: StringExpression
@@ -3959,7 +3984,6 @@ input UserExpression {
 }
 
 input UserInput {
-  avatar: FileInput
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -3967,6 +3991,7 @@ input UserInput {
   disable: Boolean
   email: String
   fileUserRelation: [FileUserRelationInput]
+  files: [FileInput]
   groupUserRelation: [GroupUserRelationInput]
   groups: [GroupInput]
   hash: String
@@ -3989,7 +4014,6 @@ input UserInput {
 }
 
 input UserListMutationArguments {
-  avatar: FileInput
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -3997,6 +4021,7 @@ input UserListMutationArguments {
   disable: Boolean
   email: String
   fileUserRelation: [FileUserRelationInput]
+  files: [FileInput]
   groupUserRelation: [GroupUserRelationInput]
   groups: [GroupInput]
   hash: String
@@ -4021,7 +4046,6 @@ input UserListMutationArguments {
 
 input UserListQueryArguments {
   after: ID
-  avatar: FileExpression
   before: ID
   cond: Conditional = AND
   createGroupId: StringExpression
@@ -4032,6 +4056,7 @@ input UserListQueryArguments {
   email: StringExpression
   exs: [UserExpression]
   fileUserRelation: FileUserRelationExpression
+  files: FileExpression
   first: Int
   groupBy: [String!]
   groupUserRelation: GroupUserRelationExpression
@@ -4060,7 +4085,6 @@ input UserListQueryArguments {
 
 input UserListSubscriptionArguments {
   after: ID
-  avatar: FileExpression
   before: ID
   cond: Conditional = AND
   createGroupId: StringExpression
@@ -4071,6 +4095,7 @@ input UserListSubscriptionArguments {
   email: StringExpression
   exs: [UserExpression]
   fileUserRelation: FileUserRelationExpression
+  files: FileExpression
   first: Int
   groupBy: [String!]
   groupUserRelation: GroupUserRelationExpression
@@ -4098,7 +4123,6 @@ input UserListSubscriptionArguments {
 }
 
 input UserMutationArguments {
-  avatar: FileInput
   createGroupId: String
   createTime: Timestamp
   createUserId: String
@@ -4106,6 +4130,7 @@ input UserMutationArguments {
   disable: Boolean
   email: String
   fileUserRelation: [FileUserRelationInput]
+  files: [FileInput]
   groupUserRelation: [GroupUserRelationInput]
   groups: [GroupInput]
   hash: String
@@ -4164,7 +4189,7 @@ type UserPhonesRelation implements Meta {
   realmId: Int
   updateTime: Timestamp
   updateUserId: String
-  user(avatar: FileExpression, createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, fileUserRelation: FileUserRelationExpression, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, lastName: StringExpression, login: StringExpression, name: StringExpression, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): User
+  user(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, disable: BooleanExpression, email: StringExpression, fileUserRelation: FileUserRelationExpression, files: FileExpression, groupBy: [String!], groupUserRelation: GroupUserRelationExpression, groups: GroupExpression, hash: StringExpression, id: StringExpression, includeDeprecated: Boolean = false, lastName: StringExpression, login: StringExpression, name: StringExpression, phones: StringExpression, realm: RealmExpression, realmId: IntExpression, roleUserRelation: RoleUserRelationExpression, roles: RoleExpression, salt: StringExpression, updateTime: StringExpression, updateUserId: StringExpression, userPhonesRelation: UserPhonesRelationExpression, version: IntExpression): User
   userRef: String
   userRefCount: Int
   userRefMax: String
@@ -4404,7 +4429,6 @@ input UserPhonesRelationSubscriptionArguments {
 }
 
 input UserQueryArguments {
-  avatar: FileExpression
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -4414,6 +4438,7 @@ input UserQueryArguments {
   email: StringExpression
   exs: [UserExpression]
   fileUserRelation: FileUserRelationExpression
+  files: FileExpression
   groupBy: [String!]
   groupUserRelation: GroupUserRelationExpression
   groups: GroupExpression
@@ -4437,7 +4462,6 @@ input UserQueryArguments {
 }
 
 input UserSubscriptionArguments {
-  avatar: FileExpression
   cond: Conditional = AND
   createGroupId: StringExpression
   createTime: StringExpression
@@ -4447,6 +4471,7 @@ input UserSubscriptionArguments {
   email: StringExpression
   exs: [UserExpression]
   fileUserRelation: FileUserRelationExpression
+  files: FileExpression
   groupBy: [String!]
   groupUserRelation: GroupUserRelationExpression
   groups: GroupExpression

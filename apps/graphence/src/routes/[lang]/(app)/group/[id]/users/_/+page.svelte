@@ -4,7 +4,7 @@
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import UserCreateForm from '~/lib/components/objects/user/UserCreateForm.svelte';
-	import { Mutation_group_usersStore } from '$houdini';
+	import { Mutation_group_usersStore, Mutation_singleUploadStore } from '$houdini';
 	import type { UserInput, MutationUserArgs } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/utils';
@@ -18,6 +18,7 @@
 	$: errors = data.errors as Record<string, Errors>;
 
 	const Mutation_group_users = new Mutation_group_usersStore();
+	const Mutation_singleUpload = new Mutation_singleUploadStore();
 
 	const mutation = (
 		event: CustomEvent<{
@@ -60,5 +61,17 @@
 </script>
 
 <Card>
-	<UserCreateForm showBackButton={$canBack} {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+	<UserCreateForm 
+		showBackButton={$canBack}
+		{node}
+		{errors}
+		on:mutation={mutation}
+		on:back={back}
+		on:gotoField={gotoField}
+		on:upload={(e) => {
+			Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
+				e.detail.then(result.data?.singleUpload)
+			);
+		}}
+	/>
 </Card>

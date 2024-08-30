@@ -4,7 +4,7 @@
 	import type { Errors, PermissionsStore} from '@graphace/commons';
 	import type { GraphQLError, GlobalGraphQLErrorMessageFunction, GraphQLErrorsFunction } from '@graphace/graphql';
 	import { Form, FormLoading, messageBoxs, notifications } from '@graphace/ui';
-	import { StringItem, BooleanItem,FileItem, ObjectItem } from '@graphace/ui-graphql';
+	import { StringItem, BooleanItem, ObjectItem, FileItem } from '@graphace/ui-graphql';
 	import GroupSelectItem from '~/lib/components/objects/group/GroupSelectItem.svelte';
 	import RoleSelectItem from '~/lib/components/objects/role/RoleSelectItem.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
@@ -168,7 +168,6 @@
 		<FormLoading rows={11} />
 	{:else}
 		{#if node}
-			<FileItem label={$LL.graphql.objects.User.fields.avatar.name()} name="name" bind:value={node.avatar} errors={errors.name} on:upload/>
 			{#if permissions.auth('User::name::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.name.name()} name="name" bind:value={node.name} readonly={!permissions.auth('User::name::WRITE')} errors={errors.name} />
 			{/if}
@@ -184,8 +183,8 @@
 			{#if permissions.auth('User::email::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.email.name()} name="email" bind:value={node.email} readonly={!permissions.auth('User::email::WRITE')} errors={errors.email} />
 			{/if}
-			{#if permissions.auth('User::avatar::*')}
-			<ObjectItem name="avatar"  path={`${node.id}/avatar`} label={$LL.graphql.objects.User.fields.avatar.name()} errors={errors.avatar} on:gotoField />
+			{#if permissions.auth('User::files::*')}
+			<FileItem label={$LL.graphql.objects.User.fields.files.name()} name="files" bind:value={node.files} readonly={!permissions.auth('User::files::WRITE')} list errors={errors.files} on:upload />
 			{/if}
 			{#if permissions.auth('User::phones::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.phones.name()} name="phones" bind:value={node.phones} readonly={!permissions.auth('User::phones::WRITE')} list errors={errors.phones} />

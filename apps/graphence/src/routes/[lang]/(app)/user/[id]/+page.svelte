@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons';
-	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import UserForm from '~/lib/components/objects/user/UserForm.svelte';
 	import type { GraphQLError } from '@graphace/graphql';
@@ -29,13 +28,14 @@
 		validate('Mutation_user_Arguments', event.detail.args, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_user.mutate(event.detail.args).then((result) => {
-					if (result.errors) {
-						event.detail.catch(result.errors);
-					} else {
-						event.detail.then(result?.data?.user);
-					}
-				});
+				Mutation_user.mutate(event.detail.args)
+					.then((result) => {
+						if (result.errors) {
+							event.detail.catch(result.errors);
+						} else {
+							event.detail.then(result?.data?.user);
+						}
+					});
 			})
 			.catch((validErrors) => {
 				errors = validErrors;
@@ -46,7 +46,7 @@
 		ot();
 	};
 
-	const gotoField = (event: CustomEvent<{ path: string; name: string }>) => {
+	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
 		to(`./${event.detail.path}`);
 	};
 </script>
@@ -61,8 +61,8 @@
 		on:back={back}
 		on:gotoField={gotoField}
 		on:upload={(e) => {
-			Mutation_singleUpload.mutate({ file: e.detail.file }).then((data) =>
-				e.detail.then(data.data.singleUpload)
+			Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
+				e.detail.then(result.data?.singleUpload)
 			);
 		}}
 	/>

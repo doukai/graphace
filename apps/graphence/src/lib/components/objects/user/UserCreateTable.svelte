@@ -3,7 +3,7 @@
 	import type { Readable } from 'svelte/store';
 	import type { Errors, PermissionsStore} from '@graphace/commons';
 	import { Table, TableHead, TableEmpty, messageBoxs } from '@graphace/ui';
-	import { ObjectTd, StringTh, StringTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql';
+	import { ObjectTd, StringTh, StringTd, BooleanTh, BooleanTd, FileTd } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash } from '@steeze-ui/heroicons';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
@@ -99,8 +99,8 @@
 			{#if permissions.auth('User::email::*')}
 			<td>{$LL.graphql.objects.User.fields.email.name()}</td>
 			{/if}
-			{#if permissions.auth('User::avatar::*')}
-			<td>{$LL.graphql.objects.User.fields.avatar.name()}</td>
+			{#if permissions.auth('User::files::*')}
+			<td>{$LL.graphql.objects.User.fields.files.name()}</td>
 			{/if}
 			{#if permissions.auth('User::phones::*')}
 			<td>{$LL.graphql.objects.User.fields.phones.name()}</td>
@@ -170,8 +170,15 @@
 							errors={errors[row]?.iterms?.email}
 						/>
 						{/if}
-						{#if permissions.auth('User::avatar::*')}
-						<ObjectTd name="avatar"  errors={errors[row]?.iterms?.avatar} path="_/avatar" on:gotoField />
+						{#if permissions.auth('User::files::*')}
+						<FileTd
+							name="files"
+							bind:value={node.files}
+							list
+							readonly
+							errors={errors[row]?.iterms?.files}
+							on:upload
+						/>
 						{/if}
 						{#if permissions.auth('User::phones::*')}
 						<StringTd

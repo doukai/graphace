@@ -61,11 +61,15 @@
 					{#if value.length > 3}
 						{value
 							.filter((item) => item)
+							.map((item) => item.name)
 							.slice(0, 3)
 							.join(',')
 							.concat('...')}
 					{:else if value.length > 0}
-						{value.filter((item) => item).join(',')}
+						{value
+							.filter((item) => item)
+							.map((item) => item.name)
+							.join(',')}
 					{:else}
 						<Icon src={Minus} class="h-5 w-5" />
 					{/if}
@@ -73,7 +77,7 @@
 					<Icon src={Minus} class="h-5 w-5" />
 				{/if}
 			{:else if value}
-				{value}
+				{value?.name}
 			{:else}
 				<Icon src={Minus} class="h-5 w-5" />
 			{/if}
@@ -94,7 +98,8 @@
 					{errors}
 					{readonly}
 					{disabled}
-					className="md:input-sm"
+					className="md:file-input-sm"
+					linkClassName="md:input-sm"
 					addBtnClassName="md:btn-sm"
 					on:upload
 				/>
@@ -106,7 +111,8 @@
 					{errors}
 					{readonly}
 					{disabled}
-					className="md:input-sm"
+					className="md:file-input-sm"
+					linkClassName="md:input-sm"
 					on:upload
 				/>
 			{/if}

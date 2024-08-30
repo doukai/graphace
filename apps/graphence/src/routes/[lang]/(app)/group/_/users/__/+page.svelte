@@ -5,7 +5,7 @@
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import UserSelectConnectionTable from '~/lib/components/objects/user/UserSelectConnectionTable.svelte';
 	import type { UserInput, QueryUserConnectionArgs, MutationUserArgs } from '~/lib/types/schema';
-	import { Query_userConnectionStore, Mutation_userStore } from '$houdini';
+	import { Query_userConnectionStore, Mutation_userStore, Mutation_singleUploadStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -19,6 +19,7 @@
 	$: nodes = $Query_userConnection.data?.userConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $Query_userConnection.data?.userConnection?.totalCount || 0;
 	const Mutation_user = new Mutation_userStore();
+	const Mutation_singleUpload = new Mutation_singleUploadStore();
 
 	const fetch = (
 		event: CustomEvent<{
@@ -100,5 +101,10 @@
 		on:mutation={mutation}
 		on:select={select}
 		on:back={back}
+		on:upload={(e) => {
+			Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
+				e.detail.then(result.data?.singleUpload)
+			);
+		}}
 	/>
 </Card>

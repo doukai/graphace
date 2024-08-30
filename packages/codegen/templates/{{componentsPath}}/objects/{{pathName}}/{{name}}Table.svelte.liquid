@@ -4,7 +4,7 @@
 	import type { Errors{%- if useAuth -%}, PermissionsStore{%- endif -%} } from '@graphace/commons';
 	import type { GraphQLError, GlobalGraphQLErrorMessageFunction, GraphQLErrorsFunction } from '@graphace/graphql';
 	import { Table, TableHead, TableLoading, TableEmpty, messageBoxs, notifications } from '@graphace/ui';
-	import { ObjectTd, {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql';
+	import { ObjectTd, {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td{% if forloop.last == false %}, {% endif %}{% endfor %}{% if hasFileField %}, FileTd{% endif %} } from '@graphace/ui-graphql';
 	{%- if imports %}
 	{%- for import in imports %}
 	{{ import }}
@@ -368,7 +368,7 @@
 							{%- if field.component %}
 							{{ field.component }}
 							{%- else %}
-							{%- if field.isScalarType or field.isEnumType %}
+							{%- if field.isScalarType or field.isEnumType or field.fieldTypeName == 'File' %}
 							<{{ field.fieldTypeName }}Td
 								name="{{ field.fieldName }}"
 								bind:value={node.{{ field.fieldName }}}
@@ -384,6 +384,9 @@
 								readonly
 								{%- endif %}
 								errors={errors[row]?.iterms?.{{ field.fieldName }}}
+								{%- if field.fieldTypeName == 'File' %}
+								on:upload
+								{%- endif %}
 							/>
 							{%- else %}
 							{%- if field.select %}

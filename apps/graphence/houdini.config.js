@@ -16,22 +16,67 @@ const config = {
 		interval: 0
 	},
 	scalars: {
+		BigInteger: {
+			type: 'number',
+			unmarshal(val) {
+				return val;
+			},
+			marshal(date) {
+				return date;
+			}
+		},
+		BigDecimal: {
+			type: 'number',
+			unmarshal(val) {
+				return val;
+			},
+			marshal(date) {
+				return date;
+			}
+		},
+		DateTime: {
+			type: 'string',
+			unmarshal(val) {
+				return val;
+			},
+			marshal(date) {
+				return date;
+			}
+		},
+		Date: {
+			type: 'string',
+			unmarshal(val) {
+				return val;
+			},
+			marshal(date) {
+				return date;
+			}
+		},
+		Time: {
+			type: 'string',
+			unmarshal(val) {
+				return val;
+			},
+			marshal(date) {
+				return date;
+			}
+		},
 		Timestamp: {
 			type: 'string',
 			unmarshal(val) {
-				return val
+				return val;
 			},
 			marshal(date) {
-				return date
+				return date;
 			}
 		},
 		Upload: {
 			type: 'string',
 			unmarshal(val) {
-				return val
+				return val;
 			},
 			marshal(date) {
-				return date
+				return date;
 			}
 		}
 	},

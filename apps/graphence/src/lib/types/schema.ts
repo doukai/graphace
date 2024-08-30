@@ -10,13 +10,13 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  BigDecimal: any;
-  BigInteger: any;
-  Date: any;
-  DateTime: any;
-  Time: any;
-  Timestamp: any;
-  Upload: any;
+  BigDecimal: number;
+  BigInteger: number;
+  Date: string;
+  DateTime: string;
+  Time: string;
+  Timestamp: string;
+  Upload: string;
 };
 
 export type BooleanExpression = {
@@ -36,23 +36,37 @@ export type ConditionalExpression = {
   arr?: InputMaybe<Array<InputMaybe<Conditional>>>;
 };
 
+/** 当前用户 */
 export type CurrentUser = {
   __typename?: 'CurrentUser';
+  /** ID */
   id?: Maybe<Scalars['String']>;
+  /** 姓名 */
   name?: Maybe<Scalars['String']>;
+  /** 姓氏 */
   lastName?: Maybe<Scalars['String']>;
+  /** 账号 */
   login?: Maybe<Scalars['String']>;
+  /** 租户ID */
   realmId?: Maybe<Scalars['Int']>;
+  /** 组 */
   groups?: Maybe<Array<Maybe<Scalars['String']>>>;
+  /** 角色 */
   roles?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
+/** 文件 */
 export type File = Meta & {
   __typename?: 'File';
+  /** ID */
   id?: Maybe<Scalars['ID']>;
+  /** 文件名 */
   name?: Maybe<Scalars['String']>;
+  /** 类型 */
   contentType?: Maybe<Scalars['String']>;
+  /** 内容 */
   content?: Maybe<Scalars['String']>;
+  /** URL */
   url?: Maybe<Scalars['String']>;
   isDeprecated?: Maybe<Scalars['Boolean']>;
   version?: Maybe<Scalars['Int']>;
@@ -360,7 +374,7 @@ export type FileUserRelationUserArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -797,7 +811,7 @@ export type GroupUsersArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -996,7 +1010,7 @@ export type GroupUsersAggregateArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -1032,7 +1046,7 @@ export type GroupUsersConnectionArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -1891,7 +1905,7 @@ export type GroupUserRelationUserArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -2314,7 +2328,7 @@ export type MutationUserArgs = {
   salt?: InputMaybe<Scalars['String']>;
   hash?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
-  avatar?: InputMaybe<FileInput>;
+  files?: InputMaybe<Array<InputMaybe<FileInput>>>;
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   disable?: InputMaybe<Scalars['Boolean']>;
   groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
@@ -2346,7 +2360,7 @@ export type MutationUserListArgs = {
   salt?: InputMaybe<Scalars['String']>;
   hash?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
-  avatar?: InputMaybe<FileInput>;
+  files?: InputMaybe<Array<InputMaybe<FileInput>>>;
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   disable?: InputMaybe<Scalars['Boolean']>;
   groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
@@ -3900,7 +3914,7 @@ export type QueryUserArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -3934,7 +3948,7 @@ export type QueryUserListArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -3974,7 +3988,7 @@ export type QueryUserConnectionArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -5288,7 +5302,7 @@ export type RoleUsersArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -5529,7 +5543,7 @@ export type RoleUsersAggregateArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -5565,7 +5579,7 @@ export type RoleUsersConnectionArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -6610,7 +6624,7 @@ export type RoleUserRelationUserArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -6969,7 +6983,7 @@ export type SubscriptionUserArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -7003,7 +7017,7 @@ export type SubscriptionUserListArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -7043,7 +7057,7 @@ export type SubscriptionUserConnectionArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -8076,8 +8090,8 @@ export type User = Meta & NamedStruct & {
   hash?: Maybe<Scalars['String']>;
   /** 邮箱 */
   email?: Maybe<Scalars['String']>;
-  /** 头像 */
-  avatar?: Maybe<File>;
+  /** 文件 */
+  files?: Maybe<Array<Maybe<File>>>;
   /** 手机号 */
   phones?: Maybe<Array<Maybe<Scalars['String']>>>;
   /** 禁用 */
@@ -8139,7 +8153,7 @@ export type User = Meta & NamedStruct & {
 
 
 /** 用户 */
-export type UserAvatarArgs = {
+export type UserFilesArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   contentType?: InputMaybe<StringExpression>;
@@ -8154,6 +8168,12 @@ export type UserAvatarArgs = {
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<FileOrderBy>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -8607,7 +8627,7 @@ export type UserConnectionQueryArguments = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -8646,7 +8666,7 @@ export type UserConnectionSubscriptionArguments = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -8691,7 +8711,7 @@ export type UserExpression = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -8723,7 +8743,7 @@ export type UserInput = {
   salt?: InputMaybe<Scalars['String']>;
   hash?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
-  avatar?: InputMaybe<FileInput>;
+  files?: InputMaybe<Array<InputMaybe<FileInput>>>;
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   disable?: InputMaybe<Scalars['Boolean']>;
   groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
@@ -8753,7 +8773,7 @@ export type UserListMutationArguments = {
   salt?: InputMaybe<Scalars['String']>;
   hash?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
-  avatar?: InputMaybe<FileInput>;
+  files?: InputMaybe<Array<InputMaybe<FileInput>>>;
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   disable?: InputMaybe<Scalars['Boolean']>;
   groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
@@ -8784,7 +8804,7 @@ export type UserListQueryArguments = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -8823,7 +8843,7 @@ export type UserListSubscriptionArguments = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -8862,7 +8882,7 @@ export type UserMutationArguments = {
   salt?: InputMaybe<Scalars['String']>;
   hash?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
-  avatar?: InputMaybe<FileInput>;
+  files?: InputMaybe<Array<InputMaybe<FileInput>>>;
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   disable?: InputMaybe<Scalars['Boolean']>;
   groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
@@ -8939,7 +8959,7 @@ export type UserPhonesRelationUserArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -9202,7 +9222,7 @@ export type UserQueryArguments = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -9235,7 +9255,7 @@ export type UserSubscriptionArguments = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  avatar?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
