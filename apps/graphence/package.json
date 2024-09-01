@@ -38,7 +38,9 @@
 		"@graphace/commons": "workspace:*",
 		"@graphace/graphql": "workspace:*",
 		"@graphace/ui": "workspace:*",
-		"@graphace/ui-graphql": "workspace:*"
+		"@graphace/ui-graphql": "workspace:*",
+		"chart.js": "^4.4.4",
+		"svelte-chartjs": "^3.1.5"
 	},
 	"devDependencies": {
 		"@graphql-codegen/cli": "^3.3.1",
