@@ -171,7 +171,7 @@
 			{#each groups as g}
 				<div use:melt={$group(g.value)}>
 					<div
-						class="py-1 pl-4 pr-4 font-semibold capitalize text-neutral-800"
+						class="py-1 pl-4 pr-4 font-semibold capitalize text-neutral"
 						use:melt={$groupLabel(g.label)}
 					>
 						{g.label}

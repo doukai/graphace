@@ -33,37 +33,37 @@
 		]
 	};
 
-	const selectCloumns = [
+	const selectOptions = [
 		{
 			value: 'name',
 			label: '姓名',
 			options: [
-				{ value: 'nameCount', label: '姓名数量' },
-				{ value: 'nameSum', label: '姓名合计' },
-				{ value: 'nameMax', label: '姓名最大值' },
-				{ value: 'nameMin', label: '姓名最小值' },
-				{ value: 'nameAvg', label: '姓名平均值' }
+				{ value: 'Count', label: '姓名数量' },
+				{ value: 'Sum', label: '姓名合计' },
+				{ value: 'Max', label: '姓名最大值' },
+				{ value: 'Min', label: '姓名最小值' },
+				{ value: 'Avg', label: '姓名平均值' }
 			]
 		},
 		{
 			value: 'lastName',
 			label: '姓氏',
 			options: [
-				{ value: 'nameCount', label: '姓氏数量' },
-				{ value: 'nameSum', label: '姓氏合计' },
-				{ value: 'nameMax', label: '姓氏最大值' },
-				{ value: 'nameMin', label: '姓氏最小值' },
-				{ value: 'nameAvg', label: '姓氏平均值' }
+				{ value: 'Count', label: '姓氏数量' },
+				{ value: 'Sum', label: '姓氏合计' },
+				{ value: 'Max', label: '姓氏最大值' },
+				{ value: 'Min', label: '姓氏最小值' },
+				{ value: 'Avg', label: '姓氏平均值' }
 			]
 		}
 	];
 
-	const groupByCloumns = [
+	const groupByOptions = [
 		{ value: 'name', label: '姓名' },
 		{ value: 'lastName', label: '姓氏' }
 	];
 
-	const orderByCloumns = [
+	const orderByOptions = [
 		{
 			value: 'name',
 			label: '姓名',
@@ -85,9 +85,9 @@
 
 <Card>
 	<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-1">
-		<Combobox multiple={true} groups={selectCloumns} rootClassName="w-full" />
-		<Combobox multiple={true} options={groupByCloumns} rootClassName="w-full" />
-		<Combobox multiple={true} groups={orderByCloumns} rootClassName="w-full" />
+		<Combobox multiple={true} groups={selectOptions} rootClassName="w-full" />
+		<Combobox multiple={true} options={groupByOptions} rootClassName="w-full" />
+		<Combobox multiple={true} groups={orderByOptions} rootClassName="w-full" />
 		<input type="text" class="input input-bordered w-full" />
 	</div>
 	<div class="divider" />
