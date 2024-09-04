@@ -3,6 +3,12 @@
 		value: any | null | undefined;
 		label: string | null | undefined;
 		node?: any | null | undefined;
+		group?: Group | null | undefined;
+	};
+	export type Group = {
+		value: any | null | undefined;
+		label: string | null | undefined;
+		options?: Option[] | null | undefined;
 	};
 </script>
 
@@ -15,6 +21,7 @@
 	import { Check, ChevronUp, ChevronDown, XMark } from '@steeze-ui/heroicons';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { createEventDispatcher } from 'svelte';
+	export let rootClassName: string = '';
 	export let className: string = '';
 	export let containerClassName: string = '';
 	export let tagClassName: string = '';
@@ -22,6 +29,7 @@
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let options: Option[] | null | undefined = [];
+	export let groups: Group[] | null | undefined = undefined;
 	export let value: Option | Option[] | null | undefined = undefined;
 	export let multiple: boolean = false;
 	export let name: string | undefined = undefined;
@@ -36,7 +44,7 @@
 	}>();
 
 	const {
-		elements: { menu, input, option, label },
+		elements: { menu, input, option, label, group, groupLabel },
 		states: { open, inputValue, touchedInput, selected },
 		helpers: { isSelected }
 	} = createCombobox<Option, boolean>({
@@ -96,7 +104,7 @@
 	}
 </script>
 
-<div class="relative">
+<div class="relative {rootClassName}">
 	<div
 		use:melt={$root}
 		class="textarea textarea-bordered flex flex-row flex-wrap items-center min-h-6 p-0 {containerClassName}"
@@ -135,7 +143,7 @@
 				}
 			}}
 			{name}
-			{placeholder}
+			placeholder={value || (Array.isArray(value) && value.length > 0) ? '' : placeholder}
 			{disabled}
 		/>
 	</div>
@@ -159,6 +167,47 @@
 					<span class="loading loading-spinner loading-xs" />
 				</div>
 			</li>
+		{:else if groups}
+			{#each groups as g}
+				<div use:melt={$group(g.value)}>
+					<div
+						class="py-1 pl-4 pr-4 font-semibold capitalize text-neutral-800"
+						use:melt={$groupLabel(g.label)}
+					>
+						{g.label}
+					</div>
+					{#each g.options as op, index (index)}
+						<li
+							use:melt={$option({
+								value: { ...op, group: g },
+								label: op.label
+							})}
+						>
+							<!-- svelte-ignore a11y-missing-attribute -->
+							<a class="flex">
+								{#if $isSelected({ ...op, group: g })}
+									<Icon src={Check} class="size-4" />
+								{:else}
+									<div class="size-4" />
+								{/if}
+								{op.label}
+							</a>
+						</li>
+					{:else}
+						<li>
+							<div class="flex justify-center flex-nowrap">
+								<span class="badge badge-ghost">{$LL.ui.table.empty()}</span>
+							</div>
+						</li>
+					{/each}
+				</div>
+			{:else}
+				<li>
+					<div class="flex justify-center flex-nowrap">
+						<span class="badge badge-ghost">{$LL.ui.table.empty()}</span>
+					</div>
+				</li>
+			{/each}
 		{:else}
 			{#each options as op, index (index)}
 				<li
