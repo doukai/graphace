@@ -2,6 +2,11 @@
 	import { Card, Combobox, Pagination } from '@graphace/ui';
 	import { Bar } from 'svelte-chartjs';
 	import { Chart, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js';
+	import { createPopover, melt } from '@melt-ui/svelte';
+	import { fade } from 'svelte/transition';
+	import UserFilter from '~/lib/components/objects/user/UserFilter.svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { AdjustmentsHorizontal, Funnel } from '@steeze-ui/heroicons';
 
 	Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -81,14 +86,36 @@
 			]
 		}
 	];
+
+	const {
+		elements: { trigger, content, arrow, close, overlay },
+		states: { open }
+	} = createPopover({
+		forceVisible: true,
+		preventScroll: true
+	});
 </script>
 
 <Card>
-	<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-1">
+	<div class="flex space-x-1">
 		<Combobox multiple={true} groups={selectOptions} rootClassName="w-full" />
-		<Combobox multiple={true} options={groupByOptions} rootClassName="w-full" />
-		<Combobox multiple={true} groups={orderByOptions} rootClassName="w-full" />
-		<input type="text" class="input input-bordered w-full" />
+		<button class="btn btn-square" use:melt={$trigger}>
+			<Icon src={AdjustmentsHorizontal} class="h-5 w-5" />
+		</button>
+		{#if $open}
+			<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
+			<div
+				class="space-y-2 md:space-y-1 p-1 rounded-xl bg-base-200 shadow z-[50]"
+				use:melt={$content}
+			>
+				<div use:melt={$arrow} />
+				<div class="space-y-1" transition:fade={{ duration: 100 }}>
+					<Combobox multiple={true} options={groupByOptions} rootClassName="w-full" />
+					<Combobox multiple={true} groups={orderByOptions} rootClassName="w-full" />
+				</div>
+			</div>
+		{/if}
+		<UserFilter />
 	</div>
 	<div class="divider" />
 	<div class="card-body overflow-auto">

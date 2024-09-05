@@ -3,7 +3,7 @@
 	import type { Readable } from 'svelte/store';
 	import { fade } from 'svelte/transition';
 	import { createPopover, melt } from '@melt-ui/svelte';
-	import type { PermissionsStore } from '@graphace/commons'; 
+	import type { PermissionsStore } from '@graphace/commons';
 	import { OperatorSelect, StringInput, BooleanInput } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel } from '@steeze-ui/heroicons';
@@ -13,7 +13,7 @@
 	import RealmSelect from '~/lib/components/objects/realm/RealmSelect.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { Operator } from '$houdini';
-	import type { UserInput, GroupInput, RoleInput, RealmInput, UserExpression } from '$houdini';
+	import type { GroupInput, RoleInput, RealmInput, UserExpression } from '$houdini';
 
 	export let name: string;
 	export let expression: UserExpression | null | undefined;
@@ -63,7 +63,7 @@
 	} else if (realm) {
 		_expression.realm.id.val = realm?.id;
 	}
-	
+
 	const dispatch = createEventDispatcher<{
 		filter: {};
 	}>();
@@ -79,12 +79,18 @@
 		} else {
 			expression = { ...expression, name: undefined };
 		}
-		if (_expression.description.val || (_expression.description.arr && _expression.description.arr.length > 0)) {
+		if (
+			_expression.description.val ||
+			(_expression.description.arr && _expression.description.arr.length > 0)
+		) {
 			expression = { ...expression, description: _expression.description };
 		} else {
 			expression = { ...expression, description: undefined };
 		}
-		if (_expression.lastName.val || (_expression.lastName.arr && _expression.lastName.arr.length > 0)) {
+		if (
+			_expression.lastName.val ||
+			(_expression.lastName.arr && _expression.lastName.arr.length > 0)
+		) {
 			expression = { ...expression, lastName: _expression.lastName };
 		} else {
 			expression = { ...expression, lastName: undefined };
@@ -104,33 +110,39 @@
 		} else {
 			expression = { ...expression, phones: undefined };
 		}
-		if (_expression.disable.val || (_expression.disable.arr && _expression.disable.arr.length > 0)) {
+		if (
+			_expression.disable.val ||
+			(_expression.disable.arr && _expression.disable.arr.length > 0)
+		) {
 			expression = { ...expression, disable: _expression.disable };
 		} else {
 			expression = { ...expression, disable: undefined };
 		}
-		if (_expression.groups.id?.val ||
+		if (
+			_expression.groups.id?.val ||
 			(_expression.groups.id?.arr && _expression.groups.id?.arr.length > 0)
 		) {
 			expression = { ...expression, groups: _expression.groups };
 		} else {
 			expression = { ...expression, groups: undefined };
 		}
-		if (_expression.roles.id?.val ||
+		if (
+			_expression.roles.id?.val ||
 			(_expression.roles.id?.arr && _expression.roles.id?.arr.length > 0)
 		) {
 			expression = { ...expression, roles: _expression.roles };
 		} else {
 			expression = { ...expression, roles: undefined };
 		}
-		if (_expression.realm.id?.val ||
+		if (
+			_expression.realm.id?.val ||
 			(_expression.realm.id?.arr && _expression.realm.id?.arr.length > 0)
 		) {
 			expression = { ...expression, realm: _expression.realm };
 		} else {
 			expression = { ...expression, realm: undefined };
 		}
-		
+
 		if (Object.values(expression).filter((item) => item).length === 0) {
 			expression = undefined;
 		}
@@ -238,22 +250,15 @@
 	});
 </script>
 
-<td>
-	<a class="link group inline-flex" href={null} use:melt={$trigger}>
-		{name}
-		{#if expression && Object.keys(expression).length > 0}
-			<span class="flex-none">
-				<Icon src={Funnel} class="h-5 w-5" />
-			</span>
-		{/if}
-	</a>
-</td>
+<button class="btn btn-square" use:melt={$trigger}>
+	<Icon src={Funnel} class="h-5 w-5" />
+</button>
 
 {#if $open}
 	<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
-	<div class="space-y-2 md:space-y-1 p-1 rounded-xl bg-base-100 shadow z-[50]" use:melt={$content}>
+	<div class="space-y-2 md:space-y-1 p-1 rounded-xl bg-base-200 shadow z-[50]" use:melt={$content}>
 		<div use:melt={$arrow} />
-			{#if permissions.auth('User::name::*')}
+		{#if permissions.auth('User::name::*')}
 			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<div class="form-control">
@@ -287,8 +292,8 @@
 					/>
 				{/if}
 			</div>
-			{/if}
-			{#if permissions.auth('User::description::*')}
+		{/if}
+		{#if permissions.auth('User::description::*')}
 			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<div class="form-control">
@@ -322,8 +327,8 @@
 					/>
 				{/if}
 			</div>
-			{/if}
-			{#if permissions.auth('User::lastName::*')}
+		{/if}
+		{#if permissions.auth('User::lastName::*')}
 			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<div class="form-control">
@@ -357,8 +362,8 @@
 					/>
 				{/if}
 			</div>
-			{/if}
-			{#if permissions.auth('User::login::*')}
+		{/if}
+		{#if permissions.auth('User::login::*')}
 			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<div class="form-control">
@@ -392,8 +397,8 @@
 					/>
 				{/if}
 			</div>
-			{/if}
-			{#if permissions.auth('User::email::*')}
+		{/if}
+		{#if permissions.auth('User::email::*')}
 			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<div class="form-control">
@@ -427,8 +432,8 @@
 					/>
 				{/if}
 			</div>
-			{/if}
-			{#if permissions.auth('User::phones::*')}
+		{/if}
+		{#if permissions.auth('User::phones::*')}
 			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<div class="form-control">
@@ -462,8 +467,8 @@
 					/>
 				{/if}
 			</div>
-			{/if}
-			{#if permissions.auth('User::disable::*')}
+		{/if}
+		{#if permissions.auth('User::disable::*')}
 			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<div class="form-control">
@@ -495,8 +500,8 @@
 					/>
 				{/if}
 			</div>
-			{/if}
-			{#if permissions.auth('User::groups::*')}
+		{/if}
+		{#if permissions.auth('User::groups::*')}
 			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<div class="form-control">
@@ -516,7 +521,7 @@
 						{name}
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						list
-						bind:value={ groups }
+						bind:value={groups}
 						className="md:input-sm"
 						containerClassName="max-w-xs"
 						tagClassName="md:badge-sm"
@@ -526,7 +531,7 @@
 					<GroupSelect
 						{name}
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						bind:value={ groups }
+						bind:value={groups}
 						className="md:input-sm"
 						containerClassName="max-w-xs"
 						tagClassName="md:badge-sm"
@@ -534,8 +539,8 @@
 					/>
 				{/if}
 			</div>
-			{/if}
-			{#if permissions.auth('User::roles::*')}
+		{/if}
+		{#if permissions.auth('User::roles::*')}
 			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<div class="form-control">
@@ -555,7 +560,7 @@
 						{name}
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						list
-						bind:value={ roles }
+						bind:value={roles}
 						className="md:input-sm"
 						containerClassName="max-w-xs"
 						tagClassName="md:badge-sm"
@@ -565,7 +570,7 @@
 					<RoleSelect
 						{name}
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						bind:value={ roles }
+						bind:value={roles}
 						className="md:input-sm"
 						containerClassName="max-w-xs"
 						tagClassName="md:badge-sm"
@@ -573,8 +578,8 @@
 					/>
 				{/if}
 			</div>
-			{/if}
-			{#if permissions.auth('User::realm::*')}
+		{/if}
+		{#if permissions.auth('User::realm::*')}
 			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<div class="form-control">
@@ -594,7 +599,7 @@
 						{name}
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						list
-						bind:value={ realm }
+						bind:value={realm}
 						className="md:input-sm"
 						containerClassName="max-w-xs"
 						tagClassName="md:badge-sm"
@@ -604,7 +609,7 @@
 					<RealmSelect
 						{name}
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						bind:value={ realm }
+						bind:value={realm}
 						className="md:input-sm"
 						containerClassName="max-w-xs"
 						tagClassName="md:badge-sm"
@@ -612,7 +617,7 @@
 					/>
 				{/if}
 			</div>
-			{/if}
+		{/if}
 		<div class="flex justify-center space-x-2">
 			<div class="tooltip" data-tip={$LL.uiGraphql.table.th.filter()}>
 				<button class="btn btn-square btn-primary md:btn-sm" on:click={(e) => filter()}>
