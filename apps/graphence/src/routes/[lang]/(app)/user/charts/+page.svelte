@@ -110,8 +110,22 @@
 			>
 				<div use:melt={$arrow} />
 				<div class="space-y-1" transition:fade={{ duration: 100 }}>
-					<Combobox multiple={true} options={groupByOptions} rootClassName="w-full" />
-					<Combobox multiple={true} groups={orderByOptions} rootClassName="w-full" />
+					<Combobox
+						multiple={true}
+						options={groupByOptions}
+						rootClassName="w-full"
+						className="md:input-sm"
+						containerClassName="max-w-xs"
+						tagClassName="md:badge-sm"
+					/>
+					<Combobox
+						multiple={true}
+						groups={orderByOptions}
+						rootClassName="w-full"
+						className="md:input-sm"
+						containerClassName="max-w-xs"
+						tagClassName="md:badge-sm"
+					/>
 				</div>
 			</div>
 		{/if}

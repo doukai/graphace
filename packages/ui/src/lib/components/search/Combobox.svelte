@@ -26,6 +26,7 @@
 	export let containerClassName: string = '';
 	export let tagClassName: string = '';
 	export let menuClassName: string = '';
+	export let labelClassName: string = '';
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let options: Option[] | null | undefined = [];
@@ -33,6 +34,7 @@
 	export let value: Option | Option[] | null | undefined = undefined;
 	export let multiple: boolean = false;
 	export let name: string | undefined = undefined;
+	export let title: string | undefined = undefined;
 	export let disabled = false;
 	export let placeholder: string = '';
 	export let loading: boolean = false;
@@ -105,48 +107,53 @@
 </script>
 
 <div class="relative {rootClassName}">
-	<div
-		use:melt={$root}
-		class="textarea textarea-bordered flex flex-row flex-wrap items-center min-h-6 p-0 {containerClassName}"
-	>
-		{#each $tags as t}
-			<div
-				use:melt={$tag(t)}
-				class="badge badge-neutral flex items-center ml-1 mt-1 mb-1 pl-1 pr-0 overflow-hidden {tagClassName}"
-			>
-				<span class="flex items-center border-r border-white/10">{t.value}</span>
-				<button
-					use:melt={$deleteTrigger(t)}
-					{disabled}
-					class="flex items-center h-full hover:bg-neutral-focus"
+	<label class={title ? 'input-group' : ''}>
+		{#if title}
+			<span class={labelClassName}>{title}</span>
+		{/if}
+		<div
+			use:melt={$root}
+			class="textarea textarea-bordered flex flex-row flex-wrap items-center w-full min-h-6 p-0 {containerClassName}"
+		>
+			{#each $tags as t}
+				<div
+					use:melt={$tag(t)}
+					class="badge badge-neutral flex items-center ml-1 mt-1 mb-1 pl-1 pr-0 overflow-hidden {tagClassName}"
 				>
-					<Icon src={XMark} class="size-3" />
-				</button>
-			</div>
-			<div use:melt={$edit(t)} class="flex items-center rounded-md px-1.5 overflow-hidden">
-				{t.value}
-			</div>
-		{/each}
-		<input
-			use:melt={$input}
-			type="text"
-			class="input shrink grow basis-0 border-0 outline-none focus:outline-none {className}"
-			on:focus={(e) => {
-				if ($touchedInput) {
-					debounce(() => {
-						dispatch('search', { searchValue: $inputValue });
-					});
-				} else {
-					debounce(() => {
-						dispatch('search', { searchValue: undefined });
-					});
-				}
-			}}
-			{name}
-			placeholder={value || (Array.isArray(value) && value.length > 0) ? '' : placeholder}
-			{disabled}
-		/>
-	</div>
+					<span class="flex items-center border-r bg-neutral border-white/10">{t.value}</span>
+					<button
+						use:melt={$deleteTrigger(t)}
+						{disabled}
+						class="flex items-center h-full hover:bg-neutral-focus"
+					>
+						<Icon src={XMark} class="size-3" />
+					</button>
+				</div>
+				<div use:melt={$edit(t)} class="flex items-center rounded-md px-1.5 overflow-hidden">
+					{t.value}
+				</div>
+			{/each}
+			<input
+				use:melt={$input}
+				type="text"
+				class="input shrink grow basis-0 border-0 outline-none focus:outline-none {className}"
+				on:focus={(e) => {
+					if ($touchedInput) {
+						debounce(() => {
+							dispatch('search', { searchValue: $inputValue });
+						});
+					} else {
+						debounce(() => {
+							dispatch('search', { searchValue: undefined });
+						});
+					}
+				}}
+				{name}
+				placeholder={value || (Array.isArray(value) && value.length > 0) ? '' : placeholder}
+				{disabled}
+			/>
+		</div>
+	</label>
 	<div class="absolute right-2 top-1/2 z-10 -translate-y-1/2">
 		{#if $open}
 			<Icon src={ChevronUp} class="size-4" />
