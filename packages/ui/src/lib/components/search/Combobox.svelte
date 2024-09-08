@@ -42,7 +42,7 @@
 	const dispatch = createEventDispatcher<{
 		search: { searchValue: string | null | undefined };
 		update: { option: Option };
-		change: { value: Option | Option[] };
+		change: { value: Option | Option[]; original?: Option | Option[] };
 	}>();
 
 	const {
@@ -61,7 +61,8 @@
 		multiple: multiple,
 		onSelectedChange: ({ curr, next }) => {
 			value = Array.isArray(next) ? next.map((item) => item.value) : next?.value;
-			dispatch('change', { value });
+			let original = Array.isArray(curr) ? curr.map((item) => item.value) : curr?.value;
+			dispatch('change', { value, original });
 			return next;
 		}
 	});
@@ -107,9 +108,9 @@
 </script>
 
 <div class="relative {rootClassName}">
-	<label class={title ? 'input-group' : ''}>
+	<label class={title ? 'input-group md:input-group-sm' : ''}>
 		{#if title}
-			<span class={labelClassName}>{title}</span>
+			<span class="whitespace-nowrap {labelClassName}">{title}</span>
 		{/if}
 		<div
 			use:melt={$root}
@@ -120,7 +121,7 @@
 					use:melt={$tag(t)}
 					class="badge badge-neutral flex items-center ml-1 mt-1 mb-1 pl-1 pr-0 overflow-hidden {tagClassName}"
 				>
-					<span class="flex items-center border-r bg-neutral border-white/10">{t.value}</span>
+					<span class="flex items-center border-r p-1 bg-neutral border-white/10">{t.value}</span>
 					<button
 						use:melt={$deleteTrigger(t)}
 						{disabled}
