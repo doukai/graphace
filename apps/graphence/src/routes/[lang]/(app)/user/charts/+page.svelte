@@ -13,36 +13,11 @@
 	Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, autocolors);
 
 	// export let data: PageData;
-	export let data = {
-		labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-		datasets: [
-			{
-				label: '% of Votes',
-				data: [12, 19, 3, 5, 2, 3],
-				backgroundColor: [
-					'rgba(255, 134,159,0.4)',
-					'rgba(98,  182, 239,0.4)',
-					'rgba(255, 218, 128,0.4)',
-					'rgba(113, 205, 205,0.4)',
-					'rgba(170, 128, 252,0.4)',
-					'rgba(255, 177, 101,0.4)'
-				],
-				borderWidth: 2,
-				borderColor: [
-					'rgba(255, 134, 159, 1)',
-					'rgba(98,  182, 239, 1)',
-					'rgba(255, 218, 128, 1)',
-					'rgba(113, 205, 205, 1)',
-					'rgba(170, 128, 252, 1)',
-					'rgba(255, 177, 101, 1)'
-				]
-			}
-		]
-	};
+	export let data = {};
 
 	const selectOptions = [
 		{
-			value: 'name',
+			value: '',
 			label: '姓名',
 			options: [
 				{ value: 'nameCount', label: '姓名数量' },
@@ -52,13 +27,23 @@
 			]
 		},
 		{
-			value: 'lastName',
+			value: '',
 			label: '姓氏',
 			options: [
 				{ value: 'lastNameCount', label: '姓氏数量' },
 				{ value: 'lastNameMax', label: '姓氏最大值' },
 				{ value: 'lastNameMin', label: '姓氏最小值' },
 				{ value: 'lastNameAvg', label: '姓氏平均值' }
+			]
+		},
+		{
+			value: 'rolesAggregate',
+			label: '角色',
+			options: [
+				{ value: 'nameCount', label: '姓名数量' },
+				{ value: 'nameMax', label: '姓名最大值' },
+				{ value: 'nameMin', label: '姓名最小值' },
+				{ value: 'nameAvg', label: '姓名平均值' }
 			]
 		}
 	];
@@ -84,11 +69,21 @@
 				{ value: 'ASC', label: '姓氏正序' },
 				{ value: 'DESC', label: '姓氏倒序' }
 			]
+		},
+		{
+			value: 'rolesAggregate',
+			label: '角色',
+			options: [
+				{ value: 'nameCount', label: '姓名数量' },
+				{ value: 'nameMax', label: '姓名最大值' },
+				{ value: 'nameMin', label: '姓名最小值' },
+				{ value: 'nameAvg', label: '姓名平均值' }
+			]
 		}
 	];
 
 	let queryArguments: UserConnectionQueryArguments = {};
-	let selectColumns: string[] = [];
+	let selectColumns: Option[] = [];
 	let groupByColumns: Option[] = [];
 	let orderByColumns: Option[] = [];
 
@@ -130,7 +125,7 @@
 								),
 								datasets: selectColumns.map((column) => ({
 									label: column,
-									data: nodes.map((node: { [x: string]: any }) => node[column])
+									data: nodes.map((node: { [x: string]: any }) => node[column.value])
 								}))
 							};
 						}
@@ -148,6 +143,7 @@
 			multiple={true}
 			groups={selectOptions}
 			rootClassName="w-full"
+			bind:value={selectColumns}
 			on:change={(e) => {
 				if (Array.isArray(e.detail.value)) {
 					selectColumns = e.detail.value.map((option) => option.value);
