@@ -296,6 +296,21 @@ export type FileOrderBy = {
   updateUserId?: InputMaybe<Sort>;
   updateTime?: InputMaybe<Sort>;
   createGroupId?: InputMaybe<Sort>;
+  idCount?: InputMaybe<Sort>;
+  idMax?: InputMaybe<Sort>;
+  idMin?: InputMaybe<Sort>;
+  nameCount?: InputMaybe<Sort>;
+  nameMax?: InputMaybe<Sort>;
+  nameMin?: InputMaybe<Sort>;
+  contentTypeCount?: InputMaybe<Sort>;
+  contentTypeMax?: InputMaybe<Sort>;
+  contentTypeMin?: InputMaybe<Sort>;
+  contentCount?: InputMaybe<Sort>;
+  contentMax?: InputMaybe<Sort>;
+  contentMin?: InputMaybe<Sort>;
+  urlCount?: InputMaybe<Sort>;
+  urlMax?: InputMaybe<Sort>;
+  urlMin?: InputMaybe<Sort>;
 };
 
 export type FileQueryArguments = {
@@ -605,7 +620,9 @@ export type FileUserRelationMutationArguments = {
 export type FileUserRelationOrderBy = {
   id?: InputMaybe<Sort>;
   userRef?: InputMaybe<Sort>;
+  user?: InputMaybe<UserOrderBy>;
   fileRef?: InputMaybe<Sort>;
+  file?: InputMaybe<FileOrderBy>;
   isDeprecated?: InputMaybe<Sort>;
   version?: InputMaybe<Sort>;
   realmId?: InputMaybe<Sort>;
@@ -614,6 +631,15 @@ export type FileUserRelationOrderBy = {
   updateUserId?: InputMaybe<Sort>;
   updateTime?: InputMaybe<Sort>;
   createGroupId?: InputMaybe<Sort>;
+  idCount?: InputMaybe<Sort>;
+  idMax?: InputMaybe<Sort>;
+  idMin?: InputMaybe<Sort>;
+  userRefCount?: InputMaybe<Sort>;
+  userRefMax?: InputMaybe<Sort>;
+  userRefMin?: InputMaybe<Sort>;
+  fileRefCount?: InputMaybe<Sort>;
+  fileRefMax?: InputMaybe<Sort>;
+  fileRefMin?: InputMaybe<Sort>;
 };
 
 export type FileUserRelationQueryArguments = {
@@ -677,7 +703,7 @@ export type FuncExpression = {
 };
 
 /** 组 */
-export type Group = Meta & NamedStruct & TreeStruct & {
+export type Group = TreeStruct & NamedStruct & Meta & {
   __typename?: 'Group';
   /** ID */
   id?: Maybe<Scalars['ID']>;
@@ -1483,6 +1509,11 @@ export type GroupOrderBy = {
   path?: InputMaybe<Sort>;
   deep?: InputMaybe<Sort>;
   parentId?: InputMaybe<Sort>;
+  parent?: InputMaybe<GroupOrderBy>;
+  subGroups?: InputMaybe<GroupOrderBy>;
+  users?: InputMaybe<UserOrderBy>;
+  roles?: InputMaybe<RoleOrderBy>;
+  realm?: InputMaybe<RealmOrderBy>;
   isDeprecated?: InputMaybe<Sort>;
   version?: InputMaybe<Sort>;
   realmId?: InputMaybe<Sort>;
@@ -1491,6 +1522,33 @@ export type GroupOrderBy = {
   updateUserId?: InputMaybe<Sort>;
   updateTime?: InputMaybe<Sort>;
   createGroupId?: InputMaybe<Sort>;
+  groupUserRelation?: InputMaybe<GroupUserRelationOrderBy>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationOrderBy>;
+  subGroupsAggregate?: InputMaybe<GroupOrderBy>;
+  usersAggregate?: InputMaybe<UserOrderBy>;
+  rolesAggregate?: InputMaybe<RoleOrderBy>;
+  groupUserRelationAggregate?: InputMaybe<GroupUserRelationOrderBy>;
+  groupRoleRelationAggregate?: InputMaybe<GroupRoleRelationOrderBy>;
+  idCount?: InputMaybe<Sort>;
+  idMax?: InputMaybe<Sort>;
+  idMin?: InputMaybe<Sort>;
+  nameCount?: InputMaybe<Sort>;
+  nameMax?: InputMaybe<Sort>;
+  nameMin?: InputMaybe<Sort>;
+  descriptionCount?: InputMaybe<Sort>;
+  descriptionMax?: InputMaybe<Sort>;
+  descriptionMin?: InputMaybe<Sort>;
+  pathCount?: InputMaybe<Sort>;
+  pathMax?: InputMaybe<Sort>;
+  pathMin?: InputMaybe<Sort>;
+  parentIdCount?: InputMaybe<Sort>;
+  parentIdMax?: InputMaybe<Sort>;
+  parentIdMin?: InputMaybe<Sort>;
+  deepCount?: InputMaybe<Sort>;
+  deepSum?: InputMaybe<Sort>;
+  deepAvg?: InputMaybe<Sort>;
+  deepMax?: InputMaybe<Sort>;
+  deepMin?: InputMaybe<Sort>;
 };
 
 export type GroupQueryArguments = {
@@ -1790,7 +1848,9 @@ export type GroupRoleRelationMutationArguments = {
 export type GroupRoleRelationOrderBy = {
   id?: InputMaybe<Sort>;
   roleRef?: InputMaybe<Sort>;
+  role?: InputMaybe<RoleOrderBy>;
   groupRef?: InputMaybe<Sort>;
+  group?: InputMaybe<GroupOrderBy>;
   isDeprecated?: InputMaybe<Sort>;
   version?: InputMaybe<Sort>;
   realmId?: InputMaybe<Sort>;
@@ -1799,6 +1859,15 @@ export type GroupRoleRelationOrderBy = {
   updateUserId?: InputMaybe<Sort>;
   updateTime?: InputMaybe<Sort>;
   createGroupId?: InputMaybe<Sort>;
+  idCount?: InputMaybe<Sort>;
+  idMax?: InputMaybe<Sort>;
+  idMin?: InputMaybe<Sort>;
+  roleRefCount?: InputMaybe<Sort>;
+  roleRefMax?: InputMaybe<Sort>;
+  roleRefMin?: InputMaybe<Sort>;
+  groupRefCount?: InputMaybe<Sort>;
+  groupRefMax?: InputMaybe<Sort>;
+  groupRefMin?: InputMaybe<Sort>;
 };
 
 export type GroupRoleRelationQueryArguments = {
@@ -2144,7 +2213,9 @@ export type GroupUserRelationMutationArguments = {
 export type GroupUserRelationOrderBy = {
   id?: InputMaybe<Sort>;
   userRef?: InputMaybe<Sort>;
+  user?: InputMaybe<UserOrderBy>;
   groupRef?: InputMaybe<Sort>;
+  group?: InputMaybe<GroupOrderBy>;
   isDeprecated?: InputMaybe<Sort>;
   version?: InputMaybe<Sort>;
   realmId?: InputMaybe<Sort>;
@@ -2153,6 +2224,15 @@ export type GroupUserRelationOrderBy = {
   updateUserId?: InputMaybe<Sort>;
   updateTime?: InputMaybe<Sort>;
   createGroupId?: InputMaybe<Sort>;
+  idCount?: InputMaybe<Sort>;
+  idMax?: InputMaybe<Sort>;
+  idMin?: InputMaybe<Sort>;
+  userRefCount?: InputMaybe<Sort>;
+  userRefMax?: InputMaybe<Sort>;
+  userRefMin?: InputMaybe<Sort>;
+  groupRefCount?: InputMaybe<Sort>;
+  groupRefMax?: InputMaybe<Sort>;
+  groupRefMin?: InputMaybe<Sort>;
 };
 
 export type GroupUserRelationQueryArguments = {
@@ -3441,6 +3521,8 @@ export type PermissionOrderBy = {
   field?: InputMaybe<Sort>;
   type?: InputMaybe<Sort>;
   permissionType?: InputMaybe<Sort>;
+  roles?: InputMaybe<RoleOrderBy>;
+  realm?: InputMaybe<RealmOrderBy>;
   isDeprecated?: InputMaybe<Sort>;
   version?: InputMaybe<Sort>;
   realmId?: InputMaybe<Sort>;
@@ -3449,6 +3531,21 @@ export type PermissionOrderBy = {
   updateUserId?: InputMaybe<Sort>;
   updateTime?: InputMaybe<Sort>;
   createGroupId?: InputMaybe<Sort>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationOrderBy>;
+  rolesAggregate?: InputMaybe<RoleOrderBy>;
+  permissionRoleRelationAggregate?: InputMaybe<PermissionRoleRelationOrderBy>;
+  nameCount?: InputMaybe<Sort>;
+  nameMax?: InputMaybe<Sort>;
+  nameMin?: InputMaybe<Sort>;
+  descriptionCount?: InputMaybe<Sort>;
+  descriptionMax?: InputMaybe<Sort>;
+  descriptionMin?: InputMaybe<Sort>;
+  fieldCount?: InputMaybe<Sort>;
+  fieldMax?: InputMaybe<Sort>;
+  fieldMin?: InputMaybe<Sort>;
+  typeCount?: InputMaybe<Sort>;
+  typeMax?: InputMaybe<Sort>;
+  typeMin?: InputMaybe<Sort>;
 };
 
 export type PermissionQueryArguments = {
@@ -3738,7 +3835,9 @@ export type PermissionRoleRelationMutationArguments = {
 export type PermissionRoleRelationOrderBy = {
   id?: InputMaybe<Sort>;
   roleRef?: InputMaybe<Sort>;
+  role?: InputMaybe<RoleOrderBy>;
   permissionRef?: InputMaybe<Sort>;
+  permission?: InputMaybe<PermissionOrderBy>;
   isDeprecated?: InputMaybe<Sort>;
   version?: InputMaybe<Sort>;
   realmId?: InputMaybe<Sort>;
@@ -3747,6 +3846,15 @@ export type PermissionRoleRelationOrderBy = {
   updateUserId?: InputMaybe<Sort>;
   updateTime?: InputMaybe<Sort>;
   createGroupId?: InputMaybe<Sort>;
+  idCount?: InputMaybe<Sort>;
+  idMax?: InputMaybe<Sort>;
+  idMin?: InputMaybe<Sort>;
+  roleRefCount?: InputMaybe<Sort>;
+  roleRefMax?: InputMaybe<Sort>;
+  roleRefMin?: InputMaybe<Sort>;
+  permissionRefCount?: InputMaybe<Sort>;
+  permissionRefMax?: InputMaybe<Sort>;
+  permissionRefMin?: InputMaybe<Sort>;
 };
 
 export type PermissionRoleRelationQueryArguments = {
@@ -4982,7 +5090,7 @@ export type Query_JsonSchema_Arguments = {
 };
 
 /** 租户 */
-export type Realm = Meta & NamedStruct & {
+export type Realm = NamedStruct & Meta & {
   __typename?: 'Realm';
   /** ID */
   id?: Maybe<Scalars['ID']>;
@@ -5194,6 +5302,15 @@ export type RealmOrderBy = {
   updateUserId?: InputMaybe<Sort>;
   updateTime?: InputMaybe<Sort>;
   createGroupId?: InputMaybe<Sort>;
+  idCount?: InputMaybe<Sort>;
+  idMax?: InputMaybe<Sort>;
+  idMin?: InputMaybe<Sort>;
+  nameCount?: InputMaybe<Sort>;
+  nameMax?: InputMaybe<Sort>;
+  nameMin?: InputMaybe<Sort>;
+  descriptionCount?: InputMaybe<Sort>;
+  descriptionMax?: InputMaybe<Sort>;
+  descriptionMin?: InputMaybe<Sort>;
 };
 
 export type RealmQueryArguments = {
@@ -5233,7 +5350,7 @@ export type RealmSubscriptionArguments = {
 };
 
 /** 角色 */
-export type Role = Meta & NamedStruct & {
+export type Role = NamedStruct & Meta & {
   __typename?: 'Role';
   /** ID */
   id?: Maybe<Scalars['ID']>;
@@ -6224,7 +6341,9 @@ export type RoleCompositeRelationMutationArguments = {
 export type RoleCompositeRelationOrderBy = {
   id?: InputMaybe<Sort>;
   roleRef?: InputMaybe<Sort>;
+  role?: InputMaybe<RoleOrderBy>;
   compositeRef?: InputMaybe<Sort>;
+  composite?: InputMaybe<RoleOrderBy>;
   isDeprecated?: InputMaybe<Sort>;
   version?: InputMaybe<Sort>;
   realmId?: InputMaybe<Sort>;
@@ -6233,6 +6352,15 @@ export type RoleCompositeRelationOrderBy = {
   updateUserId?: InputMaybe<Sort>;
   updateTime?: InputMaybe<Sort>;
   createGroupId?: InputMaybe<Sort>;
+  idCount?: InputMaybe<Sort>;
+  idMax?: InputMaybe<Sort>;
+  idMin?: InputMaybe<Sort>;
+  roleRefCount?: InputMaybe<Sort>;
+  roleRefMax?: InputMaybe<Sort>;
+  roleRefMin?: InputMaybe<Sort>;
+  compositeRefCount?: InputMaybe<Sort>;
+  compositeRefMax?: InputMaybe<Sort>;
+  compositeRefMin?: InputMaybe<Sort>;
 };
 
 export type RoleCompositeRelationQueryArguments = {
@@ -6524,6 +6652,11 @@ export type RoleOrderBy = {
   id?: InputMaybe<Sort>;
   name?: InputMaybe<Sort>;
   description?: InputMaybe<Sort>;
+  users?: InputMaybe<UserOrderBy>;
+  groups?: InputMaybe<GroupOrderBy>;
+  composites?: InputMaybe<RoleOrderBy>;
+  permissions?: InputMaybe<PermissionOrderBy>;
+  realm?: InputMaybe<RealmOrderBy>;
   isDeprecated?: InputMaybe<Sort>;
   version?: InputMaybe<Sort>;
   realmId?: InputMaybe<Sort>;
@@ -6532,6 +6665,27 @@ export type RoleOrderBy = {
   updateUserId?: InputMaybe<Sort>;
   updateTime?: InputMaybe<Sort>;
   createGroupId?: InputMaybe<Sort>;
+  roleUserRelation?: InputMaybe<RoleUserRelationOrderBy>;
+  groupRoleRelation?: InputMaybe<GroupRoleRelationOrderBy>;
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationOrderBy>;
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationOrderBy>;
+  usersAggregate?: InputMaybe<UserOrderBy>;
+  groupsAggregate?: InputMaybe<GroupOrderBy>;
+  compositesAggregate?: InputMaybe<RoleOrderBy>;
+  permissionsAggregate?: InputMaybe<PermissionOrderBy>;
+  roleUserRelationAggregate?: InputMaybe<RoleUserRelationOrderBy>;
+  groupRoleRelationAggregate?: InputMaybe<GroupRoleRelationOrderBy>;
+  roleCompositeRelationAggregate?: InputMaybe<RoleCompositeRelationOrderBy>;
+  permissionRoleRelationAggregate?: InputMaybe<PermissionRoleRelationOrderBy>;
+  idCount?: InputMaybe<Sort>;
+  idMax?: InputMaybe<Sort>;
+  idMin?: InputMaybe<Sort>;
+  nameCount?: InputMaybe<Sort>;
+  nameMax?: InputMaybe<Sort>;
+  nameMin?: InputMaybe<Sort>;
+  descriptionCount?: InputMaybe<Sort>;
+  descriptionMax?: InputMaybe<Sort>;
+  descriptionMin?: InputMaybe<Sort>;
 };
 
 export type RoleQueryArguments = {
@@ -6862,7 +7016,9 @@ export type RoleUserRelationMutationArguments = {
 export type RoleUserRelationOrderBy = {
   id?: InputMaybe<Sort>;
   userRef?: InputMaybe<Sort>;
+  user?: InputMaybe<UserOrderBy>;
   roleRef?: InputMaybe<Sort>;
+  role?: InputMaybe<RoleOrderBy>;
   isDeprecated?: InputMaybe<Sort>;
   version?: InputMaybe<Sort>;
   realmId?: InputMaybe<Sort>;
@@ -6871,6 +7027,15 @@ export type RoleUserRelationOrderBy = {
   updateUserId?: InputMaybe<Sort>;
   updateTime?: InputMaybe<Sort>;
   createGroupId?: InputMaybe<Sort>;
+  idCount?: InputMaybe<Sort>;
+  idMax?: InputMaybe<Sort>;
+  idMin?: InputMaybe<Sort>;
+  userRefCount?: InputMaybe<Sort>;
+  userRefMax?: InputMaybe<Sort>;
+  userRefMin?: InputMaybe<Sort>;
+  roleRefCount?: InputMaybe<Sort>;
+  roleRefMax?: InputMaybe<Sort>;
+  roleRefMin?: InputMaybe<Sort>;
 };
 
 export type RoleUserRelationQueryArguments = {
@@ -8072,7 +8237,7 @@ export type TreeStructInput = {
 };
 
 /** 用户 */
-export type User = Meta & NamedStruct & {
+export type User = NamedStruct & Meta & {
   __typename?: 'User';
   /** ID */
   id?: Maybe<Scalars['ID']>;
@@ -8913,7 +9078,12 @@ export type UserOrderBy = {
   salt?: InputMaybe<Sort>;
   hash?: InputMaybe<Sort>;
   email?: InputMaybe<Sort>;
+  files?: InputMaybe<FileOrderBy>;
+  phones?: InputMaybe<Sort>;
   disable?: InputMaybe<Sort>;
+  groups?: InputMaybe<GroupOrderBy>;
+  roles?: InputMaybe<RoleOrderBy>;
+  realm?: InputMaybe<RealmOrderBy>;
   isDeprecated?: InputMaybe<Sort>;
   version?: InputMaybe<Sort>;
   realmId?: InputMaybe<Sort>;
@@ -8922,6 +9092,39 @@ export type UserOrderBy = {
   updateUserId?: InputMaybe<Sort>;
   updateTime?: InputMaybe<Sort>;
   createGroupId?: InputMaybe<Sort>;
+  fileUserRelation?: InputMaybe<FileUserRelationOrderBy>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationOrderBy>;
+  groupUserRelation?: InputMaybe<GroupUserRelationOrderBy>;
+  roleUserRelation?: InputMaybe<RoleUserRelationOrderBy>;
+  groupsAggregate?: InputMaybe<GroupOrderBy>;
+  rolesAggregate?: InputMaybe<RoleOrderBy>;
+  userPhonesRelationAggregate?: InputMaybe<UserPhonesRelationOrderBy>;
+  groupUserRelationAggregate?: InputMaybe<GroupUserRelationOrderBy>;
+  roleUserRelationAggregate?: InputMaybe<RoleUserRelationOrderBy>;
+  idCount?: InputMaybe<Sort>;
+  idMax?: InputMaybe<Sort>;
+  idMin?: InputMaybe<Sort>;
+  nameCount?: InputMaybe<Sort>;
+  nameMax?: InputMaybe<Sort>;
+  nameMin?: InputMaybe<Sort>;
+  descriptionCount?: InputMaybe<Sort>;
+  descriptionMax?: InputMaybe<Sort>;
+  descriptionMin?: InputMaybe<Sort>;
+  lastNameCount?: InputMaybe<Sort>;
+  lastNameMax?: InputMaybe<Sort>;
+  lastNameMin?: InputMaybe<Sort>;
+  loginCount?: InputMaybe<Sort>;
+  loginMax?: InputMaybe<Sort>;
+  loginMin?: InputMaybe<Sort>;
+  saltCount?: InputMaybe<Sort>;
+  saltMax?: InputMaybe<Sort>;
+  saltMin?: InputMaybe<Sort>;
+  hashCount?: InputMaybe<Sort>;
+  hashMax?: InputMaybe<Sort>;
+  hashMin?: InputMaybe<Sort>;
+  emailCount?: InputMaybe<Sort>;
+  emailMax?: InputMaybe<Sort>;
+  emailMin?: InputMaybe<Sort>;
 };
 
 export type UserPhonesRelation = Meta & {
@@ -9164,6 +9367,7 @@ export type UserPhonesRelationMutationArguments = {
 export type UserPhonesRelationOrderBy = {
   id?: InputMaybe<Sort>;
   userRef?: InputMaybe<Sort>;
+  user?: InputMaybe<UserOrderBy>;
   phonesRef?: InputMaybe<Sort>;
   isDeprecated?: InputMaybe<Sort>;
   version?: InputMaybe<Sort>;
@@ -9173,6 +9377,15 @@ export type UserPhonesRelationOrderBy = {
   updateUserId?: InputMaybe<Sort>;
   updateTime?: InputMaybe<Sort>;
   createGroupId?: InputMaybe<Sort>;
+  idCount?: InputMaybe<Sort>;
+  idMax?: InputMaybe<Sort>;
+  idMin?: InputMaybe<Sort>;
+  userRefCount?: InputMaybe<Sort>;
+  userRefMax?: InputMaybe<Sort>;
+  userRefMin?: InputMaybe<Sort>;
+  phonesRefCount?: InputMaybe<Sort>;
+  phonesRefMax?: InputMaybe<Sort>;
+  phonesRefMin?: InputMaybe<Sort>;
 };
 
 export type UserPhonesRelationQueryArguments = {

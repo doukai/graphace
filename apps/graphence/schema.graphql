@@ -322,17 +322,32 @@ input FileMutationArguments {
 
 input FileOrderBy {
   content: Sort
+  contentCount: Sort
+  contentMax: Sort
+  contentMin: Sort
   contentType: Sort
+  contentTypeCount: Sort
+  contentTypeMax: Sort
+  contentTypeMin: Sort
   createGroupId: Sort
   createTime: Sort
   createUserId: Sort
   id: Sort
+  idCount: Sort
+  idMax: Sort
+  idMin: Sort
   isDeprecated: Sort
   name: Sort
+  nameCount: Sort
+  nameMax: Sort
+  nameMin: Sort
   realmId: Sort
   updateTime: Sort
   updateUserId: Sort
   url: Sort
+  urlCount: Sort
+  urlMax: Sort
+  urlMin: Sort
   version: Sort
 }
 
@@ -592,13 +607,24 @@ input FileUserRelationOrderBy {
   createGroupId: Sort
   createTime: Sort
   createUserId: Sort
+  file: FileOrderBy
   fileRef: Sort
+  fileRefCount: Sort
+  fileRefMax: Sort
+  fileRefMin: Sort
   id: Sort
+  idCount: Sort
+  idMax: Sort
+  idMin: Sort
   isDeprecated: Sort
   realmId: Sort
   updateTime: Sort
   updateUserId: Sort
+  user: UserOrderBy
   userRef: Sort
+  userRefCount: Sort
+  userRefMax: Sort
+  userRefMin: Sort
   version: Sort
 }
 
@@ -997,15 +1023,47 @@ input GroupOrderBy {
   createTime: Sort
   createUserId: Sort
   deep: Sort
+  deepAvg: Sort
+  deepCount: Sort
+  deepMax: Sort
+  deepMin: Sort
+  deepSum: Sort
   description: Sort
+  descriptionCount: Sort
+  descriptionMax: Sort
+  descriptionMin: Sort
+  groupRoleRelation: GroupRoleRelationOrderBy
+  groupRoleRelationAggregate: GroupRoleRelationOrderBy
+  groupUserRelation: GroupUserRelationOrderBy
+  groupUserRelationAggregate: GroupUserRelationOrderBy
   id: Sort
+  idCount: Sort
+  idMax: Sort
+  idMin: Sort
   isDeprecated: Sort
   name: Sort
+  nameCount: Sort
+  nameMax: Sort
+  nameMin: Sort
+  parent: GroupOrderBy
   parentId: Sort
+  parentIdCount: Sort
+  parentIdMax: Sort
+  parentIdMin: Sort
   path: Sort
+  pathCount: Sort
+  pathMax: Sort
+  pathMin: Sort
+  realm: RealmOrderBy
   realmId: Sort
+  roles: RoleOrderBy
+  rolesAggregate: RoleOrderBy
+  subGroups: GroupOrderBy
+  subGroupsAggregate: GroupOrderBy
   updateTime: Sort
   updateUserId: Sort
+  users: UserOrderBy
+  usersAggregate: UserOrderBy
   version: Sort
 }
 
@@ -1253,11 +1311,22 @@ input GroupRoleRelationOrderBy {
   createGroupId: Sort
   createTime: Sort
   createUserId: Sort
+  group: GroupOrderBy
   groupRef: Sort
+  groupRefCount: Sort
+  groupRefMax: Sort
+  groupRefMin: Sort
   id: Sort
+  idCount: Sort
+  idMax: Sort
+  idMin: Sort
   isDeprecated: Sort
   realmId: Sort
+  role: RoleOrderBy
   roleRef: Sort
+  roleRefCount: Sort
+  roleRefMax: Sort
+  roleRefMin: Sort
   updateTime: Sort
   updateUserId: Sort
   version: Sort
@@ -1547,13 +1616,24 @@ input GroupUserRelationOrderBy {
   createGroupId: Sort
   createTime: Sort
   createUserId: Sort
+  group: GroupOrderBy
   groupRef: Sort
+  groupRefCount: Sort
+  groupRefMax: Sort
+  groupRefMin: Sort
   id: Sort
+  idCount: Sort
+  idMax: Sort
+  idMin: Sort
   isDeprecated: Sort
   realmId: Sort
   updateTime: Sort
   updateUserId: Sort
+  user: UserOrderBy
   userRef: Sort
+  userRefCount: Sort
+  userRefMax: Sort
+  userRefMin: Sort
   version: Sort
 }
 
@@ -2081,12 +2161,29 @@ input PermissionOrderBy {
   createTime: Sort
   createUserId: Sort
   description: Sort
+  descriptionCount: Sort
+  descriptionMax: Sort
+  descriptionMin: Sort
   field: Sort
+  fieldCount: Sort
+  fieldMax: Sort
+  fieldMin: Sort
   isDeprecated: Sort
   name: Sort
+  nameCount: Sort
+  nameMax: Sort
+  nameMin: Sort
+  permissionRoleRelation: PermissionRoleRelationOrderBy
+  permissionRoleRelationAggregate: PermissionRoleRelationOrderBy
   permissionType: Sort
+  realm: RealmOrderBy
   realmId: Sort
+  roles: RoleOrderBy
+  rolesAggregate: RoleOrderBy
   type: Sort
+  typeCount: Sort
+  typeMax: Sort
+  typeMin: Sort
   updateTime: Sort
   updateUserId: Sort
   version: Sort
@@ -2332,10 +2429,21 @@ input PermissionRoleRelationOrderBy {
   createTime: Sort
   createUserId: Sort
   id: Sort
+  idCount: Sort
+  idMax: Sort
+  idMin: Sort
   isDeprecated: Sort
+  permission: PermissionOrderBy
   permissionRef: Sort
+  permissionRefCount: Sort
+  permissionRefMax: Sort
+  permissionRefMin: Sort
   realmId: Sort
+  role: RoleOrderBy
   roleRef: Sort
+  roleRefCount: Sort
+  roleRefMax: Sort
+  roleRefMin: Sort
   updateTime: Sort
   updateUserId: Sort
   version: Sort
@@ -2711,9 +2819,18 @@ input RealmOrderBy {
   createTime: Sort
   createUserId: Sort
   description: Sort
+  descriptionCount: Sort
+  descriptionMax: Sort
+  descriptionMin: Sort
   id: Sort
+  idCount: Sort
+  idMax: Sort
+  idMin: Sort
   isDeprecated: Sort
   name: Sort
+  nameCount: Sort
+  nameMax: Sort
+  nameMin: Sort
   realmId: Sort
   updateTime: Sort
   updateUserId: Sort
@@ -3034,14 +3151,25 @@ input RoleCompositeRelationMutationArguments {
 }
 
 input RoleCompositeRelationOrderBy {
+  composite: RoleOrderBy
   compositeRef: Sort
+  compositeRefCount: Sort
+  compositeRefMax: Sort
+  compositeRefMin: Sort
   createGroupId: Sort
   createTime: Sort
   createUserId: Sort
   id: Sort
+  idCount: Sort
+  idMax: Sort
+  idMin: Sort
   isDeprecated: Sort
   realmId: Sort
+  role: RoleOrderBy
   roleRef: Sort
+  roleRefCount: Sort
+  roleRefMax: Sort
+  roleRefMin: Sort
   updateTime: Sort
   updateUserId: Sort
   version: Sort
@@ -3331,16 +3459,42 @@ input RoleMutationArguments {
 }
 
 input RoleOrderBy {
+  composites: RoleOrderBy
+  compositesAggregate: RoleOrderBy
   createGroupId: Sort
   createTime: Sort
   createUserId: Sort
   description: Sort
+  descriptionCount: Sort
+  descriptionMax: Sort
+  descriptionMin: Sort
+  groupRoleRelation: GroupRoleRelationOrderBy
+  groupRoleRelationAggregate: GroupRoleRelationOrderBy
+  groups: GroupOrderBy
+  groupsAggregate: GroupOrderBy
   id: Sort
+  idCount: Sort
+  idMax: Sort
+  idMin: Sort
   isDeprecated: Sort
   name: Sort
+  nameCount: Sort
+  nameMax: Sort
+  nameMin: Sort
+  permissionRoleRelation: PermissionRoleRelationOrderBy
+  permissionRoleRelationAggregate: PermissionRoleRelationOrderBy
+  permissions: PermissionOrderBy
+  permissionsAggregate: PermissionOrderBy
+  realm: RealmOrderBy
   realmId: Sort
+  roleCompositeRelation: RoleCompositeRelationOrderBy
+  roleCompositeRelationAggregate: RoleCompositeRelationOrderBy
+  roleUserRelation: RoleUserRelationOrderBy
+  roleUserRelationAggregate: RoleUserRelationOrderBy
   updateTime: Sort
   updateUserId: Sort
+  users: UserOrderBy
+  usersAggregate: UserOrderBy
   version: Sort
 }
 
@@ -3615,12 +3769,23 @@ input RoleUserRelationOrderBy {
   createTime: Sort
   createUserId: Sort
   id: Sort
+  idCount: Sort
+  idMax: Sort
+  idMin: Sort
   isDeprecated: Sort
   realmId: Sort
+  role: RoleOrderBy
   roleRef: Sort
+  roleRefCount: Sort
+  roleRefMax: Sort
+  roleRefMin: Sort
   updateTime: Sort
   updateUserId: Sort
+  user: UserOrderBy
   userRef: Sort
+  userRefCount: Sort
+  userRefMax: Sort
+  userRefMin: Sort
   version: Sort
 }
 
@@ -4158,18 +4323,56 @@ input UserOrderBy {
   createTime: Sort
   createUserId: Sort
   description: Sort
+  descriptionCount: Sort
+  descriptionMax: Sort
+  descriptionMin: Sort
   disable: Sort
   email: Sort
+  emailCount: Sort
+  emailMax: Sort
+  emailMin: Sort
+  fileUserRelation: FileUserRelationOrderBy
+  files: FileOrderBy
+  groupUserRelation: GroupUserRelationOrderBy
+  groupUserRelationAggregate: GroupUserRelationOrderBy
+  groups: GroupOrderBy
+  groupsAggregate: GroupOrderBy
   hash: Sort
+  hashCount: Sort
+  hashMax: Sort
+  hashMin: Sort
   id: Sort
+  idCount: Sort
+  idMax: Sort
+  idMin: Sort
   isDeprecated: Sort
   lastName: Sort
+  lastNameCount: Sort
+  lastNameMax: Sort
+  lastNameMin: Sort
   login: Sort
+  loginCount: Sort
+  loginMax: Sort
+  loginMin: Sort
   name: Sort
+  nameCount: Sort
+  nameMax: Sort
+  nameMin: Sort
+  phones: Sort
+  realm: RealmOrderBy
   realmId: Sort
+  roleUserRelation: RoleUserRelationOrderBy
+  roleUserRelationAggregate: RoleUserRelationOrderBy
+  roles: RoleOrderBy
+  rolesAggregate: RoleOrderBy
   salt: Sort
+  saltCount: Sort
+  saltMax: Sort
+  saltMin: Sort
   updateTime: Sort
   updateUserId: Sort
+  userPhonesRelation: UserPhonesRelationOrderBy
+  userPhonesRelationAggregate: UserPhonesRelationOrderBy
   version: Sort
 }
 
@@ -4381,12 +4584,22 @@ input UserPhonesRelationOrderBy {
   createTime: Sort
   createUserId: Sort
   id: Sort
+  idCount: Sort
+  idMax: Sort
+  idMin: Sort
   isDeprecated: Sort
   phonesRef: Sort
+  phonesRefCount: Sort
+  phonesRefMax: Sort
+  phonesRefMin: Sort
   realmId: Sort
   updateTime: Sort
   updateUserId: Sort
+  user: UserOrderBy
   userRef: Sort
+  userRefCount: Sort
+  userRefMax: Sort
+  userRefMin: Sort
   version: Sort
 }
 

@@ -26,6 +26,7 @@
 	export let containerClassName: string = '';
 	export let tagClassName: string = '';
 	export let menuClassName: string = '';
+	export let groupClassName: string = '';
 	export let labelClassName: string = '';
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
@@ -108,13 +109,13 @@
 </script>
 
 <div class="relative {rootClassName}">
-	<label class={title ? 'input-group md:input-group-sm' : ''}>
+	<div class={title ? 'input-group ' + groupClassName : ''}>
 		{#if title}
 			<span class="whitespace-nowrap {labelClassName}">{title}</span>
 		{/if}
 		<div
 			use:melt={$root}
-			class="textarea textarea-bordered flex flex-row flex-wrap items-center w-full min-h-6 p-0 {containerClassName}"
+			class="textarea textarea-bordered flex flex-row flex-wrap items-center w-full p-0 {containerClassName}"
 		>
 			{#each $tags as t}
 				<div
@@ -137,7 +138,7 @@
 			<input
 				use:melt={$input}
 				type="text"
-				class="input shrink grow basis-0 border-0 outline-none focus:outline-none {className}"
+				class="input-sm shrink grow basis-0 border-0 outline-none focus:outline-none {className}"
 				on:focus={(e) => {
 					if ($touchedInput) {
 						debounce(() => {
@@ -154,7 +155,7 @@
 				{disabled}
 			/>
 		</div>
-	</label>
+	</div>
 	<div class="absolute right-2 top-1/2 z-10 -translate-y-1/2">
 		{#if $open}
 			<Icon src={ChevronUp} class="size-4" />

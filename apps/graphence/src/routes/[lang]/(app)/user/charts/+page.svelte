@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card, Combobox, Pagination, type Option } from '@graphace/ui';
+	import { Card, Combobox, Group, Pagination, type Option } from '@graphace/ui';
 	import { Bar } from 'svelte-chartjs';
 	import { Chart, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js';
 	import autocolors from 'chartjs-plugin-autocolors';
@@ -22,8 +22,7 @@
 			options: [
 				{ value: 'nameCount', label: '姓名数量' },
 				{ value: 'nameMax', label: '姓名最大值' },
-				{ value: 'nameMin', label: '姓名最小值' },
-				{ value: 'nameAvg', label: '姓名平均值' }
+				{ value: 'nameMin', label: '姓名最小值' }
 			]
 		},
 		{
@@ -32,8 +31,7 @@
 			options: [
 				{ value: 'lastNameCount', label: '姓氏数量' },
 				{ value: 'lastNameMax', label: '姓氏最大值' },
-				{ value: 'lastNameMin', label: '姓氏最小值' },
-				{ value: 'lastNameAvg', label: '姓氏平均值' }
+				{ value: 'lastNameMin', label: '姓氏最小值' }
 			]
 		},
 		{
@@ -42,8 +40,7 @@
 			options: [
 				{ value: 'nameCount', label: '姓名数量' },
 				{ value: 'nameMax', label: '姓名最大值' },
-				{ value: 'nameMin', label: '姓名最小值' },
-				{ value: 'nameAvg', label: '姓名平均值' }
+				{ value: 'nameMin', label: '姓名最小值' }
 			]
 		}
 	];
@@ -53,34 +50,41 @@
 		{ value: 'lastName', label: '姓氏' }
 	];
 
-	const orderByOptions = [
-		{
-			value: 'name',
-			label: '姓名',
-			options: [
-				{ value: 'ASC', label: '姓名正序' },
-				{ value: 'DESC', label: '姓名倒序' }
-			]
-		},
-		{
-			value: 'lastName',
-			label: '姓氏',
-			options: [
-				{ value: 'ASC', label: '姓氏正序' },
-				{ value: 'DESC', label: '姓氏倒序' }
-			]
-		},
-		{
-			value: 'rolesAggregate',
-			label: '角色',
-			options: [
-				{ value: 'nameCount', label: '姓名数量' },
-				{ value: 'nameMax', label: '姓名最大值' },
-				{ value: 'nameMin', label: '姓名最小值' },
-				{ value: 'nameAvg', label: '姓名平均值' }
-			]
-		}
-	];
+	// $: orderByOptions = [
+	// 	...selectColumns,
+	// 	...groupByColumns.map((option) => ({
+	// 		...option,
+	// 		group: { value: '', label: option.label }
+	// 	}))
+	// ]
+	// 	.reduce((groups, option) => {
+	// 		if (
+	// 			groups.some(
+	// 				(group) => group.value === option.group?.value && group.label === option.group?.label
+	// 			)
+	// 		) {
+	// 			groups
+	// 				.find(
+	// 					(group) => group.value === option.group?.value && group.label === option.group?.label
+	// 				)
+	// 				?.options?.push(option);
+	// 		} else {
+	// 			groups.push({
+	// 				value: option.group?.value,
+	// 				label: option.group?.label,
+	// 				options: [option]
+	// 			});
+	// 		}
+	// 		return groups;
+	// 	}, <Group[]>[])
+	// 	.map((group) => ({
+	// 		value: group.value,
+	// 		label: group.label,
+	// 		options: group.options?.flatMap((option) => [
+	// 			{ value: option.value, label: option.label + '正序', node: 'ASC' },
+	// 			{ value: option.value, label: option.label + '倒序', node: 'DESC' }
+	// 		])
+	// 	}));
 
 	let queryArguments: UserConnectionQueryArguments = {};
 	let selectColumns: Option[] = [];
@@ -145,10 +149,14 @@
 			rootClassName="w-full"
 			bind:value={selectColumns}
 			on:change={(e) => {
-				if (Array.isArray(e.detail.value)) {
-					selectColumns = e.detail.value.map((option) => option.value);
-				}
-				search();
+				// if (Array.isArray(e.detail.value)) {
+				// 	orderByColumns = orderByColumns.filter(
+				// 		(orderColumn) =>
+				// 			Array.isArray(e.detail.value) &&
+				// 			e.detail.value.some((selectColumn) => selectColumn.value === orderColumn.value)
+				// 	);
+				// }
+				// search();
 			}}
 		/>
 		<button class="btn btn-square" use:melt={$trigger}>
@@ -167,31 +175,39 @@
 						multiple={true}
 						options={groupByOptions}
 						rootClassName="w-full"
-						className="md:input-sm"
-						containerClassName="max-w-xs"
+						className="md:input-xs"
+						containerClassName="md:textarea-sm md:min-h-1 max-w-xs"
 						tagClassName="md:badge-sm"
+						groupClassName="md:input-group-sm"
+						labelClassName="md:btn-sm"
 						bind:value={groupByColumns}
 						on:change={(e) => {
-							if (Array.isArray(e.detail.value)) {
-								queryArguments.groupBy = e.detail.value.map((option) => option.value);
-							}
+							// if (Array.isArray(e.detail.value)) {
+							// 	// orderByColumns = orderByColumns.filter(
+							// 	// 	(orderColumn) =>
+							// 	// 		Array.isArray(e.detail.value) &&
+							// 	// 		e.detail.value.some((groupColumn) => groupColumn.value === orderColumn.value)
+							// 	// );
+							// 	// queryArguments.groupBy = e.detail.value.map((option) => option.value);
+							// }
 						}}
 					/>
 					<Combobox
 						title="排序"
 						multiple={true}
-						groups={orderByOptions}
 						rootClassName="w-full"
-						className="md:input-sm"
-						containerClassName="max-w-xs"
+						className="md:input-xs"
+						containerClassName="md:textarea-sm md:min-h-1 max-w-xs"
 						tagClassName="md:badge-sm"
+						groupClassName="md:input-group-sm"
+						labelClassName="md:btn-sm"
 						value={orderByColumns}
 						on:change={(e) => {
-							if (Array.isArray(e.detail.value)) {
-								queryArguments.orderBy = Object.fromEntries(
-									e.detail.value.map((option) => [option.group?.value, option.value])
-								);
-							}
+							// if (Array.isArray(e.detail.value)) {
+							// 	queryArguments.orderBy = Object.fromEntries(
+							// 		e.detail.value.map((option) => [option.group?.value, option.value])
+							// 	);
+							// }
 						}}
 					/>
 				</div>
