@@ -78,16 +78,16 @@
 		},
 		remove: async (t: Tag) => {
 			$selected = Array.isArray($selected)
-				? $selected.filter((item) => item.value.value !== t.id)
+				? $selected.filter((item) => (item.value.group?.value || '') + item.value.value !== t.id)
 				: undefined;
 			return false;
 		}
 	});
 
 	$: $tags = Array.isArray(value)
-		? value.map((item) => ({ id: item.value, value: item.label }))
+		? value.map((item) => ({ id: (item.value.group?.value || '') + item.value, value: item.label }))
 		: value
-		? [{ id: value.value, value: value.label }]
+		? [{ id: (value.value.group?.value || '') + value.value, value: value.label }]
 		: [];
 
 	let debounceTimer: ReturnType<typeof setTimeout>;
@@ -109,13 +109,13 @@
 </script>
 
 <div class="relative {rootClassName}">
-	<div class={title ? 'input-group ' + groupClassName : ''}>
+	<div class={title ? `input-group ${groupClassName}` : ''}>
 		{#if title}
 			<span class="whitespace-nowrap {labelClassName}">{title}</span>
 		{/if}
 		<div
 			use:melt={$root}
-			class="textarea textarea-bordered flex flex-row flex-wrap items-center w-full p-0 {containerClassName}"
+			class="textarea textarea-bordered flex flex-row flex-wrap items-center w-full min-h-12 p-0 {containerClassName}"
 		>
 			{#each $tags as t}
 				<div
