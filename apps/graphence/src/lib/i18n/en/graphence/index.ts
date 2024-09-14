@@ -49,6 +49,13 @@ const en: BaseTranslation = {
             newPassword: "New password",
             repeatNewPassword: "Repeat new Password",
             inconsistent: "Inconsistent"
+        },
+        agg: {
+            columns: "Columns",
+            groupBy: "Group By",
+            orderBy: "Order By",
+            option: "Options",
+            filter: "Filter"
         }
     }
 }

@@ -36,6 +36,51 @@ const en: BaseTranslation = {
 				},
 				url: {
 					name: 'url',
+				},
+				idCount: {
+					name: 'idCount',
+				},
+				idMax: {
+					name: 'idMax',
+				},
+				idMin: {
+					name: 'idMin',
+				},
+				nameCount: {
+					name: 'nameCount',
+				},
+				nameMax: {
+					name: 'nameMax',
+				},
+				nameMin: {
+					name: 'nameMin',
+				},
+				contentTypeCount: {
+					name: 'contentTypeCount',
+				},
+				contentTypeMax: {
+					name: 'contentTypeMax',
+				},
+				contentTypeMin: {
+					name: 'contentTypeMin',
+				},
+				contentCount: {
+					name: 'contentCount',
+				},
+				contentMax: {
+					name: 'contentMax',
+				},
+				contentMin: {
+					name: 'contentMin',
+				},
+				urlCount: {
+					name: 'urlCount',
+				},
+				urlMax: {
+					name: 'urlMax',
+				},
+				urlMin: {
+					name: 'urlMin',
 				}
 			}
 		},
@@ -71,6 +116,75 @@ const en: BaseTranslation = {
 				},
 				realm: {
 					name: 'realm',
+				},
+				subGroupsAggregate: {
+					name: 'subGroupsAggregate',
+				},
+				usersAggregate: {
+					name: 'usersAggregate',
+				},
+				rolesAggregate: {
+					name: 'rolesAggregate',
+				},
+				idCount: {
+					name: 'idCount',
+				},
+				idMax: {
+					name: 'idMax',
+				},
+				idMin: {
+					name: 'idMin',
+				},
+				nameCount: {
+					name: 'nameCount',
+				},
+				nameMax: {
+					name: 'nameMax',
+				},
+				nameMin: {
+					name: 'nameMin',
+				},
+				descriptionCount: {
+					name: 'descriptionCount',
+				},
+				descriptionMax: {
+					name: 'descriptionMax',
+				},
+				descriptionMin: {
+					name: 'descriptionMin',
+				},
+				pathCount: {
+					name: 'pathCount',
+				},
+				pathMax: {
+					name: 'pathMax',
+				},
+				pathMin: {
+					name: 'pathMin',
+				},
+				parentIdCount: {
+					name: 'parentIdCount',
+				},
+				parentIdMax: {
+					name: 'parentIdMax',
+				},
+				parentIdMin: {
+					name: 'parentIdMin',
+				},
+				deepCount: {
+					name: 'deepCount',
+				},
+				deepSum: {
+					name: 'deepSum',
+				},
+				deepAvg: {
+					name: 'deepAvg',
+				},
+				deepMax: {
+					name: 'deepMax',
+				},
+				deepMin: {
+					name: 'deepMin',
 				}
 			}
 		},
@@ -97,6 +211,45 @@ const en: BaseTranslation = {
 				},
 				realm: {
 					name: 'realm',
+				},
+				rolesAggregate: {
+					name: 'rolesAggregate',
+				},
+				nameCount: {
+					name: 'nameCount',
+				},
+				nameMax: {
+					name: 'nameMax',
+				},
+				nameMin: {
+					name: 'nameMin',
+				},
+				descriptionCount: {
+					name: 'descriptionCount',
+				},
+				descriptionMax: {
+					name: 'descriptionMax',
+				},
+				descriptionMin: {
+					name: 'descriptionMin',
+				},
+				fieldCount: {
+					name: 'fieldCount',
+				},
+				fieldMax: {
+					name: 'fieldMax',
+				},
+				fieldMin: {
+					name: 'fieldMin',
+				},
+				typeCount: {
+					name: 'typeCount',
+				},
+				typeMax: {
+					name: 'typeMax',
+				},
+				typeMin: {
+					name: 'typeMin',
 				}
 			}
 		},
@@ -134,6 +287,33 @@ const en: BaseTranslation = {
 				},
 				description: {
 					name: 'description',
+				},
+				idCount: {
+					name: 'idCount',
+				},
+				idMax: {
+					name: 'idMax',
+				},
+				idMin: {
+					name: 'idMin',
+				},
+				nameCount: {
+					name: 'nameCount',
+				},
+				nameMax: {
+					name: 'nameMax',
+				},
+				nameMin: {
+					name: 'nameMin',
+				},
+				descriptionCount: {
+					name: 'descriptionCount',
+				},
+				descriptionMax: {
+					name: 'descriptionMax',
+				},
+				descriptionMin: {
+					name: 'descriptionMin',
 				}
 			}
 		},
@@ -160,6 +340,45 @@ const en: BaseTranslation = {
 				},
 				realm: {
 					name: 'realm',
+				},
+				usersAggregate: {
+					name: 'usersAggregate',
+				},
+				groupsAggregate: {
+					name: 'groupsAggregate',
+				},
+				compositesAggregate: {
+					name: 'compositesAggregate',
+				},
+				permissionsAggregate: {
+					name: 'permissionsAggregate',
+				},
+				idCount: {
+					name: 'idCount',
+				},
+				idMax: {
+					name: 'idMax',
+				},
+				idMin: {
+					name: 'idMin',
+				},
+				nameCount: {
+					name: 'nameCount',
+				},
+				nameMax: {
+					name: 'nameMax',
+				},
+				nameMin: {
+					name: 'nameMin',
+				},
+				descriptionCount: {
+					name: 'descriptionCount',
+				},
+				descriptionMax: {
+					name: 'descriptionMax',
+				},
+				descriptionMin: {
+					name: 'descriptionMin',
 				}
 			}
 		},
@@ -198,6 +417,84 @@ const en: BaseTranslation = {
 				},
 				realm: {
 					name: 'realm',
+				},
+				groupsAggregate: {
+					name: 'groupsAggregate',
+				},
+				rolesAggregate: {
+					name: 'rolesAggregate',
+				},
+				idCount: {
+					name: 'idCount',
+				},
+				idMax: {
+					name: 'idMax',
+				},
+				idMin: {
+					name: 'idMin',
+				},
+				nameCount: {
+					name: 'nameCount',
+				},
+				nameMax: {
+					name: 'nameMax',
+				},
+				nameMin: {
+					name: 'nameMin',
+				},
+				descriptionCount: {
+					name: 'descriptionCount',
+				},
+				descriptionMax: {
+					name: 'descriptionMax',
+				},
+				descriptionMin: {
+					name: 'descriptionMin',
+				},
+				lastNameCount: {
+					name: 'lastNameCount',
+				},
+				lastNameMax: {
+					name: 'lastNameMax',
+				},
+				lastNameMin: {
+					name: 'lastNameMin',
+				},
+				loginCount: {
+					name: 'loginCount',
+				},
+				loginMax: {
+					name: 'loginMax',
+				},
+				loginMin: {
+					name: 'loginMin',
+				},
+				saltCount: {
+					name: 'saltCount',
+				},
+				saltMax: {
+					name: 'saltMax',
+				},
+				saltMin: {
+					name: 'saltMin',
+				},
+				hashCount: {
+					name: 'hashCount',
+				},
+				hashMax: {
+					name: 'hashMax',
+				},
+				hashMin: {
+					name: 'hashMin',
+				},
+				emailCount: {
+					name: 'emailCount',
+				},
+				emailMax: {
+					name: 'emailMax',
+				},
+				emailMin: {
+					name: 'emailMin',
 				}
 			}
 		}

@@ -50,7 +50,6 @@ const renders: Record<Template, Render> = {
                                     .filter(field => inListField(objectType.name, field.name, getFieldType(field.type).name) || inDetailField(objectType.name, field.name, getFieldType(field.type).name))
                                     .filter(field => !isConnection(getFieldType(field.type).name))
                                     .filter(field => !isEdge(getFieldType(field.type).name))
-                                    .filter(field => !isAggregate(field.name))
                                     .filter(field => !isPageInfo(getFieldType(field.type).name))
                                     .filter(field => !isIntrospection(getFieldType(field.type).name))
                             };
@@ -92,7 +91,6 @@ const renders: Record<Template, Render> = {
                                     .filter(field => inListField(objectType.name, field.name, getFieldType(field.type).name) || inDetailField(objectType.name, field.name, getFieldType(field.type).name))
                                     .filter(field => !isConnection(getFieldType(field.type).name))
                                     .filter(field => !isEdge(getFieldType(field.type).name))
-                                    .filter(field => !isAggregate(field.name))
                                     .filter(field => !isPageInfo(getFieldType(field.type).name))
                                     .filter(field => !isIntrospection(getFieldType(field.type).name))
                             };

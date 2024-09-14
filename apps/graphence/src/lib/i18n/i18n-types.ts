@@ -191,6 +191,28 @@ export type NamespaceGraphenceTranslation = {
 			 */
 			inconsistent: string
 		}
+		agg: {
+			/**
+			 * C​o​l​u​m​n​s
+			 */
+			columns: string
+			/**
+			 * G​r​o​u​p​ ​B​y
+			 */
+			groupBy: string
+			/**
+			 * O​r​d​e​r​ ​B​y
+			 */
+			orderBy: string
+			/**
+			 * O​p​t​i​o​n​s
+			 */
+			option: string
+			/**
+			 * F​i​l​t​e​r
+			 */
+			filter: string
+		}
 	}
 }
 
@@ -264,6 +286,96 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				idCount: {
+					/**
+					 * i​d​C​o​u​n​t
+					 */
+					name: string
+				}
+				idMax: {
+					/**
+					 * i​d​M​a​x
+					 */
+					name: string
+				}
+				idMin: {
+					/**
+					 * i​d​M​i​n
+					 */
+					name: string
+				}
+				nameCount: {
+					/**
+					 * n​a​m​e​C​o​u​n​t
+					 */
+					name: string
+				}
+				nameMax: {
+					/**
+					 * n​a​m​e​M​a​x
+					 */
+					name: string
+				}
+				nameMin: {
+					/**
+					 * n​a​m​e​M​i​n
+					 */
+					name: string
+				}
+				contentTypeCount: {
+					/**
+					 * c​o​n​t​e​n​t​T​y​p​e​C​o​u​n​t
+					 */
+					name: string
+				}
+				contentTypeMax: {
+					/**
+					 * c​o​n​t​e​n​t​T​y​p​e​M​a​x
+					 */
+					name: string
+				}
+				contentTypeMin: {
+					/**
+					 * c​o​n​t​e​n​t​T​y​p​e​M​i​n
+					 */
+					name: string
+				}
+				contentCount: {
+					/**
+					 * c​o​n​t​e​n​t​C​o​u​n​t
+					 */
+					name: string
+				}
+				contentMax: {
+					/**
+					 * c​o​n​t​e​n​t​M​a​x
+					 */
+					name: string
+				}
+				contentMin: {
+					/**
+					 * c​o​n​t​e​n​t​M​i​n
+					 */
+					name: string
+				}
+				urlCount: {
+					/**
+					 * u​r​l​C​o​u​n​t
+					 */
+					name: string
+				}
+				urlMax: {
+					/**
+					 * u​r​l​M​a​x
+					 */
+					name: string
+				}
+				urlMin: {
+					/**
+					 * u​r​l​M​i​n
+					 */
+					name: string
+				}
 			}
 		}
 		Group: {
@@ -332,6 +444,144 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				subGroupsAggregate: {
+					/**
+					 * s​u​b​G​r​o​u​p​s​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				usersAggregate: {
+					/**
+					 * u​s​e​r​s​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				rolesAggregate: {
+					/**
+					 * r​o​l​e​s​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				idCount: {
+					/**
+					 * i​d​C​o​u​n​t
+					 */
+					name: string
+				}
+				idMax: {
+					/**
+					 * i​d​M​a​x
+					 */
+					name: string
+				}
+				idMin: {
+					/**
+					 * i​d​M​i​n
+					 */
+					name: string
+				}
+				nameCount: {
+					/**
+					 * n​a​m​e​C​o​u​n​t
+					 */
+					name: string
+				}
+				nameMax: {
+					/**
+					 * n​a​m​e​M​a​x
+					 */
+					name: string
+				}
+				nameMin: {
+					/**
+					 * n​a​m​e​M​i​n
+					 */
+					name: string
+				}
+				descriptionCount: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n​C​o​u​n​t
+					 */
+					name: string
+				}
+				descriptionMax: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n​M​a​x
+					 */
+					name: string
+				}
+				descriptionMin: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n​M​i​n
+					 */
+					name: string
+				}
+				pathCount: {
+					/**
+					 * p​a​t​h​C​o​u​n​t
+					 */
+					name: string
+				}
+				pathMax: {
+					/**
+					 * p​a​t​h​M​a​x
+					 */
+					name: string
+				}
+				pathMin: {
+					/**
+					 * p​a​t​h​M​i​n
+					 */
+					name: string
+				}
+				parentIdCount: {
+					/**
+					 * p​a​r​e​n​t​I​d​C​o​u​n​t
+					 */
+					name: string
+				}
+				parentIdMax: {
+					/**
+					 * p​a​r​e​n​t​I​d​M​a​x
+					 */
+					name: string
+				}
+				parentIdMin: {
+					/**
+					 * p​a​r​e​n​t​I​d​M​i​n
+					 */
+					name: string
+				}
+				deepCount: {
+					/**
+					 * d​e​e​p​C​o​u​n​t
+					 */
+					name: string
+				}
+				deepSum: {
+					/**
+					 * d​e​e​p​S​u​m
+					 */
+					name: string
+				}
+				deepAvg: {
+					/**
+					 * d​e​e​p​A​v​g
+					 */
+					name: string
+				}
+				deepMax: {
+					/**
+					 * d​e​e​p​M​a​x
+					 */
+					name: string
+				}
+				deepMin: {
+					/**
+					 * d​e​e​p​M​i​n
+					 */
+					name: string
+				}
 			}
 		}
 		Permission: {
@@ -379,6 +629,84 @@ export type NamespaceGraphqlTranslation = {
 				realm: {
 					/**
 					 * r​e​a​l​m
+					 */
+					name: string
+				}
+				rolesAggregate: {
+					/**
+					 * r​o​l​e​s​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				nameCount: {
+					/**
+					 * n​a​m​e​C​o​u​n​t
+					 */
+					name: string
+				}
+				nameMax: {
+					/**
+					 * n​a​m​e​M​a​x
+					 */
+					name: string
+				}
+				nameMin: {
+					/**
+					 * n​a​m​e​M​i​n
+					 */
+					name: string
+				}
+				descriptionCount: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n​C​o​u​n​t
+					 */
+					name: string
+				}
+				descriptionMax: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n​M​a​x
+					 */
+					name: string
+				}
+				descriptionMin: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n​M​i​n
+					 */
+					name: string
+				}
+				fieldCount: {
+					/**
+					 * f​i​e​l​d​C​o​u​n​t
+					 */
+					name: string
+				}
+				fieldMax: {
+					/**
+					 * f​i​e​l​d​M​a​x
+					 */
+					name: string
+				}
+				fieldMin: {
+					/**
+					 * f​i​e​l​d​M​i​n
+					 */
+					name: string
+				}
+				typeCount: {
+					/**
+					 * t​y​p​e​C​o​u​n​t
+					 */
+					name: string
+				}
+				typeMax: {
+					/**
+					 * t​y​p​e​M​a​x
+					 */
+					name: string
+				}
+				typeMin: {
+					/**
+					 * t​y​p​e​M​i​n
 					 */
 					name: string
 				}
@@ -452,6 +780,60 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				idCount: {
+					/**
+					 * i​d​C​o​u​n​t
+					 */
+					name: string
+				}
+				idMax: {
+					/**
+					 * i​d​M​a​x
+					 */
+					name: string
+				}
+				idMin: {
+					/**
+					 * i​d​M​i​n
+					 */
+					name: string
+				}
+				nameCount: {
+					/**
+					 * n​a​m​e​C​o​u​n​t
+					 */
+					name: string
+				}
+				nameMax: {
+					/**
+					 * n​a​m​e​M​a​x
+					 */
+					name: string
+				}
+				nameMin: {
+					/**
+					 * n​a​m​e​M​i​n
+					 */
+					name: string
+				}
+				descriptionCount: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n​C​o​u​n​t
+					 */
+					name: string
+				}
+				descriptionMax: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n​M​a​x
+					 */
+					name: string
+				}
+				descriptionMin: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n​M​i​n
+					 */
+					name: string
+				}
 			}
 		}
 		Role: {
@@ -499,6 +881,84 @@ export type NamespaceGraphqlTranslation = {
 				realm: {
 					/**
 					 * r​e​a​l​m
+					 */
+					name: string
+				}
+				usersAggregate: {
+					/**
+					 * u​s​e​r​s​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				groupsAggregate: {
+					/**
+					 * g​r​o​u​p​s​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				compositesAggregate: {
+					/**
+					 * c​o​m​p​o​s​i​t​e​s​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				permissionsAggregate: {
+					/**
+					 * p​e​r​m​i​s​s​i​o​n​s​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				idCount: {
+					/**
+					 * i​d​C​o​u​n​t
+					 */
+					name: string
+				}
+				idMax: {
+					/**
+					 * i​d​M​a​x
+					 */
+					name: string
+				}
+				idMin: {
+					/**
+					 * i​d​M​i​n
+					 */
+					name: string
+				}
+				nameCount: {
+					/**
+					 * n​a​m​e​C​o​u​n​t
+					 */
+					name: string
+				}
+				nameMax: {
+					/**
+					 * n​a​m​e​M​a​x
+					 */
+					name: string
+				}
+				nameMin: {
+					/**
+					 * n​a​m​e​M​i​n
+					 */
+					name: string
+				}
+				descriptionCount: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n​C​o​u​n​t
+					 */
+					name: string
+				}
+				descriptionMax: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n​M​a​x
+					 */
+					name: string
+				}
+				descriptionMin: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n​M​i​n
 					 */
 					name: string
 				}
@@ -573,6 +1033,162 @@ export type NamespaceGraphqlTranslation = {
 				realm: {
 					/**
 					 * r​e​a​l​m
+					 */
+					name: string
+				}
+				groupsAggregate: {
+					/**
+					 * g​r​o​u​p​s​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				rolesAggregate: {
+					/**
+					 * r​o​l​e​s​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				idCount: {
+					/**
+					 * i​d​C​o​u​n​t
+					 */
+					name: string
+				}
+				idMax: {
+					/**
+					 * i​d​M​a​x
+					 */
+					name: string
+				}
+				idMin: {
+					/**
+					 * i​d​M​i​n
+					 */
+					name: string
+				}
+				nameCount: {
+					/**
+					 * n​a​m​e​C​o​u​n​t
+					 */
+					name: string
+				}
+				nameMax: {
+					/**
+					 * n​a​m​e​M​a​x
+					 */
+					name: string
+				}
+				nameMin: {
+					/**
+					 * n​a​m​e​M​i​n
+					 */
+					name: string
+				}
+				descriptionCount: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n​C​o​u​n​t
+					 */
+					name: string
+				}
+				descriptionMax: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n​M​a​x
+					 */
+					name: string
+				}
+				descriptionMin: {
+					/**
+					 * d​e​s​c​r​i​p​t​i​o​n​M​i​n
+					 */
+					name: string
+				}
+				lastNameCount: {
+					/**
+					 * l​a​s​t​N​a​m​e​C​o​u​n​t
+					 */
+					name: string
+				}
+				lastNameMax: {
+					/**
+					 * l​a​s​t​N​a​m​e​M​a​x
+					 */
+					name: string
+				}
+				lastNameMin: {
+					/**
+					 * l​a​s​t​N​a​m​e​M​i​n
+					 */
+					name: string
+				}
+				loginCount: {
+					/**
+					 * l​o​g​i​n​C​o​u​n​t
+					 */
+					name: string
+				}
+				loginMax: {
+					/**
+					 * l​o​g​i​n​M​a​x
+					 */
+					name: string
+				}
+				loginMin: {
+					/**
+					 * l​o​g​i​n​M​i​n
+					 */
+					name: string
+				}
+				saltCount: {
+					/**
+					 * s​a​l​t​C​o​u​n​t
+					 */
+					name: string
+				}
+				saltMax: {
+					/**
+					 * s​a​l​t​M​a​x
+					 */
+					name: string
+				}
+				saltMin: {
+					/**
+					 * s​a​l​t​M​i​n
+					 */
+					name: string
+				}
+				hashCount: {
+					/**
+					 * h​a​s​h​C​o​u​n​t
+					 */
+					name: string
+				}
+				hashMax: {
+					/**
+					 * h​a​s​h​M​a​x
+					 */
+					name: string
+				}
+				hashMin: {
+					/**
+					 * h​a​s​h​M​i​n
+					 */
+					name: string
+				}
+				emailCount: {
+					/**
+					 * e​m​a​i​l​C​o​u​n​t
+					 */
+					name: string
+				}
+				emailMax: {
+					/**
+					 * e​m​a​i​l​M​a​x
+					 */
+					name: string
+				}
+				emailMin: {
+					/**
+					 * e​m​a​i​l​M​i​n
 					 */
 					name: string
 				}
@@ -1159,6 +1775,28 @@ export type TranslationFunctions = {
 				 */
 				inconsistent: () => LocalizedString
 			}
+			agg: {
+				/**
+				 * Columns
+				 */
+				columns: () => LocalizedString
+				/**
+				 * Group By
+				 */
+				groupBy: () => LocalizedString
+				/**
+				 * Order By
+				 */
+				orderBy: () => LocalizedString
+				/**
+				 * Options
+				 */
+				option: () => LocalizedString
+				/**
+				 * Filter
+				 */
+				filter: () => LocalizedString
+			}
 		}
 	}
 	graphql: {
@@ -1231,6 +1869,96 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
+					idCount: {
+						/**
+						 * idCount
+						 */
+						name: () => LocalizedString
+					}
+					idMax: {
+						/**
+						 * idMax
+						 */
+						name: () => LocalizedString
+					}
+					idMin: {
+						/**
+						 * idMin
+						 */
+						name: () => LocalizedString
+					}
+					nameCount: {
+						/**
+						 * nameCount
+						 */
+						name: () => LocalizedString
+					}
+					nameMax: {
+						/**
+						 * nameMax
+						 */
+						name: () => LocalizedString
+					}
+					nameMin: {
+						/**
+						 * nameMin
+						 */
+						name: () => LocalizedString
+					}
+					contentTypeCount: {
+						/**
+						 * contentTypeCount
+						 */
+						name: () => LocalizedString
+					}
+					contentTypeMax: {
+						/**
+						 * contentTypeMax
+						 */
+						name: () => LocalizedString
+					}
+					contentTypeMin: {
+						/**
+						 * contentTypeMin
+						 */
+						name: () => LocalizedString
+					}
+					contentCount: {
+						/**
+						 * contentCount
+						 */
+						name: () => LocalizedString
+					}
+					contentMax: {
+						/**
+						 * contentMax
+						 */
+						name: () => LocalizedString
+					}
+					contentMin: {
+						/**
+						 * contentMin
+						 */
+						name: () => LocalizedString
+					}
+					urlCount: {
+						/**
+						 * urlCount
+						 */
+						name: () => LocalizedString
+					}
+					urlMax: {
+						/**
+						 * urlMax
+						 */
+						name: () => LocalizedString
+					}
+					urlMin: {
+						/**
+						 * urlMin
+						 */
+						name: () => LocalizedString
+					}
 				}
 			}
 			Group: {
@@ -1299,6 +2027,144 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
+					subGroupsAggregate: {
+						/**
+						 * subGroupsAggregate
+						 */
+						name: () => LocalizedString
+					}
+					usersAggregate: {
+						/**
+						 * usersAggregate
+						 */
+						name: () => LocalizedString
+					}
+					rolesAggregate: {
+						/**
+						 * rolesAggregate
+						 */
+						name: () => LocalizedString
+					}
+					idCount: {
+						/**
+						 * idCount
+						 */
+						name: () => LocalizedString
+					}
+					idMax: {
+						/**
+						 * idMax
+						 */
+						name: () => LocalizedString
+					}
+					idMin: {
+						/**
+						 * idMin
+						 */
+						name: () => LocalizedString
+					}
+					nameCount: {
+						/**
+						 * nameCount
+						 */
+						name: () => LocalizedString
+					}
+					nameMax: {
+						/**
+						 * nameMax
+						 */
+						name: () => LocalizedString
+					}
+					nameMin: {
+						/**
+						 * nameMin
+						 */
+						name: () => LocalizedString
+					}
+					descriptionCount: {
+						/**
+						 * descriptionCount
+						 */
+						name: () => LocalizedString
+					}
+					descriptionMax: {
+						/**
+						 * descriptionMax
+						 */
+						name: () => LocalizedString
+					}
+					descriptionMin: {
+						/**
+						 * descriptionMin
+						 */
+						name: () => LocalizedString
+					}
+					pathCount: {
+						/**
+						 * pathCount
+						 */
+						name: () => LocalizedString
+					}
+					pathMax: {
+						/**
+						 * pathMax
+						 */
+						name: () => LocalizedString
+					}
+					pathMin: {
+						/**
+						 * pathMin
+						 */
+						name: () => LocalizedString
+					}
+					parentIdCount: {
+						/**
+						 * parentIdCount
+						 */
+						name: () => LocalizedString
+					}
+					parentIdMax: {
+						/**
+						 * parentIdMax
+						 */
+						name: () => LocalizedString
+					}
+					parentIdMin: {
+						/**
+						 * parentIdMin
+						 */
+						name: () => LocalizedString
+					}
+					deepCount: {
+						/**
+						 * deepCount
+						 */
+						name: () => LocalizedString
+					}
+					deepSum: {
+						/**
+						 * deepSum
+						 */
+						name: () => LocalizedString
+					}
+					deepAvg: {
+						/**
+						 * deepAvg
+						 */
+						name: () => LocalizedString
+					}
+					deepMax: {
+						/**
+						 * deepMax
+						 */
+						name: () => LocalizedString
+					}
+					deepMin: {
+						/**
+						 * deepMin
+						 */
+						name: () => LocalizedString
+					}
 				}
 			}
 			Permission: {
@@ -1346,6 +2212,84 @@ export type TranslationFunctions = {
 					realm: {
 						/**
 						 * realm
+						 */
+						name: () => LocalizedString
+					}
+					rolesAggregate: {
+						/**
+						 * rolesAggregate
+						 */
+						name: () => LocalizedString
+					}
+					nameCount: {
+						/**
+						 * nameCount
+						 */
+						name: () => LocalizedString
+					}
+					nameMax: {
+						/**
+						 * nameMax
+						 */
+						name: () => LocalizedString
+					}
+					nameMin: {
+						/**
+						 * nameMin
+						 */
+						name: () => LocalizedString
+					}
+					descriptionCount: {
+						/**
+						 * descriptionCount
+						 */
+						name: () => LocalizedString
+					}
+					descriptionMax: {
+						/**
+						 * descriptionMax
+						 */
+						name: () => LocalizedString
+					}
+					descriptionMin: {
+						/**
+						 * descriptionMin
+						 */
+						name: () => LocalizedString
+					}
+					fieldCount: {
+						/**
+						 * fieldCount
+						 */
+						name: () => LocalizedString
+					}
+					fieldMax: {
+						/**
+						 * fieldMax
+						 */
+						name: () => LocalizedString
+					}
+					fieldMin: {
+						/**
+						 * fieldMin
+						 */
+						name: () => LocalizedString
+					}
+					typeCount: {
+						/**
+						 * typeCount
+						 */
+						name: () => LocalizedString
+					}
+					typeMax: {
+						/**
+						 * typeMax
+						 */
+						name: () => LocalizedString
+					}
+					typeMin: {
+						/**
+						 * typeMin
 						 */
 						name: () => LocalizedString
 					}
@@ -1419,6 +2363,60 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
+					idCount: {
+						/**
+						 * idCount
+						 */
+						name: () => LocalizedString
+					}
+					idMax: {
+						/**
+						 * idMax
+						 */
+						name: () => LocalizedString
+					}
+					idMin: {
+						/**
+						 * idMin
+						 */
+						name: () => LocalizedString
+					}
+					nameCount: {
+						/**
+						 * nameCount
+						 */
+						name: () => LocalizedString
+					}
+					nameMax: {
+						/**
+						 * nameMax
+						 */
+						name: () => LocalizedString
+					}
+					nameMin: {
+						/**
+						 * nameMin
+						 */
+						name: () => LocalizedString
+					}
+					descriptionCount: {
+						/**
+						 * descriptionCount
+						 */
+						name: () => LocalizedString
+					}
+					descriptionMax: {
+						/**
+						 * descriptionMax
+						 */
+						name: () => LocalizedString
+					}
+					descriptionMin: {
+						/**
+						 * descriptionMin
+						 */
+						name: () => LocalizedString
+					}
 				}
 			}
 			Role: {
@@ -1466,6 +2464,84 @@ export type TranslationFunctions = {
 					realm: {
 						/**
 						 * realm
+						 */
+						name: () => LocalizedString
+					}
+					usersAggregate: {
+						/**
+						 * usersAggregate
+						 */
+						name: () => LocalizedString
+					}
+					groupsAggregate: {
+						/**
+						 * groupsAggregate
+						 */
+						name: () => LocalizedString
+					}
+					compositesAggregate: {
+						/**
+						 * compositesAggregate
+						 */
+						name: () => LocalizedString
+					}
+					permissionsAggregate: {
+						/**
+						 * permissionsAggregate
+						 */
+						name: () => LocalizedString
+					}
+					idCount: {
+						/**
+						 * idCount
+						 */
+						name: () => LocalizedString
+					}
+					idMax: {
+						/**
+						 * idMax
+						 */
+						name: () => LocalizedString
+					}
+					idMin: {
+						/**
+						 * idMin
+						 */
+						name: () => LocalizedString
+					}
+					nameCount: {
+						/**
+						 * nameCount
+						 */
+						name: () => LocalizedString
+					}
+					nameMax: {
+						/**
+						 * nameMax
+						 */
+						name: () => LocalizedString
+					}
+					nameMin: {
+						/**
+						 * nameMin
+						 */
+						name: () => LocalizedString
+					}
+					descriptionCount: {
+						/**
+						 * descriptionCount
+						 */
+						name: () => LocalizedString
+					}
+					descriptionMax: {
+						/**
+						 * descriptionMax
+						 */
+						name: () => LocalizedString
+					}
+					descriptionMin: {
+						/**
+						 * descriptionMin
 						 */
 						name: () => LocalizedString
 					}
@@ -1540,6 +2616,162 @@ export type TranslationFunctions = {
 					realm: {
 						/**
 						 * realm
+						 */
+						name: () => LocalizedString
+					}
+					groupsAggregate: {
+						/**
+						 * groupsAggregate
+						 */
+						name: () => LocalizedString
+					}
+					rolesAggregate: {
+						/**
+						 * rolesAggregate
+						 */
+						name: () => LocalizedString
+					}
+					idCount: {
+						/**
+						 * idCount
+						 */
+						name: () => LocalizedString
+					}
+					idMax: {
+						/**
+						 * idMax
+						 */
+						name: () => LocalizedString
+					}
+					idMin: {
+						/**
+						 * idMin
+						 */
+						name: () => LocalizedString
+					}
+					nameCount: {
+						/**
+						 * nameCount
+						 */
+						name: () => LocalizedString
+					}
+					nameMax: {
+						/**
+						 * nameMax
+						 */
+						name: () => LocalizedString
+					}
+					nameMin: {
+						/**
+						 * nameMin
+						 */
+						name: () => LocalizedString
+					}
+					descriptionCount: {
+						/**
+						 * descriptionCount
+						 */
+						name: () => LocalizedString
+					}
+					descriptionMax: {
+						/**
+						 * descriptionMax
+						 */
+						name: () => LocalizedString
+					}
+					descriptionMin: {
+						/**
+						 * descriptionMin
+						 */
+						name: () => LocalizedString
+					}
+					lastNameCount: {
+						/**
+						 * lastNameCount
+						 */
+						name: () => LocalizedString
+					}
+					lastNameMax: {
+						/**
+						 * lastNameMax
+						 */
+						name: () => LocalizedString
+					}
+					lastNameMin: {
+						/**
+						 * lastNameMin
+						 */
+						name: () => LocalizedString
+					}
+					loginCount: {
+						/**
+						 * loginCount
+						 */
+						name: () => LocalizedString
+					}
+					loginMax: {
+						/**
+						 * loginMax
+						 */
+						name: () => LocalizedString
+					}
+					loginMin: {
+						/**
+						 * loginMin
+						 */
+						name: () => LocalizedString
+					}
+					saltCount: {
+						/**
+						 * saltCount
+						 */
+						name: () => LocalizedString
+					}
+					saltMax: {
+						/**
+						 * saltMax
+						 */
+						name: () => LocalizedString
+					}
+					saltMin: {
+						/**
+						 * saltMin
+						 */
+						name: () => LocalizedString
+					}
+					hashCount: {
+						/**
+						 * hashCount
+						 */
+						name: () => LocalizedString
+					}
+					hashMax: {
+						/**
+						 * hashMax
+						 */
+						name: () => LocalizedString
+					}
+					hashMin: {
+						/**
+						 * hashMin
+						 */
+						name: () => LocalizedString
+					}
+					emailCount: {
+						/**
+						 * emailCount
+						 */
+						name: () => LocalizedString
+					}
+					emailMax: {
+						/**
+						 * emailMax
+						 */
+						name: () => LocalizedString
+					}
+					emailMin: {
+						/**
+						 * emailMin
 						 */
 						name: () => LocalizedString
 					}

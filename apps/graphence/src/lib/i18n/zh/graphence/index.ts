@@ -49,6 +49,13 @@ const zh: NamespaceGraphenceTranslation = {
             newPassword: "新密码",
             repeatNewPassword: "重复新密码",
             inconsistent: "两次输入不一致"
+        },
+        agg: {
+            columns: "字段",
+            groupBy: "分组",
+            orderBy: "排序",
+            option: "选项",
+            filter: "筛选"
         }
     }
 }
