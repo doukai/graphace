@@ -565,6 +565,39 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Filter.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
+                return {
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        isNamedStruct: type.getInterfaces().some(interfaceType => interfaceType.name === 'NamedStruct'),
+                        idName: getIDFieldName(type),
+                        scalars: new Set([...getScalarNames(fields) || [], 'String']),
+                        enums: getEnumNames(fields),
+                        imports: componentFieldImports(typeName, fields),
+                        namedStructObjectNames: getNamedStructObjectNames(fields),
+                        fields: componentFields(typeName, fields),
+                        cols: fields?.length,
+                        schemaTypesPath: config.schemaTypesPath,
+                        enumsPath: `${config.componentsPath}/enums`,
+                        objectsPath: `${config.componentsPath}/objects`,
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName(),
+                        hasFileField: hasFileField(type),
+                        useAuth: config.useAuth,
+                        appName: config.appName
+                    }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
+    },
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Th.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {

@@ -5,6 +5,7 @@ import GroupConnectionTable from "./GroupConnectionTable.svelte";
 import GroupCreateTable from "./GroupCreateTable.svelte";
 import GroupSelectTable from "./GroupSelectTable.svelte";
 import GroupSelectConnectionTable from "./GroupSelectConnectionTable.svelte";
+import GroupFilter from "./GroupFilter.svelte";
 import GroupTh from "./GroupTh.svelte";
 import GroupSelect from "./GroupSelect.svelte";
 import GroupSelectItem from "./GroupSelectItem.svelte";
@@ -13,5 +14,5 @@ import GroupTreeMenu from "./GroupTreeMenu.svelte";
 import GroupTreeCard from "./GroupTreeCard.svelte";
 
 export {
-  GroupForm, GroupCreateForm, GroupTable, GroupConnectionTable, GroupCreateTable, GroupSelectTable, GroupSelectConnectionTable, GroupTh, GroupSelect, GroupSelectItem, GroupSelectTd, GroupTreeMenu, GroupTreeCard
+  GroupForm, GroupCreateForm, GroupTable, GroupConnectionTable, GroupCreateTable, GroupSelectTable, GroupSelectConnectionTable, GroupFilter, GroupTh, GroupSelect, GroupSelectItem, GroupSelectTd, GroupTreeMenu, GroupTreeCard
 }

@@ -15,6 +15,7 @@ export type Template =
     '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectConnectionTable.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}TreeMenu.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}TreeCard.svelte' |
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Filter.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Th.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Select.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectTd.svelte' |

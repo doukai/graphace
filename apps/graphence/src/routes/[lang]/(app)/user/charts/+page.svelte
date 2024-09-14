@@ -7,7 +7,7 @@
 	import { fade } from 'svelte/transition';
 	import UserFilter from '~/lib/components/objects/user/UserFilter.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { AdjustmentsHorizontal } from '@steeze-ui/heroicons';
+	import { AdjustmentsHorizontal, Funnel } from '@steeze-ui/heroicons';
 	import type { UserConnectionQueryArguments } from '~/lib/types/schema';
 
 	Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, autocolors);
@@ -90,6 +90,9 @@
 	let selectColumns: Option[] = [];
 	let groupByColumns: Option[] = [];
 	let orderByColumns: Option[] = [];
+	let totalCount: number = 0;
+	let pageNumber: number = 1;
+	let pageSize: number = 10;
 
 	const {
 		elements: { trigger, content, arrow, close, overlay },
@@ -99,14 +102,85 @@
 		preventScroll: true
 	});
 
-	const search = () => {
-		if (selectColumns.length > 0) {
+	const queryPage = (toPageNumber?: number | undefined) => {
+		if (selectColumns.length > 0 && groupByColumns.length > 0) {
+			if (!queryArguments) {
+				queryArguments = {};
+			}
+
+			if (groupByColumns.length > 0) {
+				queryArguments.groupBy = groupByColumns.map((option) => option.value);
+			} else {
+				queryArguments.groupBy = undefined;
+			}
+
+			if (orderByColumns.length > 0) {
+				queryArguments.orderBy = Object.fromEntries(
+					orderByColumns
+						.reduce((groups, option) => {
+							if (groups.some((group) => group.value === option.group?.value)) {
+								groups
+									.find((group) => group.value === option.group?.value)
+									?.sorts?.push({ value: option.value, sort: option.node });
+							} else {
+								if (option.group?.value) {
+									groups.push({
+										value: option.group?.value,
+										sorts: [{ value: option.value, sort: option.node }]
+									});
+								} else {
+									groups.push({
+										value: option.value,
+										sort: option.node
+									});
+								}
+							}
+							return groups;
+						}, <{ value: string; sort?: string; sorts?: { value: string; sort: string }[] }[]>[])
+						.map((sort) => {
+							if (sort.sorts) {
+								return [
+									sort.value,
+									Object.fromEntries(sort.sorts?.map((sort) => [sort.value, sort.sort]))
+								];
+							} else {
+								return [sort.value, sort.sort];
+							}
+						})
+				);
+			} else {
+				queryArguments.orderBy = undefined;
+			}
+
+			queryArguments.offset = ((toPageNumber || pageNumber) - 1) * pageSize;
+			queryArguments.first = pageSize;
+
 			let query = `query Query_userConnection($id: StringExpression, $name: StringExpression, $description: StringExpression, $lastName: StringExpression, $login: StringExpression, $salt: StringExpression, $hash: StringExpression, $email: StringExpression, $files: FileExpression, $phones: StringExpression, $disable: BooleanExpression, $groups: GroupExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $fileUserRelation: FileUserRelationExpression, $userPhonesRelation: UserPhonesRelationExpression, $groupUserRelation: GroupUserRelationExpression, $roleUserRelation: RoleUserRelationExpression, $orderBy: UserOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [UserExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
   userConnection(id: $id name: $name description: $description lastName: $lastName login: $login salt: $salt hash: $hash email: $email files: $files phones: $phones disable: $disable groups: $groups roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId fileUserRelation: $fileUserRelation userPhonesRelation: $userPhonesRelation groupUserRelation: $groupUserRelation roleUserRelation: $roleUserRelation orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before)  {
     totalCount
     edges {
       node {
-		${[...selectColumns, ...(queryArguments.groupBy || [])].join('\r\n')}
+		${(queryArguments.groupBy || []).join('\r\n')}
+		${selectColumns
+			.reduce((groups, option) => {
+				if (groups.some((group) => group.value === option.group?.value)) {
+					groups.find((group) => group.value === option.group?.value)?.options?.push(option);
+				} else {
+					groups.push({
+						value: option.group?.value,
+						label: option.group?.label,
+						options: [option]
+					});
+				}
+				return groups;
+			}, <Group[]>[])
+			.map((group) => {
+				if (group.value) {
+					return `${group.value} {${group.options?.map((option) => option.value).join('\r\n')}}`;
+				} else {
+					return group.options?.map((option) => option.value).join('\r\n');
+				}
+			})}
       }
     }
   }
@@ -128,7 +202,7 @@
 									queryArguments.groupBy?.map((column) => node[column]).join(' - ')
 								),
 								datasets: selectColumns.map((column) => ({
-									label: column,
+									label: column.value,
 									data: nodes.map((node: { [x: string]: any }) => node[column.value])
 								}))
 							};
@@ -149,14 +223,12 @@
 			rootClassName="w-full"
 			bind:value={selectColumns}
 			on:change={(e) => {
-				if (Array.isArray(e.detail.value)) {
-					orderByColumns = orderByColumns.filter(
-						(orderColumn) =>
-							Array.isArray(e.detail.value) &&
-							e.detail.value.some((selectColumn) => selectColumn.value === orderColumn.value)
-					);
-				}
-				// search();
+				orderByColumns = orderByColumns.filter(
+					(orderColumn) =>
+						!Array.isArray(e.detail.value) ||
+						e.detail.value.some((selectColumn) => selectColumn.value === orderColumn.value)
+				);
+				queryPage(1);
 			}}
 		/>
 		<button class="btn btn-square" use:melt={$trigger}>
@@ -176,19 +248,17 @@
 						options={groupByOptions}
 						rootClassName="w-full"
 						className="md:input-xs"
-						containerClassName="md:textarea-sm md:min-h-8 max-w-xs"
+						containerClassName="md:min-h-8 max-w-xs"
 						tagClassName="md:badge-sm"
 						groupClassName="md:input-group-sm"
 						bind:value={groupByColumns}
 						on:change={(e) => {
-							if (Array.isArray(e.detail.value)) {
-								orderByColumns = orderByColumns.filter(
-									(orderColumn) =>
-										Array.isArray(e.detail.value) &&
-										e.detail.value.some((groupColumn) => groupColumn.value === orderColumn.value)
-								);
-								queryArguments.groupBy = e.detail.value.map((option) => option.value);
-							}
+							orderByColumns = orderByColumns.filter(
+								(orderColumn) =>
+									!Array.isArray(e.detail.value) ||
+									e.detail.value.some((groupColumn) => groupColumn.value === orderColumn.value)
+							);
+							queryPage(1);
 						}}
 					/>
 					<Combobox
@@ -197,27 +267,33 @@
 						groups={orderByOptions}
 						rootClassName="w-full"
 						className="md:input-xs"
-						containerClassName="md:textarea-sm md:min-h-8 max-w-xs"
+						containerClassName="md:min-h-8 max-w-xs"
 						tagClassName="md:badge-sm"
 						groupClassName="md:input-group-sm"
-						value={orderByColumns}
+						bind:value={orderByColumns}
 						on:change={(e) => {
-							if (Array.isArray(e.detail.value)) {
-								queryArguments.orderBy = Object.fromEntries(
-									e.detail.value.map((option) => [option.group?.value, option.value])
-								);
-							}
+							queryPage(1);
 						}}
 					/>
 				</div>
 			</div>
 		{/if}
-		<UserFilter name="filter" bind:expression={queryArguments} />
+		<UserFilter bind:expression={queryArguments} let:trigger on:filter={(e) => queryPage(1)}>
+			<button class="btn btn-square" use:melt={trigger}>
+				<Icon src={Funnel} class="h-5 w-5" />
+			</button>
+		</UserFilter>
 	</div>
 	<div class="divider" />
 	<div class="card-body overflow-auto">
 		<Bar {data} options={{ responsive: true, maintainAspectRatio: false }} />
 	</div>
 	<div class="divider" />
-	<Pagination />
+	<Pagination
+		bind:pageNumber
+		bind:pageSize
+		{totalCount}
+		on:pageChange={(e) => queryPage()}
+		on:sizeChange={(e) => queryPage()}
+	/>
 </Card>

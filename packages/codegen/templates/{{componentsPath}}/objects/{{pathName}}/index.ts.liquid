@@ -5,6 +5,7 @@ import {{ name }}ConnectionTable from "./{{ name }}ConnectionTable.svelte";
 import {{ name }}CreateTable from "./{{ name }}CreateTable.svelte";
 import {{ name }}SelectTable from "./{{ name }}SelectTable.svelte";
 import {{ name }}SelectConnectionTable from "./{{ name }}SelectConnectionTable.svelte";
+import {{ name }}Filter from "./{{ name }}Filter.svelte";
 import {{ name }}Th from "./{{ name }}Th.svelte";
 {%- if isNamedStruct %}
 import {{ name }}Select from "./{{ name }}Select.svelte";
@@ -17,5 +18,5 @@ import {{ name }}TreeCard from "./{{ name }}TreeCard.svelte";
 {%- endif %}
 
 export {
-  {{ name }}Form, {{ name }}CreateForm, {{ name }}Table, {{ name }}ConnectionTable, {{ name }}CreateTable, {{ name }}SelectTable, {{ name }}SelectConnectionTable, {{ name }}Th{% if isNamedStruct %}, {{ name }}Select, {{ name }}SelectItem, {{ name }}SelectTd{%- endif %}{% if isTreeStruct %}, {{ name }}TreeMenu, {{ name }}TreeCard{%- endif %}
+  {{ name }}Form, {{ name }}CreateForm, {{ name }}Table, {{ name }}ConnectionTable, {{ name }}CreateTable, {{ name }}SelectTable, {{ name }}SelectConnectionTable, {{ name }}Filter, {{ name }}Th{% if isNamedStruct %}, {{ name }}Select, {{ name }}SelectItem, {{ name }}SelectTd{%- endif %}{% if isTreeStruct %}, {{ name }}TreeMenu, {{ name }}TreeCard{%- endif %}
 }

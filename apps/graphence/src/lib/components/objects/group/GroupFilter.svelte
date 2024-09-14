@@ -4,23 +4,25 @@
 	import { fade } from 'svelte/transition';
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import type { PermissionsStore } from '@graphace/commons'; 
-	import { OperatorSelect, StringInput, BooleanInput } from '@graphace/ui-graphql';
+	import { OperatorSelect, StringInput, IntInput } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark } from '@steeze-ui/heroicons';
-	import type { StringExpression, BooleanExpression } from '~/lib/types/schema';
-	import UserSelect from '~/lib/components/objects/user/UserSelect.svelte';
+	import type { StringExpression, IntExpression } from '~/lib/types/schema';
 	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
+	import UserSelect from '~/lib/components/objects/user/UserSelect.svelte';
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import RealmSelect from '~/lib/components/objects/realm/RealmSelect.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { Operator } from '$houdini';
-	import type { UserInput, GroupInput, RoleInput, RealmInput, UserExpression } from '$houdini';
+	import type { GroupInput, UserInput, RoleInput, RealmInput, GroupExpression } from '$houdini';
 
-	export let expression: UserExpression | null | undefined;
+	export let expression: GroupExpression | null | undefined;
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 	const permissions = getContext('permissions') as PermissionsStore;
-	let value: UserInput | (UserInput | null | undefined)[] | null | undefined = undefined;
-	let groups: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
+	let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
+	let parent: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
+	let subGroups: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
+	let users: UserInput | (UserInput | null | undefined)[] | null | undefined = undefined;
 	let roles: RoleInput | (RoleInput | null | undefined)[] | null | undefined = undefined;
 	let realm: RealmInput | (RealmInput | null | undefined)[] | null | undefined = undefined;
 
@@ -28,24 +30,24 @@
 		id: StringExpression;
 		name: StringExpression;
 		description: StringExpression;
-		lastName: StringExpression;
-		login: StringExpression;
-		email: StringExpression;
-		phones: StringExpression;
-		disable: BooleanExpression;
-		groups: { id: StringExpression };
+		path: StringExpression;
+		deep: IntExpression;
+		parentId: StringExpression;
+		parent: { id: StringExpression };
+		subGroups: { id: StringExpression };
+		users: { id: StringExpression };
 		roles: { id: StringExpression };
 		realm: { id: StringExpression };
 	} = {
 		id: { opr: Operator.EQ },
 		name: { opr: Operator.EQ },
 		description: { opr: Operator.EQ },
-		lastName: { opr: Operator.EQ },
-		login: { opr: Operator.EQ },
-		email: { opr: Operator.EQ },
-		phones: { opr: Operator.EQ },
-		disable: { opr: Operator.EQ },
-		groups: { id: { opr: Operator.EQ } },
+		path: { opr: Operator.EQ },
+		deep: { opr: Operator.EQ },
+		parentId: { opr: Operator.EQ },
+		parent: { id: { opr: Operator.EQ } },
+		subGroups: { id: { opr: Operator.EQ } },
+		users: { id: { opr: Operator.EQ } },
 		roles: { id: { opr: Operator.EQ } },
 		realm: { id: { opr: Operator.EQ } }
 	};
@@ -54,10 +56,20 @@
 	} else if (value) {
 		_expression.id.val = value?.id;
 	}
-	$: if (Array.isArray(groups)) {
-		_expression.groups.id.arr = groups?.map((item) => item?.id);
-	} else if (groups) {
-		_expression.groups.id.val = groups?.id;
+	$: if (Array.isArray(parent)) {
+		_expression.parent.id.arr = parent?.map((item) => item?.id);
+	} else if (parent) {
+		_expression.parent.id.val = parent?.id;
+	}
+	$: if (Array.isArray(subGroups)) {
+		_expression.subGroups.id.arr = subGroups?.map((item) => item?.id);
+	} else if (subGroups) {
+		_expression.subGroups.id.val = subGroups?.id;
+	}
+	$: if (Array.isArray(users)) {
+		_expression.users.id.arr = users?.map((item) => item?.id);
+	} else if (users) {
+		_expression.users.id.val = users?.id;
 	}
 	$: if (Array.isArray(roles)) {
 		_expression.roles.id.arr = roles?.map((item) => item?.id);
@@ -90,37 +102,41 @@
 		} else {
 			expression = { ...expression, description: undefined };
 		}
-		if (_expression.lastName.val || (_expression.lastName.arr && _expression.lastName.arr.length > 0)) {
-			expression = { ...expression, lastName: _expression.lastName };
+		if (_expression.path.val || (_expression.path.arr && _expression.path.arr.length > 0)) {
+			expression = { ...expression, path: _expression.path };
 		} else {
-			expression = { ...expression, lastName: undefined };
+			expression = { ...expression, path: undefined };
 		}
-		if (_expression.login.val || (_expression.login.arr && _expression.login.arr.length > 0)) {
-			expression = { ...expression, login: _expression.login };
+		if (_expression.deep.val || (_expression.deep.arr && _expression.deep.arr.length > 0)) {
+			expression = { ...expression, deep: _expression.deep };
 		} else {
-			expression = { ...expression, login: undefined };
+			expression = { ...expression, deep: undefined };
 		}
-		if (_expression.email.val || (_expression.email.arr && _expression.email.arr.length > 0)) {
-			expression = { ...expression, email: _expression.email };
+		if (_expression.parentId.val || (_expression.parentId.arr && _expression.parentId.arr.length > 0)) {
+			expression = { ...expression, parentId: _expression.parentId };
 		} else {
-			expression = { ...expression, email: undefined };
+			expression = { ...expression, parentId: undefined };
 		}
-		if (_expression.phones.val || (_expression.phones.arr && _expression.phones.arr.length > 0)) {
-			expression = { ...expression, phones: _expression.phones };
-		} else {
-			expression = { ...expression, phones: undefined };
-		}
-		if (_expression.disable.val || (_expression.disable.arr && _expression.disable.arr.length > 0)) {
-			expression = { ...expression, disable: _expression.disable };
-		} else {
-			expression = { ...expression, disable: undefined };
-		}
-		if (_expression.groups.id?.val ||
-			(_expression.groups.id?.arr && _expression.groups.id?.arr.length > 0)
+		if (_expression.parent.id?.val ||
+			(_expression.parent.id?.arr && _expression.parent.id?.arr.length > 0)
 		) {
-			expression = { ...expression, groups: _expression.groups };
+			expression = { ...expression, parent: _expression.parent };
 		} else {
-			expression = { ...expression, groups: undefined };
+			expression = { ...expression, parent: undefined };
+		}
+		if (_expression.subGroups.id?.val ||
+			(_expression.subGroups.id?.arr && _expression.subGroups.id?.arr.length > 0)
+		) {
+			expression = { ...expression, subGroups: _expression.subGroups };
+		} else {
+			expression = { ...expression, subGroups: undefined };
+		}
+		if (_expression.users.id?.val ||
+			(_expression.users.id?.arr && _expression.users.id?.arr.length > 0)
+		) {
+			expression = { ...expression, users: _expression.users };
+		} else {
+			expression = { ...expression, users: undefined };
 		}
 		if (_expression.roles.id?.val ||
 			(_expression.roles.id?.arr && _expression.roles.id?.arr.length > 0)
@@ -153,16 +169,26 @@
 		}
 		_expression.name = { opr: Operator.EQ };
 		_expression.description = { opr: Operator.EQ };
-		_expression.lastName = { opr: Operator.EQ };
-		_expression.login = { opr: Operator.EQ };
-		_expression.email = { opr: Operator.EQ };
-		_expression.phones = { opr: Operator.EQ };
-		_expression.disable = { opr: Operator.EQ };
-		_expression.groups = { id: { opr: Operator.EQ } };
-		if (Array.isArray(groups)) {
-			groups = [];
-		} else if (groups) {
-			groups = undefined;
+		_expression.path = { opr: Operator.EQ };
+		_expression.deep = { opr: Operator.EQ };
+		_expression.parentId = { opr: Operator.EQ };
+		_expression.parent = { id: { opr: Operator.EQ } };
+		if (Array.isArray(parent)) {
+			parent = [];
+		} else if (parent) {
+			parent = undefined;
+		}
+		_expression.subGroups = { id: { opr: Operator.EQ } };
+		if (Array.isArray(subGroups)) {
+			subGroups = [];
+		} else if (subGroups) {
+			subGroups = undefined;
+		}
+		_expression.users = { id: { opr: Operator.EQ } };
+		if (Array.isArray(users)) {
+			users = [];
+		} else if (users) {
+			users = undefined;
 		}
 		_expression.roles = { id: { opr: Operator.EQ } };
 		if (Array.isArray(roles)) {
@@ -197,33 +223,43 @@
 		_expression.description.arr = [];
 		_expression.description.val = undefined;
 	};
-	const lastNameOprChange = (): void => {
-		_expression.lastName.arr = [];
-		_expression.lastName.val = undefined;
+	const pathOprChange = (): void => {
+		_expression.path.arr = [];
+		_expression.path.val = undefined;
 	};
-	const loginOprChange = (): void => {
-		_expression.login.arr = [];
-		_expression.login.val = undefined;
+	const deepOprChange = (): void => {
+		_expression.deep.arr = [];
+		_expression.deep.val = undefined;
 	};
-	const emailOprChange = (): void => {
-		_expression.email.arr = [];
-		_expression.email.val = undefined;
+	const parentIdOprChange = (): void => {
+		_expression.parentId.arr = [];
+		_expression.parentId.val = undefined;
 	};
-	const phonesOprChange = (): void => {
-		_expression.phones.arr = [];
-		_expression.phones.val = undefined;
+	const parentOprChange = (): void => {
+		_expression.parent.id.arr = [];
+		_expression.parent.id.val = undefined;
+		if (Array.isArray(parent)) {
+			parent = [];
+		} else if (parent) {
+			parent = undefined;
+		}
 	};
-	const disableOprChange = (): void => {
-		_expression.disable.arr = [];
-		_expression.disable.val = undefined;
+	const subGroupsOprChange = (): void => {
+		_expression.subGroups.id.arr = [];
+		_expression.subGroups.id.val = undefined;
+		if (Array.isArray(subGroups)) {
+			subGroups = [];
+		} else if (subGroups) {
+			subGroups = undefined;
+		}
 	};
-	const groupsOprChange = (): void => {
-		_expression.groups.id.arr = [];
-		_expression.groups.id.val = undefined;
-		if (Array.isArray(groups)) {
-			groups = [];
-		} else if (groups) {
-			groups = undefined;
+	const usersOprChange = (): void => {
+		_expression.users.id.arr = [];
+		_expression.users.id.val = undefined;
+		if (Array.isArray(users)) {
+			users = [];
+		} else if (users) {
+			users = undefined;
 		}
 	};
 	const rolesOprChange = (): void => {
@@ -260,13 +296,13 @@
 	<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
 	<div class="space-y-2 md:space-y-1 p-1 rounded-xl bg-base-100 shadow z-[50]" use:melt={$content}>
 		<div use:melt={$arrow} />
-			{#if permissions.auth('User::id::*')}
+			{#if permissions.auth('Group::id::*')}
 			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
-							{$LL.graphql.objects.User.name()}
+							{$LL.graphql.objects.Group.name()}
 						</span>
 						<OperatorSelect
 							className="md:select-sm"
@@ -276,7 +312,7 @@
 					</label>
 				</div>
 				{#if _expression.id.opr === 'IN' || _expression.id.opr === 'NIN' || _expression.id.opr === 'BT' || _expression.id.opr === 'NBT'}
-					<UserSelect
+					<GroupSelect
 						name="id"
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						list
@@ -287,7 +323,7 @@
 						menuClassName="md:menu-sm"
 					/>
 				{:else}
-					<UserSelect
+					<GroupSelect
 						name="id"
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						bind:value
@@ -299,13 +335,13 @@
 				{/if}
 			</div>
 			{/if}
-			{#if permissions.auth('User::name::*')}
+			{#if permissions.auth('Group::name::*')}
 			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
-							{$LL.graphql.objects.User.fields.name.name()}
+							{$LL.graphql.objects.Group.fields.name.name()}
 						</span>
 						<OperatorSelect
 							className="md:select-sm"
@@ -334,13 +370,13 @@
 				{/if}
 			</div>
 			{/if}
-			{#if permissions.auth('User::description::*')}
+			{#if permissions.auth('Group::description::*')}
 			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
-							{$LL.graphql.objects.User.fields.description.name()}
+							{$LL.graphql.objects.Group.fields.description.name()}
 						</span>
 						<OperatorSelect
 							className="md:select-sm"
@@ -369,28 +405,28 @@
 				{/if}
 			</div>
 			{/if}
-			{#if permissions.auth('User::lastName::*')}
+			{#if permissions.auth('Group::path::*')}
 			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
-							{$LL.graphql.objects.User.fields.lastName.name()}
+							{$LL.graphql.objects.Group.fields.path.name()}
 						</span>
 						<OperatorSelect
 							className="md:select-sm"
-							bind:value={_expression.lastName.opr}
-							on:change={(e) => lastNameOprChange()}
+							bind:value={_expression.path.opr}
+							on:change={(e) => pathOprChange()}
 						/>
 					</label>
 				</div>
-				{#if _expression.lastName.opr === 'IN' || _expression.lastName.opr === 'NIN' || _expression.lastName.opr === 'BT' || _expression.lastName.opr === 'NBT'}
+				{#if _expression.path.opr === 'IN' || _expression.path.opr === 'NIN' || _expression.path.opr === 'BT' || _expression.path.opr === 'NBT'}
 					<StringInput
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
 						addBtnClassName="md:btn-sm"
-						name="lastName"
-						bind:value={_expression.lastName.arr}
+						name="path"
+						bind:value={_expression.path.arr}
 						list
 					/>
 				{:else}
@@ -398,34 +434,69 @@
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
 						addBtnClassName="md:btn-sm"
-						name="lastName"
-						bind:value={_expression.lastName.val}
+						name="path"
+						bind:value={_expression.path.val}
 					/>
 				{/if}
 			</div>
 			{/if}
-			{#if permissions.auth('User::login::*')}
+			{#if permissions.auth('Group::deep::*')}
 			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
-							{$LL.graphql.objects.User.fields.login.name()}
+							{$LL.graphql.objects.Group.fields.deep.name()}
 						</span>
 						<OperatorSelect
 							className="md:select-sm"
-							bind:value={_expression.login.opr}
-							on:change={(e) => loginOprChange()}
+							bind:value={_expression.deep.opr}
+							on:change={(e) => deepOprChange()}
 						/>
 					</label>
 				</div>
-				{#if _expression.login.opr === 'IN' || _expression.login.opr === 'NIN' || _expression.login.opr === 'BT' || _expression.login.opr === 'NBT'}
+				{#if _expression.deep.opr === 'IN' || _expression.deep.opr === 'NIN' || _expression.deep.opr === 'BT' || _expression.deep.opr === 'NBT'}
+					<IntInput
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						className="md:input-sm"
+						addBtnClassName="md:btn-sm"
+						name="deep"
+						bind:value={_expression.deep.arr}
+						list
+					/>
+				{:else}
+					<IntInput
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						className="md:input-sm"
+						addBtnClassName="md:btn-sm"
+						name="deep"
+						bind:value={_expression.deep.val}
+					/>
+				{/if}
+			</div>
+			{/if}
+			{#if permissions.auth('Group::parentId::*')}
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
+				<div class="form-control">
+					<label class="input-group md:input-group-sm">
+						<span class="w-20 whitespace-nowrap">
+							{$LL.graphql.objects.Group.fields.parentId.name()}
+						</span>
+						<OperatorSelect
+							className="md:select-sm"
+							bind:value={_expression.parentId.opr}
+							on:change={(e) => parentIdOprChange()}
+						/>
+					</label>
+				</div>
+				{#if _expression.parentId.opr === 'IN' || _expression.parentId.opr === 'NIN' || _expression.parentId.opr === 'BT' || _expression.parentId.opr === 'NBT'}
 					<StringInput
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
 						addBtnClassName="md:btn-sm"
-						name="login"
-						bind:value={_expression.login.arr}
+						name="parentId"
+						bind:value={_expression.parentId.arr}
 						list
 					/>
 				{:else}
@@ -433,136 +504,33 @@
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						className="md:input-sm"
 						addBtnClassName="md:btn-sm"
-						name="login"
-						bind:value={_expression.login.val}
+						name="parentId"
+						bind:value={_expression.parentId.val}
 					/>
 				{/if}
 			</div>
 			{/if}
-			{#if permissions.auth('User::email::*')}
+			{#if permissions.auth('Group::parent::*')}
 			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
-							{$LL.graphql.objects.User.fields.email.name()}
+							{$LL.graphql.objects.Group.fields.parent.name()}
 						</span>
 						<OperatorSelect
 							className="md:select-sm"
-							bind:value={_expression.email.opr}
-							on:change={(e) => emailOprChange()}
+							bind:value={_expression.parent.id.opr}
+							on:change={(e) => parentOprChange()}
 						/>
 					</label>
 				</div>
-				{#if _expression.email.opr === 'IN' || _expression.email.opr === 'NIN' || _expression.email.opr === 'BT' || _expression.email.opr === 'NBT'}
-					<StringInput
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						className="md:input-sm"
-						addBtnClassName="md:btn-sm"
-						name="email"
-						bind:value={_expression.email.arr}
-						list
-					/>
-				{:else}
-					<StringInput
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						className="md:input-sm"
-						addBtnClassName="md:btn-sm"
-						name="email"
-						bind:value={_expression.email.val}
-					/>
-				{/if}
-			</div>
-			{/if}
-			{#if permissions.auth('User::phones::*')}
-			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
-				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control">
-					<label class="input-group md:input-group-sm">
-						<span class="w-20 whitespace-nowrap">
-							{$LL.graphql.objects.User.fields.phones.name()}
-						</span>
-						<OperatorSelect
-							className="md:select-sm"
-							bind:value={_expression.phones.opr}
-							on:change={(e) => phonesOprChange()}
-						/>
-					</label>
-				</div>
-				{#if _expression.phones.opr === 'IN' || _expression.phones.opr === 'NIN' || _expression.phones.opr === 'BT' || _expression.phones.opr === 'NBT'}
-					<StringInput
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						className="md:input-sm"
-						addBtnClassName="md:btn-sm"
-						name="phones"
-						bind:value={_expression.phones.arr}
-						list
-					/>
-				{:else}
-					<StringInput
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						className="md:input-sm"
-						addBtnClassName="md:btn-sm"
-						name="phones"
-						bind:value={_expression.phones.val}
-					/>
-				{/if}
-			</div>
-			{/if}
-			{#if permissions.auth('User::disable::*')}
-			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
-				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control">
-					<label class="input-group md:input-group-sm">
-						<span class="w-20 whitespace-nowrap">
-							{$LL.graphql.objects.User.fields.disable.name()}
-						</span>
-						<OperatorSelect
-							className="md:select-sm"
-							bind:value={_expression.disable.opr}
-							on:change={(e) => disableOprChange()}
-						/>
-					</label>
-				</div>
-				{#if _expression.disable.opr === 'IN' || _expression.disable.opr === 'NIN' || _expression.disable.opr === 'BT' || _expression.disable.opr === 'NBT'}
-					<BooleanInput
-						className="md:toggle-sm"
-						addBtnClassName="md:btn-sm"
-						name="disable"
-						bind:value={_expression.disable.arr}
-						list
-					/>
-				{:else}
-					<BooleanInput
-						className="md:toggle-sm"
-						addBtnClassName="md:btn-sm"
-						name="disable"
-						bind:value={_expression.disable.val}
-					/>
-				{/if}
-			</div>
-			{/if}
-			{#if permissions.auth('User::groups::*')}
-			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
-				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control">
-					<label class="input-group md:input-group-sm">
-						<span class="w-20 whitespace-nowrap">
-							{$LL.graphql.objects.User.fields.groups.name()}
-						</span>
-						<OperatorSelect
-							className="md:select-sm"
-							bind:value={_expression.groups.id.opr}
-							on:change={(e) => groupsOprChange()}
-						/>
-					</label>
-				</div>
-				{#if _expression.groups.id.opr === 'IN' || _expression.groups.id.opr === 'NIN' || _expression.groups.id.opr === 'BT' || _expression.groups.id.opr === 'NBT'}
+				{#if _expression.parent.id.opr === 'IN' || _expression.parent.id.opr === 'NIN' || _expression.parent.id.opr === 'BT' || _expression.parent.id.opr === 'NBT'}
 					<GroupSelect
-						name="groups"
+						name="parent"
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 						list
-						bind:value={ groups }
+						bind:value={ parent }
 						className="md:input-sm"
 						containerClassName="md:min-h-8 max-w-xs"
 						tagClassName="md:badge-sm"
@@ -570,9 +538,9 @@
 					/>
 				{:else}
 					<GroupSelect
-						name="groups"
+						name="parent"
 						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						bind:value={ groups }
+						bind:value={ parent }
 						className="md:input-sm"
 						containerClassName="md:min-h-8 max-w-xs"
 						tagClassName="md:badge-sm"
@@ -581,13 +549,91 @@
 				{/if}
 			</div>
 			{/if}
-			{#if permissions.auth('User::roles::*')}
+			{#if permissions.auth('Group::subGroups::*')}
 			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
-							{$LL.graphql.objects.User.fields.roles.name()}
+							{$LL.graphql.objects.Group.fields.subGroups.name()}
+						</span>
+						<OperatorSelect
+							className="md:select-sm"
+							bind:value={_expression.subGroups.id.opr}
+							on:change={(e) => subGroupsOprChange()}
+						/>
+					</label>
+				</div>
+				{#if _expression.subGroups.id.opr === 'IN' || _expression.subGroups.id.opr === 'NIN' || _expression.subGroups.id.opr === 'BT' || _expression.subGroups.id.opr === 'NBT'}
+					<GroupSelect
+						name="subGroups"
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						list
+						bind:value={ subGroups }
+						className="md:input-sm"
+						containerClassName="md:min-h-8 max-w-xs"
+						tagClassName="md:badge-sm"
+						menuClassName="md:menu-sm"
+					/>
+				{:else}
+					<GroupSelect
+						name="subGroups"
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						bind:value={ subGroups }
+						className="md:input-sm"
+						containerClassName="md:min-h-8 max-w-xs"
+						tagClassName="md:badge-sm"
+						menuClassName="md:menu-sm"
+					/>
+				{/if}
+			</div>
+			{/if}
+			{#if permissions.auth('Group::users::*')}
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
+				<div class="form-control">
+					<label class="input-group md:input-group-sm">
+						<span class="w-20 whitespace-nowrap">
+							{$LL.graphql.objects.Group.fields.users.name()}
+						</span>
+						<OperatorSelect
+							className="md:select-sm"
+							bind:value={_expression.users.id.opr}
+							on:change={(e) => usersOprChange()}
+						/>
+					</label>
+				</div>
+				{#if _expression.users.id.opr === 'IN' || _expression.users.id.opr === 'NIN' || _expression.users.id.opr === 'BT' || _expression.users.id.opr === 'NBT'}
+					<UserSelect
+						name="users"
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						list
+						bind:value={ users }
+						className="md:input-sm"
+						containerClassName="md:min-h-8 max-w-xs"
+						tagClassName="md:badge-sm"
+						menuClassName="md:menu-sm"
+					/>
+				{:else}
+					<UserSelect
+						name="users"
+						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+						bind:value={ users }
+						className="md:input-sm"
+						containerClassName="md:min-h-8 max-w-xs"
+						tagClassName="md:badge-sm"
+						menuClassName="md:menu-sm"
+					/>
+				{/if}
+			</div>
+			{/if}
+			{#if permissions.auth('Group::roles::*')}
+			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
+				<div class="form-control">
+					<label class="input-group md:input-group-sm">
+						<span class="w-20 whitespace-nowrap">
+							{$LL.graphql.objects.Group.fields.roles.name()}
 						</span>
 						<OperatorSelect
 							className="md:select-sm"
@@ -620,13 +666,13 @@
 				{/if}
 			</div>
 			{/if}
-			{#if permissions.auth('User::realm::*')}
+			{#if permissions.auth('Group::realm::*')}
 			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<div class="form-control">
 					<label class="input-group md:input-group-sm">
 						<span class="w-20 whitespace-nowrap">
-							{$LL.graphql.objects.User.fields.realm.name()}
+							{$LL.graphql.objects.Group.fields.realm.name()}
 						</span>
 						<OperatorSelect
 							className="md:select-sm"
