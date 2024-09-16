@@ -4,11 +4,13 @@
 		label: string | null | undefined;
 		node?: any | null | undefined;
 		group?: Group | null | undefined;
+		disabled?: boolean | undefined;
 	};
 	export type Group = {
 		value: any | null | undefined;
 		label: string | null | undefined;
 		options?: Option[] | null | undefined;
+		disabled?: boolean | undefined;
 	};
 </script>
 
@@ -177,7 +179,7 @@
 				</div>
 			</li>
 		{:else if groups}
-			{#each groups as g}
+			{#each groups.filter((group) => !group.disabled) as g}
 				<div use:melt={$group(g.value)}>
 					<div
 						class="py-1 pl-4 pr-4 font-semibold capitalize text-neutral"
@@ -185,16 +187,16 @@
 					>
 						{g.label}
 					</div>
-					{#each g.options as op, index (index)}
+					{#each g.options.filter((option) => !option.disabled) as op, index (index)}
 						<li
 							use:melt={$option({
-								value: { ...op, group: g },
+								value: { ...op, group: { value: g.value, label: g.label } },
 								label: op.label
 							})}
 						>
 							<!-- svelte-ignore a11y-missing-attribute -->
 							<a class="flex">
-								{#if $isSelected({ ...op, group: g })}
+								{#if $isSelected({ ...op, group: { value: g.value, label: g.label } })}
 									<Icon src={Check} class="size-4" />
 								{:else}
 									<div class="size-4" />
@@ -218,7 +220,7 @@
 				</li>
 			{/each}
 		{:else}
-			{#each options as op, index (index)}
+			{#each options.filter((option) => !option.disabled) as op, index (index)}
 				<li
 					use:melt={$option({
 						value: op,

@@ -55,7 +55,8 @@ const en: BaseTranslation = {
             groupBy: "Group By",
             orderBy: "Order By",
             option: "Options",
-            filter: "Filter"
+            filter: "Filter",
+            bookmark: "Bookmark"
         }
     }
 }

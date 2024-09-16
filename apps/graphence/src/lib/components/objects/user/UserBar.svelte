@@ -4,28 +4,26 @@
 	import { fade } from 'svelte/transition';
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { AdjustmentsHorizontal, Funnel } from '@steeze-ui/heroicons';
+	import { AdjustmentsHorizontal, Funnel, Bookmark } from '@steeze-ui/heroicons';
 	import { Bar } from 'svelte-chartjs';
-	import {
-		Chart,
-		Title,
-		Tooltip,
-		Legend,
-		BarElement,
-		CategoryScale,
-		LinearScale,
-		ChartData
-	} from 'chart.js';
+	import { Chart, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js';
 	import autocolors from 'chartjs-plugin-autocolors';
-	import { Card, Combobox, Group, Pagination, type Option } from '@graphace/ui';
+	import { PermissionsStore } from '@graphace/commons';
+	import { Combobox, Group, Pagination, type Option } from '@graphace/ui';
 	import UserFilter from '~/lib/components/objects/user/UserFilter.svelte';
+	import { UserAggStore } from '~/lib/stores/userAggStore';
 	import type { UserConnectionQueryArguments } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	const permissions = getContext('permissions') as PermissionsStore;
 
-	export let data: ChartData<'bar', (number | [number, number])[], unknown> = {
-		datasets: []
-	};
+	export let queryArguments: UserConnectionQueryArguments = {};
+	export let selectColumns: Option[] = [];
+	export let groupByColumns: Option[] = [];
+	export let orderByColumns: Option[] = [];
+	export let totalCount: number = 0;
+	export let pageNumber: number = 1;
+	export let pageSize: number = 10;
 
 	Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, autocolors);
 
@@ -34,35 +32,86 @@
 			value: '',
 			label: $LL.graphql.objects.User.fields.name.name(),
 			options: [
-				{ value: 'nameCount', label: $LL.graphql.objects.User.fields.nameCount.name() },
-				{ value: 'nameMax', label: $LL.graphql.objects.User.fields.nameMax.name() },
-				{ value: 'nameMin', label: $LL.graphql.objects.User.fields.nameMin.name() }
-			]
+				{
+					value: 'nameCount',
+					label: $LL.graphql.objects.User.fields.nameCount.name()
+				},
+				{
+					value: 'nameMax',
+					label: $LL.graphql.objects.User.fields.nameMax.name()
+				},
+				{
+					value: 'nameMin',
+					label: $LL.graphql.objects.User.fields.nameMin.name()
+				}
+			],
+			disabled: !permissions.auth('User::name::READ')
 		},
 		{
 			value: '',
 			label: $LL.graphql.objects.User.fields.lastName.name(),
 			options: [
-				{ value: 'lastNameCount', label: $LL.graphql.objects.User.fields.lastNameCount.name() },
-				{ value: 'lastNameMax', label: $LL.graphql.objects.User.fields.lastNameMax.name() },
-				{ value: 'lastNameMin', label: $LL.graphql.objects.User.fields.lastNameMin.name() }
-			]
+				{
+					value: 'lastNameCount',
+					label: $LL.graphql.objects.User.fields.lastNameCount.name()
+				},
+				{
+					value: 'lastNameMax',
+					label: $LL.graphql.objects.User.fields.lastNameMax.name()
+				},
+				{
+					value: 'lastNameMin',
+					label: $LL.graphql.objects.User.fields.lastNameMin.name()
+				}
+			],
+			disabled: !permissions.auth('User::lastName::READ')
 		},
 		{
 			value: 'rolesAggregate',
 			label: $LL.graphql.objects.User.fields.roles.name(),
 			options: [
-				{ value: 'nameCount', label: $LL.graphql.objects.User.fields.nameCount.name() },
-				{ value: 'nameMax', label: $LL.graphql.objects.User.fields.nameMax.name() },
-				{ value: 'nameMin', label: $LL.graphql.objects.User.fields.nameMin.name() }
-			]
+				{
+					value: 'nameCount',
+					label: $LL.graphql.objects.User.fields.nameCount.name(),
+					disabled: !permissions.auth('Role::name::READ')
+				},
+				{
+					value: 'nameMax',
+					label: $LL.graphql.objects.User.fields.nameMax.name(),
+					disabled: !permissions.auth('Role::name::READ')
+				},
+				{
+					value: 'nameMin',
+					label: $LL.graphql.objects.User.fields.nameMin.name(),
+					disabled: !permissions.auth('Role::name::READ')
+				}
+			],
+			disabled: !permissions.auth('User::roles::READ')
 		}
 	];
 
+	let filteredSelectOptions = selectOptions;
+
 	const groupByOptions = [
-		{ value: 'name', label: $LL.graphql.objects.User.fields.name.name() },
-		{ value: 'lastName', label: $LL.graphql.objects.User.fields.lastName.name() }
+		{
+			value: 'name',
+			label: $LL.graphql.objects.User.fields.name.name(),
+			disabled: !permissions.auth('User::name::READ')
+		},
+		{
+			value: 'lastName',
+			label: $LL.graphql.objects.User.fields.lastName.name(),
+			disabled: !permissions.auth('User::lastName::READ')
+		}
 	];
+
+	let filteredGroupByOptions = groupByOptions;
+
+	if (queryArguments.groupBy && queryArguments.groupBy.length > 0) {
+		groupByColumns = groupByOptions.filter((option) =>
+			queryArguments.groupBy?.some((column) => option.value === column)
+		);
+	}
 
 	$: orderByOptions = [
 		...selectColumns,
@@ -77,11 +126,14 @@
 					(group) => group.value === option.group?.value && group.label === option.group?.label
 				)
 			) {
-				groups
-					.find(
-						(group) => group.value === option.group?.value && group.label === option.group?.label
-					)
-					?.options?.push(option);
+				const group = groups.find(
+					(group) => group.value === option.group?.value && group.label === option.group?.label
+				)!;
+				if (group.options) {
+					group.options.push(option);
+				} else {
+					group.options = [option];
+				}
 			} else {
 				groups.push({
 					value: option.group?.value,
@@ -91,22 +143,109 @@
 			}
 			return groups;
 		}, <Group[]>[])
-		.map((group) => ({
-			value: group.value,
-			label: group.label,
-			options: group.options?.flatMap((option) => [
-				{ value: option.value, label: option.label + $LL.uiGraphql.table.th.asc(), node: 'ASC' },
-				{ value: option.value, label: option.label + $LL.uiGraphql.table.th.desc(), node: 'DESC' }
-			])
-		}));
+		.map((group) => {
+			if (!group.options) {
+				console.log(group);
+			}
+			return {
+				value: group.value,
+				label: group.label,
+				options: group.options?.flatMap((option) => [
+					{ value: option.value, label: option.label + $LL.uiGraphql.table.th.asc(), node: 'ASC' },
+					{ value: option.value, label: option.label + $LL.uiGraphql.table.th.desc(), node: 'DESC' }
+				])
+			};
+		});
 
-	let queryArguments: UserConnectionQueryArguments = {};
-	let selectColumns: Option[] = [];
-	let groupByColumns: Option[] = [];
-	let orderByColumns: Option[] = [];
-	let totalCount: number = 0;
-	let pageNumber: number = 1;
-	let pageSize: number = 10;
+	let filteredOrderByOptions = orderByOptions;
+
+	$: if (queryArguments.orderBy && Object.keys(queryArguments.orderBy).length > 0) {
+		orderByColumns = Object.entries(queryArguments.orderBy).flatMap((entry) => {
+			if (entry[1] === 'ASC' || entry[1] === 'DESC') {
+				return orderByOptions?.flatMap((group) =>
+					(group.options || [])
+						.filter((option) => option.value === entry[0] && option.node === entry[1])
+						.map((option) => ({ ...option, group: group }))
+				);
+			} else {
+				return Object.entries(entry[1] || {}).flatMap((subEntry) =>
+					orderByOptions
+						.filter((group) => group.value === entry[0])
+						.flatMap((group) =>
+							(group.options || [])
+								.filter((option) => option.value === subEntry[0] && option.node === subEntry[1])
+								.map((option) => ({ ...option, group: group }))
+						)
+				);
+			}
+		});
+	}
+
+	if (queryArguments.first) {
+		pageSize = queryArguments.first;
+	}
+
+	if (queryArguments.offset) {
+		pageNumber = queryArguments.offset / pageSize + 1;
+	}
+
+	const buildArguments = (toPageNumber?: number | undefined): UserConnectionQueryArguments => {
+		if (!queryArguments) {
+			queryArguments = {};
+		}
+
+		if (groupByColumns.length > 0) {
+			queryArguments.groupBy = groupByColumns.map((option) => option.value);
+		} else {
+			queryArguments.groupBy = undefined;
+		}
+
+		if (orderByColumns.length > 0) {
+			queryArguments.orderBy = Object.fromEntries(
+				orderByColumns
+					.reduce((groups, option) => {
+						if (groups.some((group) => group.value === option.group?.value)) {
+							groups
+								.find((group) => group.value === option.group?.value)
+								?.sorts?.push({ value: option.value, sort: option.node });
+						} else {
+							if (option.group?.value) {
+								groups.push({
+									value: option.group?.value,
+									sorts: [{ value: option.value, sort: option.node }]
+								});
+							} else {
+								groups.push({
+									value: option.value,
+									sort: option.node
+								});
+							}
+						}
+						return groups;
+					}, <{ value: string; sort?: string; sorts?: { value: string; sort: string }[] }[]>[])
+					.map((sort) => {
+						if (sort.sorts) {
+							return [
+								sort.value,
+								Object.fromEntries(sort.sorts?.map((sort) => [sort.value, sort.sort]))
+							];
+						} else {
+							return [sort.value, sort.sort];
+						}
+					})
+			);
+		} else {
+			queryArguments.orderBy = undefined;
+		}
+
+		queryArguments.offset = ((toPageNumber || pageNumber) - 1) * pageSize;
+		queryArguments.first = pageSize;
+		return queryArguments;
+	};
+
+	const queryPage = (toPageNumber?: number | undefined) => {
+		UserAggStore.fetch(selectColumns, buildArguments(toPageNumber));
+	};
 
 	const {
 		elements: { trigger, content, arrow, close, overlay },
@@ -115,126 +254,33 @@
 		forceVisible: true,
 		preventScroll: true
 	});
-
-	const queryPage = (toPageNumber?: number | undefined) => {
-		if (selectColumns.length > 0 && groupByColumns.length > 0) {
-			if (!queryArguments) {
-				queryArguments = {};
-			}
-
-			if (groupByColumns.length > 0) {
-				queryArguments.groupBy = groupByColumns.map((option) => option.value);
-			} else {
-				queryArguments.groupBy = undefined;
-			}
-
-			if (orderByColumns.length > 0) {
-				queryArguments.orderBy = Object.fromEntries(
-					orderByColumns
-						.reduce((groups, option) => {
-							if (groups.some((group) => group.value === option.group?.value)) {
-								groups
-									.find((group) => group.value === option.group?.value)
-									?.sorts?.push({ value: option.value, sort: option.node });
-							} else {
-								if (option.group?.value) {
-									groups.push({
-										value: option.group?.value,
-										sorts: [{ value: option.value, sort: option.node }]
-									});
-								} else {
-									groups.push({
-										value: option.value,
-										sort: option.node
-									});
-								}
-							}
-							return groups;
-						}, <{ value: string; sort?: string; sorts?: { value: string; sort: string }[] }[]>[])
-						.map((sort) => {
-							if (sort.sorts) {
-								return [
-									sort.value,
-									Object.fromEntries(sort.sorts?.map((sort) => [sort.value, sort.sort]))
-								];
-							} else {
-								return [sort.value, sort.sort];
-							}
-						})
-				);
-			} else {
-				queryArguments.orderBy = undefined;
-			}
-
-			queryArguments.offset = ((toPageNumber || pageNumber) - 1) * pageSize;
-			queryArguments.first = pageSize;
-
-			let query = `query Query_userConnection($id: StringExpression, $name: StringExpression, $description: StringExpression, $lastName: StringExpression, $login: StringExpression, $salt: StringExpression, $hash: StringExpression, $email: StringExpression, $files: FileExpression, $phones: StringExpression, $disable: BooleanExpression, $groups: GroupExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $fileUserRelation: FileUserRelationExpression, $userPhonesRelation: UserPhonesRelationExpression, $groupUserRelation: GroupUserRelationExpression, $roleUserRelation: RoleUserRelationExpression, $orderBy: UserOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [UserExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
-  userConnection(id: $id name: $name description: $description lastName: $lastName login: $login salt: $salt hash: $hash email: $email files: $files phones: $phones disable: $disable groups: $groups roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId fileUserRelation: $fileUserRelation userPhonesRelation: $userPhonesRelation groupUserRelation: $groupUserRelation roleUserRelation: $roleUserRelation orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before)  {
-    totalCount
-    edges {
-      node {
-		${(queryArguments.groupBy || []).join('\r\n')}
-		${selectColumns
-			.reduce((groups, option) => {
-				if (groups.some((group) => group.value === option.group?.value)) {
-					groups.find((group) => group.value === option.group?.value)?.options?.push(option);
-				} else {
-					groups.push({
-						value: option.group?.value,
-						label: option.group?.label,
-						options: [option]
-					});
-				}
-				return groups;
-			}, <Group[]>[])
-			.map((group) => {
-				if (group.value) {
-					return `${group.value} {${group.options?.map((option) => option.value).join('\r\n')}}`;
-				} else {
-					return group.options?.map((option) => option.value).join('\r\n');
-				}
-			})}
-      }
-    }
-  }
-}`;
-
-			fetch('/graphql', {
-				method: 'POST',
-				body: JSON.stringify({
-					query: query,
-					variables: queryArguments
-				})
-			}).then((response) => {
-				if (response.ok) {
-					response.json().then((json) => {
-						if (queryArguments.groupBy) {
-							const nodes = json.data.userConnection.edges.map((edge: { node: any }) => edge.node);
-							data = {
-								labels: nodes.map((node: { [x: string]: any }) =>
-									queryArguments.groupBy?.map((column) => node[column]).join(' - ')
-								),
-								datasets: selectColumns.map((column) => ({
-									label: column.value,
-									data: nodes.map((node: { [x: string]: any }) => node[column.value])
-								}))
-							};
-						}
-					});
-				}
-			});
-		}
-	};
 </script>
 
 <div class="flex space-x-1">
 	<Combobox
 		title={$LL.graphence.components.agg.columns()}
 		multiple={true}
-		groups={selectOptions}
+		groups={filteredSelectOptions}
 		rootClassName="w-full"
 		bind:value={selectColumns}
+		on:search={(e) => {
+			if (e.detail.searchValue) {
+				filteredSelectOptions = selectOptions
+					.filter(
+						(group) =>
+							group.label.includes(e.detail.searchValue || '') ||
+							group.options.some((option) => option.label.includes(e.detail.searchValue || ''))
+					)
+					.map((group) => ({
+						...group,
+						options: group.options.filter((option) =>
+							option.label.includes(e.detail.searchValue || '')
+						)
+					}));
+			} else {
+				filteredSelectOptions = selectOptions;
+			}
+		}}
 		on:change={(e) => {
 			orderByColumns = orderByColumns.filter(
 				(orderColumn) =>
@@ -260,13 +306,22 @@
 				<Combobox
 					title={$LL.graphence.components.agg.groupBy()}
 					multiple={true}
-					options={groupByOptions}
+					options={filteredGroupByOptions}
 					rootClassName="w-full"
 					className="md:input-xs"
 					containerClassName="md:min-h-8 max-w-xs"
 					tagClassName="md:badge-sm"
 					groupClassName="md:input-group-sm"
 					bind:value={groupByColumns}
+					on:search={(e) => {
+						if (e.detail.searchValue) {
+							filteredGroupByOptions = groupByOptions.filter((option) =>
+								option.label.includes(e.detail.searchValue || '')
+							);
+						} else {
+							filteredGroupByOptions = groupByOptions;
+						}
+					}}
 					on:change={(e) => {
 						orderByColumns = orderByColumns.filter(
 							(orderColumn) =>
@@ -279,13 +334,33 @@
 				<Combobox
 					title={$LL.graphence.components.agg.orderBy()}
 					multiple={true}
-					groups={orderByOptions}
+					groups={filteredOrderByOptions}
 					rootClassName="w-full"
 					className="md:input-xs"
 					containerClassName="md:min-h-8 max-w-xs"
 					tagClassName="md:badge-sm"
 					groupClassName="md:input-group-sm"
 					bind:value={orderByColumns}
+					on:search={(e) => {
+						if (e.detail.searchValue) {
+							filteredOrderByOptions = orderByOptions
+								.filter(
+									(group) =>
+										group.label?.includes(e.detail.searchValue || '') ||
+										group.options?.some((option) =>
+											option.label.includes(e.detail.searchValue || '')
+										)
+								)
+								.map((group) => ({
+									...group,
+									options: group.options?.filter((option) =>
+										option.label.includes(e.detail.searchValue || '')
+									)
+								}));
+						} else {
+							filteredOrderByOptions = orderByOptions;
+						}
+					}}
 					on:change={(e) => {
 						queryPage(1);
 					}}
@@ -300,10 +375,23 @@
 			</button>
 		</div>
 	</UserFilter>
+	<div class="tooltip" data-tip={$LL.graphence.components.agg.bookmark()}>
+		<button
+			class="btn btn-square"
+			on:click={(e) =>
+				console.log(
+					`selectColumns=${JSON.stringify(selectColumns)}&queryArguments=${JSON.stringify(
+						buildArguments()
+					)}`
+				)}
+		>
+			<Icon src={Bookmark} class="h-5 w-5" />
+		</button>
+	</div>
 </div>
 <div class="divider" />
 <div class="card-body overflow-auto">
-	<Bar {data} options={{ responsive: true, maintainAspectRatio: false }} />
+	<Bar data={$UserAggStore} options={{ responsive: true, maintainAspectRatio: false }} />
 </div>
 <div class="divider" />
 <Pagination

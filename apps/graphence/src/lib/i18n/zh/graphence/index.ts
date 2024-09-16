@@ -55,7 +55,8 @@ const zh: NamespaceGraphenceTranslation = {
             groupBy: "分组",
             orderBy: "排序",
             option: "选项",
-            filter: "筛选"
+            filter: "筛选",
+            bookmark: "收藏"
         }
     }
 }

@@ -212,6 +212,10 @@ export type NamespaceGraphenceTranslation = {
 			 * F​i​l​t​e​r
 			 */
 			filter: string
+			/**
+			 * B​o​o​k​m​a​r​k
+			 */
+			bookmark: string
 		}
 	}
 }
@@ -1796,6 +1800,10 @@ export type TranslationFunctions = {
 				 * Filter
 				 */
 				filter: () => LocalizedString
+				/**
+				 * Bookmark
+				 */
+				bookmark: () => LocalizedString
 			}
 		}
 	}
