@@ -13,5 +13,5 @@
 </script>
 
 <Card>
-	<UserBar {selectColumns} {queryArguments} />
+	<UserBar {selectColumns} {queryArguments} isFetching={$UserAggStore.isFetching} />
 </Card>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import { fade } from 'svelte/transition';
 	import { createPopover, melt } from '@melt-ui/svelte';
@@ -24,8 +24,16 @@
 	export let totalCount: number = 0;
 	export let pageNumber: number = 1;
 	export let pageSize: number = 10;
+	export let isFetching: boolean = false;
+	export let showOptionButton: boolean = true;
+	export let showFilterButton: boolean = true;
+	export let showBookmarkButton: boolean = false;
 
 	Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, autocolors);
+
+	const dispatch = createEventDispatcher<{
+		bookmark: { selectColumns: string; queryArguments: string };
+	}>();
 
 	const selectOptions = [
 		{
@@ -126,14 +134,11 @@
 					(group) => group.value === option.group?.value && group.label === option.group?.label
 				)
 			) {
-				const group = groups.find(
-					(group) => group.value === option.group?.value && group.label === option.group?.label
-				)!;
-				if (group.options) {
-					group.options.push(option);
-				} else {
-					group.options = [option];
-				}
+				groups
+					.find(
+						(group) => group.value === option.group?.value && group.label === option.group?.label
+					)
+					?.options?.push(option);
 			} else {
 				groups.push({
 					value: option.group?.value,
@@ -144,9 +149,6 @@
 			return groups;
 		}, <Group[]>[])
 		.map((group) => {
-			if (!group.options) {
-				console.log(group);
-			}
 			return {
 				value: group.value,
 				label: group.label,
@@ -162,7 +164,7 @@
 	$: if (queryArguments.orderBy && Object.keys(queryArguments.orderBy).length > 0) {
 		orderByColumns = Object.entries(queryArguments.orderBy).flatMap((entry) => {
 			if (entry[1] === 'ASC' || entry[1] === 'DESC') {
-				return orderByOptions?.flatMap((group) =>
+				return orderByOptions.flatMap((group) =>
 					(group.options || [])
 						.filter((option) => option.value === entry[0] && option.node === entry[1])
 						.map((option) => ({ ...option, group: group }))
@@ -290,108 +292,119 @@
 			queryPage(1);
 		}}
 	/>
-	<div class="tooltip" data-tip={$LL.graphence.components.agg.option()}>
-		<button class="btn btn-square" use:melt={$trigger}>
-			<Icon src={AdjustmentsHorizontal} class="h-5 w-5" />
-		</button>
-	</div>
-	{#if $open}
-		<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
-		<div
-			class="space-y-2 md:space-y-1 p-1 rounded-xl bg-base-200 shadow z-[50]"
-			use:melt={$content}
-		>
-			<div use:melt={$arrow} />
-			<div class="space-y-1" transition:fade={{ duration: 100 }}>
-				<Combobox
-					title={$LL.graphence.components.agg.groupBy()}
-					multiple={true}
-					options={filteredGroupByOptions}
-					rootClassName="w-full"
-					className="md:input-xs"
-					containerClassName="md:min-h-8 max-w-xs"
-					tagClassName="md:badge-sm"
-					groupClassName="md:input-group-sm"
-					bind:value={groupByColumns}
-					on:search={(e) => {
-						if (e.detail.searchValue) {
-							filteredGroupByOptions = groupByOptions.filter((option) =>
-								option.label.includes(e.detail.searchValue || '')
-							);
-						} else {
-							filteredGroupByOptions = groupByOptions;
-						}
-					}}
-					on:change={(e) => {
-						orderByColumns = orderByColumns.filter(
-							(orderColumn) =>
-								!Array.isArray(e.detail.value) ||
-								e.detail.value.some((groupColumn) => groupColumn.value === orderColumn.value)
-						);
-						queryPage(1);
-					}}
-				/>
-				<Combobox
-					title={$LL.graphence.components.agg.orderBy()}
-					multiple={true}
-					groups={filteredOrderByOptions}
-					rootClassName="w-full"
-					className="md:input-xs"
-					containerClassName="md:min-h-8 max-w-xs"
-					tagClassName="md:badge-sm"
-					groupClassName="md:input-group-sm"
-					bind:value={orderByColumns}
-					on:search={(e) => {
-						if (e.detail.searchValue) {
-							filteredOrderByOptions = orderByOptions
-								.filter(
-									(group) =>
-										group.label?.includes(e.detail.searchValue || '') ||
-										group.options?.some((option) =>
-											option.label.includes(e.detail.searchValue || '')
-										)
-								)
-								.map((group) => ({
-									...group,
-									options: group.options?.filter((option) =>
-										option.label.includes(e.detail.searchValue || '')
-									)
-								}));
-						} else {
-							filteredOrderByOptions = orderByOptions;
-						}
-					}}
-					on:change={(e) => {
-						queryPage(1);
-					}}
-				/>
-			</div>
-		</div>
-	{/if}
-	<UserFilter bind:expression={queryArguments} let:trigger on:filter={(e) => queryPage(1)}>
-		<div class="tooltip" data-tip={$LL.graphence.components.agg.filter()}>
-			<button class="btn btn-square" use:melt={trigger}>
-				<Icon src={Funnel} class="h-5 w-5" />
+	{#if showOptionButton}
+		<div class="tooltip" data-tip={$LL.graphence.components.agg.option()}>
+			<button class="btn btn-square" use:melt={$trigger}>
+				<Icon src={AdjustmentsHorizontal} class="h-5 w-5" />
 			</button>
 		</div>
-	</UserFilter>
-	<div class="tooltip" data-tip={$LL.graphence.components.agg.bookmark()}>
-		<button
-			class="btn btn-square"
-			on:click={(e) =>
-				console.log(
-					`selectColumns=${JSON.stringify(selectColumns)}&queryArguments=${JSON.stringify(
-						buildArguments()
-					)}`
-				)}
-		>
-			<Icon src={Bookmark} class="h-5 w-5" />
-		</button>
-	</div>
+		{#if $open}
+			<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
+			<div
+				class="space-y-2 md:space-y-1 p-1 rounded-xl bg-base-200 shadow z-[50]"
+				use:melt={$content}
+			>
+				<div use:melt={$arrow} />
+				<div class="space-y-1" transition:fade={{ duration: 100 }}>
+					<Combobox
+						title={$LL.graphence.components.agg.groupBy()}
+						multiple={true}
+						options={filteredGroupByOptions}
+						rootClassName="w-full"
+						className="md:input-xs"
+						containerClassName="md:min-h-8 max-w-xs"
+						tagClassName="md:badge-sm"
+						groupClassName="md:input-group-sm"
+						bind:value={groupByColumns}
+						on:search={(e) => {
+							if (e.detail.searchValue) {
+								filteredGroupByOptions = groupByOptions.filter((option) =>
+									option.label.includes(e.detail.searchValue || '')
+								);
+							} else {
+								filteredGroupByOptions = groupByOptions;
+							}
+						}}
+						on:change={(e) => {
+							orderByColumns = orderByColumns.filter(
+								(orderColumn) =>
+									!Array.isArray(e.detail.value) ||
+									e.detail.value.some((groupColumn) => groupColumn.value === orderColumn.value)
+							);
+							queryPage(1);
+						}}
+					/>
+					<Combobox
+						title={$LL.graphence.components.agg.orderBy()}
+						multiple={true}
+						groups={filteredOrderByOptions}
+						rootClassName="w-full"
+						className="md:input-xs"
+						containerClassName="md:min-h-8 max-w-xs"
+						tagClassName="md:badge-sm"
+						groupClassName="md:input-group-sm"
+						bind:value={orderByColumns}
+						on:search={(e) => {
+							if (e.detail.searchValue) {
+								filteredOrderByOptions = orderByOptions
+									.filter(
+										(group) =>
+											group.label?.includes(e.detail.searchValue || '') ||
+											group.options?.some((option) =>
+												option.label.includes(e.detail.searchValue || '')
+											)
+									)
+									.map((group) => ({
+										...group,
+										options: group.options?.filter((option) =>
+											option.label.includes(e.detail.searchValue || '')
+										)
+									}));
+							} else {
+								filteredOrderByOptions = orderByOptions;
+							}
+						}}
+						on:change={(e) => {
+							queryPage(1);
+						}}
+					/>
+				</div>
+			</div>
+		{/if}
+	{/if}
+	{#if showFilterButton}
+		<UserFilter bind:expression={queryArguments} let:trigger on:filter={(e) => queryPage(1)}>
+			<div class="tooltip" data-tip={$LL.graphence.components.agg.filter()}>
+				<button class="btn btn-square" use:melt={trigger}>
+					<Icon src={Funnel} class="h-5 w-5" />
+				</button>
+			</div>
+		</UserFilter>
+	{/if}
+	{#if showBookmarkButton}
+		<div class="tooltip" data-tip={$LL.graphence.components.agg.bookmark()}>
+			<button
+				class="btn btn-square"
+				on:click={(e) =>
+					dispatch('bookmark', {
+						selectColumns: JSON.stringify(selectColumns),
+						queryArguments: JSON.stringify(buildArguments())
+					})}
+			>
+				<Icon src={Bookmark} class="h-5 w-5" />
+			</button>
+		</div>
+	{/if}
 </div>
 <div class="divider" />
 <div class="card-body overflow-auto">
-	<Bar data={$UserAggStore} options={{ responsive: true, maintainAspectRatio: false }} />
+	{#if isFetching}
+		<div class="flex justify-center">
+			<span class="loading loading-bars loading-lg" />
+		</div>
+	{:else}
+		<Bar data={$UserAggStore.data} options={{ responsive: true, maintainAspectRatio: false }} />
+	{/if}
 </div>
 <div class="divider" />
 <Pagination

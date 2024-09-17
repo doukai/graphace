@@ -5,15 +5,27 @@ import { ChartData } from 'chart.js';
 import type { UserConnectionQueryArguments } from '~/lib/types/schema';
 
 function createUserAggStore() {
-    const chartData: Writable<ChartData<'bar', (number | [number, number])[], unknown>> = writable({
-        datasets: []
+    const chartData: Writable<{ isFetching: boolean, data: ChartData<'bar', (number | [number, number])[], unknown> }> = writable({
+        isFetching: false,
+        data: {
+            datasets: []
+        }
     });
     const { subscribe, set } = chartData;
 
+    let isFetching: boolean = false;
+
     return {
         subscribe,
+        isFetching,
         fetch: async (selectColumns: Option[], queryArguments: UserConnectionQueryArguments) => {
             if (selectColumns && selectColumns.length > 0 && queryArguments.groupBy && queryArguments.groupBy.length > 0) {
+                set({
+                    isFetching: true,
+                    data: {
+                        datasets: []
+                    }
+                })
                 let query = `query Query_userConnection($id: StringExpression, $name: StringExpression, $description: StringExpression, $lastName: StringExpression, $login: StringExpression, $salt: StringExpression, $hash: StringExpression, $email: StringExpression, $files: FileExpression, $phones: StringExpression, $disable: BooleanExpression, $groups: GroupExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $fileUserRelation: FileUserRelationExpression, $userPhonesRelation: UserPhonesRelationExpression, $groupUserRelation: GroupUserRelationExpression, $roleUserRelation: RoleUserRelationExpression, $orderBy: UserOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [UserExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
     userConnection(id: $id name: $name description: $description lastName: $lastName login: $login salt: $salt hash: $hash email: $email files: $files phones: $phones disable: $disable groups: $groups roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId fileUserRelation: $fileUserRelation userPhonesRelation: $userPhonesRelation groupUserRelation: $groupUserRelation roleUserRelation: $roleUserRelation orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before)  {
         totalCount
@@ -54,23 +66,27 @@ function createUserAggStore() {
                 });
 
                 if (response.ok) {
+                    isFetching = true;
                     const json = await response.json();
                     if (queryArguments.groupBy) {
                         const nodes = json.data.userConnection.edges.map((edge: { node: any }) => edge.node);
                         set({
-                            labels: nodes.map((node: { [x: string]: any }) =>
-                                queryArguments.groupBy?.map((column) => node[column]).join(' - ')
-                            ),
-                            datasets: selectColumns.map((column) => ({
-                                label: column.label,
-                                data: nodes.map((node: { [x: string]: any }) => {
-                                    if (column.group?.value) {
-                                        return node[column.group.value][column.value];
-                                    } else {
-                                        return node[column.value];
-                                    }
-                                })
-                            }))
+                            isFetching: false,
+                            data: {
+                                labels: nodes.map((node: { [x: string]: any }) =>
+                                    queryArguments.groupBy?.map((column) => node[column]).join(' - ')
+                                ),
+                                datasets: selectColumns.map((column) => ({
+                                    label: column.label,
+                                    data: nodes.map((node: { [x: string]: any }) => {
+                                        if (column.group?.value) {
+                                            return node[column.group.value][column.value];
+                                        } else {
+                                            return node[column.value];
+                                        }
+                                    })
+                                }))
+                            }
                         });
                     }
                 }
