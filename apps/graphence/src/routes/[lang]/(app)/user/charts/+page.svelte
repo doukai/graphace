@@ -1,17 +1,14 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { Card } from '@graphace/ui';
 	import UserBar from '~/lib/components/objects/user/UserBar.svelte';
-	import { UserAggStore } from '~/lib/stores/userAggStore';
+	import type { UserAggStore } from '~/lib/stores/userAggStore';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
 	const { selectColumns, queryArguments } = data;
-	onMount(async () => {
-		UserAggStore.fetch(selectColumns, queryArguments);
-	});
+	const UserAgg = data.UserAgg as UserAggStore;
 </script>
 
 <Card>
-	<UserBar {selectColumns} {queryArguments} isFetching={$UserAggStore.isFetching} />
+	<UserBar isFetching={$UserAgg.isFetching} data={$UserAgg.data} {selectColumns} {queryArguments} />
 </Card>
