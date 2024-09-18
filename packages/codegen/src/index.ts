@@ -697,21 +697,10 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         idName: getIDFieldName(type),
-                        scalars: new Set([...getScalarNames(fields) || [], 'String']),
-                        enums: getEnumNames(fields),
-                        objects: getObjectNames(fields),
-                        imports: componentFieldImports(typeName, fields),
-                        selectImports: getSelectComponentFieldImports(typeName, fields),
-                        fields: componentFields(typeName, fields),
                         scalarFields: componentFields(typeName, fields)?.filter(field => field.isScalarType).filter(field => !field.isListType),
                         aggFieldList: componentFields(typeName, aggFields),
                         schemaTypesPath: config.schemaTypesPath,
-                        enumsPath: `${config.componentsPath}/enums`,
                         objectsPath: `${config.componentsPath}/objects`,
-                        queryTypeName: getQueryTypeName(),
-                        mutationTypeName: getMutationTypeName(),
-                        subscriptionTypeName: getSubscriptionTypeName(),
-                        hasFileField: hasFileField(type),
                         useAuth: config.useAuth,
                         appName: config.appName
                     }),
@@ -761,30 +750,10 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
-                const aggFields = getAggFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
-                        idName: getIDFieldName(type),
-                        args: schema.getQueryType()?.getFields()[`${changeCase.camelCase(typeName)}Connection`].args,
-                        scalars: new Set([...getScalarNames(fields) || [], 'String']),
-                        enums: getEnumNames(fields),
-                        objects: getObjectNames(fields),
-                        imports: componentFieldImports(typeName, fields),
-                        selectImports: getSelectComponentFieldImports(typeName, fields),
-                        fields: componentFields(typeName, fields),
-                        scalarFields: componentFields(typeName, fields)?.filter(field => field.isScalarType).filter(field => !field.isListType),
-                        aggFieldList: componentFields(typeName, aggFields),
-                        schemaTypesPath: config.schemaTypesPath,
-                        enumsPath: `${config.componentsPath}/enums`,
-                        objectsPath: `${config.componentsPath}/objects`,
-                        queryTypeName: getQueryTypeName(),
-                        mutationTypeName: getMutationTypeName(),
-                        subscriptionTypeName: getSubscriptionTypeName(),
-                        hasFileField: hasFileField(type),
-                        useAuth: config.useAuth,
-                        appName: config.appName
+                        args: schema.getQueryType()?.getFields()[`${changeCase.camelCase(typeName)}Connection`].args
                     }),
                 };
             }
@@ -1703,23 +1672,13 @@ const renders: Record<Template, Render> = {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
-            const connectionField = getConnectionField(schema.getQueryType(), changeCase.camelCase(typeName));
             if (type && isObjectType(type)) {
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         idName: getIDFieldName(type),
-                        imports: getObjectArrayImports(typeName),
-                        component: getObjectArrayComponent(typeName),
-                        connectionField: connectionField,
                         barPath: `${config.componentsPath}/objects`,
-                        storesPath: `${config.storesPath}`,
-                        schemaTypesPath: config.schemaTypesPath,
-                        queryTypeName: getQueryTypeName(),
-                        mutationTypeName: getMutationTypeName(),
-                        subscriptionTypeName: getSubscriptionTypeName(),
-                        hasFileField: hasFileField(type),
-                        useAuth: config.useAuth
+                        storesPath: config.storesPath
                     }),
                 };
             }
@@ -1731,18 +1690,14 @@ const renders: Record<Template, Render> = {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
-            const connectionField = getConnectionField(schema.getQueryType(), changeCase.camelCase(typeName));
             if (type && isObjectType(type)) {
+                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         idName: getIDFieldName(type),
-                        connectionField: connectionField,
-                        storesPath: `${config.storesPath}`,
-                        queryTypeName: getQueryTypeName(),
-                        mutationTypeName: getMutationTypeName(),
-                        subscriptionTypeName: getSubscriptionTypeName(),
-                        hasFileField: hasFileField(type),
+                        objects: getObjectNames(fields),
+                        storesPath: config.storesPath,
                         useAuth: config.useAuth
                     }),
                 };

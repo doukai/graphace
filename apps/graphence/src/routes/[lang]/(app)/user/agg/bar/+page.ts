@@ -4,7 +4,7 @@ import { createUserAggStore } from '~/lib/stores/user/userAggStore';
 import { permissions } from '~/utils/auth-util';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await permissions.getTypes('User');
+    await permissions.getTypes('User', 'File', 'Group', 'Role', 'Realm');
     const selectColumns = JSON.parse(event.url.searchParams.get('selectColumns') || '[]');
     const queryArguments = JSON.parse(event.url.searchParams.get('queryArguments') || '{}');
     const showHeader = !event.url.searchParams.has('hideHeader');

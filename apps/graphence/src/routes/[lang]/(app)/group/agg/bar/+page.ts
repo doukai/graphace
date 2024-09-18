@@ -4,7 +4,7 @@ import { createGroupAggStore } from '~/lib/stores/group/groupAggStore';
 import { permissions } from '~/utils/auth-util';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await permissions.getTypes('Group');
+    await permissions.getTypes('Group', 'User', 'Role', 'Realm');
     const selectColumns = JSON.parse(event.url.searchParams.get('selectColumns') || '[]');
     const queryArguments = JSON.parse(event.url.searchParams.get('queryArguments') || '{}');
     const showHeader = !event.url.searchParams.has('hideHeader');

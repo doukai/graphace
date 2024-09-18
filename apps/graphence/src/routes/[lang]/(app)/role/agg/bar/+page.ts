@@ -4,7 +4,7 @@ import { createRoleAggStore } from '~/lib/stores/role/roleAggStore';
 import { permissions } from '~/utils/auth-util';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await permissions.getTypes('Role');
+    await permissions.getTypes('Role', 'User', 'Group', 'Permission', 'Realm');
     const selectColumns = JSON.parse(event.url.searchParams.get('selectColumns') || '[]');
     const queryArguments = JSON.parse(event.url.searchParams.get('queryArguments') || '{}');
     const showHeader = !event.url.searchParams.has('hideHeader');

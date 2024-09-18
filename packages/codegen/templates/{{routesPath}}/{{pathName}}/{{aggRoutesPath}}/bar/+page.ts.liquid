@@ -6,7 +6,7 @@ import { permissions } from '~/utils/auth-util';
 {%- endif %}
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await permissions.getTypes('{{ name }}');
+    await permissions.getTypes('{{ name }}'{% for object in objects %}{%- if object != name -%}, '{{ object }}'{%- endif -%}{% endfor %});
     const selectColumns = JSON.parse(event.url.searchParams.get('selectColumns') || '[]');
     const queryArguments = JSON.parse(event.url.searchParams.get('queryArguments') || '{}');
     const showHeader = !event.url.searchParams.has('hideHeader');
