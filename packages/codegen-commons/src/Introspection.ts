@@ -177,6 +177,16 @@ export const getIDFieldName = (type: GraphQLNamedType): string | undefined => {
     return undefined;
 }
 
+export const getOriginalFieldName = (field: GraphQLField<any, any, any>): string | undefined => {
+    const fieldName = field.name;
+    for (let suffix of aggregateSuffix) {
+        if (fieldName.slice(-suffix.length) === suffix) {
+            return fieldName.substring(0, fieldName.lastIndexOf(suffix));
+        }
+    }
+    return undefined;
+}
+
 export const hasFileField = (type: GraphQLNamedType): boolean => {
     if (isObjectType(type)) {
         return Object.values(type.getFields())

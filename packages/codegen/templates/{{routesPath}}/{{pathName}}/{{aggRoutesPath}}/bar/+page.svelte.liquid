@@ -1,0 +1,33 @@
+<script lang="ts">
+	import { Card } from '@graphace/ui';
+	import {{ name }}Bar from '~/{{ barPath }}/{{ name | paramCase }}/{{ name }}Bar.svelte';
+	import type { {{ name }}AggStore } from '~/{{ storesPath }}/{{ name | paramCase }}/{{ name | camelCase }}AggStore';
+	import type { PageData } from './$houdini';
+
+	export let data: PageData;
+	const {
+		selectColumns,
+		queryArguments,
+		showHeader,
+		showFooter,
+		showOptionButton,
+		showFilterButton,
+		showBookmarkButton
+	} = data;
+	const {{ name }}Agg = data.{{ name }}Agg as {{ name }}AggStore;
+</script>
+
+<Card>
+	<{{ name }}Bar
+		isFetching={${{ name }}Agg.isFetching}
+		data={${{ name }}Agg.data}
+		{selectColumns}
+		{queryArguments}
+		{showHeader}
+		{showFooter}
+		{showOptionButton}
+		{showFilterButton}
+		{showBookmarkButton}
+		on:query={(e) => {{ name }}Agg.fetch(e.detail.selectColumns, e.detail.queryArguments)}
+	/>
+</Card>

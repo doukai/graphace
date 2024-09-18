@@ -10,6 +10,10 @@ export interface GraphacePresetConfig {
 
   routesPath?: string;
 
+  aggRoutesPath?: string;
+
+  storesPath?: string;
+
   i18nPath?: string;
 
   i18nDefault?: string;

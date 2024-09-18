@@ -8,8 +8,10 @@ import { buildPath } from "./Builder";
 const _appName = 'web';
 const _graphqlPath = 'graphql';
 const _componentsPath = 'lib/components';
+const _storesPath = 'lib/stores';
 const _dataPath = 'lib/data';
 const _routesPath = 'routes/[lang]/(app)';
+const _aggRoutesPath = 'agg';
 const _i18nPath = 'lib/i18n';
 const _i18nDefault = 'en';
 
@@ -18,10 +20,12 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         const generateOptions: Types.GenerateOptions[] = [];
         const graphqlPath = `${options.baseOutputDir}/${options.presetConfig.graphqlPath || _graphqlPath}`;
         const componentsPath = `${options.baseOutputDir}/${options.presetConfig.componentsPath || _componentsPath}`;
+        const storesPath = `${options.baseOutputDir}/${options.presetConfig.storesPath || _storesPath}`;
         const dataPath = `${options.baseOutputDir}/${options.presetConfig.dataPath || _dataPath}`;
         const routesPath = `${options.baseOutputDir}/${options.presetConfig.routesPath || _routesPath}`;
+        const aggRoutesPath = options.presetConfig.aggRoutesPath || _aggRoutesPath;
         const i18nPath = `${options.baseOutputDir}/${options.presetConfig.i18nPath || _i18nPath}`;
-        const i18nDefault = `${options.presetConfig.i18nDefault || _i18nDefault}`;
+        const i18nDefault = options.presetConfig.i18nDefault || _i18nDefault;
         const i18nDescription = options.presetConfig.i18nDescription;
 
         const queryFields = options.schemaAst?.getQueryType()?.getFields() || [];
@@ -1196,6 +1200,61 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 })
         );
 
+        generateOptions.push(
+            ...targetRouteObjectType
+                .map(type => {
+                    const template = '{{routesPath}}/{{pathName}}/{{aggRoutesPath}}/bar/+page.svelte';
+                    const scope = { routesPath, aggRoutesPath, pathName: changeCase.paramCase(type.name) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            appName: options.presetConfig.appName || _appName,
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetRouteObjectType
+                .map(type => {
+                    const template = '{{routesPath}}/{{pathName}}/{{aggRoutesPath}}/bar/+page.ts';
+                    const scope = { routesPath, aggRoutesPath, pathName: changeCase.paramCase(type.name) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            appName: options.presetConfig.appName || _appName,
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
 
         generateOptions.push(
             ...targetComponentObjectTypes
@@ -1638,6 +1697,33 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         generateOptions.push(
             ...targetComponentObjectTypes
                 .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Bar.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            appName: options.presetConfig.appName || _appName,
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
                     const template = '{{componentsPath}}/objects/{{pathName}}/index.ts';
                     const scope = { componentsPath, pathName: changeCase.paramCase(type.name) };
                     return {
@@ -1684,6 +1770,33 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 schemaAst: options.schemaAst,
                 skipDocumentsValidation: true,
             }
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{storesPath}}/{{pathName}}/{{name}}AggStore.ts';
+                    const scope = { storesPath, pathName: changeCase.paramCase(type.name), name: changeCase.camelCase(type.name) };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            appName: options.presetConfig.appName || _appName,
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
         );
 
         generateOptions.push(

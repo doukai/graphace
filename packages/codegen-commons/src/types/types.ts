@@ -75,4 +75,6 @@ export type FieldInfo = {
     isNamed: boolean;
     select?: boolean;
     component?: string;
+    originalFieldName?: string | undefined;
+    aggFieldList?: FieldInfo[] | undefined;
 }

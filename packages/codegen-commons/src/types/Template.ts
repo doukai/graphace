@@ -20,6 +20,7 @@ export type Template =
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Select.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectTd.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectItem.svelte' |
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Bar.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/index.ts' |
     '{{componentsPath}}/objects/index.ts' |
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Item.svelte' |
@@ -28,6 +29,7 @@ export type Template =
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Input.svelte' |
     '{{componentsPath}}/enums/{{pathName}}/index.ts' |
     '{{componentsPath}}/enums/index.ts' |
+    '{{storesPath}}/{{pathName}}/{{name}}AggStore.ts' |
     '{{routesPath}}/{{pathName}}/+page.svelte' |
     '{{routesPath}}/{{pathName}}/+page.ts' |
     '{{routesPath}}/{{pathName}}/[id]/+page.svelte' |
@@ -53,4 +55,6 @@ export type Template =
     '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/_/+page.svelte' |
     '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/_/+page.ts' |
     '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/__/+page.svelte' |
-    '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/__/+page.ts' 
+    '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/__/+page.ts' |
+    '{{routesPath}}/{{pathName}}/{{aggRoutesPath}}/bar/+page.svelte' |
+    '{{routesPath}}/{{pathName}}/{{aggRoutesPath}}/bar/+page.ts'
