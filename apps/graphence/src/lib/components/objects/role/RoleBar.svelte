@@ -19,14 +19,15 @@
 	import autocolors from 'chartjs-plugin-autocolors';
 	import { PermissionsStore } from '@graphace/commons';
 	import { Field } from '@graphace/graphql';
-	import { Combobox, Group, Pagination, type Option } from '@graphace/ui';
+	import { Combobox, Group as G, Pagination, type Option } from '@graphace/ui';
 	import RoleFilter from '~/lib/components/objects/role/RoleFilter.svelte';
-	import type { RoleConnectionQueryArguments } from '~/lib/types/schema';
+	import type { Role, RoleConnection, RoleConnectionQueryArguments } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 	const permissions = getContext('permissions') as PermissionsStore;
 
 	export let data: ChartData<'bar', (number | [number, number])[], unknown> = { datasets: [] };
+	export let connecton: RoleConnection;
 	export let fields: Field[] = [];
 	export let queryArguments: RoleConnectionQueryArguments = {};
 	export let selectColumns: Option[] = [];
@@ -50,6 +51,25 @@
 	}>();
 
 	const selectOptions = [
+		{
+			value: '',
+			label: $LL.graphql.objects.Role.fields.id.name(),
+			options: [
+				{
+					value: 'idCount',
+					label: $LL.graphql.objects.Role.fields.idCount.name()
+				},
+				{
+					value: 'idMax',
+					label: $LL.graphql.objects.Role.fields.idMax.name()
+				},
+				{
+					value: 'idMin',
+					label: $LL.graphql.objects.Role.fields.idMin.name()
+				},
+			],
+			disabled: !permissions.auth('Role::id::READ')
+		},
 		{
 			value: '',
 			label: $LL.graphql.objects.Role.fields.name.name(),
@@ -516,7 +536,7 @@
 				});
 			}
 			return groups;
-		}, <Group[]>[])
+		}, <G[]>[])
 		.map((group) => {
 			return {
 				value: group.value,
@@ -560,8 +580,43 @@
 		pageNumber = queryArguments.offset / pageSize + 1;
 	}
 
+	$: if (connecton) {
+		const nodes = connecton.edges?.map((edge) => edge?.node);
+		data = {
+			labels: nodes?.map((node) =>
+				queryArguments.groupBy?.map((column) => node?.[column as keyof Role]).join(' - ')
+			),
+			datasets: fields.flatMap((field) => {
+				if (field.fields && field.fields.length > 0) {
+					return field.fields.map((subField) => ({
+						label: selectOptions
+							.filter((group) => group.value === field.name)
+							?.flatMap((group) =>
+								group.options.filter((option) => option.value === subField.name)
+							)[0].label,
+						data: nodes?.map((node) => {
+							const object = node?.[field.name as keyof Role];
+							return object?.[subField.name as keyof typeof object];
+						})
+					}));
+				} else {
+					return [
+						{
+							label: selectOptions
+								.filter((group) => !group.value)
+								?.flatMap((group) =>
+									group.options.filter((option) => option.value === field.name)
+								)[0].label,
+							data: nodes?.map((node) => node?.[field.name as keyof Role])
+						}
+					];
+				}
+			})
+		};
+	}
+
 	const buildFields = (): Field[] => {
-		return selectColumns.reduce((fields, option) => {
+		fields = selectColumns.reduce((fields, option) => {
 			if (option.group?.value) {
 				if (fields.some((field) => field.name === option.group?.value)) {
 					fields
@@ -575,6 +630,8 @@
 			}
 			return fields;
 		}, <Field[]>[]);
+
+		return fields;
 	};
 
 	const buildArguments = (toPageNumber?: number | undefined): RoleConnectionQueryArguments => {

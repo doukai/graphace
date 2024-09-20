@@ -1,33 +1,18 @@
-import { writable, get } from 'svelte/store';
+import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import { LoadEvent } from '@sveltejs/kit';
 import { type Field, fieldToString } from '@graphace/graphql';
-import { ChartData } from 'chart.js';
-import type { RealmConnectionQueryArguments } from '~/lib/types/schema';
-import LL from '$i18n/i18n-svelte';
+import type { RealmConnection, RealmConnectionQueryArguments } from '~/lib/types/schema';
 
 export async function createRealmAggStore(params: { event: LoadEvent, fields: Field[], queryArguments: RealmConnectionQueryArguments }): Promise<RealmAggStore> {
-    const chartData: Writable<{ isFetching: boolean, data: ChartData<'bar', (number | [number, number])[], unknown> }> = writable({
+    const data: Writable<{ isFetching: boolean, connection: RealmConnection }> = writable({
         isFetching: false,
-        data: {
-            datasets: []
-        }
+        connection: {}
     });
 
     const { event, fields, queryArguments } = params;
 
-    let $LL = get(LL);
-
-    const fieldNames: Record<string, () => LocalizedString | Record<string, () => LocalizedString>> = {
-        nameCount: $LL.graphql.objects.Realm.fields.nameCount.name,
-        nameMax: $LL.graphql.objects.Realm.fields.nameMax.name,
-        nameMin: $LL.graphql.objects.Realm.fields.nameMin.name,
-        descriptionCount: $LL.graphql.objects.Realm.fields.descriptionCount.name,
-        descriptionMax: $LL.graphql.objects.Realm.fields.descriptionMax.name,
-        descriptionMin: $LL.graphql.objects.Realm.fields.descriptionMin.name,
-    }
-
-    const { subscribe, set, update } = chartData;
+    const { subscribe, set, update } = data;
 
     const fetch = async (fields: Field[], queryArguments: RealmConnectionQueryArguments) => {
         if (fields && fields.length > 0 && queryArguments.groupBy && queryArguments.groupBy.length > 0) {
@@ -55,38 +40,12 @@ export async function createRealmAggStore(params: { event: LoadEvent, fields: Fi
             if (response.ok) {
                 const json = await response.json();
                 if (queryArguments.groupBy) {
-                    const nodes = json.data.userConnection.edges.map((edge: { node: any }) => edge.node);
                     set({
                         isFetching: false,
-                        data: {
-                            labels: nodes.map((node: { [x: string]: any }) =>
-                                queryArguments.groupBy?.map((column) => node[column]).join(' - ')
-                            ),
-                            datasets: fields.flatMap((field) => {
-                                if (field.fields && field.fields.length > 0) {
-                                    return field.fields.map(subField => ({
-                                        label: getFieldName(field.name, subField.name),
-                                        data: nodes.map((node: { [x: string]: any }) => node[field.name][subField.name])
-                                    }));
-                                } else {
-                                    return [{
-                                        label: getFieldName(field.name),
-                                        data: nodes.map((node: { [x: string]: any }) => node[field.name])
-                                    }];
-                                }
-                            })
-                        }
+                        connection: json.data.realmConnection
                     });
                 }
             }
-        }
-    }
-
-    const getFieldName = (fieldName: string, subFieldName?: string): string | undefined => {
-        if (subFieldName && typeof fieldNames[fieldName] !== 'string') {
-            return fieldNames[fieldName][subFieldName]();
-        } else if (typeof fieldNames[fieldName] === 'string') {
-            return fieldNames[fieldName]();
         }
     }
 
@@ -94,19 +53,17 @@ export async function createRealmAggStore(params: { event: LoadEvent, fields: Fi
 
     return {
         subscribe,
-        fetch,
-        getFieldName
+        fetch
     };
 }
 
 export type RealmAggStore = {
     subscribe: (this: void, run: Subscriber<{
         isFetching: boolean;
-        data: ChartData<"bar", (number | [number, number])[], unknown>;
+        connection: RealmConnection;
     }>, invalidate?: Invalidator<{
         isFetching: boolean;
-        data: ChartData<"bar", (number | [number, number])[], unknown>;
+        connection: RealmConnection;
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], queryArguments: UserConnectionQueryArguments) => Promise<void>;
-    getFieldName: (fieldName: string, subFieldName?: string) => string | undefined
+    fetch: (fields: Field[], queryArguments: RealmConnectionQueryArguments) => Promise<void>;
 }

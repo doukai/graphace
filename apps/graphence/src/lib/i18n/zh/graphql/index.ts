@@ -5,6 +5,9 @@ const zh: NamespaceGraphqlTranslation = {
 		CurrentUser: {
 			name: '当前用户',
 			fields: {
+				id: {
+					name: 'ID',
+				},
 				name: {
 					name: '姓名',
 				},
@@ -13,6 +16,9 @@ const zh: NamespaceGraphqlTranslation = {
 				},
 				login: {
 					name: '账号',
+				},
+				realmId: {
+					name: '租户ID',
 				},
 				groups: {
 					name: '组',
@@ -25,6 +31,9 @@ const zh: NamespaceGraphqlTranslation = {
 		File: {
 			name: '文件',
 			fields: {
+				id: {
+					name: 'ID',
+				},
 				name: {
 					name: '文件名',
 				},
@@ -36,6 +45,30 @@ const zh: NamespaceGraphqlTranslation = {
 				},
 				url: {
 					name: 'URL',
+				},
+				isDeprecated: {
+					name: 'isDeprecated',
+				},
+				version: {
+					name: 'version',
+				},
+				realmId: {
+					name: 'realmId',
+				},
+				createUserId: {
+					name: 'createUserId',
+				},
+				createTime: {
+					name: 'createTime',
+				},
+				updateUserId: {
+					name: 'updateUserId',
+				},
+				updateTime: {
+					name: 'updateTime',
+				},
+				createGroupId: {
+					name: 'createGroupId',
 				},
 				idCount: {
 					name: 'idCount',
@@ -87,6 +120,9 @@ const zh: NamespaceGraphqlTranslation = {
 		Group: {
 			name: '组',
 			fields: {
+				id: {
+					name: 'ID',
+				},
 				name: {
 					name: '名称',
 				},
@@ -117,14 +153,65 @@ const zh: NamespaceGraphqlTranslation = {
 				realm: {
 					name: '租户',
 				},
+				isDeprecated: {
+					name: 'isDeprecated',
+				},
+				version: {
+					name: 'version',
+				},
+				realmId: {
+					name: 'realmId',
+				},
+				createUserId: {
+					name: 'createUserId',
+				},
+				createTime: {
+					name: 'createTime',
+				},
+				updateUserId: {
+					name: 'updateUserId',
+				},
+				updateTime: {
+					name: 'updateTime',
+				},
+				createGroupId: {
+					name: 'createGroupId',
+				},
+				groupUserRelation: {
+					name: 'groupUserRelation',
+				},
+				groupRoleRelation: {
+					name: 'groupRoleRelation',
+				},
 				subGroupsAggregate: {
 					name: 'subGroupsAggregate',
+				},
+				subGroupsConnection: {
+					name: 'subGroupsConnection',
 				},
 				usersAggregate: {
 					name: 'usersAggregate',
 				},
+				usersConnection: {
+					name: 'usersConnection',
+				},
 				rolesAggregate: {
 					name: 'rolesAggregate',
+				},
+				rolesConnection: {
+					name: 'rolesConnection',
+				},
+				groupUserRelationAggregate: {
+					name: 'groupUserRelationAggregate',
+				},
+				groupUserRelationConnection: {
+					name: 'groupUserRelationConnection',
+				},
+				groupRoleRelationAggregate: {
+					name: 'groupRoleRelationAggregate',
+				},
+				groupRoleRelationConnection: {
+					name: 'groupRoleRelationConnection',
 				},
 				idCount: {
 					name: 'idCount',
@@ -185,6 +272,9 @@ const zh: NamespaceGraphqlTranslation = {
 				},
 				deepMin: {
 					name: 'deepMin',
+				},
+				syncGroupPolicy: {
+					name: 'syncGroupPolicy',
 				}
 			}
 		},
@@ -212,8 +302,44 @@ const zh: NamespaceGraphqlTranslation = {
 				realm: {
 					name: '租户',
 				},
+				isDeprecated: {
+					name: 'isDeprecated',
+				},
+				version: {
+					name: 'version',
+				},
+				realmId: {
+					name: 'realmId',
+				},
+				createUserId: {
+					name: 'createUserId',
+				},
+				createTime: {
+					name: 'createTime',
+				},
+				updateUserId: {
+					name: 'updateUserId',
+				},
+				updateTime: {
+					name: 'updateTime',
+				},
+				createGroupId: {
+					name: 'createGroupId',
+				},
+				permissionRoleRelation: {
+					name: 'permissionRoleRelation',
+				},
 				rolesAggregate: {
 					name: 'rolesAggregate',
+				},
+				rolesConnection: {
+					name: 'rolesConnection',
+				},
+				permissionRoleRelationAggregate: {
+					name: 'permissionRoleRelationAggregate',
+				},
+				permissionRoleRelationConnection: {
+					name: 'permissionRoleRelationConnection',
 				},
 				nameCount: {
 					name: 'nameCount',
@@ -250,12 +376,18 @@ const zh: NamespaceGraphqlTranslation = {
 				},
 				typeMin: {
 					name: 'typeMin',
+				},
+				syncPermissionPolicy: {
+					name: 'syncPermissionPolicy',
 				}
 			}
 		},
 		Policy: {
 			name: 'Policy',
 			fields: {
+				id: {
+					name: 'id',
+				},
 				ptype: {
 					name: 'ptype',
 				},
@@ -282,11 +414,38 @@ const zh: NamespaceGraphqlTranslation = {
 		Realm: {
 			name: '租户',
 			fields: {
+				id: {
+					name: 'ID',
+				},
 				name: {
 					name: '名称',
 				},
 				description: {
 					name: '描述',
+				},
+				isDeprecated: {
+					name: 'isDeprecated',
+				},
+				version: {
+					name: 'version',
+				},
+				realmId: {
+					name: 'realmId',
+				},
+				createUserId: {
+					name: 'createUserId',
+				},
+				createTime: {
+					name: 'createTime',
+				},
+				updateUserId: {
+					name: 'updateUserId',
+				},
+				updateTime: {
+					name: 'updateTime',
+				},
+				createGroupId: {
+					name: 'createGroupId',
 				},
 				idCount: {
 					name: 'idCount',
@@ -320,6 +479,9 @@ const zh: NamespaceGraphqlTranslation = {
 		Role: {
 			name: '角色',
 			fields: {
+				id: {
+					name: 'ID',
+				},
 				name: {
 					name: '名称',
 				},
@@ -341,17 +503,89 @@ const zh: NamespaceGraphqlTranslation = {
 				realm: {
 					name: '租户',
 				},
+				isDeprecated: {
+					name: 'isDeprecated',
+				},
+				version: {
+					name: 'version',
+				},
+				realmId: {
+					name: 'realmId',
+				},
+				createUserId: {
+					name: 'createUserId',
+				},
+				createTime: {
+					name: 'createTime',
+				},
+				updateUserId: {
+					name: 'updateUserId',
+				},
+				updateTime: {
+					name: 'updateTime',
+				},
+				createGroupId: {
+					name: 'createGroupId',
+				},
+				roleUserRelation: {
+					name: 'roleUserRelation',
+				},
+				groupRoleRelation: {
+					name: 'groupRoleRelation',
+				},
+				roleCompositeRelation: {
+					name: 'roleCompositeRelation',
+				},
+				permissionRoleRelation: {
+					name: 'permissionRoleRelation',
+				},
 				usersAggregate: {
 					name: 'usersAggregate',
+				},
+				usersConnection: {
+					name: 'usersConnection',
 				},
 				groupsAggregate: {
 					name: 'groupsAggregate',
 				},
+				groupsConnection: {
+					name: 'groupsConnection',
+				},
 				compositesAggregate: {
 					name: 'compositesAggregate',
 				},
+				compositesConnection: {
+					name: 'compositesConnection',
+				},
 				permissionsAggregate: {
 					name: 'permissionsAggregate',
+				},
+				permissionsConnection: {
+					name: 'permissionsConnection',
+				},
+				roleUserRelationAggregate: {
+					name: 'roleUserRelationAggregate',
+				},
+				roleUserRelationConnection: {
+					name: 'roleUserRelationConnection',
+				},
+				groupRoleRelationAggregate: {
+					name: 'groupRoleRelationAggregate',
+				},
+				groupRoleRelationConnection: {
+					name: 'groupRoleRelationConnection',
+				},
+				roleCompositeRelationAggregate: {
+					name: 'roleCompositeRelationAggregate',
+				},
+				roleCompositeRelationConnection: {
+					name: 'roleCompositeRelationConnection',
+				},
+				permissionRoleRelationAggregate: {
+					name: 'permissionRoleRelationAggregate',
+				},
+				permissionRoleRelationConnection: {
+					name: 'permissionRoleRelationConnection',
 				},
 				idCount: {
 					name: 'idCount',
@@ -379,12 +613,18 @@ const zh: NamespaceGraphqlTranslation = {
 				},
 				descriptionMin: {
 					name: 'descriptionMin',
+				},
+				syncRolePolicy: {
+					name: 'syncRolePolicy',
 				}
 			}
 		},
 		User: {
 			name: '用户',
 			fields: {
+				id: {
+					name: 'ID',
+				},
 				name: {
 					name: '姓名',
 				},
@@ -396,6 +636,12 @@ const zh: NamespaceGraphqlTranslation = {
 				},
 				login: {
 					name: '账号',
+				},
+				salt: {
+					name: '盐',
+				},
+				hash: {
+					name: '哈希',
 				},
 				email: {
 					name: '邮箱',
@@ -418,11 +664,71 @@ const zh: NamespaceGraphqlTranslation = {
 				realm: {
 					name: '租户',
 				},
+				isDeprecated: {
+					name: 'isDeprecated',
+				},
+				version: {
+					name: 'version',
+				},
+				realmId: {
+					name: 'realmId',
+				},
+				createUserId: {
+					name: 'createUserId',
+				},
+				createTime: {
+					name: 'createTime',
+				},
+				updateUserId: {
+					name: 'updateUserId',
+				},
+				updateTime: {
+					name: 'updateTime',
+				},
+				createGroupId: {
+					name: 'createGroupId',
+				},
+				fileUserRelation: {
+					name: 'fileUserRelation',
+				},
+				userPhonesRelation: {
+					name: 'userPhonesRelation',
+				},
+				groupUserRelation: {
+					name: 'groupUserRelation',
+				},
+				roleUserRelation: {
+					name: 'roleUserRelation',
+				},
 				groupsAggregate: {
 					name: 'groupsAggregate',
 				},
+				groupsConnection: {
+					name: 'groupsConnection',
+				},
 				rolesAggregate: {
 					name: 'rolesAggregate',
+				},
+				rolesConnection: {
+					name: 'rolesConnection',
+				},
+				userPhonesRelationAggregate: {
+					name: 'userPhonesRelationAggregate',
+				},
+				userPhonesRelationConnection: {
+					name: 'userPhonesRelationConnection',
+				},
+				groupUserRelationAggregate: {
+					name: 'groupUserRelationAggregate',
+				},
+				groupUserRelationConnection: {
+					name: 'groupUserRelationConnection',
+				},
+				roleUserRelationAggregate: {
+					name: 'roleUserRelationAggregate',
+				},
+				roleUserRelationConnection: {
+					name: 'roleUserRelationConnection',
 				},
 				idCount: {
 					name: 'idCount',
@@ -495,6 +801,9 @@ const zh: NamespaceGraphqlTranslation = {
 				},
 				emailMin: {
 					name: 'emailMin',
+				},
+				syncUserPolicy: {
+					name: 'syncUserPolicy',
 				}
 			}
 		}

@@ -19,14 +19,15 @@
 	import autocolors from 'chartjs-plugin-autocolors';
 	import { PermissionsStore } from '@graphace/commons';
 	import { Field } from '@graphace/graphql';
-	import { Combobox, Group, Pagination, type Option } from '@graphace/ui';
+	import { Combobox, Group as G, Pagination, type Option } from '@graphace/ui';
 	import GroupFilter from '~/lib/components/objects/group/GroupFilter.svelte';
-	import type { GroupConnectionQueryArguments } from '~/lib/types/schema';
+	import type { Group, GroupConnection, GroupConnectionQueryArguments } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 	const permissions = getContext('permissions') as PermissionsStore;
 
 	export let data: ChartData<'bar', (number | [number, number])[], unknown> = { datasets: [] };
+	export let connecton: GroupConnection;
 	export let fields: Field[] = [];
 	export let queryArguments: GroupConnectionQueryArguments = {};
 	export let selectColumns: Option[] = [];
@@ -50,6 +51,25 @@
 	}>();
 
 	const selectOptions = [
+		{
+			value: '',
+			label: $LL.graphql.objects.Group.fields.id.name(),
+			options: [
+				{
+					value: 'idCount',
+					label: $LL.graphql.objects.Group.fields.idCount.name()
+				},
+				{
+					value: 'idMax',
+					label: $LL.graphql.objects.Group.fields.idMax.name()
+				},
+				{
+					value: 'idMin',
+					label: $LL.graphql.objects.Group.fields.idMin.name()
+				},
+			],
+			disabled: !permissions.auth('Group::id::READ')
+		},
 		{
 			value: '',
 			label: $LL.graphql.objects.Group.fields.name.name(),
@@ -529,7 +549,7 @@
 				});
 			}
 			return groups;
-		}, <Group[]>[])
+		}, <G[]>[])
 		.map((group) => {
 			return {
 				value: group.value,
@@ -573,8 +593,43 @@
 		pageNumber = queryArguments.offset / pageSize + 1;
 	}
 
+	$: if (connecton) {
+		const nodes = connecton.edges?.map((edge) => edge?.node);
+		data = {
+			labels: nodes?.map((node) =>
+				queryArguments.groupBy?.map((column) => node?.[column as keyof Group]).join(' - ')
+			),
+			datasets: fields.flatMap((field) => {
+				if (field.fields && field.fields.length > 0) {
+					return field.fields.map((subField) => ({
+						label: selectOptions
+							.filter((group) => group.value === field.name)
+							?.flatMap((group) =>
+								group.options.filter((option) => option.value === subField.name)
+							)[0].label,
+						data: nodes?.map((node) => {
+							const object = node?.[field.name as keyof Group];
+							return object?.[subField.name as keyof typeof object];
+						})
+					}));
+				} else {
+					return [
+						{
+							label: selectOptions
+								.filter((group) => !group.value)
+								?.flatMap((group) =>
+									group.options.filter((option) => option.value === field.name)
+								)[0].label,
+							data: nodes?.map((node) => node?.[field.name as keyof Group])
+						}
+					];
+				}
+			})
+		};
+	}
+
 	const buildFields = (): Field[] => {
-		return selectColumns.reduce((fields, option) => {
+		fields = selectColumns.reduce((fields, option) => {
 			if (option.group?.value) {
 				if (fields.some((field) => field.name === option.group?.value)) {
 					fields
@@ -588,6 +643,8 @@
 			}
 			return fields;
 		}, <Field[]>[]);
+
+		return fields;
 	};
 
 	const buildArguments = (toPageNumber?: number | undefined): GroupConnectionQueryArguments => {

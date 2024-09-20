@@ -20,7 +20,7 @@
 <Card>
 	<RealmBar
 		isFetching={$RealmAgg.isFetching}
-		data={$RealmAgg.data}
+		connecton={$RealmAgg.connection}
 		{fields}
 		{queryArguments}
 		{showHeader}

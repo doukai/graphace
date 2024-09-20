@@ -47,8 +47,6 @@ const renders: Record<Template, Render> = {
                             return {
                                 ...assertObjectType(objectType),
                                 fields: Object.values(objectType.getFields())
-                                    .filter(field => inListField(objectType.name, field.name, getFieldType(field.type).name) || inDetailField(objectType.name, field.name, getFieldType(field.type).name))
-                                    .filter(field => !isConnection(getFieldType(field.type).name))
                                     .filter(field => !isEdge(getFieldType(field.type).name))
                                     .filter(field => !isPageInfo(getFieldType(field.type).name))
                                     .filter(field => !isIntrospection(getFieldType(field.type).name))
@@ -88,8 +86,6 @@ const renders: Record<Template, Render> = {
                             return {
                                 ...assertObjectType(objectType),
                                 fields: Object.values(objectType.getFields())
-                                    .filter(field => inListField(objectType.name, field.name, getFieldType(field.type).name) || inDetailField(objectType.name, field.name, getFieldType(field.type).name))
-                                    .filter(field => !isConnection(getFieldType(field.type).name))
                                     .filter(field => !isEdge(getFieldType(field.type).name))
                                     .filter(field => !isPageInfo(getFieldType(field.type).name))
                                     .filter(field => !isIntrospection(getFieldType(field.type).name))
@@ -692,7 +688,7 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
-                const aggFields = getAggFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
+                const aggFields = getAggFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => field.fieldName === getIDFieldName(type) || inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,

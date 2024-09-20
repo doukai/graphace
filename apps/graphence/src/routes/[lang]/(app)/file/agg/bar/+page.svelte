@@ -20,7 +20,7 @@
 <Card>
 	<FileBar
 		isFetching={$FileAgg.isFetching}
-		data={$FileAgg.data}
+		connecton={$FileAgg.connection}
 		{fields}
 		{queryArguments}
 		{showHeader}

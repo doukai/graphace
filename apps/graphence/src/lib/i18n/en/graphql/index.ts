@@ -5,6 +5,9 @@ const en: BaseTranslation = {
 		CurrentUser: {
 			name: 'CurrentUser',
 			fields: {
+				id: {
+					name: 'id',
+				},
 				name: {
 					name: 'name',
 				},
@@ -13,6 +16,9 @@ const en: BaseTranslation = {
 				},
 				login: {
 					name: 'login',
+				},
+				realmId: {
+					name: 'realmId',
 				},
 				groups: {
 					name: 'groups',
@@ -25,6 +31,9 @@ const en: BaseTranslation = {
 		File: {
 			name: 'File',
 			fields: {
+				id: {
+					name: 'id',
+				},
 				name: {
 					name: 'name',
 				},
@@ -36,6 +45,30 @@ const en: BaseTranslation = {
 				},
 				url: {
 					name: 'url',
+				},
+				isDeprecated: {
+					name: 'isDeprecated',
+				},
+				version: {
+					name: 'version',
+				},
+				realmId: {
+					name: 'realmId',
+				},
+				createUserId: {
+					name: 'createUserId',
+				},
+				createTime: {
+					name: 'createTime',
+				},
+				updateUserId: {
+					name: 'updateUserId',
+				},
+				updateTime: {
+					name: 'updateTime',
+				},
+				createGroupId: {
+					name: 'createGroupId',
 				},
 				idCount: {
 					name: 'idCount',
@@ -87,6 +120,9 @@ const en: BaseTranslation = {
 		Group: {
 			name: 'Group',
 			fields: {
+				id: {
+					name: 'id',
+				},
 				name: {
 					name: 'name',
 				},
@@ -117,14 +153,65 @@ const en: BaseTranslation = {
 				realm: {
 					name: 'realm',
 				},
+				isDeprecated: {
+					name: 'isDeprecated',
+				},
+				version: {
+					name: 'version',
+				},
+				realmId: {
+					name: 'realmId',
+				},
+				createUserId: {
+					name: 'createUserId',
+				},
+				createTime: {
+					name: 'createTime',
+				},
+				updateUserId: {
+					name: 'updateUserId',
+				},
+				updateTime: {
+					name: 'updateTime',
+				},
+				createGroupId: {
+					name: 'createGroupId',
+				},
+				groupUserRelation: {
+					name: 'groupUserRelation',
+				},
+				groupRoleRelation: {
+					name: 'groupRoleRelation',
+				},
 				subGroupsAggregate: {
 					name: 'subGroupsAggregate',
+				},
+				subGroupsConnection: {
+					name: 'subGroupsConnection',
 				},
 				usersAggregate: {
 					name: 'usersAggregate',
 				},
+				usersConnection: {
+					name: 'usersConnection',
+				},
 				rolesAggregate: {
 					name: 'rolesAggregate',
+				},
+				rolesConnection: {
+					name: 'rolesConnection',
+				},
+				groupUserRelationAggregate: {
+					name: 'groupUserRelationAggregate',
+				},
+				groupUserRelationConnection: {
+					name: 'groupUserRelationConnection',
+				},
+				groupRoleRelationAggregate: {
+					name: 'groupRoleRelationAggregate',
+				},
+				groupRoleRelationConnection: {
+					name: 'groupRoleRelationConnection',
 				},
 				idCount: {
 					name: 'idCount',
@@ -185,6 +272,9 @@ const en: BaseTranslation = {
 				},
 				deepMin: {
 					name: 'deepMin',
+				},
+				syncGroupPolicy: {
+					name: 'syncGroupPolicy',
 				}
 			}
 		},
@@ -212,8 +302,44 @@ const en: BaseTranslation = {
 				realm: {
 					name: 'realm',
 				},
+				isDeprecated: {
+					name: 'isDeprecated',
+				},
+				version: {
+					name: 'version',
+				},
+				realmId: {
+					name: 'realmId',
+				},
+				createUserId: {
+					name: 'createUserId',
+				},
+				createTime: {
+					name: 'createTime',
+				},
+				updateUserId: {
+					name: 'updateUserId',
+				},
+				updateTime: {
+					name: 'updateTime',
+				},
+				createGroupId: {
+					name: 'createGroupId',
+				},
+				permissionRoleRelation: {
+					name: 'permissionRoleRelation',
+				},
 				rolesAggregate: {
 					name: 'rolesAggregate',
+				},
+				rolesConnection: {
+					name: 'rolesConnection',
+				},
+				permissionRoleRelationAggregate: {
+					name: 'permissionRoleRelationAggregate',
+				},
+				permissionRoleRelationConnection: {
+					name: 'permissionRoleRelationConnection',
 				},
 				nameCount: {
 					name: 'nameCount',
@@ -250,12 +376,18 @@ const en: BaseTranslation = {
 				},
 				typeMin: {
 					name: 'typeMin',
+				},
+				syncPermissionPolicy: {
+					name: 'syncPermissionPolicy',
 				}
 			}
 		},
 		Policy: {
 			name: 'Policy',
 			fields: {
+				id: {
+					name: 'id',
+				},
 				ptype: {
 					name: 'ptype',
 				},
@@ -282,11 +414,38 @@ const en: BaseTranslation = {
 		Realm: {
 			name: 'Realm',
 			fields: {
+				id: {
+					name: 'id',
+				},
 				name: {
 					name: 'name',
 				},
 				description: {
 					name: 'description',
+				},
+				isDeprecated: {
+					name: 'isDeprecated',
+				},
+				version: {
+					name: 'version',
+				},
+				realmId: {
+					name: 'realmId',
+				},
+				createUserId: {
+					name: 'createUserId',
+				},
+				createTime: {
+					name: 'createTime',
+				},
+				updateUserId: {
+					name: 'updateUserId',
+				},
+				updateTime: {
+					name: 'updateTime',
+				},
+				createGroupId: {
+					name: 'createGroupId',
 				},
 				idCount: {
 					name: 'idCount',
@@ -320,6 +479,9 @@ const en: BaseTranslation = {
 		Role: {
 			name: 'Role',
 			fields: {
+				id: {
+					name: 'id',
+				},
 				name: {
 					name: 'name',
 				},
@@ -341,17 +503,89 @@ const en: BaseTranslation = {
 				realm: {
 					name: 'realm',
 				},
+				isDeprecated: {
+					name: 'isDeprecated',
+				},
+				version: {
+					name: 'version',
+				},
+				realmId: {
+					name: 'realmId',
+				},
+				createUserId: {
+					name: 'createUserId',
+				},
+				createTime: {
+					name: 'createTime',
+				},
+				updateUserId: {
+					name: 'updateUserId',
+				},
+				updateTime: {
+					name: 'updateTime',
+				},
+				createGroupId: {
+					name: 'createGroupId',
+				},
+				roleUserRelation: {
+					name: 'roleUserRelation',
+				},
+				groupRoleRelation: {
+					name: 'groupRoleRelation',
+				},
+				roleCompositeRelation: {
+					name: 'roleCompositeRelation',
+				},
+				permissionRoleRelation: {
+					name: 'permissionRoleRelation',
+				},
 				usersAggregate: {
 					name: 'usersAggregate',
+				},
+				usersConnection: {
+					name: 'usersConnection',
 				},
 				groupsAggregate: {
 					name: 'groupsAggregate',
 				},
+				groupsConnection: {
+					name: 'groupsConnection',
+				},
 				compositesAggregate: {
 					name: 'compositesAggregate',
 				},
+				compositesConnection: {
+					name: 'compositesConnection',
+				},
 				permissionsAggregate: {
 					name: 'permissionsAggregate',
+				},
+				permissionsConnection: {
+					name: 'permissionsConnection',
+				},
+				roleUserRelationAggregate: {
+					name: 'roleUserRelationAggregate',
+				},
+				roleUserRelationConnection: {
+					name: 'roleUserRelationConnection',
+				},
+				groupRoleRelationAggregate: {
+					name: 'groupRoleRelationAggregate',
+				},
+				groupRoleRelationConnection: {
+					name: 'groupRoleRelationConnection',
+				},
+				roleCompositeRelationAggregate: {
+					name: 'roleCompositeRelationAggregate',
+				},
+				roleCompositeRelationConnection: {
+					name: 'roleCompositeRelationConnection',
+				},
+				permissionRoleRelationAggregate: {
+					name: 'permissionRoleRelationAggregate',
+				},
+				permissionRoleRelationConnection: {
+					name: 'permissionRoleRelationConnection',
 				},
 				idCount: {
 					name: 'idCount',
@@ -379,12 +613,18 @@ const en: BaseTranslation = {
 				},
 				descriptionMin: {
 					name: 'descriptionMin',
+				},
+				syncRolePolicy: {
+					name: 'syncRolePolicy',
 				}
 			}
 		},
 		User: {
 			name: 'User',
 			fields: {
+				id: {
+					name: 'id',
+				},
 				name: {
 					name: 'name',
 				},
@@ -396,6 +636,12 @@ const en: BaseTranslation = {
 				},
 				login: {
 					name: 'login',
+				},
+				salt: {
+					name: 'salt',
+				},
+				hash: {
+					name: 'hash',
 				},
 				email: {
 					name: 'email',
@@ -418,11 +664,71 @@ const en: BaseTranslation = {
 				realm: {
 					name: 'realm',
 				},
+				isDeprecated: {
+					name: 'isDeprecated',
+				},
+				version: {
+					name: 'version',
+				},
+				realmId: {
+					name: 'realmId',
+				},
+				createUserId: {
+					name: 'createUserId',
+				},
+				createTime: {
+					name: 'createTime',
+				},
+				updateUserId: {
+					name: 'updateUserId',
+				},
+				updateTime: {
+					name: 'updateTime',
+				},
+				createGroupId: {
+					name: 'createGroupId',
+				},
+				fileUserRelation: {
+					name: 'fileUserRelation',
+				},
+				userPhonesRelation: {
+					name: 'userPhonesRelation',
+				},
+				groupUserRelation: {
+					name: 'groupUserRelation',
+				},
+				roleUserRelation: {
+					name: 'roleUserRelation',
+				},
 				groupsAggregate: {
 					name: 'groupsAggregate',
 				},
+				groupsConnection: {
+					name: 'groupsConnection',
+				},
 				rolesAggregate: {
 					name: 'rolesAggregate',
+				},
+				rolesConnection: {
+					name: 'rolesConnection',
+				},
+				userPhonesRelationAggregate: {
+					name: 'userPhonesRelationAggregate',
+				},
+				userPhonesRelationConnection: {
+					name: 'userPhonesRelationConnection',
+				},
+				groupUserRelationAggregate: {
+					name: 'groupUserRelationAggregate',
+				},
+				groupUserRelationConnection: {
+					name: 'groupUserRelationConnection',
+				},
+				roleUserRelationAggregate: {
+					name: 'roleUserRelationAggregate',
+				},
+				roleUserRelationConnection: {
+					name: 'roleUserRelationConnection',
 				},
 				idCount: {
 					name: 'idCount',
@@ -495,6 +801,9 @@ const en: BaseTranslation = {
 				},
 				emailMin: {
 					name: 'emailMin',
+				},
+				syncUserPolicy: {
+					name: 'syncUserPolicy',
 				}
 			}
 		}

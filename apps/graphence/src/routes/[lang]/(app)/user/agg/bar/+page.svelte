@@ -20,7 +20,7 @@
 <Card>
 	<UserBar
 		isFetching={$UserAgg.isFetching}
-		data={$UserAgg.data}
+		connecton={$UserAgg.connection}
 		{fields}
 		{queryArguments}
 		{showHeader}

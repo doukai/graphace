@@ -228,6 +228,12 @@ export type NamespaceGraphqlTranslation = {
 			 */
 			name: string
 			fields: {
+				id: {
+					/**
+					 * i​d
+					 */
+					name: string
+				}
 				name: {
 					/**
 					 * n​a​m​e
@@ -243,6 +249,12 @@ export type NamespaceGraphqlTranslation = {
 				login: {
 					/**
 					 * l​o​g​i​n
+					 */
+					name: string
+				}
+				realmId: {
+					/**
+					 * r​e​a​l​m​I​d
 					 */
 					name: string
 				}
@@ -266,6 +278,12 @@ export type NamespaceGraphqlTranslation = {
 			 */
 			name: string
 			fields: {
+				id: {
+					/**
+					 * i​d
+					 */
+					name: string
+				}
 				name: {
 					/**
 					 * n​a​m​e
@@ -287,6 +305,54 @@ export type NamespaceGraphqlTranslation = {
 				url: {
 					/**
 					 * u​r​l
+					 */
+					name: string
+				}
+				isDeprecated: {
+					/**
+					 * i​s​D​e​p​r​e​c​a​t​e​d
+					 */
+					name: string
+				}
+				version: {
+					/**
+					 * v​e​r​s​i​o​n
+					 */
+					name: string
+				}
+				realmId: {
+					/**
+					 * r​e​a​l​m​I​d
+					 */
+					name: string
+				}
+				createUserId: {
+					/**
+					 * c​r​e​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				createTime: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				updateUserId: {
+					/**
+					 * u​p​d​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				updateTime: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				createGroupId: {
+					/**
+					 * c​r​e​a​t​e​G​r​o​u​p​I​d
 					 */
 					name: string
 				}
@@ -388,6 +454,12 @@ export type NamespaceGraphqlTranslation = {
 			 */
 			name: string
 			fields: {
+				id: {
+					/**
+					 * i​d
+					 */
+					name: string
+				}
 				name: {
 					/**
 					 * n​a​m​e
@@ -448,9 +520,75 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				isDeprecated: {
+					/**
+					 * i​s​D​e​p​r​e​c​a​t​e​d
+					 */
+					name: string
+				}
+				version: {
+					/**
+					 * v​e​r​s​i​o​n
+					 */
+					name: string
+				}
+				realmId: {
+					/**
+					 * r​e​a​l​m​I​d
+					 */
+					name: string
+				}
+				createUserId: {
+					/**
+					 * c​r​e​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				createTime: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				updateUserId: {
+					/**
+					 * u​p​d​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				updateTime: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				createGroupId: {
+					/**
+					 * c​r​e​a​t​e​G​r​o​u​p​I​d
+					 */
+					name: string
+				}
+				groupUserRelation: {
+					/**
+					 * g​r​o​u​p​U​s​e​r​R​e​l​a​t​i​o​n
+					 */
+					name: string
+				}
+				groupRoleRelation: {
+					/**
+					 * g​r​o​u​p​R​o​l​e​R​e​l​a​t​i​o​n
+					 */
+					name: string
+				}
 				subGroupsAggregate: {
 					/**
 					 * s​u​b​G​r​o​u​p​s​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				subGroupsConnection: {
+					/**
+					 * s​u​b​G​r​o​u​p​s​C​o​n​n​e​c​t​i​o​n
 					 */
 					name: string
 				}
@@ -460,9 +598,45 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				usersConnection: {
+					/**
+					 * u​s​e​r​s​C​o​n​n​e​c​t​i​o​n
+					 */
+					name: string
+				}
 				rolesAggregate: {
 					/**
 					 * r​o​l​e​s​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				rolesConnection: {
+					/**
+					 * r​o​l​e​s​C​o​n​n​e​c​t​i​o​n
+					 */
+					name: string
+				}
+				groupUserRelationAggregate: {
+					/**
+					 * g​r​o​u​p​U​s​e​r​R​e​l​a​t​i​o​n​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				groupUserRelationConnection: {
+					/**
+					 * g​r​o​u​p​U​s​e​r​R​e​l​a​t​i​o​n​C​o​n​n​e​c​t​i​o​n
+					 */
+					name: string
+				}
+				groupRoleRelationAggregate: {
+					/**
+					 * g​r​o​u​p​R​o​l​e​R​e​l​a​t​i​o​n​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				groupRoleRelationConnection: {
+					/**
+					 * g​r​o​u​p​R​o​l​e​R​e​l​a​t​i​o​n​C​o​n​n​e​c​t​i​o​n
 					 */
 					name: string
 				}
@@ -586,6 +760,12 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				syncGroupPolicy: {
+					/**
+					 * s​y​n​c​G​r​o​u​p​P​o​l​i​c​y
+					 */
+					name: string
+				}
 			}
 		}
 		Permission: {
@@ -636,9 +816,81 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				isDeprecated: {
+					/**
+					 * i​s​D​e​p​r​e​c​a​t​e​d
+					 */
+					name: string
+				}
+				version: {
+					/**
+					 * v​e​r​s​i​o​n
+					 */
+					name: string
+				}
+				realmId: {
+					/**
+					 * r​e​a​l​m​I​d
+					 */
+					name: string
+				}
+				createUserId: {
+					/**
+					 * c​r​e​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				createTime: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				updateUserId: {
+					/**
+					 * u​p​d​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				updateTime: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				createGroupId: {
+					/**
+					 * c​r​e​a​t​e​G​r​o​u​p​I​d
+					 */
+					name: string
+				}
+				permissionRoleRelation: {
+					/**
+					 * p​e​r​m​i​s​s​i​o​n​R​o​l​e​R​e​l​a​t​i​o​n
+					 */
+					name: string
+				}
 				rolesAggregate: {
 					/**
 					 * r​o​l​e​s​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				rolesConnection: {
+					/**
+					 * r​o​l​e​s​C​o​n​n​e​c​t​i​o​n
+					 */
+					name: string
+				}
+				permissionRoleRelationAggregate: {
+					/**
+					 * p​e​r​m​i​s​s​i​o​n​R​o​l​e​R​e​l​a​t​i​o​n​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				permissionRoleRelationConnection: {
+					/**
+					 * p​e​r​m​i​s​s​i​o​n​R​o​l​e​R​e​l​a​t​i​o​n​C​o​n​n​e​c​t​i​o​n
 					 */
 					name: string
 				}
@@ -714,6 +966,12 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				syncPermissionPolicy: {
+					/**
+					 * s​y​n​c​P​e​r​m​i​s​s​i​o​n​P​o​l​i​c​y
+					 */
+					name: string
+				}
 			}
 		}
 		Policy: {
@@ -722,6 +980,12 @@ export type NamespaceGraphqlTranslation = {
 			 */
 			name: string
 			fields: {
+				id: {
+					/**
+					 * i​d
+					 */
+					name: string
+				}
 				ptype: {
 					/**
 					 * p​t​y​p​e
@@ -772,6 +1036,12 @@ export type NamespaceGraphqlTranslation = {
 			 */
 			name: string
 			fields: {
+				id: {
+					/**
+					 * i​d
+					 */
+					name: string
+				}
 				name: {
 					/**
 					 * n​a​m​e
@@ -781,6 +1051,54 @@ export type NamespaceGraphqlTranslation = {
 				description: {
 					/**
 					 * d​e​s​c​r​i​p​t​i​o​n
+					 */
+					name: string
+				}
+				isDeprecated: {
+					/**
+					 * i​s​D​e​p​r​e​c​a​t​e​d
+					 */
+					name: string
+				}
+				version: {
+					/**
+					 * v​e​r​s​i​o​n
+					 */
+					name: string
+				}
+				realmId: {
+					/**
+					 * r​e​a​l​m​I​d
+					 */
+					name: string
+				}
+				createUserId: {
+					/**
+					 * c​r​e​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				createTime: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				updateUserId: {
+					/**
+					 * u​p​d​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				updateTime: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				createGroupId: {
+					/**
+					 * c​r​e​a​t​e​G​r​o​u​p​I​d
 					 */
 					name: string
 				}
@@ -846,6 +1164,12 @@ export type NamespaceGraphqlTranslation = {
 			 */
 			name: string
 			fields: {
+				id: {
+					/**
+					 * i​d
+					 */
+					name: string
+				}
 				name: {
 					/**
 					 * n​a​m​e
@@ -888,9 +1212,87 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				isDeprecated: {
+					/**
+					 * i​s​D​e​p​r​e​c​a​t​e​d
+					 */
+					name: string
+				}
+				version: {
+					/**
+					 * v​e​r​s​i​o​n
+					 */
+					name: string
+				}
+				realmId: {
+					/**
+					 * r​e​a​l​m​I​d
+					 */
+					name: string
+				}
+				createUserId: {
+					/**
+					 * c​r​e​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				createTime: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				updateUserId: {
+					/**
+					 * u​p​d​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				updateTime: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				createGroupId: {
+					/**
+					 * c​r​e​a​t​e​G​r​o​u​p​I​d
+					 */
+					name: string
+				}
+				roleUserRelation: {
+					/**
+					 * r​o​l​e​U​s​e​r​R​e​l​a​t​i​o​n
+					 */
+					name: string
+				}
+				groupRoleRelation: {
+					/**
+					 * g​r​o​u​p​R​o​l​e​R​e​l​a​t​i​o​n
+					 */
+					name: string
+				}
+				roleCompositeRelation: {
+					/**
+					 * r​o​l​e​C​o​m​p​o​s​i​t​e​R​e​l​a​t​i​o​n
+					 */
+					name: string
+				}
+				permissionRoleRelation: {
+					/**
+					 * p​e​r​m​i​s​s​i​o​n​R​o​l​e​R​e​l​a​t​i​o​n
+					 */
+					name: string
+				}
 				usersAggregate: {
 					/**
 					 * u​s​e​r​s​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				usersConnection: {
+					/**
+					 * u​s​e​r​s​C​o​n​n​e​c​t​i​o​n
 					 */
 					name: string
 				}
@@ -900,15 +1302,81 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				groupsConnection: {
+					/**
+					 * g​r​o​u​p​s​C​o​n​n​e​c​t​i​o​n
+					 */
+					name: string
+				}
 				compositesAggregate: {
 					/**
 					 * c​o​m​p​o​s​i​t​e​s​A​g​g​r​e​g​a​t​e
 					 */
 					name: string
 				}
+				compositesConnection: {
+					/**
+					 * c​o​m​p​o​s​i​t​e​s​C​o​n​n​e​c​t​i​o​n
+					 */
+					name: string
+				}
 				permissionsAggregate: {
 					/**
 					 * p​e​r​m​i​s​s​i​o​n​s​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				permissionsConnection: {
+					/**
+					 * p​e​r​m​i​s​s​i​o​n​s​C​o​n​n​e​c​t​i​o​n
+					 */
+					name: string
+				}
+				roleUserRelationAggregate: {
+					/**
+					 * r​o​l​e​U​s​e​r​R​e​l​a​t​i​o​n​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				roleUserRelationConnection: {
+					/**
+					 * r​o​l​e​U​s​e​r​R​e​l​a​t​i​o​n​C​o​n​n​e​c​t​i​o​n
+					 */
+					name: string
+				}
+				groupRoleRelationAggregate: {
+					/**
+					 * g​r​o​u​p​R​o​l​e​R​e​l​a​t​i​o​n​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				groupRoleRelationConnection: {
+					/**
+					 * g​r​o​u​p​R​o​l​e​R​e​l​a​t​i​o​n​C​o​n​n​e​c​t​i​o​n
+					 */
+					name: string
+				}
+				roleCompositeRelationAggregate: {
+					/**
+					 * r​o​l​e​C​o​m​p​o​s​i​t​e​R​e​l​a​t​i​o​n​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				roleCompositeRelationConnection: {
+					/**
+					 * r​o​l​e​C​o​m​p​o​s​i​t​e​R​e​l​a​t​i​o​n​C​o​n​n​e​c​t​i​o​n
+					 */
+					name: string
+				}
+				permissionRoleRelationAggregate: {
+					/**
+					 * p​e​r​m​i​s​s​i​o​n​R​o​l​e​R​e​l​a​t​i​o​n​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				permissionRoleRelationConnection: {
+					/**
+					 * p​e​r​m​i​s​s​i​o​n​R​o​l​e​R​e​l​a​t​i​o​n​C​o​n​n​e​c​t​i​o​n
 					 */
 					name: string
 				}
@@ -966,6 +1434,12 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				syncRolePolicy: {
+					/**
+					 * s​y​n​c​R​o​l​e​P​o​l​i​c​y
+					 */
+					name: string
+				}
 			}
 		}
 		User: {
@@ -974,6 +1448,12 @@ export type NamespaceGraphqlTranslation = {
 			 */
 			name: string
 			fields: {
+				id: {
+					/**
+					 * i​d
+					 */
+					name: string
+				}
 				name: {
 					/**
 					 * n​a​m​e
@@ -995,6 +1475,18 @@ export type NamespaceGraphqlTranslation = {
 				login: {
 					/**
 					 * l​o​g​i​n
+					 */
+					name: string
+				}
+				salt: {
+					/**
+					 * s​a​l​t
+					 */
+					name: string
+				}
+				hash: {
+					/**
+					 * h​a​s​h
 					 */
 					name: string
 				}
@@ -1040,15 +1532,135 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				isDeprecated: {
+					/**
+					 * i​s​D​e​p​r​e​c​a​t​e​d
+					 */
+					name: string
+				}
+				version: {
+					/**
+					 * v​e​r​s​i​o​n
+					 */
+					name: string
+				}
+				realmId: {
+					/**
+					 * r​e​a​l​m​I​d
+					 */
+					name: string
+				}
+				createUserId: {
+					/**
+					 * c​r​e​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				createTime: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				updateUserId: {
+					/**
+					 * u​p​d​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				updateTime: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				createGroupId: {
+					/**
+					 * c​r​e​a​t​e​G​r​o​u​p​I​d
+					 */
+					name: string
+				}
+				fileUserRelation: {
+					/**
+					 * f​i​l​e​U​s​e​r​R​e​l​a​t​i​o​n
+					 */
+					name: string
+				}
+				userPhonesRelation: {
+					/**
+					 * u​s​e​r​P​h​o​n​e​s​R​e​l​a​t​i​o​n
+					 */
+					name: string
+				}
+				groupUserRelation: {
+					/**
+					 * g​r​o​u​p​U​s​e​r​R​e​l​a​t​i​o​n
+					 */
+					name: string
+				}
+				roleUserRelation: {
+					/**
+					 * r​o​l​e​U​s​e​r​R​e​l​a​t​i​o​n
+					 */
+					name: string
+				}
 				groupsAggregate: {
 					/**
 					 * g​r​o​u​p​s​A​g​g​r​e​g​a​t​e
 					 */
 					name: string
 				}
+				groupsConnection: {
+					/**
+					 * g​r​o​u​p​s​C​o​n​n​e​c​t​i​o​n
+					 */
+					name: string
+				}
 				rolesAggregate: {
 					/**
 					 * r​o​l​e​s​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				rolesConnection: {
+					/**
+					 * r​o​l​e​s​C​o​n​n​e​c​t​i​o​n
+					 */
+					name: string
+				}
+				userPhonesRelationAggregate: {
+					/**
+					 * u​s​e​r​P​h​o​n​e​s​R​e​l​a​t​i​o​n​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				userPhonesRelationConnection: {
+					/**
+					 * u​s​e​r​P​h​o​n​e​s​R​e​l​a​t​i​o​n​C​o​n​n​e​c​t​i​o​n
+					 */
+					name: string
+				}
+				groupUserRelationAggregate: {
+					/**
+					 * g​r​o​u​p​U​s​e​r​R​e​l​a​t​i​o​n​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				groupUserRelationConnection: {
+					/**
+					 * g​r​o​u​p​U​s​e​r​R​e​l​a​t​i​o​n​C​o​n​n​e​c​t​i​o​n
+					 */
+					name: string
+				}
+				roleUserRelationAggregate: {
+					/**
+					 * r​o​l​e​U​s​e​r​R​e​l​a​t​i​o​n​A​g​g​r​e​g​a​t​e
+					 */
+					name: string
+				}
+				roleUserRelationConnection: {
+					/**
+					 * r​o​l​e​U​s​e​r​R​e​l​a​t​i​o​n​C​o​n​n​e​c​t​i​o​n
 					 */
 					name: string
 				}
@@ -1193,6 +1805,12 @@ export type NamespaceGraphqlTranslation = {
 				emailMin: {
 					/**
 					 * e​m​a​i​l​M​i​n
+					 */
+					name: string
+				}
+				syncUserPolicy: {
+					/**
+					 * s​y​n​c​U​s​e​r​P​o​l​i​c​y
 					 */
 					name: string
 				}
@@ -1815,6 +2433,12 @@ export type TranslationFunctions = {
 				 */
 				name: () => LocalizedString
 				fields: {
+					id: {
+						/**
+						 * id
+						 */
+						name: () => LocalizedString
+					}
 					name: {
 						/**
 						 * name
@@ -1830,6 +2454,12 @@ export type TranslationFunctions = {
 					login: {
 						/**
 						 * login
+						 */
+						name: () => LocalizedString
+					}
+					realmId: {
+						/**
+						 * realmId
 						 */
 						name: () => LocalizedString
 					}
@@ -1853,6 +2483,12 @@ export type TranslationFunctions = {
 				 */
 				name: () => LocalizedString
 				fields: {
+					id: {
+						/**
+						 * id
+						 */
+						name: () => LocalizedString
+					}
 					name: {
 						/**
 						 * name
@@ -1874,6 +2510,54 @@ export type TranslationFunctions = {
 					url: {
 						/**
 						 * url
+						 */
+						name: () => LocalizedString
+					}
+					isDeprecated: {
+						/**
+						 * isDeprecated
+						 */
+						name: () => LocalizedString
+					}
+					version: {
+						/**
+						 * version
+						 */
+						name: () => LocalizedString
+					}
+					realmId: {
+						/**
+						 * realmId
+						 */
+						name: () => LocalizedString
+					}
+					createUserId: {
+						/**
+						 * createUserId
+						 */
+						name: () => LocalizedString
+					}
+					createTime: {
+						/**
+						 * createTime
+						 */
+						name: () => LocalizedString
+					}
+					updateUserId: {
+						/**
+						 * updateUserId
+						 */
+						name: () => LocalizedString
+					}
+					updateTime: {
+						/**
+						 * updateTime
+						 */
+						name: () => LocalizedString
+					}
+					createGroupId: {
+						/**
+						 * createGroupId
 						 */
 						name: () => LocalizedString
 					}
@@ -1975,6 +2659,12 @@ export type TranslationFunctions = {
 				 */
 				name: () => LocalizedString
 				fields: {
+					id: {
+						/**
+						 * id
+						 */
+						name: () => LocalizedString
+					}
 					name: {
 						/**
 						 * name
@@ -2035,9 +2725,75 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
+					isDeprecated: {
+						/**
+						 * isDeprecated
+						 */
+						name: () => LocalizedString
+					}
+					version: {
+						/**
+						 * version
+						 */
+						name: () => LocalizedString
+					}
+					realmId: {
+						/**
+						 * realmId
+						 */
+						name: () => LocalizedString
+					}
+					createUserId: {
+						/**
+						 * createUserId
+						 */
+						name: () => LocalizedString
+					}
+					createTime: {
+						/**
+						 * createTime
+						 */
+						name: () => LocalizedString
+					}
+					updateUserId: {
+						/**
+						 * updateUserId
+						 */
+						name: () => LocalizedString
+					}
+					updateTime: {
+						/**
+						 * updateTime
+						 */
+						name: () => LocalizedString
+					}
+					createGroupId: {
+						/**
+						 * createGroupId
+						 */
+						name: () => LocalizedString
+					}
+					groupUserRelation: {
+						/**
+						 * groupUserRelation
+						 */
+						name: () => LocalizedString
+					}
+					groupRoleRelation: {
+						/**
+						 * groupRoleRelation
+						 */
+						name: () => LocalizedString
+					}
 					subGroupsAggregate: {
 						/**
 						 * subGroupsAggregate
+						 */
+						name: () => LocalizedString
+					}
+					subGroupsConnection: {
+						/**
+						 * subGroupsConnection
 						 */
 						name: () => LocalizedString
 					}
@@ -2047,9 +2803,45 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
+					usersConnection: {
+						/**
+						 * usersConnection
+						 */
+						name: () => LocalizedString
+					}
 					rolesAggregate: {
 						/**
 						 * rolesAggregate
+						 */
+						name: () => LocalizedString
+					}
+					rolesConnection: {
+						/**
+						 * rolesConnection
+						 */
+						name: () => LocalizedString
+					}
+					groupUserRelationAggregate: {
+						/**
+						 * groupUserRelationAggregate
+						 */
+						name: () => LocalizedString
+					}
+					groupUserRelationConnection: {
+						/**
+						 * groupUserRelationConnection
+						 */
+						name: () => LocalizedString
+					}
+					groupRoleRelationAggregate: {
+						/**
+						 * groupRoleRelationAggregate
+						 */
+						name: () => LocalizedString
+					}
+					groupRoleRelationConnection: {
+						/**
+						 * groupRoleRelationConnection
 						 */
 						name: () => LocalizedString
 					}
@@ -2173,6 +2965,12 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
+					syncGroupPolicy: {
+						/**
+						 * syncGroupPolicy
+						 */
+						name: () => LocalizedString
+					}
 				}
 			}
 			Permission: {
@@ -2223,9 +3021,81 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
+					isDeprecated: {
+						/**
+						 * isDeprecated
+						 */
+						name: () => LocalizedString
+					}
+					version: {
+						/**
+						 * version
+						 */
+						name: () => LocalizedString
+					}
+					realmId: {
+						/**
+						 * realmId
+						 */
+						name: () => LocalizedString
+					}
+					createUserId: {
+						/**
+						 * createUserId
+						 */
+						name: () => LocalizedString
+					}
+					createTime: {
+						/**
+						 * createTime
+						 */
+						name: () => LocalizedString
+					}
+					updateUserId: {
+						/**
+						 * updateUserId
+						 */
+						name: () => LocalizedString
+					}
+					updateTime: {
+						/**
+						 * updateTime
+						 */
+						name: () => LocalizedString
+					}
+					createGroupId: {
+						/**
+						 * createGroupId
+						 */
+						name: () => LocalizedString
+					}
+					permissionRoleRelation: {
+						/**
+						 * permissionRoleRelation
+						 */
+						name: () => LocalizedString
+					}
 					rolesAggregate: {
 						/**
 						 * rolesAggregate
+						 */
+						name: () => LocalizedString
+					}
+					rolesConnection: {
+						/**
+						 * rolesConnection
+						 */
+						name: () => LocalizedString
+					}
+					permissionRoleRelationAggregate: {
+						/**
+						 * permissionRoleRelationAggregate
+						 */
+						name: () => LocalizedString
+					}
+					permissionRoleRelationConnection: {
+						/**
+						 * permissionRoleRelationConnection
 						 */
 						name: () => LocalizedString
 					}
@@ -2301,6 +3171,12 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
+					syncPermissionPolicy: {
+						/**
+						 * syncPermissionPolicy
+						 */
+						name: () => LocalizedString
+					}
 				}
 			}
 			Policy: {
@@ -2309,6 +3185,12 @@ export type TranslationFunctions = {
 				 */
 				name: () => LocalizedString
 				fields: {
+					id: {
+						/**
+						 * id
+						 */
+						name: () => LocalizedString
+					}
 					ptype: {
 						/**
 						 * ptype
@@ -2359,6 +3241,12 @@ export type TranslationFunctions = {
 				 */
 				name: () => LocalizedString
 				fields: {
+					id: {
+						/**
+						 * id
+						 */
+						name: () => LocalizedString
+					}
 					name: {
 						/**
 						 * name
@@ -2368,6 +3256,54 @@ export type TranslationFunctions = {
 					description: {
 						/**
 						 * description
+						 */
+						name: () => LocalizedString
+					}
+					isDeprecated: {
+						/**
+						 * isDeprecated
+						 */
+						name: () => LocalizedString
+					}
+					version: {
+						/**
+						 * version
+						 */
+						name: () => LocalizedString
+					}
+					realmId: {
+						/**
+						 * realmId
+						 */
+						name: () => LocalizedString
+					}
+					createUserId: {
+						/**
+						 * createUserId
+						 */
+						name: () => LocalizedString
+					}
+					createTime: {
+						/**
+						 * createTime
+						 */
+						name: () => LocalizedString
+					}
+					updateUserId: {
+						/**
+						 * updateUserId
+						 */
+						name: () => LocalizedString
+					}
+					updateTime: {
+						/**
+						 * updateTime
+						 */
+						name: () => LocalizedString
+					}
+					createGroupId: {
+						/**
+						 * createGroupId
 						 */
 						name: () => LocalizedString
 					}
@@ -2433,6 +3369,12 @@ export type TranslationFunctions = {
 				 */
 				name: () => LocalizedString
 				fields: {
+					id: {
+						/**
+						 * id
+						 */
+						name: () => LocalizedString
+					}
 					name: {
 						/**
 						 * name
@@ -2475,9 +3417,87 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
+					isDeprecated: {
+						/**
+						 * isDeprecated
+						 */
+						name: () => LocalizedString
+					}
+					version: {
+						/**
+						 * version
+						 */
+						name: () => LocalizedString
+					}
+					realmId: {
+						/**
+						 * realmId
+						 */
+						name: () => LocalizedString
+					}
+					createUserId: {
+						/**
+						 * createUserId
+						 */
+						name: () => LocalizedString
+					}
+					createTime: {
+						/**
+						 * createTime
+						 */
+						name: () => LocalizedString
+					}
+					updateUserId: {
+						/**
+						 * updateUserId
+						 */
+						name: () => LocalizedString
+					}
+					updateTime: {
+						/**
+						 * updateTime
+						 */
+						name: () => LocalizedString
+					}
+					createGroupId: {
+						/**
+						 * createGroupId
+						 */
+						name: () => LocalizedString
+					}
+					roleUserRelation: {
+						/**
+						 * roleUserRelation
+						 */
+						name: () => LocalizedString
+					}
+					groupRoleRelation: {
+						/**
+						 * groupRoleRelation
+						 */
+						name: () => LocalizedString
+					}
+					roleCompositeRelation: {
+						/**
+						 * roleCompositeRelation
+						 */
+						name: () => LocalizedString
+					}
+					permissionRoleRelation: {
+						/**
+						 * permissionRoleRelation
+						 */
+						name: () => LocalizedString
+					}
 					usersAggregate: {
 						/**
 						 * usersAggregate
+						 */
+						name: () => LocalizedString
+					}
+					usersConnection: {
+						/**
+						 * usersConnection
 						 */
 						name: () => LocalizedString
 					}
@@ -2487,15 +3507,81 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
+					groupsConnection: {
+						/**
+						 * groupsConnection
+						 */
+						name: () => LocalizedString
+					}
 					compositesAggregate: {
 						/**
 						 * compositesAggregate
 						 */
 						name: () => LocalizedString
 					}
+					compositesConnection: {
+						/**
+						 * compositesConnection
+						 */
+						name: () => LocalizedString
+					}
 					permissionsAggregate: {
 						/**
 						 * permissionsAggregate
+						 */
+						name: () => LocalizedString
+					}
+					permissionsConnection: {
+						/**
+						 * permissionsConnection
+						 */
+						name: () => LocalizedString
+					}
+					roleUserRelationAggregate: {
+						/**
+						 * roleUserRelationAggregate
+						 */
+						name: () => LocalizedString
+					}
+					roleUserRelationConnection: {
+						/**
+						 * roleUserRelationConnection
+						 */
+						name: () => LocalizedString
+					}
+					groupRoleRelationAggregate: {
+						/**
+						 * groupRoleRelationAggregate
+						 */
+						name: () => LocalizedString
+					}
+					groupRoleRelationConnection: {
+						/**
+						 * groupRoleRelationConnection
+						 */
+						name: () => LocalizedString
+					}
+					roleCompositeRelationAggregate: {
+						/**
+						 * roleCompositeRelationAggregate
+						 */
+						name: () => LocalizedString
+					}
+					roleCompositeRelationConnection: {
+						/**
+						 * roleCompositeRelationConnection
+						 */
+						name: () => LocalizedString
+					}
+					permissionRoleRelationAggregate: {
+						/**
+						 * permissionRoleRelationAggregate
+						 */
+						name: () => LocalizedString
+					}
+					permissionRoleRelationConnection: {
+						/**
+						 * permissionRoleRelationConnection
 						 */
 						name: () => LocalizedString
 					}
@@ -2553,6 +3639,12 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
+					syncRolePolicy: {
+						/**
+						 * syncRolePolicy
+						 */
+						name: () => LocalizedString
+					}
 				}
 			}
 			User: {
@@ -2561,6 +3653,12 @@ export type TranslationFunctions = {
 				 */
 				name: () => LocalizedString
 				fields: {
+					id: {
+						/**
+						 * id
+						 */
+						name: () => LocalizedString
+					}
 					name: {
 						/**
 						 * name
@@ -2582,6 +3680,18 @@ export type TranslationFunctions = {
 					login: {
 						/**
 						 * login
+						 */
+						name: () => LocalizedString
+					}
+					salt: {
+						/**
+						 * salt
+						 */
+						name: () => LocalizedString
+					}
+					hash: {
+						/**
+						 * hash
 						 */
 						name: () => LocalizedString
 					}
@@ -2627,15 +3737,135 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
+					isDeprecated: {
+						/**
+						 * isDeprecated
+						 */
+						name: () => LocalizedString
+					}
+					version: {
+						/**
+						 * version
+						 */
+						name: () => LocalizedString
+					}
+					realmId: {
+						/**
+						 * realmId
+						 */
+						name: () => LocalizedString
+					}
+					createUserId: {
+						/**
+						 * createUserId
+						 */
+						name: () => LocalizedString
+					}
+					createTime: {
+						/**
+						 * createTime
+						 */
+						name: () => LocalizedString
+					}
+					updateUserId: {
+						/**
+						 * updateUserId
+						 */
+						name: () => LocalizedString
+					}
+					updateTime: {
+						/**
+						 * updateTime
+						 */
+						name: () => LocalizedString
+					}
+					createGroupId: {
+						/**
+						 * createGroupId
+						 */
+						name: () => LocalizedString
+					}
+					fileUserRelation: {
+						/**
+						 * fileUserRelation
+						 */
+						name: () => LocalizedString
+					}
+					userPhonesRelation: {
+						/**
+						 * userPhonesRelation
+						 */
+						name: () => LocalizedString
+					}
+					groupUserRelation: {
+						/**
+						 * groupUserRelation
+						 */
+						name: () => LocalizedString
+					}
+					roleUserRelation: {
+						/**
+						 * roleUserRelation
+						 */
+						name: () => LocalizedString
+					}
 					groupsAggregate: {
 						/**
 						 * groupsAggregate
 						 */
 						name: () => LocalizedString
 					}
+					groupsConnection: {
+						/**
+						 * groupsConnection
+						 */
+						name: () => LocalizedString
+					}
 					rolesAggregate: {
 						/**
 						 * rolesAggregate
+						 */
+						name: () => LocalizedString
+					}
+					rolesConnection: {
+						/**
+						 * rolesConnection
+						 */
+						name: () => LocalizedString
+					}
+					userPhonesRelationAggregate: {
+						/**
+						 * userPhonesRelationAggregate
+						 */
+						name: () => LocalizedString
+					}
+					userPhonesRelationConnection: {
+						/**
+						 * userPhonesRelationConnection
+						 */
+						name: () => LocalizedString
+					}
+					groupUserRelationAggregate: {
+						/**
+						 * groupUserRelationAggregate
+						 */
+						name: () => LocalizedString
+					}
+					groupUserRelationConnection: {
+						/**
+						 * groupUserRelationConnection
+						 */
+						name: () => LocalizedString
+					}
+					roleUserRelationAggregate: {
+						/**
+						 * roleUserRelationAggregate
+						 */
+						name: () => LocalizedString
+					}
+					roleUserRelationConnection: {
+						/**
+						 * roleUserRelationConnection
 						 */
 						name: () => LocalizedString
 					}
@@ -2780,6 +4010,12 @@ export type TranslationFunctions = {
 					emailMin: {
 						/**
 						 * emailMin
+						 */
+						name: () => LocalizedString
+					}
+					syncUserPolicy: {
+						/**
+						 * syncUserPolicy
 						 */
 						name: () => LocalizedString
 					}

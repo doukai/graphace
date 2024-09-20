@@ -20,7 +20,7 @@
 <Card>
 	<GroupBar
 		isFetching={$GroupAgg.isFetching}
-		data={$GroupAgg.data}
+		connecton={$GroupAgg.connection}
 		{fields}
 		{queryArguments}
 		{showHeader}

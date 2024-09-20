@@ -2,13 +2,14 @@ import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import { LoadEvent } from '@sveltejs/kit';
 import { type Field, fieldToString } from '@graphace/graphql';
-import type { UserConnectionQueryArguments, UserConnection } from '~/lib/types/schema';
+import type { UserConnection, UserConnectionQueryArguments } from '~/lib/types/schema';
 
 export async function createUserAggStore(params: { event: LoadEvent, fields: Field[], queryArguments: UserConnectionQueryArguments }): Promise<UserAggStore> {
     const data: Writable<{ isFetching: boolean, connection: UserConnection }> = writable({
         isFetching: false,
         connection: {}
     });
+
     const { event, fields, queryArguments } = params;
 
     const { subscribe, set, update } = data;
@@ -42,24 +43,6 @@ export async function createUserAggStore(params: { event: LoadEvent, fields: Fie
                     set({
                         isFetching: false,
                         connection: json.data.userConnection
-                        // data: {
-                        //     labels: nodes.map((node: { [x: string]: any }) =>
-                        //         queryArguments.groupBy?.map((column) => node[column]).join(' - ')
-                        //     ),
-                        //     datasets: fields.flatMap((field) => {
-                        //         if (field.fields && field.fields.length > 0) {
-                        //             return field.fields.map(subField => ({
-                        //                 label: getFieldName(field.name, subField.name),
-                        //                 data: nodes.map((node: { [x: string]: any }) => node[field.name][subField.name])
-                        //             }));
-                        //         } else {
-                        //             return [{
-                        //                 label: getFieldName(field.name),
-                        //                 data: nodes.map((node: { [x: string]: any }) => node[field.name])
-                        //             }];
-                        //         }
-                        //     })
-                        // }
                     });
                 }
             }
