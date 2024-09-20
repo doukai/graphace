@@ -1,11 +1,12 @@
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import { LoadEvent } from '@sveltejs/kit';
-import type { Group, Option } from '@graphace/ui';
+import { type Field, fieldToString } from '@graphace/graphql';
 import { ChartData } from 'chart.js';
 import type { {{ name }}ConnectionQueryArguments } from '~/lib/types/schema';
+import LL from '$i18n/i18n-svelte';
 
-export async function create{{ name }}AggStore(params: { event: LoadEvent, selectColumns: Option[], queryArguments: {{ name }}ConnectionQueryArguments }): Promise<{{ name }}AggStore> {
+export async function create{{ name }}AggStore(params: { event: LoadEvent, fields: Field[], queryArguments: {{ name }}ConnectionQueryArguments }): Promise<{{ name }}AggStore> {
     const chartData: Writable<{ isFetching: boolean, data: ChartData<'bar', (number | [number, number])[], unknown> }> = writable({
         isFetching: false,
         data: {
@@ -13,10 +14,30 @@ export async function create{{ name }}AggStore(params: { event: LoadEvent, selec
         }
     });
 
+    const { event, fields, queryArguments } = params;
+
+    let $LL = get(LL);
+
+    const fieldNames: Record<string, () => LocalizedString | Record<string, () => LocalizedString>> = {
+		{%- for field in aggFieldList %}
+		{%- if field.isScalarType %}
+        {%- for aggField in field.aggFieldList %}
+        {{ aggField.fieldName }}: $LL.graphql.objects.{{ name }}.fields.{{ aggField.fieldName }}.name,
+		{%- endfor %}
+		{%- else %}
+        {{ field.fieldName }}: {
+            {%- for aggField in field.aggFieldList %}
+            {{ aggField.fieldName }}: $LL.graphql.objects.{{ field.fieldTypeName }}.fields.{{ aggField.fieldName }}.name,
+            {%- endfor %}
+        },
+		{%- endif %}
+		{%- endfor %}
+    }
+
     const { subscribe, set, update } = chartData;
 
-    const fetch = async (selectColumns: Option[], queryArguments: {{ name }}ConnectionQueryArguments) => {
-        if (selectColumns && selectColumns.length > 0 && queryArguments.groupBy && queryArguments.groupBy.length > 0) {
+    const fetch = async (fields: Field[], queryArguments: {{ name }}ConnectionQueryArguments) => {
+        if (fields && fields.length > 0 && queryArguments.groupBy && queryArguments.groupBy.length > 0) {
             update((data) => ({ ...data, isFetching: true }));
             let query = `query Query_{{ name | paramCase }}Connection({% for arg in args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %}) {
     {{ name | paramCase }}Connection({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})  {
@@ -24,32 +45,13 @@ export async function create{{ name }}AggStore(params: { event: LoadEvent, selec
         edges {
             node {
                 ${(queryArguments.groupBy || []).join('\r\n')}
-                ${selectColumns
-                    .reduce((groups, option) => {
-                        if (groups.some((group) => group.value === option.group?.value)) {
-                            groups.find((group) => group.value === option.group?.value)?.options?.push(option);
-                        } else {
-                            groups.push({
-                                value: option.group?.value,
-                                label: option.group?.label,
-                                options: [option]
-                            });
-                        }
-                        return groups;
-                    }, <Group[]>[])
-                    .map((group) => {
-                        if (group.value) {
-                            return `${group.value} {${group.options?.map((option) => option.value).join('\r\n')}}`;
-                        } else {
-                            return group.options?.map((option) => option.value).join('\r\n');
-                        }
-                    })}
+                ${fields.map((field) => fieldToString(field)).join('\r\n')}
             }
         }
     }
 }`;
 
-            const response = await params.event.fetch('/graphql', {
+            const response = await event.fetch('/graphql', {
                 method: 'POST',
                 body: JSON.stringify({
                     query: query,
@@ -67,16 +69,19 @@ export async function create{{ name }}AggStore(params: { event: LoadEvent, selec
                             labels: nodes.map((node: { [x: string]: any }) =>
                                 queryArguments.groupBy?.map((column) => node[column]).join(' - ')
                             ),
-                            datasets: selectColumns.map((column) => ({
-                                label: column.label!,
-                                data: nodes.map((node: { [x: string]: any }) => {
-                                    if (column.group?.value) {
-                                        return node[column.group.value][column.value];
-                                    } else {
-                                        return node[column.value];
-                                    }
-                                })
-                            }))
+                            datasets: fields.flatMap((field) => {
+                                if (field.fields && field.fields.length > 0) {
+                                    return field.fields.map(subField => ({
+                                        label: getFieldName(field.name, subField.name),
+                                        data: nodes.map((node: { [x: string]: any }) => node[field.name][subField.name])
+                                    }));
+                                } else {
+                                    return [{
+                                        label: getFieldName(field.name),
+                                        data: nodes.map((node: { [x: string]: any }) => node[field.name])
+                                    }];
+                                }
+                            })
                         }
                     });
                 }
@@ -84,11 +89,20 @@ export async function create{{ name }}AggStore(params: { event: LoadEvent, selec
         }
     }
 
-    await fetch(params.selectColumns, params.queryArguments);
+    const getFieldName = (fieldName: string, subFieldName?: string): string | undefined => {
+        if (subFieldName && typeof fieldNames[fieldName] !== 'string') {
+            return fieldNames[fieldName][subFieldName]();
+        } else if (typeof fieldNames[fieldName] === 'string') {
+            return fieldNames[fieldName]();
+        }
+    }
+
+    await fetch(fields, queryArguments);
 
     return {
         subscribe,
-        fetch
+        fetch,
+        getFieldName
     };
 }
 
@@ -100,5 +114,6 @@ export type {{ name }}AggStore = {
         isFetching: boolean;
         data: ChartData<"bar", (number | [number, number])[], unknown>;
     }> | undefined) => Unsubscriber;
-    fetch: (selectColumns: Option[], queryArguments: {{ name }}ConnectionQueryArguments) => Promise<void>;
+    fetch: (fields: Field[], queryArguments: UserConnectionQueryArguments) => Promise<void>;
+    getFieldName: (fieldName: string, subFieldName?: string) => string | undefined
 }

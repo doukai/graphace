@@ -750,10 +750,12 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
+                const aggFields = getAggFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
-                        args: schema.getQueryType()?.getFields()[`${changeCase.camelCase(typeName)}Connection`].args
+                        args: schema.getQueryType()?.getFields()[`${changeCase.camelCase(typeName)}Connection`].args,
+                        aggFieldList: componentFields(typeName, aggFields)
                     }),
                 };
             }

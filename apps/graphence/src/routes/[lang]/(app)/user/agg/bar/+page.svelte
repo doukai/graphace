@@ -6,7 +6,7 @@
 
 	export let data: PageData;
 	const {
-		selectColumns,
+		fields,
 		queryArguments,
 		showHeader,
 		showFooter,
@@ -21,13 +21,13 @@
 	<UserBar
 		isFetching={$UserAgg.isFetching}
 		data={$UserAgg.data}
-		{selectColumns}
+		{fields}
 		{queryArguments}
 		{showHeader}
 		{showFooter}
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
-		on:query={(e) => UserAgg.fetch(e.detail.selectColumns, e.detail.queryArguments)}
+		on:query={(e) => UserAgg.fetch(e.detail.fields, e.detail.queryArguments)}
 	/>
 </Card>

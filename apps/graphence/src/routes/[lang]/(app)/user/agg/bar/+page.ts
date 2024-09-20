@@ -5,7 +5,7 @@ import { permissions } from '~/utils/auth-util';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     await permissions.getTypes('User', 'File', 'Group', 'Role', 'Realm');
-    const selectColumns = JSON.parse(event.url.searchParams.get('selectColumns') || '[]');
+    const fields = JSON.parse(event.url.searchParams.get('fields') || '[]');
     const queryArguments = JSON.parse(event.url.searchParams.get('queryArguments') || '{}');
     const showHeader = !event.url.searchParams.has('hideHeader');
     const showFooter = !event.url.searchParams.has('hideFooter');
@@ -13,13 +13,13 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
     const showFilterButton = !event.url.searchParams.has('hideFilterButton');
     const showBookmarkButton = event.url.searchParams.has('showBookmarkButton');
     return {
-        selectColumns,
+        fields,
         queryArguments,
         showHeader,
         showFooter,
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        UserAgg: (await createUserAggStore({ event, selectColumns, queryArguments }))
+        UserAgg: (await createUserAggStore({ event, fields, queryArguments }))
     };
 }

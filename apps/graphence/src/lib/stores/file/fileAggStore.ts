@@ -1,11 +1,12 @@
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import { LoadEvent } from '@sveltejs/kit';
-import type { Group, Option } from '@graphace/ui';
+import { type Field, fieldToString } from '@graphace/graphql';
 import { ChartData } from 'chart.js';
 import type { FileConnectionQueryArguments } from '~/lib/types/schema';
+import LL from '$i18n/i18n-svelte';
 
-export async function createFileAggStore(params: { event: LoadEvent, selectColumns: Option[], queryArguments: FileConnectionQueryArguments }): Promise<FileAggStore> {
+export async function createFileAggStore(params: { event: LoadEvent, fields: Field[], queryArguments: FileConnectionQueryArguments }): Promise<FileAggStore> {
     const chartData: Writable<{ isFetching: boolean, data: ChartData<'bar', (number | [number, number])[], unknown> }> = writable({
         isFetching: false,
         data: {
@@ -13,10 +14,29 @@ export async function createFileAggStore(params: { event: LoadEvent, selectColum
         }
     });
 
+    const { event, fields, queryArguments } = params;
+
+    let $LL = get(LL);
+
+    const fieldNames: Record<string, () => LocalizedString | Record<string, () => LocalizedString>> = {
+        nameCount: $LL.graphql.objects.File.fields.nameCount.name,
+        nameMax: $LL.graphql.objects.File.fields.nameMax.name,
+        nameMin: $LL.graphql.objects.File.fields.nameMin.name,
+        contentTypeCount: $LL.graphql.objects.File.fields.contentTypeCount.name,
+        contentTypeMax: $LL.graphql.objects.File.fields.contentTypeMax.name,
+        contentTypeMin: $LL.graphql.objects.File.fields.contentTypeMin.name,
+        contentCount: $LL.graphql.objects.File.fields.contentCount.name,
+        contentMax: $LL.graphql.objects.File.fields.contentMax.name,
+        contentMin: $LL.graphql.objects.File.fields.contentMin.name,
+        urlCount: $LL.graphql.objects.File.fields.urlCount.name,
+        urlMax: $LL.graphql.objects.File.fields.urlMax.name,
+        urlMin: $LL.graphql.objects.File.fields.urlMin.name,
+    }
+
     const { subscribe, set, update } = chartData;
 
-    const fetch = async (selectColumns: Option[], queryArguments: FileConnectionQueryArguments) => {
-        if (selectColumns && selectColumns.length > 0 && queryArguments.groupBy && queryArguments.groupBy.length > 0) {
+    const fetch = async (fields: Field[], queryArguments: FileConnectionQueryArguments) => {
+        if (fields && fields.length > 0 && queryArguments.groupBy && queryArguments.groupBy.length > 0) {
             update((data) => ({ ...data, isFetching: true }));
             let query = `query Query_fileConnection($id: StringExpression, $name: StringExpression, $contentType: StringExpression, $content: StringExpression, $url: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $orderBy: FileOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [FileExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
     fileConnection(id: $id name: $name contentType: $contentType content: $content url: $url includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before)  {
@@ -24,32 +44,13 @@ export async function createFileAggStore(params: { event: LoadEvent, selectColum
         edges {
             node {
                 ${(queryArguments.groupBy || []).join('\r\n')}
-                ${selectColumns
-                    .reduce((groups, option) => {
-                        if (groups.some((group) => group.value === option.group?.value)) {
-                            groups.find((group) => group.value === option.group?.value)?.options?.push(option);
-                        } else {
-                            groups.push({
-                                value: option.group?.value,
-                                label: option.group?.label,
-                                options: [option]
-                            });
-                        }
-                        return groups;
-                    }, <Group[]>[])
-                    .map((group) => {
-                        if (group.value) {
-                            return `${group.value} {${group.options?.map((option) => option.value).join('\r\n')}}`;
-                        } else {
-                            return group.options?.map((option) => option.value).join('\r\n');
-                        }
-                    })}
+                ${fields.map((field) => fieldToString(field)).join('\r\n')}
             }
         }
     }
 }`;
 
-            const response = await params.event.fetch('/graphql', {
+            const response = await event.fetch('/graphql', {
                 method: 'POST',
                 body: JSON.stringify({
                     query: query,
@@ -67,16 +68,19 @@ export async function createFileAggStore(params: { event: LoadEvent, selectColum
                             labels: nodes.map((node: { [x: string]: any }) =>
                                 queryArguments.groupBy?.map((column) => node[column]).join(' - ')
                             ),
-                            datasets: selectColumns.map((column) => ({
-                                label: column.label!,
-                                data: nodes.map((node: { [x: string]: any }) => {
-                                    if (column.group?.value) {
-                                        return node[column.group.value][column.value];
-                                    } else {
-                                        return node[column.value];
-                                    }
-                                })
-                            }))
+                            datasets: fields.flatMap((field) => {
+                                if (field.fields && field.fields.length > 0) {
+                                    return field.fields.map(subField => ({
+                                        label: getFieldName(field.name, subField.name),
+                                        data: nodes.map((node: { [x: string]: any }) => node[field.name][subField.name])
+                                    }));
+                                } else {
+                                    return [{
+                                        label: getFieldName(field.name),
+                                        data: nodes.map((node: { [x: string]: any }) => node[field.name])
+                                    }];
+                                }
+                            })
                         }
                     });
                 }
@@ -84,11 +88,20 @@ export async function createFileAggStore(params: { event: LoadEvent, selectColum
         }
     }
 
-    await fetch(params.selectColumns, params.queryArguments);
+    const getFieldName = (fieldName: string, subFieldName?: string): string | undefined => {
+        if (subFieldName && typeof fieldNames[fieldName] !== 'string') {
+            return fieldNames[fieldName][subFieldName]();
+        } else if (typeof fieldNames[fieldName] === 'string') {
+            return fieldNames[fieldName]();
+        }
+    }
+
+    await fetch(fields, queryArguments);
 
     return {
         subscribe,
-        fetch
+        fetch,
+        getFieldName
     };
 }
 
@@ -100,5 +113,6 @@ export type FileAggStore = {
         isFetching: boolean;
         data: ChartData<"bar", (number | [number, number])[], unknown>;
     }> | undefined) => Unsubscriber;
-    fetch: (selectColumns: Option[], queryArguments: FileConnectionQueryArguments) => Promise<void>;
+    fetch: (fields: Field[], queryArguments: UserConnectionQueryArguments) => Promise<void>;
+    getFieldName: (fieldName: string, subFieldName?: string) => string | undefined
 }

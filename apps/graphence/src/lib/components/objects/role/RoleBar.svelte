@@ -18,6 +18,7 @@
 	} from 'chart.js';
 	import autocolors from 'chartjs-plugin-autocolors';
 	import { PermissionsStore } from '@graphace/commons';
+	import { Field } from '@graphace/graphql';
 	import { Combobox, Group, Pagination, type Option } from '@graphace/ui';
 	import RoleFilter from '~/lib/components/objects/role/RoleFilter.svelte';
 	import type { RoleConnectionQueryArguments } from '~/lib/types/schema';
@@ -26,6 +27,7 @@
 	const permissions = getContext('permissions') as PermissionsStore;
 
 	export let data: ChartData<'bar', (number | [number, number])[], unknown> = { datasets: [] };
+	export let fields: Field[] = [];
 	export let queryArguments: RoleConnectionQueryArguments = {};
 	export let selectColumns: Option[] = [];
 	export let groupByColumns: Option[] = [];
@@ -43,8 +45,8 @@
 	Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, autocolors);
 
 	const dispatch = createEventDispatcher<{
-		query: { selectColumns: Option[]; queryArguments: RoleConnectionQueryArguments };
-		bookmark: { selectColumns: string; queryArguments: string };
+		query: { fields: Field[]; queryArguments: RoleConnectionQueryArguments };
+		bookmark: { fields: string; queryArguments: string };
 	}>();
 
 	const selectOptions = [
@@ -458,6 +460,30 @@
 
 	let filteredGroupByOptions = groupByOptions;
 
+	if (fields && fields.length > 0) {
+		selectColumns = fields.flatMap((field) => {
+			if (field.fields && field.fields.length > 0) {
+				return selectOptions
+					.filter((group) => group.value === field.name)
+					.flatMap((group) =>
+						field.fields!.flatMap((subField) =>
+							group.options
+								.filter((option) => option.value === subField.name)
+								.map((option) => ({ ...option, group: { value: group.value, label: group.label } }))
+						)
+					);
+			} else {
+				return selectOptions
+					.filter((group) => !group.value)
+					.flatMap((group) =>
+						group.options
+							.filter((option) => option.value === field.name)
+							.map((option) => ({ ...option, group: { value: group.value, label: group.label } }))
+					);
+			}
+		});
+	}
+
 	if (queryArguments.groupBy && queryArguments.groupBy.length > 0) {
 		groupByColumns = groupByOptions.filter((option) =>
 			queryArguments.groupBy?.some((column) => option.value === column)
@@ -534,6 +560,23 @@
 		pageNumber = queryArguments.offset / pageSize + 1;
 	}
 
+	const buildFields = (): Field[] => {
+		return selectColumns.reduce((fields, option) => {
+			if (option.group?.value) {
+				if (fields.some((field) => field.name === option.group?.value)) {
+					fields
+						.find((field) => field.name === option.group?.value)
+						?.fields?.push({ name: option.value });
+				} else {
+					fields.push({ name: option.group.value, fields: [{ name: option.value }] });
+				}
+			} else {
+				fields.push({ name: option.value });
+			}
+			return fields;
+		}, <Field[]>[]);
+	};
+
 	const buildArguments = (toPageNumber?: number | undefined): RoleConnectionQueryArguments => {
 		if (!queryArguments) {
 			queryArguments = {};
@@ -589,7 +632,7 @@
 	};
 
 	const queryPage = (toPageNumber?: number | undefined) => {
-		dispatch('query', { selectColumns, queryArguments: buildArguments(toPageNumber) });
+		dispatch('query', { fields: buildFields(), queryArguments: buildArguments(toPageNumber) });
 	};
 
 	const {
@@ -731,7 +774,7 @@
 					class="btn btn-square"
 					on:click={(e) =>
 						dispatch('bookmark', {
-							selectColumns: JSON.stringify(selectColumns),
+							fields: JSON.stringify(buildFields()),
 							queryArguments: JSON.stringify(buildArguments())
 						})}
 				>

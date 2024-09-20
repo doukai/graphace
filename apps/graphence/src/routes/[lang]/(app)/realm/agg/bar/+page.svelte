@@ -6,7 +6,7 @@
 
 	export let data: PageData;
 	const {
-		selectColumns,
+		fields,
 		queryArguments,
 		showHeader,
 		showFooter,
@@ -21,13 +21,13 @@
 	<RealmBar
 		isFetching={$RealmAgg.isFetching}
 		data={$RealmAgg.data}
-		{selectColumns}
+		{fields}
 		{queryArguments}
 		{showHeader}
 		{showFooter}
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
-		on:query={(e) => RealmAgg.fetch(e.detail.selectColumns, e.detail.queryArguments)}
+		on:query={(e) => RealmAgg.fetch(e.detail.fields, e.detail.queryArguments)}
 	/>
 </Card>

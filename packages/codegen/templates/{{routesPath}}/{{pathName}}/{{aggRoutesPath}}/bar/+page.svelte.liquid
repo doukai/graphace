@@ -6,7 +6,7 @@
 
 	export let data: PageData;
 	const {
-		selectColumns,
+		fields,
 		queryArguments,
 		showHeader,
 		showFooter,
@@ -21,13 +21,13 @@
 	<{{ name }}Bar
 		isFetching={${{ name }}Agg.isFetching}
 		data={${{ name }}Agg.data}
-		{selectColumns}
+		{fields}
 		{queryArguments}
 		{showHeader}
 		{showFooter}
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
-		on:query={(e) => {{ name }}Agg.fetch(e.detail.selectColumns, e.detail.queryArguments)}
+		on:query={(e) => {{ name }}Agg.fetch(e.detail.fields, e.detail.queryArguments)}
 	/>
 </Card>
