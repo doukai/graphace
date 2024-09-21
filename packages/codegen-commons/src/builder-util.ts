@@ -164,7 +164,10 @@ export const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): FieldI
 export const getAggFields = (schema: GraphQLSchema, type: GraphQLNamedType): FieldInfo[] | undefined => {
     if (isObjectType(type) || isInputObjectType(type)) {
         return Object.values(type.getFields())
-            .filter(field => isScalarType(getFieldType(field.type)) && getFieldType(field.type).name !== 'Boolean' && !fieldTypeIsList(field.type) && !isAggregate(field.name) || isObjectType(getFieldType(field.type)) && isAggregate(field.name))
+            .filter(field =>
+                isScalarType(getFieldType(field.type)) && getFieldType(field.type).name !== 'Boolean' && !fieldTypeIsList(field.type) && !isAggregate(field.name) ||
+                isObjectType(getFieldType(field.type)) && (!fieldTypeIsList(field.type) || isAggregate(field.name))
+            )
             .filter(field => !isIntrospection(field.name))
             .map(field => {
                 return {

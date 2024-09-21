@@ -20,7 +20,7 @@
 <Card>
 	<PermissionBar
 		isFetching={$PermissionAgg.isFetching}
-		connecton={$PermissionAgg.connection}
+		connection={$PermissionAgg.connection}
 		{fields}
 		{queryArguments}
 		{showHeader}

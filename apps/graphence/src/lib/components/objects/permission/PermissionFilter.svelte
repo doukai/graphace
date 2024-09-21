@@ -54,40 +54,71 @@
 	}>();
 
 	const filter = (): void => {
-		if (_expression.name.val || (_expression.name.arr && _expression.name.arr.length > 0)) {
+		if (
+			_expression.name.val ||
+			(_expression.name.arr && _expression.name.arr.length > 0) ||
+			_expression.name.opr ==='NIL' ||
+			_expression.name.opr ==='NNIL'
+		) {
 			expression = { ...expression, name: _expression.name };
 		} else {
 			expression = { ...expression, name: undefined };
 		}
-		if (_expression.description.val || (_expression.description.arr && _expression.description.arr.length > 0)) {
+		if (
+			_expression.description.val ||
+			(_expression.description.arr && _expression.description.arr.length > 0) ||
+			_expression.description.opr ==='NIL' ||
+			_expression.description.opr ==='NNIL'
+		) {
 			expression = { ...expression, description: _expression.description };
 		} else {
 			expression = { ...expression, description: undefined };
 		}
-		if (_expression.field.val || (_expression.field.arr && _expression.field.arr.length > 0)) {
+		if (
+			_expression.field.val ||
+			(_expression.field.arr && _expression.field.arr.length > 0) ||
+			_expression.field.opr ==='NIL' ||
+			_expression.field.opr ==='NNIL'
+		) {
 			expression = { ...expression, field: _expression.field };
 		} else {
 			expression = { ...expression, field: undefined };
 		}
-		if (_expression.type.val || (_expression.type.arr && _expression.type.arr.length > 0)) {
+		if (
+			_expression.type.val ||
+			(_expression.type.arr && _expression.type.arr.length > 0) ||
+			_expression.type.opr ==='NIL' ||
+			_expression.type.opr ==='NNIL'
+		) {
 			expression = { ...expression, type: _expression.type };
 		} else {
 			expression = { ...expression, type: undefined };
 		}
-		if (_expression.permissionType.val || (_expression.permissionType.arr && _expression.permissionType.arr.length > 0)) {
+		if (
+			_expression.permissionType.val ||
+			(_expression.permissionType.arr && _expression.permissionType.arr.length > 0) ||
+			_expression.permissionType.opr ==='NIL' ||
+			_expression.permissionType.opr ==='NNIL'
+		) {
 			expression = { ...expression, permissionType: _expression.permissionType };
 		} else {
 			expression = { ...expression, permissionType: undefined };
 		}
-		if (_expression.roles.id?.val ||
-			(_expression.roles.id?.arr && _expression.roles.id?.arr.length > 0)
+		if (
+			_expression.roles.id?.val ||
+			(_expression.roles.id?.arr && _expression.roles.id?.arr.length > 0) ||
+			_expression.roles.id.opr ==='NIL' ||
+			_expression.roles.id.opr ==='NNIL'
 		) {
 			expression = { ...expression, roles: _expression.roles };
 		} else {
 			expression = { ...expression, roles: undefined };
 		}
-		if (_expression.realm.id?.val ||
-			(_expression.realm.id?.arr && _expression.realm.id?.arr.length > 0)
+		if (
+			_expression.realm.id?.val ||
+			(_expression.realm.id?.arr && _expression.realm.id?.arr.length > 0) ||
+			_expression.realm.id.opr ==='NIL' ||
+			_expression.realm.id.opr ==='NNIL'
 		) {
 			expression = { ...expression, realm: _expression.realm };
 		} else {

@@ -75,62 +75,111 @@
 	}>();
 
 	const filter = (): void => {
-		if (_expression.id.val || (_expression.id.arr && _expression.id.arr.length > 0)) {
+		if (
+			_expression.id.val ||
+			(_expression.id.arr && _expression.id.arr.length > 0) ||
+			_expression.id.opr ==='NIL' ||
+			_expression.id.opr ==='NNIL'
+		) {
 			expression = { ...expression, id: _expression.id };
 		} else {
 			expression = { ...expression, id: undefined };
 		}
-		if (_expression.name.val || (_expression.name.arr && _expression.name.arr.length > 0)) {
+		if (
+			_expression.name.val ||
+			(_expression.name.arr && _expression.name.arr.length > 0) ||
+			_expression.name.opr ==='NIL' ||
+			_expression.name.opr ==='NNIL'
+		) {
 			expression = { ...expression, name: _expression.name };
 		} else {
 			expression = { ...expression, name: undefined };
 		}
-		if (_expression.description.val || (_expression.description.arr && _expression.description.arr.length > 0)) {
+		if (
+			_expression.description.val ||
+			(_expression.description.arr && _expression.description.arr.length > 0) ||
+			_expression.description.opr ==='NIL' ||
+			_expression.description.opr ==='NNIL'
+		) {
 			expression = { ...expression, description: _expression.description };
 		} else {
 			expression = { ...expression, description: undefined };
 		}
-		if (_expression.lastName.val || (_expression.lastName.arr && _expression.lastName.arr.length > 0)) {
+		if (
+			_expression.lastName.val ||
+			(_expression.lastName.arr && _expression.lastName.arr.length > 0) ||
+			_expression.lastName.opr ==='NIL' ||
+			_expression.lastName.opr ==='NNIL'
+		) {
 			expression = { ...expression, lastName: _expression.lastName };
 		} else {
 			expression = { ...expression, lastName: undefined };
 		}
-		if (_expression.login.val || (_expression.login.arr && _expression.login.arr.length > 0)) {
+		if (
+			_expression.login.val ||
+			(_expression.login.arr && _expression.login.arr.length > 0) ||
+			_expression.login.opr ==='NIL' ||
+			_expression.login.opr ==='NNIL'
+		) {
 			expression = { ...expression, login: _expression.login };
 		} else {
 			expression = { ...expression, login: undefined };
 		}
-		if (_expression.email.val || (_expression.email.arr && _expression.email.arr.length > 0)) {
+		if (
+			_expression.email.val ||
+			(_expression.email.arr && _expression.email.arr.length > 0) ||
+			_expression.email.opr ==='NIL' ||
+			_expression.email.opr ==='NNIL'
+		) {
 			expression = { ...expression, email: _expression.email };
 		} else {
 			expression = { ...expression, email: undefined };
 		}
-		if (_expression.phones.val || (_expression.phones.arr && _expression.phones.arr.length > 0)) {
+		if (
+			_expression.phones.val ||
+			(_expression.phones.arr && _expression.phones.arr.length > 0) ||
+			_expression.phones.opr ==='NIL' ||
+			_expression.phones.opr ==='NNIL'
+		) {
 			expression = { ...expression, phones: _expression.phones };
 		} else {
 			expression = { ...expression, phones: undefined };
 		}
-		if (_expression.disable.val || (_expression.disable.arr && _expression.disable.arr.length > 0)) {
+		if (
+			_expression.disable.val ||
+			(_expression.disable.arr && _expression.disable.arr.length > 0) ||
+			_expression.disable.opr ==='NIL' ||
+			_expression.disable.opr ==='NNIL'
+		) {
 			expression = { ...expression, disable: _expression.disable };
 		} else {
 			expression = { ...expression, disable: undefined };
 		}
-		if (_expression.groups.id?.val ||
-			(_expression.groups.id?.arr && _expression.groups.id?.arr.length > 0)
+		if (
+			_expression.groups.id?.val ||
+			(_expression.groups.id?.arr && _expression.groups.id?.arr.length > 0) ||
+			_expression.groups.id.opr ==='NIL' ||
+			_expression.groups.id.opr ==='NNIL'
 		) {
 			expression = { ...expression, groups: _expression.groups };
 		} else {
 			expression = { ...expression, groups: undefined };
 		}
-		if (_expression.roles.id?.val ||
-			(_expression.roles.id?.arr && _expression.roles.id?.arr.length > 0)
+		if (
+			_expression.roles.id?.val ||
+			(_expression.roles.id?.arr && _expression.roles.id?.arr.length > 0) ||
+			_expression.roles.id.opr ==='NIL' ||
+			_expression.roles.id.opr ==='NNIL'
 		) {
 			expression = { ...expression, roles: _expression.roles };
 		} else {
 			expression = { ...expression, roles: undefined };
 		}
-		if (_expression.realm.id?.val ||
-			(_expression.realm.id?.arr && _expression.realm.id?.arr.length > 0)
+		if (
+			_expression.realm.id?.val ||
+			(_expression.realm.id?.arr && _expression.realm.id?.arr.length > 0) ||
+			_expression.realm.id.opr ==='NIL' ||
+			_expression.realm.id.opr ==='NNIL'
 		) {
 			expression = { ...expression, realm: _expression.realm };
 		} else {

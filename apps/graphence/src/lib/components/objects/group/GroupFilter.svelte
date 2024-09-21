@@ -87,66 +87,111 @@
 	}>();
 
 	const filter = (): void => {
-		if (_expression.id.val || (_expression.id.arr && _expression.id.arr.length > 0)) {
+		if (
+			_expression.id.val ||
+			(_expression.id.arr && _expression.id.arr.length > 0) ||
+			_expression.id.opr ==='NIL' ||
+			_expression.id.opr ==='NNIL'
+		) {
 			expression = { ...expression, id: _expression.id };
 		} else {
 			expression = { ...expression, id: undefined };
 		}
-		if (_expression.name.val || (_expression.name.arr && _expression.name.arr.length > 0)) {
+		if (
+			_expression.name.val ||
+			(_expression.name.arr && _expression.name.arr.length > 0) ||
+			_expression.name.opr ==='NIL' ||
+			_expression.name.opr ==='NNIL'
+		) {
 			expression = { ...expression, name: _expression.name };
 		} else {
 			expression = { ...expression, name: undefined };
 		}
-		if (_expression.description.val || (_expression.description.arr && _expression.description.arr.length > 0)) {
+		if (
+			_expression.description.val ||
+			(_expression.description.arr && _expression.description.arr.length > 0) ||
+			_expression.description.opr ==='NIL' ||
+			_expression.description.opr ==='NNIL'
+		) {
 			expression = { ...expression, description: _expression.description };
 		} else {
 			expression = { ...expression, description: undefined };
 		}
-		if (_expression.path.val || (_expression.path.arr && _expression.path.arr.length > 0)) {
+		if (
+			_expression.path.val ||
+			(_expression.path.arr && _expression.path.arr.length > 0) ||
+			_expression.path.opr ==='NIL' ||
+			_expression.path.opr ==='NNIL'
+		) {
 			expression = { ...expression, path: _expression.path };
 		} else {
 			expression = { ...expression, path: undefined };
 		}
-		if (_expression.deep.val || (_expression.deep.arr && _expression.deep.arr.length > 0)) {
+		if (
+			_expression.deep.val ||
+			(_expression.deep.arr && _expression.deep.arr.length > 0) ||
+			_expression.deep.opr ==='NIL' ||
+			_expression.deep.opr ==='NNIL'
+		) {
 			expression = { ...expression, deep: _expression.deep };
 		} else {
 			expression = { ...expression, deep: undefined };
 		}
-		if (_expression.parentId.val || (_expression.parentId.arr && _expression.parentId.arr.length > 0)) {
+		if (
+			_expression.parentId.val ||
+			(_expression.parentId.arr && _expression.parentId.arr.length > 0) ||
+			_expression.parentId.opr ==='NIL' ||
+			_expression.parentId.opr ==='NNIL'
+		) {
 			expression = { ...expression, parentId: _expression.parentId };
 		} else {
 			expression = { ...expression, parentId: undefined };
 		}
-		if (_expression.parent.id?.val ||
-			(_expression.parent.id?.arr && _expression.parent.id?.arr.length > 0)
+		if (
+			_expression.parent.id?.val ||
+			(_expression.parent.id?.arr && _expression.parent.id?.arr.length > 0) ||
+			_expression.parent.id.opr ==='NIL' ||
+			_expression.parent.id.opr ==='NNIL'
 		) {
 			expression = { ...expression, parent: _expression.parent };
 		} else {
 			expression = { ...expression, parent: undefined };
 		}
-		if (_expression.subGroups.id?.val ||
-			(_expression.subGroups.id?.arr && _expression.subGroups.id?.arr.length > 0)
+		if (
+			_expression.subGroups.id?.val ||
+			(_expression.subGroups.id?.arr && _expression.subGroups.id?.arr.length > 0) ||
+			_expression.subGroups.id.opr ==='NIL' ||
+			_expression.subGroups.id.opr ==='NNIL'
 		) {
 			expression = { ...expression, subGroups: _expression.subGroups };
 		} else {
 			expression = { ...expression, subGroups: undefined };
 		}
-		if (_expression.users.id?.val ||
-			(_expression.users.id?.arr && _expression.users.id?.arr.length > 0)
+		if (
+			_expression.users.id?.val ||
+			(_expression.users.id?.arr && _expression.users.id?.arr.length > 0) ||
+			_expression.users.id.opr ==='NIL' ||
+			_expression.users.id.opr ==='NNIL'
 		) {
 			expression = { ...expression, users: _expression.users };
 		} else {
 			expression = { ...expression, users: undefined };
 		}
-		if (_expression.roles.id?.val ||
-			(_expression.roles.id?.arr && _expression.roles.id?.arr.length > 0)
+		if (
+			_expression.roles.id?.val ||
+			(_expression.roles.id?.arr && _expression.roles.id?.arr.length > 0) ||
+			_expression.roles.id.opr ==='NIL' ||
+			_expression.roles.id.opr ==='NNIL'
 		) {
 			expression = { ...expression, roles: _expression.roles };
 		} else {
 			expression = { ...expression, roles: undefined };
 		}
-		if (_expression.realm.id?.val ||
-			(_expression.realm.id?.arr && _expression.realm.id?.arr.length > 0)
+		if (
+			_expression.realm.id?.val ||
+			(_expression.realm.id?.arr && _expression.realm.id?.arr.length > 0) ||
+			_expression.realm.id.opr ==='NIL' ||
+			_expression.realm.id.opr ==='NNIL'
 		) {
 			expression = { ...expression, realm: _expression.realm };
 		} else {

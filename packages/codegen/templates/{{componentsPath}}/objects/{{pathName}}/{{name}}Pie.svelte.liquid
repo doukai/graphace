@@ -1,0 +1,79 @@
+<script lang="ts">
+	import { Pie } from 'svelte-chartjs';
+	import { Chart, Title, Tooltip, Legend, ArcElement, CategoryScale, ChartData } from 'chart.js';
+	import autocolors from 'chartjs-plugin-autocolors';
+	import { Field } from '@graphace/graphql';
+	import {{ name }}Agg from '~/{{ objectsPath }}/{{ name | paramCase }}/{{ name }}Agg.svelte';
+	import type { {{ name }}, {{ name }}Connection, {{ name }}ConnectionQueryArguments } from '~/lib/types/schema';
+
+	export let connection: {{ name }}Connection;
+	export let fields: Field[] = [];
+	export let queryArguments: {{ name }}ConnectionQueryArguments = {};
+	export let isFetching: boolean = false;
+	export let showHeader: boolean = true;
+	export let showFooter: boolean = true;
+	export let showOptionButton: boolean = true;
+	export let showFilterButton: boolean = true;
+	export let showBookmarkButton: boolean = false;
+
+	Chart.register(Title, Tooltip, Legend, ArcElement, CategoryScale, CategoryScale, autocolors);
+
+	let data: ChartData<'pie', number[], unknown> = { datasets: [] };
+	let getFieldName: (fieldName: string, subFieldName?: string) => string;
+
+	$: if (connection) {
+		const nodes = connection.edges?.map((edge) => edge?.node);
+		if (nodes) {
+			data = {
+				labels: nodes?.map((node) =>
+					queryArguments.groupBy?.map((column) => node?.[column as keyof {{ name }}]).join(' - ')
+				),
+				datasets: fields.flatMap((field) => {
+					if (field.fields && field.fields.length > 0) {
+						return field.fields.map((subField) => ({
+							label: getFieldName(field.name, subField.name),
+							data: nodes?.map((node) => {
+								const object = node?.[field.name as keyof {{ name }}];
+								return object?.[subField.name as keyof typeof object];
+							})
+						}));
+					} else {
+						return [
+							{
+								label: getFieldName(field.name),
+								data: nodes?.map((node) => node?.[field.name as keyof {{ name }}])
+							}
+						];
+					}
+				})
+			};
+		}
+	}
+</script>
+
+<{{ name }}Agg
+	bind:fields
+	bind:queryArguments
+	{isFetching}
+	{showHeader}
+	{showFooter}
+	{showOptionButton}
+	{showFilterButton}
+	{showBookmarkButton}
+	on:query
+	on:bookmark
+	bind:getFieldName
+>
+	<Pie
+		{data}
+		options={% raw %}{{{% endraw %}
+			responsive: true,
+			maintainAspectRatio: false,
+			plugins: {
+				autocolors: {
+					mode: 'data'
+				}
+			}
+		{% raw %}}}{% endraw %}
+	/>
+</{{ name }}Agg>

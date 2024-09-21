@@ -35,7 +35,6 @@ const renders: Record<Template, Render> = {
                     lang: config.i18nDefault,
                     i18nDescription: config.i18nDescription,
                     objects: Object.values(schema.getTypeMap())
-                        .filter(type => !isRelation(type.name) || config.builder?.includeRelation)
                         .filter(type => isObjectType(type))
                         .filter(type => !isOperationType(type.name))
                         .filter(type => !isConnection(type.name))
@@ -53,7 +52,6 @@ const renders: Record<Template, Render> = {
                             };
                         }),
                     enums: Object.values(schema.getTypeMap())
-                        .filter(type => inComponentEnum(type.name))
                         .filter(type => isEnumType(type))
                         .filter(type => !isIntrospection(type.name))
                         .filter(type => !isInnerEnum(type.name))
@@ -682,12 +680,12 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{componentsPath}}/objects/{{pathName}}/{{name}}Bar.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Agg.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
+                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => field.fieldName === getIDFieldName(type) || inListField(typeName, field.fieldName, field.fieldTypeName));
                 const aggFields = getAggFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => field.fieldName === getIDFieldName(type) || inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
@@ -699,6 +697,54 @@ const renders: Record<Template, Render> = {
                         objectsPath: `${config.componentsPath}/objects`,
                         useAuth: config.useAuth,
                         appName: config.appName
+                    }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
+    },
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Bar.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                return {
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        objectsPath: `${config.componentsPath}/objects`
+                    }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
+    },
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Line.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                return {
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        objectsPath: `${config.componentsPath}/objects`
+                    }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
+    },
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Pie.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                return {
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        objectsPath: `${config.componentsPath}/objects`
                     }),
                 };
             }
@@ -1666,7 +1712,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/{{pathName}}/{{aggRoutesPath}}/bar/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/{{aggRoutesPath}}/[type]/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -1684,7 +1730,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/{{pathName}}/{{aggRoutesPath}}/bar/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/{{aggRoutesPath}}/[type]/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);

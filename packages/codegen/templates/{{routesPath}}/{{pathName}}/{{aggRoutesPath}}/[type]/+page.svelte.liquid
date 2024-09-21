@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { Card } from '@graphace/ui';
 	import {{ name }}Bar from '~/{{ barPath }}/{{ name | paramCase }}/{{ name }}Bar.svelte';
+	import {{ name }}Line from '~/{{ barPath }}/{{ name | paramCase }}/{{ name }}Line.svelte';
+	import {{ name }}Pie from '~/{{ barPath }}/{{ name | paramCase }}/{{ name }}Pie.svelte';
 	import type { {{ name }}AggStore } from '~/{{ storesPath }}/{{ name | paramCase }}/{{ name | camelCase }}AggStore';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
+
 	const {
 		fields,
 		queryArguments,
@@ -14,13 +17,19 @@
 		showFilterButton,
 		showBookmarkButton
 	} = data;
+
 	const {{ name }}Agg = data.{{ name }}Agg as {{ name }}AggStore;
+
+	const components: Record<string, any> = { bar: {{ name }}Bar, line: {{ name }}Line, pie: {{ name }}Pie };
+
+	const component = components[data.type];
 </script>
 
 <Card>
-	<{{ name }}Bar
+	<svelte:component
+		this={component}
 		isFetching={${{ name }}Agg.isFetching}
-		connecton={${{ name }}Agg.connection}
+		connection={${{ name }}Agg.connection}
 		{fields}
 		{queryArguments}
 		{showHeader}

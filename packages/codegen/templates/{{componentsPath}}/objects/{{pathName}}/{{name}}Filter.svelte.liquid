@@ -100,7 +100,12 @@
 
 	const filter = (): void => {
 		{%- if isNamedStruct %}
-		if (_expression.{{ idName }}.val || (_expression.{{ idName }}.arr && _expression.{{ idName }}.arr.length > 0)) {
+		if (
+			_expression.{{ idName }}.val ||
+			(_expression.{{ idName }}.arr && _expression.{{ idName }}.arr.length > 0) ||
+			_expression.{{ idName }}.opr ==='NIL' ||
+			_expression.{{ idName }}.opr ==='NNIL'
+		) {
 			expression = { ...expression, {{ idName }}: _expression.{{ idName }} };
 		} else {
 			expression = { ...expression, {{ idName }}: undefined };
@@ -109,15 +114,23 @@
 		{%- if fields %}
 		{%- for field in fields %}
 		{%- if field.isScalarType or field.isEnumType %}
-		if (_expression.{{ field.fieldName }}.val || (_expression.{{ field.fieldName }}.arr && _expression.{{ field.fieldName }}.arr.length > 0)) {
+		if (
+			_expression.{{ field.fieldName }}.val ||
+			(_expression.{{ field.fieldName }}.arr && _expression.{{ field.fieldName }}.arr.length > 0) ||
+			_expression.{{ field.fieldName }}.opr ==='NIL' ||
+			_expression.{{ field.fieldName }}.opr ==='NNIL'
+		) {
 			expression = { ...expression, {{ field.fieldName }}: _expression.{{ field.fieldName }} };
 		} else {
 			expression = { ...expression, {{ field.fieldName }}: undefined };
 		}
 		{%- endif %}
 		{%- if field.isNamed %}
-		if (_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}?.val ||
-			(_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}?.arr && _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}?.arr.length > 0)
+		if (
+			_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}?.val ||
+			(_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}?.arr && _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}?.arr.length > 0) ||
+			_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr ==='NIL' ||
+			_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr ==='NNIL'
 		) {
 			expression = { ...expression, {{ field.fieldName }}: _expression.{{ field.fieldName }} };
 		} else {

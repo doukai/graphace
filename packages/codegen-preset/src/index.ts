@@ -1203,7 +1203,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         generateOptions.push(
             ...targetRouteObjectType
                 .map(type => {
-                    const template = '{{routesPath}}/{{pathName}}/{{aggRoutesPath}}/bar/+page.svelte';
+                    const template = '{{routesPath}}/{{pathName}}/{{aggRoutesPath}}/[type]/+page.svelte';
                     const scope = { routesPath, aggRoutesPath, pathName: changeCase.paramCase(type.name) };
                     return {
                         filename: buildPath(template, scope),
@@ -1231,7 +1231,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         generateOptions.push(
             ...targetRouteObjectType
                 .map(type => {
-                    const template = '{{routesPath}}/{{pathName}}/{{aggRoutesPath}}/bar/+page.ts';
+                    const template = '{{routesPath}}/{{pathName}}/{{aggRoutesPath}}/[type]/+page.ts';
                     const scope = { routesPath, aggRoutesPath, pathName: changeCase.paramCase(type.name) };
                     return {
                         filename: buildPath(template, scope),
@@ -1697,7 +1697,88 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         generateOptions.push(
             ...targetComponentObjectTypes
                 .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Agg.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            appName: options.presetConfig.appName || _appName,
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
                     const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Bar.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            appName: options.presetConfig.appName || _appName,
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Line.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            appName: options.presetConfig.appName || _appName,
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Pie.svelte';
                     const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
                     return {
                         filename: buildPath(template, scope),

@@ -20,7 +20,7 @@
 <Card>
 	<RoleBar
 		isFetching={$RoleAgg.isFetching}
-		connecton={$RoleAgg.connection}
+		connection={$RoleAgg.connection}
 		{fields}
 		{queryArguments}
 		{showHeader}

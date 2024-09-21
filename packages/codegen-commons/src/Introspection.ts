@@ -184,7 +184,7 @@ export const getOriginalFieldName = (field: GraphQLField<any, any, any>): string
             return fieldName.substring(0, fieldName.lastIndexOf(suffix));
         }
     }
-    return undefined;
+    return fieldName;
 }
 
 export const hasFileField = (type: GraphQLNamedType): boolean => {

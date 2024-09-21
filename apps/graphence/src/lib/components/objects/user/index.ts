@@ -7,10 +7,14 @@ import UserSelectTable from "./UserSelectTable.svelte";
 import UserSelectConnectionTable from "./UserSelectConnectionTable.svelte";
 import UserFilter from "./UserFilter.svelte";
 import UserTh from "./UserTh.svelte";
+import UserAgg from "./UserAgg.svelte";
+import UserBar from "./UserBar.svelte";
+import UserLine from "./UserLine.svelte";
+import UserPie from "./UserPie.svelte";
 import UserSelect from "./UserSelect.svelte";
 import UserSelectItem from "./UserSelectItem.svelte";
 import UserSelectTd from "./UserSelectTd.svelte";
 
 export {
-  UserForm, UserCreateForm, UserTable, UserConnectionTable, UserCreateTable, UserSelectTable, UserSelectConnectionTable, UserFilter, UserTh, UserSelect, UserSelectItem, UserSelectTd
+  UserForm, UserCreateForm, UserTable, UserConnectionTable, UserCreateTable, UserSelectTable, UserSelectConnectionTable, UserFilter, UserTh, UserAgg, UserBar, UserLine, UserPie, UserSelect, UserSelectItem, UserSelectTd
 }

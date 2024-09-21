@@ -73,44 +73,71 @@
 	}>();
 
 	const filter = (): void => {
-		if (_expression.id.val || (_expression.id.arr && _expression.id.arr.length > 0)) {
+		if (
+			_expression.id.val ||
+			(_expression.id.arr && _expression.id.arr.length > 0) ||
+			_expression.id.opr ==='NIL' ||
+			_expression.id.opr ==='NNIL'
+		) {
 			expression = { ...expression, id: _expression.id };
 		} else {
 			expression = { ...expression, id: undefined };
 		}
-		if (_expression.name.val || (_expression.name.arr && _expression.name.arr.length > 0)) {
+		if (
+			_expression.name.val ||
+			(_expression.name.arr && _expression.name.arr.length > 0) ||
+			_expression.name.opr ==='NIL' ||
+			_expression.name.opr ==='NNIL'
+		) {
 			expression = { ...expression, name: _expression.name };
 		} else {
 			expression = { ...expression, name: undefined };
 		}
-		if (_expression.description.val || (_expression.description.arr && _expression.description.arr.length > 0)) {
+		if (
+			_expression.description.val ||
+			(_expression.description.arr && _expression.description.arr.length > 0) ||
+			_expression.description.opr ==='NIL' ||
+			_expression.description.opr ==='NNIL'
+		) {
 			expression = { ...expression, description: _expression.description };
 		} else {
 			expression = { ...expression, description: undefined };
 		}
-		if (_expression.users.id?.val ||
-			(_expression.users.id?.arr && _expression.users.id?.arr.length > 0)
+		if (
+			_expression.users.id?.val ||
+			(_expression.users.id?.arr && _expression.users.id?.arr.length > 0) ||
+			_expression.users.id.opr ==='NIL' ||
+			_expression.users.id.opr ==='NNIL'
 		) {
 			expression = { ...expression, users: _expression.users };
 		} else {
 			expression = { ...expression, users: undefined };
 		}
-		if (_expression.groups.id?.val ||
-			(_expression.groups.id?.arr && _expression.groups.id?.arr.length > 0)
+		if (
+			_expression.groups.id?.val ||
+			(_expression.groups.id?.arr && _expression.groups.id?.arr.length > 0) ||
+			_expression.groups.id.opr ==='NIL' ||
+			_expression.groups.id.opr ==='NNIL'
 		) {
 			expression = { ...expression, groups: _expression.groups };
 		} else {
 			expression = { ...expression, groups: undefined };
 		}
-		if (_expression.composites.id?.val ||
-			(_expression.composites.id?.arr && _expression.composites.id?.arr.length > 0)
+		if (
+			_expression.composites.id?.val ||
+			(_expression.composites.id?.arr && _expression.composites.id?.arr.length > 0) ||
+			_expression.composites.id.opr ==='NIL' ||
+			_expression.composites.id.opr ==='NNIL'
 		) {
 			expression = { ...expression, composites: _expression.composites };
 		} else {
 			expression = { ...expression, composites: undefined };
 		}
-		if (_expression.realm.id?.val ||
-			(_expression.realm.id?.arr && _expression.realm.id?.arr.length > 0)
+		if (
+			_expression.realm.id?.val ||
+			(_expression.realm.id?.arr && _expression.realm.id?.arr.length > 0) ||
+			_expression.realm.id.opr ==='NIL' ||
+			_expression.realm.id.opr ==='NNIL'
 		) {
 			expression = { ...expression, realm: _expression.realm };
 		} else {

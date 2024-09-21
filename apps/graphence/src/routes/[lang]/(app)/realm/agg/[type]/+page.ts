@@ -1,12 +1,10 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
-import { create{{ name }}AggStore } from '~/{{ storesPath }}/{{ name | paramCase }}/{{ name | camelCase }}AggStore';
-{%- if useAuth %}
+import { createRealmAggStore } from '~/lib/stores/realm/realmAggStore';
 import { permissions } from '~/utils/auth-util';
-{%- endif %}
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await permissions.getTypes('{{ name }}'{% for object in objects %}{%- if object != name -%}, '{{ object }}'{%- endif -%}{% endfor %});
+    await permissions.getTypes('Realm');
     const fields = JSON.parse(event.url.searchParams.get('fields') || '[]');
     const queryArguments = JSON.parse(event.url.searchParams.get('queryArguments') || '{}');
     const showHeader = !event.url.searchParams.has('hideHeader');
@@ -15,6 +13,7 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
     const showFilterButton = !event.url.searchParams.has('hideFilterButton');
     const showBookmarkButton = event.url.searchParams.has('showBookmarkButton');
     return {
+        type: event.params.type,
         fields,
         queryArguments,
         showHeader,
@@ -22,6 +21,6 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        {{ name }}Agg: (await create{{ name }}AggStore({ event, fields, queryArguments }))
+        RealmAgg: (await createRealmAggStore({ event, fields, queryArguments }))
     };
 }

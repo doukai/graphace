@@ -33,22 +33,42 @@
 	}>();
 
 	const filter = (): void => {
-		if (_expression.name.val || (_expression.name.arr && _expression.name.arr.length > 0)) {
+		if (
+			_expression.name.val ||
+			(_expression.name.arr && _expression.name.arr.length > 0) ||
+			_expression.name.opr ==='NIL' ||
+			_expression.name.opr ==='NNIL'
+		) {
 			expression = { ...expression, name: _expression.name };
 		} else {
 			expression = { ...expression, name: undefined };
 		}
-		if (_expression.contentType.val || (_expression.contentType.arr && _expression.contentType.arr.length > 0)) {
+		if (
+			_expression.contentType.val ||
+			(_expression.contentType.arr && _expression.contentType.arr.length > 0) ||
+			_expression.contentType.opr ==='NIL' ||
+			_expression.contentType.opr ==='NNIL'
+		) {
 			expression = { ...expression, contentType: _expression.contentType };
 		} else {
 			expression = { ...expression, contentType: undefined };
 		}
-		if (_expression.content.val || (_expression.content.arr && _expression.content.arr.length > 0)) {
+		if (
+			_expression.content.val ||
+			(_expression.content.arr && _expression.content.arr.length > 0) ||
+			_expression.content.opr ==='NIL' ||
+			_expression.content.opr ==='NNIL'
+		) {
 			expression = { ...expression, content: _expression.content };
 		} else {
 			expression = { ...expression, content: undefined };
 		}
-		if (_expression.url.val || (_expression.url.arr && _expression.url.arr.length > 0)) {
+		if (
+			_expression.url.val ||
+			(_expression.url.arr && _expression.url.arr.length > 0) ||
+			_expression.url.opr ==='NIL' ||
+			_expression.url.opr ==='NNIL'
+		) {
 			expression = { ...expression, url: _expression.url };
 		} else {
 			expression = { ...expression, url: undefined };

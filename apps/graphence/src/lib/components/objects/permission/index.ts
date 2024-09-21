@@ -7,7 +7,11 @@ import PermissionSelectTable from "./PermissionSelectTable.svelte";
 import PermissionSelectConnectionTable from "./PermissionSelectConnectionTable.svelte";
 import PermissionFilter from "./PermissionFilter.svelte";
 import PermissionTh from "./PermissionTh.svelte";
+import PermissionAgg from "./PermissionAgg.svelte";
+import PermissionBar from "./PermissionBar.svelte";
+import PermissionLine from "./PermissionLine.svelte";
+import PermissionPie from "./PermissionPie.svelte";
 
 export {
-  PermissionForm, PermissionCreateForm, PermissionTable, PermissionConnectionTable, PermissionCreateTable, PermissionSelectTable, PermissionSelectConnectionTable, PermissionFilter, PermissionTh
+  PermissionForm, PermissionCreateForm, PermissionTable, PermissionConnectionTable, PermissionCreateTable, PermissionSelectTable, PermissionSelectConnectionTable, PermissionFilter, PermissionTh, PermissionAgg, PermissionBar, PermissionLine, PermissionPie
 }

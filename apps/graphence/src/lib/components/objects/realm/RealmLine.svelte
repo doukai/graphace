@@ -1,0 +1,88 @@
+<script lang="ts">
+	import { Line } from 'svelte-chartjs';
+	import {
+		Chart,
+		Title,
+		Tooltip,
+		Legend,
+		LineElement,
+		LinearScale,
+		PointElement,
+		CategoryScale,
+		ChartData,
+		Point
+	} from 'chart.js';
+	import autocolors from 'chartjs-plugin-autocolors';
+	import { Field } from '@graphace/graphql';
+	import RealmAgg from '~/lib/components/objects/realm/RealmAgg.svelte';
+	import type { Realm, RealmConnection, RealmConnectionQueryArguments } from '~/lib/types/schema';
+
+	export let connection: RealmConnection;
+	export let fields: Field[] = [];
+	export let queryArguments: RealmConnectionQueryArguments = {};
+	export let isFetching: boolean = false;
+	export let showHeader: boolean = true;
+	export let showFooter: boolean = true;
+	export let showOptionButton: boolean = true;
+	export let showFilterButton: boolean = true;
+	export let showBookmarkButton: boolean = false;
+
+	Chart.register(
+		Title,
+		Tooltip,
+		Legend,
+		LineElement,
+		LinearScale,
+		PointElement,
+		CategoryScale,
+		autocolors
+	);
+
+	let data: ChartData<'line', (number | Point)[], unknown> = { datasets: [] };
+	let getFieldName: (fieldName: string, subFieldName?: string) => string;
+
+	$: if (connection) {
+		const nodes = connection.edges?.map((edge) => edge?.node);
+		if (nodes) {
+			data = {
+				labels: nodes?.map((node) =>
+					queryArguments.groupBy?.map((column) => node?.[column as keyof Realm]).join(' - ')
+				),
+				datasets: fields.flatMap((field) => {
+					if (field.fields && field.fields.length > 0) {
+						return field.fields.map((subField) => ({
+							label: getFieldName(field.name, subField.name),
+							data: nodes?.map((node) => {
+								const object = node?.[field.name as keyof Realm];
+								return object?.[subField.name as keyof typeof object];
+							})
+						}));
+					} else {
+						return [
+							{
+								label: getFieldName(field.name),
+								data: nodes?.map((node) => node?.[field.name as keyof Realm])
+							}
+						];
+					}
+				})
+			};
+		}
+	}
+</script>
+
+<RealmAgg
+	bind:fields
+	bind:queryArguments
+	{isFetching}
+	{showHeader}
+	{showFooter}
+	{showOptionButton}
+	{showFilterButton}
+	{showBookmarkButton}
+	on:query
+	on:bookmark
+	bind:getFieldName
+>
+	<Line {data} options={{ responsive: true, maintainAspectRatio: false }} />
+</RealmAgg>

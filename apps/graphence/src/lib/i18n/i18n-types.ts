@@ -448,6 +448,146 @@ export type NamespaceGraphqlTranslation = {
 				}
 			}
 		}
+		FileUserRelation: {
+			/**
+			 * F​i​l​e​U​s​e​r​R​e​l​a​t​i​o​n
+			 */
+			name: string
+			fields: {
+				id: {
+					/**
+					 * i​d
+					 */
+					name: string
+				}
+				userRef: {
+					/**
+					 * u​s​e​r​R​e​f
+					 */
+					name: string
+				}
+				user: {
+					/**
+					 * u​s​e​r
+					 */
+					name: string
+				}
+				fileRef: {
+					/**
+					 * f​i​l​e​R​e​f
+					 */
+					name: string
+				}
+				file: {
+					/**
+					 * f​i​l​e
+					 */
+					name: string
+				}
+				isDeprecated: {
+					/**
+					 * i​s​D​e​p​r​e​c​a​t​e​d
+					 */
+					name: string
+				}
+				version: {
+					/**
+					 * v​e​r​s​i​o​n
+					 */
+					name: string
+				}
+				realmId: {
+					/**
+					 * r​e​a​l​m​I​d
+					 */
+					name: string
+				}
+				createUserId: {
+					/**
+					 * c​r​e​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				createTime: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				updateUserId: {
+					/**
+					 * u​p​d​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				updateTime: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				createGroupId: {
+					/**
+					 * c​r​e​a​t​e​G​r​o​u​p​I​d
+					 */
+					name: string
+				}
+				idCount: {
+					/**
+					 * i​d​C​o​u​n​t
+					 */
+					name: string
+				}
+				idMax: {
+					/**
+					 * i​d​M​a​x
+					 */
+					name: string
+				}
+				idMin: {
+					/**
+					 * i​d​M​i​n
+					 */
+					name: string
+				}
+				userRefCount: {
+					/**
+					 * u​s​e​r​R​e​f​C​o​u​n​t
+					 */
+					name: string
+				}
+				userRefMax: {
+					/**
+					 * u​s​e​r​R​e​f​M​a​x
+					 */
+					name: string
+				}
+				userRefMin: {
+					/**
+					 * u​s​e​r​R​e​f​M​i​n
+					 */
+					name: string
+				}
+				fileRefCount: {
+					/**
+					 * f​i​l​e​R​e​f​C​o​u​n​t
+					 */
+					name: string
+				}
+				fileRefMax: {
+					/**
+					 * f​i​l​e​R​e​f​M​a​x
+					 */
+					name: string
+				}
+				fileRefMin: {
+					/**
+					 * f​i​l​e​R​e​f​M​i​n
+					 */
+					name: string
+				}
+			}
+		}
 		Group: {
 			/**
 			 * G​r​o​u​p
@@ -768,6 +908,286 @@ export type NamespaceGraphqlTranslation = {
 				}
 			}
 		}
+		GroupRoleRelation: {
+			/**
+			 * G​r​o​u​p​R​o​l​e​R​e​l​a​t​i​o​n
+			 */
+			name: string
+			fields: {
+				id: {
+					/**
+					 * i​d
+					 */
+					name: string
+				}
+				roleRef: {
+					/**
+					 * r​o​l​e​R​e​f
+					 */
+					name: string
+				}
+				role: {
+					/**
+					 * r​o​l​e
+					 */
+					name: string
+				}
+				groupRef: {
+					/**
+					 * g​r​o​u​p​R​e​f
+					 */
+					name: string
+				}
+				group: {
+					/**
+					 * g​r​o​u​p
+					 */
+					name: string
+				}
+				isDeprecated: {
+					/**
+					 * i​s​D​e​p​r​e​c​a​t​e​d
+					 */
+					name: string
+				}
+				version: {
+					/**
+					 * v​e​r​s​i​o​n
+					 */
+					name: string
+				}
+				realmId: {
+					/**
+					 * r​e​a​l​m​I​d
+					 */
+					name: string
+				}
+				createUserId: {
+					/**
+					 * c​r​e​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				createTime: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				updateUserId: {
+					/**
+					 * u​p​d​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				updateTime: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				createGroupId: {
+					/**
+					 * c​r​e​a​t​e​G​r​o​u​p​I​d
+					 */
+					name: string
+				}
+				idCount: {
+					/**
+					 * i​d​C​o​u​n​t
+					 */
+					name: string
+				}
+				idMax: {
+					/**
+					 * i​d​M​a​x
+					 */
+					name: string
+				}
+				idMin: {
+					/**
+					 * i​d​M​i​n
+					 */
+					name: string
+				}
+				roleRefCount: {
+					/**
+					 * r​o​l​e​R​e​f​C​o​u​n​t
+					 */
+					name: string
+				}
+				roleRefMax: {
+					/**
+					 * r​o​l​e​R​e​f​M​a​x
+					 */
+					name: string
+				}
+				roleRefMin: {
+					/**
+					 * r​o​l​e​R​e​f​M​i​n
+					 */
+					name: string
+				}
+				groupRefCount: {
+					/**
+					 * g​r​o​u​p​R​e​f​C​o​u​n​t
+					 */
+					name: string
+				}
+				groupRefMax: {
+					/**
+					 * g​r​o​u​p​R​e​f​M​a​x
+					 */
+					name: string
+				}
+				groupRefMin: {
+					/**
+					 * g​r​o​u​p​R​e​f​M​i​n
+					 */
+					name: string
+				}
+			}
+		}
+		GroupUserRelation: {
+			/**
+			 * G​r​o​u​p​U​s​e​r​R​e​l​a​t​i​o​n
+			 */
+			name: string
+			fields: {
+				id: {
+					/**
+					 * i​d
+					 */
+					name: string
+				}
+				userRef: {
+					/**
+					 * u​s​e​r​R​e​f
+					 */
+					name: string
+				}
+				user: {
+					/**
+					 * u​s​e​r
+					 */
+					name: string
+				}
+				groupRef: {
+					/**
+					 * g​r​o​u​p​R​e​f
+					 */
+					name: string
+				}
+				group: {
+					/**
+					 * g​r​o​u​p
+					 */
+					name: string
+				}
+				isDeprecated: {
+					/**
+					 * i​s​D​e​p​r​e​c​a​t​e​d
+					 */
+					name: string
+				}
+				version: {
+					/**
+					 * v​e​r​s​i​o​n
+					 */
+					name: string
+				}
+				realmId: {
+					/**
+					 * r​e​a​l​m​I​d
+					 */
+					name: string
+				}
+				createUserId: {
+					/**
+					 * c​r​e​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				createTime: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				updateUserId: {
+					/**
+					 * u​p​d​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				updateTime: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				createGroupId: {
+					/**
+					 * c​r​e​a​t​e​G​r​o​u​p​I​d
+					 */
+					name: string
+				}
+				idCount: {
+					/**
+					 * i​d​C​o​u​n​t
+					 */
+					name: string
+				}
+				idMax: {
+					/**
+					 * i​d​M​a​x
+					 */
+					name: string
+				}
+				idMin: {
+					/**
+					 * i​d​M​i​n
+					 */
+					name: string
+				}
+				userRefCount: {
+					/**
+					 * u​s​e​r​R​e​f​C​o​u​n​t
+					 */
+					name: string
+				}
+				userRefMax: {
+					/**
+					 * u​s​e​r​R​e​f​M​a​x
+					 */
+					name: string
+				}
+				userRefMin: {
+					/**
+					 * u​s​e​r​R​e​f​M​i​n
+					 */
+					name: string
+				}
+				groupRefCount: {
+					/**
+					 * g​r​o​u​p​R​e​f​C​o​u​n​t
+					 */
+					name: string
+				}
+				groupRefMax: {
+					/**
+					 * g​r​o​u​p​R​e​f​M​a​x
+					 */
+					name: string
+				}
+				groupRefMin: {
+					/**
+					 * g​r​o​u​p​R​e​f​M​i​n
+					 */
+					name: string
+				}
+			}
+		}
 		Permission: {
 			/**
 			 * P​e​r​m​i​s​s​i​o​n
@@ -969,6 +1389,146 @@ export type NamespaceGraphqlTranslation = {
 				syncPermissionPolicy: {
 					/**
 					 * s​y​n​c​P​e​r​m​i​s​s​i​o​n​P​o​l​i​c​y
+					 */
+					name: string
+				}
+			}
+		}
+		PermissionRoleRelation: {
+			/**
+			 * P​e​r​m​i​s​s​i​o​n​R​o​l​e​R​e​l​a​t​i​o​n
+			 */
+			name: string
+			fields: {
+				id: {
+					/**
+					 * i​d
+					 */
+					name: string
+				}
+				roleRef: {
+					/**
+					 * r​o​l​e​R​e​f
+					 */
+					name: string
+				}
+				role: {
+					/**
+					 * r​o​l​e
+					 */
+					name: string
+				}
+				permissionRef: {
+					/**
+					 * p​e​r​m​i​s​s​i​o​n​R​e​f
+					 */
+					name: string
+				}
+				permission: {
+					/**
+					 * p​e​r​m​i​s​s​i​o​n
+					 */
+					name: string
+				}
+				isDeprecated: {
+					/**
+					 * i​s​D​e​p​r​e​c​a​t​e​d
+					 */
+					name: string
+				}
+				version: {
+					/**
+					 * v​e​r​s​i​o​n
+					 */
+					name: string
+				}
+				realmId: {
+					/**
+					 * r​e​a​l​m​I​d
+					 */
+					name: string
+				}
+				createUserId: {
+					/**
+					 * c​r​e​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				createTime: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				updateUserId: {
+					/**
+					 * u​p​d​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				updateTime: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				createGroupId: {
+					/**
+					 * c​r​e​a​t​e​G​r​o​u​p​I​d
+					 */
+					name: string
+				}
+				idCount: {
+					/**
+					 * i​d​C​o​u​n​t
+					 */
+					name: string
+				}
+				idMax: {
+					/**
+					 * i​d​M​a​x
+					 */
+					name: string
+				}
+				idMin: {
+					/**
+					 * i​d​M​i​n
+					 */
+					name: string
+				}
+				roleRefCount: {
+					/**
+					 * r​o​l​e​R​e​f​C​o​u​n​t
+					 */
+					name: string
+				}
+				roleRefMax: {
+					/**
+					 * r​o​l​e​R​e​f​M​a​x
+					 */
+					name: string
+				}
+				roleRefMin: {
+					/**
+					 * r​o​l​e​R​e​f​M​i​n
+					 */
+					name: string
+				}
+				permissionRefCount: {
+					/**
+					 * p​e​r​m​i​s​s​i​o​n​R​e​f​C​o​u​n​t
+					 */
+					name: string
+				}
+				permissionRefMax: {
+					/**
+					 * p​e​r​m​i​s​s​i​o​n​R​e​f​M​a​x
+					 */
+					name: string
+				}
+				permissionRefMin: {
+					/**
+					 * p​e​r​m​i​s​s​i​o​n​R​e​f​M​i​n
 					 */
 					name: string
 				}
@@ -1442,6 +2002,286 @@ export type NamespaceGraphqlTranslation = {
 				}
 			}
 		}
+		RoleCompositeRelation: {
+			/**
+			 * R​o​l​e​C​o​m​p​o​s​i​t​e​R​e​l​a​t​i​o​n
+			 */
+			name: string
+			fields: {
+				id: {
+					/**
+					 * i​d
+					 */
+					name: string
+				}
+				roleRef: {
+					/**
+					 * r​o​l​e​R​e​f
+					 */
+					name: string
+				}
+				role: {
+					/**
+					 * r​o​l​e
+					 */
+					name: string
+				}
+				compositeRef: {
+					/**
+					 * c​o​m​p​o​s​i​t​e​R​e​f
+					 */
+					name: string
+				}
+				composite: {
+					/**
+					 * c​o​m​p​o​s​i​t​e
+					 */
+					name: string
+				}
+				isDeprecated: {
+					/**
+					 * i​s​D​e​p​r​e​c​a​t​e​d
+					 */
+					name: string
+				}
+				version: {
+					/**
+					 * v​e​r​s​i​o​n
+					 */
+					name: string
+				}
+				realmId: {
+					/**
+					 * r​e​a​l​m​I​d
+					 */
+					name: string
+				}
+				createUserId: {
+					/**
+					 * c​r​e​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				createTime: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				updateUserId: {
+					/**
+					 * u​p​d​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				updateTime: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				createGroupId: {
+					/**
+					 * c​r​e​a​t​e​G​r​o​u​p​I​d
+					 */
+					name: string
+				}
+				idCount: {
+					/**
+					 * i​d​C​o​u​n​t
+					 */
+					name: string
+				}
+				idMax: {
+					/**
+					 * i​d​M​a​x
+					 */
+					name: string
+				}
+				idMin: {
+					/**
+					 * i​d​M​i​n
+					 */
+					name: string
+				}
+				roleRefCount: {
+					/**
+					 * r​o​l​e​R​e​f​C​o​u​n​t
+					 */
+					name: string
+				}
+				roleRefMax: {
+					/**
+					 * r​o​l​e​R​e​f​M​a​x
+					 */
+					name: string
+				}
+				roleRefMin: {
+					/**
+					 * r​o​l​e​R​e​f​M​i​n
+					 */
+					name: string
+				}
+				compositeRefCount: {
+					/**
+					 * c​o​m​p​o​s​i​t​e​R​e​f​C​o​u​n​t
+					 */
+					name: string
+				}
+				compositeRefMax: {
+					/**
+					 * c​o​m​p​o​s​i​t​e​R​e​f​M​a​x
+					 */
+					name: string
+				}
+				compositeRefMin: {
+					/**
+					 * c​o​m​p​o​s​i​t​e​R​e​f​M​i​n
+					 */
+					name: string
+				}
+			}
+		}
+		RoleUserRelation: {
+			/**
+			 * R​o​l​e​U​s​e​r​R​e​l​a​t​i​o​n
+			 */
+			name: string
+			fields: {
+				id: {
+					/**
+					 * i​d
+					 */
+					name: string
+				}
+				userRef: {
+					/**
+					 * u​s​e​r​R​e​f
+					 */
+					name: string
+				}
+				user: {
+					/**
+					 * u​s​e​r
+					 */
+					name: string
+				}
+				roleRef: {
+					/**
+					 * r​o​l​e​R​e​f
+					 */
+					name: string
+				}
+				role: {
+					/**
+					 * r​o​l​e
+					 */
+					name: string
+				}
+				isDeprecated: {
+					/**
+					 * i​s​D​e​p​r​e​c​a​t​e​d
+					 */
+					name: string
+				}
+				version: {
+					/**
+					 * v​e​r​s​i​o​n
+					 */
+					name: string
+				}
+				realmId: {
+					/**
+					 * r​e​a​l​m​I​d
+					 */
+					name: string
+				}
+				createUserId: {
+					/**
+					 * c​r​e​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				createTime: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				updateUserId: {
+					/**
+					 * u​p​d​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				updateTime: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				createGroupId: {
+					/**
+					 * c​r​e​a​t​e​G​r​o​u​p​I​d
+					 */
+					name: string
+				}
+				idCount: {
+					/**
+					 * i​d​C​o​u​n​t
+					 */
+					name: string
+				}
+				idMax: {
+					/**
+					 * i​d​M​a​x
+					 */
+					name: string
+				}
+				idMin: {
+					/**
+					 * i​d​M​i​n
+					 */
+					name: string
+				}
+				userRefCount: {
+					/**
+					 * u​s​e​r​R​e​f​C​o​u​n​t
+					 */
+					name: string
+				}
+				userRefMax: {
+					/**
+					 * u​s​e​r​R​e​f​M​a​x
+					 */
+					name: string
+				}
+				userRefMin: {
+					/**
+					 * u​s​e​r​R​e​f​M​i​n
+					 */
+					name: string
+				}
+				roleRefCount: {
+					/**
+					 * r​o​l​e​R​e​f​C​o​u​n​t
+					 */
+					name: string
+				}
+				roleRefMax: {
+					/**
+					 * r​o​l​e​R​e​f​M​a​x
+					 */
+					name: string
+				}
+				roleRefMin: {
+					/**
+					 * r​o​l​e​R​e​f​M​i​n
+					 */
+					name: string
+				}
+			}
+		}
 		User: {
 			/**
 			 * U​s​e​r
@@ -1811,6 +2651,140 @@ export type NamespaceGraphqlTranslation = {
 				syncUserPolicy: {
 					/**
 					 * s​y​n​c​U​s​e​r​P​o​l​i​c​y
+					 */
+					name: string
+				}
+			}
+		}
+		UserPhonesRelation: {
+			/**
+			 * U​s​e​r​P​h​o​n​e​s​R​e​l​a​t​i​o​n
+			 */
+			name: string
+			fields: {
+				id: {
+					/**
+					 * i​d
+					 */
+					name: string
+				}
+				userRef: {
+					/**
+					 * u​s​e​r​R​e​f
+					 */
+					name: string
+				}
+				user: {
+					/**
+					 * u​s​e​r
+					 */
+					name: string
+				}
+				phonesRef: {
+					/**
+					 * p​h​o​n​e​s​R​e​f
+					 */
+					name: string
+				}
+				isDeprecated: {
+					/**
+					 * i​s​D​e​p​r​e​c​a​t​e​d
+					 */
+					name: string
+				}
+				version: {
+					/**
+					 * v​e​r​s​i​o​n
+					 */
+					name: string
+				}
+				realmId: {
+					/**
+					 * r​e​a​l​m​I​d
+					 */
+					name: string
+				}
+				createUserId: {
+					/**
+					 * c​r​e​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				createTime: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				updateUserId: {
+					/**
+					 * u​p​d​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				updateTime: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				createGroupId: {
+					/**
+					 * c​r​e​a​t​e​G​r​o​u​p​I​d
+					 */
+					name: string
+				}
+				idCount: {
+					/**
+					 * i​d​C​o​u​n​t
+					 */
+					name: string
+				}
+				idMax: {
+					/**
+					 * i​d​M​a​x
+					 */
+					name: string
+				}
+				idMin: {
+					/**
+					 * i​d​M​i​n
+					 */
+					name: string
+				}
+				userRefCount: {
+					/**
+					 * u​s​e​r​R​e​f​C​o​u​n​t
+					 */
+					name: string
+				}
+				userRefMax: {
+					/**
+					 * u​s​e​r​R​e​f​M​a​x
+					 */
+					name: string
+				}
+				userRefMin: {
+					/**
+					 * u​s​e​r​R​e​f​M​i​n
+					 */
+					name: string
+				}
+				phonesRefCount: {
+					/**
+					 * p​h​o​n​e​s​R​e​f​C​o​u​n​t
+					 */
+					name: string
+				}
+				phonesRefMax: {
+					/**
+					 * p​h​o​n​e​s​R​e​f​M​a​x
+					 */
+					name: string
+				}
+				phonesRefMin: {
+					/**
+					 * p​h​o​n​e​s​R​e​f​M​i​n
 					 */
 					name: string
 				}
@@ -2653,6 +3627,146 @@ export type TranslationFunctions = {
 					}
 				}
 			}
+			FileUserRelation: {
+				/**
+				 * FileUserRelation
+				 */
+				name: () => LocalizedString
+				fields: {
+					id: {
+						/**
+						 * id
+						 */
+						name: () => LocalizedString
+					}
+					userRef: {
+						/**
+						 * userRef
+						 */
+						name: () => LocalizedString
+					}
+					user: {
+						/**
+						 * user
+						 */
+						name: () => LocalizedString
+					}
+					fileRef: {
+						/**
+						 * fileRef
+						 */
+						name: () => LocalizedString
+					}
+					file: {
+						/**
+						 * file
+						 */
+						name: () => LocalizedString
+					}
+					isDeprecated: {
+						/**
+						 * isDeprecated
+						 */
+						name: () => LocalizedString
+					}
+					version: {
+						/**
+						 * version
+						 */
+						name: () => LocalizedString
+					}
+					realmId: {
+						/**
+						 * realmId
+						 */
+						name: () => LocalizedString
+					}
+					createUserId: {
+						/**
+						 * createUserId
+						 */
+						name: () => LocalizedString
+					}
+					createTime: {
+						/**
+						 * createTime
+						 */
+						name: () => LocalizedString
+					}
+					updateUserId: {
+						/**
+						 * updateUserId
+						 */
+						name: () => LocalizedString
+					}
+					updateTime: {
+						/**
+						 * updateTime
+						 */
+						name: () => LocalizedString
+					}
+					createGroupId: {
+						/**
+						 * createGroupId
+						 */
+						name: () => LocalizedString
+					}
+					idCount: {
+						/**
+						 * idCount
+						 */
+						name: () => LocalizedString
+					}
+					idMax: {
+						/**
+						 * idMax
+						 */
+						name: () => LocalizedString
+					}
+					idMin: {
+						/**
+						 * idMin
+						 */
+						name: () => LocalizedString
+					}
+					userRefCount: {
+						/**
+						 * userRefCount
+						 */
+						name: () => LocalizedString
+					}
+					userRefMax: {
+						/**
+						 * userRefMax
+						 */
+						name: () => LocalizedString
+					}
+					userRefMin: {
+						/**
+						 * userRefMin
+						 */
+						name: () => LocalizedString
+					}
+					fileRefCount: {
+						/**
+						 * fileRefCount
+						 */
+						name: () => LocalizedString
+					}
+					fileRefMax: {
+						/**
+						 * fileRefMax
+						 */
+						name: () => LocalizedString
+					}
+					fileRefMin: {
+						/**
+						 * fileRefMin
+						 */
+						name: () => LocalizedString
+					}
+				}
+			}
 			Group: {
 				/**
 				 * Group
@@ -2973,6 +4087,286 @@ export type TranslationFunctions = {
 					}
 				}
 			}
+			GroupRoleRelation: {
+				/**
+				 * GroupRoleRelation
+				 */
+				name: () => LocalizedString
+				fields: {
+					id: {
+						/**
+						 * id
+						 */
+						name: () => LocalizedString
+					}
+					roleRef: {
+						/**
+						 * roleRef
+						 */
+						name: () => LocalizedString
+					}
+					role: {
+						/**
+						 * role
+						 */
+						name: () => LocalizedString
+					}
+					groupRef: {
+						/**
+						 * groupRef
+						 */
+						name: () => LocalizedString
+					}
+					group: {
+						/**
+						 * group
+						 */
+						name: () => LocalizedString
+					}
+					isDeprecated: {
+						/**
+						 * isDeprecated
+						 */
+						name: () => LocalizedString
+					}
+					version: {
+						/**
+						 * version
+						 */
+						name: () => LocalizedString
+					}
+					realmId: {
+						/**
+						 * realmId
+						 */
+						name: () => LocalizedString
+					}
+					createUserId: {
+						/**
+						 * createUserId
+						 */
+						name: () => LocalizedString
+					}
+					createTime: {
+						/**
+						 * createTime
+						 */
+						name: () => LocalizedString
+					}
+					updateUserId: {
+						/**
+						 * updateUserId
+						 */
+						name: () => LocalizedString
+					}
+					updateTime: {
+						/**
+						 * updateTime
+						 */
+						name: () => LocalizedString
+					}
+					createGroupId: {
+						/**
+						 * createGroupId
+						 */
+						name: () => LocalizedString
+					}
+					idCount: {
+						/**
+						 * idCount
+						 */
+						name: () => LocalizedString
+					}
+					idMax: {
+						/**
+						 * idMax
+						 */
+						name: () => LocalizedString
+					}
+					idMin: {
+						/**
+						 * idMin
+						 */
+						name: () => LocalizedString
+					}
+					roleRefCount: {
+						/**
+						 * roleRefCount
+						 */
+						name: () => LocalizedString
+					}
+					roleRefMax: {
+						/**
+						 * roleRefMax
+						 */
+						name: () => LocalizedString
+					}
+					roleRefMin: {
+						/**
+						 * roleRefMin
+						 */
+						name: () => LocalizedString
+					}
+					groupRefCount: {
+						/**
+						 * groupRefCount
+						 */
+						name: () => LocalizedString
+					}
+					groupRefMax: {
+						/**
+						 * groupRefMax
+						 */
+						name: () => LocalizedString
+					}
+					groupRefMin: {
+						/**
+						 * groupRefMin
+						 */
+						name: () => LocalizedString
+					}
+				}
+			}
+			GroupUserRelation: {
+				/**
+				 * GroupUserRelation
+				 */
+				name: () => LocalizedString
+				fields: {
+					id: {
+						/**
+						 * id
+						 */
+						name: () => LocalizedString
+					}
+					userRef: {
+						/**
+						 * userRef
+						 */
+						name: () => LocalizedString
+					}
+					user: {
+						/**
+						 * user
+						 */
+						name: () => LocalizedString
+					}
+					groupRef: {
+						/**
+						 * groupRef
+						 */
+						name: () => LocalizedString
+					}
+					group: {
+						/**
+						 * group
+						 */
+						name: () => LocalizedString
+					}
+					isDeprecated: {
+						/**
+						 * isDeprecated
+						 */
+						name: () => LocalizedString
+					}
+					version: {
+						/**
+						 * version
+						 */
+						name: () => LocalizedString
+					}
+					realmId: {
+						/**
+						 * realmId
+						 */
+						name: () => LocalizedString
+					}
+					createUserId: {
+						/**
+						 * createUserId
+						 */
+						name: () => LocalizedString
+					}
+					createTime: {
+						/**
+						 * createTime
+						 */
+						name: () => LocalizedString
+					}
+					updateUserId: {
+						/**
+						 * updateUserId
+						 */
+						name: () => LocalizedString
+					}
+					updateTime: {
+						/**
+						 * updateTime
+						 */
+						name: () => LocalizedString
+					}
+					createGroupId: {
+						/**
+						 * createGroupId
+						 */
+						name: () => LocalizedString
+					}
+					idCount: {
+						/**
+						 * idCount
+						 */
+						name: () => LocalizedString
+					}
+					idMax: {
+						/**
+						 * idMax
+						 */
+						name: () => LocalizedString
+					}
+					idMin: {
+						/**
+						 * idMin
+						 */
+						name: () => LocalizedString
+					}
+					userRefCount: {
+						/**
+						 * userRefCount
+						 */
+						name: () => LocalizedString
+					}
+					userRefMax: {
+						/**
+						 * userRefMax
+						 */
+						name: () => LocalizedString
+					}
+					userRefMin: {
+						/**
+						 * userRefMin
+						 */
+						name: () => LocalizedString
+					}
+					groupRefCount: {
+						/**
+						 * groupRefCount
+						 */
+						name: () => LocalizedString
+					}
+					groupRefMax: {
+						/**
+						 * groupRefMax
+						 */
+						name: () => LocalizedString
+					}
+					groupRefMin: {
+						/**
+						 * groupRefMin
+						 */
+						name: () => LocalizedString
+					}
+				}
+			}
 			Permission: {
 				/**
 				 * Permission
@@ -3174,6 +4568,146 @@ export type TranslationFunctions = {
 					syncPermissionPolicy: {
 						/**
 						 * syncPermissionPolicy
+						 */
+						name: () => LocalizedString
+					}
+				}
+			}
+			PermissionRoleRelation: {
+				/**
+				 * PermissionRoleRelation
+				 */
+				name: () => LocalizedString
+				fields: {
+					id: {
+						/**
+						 * id
+						 */
+						name: () => LocalizedString
+					}
+					roleRef: {
+						/**
+						 * roleRef
+						 */
+						name: () => LocalizedString
+					}
+					role: {
+						/**
+						 * role
+						 */
+						name: () => LocalizedString
+					}
+					permissionRef: {
+						/**
+						 * permissionRef
+						 */
+						name: () => LocalizedString
+					}
+					permission: {
+						/**
+						 * permission
+						 */
+						name: () => LocalizedString
+					}
+					isDeprecated: {
+						/**
+						 * isDeprecated
+						 */
+						name: () => LocalizedString
+					}
+					version: {
+						/**
+						 * version
+						 */
+						name: () => LocalizedString
+					}
+					realmId: {
+						/**
+						 * realmId
+						 */
+						name: () => LocalizedString
+					}
+					createUserId: {
+						/**
+						 * createUserId
+						 */
+						name: () => LocalizedString
+					}
+					createTime: {
+						/**
+						 * createTime
+						 */
+						name: () => LocalizedString
+					}
+					updateUserId: {
+						/**
+						 * updateUserId
+						 */
+						name: () => LocalizedString
+					}
+					updateTime: {
+						/**
+						 * updateTime
+						 */
+						name: () => LocalizedString
+					}
+					createGroupId: {
+						/**
+						 * createGroupId
+						 */
+						name: () => LocalizedString
+					}
+					idCount: {
+						/**
+						 * idCount
+						 */
+						name: () => LocalizedString
+					}
+					idMax: {
+						/**
+						 * idMax
+						 */
+						name: () => LocalizedString
+					}
+					idMin: {
+						/**
+						 * idMin
+						 */
+						name: () => LocalizedString
+					}
+					roleRefCount: {
+						/**
+						 * roleRefCount
+						 */
+						name: () => LocalizedString
+					}
+					roleRefMax: {
+						/**
+						 * roleRefMax
+						 */
+						name: () => LocalizedString
+					}
+					roleRefMin: {
+						/**
+						 * roleRefMin
+						 */
+						name: () => LocalizedString
+					}
+					permissionRefCount: {
+						/**
+						 * permissionRefCount
+						 */
+						name: () => LocalizedString
+					}
+					permissionRefMax: {
+						/**
+						 * permissionRefMax
+						 */
+						name: () => LocalizedString
+					}
+					permissionRefMin: {
+						/**
+						 * permissionRefMin
 						 */
 						name: () => LocalizedString
 					}
@@ -3647,6 +5181,286 @@ export type TranslationFunctions = {
 					}
 				}
 			}
+			RoleCompositeRelation: {
+				/**
+				 * RoleCompositeRelation
+				 */
+				name: () => LocalizedString
+				fields: {
+					id: {
+						/**
+						 * id
+						 */
+						name: () => LocalizedString
+					}
+					roleRef: {
+						/**
+						 * roleRef
+						 */
+						name: () => LocalizedString
+					}
+					role: {
+						/**
+						 * role
+						 */
+						name: () => LocalizedString
+					}
+					compositeRef: {
+						/**
+						 * compositeRef
+						 */
+						name: () => LocalizedString
+					}
+					composite: {
+						/**
+						 * composite
+						 */
+						name: () => LocalizedString
+					}
+					isDeprecated: {
+						/**
+						 * isDeprecated
+						 */
+						name: () => LocalizedString
+					}
+					version: {
+						/**
+						 * version
+						 */
+						name: () => LocalizedString
+					}
+					realmId: {
+						/**
+						 * realmId
+						 */
+						name: () => LocalizedString
+					}
+					createUserId: {
+						/**
+						 * createUserId
+						 */
+						name: () => LocalizedString
+					}
+					createTime: {
+						/**
+						 * createTime
+						 */
+						name: () => LocalizedString
+					}
+					updateUserId: {
+						/**
+						 * updateUserId
+						 */
+						name: () => LocalizedString
+					}
+					updateTime: {
+						/**
+						 * updateTime
+						 */
+						name: () => LocalizedString
+					}
+					createGroupId: {
+						/**
+						 * createGroupId
+						 */
+						name: () => LocalizedString
+					}
+					idCount: {
+						/**
+						 * idCount
+						 */
+						name: () => LocalizedString
+					}
+					idMax: {
+						/**
+						 * idMax
+						 */
+						name: () => LocalizedString
+					}
+					idMin: {
+						/**
+						 * idMin
+						 */
+						name: () => LocalizedString
+					}
+					roleRefCount: {
+						/**
+						 * roleRefCount
+						 */
+						name: () => LocalizedString
+					}
+					roleRefMax: {
+						/**
+						 * roleRefMax
+						 */
+						name: () => LocalizedString
+					}
+					roleRefMin: {
+						/**
+						 * roleRefMin
+						 */
+						name: () => LocalizedString
+					}
+					compositeRefCount: {
+						/**
+						 * compositeRefCount
+						 */
+						name: () => LocalizedString
+					}
+					compositeRefMax: {
+						/**
+						 * compositeRefMax
+						 */
+						name: () => LocalizedString
+					}
+					compositeRefMin: {
+						/**
+						 * compositeRefMin
+						 */
+						name: () => LocalizedString
+					}
+				}
+			}
+			RoleUserRelation: {
+				/**
+				 * RoleUserRelation
+				 */
+				name: () => LocalizedString
+				fields: {
+					id: {
+						/**
+						 * id
+						 */
+						name: () => LocalizedString
+					}
+					userRef: {
+						/**
+						 * userRef
+						 */
+						name: () => LocalizedString
+					}
+					user: {
+						/**
+						 * user
+						 */
+						name: () => LocalizedString
+					}
+					roleRef: {
+						/**
+						 * roleRef
+						 */
+						name: () => LocalizedString
+					}
+					role: {
+						/**
+						 * role
+						 */
+						name: () => LocalizedString
+					}
+					isDeprecated: {
+						/**
+						 * isDeprecated
+						 */
+						name: () => LocalizedString
+					}
+					version: {
+						/**
+						 * version
+						 */
+						name: () => LocalizedString
+					}
+					realmId: {
+						/**
+						 * realmId
+						 */
+						name: () => LocalizedString
+					}
+					createUserId: {
+						/**
+						 * createUserId
+						 */
+						name: () => LocalizedString
+					}
+					createTime: {
+						/**
+						 * createTime
+						 */
+						name: () => LocalizedString
+					}
+					updateUserId: {
+						/**
+						 * updateUserId
+						 */
+						name: () => LocalizedString
+					}
+					updateTime: {
+						/**
+						 * updateTime
+						 */
+						name: () => LocalizedString
+					}
+					createGroupId: {
+						/**
+						 * createGroupId
+						 */
+						name: () => LocalizedString
+					}
+					idCount: {
+						/**
+						 * idCount
+						 */
+						name: () => LocalizedString
+					}
+					idMax: {
+						/**
+						 * idMax
+						 */
+						name: () => LocalizedString
+					}
+					idMin: {
+						/**
+						 * idMin
+						 */
+						name: () => LocalizedString
+					}
+					userRefCount: {
+						/**
+						 * userRefCount
+						 */
+						name: () => LocalizedString
+					}
+					userRefMax: {
+						/**
+						 * userRefMax
+						 */
+						name: () => LocalizedString
+					}
+					userRefMin: {
+						/**
+						 * userRefMin
+						 */
+						name: () => LocalizedString
+					}
+					roleRefCount: {
+						/**
+						 * roleRefCount
+						 */
+						name: () => LocalizedString
+					}
+					roleRefMax: {
+						/**
+						 * roleRefMax
+						 */
+						name: () => LocalizedString
+					}
+					roleRefMin: {
+						/**
+						 * roleRefMin
+						 */
+						name: () => LocalizedString
+					}
+				}
+			}
 			User: {
 				/**
 				 * User
@@ -4016,6 +5830,140 @@ export type TranslationFunctions = {
 					syncUserPolicy: {
 						/**
 						 * syncUserPolicy
+						 */
+						name: () => LocalizedString
+					}
+				}
+			}
+			UserPhonesRelation: {
+				/**
+				 * UserPhonesRelation
+				 */
+				name: () => LocalizedString
+				fields: {
+					id: {
+						/**
+						 * id
+						 */
+						name: () => LocalizedString
+					}
+					userRef: {
+						/**
+						 * userRef
+						 */
+						name: () => LocalizedString
+					}
+					user: {
+						/**
+						 * user
+						 */
+						name: () => LocalizedString
+					}
+					phonesRef: {
+						/**
+						 * phonesRef
+						 */
+						name: () => LocalizedString
+					}
+					isDeprecated: {
+						/**
+						 * isDeprecated
+						 */
+						name: () => LocalizedString
+					}
+					version: {
+						/**
+						 * version
+						 */
+						name: () => LocalizedString
+					}
+					realmId: {
+						/**
+						 * realmId
+						 */
+						name: () => LocalizedString
+					}
+					createUserId: {
+						/**
+						 * createUserId
+						 */
+						name: () => LocalizedString
+					}
+					createTime: {
+						/**
+						 * createTime
+						 */
+						name: () => LocalizedString
+					}
+					updateUserId: {
+						/**
+						 * updateUserId
+						 */
+						name: () => LocalizedString
+					}
+					updateTime: {
+						/**
+						 * updateTime
+						 */
+						name: () => LocalizedString
+					}
+					createGroupId: {
+						/**
+						 * createGroupId
+						 */
+						name: () => LocalizedString
+					}
+					idCount: {
+						/**
+						 * idCount
+						 */
+						name: () => LocalizedString
+					}
+					idMax: {
+						/**
+						 * idMax
+						 */
+						name: () => LocalizedString
+					}
+					idMin: {
+						/**
+						 * idMin
+						 */
+						name: () => LocalizedString
+					}
+					userRefCount: {
+						/**
+						 * userRefCount
+						 */
+						name: () => LocalizedString
+					}
+					userRefMax: {
+						/**
+						 * userRefMax
+						 */
+						name: () => LocalizedString
+					}
+					userRefMin: {
+						/**
+						 * userRefMin
+						 */
+						name: () => LocalizedString
+					}
+					phonesRefCount: {
+						/**
+						 * phonesRefCount
+						 */
+						name: () => LocalizedString
+					}
+					phonesRefMax: {
+						/**
+						 * phonesRefMax
+						 */
+						name: () => LocalizedString
+					}
+					phonesRefMin: {
+						/**
+						 * phonesRefMin
 						 */
 						name: () => LocalizedString
 					}
