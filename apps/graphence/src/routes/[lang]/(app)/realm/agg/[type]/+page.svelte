@@ -3,6 +3,7 @@
 	import RealmBar from '~/lib/components/objects/realm/RealmBar.svelte';
 	import RealmLine from '~/lib/components/objects/realm/RealmLine.svelte';
 	import RealmPie from '~/lib/components/objects/realm/RealmPie.svelte';
+	import RealmAggTable from '~/lib/components/objects/realm/RealmAggTable.svelte';
 	import type { RealmAggStore } from '~/lib/stores/realm/realmAggStore';
 	import type { PageData } from './$houdini';
 
@@ -20,7 +21,12 @@
 
 	const RealmAgg = data.RealmAgg as RealmAggStore;
 
-	const components: Record<string, any> = { bar: RealmBar, line: RealmLine, pie: RealmPie };
+	const components: Record<string, any> = {
+		bar: RealmBar,
+		line: RealmLine,
+		pie: RealmPie,
+		table: RealmAggTable
+	};
 
 	const component = components[data.type];
 </script>

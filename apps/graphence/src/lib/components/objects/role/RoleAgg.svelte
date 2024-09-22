@@ -701,14 +701,21 @@
 	export const getFieldName = (fieldName: string, subFieldName?: string): string => {
 		if (subFieldName) {
 			return selectOptions
-			.filter((group) => group.value === fieldName)
-			?.flatMap((group) => group.options.filter((option) => option.value === subFieldName))[0]
-			.label;
+				.filter((group) => group.value === fieldName)
+				?.flatMap((group) => group.options.filter((option) => option.value === subFieldName))[0]
+				.label;
 		} else {
-			return selectOptions
-			.filter((group) => !group.value)
-			?.flatMap((group) => group.options.filter((option) => option.value === fieldName))[0].label;
+			return (
+				selectOptions
+					.filter((group) => !group.value)
+					?.flatMap((group) => group.options.filter((option) => option.value === fieldName))?.[0] ||
+				selectOptions.find((group) => group.value === fieldName)
+			).label;
 		}
+	};
+
+	export const getGrouByName = (fieldName: string): string | undefined => {
+		return groupByOptions.find((group) => group.value === fieldName)?.label;
 	};
 
 	const {
@@ -867,7 +874,7 @@
 			<span class="loading loading-bars loading-lg" />
 		</div>
 	{:else}
-		<slot />
+		<slot {getFieldName} {getGrouByName} />
 	{/if}
 </div>
 {#if showFooter}

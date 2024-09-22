@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { Card } from '@graphace/ui';
-	import {{ name }}Bar from '~/{{ barPath }}/{{ name | paramCase }}/{{ name }}Bar.svelte';
-	import {{ name }}Line from '~/{{ barPath }}/{{ name | paramCase }}/{{ name }}Line.svelte';
-	import {{ name }}Pie from '~/{{ barPath }}/{{ name | paramCase }}/{{ name }}Pie.svelte';
+	import {{ name }}Bar from '~/{{ aggPath }}/{{ name | paramCase }}/{{ name }}Bar.svelte';
+	import {{ name }}Line from '~/{{ aggPath }}/{{ name | paramCase }}/{{ name }}Line.svelte';
+	import {{ name }}Pie from '~/{{ aggPath }}/{{ name | paramCase }}/{{ name }}Pie.svelte';
+	import {{ name }}AggTable from '~/{{ aggPath }}/{{ name | paramCase }}/{{ name }}AggTable.svelte';
 	import type { {{ name }}AggStore } from '~/{{ storesPath }}/{{ name | paramCase }}/{{ name | camelCase }}AggStore';
 	import type { PageData } from './$houdini';
 
@@ -20,7 +21,12 @@
 
 	const {{ name }}Agg = data.{{ name }}Agg as {{ name }}AggStore;
 
-	const components: Record<string, any> = { bar: {{ name }}Bar, line: {{ name }}Line, pie: {{ name }}Pie };
+	const components: Record<string, any> = {
+		bar: {{ name }}Bar,
+		line: {{ name }}Line,
+		pie: {{ name }}Pie,
+		table: {{ name }}AggTable
+	};
 
 	const component = components[data.type];
 </script>

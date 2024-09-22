@@ -3,6 +3,7 @@
 	import GroupBar from '~/lib/components/objects/group/GroupBar.svelte';
 	import GroupLine from '~/lib/components/objects/group/GroupLine.svelte';
 	import GroupPie from '~/lib/components/objects/group/GroupPie.svelte';
+	import GroupAggTable from '~/lib/components/objects/group/GroupAggTable.svelte';
 	import type { GroupAggStore } from '~/lib/stores/group/groupAggStore';
 	import type { PageData } from './$houdini';
 
@@ -20,7 +21,12 @@
 
 	const GroupAgg = data.GroupAgg as GroupAggStore;
 
-	const components: Record<string, any> = { bar: GroupBar, line: GroupLine, pie: GroupPie };
+	const components: Record<string, any> = {
+		bar: GroupBar,
+		line: GroupLine,
+		pie: GroupPie,
+		table: GroupAggTable
+	};
 
 	const component = components[data.type];
 </script>

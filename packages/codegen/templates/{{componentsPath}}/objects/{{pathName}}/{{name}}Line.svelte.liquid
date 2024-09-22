@@ -69,6 +69,7 @@
 			};
 		}
 	}
+	$: totalCount = connection?.totalCount || 0;
 </script>
 
 <{{ name }}Agg
@@ -80,6 +81,7 @@
 	{showOptionButton}
 	{showFilterButton}
 	{showBookmarkButton}
+	{totalCount}
 	on:query
 	on:bookmark
 	bind:getFieldName

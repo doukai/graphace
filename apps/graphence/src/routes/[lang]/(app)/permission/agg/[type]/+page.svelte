@@ -3,6 +3,7 @@
 	import PermissionBar from '~/lib/components/objects/permission/PermissionBar.svelte';
 	import PermissionLine from '~/lib/components/objects/permission/PermissionLine.svelte';
 	import PermissionPie from '~/lib/components/objects/permission/PermissionPie.svelte';
+	import PermissionAggTable from '~/lib/components/objects/permission/PermissionAggTable.svelte';
 	import type { PermissionAggStore } from '~/lib/stores/permission/permissionAggStore';
 	import type { PageData } from './$houdini';
 
@@ -20,7 +21,12 @@
 
 	const PermissionAgg = data.PermissionAgg as PermissionAggStore;
 
-	const components: Record<string, any> = { bar: PermissionBar, line: PermissionLine, pie: PermissionPie };
+	const components: Record<string, any> = {
+		bar: PermissionBar,
+		line: PermissionLine,
+		pie: PermissionPie,
+		table: PermissionAggTable
+	};
 
 	const component = components[data.type];
 </script>

@@ -87,9 +87,9 @@
 	});
 
 	$: $tags = Array.isArray(value)
-		? value.map((item) => ({ id: (item.value.group?.value || '') + item.value, value: item.label }))
+		? value.map((item) => ({ id: (item.group?.value || '') + item.value, value: item.label }))
 		: value
-		? [{ id: (value.value.group?.value || '') + value.value, value: value.label }]
+		? [{ id: (value.group?.value || '') + value.value, value: value.label }]
 		: [];
 
 	let debounceTimer: ReturnType<typeof setTimeout>;

@@ -3,6 +3,7 @@
 	import RoleBar from '~/lib/components/objects/role/RoleBar.svelte';
 	import RoleLine from '~/lib/components/objects/role/RoleLine.svelte';
 	import RolePie from '~/lib/components/objects/role/RolePie.svelte';
+	import RoleAggTable from '~/lib/components/objects/role/RoleAggTable.svelte';
 	import type { RoleAggStore } from '~/lib/stores/role/roleAggStore';
 	import type { PageData } from './$houdini';
 
@@ -20,7 +21,12 @@
 
 	const RoleAgg = data.RoleAgg as RoleAggStore;
 
-	const components: Record<string, any> = { bar: RoleBar, line: RoleLine, pie: RolePie };
+	const components: Record<string, any> = {
+		bar: RoleBar,
+		line: RoleLine,
+		pie: RolePie,
+		table: RoleAggTable
+	};
 
 	const component = components[data.type];
 </script>

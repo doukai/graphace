@@ -49,6 +49,7 @@
 			};
 		}
 	}
+	$: totalCount = connection?.totalCount || 0;
 </script>
 
 <GroupAgg
@@ -60,6 +61,7 @@
 	{showOptionButton}
 	{showFilterButton}
 	{showBookmarkButton}
+	{totalCount}
 	on:query
 	on:bookmark
 	bind:getFieldName

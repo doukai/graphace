@@ -58,6 +58,7 @@
 			};
 		}
 	}
+	$: totalCount = connection?.totalCount || 0;
 </script>
 
 <RealmAgg
@@ -69,6 +70,7 @@
 	{showOptionButton}
 	{showFilterButton}
 	{showBookmarkButton}
+	{totalCount}
 	on:query
 	on:bookmark
 	bind:getFieldName

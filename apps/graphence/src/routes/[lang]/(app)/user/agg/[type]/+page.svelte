@@ -3,6 +3,7 @@
 	import UserBar from '~/lib/components/objects/user/UserBar.svelte';
 	import UserLine from '~/lib/components/objects/user/UserLine.svelte';
 	import UserPie from '~/lib/components/objects/user/UserPie.svelte';
+	import UserAggTable from '~/lib/components/objects/user/UserAggTable.svelte';
 	import type { UserAggStore } from '~/lib/stores/user/userAggStore';
 	import type { PageData } from './$houdini';
 
@@ -20,7 +21,12 @@
 
 	const UserAgg = data.UserAgg as UserAggStore;
 
-	const components: Record<string, any> = { bar: UserBar, line: UserLine, pie: UserPie };
+	const components: Record<string, any> = {
+		bar: UserBar,
+		line: UserLine,
+		pie: UserPie,
+		table: UserAggTable
+	};
 
 	const component = components[data.type];
 </script>
