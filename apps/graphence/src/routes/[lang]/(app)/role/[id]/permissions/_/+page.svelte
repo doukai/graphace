@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { type Errors, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
-	import type { GraphQLError, __Schema, __Type, __TypeKind } from '@graphace/graphql';
+	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import PermissionCreateForm from '~/lib/components/objects/permission/PermissionCreateForm.svelte';
 	import { Mutation_role_permissionsStore } from '$houdini';
@@ -60,5 +60,12 @@
 </script>
 
 <Card>
-	<PermissionCreateForm showBackButton={$canBack} {node} {errors} on:mutation={mutation} on:back={back} on:gotoField={gotoField} />
+	<PermissionCreateForm 
+		showBackButton={$canBack}
+		{node}
+		{errors}
+		on:mutation={mutation}
+		on:back={back}
+		on:gotoField={gotoField}
+	/>
 </Card>

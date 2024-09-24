@@ -1,4 +1,4 @@
-import { PermissionsStore, createPermissions } from '@graphace/commons';
+import { type PermissionsStore, createPermissions } from '@graphace/commons';
 import { graphql } from '$houdini';
 import { env } from '$env/dynamic/public';
 

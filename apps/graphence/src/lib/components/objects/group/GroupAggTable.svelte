@@ -34,7 +34,7 @@
 	let:getFieldName
 	let:getGrouByName
 >
-	<Table className="table-zebra md:table-sm">
+	<Table className="table-zebra table-pin-rows md:table-sm">
 		<thead>
 			<FieldThs {fields} {getFieldName} let:deep>
 				{#each queryArguments.groupBy || [] as groupByField}

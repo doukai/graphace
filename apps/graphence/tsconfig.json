@@ -10,8 +10,7 @@
 		"sourceMap": true,
 		"strict": true,
 		"rootDirs": ["./src", "./.svelte-kit/types", "./$houdini/types"],
-		"outDir": "dist",
-		"preserveValueImports": false
+		"outDir": "dist"
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	//

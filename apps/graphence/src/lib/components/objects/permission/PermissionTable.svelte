@@ -268,7 +268,7 @@
 	on:back
 />
 <div class="divider" />
-<Table className="table-zebra md:table-sm">
+<Table className="table-zebra table-pin-rows table-pin-cols md:table-sm">
 	<thead>
 		<tr class="z-20">
 			<th class="w-12">

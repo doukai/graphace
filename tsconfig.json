@@ -9,9 +9,6 @@
 		"sourceMap": true,
 		"declaration": true,
 		"strict": true,
-		"importsNotUsedAsValues": "error",
-		"isolatedModules": true,
-		"preserveValueImports": true,
 		"lib": [
 			"esnext",
 			"DOM",

@@ -3,5 +3,5 @@ import type { LocaleItem } from "./LocaleSelect.svelte";
 import ThemeSelect from "./ThemeSelect.svelte";
 
 export {
-    LocaleSelect, ThemeSelect, LocaleItem
+    LocaleSelect, ThemeSelect, type LocaleItem
 }

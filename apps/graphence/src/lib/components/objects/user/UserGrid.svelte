@@ -1,8 +1,7 @@
 <script lang="ts">
+	import { RevoGrid, type ColumnRegular } from '@revolist/svelte-datagrid';
 	import { Field } from '@graphace/graphql';
 	import UserAgg from '~/lib/components/objects/user/UserAgg.svelte';
-	import { Table, TableLoading, TableEmpty } from '@graphace/ui';
-	import { FieldThs, FieldTds } from '@graphace/ui-graphql';
 	import type { UserConnection, UserConnectionQueryArguments } from '~/lib/types/schema';
 
 	export let connection: UserConnection;
@@ -17,6 +16,30 @@
 
 	$: nodes = connection.edges?.map((edge) => edge?.node);
 	$: totalCount = connection?.totalCount || 0;
+
+	const source = [
+		{
+			name: '1',
+			details: 'Item 1'
+		},
+		{
+			name: '2',
+			details: 'Item 2'
+		}
+	];
+	const columns: ColumnRegular[] = [
+		{
+			prop: 'name',
+			name: 'First',
+			cellTemplate(h, { value }) {
+				return h('span', { style: { background: 'red' } }, value);
+			}
+		},
+		{
+			prop: 'details',
+			name: 'Second'
+		}
+	];
 </script>
 
 <UserAgg
@@ -34,29 +57,5 @@
 	let:getFieldName
 	let:getGrouByName
 >
-	<Table className="table-zebra table-pin-rows md:table-sm">
-		<thead>
-			<FieldThs {fields} {getFieldName} let:deep>
-				{#each queryArguments.groupBy || [] as groupByField}
-					<th rowspan={deep}>{getGrouByName(groupByField)}</th>
-				{/each}
-			</FieldThs>
-		</thead>
-		<tbody>
-			{#if isFetching}
-				<TableLoading rows={10} cols={(queryArguments.groupBy?.length || 0) + fields.length} />
-			{:else if nodes && nodes.length > 0}
-				{#each nodes || [] as node}
-					<tr class="hover">
-						{#each queryArguments.groupBy || [] as groupByField}
-							<th>{node[groupByField]}</th>
-						{/each}
-						<FieldTds {fields} {node} />
-					</tr>
-				{/each}
-			{:else}
-				<TableEmpty cols={(queryArguments.groupBy?.length || 0) + fields.length} />
-			{/if}
-		</tbody>
-	</Table>
+	<RevoGrid {source} {columns} />
 </UserAgg>

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { type Errors, updateNodeParam, updateErrorsParam, getChildPathParam, getNodeParam, getErrorsParam, getPathParam } from '@graphace/commons';
-	import type { __Schema, __Type, __TypeKind } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import PermissionCreateTable from '~/lib/components/objects/permission/PermissionCreateTable.svelte';
 	import type { MutationPermissionArgs } from '~/lib/types/schema';

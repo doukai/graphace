@@ -121,7 +121,7 @@ const config: CodegenConfig = {
                             fields: [
                                 {
                                     name: 'permissions',
-                                    inRoute: false
+                                    // inRoute: false
                                 },
                                 {
                                     name: 'syncRolePolicy',
