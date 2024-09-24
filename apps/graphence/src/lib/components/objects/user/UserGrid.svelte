@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { RevoGrid, type ColumnRegular } from '@revolist/svelte-datagrid';
-	import { Field } from '@graphace/graphql';
+	import type { Field } from '@graphace/graphql';
 	import UserAgg from '~/lib/components/objects/user/UserAgg.svelte';
 	import type { UserConnection, UserConnectionQueryArguments } from '~/lib/types/schema';
 

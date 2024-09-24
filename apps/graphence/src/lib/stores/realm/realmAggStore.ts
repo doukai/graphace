@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
-import { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent } from '@sveltejs/kit';
 import { type Field, fieldToString } from '@graphace/graphql';
 import type { RealmConnection, RealmConnectionQueryArguments } from '~/lib/types/schema';
 

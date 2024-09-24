@@ -4,6 +4,7 @@
 	import UserLine from '~/lib/components/objects/user/UserLine.svelte';
 	import UserPie from '~/lib/components/objects/user/UserPie.svelte';
 	import UserAggTable from '~/lib/components/objects/user/UserAggTable.svelte';
+	import UserGrid from '~/lib/components/objects/user/UserGrid.svelte';
 	import type { UserAggStore } from '~/lib/stores/user/userAggStore';
 	import type { PageData } from './$houdini';
 
@@ -32,8 +33,7 @@
 </script>
 
 <Card>
-	<svelte:component
-		this={component}
+	<UserGrid
 		isFetching={$UserAgg.isFetching}
 		connection={$UserAgg.connection}
 		{fields}

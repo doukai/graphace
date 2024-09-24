@@ -3,7 +3,7 @@
 	import type { Errors } from '@graphace/commons';
 	import type { Option } from '@graphace/ui';
 	import { ObjectSelect } from '@graphace/ui-graphql';
-	import { graphql, UserInput, Operator } from '$houdini';
+	import { graphql, type UserInput, Operator } from '$houdini';
 
 	export let value: UserInput | (UserInput | null | undefined)[] | null | undefined = undefined;
 	export let errors: Errors | undefined = undefined;

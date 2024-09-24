@@ -8,10 +8,10 @@
 		BarElement,
 		CategoryScale,
 		LinearScale,
-		ChartData
+		type ChartData
 	} from 'chart.js';
 	import autocolors from 'chartjs-plugin-autocolors';
-	import { Field } from '@graphace/graphql';
+	import { type Field } from '@graphace/graphql';
 	import {{ name }}Agg from '~/{{ objectsPath }}/{{ name | paramCase }}/{{ name }}Agg.svelte';
 	import type { {{ name }}, {{ name }}Connection, {{ name }}ConnectionQueryArguments } from '~/lib/types/schema';
 

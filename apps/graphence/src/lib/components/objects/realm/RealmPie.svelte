@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { Pie } from 'svelte-chartjs';
-	import { Chart, Title, Tooltip, Legend, ArcElement, CategoryScale, ChartData } from 'chart.js';
+	import { Chart, Title, Tooltip, Legend, ArcElement, CategoryScale, type ChartData } from 'chart.js';
 	import autocolors from 'chartjs-plugin-autocolors';
-	import { Field } from '@graphace/graphql';
+	import { type Field } from '@graphace/graphql';
 	import RealmAgg from '~/lib/components/objects/realm/RealmAgg.svelte';
 	import type { Realm, RealmConnection, RealmConnectionQueryArguments } from '~/lib/types/schema';
 

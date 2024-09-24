@@ -9,11 +9,11 @@
 		LinearScale,
 		PointElement,
 		CategoryScale,
-		ChartData,
-		Point
+		type ChartData,
+		type Point
 	} from 'chart.js';
 	import autocolors from 'chartjs-plugin-autocolors';
-	import { Field } from '@graphace/graphql';
+	import { type Field } from '@graphace/graphql';
 	import RealmAgg from '~/lib/components/objects/realm/RealmAgg.svelte';
 	import type { Realm, RealmConnection, RealmConnectionQueryArguments } from '~/lib/types/schema';
 

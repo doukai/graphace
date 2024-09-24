@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Field } from '@graphace/graphql';
+	import { type Field } from '@graphace/graphql';
 	import GroupAgg from '~/lib/components/objects/group/GroupAgg.svelte';
 	import { Table, TableLoading, TableEmpty } from '@graphace/ui';
 	import { FieldThs, FieldTds } from '@graphace/ui-graphql';

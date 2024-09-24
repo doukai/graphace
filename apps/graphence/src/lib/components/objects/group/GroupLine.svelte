@@ -9,11 +9,11 @@
 		LinearScale,
 		PointElement,
 		CategoryScale,
-		ChartData,
-		Point
+		type ChartData,
+		type Point
 	} from 'chart.js';
 	import autocolors from 'chartjs-plugin-autocolors';
-	import { Field } from '@graphace/graphql';
+	import { type Field } from '@graphace/graphql';
 	import GroupAgg from '~/lib/components/objects/group/GroupAgg.svelte';
 	import type { Group, GroupConnection, GroupConnectionQueryArguments } from '~/lib/types/schema';
 

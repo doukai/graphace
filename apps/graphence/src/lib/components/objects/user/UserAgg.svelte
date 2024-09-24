@@ -6,8 +6,8 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { AdjustmentsHorizontal, Funnel, Bookmark } from '@steeze-ui/heroicons';
 	import { type PermissionsStore } from '@graphace/commons';
-	import { Field } from '@graphace/graphql';
-	import { Combobox, Group as G, Pagination, type Option } from '@graphace/ui';
+	import { type Field } from '@graphace/graphql';
+	import { Combobox, type Group as G, Pagination, type Option } from '@graphace/ui';
 	import UserFilter from '~/lib/components/objects/user/UserFilter.svelte';
 	import type { UserConnectionQueryArguments } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
