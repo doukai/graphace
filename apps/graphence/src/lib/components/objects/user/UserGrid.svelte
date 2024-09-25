@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
+	import type { Readable } from 'svelte/store';
 	import { RevoGrid, type ColumnRegular, type ColumnGrouping } from '@revolist/svelte-datagrid';
 	import { type Field, fieldsDeep } from '@graphace/graphql';
 	import UserAgg from '~/lib/components/objects/user/UserAgg.svelte';
@@ -13,34 +15,29 @@
 	export let showOptionButton: boolean = true;
 	export let showFilterButton: boolean = true;
 	export let showBookmarkButton: boolean = false;
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	$: nodes = connection.edges?.map((edge) => edge?.node);
 	$: totalCount = connection?.totalCount || 0;
 	let getFieldName: (fieldName: string, subFieldName?: string) => string;
 	let getGrouByName: (fieldName: string) => string;
 
-	const filterFunc = (cellValue: unknown, extraValue: unknown) => {
-		if (!cellValue) {
-			return false;
-		}
-		if (typeof cellValue !== 'string') {
-			cellValue = JSON.stringify(cellValue);
-		}
-		return cellValue === 'A';
+	const filterFunc = (cellValue: unknown, extraValue: unknown): boolean => {
+		return cellValue === extraValue;
 	};
+	filterFunc.extra = 'input';
 
 	const filterConfig = {
-		include: ['newEqual','newEqual2'],
+		include: ['EQ', 'NEQ'],
 		customFilters: {
-			newEqual: {
-				columnFilterType: 'myFilterType', // column filter type id
-				name: 'Equal to A',
+			EQ: {
+				columnFilterType: 'Operator',
+				name: $LL.uiGraphql.table.th.eq(),
 				func: filterFunc
 			},
-
-			newEqual2: {
-				columnFilterType: 'myFilterType', // column filter type id
-				name: 'Equal to A2',
+			NEQ: {
+				columnFilterType: 'Operator',
+				name: $LL.uiGraphql.table.th.neq(),
 				func: filterFunc
 			}
 		}
@@ -54,7 +51,7 @@
 						prop: fieldName,
 						autoSize: true,
 						readonly: true,
-						filter: 'myFilterType'
+						filter: 'Operator'
 					})),
 					...fields.map((field) => ({
 						name: getFieldName(field.name),
@@ -73,7 +70,7 @@
 								prop: fieldName,
 								autoSize: true,
 								readonly: true,
-								filter: 'myFilterType'
+								filter: 'Operator'
 							}
 						]
 					})),
