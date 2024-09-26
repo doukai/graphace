@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
-	import type { Readable } from 'svelte/store';
+	import { getContext, onMount } from 'svelte';
+	import { type Readable, type Writable, derived } from 'svelte/store';
 	import { RevoGrid, type ColumnRegular, type ColumnGrouping } from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import SelectColumnType from '@revolist/revogrid-column-select';
@@ -8,7 +8,7 @@
 	import { type Field, fieldsDeep } from '@graphace/graphql';
 	import UserAgg from '~/lib/components/objects/user/UserAgg.svelte';
 	import type { User, UserConnection, UserConnectionQueryArguments } from '~/lib/types/schema';
-	import { __schema } from '~/lib/types/introspection.json';
+	import { getGridType } from '~/utils';
 
 	export let connection: UserConnection;
 	export let fields: Field[] = [];
@@ -32,33 +32,28 @@
 		date: new DateColumnType()
 	};
 
-	const getType = (filedName: string, subFiledName?: string): string | null | undefined => {
-		const fieldDefinition = __schema.types
-			.find((type) => type.name === 'User')
-			?.fields?.find((field) => field.name === filedName);
-		const fieldType = getFiledType(fieldDefinition?.type);
-		if (subFiledName) {
-			const subFieldDefinition = __schema.types
-				.find((type) => type.name === fieldType)
-				?.fields?.find((field) => field.name === subFiledName);
-			return getFiledType(subFieldDefinition?.type);
-		}
-		return fieldType;
-	};
+	let theme: Writable<string> = getContext('theme');
 
-	type FieldType = {
-		kind: string;
-		name?: string | null;
-		ofType?: FieldType | null;
-	};
+		debugger
 
-	const getFiledType = (fieldType: FieldType | null | undefined): string | null | undefined => {
-		if (fieldType) {
-			if (fieldType.kind === 'LIST' || fieldType.kind === 'NON_NULL') {
-				return getFiledType(fieldType?.ofType);
-			}
+	$: console.log($theme)
+
+	const getGridTheme = (theme: string) => {
+		debugger
+		if (
+			theme === 'dark' ||
+			theme === 'synthwave' ||
+			theme === 'halloween' ||
+			theme === 'forest' ||
+			theme === 'black' ||
+			theme === 'luxury' ||
+			theme === 'dracula' ||
+			theme === 'business' ||
+			theme === 'night' ||
+			theme === 'coffee'
+		) {
+			return 'darkMaterial';
 		}
-		return fieldType?.name;
 	};
 
 	$: filterConfig = {
@@ -102,7 +97,8 @@
 						autoSize: true,
 						readonly: true,
 						filter: true,
-						sortable: true
+						sortable: true,
+						...getGridType('User', fieldName)
 					})),
 					...fields.map((field) => ({
 						name: getFieldName(field.name),
@@ -110,7 +106,8 @@
 						autoSize: true,
 						readonly: true,
 						filter: true,
-						sortable: true
+						sortable: true,
+						...getGridType('User', field.name)
 					}))
 			  ] as ColumnRegular[])
 			: ([
@@ -123,7 +120,8 @@
 								autoSize: true,
 								readonly: true,
 								filter: true,
-								sortable: true
+								sortable: true,
+								...getGridType('User', fieldName)
 							}
 						]
 					})),
@@ -137,7 +135,8 @@
 									autoSize: true,
 									readonly: true,
 									filter: true,
-									sortable: true
+									sortable: true,
+									...getGridType('User', field.name, subField.name)
 								}))
 							};
 						} else {
@@ -150,7 +149,8 @@
 										autoSize: true,
 										readonly: true,
 										filter: true,
-										sortable: true
+										sortable: true,
+										...getGridType('User', field.name)
 									}
 								]
 							};
@@ -203,5 +203,6 @@
 		resize={true}
 		autoSizeColumn={true}
 		{columnTypes}
+		theme={getGridTheme($theme)}
 	/>
 </UserAgg>

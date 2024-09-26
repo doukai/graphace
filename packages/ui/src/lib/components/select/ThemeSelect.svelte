@@ -1,15 +1,19 @@
 <script lang="ts">
-	import { onMount, getContext } from 'svelte';
-	import type { Readable } from 'svelte/store';
+	import { onMount, setContext, getContext } from 'svelte';
+	import { type Readable, writable } from 'svelte/store';
 	import { themeChange } from 'theme-change';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Swatch, ChevronDown, Check } from '@steeze-ui/heroicons';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
+
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	onMount(() => {
 		themeChange(false);
 	});
+
+	const themeStore = writable('default');
+	setContext('theme', themeStore);
 
 	export let dropdownClasses = '';
 	export let btnClasses = 'btn-ghost';
@@ -151,6 +155,10 @@
 					class="outline-base-content overflow-hidden rounded-lg text-left"
 					data-set-theme={theme.id}
 					data-act-class="[&_svg]:visible"
+					on:click={(e) => {
+						console.log(theme.id);
+						themeStore.set(theme.id);
+					}}
 				>
 					<div
 						data-theme={theme.id}
