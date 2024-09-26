@@ -217,6 +217,104 @@ export type NamespaceGraphenceTranslation = {
 			 */
 			bookmark: string
 		}
+		grid: {
+			captions: {
+				/**
+				 * F​i​l​t​e​r
+				 */
+				title: string
+				/**
+				 * S​a​v​e
+				 */
+				save: string
+				/**
+				 * R​e​s​e​t
+				 */
+				reset: string
+				/**
+				 * O​K
+				 */
+				ok: string
+				/**
+				 * C​a​n​c​e​l
+				 */
+				cancel: string
+				/**
+				 * A​d​d
+				 */
+				add: string
+				/**
+				 * E​n​t​e​r​ ​v​a​l​u​e
+				 */
+				placeholder: string
+				/**
+				 * A​n​d
+				 */
+				and: string
+				/**
+				 * O​r
+				 */
+				or: string
+			}
+			filterNames: {
+				/**
+				 * N​o​n​e
+				 */
+				none: string
+				/**
+				 * N​o​t​ ​s​e​t
+				 */
+				empty: string
+				/**
+				 * S​e​t
+				 */
+				notEmpty: string
+				/**
+				 * E​q​u​a​l
+				 */
+				eq: string
+				/**
+				 * N​o​t​ ​e​q​u​a​l
+				 */
+				notEq: string
+				/**
+				 * B​e​g​i​n​s​ ​w​i​t​h
+				 */
+				begins: string
+				/**
+				 * C​o​n​t​a​i​n​s
+				 */
+				contains: string
+				/**
+				 * D​o​e​s​ ​n​o​t​ ​c​o​n​t​a​i​n
+				 */
+				notContains: string
+				/**
+				 * =
+				 */
+				eqN: string
+				/**
+				 * !​=
+				 */
+				neqN: string
+				/**
+				 * >
+				 */
+				gt: string
+				/**
+				 * >​=
+				 */
+				gte: string
+				/**
+				 * <
+				 */
+				lt: string
+				/**
+				 * <​=
+				 */
+				lte: string
+			}
+		}
 	}
 }
 
@@ -3396,6 +3494,104 @@ export type TranslationFunctions = {
 				 * Bookmark
 				 */
 				bookmark: () => LocalizedString
+			}
+			grid: {
+				captions: {
+					/**
+					 * Filter
+					 */
+					title: () => LocalizedString
+					/**
+					 * Save
+					 */
+					save: () => LocalizedString
+					/**
+					 * Reset
+					 */
+					reset: () => LocalizedString
+					/**
+					 * OK
+					 */
+					ok: () => LocalizedString
+					/**
+					 * Cancel
+					 */
+					cancel: () => LocalizedString
+					/**
+					 * Add
+					 */
+					add: () => LocalizedString
+					/**
+					 * Enter value
+					 */
+					placeholder: () => LocalizedString
+					/**
+					 * And
+					 */
+					and: () => LocalizedString
+					/**
+					 * Or
+					 */
+					or: () => LocalizedString
+				}
+				filterNames: {
+					/**
+					 * None
+					 */
+					none: () => LocalizedString
+					/**
+					 * Not set
+					 */
+					empty: () => LocalizedString
+					/**
+					 * Set
+					 */
+					notEmpty: () => LocalizedString
+					/**
+					 * Equal
+					 */
+					eq: () => LocalizedString
+					/**
+					 * Not equal
+					 */
+					notEq: () => LocalizedString
+					/**
+					 * Begins with
+					 */
+					begins: () => LocalizedString
+					/**
+					 * Contains
+					 */
+					contains: () => LocalizedString
+					/**
+					 * Does not contain
+					 */
+					notContains: () => LocalizedString
+					/**
+					 * =
+					 */
+					eqN: () => LocalizedString
+					/**
+					 * !=
+					 */
+					neqN: () => LocalizedString
+					/**
+					 * >
+					 */
+					gt: () => LocalizedString
+					/**
+					 * >=
+					 */
+					gte: () => LocalizedString
+					/**
+					 * <
+					 */
+					lt: () => LocalizedString
+					/**
+					 * <=
+					 */
+					lte: () => LocalizedString
+				}
 			}
 		}
 	}

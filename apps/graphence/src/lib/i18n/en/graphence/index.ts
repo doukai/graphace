@@ -57,6 +57,35 @@ const en: BaseTranslation = {
             option: "Options",
             filter: "Filter",
             bookmark: "Bookmark"
+        },
+        grid: {
+            captions: {
+                title: 'Filter',
+                save: 'Save',
+                reset: 'Reset',
+                ok: 'OK',
+                cancel: 'Cancel',
+                add: 'Add',
+                placeholder: 'Enter value',
+                and: 'And',
+                or: 'Or'
+            },
+            filterNames: {
+                none: 'None',
+                empty: 'Not set',
+                notEmpty: 'Set',
+                eq: 'Equal',
+                notEq: 'Not equal',
+                begins: 'Begins with',
+                contains: 'Contains',
+                notContains: 'Does not contain',
+                eqN: '=',
+                neqN: '!=',
+                gt: '>',
+                gte: '>=',
+                lt: '<',
+                lte: '<='
+            }
         }
     }
 }

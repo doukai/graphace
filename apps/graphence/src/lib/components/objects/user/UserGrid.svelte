@@ -2,9 +2,13 @@
 	import { getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import { RevoGrid, type ColumnRegular, type ColumnGrouping } from '@revolist/svelte-datagrid';
+	import NumberColumnType from '@revolist/revogrid-column-numeral';
+	import SelectColumnType from '@revolist/revogrid-column-select';
+	import DateColumnType from '@revolist/revogrid-column-date';
 	import { type Field, fieldsDeep } from '@graphace/graphql';
 	import UserAgg from '~/lib/components/objects/user/UserAgg.svelte';
 	import type { User, UserConnection, UserConnectionQueryArguments } from '~/lib/types/schema';
+	import { __schema } from '~/lib/types/introspection.json';
 
 	export let connection: UserConnection;
 	export let fields: Field[] = [];
@@ -22,23 +26,69 @@
 	let getFieldName: (fieldName: string, subFieldName?: string) => string;
 	let getGrouByName: (fieldName: string) => string;
 
-	const filterFunc = (cellValue: unknown, extraValue: unknown): boolean => {
-		return cellValue === extraValue;
+	const columnTypes = {
+		numeric: new NumberColumnType(),
+		select: new SelectColumnType(),
+		date: new DateColumnType()
 	};
-	filterFunc.extra = 'input';
 
-	const filterConfig = {
-		include: ['EQ', 'NEQ'],
-		customFilters: {
-			EQ: {
-				columnFilterType: 'Operator',
-				name: $LL.uiGraphql.table.th.eq(),
-				func: filterFunc
+	const getType = (filedName: string, subFiledName?: string): string | null | undefined => {
+		const fieldDefinition = __schema.types
+			.find((type) => type.name === 'User')
+			?.fields?.find((field) => field.name === filedName);
+		const fieldType = getFiledType(fieldDefinition?.type);
+		if (subFiledName) {
+			const subFieldDefinition = __schema.types
+				.find((type) => type.name === fieldType)
+				?.fields?.find((field) => field.name === subFiledName);
+			return getFiledType(subFieldDefinition?.type);
+		}
+		return fieldType;
+	};
+
+	type FieldType = {
+		kind: string;
+		name?: string | null;
+		ofType?: FieldType | null;
+	};
+
+	const getFiledType = (fieldType: FieldType | null | undefined): string | null | undefined => {
+		if (fieldType) {
+			if (fieldType.kind === 'LIST' || fieldType.kind === 'NON_NULL') {
+				return getFiledType(fieldType?.ofType);
+			}
+		}
+		return fieldType?.name;
+	};
+
+	$: filterConfig = {
+		localization: {
+			captions: {
+				title: $LL.graphence.components.grid.captions.title(),
+				save: $LL.graphence.components.grid.captions.save(),
+				reset: $LL.graphence.components.grid.captions.reset(),
+				ok: $LL.graphence.components.grid.captions.ok(),
+				cancel: $LL.graphence.components.grid.captions.cancel(),
+				add: $LL.graphence.components.grid.captions.add(),
+				placeholder: $LL.graphence.components.grid.captions.placeholder(),
+				and: $LL.graphence.components.grid.captions.and(),
+				or: $LL.graphence.components.grid.captions.or()
 			},
-			NEQ: {
-				columnFilterType: 'Operator',
-				name: $LL.uiGraphql.table.th.neq(),
-				func: filterFunc
+			filterNames: {
+				none: $LL.graphence.components.grid.filterNames.none(),
+				empty: $LL.graphence.components.grid.filterNames.empty(),
+				notEmpty: $LL.graphence.components.grid.filterNames.notEmpty(),
+				eq: $LL.graphence.components.grid.filterNames.eq(),
+				notEq: $LL.graphence.components.grid.filterNames.notEq(),
+				begins: $LL.graphence.components.grid.filterNames.begins(),
+				contains: $LL.graphence.components.grid.filterNames.contains(),
+				notContains: $LL.graphence.components.grid.filterNames.notContains(),
+				eqN: $LL.graphence.components.grid.filterNames.eqN(),
+				neqN: $LL.graphence.components.grid.filterNames.neqN(),
+				gt: $LL.graphence.components.grid.filterNames.gt(),
+				gte: $LL.graphence.components.grid.filterNames.gte(),
+				lt: $LL.graphence.components.grid.filterNames.lt(),
+				lte: $LL.graphence.components.grid.filterNames.lte()
 			}
 		}
 	};
@@ -51,14 +101,16 @@
 						prop: fieldName,
 						autoSize: true,
 						readonly: true,
-						filter: 'Operator'
+						filter: true,
+						sortable: true
 					})),
 					...fields.map((field) => ({
 						name: getFieldName(field.name),
 						prop: field.name,
 						autoSize: true,
 						readonly: true,
-						filter: false
+						filter: true,
+						sortable: true
 					}))
 			  ] as ColumnRegular[])
 			: ([
@@ -70,7 +122,8 @@
 								prop: fieldName,
 								autoSize: true,
 								readonly: true,
-								filter: 'Operator'
+								filter: true,
+								sortable: true
 							}
 						]
 					})),
@@ -83,7 +136,8 @@
 									prop: `${field.name}.${subField.name}`,
 									autoSize: true,
 									readonly: true,
-									filter: false
+									filter: true,
+									sortable: true
 								}))
 							};
 						} else {
@@ -95,7 +149,8 @@
 										prop: field.name,
 										autoSize: true,
 										readonly: true,
-										filter: false
+										filter: true,
+										sortable: true
 									}
 								]
 							};
@@ -140,5 +195,13 @@
 	bind:getFieldName
 	bind:getGrouByName
 >
-	<RevoGrid {source} {columns} filter={filterConfig} range={true} autoSizeColumn={true} />
+	<RevoGrid
+		{source}
+		{columns}
+		filter={filterConfig}
+		range={true}
+		resize={true}
+		autoSizeColumn={true}
+		{columnTypes}
+	/>
 </UserAgg>

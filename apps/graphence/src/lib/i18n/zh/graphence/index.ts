@@ -57,6 +57,35 @@ const zh: NamespaceGraphenceTranslation = {
             option: "选项",
             filter: "筛选",
             bookmark: "收藏"
+        },
+        grid: {
+            captions: {
+                title: '筛选',
+                save: '保存',
+                reset: '重置',
+                ok: '确认',
+                cancel: '取消',
+                add: '添加',
+                placeholder: '输入值',
+                and: '和',
+                or: '或'
+            },
+            filterNames: {
+                none: '无',
+                empty: '为空',
+                notEmpty: '不为空',
+                eq: '等于',
+                notEq: '不等于',
+                begins: '以...开头',
+                contains: '包含',
+                notContains: '不包含',
+                eqN: '=',
+                neqN: '!=',
+                gt: '>',
+                gte: '>=',
+                lt: '<',
+                lte: '<='
+            }
         }
     }
 }
