@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../../../app.css';
 	import { onMount, setContext } from 'svelte';
+	import { writable } from 'svelte/store';
 	import {
 		SideBar,
 		Breadcrumbs,
@@ -34,6 +35,7 @@
 	setContext('permissions', permissions);
 	setContext('buildGraphQLErrors', buildGraphQLErrors);
 	setContext('buildGlobalGraphQLErrorMessage', buildGlobalGraphQLErrorMessage);
+	setContext('theme', writable(undefined));
 
 	let drawersidebar: HTMLDivElement;
 	let drawerSidebarScrollY = 0;

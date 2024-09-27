@@ -1,14 +1,11 @@
 <script lang="ts">
-	import { getContext, onMount } from 'svelte';
-	import { type Readable, type Writable, derived } from 'svelte/store';
+	import { getContext } from 'svelte';
+	import { type Readable, type Writable } from 'svelte/store';
 	import { RevoGrid, type ColumnRegular, type ColumnGrouping } from '@revolist/svelte-datagrid';
-	import NumberColumnType from '@revolist/revogrid-column-numeral';
-	import SelectColumnType from '@revolist/revogrid-column-select';
-	import DateColumnType from '@revolist/revogrid-column-date';
 	import { type Field, fieldsDeep } from '@graphace/graphql';
 	import UserAgg from '~/lib/components/objects/user/UserAgg.svelte';
 	import type { User, UserConnection, UserConnectionQueryArguments } from '~/lib/types/schema';
-	import { getGridType } from '~/utils';
+	import { columnTypes, getGridType, getGridTheme } from '~/utils';
 
 	export let connection: UserConnection;
 	export let fields: Field[] = [];
@@ -20,41 +17,12 @@
 	export let showFilterButton: boolean = true;
 	export let showBookmarkButton: boolean = false;
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	const themeStore = getContext('theme') as Writable<string | undefined>;
 
 	$: nodes = connection.edges?.map((edge) => edge?.node);
 	$: totalCount = connection?.totalCount || 0;
 	let getFieldName: (fieldName: string, subFieldName?: string) => string;
 	let getGrouByName: (fieldName: string) => string;
-
-	const columnTypes = {
-		numeric: new NumberColumnType(),
-		select: new SelectColumnType(),
-		date: new DateColumnType()
-	};
-
-	let theme: Writable<string> = getContext('theme');
-
-		debugger
-
-	$: console.log($theme)
-
-	const getGridTheme = (theme: string) => {
-		debugger
-		if (
-			theme === 'dark' ||
-			theme === 'synthwave' ||
-			theme === 'halloween' ||
-			theme === 'forest' ||
-			theme === 'black' ||
-			theme === 'luxury' ||
-			theme === 'dracula' ||
-			theme === 'business' ||
-			theme === 'night' ||
-			theme === 'coffee'
-		) {
-			return 'darkMaterial';
-		}
-	};
 
 	$: filterConfig = {
 		localization: {
@@ -203,6 +171,6 @@
 		resize={true}
 		autoSizeColumn={true}
 		{columnTypes}
-		theme={getGridTheme($theme)}
+		theme={getGridTheme($themeStore)}
 	/>
 </UserAgg>

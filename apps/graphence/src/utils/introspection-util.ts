@@ -9,24 +9,24 @@ export type FieldType = {
     ofType?: FieldType | null;
 };
 
-export const getType = (typeName: string, filedName: string, subFiledName?: string): string | null | undefined => {
+export const getTypeFiledTypeName = (typeName: string, filedName: string, subFiledName?: string): string | null | undefined => {
     const fieldDefinition = __schema.types
         .find((type) => type.name === typeName)
         ?.fields?.find((field) => field.name === filedName);
-    const fieldType = getFiledType(fieldDefinition?.type);
+    const fieldType = getFiledTypeName(fieldDefinition?.type);
     if (subFiledName) {
         const subFieldDefinition = __schema.types
             .find((type) => type.name === fieldType)
             ?.fields?.find((field) => field.name === subFiledName);
-        return getFiledType(subFieldDefinition?.type);
+        return getFiledTypeName(subFieldDefinition?.type);
     }
     return fieldType;
 };
 
-export const getFiledType = (fieldType: FieldType | null | undefined): string | null | undefined => {
+export const getFiledTypeName = (fieldType: FieldType | null | undefined): string | null | undefined => {
     if (fieldType) {
         if (fieldType.kind === 'LIST' || fieldType.kind === 'NON_NULL') {
-            return getFiledType(fieldType?.ofType);
+            return getFiledTypeName(fieldType?.ofType);
         }
     }
     return fieldType?.name;
@@ -38,33 +38,7 @@ export const isEnum = (typeName: string): boolean => {
         ?.kind === 'ENUM' || false;
 };
 
-export const getGridType = (typeName: string, filedName: string, subFiledName?: string): Record<string, any> | undefined => {
-    const fieldType = getType(typeName, filedName, subFiledName);
-    if (fieldType) {
-        if (isEnum(fieldType)) {
-            return {
-                columnType: 'select',
-                labelKey: 'label',
-                valueKey: 'value',
-                source: __schema.types
-                    .find((type) => type.name === fieldType)
-                    ?.enumValues
-                    ?.map(enumValue => {
-                        const enumName = fieldType as keyof NamespaceGraphqlTranslation['enums'];
-                        const enumValues = get(LL).graphql.enums[enumName].values;
-                        return { label: enumValues[enumValue.name as keyof typeof enumValues].name(), value: enumValue.name };
-                    })
-            }
-        }
-        switch (fieldType) {
-            case 'Int':
-            case 'Float':
-            case 'BigInteger':
-            case 'BigDecimal':
-                return { columnType: 'numeric' };
-            case 'DateTime':
-            case 'Timestamp':
-                return { columnType: 'date' };
-        }
-    }
-}
+export const getType = (typeName: string) => {
+    return __schema.types
+        .find((type) => type.name === typeName);
+};

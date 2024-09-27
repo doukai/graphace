@@ -28,6 +28,7 @@
 	export let showOptionButton: boolean = true;
 	export let showFilterButton: boolean = true;
 	export let showBookmarkButton: boolean = false;
+	export let className: string = '';
 
 	const dispatch = createEventDispatcher<{
 		query: { fields: Field[]; queryArguments: RealmConnectionQueryArguments };
@@ -463,7 +464,7 @@
 	</div>
 	<div class="divider" />
 {/if}
-<div class="card-body overflow-auto">
+<div class="card-body overflow-auto {className}">
 	{#if isFetching}
 		<div class="flex justify-center">
 			<span class="loading loading-bars loading-lg" />
