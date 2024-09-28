@@ -1,16 +1,7 @@
 import { get } from 'svelte/store';
-import NumberColumnType from '@revolist/revogrid-column-numeral';
-import SelectColumnType from '@revolist/revogrid-column-select';
-import DateColumnType from '@revolist/revogrid-column-date';
 import { getTypeFiledTypeName, getType, isEnum } from '~/utils';
 import LL from '$i18n/i18n-svelte';
 import type { NamespaceGraphqlTranslation } from '$i18n/i18n-types';
-
-export const columnTypes = {
-    numeric: new NumberColumnType(),
-    select: new SelectColumnType(),
-    date: new DateColumnType()
-};
 
 export const getGridTheme = (theme: string | undefined): string | undefined => {
     if (theme) {

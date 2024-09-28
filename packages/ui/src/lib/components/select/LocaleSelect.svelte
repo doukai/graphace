@@ -6,13 +6,13 @@
 </script>
 
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Language, ChevronDown } from '@steeze-ui/heroicons';
 	import Iconify from '@iconify/svelte';
 	import { replaceLocaleInUrl } from '@graphace/commons';
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
-	import { invalidateAll } from '$app/navigation';
 	import { setLocale, locale } from '~/i18n/i18n-svelte';
 	import type { Locales } from '~/i18n/i18n-types';
 	import { baseLocale } from '~/i18n/i18n-util';
@@ -37,11 +37,13 @@
 
 		if (updateHistoryState) {
 			// update url to reflect locale changes
-			history.pushState({ locale: newLocale }, '', replaceLocaleInUrl($page.url, newLocale));
+			goto(replaceLocaleInUrl($page.url, newLocale), {
+				state: {
+					locale: newLocale
+				},
+				invalidateAll: true
+			});
 		}
-
-		// run the `load` function again
-		invalidateAll();
 	};
 
 	// update `lang` attribute
@@ -54,11 +56,6 @@
 	$: if (browser) {
 		const lang = $page.params.lang as Locales;
 		switchLocale(lang, false);
-		history.replaceState(
-			{ ...history.state, locale: lang },
-			'',
-			replaceLocaleInUrl($page.url, lang)
-		);
 	}
 </script>
 

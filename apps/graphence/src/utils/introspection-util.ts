@@ -1,7 +1,4 @@
-import { get } from 'svelte/store';
 import { __schema } from '~/lib/types/introspection.json';
-import LL from '$i18n/i18n-svelte';
-import type { NamespaceGraphqlTranslation } from '$i18n/i18n-types';
 
 export type FieldType = {
     kind: string;

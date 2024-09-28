@@ -2,10 +2,13 @@
 	import { getContext } from 'svelte';
 	import { type Readable, type Writable } from 'svelte/store';
 	import { RevoGrid, type ColumnRegular, type ColumnGrouping } from '@revolist/svelte-datagrid';
+	import NumberColumnType from '@revolist/revogrid-column-numeral';
+	import SelectColumnType from '@revolist/revogrid-column-select';
+	import DateColumnType from '@revolist/revogrid-column-date';
 	import { type Field, fieldsDeep } from '@graphace/graphql';
 	import UserAgg from '~/lib/components/objects/user/UserAgg.svelte';
 	import type { User, UserConnection, UserConnectionQueryArguments } from '~/lib/types/schema';
-	import { columnTypes, getGridType, getGridTheme } from '~/utils';
+	import { getGridType, getGridTheme } from '~/utils';
 
 	export let connection: UserConnection;
 	export let fields: Field[] = [];
@@ -23,6 +26,12 @@
 	$: totalCount = connection?.totalCount || 0;
 	let getFieldName: (fieldName: string, subFieldName?: string) => string;
 	let getGrouByName: (fieldName: string) => string;
+
+	const columnTypes = {
+		numeric: new NumberColumnType(),
+		select: new SelectColumnType(),
+		date: new DateColumnType()
+	};
 
 	$: filterConfig = {
 		localization: {
