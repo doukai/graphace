@@ -1,6 +1,6 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
-import { create{{ name }}AggStore } from '~/{{ storesPath }}/{{ name | paramCase }}/{{ name | camelCase }}AggStore';
+import { create{{ name }}QueryStore } from '~/{{ storesPath }}/{{ name | paramCase }}/{{ name | camelCase }}QueryStore';
 {%- if useAuth %}
 import { permissions } from '~/utils/auth-util';
 {%- endif %}
@@ -23,7 +23,7 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        {{ name }}Agg: (await create{{ name }}AggStore({ event, fields, queryArguments }))
+        {{ name }}Query: (await create{{ name }}QueryStore({ event, fields, queryArguments }))
     };
 }
 export const prerender = false;

@@ -4,7 +4,7 @@
 	import FileLine from '~/lib/components/objects/file/FileLine.svelte';
 	import FilePie from '~/lib/components/objects/file/FilePie.svelte';
 	import FileAggTable from '~/lib/components/objects/file/FileAggTable.svelte';
-	import type { FileAggStore } from '~/lib/stores/file/fileAggStore';
+	import type { FileQueryStore } from '~/lib/stores/file/fileQueryStore';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -19,7 +19,7 @@
 		showBookmarkButton
 	} = data;
 
-	const FileAgg = data.FileAgg as FileAggStore;
+	const FileQuery = data.FileQuery as FileQueryStore;
 
 	const components: Record<string, any> = {
 		bar: FileBar,
@@ -34,8 +34,8 @@
 <Card>
 	<svelte:component
 		this={component}
-		isFetching={$FileAgg.isFetching}
-		connection={$FileAgg.connection}
+		isFetching={$FileQuery.isFetching}
+		connection={$FileQuery.connection}
 		{fields}
 		{queryArguments}
 		{showHeader}
@@ -43,6 +43,6 @@
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
-		on:query={(e) => FileAgg.fetch(e.detail.fields, e.detail.queryArguments)}
+		on:query={(e) => FileQuery.fetch(e.detail.fields, e.detail.queryArguments)}
 	/>
 </Card>

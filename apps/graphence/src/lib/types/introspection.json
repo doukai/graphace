@@ -34484,6 +34484,42 @@
             "deprecationReason": null
           },
           {
+            "name": "permissionTypeCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "permissionTypeMax",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "ENUM",
+              "name": "PermissionType",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "permissionTypeMin",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "ENUM",
+              "name": "PermissionType",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "syncPermissionPolicy",
             "description": null,
             "args": [],
@@ -37240,6 +37276,42 @@
           },
           {
             "name": "typeMin",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "Sort",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "permissionTypeCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "Sort",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "permissionTypeMax",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "Sort",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "permissionTypeMin",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -102019,8 +102091,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "OBJECT"
+          "OBJECT",
+          "FIELD"
         ],
         "args": []
       },
@@ -102103,8 +102175,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "FIELD_DEFINITION"
+          "FIELD_DEFINITION",
+          "FIELD"
         ],
         "args": [
           {
@@ -102198,8 +102270,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "FIELD_DEFINITION"
+          "FIELD_DEFINITION",
+          "FIELD"
         ],
         "args": []
       },
@@ -102245,9 +102317,9 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "QUERY",
-          "FIELD_DEFINITION",
           "SUBSCRIPTION",
+          "FIELD_DEFINITION",
+          "QUERY",
           "INPUT_OBJECT",
           "MUTATION"
         ],
@@ -102323,9 +102395,9 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "QUERY",
-          "FIELD_DEFINITION",
           "SUBSCRIPTION",
+          "FIELD_DEFINITION",
+          "QUERY",
           "INPUT_OBJECT",
           "MUTATION"
         ],
@@ -102353,9 +102425,9 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD_DEFINITION",
           "INPUT_FIELD_DEFINITION",
           "OBJECT",
+          "FIELD_DEFINITION",
           "INPUT_OBJECT"
         ],
         "args": [
@@ -102867,10 +102939,10 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "QUERY",
-          "FIELD_DEFINITION",
-          "SUBSCRIPTION",
           "OBJECT",
+          "SUBSCRIPTION",
+          "FIELD_DEFINITION",
+          "QUERY",
           "MUTATION"
         ],
         "args": [
@@ -102897,8 +102969,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "OBJECT"
+          "OBJECT",
+          "FIELD"
         ],
         "args": []
       },
@@ -102907,8 +102979,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "OBJECT"
+          "OBJECT",
+          "FIELD"
         ],
         "args": [
           {

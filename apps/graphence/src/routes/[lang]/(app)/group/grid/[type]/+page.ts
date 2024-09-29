@@ -1,6 +1,6 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
-import { createGroupAggStore } from '~/lib/stores/group/groupAggStore';
+import { createGroupQueryStore } from '~/lib/stores/group/groupQueryStore';
 import { permissions } from '~/utils/auth-util';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
@@ -21,7 +21,7 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        GroupAgg: (await createGroupAggStore({ event, fields, queryArguments }))
+        GroupQuery: (await createGroupQueryStore({ event, fields, queryArguments }))
     };
 }
 export const prerender = false;

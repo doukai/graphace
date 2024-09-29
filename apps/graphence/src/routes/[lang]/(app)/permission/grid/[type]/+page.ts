@@ -1,6 +1,6 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
-import { createPermissionAggStore } from '~/lib/stores/permission/permissionAggStore';
+import { createPermissionQueryStore } from '~/lib/stores/permission/permissionQueryStore';
 import { permissions } from '~/utils/auth-util';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
@@ -21,7 +21,7 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        PermissionAgg: (await createPermissionAggStore({ event, fields, queryArguments }))
+        PermissionQuery: (await createPermissionQueryStore({ event, fields, queryArguments }))
     };
 }
 export const prerender = false;

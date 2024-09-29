@@ -29,6 +29,7 @@
 	{showFilterButton}
 	{showBookmarkButton}
 	{totalCount}
+	className="p-0"
 	on:query
 	on:bookmark
 	let:getFieldName

@@ -4,7 +4,7 @@ import type { LoadEvent } from '@sveltejs/kit';
 import { type Field, fieldToString } from '@graphace/graphql';
 import type { {{ name }}Connection, {{ name }}ConnectionQueryArguments } from '~/lib/types/schema';
 
-export async function create{{ name }}AggStore(params: { event: LoadEvent, fields: Field[], queryArguments: {{ name }}ConnectionQueryArguments }): Promise<{{ name }}AggStore> {
+export async function create{{ name }}QueryStore(params: { event: LoadEvent, fields: Field[], queryArguments: {{ name }}ConnectionQueryArguments }): Promise<{{ name }}QueryStore> {
     const data: Writable<{ isFetching: boolean, connection: {{ name }}Connection }> = writable({
         isFetching: false,
         connection: {}
@@ -15,7 +15,7 @@ export async function create{{ name }}AggStore(params: { event: LoadEvent, field
     const { subscribe, set, update } = data;
 
     const fetch = async (fields: Field[], queryArguments: {{ name }}ConnectionQueryArguments) => {
-        if (fields && fields.length > 0 && queryArguments.groupBy && queryArguments.groupBy.length > 0) {
+        if (fields && fields.length > 0 || queryArguments.groupBy && queryArguments.groupBy.length > 0) {
             update((data) => ({ ...data, isFetching: true }));
             let query = `query Query_{{ name | paramCase }}Connection({% for arg in args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %}) {
     {{ name | paramCase }}Connection({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})  {
@@ -39,12 +39,10 @@ export async function create{{ name }}AggStore(params: { event: LoadEvent, field
 
             if (response.ok) {
                 const json = await response.json();
-                if (queryArguments.groupBy) {
-                    set({
-                        isFetching: false,
-                        connection: json.data.{{ name | camelCase }}Connection
-                    });
-                }
+                set({
+                    isFetching: false,
+                    connection: json.data.{{ name | camelCase }}Connection
+                });
             }
         }
     }
@@ -57,7 +55,7 @@ export async function create{{ name }}AggStore(params: { event: LoadEvent, field
     };
 }
 
-export type {{ name }}AggStore = {
+export type {{ name }}QueryStore = {
     subscribe: (this: void, run: Subscriber<{
         isFetching: boolean;
         connection: {{ name }}Connection;

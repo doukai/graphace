@@ -4,7 +4,7 @@
 	import GroupLine from '~/lib/components/objects/group/GroupLine.svelte';
 	import GroupPie from '~/lib/components/objects/group/GroupPie.svelte';
 	import GroupAggTable from '~/lib/components/objects/group/GroupAggTable.svelte';
-	import type { GroupAggStore } from '~/lib/stores/group/groupAggStore';
+	import type { GroupQueryStore } from '~/lib/stores/group/groupQueryStore';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -19,7 +19,7 @@
 		showBookmarkButton
 	} = data;
 
-	const GroupAgg = data.GroupAgg as GroupAggStore;
+	const GroupQuery = data.GroupQuery as GroupQueryStore;
 
 	const components: Record<string, any> = {
 		bar: GroupBar,
@@ -34,8 +34,8 @@
 <Card>
 	<svelte:component
 		this={component}
-		isFetching={$GroupAgg.isFetching}
-		connection={$GroupAgg.connection}
+		isFetching={$GroupQuery.isFetching}
+		connection={$GroupQuery.connection}
 		{fields}
 		{queryArguments}
 		{showHeader}
@@ -43,6 +43,6 @@
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
-		on:query={(e) => GroupAgg.fetch(e.detail.fields, e.detail.queryArguments)}
+		on:query={(e) => GroupQuery.fetch(e.detail.fields, e.detail.queryArguments)}
 	/>
 </Card>

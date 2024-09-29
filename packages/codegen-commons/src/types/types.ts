@@ -64,6 +64,7 @@ export type FieldInfo = {
     fieldTypeIdName: string;
     isScalarType: boolean;
     isEnumType: boolean;
+    isLeafType: boolean;
     isObjectType: boolean;
     isNonNullType: boolean;
     isListType: boolean;

@@ -1,6 +1,6 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
-import { createRealmAggStore } from '~/lib/stores/realm/realmAggStore';
+import { createRealmQueryStore } from '~/lib/stores/realm/realmQueryStore';
 import { permissions } from '~/utils/auth-util';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
@@ -21,6 +21,6 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        RealmAgg: (await createRealmAggStore({ event, fields, queryArguments }))
+        RealmQuery: (await createRealmQueryStore({ event, fields, queryArguments }))
     };
 }

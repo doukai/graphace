@@ -1,6 +1,6 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
-import { createRoleAggStore } from '~/lib/stores/role/roleAggStore';
+import { createRoleQueryStore } from '~/lib/stores/role/roleQueryStore';
 import { permissions } from '~/utils/auth-util';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
@@ -21,7 +21,7 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        RoleAgg: (await createRoleAggStore({ event, fields, queryArguments }))
+        RoleQuery: (await createRoleQueryStore({ event, fields, queryArguments }))
     };
 }
 export const prerender = false;

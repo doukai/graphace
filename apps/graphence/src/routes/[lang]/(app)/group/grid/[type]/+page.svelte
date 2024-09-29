@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Card } from '@graphace/ui';
 	import GroupAggGrid from '~/lib/components/objects/group/GroupAggGrid.svelte';
-	import type { GroupAggStore } from '~/lib/stores/group/groupAggStore';
+	import type { GroupQueryStore } from '~/lib/stores/group/groupQueryStore';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -16,7 +16,7 @@
 		showBookmarkButton
 	} = data;
 
-	const GroupAgg = data.GroupAgg as GroupAggStore;
+	const GroupQuery = data.GroupQuery as GroupQueryStore;
 
 	const components: Record<string, any> = {
 		agg: GroupAggGrid
@@ -28,8 +28,8 @@
 <Card>
 	<svelte:component
 		this={component}
-		isFetching={$GroupAgg.isFetching}
-		connection={$GroupAgg.connection}
+		isFetching={$GroupQuery.isFetching}
+		connection={$GroupQuery.connection}
 		{fields}
 		{queryArguments}
 		{showHeader}
@@ -37,6 +37,6 @@
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
-		on:query={(e) => GroupAgg.fetch(e.detail.fields, e.detail.queryArguments)}
+		on:query={(e) => GroupQuery.fetch(e.detail.fields, e.detail.queryArguments)}
 	/>
 </Card>

@@ -590,6 +590,15 @@ const en: BaseTranslation = {
 				typeMin: {
 					name: 'typeMin',
 				},
+				permissionTypeCount: {
+					name: 'permissionTypeCount',
+				},
+				permissionTypeMax: {
+					name: 'permissionTypeMax',
+				},
+				permissionTypeMin: {
+					name: 'permissionTypeMin',
+				},
 				syncPermissionPolicy: {
 					name: 'syncPermissionPolicy',
 				}

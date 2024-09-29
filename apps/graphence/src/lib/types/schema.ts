@@ -3119,6 +3119,9 @@ export type Permission = Meta & {
   typeCount?: Maybe<Scalars['Int']>;
   typeMax?: Maybe<Scalars['String']>;
   typeMin?: Maybe<Scalars['String']>;
+  permissionTypeCount?: Maybe<Scalars['Int']>;
+  permissionTypeMax?: Maybe<PermissionType>;
+  permissionTypeMin?: Maybe<PermissionType>;
   syncPermissionPolicy?: Maybe<Scalars['Boolean']>;
 };
 
@@ -3546,6 +3549,9 @@ export type PermissionOrderBy = {
   typeCount?: InputMaybe<Sort>;
   typeMax?: InputMaybe<Sort>;
   typeMin?: InputMaybe<Sort>;
+  permissionTypeCount?: InputMaybe<Sort>;
+  permissionTypeMax?: InputMaybe<Sort>;
+  permissionTypeMin?: InputMaybe<Sort>;
 };
 
 export type PermissionQueryArguments = {

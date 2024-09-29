@@ -8,14 +8,13 @@
 	import { type PermissionsStore } from '@graphace/commons';
 	import { type Field } from '@graphace/graphql';
 	import { Combobox, type Group as G, Pagination, type Option } from '@graphace/ui';
-	import {{ name }}Filter from '~/{{ objectsPath }}/{{ name | paramCase }}/{{ name }}Filter.svelte';
-	import type { {{ name }}ConnectionQueryArguments } from '~/{{ schemaTypesPath }}';
+	import RealmFilter from '~/lib/components/objects/realm/RealmFilter.svelte';
+	import type { RealmConnectionQueryArguments } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	
 	export let fields: Field[] = [];
-	export let queryArguments: {{ name }}ConnectionQueryArguments = {};
+	export let queryArguments: RealmConnectionQueryArguments = {};
 	export let selectColumns: Option[] = [];
-	export let groupByColumns: Option[] = [];
 	export let orderByColumns: Option[] = [];
 	export let totalCount: number = 0;
 	export let pageNumber: number = 1;
@@ -32,64 +31,35 @@
 	const permissions = getContext('permissions') as PermissionsStore;
 	
 	const dispatch = createEventDispatcher<{
-		query: { fields: Field[]; queryArguments: {{ name }}ConnectionQueryArguments };
+		query: { fields: Field[]; queryArguments: RealmConnectionQueryArguments };
 		bookmark: { fields: string; queryArguments: string };
 	}>();
 
 	$: selectOptions = [
-		{%- for field in aggFieldList %}
-		{%- if field.isLeafType %}
 		{
 			value: '',
-			label: $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name(),
+			label: $LL.graphql.objects.Realm.name(),
 			options: [
-				{%- for aggField in field.aggFieldList %}
 				{
-					value: '{{ aggField.fieldName }}',
-					label: $LL.graphql.objects.{{ name }}.fields.{{ aggField.fieldName }}.name()
+					value: 'id',
+					label: $LL.graphql.objects.Realm.fields.id.name(),
+					disabled: !permissions.auth('Realm::id::READ')
 				},
-				{%- endfor %}
-			],
-			{%- if useAuth %}
-			disabled: !permissions.auth('{{ name }}::{{ field.fieldName }}::READ')
-			{%- endif %}
-		},
-		{%- else %}
-		{
-			value: '{{ field.fieldName }}',
-			label: $LL.graphql.objects.{{ name }}.fields.{{ field.originalFieldName }}.name(),
-			options: [
-				{%- for aggField in field.aggFieldList %}
 				{
-					value: '{{ aggField.fieldName }}',
-					label: $LL.graphql.objects.{{ name }}.fields.{{ field.originalFieldName }}.name() + $LL.graphql.objects.{{ field.fieldTypeName }}.fields.{{ aggField.fieldName }}.name(),
-					{%- if useAuth %}
-					disabled: !permissions.auth('{{ field.fieldTypeName }}::{{ aggField.originalFieldName }}::READ')
-					{%- endif %}
+					value: 'name',
+					label: $LL.graphql.objects.Realm.fields.name.name(),
+					disabled: !permissions.auth('Realm::name::READ')
 				},
-				{%- endfor %}
-			],
-			{%- if useAuth %}
-			disabled: !permissions.auth('{{ name }}::{{ field.originalFieldName }}::READ')
-			{%- endif %}
+				{
+					value: 'description',
+					label: $LL.graphql.objects.Realm.fields.description.name(),
+					disabled: !permissions.auth('Realm::description::READ')
+				},
+			]
 		},
-		{%- endif %}
-		{%- endfor %}
 	];
 
 	let filteredSelectOptions = selectOptions;
-
-	$: groupByOptions = [
-		{%- for field in leafFields %}
-		{
-			value: '{{ field.fieldName }}',
-			label: $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name(),
-			disabled: !permissions.auth('{{ name }}::{{ field.fieldName }}::READ')
-		},
-		{%- endfor %}
-	];
-
-	let filteredGroupByOptions = groupByOptions;
 
 	if (fields && fields.length > 0) {
 		selectColumns = fields.flatMap((field) => {
@@ -115,20 +85,38 @@
 		});
 	}
 
-	if (queryArguments.groupBy && queryArguments.groupBy.length > 0) {
-		groupByColumns = groupByOptions.filter((option) =>
-			queryArguments.groupBy?.some((column) => option.value === column)
-		);
-	}
+	$: selectColumns.reduce((groups, option) => {
+			if (
+				groups.some(
+					(group) => group.value === option.group?.value && group.label === option.group?.label
+				)
+			) {
+				groups
+					.find(
+						(group) => group.value === option.group?.value && group.label === option.group?.label
+					)
+					?.options?.push(option);
+			} else {
+				groups.push({
+					value: option.group?.value,
+					label: option.group?.label,
+					options: [option]
+				});
+			}
+			return groups;
+		}, <G[]>[])
+		.map((group) => {
+			return {
+				value: group.value,
+				label: group.label,
+				options: group.options?.flatMap((option) => [
+					{ value: option.value, label: option.label + $LL.uiGraphql.table.th.asc(), node: 'ASC' },
+					{ value: option.value, label: option.label + $LL.uiGraphql.table.th.desc(), node: 'DESC' }
+				])
+			};
+		});
 
-	$: orderByOptions = [
-		...selectColumns,
-		...groupByColumns.map((option) => ({
-			...option,
-			group: { value: '', label: option.label }
-		}))
-	]
-		.reduce((groups, option) => {
+	$: orderByOptions = selectColumns.reduce((groups, option) => {
 			if (
 				groups.some(
 					(group) => group.value === option.group?.value && group.label === option.group?.label
@@ -210,15 +198,9 @@
 		return fields;
 	};
 
-	const buildArguments = (toPageNumber?: number | undefined): {{ name }}ConnectionQueryArguments => {
+	const buildArguments = (toPageNumber?: number | undefined): RealmConnectionQueryArguments => {
 		if (!queryArguments) {
 			queryArguments = {};
-		}
-
-		if (groupByColumns.length > 0) {
-			queryArguments.groupBy = groupByColumns.map((option) => option.value);
-		} else {
-			queryArguments.groupBy = undefined;
 		}
 
 		if (orderByColumns.length > 0) {
@@ -284,10 +266,6 @@
 		}
 	};
 
-	export const getGrouByName = (fieldName: string): string | undefined => {
-		return groupByOptions.find((group) => group.value === fieldName)?.label;
-	};
-
 	const {
 		elements: { trigger, content, arrow, close, overlay },
 		states: { open }
@@ -300,7 +278,7 @@
 {#if showHeader}
 	<div class="flex space-x-1">
 		<Combobox
-			title={$LL.{{ appName }}.components.agg.columns()}
+			title={$LL.graphence.components.agg.columns()}
 			multiple={true}
 			groups={filteredSelectOptions}
 			rootClassName="w-full"
@@ -333,7 +311,7 @@
 			}}
 		/>
 		{#if showOptionButton}
-			<div class="tooltip" data-tip={$LL.{{ appName }}.components.agg.option()}>
+			<div class="tooltip" data-tip={$LL.graphence.components.agg.option()}>
 				<button class="btn btn-square" use:melt={$trigger}>
 					<Icon src={AdjustmentsHorizontal} class="h-5 w-5" />
 				</button>
@@ -345,37 +323,9 @@
 					use:melt={$content}
 				>
 					<div use:melt={$arrow} />
-					<div class="space-y-1" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
+					<div class="space-y-1" transition:fade={{ duration: 100 }}>
 						<Combobox
-							title={$LL.{{ appName }}.components.agg.groupBy()}
-							multiple={true}
-							options={filteredGroupByOptions}
-							rootClassName="w-full"
-							className="md:input-xs"
-							containerClassName="md:min-h-8 max-w-xs"
-							tagClassName="md:badge-sm"
-							groupClassName="md:input-group-sm"
-							bind:value={groupByColumns}
-							on:search={(e) => {
-								if (e.detail.searchValue) {
-									filteredGroupByOptions = groupByOptions.filter((option) =>
-										option.label.includes(e.detail.searchValue || '')
-									);
-								} else {
-									filteredGroupByOptions = groupByOptions;
-								}
-							}}
-							on:change={(e) => {
-								orderByColumns = orderByColumns.filter(
-									(orderColumn) =>
-										!Array.isArray(e.detail.value) ||
-										e.detail.value.some((groupColumn) => groupColumn.value === orderColumn.value)
-								);
-								queryPage(1);
-							}}
-						/>
-						<Combobox
-							title={$LL.{{ appName }}.components.agg.orderBy()}
+							title={$LL.graphence.components.agg.orderBy()}
 							multiple={true}
 							groups={filteredOrderByOptions}
 							rootClassName="w-full"
@@ -413,16 +363,16 @@
 			{/if}
 		{/if}
 		{#if showFilterButton}
-			<{{ name }}Filter bind:expression={queryArguments} let:trigger on:filter={(e) => queryPage(1)}>
-				<div class="tooltip" data-tip={$LL.{{ appName }}.components.agg.filter()}>
+			<RealmFilter bind:expression={queryArguments} let:trigger on:filter={(e) => queryPage(1)}>
+				<div class="tooltip" data-tip={$LL.graphence.components.agg.filter()}>
 					<button class="btn btn-square" use:melt={trigger}>
 						<Icon src={Funnel} class="h-5 w-5" />
 					</button>
 				</div>
-			</{{ name }}Filter>
+			</RealmFilter>
 		{/if}
 		{#if showBookmarkButton}
-			<div class="tooltip" data-tip={$LL.{{ appName }}.components.agg.bookmark()}>
+			<div class="tooltip" data-tip={$LL.graphence.components.agg.bookmark()}>
 				<button
 					class="btn btn-square"
 					on:click={(e) =>
@@ -444,7 +394,7 @@
 			<span class="loading loading-bars loading-lg" />
 		</div>
 	{:else}
-		<slot {getFieldName} {getGrouByName} />
+		<slot {getFieldName} />
 	{/if}
 </div>
 {#if showFooter}

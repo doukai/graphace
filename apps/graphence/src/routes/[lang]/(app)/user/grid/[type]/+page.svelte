@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Card } from '@graphace/ui';
 	import UserAggGrid from '~/lib/components/objects/user/UserAggGrid.svelte';
-	import type { UserAggStore } from '~/lib/stores/user/userAggStore';
+	import type { UserQueryStore } from '~/lib/stores/user/userQueryStore';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -16,7 +16,7 @@
 		showBookmarkButton
 	} = data;
 
-	const UserAgg = data.UserAgg as UserAggStore;
+	const UserQuery = data.UserQuery as UserQueryStore;
 
 	const components: Record<string, any> = {
 		agg: UserAggGrid
@@ -28,8 +28,8 @@
 <Card>
 	<svelte:component
 		this={component}
-		isFetching={$UserAgg.isFetching}
-		connection={$UserAgg.connection}
+		isFetching={$UserQuery.isFetching}
+		connection={$UserQuery.connection}
 		{fields}
 		{queryArguments}
 		{showHeader}
@@ -37,6 +37,6 @@
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
-		on:query={(e) => UserAgg.fetch(e.detail.fields, e.detail.queryArguments)}
+		on:query={(e) => UserQuery.fetch(e.detail.fields, e.detail.queryArguments)}
 	/>
 </Card>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Card } from '@graphace/ui';
 	import FileAggGrid from '~/lib/components/objects/file/FileAggGrid.svelte';
-	import type { FileAggStore } from '~/lib/stores/file/fileAggStore';
+	import type { FileQueryStore } from '~/lib/stores/file/fileQueryStore';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -16,7 +16,7 @@
 		showBookmarkButton
 	} = data;
 
-	const FileAgg = data.FileAgg as FileAggStore;
+	const FileQuery = data.FileQuery as FileQueryStore;
 
 	const components: Record<string, any> = {
 		agg: FileAggGrid
@@ -28,8 +28,8 @@
 <Card>
 	<svelte:component
 		this={component}
-		isFetching={$FileAgg.isFetching}
-		connection={$FileAgg.connection}
+		isFetching={$FileQuery.isFetching}
+		connection={$FileQuery.connection}
 		{fields}
 		{queryArguments}
 		{showHeader}
@@ -37,6 +37,6 @@
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
-		on:query={(e) => FileAgg.fetch(e.detail.fields, e.detail.queryArguments)}
+		on:query={(e) => FileQuery.fetch(e.detail.fields, e.detail.queryArguments)}
 	/>
 </Card>

@@ -114,6 +114,25 @@
 			disabled: !permissions.auth('Permission::type::READ')
 		},
 		{
+			value: '',
+			label: $LL.graphql.objects.Permission.fields.permissionType.name(),
+			options: [
+				{
+					value: 'permissionTypeCount',
+					label: $LL.graphql.objects.Permission.fields.permissionTypeCount.name()
+				},
+				{
+					value: 'permissionTypeMax',
+					label: $LL.graphql.objects.Permission.fields.permissionTypeMax.name()
+				},
+				{
+					value: 'permissionTypeMin',
+					label: $LL.graphql.objects.Permission.fields.permissionTypeMin.name()
+				},
+			],
+			disabled: !permissions.auth('Permission::permissionType::READ')
+		},
+		{
 			value: 'realm',
 			label: $LL.graphql.objects.Permission.fields.realm.name(),
 			options: [
@@ -241,6 +260,11 @@
 			value: 'type',
 			label: $LL.graphql.objects.Permission.fields.type.name(),
 			disabled: !permissions.auth('Permission::type::READ')
+		},
+		{
+			value: 'permissionType',
+			label: $LL.graphql.objects.Permission.fields.permissionType.name(),
+			disabled: !permissions.auth('Permission::permissionType::READ')
 		},
 	];
 

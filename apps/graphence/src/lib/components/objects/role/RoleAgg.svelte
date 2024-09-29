@@ -496,6 +496,21 @@
 					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.typeMin.name(),
 					disabled: !permissions.auth('Permission::type::READ')
 				},
+				{
+					value: 'permissionTypeCount',
+					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.permissionTypeCount.name(),
+					disabled: !permissions.auth('Permission::permissionType::READ')
+				},
+				{
+					value: 'permissionTypeMax',
+					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.permissionTypeMax.name(),
+					disabled: !permissions.auth('Permission::permissionType::READ')
+				},
+				{
+					value: 'permissionTypeMin',
+					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.permissionTypeMin.name(),
+					disabled: !permissions.auth('Permission::permissionType::READ')
+				},
 			],
 			disabled: !permissions.auth('Role::permissions::READ')
 		},

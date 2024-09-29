@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Card } from '@graphace/ui';
 	import {{ name }}AggGrid from '~/{{ gridPath }}/{{ name | paramCase }}/{{ name }}AggGrid.svelte';
-	import type { {{ name }}AggStore } from '~/{{ storesPath }}/{{ name | paramCase }}/{{ name | camelCase }}AggStore';
+	import type { {{ name }}QueryStore } from '~/{{ storesPath }}/{{ name | paramCase }}/{{ name | camelCase }}QueryStore';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -16,7 +16,7 @@
 		showBookmarkButton
 	} = data;
 
-	const {{ name }}Agg = data.{{ name }}Agg as {{ name }}AggStore;
+	const {{ name }}Query = data.{{ name }}Query as {{ name }}QueryStore;
 
 	const components: Record<string, any> = {
 		agg: {{ name }}AggGrid
@@ -28,8 +28,8 @@
 <Card>
 	<svelte:component
 		this={component}
-		isFetching={${{ name }}Agg.isFetching}
-		connection={${{ name }}Agg.connection}
+		isFetching={${{ name }}Query.isFetching}
+		connection={${{ name }}Query.connection}
 		{fields}
 		{queryArguments}
 		{showHeader}
@@ -37,6 +37,6 @@
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
-		on:query={(e) => {{ name }}Agg.fetch(e.detail.fields, e.detail.queryArguments)}
+		on:query={(e) => {{ name }}Query.fetch(e.detail.fields, e.detail.queryArguments)}
 	/>
 </Card>

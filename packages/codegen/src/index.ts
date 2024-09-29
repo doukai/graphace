@@ -2,7 +2,7 @@ import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
 import * as changeCase from "change-case";
 import { assertObjectType, isEnumType, isObjectType, type GraphQLSchema, isNonNullType, assertEnumType } from 'graphql';
-import { isOperationType, isConnection, isRelation, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getFileFields, getNamedFields, getScalarNames, getEnumNames, getEnumValues, initConfig, inGraphQLField, inListField, inDetailField, componentFields, getSelectComponentFieldImports, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, getNamedStructObjectNames, inComponentEnum, isInnerEnum, getObjectNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField, fieldTypeIsList, isSelectField, isNamedStruct, isTreeStruct, inComponentObject, hasFileField, getAggFields } from 'graphace-codegen-commons';
+import { isOperationType, isConnection, isRelation, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getFileFields, getNamedFields, getScalarNames, getEnumNames, getEnumValues, initConfig, inGraphQLField, inListField, inDetailField, componentFields, getSelectComponentFieldImports, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, getNamedStructObjectNames, inComponentEnum, isInnerEnum, getObjectNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField, fieldTypeIsList, isSelectField, isNamedStruct, isTreeStruct, inComponentObject, hasFileField, getAggFields, getNonListObjectFields } from 'graphace-codegen-commons';
 import type { Template } from 'graphace-codegen-commons';
 import { buildFileContent } from "./builder.js";
 
@@ -680,6 +680,30 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => field.fieldName === getIDFieldName(type) || inListField(typeName, field.fieldName, field.fieldTypeName));
+                const nonListObjectFields = getNonListObjectFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => field.fieldName === getIDFieldName(type) || inListField(typeName, field.fieldName, field.fieldTypeName));
+                return {
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        idName: getIDFieldName(type),
+                        leafFields: componentFields(typeName, fields)?.filter(field => field.isLeafType).filter(field => !field.isListType),
+                        nonListObjectField: componentFields(typeName, nonListObjectFields),
+                        schemaTypesPath: config.schemaTypesPath,
+                        objectsPath: `${config.componentsPath}/objects`,
+                        useAuth: config.useAuth,
+                        appName: config.appName
+                    }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
+    },
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Agg.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
@@ -691,7 +715,7 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         idName: getIDFieldName(type),
-                        scalarFields: componentFields(typeName, fields)?.filter(field => field.isScalarType).filter(field => !field.isListType),
+                        leafFields: componentFields(typeName, fields)?.filter(field => field.isLeafType).filter(field => !field.isListType),
                         aggFieldList: componentFields(typeName, aggFields),
                         schemaTypesPath: config.schemaTypesPath,
                         objectsPath: `${config.componentsPath}/objects`,
@@ -819,17 +843,31 @@ const renders: Record<Template, Render> = {
             ),
         };
     },
-    '{{storesPath}}/{{pathName}}/{{name}}AggStore.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{storesPath}}/{{pathName}}/{{name}}QueryStore.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const aggFields = getAggFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
-                        args: schema.getQueryType()?.getFields()[`${changeCase.camelCase(typeName)}Connection`].args,
-                        aggFieldList: componentFields(typeName, aggFields)
+                        args: schema.getQueryType()?.getFields()[`${changeCase.camelCase(typeName)}Connection`].args
+                    }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
+    },
+    '{{storesPath}}/{{pathName}}/{{name}}MutationStore.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                return {
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        args: schema.getQueryType()?.getFields()[`${changeCase.camelCase(typeName)}Connection`].args
                     }),
                 };
             }

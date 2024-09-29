@@ -4,7 +4,7 @@
 	import RealmLine from '~/lib/components/objects/realm/RealmLine.svelte';
 	import RealmPie from '~/lib/components/objects/realm/RealmPie.svelte';
 	import RealmAggTable from '~/lib/components/objects/realm/RealmAggTable.svelte';
-	import type { RealmAggStore } from '~/lib/stores/realm/realmAggStore';
+	import type { RealmQueryStore } from '~/lib/stores/realm/realmQueryStore';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -19,7 +19,7 @@
 		showBookmarkButton
 	} = data;
 
-	const RealmAgg = data.RealmAgg as RealmAggStore;
+	const RealmQuery = data.RealmQuery as RealmQueryStore;
 
 	const components: Record<string, any> = {
 		bar: RealmBar,
@@ -34,8 +34,8 @@
 <Card>
 	<svelte:component
 		this={component}
-		isFetching={$RealmAgg.isFetching}
-		connection={$RealmAgg.connection}
+		isFetching={$RealmQuery.isFetching}
+		connection={$RealmQuery.connection}
 		{fields}
 		{queryArguments}
 		{showHeader}
@@ -43,6 +43,6 @@
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
-		on:query={(e) => RealmAgg.fetch(e.detail.fields, e.detail.queryArguments)}
+		on:query={(e) => RealmQuery.fetch(e.detail.fields, e.detail.queryArguments)}
 	/>
 </Card>

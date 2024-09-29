@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Card } from '@graphace/ui';
 	import PermissionAggGrid from '~/lib/components/objects/permission/PermissionAggGrid.svelte';
-	import type { PermissionAggStore } from '~/lib/stores/permission/permissionAggStore';
+	import type { PermissionQueryStore } from '~/lib/stores/permission/permissionQueryStore';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -16,7 +16,7 @@
 		showBookmarkButton
 	} = data;
 
-	const PermissionAgg = data.PermissionAgg as PermissionAggStore;
+	const PermissionQuery = data.PermissionQuery as PermissionQueryStore;
 
 	const components: Record<string, any> = {
 		agg: PermissionAggGrid
@@ -28,8 +28,8 @@
 <Card>
 	<svelte:component
 		this={component}
-		isFetching={$PermissionAgg.isFetching}
-		connection={$PermissionAgg.connection}
+		isFetching={$PermissionQuery.isFetching}
+		connection={$PermissionQuery.connection}
 		{fields}
 		{queryArguments}
 		{showHeader}
@@ -37,6 +37,6 @@
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
-		on:query={(e) => PermissionAgg.fetch(e.detail.fields, e.detail.queryArguments)}
+		on:query={(e) => PermissionQuery.fetch(e.detail.fields, e.detail.queryArguments)}
 	/>
 </Card>

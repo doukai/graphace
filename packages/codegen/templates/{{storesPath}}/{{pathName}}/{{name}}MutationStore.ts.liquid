@@ -15,7 +15,7 @@ export async function create{{ name }}MutationStore(params: { event: LoadEvent, 
     const { subscribe, set, update } = data;
 
     const fetch = async (fields: Field[], mutationArguments: {{ name }}ListMutationArguments) => {
-        if (fields && fields.length > 0 && mutationArguments.list && mutationArguments.list.length > 0) {
+        if (fields && fields.length > 0) {
             update((data) => ({ ...data, isFetching: true }));
             let query = `mutation Mutation_{{ name | paramCase }}List({% for arg in args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %}) {
     {{ name | paramCase }}List({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})  {

@@ -1,4 +1,4 @@
-import { isEnumType, isInputObjectType, isNonNullType, isObjectType, isScalarType, type GraphQLSchema, type GraphQLNamedType } from "graphql";
+import { isEnumType, isInputObjectType, isNonNullType, isObjectType, isScalarType, type GraphQLSchema, type GraphQLNamedType, isLeafType } from "graphql";
 import type { BuilderConfig, FieldInfo } from "./types/types";
 import { listSuffix, connectionSuffix, fieldInMutationArgs, fieldInQueryArgs, fieldTypeIsList, fieldTypeIsNamedStruct, getFieldType, getIDFieldName, isAggregate, isInnerEnum, isIntrospection, isRelation, getOriginalFieldName } from "./introspection";
 import * as changeCase from "change-case";
@@ -149,6 +149,58 @@ export const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): FieldI
                     fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
                     isScalarType: isScalarType(getFieldType(field.type)),
                     isEnumType: isEnumType(getFieldType(field.type)),
+                    isLeafType: isLeafType(getFieldType(field.type)),
+                    isObjectType: isObjectType(getFieldType(field.type)),
+                    isNonNullType: isNonNullType(field.type),
+                    isListType: fieldTypeIsList(field.type),
+                    inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),
+                    inMutationArgs: fieldInMutationArgs(schema, type.name, field.name),
+                    isNamed: fieldTypeIsNamedStruct(field.type)
+                }
+            });
+    }
+    return undefined;
+}
+
+export const getNonListObjectFields = (schema: GraphQLSchema, type: GraphQLNamedType): FieldInfo[] | undefined => {
+    if (isObjectType(type) || isInputObjectType(type)) {
+        return Object.values(type.getFields())
+            .filter(field => isObjectType(getFieldType(field.type)) && !fieldTypeIsList(field.type) && !isAggregate(field.name))
+            .filter(field => !isIntrospection(field.name))
+            .map(field => {
+                return {
+                    fieldName: field.name,
+                    fieldTypeName: getFieldType(field.type).name,
+                    fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
+                    isScalarType: isScalarType(getFieldType(field.type)),
+                    isEnumType: isEnumType(getFieldType(field.type)),
+                    isLeafType: isLeafType(getFieldType(field.type)),
+                    isObjectType: isObjectType(getFieldType(field.type)),
+                    isNonNullType: isNonNullType(field.type),
+                    isListType: fieldTypeIsList(field.type),
+                    inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),
+                    inMutationArgs: fieldInMutationArgs(schema, type.name, field.name),
+                    isNamed: fieldTypeIsNamedStruct(field.type),
+                    leafFieldList: getObjectLeafFields(schema, getFieldType(field.type))
+                }
+            });
+    }
+    return undefined;
+}
+
+export const getObjectLeafFields = (schema: GraphQLSchema, type: GraphQLNamedType): FieldInfo[] | undefined => {
+    if (isObjectType(type) || isInputObjectType(type)) {
+        return Object.values(type.getFields())
+            .filter(field => isLeafType(getFieldType(field.type)))
+            .filter(field => !isIntrospection(field.name))
+            .map(field => {
+                return {
+                    fieldName: field.name,
+                    fieldTypeName: getFieldType(field.type).name,
+                    fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
+                    isScalarType: isScalarType(getFieldType(field.type)),
+                    isEnumType: isEnumType(getFieldType(field.type)),
+                    isLeafType: isLeafType(getFieldType(field.type)),
                     isObjectType: isObjectType(getFieldType(field.type)),
                     isNonNullType: isNonNullType(field.type),
                     isListType: fieldTypeIsList(field.type),
@@ -165,7 +217,7 @@ export const getAggFields = (schema: GraphQLSchema, type: GraphQLNamedType): Fie
     if (isObjectType(type) || isInputObjectType(type)) {
         return Object.values(type.getFields())
             .filter(field =>
-                isScalarType(getFieldType(field.type)) && getFieldType(field.type).name !== 'Boolean' && !fieldTypeIsList(field.type) && !isAggregate(field.name) ||
+                isLeafType(getFieldType(field.type)) && getFieldType(field.type).name !== 'Boolean' && !fieldTypeIsList(field.type) && !isAggregate(field.name) ||
                 isObjectType(getFieldType(field.type)) && (!fieldTypeIsList(field.type) || isAggregate(field.name))
             )
             .filter(field => !isIntrospection(field.name))
@@ -176,6 +228,7 @@ export const getAggFields = (schema: GraphQLSchema, type: GraphQLNamedType): Fie
                     fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
                     isScalarType: isScalarType(getFieldType(field.type)),
                     isEnumType: isEnumType(getFieldType(field.type)),
+                    isLeafType: isLeafType(getFieldType(field.type)),
                     isObjectType: isObjectType(getFieldType(field.type)),
                     isNonNullType: isNonNullType(field.type),
                     isListType: fieldTypeIsList(field.type),
@@ -183,17 +236,17 @@ export const getAggFields = (schema: GraphQLSchema, type: GraphQLNamedType): Fie
                     inMutationArgs: fieldInMutationArgs(schema, type.name, field.name),
                     isNamed: fieldTypeIsNamedStruct(field.type),
                     originalFieldName: getOriginalFieldName(field),
-                    aggFieldList: isObjectType(getFieldType(field.type)) ? getObjectAggFields(schema, getFieldType(field.type)) : getScalarAggFields(schema, type, field.name)
+                    aggFieldList: isObjectType(getFieldType(field.type)) ? getObjectAggFields(schema, getFieldType(field.type)) : getLeafAggFields(schema, type, field.name)
                 }
             });
     }
     return undefined;
 }
 
-export const getScalarAggFields = (schema: GraphQLSchema, type: GraphQLNamedType, originalFieldName: string): FieldInfo[] | undefined => {
+export const getLeafAggFields = (schema: GraphQLSchema, type: GraphQLNamedType, originalFieldName: string): FieldInfo[] | undefined => {
     if (isObjectType(type) || isInputObjectType(type)) {
         return Object.values(type.getFields())
-            .filter(field => isScalarType(getFieldType(field.type)) && isAggregate(field.name))
+            .filter(field => isLeafType(getFieldType(field.type)) && isAggregate(field.name))
             .filter(field => !isIntrospection(field.name))
             .filter(field => getOriginalFieldName(field) === originalFieldName)
             .map(field => {
@@ -203,6 +256,7 @@ export const getScalarAggFields = (schema: GraphQLSchema, type: GraphQLNamedType
                     fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
                     isScalarType: isScalarType(getFieldType(field.type)),
                     isEnumType: isEnumType(getFieldType(field.type)),
+                    isLeafType: isLeafType(getFieldType(field.type)),
                     isObjectType: isObjectType(getFieldType(field.type)),
                     isNonNullType: isNonNullType(field.type),
                     isListType: fieldTypeIsList(field.type),
@@ -219,7 +273,7 @@ export const getScalarAggFields = (schema: GraphQLSchema, type: GraphQLNamedType
 export const getObjectAggFields = (schema: GraphQLSchema, type: GraphQLNamedType): FieldInfo[] | undefined => {
     if (isObjectType(type) || isInputObjectType(type)) {
         return Object.values(type.getFields())
-            .filter(field => isScalarType(getFieldType(field.type)) && isAggregate(field.name))
+            .filter(field => isLeafType(getFieldType(field.type)) && isAggregate(field.name))
             .filter(field => !isIntrospection(field.name))
             .map(field => {
                 return {
@@ -228,6 +282,7 @@ export const getObjectAggFields = (schema: GraphQLSchema, type: GraphQLNamedType
                     fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
                     isScalarType: isScalarType(getFieldType(field.type)),
                     isEnumType: isEnumType(getFieldType(field.type)),
+                    isLeafType: isLeafType(getFieldType(field.type)),
                     isObjectType: isObjectType(getFieldType(field.type)),
                     isNonNullType: isNonNullType(field.type),
                     isListType: fieldTypeIsList(field.type),

@@ -377,6 +377,15 @@ const zh: NamespaceGraphqlTranslation = {
 				typeMin: {
 					name: 'typeMin',
 				},
+				permissionTypeCount: {
+					name: 'permissionTypeCount',
+				},
+				permissionTypeMax: {
+					name: 'permissionTypeMax',
+				},
+				permissionTypeMin: {
+					name: 'permissionTypeMin',
+				},
 				syncPermissionPolicy: {
 					name: 'syncPermissionPolicy',
 				}
