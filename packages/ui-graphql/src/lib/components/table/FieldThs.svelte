@@ -3,6 +3,7 @@
 
 	export let fields: Field[] = [];
 	export let getFieldName: (fieldName: string, subFieldName?: string) => string;
+	export let className: string = '';
 
 	$: deep = fieldsDeep(fields);
 </script>
@@ -11,11 +12,11 @@
 	<slot {deep} />
 	{#each fields || [] as field}
 		{#if field.fields}
-			<td colspan={field.fields.length}>{getFieldName(field.name)}</td>
+			<td class={className} colspan={field.fields.length}>{getFieldName(field.name)}</td>
 		{:else if field.parent}
-			<td rowspan={deep}>{getFieldName(field.parent.name, field.name)}</td>
+			<td class={className} rowspan={deep}>{getFieldName(field.parent.name, field.name)}</td>
 		{:else}
-			<td rowspan={deep}>{getFieldName(field.name)}</td>
+			<td class={className} rowspan={deep}>{getFieldName(field.name)}</td>
 		{/if}
 	{/each}
 </tr>
@@ -26,5 +27,6 @@
 			.filter((field) => field.fields)
 			.flatMap((field) => field.fields.map((item) => ({ ...item, parent: field })))}
 		{getFieldName}
+		{className}
 	/>
 {/if}

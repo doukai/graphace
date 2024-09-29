@@ -1,0 +1,61 @@
+import { writable } from 'svelte/store';
+import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
+import type { LoadEvent } from '@sveltejs/kit';
+import { type Field, fieldToString } from '@graphace/graphql';
+import type { {{ name }}, {{ name }}ListMutationArguments } from '~/lib/types/schema';
+
+export async function create{{ name }}MutationStore(params: { event: LoadEvent, fields: Field[], mutationArguments: {{ name }}ListMutationArguments }): Promise<{{ name }}MutationStore> {
+    const data: Writable<{ isFetching: boolean, list: {{ name }}[] }> = writable({
+        isFetching: false,
+        list: []
+    });
+
+    const { event, fields, mutationArguments } = params;
+
+    const { subscribe, set, update } = data;
+
+    const fetch = async (fields: Field[], mutationArguments: {{ name }}ListMutationArguments) => {
+        if (fields && fields.length > 0 && mutationArguments.list && mutationArguments.list.length > 0) {
+            update((data) => ({ ...data, isFetching: true }));
+            let query = `mutation Mutation_{{ name | paramCase }}List({% for arg in args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %}) {
+    {{ name | paramCase }}List({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})  {
+        ${fields.map((field) => fieldToString(field)).join('\r\n')}
+    }
+}`;
+
+            const response = await event.fetch('/graphql', {
+                method: 'POST',
+                body: JSON.stringify({
+                    query: query,
+                    variables: mutationArguments
+                })
+            });
+
+            if (response.ok) {
+                const json = await response.json();
+                set({
+                    isFetching: false,
+                    list: json.data.{{ name | paramCase }}List
+                });
+            }
+        }
+    }
+
+    await fetch(fields, mutationArguments);
+
+    return {
+        subscribe,
+        fetch
+    };
+}
+
+export type {{ name }}MutationStore = {
+    subscribe: (this: void, run: Subscriber<{
+        isFetching: boolean;
+        list: {{ name }}[];
+    }>, invalidate?: Invalidator<{
+        isFetching: boolean;
+        list: {{ name }}[];
+    }> | undefined) => Unsubscriber;
+    fetch: (fields: Field[], mutationArguments: {{ name }}ListMutationArguments) => Promise<void>;
+}

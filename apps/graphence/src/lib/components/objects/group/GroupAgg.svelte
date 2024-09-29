@@ -11,8 +11,6 @@
 	import GroupFilter from '~/lib/components/objects/group/GroupFilter.svelte';
 	import type { GroupConnectionQueryArguments } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
-	const permissions = getContext('permissions') as PermissionsStore;
 	
 	export let fields: Field[] = [];
 	export let queryArguments: GroupConnectionQueryArguments = {};
@@ -30,6 +28,9 @@
 	export let showBookmarkButton: boolean = false;
 	export let className: string = '';
 
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	const permissions = getContext('permissions') as PermissionsStore;
+	
 	const dispatch = createEventDispatcher<{
 		query: { fields: Field[]; queryArguments: GroupConnectionQueryArguments };
 		bookmark: { fields: string; queryArguments: string };

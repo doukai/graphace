@@ -768,6 +768,22 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}AggGrid.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                return {
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        objectsPath: `${config.componentsPath}/objects`
+                    }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
+    },
     '{{componentsPath}}/objects/{{pathName}}/index.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
@@ -1747,6 +1763,44 @@ const renders: Record<Template, Render> = {
         throw new Error(`${typeName} undefined`);
     },
     '{{routesPath}}/{{pathName}}/{{aggRoutesPath}}/[type]/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
+                return {
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        idName: getIDFieldName(type),
+                        objects: getObjectNames(fields),
+                        storesPath: config.storesPath,
+                        useAuth: config.useAuth
+                    }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
+    },
+    '{{routesPath}}/{{pathName}}/{{gridRoutesPath}}/[type]/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                return {
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        idName: getIDFieldName(type),
+                        gridPath: `${config.componentsPath}/objects`,
+                        storesPath: config.storesPath
+                    }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
+    },
+    '{{routesPath}}/{{pathName}}/{{gridRoutesPath}}/[type]/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);

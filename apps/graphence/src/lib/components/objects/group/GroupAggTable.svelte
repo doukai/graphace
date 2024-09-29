@@ -36,9 +36,9 @@
 >
 	<Table className="table-zebra table-pin-rows md:table-sm">
 		<thead>
-			<FieldThs {fields} {getFieldName} let:deep>
+			<FieldThs className="border" {fields} {getFieldName} let:deep>
 				{#each queryArguments.groupBy || [] as groupByField}
-					<th rowspan={deep}>{getGrouByName(groupByField)}</th>
+					<td class="border" rowspan={deep}>{getGrouByName(groupByField)}</td>
 				{/each}
 			</FieldThs>
 		</thead>
@@ -49,9 +49,9 @@
 				{#each nodes || [] as node}
 					<tr class="hover">
 						{#each queryArguments.groupBy || [] as groupByField}
-							<th>{node[groupByField]}</th>
+							<td class="border">{node[groupByField]}</td>
 						{/each}
-						<FieldTds {fields} {node} />
+						<FieldTds className="border" {fields} {node} />
 					</tr>
 				{/each}
 			{:else}

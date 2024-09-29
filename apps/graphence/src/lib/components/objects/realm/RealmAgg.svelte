@@ -11,8 +11,6 @@
 	import RealmFilter from '~/lib/components/objects/realm/RealmFilter.svelte';
 	import type { RealmConnectionQueryArguments } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
-	const permissions = getContext('permissions') as PermissionsStore;
 	
 	export let fields: Field[] = [];
 	export let queryArguments: RealmConnectionQueryArguments = {};
@@ -30,6 +28,9 @@
 	export let showBookmarkButton: boolean = false;
 	export let className: string = '';
 
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	const permissions = getContext('permissions') as PermissionsStore;
+	
 	const dispatch = createEventDispatcher<{
 		query: { fields: Field[]; queryArguments: RealmConnectionQueryArguments };
 		bookmark: { fields: string; queryArguments: string };

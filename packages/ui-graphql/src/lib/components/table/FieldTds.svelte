@@ -3,12 +3,13 @@
 
 	export let fields: Field[] = [];
 	export let node: unknown = {};
+	export let className: string = '';
 </script>
 
 {#each fields || [] as field}
 	{#if field.fields}
-		<svelte:self node={node[field.name]} fields={field.fields} />
+		<svelte:self node={node[field.name]} fields={field.fields} {className} />
 	{:else}
-		<td>{node[field.name]}</td>
+		<td class={className}>{node[field.name]}</td>
 	{/if}
 {/each}

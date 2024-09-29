@@ -12,6 +12,8 @@ export interface GraphacePresetConfig {
 
   aggRoutesPath?: string;
 
+  gridRoutesPath?: string;
+
   storesPath?: string;
 
   i18nPath?: string;

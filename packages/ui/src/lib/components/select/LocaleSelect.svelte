@@ -7,12 +7,12 @@
 
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+	import { browser } from '$app/environment';
+	import { replaceLocaleInUrl } from '@graphace/commons';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Language, ChevronDown } from '@steeze-ui/heroicons';
 	import Iconify from '@iconify/svelte';
-	import { replaceLocaleInUrl } from '@graphace/commons';
-	import { page } from '$app/stores';
-	import { browser } from '$app/environment';
 	import { setLocale, locale } from '~/i18n/i18n-svelte';
 	import type { Locales } from '~/i18n/i18n-types';
 	import { baseLocale } from '~/i18n/i18n-util';

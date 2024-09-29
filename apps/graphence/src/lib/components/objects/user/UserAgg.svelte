@@ -11,8 +11,6 @@
 	import UserFilter from '~/lib/components/objects/user/UserFilter.svelte';
 	import type { UserConnectionQueryArguments } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
-	const permissions = getContext('permissions') as PermissionsStore;
 	
 	export let fields: Field[] = [];
 	export let queryArguments: UserConnectionQueryArguments = {};
@@ -30,6 +28,9 @@
 	export let showBookmarkButton: boolean = false;
 	export let className: string = '';
 
+	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	const permissions = getContext('permissions') as PermissionsStore;
+	
 	const dispatch = createEventDispatcher<{
 		query: { fields: Field[]; queryArguments: UserConnectionQueryArguments };
 		bookmark: { fields: string; queryArguments: string };

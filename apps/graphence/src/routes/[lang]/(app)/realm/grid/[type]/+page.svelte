@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Card } from '@graphace/ui';
-	import UserAggGrid from '~/lib/components/objects/user/UserAggGrid.svelte';
-	import type { UserAggStore } from '~/lib/stores/user/userAggStore';
+	import RealmAggGrid from '~/lib/components/objects/realm/RealmAggGrid.svelte';
+	import type { RealmAggStore } from '~/lib/stores/realm/realmAggStore';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -16,10 +16,10 @@
 		showBookmarkButton
 	} = data;
 
-	const UserAgg = data.UserAgg as UserAggStore;
+	const RealmAgg = data.RealmAgg as RealmAggStore;
 
 	const components: Record<string, any> = {
-		agg: UserAggGrid
+		agg: RealmAggGrid
 	};
 
 	const component = components[data.type];
@@ -28,8 +28,8 @@
 <Card>
 	<svelte:component
 		this={component}
-		isFetching={$UserAgg.isFetching}
-		connection={$UserAgg.connection}
+		isFetching={$RealmAgg.isFetching}
+		connection={$RealmAgg.connection}
 		{fields}
 		{queryArguments}
 		{showHeader}
@@ -37,6 +37,6 @@
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
-		on:query={(e) => UserAgg.fetch(e.detail.fields, e.detail.queryArguments)}
+		on:query={(e) => RealmAgg.fetch(e.detail.fields, e.detail.queryArguments)}
 	/>
 </Card>

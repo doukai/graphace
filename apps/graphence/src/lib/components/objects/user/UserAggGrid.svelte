@@ -19,23 +19,23 @@
 	export let showOptionButton: boolean = true;
 	export let showFilterButton: boolean = true;
 	export let showBookmarkButton: boolean = false;
+
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 	const typeName = 'User';
-
 	const themeStore = getContext('theme') as Writable<string | undefined>;
-	$: theme = getGridTheme($themeStore);
-
-	$: nodes = connection.edges?.map((edge) => edge?.node);
-	$: totalCount = connection?.totalCount || 0;
-
-	let getFieldName: (fieldName: string, subFieldName?: string) => string;
-	let getGrouByName: (fieldName: string) => string;
-
+	
 	const columnTypes = {
 		numeric: new NumberColumnType(),
 		select: new SelectColumnType(),
 		date: new DateColumnType()
 	};
+
+	let getFieldName: (fieldName: string, subFieldName?: string) => string;
+	let getGrouByName: (fieldName: string) => string;
+
+	$: theme = getGridTheme($themeStore);
+	$: nodes = connection.edges?.map((edge) => edge?.node);
+	$: totalCount = connection?.totalCount || 0;
 
 	$: filter = {
 		localization: {
