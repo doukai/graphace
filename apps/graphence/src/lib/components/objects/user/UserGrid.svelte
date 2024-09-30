@@ -3,19 +3,14 @@
 	import type { Readable, Writable } from 'svelte/store';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { InboxArrowDown } from '@steeze-ui/heroicons';
-	import {
-		RevoGrid,
-		type ColumnRegular,
-		type ColumnGrouping,
-		type DataType
-	} from '@revolist/svelte-datagrid';
+	import { RevoGrid } from '@revolist/svelte-datagrid';
+	import type { ColumnRegular, ColumnGrouping, DataType } from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import SelectColumnType from '@revolist/revogrid-column-select';
-	import DateColumnType from '@revolist/revogrid-column-date';
 	import { type Field, fieldsDeep } from '@graphace/graphql';
 	import UserQuery from '~/lib/components/objects/user/User.svelte';
 	import type { User, UserConnection, UserConnectionQueryArguments } from '~/lib/types/schema';
-	import { getGridType, getGridTheme } from '~/utils';
+	import { getGridType, getGridTheme, editors } from '~/utils';
 
 	export let connection: UserConnection;
 	export let fields: Field[] = [];
@@ -33,8 +28,7 @@
 
 	const columnTypes = {
 		numeric: new NumberColumnType(),
-		select: new SelectColumnType(),
-		date: new DateColumnType()
+		select: new SelectColumnType()
 	};
 
 	let getFieldName: (fieldName: string, subFieldName?: string) => string;
@@ -136,7 +130,7 @@
 			)
 		);
 	}
-	
+
 	const mutation = () => {
 		console.log(
 			JSON.stringify(
@@ -193,5 +187,6 @@
 		autoSizeColumn={true}
 		{columnTypes}
 		{theme}
+		{editors}
 	/>
 </UserQuery>

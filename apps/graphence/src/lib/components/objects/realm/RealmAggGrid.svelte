@@ -4,7 +4,6 @@
 	import { RevoGrid, type ColumnRegular, type ColumnGrouping } from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import SelectColumnType from '@revolist/revogrid-column-select';
-	import DateColumnType from '@revolist/revogrid-column-date';
 	import { type Field, fieldsDeep } from '@graphace/graphql';
 	import RealmAgg from '~/lib/components/objects/realm/RealmAgg.svelte';
 	import type { Realm, RealmConnection, RealmConnectionQueryArguments } from '~/lib/types/schema';
@@ -26,8 +25,7 @@
 	
 	const columnTypes = {
 		numeric: new NumberColumnType(),
-		select: new SelectColumnType(),
-		date: new DateColumnType()
+		select: new SelectColumnType()
 	};
 
 	let getFieldName: (fieldName: string, subFieldName?: string) => string;
