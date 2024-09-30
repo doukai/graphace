@@ -1,12 +1,19 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Readable, Writable } from 'svelte/store';
-	import { RevoGrid, type ColumnRegular, type ColumnGrouping } from '@revolist/svelte-datagrid';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { InboxArrowDown } from '@steeze-ui/heroicons';
+	import {
+		RevoGrid,
+		type ColumnRegular,
+		type ColumnGrouping,
+		type DataType
+	} from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import SelectColumnType from '@revolist/revogrid-column-select';
 	import DateColumnType from '@revolist/revogrid-column-date';
 	import { type Field, fieldsDeep } from '@graphace/graphql';
-	import UserAgg from '~/lib/components/objects/user/UserAgg.svelte';
+	import UserQuery from '~/lib/components/objects/user/User.svelte';
 	import type { User, UserConnection, UserConnectionQueryArguments } from '~/lib/types/schema';
 	import { getGridType, getGridTheme } from '~/utils';
 
@@ -19,23 +26,23 @@
 	export let showOptionButton: boolean = true;
 	export let showFilterButton: boolean = true;
 	export let showBookmarkButton: boolean = false;
+
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 	const typeName = 'User';
-
 	const themeStore = getContext('theme') as Writable<string | undefined>;
-	$: theme = getGridTheme($themeStore);
-
-	$: nodes = connection.edges?.map((edge) => edge?.node);
-	$: totalCount = connection?.totalCount || 0;
-
-	let getFieldName: (fieldName: string, subFieldName?: string) => string;
-	let getGrouByName: (fieldName: string) => string;
 
 	const columnTypes = {
 		numeric: new NumberColumnType(),
 		select: new SelectColumnType(),
 		date: new DateColumnType()
 	};
+
+	let getFieldName: (fieldName: string, subFieldName?: string) => string;
+	let source: DataType[] = [];
+
+	$: theme = getGridTheme($themeStore);
+	$: nodes = connection.edges?.map((edge) => edge?.node);
+	$: totalCount = connection?.totalCount || 0;
 
 	$: filter = {
 		localization: {
@@ -71,96 +78,93 @@
 
 	$: columns =
 		fieldsDeep(fields) === 1
-			? ([
-					...(queryArguments.groupBy || []).map((fieldName) => ({
-						name: getGrouByName(fieldName),
-						prop: fieldName,
-						autoSize: true,
-						readonly: true,
-						filter: true,
-						sortable: true,
-						...getGridType(typeName, fieldName)
-					})),
-					...fields.map((field) => ({
-						name: getFieldName(field.name),
-						prop: field.name,
-						autoSize: true,
-						readonly: true,
-						filter: true,
-						sortable: true,
-						...getGridType(typeName, field.name)
-					}))
-			  ] as ColumnRegular[])
-			: ([
-					...(queryArguments.groupBy || []).map((fieldName) => ({
-						name: '',
-						children: [
-							{
-								name: getGrouByName(fieldName),
-								prop: fieldName,
+			? (fields.map((field) => ({
+					name: getFieldName(field.name),
+					prop: field.name,
+					autoSize: true,
+					filter: true,
+					sortable: true,
+					editable: true,
+					...getGridType(typeName, field.name)
+			  })) as ColumnRegular[])
+			: (fields.map((field) => {
+					if (field.fields && field.fields.length > 0) {
+						return {
+							name: getFieldName(field.name),
+							children: field.fields.map((subField) => ({
+								name: subField.name,
+								prop: `${field.name}.${subField.name}`,
 								autoSize: true,
-								readonly: true,
 								filter: true,
 								sortable: true,
-								...getGridType(typeName, fieldName)
-							}
-						]
-					})),
-					...fields.map((field) => {
-						if (field.fields && field.fields.length > 0) {
-							return {
-								name: getFieldName(field.name),
-								children: field.fields.map((subField) => ({
-									name: subField.name,
-									prop: `${field.name}.${subField.name}`,
+								editable: true,
+								...getGridType(typeName, field.name, subField.name)
+							}))
+						};
+					} else {
+						return {
+							name: '',
+							children: [
+								{
+									name: getFieldName(field.name),
+									prop: field.name,
 									autoSize: true,
-									readonly: true,
 									filter: true,
 									sortable: true,
-									...getGridType(typeName, field.name, subField.name)
-								}))
-							};
-						} else {
-							return {
-								name: '',
-								children: [
-									{
-										name: getFieldName(field.name),
-										prop: field.name,
-										autoSize: true,
-										readonly: true,
-										filter: true,
-										sortable: true,
-										...getGridType(typeName, field.name)
-									}
-								]
-							};
-						}
-					})
-			  ] as ColumnGrouping[]);
+									editable: true,
+									...getGridType(typeName, field.name)
+								}
+							]
+						};
+					}
+			  }) as ColumnGrouping[]);
 
-	$: source = nodes?.map((node) =>
-		Object.fromEntries([
-			...(queryArguments.groupBy || []).map((fieldName) => [
-				fieldName,
-				node?.[fieldName as keyof User]
-			]),
-			...fields.flatMap((field) => {
-				if (field.fields && field.fields.length > 0) {
-					const object = node?.[field.name as keyof User];
-					return field.fields.map((subField) => [
-						`${field.name}.${subField.name}`,
-						object?.[subField.name as keyof typeof object]
-					]);
-				} else {
-					return [[field.name, node?.[field.name as keyof User]]];
-				}
-			})
-		])
-	);
+	$: if (nodes) {
+		source = nodes?.map((node) =>
+			Object.fromEntries(
+				fields.flatMap((field) => {
+					if (field.fields && field.fields.length > 0) {
+						const object = node?.[field.name as keyof User];
+						return field.fields.map((subField) => [
+							`${field.name}.${subField.name}`,
+							object?.[subField.name as keyof typeof object] || null
+						]);
+					} else {
+						return [[field.name, node?.[field.name as keyof User] || null]];
+					}
+				})
+			)
+		);
+	}
+	
+	const mutation = () => {
+		console.log(
+			JSON.stringify(
+				source?.map((row) =>
+					Object.fromEntries(
+						fields.map((field) => {
+							if (field.fields && field.fields.length > 0) {
+								return [
+									field.name,
+									Object.fromEntries(
+										field.fields.map((subField) => [
+											subField.name,
+											row?.[`${field.name}.${subField.name}`]
+										])
+									)
+								];
+							} else {
+								return [field.name, row?.[field.name]];
+							}
+						})
+					)
+				)
+			)
+		);
+	};
 </script>
 
-<UserAgg
+<UserQuery
 	bind:fields
 	bind:queryArguments
 	{isFetching}
@@ -174,8 +178,12 @@
 	on:query
 	on:bookmark
 	bind:getFieldName
-	bind:getGrouByName
 >
+	<div class="tooltip" slot="option1" data-tip={$LL.graphence.components.grid.captions.save()}>
+		<button class="btn btn-secondary btn-square" on:click={(e) => mutation()}>
+			<Icon src={InboxArrowDown} class="h-5 w-5" />
+		</button>
+	</div>
 	<RevoGrid
 		{source}
 		{columns}
@@ -186,4 +194,4 @@
 		{columnTypes}
 		{theme}
 	/>
-</UserAgg>
+</UserQuery>

@@ -41,8 +41,6 @@ export async function createFileMutationStore(params: { event: LoadEvent, fields
         }
     }
 
-    await fetch(fields, mutationArguments);
-
     return {
         subscribe,
         fetch

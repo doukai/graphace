@@ -41,8 +41,6 @@ export async function createPermissionMutationStore(params: { event: LoadEvent, 
         }
     }
 
-    await fetch(fields, mutationArguments);
-
     return {
         subscribe,
         fetch

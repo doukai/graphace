@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Card } from '@graphace/ui';
+	import UserGrid from '~/lib/components/objects/user/UserGrid.svelte';
 	import UserAggGrid from '~/lib/components/objects/user/UserAggGrid.svelte';
 	import type { UserQueryStore } from '~/lib/stores/user/userQueryStore';
 	import type { PageData } from './$houdini';
@@ -19,6 +20,7 @@
 	const UserQuery = data.UserQuery as UserQueryStore;
 
 	const components: Record<string, any> = {
+		mutation: UserGrid,
 		agg: UserAggGrid
 	};
 

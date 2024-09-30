@@ -1924,6 +1924,9 @@ type Permission implements Meta {
 
   """权限类型"""
   permissionType: PermissionType!
+  permissionTypeCount: Int
+  permissionTypeMax: PermissionType
+  permissionTypeMin: PermissionType
 
   """租户"""
   realm(createGroupId: StringExpression, createTime: StringExpression, createUserId: StringExpression, description: StringExpression, groupBy: [String!], id: StringExpression, includeDeprecated: Boolean = false, name: StringExpression, realmId: IntExpression, updateTime: StringExpression, updateUserId: StringExpression, version: IntExpression): Realm
@@ -2176,6 +2179,9 @@ input PermissionOrderBy {
   permissionRoleRelation: PermissionRoleRelationOrderBy
   permissionRoleRelationAggregate: PermissionRoleRelationOrderBy
   permissionType: Sort
+  permissionTypeCount: Sort
+  permissionTypeMax: Sort
+  permissionTypeMin: Sort
   realm: RealmOrderBy
   realmId: Sort
   roles: RoleOrderBy

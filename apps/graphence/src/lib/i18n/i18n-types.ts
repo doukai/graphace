@@ -1484,6 +1484,24 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				permissionTypeCount: {
+					/**
+					 * p​e​r​m​i​s​s​i​o​n​T​y​p​e​C​o​u​n​t
+					 */
+					name: string
+				}
+				permissionTypeMax: {
+					/**
+					 * p​e​r​m​i​s​s​i​o​n​T​y​p​e​M​a​x
+					 */
+					name: string
+				}
+				permissionTypeMin: {
+					/**
+					 * p​e​r​m​i​s​s​i​o​n​T​y​p​e​M​i​n
+					 */
+					name: string
+				}
 				syncPermissionPolicy: {
 					/**
 					 * s​y​n​c​P​e​r​m​i​s​s​i​o​n​P​o​l​i​c​y
@@ -4758,6 +4776,24 @@ export type TranslationFunctions = {
 					typeMin: {
 						/**
 						 * typeMin
+						 */
+						name: () => LocalizedString
+					}
+					permissionTypeCount: {
+						/**
+						 * permissionTypeCount
+						 */
+						name: () => LocalizedString
+					}
+					permissionTypeMax: {
+						/**
+						 * permissionTypeMax
+						 */
+						name: () => LocalizedString
+					}
+					permissionTypeMin: {
+						/**
+						 * permissionTypeMin
 						 */
 						name: () => LocalizedString
 					}

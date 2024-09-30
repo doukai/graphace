@@ -41,8 +41,6 @@ export async function createRealmMutationStore(params: { event: LoadEvent, field
         }
     }
 
-    await fetch(fields, mutationArguments);
-
     return {
         subscribe,
         fetch
