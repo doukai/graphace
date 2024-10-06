@@ -59,6 +59,10 @@ const en: BaseTranslation = {
             bookmark: "Bookmark"
         },
         grid: {
+            boolean: {
+                true: 'Yes',
+                false: 'No',
+            },
             captions: {
                 title: 'Filter',
                 save: 'Save',

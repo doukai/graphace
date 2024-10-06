@@ -59,6 +59,10 @@ const zh: NamespaceGraphenceTranslation = {
             bookmark: "收藏"
         },
         grid: {
+            boolean: {
+                true: '是',
+                false: '否',
+            },
             captions: {
                 title: '筛选',
                 save: '保存',

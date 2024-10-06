@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Card } from '@graphace/ui';
+	import RoleGrid from '~/lib/components/objects/role/RoleGrid.svelte';
 	import RoleAggGrid from '~/lib/components/objects/role/RoleAggGrid.svelte';
 	import type { RoleQueryStore } from '~/lib/stores/role/roleQueryStore';
 	import type { PageData } from './$houdini';
@@ -19,6 +20,7 @@
 	const RoleQuery = data.RoleQuery as RoleQueryStore;
 
 	const components: Record<string, any> = {
+		mutation: RoleGrid,
 		agg: RoleAggGrid
 	};
 

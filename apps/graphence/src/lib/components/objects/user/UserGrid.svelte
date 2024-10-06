@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Readable, Writable } from 'svelte/store';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { InboxArrowDown } from '@steeze-ui/heroicons';
+	import { createToolbar, melt } from '@melt-ui/svelte';
 	import { RevoGrid } from '@revolist/svelte-datagrid';
 	import type { ColumnRegular, ColumnGrouping, DataType } from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import SelectColumnType from '@revolist/revogrid-column-select';
 	import { type Field, fieldsDeep } from '@graphace/graphql';
-	import UserQuery from '~/lib/components/objects/user/User.svelte';
+	import UserQuery from '~/lib/components/objects/user//User.svelte';
 	import type { User, UserConnection, UserConnectionQueryArguments } from '~/lib/types/schema';
 	import { getGridType, getGridTheme, editors } from '~/utils';
 
@@ -30,6 +29,11 @@
 		numeric: new NumberColumnType(),
 		select: new SelectColumnType()
 	};
+
+	const {
+		elements: { root, button, link, separator },
+		builders: { createToolbarGroup }
+	} = createToolbar();
 
 	let getFieldName: (fieldName: string, subFieldName?: string) => string;
 	let source: DataType[] = [];
@@ -86,7 +90,7 @@
 						return {
 							name: getFieldName(field.name),
 							children: field.fields.map((subField) => ({
-								name: subField.name,
+								name: getFieldName(field.name, subField.name),
 								prop: `${field.name}.${subField.name}`,
 								autoSize: true,
 								filter: true,
@@ -121,10 +125,10 @@
 						const object = node?.[field.name as keyof User];
 						return field.fields.map((subField) => [
 							`${field.name}.${subField.name}`,
-							object?.[subField.name as keyof typeof object] || null
+							object?.[subField.name as keyof typeof object]
 						]);
 					} else {
-						return [[field.name, node?.[field.name as keyof User] || null]];
+						return [[field.name, node?.[field.name as keyof User]]];
 					}
 				})
 			)
@@ -173,10 +177,11 @@
 	on:bookmark
 	bind:getFieldName
 >
-	<div class="tooltip" slot="option1" data-tip={$LL.graphence.components.grid.captions.save()}>
-		<button class="btn btn-secondary btn-square" on:click={(e) => mutation()}>
-			<Icon src={InboxArrowDown} class="h-5 w-5" />
+	<div use:melt={$root} class="flex p-1 bg-base-300 rounded">
+		<button class="btn btn-sm btn-neutral" use:melt={$button} on:click={(e) => mutation()}>
+			{$LL.graphence.components.grid.captions.save()}
 		</button>
+		<div class="divider divider-horizontal m-0" use:melt={$separator} />
 	</div>
 	<RevoGrid
 		{source}

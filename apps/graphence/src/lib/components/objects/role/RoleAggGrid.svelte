@@ -109,7 +109,7 @@
 							return {
 								name: getFieldName(field.name),
 								children: field.fields.map((subField) => ({
-									name: subField.name,
+									name: getFieldName(field.name, subField.name),
 									prop: `${field.name}.${subField.name}`,
 									autoSize: true,
 									readonly: true,

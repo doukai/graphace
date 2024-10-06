@@ -1944,6 +1944,33 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         generateOptions.push(
             ...targetComponentObjectTypes
                 .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Grid.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            appName: options.presetConfig.appName || _appName,
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
                     const template = '{{componentsPath}}/objects/{{pathName}}/index.ts';
                     const scope = { componentsPath, pathName: changeCase.paramCase(type.name) };
                     return {

@@ -72,11 +72,6 @@
 			label: $LL.graphql.objects.Permission.fields.realm.name(),
 			options: [
 				{
-					value: 'id',
-					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.id.name(),
-					disabled: !permissions.auth('Realm::id::READ')
-				},
-				{
 					value: 'name',
 					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.name.name(),
 					disabled: !permissions.auth('Realm::name::READ')
@@ -85,91 +80,6 @@
 					value: 'description',
 					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.description.name(),
 					disabled: !permissions.auth('Realm::description::READ')
-				},
-				{
-					value: 'isDeprecated',
-					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.isDeprecated.name(),
-					disabled: !permissions.auth('Realm::isDeprecated::READ')
-				},
-				{
-					value: 'version',
-					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.version.name(),
-					disabled: !permissions.auth('Realm::version::READ')
-				},
-				{
-					value: 'realmId',
-					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.realmId.name(),
-					disabled: !permissions.auth('Realm::realmId::READ')
-				},
-				{
-					value: 'createUserId',
-					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.createUserId.name(),
-					disabled: !permissions.auth('Realm::createUserId::READ')
-				},
-				{
-					value: 'createTime',
-					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.createTime.name(),
-					disabled: !permissions.auth('Realm::createTime::READ')
-				},
-				{
-					value: 'updateUserId',
-					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.updateUserId.name(),
-					disabled: !permissions.auth('Realm::updateUserId::READ')
-				},
-				{
-					value: 'updateTime',
-					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.updateTime.name(),
-					disabled: !permissions.auth('Realm::updateTime::READ')
-				},
-				{
-					value: 'createGroupId',
-					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.createGroupId.name(),
-					disabled: !permissions.auth('Realm::createGroupId::READ')
-				},
-				{
-					value: 'idCount',
-					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.idCount.name(),
-					disabled: !permissions.auth('Realm::idCount::READ')
-				},
-				{
-					value: 'idMax',
-					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.idMax.name(),
-					disabled: !permissions.auth('Realm::idMax::READ')
-				},
-				{
-					value: 'idMin',
-					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.idMin.name(),
-					disabled: !permissions.auth('Realm::idMin::READ')
-				},
-				{
-					value: 'nameCount',
-					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.nameCount.name(),
-					disabled: !permissions.auth('Realm::nameCount::READ')
-				},
-				{
-					value: 'nameMax',
-					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.nameMax.name(),
-					disabled: !permissions.auth('Realm::nameMax::READ')
-				},
-				{
-					value: 'nameMin',
-					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.nameMin.name(),
-					disabled: !permissions.auth('Realm::nameMin::READ')
-				},
-				{
-					value: 'descriptionCount',
-					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.descriptionCount.name(),
-					disabled: !permissions.auth('Realm::descriptionCount::READ')
-				},
-				{
-					value: 'descriptionMax',
-					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.descriptionMax.name(),
-					disabled: !permissions.auth('Realm::descriptionMax::READ')
-				},
-				{
-					value: 'descriptionMin',
-					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.descriptionMin.name(),
-					disabled: !permissions.auth('Realm::descriptionMin::READ')
 				},
 			],
 			disabled: !permissions.auth('Permission::realm::READ')

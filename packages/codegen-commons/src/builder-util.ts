@@ -192,6 +192,7 @@ export const getObjectLeafFields = (schema: GraphQLSchema, type: GraphQLNamedTyp
     if (isObjectType(type) || isInputObjectType(type)) {
         return Object.values(type.getFields())
             .filter(field => isLeafType(getFieldType(field.type)))
+            .filter(field => !isAggregate(field.name))
             .filter(field => !isIntrospection(field.name))
             .map(field => {
                 return {

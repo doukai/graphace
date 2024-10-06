@@ -27,6 +27,7 @@ export type Template =
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Pie.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}AggTable.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}AggGrid.svelte' |
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Grid.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/index.ts' |
     '{{componentsPath}}/objects/index.ts' |
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Item.svelte' |

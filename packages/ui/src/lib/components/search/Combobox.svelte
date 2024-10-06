@@ -187,7 +187,7 @@
 					>
 						{g.label}
 					</div>
-					{#each g.options.filter((option) => !option.disabled) as op, index (index)}
+					{#each g.options?.filter((option) => !option.disabled) as op, index (index)}
 						<li
 							use:melt={$option({
 								value: { ...op, group: { value: g.value, label: g.label } },

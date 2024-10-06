@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Card } from '@graphace/ui';
+	import PermissionGrid from '~/lib/components/objects/permission/PermissionGrid.svelte';
 	import PermissionAggGrid from '~/lib/components/objects/permission/PermissionAggGrid.svelte';
 	import type { PermissionQueryStore } from '~/lib/stores/permission/permissionQueryStore';
 	import type { PageData } from './$houdini';
@@ -19,6 +20,7 @@
 	const PermissionQuery = data.PermissionQuery as PermissionQueryStore;
 
 	const components: Record<string, any> = {
+		mutation: PermissionGrid,
 		agg: PermissionAggGrid
 	};
 

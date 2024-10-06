@@ -78,4 +78,5 @@ export type FieldInfo = {
     component?: string;
     originalFieldName?: string | undefined;
     aggFieldList?: FieldInfo[] | undefined;
+    leafFieldList?: FieldInfo[] | undefined;
 }

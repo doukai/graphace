@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Card } from '@graphace/ui';
+	import FileGrid from '~/lib/components/objects/file/FileGrid.svelte';
 	import FileAggGrid from '~/lib/components/objects/file/FileAggGrid.svelte';
 	import type { FileQueryStore } from '~/lib/stores/file/fileQueryStore';
 	import type { PageData } from './$houdini';
@@ -19,6 +20,7 @@
 	const FileQuery = data.FileQuery as FileQueryStore;
 
 	const components: Record<string, any> = {
+		mutation: FileGrid,
 		agg: FileAggGrid
 	};
 

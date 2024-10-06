@@ -218,6 +218,16 @@ export type NamespaceGraphenceTranslation = {
 			bookmark: string
 		}
 		grid: {
+			boolean: {
+				/**
+				 * Y​e​s
+				 */
+				'true': string
+				/**
+				 * N​o
+				 */
+				'false': string
+			}
 			captions: {
 				/**
 				 * F​i​l​t​e​r
@@ -3514,6 +3524,16 @@ export type TranslationFunctions = {
 				bookmark: () => LocalizedString
 			}
 			grid: {
+				boolean: {
+					/**
+					 * Yes
+					 */
+					'true': () => LocalizedString
+					/**
+					 * No
+					 */
+					'false': () => LocalizedString
+				}
 				captions: {
 					/**
 					 * Filter

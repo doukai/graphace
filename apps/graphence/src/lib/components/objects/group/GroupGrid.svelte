@@ -1,17 +1,19 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Readable, Writable } from 'svelte/store';
-	import { RevoGrid, type ColumnRegular, type ColumnGrouping } from '@revolist/svelte-datagrid';
+	import { createToolbar, melt } from '@melt-ui/svelte';
+	import { RevoGrid } from '@revolist/svelte-datagrid';
+	import type { ColumnRegular, ColumnGrouping, DataType } from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import SelectColumnType from '@revolist/revogrid-column-select';
 	import { type Field, fieldsDeep } from '@graphace/graphql';
-	import {{ name }}Agg from '~/{{ objectsPath }}/{{ name | paramCase }}/{{ name }}Agg.svelte';
-	import type { {{ name }}, {{ name }}Connection, {{ name }}ConnectionQueryArguments } from '~/lib/types/schema';
-	import { getGridType, getGridTheme } from '~/utils';
+	import GroupQuery from '~/lib/components/objects/group//Group.svelte';
+	import type { Group, GroupConnection, GroupConnectionQueryArguments } from '~/lib/types/schema';
+	import { getGridType, getGridTheme, editors } from '~/utils';
 
-	export let connection: {{ name }}Connection;
+	export let connection: GroupConnection;
 	export let fields: Field[] = [];
-	export let queryArguments: {{ name }}ConnectionQueryArguments = {};
+	export let queryArguments: GroupConnectionQueryArguments = {};
 	export let isFetching: boolean = false;
 	export let showHeader: boolean = true;
 	export let showFooter: boolean = true;
@@ -20,16 +22,21 @@
 	export let showBookmarkButton: boolean = false;
 
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
-	const typeName = '{{ name }}';
+	const typeName = 'Group';
 	const themeStore = getContext('theme') as Writable<string | undefined>;
-	
+
 	const columnTypes = {
 		numeric: new NumberColumnType(),
 		select: new SelectColumnType()
 	};
 
+	const {
+		elements: { root, button, link, separator },
+		builders: { createToolbarGroup }
+	} = createToolbar();
+
 	let getFieldName: (fieldName: string, subFieldName?: string) => string;
-	let getGrouByName: (fieldName: string) => string;
+	let source: DataType[] = [];
 
 	$: theme = getGridTheme($themeStore);
 	$: nodes = connection.edges?.map((edge) => edge?.node);
@@ -69,96 +76,93 @@
 
 	$: columns =
 		fieldsDeep(fields) === 1
-			? ([
-					...(queryArguments.groupBy || []).map((fieldName) => ({
-						name: getGrouByName(fieldName),
-						prop: fieldName,
-						autoSize: true,
-						readonly: true,
-						filter: true,
-						sortable: true,
-						...getGridType(typeName, fieldName)
-					})),
-					...fields.map((field) => ({
-						name: getFieldName(field.name),
-						prop: field.name,
-						autoSize: true,
-						readonly: true,
-						filter: true,
-						sortable: true,
-						...getGridType(typeName, field.name)
-					}))
-			  ] as ColumnRegular[])
-			: ([
-					...(queryArguments.groupBy || []).map((fieldName) => ({
-						name: '',
-						children: [
-							{
-								name: getGrouByName(fieldName),
-								prop: fieldName,
+			? (fields.map((field) => ({
+					name: getFieldName(field.name),
+					prop: field.name,
+					autoSize: true,
+					filter: true,
+					sortable: true,
+					editable: true,
+					...getGridType(typeName, field.name)
+			  })) as ColumnRegular[])
+			: (fields.map((field) => {
+					if (field.fields && field.fields.length > 0) {
+						return {
+							name: getFieldName(field.name),
+							children: field.fields.map((subField) => ({
+								name: getFieldName(field.name, subField.name),
+								prop: `${field.name}.${subField.name}`,
 								autoSize: true,
-								readonly: true,
 								filter: true,
 								sortable: true,
-								...getGridType(typeName, fieldName)
-							}
-						]
-					})),
-					...fields.map((field) => {
-						if (field.fields && field.fields.length > 0) {
-							return {
-								name: getFieldName(field.name),
-								children: field.fields.map((subField) => ({
-									name: getFieldName(field.name, subField.name),
-									prop: `${field.name}.${subField.name}`,
+								editable: true,
+								...getGridType(typeName, field.name, subField.name)
+							}))
+						};
+					} else {
+						return {
+							name: '',
+							children: [
+								{
+									name: getFieldName(field.name),
+									prop: field.name,
 									autoSize: true,
-									readonly: true,
 									filter: true,
 									sortable: true,
-									...getGridType(typeName, field.name, subField.name)
-								}))
-							};
-						} else {
-							return {
-								name: '',
-								children: [
-									{
-										name: getFieldName(field.name),
-										prop: field.name,
-										autoSize: true,
-										readonly: true,
-										filter: true,
-										sortable: true,
-										...getGridType(typeName, field.name)
-									}
-								]
-							};
-						}
-					})
-			  ] as ColumnGrouping[]);
+									editable: true,
+									...getGridType(typeName, field.name)
+								}
+							]
+						};
+					}
+			  }) as ColumnGrouping[]);
 
-	$: source = nodes?.map((node) =>
-		Object.fromEntries([
-			...(queryArguments.groupBy || []).map((fieldName) => [
-				fieldName,
-				node?.[fieldName as keyof {{ name }}]
-			]),
-			...fields.flatMap((field) => {
-				if (field.fields && field.fields.length > 0) {
-					const object = node?.[field.name as keyof {{ name }}];
-					return field.fields.map((subField) => [
-						`${field.name}.${subField.name}`,
-						object?.[subField.name as keyof typeof object]
-					]);
-				} else {
-					return [[field.name, node?.[field.name as keyof {{ name }}]]];
-				}
-			})
-		])
-	);
+	$: if (nodes) {
+		source = nodes?.map((node) =>
+			Object.fromEntries(
+				fields.flatMap((field) => {
+					if (field.fields && field.fields.length > 0) {
+						const object = node?.[field.name as keyof Group];
+						return field.fields.map((subField) => [
+							`${field.name}.${subField.name}`,
+							object?.[subField.name as keyof typeof object]
+						]);
+					} else {
+						return [[field.name, node?.[field.name as keyof Group]]];
+					}
+				})
+			)
+		);
+	}
+
+	const mutation = () => {
+		console.log(
+			JSON.stringify(
+				source?.map((row) =>
+					Object.fromEntries(
+						fields.map((field) => {
+							if (field.fields && field.fields.length > 0) {
+								return [
+									field.name,
+									Object.fromEntries(
+										field.fields.map((subField) => [
+											subField.name,
+											row?.[`${field.name}.${subField.name}`]
+										])
+									)
+								];
+							} else {
+								return [field.name, row?.[field.name]];
+							}
+						})
+					)
+				)
+			)
+		);
+	};
 </script>
 
-<{{ name }}Agg
+<GroupQuery
 	bind:fields
 	bind:queryArguments
 	{isFetching}
@@ -172,8 +176,13 @@
 	on:query
 	on:bookmark
 	bind:getFieldName
-	bind:getGrouByName
 >
+	<div use:melt={$root} class="flex p-1 bg-base-300 rounded">
+		<button class="btn btn-sm btn-neutral" use:melt={$button} on:click={(e) => mutation()}>
+			{$LL.graphence.components.grid.captions.save()}
+		</button>
+		<div class="divider divider-horizontal m-0" use:melt={$separator} />
+	</div>
 	<RevoGrid
 		{source}
 		{columns}
@@ -183,5 +192,6 @@
 		autoSizeColumn={true}
 		{columnTypes}
 		{theme}
+		{editors}
 	/>
-</{{ name }}Agg>
+</GroupQuery>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Card } from '@graphace/ui';
+	import RealmGrid from '~/lib/components/objects/realm/RealmGrid.svelte';
 	import RealmAggGrid from '~/lib/components/objects/realm/RealmAggGrid.svelte';
 	import type { RealmQueryStore } from '~/lib/stores/realm/realmQueryStore';
 	import type { PageData } from './$houdini';
@@ -19,6 +20,7 @@
 	const RealmQuery = data.RealmQuery as RealmQueryStore;
 
 	const components: Record<string, any> = {
+		mutation: RealmGrid,
 		agg: RealmAggGrid
 	};
 

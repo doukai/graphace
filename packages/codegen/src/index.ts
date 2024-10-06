@@ -686,7 +686,10 @@ const renders: Record<Template, Render> = {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
                 const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => field.fieldName === getIDFieldName(type) || inListField(typeName, field.fieldName, field.fieldTypeName));
-                const nonListObjectFields = getNonListObjectFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => field.fieldName === getIDFieldName(type) || inListField(typeName, field.fieldName, field.fieldTypeName));
+                const nonListObjectFields = getNonListObjectFields(schema, type)
+                    ?.filter(field => !isConnection(field.fieldName))
+                    .filter(field => field.fieldName === getIDFieldName(type) || inListField(typeName, field.fieldName, field.fieldTypeName))
+                    .map(field => ({ ...field, leafFieldList: field.leafFieldList?.filter(field => !isConnection(field.fieldName)).filter(field => field.fieldName === getIDFieldName(type) || inListField(typeName, field.fieldName, field.fieldTypeName)) }));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -793,6 +796,22 @@ const renders: Record<Template, Render> = {
         throw new Error(`${typeName} undefined`);
     },
     '{{componentsPath}}/objects/{{pathName}}/{{name}}AggGrid.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                return {
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        objectsPath: `${config.componentsPath}/objects`
+                    }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
+    },
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Grid.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);

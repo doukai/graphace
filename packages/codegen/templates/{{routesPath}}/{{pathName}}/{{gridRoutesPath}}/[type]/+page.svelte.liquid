@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Card } from '@graphace/ui';
+	import {{ name }}Grid from '~/{{ gridPath }}/{{ name | paramCase }}/{{ name }}Grid.svelte';
 	import {{ name }}AggGrid from '~/{{ gridPath }}/{{ name | paramCase }}/{{ name }}AggGrid.svelte';
 	import type { {{ name }}QueryStore } from '~/{{ storesPath }}/{{ name | paramCase }}/{{ name | camelCase }}QueryStore';
 	import type { PageData } from './$houdini';
@@ -19,6 +20,7 @@
 	const {{ name }}Query = data.{{ name }}Query as {{ name }}QueryStore;
 
 	const components: Record<string, any> = {
+		mutation: {{ name }}Grid,
 		agg: {{ name }}AggGrid
 	};
 

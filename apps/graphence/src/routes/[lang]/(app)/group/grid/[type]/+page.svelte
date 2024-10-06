@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Card } from '@graphace/ui';
+	import GroupGrid from '~/lib/components/objects/group/GroupGrid.svelte';
 	import GroupAggGrid from '~/lib/components/objects/group/GroupAggGrid.svelte';
 	import type { GroupQueryStore } from '~/lib/stores/group/groupQueryStore';
 	import type { PageData } from './$houdini';
@@ -19,6 +20,7 @@
 	const GroupQuery = data.GroupQuery as GroupQueryStore;
 
 	const components: Record<string, any> = {
+		mutation: GroupGrid,
 		agg: GroupAggGrid
 	};
 

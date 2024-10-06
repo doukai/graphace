@@ -6,7 +6,7 @@ import type {
     VNode,
     EditorBase
 } from '@revolist/svelte-datagrid';
-import { getTypeFiledTypeName, getType, isEnum } from '~/utils';
+import { getTypeFieldTypeName, getType, isEnum } from '~/utils';
 import LL from '$i18n/i18n-svelte';
 import type { NamespaceGraphqlTranslation } from '$i18n/i18n-types';
 
@@ -30,7 +30,7 @@ export const getGridTheme = (theme: string | undefined): string | undefined => {
 };
 
 export const getGridType = (typeName: string, filedName: string, subFiledName?: string): Record<string, any> | undefined => {
-    const fieldType = getTypeFiledTypeName(typeName, filedName, subFiledName);
+    const fieldType = getTypeFieldTypeName(typeName, filedName, subFiledName);
     if (fieldType) {
         if (isEnum(fieldType)) {
             return {
@@ -48,45 +48,33 @@ export const getGridType = (typeName: string, filedName: string, subFiledName?: 
         }
         switch (fieldType) {
             case 'Boolean':
-                return { columnType: 'boolean', editor: 'boolean' };
+                return {
+                    columnType: 'select',
+                    labelKey: 'label',
+                    valueKey: 'value',
+                    source: [
+                        { label: get(LL).graphence.components.grid.boolean.true(), value: true },
+                        { label: get(LL).graphence.components.grid.boolean.false(), value: false }
+                    ]
+                };
             case 'Int':
             case 'Float':
             case 'BigInteger':
             case 'BigDecimal':
                 return { columnType: 'numeric', editor: 'numeric' };
             case 'Date':
-                return { columnType: 'date', editor: 'date' };
+                return { editor: 'date' };
             case 'Time':
-                return { columnType: 'time', editor: 'time' };
+                return { editor: 'time' };
             case 'DateTime':
             case 'Timestamp':
-                return { columnType: 'datetime', editor: 'datetime' };
+                return { editor: 'datetime' };
         }
-        return { columnType: 'string', editor: 'string' };
+        return { editor: 'string' };
     }
 }
 
 export const editors = {
-    boolean: (
-        column: ColumnDataSchemaModel,
-        save: (value: SaveData, preventFocus?: boolean) => void,
-        close: (focusNext?: boolean) => void
-    ): EditorBase => {
-        return {
-            element: null, // will be setup up after render
-            editCell: undefined, // will be setup up after render
-            render(createElement: HyperFunc<VNode>) {
-                return createElement('input', {
-                    type: "checkbox",
-                    checked: true
-                });
-            },
-            componentDidRender() { }, // optional, called after component rendered
-            disconnectedCallback() {
-                save((this.element as HTMLInputElement)?.value);
-            } // optional, called after component destroyed
-        };
-    },
     string: (
         column: ColumnDataSchemaModel,
         save: (value: SaveData, preventFocus?: boolean) => void,
@@ -96,7 +84,9 @@ export const editors = {
             element: null, // will be setup up after render
             editCell: undefined, // will be setup up after render
             render(createElement: HyperFunc<VNode>) {
-                return createElement('input');
+                return createElement('input', {
+                    value: column.value
+                });
             },
             componentDidRender() { }, // optional, called after component rendered
             disconnectedCallback() {
@@ -114,7 +104,8 @@ export const editors = {
             editCell: undefined, // will be setup up after render
             render(createElement: HyperFunc<VNode>) {
                 return createElement('input', {
-                    type: "number"
+                    type: "number",
+                    value: column.value
                 });
             },
             componentDidRender() { }, // optional, called after component rendered
@@ -133,7 +124,8 @@ export const editors = {
             editCell: undefined, // will be setup up after render
             render(createElement: HyperFunc<VNode>) {
                 return createElement('input', {
-                    type: "date"
+                    type: "date",
+                    value: column.value
                 });
             },
             componentDidRender() { }, // optional, called after component rendered
@@ -152,7 +144,8 @@ export const editors = {
             editCell: undefined, // will be setup up after render
             render(createElement: HyperFunc<VNode>) {
                 return createElement('input', {
-                    type: "time"
+                    type: "time",
+                    value: column.value
                 });
             },
             componentDidRender() { }, // optional, called after component rendered
@@ -171,7 +164,8 @@ export const editors = {
             editCell: undefined, // will be setup up after render
             render(createElement: HyperFunc<VNode>) {
                 return createElement('input', {
-                    type: "datetime-local"
+                    type: "datetime-local",
+                    value: column.value
                 });
             },
             componentDidRender() { }, // optional, called after component rendered
