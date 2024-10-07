@@ -58,6 +58,15 @@ const zh: NamespaceGraphenceTranslation = {
             filter: "筛选",
             bookmark: "收藏"
         },
+        query: {
+            columns: "字段",
+            join: "关联",
+            joinColumns: "字段",
+            orderBy: "排序",
+            option: "选项",
+            filter: "筛选",
+            bookmark: "收藏"
+        },
         grid: {
             boolean: {
                 true: '是',

@@ -11,10 +11,14 @@
 	import RoleFilter from '~/lib/components/objects/role/RoleFilter.svelte';
 	import type { RoleConnectionQueryArguments } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
+	import { getIdFieldName } from '~/utils';
 	
 	export let fields: Field[] = [];
+	export let queryFields: Field[] = [];
 	export let queryArguments: RoleConnectionQueryArguments = {};
 	export let selectColumns: Option[] = [];
+	export let join: Option | undefined = undefined;
+	export let joinColumns: Option[] = [];
 	export let orderByColumns: Option[] = [];
 	export let totalCount: number = 0;
 	export let pageNumber: number = 1;
@@ -29,11 +33,20 @@
 
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 	const permissions = getContext('permissions') as PermissionsStore;
+	const typeName = 'Role';
 	
 	const dispatch = createEventDispatcher<{
 		query: { fields: Field[]; queryArguments: RoleConnectionQueryArguments };
 		bookmark: { fields: string; queryArguments: string };
 	}>();
+
+	const {
+		elements: { trigger, content, arrow, close, overlay },
+		states: { open }
+	} = createPopover({
+		forceVisible: true,
+		preventScroll: true
+	});
 
 	$: selectOptions = [
 		{
@@ -82,6 +95,185 @@
 	];
 
 	let filteredSelectOptions = selectOptions;
+
+	$: joinOptions = [
+		{
+			value: 'users',
+			label: $LL.graphql.objects.Role.fields.users.name(),
+			options: [
+				{
+					value: 'id',
+					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.id.name(),
+					disabled: !permissions.auth('User::id::READ')
+				},
+				{
+					value: 'name',
+					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.name.name(),
+					disabled: !permissions.auth('User::name::READ')
+				},
+				{
+					value: 'description',
+					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.description.name(),
+					disabled: !permissions.auth('User::description::READ')
+				},
+				{
+					value: 'lastName',
+					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.lastName.name(),
+					disabled: !permissions.auth('User::lastName::READ')
+				},
+				{
+					value: 'login',
+					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.login.name(),
+					disabled: !permissions.auth('User::login::READ')
+				},
+				{
+					value: 'salt',
+					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.salt.name(),
+					disabled: !permissions.auth('User::salt::READ')
+				},
+				{
+					value: 'hash',
+					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.hash.name(),
+					disabled: !permissions.auth('User::hash::READ')
+				},
+				{
+					value: 'email',
+					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.email.name(),
+					disabled: !permissions.auth('User::email::READ')
+				},
+				{
+					value: 'phones',
+					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.phones.name(),
+					disabled: !permissions.auth('User::phones::READ')
+				},
+				{
+					value: 'disable',
+					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.disable.name(),
+					disabled: !permissions.auth('User::disable::READ')
+				},
+				{
+					value: 'syncUserPolicy',
+					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.syncUserPolicy.name(),
+					disabled: !permissions.auth('User::syncUserPolicy::READ')
+				},
+			],
+			disabled: !permissions.auth('Role::users::READ')
+		},
+		{
+			value: 'groups',
+			label: $LL.graphql.objects.Role.fields.groups.name(),
+			options: [
+				{
+					value: 'id',
+					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.id.name(),
+					disabled: !permissions.auth('Group::id::READ')
+				},
+				{
+					value: 'name',
+					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.name.name(),
+					disabled: !permissions.auth('Group::name::READ')
+				},
+				{
+					value: 'description',
+					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.description.name(),
+					disabled: !permissions.auth('Group::description::READ')
+				},
+				{
+					value: 'path',
+					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.path.name(),
+					disabled: !permissions.auth('Group::path::READ')
+				},
+				{
+					value: 'deep',
+					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.deep.name(),
+					disabled: !permissions.auth('Group::deep::READ')
+				},
+				{
+					value: 'parentId',
+					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.parentId.name(),
+					disabled: !permissions.auth('Group::parentId::READ')
+				},
+				{
+					value: 'syncGroupPolicy',
+					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.syncGroupPolicy.name(),
+					disabled: !permissions.auth('Group::syncGroupPolicy::READ')
+				},
+			],
+			disabled: !permissions.auth('Role::groups::READ')
+		},
+		{
+			value: 'composites',
+			label: $LL.graphql.objects.Role.fields.composites.name(),
+			options: [
+				{
+					value: 'id',
+					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.id.name(),
+					disabled: !permissions.auth('Role::id::READ')
+				},
+				{
+					value: 'name',
+					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.name.name(),
+					disabled: !permissions.auth('Role::name::READ')
+				},
+				{
+					value: 'description',
+					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.description.name(),
+					disabled: !permissions.auth('Role::description::READ')
+				},
+			],
+			disabled: !permissions.auth('Role::composites::READ')
+		},
+		{
+			value: 'permissions',
+			label: $LL.graphql.objects.Role.fields.permissions.name(),
+			options: [
+				{
+					value: 'name',
+					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.name.name(),
+					disabled: !permissions.auth('Permission::name::READ')
+				},
+				{
+					value: 'description',
+					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.description.name(),
+					disabled: !permissions.auth('Permission::description::READ')
+				},
+				{
+					value: 'field',
+					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.field.name(),
+					disabled: !permissions.auth('Permission::field::READ')
+				},
+				{
+					value: 'type',
+					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.type.name(),
+					disabled: !permissions.auth('Permission::type::READ')
+				},
+				{
+					value: 'permissionType',
+					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.permissionType.name(),
+					disabled: !permissions.auth('Permission::permissionType::READ')
+				},
+				{
+					value: 'syncPermissionPolicy',
+					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.syncPermissionPolicy.name(),
+					disabled: !permissions.auth('Permission::syncPermissionPolicy::READ')
+				},
+			],
+			disabled: !permissions.auth('Role::permissions::READ')
+		},
+	];
+
+	let filteredJoinOptions =
+		joinOptions?.map((option) => ({
+			value: option.value,
+			label: option.label,
+			disabled: option.disabled
+		})) || [];
+
+	$: joinColumnOptions = join
+		? joinOptions.find((option) => option.value === join?.value)?.options
+		: [];
+
+	let filteredJoinColumnOptions = joinColumnOptions;
 
 	if (fields && fields.length > 0) {
 		selectColumns = fields.flatMap((field) => {
@@ -201,23 +393,52 @@
 		pageNumber = queryArguments.offset / pageSize + 1;
 	}
 
-	const buildFields = (): Field[] => {
-		fields = selectColumns.reduce((fields, option) => {
-			if (option.group?.value) {
-				if (fields.some((field) => field.name === option.group?.value)) {
-					fields
-						.find((field) => field.name === option.group?.value)
-						?.fields?.push({ name: option.value });
+	const optionsToFields = (): Field[] => {
+		return [
+			...selectColumns.reduce((fields, option) => {
+				if (option.group?.value) {
+					if (fields.some((field) => field.name === option.group?.value)) {
+						fields
+							.find((field) => field.name === option.group?.value)
+							?.fields?.push({ name: option.value });
+					} else {
+						fields.push({
+							name: option.group.value,
+							fields: [{ name: option.value }]
+						});
+					}
 				} else {
-					fields.push({ name: option.group.value, fields: [{ name: option.value }] });
+					fields.push({ name: option.value });
 				}
-			} else {
-				fields.push({ name: option.value });
-			}
-			return fields;
-		}, <Field[]>[]);
+				return fields;
+			}, <Field[]>[]),
+			...(join && joinColumns && joinColumns.length > 0
+				? [{ name: join.value, fields: joinColumns?.map((column) => ({ name: column.value })) }]
+				: [])
+		];
+	};
 
+	const buildFields = (): Field[] => {
+		fields = optionsToFields();
 		return fields;
+	};
+
+	const buildQueryFields = (): Field[] => {
+		queryFields = optionsToFields().map((field) => {
+			if (field.fields) {
+				const idFieldName = getIdFieldName(typeName, field.name);
+				if (!field.fields.some((subField) => subField.name === idFieldName)) {
+					field.fields.push({ name: idFieldName! });
+				}
+			}
+			return field;
+		});
+
+		if (!queryFields.some((subField) => subField.name === 'id')) {
+			queryFields.push({ name: 'id' });
+		}
+
+		return queryFields;
 	};
 
 	const buildArguments = (toPageNumber?: number | undefined): RoleConnectionQueryArguments => {
@@ -268,39 +489,34 @@
 		return queryArguments;
 	};
 
-	const queryPage = (toPageNumber?: number | undefined) => {
-		dispatch('query', { fields: buildFields(), queryArguments: buildArguments(toPageNumber) });
-	};
-
 	export const getFieldName = (fieldName: string, subFieldName?: string): string => {
 		if (subFieldName) {
-			return selectOptions
+			return [...selectOptions, ...joinOptions]
 				.filter((group) => group.value === fieldName)
 				?.flatMap((group) => group.options.filter((option) => option.value === subFieldName))[0]
 				.label;
 		} else {
 			return (
-				selectOptions
+				[...selectOptions, ...joinOptions]
 					.filter((group) => !group.value)
 					?.flatMap((group) => group.options.filter((option) => option.value === fieldName))?.[0] ||
-				selectOptions.find((group) => group.value === fieldName)
+				[...selectOptions, ...joinOptions].find((group) => group.value === fieldName)
 			).label;
 		}
 	};
 
-	const {
-		elements: { trigger, content, arrow, close, overlay },
-		states: { open }
-	} = createPopover({
-		forceVisible: true,
-		preventScroll: true
-	});
+	const queryPage = (toPageNumber?: number | undefined) => {
+		buildFields();
+		dispatch('query', { fields: buildQueryFields(), queryArguments: buildArguments(toPageNumber) });
+	};
+
+	queryPage();
 </script>
 
 {#if showHeader}
 	<div class="flex space-x-1">
 		<Combobox
-			title={$LL.graphence.components.agg.columns()}
+			title={$LL.graphence.components.query.columns()}
 			multiple={true}
 			groups={filteredSelectOptions}
 			rootClassName="w-full"
@@ -333,7 +549,7 @@
 			}}
 		/>
 		{#if showOptionButton}
-			<div class="tooltip" data-tip={$LL.graphence.components.agg.option()}>
+			<div class="tooltip" data-tip={$LL.graphence.components.query.option()}>
 				<button class="btn btn-square" use:melt={$trigger}>
 					<Icon src={AdjustmentsHorizontal} class="h-5 w-5" />
 				</button>
@@ -347,7 +563,62 @@
 					<div use:melt={$arrow} />
 					<div class="space-y-1" transition:fade={{ duration: 100 }}>
 						<Combobox
-							title={$LL.graphence.components.agg.orderBy()}
+							title={$LL.graphence.components.query.join()}
+							options={filteredJoinOptions}
+							rootClassName="w-full"
+							className="md:input-xs"
+							containerClassName="md:min-h-8 max-w-xs"
+							tagClassName="md:badge-sm"
+							groupClassName="md:input-group-sm"
+							bind:value={join}
+							on:search={(e) => {
+								if (e.detail.searchValue) {
+									filteredJoinOptions =
+										joinOptions
+											?.filter((group) => group.label?.includes(e.detail.searchValue || ''))
+											.map((option) => ({
+												value: option.value,
+												label: option.label,
+												disabled: option.disabled
+											})) || [];
+								} else {
+									filteredJoinOptions =
+										joinOptions?.map((option) => ({
+											value: option.value,
+											label: option.label,
+											disabled: option.disabled
+										})) || [];
+								}
+							}}
+							on:change={(e) => {
+								queryPage(1);
+							}}
+						/>
+						<Combobox
+							title={$LL.graphence.components.query.joinColumns()}
+							multiple={true}
+							options={filteredJoinColumnOptions}
+							rootClassName="w-full"
+							className="md:input-xs"
+							containerClassName="md:min-h-8 max-w-xs"
+							tagClassName="md:badge-sm"
+							groupClassName="md:input-group-sm"
+							bind:value={joinColumns}
+							on:search={(e) => {
+								if (e.detail.searchValue) {
+									filteredJoinColumnOptions = joinColumnOptions?.filter((option) =>
+										option.label?.includes(e.detail.searchValue || '')
+									);
+								} else {
+									filteredJoinColumnOptions = joinColumnOptions;
+								}
+							}}
+							on:change={(e) => {
+								queryPage(1);
+							}}
+						/>
+						<Combobox
+							title={$LL.graphence.components.query.orderBy()}
 							multiple={true}
 							groups={filteredOrderByOptions}
 							rootClassName="w-full"
@@ -386,7 +657,7 @@
 		{/if}
 		{#if showFilterButton}
 			<RoleFilter bind:expression={queryArguments} let:trigger on:filter={(e) => queryPage(1)}>
-				<div class="tooltip" data-tip={$LL.graphence.components.agg.filter()}>
+				<div class="tooltip" data-tip={$LL.graphence.components.query.filter()}>
 					<button class="btn btn-square" use:melt={trigger}>
 						<Icon src={Funnel} class="h-5 w-5" />
 					</button>
@@ -394,7 +665,7 @@
 			</RoleFilter>
 		{/if}
 		{#if showBookmarkButton}
-			<div class="tooltip" data-tip={$LL.graphence.components.agg.bookmark()}>
+			<div class="tooltip" data-tip={$LL.graphence.components.query.bookmark()}>
 				<button
 					class="btn btn-square"
 					on:click={(e) =>

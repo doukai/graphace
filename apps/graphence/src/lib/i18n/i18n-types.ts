@@ -217,6 +217,36 @@ export type NamespaceGraphenceTranslation = {
 			 */
 			bookmark: string
 		}
+		query: {
+			/**
+			 * C​o​l​u​m​n​s
+			 */
+			columns: string
+			/**
+			 * J​o​i​n
+			 */
+			join: string
+			/**
+			 * J​o​i​n​ ​C​o​l​u​m​n​s
+			 */
+			joinColumns: string
+			/**
+			 * O​r​d​e​r​ ​B​y
+			 */
+			orderBy: string
+			/**
+			 * O​p​t​i​o​n​s
+			 */
+			option: string
+			/**
+			 * F​i​l​t​e​r
+			 */
+			filter: string
+			/**
+			 * B​o​o​k​m​a​r​k
+			 */
+			bookmark: string
+		}
 		grid: {
 			boolean: {
 				/**
@@ -3506,6 +3536,36 @@ export type TranslationFunctions = {
 				 * Group By
 				 */
 				groupBy: () => LocalizedString
+				/**
+				 * Order By
+				 */
+				orderBy: () => LocalizedString
+				/**
+				 * Options
+				 */
+				option: () => LocalizedString
+				/**
+				 * Filter
+				 */
+				filter: () => LocalizedString
+				/**
+				 * Bookmark
+				 */
+				bookmark: () => LocalizedString
+			}
+			query: {
+				/**
+				 * Columns
+				 */
+				columns: () => LocalizedString
+				/**
+				 * Join
+				 */
+				join: () => LocalizedString
+				/**
+				 * Join Columns
+				 */
+				joinColumns: () => LocalizedString
 				/**
 				 * Order By
 				 */

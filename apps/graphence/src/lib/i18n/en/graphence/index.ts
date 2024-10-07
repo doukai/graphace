@@ -58,6 +58,15 @@ const en: BaseTranslation = {
             filter: "Filter",
             bookmark: "Bookmark"
         },
+        query: {
+            columns: "Columns",
+            join: "Join",
+            joinColumns: "Join Columns",
+            orderBy: "Order By",
+            option: "Options",
+            filter: "Filter",
+            bookmark: "Bookmark"
+        },
         grid: {
             boolean: {
                 true: 'Yes',

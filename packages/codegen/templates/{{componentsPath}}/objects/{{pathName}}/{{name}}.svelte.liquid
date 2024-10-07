@@ -11,10 +11,14 @@
 	import {{ name }}Filter from '~/{{ objectsPath }}/{{ name | paramCase }}/{{ name }}Filter.svelte';
 	import type { {{ name }}ConnectionQueryArguments } from '~/{{ schemaTypesPath }}';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
+	import { getIdFieldName } from '~/utils';
 	
 	export let fields: Field[] = [];
+	export let queryFields: Field[] = [];
 	export let queryArguments: {{ name }}ConnectionQueryArguments = {};
 	export let selectColumns: Option[] = [];
+	export let join: Option | undefined = undefined;
+	export let joinColumns: Option[] = [];
 	export let orderByColumns: Option[] = [];
 	export let totalCount: number = 0;
 	export let pageNumber: number = 1;
@@ -29,11 +33,20 @@
 
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 	const permissions = getContext('permissions') as PermissionsStore;
+	const typeName = '{{ name }}';
 	
 	const dispatch = createEventDispatcher<{
 		query: { fields: Field[]; queryArguments: {{ name }}ConnectionQueryArguments };
 		bookmark: { fields: string; queryArguments: string };
 	}>();
+
+	const {
+		elements: { trigger, content, arrow, close, overlay },
+		states: { open }
+	} = createPopover({
+		forceVisible: true,
+		preventScroll: true
+	});
 
 	$: selectOptions = [
 		{
@@ -51,7 +64,7 @@
 				{%- endfor %}
 			]
 		},
-		{%- for field in nonListObjectField %}
+		{%- for field in nonListObjectFields %}
 		{
 			value: '{{ field.fieldName }}',
 			label: $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name(),
@@ -74,6 +87,42 @@
 	];
 
 	let filteredSelectOptions = selectOptions;
+
+	$: joinOptions = [
+		{%- for field in listObjectFields %}
+		{
+			value: '{{ field.fieldName }}',
+			label: $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name(),
+			options: [
+				{%- for leafField in field.leafFieldList %}
+				{
+					value: '{{ leafField.fieldName }}',
+					label: $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name() + $LL.graphql.objects.{{ field.fieldTypeName }}.fields.{{ leafField.fieldName }}.name(),
+					{%- if useAuth %}
+					disabled: !permissions.auth('{{ field.fieldTypeName }}::{{ leafField.fieldName }}::READ')
+					{%- endif %}
+				},
+				{%- endfor %}
+			],
+			{%- if useAuth %}
+			disabled: !permissions.auth('{{ name }}::{{ field.fieldName }}::READ')
+			{%- endif %}
+		},
+		{%- endfor %}
+	];
+
+	let filteredJoinOptions =
+		joinOptions?.map((option) => ({
+			value: option.value,
+			label: option.label,
+			disabled: option.disabled
+		})) || [];
+
+	$: joinColumnOptions = join
+		? joinOptions.find((option) => option.value === join?.value)?.options
+		: [];
+
+	let filteredJoinColumnOptions = joinColumnOptions;
 
 	if (fields && fields.length > 0) {
 		selectColumns = fields.flatMap((field) => {
@@ -193,23 +242,52 @@
 		pageNumber = queryArguments.offset / pageSize + 1;
 	}
 
-	const buildFields = (): Field[] => {
-		fields = selectColumns.reduce((fields, option) => {
-			if (option.group?.value) {
-				if (fields.some((field) => field.name === option.group?.value)) {
-					fields
-						.find((field) => field.name === option.group?.value)
-						?.fields?.push({ name: option.value });
+	const optionsToFields = (): Field[] => {
+		return [
+			...selectColumns.reduce((fields, option) => {
+				if (option.group?.value) {
+					if (fields.some((field) => field.name === option.group?.value)) {
+						fields
+							.find((field) => field.name === option.group?.value)
+							?.fields?.push({ name: option.value });
+					} else {
+						fields.push({
+							name: option.group.value,
+							fields: [{ name: option.value }]
+						});
+					}
 				} else {
-					fields.push({ name: option.group.value, fields: [{ name: option.value }] });
+					fields.push({ name: option.value });
 				}
-			} else {
-				fields.push({ name: option.value });
-			}
-			return fields;
-		}, <Field[]>[]);
+				return fields;
+			}, <Field[]>[]),
+			...(join && joinColumns && joinColumns.length > 0
+				? [{ name: join.value, fields: joinColumns?.map((column) => ({ name: column.value })) }]
+				: [])
+		];
+	};
 
+	const buildFields = (): Field[] => {
+		fields = optionsToFields();
 		return fields;
+	};
+
+	const buildQueryFields = (): Field[] => {
+		queryFields = optionsToFields().map((field) => {
+			if (field.fields) {
+				const idFieldName = getIdFieldName(typeName, field.name);
+				if (!field.fields.some((subField) => subField.name === idFieldName)) {
+					field.fields.push({ name: idFieldName! });
+				}
+			}
+			return field;
+		});
+
+		if (!queryFields.some((subField) => subField.name === '{{ idName }}')) {
+			queryFields.push({ name: '{{ idName }}' });
+		}
+
+		return queryFields;
 	};
 
 	const buildArguments = (toPageNumber?: number | undefined): {{ name }}ConnectionQueryArguments => {
@@ -260,39 +338,34 @@
 		return queryArguments;
 	};
 
-	const queryPage = (toPageNumber?: number | undefined) => {
-		dispatch('query', { fields: buildFields(), queryArguments: buildArguments(toPageNumber) });
-	};
-
 	export const getFieldName = (fieldName: string, subFieldName?: string): string => {
 		if (subFieldName) {
-			return selectOptions
+			return [...selectOptions, ...joinOptions]
 				.filter((group) => group.value === fieldName)
 				?.flatMap((group) => group.options.filter((option) => option.value === subFieldName))[0]
 				.label;
 		} else {
 			return (
-				selectOptions
+				[...selectOptions, ...joinOptions]
 					.filter((group) => !group.value)
 					?.flatMap((group) => group.options.filter((option) => option.value === fieldName))?.[0] ||
-				selectOptions.find((group) => group.value === fieldName)
+				[...selectOptions, ...joinOptions].find((group) => group.value === fieldName)
 			).label;
 		}
 	};
 
-	const {
-		elements: { trigger, content, arrow, close, overlay },
-		states: { open }
-	} = createPopover({
-		forceVisible: true,
-		preventScroll: true
-	});
+	const queryPage = (toPageNumber?: number | undefined) => {
+		buildFields();
+		dispatch('query', { fields: buildQueryFields(), queryArguments: buildArguments(toPageNumber) });
+	};
+
+	queryPage();
 </script>
 
 {#if showHeader}
 	<div class="flex space-x-1">
 		<Combobox
-			title={$LL.{{ appName }}.components.agg.columns()}
+			title={$LL.{{ appName }}.components.query.columns()}
 			multiple={true}
 			groups={filteredSelectOptions}
 			rootClassName="w-full"
@@ -325,7 +398,7 @@
 			}}
 		/>
 		{#if showOptionButton}
-			<div class="tooltip" data-tip={$LL.{{ appName }}.components.agg.option()}>
+			<div class="tooltip" data-tip={$LL.{{ appName }}.components.query.option()}>
 				<button class="btn btn-square" use:melt={$trigger}>
 					<Icon src={AdjustmentsHorizontal} class="h-5 w-5" />
 				</button>
@@ -339,7 +412,62 @@
 					<div use:melt={$arrow} />
 					<div class="space-y-1" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
 						<Combobox
-							title={$LL.{{ appName }}.components.agg.orderBy()}
+							title={$LL.graphence.components.query.join()}
+							options={filteredJoinOptions}
+							rootClassName="w-full"
+							className="md:input-xs"
+							containerClassName="md:min-h-8 max-w-xs"
+							tagClassName="md:badge-sm"
+							groupClassName="md:input-group-sm"
+							bind:value={join}
+							on:search={(e) => {
+								if (e.detail.searchValue) {
+									filteredJoinOptions =
+										joinOptions
+											?.filter((group) => group.label?.includes(e.detail.searchValue || ''))
+											.map((option) => ({
+												value: option.value,
+												label: option.label,
+												disabled: option.disabled
+											})) || [];
+								} else {
+									filteredJoinOptions =
+										joinOptions?.map((option) => ({
+											value: option.value,
+											label: option.label,
+											disabled: option.disabled
+										})) || [];
+								}
+							}}
+							on:change={(e) => {
+								queryPage(1);
+							}}
+						/>
+						<Combobox
+							title={$LL.graphence.components.query.joinColumns()}
+							multiple={true}
+							options={filteredJoinColumnOptions}
+							rootClassName="w-full"
+							className="md:input-xs"
+							containerClassName="md:min-h-8 max-w-xs"
+							tagClassName="md:badge-sm"
+							groupClassName="md:input-group-sm"
+							bind:value={joinColumns}
+							on:search={(e) => {
+								if (e.detail.searchValue) {
+									filteredJoinColumnOptions = joinColumnOptions?.filter((option) =>
+										option.label?.includes(e.detail.searchValue || '')
+									);
+								} else {
+									filteredJoinColumnOptions = joinColumnOptions;
+								}
+							}}
+							on:change={(e) => {
+								queryPage(1);
+							}}
+						/>
+						<Combobox
+							title={$LL.{{ appName }}.components.query.orderBy()}
 							multiple={true}
 							groups={filteredOrderByOptions}
 							rootClassName="w-full"
@@ -378,7 +506,7 @@
 		{/if}
 		{#if showFilterButton}
 			<{{ name }}Filter bind:expression={queryArguments} let:trigger on:filter={(e) => queryPage(1)}>
-				<div class="tooltip" data-tip={$LL.{{ appName }}.components.agg.filter()}>
+				<div class="tooltip" data-tip={$LL.{{ appName }}.components.query.filter()}>
 					<button class="btn btn-square" use:melt={trigger}>
 						<Icon src={Funnel} class="h-5 w-5" />
 					</button>
@@ -386,7 +514,7 @@
 			</{{ name }}Filter>
 		{/if}
 		{#if showBookmarkButton}
-			<div class="tooltip" data-tip={$LL.{{ appName }}.components.agg.bookmark()}>
+			<div class="tooltip" data-tip={$LL.{{ appName }}.components.query.bookmark()}>
 				<button
 					class="btn btn-square"
 					on:click={(e) =>

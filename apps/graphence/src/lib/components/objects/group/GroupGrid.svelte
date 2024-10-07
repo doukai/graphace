@@ -7,9 +7,9 @@
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import SelectColumnType from '@revolist/revogrid-column-select';
 	import { type Field, fieldsDeep } from '@graphace/graphql';
-	import GroupQuery from '~/lib/components/objects/group//Group.svelte';
+	import GroupQuery from '~/lib/components/objects/group/Group.svelte';
 	import type { Group, GroupConnection, GroupConnectionQueryArguments } from '~/lib/types/schema';
-	import { getGridType, getGridTheme, editors } from '~/utils';
+	import { getGridType, getGridTheme, editors, typeFieldTypeHasList } from '~/utils';
 
 	export let connection: GroupConnection;
 	export let fields: Field[] = [];
@@ -35,6 +35,7 @@
 		builders: { createToolbarGroup }
 	} = createToolbar();
 
+	let queryFields: Field[] = [];
 	let getFieldName: (fieldName: string, subFieldName?: string) => string;
 	let source: DataType[] = [];
 
@@ -118,52 +119,165 @@
 			  }) as ColumnGrouping[]);
 
 	$: if (nodes) {
-		source = nodes?.map((node) =>
-			Object.fromEntries(
-				fields.flatMap((field) => {
-					if (field.fields && field.fields.length > 0) {
-						const object = node?.[field.name as keyof Group];
-						return field.fields.map((subField) => [
-							`${field.name}.${subField.name}`,
-							object?.[subField.name as keyof typeof object]
-						]);
-					} else {
-						return [[field.name, node?.[field.name as keyof Group]]];
-					}
-				})
-			)
-		);
+		const join = queryFields.find((field) => typeFieldTypeHasList(typeName, field.name));
+		source = nodes?.flatMap((node) => {
+			if (join) {
+				const array = node?.[join.name as keyof Group];
+				if (Array.isArray(array)) {
+					return array
+						.map((item) => {
+							if (join.fields && join.fields.length > 0) {
+								return join.fields.map((subField) => [
+									`${join.name}.${subField.name}`,
+									item?.[subField.name as keyof typeof item]
+								]);
+							} else {
+								return [[join.name, node?.[join.name as keyof Group]]];
+							}
+						})
+						.map((item) =>
+							Object.fromEntries([
+								...item,
+								...queryFields
+									.filter((field) => field.name !== join.name)
+									.flatMap((field) => {
+										if (field.fields && field.fields.length > 0) {
+											const object = node?.[field.name as keyof Group];
+											return field.fields.map((subField) => [
+												`${field.name}.${subField.name}`,
+												object?.[subField.name as keyof typeof object]
+											]);
+										} else {
+											return [[field.name, node?.[field.name as keyof Group]]];
+										}
+									})
+							])
+						);
+				}
+			}
+			return [
+				Object.fromEntries(
+					queryFields.flatMap((field) => {
+						if (field.fields && field.fields.length > 0) {
+							const object = node?.[field.name as keyof Group];
+							return field.fields.map((subField) => [
+								`${field.name}.${subField.name}`,
+								object?.[subField.name as keyof typeof object]
+							]);
+						} else {
+							return [[field.name, node?.[field.name as keyof Group]]];
+						}
+					})
+				)
+			];
+		});
 	}
 
 	const mutation = () => {
-		console.log(
-			JSON.stringify(
-				source?.map((row) =>
-					Object.fromEntries(
-						fields.map((field) => {
-							if (field.fields && field.fields.length > 0) {
-								return [
-									field.name,
-									Object.fromEntries(
-										field.fields.map((subField) => [
-											subField.name,
-											row?.[`${field.name}.${subField.name}`]
-										])
-									)
-								];
-							} else {
-								return [field.name, row?.[field.name]];
-							}
-						})
+		let list = [];
+		const join = queryFields.find((field) => typeFieldTypeHasList(typeName, field.name));
+		if (join) {
+			list = source?.reduce((nodes: DataType[], row) => {
+				if (
+					row['id'] &&
+					nodes.some((node: DataType) => node['id'] === row['id'])
+				) {
+					nodes
+						.find((node: DataType) => node['id'] === row['id'])
+						?.[join.name].push(
+							Object.fromEntries(
+								join!.fields?.map((subField) => [
+									subField.name,
+									row?.[`${join.name}.${subField.name}`]
+								]) || []
+							)
+						);
+				} else if (
+					nodes.some((node: DataType) =>
+						queryFields
+							.filter((field) => field.name !== join.name)
+							.filter((field) => !field.fields)
+							.every((field) => node[field.name] === row[field.name])
 					)
+				) {
+					nodes
+						.find((node: DataType) =>
+							queryFields
+								.filter((field) => field.name !== join.name)
+								.filter((field) => !field.fields)
+								.every((field) => node[field.name] === row[field.name])
+						)
+						?.[join.name].push(
+							Object.fromEntries(
+								join!.fields?.map((subField) => [
+									subField.name,
+									row?.[`${join.name}.${subField.name}`]
+								]) || []
+							)
+						);
+				} else {
+					nodes.push(
+						Object.fromEntries(
+							queryFields.map((field) => {
+								if (field.fields && field.fields.length > 0) {
+									return [
+										field.name,
+										field.name === join.name
+											? [
+													Object.fromEntries(
+														field.fields.map((subField) => [
+															subField.name,
+															row?.[`${field.name}.${subField.name}`]
+														])
+													)
+											  ]
+											: Object.fromEntries(
+													field.fields.map((subField) => [
+														subField.name,
+														row?.[`${field.name}.${subField.name}`]
+													])
+											  )
+									];
+								} else {
+									return [
+										field.name,
+										field.name === join.name ? [row?.[field.name]] : row?.[field.name]
+									];
+								}
+							})
+						)
+					);
+				}
+				return nodes;
+			}, []);
+		} else {
+			list = source?.map((row) =>
+				Object.fromEntries(
+					queryFields.map((field) => {
+						if (field.fields && field.fields.length > 0) {
+							return [
+								field.name,
+								Object.fromEntries(
+									field.fields.map((subField) => [
+										subField.name,
+										row?.[`${field.name}.${subField.name}`]
+									])
+								)
+							];
+						} else {
+							return [field.name, row?.[field.name]];
+						}
+					})
 				)
-			)
-		);
+			);
+		}
+		console.log(JSON.stringify(list));
 	};
 </script>
 
 <GroupQuery
 	bind:fields
+	bind:queryFields
 	bind:queryArguments
 	{isFetching}
 	{showHeader}
