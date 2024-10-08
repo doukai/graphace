@@ -3,7 +3,12 @@
 	import type { Readable, Writable } from 'svelte/store';
 	import { createToolbar, melt } from '@melt-ui/svelte';
 	import { RevoGrid } from '@revolist/svelte-datagrid';
-	import type { ColumnRegular, ColumnGrouping, DataType } from '@revolist/svelte-datagrid';
+	import type {
+		ColumnRegular,
+		ColumnGrouping,
+		DataType,
+		RangeArea
+	} from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import SelectColumnType from '@revolist/revogrid-column-select';
 	import { type Field, fieldsDeep } from '@graphace/graphql';
@@ -38,6 +43,7 @@
 	let queryFields: Field[] = [];
 	let getFieldName: (fieldName: string, subFieldName?: string) => string;
 	let source: DataType[] = [];
+	let rowIndex = undefined;
 
 	$: theme = getGridTheme($themeStore);
 	$: nodes = connection.edges?.map((edge) => edge?.node);
@@ -297,6 +303,13 @@
 			{$LL.graphence.components.grid.captions.save()}
 		</button>
 		<div class="divider divider-horizontal m-0" use:melt={$separator} />
+		<button
+			class="btn btn-sm btn-neutral"
+			use:melt={$button}
+			on:click={(e) => getSelectedRange().then((range) => console.log(JSON.stringify(range)))}
+		>
+			{$LL.graphence.components.grid.captions.save()}
+		</button>
 	</div>
 	<RevoGrid
 		{source}
@@ -308,5 +321,6 @@
 		{columnTypes}
 		{theme}
 		{editors}
+		on:afterfocus={(e) => (rowIndex = e.detail.rowIndex)}
 	/>
 </RoleQuery>
