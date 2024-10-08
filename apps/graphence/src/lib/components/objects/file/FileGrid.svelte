@@ -178,7 +178,14 @@
 		const join = queryFields.find((field) => typeFieldTypeHasList(typeName, field.name));
 		if (join) {
 			list = source?.reduce((nodes: DataType[], row) => {
+				const object = Object.fromEntries(
+					join!.fields?.map((subField) => [
+						subField.name,
+						row?.[`${join.name}.${subField.name}`]
+					]) || []
+				);
 				if (
+					Object.values(object).filter((value) => value).length > 0 &&
 					row['id'] &&
 					nodes.some((node: DataType) => node['id'] === row['id'])
 				) {
@@ -193,6 +200,7 @@
 							)
 						);
 				} else if (
+					Object.values(object).filter((value) => value).length > 0 &&
 					nodes.some((node: DataType) =>
 						queryFields
 							.filter((field) => field.name !== join.name)
@@ -220,24 +228,16 @@
 						Object.fromEntries(
 							queryFields.map((field) => {
 								if (field.fields && field.fields.length > 0) {
-									return [
-										field.name,
-										field.name === join.name
-											? [
-													Object.fromEntries(
-														field.fields.map((subField) => [
-															subField.name,
-															row?.[`${field.name}.${subField.name}`]
-														])
-													)
-											  ]
-											: Object.fromEntries(
-													field.fields.map((subField) => [
-														subField.name,
-														row?.[`${field.name}.${subField.name}`]
-													])
-											  )
-									];
+									const object = Object.fromEntries(
+										field.fields.map((subField) => [
+											subField.name,
+											row?.[`${field.name}.${subField.name}`]
+										])
+									);
+									if (Object.values(object).filter((value) => value).length > 0) {
+										return [field.name, field.name === join.name ? [object] : object];
+									}
+									return [field.name, field.name === join.name ? [] : null];
 								} else {
 									return [
 										field.name,
@@ -255,15 +255,16 @@
 				Object.fromEntries(
 					queryFields.map((field) => {
 						if (field.fields && field.fields.length > 0) {
-							return [
-								field.name,
-								Object.fromEntries(
-									field.fields.map((subField) => [
-										subField.name,
-										row?.[`${field.name}.${subField.name}`]
-									])
-								)
-							];
+							const object = Object.fromEntries(
+								field.fields.map((subField) => [
+									subField.name,
+									row?.[`${field.name}.${subField.name}`]
+								])
+							);
+							if (Object.values(object).filter((value) => value).length > 0) {
+								return [field.name, object];
+							}
+							return [field.name, null];
 						} else {
 							return [field.name, row?.[field.name]];
 						}

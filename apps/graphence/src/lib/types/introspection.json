@@ -102091,8 +102091,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "FIELD"
+          "FIELD",
+          "OBJECT"
         ],
         "args": []
       },
@@ -102280,8 +102280,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "INPUT_OBJECT"
+          "INPUT_OBJECT",
+          "OBJECT"
         ],
         "args": [
           {
@@ -102307,8 +102307,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "INPUT_OBJECT"
+          "INPUT_OBJECT",
+          "OBJECT"
         ],
         "args": []
       },
@@ -102317,11 +102317,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "SUBSCRIPTION",
-          "MUTATION",
           "FIELD_DEFINITION",
           "QUERY",
-          "INPUT_OBJECT"
+          "INPUT_OBJECT",
+          "MUTATION",
+          "SUBSCRIPTION"
         ],
         "args": [
           {
@@ -102395,11 +102395,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "SUBSCRIPTION",
-          "MUTATION",
           "FIELD_DEFINITION",
           "QUERY",
-          "INPUT_OBJECT"
+          "INPUT_OBJECT",
+          "MUTATION",
+          "SUBSCRIPTION"
         ],
         "args": [
           {
@@ -102425,10 +102425,10 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "INPUT_FIELD_DEFINITION",
           "FIELD_DEFINITION",
-          "INPUT_OBJECT"
+          "INPUT_OBJECT",
+          "INPUT_FIELD_DEFINITION",
+          "OBJECT"
         ],
         "args": [
           {
@@ -102939,11 +102939,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "SUBSCRIPTION",
-          "MUTATION",
-          "OBJECT",
           "FIELD_DEFINITION",
-          "QUERY"
+          "QUERY",
+          "MUTATION",
+          "SUBSCRIPTION",
+          "OBJECT"
         ],
         "args": [
           {
@@ -102969,8 +102969,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "FIELD"
+          "FIELD",
+          "OBJECT"
         ],
         "args": []
       },
@@ -102979,8 +102979,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "FIELD"
+          "FIELD",
+          "OBJECT"
         ],
         "args": [
           {
