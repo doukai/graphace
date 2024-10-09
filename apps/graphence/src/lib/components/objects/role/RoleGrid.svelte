@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable, Writable } from 'svelte/store';
 	import { createToolbar, melt } from '@melt-ui/svelte';
 	import { RevoGrid } from '@revolist/svelte-datagrid';
@@ -14,12 +14,18 @@
 	import SelectColumnType from '@revolist/revogrid-column-select';
 	import { type Field, fieldsDeep } from '@graphace/graphql';
 	import RoleQuery from '~/lib/components/objects/role/Role.svelte';
-	import type { Role, RoleConnection, RoleConnectionQueryArguments } from '~/lib/types/schema';
+	import type {
+		Role,
+		RoleConnection,
+		RoleConnectionQueryArguments,
+		RoleListMutationArguments
+	} from '~/lib/types/schema';
 	import { getGridType, getGridTheme, editors, typeFieldTypeHasList } from '~/utils';
 
 	export let connection: RoleConnection;
 	export let fields: Field[] = [];
 	export let queryArguments: RoleConnectionQueryArguments = {};
+	export let mutationArguments: RoleListMutationArguments = {};
 	export let isFetching: boolean = false;
 	export let showHeader: boolean = true;
 	export let showFooter: boolean = true;
@@ -35,6 +41,10 @@
 		numeric: new NumberColumnType(),
 		select: new SelectColumnType()
 	};
+
+	const dispatch = createEventDispatcher<{
+		mutation: { fields: Field[]; mutationArguments: RoleListMutationArguments };
+	}>();
 
 	const {
 		elements: { root, button, link, separator },

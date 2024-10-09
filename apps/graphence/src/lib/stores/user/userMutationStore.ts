@@ -4,17 +4,17 @@ import type { LoadEvent } from '@sveltejs/kit';
 import { type Field, fieldToString } from '@graphace/graphql';
 import type { User, UserListMutationArguments } from '~/lib/types/schema';
 
-export async function createUserMutationStore(params: { event: LoadEvent, fields: Field[], mutationArguments: UserListMutationArguments }): Promise<UserMutationStore> {
+export async function createUserMutationStore(params: { event: LoadEvent }): Promise<UserMutationStore> {
     const data: Writable<{ isFetching: boolean, list: User[] }> = writable({
         isFetching: false,
         list: []
     });
 
-    const { event, fields, mutationArguments } = params;
+    const { event } = params;
 
     const { subscribe, set, update } = data;
 
-    const fetch = async (fields: Field[], mutationArguments: UserListMutationArguments) => {
+    const fetch = async (fields: Field[], mutationArguments: UserListMutationArguments): Promise<User[] | null | undefined> => {
         if (fields && fields.length > 0) {
             update((data) => ({ ...data, isFetching: true }));
             let query = `mutation Mutation_userList($id: StringExpression, $name: StringExpression, $description: StringExpression, $lastName: StringExpression, $login: StringExpression, $salt: StringExpression, $hash: StringExpression, $email: StringExpression, $files: FileExpression, $phones: StringExpression, $disable: BooleanExpression, $groups: GroupExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $fileUserRelation: FileUserRelationExpression, $userPhonesRelation: UserPhonesRelationExpression, $groupUserRelation: GroupUserRelationExpression, $roleUserRelation: RoleUserRelationExpression, $orderBy: UserOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [UserExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
@@ -37,6 +37,7 @@ export async function createUserMutationStore(params: { event: LoadEvent, fields
                     isFetching: false,
                     list: json.data.userList
                 });
+                return json.data.userList;
             }
         }
     }
@@ -55,5 +56,5 @@ export type UserMutationStore = {
         isFetching: boolean;
         list: User[];
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], mutationArguments: UserListMutationArguments) => Promise<void>;
+    fetch: (fields: Field[], mutationArguments: UserListMutationArguments) => Promise<User[] | null | undefined>;
 }

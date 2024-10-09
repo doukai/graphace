@@ -3,6 +3,7 @@
 	import UserGrid from '~/lib/components/objects/user/UserGrid.svelte';
 	import UserAggGrid from '~/lib/components/objects/user/UserAggGrid.svelte';
 	import type { UserQueryStore } from '~/lib/stores/user/userQueryStore';
+	import type { UserMutationStore } from '~/lib/stores/user/userMutationStore';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -18,6 +19,7 @@
 	} = data;
 
 	const UserQuery = data.UserQuery as UserQueryStore;
+	const UserMutation = data.UserMutation as UserMutationStore;
 
 	const components: Record<string, any> = {
 		mutation: UserGrid,
@@ -40,5 +42,6 @@
 		{showFilterButton}
 		{showBookmarkButton}
 		on:query={(e) => UserQuery.fetch(e.detail.fields, e.detail.queryArguments)}
+		on:mutation={(e) => UserMutation.fetch(e.detail.fields, e.detail.mutationArguments)}
 	/>
 </Card>
