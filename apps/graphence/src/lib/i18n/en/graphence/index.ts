@@ -68,6 +68,16 @@ const en: BaseTranslation = {
             bookmark: "Bookmark"
         },
         grid: {
+            buttons: {
+                refresh: 'Refresh',
+                save: 'Save',
+                new: 'New',
+                InsertAbove: 'Insert↑',
+                InsertBelow: 'Insert↓',
+                append: 'Append',
+                remove: 'Remove',
+                canel: 'Canel'
+            },
             boolean: {
                 true: 'Yes',
                 false: 'No',

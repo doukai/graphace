@@ -68,6 +68,16 @@ const zh: NamespaceGraphenceTranslation = {
             bookmark: "收藏"
         },
         grid: {
+            buttons: {
+                refresh: '刷新',
+                save: '保存',
+                new: '新页',
+                InsertAbove: '插入↑',
+                InsertBelow: '插入↓',
+                append: '添加',
+                remove: '删除',
+                canel: '取消'
+            },
             boolean: {
                 true: '是',
                 false: '否',

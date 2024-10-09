@@ -248,6 +248,40 @@ export type NamespaceGraphenceTranslation = {
 			bookmark: string
 		}
 		grid: {
+			buttons: {
+				/**
+				 * R​e​f​r​e​s​h
+				 */
+				refresh: string
+				/**
+				 * S​a​v​e
+				 */
+				save: string
+				/**
+				 * N​e​w
+				 */
+				'new': string
+				/**
+				 * I​n​s​e​r​t​↑
+				 */
+				InsertAbove: string
+				/**
+				 * I​n​s​e​r​t​↓
+				 */
+				InsertBelow: string
+				/**
+				 * A​p​p​e​n​d
+				 */
+				append: string
+				/**
+				 * R​e​m​o​v​e
+				 */
+				remove: string
+				/**
+				 * C​a​n​e​l
+				 */
+				canel: string
+			}
 			boolean: {
 				/**
 				 * Y​e​s
@@ -3584,6 +3618,40 @@ export type TranslationFunctions = {
 				bookmark: () => LocalizedString
 			}
 			grid: {
+				buttons: {
+					/**
+					 * Refresh
+					 */
+					refresh: () => LocalizedString
+					/**
+					 * Save
+					 */
+					save: () => LocalizedString
+					/**
+					 * New
+					 */
+					'new': () => LocalizedString
+					/**
+					 * Insert↑
+					 */
+					InsertAbove: () => LocalizedString
+					/**
+					 * Insert↓
+					 */
+					InsertBelow: () => LocalizedString
+					/**
+					 * Append
+					 */
+					append: () => LocalizedString
+					/**
+					 * Remove
+					 */
+					remove: () => LocalizedString
+					/**
+					 * Canel
+					 */
+					canel: () => LocalizedString
+				}
 				boolean: {
 					/**
 					 * Yes

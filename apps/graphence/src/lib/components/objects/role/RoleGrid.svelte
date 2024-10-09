@@ -3,7 +3,13 @@
 	import type { Readable, Writable } from 'svelte/store';
 	import { createToolbar, melt } from '@melt-ui/svelte';
 	import { RevoGrid } from '@revolist/svelte-datagrid';
-	import type { ColumnRegular, ColumnGrouping, DataType } from '@revolist/svelte-datagrid';
+	import type {
+		ColumnRegular,
+		ColumnGrouping,
+		DataType,
+		Cell,
+		DimensionRows
+	} from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import SelectColumnType from '@revolist/revogrid-column-select';
 	import { type Field, fieldsDeep } from '@graphace/graphql';
@@ -38,7 +44,18 @@
 	let queryFields: Field[] = [];
 	let getFieldName: (fieldName: string, subFieldName?: string) => string;
 	let source: DataType[] = [];
+	let pageSize: number = 10;
 	let rowIndex: number | undefined = undefined;
+	let colIndex: number | undefined = undefined;
+	let setCellsFocus: (
+		cellStart?: Cell,
+		cellEnd?: Cell,
+		colType?: string,
+		rowType?: string
+	) => Promise<void>;
+	let refresh: (type?: DimensionRows | 'all') => Promise<void>;
+	let getSource: (type?: DimensionRows) => Promise<DataType[]>;
+	let queryPage: (toPageNumber?: number | undefined) => void;
 
 	$: theme = getGridTheme($themeStore);
 	$: nodes = connection.edges?.map((edge) => edge?.node);
@@ -281,6 +298,7 @@
 	bind:fields
 	bind:queryFields
 	bind:queryArguments
+	bind:pageSize
 	{isFetching}
 	{showHeader}
 	{showFooter}
@@ -288,27 +306,79 @@
 	{showFilterButton}
 	{showBookmarkButton}
 	{totalCount}
-	className="p-0"
+	className="p-0 h-screen"
 	on:query
 	on:bookmark
 	bind:getFieldName
+	bind:queryPage
 >
-	<div use:melt={$root} class="flex p-1 bg-base-300 rounded">
-		<button class="btn btn-sm btn-neutral" use:melt={$button} on:click={(e) => mutation()}>
-			{$LL.graphence.components.grid.captions.save()}
+	<div use:melt={$root} class="flex p-1 bg-base-300 rounded space-x-1">
+		<button class="btn btn-xs" use:melt={$button} on:click={(e) => queryPage()}>
+			{$LL.graphence.components.grid.buttons.refresh()}
+		</button>
+		<button class="btn btn-xs btn-secondary" use:melt={$button} on:click={(e) => mutation()}>
+			{$LL.graphence.components.grid.buttons.save()}
 		</button>
 		<div class="divider divider-horizontal m-0" use:melt={$separator} />
 		<button
-			class="btn btn-sm btn-neutral"
+			class="btn btn-xs btn-primary"
 			use:melt={$button}
+			disabled={fields.length === 0}
+			on:click={(e) => {
+				source = [...Array(pageSize).map(() => ({}))];
+			}}
+		>
+			{$LL.graphence.components.grid.buttons.new()}
+		</button>
+		<button
+			class="btn btn-xs btn-primary"
+			use:melt={$button}
+			disabled={!rowIndex}
 			on:click={(e) => {
 				if (rowIndex) {
 					source.splice(rowIndex, 0, {});
 					source = [...source];
+					setCellsFocus(
+						{ x: colIndex || 0, y: rowIndex || 0 },
+						{ x: colIndex || 0, y: rowIndex || 0 }
+					);
 				}
 			}}
 		>
-			{$LL.graphence.components.grid.captions.save()}
+			{$LL.graphence.components.grid.buttons.InsertAbove()}
+		</button>
+		<button
+			class="btn btn-xs btn-primary"
+			use:melt={$button}
+			disabled={!rowIndex}
+			on:click={(e) => {
+				if (rowIndex) {
+					source.splice(rowIndex + 1, 0, {});
+					source = [...source];
+					setCellsFocus(
+						{ x: colIndex || 0, y: rowIndex + 1 || 0 },
+						{ x: colIndex || 0, y: rowIndex + 1 || 0 }
+					);
+				}
+			}}
+		>
+			{$LL.graphence.components.grid.buttons.InsertBelow()}
+		</button>
+		<button
+			class="btn btn-xs btn-primary"
+			use:melt={$button}
+			disabled={fields.length === 0}
+			on:click={(e) => {
+				if (rowIndex) {
+					source = [...source, {}];
+				}
+			}}
+		>
+			{$LL.graphence.components.grid.buttons.append()}
+		</button>
+		<div class="divider divider-horizontal m-0" use:melt={$separator} />
+		<button class="btn btn-xs btn-error" use:melt={$button}>
+			{$LL.graphence.components.grid.buttons.remove()}
 		</button>
 	</div>
 	<RevoGrid
@@ -318,9 +388,16 @@
 		range={true}
 		resize={true}
 		autoSizeColumn={true}
+		rowHeaders={true}
 		{columnTypes}
 		{theme}
 		{editors}
-		on:afterfocus={(e) => (rowIndex = e.detail.rowIndex)}
+		on:afterfocus={(e) => {
+			rowIndex = e.detail.rowIndex;
+			colIndex = e.detail.colIndex;
+		}}
+		bind:setCellsFocus
+		bind:refresh
+		bind:getSource
 	/>
 </RoleQuery>

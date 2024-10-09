@@ -12,7 +12,7 @@
 	import type { RoleConnectionQueryArguments } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { getIdFieldName } from '~/utils';
-	
+
 	export let fields: Field[] = [];
 	export let queryFields: Field[] = [];
 	export let queryArguments: RoleConnectionQueryArguments = {};
@@ -34,7 +34,7 @@
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 	const permissions = getContext('permissions') as PermissionsStore;
 	const typeName = 'Role';
-	
+
 	const dispatch = createEventDispatcher<{
 		query: { fields: Field[]; queryArguments: RoleConnectionQueryArguments };
 		bookmark: { fields: string; queryArguments: string };
@@ -67,7 +67,7 @@
 					value: 'description',
 					label: $LL.graphql.objects.Role.fields.description.name(),
 					disabled: !permissions.auth('Role::description::READ')
-				},
+				}
 			]
 		},
 		{
@@ -76,22 +76,28 @@
 			options: [
 				{
 					value: 'id',
-					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.id.name(),
+					label:
+						$LL.graphql.objects.Role.fields.realm.name() +
+						$LL.graphql.objects.Realm.fields.id.name(),
 					disabled: !permissions.auth('Realm::id::READ')
 				},
 				{
 					value: 'name',
-					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.name.name(),
+					label:
+						$LL.graphql.objects.Role.fields.realm.name() +
+						$LL.graphql.objects.Realm.fields.name.name(),
 					disabled: !permissions.auth('Realm::name::READ')
 				},
 				{
 					value: 'description',
-					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.description.name(),
+					label:
+						$LL.graphql.objects.Role.fields.realm.name() +
+						$LL.graphql.objects.Realm.fields.description.name(),
 					disabled: !permissions.auth('Realm::description::READ')
-				},
+				}
 			],
 			disabled: !permissions.auth('Role::realm::READ')
-		},
+		}
 	];
 
 	let filteredSelectOptions = selectOptions;
@@ -103,59 +109,81 @@
 			options: [
 				{
 					value: 'id',
-					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.id.name(),
+					label:
+						$LL.graphql.objects.Role.fields.users.name() +
+						$LL.graphql.objects.User.fields.id.name(),
 					disabled: !permissions.auth('User::id::READ')
 				},
 				{
 					value: 'name',
-					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.name.name(),
+					label:
+						$LL.graphql.objects.Role.fields.users.name() +
+						$LL.graphql.objects.User.fields.name.name(),
 					disabled: !permissions.auth('User::name::READ')
 				},
 				{
 					value: 'description',
-					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.description.name(),
+					label:
+						$LL.graphql.objects.Role.fields.users.name() +
+						$LL.graphql.objects.User.fields.description.name(),
 					disabled: !permissions.auth('User::description::READ')
 				},
 				{
 					value: 'lastName',
-					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.lastName.name(),
+					label:
+						$LL.graphql.objects.Role.fields.users.name() +
+						$LL.graphql.objects.User.fields.lastName.name(),
 					disabled: !permissions.auth('User::lastName::READ')
 				},
 				{
 					value: 'login',
-					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.login.name(),
+					label:
+						$LL.graphql.objects.Role.fields.users.name() +
+						$LL.graphql.objects.User.fields.login.name(),
 					disabled: !permissions.auth('User::login::READ')
 				},
 				{
 					value: 'salt',
-					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.salt.name(),
+					label:
+						$LL.graphql.objects.Role.fields.users.name() +
+						$LL.graphql.objects.User.fields.salt.name(),
 					disabled: !permissions.auth('User::salt::READ')
 				},
 				{
 					value: 'hash',
-					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.hash.name(),
+					label:
+						$LL.graphql.objects.Role.fields.users.name() +
+						$LL.graphql.objects.User.fields.hash.name(),
 					disabled: !permissions.auth('User::hash::READ')
 				},
 				{
 					value: 'email',
-					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.email.name(),
+					label:
+						$LL.graphql.objects.Role.fields.users.name() +
+						$LL.graphql.objects.User.fields.email.name(),
 					disabled: !permissions.auth('User::email::READ')
 				},
 				{
 					value: 'phones',
-					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.phones.name(),
+					label:
+						$LL.graphql.objects.Role.fields.users.name() +
+						$LL.graphql.objects.User.fields.phones.name(),
 					disabled: !permissions.auth('User::phones::READ')
 				},
 				{
 					value: 'disable',
-					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.disable.name(),
+					label:
+						$LL.graphql.objects.Role.fields.users.name() +
+						$LL.graphql.objects.User.fields.disable.name(),
 					disabled: !permissions.auth('User::disable::READ')
 				},
 				{
 					value: 'syncUserPolicy',
-					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.syncUserPolicy.name(),
+					label:
+						$LL.graphql.objects.Role.fields.users.name() +
+						$LL.graphql.objects.User.fields.syncUserPolicy.name(),
 					disabled: !permissions.auth('User::syncUserPolicy::READ')
-				},
+				}
 			],
 			disabled: !permissions.auth('Role::users::READ')
 		},
@@ -165,39 +193,53 @@
 			options: [
 				{
 					value: 'id',
-					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.id.name(),
+					label:
+						$LL.graphql.objects.Role.fields.groups.name() +
+						$LL.graphql.objects.Group.fields.id.name(),
 					disabled: !permissions.auth('Group::id::READ')
 				},
 				{
 					value: 'name',
-					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.name.name(),
+					label:
+						$LL.graphql.objects.Role.fields.groups.name() +
+						$LL.graphql.objects.Group.fields.name.name(),
 					disabled: !permissions.auth('Group::name::READ')
 				},
 				{
 					value: 'description',
-					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.description.name(),
+					label:
+						$LL.graphql.objects.Role.fields.groups.name() +
+						$LL.graphql.objects.Group.fields.description.name(),
 					disabled: !permissions.auth('Group::description::READ')
 				},
 				{
 					value: 'path',
-					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.path.name(),
+					label:
+						$LL.graphql.objects.Role.fields.groups.name() +
+						$LL.graphql.objects.Group.fields.path.name(),
 					disabled: !permissions.auth('Group::path::READ')
 				},
 				{
 					value: 'deep',
-					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.deep.name(),
+					label:
+						$LL.graphql.objects.Role.fields.groups.name() +
+						$LL.graphql.objects.Group.fields.deep.name(),
 					disabled: !permissions.auth('Group::deep::READ')
 				},
 				{
 					value: 'parentId',
-					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.parentId.name(),
+					label:
+						$LL.graphql.objects.Role.fields.groups.name() +
+						$LL.graphql.objects.Group.fields.parentId.name(),
 					disabled: !permissions.auth('Group::parentId::READ')
 				},
 				{
 					value: 'syncGroupPolicy',
-					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.syncGroupPolicy.name(),
+					label:
+						$LL.graphql.objects.Role.fields.groups.name() +
+						$LL.graphql.objects.Group.fields.syncGroupPolicy.name(),
 					disabled: !permissions.auth('Group::syncGroupPolicy::READ')
-				},
+				}
 			],
 			disabled: !permissions.auth('Role::groups::READ')
 		},
@@ -207,19 +249,25 @@
 			options: [
 				{
 					value: 'id',
-					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.id.name(),
+					label:
+						$LL.graphql.objects.Role.fields.composites.name() +
+						$LL.graphql.objects.Role.fields.id.name(),
 					disabled: !permissions.auth('Role::id::READ')
 				},
 				{
 					value: 'name',
-					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.name.name(),
+					label:
+						$LL.graphql.objects.Role.fields.composites.name() +
+						$LL.graphql.objects.Role.fields.name.name(),
 					disabled: !permissions.auth('Role::name::READ')
 				},
 				{
 					value: 'description',
-					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.description.name(),
+					label:
+						$LL.graphql.objects.Role.fields.composites.name() +
+						$LL.graphql.objects.Role.fields.description.name(),
 					disabled: !permissions.auth('Role::description::READ')
-				},
+				}
 			],
 			disabled: !permissions.auth('Role::composites::READ')
 		},
@@ -229,37 +277,49 @@
 			options: [
 				{
 					value: 'name',
-					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.name.name(),
+					label:
+						$LL.graphql.objects.Role.fields.permissions.name() +
+						$LL.graphql.objects.Permission.fields.name.name(),
 					disabled: !permissions.auth('Permission::name::READ')
 				},
 				{
 					value: 'description',
-					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.description.name(),
+					label:
+						$LL.graphql.objects.Role.fields.permissions.name() +
+						$LL.graphql.objects.Permission.fields.description.name(),
 					disabled: !permissions.auth('Permission::description::READ')
 				},
 				{
 					value: 'field',
-					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.field.name(),
+					label:
+						$LL.graphql.objects.Role.fields.permissions.name() +
+						$LL.graphql.objects.Permission.fields.field.name(),
 					disabled: !permissions.auth('Permission::field::READ')
 				},
 				{
 					value: 'type',
-					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.type.name(),
+					label:
+						$LL.graphql.objects.Role.fields.permissions.name() +
+						$LL.graphql.objects.Permission.fields.type.name(),
 					disabled: !permissions.auth('Permission::type::READ')
 				},
 				{
 					value: 'permissionType',
-					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.permissionType.name(),
+					label:
+						$LL.graphql.objects.Role.fields.permissions.name() +
+						$LL.graphql.objects.Permission.fields.permissionType.name(),
 					disabled: !permissions.auth('Permission::permissionType::READ')
 				},
 				{
 					value: 'syncPermissionPolicy',
-					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.syncPermissionPolicy.name(),
+					label:
+						$LL.graphql.objects.Role.fields.permissions.name() +
+						$LL.graphql.objects.Permission.fields.syncPermissionPolicy.name(),
 					disabled: !permissions.auth('Permission::syncPermissionPolicy::READ')
-				},
+				}
 			],
 			disabled: !permissions.auth('Role::permissions::READ')
-		},
+		}
 	];
 
 	let filteredJoinOptions =
@@ -299,7 +359,8 @@
 		});
 	}
 
-	$: selectColumns.reduce((groups, option) => {
+	$: selectColumns
+		.reduce((groups, option) => {
 			if (
 				groups.some(
 					(group) => group.value === option.group?.value && group.label === option.group?.label
@@ -330,7 +391,8 @@
 			};
 		});
 
-	$: orderByOptions = selectColumns.reduce((groups, option) => {
+	$: orderByOptions = selectColumns
+		.reduce((groups, option) => {
 			if (
 				groups.some(
 					(group) => group.value === option.group?.value && group.label === option.group?.label
@@ -505,7 +567,7 @@
 		}
 	};
 
-	const queryPage = (toPageNumber?: number | undefined) => {
+	export const queryPage = (toPageNumber?: number | undefined) => {
 		buildFields();
 		dispatch('query', { fields: buildQueryFields(), queryArguments: buildArguments(toPageNumber) });
 	};
