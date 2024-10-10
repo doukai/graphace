@@ -20,13 +20,23 @@
 		RoleConnectionQueryArguments,
 		RoleListMutationArguments
 	} from '~/lib/types/schema';
-	import { getGridType, getGridTheme, editors, typeFieldTypeHasList } from '~/utils';
+	import {
+		getGridType,
+		getGridTheme,
+		editors,
+		typeFieldTypeHasList,
+		buildGraphQLErrors,
+		buildGlobalGraphQLErrorMessage
+	} from '~/utils';
+	import type { Errors } from '@graphace/commons';
+	import { messageBoxs, notifications } from '@graphace/ui';
 
 	export let connection: RoleConnection;
 	export let fields: Field[] = [];
 	export let queryArguments: RoleConnectionQueryArguments = {};
 	export let mutationArguments: RoleListMutationArguments = {};
 	export let isFetching: boolean = false;
+	export let errors: Record<number, Errors> = {};
 	export let showHeader: boolean = true;
 	export let showFooter: boolean = true;
 	export let showOptionButton: boolean = true;
@@ -305,7 +315,34 @@
 				)
 			);
 		}
-		console.log(JSON.stringify(list));
+
+		dispatch('mutation', {
+			fields: queryFields,
+			mutationArguments: { list: list },
+			then: (list) => {
+				if (list) {
+					nodes = list;
+				}
+				notifications.success($LL.graphence.message.saveSuccess());
+			},
+			catch: (graphQLErrors) => {
+				console.error(graphQLErrors);
+				errors = buildGraphQLErrors(graphQLErrors);
+				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
+				if (globalError) {
+					messageBoxs.open({
+						title: $LL.graphence.message.saveFailed(),
+						content: globalError,
+						buttonName: $LL.ui.button.back(),
+						buttonType: 'neutral',
+						confirm: () => {
+							queryPage(1);
+							return true;
+						}
+					});
+				}
+			}
+		});
 	};
 </script>
 

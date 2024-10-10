@@ -42,9 +42,13 @@
 		{showFilterButton}
 		{showBookmarkButton}
 		on:query={(e) => RoleQuery.fetch(e.detail.fields, e.detail.queryArguments)}
-		on:mutation={(e) => RoleListMutation.fetch(e.detail.fields, e.detail.queryArguments)
-		.then(response=>{
-			
-		})}
+		on:mutation={(e) =>
+			RoleListMutation.fetch(e.detail.fields, e.detail.mutationArguments).then((response) => {
+				if (response?.errors) {
+					e.detail.catch(response.errors);
+				} else {
+					e.detail.then(response?.data?.roleList);
+				}
+			})}
 	/>
 </Card>
