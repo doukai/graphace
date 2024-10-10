@@ -1,20 +1,20 @@
 import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import type { LoadEvent } from '@sveltejs/kit';
-import { type Field, fieldToString } from '@graphace/graphql';
+import { type Field, type GraphQLError, fieldToString } from '@graphace/graphql';
 import type { Role, RoleListMutationArguments } from '~/lib/types/schema';
 
-export async function createRoleMutationStore(params: { event: LoadEvent, fields: Field[], mutationArguments: RoleListMutationArguments }): Promise<RoleMutationStore> {
-    const data: Writable<{ isFetching: boolean, list: Role[] }> = writable({
+export async function createRoleListMutationStore(params: { event: LoadEvent }): Promise<RoleListMutationStore> {
+    const data: Writable<{ isFetching: boolean, response: { data?: { roleList: Role[] | null | undefined }, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
-        list: []
+        response: {}
     });
 
-    const { event, fields, mutationArguments } = params;
+    const { event } = params;
 
     const { subscribe, set, update } = data;
 
-    const fetch = async (fields: Field[], mutationArguments: RoleListMutationArguments) => {
+    const fetch = async (fields: Field[], mutationArguments: RoleListMutationArguments): Promise<{ data?: { roleList: Role[] | null | undefined }, errors?: GraphQLError[] | null | undefined } | null | undefined> => {
         if (fields && fields.length > 0) {
             update((data) => ({ ...data, isFetching: true }));
             let query = `mutation Mutation_roleList($id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $groups: GroupExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $roleUserRelation: RoleUserRelationExpression, $groupRoleRelation: GroupRoleRelationExpression, $roleCompositeRelation: RoleCompositeRelationExpression, $permissionRoleRelation: PermissionRoleRelationExpression, $orderBy: RoleOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [RoleExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
@@ -35,8 +35,9 @@ export async function createRoleMutationStore(params: { event: LoadEvent, fields
                 const json = await response.json();
                 set({
                     isFetching: false,
-                    list: json.data.roleList
+                    response: json
                 });
+                return json;
             }
         }
     }
@@ -47,13 +48,13 @@ export async function createRoleMutationStore(params: { event: LoadEvent, fields
     };
 }
 
-export type RoleMutationStore = {
+export type RoleListMutationStore = {
     subscribe: (this: void, run: Subscriber<{
         isFetching: boolean;
-        list: Role[];
+        response: { data?: { roleList: Role[] | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }>, invalidate?: Invalidator<{
         isFetching: boolean;
-        list: Role[];
+        response: { data?: { roleList: Role[] | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], mutationArguments: RoleListMutationArguments) => Promise<void>;
+    fetch: (fields: Field[], mutationArguments: RoleListMutationArguments) => Promise<{ data?: { roleList: Role[] | null | undefined }, errors?: GraphQLError[] | null | undefined } | null | undefined>;
 }

@@ -12,7 +12,7 @@
 	} from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import SelectColumnType from '@revolist/revogrid-column-select';
-	import { type Field, fieldsDeep } from '@graphace/graphql';
+	import { type Field, fieldsDeep, type GraphQLError } from '@graphace/graphql';
 	import RoleQuery from '~/lib/components/objects/role/Role.svelte';
 	import type {
 		Role,
@@ -43,7 +43,12 @@
 	};
 
 	const dispatch = createEventDispatcher<{
-		mutation: { fields: Field[]; mutationArguments: RoleListMutationArguments };
+		mutation: {
+			fields: Field[];
+			mutationArguments: RoleListMutationArguments;
+			then: (list: Role[] | null | undefined) => void;
+			catch: (errors: GraphQLError[]) => void;
+		};
 	}>();
 
 	const {

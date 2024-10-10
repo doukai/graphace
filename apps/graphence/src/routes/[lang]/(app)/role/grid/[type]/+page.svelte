@@ -3,6 +3,7 @@
 	import RoleGrid from '~/lib/components/objects/role/RoleGrid.svelte';
 	import RoleAggGrid from '~/lib/components/objects/role/RoleAggGrid.svelte';
 	import type { RoleQueryStore } from '~/lib/stores/role/roleQueryStore';
+	import type { RoleListMutationStore } from '~/lib/stores/role/roleMutationStore';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -18,6 +19,7 @@
 	} = data;
 
 	const RoleQuery = data.RoleQuery as RoleQueryStore;
+	const RoleListMutation = data.RoleListMutation as RoleListMutationStore;
 
 	const components: Record<string, any> = {
 		mutation: RoleGrid,
@@ -40,5 +42,9 @@
 		{showFilterButton}
 		{showBookmarkButton}
 		on:query={(e) => RoleQuery.fetch(e.detail.fields, e.detail.queryArguments)}
+		on:mutation={(e) => RoleListMutation.fetch(e.detail.fields, e.detail.queryArguments)
+		.then(response=>{
+			
+		})}
 	/>
 </Card>

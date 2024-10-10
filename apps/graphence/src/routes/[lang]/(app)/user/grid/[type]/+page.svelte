@@ -42,6 +42,6 @@
 		{showFilterButton}
 		{showBookmarkButton}
 		on:query={(e) => UserQuery.fetch(e.detail.fields, e.detail.queryArguments)}
-		on:mutation={(e) => UserMutation.fetch(e.detail.fields, e.detail.mutationArguments)}
+		on:mutation={(e) => UserMutation.fetch(e.detail.fields, e.detail.mutationArguments).then()}
 	/>
 </Card>
