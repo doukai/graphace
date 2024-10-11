@@ -26,7 +26,7 @@
 	import {
 		getGridType,
 		getGridTheme,
-		editors,
+		createEditors,
 		typeFieldTypeHasList,
 		buildGraphQLErrors,
 		buildGlobalGraphQLErrorMessage
@@ -130,25 +130,10 @@
 					sortable: true,
 					editable: true,
 					...getGridType(typeName, field.name),
-					// cellTemplate: (
-					// 	createElement: HyperFunc<VNode>,
-					// 	props: CellTemplateProp,
-					// 	additionalData?: any
-					// ) => {
-					// 	return createElement(
-					// 		'div',
-					// 		{
-					// 			class: 'tooltip tooltip-open',
-					// 			'data-tip': 'hello'
-					// 		},
-					// 		props.model[props.prop]
-					// 	);
-					// }
-					cellProperties: ({ rowIndex, prop, model, data, column }) => {
+					cellProperties: ({ rowIndex }) => {
 						if (errors[rowIndex]?.iterms?.[field.name]) {
 							return {
-								class: 'bg-error',
-								'data-tip': errors[rowIndex].iterms?.[field.name]
+								class: 'bg-error'
 							};
 						}
 						return {};
@@ -468,7 +453,7 @@
 		rowHeaders={true}
 		{columnTypes}
 		{theme}
-		{editors}
+		editors={createEditors(errors)}
 		on:afterfocus={(e) => {
 			rowIndex = e.detail.rowIndex;
 			colIndex = e.detail.colIndex;
