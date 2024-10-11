@@ -8,7 +8,10 @@
 		ColumnGrouping,
 		DataType,
 		Cell,
-		DimensionRows
+		DimensionRows,
+		VNode,
+		HyperFunc,
+		CellTemplateProp
 	} from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import SelectColumnType from '@revolist/revogrid-column-select';
@@ -34,7 +37,6 @@
 	export let connection: RoleConnection;
 	export let fields: Field[] = [];
 	export let queryArguments: RoleConnectionQueryArguments = {};
-	export let mutationArguments: RoleListMutationArguments = {};
 	export let isFetching: boolean = false;
 	export let errors: Record<number, Errors> = {};
 	export let showHeader: boolean = true;
@@ -127,7 +129,30 @@
 					filter: true,
 					sortable: true,
 					editable: true,
-					...getGridType(typeName, field.name)
+					...getGridType(typeName, field.name),
+					// cellTemplate: (
+					// 	createElement: HyperFunc<VNode>,
+					// 	props: CellTemplateProp,
+					// 	additionalData?: any
+					// ) => {
+					// 	return createElement(
+					// 		'div',
+					// 		{
+					// 			class: 'tooltip tooltip-open',
+					// 			'data-tip': 'hello'
+					// 		},
+					// 		props.model[props.prop]
+					// 	);
+					// }
+					cellProperties: ({ rowIndex, prop, model, data, column }) => {
+						if (errors[rowIndex]?.iterms?.[field.name]) {
+							return {
+								class: 'bg-error',
+								'data-tip': errors[rowIndex].iterms?.[field.name]
+							};
+						}
+						return {};
+					}
 			  })) as ColumnRegular[])
 			: (fields.map((field) => {
 					if (field.fields && field.fields.length > 0) {

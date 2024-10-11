@@ -84,13 +84,24 @@ export const editors = {
             element: null, // will be setup up after render
             editCell: undefined, // will be setup up after render
             render(createElement: HyperFunc<VNode>) {
-                return createElement('input', {
-                    value: column.value
-                });
+                debugger
+                return createElement(
+                    'div',
+                    {
+                        class: 'tooltip tooltip-open',
+                        'data-tip': 'hello'
+                    },
+                    createElement(
+                        'input',
+                        {
+                            value: column.value
+                        }
+                    )
+                );
             },
             componentDidRender() { }, // optional, called after component rendered
             disconnectedCallback() {
-                save((this.element as HTMLInputElement)?.value);
+                save(((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value);
             } // optional, called after component destroyed
         };
     },
