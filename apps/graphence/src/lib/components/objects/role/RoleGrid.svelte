@@ -85,38 +85,7 @@
 	$: theme = getGridTheme($themeStore);
 	$: nodes = connection.edges?.map((edge) => edge?.node);
 	$: totalCount = connection?.totalCount || 0;
-
-	$: filter = {
-		localization: {
-			captions: {
-				title: $LL.graphence.components.grid.captions.title(),
-				save: $LL.graphence.components.grid.captions.save(),
-				reset: $LL.graphence.components.grid.captions.reset(),
-				ok: $LL.graphence.components.grid.captions.ok(),
-				cancel: $LL.graphence.components.grid.captions.cancel(),
-				add: $LL.graphence.components.grid.captions.add(),
-				placeholder: $LL.graphence.components.grid.captions.placeholder(),
-				and: $LL.graphence.components.grid.captions.and(),
-				or: $LL.graphence.components.grid.captions.or()
-			},
-			filterNames: {
-				none: $LL.graphence.components.grid.filterNames.none(),
-				empty: $LL.graphence.components.grid.filterNames.empty(),
-				notEmpty: $LL.graphence.components.grid.filterNames.notEmpty(),
-				eq: $LL.graphence.components.grid.filterNames.eq(),
-				notEq: $LL.graphence.components.grid.filterNames.notEq(),
-				begins: $LL.graphence.components.grid.filterNames.begins(),
-				contains: $LL.graphence.components.grid.filterNames.contains(),
-				notContains: $LL.graphence.components.grid.filterNames.notContains(),
-				eqN: $LL.graphence.components.grid.filterNames.eqN(),
-				neqN: $LL.graphence.components.grid.filterNames.neqN(),
-				gt: $LL.graphence.components.grid.filterNames.gt(),
-				gte: $LL.graphence.components.grid.filterNames.gte(),
-				lt: $LL.graphence.components.grid.filterNames.lt(),
-				lte: $LL.graphence.components.grid.filterNames.lte()
-			}
-		}
-	};
+	$: editors = createEditors(gridErrors);
 
 	$: columns =
 		fieldsDeep(fields) === 1
@@ -124,8 +93,6 @@
 					name: getFieldName(field.name),
 					prop: field.name,
 					autoSize: true,
-					filter: true,
-					sortable: true,
 					editable: true,
 					...getGridType(typeName, field.name),
 					cellProperties: ({ rowIndex }) => {
@@ -145,8 +112,6 @@
 								name: getFieldName(field.name, subField.name),
 								prop: `${field.name}.${subField.name}`,
 								autoSize: true,
-								filter: true,
-								sortable: true,
 								editable: true,
 								...getGridType(typeName, field.name, subField.name),
 								cellProperties: ({ rowIndex }) => {
@@ -167,8 +132,6 @@
 									name: getFieldName(field.name),
 									prop: field.name,
 									autoSize: true,
-									filter: true,
-									sortable: true,
 									editable: true,
 									...getGridType(typeName, field.name),
 									cellProperties: ({ rowIndex }) => {
@@ -513,14 +476,13 @@
 	<RevoGrid
 		bind:source
 		{columns}
-		{filter}
 		range={true}
 		resize={true}
 		autoSizeColumn={true}
 		rowHeaders={true}
 		{columnTypes}
 		{theme}
-		editors={createEditors(gridErrors)}
+		{editors}
 		on:afterfocus={(e) => {
 			rowIndex = e.detail.rowIndex;
 			colIndex = e.detail.colIndex;

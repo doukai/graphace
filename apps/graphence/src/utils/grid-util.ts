@@ -75,7 +75,7 @@ export const getGridType = (typeName: string, filedName: string, subFiledName?: 
     }
 }
 
-export const createEditors = (errors: Record<number, Errors>) => {
+export const createEditors = (errors: Record<string, Errors>[] | undefined) => {
     return {
         string: (
             column: ColumnDataSchemaModel,
@@ -99,9 +99,8 @@ export const createEditors = (errors: Record<number, Errors>) => {
                     );
                 },
                 componentDidRender() {
-                    debugger
                     if (this.element) {
-                        const message = errors[this.editCell?.y || -1]?.iterms?.[column.prop].errors?.[0].message;
+                        const message = errors?.[this.editCell?.y!]?.[column.prop].errors?.[0]?.message;
                         if (message) {
                             this.element.className = 'tooltip tooltip-open tooltip-right tooltip-error';
                             this.element.setAttribute('data-tip', message);
@@ -110,7 +109,8 @@ export const createEditors = (errors: Record<number, Errors>) => {
                     }
                 },
                 disconnectedCallback() {
-                    save(((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value, true);
+                    const value = ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value;
+                    save(value, true);
                 }
             };
         },
@@ -138,7 +138,7 @@ export const createEditors = (errors: Record<number, Errors>) => {
                 },
                 componentDidRender() {
                     if (this.element) {
-                        const message = errors[this.editCell?.y || -1]?.iterms?.[column.prop].errors?.[0].message;
+                        const message = errors?.[this.editCell?.y!]?.[column.prop].errors?.[0]?.message;
                         if (message) {
                             this.element.className = 'tooltip tooltip-open tooltip-right tooltip-error';
                             this.element.setAttribute('data-tip', message);
@@ -147,7 +147,8 @@ export const createEditors = (errors: Record<number, Errors>) => {
                     }
                 },
                 disconnectedCallback() {
-                    save(((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value, true);
+                    const value = ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value;
+                    save(value, true);
                 }
             };
         },
@@ -175,7 +176,7 @@ export const createEditors = (errors: Record<number, Errors>) => {
                 },
                 componentDidRender() {
                     if (this.element) {
-                        const message = errors[this.editCell?.y || -1]?.iterms?.[column.prop].errors?.[0].message;
+                        const message = errors?.[this.editCell?.y!]?.[column.prop].errors?.[0]?.message;
                         if (message) {
                             this.element.className = 'tooltip tooltip-open tooltip-right tooltip-error';
                             this.element.setAttribute('data-tip', message);
@@ -184,7 +185,8 @@ export const createEditors = (errors: Record<number, Errors>) => {
                     }
                 },
                 disconnectedCallback() {
-                    save(((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value, true);
+                    const value = ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value;
+                    save(value, true);
                 }
             };
         },
@@ -212,7 +214,7 @@ export const createEditors = (errors: Record<number, Errors>) => {
                 },
                 componentDidRender() {
                     if (this.element) {
-                        const message = errors[this.editCell?.y || -1]?.iterms?.[column.prop].errors?.[0].message;
+                        const message = errors?.[this.editCell?.y!]?.[column.prop].errors?.[0]?.message;
                         if (message) {
                             this.element.className = 'tooltip tooltip-open tooltip-right tooltip-error';
                             this.element.setAttribute('data-tip', message);
@@ -221,7 +223,8 @@ export const createEditors = (errors: Record<number, Errors>) => {
                     }
                 },
                 disconnectedCallback() {
-                    save(((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value, true);
+                    const value = ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value;
+                    save(value, true);
                 }
             };
         },
@@ -249,7 +252,7 @@ export const createEditors = (errors: Record<number, Errors>) => {
                 },
                 componentDidRender() {
                     if (this.element) {
-                        const message = errors[this.editCell?.y || -1]?.iterms?.[column.prop].errors?.[0].message;
+                        const message = errors?.[this.editCell?.y!]?.[column.prop].errors?.[0]?.message;
                         if (message) {
                             this.element.className = 'tooltip tooltip-open tooltip-right tooltip-error';
                             this.element.setAttribute('data-tip', message);
@@ -258,7 +261,8 @@ export const createEditors = (errors: Record<number, Errors>) => {
                     }
                 },
                 disconnectedCallback() {
-                    save(((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value, true);
+                    const value = ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value;
+                    save(value, true);
                 }
             };
         }
