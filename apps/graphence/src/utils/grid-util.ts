@@ -99,6 +99,7 @@ export const createEditors = (errors: Record<number, Errors>) => {
                     );
                 },
                 componentDidRender() {
+                    debugger
                     if (this.element) {
                         const message = errors[this.editCell?.y || -1]?.iterms?.[column.prop].errors?.[0].message;
                         if (message) {
@@ -122,14 +123,31 @@ export const createEditors = (errors: Record<number, Errors>) => {
                 element: null,
                 editCell: undefined,
                 render(createElement: HyperFunc<VNode>) {
-                    return createElement('input', {
-                        type: "number",
-                        value: column.value
-                    });
+                    return createElement(
+                        'div',
+                        {},
+                        createElement(
+                            'input',
+                            {
+                                type: "number",
+                                class: 'input input-xs',
+                                value: column.value
+                            }
+                        )
+                    );
                 },
-                componentDidRender() { },
+                componentDidRender() {
+                    if (this.element) {
+                        const message = errors[this.editCell?.y || -1]?.iterms?.[column.prop].errors?.[0].message;
+                        if (message) {
+                            this.element.className = 'tooltip tooltip-open tooltip-right tooltip-error';
+                            this.element.setAttribute('data-tip', message);
+                        }
+                        ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.focus();
+                    }
+                },
                 disconnectedCallback() {
-                    save((this.element as HTMLInputElement)?.value);
+                    save(((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value, true);
                 }
             };
         },
@@ -142,14 +160,31 @@ export const createEditors = (errors: Record<number, Errors>) => {
                 element: null,
                 editCell: undefined,
                 render(createElement: HyperFunc<VNode>) {
-                    return createElement('input', {
-                        type: "date",
-                        value: column.value
-                    });
+                    return createElement(
+                        'div',
+                        {},
+                        createElement(
+                            'input',
+                            {
+                                type: "date",
+                                class: 'input input-xs',
+                                value: column.value
+                            }
+                        )
+                    );
                 },
-                componentDidRender() { },
+                componentDidRender() {
+                    if (this.element) {
+                        const message = errors[this.editCell?.y || -1]?.iterms?.[column.prop].errors?.[0].message;
+                        if (message) {
+                            this.element.className = 'tooltip tooltip-open tooltip-right tooltip-error';
+                            this.element.setAttribute('data-tip', message);
+                        }
+                        ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.focus();
+                    }
+                },
                 disconnectedCallback() {
-                    save((this.element as HTMLInputElement)?.value);
+                    save(((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value, true);
                 }
             };
         },
@@ -162,14 +197,31 @@ export const createEditors = (errors: Record<number, Errors>) => {
                 element: null,
                 editCell: undefined,
                 render(createElement: HyperFunc<VNode>) {
-                    return createElement('input', {
-                        type: "time",
-                        value: column.value
-                    });
+                    return createElement(
+                        'div',
+                        {},
+                        createElement(
+                            'time',
+                            {
+                                type: "date",
+                                class: 'input input-xs',
+                                value: column.value
+                            }
+                        )
+                    );
                 },
-                componentDidRender() { },
+                componentDidRender() {
+                    if (this.element) {
+                        const message = errors[this.editCell?.y || -1]?.iterms?.[column.prop].errors?.[0].message;
+                        if (message) {
+                            this.element.className = 'tooltip tooltip-open tooltip-right tooltip-error';
+                            this.element.setAttribute('data-tip', message);
+                        }
+                        ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.focus();
+                    }
+                },
                 disconnectedCallback() {
-                    save((this.element as HTMLInputElement)?.value);
+                    save(((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value, true);
                 }
             };
         },
@@ -182,14 +234,31 @@ export const createEditors = (errors: Record<number, Errors>) => {
                 element: null,
                 editCell: undefined,
                 render(createElement: HyperFunc<VNode>) {
-                    return createElement('input', {
-                        type: "datetime-local",
-                        value: column.value
-                    });
+                    return createElement(
+                        'div',
+                        {},
+                        createElement(
+                            'time',
+                            {
+                                type: "datetime-local",
+                                class: 'input input-xs',
+                                value: column.value
+                            }
+                        )
+                    );
                 },
-                componentDidRender() { },
+                componentDidRender() {
+                    if (this.element) {
+                        const message = errors[this.editCell?.y || -1]?.iterms?.[column.prop].errors?.[0].message;
+                        if (message) {
+                            this.element.className = 'tooltip tooltip-open tooltip-right tooltip-error';
+                            this.element.setAttribute('data-tip', message);
+                        }
+                        ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.focus();
+                    }
+                },
                 disconnectedCallback() {
-                    save((this.element as HTMLInputElement)?.value);
+                    save(((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value, true);
                 }
             };
         }

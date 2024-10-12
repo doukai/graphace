@@ -8,10 +8,7 @@
 		ColumnGrouping,
 		DataType,
 		Cell,
-		DimensionRows,
-		VNode,
-		HyperFunc,
-		CellTemplateProp
+		DimensionRows
 	} from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import SelectColumnType from '@revolist/revogrid-column-select';
@@ -72,6 +69,7 @@
 	let getFieldName: (fieldName: string, subFieldName?: string) => string;
 	let source: DataType[] = [];
 	let pageSize: number = 10;
+	let gridErrors: Record<string, Errors>[] | undefined = [];
 	let rowIndex: number | undefined = undefined;
 	let colIndex: number | undefined = undefined;
 	let setCellsFocus: (
@@ -131,7 +129,7 @@
 					editable: true,
 					...getGridType(typeName, field.name),
 					cellProperties: ({ rowIndex }) => {
-						if (errors[rowIndex]?.iterms?.[field.name]) {
+						if (gridErrors?.[rowIndex]?.[field.name]) {
 							return {
 								class: 'bg-error'
 							};
@@ -150,7 +148,15 @@
 								filter: true,
 								sortable: true,
 								editable: true,
-								...getGridType(typeName, field.name, subField.name)
+								...getGridType(typeName, field.name, subField.name),
+								cellProperties: ({ rowIndex }) => {
+									if (gridErrors?.[rowIndex]?.[`${field.name}.${subField.name}`]) {
+										return {
+											class: 'bg-error'
+										};
+									}
+									return {};
+								}
 							}))
 						};
 					} else {
@@ -164,7 +170,15 @@
 									filter: true,
 									sortable: true,
 									editable: true,
-									...getGridType(typeName, field.name)
+									...getGridType(typeName, field.name),
+									cellProperties: ({ rowIndex }) => {
+										if (gridErrors?.[rowIndex]?.[field.name]) {
+											return {
+												class: 'bg-error'
+											};
+										}
+										return {};
+									}
 								}
 							]
 						};
@@ -219,6 +233,59 @@
 							]);
 						} else {
 							return [[field.name, node?.[field.name as keyof Role]]];
+						}
+					})
+				)
+			];
+		});
+	}
+
+	$: if (errors && Object.keys(errors).length) {
+		const join = queryFields.find((field) => typeFieldTypeHasList(typeName, field.name));
+		gridErrors = nodes?.flatMap((node, nodeIndex) => {
+			if (join) {
+				const array = node?.[join.name as keyof Role];
+				if (Array.isArray(array)) {
+					return array
+						.map((_, index) => {
+							if (join.fields && join.fields.length > 0) {
+								return join.fields.map((subField) => [
+									`${join.name}.${subField.name}`,
+									errors[nodeIndex]?.iterms?.[join.name]?.iterms?.[index]?.iterms?.[subField.name]
+								]);
+							} else {
+								return [[join.name, errors[nodeIndex]?.iterms?.[join.name]]];
+							}
+						})
+						.map((item) =>
+							Object.fromEntries([
+								...item,
+								...queryFields
+									.filter((field) => field.name !== join.name)
+									.flatMap((field) => {
+										if (field.fields && field.fields.length > 0) {
+											return field.fields.map((subField) => [
+												`${field.name}.${subField.name}`,
+												errors[nodeIndex]?.iterms?.[field.name]?.iterms?.[subField.name]
+											]);
+										} else {
+											return [[field.name, errors[nodeIndex]?.iterms?.[field.name]]];
+										}
+									})
+							])
+						);
+				}
+			}
+			return [
+				Object.fromEntries(
+					queryFields.flatMap((field) => {
+						if (field.fields && field.fields.length > 0) {
+							return field.fields.map((subField) => [
+								`${field.name}.${subField.name}`,
+								errors[nodeIndex]?.iterms?.[field.name]?.iterms?.[subField.name]
+							]);
+						} else {
+							return [[field.name, errors[nodeIndex]?.iterms?.[field.name]]];
 						}
 					})
 				)
@@ -453,7 +520,7 @@
 		rowHeaders={true}
 		{columnTypes}
 		{theme}
-		editors={createEditors(errors)}
+		editors={createEditors(gridErrors)}
 		on:afterfocus={(e) => {
 			rowIndex = e.detail.rowIndex;
 			colIndex = e.detail.colIndex;
