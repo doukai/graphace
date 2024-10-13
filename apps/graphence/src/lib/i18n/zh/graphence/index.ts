@@ -71,7 +71,7 @@ const zh: NamespaceGraphenceTranslation = {
             buttons: {
                 refresh: '刷新',
                 save: '保存',
-                new: '新页',
+                new: '新建',
                 InsertAbove: '插入↑',
                 InsertBelow: '插入↓',
                 append: '添加',

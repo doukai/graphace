@@ -100,7 +100,7 @@ export const createEditors = (errors: Record<string, Errors>[] | undefined) => {
                 },
                 componentDidRender() {
                     if (this.element) {
-                        const message = errors?.[this.editCell?.y!]?.[column.prop].errors?.[0]?.message;
+                        const message = errors?.[this.editCell?.y!]?.[column.prop]?.errors?.[0]?.message;
                         if (message) {
                             this.element.className = 'tooltip tooltip-open tooltip-right tooltip-error';
                             this.element.setAttribute('data-tip', message);
@@ -138,7 +138,7 @@ export const createEditors = (errors: Record<string, Errors>[] | undefined) => {
                 },
                 componentDidRender() {
                     if (this.element) {
-                        const message = errors?.[this.editCell?.y!]?.[column.prop].errors?.[0]?.message;
+                        const message = errors?.[this.editCell?.y!]?.[column.prop]?.errors?.[0]?.message;
                         if (message) {
                             this.element.className = 'tooltip tooltip-open tooltip-right tooltip-error';
                             this.element.setAttribute('data-tip', message);
@@ -176,7 +176,7 @@ export const createEditors = (errors: Record<string, Errors>[] | undefined) => {
                 },
                 componentDidRender() {
                     if (this.element) {
-                        const message = errors?.[this.editCell?.y!]?.[column.prop].errors?.[0]?.message;
+                        const message = errors?.[this.editCell?.y!]?.[column.prop]?.errors?.[0]?.message;
                         if (message) {
                             this.element.className = 'tooltip tooltip-open tooltip-right tooltip-error';
                             this.element.setAttribute('data-tip', message);
@@ -214,7 +214,7 @@ export const createEditors = (errors: Record<string, Errors>[] | undefined) => {
                 },
                 componentDidRender() {
                     if (this.element) {
-                        const message = errors?.[this.editCell?.y!]?.[column.prop].errors?.[0]?.message;
+                        const message = errors?.[this.editCell?.y!]?.[column.prop]?.errors?.[0]?.message;
                         if (message) {
                             this.element.className = 'tooltip tooltip-open tooltip-right tooltip-error';
                             this.element.setAttribute('data-tip', message);
@@ -252,7 +252,7 @@ export const createEditors = (errors: Record<string, Errors>[] | undefined) => {
                 },
                 componentDidRender() {
                     if (this.element) {
-                        const message = errors?.[this.editCell?.y!]?.[column.prop].errors?.[0]?.message;
+                        const message = errors?.[this.editCell?.y!]?.[column.prop]?.errors?.[0]?.message;
                         if (message) {
                             this.element.className = 'tooltip tooltip-open tooltip-right tooltip-error';
                             this.element.setAttribute('data-tip', message);

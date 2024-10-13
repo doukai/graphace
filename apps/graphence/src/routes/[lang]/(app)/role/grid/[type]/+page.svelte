@@ -46,10 +46,14 @@
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
-		on:query={(e) => RoleQuery.fetch(e.detail.fields, e.detail.queryArguments)}
+		on:query={(e) => {
+			errors = {};
+			RoleQuery.fetch(e.detail.fields, e.detail.queryArguments);
+		}}
 		on:mutation={(e) => {
 			validate('Mutation_roleList_Arguments', e.detail.mutationArguments, $locale)
 				.then((data) => {
+					errors = {};
 					RoleListMutation.fetch(e.detail.fields, e.detail.mutationArguments).then((response) => {
 						if (response?.errors) {
 							e.detail.catch(response.errors);

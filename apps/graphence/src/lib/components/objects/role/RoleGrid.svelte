@@ -3,13 +3,7 @@
 	import type { Readable, Writable } from 'svelte/store';
 	import { createToolbar, melt } from '@melt-ui/svelte';
 	import { RevoGrid } from '@revolist/svelte-datagrid';
-	import type {
-		ColumnRegular,
-		ColumnGrouping,
-		DataType,
-		Cell,
-		DimensionRows
-	} from '@revolist/svelte-datagrid';
+	import type { ColumnRegular, ColumnGrouping, DataType, Cell } from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import SelectColumnType from '@revolist/revogrid-column-select';
 	import { type Field, fieldsDeep, type GraphQLError } from '@graphace/graphql';
@@ -44,6 +38,7 @@
 
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 	const typeName = 'Role';
+	const idFieldName = 'id';
 	const themeStore = getContext('theme') as Writable<string | undefined>;
 
 	const columnTypes = {
@@ -66,21 +61,19 @@
 	} = createToolbar();
 
 	let queryFields: Field[] = [];
-	let getFieldName: (fieldName: string, subFieldName?: string) => string;
 	let source: DataType[] = [];
 	let pageSize: number = 10;
 	let gridErrors: Record<string, Errors>[] | undefined = [];
 	let rowIndex: number | undefined = undefined;
 	let colIndex: number | undefined = undefined;
+	let getFieldName: (fieldName: string, subFieldName?: string) => string;
+	let queryPage: (toPageNumber?: number | undefined) => void;
 	let setCellsFocus: (
 		cellStart?: Cell,
 		cellEnd?: Cell,
 		colType?: string,
 		rowType?: string
 	) => Promise<void>;
-	let refresh: (type?: DimensionRows | 'all') => Promise<void>;
-	let getSource: (type?: DimensionRows) => Promise<DataType[]>;
-	let queryPage: (toPageNumber?: number | undefined) => void;
 
 	$: theme = getGridTheme($themeStore);
 	$: nodes = connection.edges?.map((edge) => edge?.node);
@@ -99,6 +92,10 @@
 						if (gridErrors?.[rowIndex]?.[field.name]) {
 							return {
 								class: 'bg-error'
+							};
+						} else if (source[rowIndex]?.isDeprecated && source[rowIndex]?.isDeprecated === true) {
+							return {
+								class: 'bg-neutral-content'
 							};
 						}
 						return {};
@@ -119,6 +116,13 @@
 										return {
 											class: 'bg-error'
 										};
+									} else if (
+										source[rowIndex]?.isDeprecated &&
+										source[rowIndex]?.isDeprecated === true
+									) {
+										return {
+											class: 'bg-neutral-content'
+										};
 									}
 									return {};
 								}
@@ -138,6 +142,13 @@
 										if (gridErrors?.[rowIndex]?.[field.name]) {
 											return {
 												class: 'bg-error'
+											};
+										} else if (
+											source[rowIndex]?.isDeprecated &&
+											source[rowIndex]?.isDeprecated === true
+										) {
+											return {
+												class: 'bg-neutral-content'
 											};
 										}
 										return {};
@@ -254,6 +265,8 @@
 				)
 			];
 		});
+	} else {
+		gridErrors = [];
 	}
 
 	const mutation = () => {
@@ -269,11 +282,11 @@
 				);
 				if (
 					Object.values(object).filter((value) => value).length > 0 &&
-					row['id'] &&
-					nodes.some((node: DataType) => node['id'] === row['id'])
+					row[idFieldName] &&
+					nodes.some((node: DataType) => node[idFieldName] === row[idFieldName])
 				) {
 					nodes
-						.find((node: DataType) => node['id'] === row['id'])
+						.find((node: DataType) => node[idFieldName] === row[idFieldName])
 						?.[join.name].push(
 							Object.fromEntries(
 								join!.fields?.map((subField) => [
@@ -309,7 +322,7 @@
 				} else {
 					nodes.push(
 						Object.fromEntries(
-							queryFields.map((field) => {
+							[...queryFields, { name: 'isDeprecated' }].map((field) => {
 								if (field.fields && field.fields.length > 0) {
 									const object = Object.fromEntries(
 										field.fields.map((subField) => [
@@ -336,7 +349,7 @@
 		} else {
 			list = source?.map((row) =>
 				Object.fromEntries(
-					queryFields.map((field) => {
+					[...queryFields, { name: 'isDeprecated' }].map((field) => {
 						if (field.fields && field.fields.length > 0) {
 							const object = Object.fromEntries(
 								field.fields.map((subField) => [
@@ -413,7 +426,7 @@
 		</button>
 		<div class="divider divider-horizontal m-0" use:melt={$separator} />
 		<button
-			class="btn btn-xs btn-primary"
+			class="btn btn-xs btn-primary pt-0"
 			use:melt={$button}
 			disabled={fields.length === 0}
 			on:click={(e) => {
@@ -425,9 +438,9 @@
 		<button
 			class="btn btn-xs btn-primary"
 			use:melt={$button}
-			disabled={!rowIndex}
+			disabled={rowIndex === undefined}
 			on:click={(e) => {
-				if (rowIndex) {
+				if (rowIndex !== undefined) {
 					source.splice(rowIndex, 0, {});
 					source = [...source];
 					setCellsFocus(
@@ -442,9 +455,9 @@
 		<button
 			class="btn btn-xs btn-primary"
 			use:melt={$button}
-			disabled={!rowIndex}
+			disabled={rowIndex === undefined}
 			on:click={(e) => {
-				if (rowIndex) {
+				if (rowIndex !== undefined) {
 					source.splice(rowIndex + 1, 0, {});
 					source = [...source];
 					setCellsFocus(
@@ -461,16 +474,43 @@
 			use:melt={$button}
 			disabled={fields.length === 0}
 			on:click={(e) => {
-				if (rowIndex) {
-					source = [...source, {}];
-				}
+				source = [...source, {}];
 			}}
 		>
 			{$LL.graphence.components.grid.buttons.append()}
 		</button>
 		<div class="divider divider-horizontal m-0" use:melt={$separator} />
-		<button class="btn btn-xs btn-error" use:melt={$button}>
+		<button
+			disabled={rowIndex === undefined || source[rowIndex]?.isDeprecated === true}
+			on:click={(e) => {
+				if (rowIndex !== undefined) {
+					source[rowIndex].isDeprecated = true;
+					setCellsFocus(
+						{ x: colIndex || 0, y: rowIndex || 0 },
+						{ x: colIndex || 0, y: rowIndex || 0 }
+					);
+				}
+			}}
+			class="btn btn-xs btn-error"
+			use:melt={$button}
+		>
 			{$LL.graphence.components.grid.buttons.remove()}
+		</button>
+		<button
+			disabled={rowIndex === undefined || !source[rowIndex]?.isDeprecated}
+			on:click={(e) => {
+				if (rowIndex !== undefined) {
+					source[rowIndex].isDeprecated = undefined;
+					setCellsFocus(
+						{ x: colIndex || 0, y: rowIndex || 0 },
+						{ x: colIndex || 0, y: rowIndex || 0 }
+					);
+				}
+			}}
+			class="btn btn-xs btn-success"
+			use:melt={$button}
+		>
+			{$LL.graphence.components.grid.buttons.canel()}
 		</button>
 	</div>
 	<RevoGrid
@@ -488,7 +528,5 @@
 			colIndex = e.detail.colIndex;
 		}}
 		bind:setCellsFocus
-		bind:refresh
-		bind:getSource
 	/>
 </RoleQuery>
