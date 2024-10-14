@@ -1,11 +1,16 @@
 <script lang="ts">
+	import type { Errors } from '@graphace/commons';
 	import { Card } from '@graphace/ui';
 	import RealmGrid from '~/lib/components/objects/realm/RealmGrid.svelte';
 	import RealmAggGrid from '~/lib/components/objects/realm/RealmAggGrid.svelte';
-	import type { RealmQueryStore } from '~/lib/stores/realm/realmQueryStore';
+	import type { RealmConnectionQueryStore } from '~/lib/stores/realm/realmQueryStore';
+	import type { RealmListMutationStore } from '~/lib/stores/realm/realmMutationStore';
 	import type { PageData } from './$houdini';
+	import { validate } from '~/utils';
+	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	let errors: Record<number, Errors> = {};
 
 	const {
 		fields,
@@ -17,7 +22,8 @@
 		showBookmarkButton
 	} = data;
 
-	const RealmQuery = data.RealmQuery as RealmQueryStore;
+	const RealmConnectionQuery = data.RealmQuery as RealmConnectionQueryStore;
+	const RealmListMutation = data.RealmQuery as RealmListMutationStore;
 
 	const components: Record<string, any> = {
 		mutation: RealmGrid,
@@ -30,8 +36,8 @@
 <Card>
 	<svelte:component
 		this={component}
-		isFetching={$RealmQuery.isFetching}
-		connection={$RealmQuery.connection}
+		isFetching={$RealmConnectionQuery.isFetching}
+		connection={$RealmConnectionQuery.response.data?.realmConnection}
 		{fields}
 		{queryArguments}
 		{showHeader}
@@ -39,6 +45,25 @@
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
-		on:query={(e) => RealmQuery.fetch(e.detail.fields, e.detail.queryArguments)}
+		on:query={(e) => {
+			errors = {};
+			RealmConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments);
+		}}
+		on:mutation={(e) => {
+			validate('Mutation_realmList_Arguments', e.detail.mutationArguments, $locale)
+				.then((data) => {
+					errors = {};
+					RealmListMutation.fetch(e.detail.fields, e.detail.mutationArguments).then((response) => {
+						if (response?.errors) {
+							e.detail.catch(response.errors);
+						} else {
+							e.detail.then(response?.data?.realmList);
+						}
+					});
+				})
+				.catch((validErrors) => {
+					errors = validErrors.list.iterms;
+				});
+		}}
 	/>
 </Card>

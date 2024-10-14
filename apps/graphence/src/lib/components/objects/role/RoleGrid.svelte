@@ -6,15 +6,10 @@
 	import type { Cell } from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import SelectColumnType from '@revolist/revogrid-column-select';
-	import { type Field, type GraphQLError } from '@graphace/graphql';
+	import type { Field, GraphQLError } from '@graphace/graphql';
 	import RoleQuery from '~/lib/components/objects/role/Role.svelte';
 	import { GridToolbar } from '~/lib/components/grid';
-	import type {
-		Role,
-		RoleConnection,
-		RoleConnectionQueryArguments,
-		RoleListMutationArguments
-	} from '~/lib/types/schema';
+	import type { Role, RoleConnection, RoleConnectionQueryArguments, RoleListMutationArguments } from '~/lib/types/schema';
 	import {
 		getGridTheme,
 		createEditors,
@@ -27,12 +22,12 @@
 	} from '~/utils';
 	import type { Errors } from '@graphace/commons';
 	import { messageBoxs, notifications } from '@graphace/ui';
-
+	
 	export let connection: RoleConnection;
 	export let fields: Field[] = [];
 	export let queryArguments: RoleConnectionQueryArguments = {};
-	export let isFetching: boolean = false;
 	export let errors: Record<number, Errors> = {};
+	export let isFetching: boolean = false;
 	export let showHeader: boolean = true;
 	export let showFooter: boolean = true;
 	export let showOptionButton: boolean = true;
@@ -119,7 +114,6 @@
 	bind:fields
 	bind:queryFields
 	bind:queryArguments
-	bind:pageSize
 	{isFetching}
 	{showHeader}
 	{showFooter}
@@ -127,11 +121,10 @@
 	{showFilterButton}
 	{showBookmarkButton}
 	{totalCount}
-	className="p-0 h-screen"
+	className="p-0"
 	on:query
 	on:bookmark
 	bind:getFieldName
-	bind:queryPage
 >
 	<GridToolbar
 		slot="toolbar"
@@ -145,19 +138,13 @@
 		on:mutation={(e) => mutation()}
 	/>
 	<RevoGrid
-		bind:source
+		{source}
 		{columns}
 		range={true}
 		resize={true}
 		autoSizeColumn={true}
-		rowHeaders={true}
 		{columnTypes}
 		{theme}
 		{editors}
-		on:afterfocus={(e) => {
-			rowIndex = e.detail.rowIndex;
-			colIndex = e.detail.colIndex;
-		}}
-		bind:setCellsFocus
 	/>
 </RoleQuery>

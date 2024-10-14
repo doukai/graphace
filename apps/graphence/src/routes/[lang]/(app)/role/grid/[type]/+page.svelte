@@ -1,13 +1,13 @@
 <script lang="ts">
+	import type { Errors } from '@graphace/commons';
 	import { Card } from '@graphace/ui';
 	import RoleGrid from '~/lib/components/objects/role/RoleGrid.svelte';
 	import RoleAggGrid from '~/lib/components/objects/role/RoleAggGrid.svelte';
-	import type { RoleQueryConnectionStore } from '~/lib/stores/role/roleQueryStore';
+	import type { RoleConnectionQueryStore } from '~/lib/stores/role/roleQueryStore';
 	import type { RoleListMutationStore } from '~/lib/stores/role/roleMutationStore';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/utils';
 	import { locale } from '$i18n/i18n-svelte';
-	import type { Errors } from '@graphace/commons';
 
 	export let data: PageData;
 	let errors: Record<number, Errors> = {};
@@ -22,8 +22,8 @@
 		showBookmarkButton
 	} = data;
 
-	const RoleConnectionQuery = data.RoleConnectionQuery as RoleQueryConnectionStore;
-	const RoleListMutation = data.RoleListMutation as RoleListMutationStore;
+	const RoleConnectionQuery = data.RoleQuery as RoleConnectionQueryStore;
+	const RoleListMutation = data.RoleQuery as RoleListMutationStore;
 
 	const components: Record<string, any> = {
 		mutation: RoleGrid,
@@ -38,7 +38,6 @@
 		this={component}
 		isFetching={$RoleConnectionQuery.isFetching}
 		connection={$RoleConnectionQuery.response.data?.roleConnection}
-		{errors}
 		{fields}
 		{queryArguments}
 		{showHeader}

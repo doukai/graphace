@@ -1,16 +1,16 @@
 import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import type { LoadEvent } from '@sveltejs/kit';
-import { type Field, fieldToString } from '@graphace/graphql';
+import { type Field, type GraphQLError, fieldToString } from '@graphace/graphql';
 import type { {{ name }}, {{ name }}ListMutationArguments } from '~/lib/types/schema';
 
-export async function create{{ name }}MutationStore(params: { event: LoadEvent, fields: Field[], mutationArguments: {{ name }}ListMutationArguments }): Promise<{{ name }}MutationStore> {
-    const data: Writable<{ isFetching: boolean, list: {{ name }}[] }> = writable({
+export async function create{{ name }}ListMutationStore(params: { event: LoadEvent }): Promise<{{ name }}ListMutationStore> {
+    const data: Writable<{ isFetching: boolean, response: { data?: { {{ name | camelCase }}List: {{ name }}[] | null | undefined }, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
-        list: []
+        response: {}
     });
 
-    const { event, fields, mutationArguments } = params;
+    const { event } = params;
 
     const { subscribe, set, update } = data;
 
@@ -35,8 +35,9 @@ export async function create{{ name }}MutationStore(params: { event: LoadEvent, 
                 const json = await response.json();
                 set({
                     isFetching: false,
-                    list: json.data.{{ name | paramCase }}List
+                    response: json
                 });
+                return json;
             }
         }
     }
@@ -47,13 +48,13 @@ export async function create{{ name }}MutationStore(params: { event: LoadEvent, 
     };
 }
 
-export type {{ name }}MutationStore = {
+export type {{ name }}ListMutationStore = {
     subscribe: (this: void, run: Subscriber<{
         isFetching: boolean;
-        list: {{ name }}[];
+        response: { data?: { {{ name | camelCase }}List: {{ name }}[] | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }>, invalidate?: Invalidator<{
         isFetching: boolean;
-        list: {{ name }}[];
+        response: { data?: { {{ name | camelCase }}List: {{ name }}[] | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], mutationArguments: {{ name }}ListMutationArguments) => Promise<void>;
+    fetch: (fields: Field[], mutationArguments: {{ name }}ListMutationArguments) => Promise<{ data?: { {{ name | camelCase }}List: {{ name }}[] | null | undefined }, errors?: GraphQLError[] | null | undefined } | null | undefined>;
 }

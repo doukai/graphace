@@ -1,13 +1,13 @@
 import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import type { LoadEvent } from '@sveltejs/kit';
-import { type Field, fieldToString } from '@graphace/graphql';
+import { type Field, fieldToString, type GraphQLError } from '@graphace/graphql';
 import type { FileConnection, FileConnectionQueryArguments } from '~/lib/types/schema';
 
-export async function createFileQueryStore(params: { event: LoadEvent, fields: Field[], queryArguments: FileConnectionQueryArguments }): Promise<FileQueryStore> {
-    const data: Writable<{ isFetching: boolean, connection: FileConnection }> = writable({
+export async function createFileConnectionQueryStore(params: { event: LoadEvent, fields: Field[], queryArguments: FileConnectionQueryArguments }): Promise<FileConnectionQueryStore> {
+    const data: Writable<{ isFetching: boolean, response: { data?: { fileConnection: FileConnection | null | undefined }, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
-        connection: {}
+        response: {}
     });
 
     const { event, fields, queryArguments } = params;
@@ -41,8 +41,9 @@ export async function createFileQueryStore(params: { event: LoadEvent, fields: F
                 const json = await response.json();
                 set({
                     isFetching: false,
-                    connection: json.data.fileConnection
+                    response: json
                 });
+                return json;
             }
         }
     }
@@ -55,13 +56,13 @@ export async function createFileQueryStore(params: { event: LoadEvent, fields: F
     };
 }
 
-export type FileQueryStore = {
+export type FileConnectionQueryStore = {
     subscribe: (this: void, run: Subscriber<{
         isFetching: boolean;
-        connection: FileConnection;
+        response: { data?: { fileConnection: FileConnection | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }>, invalidate?: Invalidator<{
         isFetching: boolean;
-        connection: FileConnection;
+        response: { data?: { fileConnection: FileConnection | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
     fetch: (fields: Field[], queryArguments: FileConnectionQueryArguments) => Promise<void>;
 }

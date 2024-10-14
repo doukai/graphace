@@ -1,13 +1,13 @@
 import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import type { LoadEvent } from '@sveltejs/kit';
-import { type Field, fieldToString } from '@graphace/graphql';
+import { type Field, fieldToString, type GraphQLError } from '@graphace/graphql';
 import type { GroupConnection, GroupConnectionQueryArguments } from '~/lib/types/schema';
 
-export async function createGroupQueryStore(params: { event: LoadEvent, fields: Field[], queryArguments: GroupConnectionQueryArguments }): Promise<GroupQueryStore> {
-    const data: Writable<{ isFetching: boolean, connection: GroupConnection }> = writable({
+export async function createGroupConnectionQueryStore(params: { event: LoadEvent, fields: Field[], queryArguments: GroupConnectionQueryArguments }): Promise<GroupConnectionQueryStore> {
+    const data: Writable<{ isFetching: boolean, response: { data?: { groupConnection: GroupConnection | null | undefined }, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
-        connection: {}
+        response: {}
     });
 
     const { event, fields, queryArguments } = params;
@@ -41,8 +41,9 @@ export async function createGroupQueryStore(params: { event: LoadEvent, fields: 
                 const json = await response.json();
                 set({
                     isFetching: false,
-                    connection: json.data.groupConnection
+                    response: json
                 });
+                return json;
             }
         }
     }
@@ -55,13 +56,13 @@ export async function createGroupQueryStore(params: { event: LoadEvent, fields: 
     };
 }
 
-export type GroupQueryStore = {
+export type GroupConnectionQueryStore = {
     subscribe: (this: void, run: Subscriber<{
         isFetching: boolean;
-        connection: GroupConnection;
+        response: { data?: { groupConnection: GroupConnection | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }>, invalidate?: Invalidator<{
         isFetching: boolean;
-        connection: GroupConnection;
+        response: { data?: { groupConnection: GroupConnection | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
     fetch: (fields: Field[], queryArguments: GroupConnectionQueryArguments) => Promise<void>;
 }

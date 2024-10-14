@@ -1,11 +1,16 @@
 <script lang="ts">
+	import type { Errors } from '@graphace/commons';
 	import { Card } from '@graphace/ui';
 	import PermissionGrid from '~/lib/components/objects/permission/PermissionGrid.svelte';
 	import PermissionAggGrid from '~/lib/components/objects/permission/PermissionAggGrid.svelte';
-	import type { PermissionQueryStore } from '~/lib/stores/permission/permissionQueryStore';
+	import type { PermissionConnectionQueryStore } from '~/lib/stores/permission/permissionQueryStore';
+	import type { PermissionListMutationStore } from '~/lib/stores/permission/permissionMutationStore';
 	import type { PageData } from './$houdini';
+	import { validate } from '~/utils';
+	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	let errors: Record<number, Errors> = {};
 
 	const {
 		fields,
@@ -17,7 +22,8 @@
 		showBookmarkButton
 	} = data;
 
-	const PermissionQuery = data.PermissionQuery as PermissionQueryStore;
+	const PermissionConnectionQuery = data.PermissionQuery as PermissionConnectionQueryStore;
+	const PermissionListMutation = data.PermissionQuery as PermissionListMutationStore;
 
 	const components: Record<string, any> = {
 		mutation: PermissionGrid,
@@ -30,8 +36,8 @@
 <Card>
 	<svelte:component
 		this={component}
-		isFetching={$PermissionQuery.isFetching}
-		connection={$PermissionQuery.connection}
+		isFetching={$PermissionConnectionQuery.isFetching}
+		connection={$PermissionConnectionQuery.response.data?.permissionConnection}
 		{fields}
 		{queryArguments}
 		{showHeader}
@@ -39,6 +45,25 @@
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
-		on:query={(e) => PermissionQuery.fetch(e.detail.fields, e.detail.queryArguments)}
+		on:query={(e) => {
+			errors = {};
+			PermissionConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments);
+		}}
+		on:mutation={(e) => {
+			validate('Mutation_permissionList_Arguments', e.detail.mutationArguments, $locale)
+				.then((data) => {
+					errors = {};
+					PermissionListMutation.fetch(e.detail.fields, e.detail.mutationArguments).then((response) => {
+						if (response?.errors) {
+							e.detail.catch(response.errors);
+						} else {
+							e.detail.then(response?.data?.permissionList);
+						}
+					});
+				})
+				.catch((validErrors) => {
+					errors = validErrors.list.iterms;
+				});
+		}}
 	/>
 </Card>

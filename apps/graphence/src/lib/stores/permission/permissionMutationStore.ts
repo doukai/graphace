@@ -1,24 +1,24 @@
 import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import type { LoadEvent } from '@sveltejs/kit';
-import { type Field, fieldToString } from '@graphace/graphql';
+import { type Field, type GraphQLError, fieldToString } from '@graphace/graphql';
 import type { Permission, PermissionListMutationArguments } from '~/lib/types/schema';
 
-export async function createPermissionMutationStore(params: { event: LoadEvent, fields: Field[], mutationArguments: PermissionListMutationArguments }): Promise<PermissionMutationStore> {
-    const data: Writable<{ isFetching: boolean, list: Permission[] }> = writable({
+export async function createPermissionListMutationStore(params: { event: LoadEvent }): Promise<PermissionListMutationStore> {
+    const data: Writable<{ isFetching: boolean, response: { data?: { permissionList: Permission[] | null | undefined }, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
-        list: []
+        response: {}
     });
 
-    const { event, fields, mutationArguments } = params;
+    const { event } = params;
 
     const { subscribe, set, update } = data;
 
     const fetch = async (fields: Field[], mutationArguments: PermissionListMutationArguments) => {
         if (fields && fields.length > 0) {
             update((data) => ({ ...data, isFetching: true }));
-            let query = `mutation Mutation_permissionList($name: StringExpression, $description: StringExpression, $field: StringExpression, $type: StringExpression, $permissionType: PermissionTypeExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $permissionRoleRelation: PermissionRoleRelationExpression, $orderBy: PermissionOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [PermissionExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
-    permissionList(name: $name description: $description field: $field type: $type permissionType: $permissionType roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId permissionRoleRelation: $permissionRoleRelation orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before)  {
+            let query = `mutation Mutation_permissionList($name: ID, $description: String, $field: String, $type: String, $permissionType: PermissionType, $roles: [RoleInput], $realm: RealmInput, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $permissionRoleRelation: [PermissionRoleRelationInput], $list: [PermissionInput], $where: PermissionExpression) {
+    permissionList(name: $name description: $description field: $field type: $type permissionType: $permissionType roles: $roles realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId permissionRoleRelation: $permissionRoleRelation list: $list where: $where)  {
         ${fields.map((field) => fieldToString(field)).join('\r\n')}
     }
 }`;
@@ -35,8 +35,9 @@ export async function createPermissionMutationStore(params: { event: LoadEvent, 
                 const json = await response.json();
                 set({
                     isFetching: false,
-                    list: json.data.permissionList
+                    response: json
                 });
+                return json;
             }
         }
     }
@@ -47,13 +48,13 @@ export async function createPermissionMutationStore(params: { event: LoadEvent, 
     };
 }
 
-export type PermissionMutationStore = {
+export type PermissionListMutationStore = {
     subscribe: (this: void, run: Subscriber<{
         isFetching: boolean;
-        list: Permission[];
+        response: { data?: { permissionList: Permission[] | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }>, invalidate?: Invalidator<{
         isFetching: boolean;
-        list: Permission[];
+        response: { data?: { permissionList: Permission[] | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], mutationArguments: PermissionListMutationArguments) => Promise<void>;
+    fetch: (fields: Field[], mutationArguments: PermissionListMutationArguments) => Promise<{ data?: { permissionList: Permission[] | null | undefined }, errors?: GraphQLError[] | null | undefined } | null | undefined>;
 }

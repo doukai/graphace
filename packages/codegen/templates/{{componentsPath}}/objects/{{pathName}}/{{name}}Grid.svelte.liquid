@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable, Writable } from 'svelte/store';
 	import { createToolbar } from '@melt-ui/svelte';
 	import { RevoGrid } from '@revolist/svelte-datagrid';
@@ -9,12 +9,11 @@
 	import type { Field, GraphQLError } from '@graphace/graphql';
 	import {{ name }}Query from '~/{{ objectsPath }}/{{ name | paramCase }}/{{ name }}.svelte';
 	import { GridToolbar } from '~/lib/components/grid';
-	import type { {{ name }}, {{ name }}Connection, {{ name }}ConnectionQueryArguments } from '~/lib/types/schema';
+	import type { {{ name }}, {{ name }}Connection, {{ name }}ConnectionQueryArguments, {{ name }}ListMutationArguments } from '~/lib/types/schema';
 	import {
 		getGridTheme,
 		createEditors,
 		buildGraphQLErrors,
-		buildGlobalGraphQLErrorMessage
 		buildGlobalGraphQLErrorMessage,
 		fieldsToColumns,
 		errorsToGridErrors,
@@ -44,6 +43,15 @@
 		numeric: new NumberColumnType(),
 		select: new SelectColumnType()
 	};
+
+	const dispatch = createEventDispatcher<{
+		mutation: {
+			fields: Field[];
+			mutationArguments: {{ name }}ListMutationArguments;
+			then: (list: {{ name }}[] | null | undefined) => void;
+			catch: (errors: GraphQLError[]) => void;
+		};
+	}>();
 
 	const {
 		elements: { root, button, link, separator },
@@ -132,7 +140,6 @@
 	<RevoGrid
 		{source}
 		{columns}
-		{filter}
 		range={true}
 		resize={true}
 		autoSizeColumn={true}

@@ -1,6 +1,7 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
-import { createRealmQueryStore } from '~/lib/stores/realm/realmQueryStore';
+import { createRealmConnectionQueryStore } from '~/lib/stores/realm/realmQueryStore';
+import { createRealmListMutationStore } from '~/lib/stores/realm/realmMutationStore';
 import { permissions } from '~/utils/auth-util';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
@@ -21,7 +22,8 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        RealmQuery: (await createRealmQueryStore({ event, fields, queryArguments }))
+        RealmConnectionQuery: (await createRealmConnectionQueryStore({ event, fields, queryArguments })),
+        RealmListMutation: (await createRealmListMutationStore({ event }))
     };
 }
 export const prerender = false;

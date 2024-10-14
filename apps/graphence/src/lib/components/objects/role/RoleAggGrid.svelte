@@ -4,7 +4,7 @@
 	import { RevoGrid } from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import SelectColumnType from '@revolist/revogrid-column-select';
-	import { type Field } from '@graphace/graphql';
+	import type { Field } from '@graphace/graphql';
 	import RoleAgg from '~/lib/components/objects/role/RoleAgg.svelte';
 	import type { RoleConnection, RoleConnectionQueryArguments } from '~/lib/types/schema';
 	import { getGridTheme, fieldsToAggColumns, nodesToAggSource } from '~/utils';
@@ -22,7 +22,7 @@
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 	const typeName = 'Role';
 	const themeStore = getContext('theme') as Writable<string | undefined>;
-
+	
 	const columnTypes = {
 		numeric: new NumberColumnType(),
 		select: new SelectColumnType()

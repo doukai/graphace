@@ -1,13 +1,13 @@
 import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import type { LoadEvent } from '@sveltejs/kit';
-import { type Field, fieldToString } from '@graphace/graphql';
+import { type Field, fieldToString, type GraphQLError } from '@graphace/graphql';
 import type { RealmConnection, RealmConnectionQueryArguments } from '~/lib/types/schema';
 
-export async function createRealmQueryStore(params: { event: LoadEvent, fields: Field[], queryArguments: RealmConnectionQueryArguments }): Promise<RealmQueryStore> {
-    const data: Writable<{ isFetching: boolean, connection: RealmConnection }> = writable({
+export async function createRealmConnectionQueryStore(params: { event: LoadEvent, fields: Field[], queryArguments: RealmConnectionQueryArguments }): Promise<RealmConnectionQueryStore> {
+    const data: Writable<{ isFetching: boolean, response: { data?: { realmConnection: RealmConnection | null | undefined }, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
-        connection: {}
+        response: {}
     });
 
     const { event, fields, queryArguments } = params;
@@ -41,8 +41,9 @@ export async function createRealmQueryStore(params: { event: LoadEvent, fields: 
                 const json = await response.json();
                 set({
                     isFetching: false,
-                    connection: json.data.realmConnection
+                    response: json
                 });
+                return json;
             }
         }
     }
@@ -55,13 +56,13 @@ export async function createRealmQueryStore(params: { event: LoadEvent, fields: 
     };
 }
 
-export type RealmQueryStore = {
+export type RealmConnectionQueryStore = {
     subscribe: (this: void, run: Subscriber<{
         isFetching: boolean;
-        connection: RealmConnection;
+        response: { data?: { realmConnection: RealmConnection | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }>, invalidate?: Invalidator<{
         isFetching: boolean;
-        connection: RealmConnection;
+        response: { data?: { realmConnection: RealmConnection | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
     fetch: (fields: Field[], queryArguments: RealmConnectionQueryArguments) => Promise<void>;
 }

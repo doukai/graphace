@@ -1,24 +1,24 @@
 import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import type { LoadEvent } from '@sveltejs/kit';
-import { type Field, fieldToString } from '@graphace/graphql';
+import { type Field, type GraphQLError, fieldToString } from '@graphace/graphql';
 import type { File, FileListMutationArguments } from '~/lib/types/schema';
 
-export async function createFileMutationStore(params: { event: LoadEvent, fields: Field[], mutationArguments: FileListMutationArguments }): Promise<FileMutationStore> {
-    const data: Writable<{ isFetching: boolean, list: File[] }> = writable({
+export async function createFileListMutationStore(params: { event: LoadEvent }): Promise<FileListMutationStore> {
+    const data: Writable<{ isFetching: boolean, response: { data?: { fileList: File[] | null | undefined }, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
-        list: []
+        response: {}
     });
 
-    const { event, fields, mutationArguments } = params;
+    const { event } = params;
 
     const { subscribe, set, update } = data;
 
     const fetch = async (fields: Field[], mutationArguments: FileListMutationArguments) => {
         if (fields && fields.length > 0) {
             update((data) => ({ ...data, isFetching: true }));
-            let query = `mutation Mutation_fileList($id: StringExpression, $name: StringExpression, $contentType: StringExpression, $content: StringExpression, $url: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $orderBy: FileOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [FileExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
-    fileList(id: $id name: $name contentType: $contentType content: $content url: $url includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before)  {
+            let query = `mutation Mutation_fileList($id: ID, $name: String, $contentType: String, $content: String, $url: String, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $list: [FileInput], $where: FileExpression) {
+    fileList(id: $id name: $name contentType: $contentType content: $content url: $url isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId list: $list where: $where)  {
         ${fields.map((field) => fieldToString(field)).join('\r\n')}
     }
 }`;
@@ -35,8 +35,9 @@ export async function createFileMutationStore(params: { event: LoadEvent, fields
                 const json = await response.json();
                 set({
                     isFetching: false,
-                    list: json.data.fileList
+                    response: json
                 });
+                return json;
             }
         }
     }
@@ -47,13 +48,13 @@ export async function createFileMutationStore(params: { event: LoadEvent, fields
     };
 }
 
-export type FileMutationStore = {
+export type FileListMutationStore = {
     subscribe: (this: void, run: Subscriber<{
         isFetching: boolean;
-        list: File[];
+        response: { data?: { fileList: File[] | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }>, invalidate?: Invalidator<{
         isFetching: boolean;
-        list: File[];
+        response: { data?: { fileList: File[] | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], mutationArguments: FileListMutationArguments) => Promise<void>;
+    fetch: (fields: Field[], mutationArguments: FileListMutationArguments) => Promise<{ data?: { fileList: File[] | null | undefined }, errors?: GraphQLError[] | null | undefined } | null | undefined>;
 }

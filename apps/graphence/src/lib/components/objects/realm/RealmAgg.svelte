@@ -36,6 +36,14 @@
 		bookmark: { fields: string; queryArguments: string };
 	}>();
 
+	const {
+		elements: { trigger, content, arrow, close, overlay },
+		states: { open }
+	} = createPopover({
+		forceVisible: true,
+		preventScroll: true
+	});
+
 	$: selectOptions = [
 		{
 			value: '',
@@ -291,10 +299,6 @@
 		return queryArguments;
 	};
 
-	const queryPage = (toPageNumber?: number | undefined) => {
-		dispatch('query', { fields: buildFields(), queryArguments: buildArguments(toPageNumber) });
-	};
-
 	export const getFieldName = (fieldName: string, subFieldName?: string): string => {
 		if (subFieldName) {
 			return selectOptions
@@ -315,13 +319,11 @@
 		return groupByOptions.find((group) => group.value === fieldName)?.label;
 	};
 
-	const {
-		elements: { trigger, content, arrow, close, overlay },
-		states: { open }
-	} = createPopover({
-		forceVisible: true,
-		preventScroll: true
-	});
+	const queryPage = (toPageNumber?: number | undefined) => {
+		dispatch('query', { fields: buildFields(), queryArguments: buildArguments(toPageNumber) });
+	};
+
+	queryPage();
 </script>
 
 {#if showHeader}

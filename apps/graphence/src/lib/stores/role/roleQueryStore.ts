@@ -4,7 +4,7 @@ import type { LoadEvent } from '@sveltejs/kit';
 import { type Field, fieldToString, type GraphQLError } from '@graphace/graphql';
 import type { RoleConnection, RoleConnectionQueryArguments } from '~/lib/types/schema';
 
-export async function createRoleConnectionQueryStore(params: { event: LoadEvent, fields: Field[], queryArguments: RoleConnectionQueryArguments }): Promise<RoleQueryConnectionStore> {
+export async function createRoleConnectionQueryStore(params: { event: LoadEvent, fields: Field[], queryArguments: RoleConnectionQueryArguments }): Promise<RoleConnectionQueryStore> {
     const data: Writable<{ isFetching: boolean, response: { data?: { roleConnection: RoleConnection | null | undefined }, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
         response: {}
@@ -56,7 +56,7 @@ export async function createRoleConnectionQueryStore(params: { event: LoadEvent,
     };
 }
 
-export type RoleQueryConnectionStore = {
+export type RoleConnectionQueryStore = {
     subscribe: (this: void, run: Subscriber<{
         isFetching: boolean;
         response: { data?: { roleConnection: RoleConnection | null | undefined }, errors?: GraphQLError[] | null | undefined };

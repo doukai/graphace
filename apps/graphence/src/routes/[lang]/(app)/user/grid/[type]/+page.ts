@@ -1,7 +1,7 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
-import { createUserQueryStore } from '~/lib/stores/user/userQueryStore';
-import { createUserMutationStore } from '~/lib/stores/user/userMutationStore';
+import { createUserConnectionQueryStore } from '~/lib/stores/user/userQueryStore';
+import { createUserListMutationStore } from '~/lib/stores/user/userMutationStore';
 import { permissions } from '~/utils/auth-util';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
@@ -22,8 +22,8 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        UserQuery: (await createUserQueryStore({ event, fields, queryArguments })),
-        UserMutation: (await createUserMutationStore({ event }))
+        UserConnectionQuery: (await createUserConnectionQueryStore({ event, fields, queryArguments })),
+        UserListMutation: (await createUserListMutationStore({ event }))
     };
 }
 export const prerender = false;

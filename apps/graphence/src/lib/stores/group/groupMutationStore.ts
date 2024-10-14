@@ -1,24 +1,24 @@
 import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import type { LoadEvent } from '@sveltejs/kit';
-import { type Field, fieldToString } from '@graphace/graphql';
+import { type Field, type GraphQLError, fieldToString } from '@graphace/graphql';
 import type { Group, GroupListMutationArguments } from '~/lib/types/schema';
 
-export async function createGroupMutationStore(params: { event: LoadEvent, fields: Field[], mutationArguments: GroupListMutationArguments }): Promise<GroupMutationStore> {
-    const data: Writable<{ isFetching: boolean, list: Group[] }> = writable({
+export async function createGroupListMutationStore(params: { event: LoadEvent }): Promise<GroupListMutationStore> {
+    const data: Writable<{ isFetching: boolean, response: { data?: { groupList: Group[] | null | undefined }, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
-        list: []
+        response: {}
     });
 
-    const { event, fields, mutationArguments } = params;
+    const { event } = params;
 
     const { subscribe, set, update } = data;
 
     const fetch = async (fields: Field[], mutationArguments: GroupListMutationArguments) => {
         if (fields && fields.length > 0) {
             update((data) => ({ ...data, isFetching: true }));
-            let query = `mutation Mutation_groupList($id: StringExpression, $name: StringExpression, $description: StringExpression, $path: StringExpression, $deep: IntExpression, $parentId: StringExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $groupUserRelation: GroupUserRelationExpression, $groupRoleRelation: GroupRoleRelationExpression, $orderBy: GroupOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [GroupExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
-    groupList(id: $id name: $name description: $description path: $path deep: $deep parentId: $parentId parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupUserRelation: $groupUserRelation groupRoleRelation: $groupRoleRelation orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before)  {
+            let query = `mutation Mutation_groupList($id: ID, $name: String, $description: String, $path: String, $deep: Int, $parentId: String, $parent: GroupInput, $subGroups: [GroupInput], $users: [UserInput], $roles: [RoleInput], $realm: RealmInput, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $groupUserRelation: [GroupUserRelationInput], $groupRoleRelation: [GroupRoleRelationInput], $list: [GroupInput], $where: GroupExpression) {
+    groupList(id: $id name: $name description: $description path: $path deep: $deep parentId: $parentId parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupUserRelation: $groupUserRelation groupRoleRelation: $groupRoleRelation list: $list where: $where)  {
         ${fields.map((field) => fieldToString(field)).join('\r\n')}
     }
 }`;
@@ -35,8 +35,9 @@ export async function createGroupMutationStore(params: { event: LoadEvent, field
                 const json = await response.json();
                 set({
                     isFetching: false,
-                    list: json.data.groupList
+                    response: json
                 });
+                return json;
             }
         }
     }
@@ -47,13 +48,13 @@ export async function createGroupMutationStore(params: { event: LoadEvent, field
     };
 }
 
-export type GroupMutationStore = {
+export type GroupListMutationStore = {
     subscribe: (this: void, run: Subscriber<{
         isFetching: boolean;
-        list: Group[];
+        response: { data?: { groupList: Group[] | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }>, invalidate?: Invalidator<{
         isFetching: boolean;
-        list: Group[];
+        response: { data?: { groupList: Group[] | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], mutationArguments: GroupListMutationArguments) => Promise<void>;
+    fetch: (fields: Field[], mutationArguments: GroupListMutationArguments) => Promise<{ data?: { groupList: Group[] | null | undefined }, errors?: GraphQLError[] | null | undefined } | null | undefined>;
 }
