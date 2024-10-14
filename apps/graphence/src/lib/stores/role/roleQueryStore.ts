@@ -1,13 +1,13 @@
 import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import type { LoadEvent } from '@sveltejs/kit';
-import { type Field, fieldToString } from '@graphace/graphql';
+import { type Field, fieldToString, type GraphQLError } from '@graphace/graphql';
 import type { RoleConnection, RoleConnectionQueryArguments } from '~/lib/types/schema';
 
-export async function createRoleQueryStore(params: { event: LoadEvent, fields: Field[], queryArguments: RoleConnectionQueryArguments }): Promise<RoleQueryStore> {
-    const data: Writable<{ isFetching: boolean, connection: RoleConnection }> = writable({
+export async function createRoleConnectionQueryStore(params: { event: LoadEvent, fields: Field[], queryArguments: RoleConnectionQueryArguments }): Promise<RoleQueryConnectionStore> {
+    const data: Writable<{ isFetching: boolean, response: { data?: { roleConnection: RoleConnection | null | undefined }, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
-        connection: {}
+        response: {}
     });
 
     const { event, fields, queryArguments } = params;
@@ -41,8 +41,9 @@ export async function createRoleQueryStore(params: { event: LoadEvent, fields: F
                 const json = await response.json();
                 set({
                     isFetching: false,
-                    connection: json.data.roleConnection
+                    response: json
                 });
+                return json;
             }
         }
     }
@@ -55,13 +56,13 @@ export async function createRoleQueryStore(params: { event: LoadEvent, fields: F
     };
 }
 
-export type RoleQueryStore = {
+export type RoleQueryConnectionStore = {
     subscribe: (this: void, run: Subscriber<{
         isFetching: boolean;
-        connection: RoleConnection;
+        response: { data?: { roleConnection: RoleConnection | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }>, invalidate?: Invalidator<{
         isFetching: boolean;
-        connection: RoleConnection;
+        response: { data?: { roleConnection: RoleConnection | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
     fetch: (fields: Field[], queryArguments: RoleConnectionQueryArguments) => Promise<void>;
 }

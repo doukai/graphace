@@ -34,6 +34,7 @@
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 	const permissions = getContext('permissions') as PermissionsStore;
 	const typeName = 'Role';
+	const idFieldName = 'id';
 
 	const dispatch = createEventDispatcher<{
 		query: { fields: Field[]; queryArguments: RoleConnectionQueryArguments };
@@ -359,38 +360,6 @@
 		});
 	}
 
-	$: selectColumns
-		.reduce((groups, option) => {
-			if (
-				groups.some(
-					(group) => group.value === option.group?.value && group.label === option.group?.label
-				)
-			) {
-				groups
-					.find(
-						(group) => group.value === option.group?.value && group.label === option.group?.label
-					)
-					?.options?.push(option);
-			} else {
-				groups.push({
-					value: option.group?.value,
-					label: option.group?.label,
-					options: [option]
-				});
-			}
-			return groups;
-		}, <G[]>[])
-		.map((group) => {
-			return {
-				value: group.value,
-				label: group.label,
-				options: group.options?.flatMap((option) => [
-					{ value: option.value, label: option.label + $LL.uiGraphql.table.th.asc(), node: 'ASC' },
-					{ value: option.value, label: option.label + $LL.uiGraphql.table.th.desc(), node: 'DESC' }
-				])
-			};
-		});
-
 	$: orderByOptions = selectColumns
 		.reduce((groups, option) => {
 			if (
@@ -496,8 +465,8 @@
 			return field;
 		});
 
-		if (!queryFields.some((subField) => subField.name === 'id')) {
-			queryFields.push({ name: 'id' });
+		if (!queryFields.some((subField) => subField.name === idFieldName)) {
+			queryFields.push({ name: idFieldName });
 		}
 
 		return queryFields;
@@ -744,6 +713,7 @@
 	<div class="divider" />
 {/if}
 <div class="card-body overflow-auto {className}">
+	<slot name="toolbar" />
 	{#if isFetching}
 		<div class="flex justify-center">
 			<span class="loading loading-bars loading-lg" />

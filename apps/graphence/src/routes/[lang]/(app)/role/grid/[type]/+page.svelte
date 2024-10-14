@@ -2,7 +2,7 @@
 	import { Card } from '@graphace/ui';
 	import RoleGrid from '~/lib/components/objects/role/RoleGrid.svelte';
 	import RoleAggGrid from '~/lib/components/objects/role/RoleAggGrid.svelte';
-	import type { RoleQueryStore } from '~/lib/stores/role/roleQueryStore';
+	import type { RoleQueryConnectionStore } from '~/lib/stores/role/roleQueryStore';
 	import type { RoleListMutationStore } from '~/lib/stores/role/roleMutationStore';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/utils';
@@ -22,7 +22,7 @@
 		showBookmarkButton
 	} = data;
 
-	const RoleQuery = data.RoleQuery as RoleQueryStore;
+	const RoleConnectionQuery = data.RoleConnectionQuery as RoleQueryConnectionStore;
 	const RoleListMutation = data.RoleListMutation as RoleListMutationStore;
 
 	const components: Record<string, any> = {
@@ -36,8 +36,8 @@
 <Card>
 	<svelte:component
 		this={component}
-		isFetching={$RoleQuery.isFetching}
-		connection={$RoleQuery.connection}
+		isFetching={$RoleConnectionQuery.isFetching}
+		connection={$RoleConnectionQuery.response.data?.roleConnection}
 		{errors}
 		{fields}
 		{queryArguments}
@@ -48,7 +48,7 @@
 		{showBookmarkButton}
 		on:query={(e) => {
 			errors = {};
-			RoleQuery.fetch(e.detail.fields, e.detail.queryArguments);
+			RoleConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments);
 		}}
 		on:mutation={(e) => {
 			validate('Mutation_roleList_Arguments', e.detail.mutationArguments, $locale)
