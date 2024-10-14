@@ -22,8 +22,8 @@
 		showBookmarkButton
 	} = data;
 
-	const RoleConnectionQuery = data.RoleQuery as RoleConnectionQueryStore;
-	const RoleListMutation = data.RoleQuery as RoleListMutationStore;
+	const RoleConnectionQuery = data.RoleConnectionQuery as RoleConnectionQueryStore;
+	const RoleListMutation = data.RoleListMutation as RoleListMutationStore;
 
 	const components: Record<string, any> = {
 		mutation: RoleGrid,

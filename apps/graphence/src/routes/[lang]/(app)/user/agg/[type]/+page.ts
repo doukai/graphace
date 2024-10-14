@@ -1,6 +1,6 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
-import { createUserQueryStore } from '~/lib/stores/user/userQueryStore';
+import { createUserConnectionQueryStore } from '~/lib/stores/user/userQueryStore';
 import { permissions } from '~/utils/auth-util';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
@@ -21,6 +21,6 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        UserQuery: (await createUserQueryStore({ event, fields, queryArguments }))
+        UserConnectionQuery: (await createUserConnectionQueryStore({ event, fields, queryArguments }))
     };
 }

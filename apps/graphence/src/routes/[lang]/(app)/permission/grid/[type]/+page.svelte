@@ -22,8 +22,8 @@
 		showBookmarkButton
 	} = data;
 
-	const PermissionConnectionQuery = data.PermissionQuery as PermissionConnectionQueryStore;
-	const PermissionListMutation = data.PermissionQuery as PermissionListMutationStore;
+	const PermissionConnectionQuery = data.PermissionConnectionQuery as PermissionConnectionQueryStore;
+	const PermissionListMutation = data.PermissionListMutation as PermissionListMutationStore;
 
 	const components: Record<string, any> = {
 		mutation: PermissionGrid,

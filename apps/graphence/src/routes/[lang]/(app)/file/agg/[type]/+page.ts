@@ -1,6 +1,6 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
-import { createFileQueryStore } from '~/lib/stores/file/fileQueryStore';
+import { createFileConnectionQueryStore } from '~/lib/stores/file/fileQueryStore';
 import { permissions } from '~/utils/auth-util';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
@@ -21,6 +21,6 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        FileQuery: (await createFileQueryStore({ event, fields, queryArguments }))
+        FileConnectionQuery: (await createFileConnectionQueryStore({ event, fields, queryArguments }))
     };
 }

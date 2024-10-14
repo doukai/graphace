@@ -22,8 +22,8 @@
 		showBookmarkButton
 	} = data;
 
-	const RealmConnectionQuery = data.RealmQuery as RealmConnectionQueryStore;
-	const RealmListMutation = data.RealmQuery as RealmListMutationStore;
+	const RealmConnectionQuery = data.RealmConnectionQuery as RealmConnectionQueryStore;
+	const RealmListMutation = data.RealmListMutation as RealmListMutationStore;
 
 	const components: Record<string, any> = {
 		mutation: RealmGrid,

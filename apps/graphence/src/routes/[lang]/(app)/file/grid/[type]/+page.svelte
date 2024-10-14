@@ -22,8 +22,8 @@
 		showBookmarkButton
 	} = data;
 
-	const FileConnectionQuery = data.FileQuery as FileConnectionQueryStore;
-	const FileListMutation = data.FileQuery as FileListMutationStore;
+	const FileConnectionQuery = data.FileConnectionQuery as FileConnectionQueryStore;
+	const FileListMutation = data.FileListMutation as FileListMutationStore;
 
 	const components: Record<string, any> = {
 		mutation: FileGrid,

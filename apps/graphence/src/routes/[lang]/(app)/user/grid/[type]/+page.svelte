@@ -22,8 +22,8 @@
 		showBookmarkButton
 	} = data;
 
-	const UserConnectionQuery = data.UserQuery as UserConnectionQueryStore;
-	const UserListMutation = data.UserQuery as UserListMutationStore;
+	const UserConnectionQuery = data.UserConnectionQuery as UserConnectionQueryStore;
+	const UserListMutation = data.UserListMutation as UserListMutationStore;
 
 	const components: Record<string, any> = {
 		mutation: UserGrid,

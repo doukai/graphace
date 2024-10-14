@@ -1,6 +1,6 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
-import { createGroupQueryStore } from '~/lib/stores/group/groupQueryStore';
+import { createGroupConnectionQueryStore } from '~/lib/stores/group/groupQueryStore';
 import { permissions } from '~/utils/auth-util';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
@@ -21,6 +21,6 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        GroupQuery: (await createGroupQueryStore({ event, fields, queryArguments }))
+        GroupConnectionQuery: (await createGroupConnectionQueryStore({ event, fields, queryArguments }))
     };
 }

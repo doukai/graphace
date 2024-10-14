@@ -4,7 +4,7 @@
 	import PermissionLine from '~/lib/components/objects/permission/PermissionLine.svelte';
 	import PermissionPie from '~/lib/components/objects/permission/PermissionPie.svelte';
 	import PermissionAggTable from '~/lib/components/objects/permission/PermissionAggTable.svelte';
-	import type { PermissionQueryStore } from '~/lib/stores/permission/permissionQueryStore';
+	import type { PermissionConnectionQueryStore } from '~/lib/stores/permission/permissionQueryStore';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -19,7 +19,7 @@
 		showBookmarkButton
 	} = data;
 
-	const PermissionQuery = data.PermissionQuery as PermissionQueryStore;
+	const PermissionConnectionQuery = data.PermissionConnectionQuery as PermissionConnectionQueryStore;
 
 	const components: Record<string, any> = {
 		bar: PermissionBar,
@@ -34,8 +34,8 @@
 <Card>
 	<svelte:component
 		this={component}
-		isFetching={$PermissionQuery.isFetching}
-		connection={$PermissionQuery.connection}
+		isFetching={$PermissionConnectionQuery.isFetching}
+		connection={$PermissionConnectionQuery.response.data?.permissionConnection}
 		{fields}
 		{queryArguments}
 		{showHeader}
@@ -43,6 +43,6 @@
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
-		on:query={(e) => PermissionQuery.fetch(e.detail.fields, e.detail.queryArguments)}
+		on:query={(e) => PermissionConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments)}
 	/>
 </Card>

@@ -4,7 +4,7 @@
 	import UserLine from '~/lib/components/objects/user/UserLine.svelte';
 	import UserPie from '~/lib/components/objects/user/UserPie.svelte';
 	import UserAggTable from '~/lib/components/objects/user/UserAggTable.svelte';
-	import type { UserQueryStore } from '~/lib/stores/user/userQueryStore';
+	import type { UserConnectionQueryStore } from '~/lib/stores/user/userQueryStore';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -19,7 +19,7 @@
 		showBookmarkButton
 	} = data;
 
-	const UserQuery = data.UserQuery as UserQueryStore;
+	const UserConnectionQuery = data.UserConnectionQuery as UserConnectionQueryStore;
 
 	const components: Record<string, any> = {
 		bar: UserBar,
@@ -34,8 +34,8 @@
 <Card>
 	<svelte:component
 		this={component}
-		isFetching={$UserQuery.isFetching}
-		connection={$UserQuery.connection}
+		isFetching={$UserConnectionQuery.isFetching}
+		connection={$UserConnectionQuery.response.data?.userConnection}
 		{fields}
 		{queryArguments}
 		{showHeader}
@@ -43,6 +43,6 @@
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
-		on:query={(e) => UserQuery.fetch(e.detail.fields, e.detail.queryArguments)}
+		on:query={(e) => UserConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments)}
 	/>
 </Card>

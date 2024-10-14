@@ -22,8 +22,8 @@
 		showBookmarkButton
 	} = data;
 
-	const GroupConnectionQuery = data.GroupQuery as GroupConnectionQueryStore;
-	const GroupListMutation = data.GroupQuery as GroupListMutationStore;
+	const GroupConnectionQuery = data.GroupConnectionQuery as GroupConnectionQueryStore;
+	const GroupListMutation = data.GroupListMutation as GroupListMutationStore;
 
 	const components: Record<string, any> = {
 		mutation: GroupGrid,

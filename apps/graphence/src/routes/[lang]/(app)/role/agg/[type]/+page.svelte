@@ -4,7 +4,7 @@
 	import RoleLine from '~/lib/components/objects/role/RoleLine.svelte';
 	import RolePie from '~/lib/components/objects/role/RolePie.svelte';
 	import RoleAggTable from '~/lib/components/objects/role/RoleAggTable.svelte';
-	import type { RoleQueryStore } from '~/lib/stores/role/roleQueryStore';
+	import type { RoleConnectionQueryStore } from '~/lib/stores/role/roleQueryStore';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
@@ -19,7 +19,7 @@
 		showBookmarkButton
 	} = data;
 
-	const RoleQuery = data.RoleQuery as RoleQueryStore;
+	const RoleConnectionQuery = data.RoleConnectionQuery as RoleConnectionQueryStore;
 
 	const components: Record<string, any> = {
 		bar: RoleBar,
@@ -34,8 +34,8 @@
 <Card>
 	<svelte:component
 		this={component}
-		isFetching={$RoleQuery.isFetching}
-		connection={$RoleQuery.connection}
+		isFetching={$RoleConnectionQuery.isFetching}
+		connection={$RoleConnectionQuery.response.data?.roleConnection}
 		{fields}
 		{queryArguments}
 		{showHeader}
@@ -43,6 +43,6 @@
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
-		on:query={(e) => RoleQuery.fetch(e.detail.fields, e.detail.queryArguments)}
+		on:query={(e) => RoleConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments)}
 	/>
 </Card>

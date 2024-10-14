@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable, Writable } from 'svelte/store';
-	import { createToolbar } from '@melt-ui/svelte';
 	import { RevoGrid } from '@revolist/svelte-datagrid';
 	import type { Cell } from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
@@ -52,11 +51,6 @@
 			catch: (errors: GraphQLError[]) => void;
 		};
 	}>();
-
-	const {
-		elements: { root, button, link, separator },
-		builders: { createToolbarGroup }
-	} = createToolbar();
 
 	let queryFields: Field[] = [];
 	let pageSize: number = 10;

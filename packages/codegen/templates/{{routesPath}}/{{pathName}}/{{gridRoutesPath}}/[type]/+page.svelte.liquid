@@ -22,8 +22,8 @@
 		showBookmarkButton
 	} = data;
 
-	const {{ name }}ConnectionQuery = data.{{ name }}Query as {{ name }}ConnectionQueryStore;
-	const {{ name }}ListMutation = data.{{ name }}Query as {{ name }}ListMutationStore;
+	const {{ name }}ConnectionQuery = data.{{ name }}ConnectionQuery as {{ name }}ConnectionQueryStore;
+	const {{ name }}ListMutation = data.{{ name }}ListMutation as {{ name }}ListMutationStore;
 
 	const components: Record<string, any> = {
 		mutation: {{ name }}Grid,
