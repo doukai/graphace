@@ -9,6 +9,7 @@
 
 	export let fields: Field[] = [];
 	export let source: DataType[] = [];
+	export let idFieldName: string;
 	export let rowIndex: number | undefined = undefined;
 	export let colIndex: number | undefined = undefined;
 	export let pageSize: number = 10;
@@ -70,12 +71,17 @@
 		disabled={rowIndex === undefined || source[rowIndex]?.isDeprecated === true}
 		on:click={(e) => {
 			if (rowIndex !== undefined) {
-				source[rowIndex].isDeprecated = true;
+				if (source[rowIndex]?.[idFieldName]) {
+					source[rowIndex].isDeprecated = true;
+					setCellsFocus(
+						{ x: colIndex || 0, y: rowIndex || 0 },
+						{ x: colIndex || 0, y: rowIndex || 0 }
+					);
+				} else {
+					source.splice(rowIndex, 1);
+					source = [...source];
+				}
 				dispatch('change', { source });
-				setCellsFocus(
-					{ x: colIndex || 0, y: rowIndex || 0 },
-					{ x: colIndex || 0, y: rowIndex || 0 }
-				);
 			}
 		}}
 		class="btn btn-xs btn-error"

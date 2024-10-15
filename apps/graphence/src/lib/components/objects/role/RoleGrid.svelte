@@ -125,6 +125,7 @@
 		slot="toolbar"
 		{fields}
 		{source}
+		{idFieldName}
 		{rowIndex}
 		{colIndex}
 		{pageSize}
