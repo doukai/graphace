@@ -66,7 +66,7 @@
 	) => Promise<void>;
 
 	$: theme = getGridTheme($themeStore);
-	$: nodes = connection.edges?.map((edge) => edge?.node);
+	$: nodes = connection?.edges?.map((edge) => edge?.node);
 	$: totalCount = connection?.totalCount || 0;
 	$: source = nodesToSource<Realm>(typeName, queryFields, nodes) || [];
 	$: gridErrors = errorsToGridErrors<Realm>(typeName, errors, queryFields, nodes);
@@ -115,10 +115,11 @@
 	{showFilterButton}
 	{showBookmarkButton}
 	{totalCount}
-	className="p-0"
+	className="p-0 h-screen"
 	on:query
 	on:bookmark
 	bind:getFieldName
+	bind:queryPage
 >
 	<GridToolbar
 		slot="toolbar"
@@ -130,6 +131,7 @@
 		{setCellsFocus}
 		on:query={(e) => queryPage()}
 		on:mutation={(e) => mutation()}
+		on:change={(e) => (source = e.detail.source)}
 	/>
 	<RevoGrid
 		{source}
@@ -140,5 +142,10 @@
 		{columnTypes}
 		{theme}
 		{editors}
+		on:afterfocus={(e) => {
+			rowIndex = e.detail.rowIndex;
+			colIndex = e.detail.colIndex;
+		}}
+		bind:setCellsFocus
 	/>
 </RealmQuery>

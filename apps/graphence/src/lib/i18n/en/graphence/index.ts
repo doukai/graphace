@@ -72,8 +72,6 @@ const en: BaseTranslation = {
                 refresh: 'Refresh',
                 save: 'Save',
                 new: 'New',
-                InsertAbove: 'Insert↑',
-                InsertBelow: 'Insert↓',
                 append: 'Append',
                 remove: 'Remove',
                 canel: 'Canel'

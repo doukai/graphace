@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang='ts'>
 	import { getContext } from 'svelte';
 	import type { Readable, Writable } from 'svelte/store';
 	import { RevoGrid } from '@revolist/svelte-datagrid';
@@ -22,7 +22,7 @@
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 	const typeName = 'File';
 	const themeStore = getContext('theme') as Writable<string | undefined>;
-	
+
 	const columnTypes = {
 		numeric: new NumberColumnType(),
 		select: new SelectColumnType()
@@ -32,7 +32,7 @@
 	let getGrouByName: (fieldName: string) => string;
 
 	$: theme = getGridTheme($themeStore);
-	$: nodes = connection.edges?.map((edge) => edge?.node);
+	$: nodes = connection?.edges?.map((edge) => edge?.node);
 	$: totalCount = connection?.totalCount || 0;
 
 	$: filter = {
@@ -67,7 +67,13 @@
 		}
 	};
 
-	$: columns = fieldsToAggColumns(typeName, fields, getFieldName);
+	$: columns = fieldsToAggColumns(
+		typeName,
+		queryArguments.groupBy || [],
+		fields,
+		getFieldName,
+		getGrouByName
+	);
 	$: source = nodesToAggSource(queryArguments.groupBy || [], fields, nodes);
 </script>
 
@@ -81,7 +87,7 @@
 	{showFilterButton}
 	{showBookmarkButton}
 	{totalCount}
-	className="p-0"
+	className="p-0 h-screen"
 	on:query
 	on:bookmark
 	bind:getFieldName

@@ -339,7 +339,7 @@
 		}
 	};
 
-	const queryPage = (toPageNumber?: number | undefined) => {
+	export const queryPage = (toPageNumber?: number | undefined) => {
 		buildFields();
 		dispatch('query', { fields: buildQueryFields(), queryArguments: buildArguments(toPageNumber) });
 	};

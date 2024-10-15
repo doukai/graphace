@@ -22,7 +22,7 @@
 	let getFieldName: (fieldName: string, subFieldName?: string) => string;
 
 	$: if (connection) {
-		const nodes = connection.edges?.map((edge) => edge?.node);
+		const nodes = connection?.edges?.map((edge) => edge?.node);
 		if (nodes) {
 			data = {
 				labels: nodes?.map((node) =>

@@ -514,8 +514,8 @@
 		pageNumber = queryArguments.offset / pageSize + 1;
 	}
 
-	const buildFields = (): Field[] => {
-		fields = selectColumns.reduce((fields, option) => {
+	const optionsToFields = (): Field[] => {
+		return selectColumns.reduce((fields, option) => {
 			if (option.group?.value) {
 				if (fields.some((field) => field.name === option.group?.value)) {
 					fields
@@ -529,7 +529,10 @@
 			}
 			return fields;
 		}, <Field[]>[]);
+	};
 
+	const buildFields = (): Field[] => {
+		fields = optionsToFields();
 		return fields;
 	};
 
@@ -607,7 +610,7 @@
 		return groupByOptions.find((group) => group.value === fieldName)?.label;
 	};
 
-	const queryPage = (toPageNumber?: number | undefined) => {
+	export const queryPage = (toPageNumber?: number | undefined) => {
 		dispatch('query', { fields: buildFields(), queryArguments: buildArguments(toPageNumber) });
 	};
 

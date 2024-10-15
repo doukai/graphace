@@ -15,7 +15,7 @@
 	export let showFilterButton: boolean = true;
 	export let showBookmarkButton: boolean = false;
 
-	$: nodes = connection.edges?.map((edge) => edge?.node);
+	$: nodes = connection?.edges?.map((edge) => edge?.node);
 	$: totalCount = connection?.totalCount || 0;
 </script>
 

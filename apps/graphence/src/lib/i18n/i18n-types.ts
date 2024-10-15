@@ -262,14 +262,6 @@ export type NamespaceGraphenceTranslation = {
 				 */
 				'new': string
 				/**
-				 * I​n​s​e​r​t​↑
-				 */
-				InsertAbove: string
-				/**
-				 * I​n​s​e​r​t​↓
-				 */
-				InsertBelow: string
-				/**
 				 * A​p​p​e​n​d
 				 */
 				append: string
@@ -3631,14 +3623,6 @@ export type TranslationFunctions = {
 					 * New
 					 */
 					'new': () => LocalizedString
-					/**
-					 * Insert↑
-					 */
-					InsertAbove: () => LocalizedString
-					/**
-					 * Insert↓
-					 */
-					InsertBelow: () => LocalizedString
 					/**
 					 * Append
 					 */

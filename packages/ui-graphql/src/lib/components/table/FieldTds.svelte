@@ -9,6 +9,8 @@
 {#each fields || [] as field}
 	{#if field.fields}
 		<svelte:self node={node[field.name]} fields={field.fields} {className} />
+	{:else if node[field.name] === null}
+		<td class={className}>-</td>
 	{:else}
 		<td class={className}>{node[field.name]}</td>
 	{/if}

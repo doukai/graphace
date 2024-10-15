@@ -49,7 +49,7 @@ export const getGridType = (typeName: string, filedName: string, subFiledName?: 
                         const enumValues = get(LL).graphql.enums[enumName].values;
                         return { label: enumValues[enumValue.name as keyof typeof enumValues].name(), value: enumValue.name };
                     })
-            }
+            };
         }
         switch (fieldType) {
             case 'Boolean':
@@ -350,45 +350,78 @@ export const fieldsToColumns = (typeName: string, fields: Field[], source: DataT
                     ]
                 };
             }
-        }) as ColumnGrouping[])
+        }) as ColumnGrouping[]);
 }
 
-export const fieldsToAggColumns = (typeName: string, fields: Field[], getFieldName: (fieldName: string, subFieldName?: string) => string): ColumnRegular[] | ColumnGrouping[] => {
+export const fieldsToAggColumns = (typeName: string, groupBy: string[], fields: Field[], getFieldName: (fieldName: string, subFieldName?: string) => string, getGrouByName: (fieldName: string) => string): ColumnRegular[] | ColumnGrouping[] => {
     return fieldsDeep(fields) === 1
-        ? (fields.map((field) => ({
-            name: getFieldName(field.name),
-            prop: field.name,
-            autoSize: true,
-            editable: true,
-            ...getGridType(typeName, field.name)
-        })) as ColumnRegular[])
-        : (fields.map((field) => {
-            if (field.fields && field.fields.length > 0) {
-                return {
-                    name: getFieldName(field.name),
-                    children: field.fields.map((subField) => ({
-                        name: getFieldName(field.name, subField.name),
-                        prop: `${field.name}.${subField.name}`,
+        ? ([
+            ...(groupBy || []).map((fieldName) => ({
+                name: getGrouByName(fieldName),
+                prop: fieldName,
+                autoSize: true,
+                readonly: true,
+                filter: true,
+                sortable: true,
+                ...getGridType(typeName, fieldName)
+            })),
+            ...fields.map((field) => ({
+                name: getFieldName(field.name),
+                prop: field.name,
+                autoSize: true,
+                readonly: true,
+                filter: true,
+                sortable: true,
+                ...getGridType(typeName, field.name)
+            }))
+        ] as ColumnRegular[])
+        : ([
+            ...(groupBy || []).map((fieldName) => ({
+                name: '',
+                children: [
+                    {
+                        name: getGrouByName(fieldName),
+                        prop: fieldName,
                         autoSize: true,
-                        editable: true,
-                        ...getGridType(typeName, field.name, subField.name)
-                    }))
-                };
-            } else {
-                return {
-                    name: '',
-                    children: [
-                        {
-                            name: getFieldName(field.name),
-                            prop: field.name,
+                        readonly: true,
+                        filter: true,
+                        sortable: true,
+                        ...getGridType(typeName, fieldName)
+                    }
+                ]
+            })),
+            ...fields.map((field) => {
+                if (field.fields && field.fields.length > 0) {
+                    return {
+                        name: getFieldName(field.name),
+                        children: field.fields.map((subField) => ({
+                            name: getFieldName(field.name, subField.name),
+                            prop: `${field.name}.${subField.name}`,
                             autoSize: true,
-                            editable: true,
-                            ...getGridType(typeName, field.name)
-                        }
-                    ]
-                };
-            }
-        }) as ColumnGrouping[])
+                            readonly: true,
+                            filter: true,
+                            sortable: true,
+                            ...getGridType(typeName, field.name, subField.name)
+                        }))
+                    };
+                } else {
+                    return {
+                        name: '',
+                        children: [
+                            {
+                                name: getFieldName(field.name),
+                                prop: field.name,
+                                autoSize: true,
+                                readonly: true,
+                                filter: true,
+                                sortable: true,
+                                ...getGridType(typeName, field.name)
+                            }
+                        ]
+                    };
+                }
+            })
+        ] as ColumnGrouping[]);
 }
 
 export const nodesToSource = <T>(typeName: string, queryFields: Field[], nodes: (T | null | undefined)[] | undefined): DataType[] | undefined => {
@@ -465,7 +498,7 @@ export const nodesToAggSource = <T>(groupBy: string[], fields: Field[], nodes: (
                 }
             })
         ])
-    )
+    );
 }
 
 export const errorsToGridErrors = <T>(typeName: string, errors: Record<number, Errors>, queryFields: Field[], nodes: (T | null | undefined)[] | undefined): Record<string, Errors>[] | undefined => {
@@ -600,7 +633,8 @@ export const sourceToMutationList = (typeName: string, idFieldName: string, quer
                 );
             }
             return nodes;
-        }, <DataType[]>[]);
+        }, <DataType[]>[])
+            .filter(row => Object.values(row).every(col => col !== null && col !== undefined));;
     } else {
         return source?.map((row) =>
             Object.fromEntries(
@@ -621,6 +655,7 @@ export const sourceToMutationList = (typeName: string, idFieldName: string, quer
                     }
                 })
             )
-        );
+        )
+            .filter(row => Object.values(row).every(col => col !== null && col !== undefined));
     }
 }

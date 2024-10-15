@@ -8,7 +8,7 @@
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let fields: Field[] = [];
-	export let source: DataType[];
+	export let source: DataType[] = [];
 	export let rowIndex: number | undefined = undefined;
 	export let colIndex: number | undefined = undefined;
 	export let pageSize: number = 10;
@@ -22,6 +22,7 @@
 	const dispatch = createEventDispatcher<{
 		query: {};
 		mutation: {};
+		change: { source: DataType[] };
 	}>();
 
 	const {
@@ -48,6 +49,7 @@
 		disabled={fields.length === 0}
 		on:click={(e) => {
 			source = [...Array(pageSize).map(() => ({}))];
+			dispatch('change', { source });
 		}}
 	>
 		{$LL.graphence.components.grid.buttons.new()}
@@ -55,43 +57,10 @@
 	<button
 		class="btn btn-xs btn-primary"
 		use:melt={$button}
-		disabled={rowIndex === undefined}
-		on:click={(e) => {
-			if (rowIndex !== undefined) {
-				source.splice(rowIndex, 0, {});
-				source = [...source];
-				setCellsFocus(
-					{ x: colIndex || 0, y: rowIndex || 0 },
-					{ x: colIndex || 0, y: rowIndex || 0 }
-				);
-			}
-		}}
-	>
-		{$LL.graphence.components.grid.buttons.InsertAbove()}
-	</button>
-	<button
-		class="btn btn-xs btn-primary"
-		use:melt={$button}
-		disabled={rowIndex === undefined}
-		on:click={(e) => {
-			if (rowIndex !== undefined) {
-				source.splice(rowIndex + 1, 0, {});
-				source = [...source];
-				setCellsFocus(
-					{ x: colIndex || 0, y: rowIndex + 1 || 0 },
-					{ x: colIndex || 0, y: rowIndex + 1 || 0 }
-				);
-			}
-		}}
-	>
-		{$LL.graphence.components.grid.buttons.InsertBelow()}
-	</button>
-	<button
-		class="btn btn-xs btn-primary"
-		use:melt={$button}
 		disabled={fields.length === 0}
 		on:click={(e) => {
 			source = [...source, {}];
+			dispatch('change', { source });
 		}}
 	>
 		{$LL.graphence.components.grid.buttons.append()}
@@ -102,6 +71,7 @@
 		on:click={(e) => {
 			if (rowIndex !== undefined) {
 				source[rowIndex].isDeprecated = true;
+				dispatch('change', { source });
 				setCellsFocus(
 					{ x: colIndex || 0, y: rowIndex || 0 },
 					{ x: colIndex || 0, y: rowIndex || 0 }
@@ -118,6 +88,7 @@
 		on:click={(e) => {
 			if (rowIndex !== undefined) {
 				source[rowIndex].isDeprecated = undefined;
+				dispatch('change', { source });
 				setCellsFocus(
 					{ x: colIndex || 0, y: rowIndex || 0 },
 					{ x: colIndex || 0, y: rowIndex || 0 }
