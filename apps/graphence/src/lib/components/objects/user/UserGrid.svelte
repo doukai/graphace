@@ -8,7 +8,12 @@
 	import type { Field, GraphQLError } from '@graphace/graphql';
 	import UserQuery from '~/lib/components/objects/user/User.svelte';
 	import { GridToolbar } from '~/lib/components/grid';
-	import type { User, UserConnection, UserConnectionQueryArguments, UserListMutationArguments } from '~/lib/types/schema';
+	import type {
+		User,
+		UserConnection,
+		UserConnectionQueryArguments,
+		UserListMutationArguments
+	} from '~/lib/types/schema';
 	import {
 		getGridTheme,
 		createEditors,
@@ -21,7 +26,7 @@
 	} from '~/utils';
 	import type { Errors } from '@graphace/commons';
 	import { messageBoxs, notifications } from '@graphace/ui';
-	
+
 	export let connection: UserConnection;
 	export let fields: Field[] = [];
 	export let queryArguments: UserConnectionQueryArguments = {};
@@ -115,7 +120,7 @@
 	{showFilterButton}
 	{showBookmarkButton}
 	{totalCount}
-	className="p-0 h-screen"
+	className="p-0"
 	on:query
 	on:bookmark
 	bind:getFieldName

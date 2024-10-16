@@ -634,7 +634,7 @@ export const sourceToMutationList = (typeName: string, idFieldName: string, quer
             }
             return nodes;
         }, <DataType[]>[])
-            .filter(row => Object.values(row).every(col => col !== null && col !== undefined));;
+            .filter(row => !Object.values(row).every(col => col === null || col === undefined));
     } else {
         return source?.map((row) =>
             Object.fromEntries(
@@ -656,6 +656,6 @@ export const sourceToMutationList = (typeName: string, idFieldName: string, quer
                 })
             )
         )
-            .filter(row => Object.values(row).every(col => col !== null && col !== undefined));
+            .filter(row => !Object.values(row).every(col => col === null || col === undefined));
     }
 }
