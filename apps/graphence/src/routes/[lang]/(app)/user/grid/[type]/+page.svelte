@@ -39,6 +39,7 @@
 		isFetching={$UserConnectionQuery.isFetching}
 		connection={$UserConnectionQuery.response.data?.userConnection}
 		{fields}
+		{errors}
 		{queryArguments}
 		{showHeader}
 		{showFooter}

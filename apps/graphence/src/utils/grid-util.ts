@@ -429,7 +429,7 @@ export const nodesToSource = <T>(typeName: string, queryFields: Field[], nodes: 
     return nodes?.flatMap((node) => {
         if (join) {
             const array = node?.[join.name as keyof T];
-            if (Array.isArray(array)) {
+            if (Array.isArray(array) && array.length > 0) {
                 return array
                     .map((item) => {
                         if (join.fields && join.fields.length > 0) {

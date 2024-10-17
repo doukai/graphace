@@ -49,7 +49,11 @@
 		use:melt={$button}
 		disabled={fields.length === 0}
 		on:click={(e) => {
-			source = [...Array(pageSize).map(() => ({}))];
+			source = [
+				...Array(pageSize)
+					.fill(undefined)
+					.map(() => ({}))
+			];
 			dispatch('change', { source });
 		}}
 	>

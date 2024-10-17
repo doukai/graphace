@@ -39,6 +39,7 @@
 		isFetching={$GroupConnectionQuery.isFetching}
 		connection={$GroupConnectionQuery.response.data?.groupConnection}
 		{fields}
+		{errors}
 		{queryArguments}
 		{showHeader}
 		{showFooter}

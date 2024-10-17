@@ -39,6 +39,7 @@
 		isFetching={${{ name }}ConnectionQuery.isFetching}
 		connection={${{ name }}ConnectionQuery.response.data?.{{ name | camelCase }}Connection}
 		{fields}
+		{errors}
 		{queryArguments}
 		{showHeader}
 		{showFooter}

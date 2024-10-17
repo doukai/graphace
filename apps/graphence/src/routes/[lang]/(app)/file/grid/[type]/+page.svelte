@@ -39,6 +39,7 @@
 		isFetching={$FileConnectionQuery.isFetching}
 		connection={$FileConnectionQuery.response.data?.fileConnection}
 		{fields}
+		{errors}
 		{queryArguments}
 		{showHeader}
 		{showFooter}

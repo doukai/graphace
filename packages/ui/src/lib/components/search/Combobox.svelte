@@ -140,7 +140,7 @@
 			<input
 				use:melt={$input}
 				type="text"
-				class="input input-sm shrink grow basis-0 border-0 outline-none focus:outline-none {className}"
+				class="input input-sm p-0 shrink grow basis-0 border-0 outline-none focus:outline-none {className}"
 				on:focus={(e) => {
 					if ($touchedInput) {
 						debounce(() => {

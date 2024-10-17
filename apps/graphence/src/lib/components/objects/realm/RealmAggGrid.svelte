@@ -100,6 +100,7 @@
 		range={true}
 		resize={true}
 		autoSizeColumn={true}
+		rowHeaders={true}
 		{columnTypes}
 		{theme}
 	/>

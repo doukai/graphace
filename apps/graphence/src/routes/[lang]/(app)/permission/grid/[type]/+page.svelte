@@ -39,6 +39,7 @@
 		isFetching={$PermissionConnectionQuery.isFetching}
 		connection={$PermissionConnectionQuery.response.data?.permissionConnection}
 		{fields}
+		{errors}
 		{queryArguments}
 		{showHeader}
 		{showFooter}

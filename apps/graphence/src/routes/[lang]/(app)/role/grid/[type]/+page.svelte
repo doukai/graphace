@@ -39,6 +39,7 @@
 		isFetching={$RoleConnectionQuery.isFetching}
 		connection={$RoleConnectionQuery.response.data?.roleConnection}
 		{fields}
+		{errors}
 		{queryArguments}
 		{showHeader}
 		{showFooter}

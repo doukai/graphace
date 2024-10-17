@@ -39,6 +39,7 @@
 		isFetching={$RealmConnectionQuery.isFetching}
 		connection={$RealmConnectionQuery.response.data?.realmConnection}
 		{fields}
+		{errors}
 		{queryArguments}
 		{showHeader}
 		{showFooter}
