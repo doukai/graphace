@@ -39,9 +39,7 @@ export const getGridType = (typeName: string, filedName: string, subFiledName?: 
     if (fieldType) {
         if (isEnum(fieldType)) {
             return {
-                columnType: 'select',
-                labelKey: 'label',
-                valueKey: 'value',
+                editor: 'enum',
                 source: getType(fieldType)
                     ?.enumValues
                     ?.map(enumValue => {
@@ -53,15 +51,7 @@ export const getGridType = (typeName: string, filedName: string, subFiledName?: 
         }
         switch (fieldType) {
             case 'Boolean':
-                return {
-                    columnType: 'select',
-                    labelKey: 'label',
-                    valueKey: 'value',
-                    source: [
-                        { label: get(LL).graphence.components.grid.boolean.true(), value: true },
-                        { label: get(LL).graphence.components.grid.boolean.false(), value: false }
-                    ]
-                };
+                return { editor: 'boolean' };
             case 'Int':
             case 'Float':
             case 'BigInteger':
@@ -114,6 +104,59 @@ export const createEditors = (errors: Record<string, Errors>[] | undefined) => {
                 },
                 disconnectedCallback() {
                     const value = ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value;
+                    save(value, true);
+                }
+            };
+        },
+        boolean: (
+            column: ColumnDataSchemaModel,
+            save: (value: SaveData, preventFocus?: boolean) => void,
+            close: (focusNext?: boolean) => void
+        ): EditorBase => {
+            return {
+                element: null,
+                editCell: undefined,
+                render(createElement: HyperFunc<VNode>) {
+                    return createElement(
+                        'div',
+                        {},
+                        createElement(
+                            'select',
+                            {
+                                class: 'select select-xs w-full',
+                                value: column.value
+                            },
+                            [
+                                createElement(
+                                    'option',
+                                    {
+                                        value: get(LL).graphence.components.grid.boolean.true()
+                                    },
+                                    get(LL).graphence.components.grid.boolean.true()
+                                ),
+                                createElement(
+                                    'option',
+                                    {
+                                        value: get(LL).graphence.components.grid.boolean.false()
+                                    },
+                                    get(LL).graphence.components.grid.boolean.false()
+                                )
+                            ]
+                        )
+                    );
+                },
+                componentDidRender() {
+                    if (this.element) {
+                        const message = errors?.[this.editCell?.y!]?.[column.prop]?.errors?.[0]?.message;
+                        if (message) {
+                            this.element.className = 'tooltip tooltip-open tooltip-right tooltip-error';
+                            this.element.setAttribute('data-tip', message);
+                        }
+                        ((this.element as HTMLDivElement)?.children[0] as HTMLSelectElement)?.focus();
+                    }
+                },
+                disconnectedCallback() {
+                    const value = ((this.element as HTMLDivElement)?.children[0] as HTMLSelectElement)?.value;
                     save(value, true);
                 }
             };
@@ -266,6 +309,51 @@ export const createEditors = (errors: Record<string, Errors>[] | undefined) => {
                 },
                 disconnectedCallback() {
                     const value = ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value;
+                    save(value, true);
+                }
+            };
+        },
+        enum: (
+            column: ColumnDataSchemaModel,
+            save: (value: SaveData, preventFocus?: boolean) => void,
+            close: (focusNext?: boolean) => void
+        ): EditorBase => {
+            return {
+                element: null,
+                editCell: undefined,
+                render(createElement: HyperFunc<VNode>) {
+                    return createElement(
+                        'div',
+                        {},
+                        createElement(
+                            'select',
+                            {
+                                class: 'select select-xs w-full',
+                                value: column.value
+                            }
+                        )
+                    );
+                },
+                componentDidRender() {
+                    if (this.element) {
+                        const message = errors?.[this.editCell?.y!]?.[column.prop]?.errors?.[0]?.message;
+                        if (message) {
+                            this.element.className = 'tooltip tooltip-open tooltip-right tooltip-error';
+                            this.element.setAttribute('data-tip', message);
+                        }
+                        if (this.editCell) {
+                            this.editCell.column.source.forEach((item: { label: string }) => {
+                                const option = document.createElement("option");
+                                option.value = item.label;
+                                option.text = item.label;
+                                ((this.element as HTMLDivElement)?.children[0] as HTMLSelectElement).appendChild(option);
+                            })
+                        }
+                        ((this.element as HTMLDivElement)?.children[0] as HTMLSelectElement)?.focus();
+                    }
+                },
+                disconnectedCallback() {
+                    const value = ((this.element as HTMLDivElement)?.children[0] as HTMLSelectElement)?.value;
                     save(value, true);
                 }
             };
