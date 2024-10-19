@@ -3,7 +3,6 @@
 	import type { Readable, Writable } from 'svelte/store';
 	import { RevoGrid } from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
-	import SelectColumnType from '@revolist/revogrid-column-select';
 	import type { Field } from '@graphace/graphql';
 	import {{ name }}Agg from '~/{{ objectsPath }}/{{ name | paramCase }}/{{ name }}Agg.svelte';
 	import type { {{ name }}Connection, {{ name }}ConnectionQueryArguments } from '~/lib/types/schema';
@@ -24,8 +23,7 @@
 	const themeStore = getContext('theme') as Writable<string | undefined>;
 
 	const columnTypes = {
-		numeric: new NumberColumnType(),
-		select: new SelectColumnType()
+		numeric: new NumberColumnType()
 	};
 
 	let getFieldName: (fieldName: string, subFieldName?: string) => string;
@@ -74,7 +72,7 @@
 		getFieldName,
 		getGrouByName
 	);
-	$: source = nodesToAggSource(queryArguments.groupBy || [], fields, nodes);
+	$: source = nodesToAggSource(typeName, queryArguments.groupBy || [], fields, nodes);
 </script>
 
 <{{ name }}Agg

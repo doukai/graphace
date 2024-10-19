@@ -4,7 +4,6 @@
 	import { RevoGrid } from '@revolist/svelte-datagrid';
 	import type { Cell } from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
-	import SelectColumnType from '@revolist/revogrid-column-select';
 	import type { Field, GraphQLError } from '@graphace/graphql';
 	import GroupQuery from '~/lib/components/objects/group/Group.svelte';
 	import { GridToolbar } from '~/lib/components/grid';
@@ -39,8 +38,7 @@
 	const themeStore = getContext('theme') as Writable<string | undefined>;
 
 	const columnTypes = {
-		numeric: new NumberColumnType(),
-		select: new SelectColumnType()
+		numeric: new NumberColumnType()
 	};
 
 	const dispatch = createEventDispatcher<{

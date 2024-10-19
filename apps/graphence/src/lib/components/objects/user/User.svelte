@@ -609,7 +609,7 @@
 	</div>
 	<div class="divider" />
 {/if}
-<div class="card-body {className}">
+<div class="card-body overflow-auto {className}">
 	<slot name="toolbar" />
 	{#if isFetching}
 		<div class="flex justify-center">

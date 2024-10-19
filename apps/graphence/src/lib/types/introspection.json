@@ -102091,8 +102091,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "FIELD"
+          "FIELD",
+          "OBJECT"
         ],
         "args": []
       },
@@ -102317,11 +102317,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "INPUT_OBJECT",
-          "MUTATION",
           "QUERY",
-          "SUBSCRIPTION",
-          "FIELD_DEFINITION"
+          "INPUT_OBJECT",
+          "FIELD_DEFINITION",
+          "MUTATION",
+          "SUBSCRIPTION"
         ],
         "args": [
           {
@@ -102395,11 +102395,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "INPUT_OBJECT",
-          "MUTATION",
           "QUERY",
-          "SUBSCRIPTION",
-          "FIELD_DEFINITION"
+          "INPUT_OBJECT",
+          "FIELD_DEFINITION",
+          "MUTATION",
+          "SUBSCRIPTION"
         ],
         "args": [
           {
@@ -102426,9 +102426,9 @@
         "isRepeatable": false,
         "locations": [
           "INPUT_OBJECT",
+          "FIELD_DEFINITION",
           "INPUT_FIELD_DEFINITION",
-          "OBJECT",
-          "FIELD_DEFINITION"
+          "OBJECT"
         ],
         "args": [
           {
@@ -102939,11 +102939,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "MUTATION",
           "QUERY",
+          "FIELD_DEFINITION",
           "OBJECT",
-          "SUBSCRIPTION",
-          "FIELD_DEFINITION"
+          "MUTATION",
+          "SUBSCRIPTION"
         ],
         "args": [
           {
@@ -102969,8 +102969,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "FIELD"
+          "FIELD",
+          "OBJECT"
         ],
         "args": []
       },
@@ -102979,8 +102979,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "FIELD"
+          "FIELD",
+          "OBJECT"
         ],
         "args": [
           {

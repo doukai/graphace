@@ -9,11 +9,11 @@ import type {
     ColumnGrouping,
     DataType
 } from '@revolist/svelte-datagrid';
-import { getTypeFieldTypeName, getType, isEnum, typeFieldTypeHasList } from '~/utils';
+import type { Errors } from '@graphace/commons';
+import { fieldsDeep, type __Type, type Field } from '@graphace/graphql';
+import { getTypeFieldTypeName, getType, isEnum, typeFieldTypeHasList, getFieldType } from '~/utils';
 import LL from '$i18n/i18n-svelte';
 import type { NamespaceGraphqlTranslation } from '$i18n/i18n-types';
-import type { Errors } from '@graphace/commons';
-import { fieldsDeep, type Field } from '@graphace/graphql';
 
 export const getGridTheme = (theme: string | undefined): string | undefined => {
     if (theme) {
@@ -86,7 +86,7 @@ export const createEditors = (errors: Record<string, Errors>[] | undefined) => {
                         createElement(
                             'input',
                             {
-                                class: 'input input-xs',
+                                class: 'input input-xs w-full',
                                 value: column.value
                             }
                         )
@@ -177,7 +177,7 @@ export const createEditors = (errors: Record<string, Errors>[] | undefined) => {
                             'input',
                             {
                                 type: "number",
-                                class: 'input input-xs',
+                                class: 'input input-xs w-full',
                                 value: column.value
                             }
                         )
@@ -215,7 +215,7 @@ export const createEditors = (errors: Record<string, Errors>[] | undefined) => {
                             'input',
                             {
                                 type: "date",
-                                class: 'input input-xs',
+                                class: 'input input-xs w-full',
                                 value: column.value
                             }
                         )
@@ -253,7 +253,7 @@ export const createEditors = (errors: Record<string, Errors>[] | undefined) => {
                             'time',
                             {
                                 type: "date",
-                                class: 'input input-xs',
+                                class: 'input input-xs w-full',
                                 value: column.value
                             }
                         )
@@ -291,7 +291,7 @@ export const createEditors = (errors: Record<string, Errors>[] | undefined) => {
                             'time',
                             {
                                 type: "datetime-local",
-                                class: 'input input-xs',
+                                class: 'input input-xs w-full',
                                 value: column.value
                             }
                         )
@@ -523,10 +523,10 @@ export const nodesToSource = <T>(typeName: string, queryFields: Field[], nodes: 
                         if (join.fields && join.fields.length > 0) {
                             return join.fields.map((subField) => [
                                 `${join.name}.${subField.name}`,
-                                item?.[subField.name as keyof typeof item] as unknown
+                                getTypeFieldName(item?.[subField.name as keyof typeof item], typeName, join.name, subField.name)
                             ]);
                         } else {
-                            return [[join.name, node?.[join.name as keyof T]]];
+                            return [[join.name, getTypeFieldName(node?.[join.name as keyof T], typeName, join.name)]];
                         }
                     })
                     .map((item) =>
@@ -539,10 +539,10 @@ export const nodesToSource = <T>(typeName: string, queryFields: Field[], nodes: 
                                         const object = node?.[field.name as keyof T];
                                         return field.fields.map((subField) => [
                                             `${field.name}.${subField.name}`,
-                                            object?.[subField.name as keyof typeof object] as unknown
+                                            getTypeFieldName(object?.[subField.name as keyof typeof object], typeName, join.name, subField.name)
                                         ]);
                                     } else {
-                                        return [[field.name, node?.[field.name as keyof T]]];
+                                        return [[field.name, getTypeFieldName(node?.[field.name as keyof T], typeName, join.name)]];
                                     }
                                 })
                         ])
@@ -556,10 +556,10 @@ export const nodesToSource = <T>(typeName: string, queryFields: Field[], nodes: 
                         const object = node?.[field.name as keyof T];
                         return field.fields.map((subField) => [
                             `${field.name}.${subField.name}`,
-                            object?.[subField.name as keyof typeof object] as unknown
+                            getTypeFieldName(object?.[subField.name as keyof typeof object], typeName, field.name, subField.name)
                         ]);
                     } else {
-                        return [[field.name, node?.[field.name as keyof T]]];
+                        return [[field.name, getTypeFieldName(node?.[field.name as keyof T], typeName, field.name)]];
                     }
                 })
             )
@@ -567,22 +567,22 @@ export const nodesToSource = <T>(typeName: string, queryFields: Field[], nodes: 
     });
 }
 
-export const nodesToAggSource = <T>(groupBy: string[], fields: Field[], nodes: (T | null | undefined)[] | undefined): DataType[] | undefined => {
+export const nodesToAggSource = <T>(typeName: string, groupBy: string[], fields: Field[], nodes: (T | null | undefined)[] | undefined): DataType[] | undefined => {
     return nodes?.map((node) =>
         Object.fromEntries([
             ...(groupBy || []).map((fieldName) => [
                 fieldName,
-                node?.[fieldName as keyof T]
+                getTypeFieldName(node?.[fieldName as keyof T], typeName, fieldName)
             ]),
             ...fields.flatMap((field) => {
                 if (field.fields && field.fields.length > 0) {
                     const object = node?.[field.name as keyof T];
                     return field.fields.map((subField) => [
                         `${field.name}.${subField.name}`,
-                        object?.[subField.name as keyof typeof object] as unknown
+                        getTypeFieldName(object?.[subField.name as keyof typeof object], typeName, field.name, subField.name)
                     ]);
                 } else {
-                    return [[field.name, node?.[field.name as keyof T]]];
+                    return [[field.name, getTypeFieldName(node?.[field.name as keyof T], typeName, field.name)]];
                 }
             })
         ])
@@ -653,7 +653,7 @@ export const sourceToMutationList = (typeName: string, idFieldName: string, quer
             const object = Object.fromEntries(
                 join!.fields?.map((subField) => [
                     subField.name,
-                    row?.[`${join.name}.${subField.name}`]
+                    getTypeFieldValue(row?.[`${join.name}.${subField.name}`], typeName, join.name, subField.name)
                 ]) || []
             );
             if (
@@ -667,7 +667,7 @@ export const sourceToMutationList = (typeName: string, idFieldName: string, quer
                         Object.fromEntries(
                             join!.fields?.map((subField) => [
                                 subField.name,
-                                row?.[`${join.name}.${subField.name}`]
+                                getTypeFieldValue(row?.[`${join.name}.${subField.name}`], typeName, join.name, subField.name)
                             ]) || []
                         )
                     );
@@ -691,7 +691,7 @@ export const sourceToMutationList = (typeName: string, idFieldName: string, quer
                         Object.fromEntries(
                             join!.fields?.map((subField) => [
                                 subField.name,
-                                row?.[`${join.name}.${subField.name}`]
+                                getTypeFieldValue(row?.[`${join.name}.${subField.name}`], typeName, join.name, subField.name)
                             ]) || []
                         )
                     );
@@ -703,7 +703,7 @@ export const sourceToMutationList = (typeName: string, idFieldName: string, quer
                                 const object = Object.fromEntries(
                                     field.fields.map((subField) => [
                                         subField.name,
-                                        row?.[`${field.name}.${subField.name}`]
+                                        getTypeFieldValue(row?.[`${field.name}.${subField.name}`], typeName, field.name, subField.name)
                                     ])
                                 );
                                 if (Object.values(object).filter((value) => value).length > 0) {
@@ -713,7 +713,7 @@ export const sourceToMutationList = (typeName: string, idFieldName: string, quer
                             } else {
                                 return [
                                     field.name,
-                                    field.name === join.name ? [row?.[field.name]] : row?.[field.name]
+                                    field.name === join.name ? [getTypeFieldValue(row?.[field.name], typeName, field.name)] : getTypeFieldValue(row?.[field.name], typeName, field.name)
                                 ];
                             }
                         })
@@ -731,7 +731,7 @@ export const sourceToMutationList = (typeName: string, idFieldName: string, quer
                         const object = Object.fromEntries(
                             field.fields.map((subField) => [
                                 subField.name,
-                                row?.[`${field.name}.${subField.name}`]
+                                getTypeFieldValue(row?.[`${field.name}.${subField.name}`], typeName, field.name, subField.name)
                             ])
                         );
                         if (Object.values(object).filter((value) => value).length > 0) {
@@ -739,11 +739,149 @@ export const sourceToMutationList = (typeName: string, idFieldName: string, quer
                         }
                         return [field.name, null];
                     } else {
-                        return [field.name, row?.[field.name]];
+                        return [field.name, getTypeFieldValue(row?.[field.name], typeName, field.name)];
                     }
                 })
             )
         )
             .filter(row => !Object.values(row).every(col => col === null || col === undefined));
     }
+}
+
+export const getTypeFieldName = (value: any, typeName: string, fieldName: string, subFieldName?: string): any | null | undefined => {
+    const typeDefinition = getType(typeName);
+    const fieldDefinition = typeDefinition?.fields?.find((field) => field.name === fieldName);
+    const fieldTypeDefinition = getFieldType(fieldDefinition?.type as __Type | null | undefined);
+    if (subFieldName) {
+        const subFieldDefinition = fieldTypeDefinition?.fields?.find((field) => field.name === subFieldName);
+        const subFieldTypeDefinition = getFieldType(subFieldDefinition?.type as __Type | null | undefined);
+        if (subFieldTypeDefinition?.name) {
+            if (Array.isArray(value)) {
+                if (subFieldTypeDefinition.name === 'Boolean') {
+                    return value.map(item => booleanValueToName(item));
+                } else if (isEnum(subFieldTypeDefinition.name)) {
+                    return value.map(item => enumValueToName(subFieldTypeDefinition.name!, item));
+                } else {
+                    return value;
+                }
+            } else {
+                if (subFieldTypeDefinition.name === 'Boolean') {
+                    return booleanValueToName(value);
+                } else if (isEnum(subFieldTypeDefinition.name)) {
+                    return enumValueToName(subFieldTypeDefinition.name, value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    }
+    if (fieldTypeDefinition?.name) {
+        if (Array.isArray(value)) {
+            if (fieldTypeDefinition.name === 'Boolean') {
+                return value.map(item => booleanValueToName(item));
+            } else if (isEnum(fieldTypeDefinition.name)) {
+                return value.map(item => enumValueToName(fieldTypeDefinition.name!, item));
+            } else {
+                return value;
+            }
+        } else {
+            if (fieldTypeDefinition.name === 'Boolean') {
+                return booleanValueToName(value);
+            } else if (isEnum(fieldTypeDefinition.name)) {
+                return enumValueToName(fieldTypeDefinition.name, value);
+            } else {
+                return value;
+            }
+        }
+    }
+}
+
+export const getTypeFieldValue = (value: any, typeName: string, fieldName: string, subFieldName?: string): any | null | undefined => {
+    const typeDefinition = getType(typeName);
+    const fieldDefinition = typeDefinition?.fields?.find((field) => field.name === fieldName);
+    const fieldTypeDefinition = getFieldType(fieldDefinition?.type as __Type | null | undefined);
+    if (subFieldName) {
+        const subFieldDefinition = fieldTypeDefinition?.fields?.find((field) => field.name === subFieldName);
+        const subFieldTypeDefinition = getFieldType(subFieldDefinition?.type as __Type | null | undefined);
+        if (subFieldTypeDefinition?.name) {
+            if (Array.isArray(value)) {
+                if (subFieldTypeDefinition.name === 'Boolean') {
+                    return value.map(item => booleanNameToValue(item));
+                } else if (isEnum(subFieldTypeDefinition.name)) {
+                    return value.map(item => enumNameToValue(subFieldTypeDefinition.name!, item));
+                } else {
+                    return value;
+                }
+            } else {
+                if (subFieldTypeDefinition.name === 'Boolean') {
+                    return booleanNameToValue(value);
+                } else if (isEnum(subFieldTypeDefinition.name)) {
+                    return enumNameToValue(subFieldTypeDefinition.name, value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    }
+    if (fieldTypeDefinition?.name) {
+        if (Array.isArray(value)) {
+            if (fieldTypeDefinition.name === 'Boolean') {
+                return value.map(item => booleanNameToValue(item));
+            } else if (isEnum(fieldTypeDefinition.name)) {
+                return value.map(item => enumNameToValue(fieldTypeDefinition.name!, item));
+            } else {
+                return value;
+            }
+        } else {
+            if (fieldTypeDefinition.name === 'Boolean') {
+                return booleanNameToValue(value);
+            } else if (isEnum(fieldTypeDefinition.name)) {
+                return enumNameToValue(fieldTypeDefinition.name, value);
+            } else {
+                return value;
+            }
+        }
+    }
+}
+
+export const booleanNameToValue = (name: string | null | undefined): boolean | null | undefined => {
+    if (name === get(LL).graphence.components.grid.boolean.true()) {
+        return true;
+    } else if (name === get(LL).graphence.components.grid.boolean.false()) {
+        return false;
+    } else if (name === null) {
+        return null;
+    }
+}
+
+export const booleanValueToName = (value: boolean | null | undefined): string | null | undefined => {
+    if (value === true) {
+        return get(LL).graphence.components.grid.boolean.true();
+    } else if (value === false) {
+        return get(LL).graphence.components.grid.boolean.false();
+    } else if (value === null) {
+        return null;
+    }
+}
+
+export const enumNameToValue = (typeName: string, name: string | null | undefined): string | null | undefined => {
+    return getType(typeName)
+        ?.enumValues
+        ?.filter(enumValue => {
+            const enumName = typeName as keyof NamespaceGraphqlTranslation['enums'];
+            const enumValues = get(LL).graphql.enums[enumName].values;
+            return enumValues[enumValue.name as keyof typeof enumValues].name() === name;
+        })
+        ?.map(enumValue => enumValue.name)?.[0];
+}
+
+export const enumValueToName = (typeName: string, value: string | null | undefined): string | null | undefined => {
+    return getType(typeName)
+        ?.enumValues
+        ?.filter(enumValue => enumValue.name === value)
+        ?.map(enumValue => {
+            const enumName = typeName as keyof NamespaceGraphqlTranslation['enums'];
+            const enumValues = get(LL).graphql.enums[enumName].values;
+            return enumValues[enumValue.name as keyof typeof enumValues].name();
+        })?.[0];
 }
