@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable, Writable } from 'svelte/store';
-	import { RevoGrid } from '@revolist/svelte-datagrid';
-	import type { Cell } from '@revolist/svelte-datagrid';
+	import { type Cell, RevoGrid } from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import type { Field, GraphQLError } from '@graphace/graphql';
 	import UserQuery from '~/lib/components/objects/user/User.svelte';
