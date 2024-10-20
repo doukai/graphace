@@ -84,18 +84,18 @@
 	<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
 	<div class="p-1 rounded-xl bg-base-100 shadow z-[50]" use:melt={$content}>
 		<div use:melt={$arrow} />
-		<div class="flex items-center space-x-1" transition:fade={{ duration: 100 }}>
+		<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1 max-w-xs md:max-w-md" transition:fade={{ duration: 100 }}>
 			<OperatorSelect
 				bind:value={_expression.opr}
 				on:change={(e) => oprChange()}
-				className="md:select-sm"
+				className="md:select-sm w-full"
 			/>
 			{#if _expression.opr === 'IN' || _expression.opr === 'NIN' || _expression.opr === 'BT' || _expression.opr === 'NBT'}
 				<NumberInputList
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{name}
 					bind:value={_expression.in}
-					className="md:input-sm"
+					className="md:input-sm w-full"
 					addBtnClassName="md:btn-sm"
 				/>
 			{:else}
@@ -103,29 +103,31 @@
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{name}
 					bind:value={_expression.val}
-					className="md:input-sm"
+					className="md:input-sm w-full"
 				/>
 			{/if}
-			<select class="select select-bordered md:select-sm" bind:value={_sort}>
+			<select class="select select-bordered md:select-sm w-full" bind:value={_sort}>
 				<option value={undefined} selected>{$LL.uiGraphql.table.th.noSort()}</option>
 				<option value="ASC">{$LL.uiGraphql.table.th.asc()}</option>
 				<option value="DESC">{$LL.uiGraphql.table.th.desc()}</option>
 			</select>
-			<div class="tooltip flex items-center" data-tip={$LL.uiGraphql.table.th.filter()}>
-				<button
-					class="btn btn-square btn-primary md:btn-sm"
-					on:click|preventDefault={(e) => filter()}
-				>
-					<Icon src={Check} class="h-5 w-5" />
-				</button>
-			</div>
-			<div class="tooltip flex items-center" data-tip={$LL.uiGraphql.table.th.cancel()}>
-				<button
-					class="btn btn-square btn-outline btn-error md:btn-sm"
-					on:click|preventDefault={(e) => clear()}
-				>
-					<Icon src={XMark} class="h-5 w-5" />
-				</button>
+			<div class="flex space-x-1">
+				<div class="tooltip flex items-center" data-tip={$LL.uiGraphql.table.th.filter()}>
+					<button
+						class="btn btn-square btn-primary md:btn-sm"
+						on:click|preventDefault={(e) => filter()}
+					>
+						<Icon src={Check} class="h-5 w-5" />
+					</button>
+				</div>
+				<div class="tooltip flex items-center" data-tip={$LL.uiGraphql.table.th.cancel()}>
+					<button
+						class="btn btn-square btn-outline btn-error md:btn-sm"
+						on:click|preventDefault={(e) => clear()}
+					>
+						<Icon src={XMark} class="h-5 w-5" />
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -120,148 +120,154 @@
 
 {#if $open}
 	<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
-	<div class="space-y-2 md:space-y-1 p-1 rounded-xl bg-base-100 shadow z-[50]" use:melt={$content}>
+	<div class="p-1 rounded-xl bg-base-100 shadow z-[50] max-w-xs md:max-w-md" use:melt={$content}>
 		<div use:melt={$arrow} />
+		<div class="space-y-2 max-h-60 overflow-y-auto">
 			{#if permissions.auth('File::name::*')}
-			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
-				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control">
-					<label class="input-group md:input-group-sm">
-						<span class="w-20 whitespace-nowrap">
-							{$LL.graphql.objects.File.fields.name.name()}
-						</span>
-						<OperatorSelect
-							className="md:select-sm"
-							bind:value={_expression.name.opr}
-							on:change={(e) => nameOprChange()}
+				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-2" transition:fade={{ duration: 100 }}>
+					<!-- svelte-ignore a11y-label-has-associated-control -->
+					<div class="form-control w-full md:w-60">
+						<label class="input-group md:input-group-sm">
+							<span class="w-20 whitespace-nowrap">
+								{$LL.graphql.objects.File.fields.name.name()}
+							</span>
+							<OperatorSelect
+								className="md:select-sm w-full"
+								bind:value={_expression.name.opr}
+								on:change={(e) => nameOprChange()}
+							/>
+						</label>
+					</div>
+					{#if _expression.name.opr === 'IN' || _expression.name.opr === 'NIN' || _expression.name.opr === 'BT' || _expression.name.opr === 'NBT'}
+						<StringInput
+							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+							className="md:input-sm"
+							addBtnClassName="md:btn-sm"
+							name="name"
+							bind:value={_expression.name.arr}
+							list
 						/>
-					</label>
+					{:else}
+						<StringInput
+							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+							className="md:input-sm"
+							addBtnClassName="md:btn-sm"
+							name="name"
+							bind:value={_expression.name.val}
+						/>
+					{/if}
 				</div>
-				{#if _expression.name.opr === 'IN' || _expression.name.opr === 'NIN' || _expression.name.opr === 'BT' || _expression.name.opr === 'NBT'}
-					<StringInput
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						className="md:input-sm"
-						addBtnClassName="md:btn-sm"
-						name="name"
-						bind:value={_expression.name.arr}
-						list
-					/>
-				{:else}
-					<StringInput
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						className="md:input-sm"
-						addBtnClassName="md:btn-sm"
-						name="name"
-						bind:value={_expression.name.val}
-					/>
-				{/if}
-			</div>
+				<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('File::contentType::*')}
-			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
-				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control">
-					<label class="input-group md:input-group-sm">
-						<span class="w-20 whitespace-nowrap">
-							{$LL.graphql.objects.File.fields.contentType.name()}
-						</span>
-						<OperatorSelect
-							className="md:select-sm"
-							bind:value={_expression.contentType.opr}
-							on:change={(e) => contentTypeOprChange()}
+				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-2" transition:fade={{ duration: 100 }}>
+					<!-- svelte-ignore a11y-label-has-associated-control -->
+					<div class="form-control w-full md:w-60">
+						<label class="input-group md:input-group-sm">
+							<span class="w-20 whitespace-nowrap">
+								{$LL.graphql.objects.File.fields.contentType.name()}
+							</span>
+							<OperatorSelect
+								className="md:select-sm w-full"
+								bind:value={_expression.contentType.opr}
+								on:change={(e) => contentTypeOprChange()}
+							/>
+						</label>
+					</div>
+					{#if _expression.contentType.opr === 'IN' || _expression.contentType.opr === 'NIN' || _expression.contentType.opr === 'BT' || _expression.contentType.opr === 'NBT'}
+						<StringInput
+							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+							className="md:input-sm"
+							addBtnClassName="md:btn-sm"
+							name="contentType"
+							bind:value={_expression.contentType.arr}
+							list
 						/>
-					</label>
+					{:else}
+						<StringInput
+							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+							className="md:input-sm"
+							addBtnClassName="md:btn-sm"
+							name="contentType"
+							bind:value={_expression.contentType.val}
+						/>
+					{/if}
 				</div>
-				{#if _expression.contentType.opr === 'IN' || _expression.contentType.opr === 'NIN' || _expression.contentType.opr === 'BT' || _expression.contentType.opr === 'NBT'}
-					<StringInput
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						className="md:input-sm"
-						addBtnClassName="md:btn-sm"
-						name="contentType"
-						bind:value={_expression.contentType.arr}
-						list
-					/>
-				{:else}
-					<StringInput
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						className="md:input-sm"
-						addBtnClassName="md:btn-sm"
-						name="contentType"
-						bind:value={_expression.contentType.val}
-					/>
-				{/if}
-			</div>
+				<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('File::content::*')}
-			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
-				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control">
-					<label class="input-group md:input-group-sm">
-						<span class="w-20 whitespace-nowrap">
-							{$LL.graphql.objects.File.fields.content.name()}
-						</span>
-						<OperatorSelect
-							className="md:select-sm"
-							bind:value={_expression.content.opr}
-							on:change={(e) => contentOprChange()}
+				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-2" transition:fade={{ duration: 100 }}>
+					<!-- svelte-ignore a11y-label-has-associated-control -->
+					<div class="form-control w-full md:w-60">
+						<label class="input-group md:input-group-sm">
+							<span class="w-20 whitespace-nowrap">
+								{$LL.graphql.objects.File.fields.content.name()}
+							</span>
+							<OperatorSelect
+								className="md:select-sm w-full"
+								bind:value={_expression.content.opr}
+								on:change={(e) => contentOprChange()}
+							/>
+						</label>
+					</div>
+					{#if _expression.content.opr === 'IN' || _expression.content.opr === 'NIN' || _expression.content.opr === 'BT' || _expression.content.opr === 'NBT'}
+						<StringInput
+							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+							className="md:input-sm"
+							addBtnClassName="md:btn-sm"
+							name="content"
+							bind:value={_expression.content.arr}
+							list
 						/>
-					</label>
+					{:else}
+						<StringInput
+							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+							className="md:input-sm"
+							addBtnClassName="md:btn-sm"
+							name="content"
+							bind:value={_expression.content.val}
+						/>
+					{/if}
 				</div>
-				{#if _expression.content.opr === 'IN' || _expression.content.opr === 'NIN' || _expression.content.opr === 'BT' || _expression.content.opr === 'NBT'}
-					<StringInput
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						className="md:input-sm"
-						addBtnClassName="md:btn-sm"
-						name="content"
-						bind:value={_expression.content.arr}
-						list
-					/>
-				{:else}
-					<StringInput
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						className="md:input-sm"
-						addBtnClassName="md:btn-sm"
-						name="content"
-						bind:value={_expression.content.val}
-					/>
-				{/if}
-			</div>
+				<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('File::url::*')}
-			<div class="flex items-center space-x-2" transition:fade={{ duration: 100 }}>
-				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control">
-					<label class="input-group md:input-group-sm">
-						<span class="w-20 whitespace-nowrap">
-							{$LL.graphql.objects.File.fields.url.name()}
-						</span>
-						<OperatorSelect
-							className="md:select-sm"
-							bind:value={_expression.url.opr}
-							on:change={(e) => urlOprChange()}
+				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-2" transition:fade={{ duration: 100 }}>
+					<!-- svelte-ignore a11y-label-has-associated-control -->
+					<div class="form-control w-full md:w-60">
+						<label class="input-group md:input-group-sm">
+							<span class="w-20 whitespace-nowrap">
+								{$LL.graphql.objects.File.fields.url.name()}
+							</span>
+							<OperatorSelect
+								className="md:select-sm w-full"
+								bind:value={_expression.url.opr}
+								on:change={(e) => urlOprChange()}
+							/>
+						</label>
+					</div>
+					{#if _expression.url.opr === 'IN' || _expression.url.opr === 'NIN' || _expression.url.opr === 'BT' || _expression.url.opr === 'NBT'}
+						<StringInput
+							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+							className="md:input-sm"
+							addBtnClassName="md:btn-sm"
+							name="url"
+							bind:value={_expression.url.arr}
+							list
 						/>
-					</label>
+					{:else}
+						<StringInput
+							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+							className="md:input-sm"
+							addBtnClassName="md:btn-sm"
+							name="url"
+							bind:value={_expression.url.val}
+						/>
+					{/if}
 				</div>
-				{#if _expression.url.opr === 'IN' || _expression.url.opr === 'NIN' || _expression.url.opr === 'BT' || _expression.url.opr === 'NBT'}
-					<StringInput
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						className="md:input-sm"
-						addBtnClassName="md:btn-sm"
-						name="url"
-						bind:value={_expression.url.arr}
-						list
-					/>
-				{:else}
-					<StringInput
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						className="md:input-sm"
-						addBtnClassName="md:btn-sm"
-						name="url"
-						bind:value={_expression.url.val}
-					/>
-				{/if}
-			</div>
+				<div class="divider m-0 md:hidden" />
 			{/if}
+		</div>
 		<div class="flex justify-center space-x-2">
 			<div class="tooltip" data-tip={$LL.uiGraphql.table.th.filter()}>
 				<button class="btn btn-square btn-primary md:btn-sm" on:click={(e) => filter()}>

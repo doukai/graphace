@@ -3,7 +3,9 @@
 	import type { Readable, Writable } from 'svelte/store';
 	import { type Cell, RevoGrid } from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
+	import type { Errors } from '@graphace/commons';
 	import type { Field, GraphQLError } from '@graphace/graphql';
+	import { messageBoxs, notifications } from '@graphace/ui';
 	import GroupQuery from '~/lib/components/objects/group/Group.svelte';
 	import { GridToolbar } from '~/lib/components/grid';
 	import type { Group, GroupConnection, GroupConnectionQueryArguments, GroupListMutationArguments } from '~/lib/types/schema';
@@ -17,8 +19,6 @@
 		nodesToSource,
 		sourceToMutationList
 	} from '~/utils';
-	import type { Errors } from '@graphace/commons';
-	import { messageBoxs, notifications } from '@graphace/ui';
 	
 	export let connection: GroupConnection;
 	export let fields: Field[] = [];
@@ -68,7 +68,7 @@
 	$: source = nodesToSource<Group>(typeName, queryFields, nodes) || [];
 	$: gridErrors = errorsToGridErrors<Group>(typeName, errors, queryFields, nodes);
 	$: columns = fieldsToColumns(typeName, fields, source, gridErrors, getFieldName);
-	
+
 	const editors = createEditors(() => gridErrors);
 
 	const mutation = () => {
@@ -113,7 +113,7 @@
 	{showFilterButton}
 	{showBookmarkButton}
 	{totalCount}
-	className="p-0 h-screen"
+	className="p-0 md:h-screen"
 	on:query
 	on:bookmark
 	bind:getFieldName

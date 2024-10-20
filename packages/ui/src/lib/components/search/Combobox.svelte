@@ -24,7 +24,7 @@
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { createEventDispatcher } from 'svelte';
 	export let rootClassName: string = '';
-	export let className: string = '';
+	export let className: string = 'sm:input-xs md:input-sm';
 	export let containerClassName: string = '';
 	export let tagClassName: string = '';
 	export let menuClassName: string = '';
@@ -140,7 +140,7 @@
 			<input
 				use:melt={$input}
 				type="text"
-				class="input input-sm p-0 shrink grow basis-0 border-0 outline-none focus:outline-none {className}"
+				class="input w-full shrink grow basis-0 border-0 outline-none focus:outline-none {className}"
 				on:focus={(e) => {
 					if ($touchedInput) {
 						debounce(() => {

@@ -226,159 +226,164 @@
 
 {#if $open}
 	<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
-	<div class="space-y-2 md:space-y-1 p-1 rounded-xl bg-base-100 shadow z-[50]" use:melt={$content}>
+	<div class="p-1 rounded-xl bg-base-100 shadow z-[50] max-w-xs md:max-w-md" use:melt={$content}>
 		<div use:melt={$arrow} />
-		{%- if fields %}
-		{%- if isNamedStruct %}
+		<div class="space-y-2 max-h-60 overflow-y-auto">
+			{%- if fields %}
+			{%- if isNamedStruct %}
 			{%- if useAuth %}
 			{#if permissions.auth('{{ name }}::{{ idName }}::*')}
 			{%- endif %}
-			<div class="flex items-center space-x-2" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
-				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control">
-					<label class="input-group md:input-group-sm">
-						<span class="w-20 whitespace-nowrap">
-							{$LL.graphql.objects.{{ name }}.name()}
-						</span>
-						<OperatorSelect
-							className="md:select-sm"
-							bind:value={_expression.{{ idName }}.opr}
-							on:change={(e) => {{ idName }}OprChange()}
+				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-2" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
+					<!-- svelte-ignore a11y-label-has-associated-control -->
+					<div class="form-control w-full md:w-60">
+						<label class="input-group md:input-group-sm">
+							<span class="w-20 whitespace-nowrap">
+								{$LL.graphql.objects.{{ name }}.name()}
+							</span>
+							<OperatorSelect
+								className="md:select-sm w-full"
+								bind:value={_expression.{{ idName }}.opr}
+								on:change={(e) => {{ idName }}OprChange()}
+							/>
+						</label>
+					</div>
+					{#if _expression.{{ idName }}.opr === 'IN' || _expression.{{ idName }}.opr === 'NIN' || _expression.{{ idName }}.opr === 'BT' || _expression.{{ idName }}.opr === 'NBT'}
+						<{{ name }}Select
+							name="{{ idName }}"
+							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+							list
+							bind:value
+							className="md:input-sm"
+							containerClassName="md:min-h-8 max-w-xs"
+							tagClassName="md:badge-sm"
+							menuClassName="md:menu-sm"
 						/>
-					</label>
+					{:else}
+						<{{ name }}Select
+							name="{{ idName }}"
+							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+							bind:value
+							className="md:input-sm"
+							containerClassName="md:min-h-8 max-w-xs"
+							tagClassName="md:badge-sm"
+							menuClassName="md:menu-sm"
+						/>
+					{/if}
 				</div>
-				{#if _expression.{{ idName }}.opr === 'IN' || _expression.{{ idName }}.opr === 'NIN' || _expression.{{ idName }}.opr === 'BT' || _expression.{{ idName }}.opr === 'NBT'}
-					<{{ name }}Select
-						name="{{ idName }}"
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						list
-						bind:value
-						className="md:input-sm"
-						containerClassName="md:min-h-8 max-w-xs"
-						tagClassName="md:badge-sm"
-						menuClassName="md:menu-sm"
-					/>
-				{:else}
-					<{{ name }}Select
-						name="{{ idName }}"
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						bind:value
-						className="md:input-sm"
-						containerClassName="md:min-h-8 max-w-xs"
-						tagClassName="md:badge-sm"
-						menuClassName="md:menu-sm"
-					/>
-				{/if}
-			</div>
+				<div class="divider m-0 md:hidden" />
 			{%- if useAuth %}
 			{/if}
 			{%- endif %}
-		{%- endif %}
-		{%- for field in fields %}
-		{%- if field.isScalarType or field.isEnumType %}
+			{%- endif %}
+			{%- for field in fields %}
+			{%- if field.isScalarType or field.isEnumType %}
 			{%- if useAuth %}
 			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 			{%- endif %}
-			<div class="flex items-center space-x-2" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
-				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control">
-					<label class="input-group md:input-group-sm">
-						<span class="w-20 whitespace-nowrap">
-							{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-						</span>
-						<OperatorSelect
+				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-2" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
+					<!-- svelte-ignore a11y-label-has-associated-control -->
+					<div class="form-control w-full md:w-60">
+						<label class="input-group md:input-group-sm">
+							<span class="w-20 whitespace-nowrap">
+								{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+							</span>
+							<OperatorSelect
+								className="md:select-sm w-full"
+								bind:value={_expression.{{ field.fieldName }}.opr}
+								on:change={(e) => {{ field.fieldName }}OprChange()}
+							/>
+						</label>
+					</div>
+					{#if _expression.{{ field.fieldName }}.opr === 'IN' || _expression.{{ field.fieldName }}.opr === 'NIN' || _expression.{{ field.fieldName }}.opr === 'BT' || _expression.{{ field.fieldName }}.opr === 'NBT'}
+						<{{ field.fieldTypeName }}Input
+							{%- if field.isEnumType %}
+							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 							className="md:select-sm"
-							bind:value={_expression.{{ field.fieldName }}.opr}
-							on:change={(e) => {{ field.fieldName }}OprChange()}
+							{%- elsif field.fieldTypeName == "Boolean" %}
+							className="md:toggle-sm"
+							addBtnClassName="md:btn-sm"
+							{%- else %}
+							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+							className="md:input-sm"
+							addBtnClassName="md:btn-sm"
+							{%- endif %}
+							name="{{ field.fieldName }}"
+							bind:value={_expression.{{ field.fieldName }}.arr}
+							list
 						/>
-					</label>
+					{:else}
+						<{{ field.fieldTypeName }}Input
+							{%- if field.isEnumType %}
+							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+							className="md:select-sm"
+							{%- elsif field.fieldTypeName == "Boolean" %}
+							className="md:toggle-sm"
+							addBtnClassName="md:btn-sm"
+							{%- else %}
+							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+							className="md:input-sm"
+							addBtnClassName="md:btn-sm"
+							{%- endif %}
+							name="{{ field.fieldName }}"
+							bind:value={_expression.{{ field.fieldName }}.val}
+						/>
+					{/if}
 				</div>
-				{#if _expression.{{ field.fieldName }}.opr === 'IN' || _expression.{{ field.fieldName }}.opr === 'NIN' || _expression.{{ field.fieldName }}.opr === 'BT' || _expression.{{ field.fieldName }}.opr === 'NBT'}
-					<{{ field.fieldTypeName }}Input
-						{%- if field.isEnumType %}
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						className="md:select-sm"
-						{%- elsif field.fieldTypeName == "Boolean" %}
-						className="md:toggle-sm"
-						addBtnClassName="md:btn-sm"
-						{%- else %}
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						className="md:input-sm"
-						addBtnClassName="md:btn-sm"
-						{%- endif %}
-						name="{{ field.fieldName }}"
-						bind:value={_expression.{{ field.fieldName }}.arr}
-						list
-					/>
-				{:else}
-					<{{ field.fieldTypeName }}Input
-						{%- if field.isEnumType %}
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						className="md:select-sm"
-						{%- elsif field.fieldTypeName == "Boolean" %}
-						className="md:toggle-sm"
-						addBtnClassName="md:btn-sm"
-						{%- else %}
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						className="md:input-sm"
-						addBtnClassName="md:btn-sm"
-						{%- endif %}
-						name="{{ field.fieldName }}"
-						bind:value={_expression.{{ field.fieldName }}.val}
-					/>
-				{/if}
-			</div>
+				<div class="divider m-0 md:hidden" />
 			{%- if useAuth %}
 			{/if}
 			{%- endif %}
-		{%- endif %}
-		{%- if field.isNamed %}
+			{%- endif %}
+			{%- if field.isNamed %}
 			{%- if useAuth %}
 			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 			{%- endif %}
-			<div class="flex items-center space-x-2" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
-				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class="form-control">
-					<label class="input-group md:input-group-sm">
-						<span class="w-20 whitespace-nowrap">
-							{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-						</span>
-						<OperatorSelect
-							className="md:select-sm"
-							bind:value={_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr}
-							on:change={(e) => {{ field.fieldName }}OprChange()}
+				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-2" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
+					<!-- svelte-ignore a11y-label-has-associated-control -->
+					<div class="form-control w-full md:w-60">
+						<label class="input-group md:input-group-sm">
+							<span class="w-20 whitespace-nowrap">
+								{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+							</span>
+							<OperatorSelect
+								className="md:select-sm w-full"
+								bind:value={_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr}
+								on:change={(e) => {{ field.fieldName }}OprChange()}
+							/>
+						</label>
+					</div>
+					{#if _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr === 'IN' || _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr === 'NIN' || _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr === 'BT' || _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr === 'NBT'}
+						<{{ field.fieldTypeName }}Select
+							name="{{ field.fieldName }}"
+							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+							list
+							bind:value={ {{ field.fieldName }} }
+							className="md:input-sm"
+							containerClassName="md:min-h-8 max-w-xs"
+							tagClassName="md:badge-sm"
+							menuClassName="md:menu-sm"
 						/>
-					</label>
+					{:else}
+						<{{ field.fieldTypeName }}Select
+							name="{{ field.fieldName }}"
+							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+							bind:value={ {{ field.fieldName }} }
+							className="md:input-sm"
+							containerClassName="md:min-h-8 max-w-xs"
+							tagClassName="md:badge-sm"
+							menuClassName="md:menu-sm"
+						/>
+					{/if}
 				</div>
-				{#if _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr === 'IN' || _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr === 'NIN' || _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr === 'BT' || _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr === 'NBT'}
-					<{{ field.fieldTypeName }}Select
-						name="{{ field.fieldName }}"
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						list
-						bind:value={ {{ field.fieldName }} }
-						className="md:input-sm"
-						containerClassName="md:min-h-8 max-w-xs"
-						tagClassName="md:badge-sm"
-						menuClassName="md:menu-sm"
-					/>
-				{:else}
-					<{{ field.fieldTypeName }}Select
-						name="{{ field.fieldName }}"
-						placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-						bind:value={ {{ field.fieldName }} }
-						className="md:input-sm"
-						containerClassName="md:min-h-8 max-w-xs"
-						tagClassName="md:badge-sm"
-						menuClassName="md:menu-sm"
-					/>
-				{/if}
-			</div>
+				<div class="divider m-0 md:hidden" />
 			{%- if useAuth %}
 			{/if}
 			{%- endif %}
-		{%- endif %}
-		{%- endfor %}
-		{%- endif %}
+			{%- endif %}
+			{%- endfor %}
+			{%- endif %}
+		</div>
 		<div class="flex justify-center space-x-2">
 			<div class="tooltip" data-tip={$LL.uiGraphql.table.th.filter()}>
 				<button class="btn btn-square btn-primary md:btn-sm" on:click={(e) => filter()}>

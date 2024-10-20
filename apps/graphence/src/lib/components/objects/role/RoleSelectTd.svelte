@@ -100,8 +100,8 @@
 				{disabled}
 				{readonly}
 				{placeholder}
-				className="md:input-sm"
-				containerClassName="max-w-xs"
+				className="md:input-xs"
+				containerClassName="md:textarea-sm md:min-h-6 max-w-xs"
 				tagClassName="md:badge-sm"
 				menuClassName="md:menu-sm"
 				bind:value={selected}

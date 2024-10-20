@@ -85,7 +85,7 @@
 	{showFilterButton}
 	{showBookmarkButton}
 	{totalCount}
-	className="p-0 h-screen"
+	className="p-0 md:h-screen"
 	on:query
 	on:bookmark
 	bind:getFieldName
