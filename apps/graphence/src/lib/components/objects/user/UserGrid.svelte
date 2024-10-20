@@ -68,7 +68,8 @@
 	$: source = nodesToSource<User>(typeName, queryFields, nodes) || [];
 	$: gridErrors = errorsToGridErrors<User>(typeName, errors, queryFields, nodes);
 	$: columns = fieldsToColumns(typeName, fields, source, gridErrors, getFieldName);
-	$: editors = createEditors(gridErrors);
+	
+	const editors = createEditors(() => gridErrors);
 
 	const mutation = () => {
 		dispatch('mutation', {

@@ -3,7 +3,9 @@
 	import type { Readable, Writable } from 'svelte/store';
 	import { type Cell, RevoGrid } from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
+	import type { Errors } from '@graphace/commons';
 	import type { Field, GraphQLError } from '@graphace/graphql';
+	import { messageBoxs, notifications } from '@graphace/ui';
 	import {{ name }}Query from '~/{{ objectsPath }}/{{ name | paramCase }}/{{ name }}.svelte';
 	import { GridToolbar } from '~/lib/components/grid';
 	import type { {{ name }}, {{ name }}Connection, {{ name }}ConnectionQueryArguments, {{ name }}ListMutationArguments } from '~/lib/types/schema';
@@ -17,8 +19,6 @@
 		nodesToSource,
 		sourceToMutationList
 	} from '~/utils';
-	import type { Errors } from '@graphace/commons';
-	import { messageBoxs, notifications } from '@graphace/ui';
 	
 	export let connection: {{ name }}Connection;
 	export let fields: Field[] = [];
@@ -68,7 +68,8 @@
 	$: source = nodesToSource<{{ name }}>(typeName, queryFields, nodes) || [];
 	$: gridErrors = errorsToGridErrors<{{ name }}>(typeName, errors, queryFields, nodes);
 	$: columns = fieldsToColumns(typeName, fields, source, gridErrors, getFieldName);
-	$: editors = createEditors(gridErrors);
+
+	const editors = createEditors(() => gridErrors);
 
 	const mutation = () => {
 		dispatch('mutation', {

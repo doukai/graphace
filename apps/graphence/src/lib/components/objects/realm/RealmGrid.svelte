@@ -68,7 +68,8 @@
 	$: source = nodesToSource<Realm>(typeName, queryFields, nodes) || [];
 	$: gridErrors = errorsToGridErrors<Realm>(typeName, errors, queryFields, nodes);
 	$: columns = fieldsToColumns(typeName, fields, source, gridErrors, getFieldName);
-	$: editors = createEditors(gridErrors);
+	
+	const editors = createEditors(() => gridErrors);
 
 	const mutation = () => {
 		dispatch('mutation', {
