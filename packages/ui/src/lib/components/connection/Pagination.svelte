@@ -38,19 +38,21 @@
 </script>
 
 <div class="hidden md:flex justify-between">
-	<div class="join">
-		<button class="join-item btn">{$LL.ui.pagination.size()}</button>
-		<select
-			class="join-item select select-bordered"
-			bind:value={pageSize}
-			on:change={() => {
-				dispatch('sizeChange');
-			}}
-		>
-			{#each pageSizeOptions as pageSizeOption}
-				<option value={pageSizeOption}>{pageSizeOption}</option>
-			{/each}
-		</select>
+	<div class="form-control">
+		<label class="input-group">
+			<span>{$LL.ui.pagination.size()}</span>
+			<select
+				class="select select-bordered"
+				bind:value={pageSize}
+				on:change={() => {
+					dispatch('sizeChange');
+				}}
+			>
+				{#each pageSizeOptions as pageSizeOption}
+					<option value={pageSizeOption}>{pageSizeOption}</option>
+				{/each}
+			</select>
+		</label>
 	</div>
 	<div class="flex items-center">
 		<span class="text-sm text-center font-semibold">
