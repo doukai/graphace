@@ -791,9 +791,9 @@
 				</button>
 			</div>
 			{#if $open}
-				<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
+				<div use:melt={$overlay} class="fixed inset-0 z-[100]" />
 				<div
-					class="space-y-2 md:space-y-1 p-1 rounded-xl bg-base-200 shadow z-[50]"
+					class="p-1 rounded-xl bg-base-200 shadow z-[100]"
 					use:melt={$content}
 				>
 					<div use:melt={$arrow} />

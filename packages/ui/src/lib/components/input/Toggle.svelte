@@ -10,7 +10,7 @@
 	export let className: string = '';
 </script>
 
-<div class="form-control">
+<div class="form-control w-full">
 	<input
 		type="checkbox"
 		{id}

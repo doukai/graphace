@@ -338,12 +338,12 @@
 <slot trigger={$trigger} />
 
 {#if $open}
-	<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
-	<div class="p-1 rounded-xl bg-base-100 shadow z-[50] max-w-xs md:max-w-md" use:melt={$content}>
+	<div use:melt={$overlay} class="fixed inset-0 z-[100]" />
+	<div class="p-1 rounded-xl bg-base-200 shadow z-[100]" use:melt={$content}>
 		<div use:melt={$arrow} />
-		<div class="space-y-2 max-h-60 overflow-y-auto">
+		<div class="space-y-1 max-h-60 overflow-y-auto">
 			{#if permissions.auth('Group::id::*')}
-				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-2" transition:fade={{ duration: 100 }}>
+				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1" transition:fade={{ duration: 100 }}>
 					<!-- svelte-ignore a11y-label-has-associated-control -->
 					<div class="form-control w-full md:w-60">
 						<label class="input-group md:input-group-sm">
@@ -383,7 +383,7 @@
 				<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Group::name::*')}
-				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-2" transition:fade={{ duration: 100 }}>
+				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1" transition:fade={{ duration: 100 }}>
 					<!-- svelte-ignore a11y-label-has-associated-control -->
 					<div class="form-control w-full md:w-60">
 						<label class="input-group md:input-group-sm">
@@ -419,7 +419,7 @@
 				<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Group::description::*')}
-				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-2" transition:fade={{ duration: 100 }}>
+				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1" transition:fade={{ duration: 100 }}>
 					<!-- svelte-ignore a11y-label-has-associated-control -->
 					<div class="form-control w-full md:w-60">
 						<label class="input-group md:input-group-sm">
@@ -455,7 +455,7 @@
 				<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Group::path::*')}
-				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-2" transition:fade={{ duration: 100 }}>
+				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1" transition:fade={{ duration: 100 }}>
 					<!-- svelte-ignore a11y-label-has-associated-control -->
 					<div class="form-control w-full md:w-60">
 						<label class="input-group md:input-group-sm">
@@ -491,7 +491,7 @@
 				<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Group::deep::*')}
-				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-2" transition:fade={{ duration: 100 }}>
+				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1" transition:fade={{ duration: 100 }}>
 					<!-- svelte-ignore a11y-label-has-associated-control -->
 					<div class="form-control w-full md:w-60">
 						<label class="input-group md:input-group-sm">
@@ -527,7 +527,7 @@
 				<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Group::parentId::*')}
-				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-2" transition:fade={{ duration: 100 }}>
+				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1" transition:fade={{ duration: 100 }}>
 					<!-- svelte-ignore a11y-label-has-associated-control -->
 					<div class="form-control w-full md:w-60">
 						<label class="input-group md:input-group-sm">
@@ -563,7 +563,7 @@
 				<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Group::parent::*')}
-				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-2" transition:fade={{ duration: 100 }}>
+				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1" transition:fade={{ duration: 100 }}>
 					<!-- svelte-ignore a11y-label-has-associated-control -->
 					<div class="form-control w-full md:w-60">
 						<label class="input-group md:input-group-sm">
@@ -603,7 +603,7 @@
 				<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Group::subGroups::*')}
-				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-2" transition:fade={{ duration: 100 }}>
+				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1" transition:fade={{ duration: 100 }}>
 					<!-- svelte-ignore a11y-label-has-associated-control -->
 					<div class="form-control w-full md:w-60">
 						<label class="input-group md:input-group-sm">
@@ -643,7 +643,7 @@
 				<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Group::users::*')}
-				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-2" transition:fade={{ duration: 100 }}>
+				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1" transition:fade={{ duration: 100 }}>
 					<!-- svelte-ignore a11y-label-has-associated-control -->
 					<div class="form-control w-full md:w-60">
 						<label class="input-group md:input-group-sm">
@@ -683,7 +683,7 @@
 				<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Group::roles::*')}
-				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-2" transition:fade={{ duration: 100 }}>
+				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1" transition:fade={{ duration: 100 }}>
 					<!-- svelte-ignore a11y-label-has-associated-control -->
 					<div class="form-control w-full md:w-60">
 						<label class="input-group md:input-group-sm">
@@ -723,7 +723,7 @@
 				<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Group::realm::*')}
-				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-2" transition:fade={{ duration: 100 }}>
+				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1" transition:fade={{ duration: 100 }}>
 					<!-- svelte-ignore a11y-label-has-associated-control -->
 					<div class="form-control w-full md:w-60">
 						<label class="input-group md:input-group-sm">
@@ -763,7 +763,7 @@
 				<div class="divider m-0 md:hidden" />
 			{/if}
 		</div>
-		<div class="flex justify-center space-x-2">
+		<div class="flex justify-center space-x-1 pt-1">
 			<div class="tooltip" data-tip={$LL.uiGraphql.table.th.filter()}>
 				<button class="btn btn-square btn-primary md:btn-sm" on:click={(e) => filter()}>
 					<Icon src={Check} class="h-5 w-5" />

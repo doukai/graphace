@@ -90,8 +90,8 @@
 </td>
 
 {#if $open}
-	<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
-	<div class="p-1 rounded-xl bg-base-100 shadow z-[50]" use:melt={$content}>
+	<div use:melt={$overlay} class="fixed inset-0 z-[100]" />
+	<div class="p-1 rounded-xl bg-base-100 shadow z-[100]" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="flex items-start space-x-1" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
 			<{{ name }}Select
