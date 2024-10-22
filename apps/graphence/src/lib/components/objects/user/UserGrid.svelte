@@ -8,7 +8,12 @@
 	import { messageBoxs, notifications } from '@graphace/ui';
 	import UserQuery from '~/lib/components/objects/user/User.svelte';
 	import { GridToolbar } from '~/lib/components/grid';
-	import type { User, UserConnection, UserConnectionQueryArguments, UserListMutationArguments } from '~/lib/types/schema';
+	import type {
+		User,
+		UserConnection,
+		UserConnectionQueryArguments,
+		UserListMutationArguments
+	} from '~/lib/types/schema';
 	import {
 		getGridTheme,
 		createEditors,
@@ -17,9 +22,10 @@
 		fieldsToColumns,
 		errorsToGridErrors,
 		nodesToSource,
-		sourceToMutationList
+		sourceToMutationList,
+		exportToXlsx
 	} from '~/utils';
-	
+
 	export let connection: UserConnection;
 	export let fields: Field[] = [];
 	export let queryArguments: UserConnectionQueryArguments = {};
@@ -131,6 +137,7 @@
 		on:query={(e) => queryPage()}
 		on:mutation={(e) => mutation()}
 		on:change={(e) => (source = e.detail.source)}
+		on:export={(e) => exportToXlsx(typeName, fields, nodes)}
 	/>
 	<RevoGrid
 		{source}

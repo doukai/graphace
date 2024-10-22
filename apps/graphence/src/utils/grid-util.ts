@@ -9,6 +9,7 @@ import type {
     ColumnGrouping,
     DataType
 } from '@revolist/svelte-datagrid';
+import { read, utils, writeFileXLSX } from 'xlsx';
 import type { Errors } from '@graphace/commons';
 import { fieldsDeep, type __Type, type Field } from '@graphace/graphql';
 import { getTypeFieldTypeName, getType, isEnum, typeFieldTypeHasList, getFieldType } from '~/utils';
@@ -884,4 +885,67 @@ export const enumValueToName = (typeName: string, value: string | null | undefin
             const enumValues = get(LL).graphql.enums[enumName].values;
             return enumValues[enumValue.name as keyof typeof enumValues].name();
         })?.[0];
+}
+
+export const exportToXlsx = <T>(typeName: string, queryFields: Field[], nodes: (T | null | undefined)[] | undefined): void => {
+    const join = queryFields.find((field) => typeFieldTypeHasList(typeName, field.name));
+    const json = nodes?.flatMap((node) => {
+        if (join) {
+            const array = node?.[join.name as keyof T];
+            if (Array.isArray(array) && array.length > 0) {
+                return array
+                    .map((item) => {
+                        if (join.fields && join.fields.length > 0) {
+                            return join.fields.map((subField) => [
+                                `${join.name}.${subField.name}`,
+                                getTypeFieldName(item?.[subField.name as keyof typeof item], typeName, join.name, subField.name)
+                            ]);
+                        } else {
+                            return [[join.name, getTypeFieldName(node?.[join.name as keyof T], typeName, join.name)]];
+                        }
+                    })
+                    .map((item) =>
+                        Object.fromEntries([
+                            ...item,
+                            ...queryFields
+                                .filter((field) => field.name !== join.name)
+                                .flatMap((field) => {
+                                    if (field.fields && field.fields.length > 0) {
+                                        const object = node?.[field.name as keyof T];
+                                        return field.fields.map((subField) => [
+                                            `${field.name}.${subField.name}`,
+                                            getTypeFieldName(object?.[subField.name as keyof typeof object], typeName, join.name, subField.name)
+                                        ]);
+                                    } else {
+                                        return [[field.name, getTypeFieldName(node?.[field.name as keyof T], typeName, join.name)]];
+                                    }
+                                })
+                        ])
+                    );
+            }
+        }
+        return [
+            Object.fromEntries(
+                queryFields.flatMap((field) => {
+                    if (field.fields && field.fields.length > 0) {
+                        const object = node?.[field.name as keyof T];
+                        return field.fields.map((subField) => [
+                            `${field.name}.${subField.name}`,
+                            getTypeFieldName(object?.[subField.name as keyof typeof object], typeName, field.name, subField.name)
+                        ]);
+                    } else {
+                        return [[field.name, getTypeFieldName(node?.[field.name as keyof T], typeName, field.name)]];
+                    }
+                })
+            )
+        ];
+    });
+
+    const ws = utils.json_to_sheet(json || []);
+    const wb = utils.book_new();
+
+    const objectName = typeName as keyof NamespaceGraphqlTranslation['objects'];
+    const name = get(LL).graphql.objects[objectName].name();
+    utils.book_append_sheet(wb, ws, name);
+    writeFileXLSX(wb, `${name}.xlsx`);
 }

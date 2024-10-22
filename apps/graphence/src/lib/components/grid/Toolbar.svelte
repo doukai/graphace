@@ -23,6 +23,7 @@
 	const dispatch = createEventDispatcher<{
 		query: {};
 		mutation: {};
+		export: {};
 		change: { source: DataType[] };
 	}>();
 
@@ -109,5 +110,13 @@
 		use:melt={$button}
 	>
 		{$LL.graphence.components.grid.buttons.canel()}
+	</button>
+	<div class="divider divider-horizontal m-0" use:melt={$separator} />
+	<button
+		on:click={(e) => dispatch('export', { source })}
+		class="btn btn-xs btn-error"
+		use:melt={$button}
+	>
+		{$LL.graphence.components.grid.buttons.remove()}
 	</button>
 </div>

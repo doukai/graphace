@@ -94,7 +94,8 @@
 		"tsx": "^4.16.0",
 		"typesafe-i18n": "^5.26.2",
 		"typescript": "^5.1.6",
-		"vite": "^5.4.7"
+		"vite": "^5.4.7",
+		"xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
 	},
 	"peerDependencies": {
 		"@sveltejs/kit": ">=2.0.0",
