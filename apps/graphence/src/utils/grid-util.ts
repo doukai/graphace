@@ -12,7 +12,7 @@ import type {
 import { read, utils, writeFileXLSX } from 'xlsx';
 import type { Errors } from '@graphace/commons';
 import { fieldsDeep, type __Type, type Field } from '@graphace/graphql';
-import { getTypeFieldTypeName, getType, isEnum, typeFieldTypeHasList, getFieldType } from '~/utils';
+import { getTypeFieldTypeName, getType, isEnum, typeFieldTypeHasList, getFieldType, getFieldTypeName } from '~/utils';
 import LL from '$i18n/i18n-svelte';
 import type { NamespaceGraphqlTranslation } from '$i18n/i18n-types';
 
@@ -540,10 +540,10 @@ export const nodesToSource = <T>(typeName: string, queryFields: Field[], nodes: 
                                         const object = node?.[field.name as keyof T];
                                         return field.fields.map((subField) => [
                                             `${field.name}.${subField.name}`,
-                                            getTypeFieldName(object?.[subField.name as keyof typeof object], typeName, join.name, subField.name)
+                                            getTypeFieldName(object?.[subField.name as keyof typeof object], typeName, field.name, subField.name)
                                         ]);
                                     } else {
-                                        return [[field.name, getTypeFieldName(node?.[field.name as keyof T], typeName, join.name)]];
+                                        return [[field.name, getTypeFieldName(node?.[field.name as keyof T], typeName, field.name)]];
                                     }
                                 })
                         ])
@@ -888,6 +888,8 @@ export const enumValueToName = (typeName: string, value: string | null | undefin
 }
 
 export const exportToXlsx = <T>(typeName: string, queryFields: Field[], nodes: (T | null | undefined)[] | undefined): void => {
+    const objectName = typeName as keyof NamespaceGraphqlTranslation['objects'];
+    const fields = get(LL).graphql.objects[objectName].fields;
     const join = queryFields.find((field) => typeFieldTypeHasList(typeName, field.name));
     const json = nodes?.flatMap((node) => {
         if (join) {
@@ -896,12 +898,17 @@ export const exportToXlsx = <T>(typeName: string, queryFields: Field[], nodes: (
                 return array
                     .map((item) => {
                         if (join.fields && join.fields.length > 0) {
-                            return join.fields.map((subField) => [
-                                `${join.name}.${subField.name}`,
-                                getTypeFieldName(item?.[subField.name as keyof typeof item], typeName, join.name, subField.name)
-                            ]);
+                            return join.fields.map((subField) => {
+                                const subFieldTypeName = getTypeFieldTypeName(typeName, join.name);
+                                const subObjectName = subFieldTypeName as keyof NamespaceGraphqlTranslation['objects'];
+                                const subFields = get(LL).graphql.objects[subObjectName].fields;
+                                return [
+                                    `${fields[join.name as keyof typeof fields].name()}-${subFields[subField.name as keyof typeof subFields].name()}`,
+                                    getTypeFieldName(item?.[subField.name as keyof typeof item], typeName, join.name, subField.name)
+                                ]
+                            });
                         } else {
-                            return [[join.name, getTypeFieldName(node?.[join.name as keyof T], typeName, join.name)]];
+                            return [[fields[join.name as keyof typeof fields].name(), getTypeFieldName(node?.[join.name as keyof T], typeName, join.name)]];
                         }
                     })
                     .map((item) =>
@@ -912,12 +919,17 @@ export const exportToXlsx = <T>(typeName: string, queryFields: Field[], nodes: (
                                 .flatMap((field) => {
                                     if (field.fields && field.fields.length > 0) {
                                         const object = node?.[field.name as keyof T];
-                                        return field.fields.map((subField) => [
-                                            `${field.name}.${subField.name}`,
-                                            getTypeFieldName(object?.[subField.name as keyof typeof object], typeName, join.name, subField.name)
-                                        ]);
+                                        return field.fields.map((subField) => {
+                                            const subFieldTypeName = getTypeFieldTypeName(typeName, field.name);
+                                            const subObjectName = subFieldTypeName as keyof NamespaceGraphqlTranslation['objects'];
+                                            const subFields = get(LL).graphql.objects[subObjectName].fields;
+                                            return [
+                                                `${fields[field.name as keyof typeof fields].name()}-${subFields[subField.name as keyof typeof subFields].name()}`,
+                                                getTypeFieldName(object?.[subField.name as keyof typeof object], typeName, field.name, subField.name)
+                                            ]
+                                        });
                                     } else {
-                                        return [[field.name, getTypeFieldName(node?.[field.name as keyof T], typeName, join.name)]];
+                                        return [[fields[field.name as keyof typeof fields].name(), getTypeFieldName(node?.[field.name as keyof T], typeName, field.name)]];
                                     }
                                 })
                         ])
@@ -929,12 +941,17 @@ export const exportToXlsx = <T>(typeName: string, queryFields: Field[], nodes: (
                 queryFields.flatMap((field) => {
                     if (field.fields && field.fields.length > 0) {
                         const object = node?.[field.name as keyof T];
-                        return field.fields.map((subField) => [
-                            `${field.name}.${subField.name}`,
-                            getTypeFieldName(object?.[subField.name as keyof typeof object], typeName, field.name, subField.name)
-                        ]);
+                        return field.fields.map((subField) => {
+                            const subFieldTypeName = getTypeFieldTypeName(typeName, field.name);
+                            const subObjectName = subFieldTypeName as keyof NamespaceGraphqlTranslation['objects'];
+                            const subFields = get(LL).graphql.objects[subObjectName].fields;
+                            return [
+                                `${fields[field.name as keyof typeof fields].name()}-${subFields[subField.name as keyof typeof subFields].name()}`,
+                                getTypeFieldName(object?.[subField.name as keyof typeof object], typeName, field.name, subField.name)
+                            ]
+                        });
                     } else {
-                        return [[field.name, getTypeFieldName(node?.[field.name as keyof T], typeName, field.name)]];
+                        return [[fields[field.name as keyof typeof fields].name(), getTypeFieldName(node?.[field.name as keyof T], typeName, field.name)]];
                     }
                 })
             )
@@ -944,8 +961,11 @@ export const exportToXlsx = <T>(typeName: string, queryFields: Field[], nodes: (
     const ws = utils.json_to_sheet(json || []);
     const wb = utils.book_new();
 
-    const objectName = typeName as keyof NamespaceGraphqlTranslation['objects'];
     const name = get(LL).graphql.objects[objectName].name();
     utils.book_append_sheet(wb, ws, name);
     writeFileXLSX(wb, `${name}.xlsx`);
+}
+
+export const importFromXlsx = <T>(typeName: string, queryFields: Field[], nodes: (T | null | undefined)[] | undefined): void => {
+
 }
