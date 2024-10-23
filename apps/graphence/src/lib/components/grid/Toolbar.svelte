@@ -48,7 +48,7 @@
 	>
 		{$LL.graphence.components.grid.buttons.save()}
 	</button>
-	<div class="divider divider-horizontal m-0" use:melt={$separator} />
+	<div class="hidden md:divider md:divider-horizontal md:m-0" use:melt={$separator} />
 	<button
 		class="btn btn-xs btn-primary pt-0"
 		use:melt={$button}
@@ -75,56 +75,57 @@
 	>
 		{$LL.graphence.components.grid.buttons.append()}
 	</button>
-	<div class="divider divider-horizontal m-0" use:melt={$separator} />
-	<button
-		disabled={rowIndex === undefined || source[rowIndex]?.isDeprecated === true}
-		on:click={(e) => {
-			if (rowIndex !== undefined) {
-				if (source[rowIndex]?.[idFieldName]) {
-					source[rowIndex].isDeprecated = true;
+	{#if rowIndex === undefined || source[rowIndex]?.isDeprecated === true}
+		<button
+			on:click={(e) => {
+				if (rowIndex !== undefined) {
+					source[rowIndex].isDeprecated = undefined;
+					dispatch('change', { source });
 					setCellsFocus(
 						{ x: colIndex || 0, y: rowIndex || 0 },
 						{ x: colIndex || 0, y: rowIndex || 0 }
 					);
-				} else {
-					source.splice(rowIndex, 1);
-					source = [...source];
 				}
-				dispatch('change', { source });
-			}
-		}}
-		class="btn btn-xs btn-error"
-		use:melt={$button}
-	>
-		{$LL.graphence.components.grid.buttons.remove()}
-	</button>
-	<button
-		disabled={rowIndex === undefined || !source[rowIndex]?.isDeprecated}
-		on:click={(e) => {
-			if (rowIndex !== undefined) {
-				source[rowIndex].isDeprecated = undefined;
-				dispatch('change', { source });
-				setCellsFocus(
-					{ x: colIndex || 0, y: rowIndex || 0 },
-					{ x: colIndex || 0, y: rowIndex || 0 }
-				);
-			}
-		}}
-		class="btn btn-xs btn-success"
-		use:melt={$button}
-	>
-		{$LL.graphence.components.grid.buttons.canel()}
-	</button>
-	<div class="divider divider-horizontal m-0" use:melt={$separator} />
+			}}
+			class="btn btn-xs btn-success"
+			use:melt={$button}
+		>
+			{$LL.graphence.components.grid.buttons.canel()}
+		</button>
+	{/if}
+	{#if rowIndex === undefined || !source[rowIndex]?.isDeprecated}
+		<button
+			on:click={(e) => {
+				if (rowIndex !== undefined) {
+					if (source[rowIndex]?.[idFieldName]) {
+						source[rowIndex].isDeprecated = true;
+						setCellsFocus(
+							{ x: colIndex || 0, y: rowIndex || 0 },
+							{ x: colIndex || 0, y: rowIndex || 0 }
+						);
+					} else {
+						source.splice(rowIndex, 1);
+						source = [...source];
+					}
+					dispatch('change', { source });
+				}
+			}}
+			class="btn btn-xs btn-error"
+			use:melt={$button}
+		>
+			{$LL.graphence.components.grid.buttons.remove()}
+		</button>
+	{/if}
+	<div class="hidden md:divider md:divider-horizontal md:m-0" use:melt={$separator} />
 	<button
 		on:click={(e) => dispatch('export', { source })}
-		class="btn btn-xs btn-error"
+		class="btn btn-xs btn-info"
 		use:melt={$button}
 	>
-		{$LL.graphence.components.grid.buttons.remove()}
+		{$LL.graphence.components.grid.buttons.export()}
 	</button>
-	<Dialog title={$LL.graphence.components.grid.buttons.remove()} className="btn-xs">
-		<span slot="button">{$LL.graphence.components.grid.buttons.remove()}</span>
+	<Dialog title={$LL.graphence.components.grid.buttons.import()} className="btn-xs btn-info">
+		<span slot="button">{$LL.graphence.components.grid.buttons.import()}</span>
 		<input
 			type="file"
 			class="file-input file-input-bordered w-full"
@@ -140,7 +141,7 @@
 			class="btn"
 			use:melt={$button}
 		>
-			{$LL.graphence.components.grid.buttons.remove()}
+			{$LL.graphence.components.grid.buttons.ok()}
 		</button>
 	</Dialog>
 </div>

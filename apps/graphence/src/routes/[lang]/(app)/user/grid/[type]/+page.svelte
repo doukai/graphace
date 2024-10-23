@@ -7,10 +7,12 @@
 	import type { UserListMutationStore } from '~/lib/stores/user/userMutationStore';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/utils';
+	import type { UserConnection } from '~/lib/types/schema';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
 	let errors: Record<number, Errors> = {};
+	let connection: UserConnection | null | undefined = {};
 
 	const {
 		fields,
@@ -37,7 +39,7 @@
 	<svelte:component
 		this={component}
 		isFetching={$UserConnectionQuery.isFetching}
-		connection={$UserConnectionQuery.response.data?.userConnection}
+		{connection}
 		{fields}
 		{errors}
 		{queryArguments}
@@ -48,6 +50,16 @@
 		{showBookmarkButton}
 		on:query={(e) => {
 			errors = {};
+			UserConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
+				connection = response?.data?.userConnection;
+				if (e.detail.catch && response?.errors) {
+					e.detail.catch(response.errors);
+				} else if (e.detail.then) {
+					e.detail.then(response?.data?.userConnection);
+				}
+			});
+		}}
+		on:exportQuery={(e) => {
 			UserConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
 				if (e.detail.catch && response?.errors) {
 					e.detail.catch(response.errors);

@@ -74,7 +74,10 @@ const zh: NamespaceGraphenceTranslation = {
                 new: '新页',
                 append: '添加',
                 remove: '删除',
-                canel: '取消'
+                ok: '确认',
+                canel: '取消',
+                export: '导出',
+                import: '导入'
             },
             boolean: {
                 true: '是',

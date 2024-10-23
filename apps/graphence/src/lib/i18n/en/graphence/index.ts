@@ -74,7 +74,10 @@ const en: BaseTranslation = {
                 new: 'New',
                 append: 'Append',
                 remove: 'Remove',
-                canel: 'Canel'
+                ok: 'ok',
+                canel: 'Canel',
+                export: 'Export',
+                import: 'Import'
             },
             boolean: {
                 true: 'Yes',

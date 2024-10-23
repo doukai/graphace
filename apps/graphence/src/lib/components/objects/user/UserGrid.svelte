@@ -54,10 +54,10 @@
 			then: (list: User[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
-		export: {
+		exportQuery: {
 			fields: Field[];
 			queryArguments: UserConnectionQueryArguments;
-			then?: (list: UserConnection | null | undefined) => void;
+			then?: (connection: UserConnection | null | undefined) => void;
 			catch?: (errors: GraphQLError[]) => void;
 		};
 	}>();
@@ -67,12 +67,11 @@
 	let rowIndex: number | undefined = undefined;
 	let colIndex: number | undefined = undefined;
 	let getFieldName: (fieldName: string, subFieldName?: string) => string;
-	let queryPage: (
+	let queryPage: (toPageNumber?: number | undefined) => void;
+	let buildArguments: (
 		toPageNumber?: number | undefined,
-		limit?: number | undefined,
-		then?: (connection: UserConnection | null | undefined) => void,
-		error?: (errors: GraphQLError[]) => void
-	) => void;
+		limit?: number | undefined
+	) => UserConnectionQueryArguments;
 	let setCellsFocus: (
 		cellStart?: Cell,
 		cellEnd?: Cell,
@@ -136,6 +135,7 @@
 	on:bookmark
 	bind:getFieldName
 	bind:queryPage
+	bind:buildArguments
 >
 	<GridToolbar
 		slot="toolbar"
@@ -150,13 +150,16 @@
 		on:mutation={(e) => mutation()}
 		on:change={(e) => (source = e.detail.source)}
 		on:export={(e) =>
-			queryPage(1, 500, (connection) =>
-				exportToXlsx(
-					typeName,
-					fields,
-					connection?.edges?.map((edge) => edge?.node)
-				)
-			)}
+			dispatch('exportQuery', {
+				fields,
+				queryArguments: buildArguments(1, 500),
+				then: (connection) =>
+					exportToXlsx(
+						typeName,
+						fields,
+						connection?.edges?.map((edge) => edge?.node)
+					)
+			})}
 		on:import={(e) => importFromXlsx(columns, e.detail.file).then((data) => (source = data))}
 	/>
 	<RevoGrid

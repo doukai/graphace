@@ -36,21 +36,21 @@ export const getGridTheme = (theme: string | undefined): string | undefined => {
 };
 
 export const getGridType = (typeName: string, filedName: string, subFiledName?: string): Record<string, any> | undefined => {
-    const fieldType = getTypeFieldTypeName(typeName, filedName, subFiledName);
-    if (fieldType) {
-        if (isEnum(fieldType)) {
+    const fieldTypeName = getTypeFieldTypeName(typeName, filedName, subFiledName);
+    if (fieldTypeName) {
+        if (isEnum(fieldTypeName)) {
             return {
                 editor: 'enum',
-                source: getType(fieldType)
+                source: getType(fieldTypeName)
                     ?.enumValues
                     ?.map(enumValue => {
-                        const enumName = fieldType as keyof NamespaceGraphqlTranslation['enums'];
+                        const enumName = fieldTypeName as keyof NamespaceGraphqlTranslation['enums'];
                         const enumValues = get(LL).graphql.enums[enumName].values;
                         return { label: enumValues[enumValue.name as keyof typeof enumValues].name(), value: enumValue.name };
                     })
             };
         }
-        switch (fieldType) {
+        switch (fieldTypeName) {
             case 'Boolean':
                 return { editor: 'boolean' };
             case 'Int':
@@ -903,7 +903,7 @@ export const exportToXlsx = <T>(typeName: string, fields: Field[], nodes: (T | n
                                 const subObjectName = subFieldTypeName as keyof NamespaceGraphqlTranslation['objects'];
                                 const subObjectFields = get(LL).graphql.objects[subObjectName].fields;
                                 return [
-                                    `${objectFields[join.name as keyof typeof objectFields].name()}-${subObjectFields[subField.name as keyof typeof subObjectFields].name()}`,
+                                    objectFields[join.name as keyof typeof objectFields].name() + subObjectFields[subField.name as keyof typeof subObjectFields].name(),
                                     getTypeFieldName(item?.[subField.name as keyof typeof item], typeName, join.name, subField.name)
                                 ]
                             });
@@ -924,7 +924,7 @@ export const exportToXlsx = <T>(typeName: string, fields: Field[], nodes: (T | n
                                             const subObjectName = subFieldTypeName as keyof NamespaceGraphqlTranslation['objects'];
                                             const subFields = get(LL).graphql.objects[subObjectName].fields;
                                             return [
-                                                `${objectFields[field.name as keyof typeof objectFields].name()}-${subFields[subField.name as keyof typeof subFields].name()}`,
+                                                objectFields[field.name as keyof typeof objectFields].name() + subFields[subField.name as keyof typeof subFields].name(),
                                                 getTypeFieldName(object?.[subField.name as keyof typeof object], typeName, field.name, subField.name)
                                             ]
                                         });
@@ -946,7 +946,7 @@ export const exportToXlsx = <T>(typeName: string, fields: Field[], nodes: (T | n
                             const subObjectName = subFieldTypeName as keyof NamespaceGraphqlTranslation['objects'];
                             const subObjectFields = get(LL).graphql.objects[subObjectName].fields;
                             return [
-                                `${objectFields[field.name as keyof typeof objectFields].name()}-${subObjectFields[subField.name as keyof typeof subObjectFields].name()}`,
+                                objectFields[field.name as keyof typeof objectFields].name() + subObjectFields[subField.name as keyof typeof subObjectFields].name(),
                                 getTypeFieldName(object?.[subField.name as keyof typeof object], typeName, field.name, subField.name)
                             ]
                         });
@@ -973,23 +973,12 @@ export const importFromXlsx = async (columns: ColumnRegular[] | ColumnGrouping[]
             Object.fromEntries(
                 Object.entries(object as object)
                     .map(entry => {
-                        if (entry[0].includes('-')) {
-                            const [fieldName, subFieldName] = entry[0].split('-');
-                            const column = columns.find(column => column.name === fieldName) as ColumnGrouping;
-                            if (column) {
-                                const subColumn = column.children.find((column) => column.name === fieldName + subFieldName) as ColumnRegular;
-                                if (subColumn) {
-                                    return [subColumn.prop, entry[1]];
-                                }
-                            }
-                        } else {
-                            const column = columns.find((column) => column.name === entry[0] || (column as ColumnGrouping).children?.some(child => child.name === entry[0]));
-                            if (column) {
-                                if ((column as ColumnRegular).name == entry[0]) {
-                                    return [(column as ColumnRegular)?.prop, entry[1]];
-                                } else if ((column as ColumnGrouping).children[0]) {
-                                    return [((column as ColumnGrouping).children[0] as ColumnRegular)?.prop, entry[1]];
-                                }
+                        const column = columns.find((column) => column.name === entry[0] || (column as ColumnGrouping).children?.some(child => child.name === entry[0]));
+                        if (column) {
+                            if ((column as ColumnRegular).name == entry[0]) {
+                                return [(column as ColumnRegular)?.prop, entry[1]];
+                            } else {
+                                return [((column as ColumnGrouping).children?.find(child => child.name === entry[0]) as ColumnRegular)?.prop, entry[1]];
                             }
                         }
                     })

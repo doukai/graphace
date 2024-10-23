@@ -5,11 +5,11 @@
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { AdjustmentsHorizontal, Funnel, Bookmark } from '@steeze-ui/heroicons';
-	import { type PermissionsStore } from '@graphace/commons';
-	import { type Field, type GraphQLError } from '@graphace/graphql';
+	import type { PermissionsStore } from '@graphace/commons';
+	import type { Field } from '@graphace/graphql';
 	import { Combobox, type Group as G, Pagination, type Option } from '@graphace/ui';
 	import UserFilter from '~/lib/components/objects/user/UserFilter.svelte';
-	import type { UserConnection, UserConnectionQueryArguments } from '~/lib/types/schema';
+	import type { UserConnectionQueryArguments } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { getIdFieldName } from '~/utils';
 
@@ -40,8 +40,6 @@
 		query: {
 			fields: Field[];
 			queryArguments: UserConnectionQueryArguments;
-			then?: (list: UserConnection | null | undefined) => void;
-			catch?: (errors: GraphQLError[]) => void;
 		};
 		bookmark: { fields: string; queryArguments: string };
 	}>();
@@ -413,7 +411,7 @@
 		return queryFields;
 	};
 
-	const buildArguments = (
+	export const buildArguments = (
 		toPageNumber?: number | undefined,
 		limit?: number | undefined
 	): UserConnectionQueryArguments => {
@@ -480,18 +478,11 @@
 		}
 	};
 
-	export const queryPage = (
-		toPageNumber?: number | undefined,
-		limit?: number | undefined,
-		then?: (connection: UserConnection | null | undefined) => void,
-		error?: (errors: GraphQLError[]) => void
-	) => {
+	export const queryPage = (toPageNumber?: number | undefined) => {
 		buildFields();
 		dispatch('query', {
 			fields: buildQueryFields(),
-			queryArguments: buildArguments(toPageNumber, limit),
-			then,
-			catch: error
+			queryArguments: buildArguments(toPageNumber)
 		});
 	};
 
