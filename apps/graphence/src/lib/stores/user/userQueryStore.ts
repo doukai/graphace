@@ -64,5 +64,5 @@ export type UserConnectionQueryStore = {
         isFetching: boolean;
         response: { data?: { userConnection: UserConnection | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], queryArguments: UserConnectionQueryArguments) => Promise<void>;
+    fetch: (fields: Field[], queryArguments: UserConnectionQueryArguments) => Promise<{ data?: { userConnection: UserConnection | null | undefined }, errors?: GraphQLError[] | null | undefined }>;
 }

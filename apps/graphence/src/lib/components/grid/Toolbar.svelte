@@ -2,6 +2,7 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import { createToolbar, melt } from '@melt-ui/svelte';
+	import { Dialog } from '@graphace/ui';
 	import type { Field } from '@graphace/graphql';
 	import type { Cell, DataType } from '@revolist/svelte-datagrid';
 
@@ -20,10 +21,13 @@
 		rowType?: string
 	) => Promise<void>;
 
+	let file: File;
+
 	const dispatch = createEventDispatcher<{
 		query: {};
 		mutation: {};
 		export: {};
+		import: { file: File };
 		change: { source: DataType[] };
 	}>();
 
@@ -119,4 +123,24 @@
 	>
 		{$LL.graphence.components.grid.buttons.remove()}
 	</button>
+	<Dialog title={$LL.graphence.components.grid.buttons.remove()} className="btn-xs">
+		<span slot="button">{$LL.graphence.components.grid.buttons.remove()}</span>
+		<input
+			type="file"
+			class="file-input file-input-bordered w-full"
+			on:change={(e) => {
+				if (e.currentTarget?.files?.[0]) {
+					file = e.currentTarget?.files?.[0];
+				}
+			}}
+		/>
+		<button
+			slot="action"
+			on:click={(e) => dispatch('import', { file })}
+			class="btn"
+			use:melt={$button}
+		>
+			{$LL.graphence.components.grid.buttons.remove()}
+		</button>
+	</Dialog>
 </div>

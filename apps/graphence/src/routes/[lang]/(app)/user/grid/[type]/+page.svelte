@@ -48,7 +48,13 @@
 		{showBookmarkButton}
 		on:query={(e) => {
 			errors = {};
-			UserConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments);
+			UserConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
+				if (e.detail.catch && response?.errors) {
+					e.detail.catch(response.errors);
+				} else if (e.detail.then) {
+					e.detail.then(response?.data?.userConnection);
+				}
+			});
 		}}
 		on:mutation={(e) => {
 			validate('Mutation_userList_Arguments', e.detail.mutationArguments, $locale)

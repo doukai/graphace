@@ -16,7 +16,8 @@ import { notifications } from "./Notifications.svelte";
 import SideBar from "./SideBar.svelte";
 import Breadcrumbs from "./Breadcrumbs.svelte";
 import Collapse from "./Collapse.svelte";
+import Dialog from "./Dialog.svelte";
 
 export {
-    MessageBoxs, messageBoxs, Notifications, notifications, SideBar, Breadcrumbs, Collapse
+    MessageBoxs, messageBoxs, Notifications, notifications, SideBar, Breadcrumbs, Collapse, Dialog
 }
