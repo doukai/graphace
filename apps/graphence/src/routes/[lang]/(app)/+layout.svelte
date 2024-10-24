@@ -82,10 +82,10 @@
 	}
 
 	let searchIndex = pages.flatMap((page) =>
-		page.items.map((item) => {
+		pages.map((page) => {
 			return {
-				...item,
-				name: $LL.graphql.objects[item.name as keyof NamespaceGraphqlTranslation['objects']].name()
+				...page,
+				name: $LL.graphql.objects[page.name as keyof NamespaceGraphqlTranslation['objects']].name()
 			};
 		})
 	);

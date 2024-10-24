@@ -14,15 +14,13 @@
 	let connection: {{ name }}Connection | null | undefined = {};
 	let errors: Record<number, Errors> = {};
 
-	const {
-		fields,
-		queryArguments,
-		showHeader,
-		showFooter,
-		showOptionButton,
-		showFilterButton,
-		showBookmarkButton
-	} = data;
+	$: fields = data.fields;
+	$: queryArguments = data.queryArguments;
+	$: showHeader = data.showHeader;
+	$: showFooter = data.showFooter;
+	$: showOptionButton = data.showOptionButton;
+	$: showFilterButton = data.fields;
+	$: showBookmarkButton = data.showBookmarkButton;
 
 	const {{ name }}ConnectionQuery = data.{{ name }}ConnectionQuery as {{ name }}ConnectionQueryStore;
 	const {{ name }}ListMutation = data.{{ name }}ListMutation as {{ name }}ListMutationStore;
@@ -32,7 +30,7 @@
 		agg: {{ name }}AggGrid
 	};
 
-	const component = components[data.type];
+	$: component = components[data.type];
 </script>
 
 <Card>
