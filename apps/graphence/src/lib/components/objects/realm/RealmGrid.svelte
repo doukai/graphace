@@ -6,8 +6,8 @@
 	import type { Errors } from '@graphace/commons';
 	import type { Field, GraphQLError } from '@graphace/graphql';
 	import { messageBoxs, notifications } from '@graphace/ui';
+	import { GridToolbar } from '@graphace/ui-graphql';
 	import RealmQuery from '~/lib/components/objects/realm/Realm.svelte';
-	import { GridToolbar } from '~/lib/components/grid';
 	import type { Realm, RealmConnection, RealmConnectionQueryArguments, RealmListMutationArguments } from '~/lib/types/schema';
 	import {
 		getGridTheme,
@@ -17,13 +17,16 @@
 		fieldsToColumns,
 		errorsToGridErrors,
 		nodesToSource,
-		sourceToMutationList
+		sourceToMutationList,
+		exportToXlsx,
+		importFromXlsx
 	} from '~/utils';
 	
 	export let connection: RealmConnection;
 	export let fields: Field[] = [];
 	export let queryArguments: RealmConnectionQueryArguments = {};
 	export let errors: Record<number, Errors> = {};
+	export let exportLimit: number = 500;
 	export let isFetching: boolean = false;
 	export let showHeader: boolean = true;
 	export let showFooter: boolean = true;
@@ -47,6 +50,12 @@
 			then: (list: Realm[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
+		exportQuery: {
+			fields: Field[];
+			queryArguments: RealmConnectionQueryArguments;
+			then?: (connection: RealmConnection | null | undefined) => void;
+			catch?: (errors: GraphQLError[]) => void;
+		};
 	}>();
 
 	let queryFields: Field[] = [];
@@ -55,6 +64,10 @@
 	let colIndex: number | undefined = undefined;
 	let getFieldName: (fieldName: string, subFieldName?: string) => string;
 	let queryPage: (toPageNumber?: number | undefined) => void;
+	let buildArguments: (
+		toPageNumber?: number | undefined,
+		limit?: number | undefined
+	) => RealmConnectionQueryArguments;
 	let setCellsFocus: (
 		cellStart?: Cell,
 		cellEnd?: Cell,
@@ -118,6 +131,7 @@
 	on:bookmark
 	bind:getFieldName
 	bind:queryPage
+	bind:buildArguments
 >
 	<GridToolbar
 		slot="toolbar"
@@ -131,6 +145,19 @@
 		on:query={(e) => queryPage()}
 		on:mutation={(e) => mutation()}
 		on:change={(e) => (source = e.detail.source)}
+		on:export={(e) =>
+			dispatch('exportQuery', {
+				fields,
+				queryArguments: buildArguments(1, exportLimit),
+				then: (connection) =>
+					exportToXlsx(
+						typeName,
+						fields,
+						connection?.edges?.map((edge) => edge?.node)
+					)
+			})
+		}
+		on:import={(e) => importFromXlsx(columns, e.detail.file).then((data) => (source = data))}
 	/>
 	<RevoGrid
 		{source}

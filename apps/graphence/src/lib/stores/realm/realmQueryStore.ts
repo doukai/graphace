@@ -64,5 +64,5 @@ export type RealmConnectionQueryStore = {
         isFetching: boolean;
         response: { data?: { realmConnection: RealmConnection | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], queryArguments: RealmConnectionQueryArguments) => Promise<void>;
+    fetch: (fields: Field[], queryArguments: RealmConnectionQueryArguments) => Promise<{ data?: { realmConnection: RealmConnection | null | undefined }, errors?: GraphQLError[] | null | undefined }>;
 }

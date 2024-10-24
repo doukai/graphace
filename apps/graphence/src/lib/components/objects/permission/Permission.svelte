@@ -5,8 +5,8 @@
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { AdjustmentsHorizontal, Funnel, Bookmark } from '@steeze-ui/heroicons';
-	import { type PermissionsStore } from '@graphace/commons';
-	import { type Field } from '@graphace/graphql';
+	import type { PermissionsStore } from '@graphace/commons';
+	import type { Field } from '@graphace/graphql';
 	import { Combobox, type Group as G, Pagination, type Option } from '@graphace/ui';
 	import PermissionFilter from '~/lib/components/objects/permission/PermissionFilter.svelte';
 	import type { PermissionConnectionQueryArguments } from '~/lib/types/schema';
@@ -275,7 +275,7 @@
 		return queryFields;
 	};
 
-	const buildArguments = (toPageNumber?: number | undefined): PermissionConnectionQueryArguments => {
+	export const buildArguments = (toPageNumber?: number | undefined, limit?: number | undefined): PermissionConnectionQueryArguments => {
 		if (!queryArguments) {
 			queryArguments = {};
 		}
@@ -318,8 +318,8 @@
 			queryArguments.orderBy = undefined;
 		}
 
-		queryArguments.offset = ((toPageNumber || pageNumber) - 1) * pageSize;
-		queryArguments.first = pageSize;
+		queryArguments.offset = ((toPageNumber || pageNumber) - 1) * (limit || pageSize);
+		queryArguments.first = limit || pageSize;
 		return queryArguments;
 	};
 

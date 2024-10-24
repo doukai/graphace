@@ -7,9 +7,11 @@
 	import type { RoleListMutationStore } from '~/lib/stores/role/roleMutationStore';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/utils';
+	import type { RoleConnection } from '~/lib/types/schema';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	let connection: RoleConnection | null | undefined = {};
 	let errors: Record<number, Errors> = {};
 
 	const {
@@ -37,7 +39,7 @@
 	<svelte:component
 		this={component}
 		isFetching={$RoleConnectionQuery.isFetching}
-		connection={$RoleConnectionQuery.response.data?.roleConnection}
+		{connection}
 		{fields}
 		{errors}
 		{queryArguments}
@@ -48,7 +50,23 @@
 		{showBookmarkButton}
 		on:query={(e) => {
 			errors = {};
-			RoleConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments);
+			RoleConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
+				connection = response?.data?.roleConnection;
+				if (e.detail.catch && response?.errors) {
+					e.detail.catch(response.errors);
+				} else if (e.detail.then) {
+					e.detail.then(response?.data?.roleConnection);
+				}
+			});
+		}}
+		on:exportQuery={(e) => {
+			RoleConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
+				if (e.detail.catch && response?.errors) {
+					e.detail.catch(response.errors);
+				} else if (e.detail.then) {
+					e.detail.then(response?.data?.roleConnection);
+				}
+			});
 		}}
 		on:mutation={(e) => {
 			validate('Mutation_roleList_Arguments', e.detail.mutationArguments, $locale)

@@ -7,9 +7,11 @@
 	import type { PermissionListMutationStore } from '~/lib/stores/permission/permissionMutationStore';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/utils';
+	import type { PermissionConnection } from '~/lib/types/schema';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	let connection: PermissionConnection | null | undefined = {};
 	let errors: Record<number, Errors> = {};
 
 	const {
@@ -37,7 +39,7 @@
 	<svelte:component
 		this={component}
 		isFetching={$PermissionConnectionQuery.isFetching}
-		connection={$PermissionConnectionQuery.response.data?.permissionConnection}
+		{connection}
 		{fields}
 		{errors}
 		{queryArguments}
@@ -48,7 +50,23 @@
 		{showBookmarkButton}
 		on:query={(e) => {
 			errors = {};
-			PermissionConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments);
+			PermissionConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
+				connection = response?.data?.permissionConnection;
+				if (e.detail.catch && response?.errors) {
+					e.detail.catch(response.errors);
+				} else if (e.detail.then) {
+					e.detail.then(response?.data?.permissionConnection);
+				}
+			});
+		}}
+		on:exportQuery={(e) => {
+			PermissionConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
+				if (e.detail.catch && response?.errors) {
+					e.detail.catch(response.errors);
+				} else if (e.detail.then) {
+					e.detail.then(response?.data?.permissionConnection);
+				}
+			});
 		}}
 		on:mutation={(e) => {
 			validate('Mutation_permissionList_Arguments', e.detail.mutationArguments, $locale)

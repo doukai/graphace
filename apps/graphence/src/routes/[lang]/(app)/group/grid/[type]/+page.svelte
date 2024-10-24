@@ -7,9 +7,11 @@
 	import type { GroupListMutationStore } from '~/lib/stores/group/groupMutationStore';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/utils';
+	import type { GroupConnection } from '~/lib/types/schema';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	let connection: GroupConnection | null | undefined = {};
 	let errors: Record<number, Errors> = {};
 
 	const {
@@ -37,7 +39,7 @@
 	<svelte:component
 		this={component}
 		isFetching={$GroupConnectionQuery.isFetching}
-		connection={$GroupConnectionQuery.response.data?.groupConnection}
+		{connection}
 		{fields}
 		{errors}
 		{queryArguments}
@@ -48,7 +50,23 @@
 		{showBookmarkButton}
 		on:query={(e) => {
 			errors = {};
-			GroupConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments);
+			GroupConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
+				connection = response?.data?.groupConnection;
+				if (e.detail.catch && response?.errors) {
+					e.detail.catch(response.errors);
+				} else if (e.detail.then) {
+					e.detail.then(response?.data?.groupConnection);
+				}
+			});
+		}}
+		on:exportQuery={(e) => {
+			GroupConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
+				if (e.detail.catch && response?.errors) {
+					e.detail.catch(response.errors);
+				} else if (e.detail.then) {
+					e.detail.then(response?.data?.groupConnection);
+				}
+			});
 		}}
 		on:mutation={(e) => {
 			validate('Mutation_groupList_Arguments', e.detail.mutationArguments, $locale)

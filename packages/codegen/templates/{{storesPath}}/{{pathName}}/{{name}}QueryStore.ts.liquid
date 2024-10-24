@@ -64,5 +64,5 @@ export type {{ name }}ConnectionQueryStore = {
         isFetching: boolean;
         response: { data?: { {{ name | camelCase }}Connection: {{ name }}Connection | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], queryArguments: {{ name }}ConnectionQueryArguments) => Promise<void>;
+    fetch: (fields: Field[], queryArguments: {{ name }}ConnectionQueryArguments) => Promise<{ data?: { {{ name | camelCase }}Connection: {{ name }}Connection | null | undefined }, errors?: GraphQLError[] | null | undefined }>;
 }

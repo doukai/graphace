@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	export let title: string = '';
+	export let disabled: boolean = false;
 	export let className: string = '';
 
 	let dialog: HTMLDialogElement;
@@ -10,7 +11,7 @@
 	}>();
 </script>
 
-<button class="btn {className}" on:click={(e) => dialog.showModal()}>
+<button class="btn {className}" {disabled} on:click={(e) => dialog.showModal()}>
 	<slot name="button" />
 </button>
 <dialog bind:this={dialog} class="modal modal-bottom sm:modal-middle">

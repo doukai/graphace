@@ -10,8 +10,7 @@ import type {
 } from '@revolist/svelte-datagrid';
 import { read, utils, writeFileXLSX } from 'xlsx';
 import type { Errors } from '@graphace/commons';
-import { fieldsDeep, type __Schema, type __Type, type Field } from '../types';
-import { createIntrospection } from './introspection-util';
+import { fieldsDeep, createIntrospection, type __Schema, type __Type, type Field } from '@graphace/graphql';
 
 export const createGrid = (
     __schema: __Schema,
@@ -346,7 +345,7 @@ export const createGrid = (
                                 this.element.setAttribute('data-tip', message);
                             }
                             if (this.editCell) {
-                                this.editCell.column.source.forEach((item: { label: string }) => {
+                                column.column.source.forEach((item: { label: string }) => {
                                     const option = document.createElement("option");
                                     option.value = item.label;
                                     option.text = item.label;

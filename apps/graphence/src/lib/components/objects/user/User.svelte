@@ -12,7 +12,7 @@
 	import type { UserConnectionQueryArguments } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { getIdFieldName } from '~/utils';
-
+	
 	export let fields: Field[] = [];
 	export let queryFields: Field[] = [];
 	export let queryArguments: UserConnectionQueryArguments = {};
@@ -35,12 +35,9 @@
 	const permissions = getContext('permissions') as PermissionsStore;
 	const typeName = 'User';
 	const idFieldName = 'id';
-
+	
 	const dispatch = createEventDispatcher<{
-		query: {
-			fields: Field[];
-			queryArguments: UserConnectionQueryArguments;
-		};
+		query: { fields: Field[]; queryArguments: UserConnectionQueryArguments };
 		bookmark: { fields: string; queryArguments: string };
 	}>();
 
@@ -91,7 +88,7 @@
 					value: 'disable',
 					label: $LL.graphql.objects.User.fields.disable.name(),
 					disabled: !permissions.auth('User::disable::READ')
-				}
+				},
 			]
 		},
 		{
@@ -100,28 +97,22 @@
 			options: [
 				{
 					value: 'id',
-					label:
-						$LL.graphql.objects.User.fields.realm.name() +
-						$LL.graphql.objects.Realm.fields.id.name(),
+					label: $LL.graphql.objects.User.fields.realm.name() + $LL.graphql.objects.Realm.fields.id.name(),
 					disabled: !permissions.auth('Realm::id::READ')
 				},
 				{
 					value: 'name',
-					label:
-						$LL.graphql.objects.User.fields.realm.name() +
-						$LL.graphql.objects.Realm.fields.name.name(),
+					label: $LL.graphql.objects.User.fields.realm.name() + $LL.graphql.objects.Realm.fields.name.name(),
 					disabled: !permissions.auth('Realm::name::READ')
 				},
 				{
 					value: 'description',
-					label:
-						$LL.graphql.objects.User.fields.realm.name() +
-						$LL.graphql.objects.Realm.fields.description.name(),
+					label: $LL.graphql.objects.User.fields.realm.name() + $LL.graphql.objects.Realm.fields.description.name(),
 					disabled: !permissions.auth('Realm::description::READ')
-				}
+				},
 			],
 			disabled: !permissions.auth('User::realm::READ')
-		}
+		},
 	];
 
 	let filteredSelectOptions = selectOptions;
@@ -133,39 +124,29 @@
 			options: [
 				{
 					value: 'id',
-					label:
-						$LL.graphql.objects.User.fields.files.name() +
-						$LL.graphql.objects.File.fields.id.name(),
+					label: $LL.graphql.objects.User.fields.files.name() + $LL.graphql.objects.File.fields.id.name(),
 					disabled: !permissions.auth('File::id::READ')
 				},
 				{
 					value: 'name',
-					label:
-						$LL.graphql.objects.User.fields.files.name() +
-						$LL.graphql.objects.File.fields.name.name(),
+					label: $LL.graphql.objects.User.fields.files.name() + $LL.graphql.objects.File.fields.name.name(),
 					disabled: !permissions.auth('File::name::READ')
 				},
 				{
 					value: 'contentType',
-					label:
-						$LL.graphql.objects.User.fields.files.name() +
-						$LL.graphql.objects.File.fields.contentType.name(),
+					label: $LL.graphql.objects.User.fields.files.name() + $LL.graphql.objects.File.fields.contentType.name(),
 					disabled: !permissions.auth('File::contentType::READ')
 				},
 				{
 					value: 'content',
-					label:
-						$LL.graphql.objects.User.fields.files.name() +
-						$LL.graphql.objects.File.fields.content.name(),
+					label: $LL.graphql.objects.User.fields.files.name() + $LL.graphql.objects.File.fields.content.name(),
 					disabled: !permissions.auth('File::content::READ')
 				},
 				{
 					value: 'url',
-					label:
-						$LL.graphql.objects.User.fields.files.name() +
-						$LL.graphql.objects.File.fields.url.name(),
+					label: $LL.graphql.objects.User.fields.files.name() + $LL.graphql.objects.File.fields.url.name(),
 					disabled: !permissions.auth('File::url::READ')
-				}
+				},
 			],
 			disabled: !permissions.auth('User::files::READ')
 		},
@@ -175,53 +156,39 @@
 			options: [
 				{
 					value: 'id',
-					label:
-						$LL.graphql.objects.User.fields.groups.name() +
-						$LL.graphql.objects.Group.fields.id.name(),
+					label: $LL.graphql.objects.User.fields.groups.name() + $LL.graphql.objects.Group.fields.id.name(),
 					disabled: !permissions.auth('Group::id::READ')
 				},
 				{
 					value: 'name',
-					label:
-						$LL.graphql.objects.User.fields.groups.name() +
-						$LL.graphql.objects.Group.fields.name.name(),
+					label: $LL.graphql.objects.User.fields.groups.name() + $LL.graphql.objects.Group.fields.name.name(),
 					disabled: !permissions.auth('Group::name::READ')
 				},
 				{
 					value: 'description',
-					label:
-						$LL.graphql.objects.User.fields.groups.name() +
-						$LL.graphql.objects.Group.fields.description.name(),
+					label: $LL.graphql.objects.User.fields.groups.name() + $LL.graphql.objects.Group.fields.description.name(),
 					disabled: !permissions.auth('Group::description::READ')
 				},
 				{
 					value: 'path',
-					label:
-						$LL.graphql.objects.User.fields.groups.name() +
-						$LL.graphql.objects.Group.fields.path.name(),
+					label: $LL.graphql.objects.User.fields.groups.name() + $LL.graphql.objects.Group.fields.path.name(),
 					disabled: !permissions.auth('Group::path::READ')
 				},
 				{
 					value: 'deep',
-					label:
-						$LL.graphql.objects.User.fields.groups.name() +
-						$LL.graphql.objects.Group.fields.deep.name(),
+					label: $LL.graphql.objects.User.fields.groups.name() + $LL.graphql.objects.Group.fields.deep.name(),
 					disabled: !permissions.auth('Group::deep::READ')
 				},
 				{
 					value: 'parentId',
-					label:
-						$LL.graphql.objects.User.fields.groups.name() +
-						$LL.graphql.objects.Group.fields.parentId.name(),
+					label: $LL.graphql.objects.User.fields.groups.name() + $LL.graphql.objects.Group.fields.parentId.name(),
 					disabled: !permissions.auth('Group::parentId::READ')
 				},
 				{
 					value: 'syncGroupPolicy',
-					label:
-						$LL.graphql.objects.User.fields.groups.name() +
-						$LL.graphql.objects.Group.fields.syncGroupPolicy.name(),
+					label: $LL.graphql.objects.User.fields.groups.name() + $LL.graphql.objects.Group.fields.syncGroupPolicy.name(),
 					disabled: !permissions.auth('Group::syncGroupPolicy::READ')
-				}
+				},
 			],
 			disabled: !permissions.auth('User::groups::READ')
 		},
@@ -231,35 +198,27 @@
 			options: [
 				{
 					value: 'id',
-					label:
-						$LL.graphql.objects.User.fields.roles.name() +
-						$LL.graphql.objects.Role.fields.id.name(),
+					label: $LL.graphql.objects.User.fields.roles.name() + $LL.graphql.objects.Role.fields.id.name(),
 					disabled: !permissions.auth('Role::id::READ')
 				},
 				{
 					value: 'name',
-					label:
-						$LL.graphql.objects.User.fields.roles.name() +
-						$LL.graphql.objects.Role.fields.name.name(),
+					label: $LL.graphql.objects.User.fields.roles.name() + $LL.graphql.objects.Role.fields.name.name(),
 					disabled: !permissions.auth('Role::name::READ')
 				},
 				{
 					value: 'description',
-					label:
-						$LL.graphql.objects.User.fields.roles.name() +
-						$LL.graphql.objects.Role.fields.description.name(),
+					label: $LL.graphql.objects.User.fields.roles.name() + $LL.graphql.objects.Role.fields.description.name(),
 					disabled: !permissions.auth('Role::description::READ')
 				},
 				{
 					value: 'syncRolePolicy',
-					label:
-						$LL.graphql.objects.User.fields.roles.name() +
-						$LL.graphql.objects.Role.fields.syncRolePolicy.name(),
+					label: $LL.graphql.objects.User.fields.roles.name() + $LL.graphql.objects.Role.fields.syncRolePolicy.name(),
 					disabled: !permissions.auth('Role::syncRolePolicy::READ')
-				}
+				},
 			],
 			disabled: !permissions.auth('User::roles::READ')
-		}
+		},
 	];
 
 	let filteredJoinOptions =
@@ -299,8 +258,7 @@
 		});
 	}
 
-	$: orderByOptions = selectColumns
-		.reduce((groups, option) => {
+	$: orderByOptions = selectColumns.reduce((groups, option) => {
 			if (
 				groups.some(
 					(group) => group.value === option.group?.value && group.label === option.group?.label
@@ -411,10 +369,7 @@
 		return queryFields;
 	};
 
-	export const buildArguments = (
-		toPageNumber?: number | undefined,
-		limit?: number | undefined
-	): UserConnectionQueryArguments => {
+	export const buildArguments = (toPageNumber?: number | undefined, limit?: number | undefined): UserConnectionQueryArguments => {
 		if (!queryArguments) {
 			queryArguments = {};
 		}
@@ -457,7 +412,7 @@
 			queryArguments.orderBy = undefined;
 		}
 
-		queryArguments.offset = ((toPageNumber || pageNumber) - 1) * pageSize;
+		queryArguments.offset = ((toPageNumber || pageNumber) - 1) * (limit || pageSize);
 		queryArguments.first = limit || pageSize;
 		return queryArguments;
 	};
@@ -480,10 +435,7 @@
 
 	export const queryPage = (toPageNumber?: number | undefined) => {
 		buildFields();
-		dispatch('query', {
-			fields: buildQueryFields(),
-			queryArguments: buildArguments(toPageNumber)
-		});
+		dispatch('query', { fields: buildQueryFields(), queryArguments: buildArguments(toPageNumber) });
 	};
 
 	queryPage();
@@ -532,7 +484,10 @@
 			</div>
 			{#if $open}
 				<div use:melt={$overlay} class="fixed inset-0 z-[100]" />
-				<div class="p-1 rounded-xl bg-base-200 shadow z-[100]" use:melt={$content}>
+				<div
+					class="p-1 rounded-xl bg-base-200 shadow z-[100]"
+					use:melt={$content}
+				>
 					<div use:melt={$arrow} />
 					<div class="space-y-1" transition:fade={{ duration: 100 }}>
 						<Combobox

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
+	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { createToolbar, melt } from '@melt-ui/svelte';
 	import { Dialog } from '@graphace/ui';
 	import type { Field } from '@graphace/graphql';
@@ -39,14 +40,14 @@
 
 <div use:melt={$root} class="flex p-1 bg-base-300 rounded space-x-1">
 	<button class="btn btn-xs" use:melt={$button} on:click={(e) => dispatch('query', {})}>
-		{$LL.graphence.components.grid.buttons.refresh()}
+		{$LL.uiGraphql.grid.buttons.refresh()}
 	</button>
 	<button
 		class="btn btn-xs btn-secondary"
 		use:melt={$button}
 		on:click={(e) => dispatch('mutation', {})}
 	>
-		{$LL.graphence.components.grid.buttons.save()}
+		{$LL.uiGraphql.grid.buttons.save()}
 	</button>
 	<div class="hidden md:divider md:divider-horizontal md:m-0" use:melt={$separator} />
 	<button
@@ -62,7 +63,7 @@
 			dispatch('change', { source });
 		}}
 	>
-		{$LL.graphence.components.grid.buttons.new()}
+		{$LL.uiGraphql.grid.buttons.new()}
 	</button>
 	<button
 		class="btn btn-xs btn-primary"
@@ -73,7 +74,7 @@
 			dispatch('change', { source });
 		}}
 	>
-		{$LL.graphence.components.grid.buttons.append()}
+		{$LL.uiGraphql.grid.buttons.append()}
 	</button>
 	{#if rowIndex === undefined || source[rowIndex]?.isDeprecated === true}
 		<button
@@ -90,7 +91,7 @@
 			class="btn btn-xs btn-success"
 			use:melt={$button}
 		>
-			{$LL.graphence.components.grid.buttons.canel()}
+			{$LL.uiGraphql.grid.buttons.canel()}
 		</button>
 	{/if}
 	{#if rowIndex === undefined || !source[rowIndex]?.isDeprecated}
@@ -113,7 +114,7 @@
 			class="btn btn-xs btn-error"
 			use:melt={$button}
 		>
-			{$LL.graphence.components.grid.buttons.remove()}
+			{$LL.uiGraphql.grid.buttons.remove()}
 		</button>
 	{/if}
 	<div class="hidden md:divider md:divider-horizontal md:m-0" use:melt={$separator} />
@@ -121,11 +122,16 @@
 		on:click={(e) => dispatch('export', { source })}
 		class="btn btn-xs btn-info"
 		use:melt={$button}
+		disabled={fields.length === 0}
 	>
-		{$LL.graphence.components.grid.buttons.export()}
+		{$LL.uiGraphql.grid.buttons.export()}
 	</button>
-	<Dialog title={$LL.graphence.components.grid.buttons.import()} className="btn-xs btn-info">
-		<span slot="button">{$LL.graphence.components.grid.buttons.import()}</span>
+	<Dialog
+		title={$LL.uiGraphql.grid.buttons.import()}
+		className="btn-xs btn-info"
+		disabled={fields.length === 0}
+	>
+		<span slot="button">{$LL.uiGraphql.grid.buttons.import()}</span>
 		<input
 			type="file"
 			class="file-input file-input-bordered w-full"
@@ -141,7 +147,7 @@
 			class="btn"
 			use:melt={$button}
 		>
-			{$LL.graphence.components.grid.buttons.ok()}
+			{$LL.uiGraphql.grid.buttons.ok()}
 		</button>
 	</Dialog>
 </div>

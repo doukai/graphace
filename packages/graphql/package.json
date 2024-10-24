@@ -22,8 +22,6 @@
 		"@graphace/commons": "workspace:*"
 	},
 	"peerDependencies": {
-		"@revolist/svelte-datagrid": ">=4.0.0",
-		"xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
 	},
 	"publishConfig": {
 		"access": "public"

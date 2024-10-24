@@ -64,5 +64,5 @@ export type GroupConnectionQueryStore = {
         isFetching: boolean;
         response: { data?: { groupConnection: GroupConnection | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], queryArguments: GroupConnectionQueryArguments) => Promise<void>;
+    fetch: (fields: Field[], queryArguments: GroupConnectionQueryArguments) => Promise<{ data?: { groupConnection: GroupConnection | null | undefined }, errors?: GraphQLError[] | null | undefined }>;
 }

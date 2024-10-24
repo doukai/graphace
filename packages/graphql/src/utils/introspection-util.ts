@@ -25,7 +25,7 @@ export const createIntrospection = (__schema: __Schema) => {
             if (fieldType.kind === 'LIST' || fieldType.kind === 'NON_NULL') {
                 return getFieldType(fieldType?.ofType);
             }
-            return fieldType;
+            return getType(fieldType.name!);
         }
     };
 

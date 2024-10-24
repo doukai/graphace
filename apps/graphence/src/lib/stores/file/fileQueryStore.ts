@@ -64,5 +64,5 @@ export type FileConnectionQueryStore = {
         isFetching: boolean;
         response: { data?: { fileConnection: FileConnection | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], queryArguments: FileConnectionQueryArguments) => Promise<void>;
+    fetch: (fields: Field[], queryArguments: FileConnectionQueryArguments) => Promise<{ data?: { fileConnection: FileConnection | null | undefined }, errors?: GraphQLError[] | null | undefined }>;
 }

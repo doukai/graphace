@@ -11,8 +11,8 @@
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	let errors: Record<number, Errors> = {};
 	let connection: UserConnection | null | undefined = {};
+	let errors: Record<number, Errors> = {};
 
 	const {
 		fields,

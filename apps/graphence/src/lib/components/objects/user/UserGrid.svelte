@@ -6,14 +6,9 @@
 	import type { Errors } from '@graphace/commons';
 	import type { Field, GraphQLError } from '@graphace/graphql';
 	import { messageBoxs, notifications } from '@graphace/ui';
+	import { GridToolbar } from '@graphace/ui-graphql';
 	import UserQuery from '~/lib/components/objects/user/User.svelte';
-	import { GridToolbar } from '~/lib/components/grid';
-	import type {
-		User,
-		UserConnection,
-		UserConnectionQueryArguments,
-		UserListMutationArguments
-	} from '~/lib/types/schema';
+	import type { User, UserConnection, UserConnectionQueryArguments, UserListMutationArguments } from '~/lib/types/schema';
 	import {
 		getGridTheme,
 		createEditors,
@@ -26,11 +21,12 @@
 		exportToXlsx,
 		importFromXlsx
 	} from '~/utils';
-
+	
 	export let connection: UserConnection;
 	export let fields: Field[] = [];
 	export let queryArguments: UserConnectionQueryArguments = {};
 	export let errors: Record<number, Errors> = {};
+	export let exportLimit: number = 500;
 	export let isFetching: boolean = false;
 	export let showHeader: boolean = true;
 	export let showFooter: boolean = true;
@@ -152,14 +148,15 @@
 		on:export={(e) =>
 			dispatch('exportQuery', {
 				fields,
-				queryArguments: buildArguments(1, 500),
+				queryArguments: buildArguments(1, exportLimit),
 				then: (connection) =>
 					exportToXlsx(
 						typeName,
 						fields,
 						connection?.edges?.map((edge) => edge?.node)
 					)
-			})}
+			})
+		}
 		on:import={(e) => importFromXlsx(columns, e.detail.file).then((data) => (source = data))}
 	/>
 	<RevoGrid

@@ -7,9 +7,11 @@
 	import type { RealmListMutationStore } from '~/lib/stores/realm/realmMutationStore';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/utils';
+	import type { RealmConnection } from '~/lib/types/schema';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	let connection: RealmConnection | null | undefined = {};
 	let errors: Record<number, Errors> = {};
 
 	const {
@@ -37,7 +39,7 @@
 	<svelte:component
 		this={component}
 		isFetching={$RealmConnectionQuery.isFetching}
-		connection={$RealmConnectionQuery.response.data?.realmConnection}
+		{connection}
 		{fields}
 		{errors}
 		{queryArguments}
@@ -48,7 +50,23 @@
 		{showBookmarkButton}
 		on:query={(e) => {
 			errors = {};
-			RealmConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments);
+			RealmConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
+				connection = response?.data?.realmConnection;
+				if (e.detail.catch && response?.errors) {
+					e.detail.catch(response.errors);
+				} else if (e.detail.then) {
+					e.detail.then(response?.data?.realmConnection);
+				}
+			});
+		}}
+		on:exportQuery={(e) => {
+			RealmConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
+				if (e.detail.catch && response?.errors) {
+					e.detail.catch(response.errors);
+				} else if (e.detail.then) {
+					e.detail.then(response?.data?.realmConnection);
+				}
+			});
 		}}
 		on:mutation={(e) => {
 			validate('Mutation_realmList_Arguments', e.detail.mutationArguments, $locale)

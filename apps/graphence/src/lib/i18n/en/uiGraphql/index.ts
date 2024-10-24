@@ -34,6 +34,19 @@ const en_uiGraphql = {
 			clear: 'clear',
 		},
 	},
+	grid: {
+		buttons: {
+			refresh: 'Refresh',
+			save: 'Save',
+			'new': 'New',
+			append: 'Append',
+			remove: 'Remove',
+			ok: 'ok',
+			canel: 'Canel',
+			'export': 'Export',
+			'import': 'Import',
+		},
+	},
 } satisfies BaseTranslation
 
 export default en_uiGraphql

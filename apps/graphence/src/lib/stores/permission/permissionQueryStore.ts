@@ -64,5 +64,5 @@ export type PermissionConnectionQueryStore = {
         isFetching: boolean;
         response: { data?: { permissionConnection: PermissionConnection | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], queryArguments: PermissionConnectionQueryArguments) => Promise<void>;
+    fetch: (fields: Field[], queryArguments: PermissionConnectionQueryArguments) => Promise<{ data?: { permissionConnection: PermissionConnection | null | undefined }, errors?: GraphQLError[] | null | undefined }>;
 }

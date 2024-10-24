@@ -64,5 +64,5 @@ export type RoleConnectionQueryStore = {
         isFetching: boolean;
         response: { data?: { roleConnection: RoleConnection | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], queryArguments: RoleConnectionQueryArguments) => Promise<void>;
+    fetch: (fields: Field[], queryArguments: RoleConnectionQueryArguments) => Promise<{ data?: { roleConnection: RoleConnection | null | undefined }, errors?: GraphQLError[] | null | undefined }>;
 }
