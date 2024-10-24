@@ -158,6 +158,34 @@ export type NamespaceGraphenceTranslation = {
 			 * M​o​d​u​l​e​s
 			 */
 			modules: string
+			/**
+			 * S​t​a​t​i​s​t​i​c​s
+			 */
+			statistics: string
+			/**
+			 * G​r​i​d
+			 */
+			grid: string
+			/**
+			 * T​a​b​l​e
+			 */
+			table: string
+			/**
+			 * B​a​r
+			 */
+			bar: string
+			/**
+			 * L​i​n​e
+			 */
+			line: string
+			/**
+			 * P​i​e
+			 */
+			pie: string
+			/**
+			 * E​d​i​t
+			 */
+			mutation: string
 		}
 		userMenu: {
 			/**
@@ -3534,6 +3562,34 @@ export type TranslationFunctions = {
 				 * Modules
 				 */
 				modules: () => LocalizedString
+				/**
+				 * Statistics
+				 */
+				statistics: () => LocalizedString
+				/**
+				 * Grid
+				 */
+				grid: () => LocalizedString
+				/**
+				 * Table
+				 */
+				table: () => LocalizedString
+				/**
+				 * Bar
+				 */
+				bar: () => LocalizedString
+				/**
+				 * Line
+				 */
+				line: () => LocalizedString
+				/**
+				 * Pie
+				 */
+				pie: () => LocalizedString
+				/**
+				 * Edit
+				 */
+				mutation: () => LocalizedString
 			}
 			userMenu: {
 				/**

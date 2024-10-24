@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons';
-	import { Card } from '@graphace/ui';
+	import { Card, urlName } from '@graphace/ui';
 	import PermissionGrid from '~/lib/components/objects/permission/PermissionGrid.svelte';
 	import PermissionAggGrid from '~/lib/components/objects/permission/PermissionAggGrid.svelte';
 	import type { PermissionConnectionQueryStore } from '~/lib/stores/permission/permissionQueryStore';
@@ -8,21 +9,21 @@
 	import type { PageData } from './$houdini';
 	import { validate } from '~/utils';
 	import type { PermissionConnection } from '~/lib/types/schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	$: urlName($page.url, $LL.graphql.objects.Permission.name());
 	let connection: PermissionConnection | null | undefined = {};
 	let errors: Record<number, Errors> = {};
 
-	const {
-		fields,
-		queryArguments,
-		showHeader,
-		showFooter,
-		showOptionButton,
-		showFilterButton,
-		showBookmarkButton
-	} = data;
+	$: fields = data.fields;
+	$: queryArguments = data.queryArguments;
+	$: showHeader = data.showHeader;
+	$: showFooter = data.showFooter;
+	$: showOptionButton = data.showOptionButton;
+	$: showFilterButton = data.fields;
+	$: showBookmarkButton = data.showBookmarkButton;
 
 	const PermissionConnectionQuery = data.PermissionConnectionQuery as PermissionConnectionQueryStore;
 	const PermissionListMutation = data.PermissionListMutation as PermissionListMutationStore;
@@ -32,7 +33,7 @@
 		agg: PermissionAggGrid
 	};
 
-	const component = components[data.type];
+	$: component = components[data.type];
 </script>
 
 <Card>

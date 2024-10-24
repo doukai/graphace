@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons';
-	import { Card } from '@graphace/ui';
+	import { Card, urlName } from '@graphace/ui';
 	import RoleGrid from '~/lib/components/objects/role/RoleGrid.svelte';
 	import RoleAggGrid from '~/lib/components/objects/role/RoleAggGrid.svelte';
 	import type { RoleConnectionQueryStore } from '~/lib/stores/role/roleQueryStore';
@@ -8,21 +9,21 @@
 	import type { PageData } from './$houdini';
 	import { validate } from '~/utils';
 	import type { RoleConnection } from '~/lib/types/schema';
+	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	$: urlName($page.url, $LL.graphql.objects.Role.name());
 	let connection: RoleConnection | null | undefined = {};
 	let errors: Record<number, Errors> = {};
 
-	const {
-		fields,
-		queryArguments,
-		showHeader,
-		showFooter,
-		showOptionButton,
-		showFilterButton,
-		showBookmarkButton
-	} = data;
+	$: fields = data.fields;
+	$: queryArguments = data.queryArguments;
+	$: showHeader = data.showHeader;
+	$: showFooter = data.showFooter;
+	$: showOptionButton = data.showOptionButton;
+	$: showFilterButton = data.fields;
+	$: showBookmarkButton = data.showBookmarkButton;
 
 	const RoleConnectionQuery = data.RoleConnectionQuery as RoleConnectionQueryStore;
 	const RoleListMutation = data.RoleListMutation as RoleListMutationStore;
@@ -32,7 +33,7 @@
 		agg: RoleAggGrid
 	};
 
-	const component = components[data.type];
+	$: component = components[data.type];
 </script>
 
 <Card>

@@ -37,7 +37,14 @@ const zh: NamespaceGraphenceTranslation = {
             selectBtn: "选择"
         },
         sideBarMenu: {
-            modules: "模块"
+            modules: "模块",
+            statistics: "统计",
+            grid: "表格",
+            table: "统计表",
+            bar: "柱状图",
+            line: "折线图",
+            pie: "饼图",
+            mutation: "编辑"
         },
         userMenu: {
             profile: "个人资料",

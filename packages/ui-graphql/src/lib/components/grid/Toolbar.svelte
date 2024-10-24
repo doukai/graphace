@@ -38,7 +38,7 @@
 	} = createToolbar();
 </script>
 
-<div use:melt={$root} class="flex p-1 bg-base-300 rounded space-x-1">
+<div use:melt={$root} class="flex p-1 bg-base-200 rounded space-x-1">
 	<button class="btn btn-xs" use:melt={$button} on:click={(e) => dispatch('query', {})}>
 		{$LL.uiGraphql.grid.buttons.refresh()}
 	</button>
@@ -76,7 +76,7 @@
 	>
 		{$LL.uiGraphql.grid.buttons.append()}
 	</button>
-	{#if rowIndex === undefined || source[rowIndex]?.isDeprecated === true}
+	{#if rowIndex !== undefined && source[rowIndex]?.isDeprecated === true}
 		<button
 			on:click={(e) => {
 				if (rowIndex !== undefined) {
@@ -94,7 +94,7 @@
 			{$LL.uiGraphql.grid.buttons.canel()}
 		</button>
 	{/if}
-	{#if rowIndex === undefined || !source[rowIndex]?.isDeprecated}
+	{#if rowIndex !== undefined && !source[rowIndex]?.isDeprecated}
 		<button
 			on:click={(e) => {
 				if (rowIndex !== undefined) {

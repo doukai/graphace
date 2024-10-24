@@ -1,23 +1,24 @@
 <script lang="ts">
-	import { Card } from '@graphace/ui';
+	import { page } from '$app/stores';
+	import { Card, urlName } from '@graphace/ui';
 	import PermissionBar from '~/lib/components/objects/permission/PermissionBar.svelte';
 	import PermissionLine from '~/lib/components/objects/permission/PermissionLine.svelte';
 	import PermissionPie from '~/lib/components/objects/permission/PermissionPie.svelte';
 	import PermissionAggTable from '~/lib/components/objects/permission/PermissionAggTable.svelte';
 	import type { PermissionConnectionQueryStore } from '~/lib/stores/permission/permissionQueryStore';
 	import type { PageData } from './$houdini';
+	import LL from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+	$: urlName($page.url, $LL.graphql.objects.Permission.name());
 
-	const {
-		fields,
-		queryArguments,
-		showHeader,
-		showFooter,
-		showOptionButton,
-		showFilterButton,
-		showBookmarkButton
-	} = data;
+	$: fields = data.fields;
+	$: queryArguments = data.queryArguments;
+	$: showHeader = data.showHeader;
+	$: showFooter = data.showFooter;
+	$: showOptionButton = data.showOptionButton;
+	$: showFilterButton = data.fields;
+	$: showBookmarkButton = data.showBookmarkButton;
 
 	const PermissionConnectionQuery = data.PermissionConnectionQuery as PermissionConnectionQueryStore;
 
@@ -28,7 +29,7 @@
 		table: PermissionAggTable
 	};
 
-	const component = components[data.type];
+	$: component = components[data.type];
 </script>
 
 <Card>

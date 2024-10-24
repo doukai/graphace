@@ -5,11 +5,7 @@
 	import { init } from '@graphace/ui';
 	import { page } from '$app/stores';
 	import Iconify from '@iconify/svelte';
-	import type {
-		NamespaceGraphqlTranslation,
-		NamespaceGraphenceTranslation,
-		TranslationFunctions
-	} from '$i18n/i18n-types';
+	import type { NamespaceGraphqlTranslation, TranslationFunctions } from '$i18n/i18n-types';
 	import { locale } from '$i18n/i18n-svelte';
 	import pages from '~/lib/data/pages.json';
 
@@ -39,7 +35,9 @@
 					init(`/${$locale}${href}`);
 				}}
 				class={$page.url.pathname === `/${$locale}${href}` ||
-				$page.url.pathname.startsWith(`/${$locale}${href}/`)
+				($page.url.pathname.startsWith(`/${$locale}${href}/`) &&
+					!$page.url.pathname.startsWith(`/${$locale}${href}/agg`) &&
+					!$page.url.pathname.startsWith(`/${$locale}${href}/grid`))
 					? 'active'
 					: ''}
 			>
@@ -54,9 +52,9 @@
 <li />
 <li class="menu-title flex flex-row gap-4">
 	<span class="text-base-content">
-		<Iconify class="w-5 h-5" icon="material-symbols:add-chart-sharp" />
+		<Iconify class="w-5 h-5" icon="material-symbols:bar-chart" />
 	</span>
-	<span>{$LL.graphence.components.sideBarMenu.modules()}</span>
+	<span>{$LL.graphence.components.sideBarMenu.statistics()}</span>
 </li>
 {#each menus as { href, name, authPermissions, icon }}
 	{#if permissions.auth(...(authPermissions || []))}
@@ -76,7 +74,7 @@
 								: ''}
 						>
 							<Iconify class="w-5 h-5" icon="material-symbols:table-chart-outline" />
-							<span>{$LL.graphql.objects[name].name()}</span>
+							<span>{$LL.graphence.components.sideBarMenu.table()}</span>
 						</a>
 					</li>
 					<li>
@@ -91,7 +89,7 @@
 								: ''}
 						>
 							<Iconify class="w-5 h-5" icon="material-symbols:bar-chart" />
-							<span>{$LL.graphql.objects[name].name()}</span>
+							<span>{$LL.graphence.components.sideBarMenu.bar()}</span>
 						</a>
 					</li>
 					<li>
@@ -106,7 +104,7 @@
 								: ''}
 						>
 							<Iconify class="w-5 h-5" icon="material-symbols:show-chart" />
-							<span>{$LL.graphql.objects[name].name()}</span>
+							<span>{$LL.graphence.components.sideBarMenu.line()}</span>
 						</a>
 					</li>
 					<li>
@@ -121,7 +119,55 @@
 								: ''}
 						>
 							<Iconify class="w-5 h-5" icon="material-symbols:pie-chart-outline" />
-							<span>{$LL.graphql.objects[name].name()}</span>
+							<span>{$LL.graphence.components.sideBarMenu.pie()}</span>
+						</a>
+					</li>
+				</ul>
+			</details>
+		</li>
+	{/if}
+{/each}
+<li />
+<li class="menu-title flex flex-row gap-4">
+	<span class="text-base-content">
+		<Iconify class="w-5 h-5" icon="material-symbols:grid-on-sharp" />
+	</span>
+	<span>{$LL.graphence.components.sideBarMenu.grid()}</span>
+</li>
+{#each menus as { href, name, authPermissions, icon }}
+	{#if permissions.auth(...(authPermissions || []))}
+		<li>
+			<details>
+				<summary>{$LL.graphql.objects[name].name()}</summary>
+				<ul>
+					<li>
+						<a
+							href={null}
+							on:click|preventDefault={(e) => {
+								init(`/${$locale}${href}/grid/agg`);
+							}}
+							class={$page.url.pathname === `/${$locale}${href}/grid/agg` ||
+							$page.url.pathname.startsWith(`/${$locale}${href}/grid/agg/`)
+								? 'active'
+								: ''}
+						>
+							<Iconify class="w-5 h-5" icon="material-symbols:table-eye-sharp" />
+							<span>{$LL.graphence.components.sideBarMenu.statistics()}</span>
+						</a>
+					</li>
+					<li>
+						<a
+							href={null}
+							on:click|preventDefault={(e) => {
+								init(`/${$locale}${href}/grid/mutation`);
+							}}
+							class={$page.url.pathname === `/${$locale}${href}/grid/mutation` ||
+							$page.url.pathname.startsWith(`/${$locale}${href}/grid/mutation/`)
+								? 'active'
+								: ''}
+						>
+							<Iconify class="w-5 h-5" icon="material-symbols:table-edit-sharp" />
+							<span>{$LL.graphence.components.sideBarMenu.mutation()}</span>
 						</a>
 					</li>
 				</ul>

@@ -1,18 +1,14 @@
 [
-  {
-    "name": "modules",
-    "icon": "material-symbols:view-module",
-    "items": [
 {%- if objects %}
 {%- for object in objects %}
-	    {
+	{
         "name": "{{ object.name }}",
         "tags": "{{ object.name }}",
         "href": "/{{ object.name | paramCase }}"{%- if useAuth %},
-        "authPermissions": ["{{ object.name }}::*::*"]{%- endif %}
-	    }{%- if forloop.last == false -%},{%- endif %}
+        "authPermissions": [
+            "{{ object.name }}::*::*"
+        ]{%- endif %}
+	}{%- if forloop.last == false -%},{%- endif %}
 {%- endfor %}
 {%- endif %}
-    ]
-  }
 ]

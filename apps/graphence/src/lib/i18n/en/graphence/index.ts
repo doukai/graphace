@@ -37,7 +37,14 @@ const en: BaseTranslation = {
             selectBtn: "Select"
         },
         sideBarMenu: {
-            modules: "Modules"
+            modules: "Modules",
+            statistics: "Statistics",
+            grid: "Grid",
+            table: "Table",
+            bar: "Bar",
+            line: "Line",
+            pie: "Pie",
+            mutation: "Edit"
         },
         userMenu: {
             profile: "Profile",

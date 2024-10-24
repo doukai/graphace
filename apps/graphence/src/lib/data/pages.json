@@ -1,50 +1,50 @@
 [
-  {
-    "name": "File",
-    "tags": "File",
-    "href": "/file",
-    "authPermissions": [
-      "File::*::*"
-    ]
-  },
-  {
-    "name": "Group",
-    "tags": "Group",
-    "href": "/group",
-    "authPermissions": [
-      "Group::*::*"
-    ]
-  },
-  {
-    "name": "Permission",
-    "tags": "Permission",
-    "href": "/permission",
-    "authPermissions": [
-      "Permission::*::*"
-    ]
-  },
-  {
-    "name": "Realm",
-    "tags": "Realm",
-    "href": "/realm",
-    "authPermissions": [
-      "Realm::*::*"
-    ]
-  },
-  {
-    "name": "Role",
-    "tags": "Role",
-    "href": "/role",
-    "authPermissions": [
-      "Role::*::*"
-    ]
-  },
-  {
-    "name": "User",
-    "tags": "User",
-    "href": "/user",
-    "authPermissions": [
-      "User::*::*"
-    ]
-  }
+	{
+        "name": "File",
+        "tags": "File",
+        "href": "/file",
+        "authPermissions": [
+            "File::*::*"
+        ]
+	},
+	{
+        "name": "Group",
+        "tags": "Group",
+        "href": "/group",
+        "authPermissions": [
+            "Group::*::*"
+        ]
+	},
+	{
+        "name": "Permission",
+        "tags": "Permission",
+        "href": "/permission",
+        "authPermissions": [
+            "Permission::*::*"
+        ]
+	},
+	{
+        "name": "Realm",
+        "tags": "Realm",
+        "href": "/realm",
+        "authPermissions": [
+            "Realm::*::*"
+        ]
+	},
+	{
+        "name": "Role",
+        "tags": "Role",
+        "href": "/role",
+        "authPermissions": [
+            "Role::*::*"
+        ]
+	},
+	{
+        "name": "User",
+        "tags": "User",
+        "href": "/user",
+        "authPermissions": [
+            "User::*::*"
+        ]
+	}
 ]
