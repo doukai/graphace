@@ -42,6 +42,8 @@ directive @permitAll on FIELD | OBJECT
 
 directive @rolesAllowed(roles: [String]) on FIELD | OBJECT
 
+directive @uniqueMerge on FIELD
+
 scalar BigDecimal
 
 scalar BigInteger
