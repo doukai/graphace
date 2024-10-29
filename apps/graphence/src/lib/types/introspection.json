@@ -102318,9 +102318,9 @@
         "isRepeatable": false,
         "locations": [
           "SUBSCRIPTION",
-          "MUTATION",
           "FIELD_DEFINITION",
           "QUERY",
+          "MUTATION",
           "INPUT_OBJECT"
         ],
         "args": [
@@ -102396,9 +102396,9 @@
         "isRepeatable": false,
         "locations": [
           "SUBSCRIPTION",
-          "MUTATION",
           "FIELD_DEFINITION",
           "QUERY",
+          "MUTATION",
           "INPUT_OBJECT"
         ],
         "args": [
@@ -102427,8 +102427,8 @@
         "locations": [
           "FIELD_DEFINITION",
           "INPUT_FIELD_DEFINITION",
-          "INPUT_OBJECT",
-          "OBJECT"
+          "OBJECT",
+          "INPUT_OBJECT"
         ],
         "args": [
           {
@@ -102940,10 +102940,10 @@
         "isRepeatable": false,
         "locations": [
           "SUBSCRIPTION",
-          "MUTATION",
           "FIELD_DEFINITION",
           "QUERY",
-          "OBJECT"
+          "OBJECT",
+          "MUTATION"
         ],
         "args": [
           {
@@ -103000,6 +103000,15 @@
             "deprecationReason": null
           }
         ]
+      },
+      {
+        "name": "uniqueMerge",
+        "description": null,
+        "isRepeatable": false,
+        "locations": [
+          "FIELD"
+        ],
+        "args": []
       }
     ]
   }

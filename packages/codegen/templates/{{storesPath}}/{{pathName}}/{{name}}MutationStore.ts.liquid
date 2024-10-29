@@ -14,11 +14,11 @@ export async function create{{ name }}ListMutationStore(params: { event: LoadEve
 
     const { subscribe, set, update } = data;
 
-    const fetch = async (fields: Field[], mutationArguments: {{ name }}ListMutationArguments) => {
+    const fetch = async (fields: Field[], mutationArguments: {{ name }}ListMutationArguments, directives?: string[]) => {
         if (fields && fields.length > 0) {
             update((data) => ({ ...data, isFetching: true }));
             let query = `mutation Mutation_{{ name | paramCase }}List({% for arg in args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %}) {
-    {{ name | paramCase }}List({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})  {
+    {{ name | paramCase }}List({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %}) ${directives?.join(' ') || ''} {
         ${fields.map((field) => fieldToString(field)).join('\r\n')}
     }
 }`;
@@ -31,14 +31,12 @@ export async function create{{ name }}ListMutationStore(params: { event: LoadEve
                 })
             });
 
-            if (response.ok) {
-                const json = await response.json();
-                set({
-                    isFetching: false,
-                    response: json
-                });
-                return json;
-            }
+            const json = await response.json();
+            set({
+                isFetching: false,
+                response: json
+            });
+            return json;
         }
     }
 
@@ -56,5 +54,5 @@ export type {{ name }}ListMutationStore = {
         isFetching: boolean;
         response: { data?: { {{ name | camelCase }}List: {{ name }}[] | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], mutationArguments: {{ name }}ListMutationArguments) => Promise<{ data?: { {{ name | camelCase }}List: {{ name }}[] | null | undefined }, errors?: GraphQLError[] | null | undefined } | null | undefined>;
+    fetch: (fields: Field[], mutationArguments: {{ name }}ListMutationArguments, directives?: string[]) => Promise<{ data?: { {{ name | camelCase }}List: {{ name }}[] | null | undefined }, errors?: GraphQLError[] | null | undefined } | null | undefined>;
 }

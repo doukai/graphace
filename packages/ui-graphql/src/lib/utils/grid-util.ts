@@ -779,10 +779,10 @@ export const createGrid = (
         }
     };
 
-    const sourceToMutationList = (typeName: string, idFieldName: string, queryFields: Field[], source: DataType[]): DataType[] => {
+    const sourceToMutationList = <T>(typeName: string, idFieldName: string, queryFields: Field[], source: DataType[]): T[] => {
         const join = queryFields.find((field) => typeFieldTypeHasList(typeName, field.name));
         if (join) {
-            return source?.reduce((nodes: DataType[], row) => {
+            return source?.reduce((nodes: T[], row) => {
                 const object = Object.fromEntries(
                     join!.fields?.map((subField) => [
                         subField.name,
@@ -792,10 +792,10 @@ export const createGrid = (
                 if (
                     Object.values(object).filter((value) => value).length > 0 &&
                     row[idFieldName] &&
-                    nodes.some((node: DataType) => node[idFieldName] === row[idFieldName])
+                    nodes.some((node: T) => node[idFieldName] === row[idFieldName])
                 ) {
                     nodes
-                        .find((node: DataType) => node[idFieldName] === row[idFieldName])
+                        .find((node: T) => node[idFieldName] === row[idFieldName])
                         ?.[join.name].push(
                             Object.fromEntries(
                                 join!.fields?.map((subField) => [
@@ -806,7 +806,7 @@ export const createGrid = (
                         );
                 } else if (
                     Object.values(object).filter((value) => value).length > 0 &&
-                    nodes.some((node: DataType) =>
+                    nodes.some((node: T) =>
                         queryFields
                             .filter((field) => field.name !== join.name)
                             .filter((field) => !field.fields)
@@ -814,7 +814,7 @@ export const createGrid = (
                     )
                 ) {
                     nodes
-                        .find((node: DataType) =>
+                        .find((node: T) =>
                             queryFields
                                 .filter((field) => field.name !== join.name)
                                 .filter((field) => !field.fields)
@@ -850,11 +850,11 @@ export const createGrid = (
                                     ];
                                 }
                             })
-                        )
+                        ) as T
                     );
                 }
                 return nodes;
-            }, <DataType[]>[])
+            }, <T[]>[])
                 .filter(row => !Object.values(row).every(col => col === null || col === undefined));
         } else {
             return source?.map((row) =>
@@ -875,7 +875,7 @@ export const createGrid = (
                             return [field.name, getTypeFieldValue(row?.[field.name], typeName, field.name)];
                         }
                     })
-                )
+                ) as T
             )
                 .filter(row => !Object.values(row).every(col => col === null || col === undefined));
         }

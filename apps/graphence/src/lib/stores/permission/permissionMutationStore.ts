@@ -14,11 +14,11 @@ export async function createPermissionListMutationStore(params: { event: LoadEve
 
     const { subscribe, set, update } = data;
 
-    const fetch = async (fields: Field[], mutationArguments: PermissionListMutationArguments) => {
+    const fetch = async (fields: Field[], mutationArguments: PermissionListMutationArguments, directives?: string[]) => {
         if (fields && fields.length > 0) {
             update((data) => ({ ...data, isFetching: true }));
             let query = `mutation Mutation_permissionList($name: ID, $description: String, $field: String, $type: String, $permissionType: PermissionType, $roles: [RoleInput], $realm: RealmInput, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $permissionRoleRelation: [PermissionRoleRelationInput], $list: [PermissionInput], $where: PermissionExpression) {
-    permissionList(name: $name description: $description field: $field type: $type permissionType: $permissionType roles: $roles realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId permissionRoleRelation: $permissionRoleRelation list: $list where: $where)  {
+    permissionList(name: $name description: $description field: $field type: $type permissionType: $permissionType roles: $roles realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId permissionRoleRelation: $permissionRoleRelation list: $list where: $where) ${directives?.join(' ') || ''} {
         ${fields.map((field) => fieldToString(field)).join('\r\n')}
     }
 }`;
@@ -31,14 +31,12 @@ export async function createPermissionListMutationStore(params: { event: LoadEve
                 })
             });
 
-            if (response.ok) {
-                const json = await response.json();
-                set({
-                    isFetching: false,
-                    response: json
-                });
-                return json;
-            }
+            const json = await response.json();
+            set({
+                isFetching: false,
+                response: json
+            });
+            return json;
         }
     }
 
@@ -56,5 +54,5 @@ export type PermissionListMutationStore = {
         isFetching: boolean;
         response: { data?: { permissionList: Permission[] | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], mutationArguments: PermissionListMutationArguments) => Promise<{ data?: { permissionList: Permission[] | null | undefined }, errors?: GraphQLError[] | null | undefined } | null | undefined>;
+    fetch: (fields: Field[], mutationArguments: PermissionListMutationArguments, directives?: string[]) => Promise<{ data?: { permissionList: Permission[] | null | undefined }, errors?: GraphQLError[] | null | undefined } | null | undefined>;
 }

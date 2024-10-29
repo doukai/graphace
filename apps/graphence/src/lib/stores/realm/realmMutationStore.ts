@@ -14,11 +14,11 @@ export async function createRealmListMutationStore(params: { event: LoadEvent })
 
     const { subscribe, set, update } = data;
 
-    const fetch = async (fields: Field[], mutationArguments: RealmListMutationArguments) => {
+    const fetch = async (fields: Field[], mutationArguments: RealmListMutationArguments, directives?: string[]) => {
         if (fields && fields.length > 0) {
             update((data) => ({ ...data, isFetching: true }));
             let query = `mutation Mutation_realmList($id: ID, $name: String, $description: String, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $list: [RealmInput], $where: RealmExpression) {
-    realmList(id: $id name: $name description: $description isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId list: $list where: $where)  {
+    realmList(id: $id name: $name description: $description isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId list: $list where: $where) ${directives?.join(' ') || ''} {
         ${fields.map((field) => fieldToString(field)).join('\r\n')}
     }
 }`;
@@ -31,14 +31,12 @@ export async function createRealmListMutationStore(params: { event: LoadEvent })
                 })
             });
 
-            if (response.ok) {
-                const json = await response.json();
-                set({
-                    isFetching: false,
-                    response: json
-                });
-                return json;
-            }
+            const json = await response.json();
+            set({
+                isFetching: false,
+                response: json
+            });
+            return json;
         }
     }
 
@@ -56,5 +54,5 @@ export type RealmListMutationStore = {
         isFetching: boolean;
         response: { data?: { realmList: Realm[] | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], mutationArguments: RealmListMutationArguments) => Promise<{ data?: { realmList: Realm[] | null | undefined }, errors?: GraphQLError[] | null | undefined } | null | undefined>;
+    fetch: (fields: Field[], mutationArguments: RealmListMutationArguments, directives?: string[]) => Promise<{ data?: { realmList: Realm[] | null | undefined }, errors?: GraphQLError[] | null | undefined } | null | undefined>;
 }

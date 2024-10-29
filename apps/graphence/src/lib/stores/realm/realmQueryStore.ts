@@ -14,11 +14,11 @@ export async function createRealmConnectionQueryStore(params: { event: LoadEvent
 
     const { subscribe, set, update } = data;
 
-    const fetch = async (fields: Field[], queryArguments: RealmConnectionQueryArguments) => {
+    const fetch = async (fields: Field[], queryArguments: RealmConnectionQueryArguments, directives?: string[]) => {
         if (fields && fields.length > 0 || queryArguments.groupBy && queryArguments.groupBy.length > 0) {
             update((data) => ({ ...data, isFetching: true }));
             let query = `query Query_realmConnection($id: StringExpression, $name: StringExpression, $description: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $orderBy: RealmOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [RealmExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
-    realmConnection(id: $id name: $name description: $description includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before)  {
+    realmConnection(id: $id name: $name description: $description includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before) ${directives?.join(' ') || ''} {
         totalCount
         edges {
             node {
@@ -37,14 +37,12 @@ export async function createRealmConnectionQueryStore(params: { event: LoadEvent
                 })
             });
 
-            if (response.ok) {
-                const json = await response.json();
-                set({
-                    isFetching: false,
-                    response: json
-                });
-                return json;
-            }
+            const json = await response.json();
+            set({
+                isFetching: false,
+                response: json
+            });
+            return json;
         }
     }
 
@@ -64,5 +62,5 @@ export type RealmConnectionQueryStore = {
         isFetching: boolean;
         response: { data?: { realmConnection: RealmConnection | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], queryArguments: RealmConnectionQueryArguments) => Promise<{ data?: { realmConnection: RealmConnection | null | undefined }, errors?: GraphQLError[] | null | undefined }>;
+    fetch: (fields: Field[], queryArguments: RealmConnectionQueryArguments, directives?: string[]) => Promise<{ data?: { realmConnection: RealmConnection | null | undefined }, errors?: GraphQLError[] | null | undefined }>;
 }

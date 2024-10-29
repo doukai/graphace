@@ -7,7 +7,7 @@
 	import type { RealmConnectionQueryStore } from '~/lib/stores/realm/realmQueryStore';
 	import type { RealmListMutationStore } from '~/lib/stores/realm/realmMutationStore';
 	import type { PageData } from './$houdini';
-	import { validate } from '~/utils';
+	import { buildGraphQLErrors, validate } from '~/utils';
 	import type { RealmConnection } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
@@ -73,8 +73,14 @@
 			validate('Mutation_realmList_Arguments', e.detail.mutationArguments, $locale)
 				.then((data) => {
 					errors = {};
-					RealmListMutation.fetch(e.detail.fields, e.detail.mutationArguments).then((response) => {
+					RealmListMutation.fetch(
+						e.detail.fields,
+						e.detail.mutationArguments,
+						e.detail.directives
+					)
+					.then((response) => {
 						if (response?.errors) {
+							errors = buildGraphQLErrors(response.errors).list.iterms || {};
 							e.detail.catch(response.errors);
 						} else {
 							e.detail.then(response?.data?.realmList);

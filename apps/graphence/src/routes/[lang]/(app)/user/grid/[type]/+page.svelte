@@ -7,7 +7,7 @@
 	import type { UserConnectionQueryStore } from '~/lib/stores/user/userQueryStore';
 	import type { UserListMutationStore } from '~/lib/stores/user/userMutationStore';
 	import type { PageData } from './$houdini';
-	import { validate } from '~/utils';
+	import { buildGraphQLErrors, validate } from '~/utils';
 	import type { UserConnection } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
@@ -73,8 +73,14 @@
 			validate('Mutation_userList_Arguments', e.detail.mutationArguments, $locale)
 				.then((data) => {
 					errors = {};
-					UserListMutation.fetch(e.detail.fields, e.detail.mutationArguments).then((response) => {
+					UserListMutation.fetch(
+						e.detail.fields,
+						e.detail.mutationArguments,
+						e.detail.directives
+					)
+					.then((response) => {
 						if (response?.errors) {
+							errors = buildGraphQLErrors(response.errors).list.iterms || {};
 							e.detail.catch(response.errors);
 						} else {
 							e.detail.then(response?.data?.userList);

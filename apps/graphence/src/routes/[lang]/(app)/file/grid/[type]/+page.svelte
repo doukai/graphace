@@ -7,7 +7,7 @@
 	import type { FileConnectionQueryStore } from '~/lib/stores/file/fileQueryStore';
 	import type { FileListMutationStore } from '~/lib/stores/file/fileMutationStore';
 	import type { PageData } from './$houdini';
-	import { validate } from '~/utils';
+	import { buildGraphQLErrors, validate } from '~/utils';
 	import type { FileConnection } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
@@ -73,8 +73,14 @@
 			validate('Mutation_fileList_Arguments', e.detail.mutationArguments, $locale)
 				.then((data) => {
 					errors = {};
-					FileListMutation.fetch(e.detail.fields, e.detail.mutationArguments).then((response) => {
+					FileListMutation.fetch(
+						e.detail.fields,
+						e.detail.mutationArguments,
+						e.detail.directives
+					)
+					.then((response) => {
 						if (response?.errors) {
+							errors = buildGraphQLErrors(response.errors).list.iterms || {};
 							e.detail.catch(response.errors);
 						} else {
 							e.detail.then(response?.data?.fileList);

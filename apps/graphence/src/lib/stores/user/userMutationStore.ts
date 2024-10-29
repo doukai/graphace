@@ -14,11 +14,11 @@ export async function createUserListMutationStore(params: { event: LoadEvent }):
 
     const { subscribe, set, update } = data;
 
-    const fetch = async (fields: Field[], mutationArguments: UserListMutationArguments) => {
+    const fetch = async (fields: Field[], mutationArguments: UserListMutationArguments, directives?: string[]) => {
         if (fields && fields.length > 0) {
             update((data) => ({ ...data, isFetching: true }));
             let query = `mutation Mutation_userList($id: ID, $name: String, $description: String, $lastName: String, $login: String, $salt: String, $hash: String, $email: String, $files: [FileInput], $phones: [String], $disable: Boolean, $groups: [GroupInput], $roles: [RoleInput], $realm: RealmInput, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $fileUserRelation: [FileUserRelationInput], $userPhonesRelation: [UserPhonesRelationInput], $groupUserRelation: [GroupUserRelationInput], $roleUserRelation: [RoleUserRelationInput], $list: [UserInput], $where: UserExpression) {
-    userList(id: $id name: $name description: $description lastName: $lastName login: $login salt: $salt hash: $hash email: $email files: $files phones: $phones disable: $disable groups: $groups roles: $roles realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId fileUserRelation: $fileUserRelation userPhonesRelation: $userPhonesRelation groupUserRelation: $groupUserRelation roleUserRelation: $roleUserRelation list: $list where: $where) @uniqueMerge  {
+    userList(id: $id name: $name description: $description lastName: $lastName login: $login salt: $salt hash: $hash email: $email files: $files phones: $phones disable: $disable groups: $groups roles: $roles realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId fileUserRelation: $fileUserRelation userPhonesRelation: $userPhonesRelation groupUserRelation: $groupUserRelation roleUserRelation: $roleUserRelation list: $list where: $where) ${directives?.join(' ') || ''} {
         ${fields.map((field) => fieldToString(field)).join('\r\n')}
     }
 }`;
@@ -31,14 +31,12 @@ export async function createUserListMutationStore(params: { event: LoadEvent }):
                 })
             });
 
-            if (response.ok) {
-                const json = await response.json();
-                set({
-                    isFetching: false,
-                    response: json
-                });
-                return json;
-            }
+            const json = await response.json();
+            set({
+                isFetching: false,
+                response: json
+            });
+            return json;
         }
     }
 
@@ -56,5 +54,5 @@ export type UserListMutationStore = {
         isFetching: boolean;
         response: { data?: { userList: User[] | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], mutationArguments: UserListMutationArguments) => Promise<{ data?: { userList: User[] | null | undefined }, errors?: GraphQLError[] | null | undefined } | null | undefined>;
+    fetch: (fields: Field[], mutationArguments: UserListMutationArguments, directives?: string[]) => Promise<{ data?: { userList: User[] | null | undefined }, errors?: GraphQLError[] | null | undefined } | null | undefined>;
 }

@@ -14,11 +14,11 @@ export async function createFileListMutationStore(params: { event: LoadEvent }):
 
     const { subscribe, set, update } = data;
 
-    const fetch = async (fields: Field[], mutationArguments: FileListMutationArguments) => {
+    const fetch = async (fields: Field[], mutationArguments: FileListMutationArguments, directives?: string[]) => {
         if (fields && fields.length > 0) {
             update((data) => ({ ...data, isFetching: true }));
             let query = `mutation Mutation_fileList($id: ID, $name: String, $contentType: String, $content: String, $url: String, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $list: [FileInput], $where: FileExpression) {
-    fileList(id: $id name: $name contentType: $contentType content: $content url: $url isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId list: $list where: $where)  {
+    fileList(id: $id name: $name contentType: $contentType content: $content url: $url isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId list: $list where: $where) ${directives?.join(' ') || ''} {
         ${fields.map((field) => fieldToString(field)).join('\r\n')}
     }
 }`;
@@ -31,14 +31,12 @@ export async function createFileListMutationStore(params: { event: LoadEvent }):
                 })
             });
 
-            if (response.ok) {
-                const json = await response.json();
-                set({
-                    isFetching: false,
-                    response: json
-                });
-                return json;
-            }
+            const json = await response.json();
+            set({
+                isFetching: false,
+                response: json
+            });
+            return json;
         }
     }
 
@@ -56,5 +54,5 @@ export type FileListMutationStore = {
         isFetching: boolean;
         response: { data?: { fileList: File[] | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], mutationArguments: FileListMutationArguments) => Promise<{ data?: { fileList: File[] | null | undefined }, errors?: GraphQLError[] | null | undefined } | null | undefined>;
+    fetch: (fields: Field[], mutationArguments: FileListMutationArguments, directives?: string[]) => Promise<{ data?: { fileList: File[] | null | undefined }, errors?: GraphQLError[] | null | undefined } | null | undefined>;
 }

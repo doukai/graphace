@@ -12,7 +12,6 @@
 	import {
 		getGridTheme,
 		createEditors,
-		buildGraphQLErrors,
 		buildGlobalGraphQLErrorMessage,
 		fieldsToColumns,
 		errorsToGridErrors,
@@ -47,6 +46,7 @@
 		mutation: {
 			fields: Field[];
 			mutationArguments: RealmListMutationArguments;
+			directives?: string[];
 			then: (list: Realm[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
@@ -85,9 +85,11 @@
 	const editors = createEditors(() => gridErrors);
 
 	const mutation = () => {
+		nodes = sourceToMutationList(typeName, idFieldName, queryFields, source);
 		dispatch('mutation', {
 			fields: queryFields,
-			mutationArguments: { list: sourceToMutationList(typeName, idFieldName, queryFields, source) },
+			mutationArguments: { list: nodes },
+			directives: ['@uniqueMerge'],
 			then: (list) => {
 				if (list) {
 					nodes = list;
@@ -96,7 +98,6 @@
 			},
 			catch: (graphQLErrors) => {
 				console.error(graphQLErrors);
-				errors = buildGraphQLErrors(graphQLErrors);
 				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
 				if (globalError) {
 					messageBoxs.open({
