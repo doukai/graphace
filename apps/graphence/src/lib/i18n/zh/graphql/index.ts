@@ -47,73 +47,73 @@ const zh: NamespaceGraphqlTranslation = {
 					name: 'URL',
 				},
 				isDeprecated: {
-					name: 'isDeprecated',
+					name: 'Is Deprecated',
 				},
 				version: {
-					name: 'version',
+					name: 'Version',
 				},
 				realmId: {
-					name: 'realmId',
+					name: 'Realm ID',
 				},
 				createUserId: {
-					name: 'createUserId',
+					name: 'Create User ID',
 				},
 				createTime: {
-					name: 'createTime',
+					name: 'Create Time',
 				},
 				updateUserId: {
-					name: 'updateUserId',
+					name: 'Update User ID',
 				},
 				updateTime: {
-					name: 'updateTime',
+					name: 'Update Time',
 				},
 				createGroupId: {
-					name: 'createGroupId',
+					name: 'Create Group ID',
 				},
 				idCount: {
-					name: 'idCount',
+					name: 'Count of ID',
 				},
 				idMax: {
-					name: 'idMax',
+					name: 'Max of ID',
 				},
 				idMin: {
-					name: 'idMin',
+					name: 'Min of ID',
 				},
 				nameCount: {
-					name: 'nameCount',
+					name: 'Count of 文件名',
 				},
 				nameMax: {
-					name: 'nameMax',
+					name: 'Max of 文件名',
 				},
 				nameMin: {
-					name: 'nameMin',
+					name: 'Min of 文件名',
 				},
 				contentTypeCount: {
-					name: 'contentTypeCount',
+					name: 'Count of 类型',
 				},
 				contentTypeMax: {
-					name: 'contentTypeMax',
+					name: 'Max of 类型',
 				},
 				contentTypeMin: {
-					name: 'contentTypeMin',
+					name: 'Min of 类型',
 				},
 				contentCount: {
-					name: 'contentCount',
+					name: 'Count of 内容',
 				},
 				contentMax: {
-					name: 'contentMax',
+					name: 'Max of 内容',
 				},
 				contentMin: {
-					name: 'contentMin',
+					name: 'Min of 内容',
 				},
 				urlCount: {
-					name: 'urlCount',
+					name: 'Count of URL',
 				},
 				urlMax: {
-					name: 'urlMax',
+					name: 'Max of URL',
 				},
 				urlMin: {
-					name: 'urlMin',
+					name: 'Min of URL',
 				}
 			}
 		},
@@ -154,124 +154,124 @@ const zh: NamespaceGraphqlTranslation = {
 					name: '租户',
 				},
 				isDeprecated: {
-					name: 'isDeprecated',
+					name: '已移除',
 				},
 				version: {
-					name: 'version',
+					name: '版本',
 				},
 				realmId: {
-					name: 'realmId',
+					name: '域',
 				},
 				createUserId: {
-					name: 'createUserId',
+					name: '创建者',
 				},
 				createTime: {
-					name: 'createTime',
+					name: '创建时间',
 				},
 				updateUserId: {
-					name: 'updateUserId',
+					name: '更新者',
 				},
 				updateTime: {
-					name: 'updateTime',
+					name: '更新时间',
 				},
 				createGroupId: {
-					name: 'createGroupId',
+					name: '创建组',
 				},
 				groupUserRelation: {
-					name: 'groupUserRelation',
+					name: '用户 组 关系',
 				},
 				groupRoleRelation: {
-					name: 'groupRoleRelation',
+					name: '角色 组 关系',
 				},
 				subGroupsAggregate: {
-					name: 'subGroupsAggregate',
+					name: '下级 统计字段',
 				},
 				subGroupsConnection: {
-					name: 'subGroupsConnection',
+					name: '下级 连接字段',
 				},
 				usersAggregate: {
-					name: 'usersAggregate',
+					name: '用户 统计字段',
 				},
 				usersConnection: {
-					name: 'usersConnection',
+					name: '用户 连接字段',
 				},
 				rolesAggregate: {
-					name: 'rolesAggregate',
+					name: '角色 统计字段',
 				},
 				rolesConnection: {
-					name: 'rolesConnection',
+					name: '角色 连接字段',
 				},
 				groupUserRelationAggregate: {
-					name: 'groupUserRelationAggregate',
+					name: '用户 组 关系 统计字段',
 				},
 				groupUserRelationConnection: {
-					name: 'groupUserRelationConnection',
+					name: '用户 组 关系 连接字段',
 				},
 				groupRoleRelationAggregate: {
-					name: 'groupRoleRelationAggregate',
+					name: '角色 组 关系 统计字段',
 				},
 				groupRoleRelationConnection: {
-					name: 'groupRoleRelationConnection',
+					name: '角色 组 关系 连接字段',
 				},
 				idCount: {
-					name: 'idCount',
+					name: 'ID 数量',
 				},
 				idMax: {
-					name: 'idMax',
+					name: 'ID 最大值',
 				},
 				idMin: {
-					name: 'idMin',
+					name: 'ID 最小值',
 				},
 				nameCount: {
-					name: 'nameCount',
+					name: '名称 数量',
 				},
 				nameMax: {
-					name: 'nameMax',
+					name: '名称 最大值',
 				},
 				nameMin: {
-					name: 'nameMin',
+					name: '名称 最小值',
 				},
 				descriptionCount: {
-					name: 'descriptionCount',
+					name: '描述 数量',
 				},
 				descriptionMax: {
-					name: 'descriptionMax',
+					name: '描述 最大值',
 				},
 				descriptionMin: {
-					name: 'descriptionMin',
+					name: '描述 最小值',
 				},
 				pathCount: {
-					name: 'pathCount',
+					name: '路径 数量',
 				},
 				pathMax: {
-					name: 'pathMax',
+					name: '路径 最大值',
 				},
 				pathMin: {
-					name: 'pathMin',
+					name: '路径 最小值',
 				},
 				parentIdCount: {
-					name: 'parentIdCount',
+					name: '上级ID 数量',
 				},
 				parentIdMax: {
-					name: 'parentIdMax',
+					name: '上级ID 最大值',
 				},
 				parentIdMin: {
-					name: 'parentIdMin',
+					name: '上级ID 最小值',
 				},
 				deepCount: {
-					name: 'deepCount',
+					name: '层级 数量',
 				},
 				deepSum: {
-					name: 'deepSum',
+					name: '层级 合集',
 				},
 				deepAvg: {
-					name: 'deepAvg',
+					name: '层级 平均数',
 				},
 				deepMax: {
-					name: 'deepMax',
+					name: '层级 最大值',
 				},
 				deepMin: {
-					name: 'deepMin',
+					name: '层级 最小值',
 				},
 				syncGroupPolicy: {
 					name: 'syncGroupPolicy',
@@ -303,88 +303,88 @@ const zh: NamespaceGraphqlTranslation = {
 					name: '租户',
 				},
 				isDeprecated: {
-					name: 'isDeprecated',
+					name: '已移除',
 				},
 				version: {
-					name: 'version',
+					name: '版本',
 				},
 				realmId: {
-					name: 'realmId',
+					name: '域',
 				},
 				createUserId: {
-					name: 'createUserId',
+					name: '创建者',
 				},
 				createTime: {
-					name: 'createTime',
+					name: '创建时间',
 				},
 				updateUserId: {
-					name: 'updateUserId',
+					name: '更新者',
 				},
 				updateTime: {
-					name: 'updateTime',
+					name: '更新时间',
 				},
 				createGroupId: {
-					name: 'createGroupId',
+					name: '创建组',
 				},
 				permissionRoleRelation: {
-					name: 'permissionRoleRelation',
+					name: '角色 权限 关系',
 				},
 				rolesAggregate: {
-					name: 'rolesAggregate',
+					name: '角色 统计字段',
 				},
 				rolesConnection: {
-					name: 'rolesConnection',
+					name: '角色 连接字段',
 				},
 				permissionRoleRelationAggregate: {
-					name: 'permissionRoleRelationAggregate',
+					name: '角色 权限 关系 统计字段',
 				},
 				permissionRoleRelationConnection: {
-					name: 'permissionRoleRelationConnection',
+					name: '角色 权限 关系 连接字段',
 				},
 				nameCount: {
-					name: 'nameCount',
+					name: '名称 数量',
 				},
 				nameMax: {
-					name: 'nameMax',
+					name: '名称 最大值',
 				},
 				nameMin: {
-					name: 'nameMin',
+					name: '名称 最小值',
 				},
 				descriptionCount: {
-					name: 'descriptionCount',
+					name: '描述 数量',
 				},
 				descriptionMax: {
-					name: 'descriptionMax',
+					name: '描述 最大值',
 				},
 				descriptionMin: {
-					name: 'descriptionMin',
+					name: '描述 最小值',
 				},
 				fieldCount: {
-					name: 'fieldCount',
+					name: '字段 数量',
 				},
 				fieldMax: {
-					name: 'fieldMax',
+					name: '字段 最大值',
 				},
 				fieldMin: {
-					name: 'fieldMin',
+					name: '字段 最小值',
 				},
 				typeCount: {
-					name: 'typeCount',
+					name: '实体 数量',
 				},
 				typeMax: {
-					name: 'typeMax',
+					name: '实体 最大值',
 				},
 				typeMin: {
-					name: 'typeMin',
+					name: '实体 最小值',
 				},
 				permissionTypeCount: {
-					name: 'permissionTypeCount',
+					name: '权限类型 数量',
 				},
 				permissionTypeMax: {
-					name: 'permissionTypeMax',
+					name: '权限类型 最大值',
 				},
 				permissionTypeMin: {
-					name: 'permissionTypeMin',
+					name: '权限类型 最小值',
 				},
 				syncPermissionPolicy: {
 					name: 'syncPermissionPolicy',
@@ -433,55 +433,55 @@ const zh: NamespaceGraphqlTranslation = {
 					name: '描述',
 				},
 				isDeprecated: {
-					name: 'isDeprecated',
+					name: '已移除',
 				},
 				version: {
-					name: 'version',
+					name: '版本',
 				},
 				realmId: {
-					name: 'realmId',
+					name: '域',
 				},
 				createUserId: {
-					name: 'createUserId',
+					name: '创建者',
 				},
 				createTime: {
-					name: 'createTime',
+					name: '创建时间',
 				},
 				updateUserId: {
-					name: 'updateUserId',
+					name: '更新者',
 				},
 				updateTime: {
-					name: 'updateTime',
+					name: '更新时间',
 				},
 				createGroupId: {
-					name: 'createGroupId',
+					name: '创建组',
 				},
 				idCount: {
-					name: 'idCount',
+					name: 'ID 数量',
 				},
 				idMax: {
-					name: 'idMax',
+					name: 'ID 最大值',
 				},
 				idMin: {
-					name: 'idMin',
+					name: 'ID 最小值',
 				},
 				nameCount: {
-					name: 'nameCount',
+					name: '名称 数量',
 				},
 				nameMax: {
-					name: 'nameMax',
+					name: '名称 最大值',
 				},
 				nameMin: {
-					name: 'nameMin',
+					name: '名称 最小值',
 				},
 				descriptionCount: {
-					name: 'descriptionCount',
+					name: '描述 数量',
 				},
 				descriptionMax: {
-					name: 'descriptionMax',
+					name: '描述 最大值',
 				},
 				descriptionMin: {
-					name: 'descriptionMin',
+					name: '描述 最小值',
 				}
 			}
 		},
@@ -513,115 +513,115 @@ const zh: NamespaceGraphqlTranslation = {
 					name: '租户',
 				},
 				isDeprecated: {
-					name: 'isDeprecated',
+					name: '已移除',
 				},
 				version: {
-					name: 'version',
+					name: '版本',
 				},
 				realmId: {
-					name: 'realmId',
+					name: '域',
 				},
 				createUserId: {
-					name: 'createUserId',
+					name: '创建者',
 				},
 				createTime: {
-					name: 'createTime',
+					name: '创建时间',
 				},
 				updateUserId: {
-					name: 'updateUserId',
+					name: '更新者',
 				},
 				updateTime: {
-					name: 'updateTime',
+					name: '更新时间',
 				},
 				createGroupId: {
-					name: 'createGroupId',
+					name: '创建组',
 				},
 				roleUserRelation: {
-					name: 'roleUserRelation',
+					name: '用户 角色 关系',
 				},
 				groupRoleRelation: {
-					name: 'groupRoleRelation',
+					name: '角色 组 关系',
 				},
 				roleCompositeRelation: {
-					name: 'roleCompositeRelation',
+					name: '角色 角色 关系',
 				},
 				permissionRoleRelation: {
-					name: 'permissionRoleRelation',
+					name: '角色 权限 关系',
 				},
 				usersAggregate: {
-					name: 'usersAggregate',
+					name: '用户 统计字段',
 				},
 				usersConnection: {
-					name: 'usersConnection',
+					name: '用户 连接字段',
 				},
 				groupsAggregate: {
-					name: 'groupsAggregate',
+					name: '组 统计字段',
 				},
 				groupsConnection: {
-					name: 'groupsConnection',
+					name: '组 连接字段',
 				},
 				compositesAggregate: {
-					name: 'compositesAggregate',
+					name: '组合 统计字段',
 				},
 				compositesConnection: {
-					name: 'compositesConnection',
+					name: '组合 连接字段',
 				},
 				permissionsAggregate: {
-					name: 'permissionsAggregate',
+					name: '权限 统计字段',
 				},
 				permissionsConnection: {
-					name: 'permissionsConnection',
+					name: '权限 连接字段',
 				},
 				roleUserRelationAggregate: {
-					name: 'roleUserRelationAggregate',
+					name: '用户 角色 关系 统计字段',
 				},
 				roleUserRelationConnection: {
-					name: 'roleUserRelationConnection',
+					name: '用户 角色 关系 连接字段',
 				},
 				groupRoleRelationAggregate: {
-					name: 'groupRoleRelationAggregate',
+					name: '角色 组 关系 统计字段',
 				},
 				groupRoleRelationConnection: {
-					name: 'groupRoleRelationConnection',
+					name: '角色 组 关系 连接字段',
 				},
 				roleCompositeRelationAggregate: {
-					name: 'roleCompositeRelationAggregate',
+					name: '角色 角色 关系 统计字段',
 				},
 				roleCompositeRelationConnection: {
-					name: 'roleCompositeRelationConnection',
+					name: '角色 角色 关系 连接字段',
 				},
 				permissionRoleRelationAggregate: {
-					name: 'permissionRoleRelationAggregate',
+					name: '角色 权限 关系 统计字段',
 				},
 				permissionRoleRelationConnection: {
-					name: 'permissionRoleRelationConnection',
+					name: '角色 权限 关系 连接字段',
 				},
 				idCount: {
-					name: 'idCount',
+					name: 'ID 数量',
 				},
 				idMax: {
-					name: 'idMax',
+					name: 'ID 最大值',
 				},
 				idMin: {
-					name: 'idMin',
+					name: 'ID 最小值',
 				},
 				nameCount: {
-					name: 'nameCount',
+					name: '名称 数量',
 				},
 				nameMax: {
-					name: 'nameMax',
+					name: '名称 最大值',
 				},
 				nameMin: {
-					name: 'nameMin',
+					name: '名称 最小值',
 				},
 				descriptionCount: {
-					name: 'descriptionCount',
+					name: '描述 数量',
 				},
 				descriptionMax: {
-					name: 'descriptionMax',
+					name: '描述 最大值',
 				},
 				descriptionMin: {
-					name: 'descriptionMin',
+					name: '描述 最小值',
 				},
 				syncRolePolicy: {
 					name: 'syncRolePolicy',
@@ -674,142 +674,142 @@ const zh: NamespaceGraphqlTranslation = {
 					name: '租户',
 				},
 				isDeprecated: {
-					name: 'isDeprecated',
+					name: '已移除',
 				},
 				version: {
-					name: 'version',
+					name: '版本',
 				},
 				realmId: {
-					name: 'realmId',
+					name: '域',
 				},
 				createUserId: {
-					name: 'createUserId',
+					name: '创建者',
 				},
 				createTime: {
-					name: 'createTime',
+					name: '创建时间',
 				},
 				updateUserId: {
-					name: 'updateUserId',
+					name: '更新者',
 				},
 				updateTime: {
-					name: 'updateTime',
+					name: '更新时间',
 				},
 				createGroupId: {
-					name: 'createGroupId',
+					name: '创建组',
 				},
 				fileUserRelation: {
-					name: 'fileUserRelation',
+					name: '用户 文件 关系',
 				},
 				userPhonesRelation: {
-					name: 'userPhonesRelation',
+					name: '用户 手机号 关系',
 				},
 				groupUserRelation: {
-					name: 'groupUserRelation',
+					name: '用户 组 关系',
 				},
 				roleUserRelation: {
-					name: 'roleUserRelation',
+					name: '用户 角色 关系',
 				},
 				groupsAggregate: {
-					name: 'groupsAggregate',
+					name: '组 统计字段',
 				},
 				groupsConnection: {
-					name: 'groupsConnection',
+					name: '组 连接字段',
 				},
 				rolesAggregate: {
-					name: 'rolesAggregate',
+					name: '角色 统计字段',
 				},
 				rolesConnection: {
-					name: 'rolesConnection',
+					name: '角色 连接字段',
 				},
 				userPhonesRelationAggregate: {
-					name: 'userPhonesRelationAggregate',
+					name: '用户 手机号 关系 统计字段',
 				},
 				userPhonesRelationConnection: {
-					name: 'userPhonesRelationConnection',
+					name: '用户 手机号 关系 连接字段',
 				},
 				groupUserRelationAggregate: {
-					name: 'groupUserRelationAggregate',
+					name: '用户 组 关系 统计字段',
 				},
 				groupUserRelationConnection: {
-					name: 'groupUserRelationConnection',
+					name: '用户 组 关系 连接字段',
 				},
 				roleUserRelationAggregate: {
-					name: 'roleUserRelationAggregate',
+					name: '用户 角色 关系 统计字段',
 				},
 				roleUserRelationConnection: {
-					name: 'roleUserRelationConnection',
+					name: '用户 角色 关系 连接字段',
 				},
 				idCount: {
-					name: 'idCount',
+					name: 'ID 数量',
 				},
 				idMax: {
-					name: 'idMax',
+					name: 'ID 最大值',
 				},
 				idMin: {
-					name: 'idMin',
+					name: 'ID 最小值',
 				},
 				nameCount: {
-					name: 'nameCount',
+					name: '姓名 数量',
 				},
 				nameMax: {
-					name: 'nameMax',
+					name: '姓名 最大值',
 				},
 				nameMin: {
-					name: 'nameMin',
+					name: '姓名 最小值',
 				},
 				descriptionCount: {
-					name: 'descriptionCount',
+					name: '描述 数量',
 				},
 				descriptionMax: {
-					name: 'descriptionMax',
+					name: '描述 最大值',
 				},
 				descriptionMin: {
-					name: 'descriptionMin',
+					name: '描述 最小值',
 				},
 				lastNameCount: {
-					name: 'lastNameCount',
+					name: '姓氏 数量',
 				},
 				lastNameMax: {
-					name: 'lastNameMax',
+					name: '姓氏 最大值',
 				},
 				lastNameMin: {
-					name: 'lastNameMin',
+					name: '姓氏 最小值',
 				},
 				loginCount: {
-					name: 'loginCount',
+					name: '账号 数量',
 				},
 				loginMax: {
-					name: 'loginMax',
+					name: '账号 最大值',
 				},
 				loginMin: {
-					name: 'loginMin',
+					name: '账号 最小值',
 				},
 				saltCount: {
-					name: 'saltCount',
+					name: '盐 数量',
 				},
 				saltMax: {
-					name: 'saltMax',
+					name: '盐 最大值',
 				},
 				saltMin: {
-					name: 'saltMin',
+					name: '盐 最小值',
 				},
 				hashCount: {
-					name: 'hashCount',
+					name: '哈希 数量',
 				},
 				hashMax: {
-					name: 'hashMax',
+					name: '哈希 最大值',
 				},
 				hashMin: {
-					name: 'hashMin',
+					name: '哈希 最小值',
 				},
 				emailCount: {
-					name: 'emailCount',
+					name: '邮箱 数量',
 				},
 				emailMax: {
-					name: 'emailMax',
+					name: '邮箱 最大值',
 				},
 				emailMin: {
-					name: 'emailMin',
+					name: '邮箱 最小值',
 				},
 				syncUserPolicy: {
 					name: 'syncUserPolicy',
