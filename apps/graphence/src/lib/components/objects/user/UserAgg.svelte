@@ -160,6 +160,88 @@
 			disabled: !permissions.auth('User::email::READ')
 		},
 		{
+			value: 'avatar',
+			label: $LL.graphql.objects.User.fields.avatar.name(),
+			options: [
+				{
+					value: 'idCount',
+					label: $LL.graphql.objects.User.fields.avatar.name() + $LL.graphql.objects.File.fields.idCount.name(),
+					disabled: !permissions.auth('File::id::READ')
+				},
+				{
+					value: 'idMax',
+					label: $LL.graphql.objects.User.fields.avatar.name() + $LL.graphql.objects.File.fields.idMax.name(),
+					disabled: !permissions.auth('File::id::READ')
+				},
+				{
+					value: 'idMin',
+					label: $LL.graphql.objects.User.fields.avatar.name() + $LL.graphql.objects.File.fields.idMin.name(),
+					disabled: !permissions.auth('File::id::READ')
+				},
+				{
+					value: 'nameCount',
+					label: $LL.graphql.objects.User.fields.avatar.name() + $LL.graphql.objects.File.fields.nameCount.name(),
+					disabled: !permissions.auth('File::name::READ')
+				},
+				{
+					value: 'nameMax',
+					label: $LL.graphql.objects.User.fields.avatar.name() + $LL.graphql.objects.File.fields.nameMax.name(),
+					disabled: !permissions.auth('File::name::READ')
+				},
+				{
+					value: 'nameMin',
+					label: $LL.graphql.objects.User.fields.avatar.name() + $LL.graphql.objects.File.fields.nameMin.name(),
+					disabled: !permissions.auth('File::name::READ')
+				},
+				{
+					value: 'contentTypeCount',
+					label: $LL.graphql.objects.User.fields.avatar.name() + $LL.graphql.objects.File.fields.contentTypeCount.name(),
+					disabled: !permissions.auth('File::contentType::READ')
+				},
+				{
+					value: 'contentTypeMax',
+					label: $LL.graphql.objects.User.fields.avatar.name() + $LL.graphql.objects.File.fields.contentTypeMax.name(),
+					disabled: !permissions.auth('File::contentType::READ')
+				},
+				{
+					value: 'contentTypeMin',
+					label: $LL.graphql.objects.User.fields.avatar.name() + $LL.graphql.objects.File.fields.contentTypeMin.name(),
+					disabled: !permissions.auth('File::contentType::READ')
+				},
+				{
+					value: 'contentCount',
+					label: $LL.graphql.objects.User.fields.avatar.name() + $LL.graphql.objects.File.fields.contentCount.name(),
+					disabled: !permissions.auth('File::content::READ')
+				},
+				{
+					value: 'contentMax',
+					label: $LL.graphql.objects.User.fields.avatar.name() + $LL.graphql.objects.File.fields.contentMax.name(),
+					disabled: !permissions.auth('File::content::READ')
+				},
+				{
+					value: 'contentMin',
+					label: $LL.graphql.objects.User.fields.avatar.name() + $LL.graphql.objects.File.fields.contentMin.name(),
+					disabled: !permissions.auth('File::content::READ')
+				},
+				{
+					value: 'urlCount',
+					label: $LL.graphql.objects.User.fields.avatar.name() + $LL.graphql.objects.File.fields.urlCount.name(),
+					disabled: !permissions.auth('File::url::READ')
+				},
+				{
+					value: 'urlMax',
+					label: $LL.graphql.objects.User.fields.avatar.name() + $LL.graphql.objects.File.fields.urlMax.name(),
+					disabled: !permissions.auth('File::url::READ')
+				},
+				{
+					value: 'urlMin',
+					label: $LL.graphql.objects.User.fields.avatar.name() + $LL.graphql.objects.File.fields.urlMin.name(),
+					disabled: !permissions.auth('File::url::READ')
+				},
+			],
+			disabled: !permissions.auth('User::avatar::READ')
+		},
+		{
 			value: 'realm',
 			label: $LL.graphql.objects.User.fields.realm.name(),
 			options: [

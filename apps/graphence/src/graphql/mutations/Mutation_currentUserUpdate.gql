@@ -31,7 +31,7 @@ mutation Mutation_currentUserUpdate($userInput: UserInput!) {
       name
       description
     }
-    files {
+    avatar {
       id
       name
     }

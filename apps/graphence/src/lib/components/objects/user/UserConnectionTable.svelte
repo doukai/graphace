@@ -359,10 +359,10 @@
 				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
-			{#if permissions.auth('User::files::*')}
+			{#if permissions.auth('User::avatar::*')}
 			<FileTh
-				name={$LL.graphql.objects.User.fields.files.name()}
-				bind:expression={args.files}
+				name={$LL.graphql.objects.User.fields.avatar.name()}
+				bind:expression={args.avatar}
 				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
@@ -465,14 +465,13 @@
 								errors={errors[row]?.iterms?.email}
 							/>
 							{/if}
-							{#if permissions.auth('User::files::*')}
+							{#if permissions.auth('User::avatar::*')}
 							<FileTd
-								name="files"
-								bind:value={node.files}
-								list
-								on:save={(e) => updateField({ files: node?.files, where: { id: { val: node?.id } } }, row)}
-								readonly={!permissions.auth('User::files::WRITE')}
-								errors={errors[row]?.iterms?.files}
+								name="avatar"
+								bind:value={node.avatar}
+								on:save={(e) => updateField({ avatar: node?.avatar, where: { id: { val: node?.id } } }, row)}
+								readonly={!permissions.auth('User::avatar::WRITE')}
+								errors={errors[row]?.iterms?.avatar}
 								on:upload
 							/>
 							{/if}

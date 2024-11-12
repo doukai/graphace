@@ -99,8 +99,8 @@
 			{#if permissions.auth('User::email::*')}
 			<td>{$LL.graphql.objects.User.fields.email.name()}</td>
 			{/if}
-			{#if permissions.auth('User::files::*')}
-			<td>{$LL.graphql.objects.User.fields.files.name()}</td>
+			{#if permissions.auth('User::avatar::*')}
+			<td>{$LL.graphql.objects.User.fields.avatar.name()}</td>
 			{/if}
 			{#if permissions.auth('User::phones::*')}
 			<td>{$LL.graphql.objects.User.fields.phones.name()}</td>
@@ -170,13 +170,12 @@
 							errors={errors[row]?.iterms?.email}
 						/>
 						{/if}
-						{#if permissions.auth('User::files::*')}
+						{#if permissions.auth('User::avatar::*')}
 						<FileTd
-							name="files"
-							bind:value={node.files}
-							list
+							name="avatar"
+							bind:value={node.avatar}
 							readonly
-							errors={errors[row]?.iterms?.files}
+							errors={errors[row]?.iterms?.avatar}
 							on:upload
 						/>
 						{/if}

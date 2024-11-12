@@ -36,9 +36,9 @@ export type ConditionalExpression = {
   arr?: InputMaybe<Array<InputMaybe<Conditional>>>;
 };
 
-/** 当前用户 */
-export type CurrentUser = {
-  __typename?: 'CurrentUser';
+/** Current */
+export type Current = {
+  __typename?: 'Current';
   /** ID */
   id?: Maybe<Scalars['String']>;
   /** 姓名 */
@@ -84,7 +84,7 @@ export type File = Meta & {
   updateTime?: Maybe<Scalars['Timestamp']>;
   /** Create Group ID */
   createGroupId?: Maybe<Scalars['String']>;
-  /** Count of ID */
+  /** Count of 文件 */
   idCount?: Maybe<Scalars['Int']>;
   /** Max of ID */
   idMax?: Maybe<Scalars['String']>;
@@ -119,7 +119,7 @@ export type File = Meta & {
 /** Connection Object for 文件 */
 export type FileConnection = {
   __typename?: 'FileConnection';
-  /** Total Count */
+  /** Total */
   totalCount?: Maybe<Scalars['Int']>;
   /** Page Info */
   pageInfo?: Maybe<PageInfo>;
@@ -127,7 +127,7 @@ export type FileConnection = {
   edges?: Maybe<Array<Maybe<FileEdge>>>;
 };
 
-/** Query Connection Arguments for 文件 */
+/** Query Arguments for 文件 Connection */
 export type FileConnectionQueryArguments = {
   /** ID */
   id?: InputMaybe<StringExpression>;
@@ -177,7 +177,7 @@ export type FileConnectionQueryArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-/** Subscription List Arguments for 文件 */
+/** Subscription Arguments for 文件 List */
 export type FileConnectionSubscriptionArguments = {
   /** ID */
   id?: InputMaybe<StringExpression>;
@@ -304,7 +304,7 @@ export type FileInput = {
   where?: InputMaybe<FileExpression>;
 };
 
-/** Mutation List Arguments for 文件 */
+/** Mutation Arguments for 文件 List */
 export type FileListMutationArguments = {
   /** ID */
   id?: InputMaybe<Scalars['ID']>;
@@ -338,7 +338,7 @@ export type FileListMutationArguments = {
   where?: InputMaybe<FileExpression>;
 };
 
-/** Query List Arguments for 文件 */
+/** Query Arguments for 文件 List */
 export type FileListQueryArguments = {
   /** ID */
   id?: InputMaybe<StringExpression>;
@@ -388,7 +388,7 @@ export type FileListQueryArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-/** Subscription List Arguments for 文件 */
+/** Subscription Arguments for 文件 List */
 export type FileListSubscriptionArguments = {
   /** ID */
   id?: InputMaybe<StringExpression>;
@@ -500,7 +500,7 @@ export type FileOrderBy = {
   updateTime?: InputMaybe<Sort>;
   /** Create Group ID */
   createGroupId?: InputMaybe<Sort>;
-  /** Count of ID */
+  /** Count of 文件 */
   idCount?: InputMaybe<Sort>;
   /** Max of ID */
   idMax?: InputMaybe<Sort>;
@@ -611,7 +611,7 @@ export type FileSubscriptionArguments = {
 /** 用户 文件 关系 */
 export type FileUserRelation = Meta & {
   __typename?: 'FileUserRelation';
-  /** 唯一标识 */
+  /** ID */
   id?: Maybe<Scalars['ID']>;
   /** 用户 引用 */
   userRef?: Maybe<Scalars['String']>;
@@ -637,11 +637,11 @@ export type FileUserRelation = Meta & {
   updateTime?: Maybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: Maybe<Scalars['String']>;
-  /** 唯一标识 数量 */
+  /** 用户 文件 关系 数量 */
   idCount?: Maybe<Scalars['Int']>;
-  /** 唯一标识 最大值 */
+  /** ID 最大值 */
   idMax?: Maybe<Scalars['Int']>;
-  /** 唯一标识 最小值 */
+  /** ID 最小值 */
   idMin?: Maybe<Scalars['Int']>;
   /** 用户 引用 数量 */
   userRefCount?: Maybe<Scalars['Int']>;
@@ -668,7 +668,7 @@ export type FileUserRelationUserArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  files?: InputMaybe<FileExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -715,13 +715,13 @@ export type FileUserRelationConnection = {
   totalCount?: Maybe<Scalars['Int']>;
   /** 分页信息 */
   pageInfo?: Maybe<PageInfo>;
-  /** 边缘字段 */
+  /** 边缘 */
   edges?: Maybe<Array<Maybe<FileUserRelationEdge>>>;
 };
 
 /** 用户 文件 关系连接 查询参数 */
 export type FileUserRelationConnectionQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -771,7 +771,7 @@ export type FileUserRelationConnectionQueryArguments = {
 
 /** 用户 文件 关系列表 订阅参数 */
 export type FileUserRelationConnectionSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -819,18 +819,18 @@ export type FileUserRelationConnectionSubscriptionArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-/** 用户 文件 关系 连接边缘 */
+/** 用户 文件 关系 边缘 */
 export type FileUserRelationEdge = {
   __typename?: 'FileUserRelationEdge';
-  /** 节点字段 */
+  /** 节点 */
   node?: Maybe<FileUserRelation>;
-  /** 游标字段 */
+  /** 游标 */
   cursor?: Maybe<Scalars['String']>;
 };
 
 /** 用户 文件 关系 查询表达式 */
 export type FileUserRelationExpression = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -866,7 +866,7 @@ export type FileUserRelationExpression = {
 
 /** 用户 文件 关系 变更内容 */
 export type FileUserRelationInput = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 用户 引用 */
   userRef?: InputMaybe<Scalars['String']>;
@@ -898,7 +898,7 @@ export type FileUserRelationInput = {
 
 /** 用户 文件 关系列表 变更参数  */
 export type FileUserRelationListMutationArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 用户 引用 */
   userRef?: InputMaybe<Scalars['String']>;
@@ -932,7 +932,7 @@ export type FileUserRelationListMutationArguments = {
 
 /** 用户 文件 关系列表 查询参数 */
 export type FileUserRelationListQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -982,7 +982,7 @@ export type FileUserRelationListQueryArguments = {
 
 /** 用户 文件 关系列表 订阅参数 */
 export type FileUserRelationListSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -1032,7 +1032,7 @@ export type FileUserRelationListSubscriptionArguments = {
 
 /** 用户 文件 关系 变更参数 */
 export type FileUserRelationMutationArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 用户 引用 */
   userRef?: InputMaybe<Scalars['String']>;
@@ -1064,9 +1064,9 @@ export type FileUserRelationMutationArguments = {
   where?: InputMaybe<FileUserRelationExpression>;
 };
 
-/** 用户 文件 关系 排序内容 */
+/** 用户 文件 关系 排序 */
 export type FileUserRelationOrderBy = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Sort>;
   /** 用户 引用 */
   userRef?: InputMaybe<Sort>;
@@ -1092,11 +1092,11 @@ export type FileUserRelationOrderBy = {
   updateTime?: InputMaybe<Sort>;
   /** 创建组 */
   createGroupId?: InputMaybe<Sort>;
-  /** 唯一标识 数量 */
+  /** 用户 文件 关系 数量 */
   idCount?: InputMaybe<Sort>;
-  /** 唯一标识 最大值 */
+  /** ID 最大值 */
   idMax?: InputMaybe<Sort>;
-  /** 唯一标识 最小值 */
+  /** ID 最小值 */
   idMin?: InputMaybe<Sort>;
   /** 用户 引用 数量 */
   userRefCount?: InputMaybe<Sort>;
@@ -1114,7 +1114,7 @@ export type FileUserRelationOrderBy = {
 
 /** 用户 文件 关系 查询参数 */
 export type FileUserRelationQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -1152,7 +1152,7 @@ export type FileUserRelationQueryArguments = {
 
 /** 用户 文件 关系 订阅参数 */
 export type FileUserRelationSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -1255,25 +1255,25 @@ export type Group = TreeStruct & NamedStruct & Meta & {
   groupRoleRelation?: Maybe<Array<Maybe<GroupRoleRelation>>>;
   /** 下级 统计字段 */
   subGroupsAggregate?: Maybe<Group>;
-  /** 下级 连接字段 */
+  /** 下级 连接 */
   subGroupsConnection?: Maybe<GroupConnection>;
   /** 用户 统计字段 */
   usersAggregate?: Maybe<User>;
-  /** 用户 连接字段 */
+  /** 用户 连接 */
   usersConnection?: Maybe<UserConnection>;
   /** 角色 统计字段 */
   rolesAggregate?: Maybe<Role>;
-  /** 角色 连接字段 */
+  /** 角色 连接 */
   rolesConnection?: Maybe<RoleConnection>;
   /** 用户 组 关系 统计字段 */
   groupUserRelationAggregate?: Maybe<GroupUserRelation>;
-  /** 用户 组 关系 连接字段 */
+  /** 用户 组 关系 连接 */
   groupUserRelationConnection?: Maybe<GroupUserRelationConnection>;
   /** 角色 组 关系 统计字段 */
   groupRoleRelationAggregate?: Maybe<GroupRoleRelation>;
-  /** 角色 组 关系 连接字段 */
+  /** 角色 组 关系 连接 */
   groupRoleRelationConnection?: Maybe<GroupRoleRelationConnection>;
-  /** ID 数量 */
+  /** 组 数量 */
   idCount?: Maybe<Scalars['Int']>;
   /** ID 最大值 */
   idMax?: Maybe<Scalars['Int']>;
@@ -1305,9 +1305,9 @@ export type Group = TreeStruct & NamedStruct & Meta & {
   parentIdMin?: Maybe<Scalars['String']>;
   /** 层级 数量 */
   deepCount?: Maybe<Scalars['Int']>;
-  /** 层级 合集 */
+  /** 层级 合计 */
   deepSum?: Maybe<Scalars['Int']>;
-  /** 层级 平均数 */
+  /** 层级 平均值 */
   deepAvg?: Maybe<Scalars['Int']>;
   /** 层级 最大值 */
   deepMax?: Maybe<Scalars['Int']>;
@@ -1383,7 +1383,7 @@ export type GroupUsersArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  files?: InputMaybe<FileExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -1582,7 +1582,7 @@ export type GroupUsersAggregateArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  files?: InputMaybe<FileExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -1618,7 +1618,7 @@ export type GroupUsersConnectionArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  files?: InputMaybe<FileExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -1802,7 +1802,7 @@ export type GroupConnection = {
   totalCount?: Maybe<Scalars['Int']>;
   /** 分页信息 */
   pageInfo?: Maybe<PageInfo>;
-  /** 边缘字段 */
+  /** 边缘 */
   edges?: Maybe<Array<Maybe<GroupEdge>>>;
 };
 
@@ -1938,12 +1938,12 @@ export type GroupConnectionSubscriptionArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-/** 组 连接边缘 */
+/** 组 边缘 */
 export type GroupEdge = {
   __typename?: 'GroupEdge';
-  /** 节点字段 */
+  /** 节点 */
   node?: Maybe<Group>;
-  /** 游标字段 */
+  /** 游标 */
   cursor?: Maybe<Scalars['String']>;
 };
 
@@ -2279,7 +2279,7 @@ export type GroupMutationArguments = {
   where?: InputMaybe<GroupExpression>;
 };
 
-/** 组 排序内容 */
+/** 组 排序 */
 export type GroupOrderBy = {
   /** ID */
   id?: InputMaybe<Sort>;
@@ -2333,7 +2333,7 @@ export type GroupOrderBy = {
   groupUserRelationAggregate?: InputMaybe<GroupUserRelationOrderBy>;
   /** 角色 组 关系 统计字段 */
   groupRoleRelationAggregate?: InputMaybe<GroupRoleRelationOrderBy>;
-  /** ID 数量 */
+  /** 组 数量 */
   idCount?: InputMaybe<Sort>;
   /** ID 最大值 */
   idMax?: InputMaybe<Sort>;
@@ -2365,9 +2365,9 @@ export type GroupOrderBy = {
   parentIdMin?: InputMaybe<Sort>;
   /** 层级 数量 */
   deepCount?: InputMaybe<Sort>;
-  /** 层级 合集 */
+  /** 层级 合计 */
   deepSum?: InputMaybe<Sort>;
-  /** 层级 平均数 */
+  /** 层级 平均值 */
   deepAvg?: InputMaybe<Sort>;
   /** 层级 最大值 */
   deepMax?: InputMaybe<Sort>;
@@ -2432,7 +2432,7 @@ export type GroupQueryArguments = {
 /** 角色 组 关系 */
 export type GroupRoleRelation = Meta & {
   __typename?: 'GroupRoleRelation';
-  /** 唯一标识 */
+  /** ID */
   id?: Maybe<Scalars['ID']>;
   /** 角色 引用 */
   roleRef?: Maybe<Scalars['String']>;
@@ -2458,11 +2458,11 @@ export type GroupRoleRelation = Meta & {
   updateTime?: Maybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: Maybe<Scalars['String']>;
-  /** 唯一标识 数量 */
+  /** 角色 组 关系 数量 */
   idCount?: Maybe<Scalars['Int']>;
-  /** 唯一标识 最大值 */
+  /** ID 最大值 */
   idMax?: Maybe<Scalars['Int']>;
-  /** 唯一标识 最小值 */
+  /** ID 最小值 */
   idMin?: Maybe<Scalars['Int']>;
   /** 角色 引用 数量 */
   roleRefCount?: Maybe<Scalars['Int']>;
@@ -2538,13 +2538,13 @@ export type GroupRoleRelationConnection = {
   totalCount?: Maybe<Scalars['Int']>;
   /** 分页信息 */
   pageInfo?: Maybe<PageInfo>;
-  /** 边缘字段 */
+  /** 边缘 */
   edges?: Maybe<Array<Maybe<GroupRoleRelationEdge>>>;
 };
 
 /** 角色 组 关系连接 查询参数 */
 export type GroupRoleRelationConnectionQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -2594,7 +2594,7 @@ export type GroupRoleRelationConnectionQueryArguments = {
 
 /** 角色 组 关系列表 订阅参数 */
 export type GroupRoleRelationConnectionSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -2642,18 +2642,18 @@ export type GroupRoleRelationConnectionSubscriptionArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-/** 角色 组 关系 连接边缘 */
+/** 角色 组 关系 边缘 */
 export type GroupRoleRelationEdge = {
   __typename?: 'GroupRoleRelationEdge';
-  /** 节点字段 */
+  /** 节点 */
   node?: Maybe<GroupRoleRelation>;
-  /** 游标字段 */
+  /** 游标 */
   cursor?: Maybe<Scalars['String']>;
 };
 
 /** 角色 组 关系 查询表达式 */
 export type GroupRoleRelationExpression = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -2689,7 +2689,7 @@ export type GroupRoleRelationExpression = {
 
 /** 角色 组 关系 变更内容 */
 export type GroupRoleRelationInput = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 角色 引用 */
   roleRef?: InputMaybe<Scalars['String']>;
@@ -2721,7 +2721,7 @@ export type GroupRoleRelationInput = {
 
 /** 角色 组 关系列表 变更参数  */
 export type GroupRoleRelationListMutationArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 角色 引用 */
   roleRef?: InputMaybe<Scalars['String']>;
@@ -2755,7 +2755,7 @@ export type GroupRoleRelationListMutationArguments = {
 
 /** 角色 组 关系列表 查询参数 */
 export type GroupRoleRelationListQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -2805,7 +2805,7 @@ export type GroupRoleRelationListQueryArguments = {
 
 /** 角色 组 关系列表 订阅参数 */
 export type GroupRoleRelationListSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -2855,7 +2855,7 @@ export type GroupRoleRelationListSubscriptionArguments = {
 
 /** 角色 组 关系 变更参数 */
 export type GroupRoleRelationMutationArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 角色 引用 */
   roleRef?: InputMaybe<Scalars['String']>;
@@ -2887,9 +2887,9 @@ export type GroupRoleRelationMutationArguments = {
   where?: InputMaybe<GroupRoleRelationExpression>;
 };
 
-/** 角色 组 关系 排序内容 */
+/** 角色 组 关系 排序 */
 export type GroupRoleRelationOrderBy = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Sort>;
   /** 角色 引用 */
   roleRef?: InputMaybe<Sort>;
@@ -2915,11 +2915,11 @@ export type GroupRoleRelationOrderBy = {
   updateTime?: InputMaybe<Sort>;
   /** 创建组 */
   createGroupId?: InputMaybe<Sort>;
-  /** 唯一标识 数量 */
+  /** 角色 组 关系 数量 */
   idCount?: InputMaybe<Sort>;
-  /** 唯一标识 最大值 */
+  /** ID 最大值 */
   idMax?: InputMaybe<Sort>;
-  /** 唯一标识 最小值 */
+  /** ID 最小值 */
   idMin?: InputMaybe<Sort>;
   /** 角色 引用 数量 */
   roleRefCount?: InputMaybe<Sort>;
@@ -2937,7 +2937,7 @@ export type GroupRoleRelationOrderBy = {
 
 /** 角色 组 关系 查询参数 */
 export type GroupRoleRelationQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -2975,7 +2975,7 @@ export type GroupRoleRelationQueryArguments = {
 
 /** 角色 组 关系 订阅参数 */
 export type GroupRoleRelationSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -3068,7 +3068,7 @@ export type GroupSubscriptionArguments = {
 /** 用户 组 关系 */
 export type GroupUserRelation = Meta & {
   __typename?: 'GroupUserRelation';
-  /** 唯一标识 */
+  /** ID */
   id?: Maybe<Scalars['ID']>;
   /** 用户 引用 */
   userRef?: Maybe<Scalars['String']>;
@@ -3094,11 +3094,11 @@ export type GroupUserRelation = Meta & {
   updateTime?: Maybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: Maybe<Scalars['String']>;
-  /** 唯一标识 数量 */
+  /** 用户 组 关系 数量 */
   idCount?: Maybe<Scalars['Int']>;
-  /** 唯一标识 最大值 */
+  /** ID 最大值 */
   idMax?: Maybe<Scalars['Int']>;
-  /** 唯一标识 最小值 */
+  /** ID 最小值 */
   idMin?: Maybe<Scalars['Int']>;
   /** 用户 引用 数量 */
   userRefCount?: Maybe<Scalars['Int']>;
@@ -3125,7 +3125,7 @@ export type GroupUserRelationUserArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  files?: InputMaybe<FileExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -3180,13 +3180,13 @@ export type GroupUserRelationConnection = {
   totalCount?: Maybe<Scalars['Int']>;
   /** 分页信息 */
   pageInfo?: Maybe<PageInfo>;
-  /** 边缘字段 */
+  /** 边缘 */
   edges?: Maybe<Array<Maybe<GroupUserRelationEdge>>>;
 };
 
 /** 用户 组 关系连接 查询参数 */
 export type GroupUserRelationConnectionQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -3236,7 +3236,7 @@ export type GroupUserRelationConnectionQueryArguments = {
 
 /** 用户 组 关系列表 订阅参数 */
 export type GroupUserRelationConnectionSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -3284,18 +3284,18 @@ export type GroupUserRelationConnectionSubscriptionArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-/** 用户 组 关系 连接边缘 */
+/** 用户 组 关系 边缘 */
 export type GroupUserRelationEdge = {
   __typename?: 'GroupUserRelationEdge';
-  /** 节点字段 */
+  /** 节点 */
   node?: Maybe<GroupUserRelation>;
-  /** 游标字段 */
+  /** 游标 */
   cursor?: Maybe<Scalars['String']>;
 };
 
 /** 用户 组 关系 查询表达式 */
 export type GroupUserRelationExpression = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -3331,7 +3331,7 @@ export type GroupUserRelationExpression = {
 
 /** 用户 组 关系 变更内容 */
 export type GroupUserRelationInput = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 用户 引用 */
   userRef?: InputMaybe<Scalars['String']>;
@@ -3363,7 +3363,7 @@ export type GroupUserRelationInput = {
 
 /** 用户 组 关系列表 变更参数  */
 export type GroupUserRelationListMutationArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 用户 引用 */
   userRef?: InputMaybe<Scalars['String']>;
@@ -3397,7 +3397,7 @@ export type GroupUserRelationListMutationArguments = {
 
 /** 用户 组 关系列表 查询参数 */
 export type GroupUserRelationListQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -3447,7 +3447,7 @@ export type GroupUserRelationListQueryArguments = {
 
 /** 用户 组 关系列表 订阅参数 */
 export type GroupUserRelationListSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -3497,7 +3497,7 @@ export type GroupUserRelationListSubscriptionArguments = {
 
 /** 用户 组 关系 变更参数 */
 export type GroupUserRelationMutationArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 用户 引用 */
   userRef?: InputMaybe<Scalars['String']>;
@@ -3529,9 +3529,9 @@ export type GroupUserRelationMutationArguments = {
   where?: InputMaybe<GroupUserRelationExpression>;
 };
 
-/** 用户 组 关系 排序内容 */
+/** 用户 组 关系 排序 */
 export type GroupUserRelationOrderBy = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Sort>;
   /** 用户 引用 */
   userRef?: InputMaybe<Sort>;
@@ -3557,11 +3557,11 @@ export type GroupUserRelationOrderBy = {
   updateTime?: InputMaybe<Sort>;
   /** 创建组 */
   createGroupId?: InputMaybe<Sort>;
-  /** 唯一标识 数量 */
+  /** 用户 组 关系 数量 */
   idCount?: InputMaybe<Sort>;
-  /** 唯一标识 最大值 */
+  /** ID 最大值 */
   idMax?: InputMaybe<Sort>;
-  /** 唯一标识 最小值 */
+  /** ID 最小值 */
   idMin?: InputMaybe<Sort>;
   /** 用户 引用 数量 */
   userRefCount?: InputMaybe<Sort>;
@@ -3579,7 +3579,7 @@ export type GroupUserRelationOrderBy = {
 
 /** 用户 组 关系 查询参数 */
 export type GroupUserRelationQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -3617,7 +3617,7 @@ export type GroupUserRelationQueryArguments = {
 
 /** 用户 组 关系 订阅参数 */
 export type GroupUserRelationSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -3826,7 +3826,7 @@ export type MutationUserArgs = {
   salt?: InputMaybe<Scalars['String']>;
   hash?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
-  files?: InputMaybe<Array<InputMaybe<FileInput>>>;
+  avatar?: InputMaybe<FileInput>;
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   disable?: InputMaybe<Scalars['Boolean']>;
   groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
@@ -3859,7 +3859,7 @@ export type MutationUserListArgs = {
   salt?: InputMaybe<Scalars['String']>;
   hash?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
-  files?: InputMaybe<Array<InputMaybe<FileInput>>>;
+  avatar?: InputMaybe<FileInput>;
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   disable?: InputMaybe<Scalars['Boolean']>;
   groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
@@ -4587,13 +4587,13 @@ export type Permission = Meta & {
   permissionRoleRelation?: Maybe<Array<Maybe<PermissionRoleRelation>>>;
   /** 角色 统计字段 */
   rolesAggregate?: Maybe<Role>;
-  /** 角色 连接字段 */
+  /** 角色 连接 */
   rolesConnection?: Maybe<RoleConnection>;
   /** 角色 权限 关系 统计字段 */
   permissionRoleRelationAggregate?: Maybe<PermissionRoleRelation>;
-  /** 角色 权限 关系 连接字段 */
+  /** 角色 权限 关系 连接 */
   permissionRoleRelationConnection?: Maybe<PermissionRoleRelationConnection>;
-  /** 名称 数量 */
+  /** 权限 数量 */
   nameCount?: Maybe<Scalars['Int']>;
   /** 名称 最大值 */
   nameMax?: Maybe<Scalars['String']>;
@@ -4813,7 +4813,7 @@ export type PermissionConnection = {
   totalCount?: Maybe<Scalars['Int']>;
   /** 分页信息 */
   pageInfo?: Maybe<PageInfo>;
-  /** 边缘字段 */
+  /** 边缘 */
   edges?: Maybe<Array<Maybe<PermissionEdge>>>;
 };
 
@@ -4929,12 +4929,12 @@ export type PermissionConnectionSubscriptionArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-/** 权限 连接边缘 */
+/** 权限 边缘 */
 export type PermissionEdge = {
   __typename?: 'PermissionEdge';
-  /** 节点字段 */
+  /** 节点 */
   node?: Maybe<Permission>;
-  /** 游标字段 */
+  /** 游标 */
   cursor?: Maybe<Scalars['String']>;
 };
 
@@ -5210,7 +5210,7 @@ export type PermissionMutationArguments = {
   where?: InputMaybe<PermissionExpression>;
 };
 
-/** 权限 排序内容 */
+/** 权限 排序 */
 export type PermissionOrderBy = {
   /** 名称 */
   name?: InputMaybe<Sort>;
@@ -5248,7 +5248,7 @@ export type PermissionOrderBy = {
   rolesAggregate?: InputMaybe<RoleOrderBy>;
   /** 角色 权限 关系 统计字段 */
   permissionRoleRelationAggregate?: InputMaybe<PermissionRoleRelationOrderBy>;
-  /** 名称 数量 */
+  /** 权限 数量 */
   nameCount?: InputMaybe<Sort>;
   /** 名称 最大值 */
   nameMax?: InputMaybe<Sort>;
@@ -5327,7 +5327,7 @@ export type PermissionQueryArguments = {
 /** 角色 权限 关系 */
 export type PermissionRoleRelation = Meta & {
   __typename?: 'PermissionRoleRelation';
-  /** 唯一标识 */
+  /** ID */
   id?: Maybe<Scalars['ID']>;
   /** 角色 引用 */
   roleRef?: Maybe<Scalars['String']>;
@@ -5353,11 +5353,11 @@ export type PermissionRoleRelation = Meta & {
   updateTime?: Maybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: Maybe<Scalars['String']>;
-  /** 唯一标识 数量 */
+  /** 角色 权限 关系 数量 */
   idCount?: Maybe<Scalars['Int']>;
-  /** 唯一标识 最大值 */
+  /** ID 最大值 */
   idMax?: Maybe<Scalars['Int']>;
-  /** 唯一标识 最小值 */
+  /** ID 最小值 */
   idMin?: Maybe<Scalars['Int']>;
   /** 角色 引用 数量 */
   roleRefCount?: Maybe<Scalars['Int']>;
@@ -5428,13 +5428,13 @@ export type PermissionRoleRelationConnection = {
   totalCount?: Maybe<Scalars['Int']>;
   /** 分页信息 */
   pageInfo?: Maybe<PageInfo>;
-  /** 边缘字段 */
+  /** 边缘 */
   edges?: Maybe<Array<Maybe<PermissionRoleRelationEdge>>>;
 };
 
 /** 角色 权限 关系连接 查询参数 */
 export type PermissionRoleRelationConnectionQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -5484,7 +5484,7 @@ export type PermissionRoleRelationConnectionQueryArguments = {
 
 /** 角色 权限 关系列表 订阅参数 */
 export type PermissionRoleRelationConnectionSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -5532,18 +5532,18 @@ export type PermissionRoleRelationConnectionSubscriptionArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-/** 角色 权限 关系 连接边缘 */
+/** 角色 权限 关系 边缘 */
 export type PermissionRoleRelationEdge = {
   __typename?: 'PermissionRoleRelationEdge';
-  /** 节点字段 */
+  /** 节点 */
   node?: Maybe<PermissionRoleRelation>;
-  /** 游标字段 */
+  /** 游标 */
   cursor?: Maybe<Scalars['String']>;
 };
 
 /** 角色 权限 关系 查询表达式 */
 export type PermissionRoleRelationExpression = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -5579,7 +5579,7 @@ export type PermissionRoleRelationExpression = {
 
 /** 角色 权限 关系 变更内容 */
 export type PermissionRoleRelationInput = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 角色 引用 */
   roleRef?: InputMaybe<Scalars['String']>;
@@ -5611,7 +5611,7 @@ export type PermissionRoleRelationInput = {
 
 /** 角色 权限 关系列表 变更参数  */
 export type PermissionRoleRelationListMutationArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 角色 引用 */
   roleRef?: InputMaybe<Scalars['String']>;
@@ -5645,7 +5645,7 @@ export type PermissionRoleRelationListMutationArguments = {
 
 /** 角色 权限 关系列表 查询参数 */
 export type PermissionRoleRelationListQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -5695,7 +5695,7 @@ export type PermissionRoleRelationListQueryArguments = {
 
 /** 角色 权限 关系列表 订阅参数 */
 export type PermissionRoleRelationListSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -5745,7 +5745,7 @@ export type PermissionRoleRelationListSubscriptionArguments = {
 
 /** 角色 权限 关系 变更参数 */
 export type PermissionRoleRelationMutationArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 角色 引用 */
   roleRef?: InputMaybe<Scalars['String']>;
@@ -5777,9 +5777,9 @@ export type PermissionRoleRelationMutationArguments = {
   where?: InputMaybe<PermissionRoleRelationExpression>;
 };
 
-/** 角色 权限 关系 排序内容 */
+/** 角色 权限 关系 排序 */
 export type PermissionRoleRelationOrderBy = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Sort>;
   /** 角色 引用 */
   roleRef?: InputMaybe<Sort>;
@@ -5805,11 +5805,11 @@ export type PermissionRoleRelationOrderBy = {
   updateTime?: InputMaybe<Sort>;
   /** 创建组 */
   createGroupId?: InputMaybe<Sort>;
-  /** 唯一标识 数量 */
+  /** 角色 权限 关系 数量 */
   idCount?: InputMaybe<Sort>;
-  /** 唯一标识 最大值 */
+  /** ID 最大值 */
   idMax?: InputMaybe<Sort>;
-  /** 唯一标识 最小值 */
+  /** ID 最小值 */
   idMin?: InputMaybe<Sort>;
   /** 角色 引用 数量 */
   roleRefCount?: InputMaybe<Sort>;
@@ -5827,7 +5827,7 @@ export type PermissionRoleRelationOrderBy = {
 
 /** 角色 权限 关系 查询参数 */
 export type PermissionRoleRelationQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -5865,7 +5865,7 @@ export type PermissionRoleRelationQueryArguments = {
 
 /** 角色 权限 关系 订阅参数 */
 export type PermissionRoleRelationSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -5954,7 +5954,7 @@ export type PermissionType =
 
 /** 权限类型 查询表达式 */
 export type PermissionTypeExpression = {
-  /** 条件符号 */
+  /** 条件 */
   opr?: InputMaybe<Operator>;
   /** 值 */
   val?: InputMaybe<PermissionType>;
@@ -5962,10 +5962,11 @@ export type PermissionTypeExpression = {
   arr?: InputMaybe<Array<InputMaybe<PermissionType>>>;
 };
 
+/** Policy */
 export type Policy = {
   __typename?: 'Policy';
   id?: Maybe<Scalars['String']>;
-  ptype?: Maybe<Scalars['String']>;
+  policy?: Maybe<Scalars['String']>;
   v0?: Maybe<Scalars['String']>;
   v1?: Maybe<Scalars['String']>;
   v2?: Maybe<Scalars['String']>;
@@ -6067,7 +6068,7 @@ export type Query = {
   fileUserRelationList?: Maybe<Array<Maybe<FileUserRelation>>>;
   /** 用户 文件 关系连接 查询接口 */
   fileUserRelationConnection?: Maybe<FileUserRelationConnection>;
-  current?: Maybe<CurrentUser>;
+  current?: Maybe<Current>;
   currentUser?: Maybe<User>;
   currentPermissionTypeList?: Maybe<Array<Maybe<Scalars['String']>>>;
   currentPermissionNameListByTypes?: Maybe<Array<Maybe<Scalars['String']>>>;
@@ -6077,7 +6078,7 @@ export type Query = {
   file?: Maybe<File>;
   /** Query Field for 文件 List */
   fileList?: Maybe<Array<Maybe<File>>>;
-  /** Query Connection for 文件 */
+  /** Query Field for 文件 Connection */
   fileConnection?: Maybe<FileConnection>;
 };
 
@@ -6092,7 +6093,7 @@ export type QueryUserArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  files?: InputMaybe<FileExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -6127,7 +6128,7 @@ export type QueryUserListArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  files?: InputMaybe<FileExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -6168,7 +6169,7 @@ export type QueryUserConnectionArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  files?: InputMaybe<FileExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -7224,7 +7225,7 @@ export type Realm = NamedStruct & Meta & {
   updateTime?: Maybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: Maybe<Scalars['String']>;
-  /** ID 数量 */
+  /** 租户 数量 */
   idCount?: Maybe<Scalars['Int']>;
   /** ID 最大值 */
   idMax?: Maybe<Scalars['Int']>;
@@ -7251,7 +7252,7 @@ export type RealmConnection = {
   totalCount?: Maybe<Scalars['Int']>;
   /** 分页信息 */
   pageInfo?: Maybe<PageInfo>;
-  /** 边缘字段 */
+  /** 边缘 */
   edges?: Maybe<Array<Maybe<RealmEdge>>>;
 };
 
@@ -7347,12 +7348,12 @@ export type RealmConnectionSubscriptionArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-/** 租户 连接边缘 */
+/** 租户 边缘 */
 export type RealmEdge = {
   __typename?: 'RealmEdge';
-  /** 节点字段 */
+  /** 节点 */
   node?: Maybe<Realm>;
-  /** 游标字段 */
+  /** 游标 */
   cursor?: Maybe<Scalars['String']>;
 };
 
@@ -7568,7 +7569,7 @@ export type RealmMutationArguments = {
   where?: InputMaybe<RealmExpression>;
 };
 
-/** 租户 排序内容 */
+/** 租户 排序 */
 export type RealmOrderBy = {
   /** ID */
   id?: InputMaybe<Sort>;
@@ -7592,7 +7593,7 @@ export type RealmOrderBy = {
   updateTime?: InputMaybe<Sort>;
   /** 创建组 */
   createGroupId?: InputMaybe<Sort>;
-  /** ID 数量 */
+  /** 租户 数量 */
   idCount?: InputMaybe<Sort>;
   /** ID 最大值 */
   idMax?: InputMaybe<Sort>;
@@ -7725,37 +7726,37 @@ export type Role = NamedStruct & Meta & {
   permissionRoleRelation?: Maybe<Array<Maybe<PermissionRoleRelation>>>;
   /** 用户 统计字段 */
   usersAggregate?: Maybe<User>;
-  /** 用户 连接字段 */
+  /** 用户 连接 */
   usersConnection?: Maybe<UserConnection>;
   /** 组 统计字段 */
   groupsAggregate?: Maybe<Group>;
-  /** 组 连接字段 */
+  /** 组 连接 */
   groupsConnection?: Maybe<GroupConnection>;
   /** 组合 统计字段 */
   compositesAggregate?: Maybe<Role>;
-  /** 组合 连接字段 */
+  /** 组合 连接 */
   compositesConnection?: Maybe<RoleConnection>;
   /** 权限 统计字段 */
   permissionsAggregate?: Maybe<Permission>;
-  /** 权限 连接字段 */
+  /** 权限 连接 */
   permissionsConnection?: Maybe<PermissionConnection>;
   /** 用户 角色 关系 统计字段 */
   roleUserRelationAggregate?: Maybe<RoleUserRelation>;
-  /** 用户 角色 关系 连接字段 */
+  /** 用户 角色 关系 连接 */
   roleUserRelationConnection?: Maybe<RoleUserRelationConnection>;
   /** 角色 组 关系 统计字段 */
   groupRoleRelationAggregate?: Maybe<GroupRoleRelation>;
-  /** 角色 组 关系 连接字段 */
+  /** 角色 组 关系 连接 */
   groupRoleRelationConnection?: Maybe<GroupRoleRelationConnection>;
   /** 角色 角色 关系 统计字段 */
   roleCompositeRelationAggregate?: Maybe<RoleCompositeRelation>;
-  /** 角色 角色 关系 连接字段 */
+  /** 角色 角色 关系 连接 */
   roleCompositeRelationConnection?: Maybe<RoleCompositeRelationConnection>;
   /** 角色 权限 关系 统计字段 */
   permissionRoleRelationAggregate?: Maybe<PermissionRoleRelation>;
-  /** 角色 权限 关系 连接字段 */
+  /** 角色 权限 关系 连接 */
   permissionRoleRelationConnection?: Maybe<PermissionRoleRelationConnection>;
-  /** ID 数量 */
+  /** 角色 数量 */
   idCount?: Maybe<Scalars['Int']>;
   /** ID 最大值 */
   idMax?: Maybe<Scalars['Int']>;
@@ -7787,7 +7788,7 @@ export type RoleUsersArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  files?: InputMaybe<FileExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -8028,7 +8029,7 @@ export type RoleUsersAggregateArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  files?: InputMaybe<FileExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -8064,7 +8065,7 @@ export type RoleUsersConnectionArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  files?: InputMaybe<FileExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -8444,7 +8445,7 @@ export type RolePermissionRoleRelationConnectionArgs = {
 /** 角色 角色 关系 */
 export type RoleCompositeRelation = Meta & {
   __typename?: 'RoleCompositeRelation';
-  /** 唯一标识 */
+  /** ID */
   id?: Maybe<Scalars['ID']>;
   /** 角色 引用 */
   roleRef?: Maybe<Scalars['String']>;
@@ -8470,11 +8471,11 @@ export type RoleCompositeRelation = Meta & {
   updateTime?: Maybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: Maybe<Scalars['String']>;
-  /** 唯一标识 数量 */
+  /** 角色 角色 关系 数量 */
   idCount?: Maybe<Scalars['Int']>;
-  /** 唯一标识 最大值 */
+  /** ID 最大值 */
   idMax?: Maybe<Scalars['Int']>;
-  /** 唯一标识 最小值 */
+  /** ID 最小值 */
   idMin?: Maybe<Scalars['Int']>;
   /** 角色 引用 数量 */
   roleRefCount?: Maybe<Scalars['Int']>;
@@ -8549,13 +8550,13 @@ export type RoleCompositeRelationConnection = {
   totalCount?: Maybe<Scalars['Int']>;
   /** 分页信息 */
   pageInfo?: Maybe<PageInfo>;
-  /** 边缘字段 */
+  /** 边缘 */
   edges?: Maybe<Array<Maybe<RoleCompositeRelationEdge>>>;
 };
 
 /** 角色 角色 关系连接 查询参数 */
 export type RoleCompositeRelationConnectionQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -8605,7 +8606,7 @@ export type RoleCompositeRelationConnectionQueryArguments = {
 
 /** 角色 角色 关系列表 订阅参数 */
 export type RoleCompositeRelationConnectionSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -8653,18 +8654,18 @@ export type RoleCompositeRelationConnectionSubscriptionArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-/** 角色 角色 关系 连接边缘 */
+/** 角色 角色 关系 边缘 */
 export type RoleCompositeRelationEdge = {
   __typename?: 'RoleCompositeRelationEdge';
-  /** 节点字段 */
+  /** 节点 */
   node?: Maybe<RoleCompositeRelation>;
-  /** 游标字段 */
+  /** 游标 */
   cursor?: Maybe<Scalars['String']>;
 };
 
 /** 角色 角色 关系 查询表达式 */
 export type RoleCompositeRelationExpression = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -8700,7 +8701,7 @@ export type RoleCompositeRelationExpression = {
 
 /** 角色 角色 关系 变更内容 */
 export type RoleCompositeRelationInput = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 角色 引用 */
   roleRef?: InputMaybe<Scalars['String']>;
@@ -8732,7 +8733,7 @@ export type RoleCompositeRelationInput = {
 
 /** 角色 角色 关系列表 变更参数  */
 export type RoleCompositeRelationListMutationArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 角色 引用 */
   roleRef?: InputMaybe<Scalars['String']>;
@@ -8766,7 +8767,7 @@ export type RoleCompositeRelationListMutationArguments = {
 
 /** 角色 角色 关系列表 查询参数 */
 export type RoleCompositeRelationListQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -8816,7 +8817,7 @@ export type RoleCompositeRelationListQueryArguments = {
 
 /** 角色 角色 关系列表 订阅参数 */
 export type RoleCompositeRelationListSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -8866,7 +8867,7 @@ export type RoleCompositeRelationListSubscriptionArguments = {
 
 /** 角色 角色 关系 变更参数 */
 export type RoleCompositeRelationMutationArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 角色 引用 */
   roleRef?: InputMaybe<Scalars['String']>;
@@ -8898,9 +8899,9 @@ export type RoleCompositeRelationMutationArguments = {
   where?: InputMaybe<RoleCompositeRelationExpression>;
 };
 
-/** 角色 角色 关系 排序内容 */
+/** 角色 角色 关系 排序 */
 export type RoleCompositeRelationOrderBy = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Sort>;
   /** 角色 引用 */
   roleRef?: InputMaybe<Sort>;
@@ -8926,11 +8927,11 @@ export type RoleCompositeRelationOrderBy = {
   updateTime?: InputMaybe<Sort>;
   /** 创建组 */
   createGroupId?: InputMaybe<Sort>;
-  /** 唯一标识 数量 */
+  /** 角色 角色 关系 数量 */
   idCount?: InputMaybe<Sort>;
-  /** 唯一标识 最大值 */
+  /** ID 最大值 */
   idMax?: InputMaybe<Sort>;
-  /** 唯一标识 最小值 */
+  /** ID 最小值 */
   idMin?: InputMaybe<Sort>;
   /** 角色 引用 数量 */
   roleRefCount?: InputMaybe<Sort>;
@@ -8948,7 +8949,7 @@ export type RoleCompositeRelationOrderBy = {
 
 /** 角色 角色 关系 查询参数 */
 export type RoleCompositeRelationQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -8986,7 +8987,7 @@ export type RoleCompositeRelationQueryArguments = {
 
 /** 角色 角色 关系 订阅参数 */
 export type RoleCompositeRelationSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 角色 引用 */
   roleRef?: InputMaybe<StringExpression>;
@@ -9029,7 +9030,7 @@ export type RoleConnection = {
   totalCount?: Maybe<Scalars['Int']>;
   /** 分页信息 */
   pageInfo?: Maybe<PageInfo>;
-  /** 边缘字段 */
+  /** 边缘 */
   edges?: Maybe<Array<Maybe<RoleEdge>>>;
 };
 
@@ -9161,12 +9162,12 @@ export type RoleConnectionSubscriptionArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-/** 角色 连接边缘 */
+/** 角色 边缘 */
 export type RoleEdge = {
   __typename?: 'RoleEdge';
-  /** 节点字段 */
+  /** 节点 */
   node?: Maybe<Role>;
-  /** 游标字段 */
+  /** 游标 */
   cursor?: Maybe<Scalars['String']>;
 };
 
@@ -9490,7 +9491,7 @@ export type RoleMutationArguments = {
   where?: InputMaybe<RoleExpression>;
 };
 
-/** 角色 排序内容 */
+/** 角色 排序 */
 export type RoleOrderBy = {
   /** ID */
   id?: InputMaybe<Sort>;
@@ -9548,7 +9549,7 @@ export type RoleOrderBy = {
   roleCompositeRelationAggregate?: InputMaybe<RoleCompositeRelationOrderBy>;
   /** 角色 权限 关系 统计字段 */
   permissionRoleRelationAggregate?: InputMaybe<PermissionRoleRelationOrderBy>;
-  /** ID 数量 */
+  /** 角色 数量 */
   idCount?: InputMaybe<Sort>;
   /** ID 最大值 */
   idMax?: InputMaybe<Sort>;
@@ -9675,7 +9676,7 @@ export type RoleSubscriptionArguments = {
 /** 用户 角色 关系 */
 export type RoleUserRelation = Meta & {
   __typename?: 'RoleUserRelation';
-  /** 唯一标识 */
+  /** ID */
   id?: Maybe<Scalars['ID']>;
   /** 用户 引用 */
   userRef?: Maybe<Scalars['String']>;
@@ -9701,11 +9702,11 @@ export type RoleUserRelation = Meta & {
   updateTime?: Maybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: Maybe<Scalars['String']>;
-  /** 唯一标识 数量 */
+  /** 用户 角色 关系 数量 */
   idCount?: Maybe<Scalars['Int']>;
-  /** 唯一标识 最大值 */
+  /** ID 最大值 */
   idMax?: Maybe<Scalars['Int']>;
-  /** 唯一标识 最小值 */
+  /** ID 最小值 */
   idMin?: Maybe<Scalars['Int']>;
   /** 用户 引用 数量 */
   userRefCount?: Maybe<Scalars['Int']>;
@@ -9732,7 +9733,7 @@ export type RoleUserRelationUserArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  files?: InputMaybe<FileExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -9786,13 +9787,13 @@ export type RoleUserRelationConnection = {
   totalCount?: Maybe<Scalars['Int']>;
   /** 分页信息 */
   pageInfo?: Maybe<PageInfo>;
-  /** 边缘字段 */
+  /** 边缘 */
   edges?: Maybe<Array<Maybe<RoleUserRelationEdge>>>;
 };
 
 /** 用户 角色 关系连接 查询参数 */
 export type RoleUserRelationConnectionQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -9842,7 +9843,7 @@ export type RoleUserRelationConnectionQueryArguments = {
 
 /** 用户 角色 关系列表 订阅参数 */
 export type RoleUserRelationConnectionSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -9890,18 +9891,18 @@ export type RoleUserRelationConnectionSubscriptionArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-/** 用户 角色 关系 连接边缘 */
+/** 用户 角色 关系 边缘 */
 export type RoleUserRelationEdge = {
   __typename?: 'RoleUserRelationEdge';
-  /** 节点字段 */
+  /** 节点 */
   node?: Maybe<RoleUserRelation>;
-  /** 游标字段 */
+  /** 游标 */
   cursor?: Maybe<Scalars['String']>;
 };
 
 /** 用户 角色 关系 查询表达式 */
 export type RoleUserRelationExpression = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -9937,7 +9938,7 @@ export type RoleUserRelationExpression = {
 
 /** 用户 角色 关系 变更内容 */
 export type RoleUserRelationInput = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 用户 引用 */
   userRef?: InputMaybe<Scalars['String']>;
@@ -9969,7 +9970,7 @@ export type RoleUserRelationInput = {
 
 /** 用户 角色 关系列表 变更参数  */
 export type RoleUserRelationListMutationArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 用户 引用 */
   userRef?: InputMaybe<Scalars['String']>;
@@ -10003,7 +10004,7 @@ export type RoleUserRelationListMutationArguments = {
 
 /** 用户 角色 关系列表 查询参数 */
 export type RoleUserRelationListQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -10053,7 +10054,7 @@ export type RoleUserRelationListQueryArguments = {
 
 /** 用户 角色 关系列表 订阅参数 */
 export type RoleUserRelationListSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -10103,7 +10104,7 @@ export type RoleUserRelationListSubscriptionArguments = {
 
 /** 用户 角色 关系 变更参数 */
 export type RoleUserRelationMutationArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 用户 引用 */
   userRef?: InputMaybe<Scalars['String']>;
@@ -10135,9 +10136,9 @@ export type RoleUserRelationMutationArguments = {
   where?: InputMaybe<RoleUserRelationExpression>;
 };
 
-/** 用户 角色 关系 排序内容 */
+/** 用户 角色 关系 排序 */
 export type RoleUserRelationOrderBy = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Sort>;
   /** 用户 引用 */
   userRef?: InputMaybe<Sort>;
@@ -10163,11 +10164,11 @@ export type RoleUserRelationOrderBy = {
   updateTime?: InputMaybe<Sort>;
   /** 创建组 */
   createGroupId?: InputMaybe<Sort>;
-  /** 唯一标识 数量 */
+  /** 用户 角色 关系 数量 */
   idCount?: InputMaybe<Sort>;
-  /** 唯一标识 最大值 */
+  /** ID 最大值 */
   idMax?: InputMaybe<Sort>;
-  /** 唯一标识 最小值 */
+  /** ID 最小值 */
   idMin?: InputMaybe<Sort>;
   /** 用户 引用 数量 */
   userRefCount?: InputMaybe<Sort>;
@@ -10185,7 +10186,7 @@ export type RoleUserRelationOrderBy = {
 
 /** 用户 角色 关系 查询参数 */
 export type RoleUserRelationQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -10223,7 +10224,7 @@ export type RoleUserRelationQueryArguments = {
 
 /** 用户 角色 关系 订阅参数 */
 export type RoleUserRelationSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -10355,7 +10356,7 @@ export type Subscription = {
   file?: Maybe<File>;
   /** Subscription Field for 文件 List */
   fileList?: Maybe<Array<Maybe<File>>>;
-  /** Subscription Connection for 文件 */
+  /** Subscription Field for 文件 Connection */
   fileConnection?: Maybe<FileConnection>;
 };
 
@@ -10370,7 +10371,7 @@ export type SubscriptionUserArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  files?: InputMaybe<FileExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -10405,7 +10406,7 @@ export type SubscriptionUserListArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  files?: InputMaybe<FileExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -10446,7 +10447,7 @@ export type SubscriptionUserConnectionArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  files?: InputMaybe<FileExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -11543,8 +11544,8 @@ export type User = NamedStruct & Meta & {
   hash?: Maybe<Scalars['String']>;
   /** 邮箱 */
   email?: Maybe<Scalars['String']>;
-  /** 文件 */
-  files?: Maybe<Array<Maybe<File>>>;
+  /** 头像 */
+  avatar?: Maybe<File>;
   /** 手机号 */
   phones?: Maybe<Array<Maybe<Scalars['String']>>>;
   /** 禁用 */
@@ -11581,25 +11582,25 @@ export type User = NamedStruct & Meta & {
   roleUserRelation?: Maybe<Array<Maybe<RoleUserRelation>>>;
   /** 组 统计字段 */
   groupsAggregate?: Maybe<Group>;
-  /** 组 连接字段 */
+  /** 组 连接 */
   groupsConnection?: Maybe<GroupConnection>;
   /** 角色 统计字段 */
   rolesAggregate?: Maybe<Role>;
-  /** 角色 连接字段 */
+  /** 角色 连接 */
   rolesConnection?: Maybe<RoleConnection>;
   /** 用户 手机号 关系 统计字段 */
   userPhonesRelationAggregate?: Maybe<UserPhonesRelation>;
-  /** 用户 手机号 关系 连接字段 */
+  /** 用户 手机号 关系 连接 */
   userPhonesRelationConnection?: Maybe<UserPhonesRelationConnection>;
   /** 用户 组 关系 统计字段 */
   groupUserRelationAggregate?: Maybe<GroupUserRelation>;
-  /** 用户 组 关系 连接字段 */
+  /** 用户 组 关系 连接 */
   groupUserRelationConnection?: Maybe<GroupUserRelationConnection>;
   /** 用户 角色 关系 统计字段 */
   roleUserRelationAggregate?: Maybe<RoleUserRelation>;
-  /** 用户 角色 关系 连接字段 */
+  /** 用户 角色 关系 连接 */
   roleUserRelationConnection?: Maybe<RoleUserRelationConnection>;
-  /** ID 数量 */
+  /** 用户 数量 */
   idCount?: Maybe<Scalars['Int']>;
   /** ID 最大值 */
   idMax?: Maybe<Scalars['Int']>;
@@ -11652,7 +11653,7 @@ export type User = NamedStruct & Meta & {
 
 
 /** 用户 */
-export type UserFilesArgs = {
+export type UserAvatarArgs = {
   id?: InputMaybe<StringExpression>;
   name?: InputMaybe<StringExpression>;
   contentType?: InputMaybe<StringExpression>;
@@ -11667,12 +11668,6 @@ export type UserFilesArgs = {
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<FileOrderBy>;
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -12117,7 +12112,7 @@ export type UserConnection = {
   totalCount?: Maybe<Scalars['Int']>;
   /** 分页信息 */
   pageInfo?: Maybe<PageInfo>;
-  /** 边缘字段 */
+  /** 边缘 */
   edges?: Maybe<Array<Maybe<UserEdge>>>;
 };
 
@@ -12139,8 +12134,8 @@ export type UserConnectionQueryArguments = {
   hash?: InputMaybe<StringExpression>;
   /** 邮箱 */
   email?: InputMaybe<StringExpression>;
-  /** 文件 */
-  files?: InputMaybe<FileExpression>;
+  /** 头像 */
+  avatar?: InputMaybe<FileExpression>;
   /** 手机号 */
   phones?: InputMaybe<StringExpression>;
   /** 禁用 */
@@ -12215,8 +12210,8 @@ export type UserConnectionSubscriptionArguments = {
   hash?: InputMaybe<StringExpression>;
   /** 邮箱 */
   email?: InputMaybe<StringExpression>;
-  /** 文件 */
-  files?: InputMaybe<FileExpression>;
+  /** 头像 */
+  avatar?: InputMaybe<FileExpression>;
   /** 手机号 */
   phones?: InputMaybe<StringExpression>;
   /** 禁用 */
@@ -12273,12 +12268,12 @@ export type UserConnectionSubscriptionArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-/** 用户 连接边缘 */
+/** 用户 边缘 */
 export type UserEdge = {
   __typename?: 'UserEdge';
-  /** 节点字段 */
+  /** 节点 */
   node?: Maybe<User>;
-  /** 游标字段 */
+  /** 游标 */
   cursor?: Maybe<Scalars['String']>;
 };
 
@@ -12300,8 +12295,8 @@ export type UserExpression = {
   hash?: InputMaybe<StringExpression>;
   /** 邮箱 */
   email?: InputMaybe<StringExpression>;
-  /** 文件 */
-  files?: InputMaybe<FileExpression>;
+  /** 头像 */
+  avatar?: InputMaybe<FileExpression>;
   /** 手机号 */
   phones?: InputMaybe<StringExpression>;
   /** 禁用 */
@@ -12362,8 +12357,8 @@ export type UserInput = {
   hash?: InputMaybe<Scalars['String']>;
   /** 邮箱 */
   email?: InputMaybe<Scalars['String']>;
-  /** 文件 */
-  files?: InputMaybe<Array<InputMaybe<FileInput>>>;
+  /** 头像 */
+  avatar?: InputMaybe<FileInput>;
   /** 手机号 */
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   /** 禁用 */
@@ -12420,8 +12415,8 @@ export type UserListMutationArguments = {
   hash?: InputMaybe<Scalars['String']>;
   /** 邮箱 */
   email?: InputMaybe<Scalars['String']>;
-  /** 文件 */
-  files?: InputMaybe<Array<InputMaybe<FileInput>>>;
+  /** 头像 */
+  avatar?: InputMaybe<FileInput>;
   /** 手机号 */
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   /** 禁用 */
@@ -12480,8 +12475,8 @@ export type UserListQueryArguments = {
   hash?: InputMaybe<StringExpression>;
   /** 邮箱 */
   email?: InputMaybe<StringExpression>;
-  /** 文件 */
-  files?: InputMaybe<FileExpression>;
+  /** 头像 */
+  avatar?: InputMaybe<FileExpression>;
   /** 手机号 */
   phones?: InputMaybe<StringExpression>;
   /** 禁用 */
@@ -12556,8 +12551,8 @@ export type UserListSubscriptionArguments = {
   hash?: InputMaybe<StringExpression>;
   /** 邮箱 */
   email?: InputMaybe<StringExpression>;
-  /** 文件 */
-  files?: InputMaybe<FileExpression>;
+  /** 头像 */
+  avatar?: InputMaybe<FileExpression>;
   /** 手机号 */
   phones?: InputMaybe<StringExpression>;
   /** 禁用 */
@@ -12632,8 +12627,8 @@ export type UserMutationArguments = {
   hash?: InputMaybe<Scalars['String']>;
   /** 邮箱 */
   email?: InputMaybe<Scalars['String']>;
-  /** 文件 */
-  files?: InputMaybe<Array<InputMaybe<FileInput>>>;
+  /** 头像 */
+  avatar?: InputMaybe<FileInput>;
   /** 手机号 */
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   /** 禁用 */
@@ -12674,7 +12669,7 @@ export type UserMutationArguments = {
   where?: InputMaybe<UserExpression>;
 };
 
-/** 用户 排序内容 */
+/** 用户 排序 */
 export type UserOrderBy = {
   /** ID */
   id?: InputMaybe<Sort>;
@@ -12692,8 +12687,8 @@ export type UserOrderBy = {
   hash?: InputMaybe<Sort>;
   /** 邮箱 */
   email?: InputMaybe<Sort>;
-  /** 文件 */
-  files?: InputMaybe<FileOrderBy>;
+  /** 头像 */
+  avatar?: InputMaybe<FileOrderBy>;
   /** 手机号 */
   phones?: InputMaybe<Sort>;
   /** 禁用 */
@@ -12738,7 +12733,7 @@ export type UserOrderBy = {
   groupUserRelationAggregate?: InputMaybe<GroupUserRelationOrderBy>;
   /** 用户 角色 关系 统计字段 */
   roleUserRelationAggregate?: InputMaybe<RoleUserRelationOrderBy>;
-  /** ID 数量 */
+  /** 用户 数量 */
   idCount?: InputMaybe<Sort>;
   /** ID 最大值 */
   idMax?: InputMaybe<Sort>;
@@ -12791,7 +12786,7 @@ export type UserOrderBy = {
 /** 用户 手机号 关系 */
 export type UserPhonesRelation = Meta & {
   __typename?: 'UserPhonesRelation';
-  /** 唯一标识 */
+  /** ID */
   id?: Maybe<Scalars['ID']>;
   /** 用户 引用 */
   userRef?: Maybe<Scalars['String']>;
@@ -12815,11 +12810,11 @@ export type UserPhonesRelation = Meta & {
   updateTime?: Maybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: Maybe<Scalars['String']>;
-  /** 唯一标识 数量 */
+  /** 用户 手机号 关系 数量 */
   idCount?: Maybe<Scalars['Int']>;
-  /** 唯一标识 最大值 */
+  /** ID 最大值 */
   idMax?: Maybe<Scalars['Int']>;
-  /** 唯一标识 最小值 */
+  /** ID 最小值 */
   idMin?: Maybe<Scalars['Int']>;
   /** 用户 引用 数量 */
   userRefCount?: Maybe<Scalars['Int']>;
@@ -12846,7 +12841,7 @@ export type UserPhonesRelationUserArgs = {
   salt?: InputMaybe<StringExpression>;
   hash?: InputMaybe<StringExpression>;
   email?: InputMaybe<StringExpression>;
-  files?: InputMaybe<FileExpression>;
+  avatar?: InputMaybe<FileExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
   groups?: InputMaybe<GroupExpression>;
@@ -12874,13 +12869,13 @@ export type UserPhonesRelationConnection = {
   totalCount?: Maybe<Scalars['Int']>;
   /** 分页信息 */
   pageInfo?: Maybe<PageInfo>;
-  /** 边缘字段 */
+  /** 边缘 */
   edges?: Maybe<Array<Maybe<UserPhonesRelationEdge>>>;
 };
 
 /** 用户 手机号 关系连接 查询参数 */
 export type UserPhonesRelationConnectionQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -12928,7 +12923,7 @@ export type UserPhonesRelationConnectionQueryArguments = {
 
 /** 用户 手机号 关系列表 订阅参数 */
 export type UserPhonesRelationConnectionSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -12974,18 +12969,18 @@ export type UserPhonesRelationConnectionSubscriptionArguments = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
-/** 用户 手机号 关系 连接边缘 */
+/** 用户 手机号 关系 边缘 */
 export type UserPhonesRelationEdge = {
   __typename?: 'UserPhonesRelationEdge';
-  /** 节点字段 */
+  /** 节点 */
   node?: Maybe<UserPhonesRelation>;
-  /** 游标字段 */
+  /** 游标 */
   cursor?: Maybe<Scalars['String']>;
 };
 
 /** 用户 手机号 关系 查询表达式 */
 export type UserPhonesRelationExpression = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -13019,7 +13014,7 @@ export type UserPhonesRelationExpression = {
 
 /** 用户 手机号 关系 变更内容 */
 export type UserPhonesRelationInput = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 用户 引用 */
   userRef?: InputMaybe<Scalars['String']>;
@@ -13049,7 +13044,7 @@ export type UserPhonesRelationInput = {
 
 /** 用户 手机号 关系列表 变更参数  */
 export type UserPhonesRelationListMutationArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 用户 引用 */
   userRef?: InputMaybe<Scalars['String']>;
@@ -13081,7 +13076,7 @@ export type UserPhonesRelationListMutationArguments = {
 
 /** 用户 手机号 关系列表 查询参数 */
 export type UserPhonesRelationListQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -13129,7 +13124,7 @@ export type UserPhonesRelationListQueryArguments = {
 
 /** 用户 手机号 关系列表 订阅参数 */
 export type UserPhonesRelationListSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -13177,7 +13172,7 @@ export type UserPhonesRelationListSubscriptionArguments = {
 
 /** 用户 手机号 关系 变更参数 */
 export type UserPhonesRelationMutationArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 用户 引用 */
   userRef?: InputMaybe<Scalars['String']>;
@@ -13207,9 +13202,9 @@ export type UserPhonesRelationMutationArguments = {
   where?: InputMaybe<UserPhonesRelationExpression>;
 };
 
-/** 用户 手机号 关系 排序内容 */
+/** 用户 手机号 关系 排序 */
 export type UserPhonesRelationOrderBy = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<Sort>;
   /** 用户 引用 */
   userRef?: InputMaybe<Sort>;
@@ -13233,11 +13228,11 @@ export type UserPhonesRelationOrderBy = {
   updateTime?: InputMaybe<Sort>;
   /** 创建组 */
   createGroupId?: InputMaybe<Sort>;
-  /** 唯一标识 数量 */
+  /** 用户 手机号 关系 数量 */
   idCount?: InputMaybe<Sort>;
-  /** 唯一标识 最大值 */
+  /** ID 最大值 */
   idMax?: InputMaybe<Sort>;
-  /** 唯一标识 最小值 */
+  /** ID 最小值 */
   idMin?: InputMaybe<Sort>;
   /** 用户 引用 数量 */
   userRefCount?: InputMaybe<Sort>;
@@ -13255,7 +13250,7 @@ export type UserPhonesRelationOrderBy = {
 
 /** 用户 手机号 关系 查询参数 */
 export type UserPhonesRelationQueryArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -13291,7 +13286,7 @@ export type UserPhonesRelationQueryArguments = {
 
 /** 用户 手机号 关系 订阅参数 */
 export type UserPhonesRelationSubscriptionArguments = {
-  /** 唯一标识 */
+  /** ID */
   id?: InputMaybe<StringExpression>;
   /** 用户 引用 */
   userRef?: InputMaybe<StringExpression>;
@@ -13343,8 +13338,8 @@ export type UserQueryArguments = {
   hash?: InputMaybe<StringExpression>;
   /** 邮箱 */
   email?: InputMaybe<StringExpression>;
-  /** 文件 */
-  files?: InputMaybe<FileExpression>;
+  /** 头像 */
+  avatar?: InputMaybe<FileExpression>;
   /** 手机号 */
   phones?: InputMaybe<StringExpression>;
   /** 禁用 */
@@ -13407,8 +13402,8 @@ export type UserSubscriptionArguments = {
   hash?: InputMaybe<StringExpression>;
   /** 邮箱 */
   email?: InputMaybe<StringExpression>;
-  /** 文件 */
-  files?: InputMaybe<FileExpression>;
+  /** 头像 */
+  avatar?: InputMaybe<FileExpression>;
   /** 手机号 */
   phones?: InputMaybe<StringExpression>;
   /** 禁用 */

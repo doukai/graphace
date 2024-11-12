@@ -388,9 +388,9 @@ export type NamespaceGraphenceTranslation = {
 
 export type NamespaceGraphqlTranslation = {
 	objects: {
-		CurrentUser: {
+		Current: {
 			/**
-			 * C​u​r​r​e​n​t​U​s​e​r
+			 * C​u​r​r​e​n​t
 			 */
 			name: string
 			fields: {
@@ -1730,9 +1730,9 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				ptype: {
+				policy: {
 					/**
-					 * p​t​y​p​e
+					 * p​o​l​i​c​y
 					 */
 					name: string
 				}
@@ -2520,9 +2520,9 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				files: {
+				avatar: {
 					/**
-					 * f​i​l​e​s
+					 * a​v​a​t​a​r
 					 */
 					name: string
 				}
@@ -3791,9 +3791,9 @@ export type TranslationFunctions = {
 	}
 	graphql: {
 		objects: {
-			CurrentUser: {
+			Current: {
 				/**
-				 * CurrentUser
+				 * Current
 				 */
 				name: () => LocalizedString
 				fields: {
@@ -5133,9 +5133,9 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					ptype: {
+					policy: {
 						/**
-						 * ptype
+						 * policy
 						 */
 						name: () => LocalizedString
 					}
@@ -5923,9 +5923,9 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					files: {
+					avatar: {
 						/**
-						 * files
+						 * avatar
 						 */
 						name: () => LocalizedString
 					}

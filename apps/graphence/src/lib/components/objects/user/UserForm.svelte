@@ -183,8 +183,8 @@
 			{#if permissions.auth('User::email::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.email.name()} name="email" bind:value={node.email} readonly={!permissions.auth('User::email::WRITE')} errors={errors.email} />
 			{/if}
-			{#if permissions.auth('User::files::*')}
-			<FileItem label={$LL.graphql.objects.User.fields.files.name()} name="files" bind:value={node.files} readonly={!permissions.auth('User::files::WRITE')} list errors={errors.files} on:upload />
+			{#if permissions.auth('User::avatar::*')}
+			<FileItem label={$LL.graphql.objects.User.fields.avatar.name()} name="avatar" bind:value={node.avatar} readonly={!permissions.auth('User::avatar::WRITE')} errors={errors.avatar} on:upload />
 			{/if}
 			{#if permissions.auth('User::phones::*')}
 			<StringItem label={$LL.graphql.objects.User.fields.phones.name()} name="phones" bind:value={node.phones} readonly={!permissions.auth('User::phones::WRITE')} list errors={errors.phones} />

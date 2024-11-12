@@ -185,8 +185,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "CurrentUser",
-        "description": "当前用户",
+        "name": "Current",
+        "description": "Current",
         "isOneOf": null,
         "fields": [
           {
@@ -473,7 +473,7 @@
           },
           {
             "name": "idCount",
-            "description": "Count of ID",
+            "description": "Count of 文件",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -671,7 +671,7 @@
         "fields": [
           {
             "name": "totalCount",
-            "description": "Total Count",
+            "description": "Total",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -718,7 +718,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "FileConnectionQueryArguments",
-        "description": "Query Connection Arguments for 文件",
+        "description": "Query Arguments for 文件 Connection",
         "isOneOf": false,
         "fields": null,
         "inputFields": [
@@ -1018,7 +1018,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "FileConnectionSubscriptionArguments",
-        "description": "Subscription List Arguments for 文件",
+        "description": "Subscription Arguments for 文件 List",
         "isOneOf": false,
         "fields": null,
         "inputFields": [
@@ -1742,7 +1742,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "FileListMutationArguments",
-        "description": "Mutation List Arguments for 文件",
+        "description": "Mutation Arguments for 文件 List",
         "isOneOf": false,
         "fields": null,
         "inputFields": [
@@ -1938,7 +1938,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "FileListQueryArguments",
-        "description": "Query List Arguments for 文件",
+        "description": "Query Arguments for 文件 List",
         "isOneOf": false,
         "fields": null,
         "inputFields": [
@@ -2238,7 +2238,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "FileListSubscriptionArguments",
-        "description": "Subscription List Arguments for 文件",
+        "description": "Subscription Arguments for 文件 List",
         "isOneOf": false,
         "fields": null,
         "inputFields": [
@@ -2892,7 +2892,7 @@
           },
           {
             "name": "idCount",
-            "description": "Count of ID",
+            "description": "Count of 文件",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -3539,7 +3539,7 @@
         "fields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -3662,8 +3662,8 @@
                 "deprecationReason": null
               },
               {
-                "name": "files",
-                "description": "文件",
+                "name": "avatar",
+                "description": "头像",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "FileExpression",
@@ -4205,7 +4205,7 @@
           },
           {
             "name": "idCount",
-            "description": "唯一标识 数量",
+            "description": "用户 文件 关系 数量",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -4217,7 +4217,7 @@
           },
           {
             "name": "idMax",
-            "description": "唯一标识 最大值",
+            "description": "ID 最大值",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -4229,7 +4229,7 @@
           },
           {
             "name": "idMin",
-            "description": "唯一标识 最小值",
+            "description": "ID 最小值",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -4355,7 +4355,7 @@
           },
           {
             "name": "edges",
-            "description": "边缘字段",
+            "description": "边缘",
             "args": [],
             "type": {
               "kind": "LIST",
@@ -4384,7 +4384,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -4684,7 +4684,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -4978,12 +4978,12 @@
       {
         "kind": "OBJECT",
         "name": "FileUserRelationEdge",
-        "description": "用户 文件 关系 连接边缘",
+        "description": "用户 文件 关系 边缘",
         "isOneOf": null,
         "fields": [
           {
             "name": "node",
-            "description": "节点字段",
+            "description": "节点",
             "args": [],
             "type": {
               "kind": "OBJECT",
@@ -4995,7 +4995,7 @@
           },
           {
             "name": "cursor",
-            "description": "游标字段",
+            "description": "游标",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -5020,7 +5020,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -5228,7 +5228,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -5408,7 +5408,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -5604,7 +5604,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -5904,7 +5904,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -6204,7 +6204,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -6390,13 +6390,13 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "FileUserRelationOrderBy",
-        "description": "用户 文件 关系 排序内容",
+        "description": "用户 文件 关系 排序",
         "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -6552,7 +6552,7 @@
           },
           {
             "name": "idCount",
-            "description": "唯一标识 数量",
+            "description": "用户 文件 关系 数量",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -6564,7 +6564,7 @@
           },
           {
             "name": "idMax",
-            "description": "唯一标识 最大值",
+            "description": "ID 最大值",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -6576,7 +6576,7 @@
           },
           {
             "name": "idMin",
-            "description": "唯一标识 最小值",
+            "description": "ID 最小值",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -6672,7 +6672,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -6900,7 +6900,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -8069,8 +8069,8 @@
                 "deprecationReason": null
               },
               {
-                "name": "files",
-                "description": "文件",
+                "name": "avatar",
+                "description": "头像",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "FileExpression",
@@ -9005,7 +9005,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -9270,7 +9270,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -9864,7 +9864,7 @@
           },
           {
             "name": "subGroupsConnection",
-            "description": "下级 连接字段",
+            "description": "下级 连接",
             "args": [
               {
                 "name": "id",
@@ -10296,8 +10296,8 @@
                 "deprecationReason": null
               },
               {
-                "name": "files",
-                "description": "文件",
+                "name": "avatar",
+                "description": "头像",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "FileExpression",
@@ -10590,7 +10590,7 @@
           },
           {
             "name": "usersConnection",
-            "description": "用户 连接字段",
+            "description": "用户 连接",
             "args": [
               {
                 "name": "id",
@@ -10689,8 +10689,8 @@
                 "deprecationReason": null
               },
               {
-                "name": "files",
-                "description": "文件",
+                "name": "avatar",
+                "description": "头像",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "FileExpression",
@@ -11304,7 +11304,7 @@
           },
           {
             "name": "rolesConnection",
-            "description": "角色 连接字段",
+            "description": "角色 连接",
             "args": [
               {
                 "name": "id",
@@ -11629,7 +11629,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -11862,11 +11862,11 @@
           },
           {
             "name": "groupUserRelationConnection",
-            "description": "用户 组 关系 连接字段",
+            "description": "用户 组 关系 连接",
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -12103,7 +12103,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -12336,11 +12336,11 @@
           },
           {
             "name": "groupRoleRelationConnection",
-            "description": "角色 组 关系 连接字段",
+            "description": "角色 组 关系 连接",
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -12573,7 +12573,7 @@
           },
           {
             "name": "idCount",
-            "description": "ID 数量",
+            "description": "组 数量",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -12765,7 +12765,7 @@
           },
           {
             "name": "deepSum",
-            "description": "层级 合集",
+            "description": "层级 合计",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -12777,7 +12777,7 @@
           },
           {
             "name": "deepAvg",
-            "description": "层级 平均数",
+            "description": "层级 平均值",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -12877,7 +12877,7 @@
           },
           {
             "name": "edges",
-            "description": "边缘字段",
+            "description": "边缘",
             "args": [],
             "type": {
               "kind": "LIST",
@@ -13692,12 +13692,12 @@
       {
         "kind": "OBJECT",
         "name": "GroupEdge",
-        "description": "组 连接边缘",
+        "description": "组 边缘",
         "isOneOf": null,
         "fields": [
           {
             "name": "node",
-            "description": "节点字段",
+            "description": "节点",
             "args": [],
             "type": {
               "kind": "OBJECT",
@@ -13709,7 +13709,7 @@
           },
           {
             "name": "cursor",
-            "description": "游标字段",
+            "description": "游标",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -15740,7 +15740,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "GroupOrderBy",
-        "description": "组 排序内容",
+        "description": "组 排序",
         "isOneOf": false,
         "fields": null,
         "inputFields": [
@@ -16058,7 +16058,7 @@
           },
           {
             "name": "idCount",
-            "description": "ID 数量",
+            "description": "组 数量",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -16250,7 +16250,7 @@
           },
           {
             "name": "deepSum",
-            "description": "层级 合集",
+            "description": "层级 合计",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -16262,7 +16262,7 @@
           },
           {
             "name": "deepAvg",
-            "description": "层级 平均数",
+            "description": "层级 平均值",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -16633,7 +16633,7 @@
         "fields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -17323,7 +17323,7 @@
           },
           {
             "name": "idCount",
-            "description": "唯一标识 数量",
+            "description": "角色 组 关系 数量",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -17335,7 +17335,7 @@
           },
           {
             "name": "idMax",
-            "description": "唯一标识 最大值",
+            "description": "ID 最大值",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -17347,7 +17347,7 @@
           },
           {
             "name": "idMin",
-            "description": "唯一标识 最小值",
+            "description": "ID 最小值",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -17473,7 +17473,7 @@
           },
           {
             "name": "edges",
-            "description": "边缘字段",
+            "description": "边缘",
             "args": [],
             "type": {
               "kind": "LIST",
@@ -17502,7 +17502,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -17802,7 +17802,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -18096,12 +18096,12 @@
       {
         "kind": "OBJECT",
         "name": "GroupRoleRelationEdge",
-        "description": "角色 组 关系 连接边缘",
+        "description": "角色 组 关系 边缘",
         "isOneOf": null,
         "fields": [
           {
             "name": "node",
-            "description": "节点字段",
+            "description": "节点",
             "args": [],
             "type": {
               "kind": "OBJECT",
@@ -18113,7 +18113,7 @@
           },
           {
             "name": "cursor",
-            "description": "游标字段",
+            "description": "游标",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -18138,7 +18138,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -18346,7 +18346,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -18526,7 +18526,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -18722,7 +18722,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -19022,7 +19022,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -19322,7 +19322,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -19508,13 +19508,13 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "GroupRoleRelationOrderBy",
-        "description": "角色 组 关系 排序内容",
+        "description": "角色 组 关系 排序",
         "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -19670,7 +19670,7 @@
           },
           {
             "name": "idCount",
-            "description": "唯一标识 数量",
+            "description": "角色 组 关系 数量",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -19682,7 +19682,7 @@
           },
           {
             "name": "idMax",
-            "description": "唯一标识 最大值",
+            "description": "ID 最大值",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -19694,7 +19694,7 @@
           },
           {
             "name": "idMin",
-            "description": "唯一标识 最小值",
+            "description": "ID 最小值",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -19790,7 +19790,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -20018,7 +20018,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -20569,7 +20569,7 @@
         "fields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -20692,8 +20692,8 @@
                 "deprecationReason": null
               },
               {
-                "name": "files",
-                "description": "文件",
+                "name": "avatar",
+                "description": "头像",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "FileExpression",
@@ -21331,7 +21331,7 @@
           },
           {
             "name": "idCount",
-            "description": "唯一标识 数量",
+            "description": "用户 组 关系 数量",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -21343,7 +21343,7 @@
           },
           {
             "name": "idMax",
-            "description": "唯一标识 最大值",
+            "description": "ID 最大值",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -21355,7 +21355,7 @@
           },
           {
             "name": "idMin",
-            "description": "唯一标识 最小值",
+            "description": "ID 最小值",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -21481,7 +21481,7 @@
           },
           {
             "name": "edges",
-            "description": "边缘字段",
+            "description": "边缘",
             "args": [],
             "type": {
               "kind": "LIST",
@@ -21510,7 +21510,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -21810,7 +21810,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -22104,12 +22104,12 @@
       {
         "kind": "OBJECT",
         "name": "GroupUserRelationEdge",
-        "description": "用户 组 关系 连接边缘",
+        "description": "用户 组 关系 边缘",
         "isOneOf": null,
         "fields": [
           {
             "name": "node",
-            "description": "节点字段",
+            "description": "节点",
             "args": [],
             "type": {
               "kind": "OBJECT",
@@ -22121,7 +22121,7 @@
           },
           {
             "name": "cursor",
-            "description": "游标字段",
+            "description": "游标",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -22146,7 +22146,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -22354,7 +22354,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -22534,7 +22534,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -22730,7 +22730,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -23030,7 +23030,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -23330,7 +23330,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -23516,13 +23516,13 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "GroupUserRelationOrderBy",
-        "description": "用户 组 关系 排序内容",
+        "description": "用户 组 关系 排序",
         "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -23678,7 +23678,7 @@
           },
           {
             "name": "idCount",
-            "description": "唯一标识 数量",
+            "description": "用户 组 关系 数量",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -23690,7 +23690,7 @@
           },
           {
             "name": "idMax",
-            "description": "唯一标识 最大值",
+            "description": "ID 最大值",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -23702,7 +23702,7 @@
           },
           {
             "name": "idMin",
-            "description": "唯一标识 最小值",
+            "description": "ID 最小值",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -23798,7 +23798,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -24026,7 +24026,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -25380,16 +25380,12 @@
                 "deprecationReason": null
               },
               {
-                "name": "files",
-                "description": "文件",
+                "name": "avatar",
+                "description": "头像",
                 "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "FileInput",
-                    "ofType": null
-                  }
+                  "kind": "INPUT_OBJECT",
+                  "name": "FileInput",
+                  "ofType": null
                 },
                 "defaultValue": null,
                 "isDeprecated": false,
@@ -25761,16 +25757,12 @@
                 "deprecationReason": null
               },
               {
-                "name": "files",
-                "description": "文件",
+                "name": "avatar",
+                "description": "头像",
                 "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "FileInput",
-                    "ofType": null
-                  }
+                  "kind": "INPUT_OBJECT",
+                  "name": "FileInput",
+                  "ofType": null
                 },
                 "defaultValue": null,
                 "isDeprecated": false,
@@ -28135,7 +28127,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "SCALAR",
                   "name": "ID",
@@ -28316,7 +28308,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "SCALAR",
                   "name": "ID",
@@ -28505,7 +28497,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "SCALAR",
                   "name": "ID",
@@ -28698,7 +28690,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "SCALAR",
                   "name": "ID",
@@ -28899,7 +28891,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "SCALAR",
                   "name": "ID",
@@ -29092,7 +29084,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "SCALAR",
                   "name": "ID",
@@ -29293,7 +29285,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "SCALAR",
                   "name": "ID",
@@ -29486,7 +29478,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "SCALAR",
                   "name": "ID",
@@ -29687,7 +29679,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "SCALAR",
                   "name": "ID",
@@ -29880,7 +29872,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "SCALAR",
                   "name": "ID",
@@ -30081,7 +30073,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "SCALAR",
                   "name": "ID",
@@ -30274,7 +30266,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "SCALAR",
                   "name": "ID",
@@ -30475,7 +30467,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "SCALAR",
                   "name": "ID",
@@ -30668,7 +30660,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "SCALAR",
                   "name": "ID",
@@ -33012,7 +33004,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -33594,7 +33586,7 @@
           },
           {
             "name": "rolesConnection",
-            "description": "角色 连接字段",
+            "description": "角色 连接",
             "args": [
               {
                 "name": "id",
@@ -33919,7 +33911,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -34152,11 +34144,11 @@
           },
           {
             "name": "permissionRoleRelationConnection",
-            "description": "角色 权限 关系 连接字段",
+            "description": "角色 权限 关系 连接",
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -34389,7 +34381,7 @@
           },
           {
             "name": "nameCount",
-            "description": "名称 数量",
+            "description": "权限 数量",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -34623,7 +34615,7 @@
           },
           {
             "name": "edges",
-            "description": "边缘字段",
+            "description": "边缘",
             "args": [],
             "type": {
               "kind": "LIST",
@@ -35318,12 +35310,12 @@
       {
         "kind": "OBJECT",
         "name": "PermissionEdge",
-        "description": "权限 连接边缘",
+        "description": "权限 边缘",
         "isOneOf": null,
         "fields": [
           {
             "name": "node",
-            "description": "节点字段",
+            "description": "节点",
             "args": [],
             "type": {
               "kind": "OBJECT",
@@ -35335,7 +35327,7 @@
           },
           {
             "name": "cursor",
-            "description": "游标字段",
+            "description": "游标",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -36970,7 +36962,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "PermissionOrderBy",
-        "description": "权限 排序内容",
+        "description": "权限 排序",
         "isOneOf": false,
         "fields": null,
         "inputFields": [
@@ -37192,7 +37184,7 @@
           },
           {
             "name": "nameCount",
-            "description": "名称 数量",
+            "description": "权限 数量",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -37647,7 +37639,7 @@
         "fields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -38277,7 +38269,7 @@
           },
           {
             "name": "idCount",
-            "description": "唯一标识 数量",
+            "description": "角色 权限 关系 数量",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -38289,7 +38281,7 @@
           },
           {
             "name": "idMax",
-            "description": "唯一标识 最大值",
+            "description": "ID 最大值",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -38301,7 +38293,7 @@
           },
           {
             "name": "idMin",
-            "description": "唯一标识 最小值",
+            "description": "ID 最小值",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -38427,7 +38419,7 @@
           },
           {
             "name": "edges",
-            "description": "边缘字段",
+            "description": "边缘",
             "args": [],
             "type": {
               "kind": "LIST",
@@ -38456,7 +38448,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -38756,7 +38748,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -39050,12 +39042,12 @@
       {
         "kind": "OBJECT",
         "name": "PermissionRoleRelationEdge",
-        "description": "角色 权限 关系 连接边缘",
+        "description": "角色 权限 关系 边缘",
         "isOneOf": null,
         "fields": [
           {
             "name": "node",
-            "description": "节点字段",
+            "description": "节点",
             "args": [],
             "type": {
               "kind": "OBJECT",
@@ -39067,7 +39059,7 @@
           },
           {
             "name": "cursor",
-            "description": "游标字段",
+            "description": "游标",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -39092,7 +39084,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -39300,7 +39292,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -39480,7 +39472,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -39676,7 +39668,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -39976,7 +39968,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -40276,7 +40268,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -40462,13 +40454,13 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "PermissionRoleRelationOrderBy",
-        "description": "角色 权限 关系 排序内容",
+        "description": "角色 权限 关系 排序",
         "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -40624,7 +40616,7 @@
           },
           {
             "name": "idCount",
-            "description": "唯一标识 数量",
+            "description": "角色 权限 关系 数量",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -40636,7 +40628,7 @@
           },
           {
             "name": "idMax",
-            "description": "唯一标识 最大值",
+            "description": "ID 最大值",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -40648,7 +40640,7 @@
           },
           {
             "name": "idMin",
-            "description": "唯一标识 最小值",
+            "description": "ID 最小值",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -40744,7 +40736,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -40972,7 +40964,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -41488,7 +41480,7 @@
         "inputFields": [
           {
             "name": "opr",
-            "description": "条件符号",
+            "description": "条件",
             "type": {
               "kind": "ENUM",
               "name": "Operator",
@@ -41534,7 +41526,7 @@
       {
         "kind": "OBJECT",
         "name": "Policy",
-        "description": null,
+        "description": "Policy",
         "isOneOf": null,
         "fields": [
           {
@@ -41550,7 +41542,7 @@
             "deprecationReason": null
           },
           {
-            "name": "ptype",
+            "name": "policy",
             "description": null,
             "args": [],
             "type": {
@@ -41890,8 +41882,8 @@
                 "deprecationReason": null
               },
               {
-                "name": "files",
-                "description": "文件",
+                "name": "avatar",
+                "description": "头像",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "FileExpression",
@@ -42275,8 +42267,8 @@
                 "deprecationReason": null
               },
               {
-                "name": "files",
-                "description": "文件",
+                "name": "avatar",
+                "description": "头像",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "FileExpression",
@@ -42736,8 +42728,8 @@
                 "deprecationReason": null
               },
               {
-                "name": "files",
-                "description": "文件",
+                "name": "avatar",
+                "description": "头像",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "FileExpression",
@@ -47014,7 +47006,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -47231,7 +47223,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -47524,7 +47516,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -47813,7 +47805,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -48042,7 +48034,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -48347,7 +48339,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -48648,7 +48640,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -48877,7 +48869,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -49182,7 +49174,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -49483,7 +49475,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -49712,7 +49704,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -50017,7 +50009,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -50318,7 +50310,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -50547,7 +50539,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -50852,7 +50844,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -51153,7 +51145,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -51382,7 +51374,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -51687,7 +51679,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -51988,7 +51980,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -52217,7 +52209,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -52522,7 +52514,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -52823,7 +52815,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "CurrentUser",
+              "name": "Current",
               "ofType": null
             },
             "isDeprecated": false,
@@ -53467,7 +53459,7 @@
           },
           {
             "name": "fileConnection",
-            "description": "Query Connection for 文件",
+            "description": "Query Field for 文件 Connection",
             "args": [
               {
                 "name": "id",
@@ -53968,7 +53960,7 @@
           },
           {
             "name": "idCount",
-            "description": "ID 数量",
+            "description": "租户 数量",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -54123,7 +54115,7 @@
           },
           {
             "name": "edges",
-            "description": "边缘字段",
+            "description": "边缘",
             "args": [],
             "type": {
               "kind": "LIST",
@@ -54698,12 +54690,12 @@
       {
         "kind": "OBJECT",
         "name": "RealmEdge",
-        "description": "租户 连接边缘",
+        "description": "租户 边缘",
         "isOneOf": null,
         "fields": [
           {
             "name": "node",
-            "description": "节点字段",
+            "description": "节点",
             "args": [],
             "type": {
               "kind": "OBJECT",
@@ -54715,7 +54707,7 @@
           },
           {
             "name": "cursor",
-            "description": "游标字段",
+            "description": "游标",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -55966,7 +55958,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "RealmOrderBy",
-        "description": "租户 排序内容",
+        "description": "租户 排序",
         "isOneOf": false,
         "fields": null,
         "inputFields": [
@@ -56104,7 +56096,7 @@
           },
           {
             "name": "idCount",
-            "description": "ID 数量",
+            "description": "租户 数量",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -56770,8 +56762,8 @@
                 "deprecationReason": null
               },
               {
-                "name": "files",
-                "description": "文件",
+                "name": "avatar",
+                "description": "头像",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "FileExpression",
@@ -58284,7 +58276,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -58549,7 +58541,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -58814,7 +58806,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -59079,7 +59071,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -59439,8 +59431,8 @@
                 "deprecationReason": null
               },
               {
-                "name": "files",
-                "description": "文件",
+                "name": "avatar",
+                "description": "头像",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "FileExpression",
@@ -59733,7 +59725,7 @@
           },
           {
             "name": "usersConnection",
-            "description": "用户 连接字段",
+            "description": "用户 连接",
             "args": [
               {
                 "name": "id",
@@ -59832,8 +59824,8 @@
                 "deprecationReason": null
               },
               {
-                "name": "files",
-                "description": "文件",
+                "name": "avatar",
+                "description": "头像",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "FileExpression",
@@ -60435,7 +60427,7 @@
           },
           {
             "name": "groupsConnection",
-            "description": "组 连接字段",
+            "description": "组 连接",
             "args": [
               {
                 "name": "id",
@@ -61065,7 +61057,7 @@
           },
           {
             "name": "compositesConnection",
-            "description": "组合 连接字段",
+            "description": "组合 连接",
             "args": [
               {
                 "name": "id",
@@ -61647,7 +61639,7 @@
           },
           {
             "name": "permissionsConnection",
-            "description": "权限 连接字段",
+            "description": "权限 连接",
             "args": [
               {
                 "name": "name",
@@ -61912,7 +61904,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -62145,11 +62137,11 @@
           },
           {
             "name": "roleUserRelationConnection",
-            "description": "用户 角色 关系 连接字段",
+            "description": "用户 角色 关系 连接",
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -62386,7 +62378,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -62619,11 +62611,11 @@
           },
           {
             "name": "groupRoleRelationConnection",
-            "description": "角色 组 关系 连接字段",
+            "description": "角色 组 关系 连接",
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -62860,7 +62852,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -63093,11 +63085,11 @@
           },
           {
             "name": "roleCompositeRelationConnection",
-            "description": "角色 角色 关系 连接字段",
+            "description": "角色 角色 关系 连接",
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -63334,7 +63326,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -63567,11 +63559,11 @@
           },
           {
             "name": "permissionRoleRelationConnection",
-            "description": "角色 权限 关系 连接字段",
+            "description": "角色 权限 关系 连接",
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -63804,7 +63796,7 @@
           },
           {
             "name": "idCount",
-            "description": "ID 数量",
+            "description": "角色 数量",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -63947,7 +63939,7 @@
         "fields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -64625,7 +64617,7 @@
           },
           {
             "name": "idCount",
-            "description": "唯一标识 数量",
+            "description": "角色 角色 关系 数量",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -64637,7 +64629,7 @@
           },
           {
             "name": "idMax",
-            "description": "唯一标识 最大值",
+            "description": "ID 最大值",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -64649,7 +64641,7 @@
           },
           {
             "name": "idMin",
-            "description": "唯一标识 最小值",
+            "description": "ID 最小值",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -64775,7 +64767,7 @@
           },
           {
             "name": "edges",
-            "description": "边缘字段",
+            "description": "边缘",
             "args": [],
             "type": {
               "kind": "LIST",
@@ -64804,7 +64796,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -65104,7 +65096,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -65398,12 +65390,12 @@
       {
         "kind": "OBJECT",
         "name": "RoleCompositeRelationEdge",
-        "description": "角色 角色 关系 连接边缘",
+        "description": "角色 角色 关系 边缘",
         "isOneOf": null,
         "fields": [
           {
             "name": "node",
-            "description": "节点字段",
+            "description": "节点",
             "args": [],
             "type": {
               "kind": "OBJECT",
@@ -65415,7 +65407,7 @@
           },
           {
             "name": "cursor",
-            "description": "游标字段",
+            "description": "游标",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -65440,7 +65432,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -65648,7 +65640,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -65828,7 +65820,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -66024,7 +66016,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -66324,7 +66316,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -66624,7 +66616,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -66810,13 +66802,13 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "RoleCompositeRelationOrderBy",
-        "description": "角色 角色 关系 排序内容",
+        "description": "角色 角色 关系 排序",
         "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -66972,7 +66964,7 @@
           },
           {
             "name": "idCount",
-            "description": "唯一标识 数量",
+            "description": "角色 角色 关系 数量",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -66984,7 +66976,7 @@
           },
           {
             "name": "idMax",
-            "description": "唯一标识 最大值",
+            "description": "ID 最大值",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -66996,7 +66988,7 @@
           },
           {
             "name": "idMin",
-            "description": "唯一标识 最小值",
+            "description": "ID 最小值",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -67092,7 +67084,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -67320,7 +67312,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -67571,7 +67563,7 @@
           },
           {
             "name": "edges",
-            "description": "边缘字段",
+            "description": "边缘",
             "args": [],
             "type": {
               "kind": "LIST",
@@ -68362,12 +68354,12 @@
       {
         "kind": "OBJECT",
         "name": "RoleEdge",
-        "description": "角色 连接边缘",
+        "description": "角色 边缘",
         "isOneOf": null,
         "fields": [
           {
             "name": "node",
-            "description": "节点字段",
+            "description": "节点",
             "args": [],
             "type": {
               "kind": "OBJECT",
@@ -68379,7 +68371,7 @@
           },
           {
             "name": "cursor",
-            "description": "游标字段",
+            "description": "游标",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -70374,7 +70366,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "RoleOrderBy",
-        "description": "角色 排序内容",
+        "description": "角色 排序",
         "isOneOf": false,
         "fields": null,
         "inputFields": [
@@ -70716,7 +70708,7 @@
           },
           {
             "name": "idCount",
-            "description": "ID 数量",
+            "description": "角色 数量",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -71459,7 +71451,7 @@
         "fields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -71582,8 +71574,8 @@
                 "deprecationReason": null
               },
               {
-                "name": "files",
-                "description": "文件",
+                "name": "avatar",
+                "description": "头像",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "FileExpression",
@@ -72209,7 +72201,7 @@
           },
           {
             "name": "idCount",
-            "description": "唯一标识 数量",
+            "description": "用户 角色 关系 数量",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -72221,7 +72213,7 @@
           },
           {
             "name": "idMax",
-            "description": "唯一标识 最大值",
+            "description": "ID 最大值",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -72233,7 +72225,7 @@
           },
           {
             "name": "idMin",
-            "description": "唯一标识 最小值",
+            "description": "ID 最小值",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -72359,7 +72351,7 @@
           },
           {
             "name": "edges",
-            "description": "边缘字段",
+            "description": "边缘",
             "args": [],
             "type": {
               "kind": "LIST",
@@ -72388,7 +72380,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -72688,7 +72680,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -72982,12 +72974,12 @@
       {
         "kind": "OBJECT",
         "name": "RoleUserRelationEdge",
-        "description": "用户 角色 关系 连接边缘",
+        "description": "用户 角色 关系 边缘",
         "isOneOf": null,
         "fields": [
           {
             "name": "node",
-            "description": "节点字段",
+            "description": "节点",
             "args": [],
             "type": {
               "kind": "OBJECT",
@@ -72999,7 +72991,7 @@
           },
           {
             "name": "cursor",
-            "description": "游标字段",
+            "description": "游标",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -73024,7 +73016,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -73232,7 +73224,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -73412,7 +73404,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -73608,7 +73600,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -73908,7 +73900,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -74208,7 +74200,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -74394,13 +74386,13 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "RoleUserRelationOrderBy",
-        "description": "用户 角色 关系 排序内容",
+        "description": "用户 角色 关系 排序",
         "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -74556,7 +74548,7 @@
           },
           {
             "name": "idCount",
-            "description": "唯一标识 数量",
+            "description": "用户 角色 关系 数量",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -74568,7 +74560,7 @@
           },
           {
             "name": "idMax",
-            "description": "唯一标识 最大值",
+            "description": "ID 最大值",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -74580,7 +74572,7 @@
           },
           {
             "name": "idMin",
-            "description": "唯一标识 最小值",
+            "description": "ID 最小值",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -74676,7 +74668,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -74904,7 +74896,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -75381,8 +75373,8 @@
                 "deprecationReason": null
               },
               {
-                "name": "files",
-                "description": "文件",
+                "name": "avatar",
+                "description": "头像",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "FileExpression",
@@ -75766,8 +75758,8 @@
                 "deprecationReason": null
               },
               {
-                "name": "files",
-                "description": "文件",
+                "name": "avatar",
+                "description": "头像",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "FileExpression",
@@ -76227,8 +76219,8 @@
                 "deprecationReason": null
               },
               {
-                "name": "files",
-                "description": "文件",
+                "name": "avatar",
+                "description": "头像",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "FileExpression",
@@ -80505,7 +80497,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -80722,7 +80714,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -81015,7 +81007,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -81304,7 +81296,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -81533,7 +81525,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -81838,7 +81830,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -82139,7 +82131,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -82368,7 +82360,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -82673,7 +82665,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -82974,7 +82966,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -83203,7 +83195,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -83508,7 +83500,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -83809,7 +83801,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -84038,7 +84030,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -84343,7 +84335,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -84644,7 +84636,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -84873,7 +84865,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -85178,7 +85170,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -85479,7 +85471,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -85708,7 +85700,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -86013,7 +86005,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -86844,7 +86836,7 @@
           },
           {
             "name": "fileConnection",
-            "description": "Subscription Connection for 文件",
+            "description": "Subscription Field for 文件 Connection",
             "args": [
               {
                 "name": "id",
@@ -87695,8 +87687,8 @@
             "deprecationReason": null
           },
           {
-            "name": "files",
-            "description": "文件",
+            "name": "avatar",
+            "description": "头像",
             "args": [
               {
                 "name": "id",
@@ -87873,88 +87865,12 @@
                 "defaultValue": null,
                 "isDeprecated": false,
                 "deprecationReason": null
-              },
-              {
-                "name": "first",
-                "description": "前...条数",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "last",
-                "description": "后...条数",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "offset",
-                "description": "偏移条数",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "orderBy",
-                "description": "排序",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "FileOrderBy",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "after",
-                "description": "取...之后",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "ID",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "before",
-                "description": "取...之前",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "ID",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
               }
             ],
             "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "File",
-                "ofType": null
-              }
+              "kind": "OBJECT",
+              "name": "File",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -87965,7 +87881,7 @@
             "args": [
               {
                 "name": "opr",
-                "description": "条件符号",
+                "description": "条件",
                 "type": {
                   "kind": "ENUM",
                   "name": "Operator",
@@ -89005,7 +88921,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -89270,7 +89186,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -89523,7 +89439,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -89788,7 +89704,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -90358,7 +90274,7 @@
           },
           {
             "name": "groupsConnection",
-            "description": "组 连接字段",
+            "description": "组 连接",
             "args": [
               {
                 "name": "id",
@@ -90940,7 +90856,7 @@
           },
           {
             "name": "rolesConnection",
-            "description": "角色 连接字段",
+            "description": "角色 连接",
             "args": [
               {
                 "name": "id",
@@ -91217,7 +91133,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -91438,11 +91354,11 @@
           },
           {
             "name": "userPhonesRelationConnection",
-            "description": "用户 手机号 关系 连接字段",
+            "description": "用户 手机号 关系 连接",
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -91667,7 +91583,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -91900,11 +91816,11 @@
           },
           {
             "name": "groupUserRelationConnection",
-            "description": "用户 组 关系 连接字段",
+            "description": "用户 组 关系 连接",
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -92141,7 +92057,7 @@
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -92374,11 +92290,11 @@
           },
           {
             "name": "roleUserRelationConnection",
-            "description": "用户 角色 关系 连接字段",
+            "description": "用户 角色 关系 连接",
             "args": [
               {
                 "name": "id",
-                "description": "唯一标识",
+                "description": "ID",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "StringExpression",
@@ -92611,7 +92527,7 @@
           },
           {
             "name": "idCount",
-            "description": "ID 数量",
+            "description": "用户 数量",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -92958,7 +92874,7 @@
           },
           {
             "name": "edges",
-            "description": "边缘字段",
+            "description": "边缘",
             "args": [],
             "type": {
               "kind": "LIST",
@@ -93082,8 +92998,8 @@
             "deprecationReason": null
           },
           {
-            "name": "files",
-            "description": "文件",
+            "name": "avatar",
+            "description": "头像",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "FileExpression",
@@ -93538,8 +93454,8 @@
             "deprecationReason": null
           },
           {
-            "name": "files",
-            "description": "文件",
+            "name": "avatar",
+            "description": "头像",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "FileExpression",
@@ -93893,12 +93809,12 @@
       {
         "kind": "OBJECT",
         "name": "UserEdge",
-        "description": "用户 连接边缘",
+        "description": "用户 边缘",
         "isOneOf": null,
         "fields": [
           {
             "name": "node",
-            "description": "节点字段",
+            "description": "节点",
             "args": [],
             "type": {
               "kind": "OBJECT",
@@ -93910,7 +93826,7 @@
           },
           {
             "name": "cursor",
-            "description": "游标字段",
+            "description": "游标",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -94030,8 +93946,8 @@
             "deprecationReason": null
           },
           {
-            "name": "files",
-            "description": "文件",
+            "name": "avatar",
+            "description": "头像",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "FileExpression",
@@ -94394,16 +94310,12 @@
             "deprecationReason": null
           },
           {
-            "name": "files",
-            "description": "文件",
+            "name": "avatar",
+            "description": "头像",
             "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "FileInput",
-                "ofType": null
-              }
+              "kind": "INPUT_OBJECT",
+              "name": "FileInput",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -94762,16 +94674,12 @@
             "deprecationReason": null
           },
           {
-            "name": "files",
-            "description": "文件",
+            "name": "avatar",
+            "description": "头像",
             "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "FileInput",
-                "ofType": null
-              }
+              "kind": "INPUT_OBJECT",
+              "name": "FileInput",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -95146,8 +95054,8 @@
             "deprecationReason": null
           },
           {
-            "name": "files",
-            "description": "文件",
+            "name": "avatar",
+            "description": "头像",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "FileExpression",
@@ -95602,8 +95510,8 @@
             "deprecationReason": null
           },
           {
-            "name": "files",
-            "description": "文件",
+            "name": "avatar",
+            "description": "头像",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "FileExpression",
@@ -96058,16 +95966,12 @@
             "deprecationReason": null
           },
           {
-            "name": "files",
-            "description": "文件",
+            "name": "avatar",
+            "description": "头像",
             "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "FileInput",
-                "ofType": null
-              }
+              "kind": "INPUT_OBJECT",
+              "name": "FileInput",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -96337,7 +96241,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "UserOrderBy",
-        "description": "用户 排序内容",
+        "description": "用户 排序",
         "isOneOf": false,
         "fields": null,
         "inputFields": [
@@ -96438,8 +96342,8 @@
             "deprecationReason": null
           },
           {
-            "name": "files",
-            "description": "文件",
+            "name": "avatar",
+            "description": "头像",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "FileOrderBy",
@@ -96715,7 +96619,7 @@
           },
           {
             "name": "idCount",
-            "description": "ID 数量",
+            "description": "用户 数量",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -97014,7 +96918,7 @@
         "fields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -97137,8 +97041,8 @@
                 "deprecationReason": null
               },
               {
-                "name": "files",
-                "description": "文件",
+                "name": "avatar",
+                "description": "头像",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "FileExpression",
@@ -97491,7 +97395,7 @@
           },
           {
             "name": "idCount",
-            "description": "唯一标识 数量",
+            "description": "用户 手机号 关系 数量",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -97503,7 +97407,7 @@
           },
           {
             "name": "idMax",
-            "description": "唯一标识 最大值",
+            "description": "ID 最大值",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -97515,7 +97419,7 @@
           },
           {
             "name": "idMin",
-            "description": "唯一标识 最小值",
+            "description": "ID 最小值",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -97641,7 +97545,7 @@
           },
           {
             "name": "edges",
-            "description": "边缘字段",
+            "description": "边缘",
             "args": [],
             "type": {
               "kind": "LIST",
@@ -97670,7 +97574,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -97958,7 +97862,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -98240,12 +98144,12 @@
       {
         "kind": "OBJECT",
         "name": "UserPhonesRelationEdge",
-        "description": "用户 手机号 关系 连接边缘",
+        "description": "用户 手机号 关系 边缘",
         "isOneOf": null,
         "fields": [
           {
             "name": "node",
-            "description": "节点字段",
+            "description": "节点",
             "args": [],
             "type": {
               "kind": "OBJECT",
@@ -98257,7 +98161,7 @@
           },
           {
             "name": "cursor",
-            "description": "游标字段",
+            "description": "游标",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -98282,7 +98186,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -98478,7 +98382,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -98646,7 +98550,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -98830,7 +98734,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -99118,7 +99022,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -99406,7 +99310,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -99580,13 +99484,13 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "UserPhonesRelationOrderBy",
-        "description": "用户 手机号 关系 排序内容",
+        "description": "用户 手机号 关系 排序",
         "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -99730,7 +99634,7 @@
           },
           {
             "name": "idCount",
-            "description": "唯一标识 数量",
+            "description": "用户 手机号 关系 数量",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -99742,7 +99646,7 @@
           },
           {
             "name": "idMax",
-            "description": "唯一标识 最大值",
+            "description": "ID 最大值",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -99754,7 +99658,7 @@
           },
           {
             "name": "idMin",
-            "description": "唯一标识 最小值",
+            "description": "ID 最小值",
             "type": {
               "kind": "ENUM",
               "name": "Sort",
@@ -99850,7 +99754,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -100066,7 +99970,7 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "唯一标识",
+            "description": "ID",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringExpression",
@@ -100377,8 +100281,8 @@
             "deprecationReason": null
           },
           {
-            "name": "files",
-            "description": "文件",
+            "name": "avatar",
+            "description": "头像",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "FileExpression",
@@ -100761,8 +100665,8 @@
             "deprecationReason": null
           },
           {
-            "name": "files",
-            "description": "文件",
+            "name": "avatar",
+            "description": "头像",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "FileExpression",
@@ -102135,118 +102039,14 @@
         "args": []
       },
       {
-        "name": "decry",
-        "description": "package:io.graphence.core",
-        "isRepeatable": false,
-        "locations": [
-          "FIELD_DEFINITION"
-        ],
-        "args": [
-          {
-            "name": "type",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ]
-      },
-      {
-        "name": "decry2",
-        "description": "package:io.graphence.core",
-        "isRepeatable": false,
-        "locations": [
-          "FIELD_DEFINITION"
-        ],
-        "args": [
-          {
-            "name": "type",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ]
-      },
-      {
         "name": "denyAll",
         "description": "package:io.graphoenix.core",
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "FIELD"
+          "FIELD",
+          "OBJECT"
         ],
         "args": []
-      },
-      {
-        "name": "encry",
-        "description": "package:io.graphence.core",
-        "isRepeatable": false,
-        "locations": [
-          "FIELD_DEFINITION"
-        ],
-        "args": [
-          {
-            "name": "type",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ]
-      },
-      {
-        "name": "encry2",
-        "description": "package:io.graphence.core",
-        "isRepeatable": false,
-        "locations": [
-          "FIELD_DEFINITION"
-        ],
-        "args": [
-          {
-            "name": "type",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ]
       },
       {
         "name": "fetch",
@@ -102327,8 +102127,8 @@
         "description": "package:io.graphoenix.core",
         "isRepeatable": false,
         "locations": [
-          "FIELD_DEFINITION",
-          "FIELD"
+          "FIELD",
+          "FIELD_DEFINITION"
         ],
         "args": [
           {
@@ -102422,8 +102222,8 @@
         "description": "package:io.graphoenix.core",
         "isRepeatable": false,
         "locations": [
-          "FIELD_DEFINITION",
-          "FIELD"
+          "FIELD",
+          "FIELD_DEFINITION"
         ],
         "args": []
       },
@@ -102469,9 +102269,9 @@
         "description": "package:io.graphoenix.core",
         "isRepeatable": false,
         "locations": [
-          "SUBSCRIPTION",
-          "FIELD_DEFINITION",
           "MUTATION",
+          "FIELD_DEFINITION",
+          "SUBSCRIPTION",
           "QUERY",
           "INPUT_OBJECT"
         ],
@@ -102547,9 +102347,9 @@
         "description": "package:io.graphoenix.core",
         "isRepeatable": false,
         "locations": [
-          "SUBSCRIPTION",
-          "FIELD_DEFINITION",
           "MUTATION",
+          "FIELD_DEFINITION",
+          "SUBSCRIPTION",
           "QUERY",
           "INPUT_OBJECT"
         ],
@@ -102577,9 +102377,9 @@
         "description": "package:io.graphoenix.jsonschema",
         "isRepeatable": false,
         "locations": [
+          "INPUT_FIELD_DEFINITION",
           "FIELD_DEFINITION",
           "OBJECT",
-          "INPUT_FIELD_DEFINITION",
           "INPUT_OBJECT"
         ],
         "args": [
@@ -103091,10 +102891,10 @@
         "description": "package:io.graphoenix.core",
         "isRepeatable": false,
         "locations": [
+          "MUTATION",
+          "FIELD_DEFINITION",
           "SUBSCRIPTION",
           "OBJECT",
-          "FIELD_DEFINITION",
-          "MUTATION",
           "QUERY"
         ],
         "args": [
@@ -103121,8 +102921,8 @@
         "description": "package:io.graphoenix.core",
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "FIELD"
+          "FIELD",
+          "OBJECT"
         ],
         "args": []
       },
@@ -103131,8 +102931,8 @@
         "description": "package:io.graphoenix.core",
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "FIELD"
+          "FIELD",
+          "OBJECT"
         ],
         "args": [
           {

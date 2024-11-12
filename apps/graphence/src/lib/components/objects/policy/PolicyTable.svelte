@@ -49,7 +49,7 @@
 <Table>
 	<thead>
 		<tr class="z-20">
-			<th>{$LL.graphql.objects.Policy.fields.ptype.name()}</th>
+			<th>{$LL.graphql.objects.Policy.fields.policy.name()}</th>
 			<th>{$LL.graphql.objects.Policy.fields.v0.name()}</th>
 			<th>{$LL.graphql.objects.Policy.fields.v1.name()}</th>
 			<th>{$LL.graphql.objects.Policy.fields.v2.name()}</th>
@@ -65,7 +65,7 @@
 			{#if nodes && nodes.length > 0}
 				{#each nodes as node}
 					<tr class="hover">
-						<td>{node?.ptype || ''}</td>
+						<td>{node?.policy || ''}</td>
 						<td>{node?.v0 || ''}</td>
 						<td>{node?.v1 || ''}</td>
 						<td>{node?.v2 || ''}</td>

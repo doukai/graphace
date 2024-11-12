@@ -2,8 +2,8 @@ import type { BaseTranslation } from '../../i18n-types';
 
 const en: BaseTranslation = {
 	objects: {
-		CurrentUser: {
-			name: 'CurrentUser',
+		Current: {
+			name: 'Current',
 			fields: {
 				id: {
 					name: 'id',
@@ -681,8 +681,8 @@ const en: BaseTranslation = {
 				id: {
 					name: 'id',
 				},
-				ptype: {
-					name: 'ptype',
+				policy: {
+					name: 'policy',
 				},
 				v0: {
 					name: 'v0',
@@ -1081,8 +1081,8 @@ const en: BaseTranslation = {
 				email: {
 					name: 'email',
 				},
-				files: {
-					name: 'files',
+				avatar: {
+					name: 'avatar',
 				},
 				phones: {
 					name: 'phones',

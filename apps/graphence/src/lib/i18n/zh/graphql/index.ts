@@ -2,8 +2,8 @@ import type { NamespaceGraphqlTranslation } from '../../i18n-types';
 
 const zh: NamespaceGraphqlTranslation = {
 	objects: {
-		CurrentUser: {
-			name: '当前用户',
+		Current: {
+			name: 'Current',
 			fields: {
 				id: {
 					name: 'ID',
@@ -71,7 +71,7 @@ const zh: NamespaceGraphqlTranslation = {
 					name: 'Create Group ID',
 				},
 				idCount: {
-					name: 'Count of ID',
+					name: 'Count of 文件',
 				},
 				idMax: {
 					name: 'Max of ID',
@@ -187,34 +187,34 @@ const zh: NamespaceGraphqlTranslation = {
 					name: '下级 统计字段',
 				},
 				subGroupsConnection: {
-					name: '下级 连接字段',
+					name: '下级 连接',
 				},
 				usersAggregate: {
 					name: '用户 统计字段',
 				},
 				usersConnection: {
-					name: '用户 连接字段',
+					name: '用户 连接',
 				},
 				rolesAggregate: {
 					name: '角色 统计字段',
 				},
 				rolesConnection: {
-					name: '角色 连接字段',
+					name: '角色 连接',
 				},
 				groupUserRelationAggregate: {
 					name: '用户 组 关系 统计字段',
 				},
 				groupUserRelationConnection: {
-					name: '用户 组 关系 连接字段',
+					name: '用户 组 关系 连接',
 				},
 				groupRoleRelationAggregate: {
 					name: '角色 组 关系 统计字段',
 				},
 				groupRoleRelationConnection: {
-					name: '角色 组 关系 连接字段',
+					name: '角色 组 关系 连接',
 				},
 				idCount: {
-					name: 'ID 数量',
+					name: '组 数量',
 				},
 				idMax: {
 					name: 'ID 最大值',
@@ -262,10 +262,10 @@ const zh: NamespaceGraphqlTranslation = {
 					name: '层级 数量',
 				},
 				deepSum: {
-					name: '层级 合集',
+					name: '层级 合计',
 				},
 				deepAvg: {
-					name: '层级 平均数',
+					name: '层级 平均值',
 				},
 				deepMax: {
 					name: '层级 最大值',
@@ -333,16 +333,16 @@ const zh: NamespaceGraphqlTranslation = {
 					name: '角色 统计字段',
 				},
 				rolesConnection: {
-					name: '角色 连接字段',
+					name: '角色 连接',
 				},
 				permissionRoleRelationAggregate: {
 					name: '角色 权限 关系 统计字段',
 				},
 				permissionRoleRelationConnection: {
-					name: '角色 权限 关系 连接字段',
+					name: '角色 权限 关系 连接',
 				},
 				nameCount: {
-					name: '名称 数量',
+					name: '权限 数量',
 				},
 				nameMax: {
 					name: '名称 最大值',
@@ -397,8 +397,8 @@ const zh: NamespaceGraphqlTranslation = {
 				id: {
 					name: 'id',
 				},
-				ptype: {
-					name: 'ptype',
+				policy: {
+					name: 'policy',
 				},
 				v0: {
 					name: 'v0',
@@ -457,7 +457,7 @@ const zh: NamespaceGraphqlTranslation = {
 					name: '创建组',
 				},
 				idCount: {
-					name: 'ID 数量',
+					name: '租户 数量',
 				},
 				idMax: {
 					name: 'ID 最大值',
@@ -552,52 +552,52 @@ const zh: NamespaceGraphqlTranslation = {
 					name: '用户 统计字段',
 				},
 				usersConnection: {
-					name: '用户 连接字段',
+					name: '用户 连接',
 				},
 				groupsAggregate: {
 					name: '组 统计字段',
 				},
 				groupsConnection: {
-					name: '组 连接字段',
+					name: '组 连接',
 				},
 				compositesAggregate: {
 					name: '组合 统计字段',
 				},
 				compositesConnection: {
-					name: '组合 连接字段',
+					name: '组合 连接',
 				},
 				permissionsAggregate: {
 					name: '权限 统计字段',
 				},
 				permissionsConnection: {
-					name: '权限 连接字段',
+					name: '权限 连接',
 				},
 				roleUserRelationAggregate: {
 					name: '用户 角色 关系 统计字段',
 				},
 				roleUserRelationConnection: {
-					name: '用户 角色 关系 连接字段',
+					name: '用户 角色 关系 连接',
 				},
 				groupRoleRelationAggregate: {
 					name: '角色 组 关系 统计字段',
 				},
 				groupRoleRelationConnection: {
-					name: '角色 组 关系 连接字段',
+					name: '角色 组 关系 连接',
 				},
 				roleCompositeRelationAggregate: {
 					name: '角色 角色 关系 统计字段',
 				},
 				roleCompositeRelationConnection: {
-					name: '角色 角色 关系 连接字段',
+					name: '角色 角色 关系 连接',
 				},
 				permissionRoleRelationAggregate: {
 					name: '角色 权限 关系 统计字段',
 				},
 				permissionRoleRelationConnection: {
-					name: '角色 权限 关系 连接字段',
+					name: '角色 权限 关系 连接',
 				},
 				idCount: {
-					name: 'ID 数量',
+					name: '角色 数量',
 				},
 				idMax: {
 					name: 'ID 最大值',
@@ -655,8 +655,8 @@ const zh: NamespaceGraphqlTranslation = {
 				email: {
 					name: '邮箱',
 				},
-				files: {
-					name: '文件',
+				avatar: {
+					name: '头像',
 				},
 				phones: {
 					name: '手机号',
@@ -713,34 +713,34 @@ const zh: NamespaceGraphqlTranslation = {
 					name: '组 统计字段',
 				},
 				groupsConnection: {
-					name: '组 连接字段',
+					name: '组 连接',
 				},
 				rolesAggregate: {
 					name: '角色 统计字段',
 				},
 				rolesConnection: {
-					name: '角色 连接字段',
+					name: '角色 连接',
 				},
 				userPhonesRelationAggregate: {
 					name: '用户 手机号 关系 统计字段',
 				},
 				userPhonesRelationConnection: {
-					name: '用户 手机号 关系 连接字段',
+					name: '用户 手机号 关系 连接',
 				},
 				groupUserRelationAggregate: {
 					name: '用户 组 关系 统计字段',
 				},
 				groupUserRelationConnection: {
-					name: '用户 组 关系 连接字段',
+					name: '用户 组 关系 连接',
 				},
 				roleUserRelationAggregate: {
 					name: '用户 角色 关系 统计字段',
 				},
 				roleUserRelationConnection: {
-					name: '用户 角色 关系 连接字段',
+					name: '用户 角色 关系 连接',
 				},
 				idCount: {
-					name: 'ID 数量',
+					name: '用户 数量',
 				},
 				idMax: {
 					name: 'ID 最大值',

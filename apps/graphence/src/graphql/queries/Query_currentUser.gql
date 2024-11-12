@@ -30,7 +30,7 @@ query Query_currentUser {
       name
       description
     }
-    files {
+    avatar {
       id
       name
     }
