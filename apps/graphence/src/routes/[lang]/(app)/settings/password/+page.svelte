@@ -38,7 +38,7 @@
 	};
 
 	const back = (event: CustomEvent<{}>) => {
-		to(`/${$locale}/logout`);
+		ot();
 	};
 </script>
 
