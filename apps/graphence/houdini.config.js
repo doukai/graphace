@@ -6,10 +6,7 @@ const config = {
 		}
 	},
 	watchSchema: {
-		// url: 'env:PUBLIC_GRAPHQL_URL',
-		url(env) {
-			return `${env.PUBLIC_GRAPHQL_URL}?Authorization=${env.AUTH_SCHEME} ${Buffer.from(env.AUTH_TOKEN).toString('base64')}`;
-		},
+		url: 'env:PUBLIC_GRAPHQL_URL',
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization(env) {
