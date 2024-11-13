@@ -6,11 +6,14 @@ const config = {
 		}
 	},
 	watchSchema: {
-		url: 'env:PUBLIC_GRAPHQL_URL',
+		// url: 'env:PUBLIC_GRAPHQL_URL',
+		url(env) {
+			return `${env.PUBLIC_GRAPHQL_URL}?Authorization=${env.AUTH_SCHEME} ${Buffer.from(env.AUTH_TOKEN).toString('base64')}`;
+		},
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization(env) {
-				return `${env.AUTH_SCHEME} ${Buffer.from(env.AUTH_TOKEN).toString('base64')}`
+				return `${env.AUTH_SCHEME} ${Buffer.from(env.AUTH_TOKEN).toString('base64')}`;
 			}
 		},
 		interval: 0
