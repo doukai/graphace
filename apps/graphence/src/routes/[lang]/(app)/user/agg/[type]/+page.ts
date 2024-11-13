@@ -4,7 +4,7 @@ import { createUserConnectionQueryStore } from '~/lib/stores/user/userQueryStore
 import { permissions } from '~/utils/auth-util';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await permissions.getTypes('User', 'File', 'Group', 'Role', 'Realm');
+    await permissions.getTypes('User', 'Group', 'Role', 'Realm');
     const fields = JSON.parse(event.url.searchParams.get('fields') || '[]');
     const queryArguments = JSON.parse(event.url.searchParams.get('queryArguments') || '{}');
     const showHeader = !event.url.searchParams.has('hideHeader');

@@ -4,8 +4,7 @@
 	import type { Errors, PermissionsStore} from '@graphace/commons';
 	import type { GraphQLError, GlobalGraphQLErrorMessageFunction, GraphQLErrorsFunction } from '@graphace/graphql';
 	import { Table, TableHead, TableLoading, TableEmpty, messageBoxs, notifications } from '@graphace/ui';
-	import { ObjectTd, StringTh, StringTd, BooleanTh, BooleanTd, FileTd } from '@graphace/ui-graphql';
-	import FileTh from '~/lib/components/objects/file/FileTh.svelte';
+	import { ObjectTd, StringTh, StringTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
@@ -332,13 +331,6 @@
 				on:filter={(e) => query()}
 			/>
 			{/if}
-			{#if permissions.auth('User::avatar::*')}
-			<FileTh
-				name={$LL.graphql.objects.User.fields.avatar.name()}
-				bind:expression={args.avatar}
-				on:filter={(e) => query()}
-			/>
-			{/if}
 			{#if permissions.auth('User::phones::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.phones.name()}
@@ -379,7 +371,7 @@
 		</tr>
 	</thead>
 	{#if isFetching}
-		<TableLoading rows={10} cols={11 + 2}/>
+		<TableLoading rows={10} cols={10 + 2}/>
 	{:else}
 		<tbody>
 			{#if nodes && nodes.length > 0}
@@ -434,16 +426,6 @@
 								on:save={(e) => updateField({ email: node?.email, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::email::WRITE')}
 								errors={errors[row]?.iterms?.email}
-							/>
-							{/if}
-							{#if permissions.auth('User::avatar::*')}
-							<FileTd
-								name="avatar"
-								bind:value={node.avatar}
-								on:save={(e) => updateField({ avatar: node?.avatar, where: { id: { val: node?.id } } }, row)}
-								readonly={!permissions.auth('User::avatar::WRITE')}
-								errors={errors[row]?.iterms?.avatar}
-								on:upload
 							/>
 							{/if}
 							{#if permissions.auth('User::phones::*')}
@@ -565,7 +547,7 @@
 					{/if}
 				{/each}
 			{:else}
-				<TableEmpty cols={11 + 2}/>
+				<TableEmpty cols={10 + 2}/>
 			{/if}
 		</tbody>
 	{/if}

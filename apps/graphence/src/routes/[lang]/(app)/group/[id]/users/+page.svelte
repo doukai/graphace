@@ -5,7 +5,7 @@
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import UserConnectionTable from '~/lib/components/objects/user/UserConnectionTable.svelte';
 	import type { UserInput, MutationUserArgs, QueryUserConnectionArgs } from '~/lib/types/schema';
-	import { Query_group_usersStore, Mutation_userStore, Mutation_group_usersStore, Mutation_singleUploadStore } from '$houdini';
+	import { Query_group_usersStore, Mutation_userStore, Mutation_group_usersStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -20,7 +20,6 @@
 	$: totalCount = $Query_group_users.data?.group?.usersConnection?.totalCount || 0;
 	const Mutation_user = new Mutation_userStore();
 	const Mutation_group_users = new Mutation_group_usersStore();
-	const Mutation_singleUpload = new Mutation_singleUploadStore();
 	let errors: Record<number, Errors> = {};
 
 	const fetch = (
@@ -143,10 +142,5 @@
 		on:gotoField={gotoField}
 		on:gotoSelect={gotoSelect}
 		on:back={back}
-		on:upload={(e) => {
-			Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
-				e.detail.then(result.data?.singleUpload)
-			);
-		}}
 	/>
 </Card>

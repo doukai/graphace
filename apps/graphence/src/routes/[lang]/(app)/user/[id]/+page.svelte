@@ -5,7 +5,7 @@
 	import UserForm from '~/lib/components/objects/user/UserForm.svelte';
 	import type { GraphQLError } from '@graphace/graphql';
 	import type { UserInput, MutationUserArgs } from '~/lib/types/schema';
-	import { Query_userStore, Mutation_userStore, Mutation_singleUploadStore } from '$houdini';
+	import { Query_userStore, Mutation_userStore } from '$houdini';
 	import type { PageData } from './$houdini';
 	import { validate } from '~/utils';
 	import { locale } from '$i18n/i18n-svelte';
@@ -15,7 +15,6 @@
 	$: node = $Query_user.data?.user;
 	$: urlName($page.url, node?.name || '');
 	const Mutation_user = new Mutation_userStore();
-	const Mutation_singleUpload = new Mutation_singleUploadStore();
 	let errors: Record<string, Errors> = {};
 
 	const mutation = (
@@ -60,10 +59,5 @@
 		on:mutation={mutation}
 		on:back={back}
 		on:gotoField={gotoField}
-		on:upload={(e) => {
-			Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
-				e.detail.then(result.data?.singleUpload)
-			);
-		}}
 	/>
 </Card>

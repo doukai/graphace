@@ -28,166 +28,6 @@ const en: BaseTranslation = {
 				}
 			}
 		},
-		File: {
-			name: 'File',
-			fields: {
-				id: {
-					name: 'id',
-				},
-				name: {
-					name: 'name',
-				},
-				contentType: {
-					name: 'contentType',
-				},
-				content: {
-					name: 'content',
-				},
-				url: {
-					name: 'url',
-				},
-				isDeprecated: {
-					name: 'isDeprecated',
-				},
-				version: {
-					name: 'version',
-				},
-				realmId: {
-					name: 'realmId',
-				},
-				createUserId: {
-					name: 'createUserId',
-				},
-				createTime: {
-					name: 'createTime',
-				},
-				updateUserId: {
-					name: 'updateUserId',
-				},
-				updateTime: {
-					name: 'updateTime',
-				},
-				createGroupId: {
-					name: 'createGroupId',
-				},
-				idCount: {
-					name: 'idCount',
-				},
-				idMax: {
-					name: 'idMax',
-				},
-				idMin: {
-					name: 'idMin',
-				},
-				nameCount: {
-					name: 'nameCount',
-				},
-				nameMax: {
-					name: 'nameMax',
-				},
-				nameMin: {
-					name: 'nameMin',
-				},
-				contentTypeCount: {
-					name: 'contentTypeCount',
-				},
-				contentTypeMax: {
-					name: 'contentTypeMax',
-				},
-				contentTypeMin: {
-					name: 'contentTypeMin',
-				},
-				contentCount: {
-					name: 'contentCount',
-				},
-				contentMax: {
-					name: 'contentMax',
-				},
-				contentMin: {
-					name: 'contentMin',
-				},
-				urlCount: {
-					name: 'urlCount',
-				},
-				urlMax: {
-					name: 'urlMax',
-				},
-				urlMin: {
-					name: 'urlMin',
-				}
-			}
-		},
-		FileUserRelation: {
-			name: 'FileUserRelation',
-			fields: {
-				id: {
-					name: 'id',
-				},
-				userRef: {
-					name: 'userRef',
-				},
-				user: {
-					name: 'user',
-				},
-				fileRef: {
-					name: 'fileRef',
-				},
-				file: {
-					name: 'file',
-				},
-				isDeprecated: {
-					name: 'isDeprecated',
-				},
-				version: {
-					name: 'version',
-				},
-				realmId: {
-					name: 'realmId',
-				},
-				createUserId: {
-					name: 'createUserId',
-				},
-				createTime: {
-					name: 'createTime',
-				},
-				updateUserId: {
-					name: 'updateUserId',
-				},
-				updateTime: {
-					name: 'updateTime',
-				},
-				createGroupId: {
-					name: 'createGroupId',
-				},
-				idCount: {
-					name: 'idCount',
-				},
-				idMax: {
-					name: 'idMax',
-				},
-				idMin: {
-					name: 'idMin',
-				},
-				userRefCount: {
-					name: 'userRefCount',
-				},
-				userRefMax: {
-					name: 'userRefMax',
-				},
-				userRefMin: {
-					name: 'userRefMin',
-				},
-				fileRefCount: {
-					name: 'fileRefCount',
-				},
-				fileRefMax: {
-					name: 'fileRefMax',
-				},
-				fileRefMin: {
-					name: 'fileRefMin',
-				}
-			}
-		},
 		Group: {
 			name: 'Group',
 			fields: {
@@ -1081,9 +921,6 @@ const en: BaseTranslation = {
 				email: {
 					name: 'email',
 				},
-				avatar: {
-					name: 'avatar',
-				},
 				phones: {
 					name: 'phones',
 				},
@@ -1122,9 +959,6 @@ const en: BaseTranslation = {
 				},
 				createGroupId: {
 					name: 'createGroupId',
-				},
-				fileUserRelation: {
-					name: 'fileUserRelation',
 				},
 				userPhonesRelation: {
 					name: 'userPhonesRelation',

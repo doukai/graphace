@@ -30,9 +30,5 @@ query Query_currentUser {
       name
       description
     }
-    avatar {
-      id
-      name
-    }
   }
 }

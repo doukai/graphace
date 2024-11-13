@@ -28,95 +28,6 @@ const zh: NamespaceGraphqlTranslation = {
 				}
 			}
 		},
-		File: {
-			name: '文件',
-			fields: {
-				id: {
-					name: 'ID',
-				},
-				name: {
-					name: '文件名',
-				},
-				contentType: {
-					name: '类型',
-				},
-				content: {
-					name: '内容',
-				},
-				url: {
-					name: 'URL',
-				},
-				isDeprecated: {
-					name: 'Is Deprecated',
-				},
-				version: {
-					name: 'Version',
-				},
-				realmId: {
-					name: 'Realm ID',
-				},
-				createUserId: {
-					name: 'Create User ID',
-				},
-				createTime: {
-					name: 'Create Time',
-				},
-				updateUserId: {
-					name: 'Update User ID',
-				},
-				updateTime: {
-					name: 'Update Time',
-				},
-				createGroupId: {
-					name: 'Create Group ID',
-				},
-				idCount: {
-					name: 'Count of 文件',
-				},
-				idMax: {
-					name: 'Max of ID',
-				},
-				idMin: {
-					name: 'Min of ID',
-				},
-				nameCount: {
-					name: 'Count of 文件名',
-				},
-				nameMax: {
-					name: 'Max of 文件名',
-				},
-				nameMin: {
-					name: 'Min of 文件名',
-				},
-				contentTypeCount: {
-					name: 'Count of 类型',
-				},
-				contentTypeMax: {
-					name: 'Max of 类型',
-				},
-				contentTypeMin: {
-					name: 'Min of 类型',
-				},
-				contentCount: {
-					name: 'Count of 内容',
-				},
-				contentMax: {
-					name: 'Max of 内容',
-				},
-				contentMin: {
-					name: 'Min of 内容',
-				},
-				urlCount: {
-					name: 'Count of URL',
-				},
-				urlMax: {
-					name: 'Max of URL',
-				},
-				urlMin: {
-					name: 'Min of URL',
-				}
-			}
-		},
 		Group: {
 			name: '组',
 			fields: {
@@ -655,9 +566,6 @@ const zh: NamespaceGraphqlTranslation = {
 				email: {
 					name: '邮箱',
 				},
-				avatar: {
-					name: '头像',
-				},
 				phones: {
 					name: '手机号',
 				},
@@ -696,9 +604,6 @@ const zh: NamespaceGraphqlTranslation = {
 				},
 				createGroupId: {
 					name: '创建组',
-				},
-				fileUserRelation: {
-					name: '用户 文件 关系',
 				},
 				userPhonesRelation: {
 					name: '用户 手机号 关系',

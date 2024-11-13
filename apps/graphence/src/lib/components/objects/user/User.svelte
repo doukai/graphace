@@ -92,38 +92,6 @@
 			]
 		},
 		{
-			value: 'avatar',
-			label: $LL.graphql.objects.User.fields.avatar.name(),
-			options: [
-				{
-					value: 'id',
-					label: $LL.graphql.objects.User.fields.avatar.name() + $LL.graphql.objects.File.fields.id.name(),
-					disabled: !permissions.auth('File::id::READ')
-				},
-				{
-					value: 'name',
-					label: $LL.graphql.objects.User.fields.avatar.name() + $LL.graphql.objects.File.fields.name.name(),
-					disabled: !permissions.auth('File::name::READ')
-				},
-				{
-					value: 'contentType',
-					label: $LL.graphql.objects.User.fields.avatar.name() + $LL.graphql.objects.File.fields.contentType.name(),
-					disabled: !permissions.auth('File::contentType::READ')
-				},
-				{
-					value: 'content',
-					label: $LL.graphql.objects.User.fields.avatar.name() + $LL.graphql.objects.File.fields.content.name(),
-					disabled: !permissions.auth('File::content::READ')
-				},
-				{
-					value: 'url',
-					label: $LL.graphql.objects.User.fields.avatar.name() + $LL.graphql.objects.File.fields.url.name(),
-					disabled: !permissions.auth('File::url::READ')
-				},
-			],
-			disabled: !permissions.auth('User::avatar::READ')
-		},
-		{
 			value: 'realm',
 			label: $LL.graphql.objects.User.fields.realm.name(),
 			options: [
