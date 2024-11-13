@@ -102232,8 +102232,8 @@
         "description": "package:io.graphoenix.core",
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "INPUT_OBJECT"
+          "INPUT_OBJECT",
+          "OBJECT"
         ],
         "args": [
           {
@@ -102259,8 +102259,8 @@
         "description": "package:io.graphoenix.core",
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "INPUT_OBJECT"
+          "INPUT_OBJECT",
+          "OBJECT"
         ],
         "args": []
       },
@@ -102269,11 +102269,11 @@
         "description": "package:io.graphoenix.core",
         "isRepeatable": false,
         "locations": [
-          "FIELD_DEFINITION",
           "MUTATION",
+          "INPUT_OBJECT",
           "QUERY",
           "SUBSCRIPTION",
-          "INPUT_OBJECT"
+          "FIELD_DEFINITION"
         ],
         "args": [
           {
@@ -102347,11 +102347,11 @@
         "description": "package:io.graphoenix.core",
         "isRepeatable": false,
         "locations": [
-          "FIELD_DEFINITION",
           "MUTATION",
+          "INPUT_OBJECT",
           "QUERY",
           "SUBSCRIPTION",
-          "INPUT_OBJECT"
+          "FIELD_DEFINITION"
         ],
         "args": [
           {
@@ -102378,8 +102378,8 @@
         "isRepeatable": false,
         "locations": [
           "INPUT_FIELD_DEFINITION",
-          "FIELD_DEFINITION",
           "INPUT_OBJECT",
+          "FIELD_DEFINITION",
           "OBJECT"
         ],
         "args": [
@@ -102891,10 +102891,10 @@
         "description": "package:io.graphoenix.core",
         "isRepeatable": false,
         "locations": [
-          "FIELD_DEFINITION",
           "MUTATION",
           "QUERY",
           "SUBSCRIPTION",
+          "FIELD_DEFINITION",
           "OBJECT"
         ],
         "args": [

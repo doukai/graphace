@@ -4,7 +4,7 @@
 	import { type Cell, RevoGrid } from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import type { Errors } from '@graphace/commons';
-	import type { Field, GraphQLError } from '@graphace/graphql';
+	import type { Field, Directive, GraphQLError } from '@graphace/graphql';
 	import { messageBoxs, notifications } from '@graphace/ui';
 	import { GridToolbar } from '@graphace/ui-graphql';
 	import RealmQuery from '~/lib/components/objects/realm/Realm.svelte';
@@ -46,7 +46,7 @@
 		mutation: {
 			fields: Field[];
 			mutationArguments: RealmListMutationArguments;
-			directives?: string[];
+			directives?: Directive[];
 			then: (list: Realm[] | null | undefined) => void;
 			catch: (errors: GraphQLError[]) => void;
 		};
@@ -89,7 +89,7 @@
 		dispatch('mutation', {
 			fields: queryFields,
 			mutationArguments: { list: nodes },
-			directives: ['@uniqueMerge'],
+			directives: [{ name: 'uniqueMerge' }],
 			then: (list) => {
 				if (list) {
 					nodes = list;

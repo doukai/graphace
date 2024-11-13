@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import type { LoadEvent } from '@sveltejs/kit';
-import { type Field, fieldToString, type GraphQLError } from '@graphace/graphql';
+import { type Field, type Directive, type GraphQLError, fieldToString, directiveToString } from '@graphace/graphql';
 import type { {{ name }}Connection, {{ name }}ConnectionQueryArguments } from '~/lib/types/schema';
 
 export async function create{{ name }}ConnectionQueryStore(params: { event: LoadEvent, fields: Field[], queryArguments: {{ name }}ConnectionQueryArguments }): Promise<{{ name }}ConnectionQueryStore> {
@@ -14,11 +14,11 @@ export async function create{{ name }}ConnectionQueryStore(params: { event: Load
 
     const { subscribe, set, update } = data;
 
-    const fetch = async (fields: Field[], queryArguments: {{ name }}ConnectionQueryArguments, directives?: string[]) => {
+    const fetch = async (fields: Field[], queryArguments: {{ name }}ConnectionQueryArguments, directives?: Directive[]) => {
         if (fields && fields.length > 0 || queryArguments.groupBy && queryArguments.groupBy.length > 0) {
             update((data) => ({ ...data, isFetching: true }));
             let query = `query Query_{{ name | paramCase }}Connection({% for arg in args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %}) {
-    {{ name | paramCase }}Connection({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %}) ${directives?.join(' ') || ''} {
+    {{ name | paramCase }}Connection({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})${directives ? ' ' + directives.map(directive => directiveToString(directive)).join(' ') : ''} {
         totalCount
         edges {
             node {
@@ -62,5 +62,5 @@ export type {{ name }}ConnectionQueryStore = {
         isFetching: boolean;
         response: { data?: { {{ name | camelCase }}Connection: {{ name }}Connection | null | undefined }, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (fields: Field[], queryArguments: {{ name }}ConnectionQueryArguments, directives?: string[]) => Promise<{ data?: { {{ name | camelCase }}Connection: {{ name }}Connection | null | undefined }, errors?: GraphQLError[] | null | undefined }>;
+    fetch: (fields: Field[], queryArguments: {{ name }}ConnectionQueryArguments, directives?: Directive[]) => Promise<{ data?: { {{ name | camelCase }}Connection: {{ name }}Connection | null | undefined }, errors?: GraphQLError[] | null | undefined }>;
 }

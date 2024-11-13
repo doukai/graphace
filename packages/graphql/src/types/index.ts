@@ -20,3 +20,4 @@ export * from "./NamedStruct.js";
 export * from "./TreeStruct.js";
 export * from "./NodeTree.js";
 export * from "./Field.js";
+export * from "./Directive.js";
