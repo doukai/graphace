@@ -1,4 +1,4 @@
-import { Directive, directiveToString } from "./Directive";
+import { Directive, directiveToString } from "./Directive.js";
 
 export type Field = {
     name: string;

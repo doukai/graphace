@@ -44145,6 +44145,31 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "tsid",
+            "description": null,
+            "args": [
+              {
+                "name": "format",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -44189,6 +44214,30 @@
         "inputFields": [
           {
             "name": "name",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "Query_tsid_Arguments",
+        "description": null,
+        "isOneOf": false,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "format",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -80639,7 +80688,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -80651,7 +80700,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -89720,12 +89769,24 @@
     "directives": [
       {
         "name": "annotation",
-        "description": "package:io.graphoenix.core",
+        "description": null,
         "isRepeatable": false,
         "locations": [
           "OBJECT"
         ],
         "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "name",
             "description": null,
@@ -89746,12 +89807,24 @@
       },
       {
         "name": "class",
-        "description": "package:io.graphoenix.core",
+        "description": null,
         "isRepeatable": false,
         "locations": [
           "OBJECT"
         ],
         "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "name",
             "description": null,
@@ -89784,12 +89857,24 @@
       },
       {
         "name": "connection",
-        "description": "package:io.graphoenix.core",
+        "description": null,
         "isRepeatable": false,
         "locations": [
           "FIELD_DEFINITION"
         ],
         "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "field",
             "description": null,
@@ -89818,40 +89903,91 @@
       },
       {
         "name": "container",
-        "description": "package:io.graphoenix.core",
+        "description": null,
         "isRepeatable": false,
         "locations": [
           "OBJECT"
         ],
-        "args": []
+        "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ]
       },
       {
         "name": "cursor",
-        "description": "package:io.graphoenix.core",
-        "isRepeatable": false,
-        "locations": [
-          "FIELD_DEFINITION"
-        ],
-        "args": []
-      },
-      {
-        "name": "denyAll",
-        "description": "package:io.graphoenix.core",
-        "isRepeatable": false,
-        "locations": [
-          "FIELD",
-          "OBJECT"
-        ],
-        "args": []
-      },
-      {
-        "name": "fetch",
-        "description": "package:io.graphoenix.core",
+        "description": null,
         "isRepeatable": false,
         "locations": [
           "FIELD_DEFINITION"
         ],
         "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ]
+      },
+      {
+        "name": "denyAll",
+        "description": null,
+        "isRepeatable": false,
+        "locations": [
+          "FIELD",
+          "OBJECT"
+        ],
+        "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ]
+      },
+      {
+        "name": "fetch",
+        "description": null,
+        "isRepeatable": false,
+        "locations": [
+          "FIELD_DEFINITION"
+        ],
+        "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "protocol",
             "description": null,
@@ -89919,14 +90055,92 @@
         ]
       },
       {
+        "name": "fetchID",
+        "description": null,
+        "isRepeatable": false,
+        "locations": [
+          "FIELD_DEFINITION"
+        ],
+        "args": [
+          {
+            "name": "type",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "format",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.id.generator\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "invokes",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "Invoke",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ]
+      },
+      {
         "name": "format",
-        "description": "package:io.graphoenix.core",
+        "description": null,
         "isRepeatable": false,
         "locations": [
           "FIELD",
           "FIELD_DEFINITION"
         ],
         "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "value",
             "description": null,
@@ -89955,12 +90169,24 @@
       },
       {
         "name": "func",
-        "description": "package:io.graphoenix.core",
+        "description": null,
         "isRepeatable": false,
         "locations": [
           "FIELD_DEFINITION"
         ],
         "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "name",
             "description": null,
@@ -89989,12 +90215,24 @@
       },
       {
         "name": "grpc",
-        "description": "package:io.graphoenix.core",
+        "description": null,
         "isRepeatable": false,
         "locations": [
           "OBJECT"
         ],
         "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "name",
             "description": null,
@@ -90015,23 +90253,48 @@
       },
       {
         "name": "hide",
-        "description": "package:io.graphoenix.core",
+        "description": null,
         "isRepeatable": false,
         "locations": [
           "FIELD",
           "FIELD_DEFINITION"
         ],
-        "args": []
+        "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ]
       },
       {
         "name": "implements",
-        "description": "package:io.graphoenix.core",
+        "description": null,
         "isRepeatable": false,
         "locations": [
           "OBJECT",
           "INPUT_OBJECT"
         ],
         "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "interfaces",
             "description": null,
@@ -90052,26 +90315,51 @@
       },
       {
         "name": "interface",
-        "description": "package:io.graphoenix.core",
+        "description": null,
         "isRepeatable": false,
         "locations": [
           "OBJECT",
           "INPUT_OBJECT"
         ],
-        "args": []
+        "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ]
       },
       {
         "name": "invoke",
-        "description": "package:io.graphoenix.core",
+        "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD_DEFINITION",
-          "INPUT_OBJECT",
-          "QUERY",
           "SUBSCRIPTION",
-          "MUTATION"
+          "QUERY",
+          "MUTATION",
+          "INPUT_OBJECT",
+          "FIELD_DEFINITION"
         ],
         "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "className",
             "description": null,
@@ -90140,16 +90428,28 @@
       },
       {
         "name": "invokes",
-        "description": "package:io.graphoenix.core",
+        "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD_DEFINITION",
-          "INPUT_OBJECT",
-          "QUERY",
           "SUBSCRIPTION",
-          "MUTATION"
+          "QUERY",
+          "MUTATION",
+          "INPUT_OBJECT",
+          "FIELD_DEFINITION"
         ],
         "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "methods",
             "description": null,
@@ -90170,13 +90470,13 @@
       },
       {
         "name": "jsonSchema",
-        "description": "package:io.graphoenix.jsonschema",
+        "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD_DEFINITION",
+          "INPUT_FIELD_DEFINITION",
           "OBJECT",
           "INPUT_OBJECT",
-          "INPUT_FIELD_DEFINITION"
+          "FIELD_DEFINITION"
         ],
         "args": [
           {
@@ -90514,17 +90814,41 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.jsonschema\"",
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ]
       },
       {
         "name": "map",
-        "description": "package:io.graphoenix.core",
+        "description": null,
         "isRepeatable": false,
         "locations": [
           "FIELD_DEFINITION"
         ],
         "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "from",
             "description": null,
@@ -90581,21 +90905,46 @@
       },
       {
         "name": "merge",
-        "description": "package:io.graphoenix.core",
+        "description": null,
         "isRepeatable": false,
         "locations": [
           "FIELD"
         ],
-        "args": []
+        "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ]
       },
       {
         "name": "options",
-        "description": "package:io.graphoenix.core",
+        "description": null,
         "isRepeatable": false,
         "locations": [
           "FIELD_DEFINITION"
         ],
         "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "type",
             "description": null,
@@ -90684,16 +91033,28 @@
       },
       {
         "name": "package",
-        "description": "package:io.graphoenix.core",
+        "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD_DEFINITION",
+          "SUBSCRIPTION",
           "OBJECT",
           "QUERY",
-          "SUBSCRIPTION",
-          "MUTATION"
+          "MUTATION",
+          "FIELD_DEFINITION"
         ],
         "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "name",
             "description": null,
@@ -90714,23 +91075,48 @@
       },
       {
         "name": "permitAll",
-        "description": "package:io.graphoenix.core",
-        "isRepeatable": false,
-        "locations": [
-          "FIELD",
-          "OBJECT"
-        ],
-        "args": []
-      },
-      {
-        "name": "rolesAllowed",
-        "description": "package:io.graphoenix.core",
+        "description": null,
         "isRepeatable": false,
         "locations": [
           "FIELD",
           "OBJECT"
         ],
         "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ]
+      },
+      {
+        "name": "rolesAllowed",
+        "description": null,
+        "isRepeatable": false,
+        "locations": [
+          "FIELD",
+          "OBJECT"
+        ],
+        "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "roles",
             "description": null,
@@ -90751,12 +91137,25 @@
       },
       {
         "name": "uniqueMerge",
-        "description": "package:io.graphoenix.core",
+        "description": null,
         "isRepeatable": false,
         "locations": [
           "FIELD"
         ],
-        "args": []
+        "args": [
+          {
+            "name": "package",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"io.graphoenix.core\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ]
       }
     ]
   }

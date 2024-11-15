@@ -4813,6 +4813,7 @@ export type Query = {
   currentPermissionNameListByTypes?: Maybe<Array<Maybe<Scalars['String']>>>;
   policyList?: Maybe<Array<Maybe<Policy>>>;
   jsonSchema?: Maybe<Scalars['String']>;
+  tsid?: Maybe<Scalars['String']>;
 };
 
 
@@ -5763,12 +5764,22 @@ export type QueryJsonSchemaArgs = {
   name?: InputMaybe<Scalars['String']>;
 };
 
+
+/** Query */
+export type QueryTsidArgs = {
+  format?: InputMaybe<Scalars['String']>;
+};
+
 export type Query_CurrentPermissionNameListByTypes_Arguments = {
   types?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type Query_JsonSchema_Arguments = {
   name?: InputMaybe<Scalars['String']>;
+};
+
+export type Query_Tsid_Arguments = {
+  format?: InputMaybe<Scalars['String']>;
 };
 
 /** 租户 */
@@ -9988,9 +9999,9 @@ export type User = NamedStruct & Meta & {
   /** 用户 数量 */
   idCount?: Maybe<Scalars['Int']>;
   /** ID 最大值 */
-  idMax?: Maybe<Scalars['Int']>;
+  idMax?: Maybe<Scalars['String']>;
   /** ID 最小值 */
-  idMin?: Maybe<Scalars['Int']>;
+  idMin?: Maybe<Scalars['String']>;
   /** 姓名 数量 */
   nameCount?: Maybe<Scalars['Int']>;
   /** 姓名 最大值 */
