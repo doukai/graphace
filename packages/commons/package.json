@@ -11,6 +11,8 @@
 	"scripts": {
 		"build": "tsc",
 		"watch:build": "tsc --watch",
+		"yalc:publish": "yalc publish",
+		"yalc:push": "yalc push",
 		"lint": "prettier --check --ignore-path=../../.prettierignore . && eslint \".\"",
 		"format": "prettier --write --ignore-path=../../.prettierignore ."
 	},

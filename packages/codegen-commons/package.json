@@ -2,7 +2,9 @@
 	"name": "graphace-codegen-commons",
 	"version": "0.1.1",
 	"scripts": {
-		"build": "microbundle"
+		"build": "microbundle",
+		"yalc:publish": "yalc publish",
+		"yalc:push": "yalc push"
 	},
 	"devDependencies": {
 		"microbundle": "^0.15.1"

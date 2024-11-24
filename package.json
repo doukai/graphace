@@ -12,6 +12,8 @@
 		"build": "turbo run build",
 		"build:packages": "turbo run build --filter=./packages/*",
 		"publish": "pnpm publish --no-git-checks --filter=./packages/* --filter=!eslint-config-custom",
+		"yalc:publish": "turbo run yalc:publish --filter=./packages/* --filter=!eslint-config-custom",
+		"yalc:push": "turbo run yalc push --filter=./packages/* --filter=!eslint-config-custom",
 		"lint": "turbo run lint",
 		"clean": "turbo daemon clean",
 		"login": "turbo login",
