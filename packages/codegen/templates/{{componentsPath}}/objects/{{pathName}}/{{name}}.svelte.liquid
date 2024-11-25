@@ -382,7 +382,7 @@
 					<div use:melt={$arrow} />
 					<div class="space-y-1" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
 						<Combobox
-							title={$LL.graphence.components.query.join()}
+							title={$LL.{{ appName }}.components.query.join()}
 							options={filteredJoinOptions}
 							rootClassName="w-full"
 							className="md:input-xs"
@@ -414,7 +414,7 @@
 							}}
 						/>
 						<Combobox
-							title={$LL.graphence.components.query.joinColumns()}
+							title={$LL.{{ appName }}.components.query.joinColumns()}
 							multiple={true}
 							options={filteredJoinColumnOptions}
 							rootClassName="w-full"

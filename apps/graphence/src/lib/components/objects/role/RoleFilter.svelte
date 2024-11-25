@@ -7,13 +7,13 @@
 	import { OperatorSelect, StringInput } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark } from '@steeze-ui/heroicons';
-	import type { StringExpression } from '~/lib/types/schema';
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import UserSelect from '~/lib/components/objects/user/UserSelect.svelte';
 	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
 	import RealmSelect from '~/lib/components/objects/realm/RealmSelect.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { Operator } from '$houdini';
+	import type { StringExpression } from '$houdini';
 	import type { RoleInput, UserInput, GroupInput, RealmInput, RoleExpression } from '$houdini';
 
 	export let expression: RoleExpression | null | undefined;
@@ -188,7 +188,7 @@
 		dispatch('filter', {});
 		$open = false;
 	};
-	const idOprChange = (): void => {
+	const oprChange = (): void => {
 		_expression.id.arr = [];
 		_expression.id.val = undefined;
 		if (Array.isArray(value)) {
@@ -269,7 +269,7 @@
 							<OperatorSelect
 								className="md:select-sm w-full"
 								bind:value={_expression.id.opr}
-								on:change={(e) => idOprChange()}
+								on:change={(e) => oprChange()}
 							/>
 						</label>
 					</div>

@@ -12,7 +12,6 @@
 	{%- for enum in enums %}
 	import {{ enum }}Input from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Input.svelte';
 	{%- endfor %}
-	import type { {% for scalar in scalars %}{{ scalar }}Expression{% if forloop.last == false %}, {% endif %}{% endfor %} } from '~/{{ schemaTypesPath }}';
 	{%- if isNamedStruct %}
 	import {{ name }}Select from '~/{{ objectsPath }}/{{ name | paramCase }}/{{ name }}Select.svelte';
 	{%- endif %}
@@ -25,6 +24,7 @@
 	{%- endif %}
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { Operator } from '$houdini';
+	import type { {% for scalar in scalars %}{{ scalar }}Expression{% if forloop.last == false %}, {% endif %}{% endfor %} } from '$houdini';
 	import type { {% if isNamedStruct %}{{ name }}Input, {% endif %}{% if namedStructObjectNames %}{% for namedStructType in namedStructObjectNames %}{% if namedStructType != name %}{{ namedStructType }}Input, {% endif %}{% endfor %}{% endif %}{% for enum in enums %}{{ enum }}Expression, {% endfor %}{{ name }}Expression } from '$houdini';
 
 	export let expression: {{ name }}Expression | null | undefined;
@@ -50,7 +50,11 @@
 		{%- endif %}
 		{%- if fields %}
 		{%- for field in fields %}
-		{%- if field.isScalarType or field.isEnumType %}
+		{%- if field.fieldName == idName %}
+		{%- if isNamedStruct == false %}
+		{{ field.fieldName }}: StringExpression;
+		{%- endif %}
+		{%- elsif field.isScalarType or field.isEnumType %}
 		{{ field.fieldName }}: {{ field.fieldTypeName }}Expression;
 		{%- endif %}
 		{%- if field.isNamed %}
@@ -64,11 +68,15 @@
 		{%- endif %}
 		{%- if fields %}
 		{%- for field in fields %}
-		{%- if field.isScalarType or field.isEnumType %}
+		{%- if field.fieldName == idName %}
+		{%- if isNamedStruct == false %}
+		{{ field.fieldName }}: { opr: Operator.EQ }{% if forloop.last == false %},{% endif %}
+		{%- endif %}
+		{%- elsif field.isScalarType or field.isEnumType %}
 		{{ field.fieldName }}: { opr: Operator.EQ }{% if forloop.last == false %},{% endif %}
 		{%- endif %}
 		{%- if field.isNamed %}
-		{{ field.fieldName }}: { id: { opr: Operator.EQ } }{% if forloop.last == false %},{% endif %}
+		{{ field.fieldName }}: { {{ field.fieldTypeIdName }}: { opr: Operator.EQ } }{% if forloop.last == false %},{% endif %}
 		{%- endif %}
 		{%- endfor %}
 		{%- endif %}
@@ -178,7 +186,7 @@
 
 	
 	{%- if isNamedStruct %}
-	const {{ idName }}OprChange = (): void => {
+	const oprChange = (): void => {
 		_expression.{{ idName }}.arr = [];
 		_expression.{{ idName }}.val = undefined;
 		if (Array.isArray(value)) {
@@ -244,7 +252,7 @@
 							<OperatorSelect
 								className="md:select-sm w-full"
 								bind:value={_expression.{{ idName }}.opr}
-								on:change={(e) => {{ idName }}OprChange()}
+								on:change={(e) => oprChange()}
 							/>
 						</label>
 					</div>

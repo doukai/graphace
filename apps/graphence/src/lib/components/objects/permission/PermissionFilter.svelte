@@ -8,11 +8,11 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark } from '@steeze-ui/heroicons';
 	import PermissionTypeInput from '~/lib/components/enums/permission-type/PermissionTypeInput.svelte';
-	import type { IDExpression, StringExpression } from '~/lib/types/schema';
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import RealmSelect from '~/lib/components/objects/realm/RealmSelect.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { Operator } from '$houdini';
+	import type { IDExpression, StringExpression } from '$houdini';
 	import type { RoleInput, RealmInput, PermissionTypeExpression, PermissionExpression } from '$houdini';
 
 	export let expression: PermissionExpression | null | undefined;
@@ -22,7 +22,7 @@
 	let realm: RealmInput | (RealmInput | null | undefined)[] | null | undefined = undefined;
 
 	let _expression: {
-		name: IDExpression;
+		name: StringExpression;
 		description: StringExpression;
 		field: StringExpression;
 		type: StringExpression;

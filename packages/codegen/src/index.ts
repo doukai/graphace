@@ -744,7 +744,8 @@ const renders: Record<Template, Render> = {
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
-                        objectsPath: `${config.componentsPath}/objects`
+                        objectsPath: `${config.componentsPath}/objects`,
+                        appName: config.appName
                     }),
                 };
             }
@@ -760,7 +761,8 @@ const renders: Record<Template, Render> = {
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
-                        objectsPath: `${config.componentsPath}/objects`
+                        objectsPath: `${config.componentsPath}/objects`,
+                        appName: config.appName
                     }),
                 };
             }
@@ -776,7 +778,8 @@ const renders: Record<Template, Render> = {
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
-                        objectsPath: `${config.componentsPath}/objects`
+                        objectsPath: `${config.componentsPath}/objects`,
+                        appName: config.appName
                     }),
                 };
             }
@@ -792,7 +795,8 @@ const renders: Record<Template, Render> = {
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
-                        objectsPath: `${config.componentsPath}/objects`
+                        objectsPath: `${config.componentsPath}/objects`,
+                        appName: config.appName
                     }),
                 };
             }
@@ -808,7 +812,8 @@ const renders: Record<Template, Render> = {
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
-                        objectsPath: `${config.componentsPath}/objects`
+                        objectsPath: `${config.componentsPath}/objects`,
+                        appName: config.appName
                     }),
                 };
             }
@@ -825,7 +830,8 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         idName: getIDFieldName(type),
-                        objectsPath: `${config.componentsPath}/objects`
+                        objectsPath: `${config.componentsPath}/objects`,
+                        appName: config.appName
                     }),
                 };
             }

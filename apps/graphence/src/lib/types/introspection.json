@@ -44145,31 +44145,6 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "tsid",
-            "description": null,
-            "args": [
-              {
-                "name": "format",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -44214,30 +44189,6 @@
         "inputFields": [
           {
             "name": "name",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "Query_tsid_Arguments",
-        "description": null,
-        "isOneOf": false,
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "format",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -80688,7 +80639,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -80700,7 +80651,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -89950,8 +89901,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "OBJECT"
+          "OBJECT",
+          "FIELD"
         ],
         "args": [
           {
@@ -90047,72 +89998,6 @@
               "kind": "SCALAR",
               "name": "Boolean",
               "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ]
-      },
-      {
-        "name": "fetchID",
-        "description": null,
-        "isRepeatable": false,
-        "locations": [
-          "FIELD_DEFINITION"
-        ],
-        "args": [
-          {
-            "name": "type",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "format",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "package",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": "\"io.graphoenix.id.generator\"",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "invokes",
-            "description": null,
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "Invoke",
-                "ofType": null
-              }
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -90279,8 +90164,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "INPUT_OBJECT"
+          "INPUT_OBJECT",
+          "OBJECT"
         ],
         "args": [
           {
@@ -90318,8 +90203,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "INPUT_OBJECT"
+          "INPUT_OBJECT",
+          "OBJECT"
         ],
         "args": [
           {
@@ -90342,10 +90227,10 @@
         "isRepeatable": false,
         "locations": [
           "SUBSCRIPTION",
-          "QUERY",
-          "MUTATION",
           "INPUT_OBJECT",
-          "FIELD_DEFINITION"
+          "MUTATION",
+          "FIELD_DEFINITION",
+          "QUERY"
         ],
         "args": [
           {
@@ -90432,10 +90317,10 @@
         "isRepeatable": false,
         "locations": [
           "SUBSCRIPTION",
-          "QUERY",
-          "MUTATION",
           "INPUT_OBJECT",
-          "FIELD_DEFINITION"
+          "MUTATION",
+          "FIELD_DEFINITION",
+          "QUERY"
         ],
         "args": [
           {
@@ -90473,9 +90358,9 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "INPUT_FIELD_DEFINITION",
-          "OBJECT",
           "INPUT_OBJECT",
+          "OBJECT",
+          "INPUT_FIELD_DEFINITION",
           "FIELD_DEFINITION"
         ],
         "args": [
@@ -91037,10 +90922,10 @@
         "isRepeatable": false,
         "locations": [
           "SUBSCRIPTION",
-          "OBJECT",
-          "QUERY",
           "MUTATION",
-          "FIELD_DEFINITION"
+          "OBJECT",
+          "FIELD_DEFINITION",
+          "QUERY"
         ],
         "args": [
           {
@@ -91078,8 +90963,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "OBJECT"
+          "OBJECT",
+          "FIELD"
         ],
         "args": [
           {
@@ -91101,8 +90986,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "OBJECT"
+          "OBJECT",
+          "FIELD"
         ],
         "args": [
           {

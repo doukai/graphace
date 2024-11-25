@@ -94,14 +94,14 @@
 				if (list) {
 					nodes = list;
 				}
-				notifications.success($LL.graphence.message.saveSuccess());
+				notifications.success($LL.{{ appName }}.message.saveSuccess());
 			},
 			catch: (graphQLErrors) => {
 				console.error(graphQLErrors);
 				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
 				if (globalError) {
 					messageBoxs.open({
-						title: $LL.graphence.message.saveFailed(),
+						title: $LL.{{ appName }}.message.saveFailed(),
 						content: globalError,
 						buttonName: $LL.ui.button.back(),
 						buttonType: 'neutral',

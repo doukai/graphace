@@ -1,3 +1,0 @@
-query Query_tsid($format: String) {
-  tsid(format: $format) 
-}
