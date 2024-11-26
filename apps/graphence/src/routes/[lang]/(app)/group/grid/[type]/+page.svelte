@@ -6,9 +6,9 @@
 	import GroupAggGrid from '~/lib/components/objects/group/GroupAggGrid.svelte';
 	import type { GroupConnectionQueryStore } from '~/lib/stores/group/groupQueryStore';
 	import type { GroupListMutationStore } from '~/lib/stores/group/groupMutationStore';
+	import type { GroupConnection } from '~/';
 	import type { PageData } from './$houdini';
 	import { buildGraphQLErrors, validate } from '~/utils';
-	import type { GroupConnection } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 

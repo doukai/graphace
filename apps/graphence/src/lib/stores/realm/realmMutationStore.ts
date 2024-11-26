@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import type { LoadEvent } from '@sveltejs/kit';
 import { type Field, type Directive, type GraphQLError, fieldToString, directiveToString } from '@graphace/graphql';
-import type { Realm, RealmListMutationArguments } from '~/lib/types/schema';
+import type { Realm, RealmListMutationArguments } from '~/';
 
 export async function createRealmListMutationStore(params: { event: LoadEvent }): Promise<RealmListMutationStore> {
     const data: Writable<{ isFetching: boolean, response: { data?: { realmList: Realm[] | null | undefined }, errors?: GraphQLError[] | null | undefined } }> = writable({

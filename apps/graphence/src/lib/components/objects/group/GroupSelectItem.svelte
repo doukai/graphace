@@ -2,7 +2,7 @@
 	import type { Errors } from '@graphace/commons';
 	import { FormItem } from '@graphace/ui';
 	import GroupSelect from './GroupSelect.svelte';
-	import type { GroupInput } from '$houdini';
+	import type { GroupInput } from '~/lib/types/schema';
 
 	export let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;

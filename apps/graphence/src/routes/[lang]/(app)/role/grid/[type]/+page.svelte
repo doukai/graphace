@@ -6,9 +6,9 @@
 	import RoleAggGrid from '~/lib/components/objects/role/RoleAggGrid.svelte';
 	import type { RoleConnectionQueryStore } from '~/lib/stores/role/roleQueryStore';
 	import type { RoleListMutationStore } from '~/lib/stores/role/roleMutationStore';
+	import type { RoleConnection } from '~/';
 	import type { PageData } from './$houdini';
 	import { buildGraphQLErrors, validate } from '~/utils';
-	import type { RoleConnection } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 

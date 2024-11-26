@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import type { LoadEvent } from '@sveltejs/kit';
 import { type Field, type Directive, type GraphQLError, fieldToString, directiveToString } from '@graphace/graphql';
-import type { Permission, PermissionListMutationArguments } from '~/lib/types/schema';
+import type { Permission, PermissionListMutationArguments } from '~/';
 
 export async function createPermissionListMutationStore(params: { event: LoadEvent }): Promise<PermissionListMutationStore> {
     const data: Writable<{ isFetching: boolean, response: { data?: { permissionList: Permission[] | null | undefined }, errors?: GraphQLError[] | null | undefined } }> = writable({

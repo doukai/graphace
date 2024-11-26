@@ -2,7 +2,7 @@ import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
 import { load_Query_{{ name | camelCase }} } from '$houdini';
 {%- if useAuth %}
-import { permissions } from '~/utils/auth-util';
+import { permissions } from '~/utils';
 {%- endif %}
 
 export const load: LayoutLoad = async (event: LoadEvent) => {

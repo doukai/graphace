@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import type { LoadEvent } from '@sveltejs/kit';
 import { type Field, type Directive, type GraphQLError, fieldToString, directiveToString } from '@graphace/graphql';
-import type { RoleConnection, RoleConnectionQueryArguments } from '~/lib/types/schema';
+import type { RoleConnection, RoleConnectionQueryArguments } from '~/';
 
 export async function createRoleConnectionQueryStore(params: { event: LoadEvent, fields: Field[], queryArguments: RoleConnectionQueryArguments }): Promise<RoleConnectionQueryStore> {
     const data: Writable<{ isFetching: boolean, response: { data?: { roleConnection: RoleConnection | null | undefined }, errors?: GraphQLError[] | null | undefined } }> = writable({

@@ -6,9 +6,9 @@
 	import {{ name }}AggGrid from '~/{{ gridPath }}/{{ name | paramCase }}/{{ name }}AggGrid.svelte';
 	import type { {{ name }}ConnectionQueryStore } from '~/{{ storesPath }}/{{ name | paramCase }}/{{ name | camelCase }}QueryStore';
 	import type { {{ name }}ListMutationStore } from '~/{{ storesPath }}/{{ name | paramCase }}/{{ name | camelCase }}MutationStore';
+	import type { {{ name }}Connection } from '~/{{ schemaTypesPath }}';
 	import type { PageData } from './$houdini';
 	import { buildGraphQLErrors, validate } from '~/utils';
-	import type { {{ name }}Connection } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 

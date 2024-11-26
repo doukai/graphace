@@ -2,7 +2,7 @@
 	import type { Errors } from '@graphace/commons';
 	import { FormItem } from '@graphace/ui';
 	import UserSelect from './UserSelect.svelte';
-	import type { UserInput } from '$houdini';
+	import type { UserInput } from '~/lib/types/schema';
 
 	export let value: UserInput | (UserInput | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;

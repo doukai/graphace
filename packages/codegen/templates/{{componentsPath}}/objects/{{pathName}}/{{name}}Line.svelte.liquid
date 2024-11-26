@@ -15,7 +15,7 @@
 	import autocolors from 'chartjs-plugin-autocolors';
 	import { type Field } from '@graphace/graphql';
 	import {{ name }}Agg from '~/{{ objectsPath }}/{{ name | paramCase }}/{{ name }}Agg.svelte';
-	import type { {{ name }}, {{ name }}Connection, {{ name }}ConnectionQueryArguments } from '~/lib/types/schema';
+	import type { {{ name }}, {{ name }}Connection, {{ name }}ConnectionQueryArguments } from '~/{{ schemaTypesPath }}';
 
 	export let connection: {{ name }}Connection;
 	export let fields: Field[] = [];

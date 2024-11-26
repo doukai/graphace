@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import type { LoadEvent } from '@sveltejs/kit';
 import { type Field, type Directive, type GraphQLError, fieldToString, directiveToString } from '@graphace/graphql';
-import type { PermissionConnection, PermissionConnectionQueryArguments } from '~/lib/types/schema';
+import type { PermissionConnection, PermissionConnectionQueryArguments } from '~/';
 
 export async function createPermissionConnectionQueryStore(params: { event: LoadEvent, fields: Field[], queryArguments: PermissionConnectionQueryArguments }): Promise<PermissionConnectionQueryStore> {
     const data: Writable<{ isFetching: boolean, response: { data?: { permissionConnection: PermissionConnection | null | undefined }, errors?: GraphQLError[] | null | undefined } }> = writable({

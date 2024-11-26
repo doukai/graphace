@@ -3,7 +3,7 @@ import type { LayoutLoad } from '$types';
 import { type Errors, getNode, getErrors } from '@graphace/commons';
 import type { MutationGroupArgs } from '~/lib/types/schema';
 import { load_Query_groupConnection } from '$houdini';
-import { permissions } from '~/utils/auth-util';
+import { permissions } from '~/utils';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     await permissions.getTypes('Group');

@@ -12,9 +12,7 @@
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import RealmSelect from '~/lib/components/objects/realm/RealmSelect.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	import { Operator } from '$houdini';
-	import type { StringExpression, IntExpression } from '$houdini';
-	import type { GroupInput, UserInput, RoleInput, RealmInput, GroupExpression } from '$houdini';
+	import type { GroupInput, UserInput, RoleInput, RealmInput, StringExpression, IntExpression, GroupExpression } from '~/lib/types/schema';
 
 	export let expression: GroupExpression | null | undefined;
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
@@ -39,17 +37,17 @@
 		roles: { id: StringExpression };
 		realm: { id: StringExpression };
 	} = {
-		id: { opr: Operator.EQ },
-		name: { opr: Operator.EQ },
-		description: { opr: Operator.EQ },
-		path: { opr: Operator.EQ },
-		deep: { opr: Operator.EQ },
-		parentId: { opr: Operator.EQ },
-		parent: { id: { opr: Operator.EQ } },
-		subGroups: { id: { opr: Operator.EQ } },
-		users: { id: { opr: Operator.EQ } },
-		roles: { id: { opr: Operator.EQ } },
-		realm: { id: { opr: Operator.EQ } }
+		id: { opr: 'EQ' },
+		name: { opr: 'EQ' },
+		description: { opr: 'EQ' },
+		path: { opr: 'EQ' },
+		deep: { opr: 'EQ' },
+		parentId: { opr: 'EQ' },
+		parent: { id: { opr: 'EQ' } },
+		subGroups: { id: { opr: 'EQ' } },
+		users: { id: { opr: 'EQ' } },
+		roles: { id: { opr: 'EQ' } },
+		realm: { id: { opr: 'EQ' } }
 	};
 	$: if (Array.isArray(value)) {
 		_expression.id.arr = value?.map((item) => item?.id);
@@ -206,42 +204,42 @@
 	};
 
 	const clear = (): void => {
-		_expression.id = { opr: Operator.EQ };
+		_expression.id = { opr: 'EQ' };
 		if (Array.isArray(value)) {
 			value= [];
 		} else if (value) {
 			value = undefined;
 		}
-		_expression.name = { opr: Operator.EQ };
-		_expression.description = { opr: Operator.EQ };
-		_expression.path = { opr: Operator.EQ };
-		_expression.deep = { opr: Operator.EQ };
-		_expression.parentId = { opr: Operator.EQ };
-		_expression.parent = { id: { opr: Operator.EQ } };
+		_expression.name = { opr: 'EQ' };
+		_expression.description = { opr: 'EQ' };
+		_expression.path = { opr: 'EQ' };
+		_expression.deep = { opr: 'EQ' };
+		_expression.parentId = { opr: 'EQ' };
+		_expression.parent = { id: { opr: 'EQ' } };
 		if (Array.isArray(parent)) {
 			parent = [];
 		} else if (parent) {
 			parent = undefined;
 		}
-		_expression.subGroups = { id: { opr: Operator.EQ } };
+		_expression.subGroups = { id: { opr: 'EQ' } };
 		if (Array.isArray(subGroups)) {
 			subGroups = [];
 		} else if (subGroups) {
 			subGroups = undefined;
 		}
-		_expression.users = { id: { opr: Operator.EQ } };
+		_expression.users = { id: { opr: 'EQ' } };
 		if (Array.isArray(users)) {
 			users = [];
 		} else if (users) {
 			users = undefined;
 		}
-		_expression.roles = { id: { opr: Operator.EQ } };
+		_expression.roles = { id: { opr: 'EQ' } };
 		if (Array.isArray(roles)) {
 			roles = [];
 		} else if (roles) {
 			roles = undefined;
 		}
-		_expression.realm = { id: { opr: Operator.EQ } };
+		_expression.realm = { id: { opr: 'EQ' } };
 		if (Array.isArray(realm)) {
 			realm = [];
 		} else if (realm) {

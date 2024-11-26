@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import type { LoadEvent } from '@sveltejs/kit';
 import { type Field, type Directive, type GraphQLError, fieldToString, directiveToString } from '@graphace/graphql';
-import type { GroupConnection, GroupConnectionQueryArguments } from '~/lib/types/schema';
+import type { GroupConnection, GroupConnectionQueryArguments } from '~/';
 
 export async function createGroupConnectionQueryStore(params: { event: LoadEvent, fields: Field[], queryArguments: GroupConnectionQueryArguments }): Promise<GroupConnectionQueryStore> {
     const data: Writable<{ isFetching: boolean, response: { data?: { groupConnection: GroupConnection | null | undefined }, errors?: GraphQLError[] | null | undefined } }> = writable({

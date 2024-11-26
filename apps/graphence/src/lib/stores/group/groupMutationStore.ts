@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import type { LoadEvent } from '@sveltejs/kit';
 import { type Field, type Directive, type GraphQLError, fieldToString, directiveToString } from '@graphace/graphql';
-import type { Group, GroupListMutationArguments } from '~/lib/types/schema';
+import type { Group, GroupListMutationArguments } from '~/';
 
 export async function createGroupListMutationStore(params: { event: LoadEvent }): Promise<GroupListMutationStore> {
     const data: Writable<{ isFetching: boolean, response: { data?: { groupList: Group[] | null | undefined }, errors?: GraphQLError[] | null | undefined } }> = writable({

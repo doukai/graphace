@@ -1,8 +1,8 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
 import { type Errors, getNode, getErrors } from '@graphace/commons';
-import type { MutationGroupArgs } from '~/lib/types/schema';
-import { permissions } from '~/utils/auth-util';
+import type { MutationGroupArgs } from '~/';
+import { permissions } from '~/utils';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     await permissions.getTypes('Group');

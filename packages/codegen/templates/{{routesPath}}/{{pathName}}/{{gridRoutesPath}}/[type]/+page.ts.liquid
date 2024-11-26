@@ -3,7 +3,7 @@ import type { LayoutLoad } from '$types';
 import { create{{ name }}ConnectionQueryStore } from '~/{{ storesPath }}/{{ name | paramCase }}/{{ name | camelCase }}QueryStore';
 import { create{{ name }}ListMutationStore } from '~/{{ storesPath }}/{{ name | paramCase }}/{{ name | camelCase }}MutationStore';
 {%- if useAuth %}
-import { permissions } from '~/utils/auth-util';
+import { permissions } from '~/utils';
 {%- endif %}
 
 export const load: LayoutLoad = async (event: LoadEvent) => {

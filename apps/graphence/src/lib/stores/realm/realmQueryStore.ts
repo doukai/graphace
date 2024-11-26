@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import type { LoadEvent } from '@sveltejs/kit';
 import { type Field, type Directive, type GraphQLError, fieldToString, directiveToString } from '@graphace/graphql';
-import type { RealmConnection, RealmConnectionQueryArguments } from '~/lib/types/schema';
+import type { RealmConnection, RealmConnectionQueryArguments } from '~/';
 
 export async function createRealmConnectionQueryStore(params: { event: LoadEvent, fields: Field[], queryArguments: RealmConnectionQueryArguments }): Promise<RealmConnectionQueryStore> {
     const data: Writable<{ isFetching: boolean, response: { data?: { realmConnection: RealmConnection | null | undefined }, errors?: GraphQLError[] | null | undefined } }> = writable({

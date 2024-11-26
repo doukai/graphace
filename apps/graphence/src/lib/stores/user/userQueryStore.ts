@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import type { LoadEvent } from '@sveltejs/kit';
 import { type Field, type Directive, type GraphQLError, fieldToString, directiveToString } from '@graphace/graphql';
-import type { UserConnection, UserConnectionQueryArguments } from '~/lib/types/schema';
+import type { UserConnection, UserConnectionQueryArguments } from '~/';
 
 export async function createUserConnectionQueryStore(params: { event: LoadEvent, fields: Field[], queryArguments: UserConnectionQueryArguments }): Promise<UserConnectionQueryStore> {
     const data: Writable<{ isFetching: boolean, response: { data?: { userConnection: UserConnection | null | undefined }, errors?: GraphQLError[] | null | undefined } }> = writable({

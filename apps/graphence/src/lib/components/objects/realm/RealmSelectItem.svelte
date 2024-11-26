@@ -2,7 +2,7 @@
 	import type { Errors } from '@graphace/commons';
 	import { FormItem } from '@graphace/ui';
 	import RealmSelect from './RealmSelect.svelte';
-	import type { RealmInput } from '$houdini';
+	import type { RealmInput } from '~/lib/types/schema';
 
 	export let value: RealmInput | (RealmInput | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;

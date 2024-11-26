@@ -6,9 +6,9 @@
 	import PermissionAggGrid from '~/lib/components/objects/permission/PermissionAggGrid.svelte';
 	import type { PermissionConnectionQueryStore } from '~/lib/stores/permission/permissionQueryStore';
 	import type { PermissionListMutationStore } from '~/lib/stores/permission/permissionMutationStore';
+	import type { PermissionConnection } from '~/';
 	import type { PageData } from './$houdini';
 	import { buildGraphQLErrors, validate } from '~/utils';
-	import type { PermissionConnection } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 

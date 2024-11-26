@@ -5,7 +5,7 @@
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import type { Field } from '@graphace/graphql';
 	import {{ name }}Agg from '~/{{ objectsPath }}/{{ name | paramCase }}/{{ name }}Agg.svelte';
-	import type { {{ name }}Connection, {{ name }}ConnectionQueryArguments } from '~/lib/types/schema';
+	import type { {{ name }}Connection, {{ name }}ConnectionQueryArguments } from '~/{{ schemaTypesPath }}';
 	import { getGridTheme, fieldsToAggColumns, nodesToAggSource } from '~/utils';
 
 	export let connection: {{ name }}Connection;

@@ -1,8 +1,10 @@
+
+
 import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
 import * as changeCase from "change-case";
 import { assertObjectType, isEnumType, isObjectType, type GraphQLSchema, isNonNullType, assertEnumType } from 'graphql';
-import { isOperationType, isConnection, isRelation, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getFileFields, getNamedFields, getScalarNames, getEnumNames, getEnumValues, initConfig, inGraphQLField, inListField, inDetailField, componentFields, getSelectComponentFieldImports, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, getNamedStructObjectNames, inComponentEnum, isInnerEnum, getObjectNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField, fieldTypeIsList, isSelectField, isNamedStruct, isTreeStruct, inComponentObject, hasFileField, getAggFields, getNonListObjectFields, getListObjectFields } from 'graphace-codegen-commons';
+import { isOperationType, isConnection, isRelation, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getFileFields, getNamedFields, getScalarNames, getBaseScalarNames, getEnumNames, getEnumValues, initConfig, inGraphQLField, inListField, inDetailField, componentFields, getSelectComponentFieldImports, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, getNamedStructObjectNames, inComponentEnum, isInnerEnum, getObjectNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField, fieldTypeIsList, isSelectField, isNamedStruct, isTreeStruct, inComponentObject, hasFileField, getAggFields, getNonListObjectFields, getListObjectFields } from 'graphace-codegen-commons';
 import type { Template } from 'graphace-codegen-commons';
 import { buildFileContent } from "./builder.js";
 
@@ -569,6 +571,7 @@ const renders: Record<Template, Render> = {
                         isNamedStruct: type.getInterfaces().some(interfaceType => interfaceType.name === 'NamedStruct'),
                         idName: getIDFieldName(type),
                         scalars: new Set([...getScalarNames(fields) || [], 'String']),
+                        baseScalars: getBaseScalarNames(fields),
                         enums: getEnumNames(fields),
                         imports: componentFieldImports(typeName, fields),
                         namedStructObjectNames: getNamedStructObjectNames(fields),
@@ -672,6 +675,7 @@ const renders: Record<Template, Render> = {
                         name: type?.name,
                         idName: getIDFieldName(type),
                         fields: componentFields(typeName, fields),
+                        schemaTypesPath: config.schemaTypesPath,
                         appName: config.appName
                     }),
                 };
@@ -745,6 +749,7 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         objectsPath: `${config.componentsPath}/objects`,
+                        schemaTypesPath: config.schemaTypesPath,
                         appName: config.appName
                     }),
                 };
@@ -762,6 +767,7 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         objectsPath: `${config.componentsPath}/objects`,
+                        schemaTypesPath: config.schemaTypesPath,
                         appName: config.appName
                     }),
                 };
@@ -779,6 +785,7 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         objectsPath: `${config.componentsPath}/objects`,
+                        schemaTypesPath: config.schemaTypesPath,
                         appName: config.appName
                     }),
                 };
@@ -796,6 +803,7 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         objectsPath: `${config.componentsPath}/objects`,
+                        schemaTypesPath: config.schemaTypesPath,
                         appName: config.appName
                     }),
                 };
@@ -813,6 +821,7 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         objectsPath: `${config.componentsPath}/objects`,
+                        schemaTypesPath: config.schemaTypesPath,
                         appName: config.appName
                     }),
                 };
@@ -831,6 +840,7 @@ const renders: Record<Template, Render> = {
                         name: type?.name,
                         idName: getIDFieldName(type),
                         objectsPath: `${config.componentsPath}/objects`,
+                        schemaTypesPath: config.schemaTypesPath,
                         appName: config.appName
                     }),
                 };

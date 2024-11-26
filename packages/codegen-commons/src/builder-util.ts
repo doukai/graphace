@@ -345,9 +345,10 @@ export const getBaseScalarNames = (fields: FieldInfo[] | undefined): string[] | 
                 return "String";
             case "Int":
             case "BigInteger":
+                return "Int";
             case "Float":
             case "BigDecimal":
-                return "Number";
+                return "Float";
             default:
                 return "String";
         }

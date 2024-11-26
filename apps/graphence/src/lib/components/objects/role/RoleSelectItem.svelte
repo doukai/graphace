@@ -2,7 +2,7 @@
 	import type { Errors } from '@graphace/commons';
 	import { FormItem } from '@graphace/ui';
 	import RoleSelect from './RoleSelect.svelte';
-	import type { RoleInput } from '$houdini';
+	import type { RoleInput } from '~/lib/types/schema';
 
 	export let value: RoleInput | (RoleInput | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;

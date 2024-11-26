@@ -12,9 +12,7 @@
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import RealmSelect from '~/lib/components/objects/realm/RealmSelect.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	import { Operator } from '$houdini';
-	import type { StringExpression, BooleanExpression } from '$houdini';
-	import type { UserInput, GroupInput, RoleInput, RealmInput, UserExpression } from '$houdini';
+	import type { UserInput, GroupInput, RoleInput, RealmInput, StringExpression, BooleanExpression, UserExpression } from '~/lib/types/schema';
 
 	export let expression: UserExpression | null | undefined;
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
@@ -37,17 +35,17 @@
 		roles: { id: StringExpression };
 		realm: { id: StringExpression };
 	} = {
-		id: { opr: Operator.EQ },
-		name: { opr: Operator.EQ },
-		description: { opr: Operator.EQ },
-		lastName: { opr: Operator.EQ },
-		login: { opr: Operator.EQ },
-		email: { opr: Operator.EQ },
-		phones: { opr: Operator.EQ },
-		disable: { opr: Operator.EQ },
-		groups: { id: { opr: Operator.EQ } },
-		roles: { id: { opr: Operator.EQ } },
-		realm: { id: { opr: Operator.EQ } }
+		id: { opr: 'EQ' },
+		name: { opr: 'EQ' },
+		description: { opr: 'EQ' },
+		lastName: { opr: 'EQ' },
+		login: { opr: 'EQ' },
+		email: { opr: 'EQ' },
+		phones: { opr: 'EQ' },
+		disable: { opr: 'EQ' },
+		groups: { id: { opr: 'EQ' } },
+		roles: { id: { opr: 'EQ' } },
+		realm: { id: { opr: 'EQ' } }
 	};
 	$: if (Array.isArray(value)) {
 		_expression.id.arr = value?.map((item) => item?.id);
@@ -194,32 +192,32 @@
 	};
 
 	const clear = (): void => {
-		_expression.id = { opr: Operator.EQ };
+		_expression.id = { opr: 'EQ' };
 		if (Array.isArray(value)) {
 			value= [];
 		} else if (value) {
 			value = undefined;
 		}
-		_expression.name = { opr: Operator.EQ };
-		_expression.description = { opr: Operator.EQ };
-		_expression.lastName = { opr: Operator.EQ };
-		_expression.login = { opr: Operator.EQ };
-		_expression.email = { opr: Operator.EQ };
-		_expression.phones = { opr: Operator.EQ };
-		_expression.disable = { opr: Operator.EQ };
-		_expression.groups = { id: { opr: Operator.EQ } };
+		_expression.name = { opr: 'EQ' };
+		_expression.description = { opr: 'EQ' };
+		_expression.lastName = { opr: 'EQ' };
+		_expression.login = { opr: 'EQ' };
+		_expression.email = { opr: 'EQ' };
+		_expression.phones = { opr: 'EQ' };
+		_expression.disable = { opr: 'EQ' };
+		_expression.groups = { id: { opr: 'EQ' } };
 		if (Array.isArray(groups)) {
 			groups = [];
 		} else if (groups) {
 			groups = undefined;
 		}
-		_expression.roles = { id: { opr: Operator.EQ } };
+		_expression.roles = { id: { opr: 'EQ' } };
 		if (Array.isArray(roles)) {
 			roles = [];
 		} else if (roles) {
 			roles = undefined;
 		}
-		_expression.realm = { id: { opr: Operator.EQ } };
+		_expression.realm = { id: { opr: 'EQ' } };
 		if (Array.isArray(realm)) {
 			realm = [];
 		} else if (realm) {

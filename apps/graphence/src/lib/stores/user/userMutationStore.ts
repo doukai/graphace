@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import type { LoadEvent } from '@sveltejs/kit';
 import { type Field, type Directive, type GraphQLError, fieldToString, directiveToString } from '@graphace/graphql';
-import type { User, UserListMutationArguments } from '~/lib/types/schema';
+import type { User, UserListMutationArguments } from '~/';
 
 export async function createUserListMutationStore(params: { event: LoadEvent }): Promise<UserListMutationStore> {
     const data: Writable<{ isFetching: boolean, response: { data?: { userList: User[] | null | undefined }, errors?: GraphQLError[] | null | undefined } }> = writable({

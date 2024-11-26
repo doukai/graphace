@@ -1,7 +1,7 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from '$types';
 import { createRoleConnectionQueryStore } from '~/lib/stores/role/roleQueryStore';
-import { permissions } from '~/utils/auth-util';
+import { permissions } from '~/utils';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     await permissions.getTypes('Role', 'User', 'Group', 'Permission', 'Realm');

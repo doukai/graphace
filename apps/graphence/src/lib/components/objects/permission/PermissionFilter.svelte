@@ -11,9 +11,7 @@
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import RealmSelect from '~/lib/components/objects/realm/RealmSelect.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	import { Operator } from '$houdini';
-	import type { IDExpression, StringExpression } from '$houdini';
-	import type { RoleInput, RealmInput, PermissionTypeExpression, PermissionExpression } from '$houdini';
+	import type { RoleInput, RealmInput, PermissionTypeExpression, StringExpression, PermissionExpression } from '~/lib/types/schema';
 
 	export let expression: PermissionExpression | null | undefined;
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
@@ -30,13 +28,13 @@
 		roles: { id: StringExpression };
 		realm: { id: StringExpression };
 	} = {
-		name: { opr: Operator.EQ },
-		description: { opr: Operator.EQ },
-		field: { opr: Operator.EQ },
-		type: { opr: Operator.EQ },
-		permissionType: { opr: Operator.EQ },
-		roles: { id: { opr: Operator.EQ } },
-		realm: { id: { opr: Operator.EQ } }
+		name: { opr: 'EQ' },
+		description: { opr: 'EQ' },
+		field: { opr: 'EQ' },
+		type: { opr: 'EQ' },
+		permissionType: { opr: 'EQ' },
+		roles: { id: { opr: 'EQ' } },
+		realm: { id: { opr: 'EQ' } }
 	};
 	$: if (Array.isArray(roles)) {
 		_expression.roles.id.arr = roles?.map((item) => item?.id);
@@ -133,18 +131,18 @@
 	};
 
 	const clear = (): void => {
-		_expression.name = { opr: Operator.EQ };
-		_expression.description = { opr: Operator.EQ };
-		_expression.field = { opr: Operator.EQ };
-		_expression.type = { opr: Operator.EQ };
-		_expression.permissionType = { opr: Operator.EQ };
-		_expression.roles = { id: { opr: Operator.EQ } };
+		_expression.name = { opr: 'EQ' };
+		_expression.description = { opr: 'EQ' };
+		_expression.field = { opr: 'EQ' };
+		_expression.type = { opr: 'EQ' };
+		_expression.permissionType = { opr: 'EQ' };
+		_expression.roles = { id: { opr: 'EQ' } };
 		if (Array.isArray(roles)) {
 			roles = [];
 		} else if (roles) {
 			roles = undefined;
 		}
-		_expression.realm = { id: { opr: Operator.EQ } };
+		_expression.realm = { id: { opr: 'EQ' } };
 		if (Array.isArray(realm)) {
 			realm = [];
 		} else if (realm) {

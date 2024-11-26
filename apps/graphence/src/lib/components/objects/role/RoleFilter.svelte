@@ -12,9 +12,7 @@
 	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
 	import RealmSelect from '~/lib/components/objects/realm/RealmSelect.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	import { Operator } from '$houdini';
-	import type { StringExpression } from '$houdini';
-	import type { RoleInput, UserInput, GroupInput, RealmInput, RoleExpression } from '$houdini';
+	import type { RoleInput, UserInput, GroupInput, RealmInput, StringExpression, RoleExpression } from '~/lib/types/schema';
 
 	export let expression: RoleExpression | null | undefined;
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
@@ -34,13 +32,13 @@
 		composites: { id: StringExpression };
 		realm: { id: StringExpression };
 	} = {
-		id: { opr: Operator.EQ },
-		name: { opr: Operator.EQ },
-		description: { opr: Operator.EQ },
-		users: { id: { opr: Operator.EQ } },
-		groups: { id: { opr: Operator.EQ } },
-		composites: { id: { opr: Operator.EQ } },
-		realm: { id: { opr: Operator.EQ } }
+		id: { opr: 'EQ' },
+		name: { opr: 'EQ' },
+		description: { opr: 'EQ' },
+		users: { id: { opr: 'EQ' } },
+		groups: { id: { opr: 'EQ' } },
+		composites: { id: { opr: 'EQ' } },
+		realm: { id: { opr: 'EQ' } }
 	};
 	$: if (Array.isArray(value)) {
 		_expression.id.arr = value?.map((item) => item?.id);
@@ -152,33 +150,33 @@
 	};
 
 	const clear = (): void => {
-		_expression.id = { opr: Operator.EQ };
+		_expression.id = { opr: 'EQ' };
 		if (Array.isArray(value)) {
 			value= [];
 		} else if (value) {
 			value = undefined;
 		}
-		_expression.name = { opr: Operator.EQ };
-		_expression.description = { opr: Operator.EQ };
-		_expression.users = { id: { opr: Operator.EQ } };
+		_expression.name = { opr: 'EQ' };
+		_expression.description = { opr: 'EQ' };
+		_expression.users = { id: { opr: 'EQ' } };
 		if (Array.isArray(users)) {
 			users = [];
 		} else if (users) {
 			users = undefined;
 		}
-		_expression.groups = { id: { opr: Operator.EQ } };
+		_expression.groups = { id: { opr: 'EQ' } };
 		if (Array.isArray(groups)) {
 			groups = [];
 		} else if (groups) {
 			groups = undefined;
 		}
-		_expression.composites = { id: { opr: Operator.EQ } };
+		_expression.composites = { id: { opr: 'EQ' } };
 		if (Array.isArray(composites)) {
 			composites = [];
 		} else if (composites) {
 			composites = undefined;
 		}
-		_expression.realm = { id: { opr: Operator.EQ } };
+		_expression.realm = { id: { opr: 'EQ' } };
 		if (Array.isArray(realm)) {
 			realm = [];
 		} else if (realm) {
