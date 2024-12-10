@@ -6,6 +6,7 @@ export type BuilderConfig = {
     mutationTypeName?: string;
     subscriptionTypeName?: string;
     includeRelation?: boolean;
+    includeRef?: boolean;
 }
 
 export type ObjectConfig = {

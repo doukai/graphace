@@ -1,6 +1,6 @@
 import { isEnumType, isInputObjectType, isNonNullType, isObjectType, isScalarType, type GraphQLSchema, type GraphQLNamedType, isLeafType } from "graphql";
 import type { BuilderConfig, FieldInfo } from "./types/types";
-import { listSuffix, connectionSuffix, fieldInMutationArgs, fieldInQueryArgs, fieldTypeIsList, fieldTypeIsNamedStruct, getFieldType, getIDFieldName, isAggregate, isInnerEnum, isIntrospection, isRelation, getOriginalFieldName } from "./introspection";
+import { listSuffix, connectionSuffix, fieldInMutationArgs, fieldInQueryArgs, fieldTypeIsList, fieldTypeIsNamedStruct, getFieldType, getIDFieldName, isAggregate, isInnerEnum, isIntrospection, isRelation, isRef, getOriginalFieldName } from "./introspection";
 import * as changeCase from "change-case";
 
 let builderConfig: BuilderConfig | undefined = {};
@@ -85,7 +85,8 @@ export function inListField(typeName: string, fieldName: string, fieldTypeName: 
         .some(fieldConfig => fieldConfig.name === fieldName) &&
         builderConfig?.objects?.find(objectConfig => objectConfig.name === originalFieldTypeName)?.ignore !== true &&
         builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true &&
-        (!isRelation(originalFieldTypeName) || (builderConfig?.includeRelation || false));
+        (!isRelation(originalFieldTypeName) || (builderConfig?.includeRelation || false)) &&
+        (!isRef(fieldName) || (builderConfig?.includeRef || false));
 }
 
 export function isInvokeField(fieldName: string, fieldTypeName: string, fieldTypeIsList: boolean): boolean {
@@ -108,7 +109,8 @@ export function inDetailField(typeName: string, fieldName: string, fieldTypeName
         .some(fieldConfig => fieldConfig.name === fieldName) &&
         builderConfig?.objects?.find(objectConfig => objectConfig.name === originalFieldTypeName)?.ignore !== true &&
         builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true &&
-        (!isRelation(originalFieldTypeName) || (builderConfig?.includeRelation || false));
+        (!isRelation(originalFieldTypeName) || (builderConfig?.includeRelation || false)) &&
+        (!isRef(fieldName) || (builderConfig?.includeRef || false));
 }
 
 export function inRouteField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
@@ -125,7 +127,8 @@ export function inRouteField(typeName: string, fieldName: string, fieldTypeName:
         .some(fieldConfig => fieldConfig.name === fieldName) &&
         builderConfig?.objects?.find(objectConfig => objectConfig.name === originalFieldTypeName)?.ignore !== true &&
         builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true &&
-        (!isRelation(originalFieldTypeName) || (builderConfig?.includeRelation || false));
+        (!isRelation(originalFieldTypeName) || (builderConfig?.includeRelation || false)) &&
+        (!isRef(fieldName) || (builderConfig?.includeRef || false));
 }
 
 export function isSelectField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
