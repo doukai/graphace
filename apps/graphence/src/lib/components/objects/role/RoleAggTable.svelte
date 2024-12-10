@@ -14,6 +14,7 @@
 	export let showOptionButton: boolean = true;
 	export let showFilterButton: boolean = true;
 	export let showBookmarkButton: boolean = false;
+	export let nullString: string = '-';
 
 	$: nodes = connection?.edges?.map((edge) => edge?.node);
 	$: totalCount = connection?.totalCount || 0;
@@ -50,7 +51,11 @@
 				{#each nodes || [] as node}
 					<tr class="hover">
 						{#each queryArguments.groupBy || [] as groupByField}
-							<td class="border">{node[groupByField]}</td>
+							{#if node?.[groupByField] == null}
+								<td class="border">{nullString}</td>
+							{:else}
+								<td class="border">{node?.[groupByField]}</td>
+							{/if}
 						{/each}
 						<FieldTds className="border" {fields} {node} />
 					</tr>

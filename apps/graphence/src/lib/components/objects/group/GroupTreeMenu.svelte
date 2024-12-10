@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { graphql, GroupNodesQuery$input, Operator } from '$houdini';
-	import { NodeTree, TreeStruct, buildTree } from '@graphace/graphql';
+	import { graphql, type GroupNodesQuery$input, Operator } from '$houdini';
+	import { type NodeTree, type TreeStruct, buildTree } from '@graphace/graphql';
 	import { MenuTreeLoading } from '@graphace/ui';
 
 	export let nodeTrees: NodeTree[] | null | undefined = undefined;
