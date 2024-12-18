@@ -17,6 +17,7 @@ import {{ name }}AggGrid from "./{{ name }}AggGrid.svelte";
 import {{ name }}AggTable from "./{{ name }}AggTable.svelte";
 {%- if isNamedStruct %}
 import {{ name }}Select from "./{{ name }}Select.svelte";
+import {{ name }}SelectFilter from "./{{ name }}SelectFilter.svelte";
 import {{ name }}SelectItem from "./{{ name }}SelectItem.svelte";
 import {{ name }}SelectTd from "./{{ name }}SelectTd.svelte";
 {%- endif %}
@@ -26,5 +27,5 @@ import {{ name }}TreeCard from "./{{ name }}TreeCard.svelte";
 {%- endif %}
 
 export {
-  {{ name }}Form, {{ name }}CreateForm, {{ name }}Table, {{ name }}ConnectionTable, {{ name }}CreateTable, {{ name }}SelectTable, {{ name }}SelectConnectionTable, {{ name }}Filter, {{ name }}Th, {{ name }}, {{ name }}Agg, {{ name }}Bar, {{ name }}Line, {{ name }}Pie, {{ name }}Grid, {{ name }}AggGrid, {{ name }}AggTable{% if isNamedStruct %}, {{ name }}Select, {{ name }}SelectItem, {{ name }}SelectTd{%- endif %}{% if isTreeStruct %}, {{ name }}TreeMenu, {{ name }}TreeCard{%- endif %}
+  {{ name }}Form, {{ name }}CreateForm, {{ name }}Table, {{ name }}ConnectionTable, {{ name }}CreateTable, {{ name }}SelectTable, {{ name }}SelectConnectionTable, {{ name }}Filter, {{ name }}Th, {{ name }}, {{ name }}Agg, {{ name }}Bar, {{ name }}Line, {{ name }}Pie, {{ name }}Grid, {{ name }}AggGrid, {{ name }}AggTable{% if isNamedStruct %}, {{ name }}Select, {{ name }}SelectFilter, {{ name }}SelectItem, {{ name }}SelectTd{%- endif %}{% if isTreeStruct %}, {{ name }}TreeMenu, {{ name }}TreeCard{%- endif %}
 }

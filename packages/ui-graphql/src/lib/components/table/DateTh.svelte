@@ -16,7 +16,7 @@
 	export let expression: StringExpression | null | undefined;
 	export let sort: Sort | null | undefined = undefined;
 
-	let _expression: StringExpression = { opr: 'EQ', val: undefined, in: [] };
+	let _expression: StringExpression = { opr: 'EQ', val: undefined, arr: [] };
 	let _sort: Sort | undefined = undefined;
 
 	const dispatch = createEventDispatcher<{
@@ -24,7 +24,7 @@
 	}>();
 
 	const filter = (): void => {
-		if (_expression.val || (_expression.in && _expression.in.length > 0)) {
+		if (_expression.val || (_expression.arr && _expression.arr.length > 0)) {
 			expression = _expression;
 		} else {
 			expression = undefined;
@@ -36,7 +36,7 @@
 
 	const clear = (): void => {
 		_expression.opr = 'EQ';
-		_expression.in = [];
+		_expression.arr = [];
 		_expression.val = undefined;
 		_sort = undefined;
 		expression = undefined;
@@ -46,7 +46,7 @@
 	};
 
 	const oprChange = (): void => {
-		_expression.in = [];
+		_expression.arr = [];
 		_expression.val = undefined;
 	};
 
@@ -62,7 +62,7 @@
 <td>
 	<a class="link group inline-flex" href={null} use:melt={$trigger}>
 		{name}
-		{#if expression?.val || (expression?.in && expression.in.length > 0)}
+		{#if expression?.val || (expression?.arr && expression.arr.length > 0)}
 			<span class="ml-1 flex-none">
 				<Icon src={Funnel} class="h-5 w-5" />
 			</span>
@@ -94,7 +94,7 @@
 				<DateInputList
 					placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
 					{name}
-					bind:value={_expression.in}
+					bind:value={_expression.arr}
 					className="md:input-sm w-full"
 					addBtnClassName="md:btn-sm"
 				/>

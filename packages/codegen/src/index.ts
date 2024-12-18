@@ -645,6 +645,27 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectFilter.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isObjectType(type)) {
+                const fields = getFields(schema, type);
+                return {
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        idName: getIDFieldName(type),
+                        fields: componentFields(typeName, fields),
+                        objectsPath: `${config.componentsPath}/objects`,
+                        schemaTypesPath: config.schemaTypesPath,
+                        appName: config.appName
+                    }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
+    },
     '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectTd.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
@@ -977,6 +998,26 @@ const renders: Record<Template, Render> = {
         throw new Error(`${typeName} undefined`);
     },
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Input.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const typeName = config.name;
+        if (typeName) {
+            const type = schema.getType(typeName);
+            if (type && isEnumType(type)) {
+                return {
+                    content: buildFileContent(config.template, {
+                        name: type?.name,
+                        enumValues: getEnumValues(type),
+                        queryTypeName: getQueryTypeName(),
+                        mutationTypeName: getMutationTypeName(),
+                        subscriptionTypeName: getSubscriptionTypeName(),
+                        appName: config.appName
+                    }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${typeName} undefined`);
+    },
+    '{{componentsPath}}/enums/{{pathName}}/{{name}}Filter.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);

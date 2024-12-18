@@ -16,9 +16,10 @@ import RealmGrid from "./RealmGrid.svelte";
 import RealmAggGrid from "./RealmAggGrid.svelte";
 import RealmAggTable from "./RealmAggTable.svelte";
 import RealmSelect from "./RealmSelect.svelte";
+import RealmSelectFilter from "./RealmSelectFilter.svelte";
 import RealmSelectItem from "./RealmSelectItem.svelte";
 import RealmSelectTd from "./RealmSelectTd.svelte";
 
 export {
-  RealmForm, RealmCreateForm, RealmTable, RealmConnectionTable, RealmCreateTable, RealmSelectTable, RealmSelectConnectionTable, RealmFilter, RealmTh, Realm, RealmAgg, RealmBar, RealmLine, RealmPie, RealmGrid, RealmAggGrid, RealmAggTable, RealmSelect, RealmSelectItem, RealmSelectTd
+  RealmForm, RealmCreateForm, RealmTable, RealmConnectionTable, RealmCreateTable, RealmSelectTable, RealmSelectConnectionTable, RealmFilter, RealmTh, Realm, RealmAgg, RealmBar, RealmLine, RealmPie, RealmGrid, RealmAggGrid, RealmAggTable, RealmSelect, RealmSelectFilter, RealmSelectItem, RealmSelectTd
 }

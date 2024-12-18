@@ -2,151 +2,62 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	{%- if useAuth %}
-	import { fade } from 'svelte/transition';
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import type { PermissionsStore } from '@graphace/commons';
 	{%- endif %} 
-	import { OperatorSelect, {% for scalar in scalars %}{{ scalar }}Input{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql';
+	import { {% for scalar in scalars %}{{ scalar }}Filter{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark } from '@steeze-ui/heroicons';
 	{%- for enum in enums %}
-	import {{ enum }}Input from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Input.svelte';
+	import {{ enum }}Filter from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Filter.svelte';
 	{%- endfor %}
 	{%- if isNamedStruct %}
-	import {{ name }}Select from '~/{{ objectsPath }}/{{ name | paramCase }}/{{ name }}Select.svelte';
+	import {{ name }}SelectFilter from '~/{{ objectsPath }}/{{ name | paramCase }}/{{ name }}SelectFilter.svelte';
 	{%- endif %}
 	{%- if namedStructObjectNames %}
 	{%- for namedStructType in namedStructObjectNames %}
 	{%- if namedStructType != name %}
-	import {{ namedStructType }}Select from '~/{{ objectsPath }}/{{ namedStructType | paramCase }}/{{ namedStructType }}Select.svelte';
+	import {{ namedStructType }}SelectFilter from '~/{{ objectsPath }}/{{ namedStructType | paramCase }}/{{ namedStructType }}SelectFilter.svelte';
 	{%- endif %}
 	{%- endfor %}
 	{%- endif %}
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	import type { {% if isNamedStruct %}{{ name }}Input, {% endif %}{% if namedStructObjectNames %}{% for namedStructType in namedStructObjectNames %}{% if namedStructType != name %}{{ namedStructType }}Input, {% endif %}{% endfor %}{% endif %}{% for enum in enums %}{{ enum }}Expression, {% endfor %}{% for scalar in baseScalars %}{{ scalar }}Expression, {% endfor %}{{ name }}Expression } from '~/{{ schemaTypesPath }}';
+	import type { {{ name }}Expression } from '~/{{ schemaTypesPath }}';
 
 	export let expression: {{ name }}Expression | null | undefined;
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 	{%- if useAuth %}
 	const permissions = getContext('permissions') as PermissionsStore;
 	{%- endif %}
-	
-	{%- if isNamedStruct %}
-	let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
-	{%- endif %}
-	{%- if fields %}
-	{%- for field in fields %}
-	{%- if field.isNamed %}
-	let {{ field.fieldName }}: {{ field.fieldTypeName }}Input | ({{ field.fieldTypeName }}Input | null | undefined)[] | null | undefined = undefined;
-	{%- endif %}
-	{%- endfor %}
-	{%- endif %}
 
-	let _expression: {
+	let _expression = {
 		{%- if isNamedStruct %}
-		{{ idName }}: StringExpression;
+		{{ idName }}: undefined,
 		{%- endif %}
 		{%- if fields %}
 		{%- for field in fields %}
 		{%- if field.fieldName == idName %}
 		{%- if isNamedStruct == false %}
-		{{ field.fieldName }}: StringExpression;
+		{{ field.fieldName }}: undefined{% if forloop.last == false %},{% endif %}
 		{%- endif %}
 		{%- elsif field.isScalarType or field.isEnumType %}
-		{{ field.fieldName }}: {{ field.fieldTypeName }}Expression;
+		{{ field.fieldName }}: undefined{% if forloop.last == false %},{% endif %}
 		{%- endif %}
 		{%- if field.isNamed %}
-		{{ field.fieldName }}: { {{ field.fieldTypeIdName }}: StringExpression };
-		{%- endif %}
-		{%- endfor %}
-		{%- endif %}
-	} = {
-		{%- if isNamedStruct %}
-		{{ idName }}: { opr: 'EQ' },
-		{%- endif %}
-		{%- if fields %}
-		{%- for field in fields %}
-		{%- if field.fieldName == idName %}
-		{%- if isNamedStruct == false %}
-		{{ field.fieldName }}: { opr: 'EQ' }{% if forloop.last == false %},{% endif %}
-		{%- endif %}
-		{%- elsif field.isScalarType or field.isEnumType %}
-		{{ field.fieldName }}: { opr: 'EQ' }{% if forloop.last == false %},{% endif %}
-		{%- endif %}
-		{%- if field.isNamed %}
-		{{ field.fieldName }}: { {{ field.fieldTypeIdName }}: { opr: 'EQ' } }{% if forloop.last == false %},{% endif %}
+		{{ field.fieldName }}: { {{ field.fieldTypeIdName }}: undefined }{% if forloop.last == false %},{% endif %}
 		{%- endif %}
 		{%- endfor %}
 		{%- endif %}
 	};
-	
-	{%- if isNamedStruct %}
-	$: if (Array.isArray(value)) {
-		_expression.{{ idName }}.arr = value?.map((item) => item?.{{ idName }});
-	} else if (value) {
-		_expression.{{ idName }}.val = value?.{{ idName }};
-	}
-	{%- endif %}
-
-	{%- if fields %}
-	{%- for field in fields %}
-	{%- if field.isNamed %}
-	$: if (Array.isArray({{ field.fieldName }})) {
-		_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.arr = {{ field.fieldName }}?.map((item) => item?.{{ field.fieldTypeIdName }});
-	} else if ({{ field.fieldName }}) {
-		_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.val = {{ field.fieldName }}?.{{ field.fieldTypeIdName }};
-	}
-	{%- endif %}
-	{%- endfor %}
-	{%- endif %}
 	
 	const dispatch = createEventDispatcher<{
 		filter: {};
 	}>();
 
 	const filter = (): void => {
-		{%- if isNamedStruct %}
-		if (
-			_expression.{{ idName }}.val ||
-			(_expression.{{ idName }}.arr && _expression.{{ idName }}.arr.length > 0) ||
-			_expression.{{ idName }}.opr ==='NIL' ||
-			_expression.{{ idName }}.opr ==='NNIL'
-		) {
-			expression = { ...expression, {{ idName }}: _expression.{{ idName }} };
+		if (Object.values(_expression).filter((item) => item !== null).length > 0) {
+			expression = _expression;
 		} else {
-			expression = { ...expression, {{ idName }}: undefined };
-		}
-		{%- endif %}
-		{%- if fields %}
-		{%- for field in fields %}
-		{%- if field.isScalarType or field.isEnumType %}
-		if (
-			_expression.{{ field.fieldName }}.val ||
-			(_expression.{{ field.fieldName }}.arr && _expression.{{ field.fieldName }}.arr.length > 0) ||
-			_expression.{{ field.fieldName }}.opr ==='NIL' ||
-			_expression.{{ field.fieldName }}.opr ==='NNIL'
-		) {
-			expression = { ...expression, {{ field.fieldName }}: _expression.{{ field.fieldName }} };
-		} else {
-			expression = { ...expression, {{ field.fieldName }}: undefined };
-		}
-		{%- endif %}
-		{%- if field.isNamed %}
-		if (
-			_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}?.val ||
-			(_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}?.arr && _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}?.arr.length > 0) ||
-			_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr ==='NIL' ||
-			_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr ==='NNIL'
-		) {
-			expression = { ...expression, {{ field.fieldName }}: _expression.{{ field.fieldName }} };
-		} else {
-			expression = { ...expression, {{ field.fieldName }}: undefined };
-		}
-		{%- endif %}
-		{%- endfor %}
-		{%- endif %}
-		
-		if (Object.values(expression).filter((item) => item).length === 0) {
 			expression = undefined;
 		}
 		dispatch('filter', {});
@@ -154,70 +65,29 @@
 	};
 
 	const clear = (): void => {
-		{%- if isNamedStruct %}
-		_expression.{{ idName }} = { opr: 'EQ' };
-		if (Array.isArray(value)) {
-			value= [];
-		} else if (value) {
-			value = undefined;
-		}
-		{%- endif %}
-		{%- if fields %}
-		{%- for field in fields %}
-		{%- if field.isScalarType or field.isEnumType %}
-		_expression.{{ field.fieldName }} = { opr: 'EQ' };
-		{%- endif %}
-		{%- if field.isNamed %}
-		_expression.{{ field.fieldName }} = { {{ field.fieldTypeIdName }}: { opr: 'EQ' } };
-		if (Array.isArray({{ field.fieldName }})) {
-			{{ field.fieldName }} = [];
-		} else if ({{ field.fieldName }}) {
-			{{ field.fieldName }} = undefined;
-		}
-		{%- endif %}
-		{%- endfor %}
-		{%- endif %}
+		_expression = {
+			{%- if isNamedStruct %}
+			{{ idName }}: undefined,
+			{%- endif %}
+			{%- if fields %}
+			{%- for field in fields %}
+			{%- if field.fieldName == idName %}
+			{%- if isNamedStruct == false %}
+			{{ field.fieldName }}: undefined{% if forloop.last == false %},{% endif %}
+			{%- endif %}
+			{%- elsif field.isScalarType or field.isEnumType %}
+			{{ field.fieldName }}: undefined{% if forloop.last == false %},{% endif %}
+			{%- endif %}
+			{%- if field.isNamed %}
+			{{ field.fieldName }}: { {{ field.fieldTypeIdName }}: undefined }{% if forloop.last == false %},{% endif %}
+			{%- endif %}
+			{%- endfor %}
+			{%- endif %}
+		};
 		expression = undefined;
 		dispatch('filter', {});
 		$open = false;
 	};
-
-	
-	{%- if isNamedStruct %}
-	const oprChange = (): void => {
-		_expression.{{ idName }}.arr = [];
-		_expression.{{ idName }}.val = undefined;
-		if (Array.isArray(value)) {
-			value = [];
-		} else if (value) {
-			value = undefined;
-		}
-	};	
-	{%- endif %}
-
-	{%- if fields %}
-	{%- for field in fields %}
-	{%- if field.isScalarType or field.isEnumType %}
-	const {{ field.fieldName }}OprChange = (): void => {
-		_expression.{{ field.fieldName }}.arr = [];
-		_expression.{{ field.fieldName }}.val = undefined;
-	};
-	
-	{%- endif %}
-	{%- if field.isNamed %}
-	const {{ field.fieldName }}OprChange = (): void => {
-		_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.arr = [];
-		_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.val = undefined;
-		if (Array.isArray({{ field.fieldName }})) {
-			{{ field.fieldName }} = [];
-		} else if ({{ field.fieldName }}) {
-			{{ field.fieldName }} = undefined;
-		}
-	};
-
-	{%- endif %}
-	{%- endfor %}
-	{%- endif %}
 
 	const {
 		elements: { trigger, content, arrow, close, overlay },
@@ -240,43 +110,16 @@
 			{%- if useAuth %}
 			{#if permissions.auth('{{ name }}::{{ idName }}::*')}
 			{%- endif %}
-				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
-					<!-- svelte-ignore a11y-label-has-associated-control -->
-					<div class="form-control w-full md:w-60">
-						<label class="input-group md:input-group-sm">
-							<span class="w-20 whitespace-nowrap">
-								{$LL.graphql.objects.{{ name }}.name()}
-							</span>
-							<OperatorSelect
-								className="md:select-sm w-full"
-								bind:value={_expression.{{ idName }}.opr}
-								on:change={(e) => oprChange()}
-							/>
-						</label>
-					</div>
-					{#if _expression.{{ idName }}.opr === 'IN' || _expression.{{ idName }}.opr === 'NIN' || _expression.{{ idName }}.opr === 'BT' || _expression.{{ idName }}.opr === 'NBT'}
-						<{{ name }}Select
-							name="{{ idName }}"
-							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-							list
-							bind:value
-							className="md:input-sm"
-							containerClassName="md:min-h-8 max-w-xs"
-							tagClassName="md:badge-sm"
-							menuClassName="md:menu-sm"
-						/>
-					{:else}
-						<{{ name }}Select
-							name="{{ idName }}"
-							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-							bind:value
-							className="md:input-sm"
-							containerClassName="md:min-h-8 max-w-xs"
-							tagClassName="md:badge-sm"
-							menuClassName="md:menu-sm"
-						/>
-					{/if}
-				</div>
+				<{{ name }}SelectFilter
+					label={$LL.graphql.objects.{{ name }}.name()}
+					name="{{ idName }}"
+					bind:expression={_expression.{{ idName }}}
+					className="md:input-sm"
+					selectClassName="md:select-sm w-full"
+					containerClassName="md:min-h-8 max-w-xs"
+					tagClassName="md:badge-sm"
+					menuClassName="md:menu-sm"
+				/>
 				<div class="divider m-0 md:hidden" />
 			{%- if useAuth %}
 			{/if}
@@ -287,55 +130,21 @@
 			{%- if useAuth %}
 			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 			{%- endif %}
-				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
-					<!-- svelte-ignore a11y-label-has-associated-control -->
-					<div class="form-control w-full md:w-60">
-						<label class="input-group md:input-group-sm">
-							<span class="w-20 whitespace-nowrap">
-								{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-							</span>
-							<OperatorSelect
-								className="md:select-sm w-full"
-								bind:value={_expression.{{ field.fieldName }}.opr}
-								on:change={(e) => {{ field.fieldName }}OprChange()}
-							/>
-						</label>
-					</div>
-					{#if _expression.{{ field.fieldName }}.opr === 'IN' || _expression.{{ field.fieldName }}.opr === 'NIN' || _expression.{{ field.fieldName }}.opr === 'BT' || _expression.{{ field.fieldName }}.opr === 'NBT'}
-						<{{ field.fieldTypeName }}Input
-							{%- if field.isEnumType %}
-							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-							className="md:select-sm"
-							{%- elsif field.fieldTypeName == "Boolean" %}
-							className="md:toggle-sm"
-							addBtnClassName="md:btn-sm"
-							{%- else %}
-							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-							className="md:input-sm"
-							addBtnClassName="md:btn-sm"
-							{%- endif %}
-							name="{{ field.fieldName }}"
-							bind:value={_expression.{{ field.fieldName }}.arr}
-							list
-						/>
-					{:else}
-						<{{ field.fieldTypeName }}Input
-							{%- if field.isEnumType %}
-							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-							className="md:select-sm"
-							{%- elsif field.fieldTypeName == "Boolean" %}
-							className="md:toggle-sm"
-							addBtnClassName="md:btn-sm"
-							{%- else %}
-							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-							className="md:input-sm"
-							addBtnClassName="md:btn-sm"
-							{%- endif %}
-							name="{{ field.fieldName }}"
-							bind:value={_expression.{{ field.fieldName }}.val}
-						/>
-					{/if}
-				</div>
+				<{{ field.fieldTypeName }}Filter
+					label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+					name="{{ field.fieldName }}"
+					bind:expression={_expression.{{ field.fieldName }}}
+					{%- if field.isEnumType %}
+					className="md:select-sm"
+					{%- elsif field.fieldTypeName == "Boolean" %}
+					className="md:toggle-sm"
+					addBtnClassName="md:btn-sm"
+					{%- else %}
+					className="md:input-sm"
+					addBtnClassName="md:btn-sm"
+					{%- endif %}
+					selectClassName="md:select-sm w-full"
+				/>
 				<div class="divider m-0 md:hidden" />
 			{%- if useAuth %}
 			{/if}
@@ -345,43 +154,16 @@
 			{%- if useAuth %}
 			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 			{%- endif %}
-				<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
-					<!-- svelte-ignore a11y-label-has-associated-control -->
-					<div class="form-control w-full md:w-60">
-						<label class="input-group md:input-group-sm">
-							<span class="w-20 whitespace-nowrap">
-								{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-							</span>
-							<OperatorSelect
-								className="md:select-sm w-full"
-								bind:value={_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr}
-								on:change={(e) => {{ field.fieldName }}OprChange()}
-							/>
-						</label>
-					</div>
-					{#if _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr === 'IN' || _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr === 'NIN' || _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr === 'BT' || _expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}.opr === 'NBT'}
-						<{{ field.fieldTypeName }}Select
-							name="{{ field.fieldName }}"
-							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-							list
-							bind:value={ {{ field.fieldName }} }
-							className="md:input-sm"
-							containerClassName="md:min-h-8 max-w-xs"
-							tagClassName="md:badge-sm"
-							menuClassName="md:menu-sm"
-						/>
-					{:else}
-						<{{ field.fieldTypeName }}Select
-							name="{{ field.fieldName }}"
-							placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
-							bind:value={ {{ field.fieldName }} }
-							className="md:input-sm"
-							containerClassName="md:min-h-8 max-w-xs"
-							tagClassName="md:badge-sm"
-							menuClassName="md:menu-sm"
-						/>
-					{/if}
-				</div>
+				<{{ field.fieldTypeName }}SelectFilter
+					label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+					name="{{ field.fieldName }}"
+					bind:expression={_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}}
+					className="md:input-sm"
+					containerClassName="md:min-h-8 max-w-xs"
+					tagClassName="md:badge-sm"
+					menuClassName="md:menu-sm"
+					selectClassName="md:select-sm w-full"
+				/>
 				<div class="divider m-0 md:hidden" />
 			{%- if useAuth %}
 			{/if}
