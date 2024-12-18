@@ -36,9 +36,63 @@
 	}>();
 
 	const filter = (): void => {
-		if (Object.values(_expression).filter((item) => item !== null).length > 0) {
-			expression = _expression;
+		if (_expression.id) {
+			expression = { ...expression, id: _expression.id };
 		} else {
+			expression = { ...expression, id: undefined };
+		}
+		if (_expression.name) {
+			expression = { ...expression, name: _expression.name };
+		} else {
+			expression = { ...expression, name: undefined };
+		}
+		if (_expression.description) {
+			expression = { ...expression, description: _expression.description };
+		} else {
+			expression = { ...expression, description: undefined };
+		}
+		if (_expression.path) {
+			expression = { ...expression, path: _expression.path };
+		} else {
+			expression = { ...expression, path: undefined };
+		}
+		if (_expression.deep) {
+			expression = { ...expression, deep: _expression.deep };
+		} else {
+			expression = { ...expression, deep: undefined };
+		}
+		if (_expression.parentId) {
+			expression = { ...expression, parentId: _expression.parentId };
+		} else {
+			expression = { ...expression, parentId: undefined };
+		}
+		if (_expression.parent.id) {
+			expression = { ...expression, parent: _expression.parent };
+		} else {
+			expression = { ...expression, parent: undefined };
+		}
+		if (_expression.subGroups.id) {
+			expression = { ...expression, subGroups: _expression.subGroups };
+		} else {
+			expression = { ...expression, subGroups: undefined };
+		}
+		if (_expression.users.id) {
+			expression = { ...expression, users: _expression.users };
+		} else {
+			expression = { ...expression, users: undefined };
+		}
+		if (_expression.roles.id) {
+			expression = { ...expression, roles: _expression.roles };
+		} else {
+			expression = { ...expression, roles: undefined };
+		}
+		if (_expression.realm.id) {
+			expression = { ...expression, realm: _expression.realm };
+		} else {
+			expression = { ...expression, realm: undefined };
+		}
+
+		if (Object.values(expression).filter((item) => item).length === 0) {
 			expression = undefined;
 		}
 		dispatch('filter', {});
@@ -81,137 +135,137 @@
 		<div use:melt={$arrow} />
 		<div class="space-y-1 max-h-60 overflow-y-auto">
 			{#if permissions.auth('Group::id::*')}
-				<GroupSelectFilter
-					label={$LL.graphql.objects.Group.name()}
-					name="id"
-					bind:expression={_expression.id}
-					className="md:input-sm"
-					selectClassName="md:select-sm w-full"
-					containerClassName="md:min-h-8 max-w-xs"
-					tagClassName="md:badge-sm"
-					menuClassName="md:menu-sm"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<GroupSelectFilter
+				label={$LL.graphql.objects.Group.name()}
+				name="id"
+				bind:expression={_expression.id}
+				className="md:input-sm"
+				selectClassName="md:select-sm w-full"
+				containerClassName="md:min-h-8 max-w-xs"
+				tagClassName="md:badge-sm"
+				menuClassName="md:menu-sm"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Group::name::*')}
-				<StringFilter
-					label={$LL.graphql.objects.Group.fields.name.name()}
-					name="name"
-					bind:expression={_expression.name}
-					className="md:input-sm"
-					addBtnClassName="md:btn-sm"
-					selectClassName="md:select-sm w-full"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<StringFilter
+				label={$LL.graphql.objects.Group.fields.name.name()}
+				name="name"
+				bind:expression={_expression.name}
+				className="md:input-sm"
+				addBtnClassName="md:btn-sm"
+				selectClassName="md:select-sm w-full"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Group::description::*')}
-				<StringFilter
-					label={$LL.graphql.objects.Group.fields.description.name()}
-					name="description"
-					bind:expression={_expression.description}
-					className="md:input-sm"
-					addBtnClassName="md:btn-sm"
-					selectClassName="md:select-sm w-full"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<StringFilter
+				label={$LL.graphql.objects.Group.fields.description.name()}
+				name="description"
+				bind:expression={_expression.description}
+				className="md:input-sm"
+				addBtnClassName="md:btn-sm"
+				selectClassName="md:select-sm w-full"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Group::path::*')}
-				<StringFilter
-					label={$LL.graphql.objects.Group.fields.path.name()}
-					name="path"
-					bind:expression={_expression.path}
-					className="md:input-sm"
-					addBtnClassName="md:btn-sm"
-					selectClassName="md:select-sm w-full"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<StringFilter
+				label={$LL.graphql.objects.Group.fields.path.name()}
+				name="path"
+				bind:expression={_expression.path}
+				className="md:input-sm"
+				addBtnClassName="md:btn-sm"
+				selectClassName="md:select-sm w-full"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Group::deep::*')}
-				<IntFilter
-					label={$LL.graphql.objects.Group.fields.deep.name()}
-					name="deep"
-					bind:expression={_expression.deep}
-					className="md:input-sm"
-					addBtnClassName="md:btn-sm"
-					selectClassName="md:select-sm w-full"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<IntFilter
+				label={$LL.graphql.objects.Group.fields.deep.name()}
+				name="deep"
+				bind:expression={_expression.deep}
+				className="md:input-sm"
+				addBtnClassName="md:btn-sm"
+				selectClassName="md:select-sm w-full"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Group::parentId::*')}
-				<StringFilter
-					label={$LL.graphql.objects.Group.fields.parentId.name()}
-					name="parentId"
-					bind:expression={_expression.parentId}
-					className="md:input-sm"
-					addBtnClassName="md:btn-sm"
-					selectClassName="md:select-sm w-full"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<StringFilter
+				label={$LL.graphql.objects.Group.fields.parentId.name()}
+				name="parentId"
+				bind:expression={_expression.parentId}
+				className="md:input-sm"
+				addBtnClassName="md:btn-sm"
+				selectClassName="md:select-sm w-full"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Group::parent::*')}
-				<GroupSelectFilter
-					label={$LL.graphql.objects.Group.fields.parent.name()}
-					name="parent"
-					bind:expression={_expression.parent.id}
-					className="md:input-sm"
-					containerClassName="md:min-h-8 max-w-xs"
-					tagClassName="md:badge-sm"
-					menuClassName="md:menu-sm"
-					selectClassName="md:select-sm w-full"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<GroupSelectFilter
+				label={$LL.graphql.objects.Group.fields.parent.name()}
+				name="parent"
+				bind:expression={_expression.parent.id}
+				className="md:input-sm"
+				containerClassName="md:min-h-8 max-w-xs"
+				tagClassName="md:badge-sm"
+				menuClassName="md:menu-sm"
+				selectClassName="md:select-sm w-full"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Group::subGroups::*')}
-				<GroupSelectFilter
-					label={$LL.graphql.objects.Group.fields.subGroups.name()}
-					name="subGroups"
-					bind:expression={_expression.subGroups.id}
-					className="md:input-sm"
-					containerClassName="md:min-h-8 max-w-xs"
-					tagClassName="md:badge-sm"
-					menuClassName="md:menu-sm"
-					selectClassName="md:select-sm w-full"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<GroupSelectFilter
+				label={$LL.graphql.objects.Group.fields.subGroups.name()}
+				name="subGroups"
+				bind:expression={_expression.subGroups.id}
+				className="md:input-sm"
+				containerClassName="md:min-h-8 max-w-xs"
+				tagClassName="md:badge-sm"
+				menuClassName="md:menu-sm"
+				selectClassName="md:select-sm w-full"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Group::users::*')}
-				<UserSelectFilter
-					label={$LL.graphql.objects.Group.fields.users.name()}
-					name="users"
-					bind:expression={_expression.users.id}
-					className="md:input-sm"
-					containerClassName="md:min-h-8 max-w-xs"
-					tagClassName="md:badge-sm"
-					menuClassName="md:menu-sm"
-					selectClassName="md:select-sm w-full"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<UserSelectFilter
+				label={$LL.graphql.objects.Group.fields.users.name()}
+				name="users"
+				bind:expression={_expression.users.id}
+				className="md:input-sm"
+				containerClassName="md:min-h-8 max-w-xs"
+				tagClassName="md:badge-sm"
+				menuClassName="md:menu-sm"
+				selectClassName="md:select-sm w-full"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Group::roles::*')}
-				<RoleSelectFilter
-					label={$LL.graphql.objects.Group.fields.roles.name()}
-					name="roles"
-					bind:expression={_expression.roles.id}
-					className="md:input-sm"
-					containerClassName="md:min-h-8 max-w-xs"
-					tagClassName="md:badge-sm"
-					menuClassName="md:menu-sm"
-					selectClassName="md:select-sm w-full"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<RoleSelectFilter
+				label={$LL.graphql.objects.Group.fields.roles.name()}
+				name="roles"
+				bind:expression={_expression.roles.id}
+				className="md:input-sm"
+				containerClassName="md:min-h-8 max-w-xs"
+				tagClassName="md:badge-sm"
+				menuClassName="md:menu-sm"
+				selectClassName="md:select-sm w-full"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Group::realm::*')}
-				<RealmSelectFilter
-					label={$LL.graphql.objects.Group.fields.realm.name()}
-					name="realm"
-					bind:expression={_expression.realm.id}
-					className="md:input-sm"
-					containerClassName="md:min-h-8 max-w-xs"
-					tagClassName="md:badge-sm"
-					menuClassName="md:menu-sm"
-					selectClassName="md:select-sm w-full"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<RealmSelectFilter
+				label={$LL.graphql.objects.Group.fields.realm.name()}
+				name="realm"
+				bind:expression={_expression.realm.id}
+				className="md:input-sm"
+				containerClassName="md:min-h-8 max-w-xs"
+				tagClassName="md:badge-sm"
+				menuClassName="md:menu-sm"
+				selectClassName="md:select-sm w-full"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 		</div>
 		<div class="flex justify-center space-x-1 pt-1">

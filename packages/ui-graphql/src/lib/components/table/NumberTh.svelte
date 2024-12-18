@@ -84,7 +84,10 @@
 	<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
 	<div class="p-1 rounded-xl bg-base-100 shadow z-[50]" use:melt={$content}>
 		<div use:melt={$arrow} />
-		<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1 max-w-xs md:max-w-md" transition:fade={{ duration: 100 }}>
+		<div
+			class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1 max-w-xs md:max-w-md"
+			transition:fade={{ duration: 100 }}
+		>
 			<OperatorSelect
 				bind:value={_expression.opr}
 				on:change={(e) => oprChange()}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { NumberExpression } from '@graphace/graphql';
-	import NumberFilter from './NumberFilter.svelte';
+	import { NumberFilter } from '.';
 
 	export let expression: NumberExpression | null | undefined;
 	export let name: string;

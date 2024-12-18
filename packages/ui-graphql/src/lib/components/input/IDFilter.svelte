@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { StringExpression } from '@graphace/graphql';
-	import StringFilter from './StringFilter.svelte';
+	import { StringFilter } from '.';
 
 	export let expression: StringExpression | null | undefined;
 	export let name: string;

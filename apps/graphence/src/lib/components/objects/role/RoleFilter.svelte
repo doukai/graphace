@@ -32,9 +32,43 @@
 	}>();
 
 	const filter = (): void => {
-		if (Object.values(_expression).filter((item) => item !== null).length > 0) {
-			expression = _expression;
+		if (_expression.id) {
+			expression = { ...expression, id: _expression.id };
 		} else {
+			expression = { ...expression, id: undefined };
+		}
+		if (_expression.name) {
+			expression = { ...expression, name: _expression.name };
+		} else {
+			expression = { ...expression, name: undefined };
+		}
+		if (_expression.description) {
+			expression = { ...expression, description: _expression.description };
+		} else {
+			expression = { ...expression, description: undefined };
+		}
+		if (_expression.users.id) {
+			expression = { ...expression, users: _expression.users };
+		} else {
+			expression = { ...expression, users: undefined };
+		}
+		if (_expression.groups.id) {
+			expression = { ...expression, groups: _expression.groups };
+		} else {
+			expression = { ...expression, groups: undefined };
+		}
+		if (_expression.composites.id) {
+			expression = { ...expression, composites: _expression.composites };
+		} else {
+			expression = { ...expression, composites: undefined };
+		}
+		if (_expression.realm.id) {
+			expression = { ...expression, realm: _expression.realm };
+		} else {
+			expression = { ...expression, realm: undefined };
+		}
+
+		if (Object.values(expression).filter((item) => item).length === 0) {
 			expression = undefined;
 		}
 		dispatch('filter', {});
@@ -73,91 +107,91 @@
 		<div use:melt={$arrow} />
 		<div class="space-y-1 max-h-60 overflow-y-auto">
 			{#if permissions.auth('Role::id::*')}
-				<RoleSelectFilter
-					label={$LL.graphql.objects.Role.name()}
-					name="id"
-					bind:expression={_expression.id}
-					className="md:input-sm"
-					selectClassName="md:select-sm w-full"
-					containerClassName="md:min-h-8 max-w-xs"
-					tagClassName="md:badge-sm"
-					menuClassName="md:menu-sm"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<RoleSelectFilter
+				label={$LL.graphql.objects.Role.name()}
+				name="id"
+				bind:expression={_expression.id}
+				className="md:input-sm"
+				selectClassName="md:select-sm w-full"
+				containerClassName="md:min-h-8 max-w-xs"
+				tagClassName="md:badge-sm"
+				menuClassName="md:menu-sm"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Role::name::*')}
-				<StringFilter
-					label={$LL.graphql.objects.Role.fields.name.name()}
-					name="name"
-					bind:expression={_expression.name}
-					className="md:input-sm"
-					addBtnClassName="md:btn-sm"
-					selectClassName="md:select-sm w-full"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<StringFilter
+				label={$LL.graphql.objects.Role.fields.name.name()}
+				name="name"
+				bind:expression={_expression.name}
+				className="md:input-sm"
+				addBtnClassName="md:btn-sm"
+				selectClassName="md:select-sm w-full"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Role::description::*')}
-				<StringFilter
-					label={$LL.graphql.objects.Role.fields.description.name()}
-					name="description"
-					bind:expression={_expression.description}
-					className="md:input-sm"
-					addBtnClassName="md:btn-sm"
-					selectClassName="md:select-sm w-full"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<StringFilter
+				label={$LL.graphql.objects.Role.fields.description.name()}
+				name="description"
+				bind:expression={_expression.description}
+				className="md:input-sm"
+				addBtnClassName="md:btn-sm"
+				selectClassName="md:select-sm w-full"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Role::users::*')}
-				<UserSelectFilter
-					label={$LL.graphql.objects.Role.fields.users.name()}
-					name="users"
-					bind:expression={_expression.users.id}
-					className="md:input-sm"
-					containerClassName="md:min-h-8 max-w-xs"
-					tagClassName="md:badge-sm"
-					menuClassName="md:menu-sm"
-					selectClassName="md:select-sm w-full"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<UserSelectFilter
+				label={$LL.graphql.objects.Role.fields.users.name()}
+				name="users"
+				bind:expression={_expression.users.id}
+				className="md:input-sm"
+				containerClassName="md:min-h-8 max-w-xs"
+				tagClassName="md:badge-sm"
+				menuClassName="md:menu-sm"
+				selectClassName="md:select-sm w-full"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Role::groups::*')}
-				<GroupSelectFilter
-					label={$LL.graphql.objects.Role.fields.groups.name()}
-					name="groups"
-					bind:expression={_expression.groups.id}
-					className="md:input-sm"
-					containerClassName="md:min-h-8 max-w-xs"
-					tagClassName="md:badge-sm"
-					menuClassName="md:menu-sm"
-					selectClassName="md:select-sm w-full"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<GroupSelectFilter
+				label={$LL.graphql.objects.Role.fields.groups.name()}
+				name="groups"
+				bind:expression={_expression.groups.id}
+				className="md:input-sm"
+				containerClassName="md:min-h-8 max-w-xs"
+				tagClassName="md:badge-sm"
+				menuClassName="md:menu-sm"
+				selectClassName="md:select-sm w-full"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Role::composites::*')}
-				<RoleSelectFilter
-					label={$LL.graphql.objects.Role.fields.composites.name()}
-					name="composites"
-					bind:expression={_expression.composites.id}
-					className="md:input-sm"
-					containerClassName="md:min-h-8 max-w-xs"
-					tagClassName="md:badge-sm"
-					menuClassName="md:menu-sm"
-					selectClassName="md:select-sm w-full"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<RoleSelectFilter
+				label={$LL.graphql.objects.Role.fields.composites.name()}
+				name="composites"
+				bind:expression={_expression.composites.id}
+				className="md:input-sm"
+				containerClassName="md:min-h-8 max-w-xs"
+				tagClassName="md:badge-sm"
+				menuClassName="md:menu-sm"
+				selectClassName="md:select-sm w-full"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Role::realm::*')}
-				<RealmSelectFilter
-					label={$LL.graphql.objects.Role.fields.realm.name()}
-					name="realm"
-					bind:expression={_expression.realm.id}
-					className="md:input-sm"
-					containerClassName="md:min-h-8 max-w-xs"
-					tagClassName="md:badge-sm"
-					menuClassName="md:menu-sm"
-					selectClassName="md:select-sm w-full"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<RealmSelectFilter
+				label={$LL.graphql.objects.Role.fields.realm.name()}
+				name="realm"
+				bind:expression={_expression.realm.id}
+				className="md:input-sm"
+				containerClassName="md:min-h-8 max-w-xs"
+				tagClassName="md:badge-sm"
+				menuClassName="md:menu-sm"
+				selectClassName="md:select-sm w-full"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 		</div>
 		<div class="flex justify-center space-x-1 pt-1">

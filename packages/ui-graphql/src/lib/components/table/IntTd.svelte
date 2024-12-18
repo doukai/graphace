@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
 	import type { __Field, __Type } from '@graphace/graphql';
-	import NumberTd from './NumberTd.svelte';
+	import { NumberTd } from '.';
 
 	export let value: number | (number | null | undefined)[] | null | undefined;
 	export let list: boolean = false;

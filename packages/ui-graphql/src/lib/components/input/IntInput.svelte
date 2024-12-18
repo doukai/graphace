@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
-	import NumberItem from './NumberInput.svelte';
+	import { NumberInput } from '.';
 
 	export let value: number | (number | null | undefined)[] | null | undefined;
 	export let list: boolean = false;
@@ -13,7 +13,7 @@
 	export let addBtnClassName: string = '';
 </script>
 
-<NumberItem
+<NumberInput
 	bind:value
 	{list}
 	{name}

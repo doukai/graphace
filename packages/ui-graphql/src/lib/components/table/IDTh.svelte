@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { StringExpression, Sort } from '@graphace/graphql';
-	import StringTh from './StringTh.svelte';
+	import { StringTh } from '.';
 
 	export let name: string;
 	export let expression: StringExpression | null | undefined;

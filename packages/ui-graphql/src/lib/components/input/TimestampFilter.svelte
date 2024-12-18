@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { StringExpression } from '@graphace/graphql';
-	import DateTimeFilter from './DateTimeFilter.svelte';
+	import { DateTimeFilter } from '.';
 
 	export let expression: StringExpression | null | undefined;
 	export let name: string;

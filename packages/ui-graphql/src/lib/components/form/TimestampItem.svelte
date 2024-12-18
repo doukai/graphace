@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
-	import DateTimeItem from './DateTimeItem.svelte';
+	import { DateTimeItem } from '.';
 
 	export let value: string | (string | null | undefined)[] | null | undefined;
 	export let list: boolean = false;

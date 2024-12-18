@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
-	import StringTd from './StringTd.svelte';
+	import { StringTd } from '.';
 
 	export let value: string | (string | null | undefined)[] | null | undefined;
 	export let list: boolean = false;

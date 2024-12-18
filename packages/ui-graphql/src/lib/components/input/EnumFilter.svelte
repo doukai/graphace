@@ -3,7 +3,6 @@
 	import type { Readable } from 'svelte/store';
 	import type { StringExpression } from '@graphace/graphql';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
-	import { fade } from 'svelte/transition';
 	import { OperatorSelect, EnumInput } from '.';
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
@@ -34,7 +33,6 @@
 
 <div
 	class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1"
-	transition:fade={{ duration: 100 }}
 >
 	<!-- svelte-ignore a11y-label-has-associated-control -->
 	<div class="form-control w-full md:w-60">

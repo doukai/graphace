@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import { fade } from 'svelte/transition';
 	import type { Operator, StringExpression } from '@graphace/graphql';
 	import { OperatorSelect } from '@graphace/ui-graphql';
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
@@ -40,10 +39,7 @@
 	};
 </script>
 
-<div
-	class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1"
-	transition:fade={{ duration: 100 }}
->
+<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1">
 	<!-- svelte-ignore a11y-label-has-associated-control -->
 	<div class="form-control w-full md:w-60">
 		<label class="input-group md:input-group-sm">

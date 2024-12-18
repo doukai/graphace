@@ -55,9 +55,33 @@
 	}>();
 
 	const filter = (): void => {
-		if (Object.values(_expression).filter((item) => item !== null).length > 0) {
-			expression = _expression;
+		{%- if isNamedStruct %}
+		if (_expression.{{ idName }}) {
+			expression = { ...expression, {{ idName }}: _expression.{{ idName }} };
 		} else {
+			expression = { ...expression, {{ idName }}: undefined };
+		}
+		{%- endif %}
+		{%- if fields %}
+		{%- for field in fields %}
+		{%- if field.isScalarType or field.isEnumType %}
+		if (_expression.{{ field.fieldName }}) {
+			expression = { ...expression, {{ field.fieldName }}: _expression.{{ field.fieldName }} };
+		} else {
+			expression = { ...expression, {{ field.fieldName }}: undefined };
+		}
+		{%- endif %}
+		{%- if field.isNamed %}
+		if (_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}) {
+			expression = { ...expression, {{ field.fieldName }}: _expression.{{ field.fieldName }} };
+		} else {
+			expression = { ...expression, {{ field.fieldName }}: undefined };
+		}
+		{%- endif %}
+		{%- endfor %}
+		{%- endif %}
+
+		if (Object.values(expression).filter((item) => item).length === 0) {
 			expression = undefined;
 		}
 		dispatch('filter', {});
@@ -110,17 +134,17 @@
 			{%- if useAuth %}
 			{#if permissions.auth('{{ name }}::{{ idName }}::*')}
 			{%- endif %}
-				<{{ name }}SelectFilter
-					label={$LL.graphql.objects.{{ name }}.name()}
-					name="{{ idName }}"
-					bind:expression={_expression.{{ idName }}}
-					className="md:input-sm"
-					selectClassName="md:select-sm w-full"
-					containerClassName="md:min-h-8 max-w-xs"
-					tagClassName="md:badge-sm"
-					menuClassName="md:menu-sm"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<{{ name }}SelectFilter
+				label={$LL.graphql.objects.{{ name }}.name()}
+				name="{{ idName }}"
+				bind:expression={_expression.{{ idName }}}
+				className="md:input-sm"
+				selectClassName="md:select-sm w-full"
+				containerClassName="md:min-h-8 max-w-xs"
+				tagClassName="md:badge-sm"
+				menuClassName="md:menu-sm"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{%- if useAuth %}
 			{/if}
 			{%- endif %}
@@ -130,22 +154,22 @@
 			{%- if useAuth %}
 			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 			{%- endif %}
-				<{{ field.fieldTypeName }}Filter
-					label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-					name="{{ field.fieldName }}"
-					bind:expression={_expression.{{ field.fieldName }}}
-					{%- if field.isEnumType %}
-					className="md:select-sm"
-					{%- elsif field.fieldTypeName == "Boolean" %}
-					className="md:toggle-sm"
-					addBtnClassName="md:btn-sm"
-					{%- else %}
-					className="md:input-sm"
-					addBtnClassName="md:btn-sm"
-					{%- endif %}
-					selectClassName="md:select-sm w-full"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<{{ field.fieldTypeName }}Filter
+				label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+				name="{{ field.fieldName }}"
+				bind:expression={_expression.{{ field.fieldName }}}
+				{%- if field.isEnumType %}
+				className="md:select-sm"
+				{%- elsif field.fieldTypeName == "Boolean" %}
+				className="md:toggle-sm"
+				addBtnClassName="md:btn-sm"
+				{%- else %}
+				className="md:input-sm"
+				addBtnClassName="md:btn-sm"
+				{%- endif %}
+				selectClassName="md:select-sm w-full"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{%- if useAuth %}
 			{/if}
 			{%- endif %}
@@ -154,17 +178,17 @@
 			{%- if useAuth %}
 			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
 			{%- endif %}
-				<{{ field.fieldTypeName }}SelectFilter
-					label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-					name="{{ field.fieldName }}"
-					bind:expression={_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}}
-					className="md:input-sm"
-					containerClassName="md:min-h-8 max-w-xs"
-					tagClassName="md:badge-sm"
-					menuClassName="md:menu-sm"
-					selectClassName="md:select-sm w-full"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<{{ field.fieldTypeName }}SelectFilter
+				label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+				name="{{ field.fieldName }}"
+				bind:expression={_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}}
+				className="md:input-sm"
+				containerClassName="md:min-h-8 max-w-xs"
+				tagClassName="md:badge-sm"
+				menuClassName="md:menu-sm"
+				selectClassName="md:select-sm w-full"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{%- if useAuth %}
 			{/if}
 			{%- endif %}

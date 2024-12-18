@@ -25,9 +25,23 @@
 	}>();
 
 	const filter = (): void => {
-		if (Object.values(_expression).filter((item) => item !== null).length > 0) {
-			expression = _expression;
+		if (_expression.id) {
+			expression = { ...expression, id: _expression.id };
 		} else {
+			expression = { ...expression, id: undefined };
+		}
+		if (_expression.name) {
+			expression = { ...expression, name: _expression.name };
+		} else {
+			expression = { ...expression, name: undefined };
+		}
+		if (_expression.description) {
+			expression = { ...expression, description: _expression.description };
+		} else {
+			expression = { ...expression, description: undefined };
+		}
+
+		if (Object.values(expression).filter((item) => item).length === 0) {
 			expression = undefined;
 		}
 		dispatch('filter', {});
@@ -62,39 +76,39 @@
 		<div use:melt={$arrow} />
 		<div class="space-y-1 max-h-60 overflow-y-auto">
 			{#if permissions.auth('Realm::id::*')}
-				<RealmSelectFilter
-					label={$LL.graphql.objects.Realm.name()}
-					name="id"
-					bind:expression={_expression.id}
-					className="md:input-sm"
-					selectClassName="md:select-sm w-full"
-					containerClassName="md:min-h-8 max-w-xs"
-					tagClassName="md:badge-sm"
-					menuClassName="md:menu-sm"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<RealmSelectFilter
+				label={$LL.graphql.objects.Realm.name()}
+				name="id"
+				bind:expression={_expression.id}
+				className="md:input-sm"
+				selectClassName="md:select-sm w-full"
+				containerClassName="md:min-h-8 max-w-xs"
+				tagClassName="md:badge-sm"
+				menuClassName="md:menu-sm"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Realm::name::*')}
-				<StringFilter
-					label={$LL.graphql.objects.Realm.fields.name.name()}
-					name="name"
-					bind:expression={_expression.name}
-					className="md:input-sm"
-					addBtnClassName="md:btn-sm"
-					selectClassName="md:select-sm w-full"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<StringFilter
+				label={$LL.graphql.objects.Realm.fields.name.name()}
+				name="name"
+				bind:expression={_expression.name}
+				className="md:input-sm"
+				addBtnClassName="md:btn-sm"
+				selectClassName="md:select-sm w-full"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 			{#if permissions.auth('Realm::description::*')}
-				<StringFilter
-					label={$LL.graphql.objects.Realm.fields.description.name()}
-					name="description"
-					bind:expression={_expression.description}
-					className="md:input-sm"
-					addBtnClassName="md:btn-sm"
-					selectClassName="md:select-sm w-full"
-				/>
-				<div class="divider m-0 md:hidden" />
+			<StringFilter
+				label={$LL.graphql.objects.Realm.fields.description.name()}
+				name="description"
+				bind:expression={_expression.description}
+				className="md:input-sm"
+				addBtnClassName="md:btn-sm"
+				selectClassName="md:select-sm w-full"
+			/>
+			<div class="divider m-0 md:hidden" />
 			{/if}
 		</div>
 		<div class="flex justify-center space-x-1 pt-1">

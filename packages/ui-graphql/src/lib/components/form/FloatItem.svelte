@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
-	import NumberItem from './NumberItem.svelte';
+	import { NumberItem } from '.';
 
 	export let value: number | (number | null | undefined)[] | null | undefined;
 	export let list: boolean = false;
