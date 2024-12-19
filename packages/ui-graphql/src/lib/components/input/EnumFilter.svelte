@@ -36,8 +36,8 @@
 >
 	<!-- svelte-ignore a11y-label-has-associated-control -->
 	<div class="form-control w-full md:w-60">
-		<label class="input-group md:input-group-sm">
-			<span class="w-20 whitespace-nowrap">
+		<label class="input-group max-sm:input-group-vertical md:input-group-sm">
+			<span class="md:w-20 whitespace-nowrap">
 				{label}
 			</span>
 			<OperatorSelect
