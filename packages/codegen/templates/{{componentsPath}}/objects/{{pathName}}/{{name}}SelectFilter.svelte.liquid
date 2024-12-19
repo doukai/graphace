@@ -21,9 +21,9 @@
 	let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
 
 	$: if (value && !Array.isArray(value)) {
-		expression = { opr: opr, val: value?.id, arr: undefined };
+		expression = { opr: opr, val: value?.{{ idName }}, arr: undefined };
 	} else if (value && Array.isArray(value) && value.length > 0) {
-		expression = { opr: opr, val: undefined, arr: value?.map((item) => item?.id) };
+		expression = { opr: opr, val: undefined, arr: value?.map((item) => item?.{{ idName }}) };
 	} else if (opr === 'NIL' || opr === 'NNIL') {
 		expression = { opr: opr, val: undefined, arr: undefined };
 	} else {
