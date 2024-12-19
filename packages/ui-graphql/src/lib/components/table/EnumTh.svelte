@@ -25,8 +25,12 @@
 	}>();
 
 	const filter = (): void => {
-		if (_expression.val || (_expression.arr && _expression.arr.length > 0)) {
-			expression = _expression;
+		if (_expression.val) {
+			expression = { opr: _expression.opr, val: _expression.val, arr: undefined };
+		} else if (_expression.arr && _expression.arr.length > 0) {
+			expression = { opr: _expression.opr, val: undefined, arr: _expression.arr };
+		} else if (_expression.opr === 'NIL' || _expression.opr === 'NNIL') {
+			expression = { opr: _expression.opr, val: undefined, arr: undefined };
 		} else {
 			expression = undefined;
 		}
