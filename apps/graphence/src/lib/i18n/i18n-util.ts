@@ -16,10 +16,6 @@ export const locales: Locales[] = [
 ]
 
 export const namespaces: Namespaces[] = [
-	'errors',
-	'graphence',
-	'graphql',
-	'ui',
 	'uiGraphql'
 ]
 

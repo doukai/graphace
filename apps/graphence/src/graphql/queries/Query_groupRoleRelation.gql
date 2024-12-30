@@ -1,22 +1,22 @@
-query Query_groupRoleRelation($id: StringExpression $roleRef: StringExpression $role: RoleExpression $groupRef: StringExpression $group: GroupExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $groupBy: [String!] $not: Boolean $cond: Conditional $exs: [GroupRoleRelationExpression] $includeId: Boolean = true $includeRoleRef: Boolean = true $includeGroupRef: Boolean = true $includeIsDeprecated: Boolean = true $includeVersion: Boolean = true $includeRealmId: Boolean = true $includeCreateUserId: Boolean = true $includeCreateTime: Boolean = true $includeUpdateUserId: Boolean = true $includeUpdateTime: Boolean = true $includeCreateGroupId: Boolean = true $includeRole: Boolean = true $includeGroup: Boolean = true ) {
-  groupRoleRelation(id: $id roleRef: $roleRef role: $role groupRef: $groupRef group: $group includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupBy: $groupBy not: $not cond: $cond exs: $exs )  {
-    id @include(if: $includeId)
-    roleRef @include(if: $includeRoleRef)
-    groupRef @include(if: $includeGroupRef)
-    isDeprecated @include(if: $includeIsDeprecated)
-    version @include(if: $includeVersion)
-    realmId @include(if: $includeRealmId)
-    createUserId @include(if: $includeCreateUserId)
-    createTime @include(if: $includeCreateTime)
-    updateUserId @include(if: $includeUpdateUserId)
-    updateTime @include(if: $includeUpdateTime)
-    createGroupId @include(if: $includeCreateGroupId)
-    role @include(if: $includeRole) {
+query Query_groupRoleRelation($id: StringExpression $roleRef: StringExpression $role: RoleExpression $groupRef: StringExpression $group: GroupExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $groupBy: [String!] $not: Boolean $cond: Conditional $exs: [GroupRoleRelationExpression] $include_id: Boolean = true $include_roleRef: Boolean = true $include_groupRef: Boolean = true $include_isDeprecated: Boolean = true $include_version: Boolean = true $include_realmId: Boolean = true $include_createUserId: Boolean = true $include_createTime: Boolean = true $include_updateUserId: Boolean = true $include_updateTime: Boolean = true $include_createGroupId: Boolean = true $include_role: Boolean = true $include_group: Boolean = true ) {
+  groupRoleRelation(id: $id roleRef: $roleRef role: $role groupRef: $groupRef group: $group includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupBy: $groupBy not: $not cond: $cond exs: $exs ) {
+    id @include(if: $include_id)
+    roleRef @include(if: $include_roleRef)
+    groupRef @include(if: $include_groupRef)
+    isDeprecated @include(if: $include_isDeprecated)
+    version @include(if: $include_version)
+    realmId @include(if: $include_realmId)
+    createUserId @include(if: $include_createUserId)
+    createTime @include(if: $include_createTime)
+    updateUserId @include(if: $include_updateUserId)
+    updateTime @include(if: $include_updateTime)
+    createGroupId @include(if: $include_createGroupId)
+    role @include(if: $include_role) {
       id
       name
       description
     }
-    group @include(if: $includeGroup) {
+    group @include(if: $include_group) {
       id
       name
       description

@@ -1,32 +1,32 @@
 mutation Mutation_{{ name }}
   {%- if args and args.length > 0 or fields and fields.length > 0 or namedFields and namedFields.length > 0 or fileFields and fileFields > 0 -%}
-  ({% for arg in args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }} {% endfor %}{% for field in fields %}$include{{ field.name | pascalCase }}: Boolean = true {% endfor %}{% for field in namedFields %}$include{{ field.name | pascalCase }}: Boolean = true {% endfor %}{% for field in fileFields %}$include{{ field.name | pascalCase }}: Boolean = true {% endfor %})
+  ({% for arg in args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }} {% endfor %}{% for field in fields %}$include_{{ field.name }}: Boolean = true {% endfor %}{% for field in namedFields %}$include_{{ field.name }}: Boolean = true {% endfor %}{% for field in fileFields %}$include_{{ field.name }}: Boolean = true {% endfor %})
   {%- endif %} {
   {{ name }}
     {%- if args and args.length > 0 %}({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %} {% endfor %}){%- if args and args.length > 0 %}{% endif %}{% endif %}
     {%- if fields or namedFields %} {
     {%- if fields %}
     {%- for field in fields %}
-    {{ field.name }} @include(if: $include{{ field.name | pascalCase }})
+    {{ field.name }} @include(if: $include_{{ field.name }})
     {%- endfor %}
     {%- endif %}
     {%- if namedFields %}
     {%- for field in namedFields %}
     {%- if field.select %}
-    {{ field.name }} @include(if: $include{{ field.name | pascalCase }}) {
+    {{ field.name }} @include(if: $include_{{ field.name }}) {
       {{ field.fieldTypeIdName }}
       name
       description
     }
     {%- else %}
-    {{ field.name }}{% if field.isListType %}(first: 3){% endif %} @include(if: $include{{ field.name | pascalCase }}) {
+    {{ field.name }}{% if field.isListType %}(first: 3){% endif %} @include(if: $include_{{ field.name }}) {
       name
       description
     }
     {%- endif %}
     {%- endfor %}
     {%- for field in fileFields %}
-    {{ field.name }} @include(if: $include{{ field.name | pascalCase }}) {
+    {{ field.name }} @include(if: $include_{{ field.name }}) {
       id
       name
     }

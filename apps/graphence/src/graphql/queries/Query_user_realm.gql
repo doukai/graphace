@@ -1,5 +1,5 @@
-query Query_user_realm($user_id: StringExpression $id: StringExpression $name: StringExpression $description: StringExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $groupBy: [String!] $includeId: Boolean = true $includeName: Boolean = true $includeDescription: Boolean = true $includeIsDeprecated: Boolean = true $includeVersion: Boolean = true $includeRealmId: Boolean = true $includeCreateUserId: Boolean = true $includeCreateTime: Boolean = true $includeUpdateUserId: Boolean = true $includeUpdateTime: Boolean = true $includeCreateGroupId: Boolean = true ) {
-  user(id: $user_id )  {
+query Query_user_realm($user_id: StringExpression $id: StringExpression $name: StringExpression $description: StringExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $groupBy: [String!] $include_id: Boolean = true $include_name: Boolean = true $include_description: Boolean = true $include_isDeprecated: Boolean = true $include_version: Boolean = true $include_realmId: Boolean = true $include_createUserId: Boolean = true $include_createTime: Boolean = true $include_updateUserId: Boolean = true $include_updateTime: Boolean = true $include_createGroupId: Boolean = true ) {
+  user(id: $user_id ) {
     id
     name
     description
@@ -16,18 +16,18 @@ query Query_user_realm($user_id: StringExpression $id: StringExpression $name: S
     updateUserId
     updateTime
     createGroupId
-    realm(id: $id name: $name description: $description includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupBy: $groupBy )  {
-      id @include(if: $includeId)
-      name @include(if: $includeName)
-      description @include(if: $includeDescription)
-      isDeprecated @include(if: $includeIsDeprecated)
-      version @include(if: $includeVersion)
-      realmId @include(if: $includeRealmId)
-      createUserId @include(if: $includeCreateUserId)
-      createTime @include(if: $includeCreateTime)
-      updateUserId @include(if: $includeUpdateUserId)
-      updateTime @include(if: $includeUpdateTime)
-      createGroupId @include(if: $includeCreateGroupId)
+    realm(id: $id name: $name description: $description includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupBy: $groupBy ) {
+      id @include(if: $include_id)
+      name @include(if: $include_name)
+      description @include(if: $include_description)
+      isDeprecated @include(if: $include_isDeprecated)
+      version @include(if: $include_version)
+      realmId @include(if: $include_realmId)
+      createUserId @include(if: $include_createUserId)
+      createTime @include(if: $include_createTime)
+      updateUserId @include(if: $include_updateUserId)
+      updateTime @include(if: $include_updateTime)
+      createGroupId @include(if: $include_createGroupId)
     }
   }
 }

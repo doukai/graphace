@@ -1,11 +1,11 @@
-query Query_current($includeId: Boolean = false $includeName: Boolean = false $includeLastName: Boolean = false $includeLogin: Boolean = false $includeRealmId: Boolean = false $includeGroups: Boolean = false $includeRoles: Boolean = false $includeName: Boolean = false $includeLastName: Boolean = false $includeLogin: Boolean = false ) {
+query Query_current_agg($include_id: Boolean = false $include_name: Boolean = false $include_lastName: Boolean = false $include_login: Boolean = false $include_realmId: Boolean = false $include_groups: Boolean = false $include_roles: Boolean = false ) {
   current {
-    id @include(if: $includeId)
-    name @include(if: $includeName)
-    lastName @include(if: $includeLastName)
-    login @include(if: $includeLogin)
-    realmId @include(if: $includeRealmId)
-    groups @include(if: $includeGroups)
-    roles @include(if: $includeRoles)
+    id @include(if: $include_id)
+    name @include(if: $include_name)
+    lastName @include(if: $include_lastName)
+    login @include(if: $include_login)
+    realmId @include(if: $include_realmId)
+    groups @include(if: $include_groups)
+    roles @include(if: $include_roles)
   }
 }

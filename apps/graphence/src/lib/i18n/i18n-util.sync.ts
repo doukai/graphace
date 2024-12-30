@@ -8,32 +8,16 @@ import { loadedFormatters, loadedLocales, locales } from './i18n-util'
 import en from './en'
 import zh from './zh'
 
-import en_errors from './en/errors'
-import en_graphence from './en/graphence'
-import en_graphql from './en/graphql'
-import en_ui from './en/ui'
 import en_uiGraphql from './en/uiGraphql'
-import zh_errors from './zh/errors'
-import zh_graphence from './zh/graphence'
-import zh_graphql from './zh/graphql'
-import zh_ui from './zh/ui'
 import zh_uiGraphql from './zh/uiGraphql'
 
 const localeTranslations = {
 	en: {
 		...en,
-		errors: en_errors,
-		graphence: en_graphence,
-		graphql: en_graphql,
-		ui: en_ui,
 		uiGraphql: en_uiGraphql
 	},
 	zh: {
 		...zh,
-		errors: zh_errors,
-		graphence: zh_graphence,
-		graphql: zh_graphql,
-		ui: zh_ui,
 		uiGraphql: zh_uiGraphql
 	},
 }

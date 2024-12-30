@@ -1,32 +1,32 @@
-query Query_roleList($id: StringExpression $name: StringExpression $description: StringExpression $users: UserExpression $groups: GroupExpression $composites: RoleExpression $permissions: PermissionExpression $realm: RealmExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $roleUserRelation: RoleUserRelationExpression $groupRoleRelation: GroupRoleRelationExpression $roleCompositeRelation: RoleCompositeRelationExpression $permissionRoleRelation: PermissionRoleRelationExpression $orderBy: RoleOrderBy $groupBy: [String!] $not: Boolean $cond: Conditional $exs: [RoleExpression] $first: Int $last: Int $offset: Int $after: ID $before: ID $includeId: Boolean = true $includeName: Boolean = true $includeDescription: Boolean = true $includeIsDeprecated: Boolean = true $includeVersion: Boolean = true $includeRealmId: Boolean = true $includeCreateUserId: Boolean = true $includeCreateTime: Boolean = true $includeUpdateUserId: Boolean = true $includeUpdateTime: Boolean = true $includeCreateGroupId: Boolean = true $includeUsers: Boolean = true $includeGroups: Boolean = true $includeComposites: Boolean = true $includeRealm: Boolean = true ) {
-  roleList(id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId roleUserRelation: $roleUserRelation groupRoleRelation: $groupRoleRelation roleCompositeRelation: $roleCompositeRelation permissionRoleRelation: $permissionRoleRelation orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before )  {
-    id @include(if: $includeId)
-    name @include(if: $includeName)
-    description @include(if: $includeDescription)
-    isDeprecated @include(if: $includeIsDeprecated)
-    version @include(if: $includeVersion)
-    realmId @include(if: $includeRealmId)
-    createUserId @include(if: $includeCreateUserId)
-    createTime @include(if: $includeCreateTime)
-    updateUserId @include(if: $includeUpdateUserId)
-    updateTime @include(if: $includeUpdateTime)
-    createGroupId @include(if: $includeCreateGroupId)
-    users @include(if: $includeUsers) {
+query Query_roleList($id: StringExpression $name: StringExpression $description: StringExpression $users: UserExpression $groups: GroupExpression $composites: RoleExpression $permissions: PermissionExpression $realm: RealmExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $roleUserRelation: RoleUserRelationExpression $groupRoleRelation: GroupRoleRelationExpression $roleCompositeRelation: RoleCompositeRelationExpression $permissionRoleRelation: PermissionRoleRelationExpression $orderBy: RoleOrderBy $groupBy: [String!] $not: Boolean $cond: Conditional $exs: [RoleExpression] $first: Int $last: Int $offset: Int $after: ID $before: ID $include_id: Boolean = true $include_name: Boolean = true $include_description: Boolean = true $include_isDeprecated: Boolean = true $include_version: Boolean = true $include_realmId: Boolean = true $include_createUserId: Boolean = true $include_createTime: Boolean = true $include_updateUserId: Boolean = true $include_updateTime: Boolean = true $include_createGroupId: Boolean = true $include_users: Boolean = true $include_groups: Boolean = true $include_composites: Boolean = true $include_realm: Boolean = true ) {
+  roleList(id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId roleUserRelation: $roleUserRelation groupRoleRelation: $groupRoleRelation roleCompositeRelation: $roleCompositeRelation permissionRoleRelation: $permissionRoleRelation orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before ) {
+    id @include(if: $include_id)
+    name @include(if: $include_name)
+    description @include(if: $include_description)
+    isDeprecated @include(if: $include_isDeprecated)
+    version @include(if: $include_version)
+    realmId @include(if: $include_realmId)
+    createUserId @include(if: $include_createUserId)
+    createTime @include(if: $include_createTime)
+    updateUserId @include(if: $include_updateUserId)
+    updateTime @include(if: $include_updateTime)
+    createGroupId @include(if: $include_createGroupId)
+    users @include(if: $include_users) {
       id
       name
       description
     }
-    groups @include(if: $includeGroups) {
+    groups @include(if: $include_groups) {
       id
       name
       description
     }
-    composites @include(if: $includeComposites) {
+    composites @include(if: $include_composites) {
       id
       name
       description
     }
-    realm @include(if: $includeRealm) {
+    realm @include(if: $include_realm) {
       name
       description
     }

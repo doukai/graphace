@@ -158,6 +158,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...targetQueryFields
+                .filter(field => !isConnection(getFieldType(field.type).name))
                 .map(field => {
                     const template = '{{graphqlPath}}/queries/Query_{{name}}_agg.gql';
                     const scope = { graphqlPath, name: field.name };
