@@ -1,0 +1,11 @@
+query Query_current($includeId: Boolean = false $includeName: Boolean = false $includeLastName: Boolean = false $includeLogin: Boolean = false $includeRealmId: Boolean = false $includeGroups: Boolean = false $includeRoles: Boolean = false $includeName: Boolean = false $includeLastName: Boolean = false $includeLogin: Boolean = false ) {
+  current {
+    id @include(if: $includeId)
+    name @include(if: $includeName)
+    lastName @include(if: $includeLastName)
+    login @include(if: $includeLogin)
+    realmId @include(if: $includeRealmId)
+    groups @include(if: $includeGroups)
+    roles @include(if: $includeRoles)
+  }
+}

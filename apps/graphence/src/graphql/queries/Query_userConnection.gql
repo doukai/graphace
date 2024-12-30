@@ -1,35 +1,35 @@
-query Query_userConnection($id: StringExpression, $name: StringExpression, $description: StringExpression, $lastName: StringExpression, $login: StringExpression, $salt: StringExpression, $hash: StringExpression, $email: StringExpression, $phones: StringExpression, $disable: BooleanExpression, $groups: GroupExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $userPhonesRelation: UserPhonesRelationExpression, $groupUserRelation: GroupUserRelationExpression, $roleUserRelation: RoleUserRelationExpression, $orderBy: UserOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [UserExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
-  userConnection(id: $id name: $name description: $description lastName: $lastName login: $login salt: $salt hash: $hash email: $email phones: $phones disable: $disable groups: $groups roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userPhonesRelation: $userPhonesRelation groupUserRelation: $groupUserRelation roleUserRelation: $roleUserRelation orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before)  {
+query Query_userConnection($id: StringExpression $name: StringExpression $description: StringExpression $lastName: StringExpression $login: StringExpression $salt: StringExpression $hash: StringExpression $email: StringExpression $phones: StringExpression $disable: BooleanExpression $groups: GroupExpression $roles: RoleExpression $realm: RealmExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $userPhonesRelation: UserPhonesRelationExpression $groupUserRelation: GroupUserRelationExpression $roleUserRelation: RoleUserRelationExpression $orderBy: UserOrderBy $groupBy: [String!] $not: Boolean $cond: Conditional $exs: [UserExpression] $first: Int $last: Int $offset: Int $after: ID $before: ID $includeId: Boolean = true $includeName: Boolean = true $includeDescription: Boolean = true $includeLastName: Boolean = true $includeLogin: Boolean = true $includeEmail: Boolean = true $includePhones: Boolean = true $includeDisable: Boolean = true $includeIsDeprecated: Boolean = true $includeVersion: Boolean = true $includeRealmId: Boolean = true $includeCreateUserId: Boolean = true $includeCreateTime: Boolean = true $includeUpdateUserId: Boolean = true $includeUpdateTime: Boolean = true $includeCreateGroupId: Boolean = true $includeGroups: Boolean = true $includeRoles: Boolean = true $includeRealm: Boolean = true ) {
+  userConnection(id: $id name: $name description: $description lastName: $lastName login: $login salt: $salt hash: $hash email: $email phones: $phones disable: $disable groups: $groups roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userPhonesRelation: $userPhonesRelation groupUserRelation: $groupUserRelation roleUserRelation: $roleUserRelation orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before )  {
     totalCount
     edges {
       node {
-        id
-        name
-        description
-        lastName
-        login
-        email
-        phones
-        disable
-        isDeprecated
-        version
-        realmId
-        createUserId
-        createTime
-        updateUserId
-        updateTime
-        createGroupId
-        groups {
+        id @include(if: $includeId)
+        name @include(if: $includeName)
+        description @include(if: $includeDescription)
+        lastName @include(if: $includeLastName)
+        login @include(if: $includeLogin)
+        email @include(if: $includeEmail)
+        phones @include(if: $includePhones)
+        disable @include(if: $includeDisable)
+        isDeprecated @include(if: $includeIsDeprecated)
+        version @include(if: $includeVersion)
+        realmId @include(if: $includeRealmId)
+        createUserId @include(if: $includeCreateUserId)
+        createTime @include(if: $includeCreateTime)
+        updateUserId @include(if: $includeUpdateUserId)
+        updateTime @include(if: $includeUpdateTime)
+        createGroupId @include(if: $includeCreateGroupId)
+        groups @include(if: $includeGroups) {
           id
           name
           description
         }
-        roles {
+        roles @include(if: $includeRoles) {
           id
           name
           description
         }
-        realm {
+        realm @include(if: $includeRealm) {
           name
           description
         }

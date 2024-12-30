@@ -1,17 +1,17 @@
-query Query_permissionRoleRelationList($id: StringExpression, $roleRef: StringExpression, $role: RoleExpression, $permissionRef: StringExpression, $permission: PermissionExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $orderBy: PermissionRoleRelationOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [PermissionRoleRelationExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
-  permissionRoleRelationList(id: $id roleRef: $roleRef role: $role permissionRef: $permissionRef permission: $permission includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before)  {
-    id
-    roleRef
-    permissionRef
-    isDeprecated
-    version
-    realmId
-    createUserId
-    createTime
-    updateUserId
-    updateTime
-    createGroupId
-    role {
+query Query_permissionRoleRelationList($id: StringExpression $roleRef: StringExpression $role: RoleExpression $permissionRef: StringExpression $permission: PermissionExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $orderBy: PermissionRoleRelationOrderBy $groupBy: [String!] $not: Boolean $cond: Conditional $exs: [PermissionRoleRelationExpression] $first: Int $last: Int $offset: Int $after: ID $before: ID $includeId: Boolean = true $includeRoleRef: Boolean = true $includePermissionRef: Boolean = true $includeIsDeprecated: Boolean = true $includeVersion: Boolean = true $includeRealmId: Boolean = true $includeCreateUserId: Boolean = true $includeCreateTime: Boolean = true $includeUpdateUserId: Boolean = true $includeUpdateTime: Boolean = true $includeCreateGroupId: Boolean = true $includeRole: Boolean = true ) {
+  permissionRoleRelationList(id: $id roleRef: $roleRef role: $role permissionRef: $permissionRef permission: $permission includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before )  {
+    id @include(if: $includeId)
+    roleRef @include(if: $includeRoleRef)
+    permissionRef @include(if: $includePermissionRef)
+    isDeprecated @include(if: $includeIsDeprecated)
+    version @include(if: $includeVersion)
+    realmId @include(if: $includeRealmId)
+    createUserId @include(if: $includeCreateUserId)
+    createTime @include(if: $includeCreateTime)
+    updateUserId @include(if: $includeUpdateUserId)
+    updateTime @include(if: $includeUpdateTime)
+    createGroupId @include(if: $includeCreateGroupId)
+    role @include(if: $includeRole) {
       id
       name
       description

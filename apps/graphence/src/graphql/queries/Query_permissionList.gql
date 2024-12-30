@@ -1,24 +1,24 @@
-query Query_permissionList($name: StringExpression, $description: StringExpression, $field: StringExpression, $type: StringExpression, $permissionType: PermissionTypeExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $permissionRoleRelation: PermissionRoleRelationExpression, $orderBy: PermissionOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [PermissionExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
-  permissionList(name: $name description: $description field: $field type: $type permissionType: $permissionType roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId permissionRoleRelation: $permissionRoleRelation orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before)  {
-    name
-    description
-    field
-    type
-    permissionType
-    isDeprecated
-    version
-    realmId
-    createUserId
-    createTime
-    updateUserId
-    updateTime
-    createGroupId
-    roles {
+query Query_permissionList($name: StringExpression $description: StringExpression $field: StringExpression $type: StringExpression $permissionType: PermissionTypeExpression $roles: RoleExpression $realm: RealmExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $permissionRoleRelation: PermissionRoleRelationExpression $orderBy: PermissionOrderBy $groupBy: [String!] $not: Boolean $cond: Conditional $exs: [PermissionExpression] $first: Int $last: Int $offset: Int $after: ID $before: ID $includeName: Boolean = true $includeDescription: Boolean = true $includeField: Boolean = true $includeType: Boolean = true $includePermissionType: Boolean = true $includeIsDeprecated: Boolean = true $includeVersion: Boolean = true $includeRealmId: Boolean = true $includeCreateUserId: Boolean = true $includeCreateTime: Boolean = true $includeUpdateUserId: Boolean = true $includeUpdateTime: Boolean = true $includeCreateGroupId: Boolean = true $includeRoles: Boolean = true $includeRealm: Boolean = true ) {
+  permissionList(name: $name description: $description field: $field type: $type permissionType: $permissionType roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId permissionRoleRelation: $permissionRoleRelation orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before )  {
+    name @include(if: $includeName)
+    description @include(if: $includeDescription)
+    field @include(if: $includeField)
+    type @include(if: $includeType)
+    permissionType @include(if: $includePermissionType)
+    isDeprecated @include(if: $includeIsDeprecated)
+    version @include(if: $includeVersion)
+    realmId @include(if: $includeRealmId)
+    createUserId @include(if: $includeCreateUserId)
+    createTime @include(if: $includeCreateTime)
+    updateUserId @include(if: $includeUpdateUserId)
+    updateTime @include(if: $includeUpdateTime)
+    createGroupId @include(if: $includeCreateGroupId)
+    roles @include(if: $includeRoles) {
       id
       name
       description
     }
-    realm {
+    realm @include(if: $includeRealm) {
       name
       description
     }

@@ -1,0 +1,46 @@
+query Query_permissionRoleRelationList($id: StringExpression $roleRef: StringExpression $role: RoleExpression $permissionRef: StringExpression $permission: PermissionExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $orderBy: PermissionRoleRelationOrderBy $groupBy: [String!] $not: Boolean $cond: Conditional $exs: [PermissionRoleRelationExpression] $first: Int $last: Int $offset: Int $after: ID $before: ID $includeId: Boolean = false $includeRoleRef: Boolean = false $includePermissionRef: Boolean = false $includeIsDeprecated: Boolean = false $includeVersion: Boolean = false $includeRealmId: Boolean = false $includeCreateUserId: Boolean = false $includeCreateTime: Boolean = false $includeUpdateUserId: Boolean = false $includeUpdateTime: Boolean = false $includeCreateGroupId: Boolean = false $includeId: Boolean = false $includeRole: Boolean = false $includePermission: Boolean = false ) {
+  permissionRoleRelationList(id: $idroleRef: $roleRefrole: $rolepermissionRef: $permissionRefpermission: $permissionincludeDeprecated: $includeDeprecatedversion: $versionrealmId: $realmIdcreateUserId: $createUserIdcreateTime: $createTimeupdateUserId: $updateUserIdupdateTime: $updateTimecreateGroupId: $createGroupIdorderBy: $orderBygroupBy: $groupBynot: $notcond: $condexs: $exsfirst: $firstlast: $lastoffset: $offsetafter: $afterbefore: $before)  {
+    id @include(if: $includeId)
+    roleRef @include(if: $includeRoleRef)
+    permissionRef @include(if: $includePermissionRef)
+    isDeprecated @include(if: $includeIsDeprecated)
+    version @include(if: $includeVersion)
+    realmId @include(if: $includeRealmId)
+    createUserId @include(if: $includeCreateUserId)
+    createTime @include(if: $includeCreateTime)
+    updateUserId @include(if: $includeUpdateUserId)
+    updateTime @include(if: $includeUpdateTime)
+    createGroupId @include(if: $includeCreateGroupId)
+      idCount @include(if: $includeIdCount)
+      idMax @include(if: $includeIdMax)
+      idMin @include(if: $includeIdMin)
+    role @include(if: $includeRole) {
+        idCount @include(if: $includeRoleIdCount)
+        idMax @include(if: $includeRoleIdMax)
+        idMin @include(if: $includeRoleIdMin)
+        nameCount @include(if: $includeRoleNameCount)
+        nameMax @include(if: $includeRoleNameMax)
+        nameMin @include(if: $includeRoleNameMin)
+        descriptionCount @include(if: $includeRoleDescriptionCount)
+        descriptionMax @include(if: $includeRoleDescriptionMax)
+        descriptionMin @include(if: $includeRoleDescriptionMin)
+    }
+    permission @include(if: $includePermission) {
+        nameCount @include(if: $includePermissionNameCount)
+        nameMax @include(if: $includePermissionNameMax)
+        nameMin @include(if: $includePermissionNameMin)
+        descriptionCount @include(if: $includePermissionDescriptionCount)
+        descriptionMax @include(if: $includePermissionDescriptionMax)
+        descriptionMin @include(if: $includePermissionDescriptionMin)
+        fieldCount @include(if: $includePermissionFieldCount)
+        fieldMax @include(if: $includePermissionFieldMax)
+        fieldMin @include(if: $includePermissionFieldMin)
+        typeCount @include(if: $includePermissionTypeCount)
+        typeMax @include(if: $includePermissionTypeMax)
+        typeMin @include(if: $includePermissionTypeMin)
+        permissionTypeCount @include(if: $includePermissionPermissionTypeCount)
+        permissionTypeMax @include(if: $includePermissionPermissionTypeMax)
+        permissionTypeMin @include(if: $includePermissionPermissionTypeMin)
+    }
+  }
+}

@@ -1,0 +1,27 @@
+query Query_userConnection($id: StringExpression $name: StringExpression $description: StringExpression $lastName: StringExpression $login: StringExpression $salt: StringExpression $hash: StringExpression $email: StringExpression $phones: StringExpression $disable: BooleanExpression $groups: GroupExpression $roles: RoleExpression $realm: RealmExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $userPhonesRelation: UserPhonesRelationExpression $groupUserRelation: GroupUserRelationExpression $roleUserRelation: RoleUserRelationExpression $orderBy: UserOrderBy $groupBy: [String!] $not: Boolean $cond: Conditional $exs: [UserExpression] $first: Int $last: Int $offset: Int $after: ID $before: ID $includeId: Boolean = false $includeName: Boolean = false $includeDescription: Boolean = false $includeLastName: Boolean = false $includeLogin: Boolean = false $includeEmail: Boolean = false $includePhones: Boolean = false $includeDisable: Boolean = false $includeIsDeprecated: Boolean = false $includeVersion: Boolean = false $includeRealmId: Boolean = false $includeCreateUserId: Boolean = false $includeCreateTime: Boolean = false $includeUpdateUserId: Boolean = false $includeUpdateTime: Boolean = false $includeCreateGroupId: Boolean = false $includePageInfo: Boolean = false ) {
+  userConnection(id: $idname: $namedescription: $descriptionlastName: $lastNamelogin: $loginsalt: $salthash: $hashemail: $emailphones: $phonesdisable: $disablegroups: $groupsroles: $rolesrealm: $realmincludeDeprecated: $includeDeprecatedversion: $versionrealmId: $realmIdcreateUserId: $createUserIdcreateTime: $createTimeupdateUserId: $updateUserIdupdateTime: $updateTimecreateGroupId: $createGroupIduserPhonesRelation: $userPhonesRelationgroupUserRelation: $groupUserRelationroleUserRelation: $roleUserRelationorderBy: $orderBygroupBy: $groupBynot: $notcond: $condexs: $exsfirst: $firstlast: $lastoffset: $offsetafter: $afterbefore: $before)  {
+    totalCount
+    edges {
+      node {
+        id @include(if: $includeId)
+        name @include(if: $includeName)
+        description @include(if: $includeDescription)
+        lastName @include(if: $includeLastName)
+        login @include(if: $includeLogin)
+        email @include(if: $includeEmail)
+        phones @include(if: $includePhones)
+        disable @include(if: $includeDisable)
+        isDeprecated @include(if: $includeIsDeprecated)
+        version @include(if: $includeVersion)
+        realmId @include(if: $includeRealmId)
+        createUserId @include(if: $includeCreateUserId)
+        createTime @include(if: $includeCreateTime)
+        updateUserId @include(if: $includeUpdateUserId)
+        updateTime @include(if: $includeUpdateTime)
+        createGroupId @include(if: $includeCreateGroupId)
+        pageInfo @include(if: $includePageInfo) {
+        }
+      }
+    }
+  }
+}

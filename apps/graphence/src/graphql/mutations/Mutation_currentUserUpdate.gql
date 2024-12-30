@@ -1,33 +1,33 @@
-mutation Mutation_currentUserUpdate($userInput: UserInput!) {
-  currentUserUpdate(userInput: $userInput) {
-    id
-    name
-    description
-    lastName
-    login
-    email
-    phones
-    disable
-    isDeprecated
-    version
-    realmId
-    createUserId
-    createTime
-    updateUserId
-    updateTime
-    createGroupId
-    syncUserPolicy
-    groups {
+mutation Mutation_currentUserUpdate($userInput: UserInput! $includeId: Boolean = true $includeName: Boolean = true $includeDescription: Boolean = true $includeLastName: Boolean = true $includeLogin: Boolean = true $includeEmail: Boolean = true $includePhones: Boolean = true $includeDisable: Boolean = true $includeIsDeprecated: Boolean = true $includeVersion: Boolean = true $includeRealmId: Boolean = true $includeCreateUserId: Boolean = true $includeCreateTime: Boolean = true $includeUpdateUserId: Boolean = true $includeUpdateTime: Boolean = true $includeCreateGroupId: Boolean = true $includeSyncUserPolicy: Boolean = true $includeGroups: Boolean = true $includeRoles: Boolean = true $includeRealm: Boolean = true ) {
+  currentUserUpdate(userInput: $userInput ) {
+    id @include(if: $includeId)
+    name @include(if: $includeName)
+    description @include(if: $includeDescription)
+    lastName @include(if: $includeLastName)
+    login @include(if: $includeLogin)
+    email @include(if: $includeEmail)
+    phones @include(if: $includePhones)
+    disable @include(if: $includeDisable)
+    isDeprecated @include(if: $includeIsDeprecated)
+    version @include(if: $includeVersion)
+    realmId @include(if: $includeRealmId)
+    createUserId @include(if: $includeCreateUserId)
+    createTime @include(if: $includeCreateTime)
+    updateUserId @include(if: $includeUpdateUserId)
+    updateTime @include(if: $includeUpdateTime)
+    createGroupId @include(if: $includeCreateGroupId)
+    syncUserPolicy @include(if: $includeSyncUserPolicy)
+    groups @include(if: $includeGroups) {
       id
       name
       description
     }
-    roles {
+    roles @include(if: $includeRoles) {
       id
       name
       description
     }
-    realm {
+    realm @include(if: $includeRealm) {
       name
       description
     }

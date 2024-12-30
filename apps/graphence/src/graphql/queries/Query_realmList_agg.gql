@@ -1,0 +1,24 @@
+query Query_realmList($id: StringExpression $name: StringExpression $description: StringExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $orderBy: RealmOrderBy $groupBy: [String!] $not: Boolean $cond: Conditional $exs: [RealmExpression] $first: Int $last: Int $offset: Int $after: ID $before: ID $includeId: Boolean = false $includeName: Boolean = false $includeDescription: Boolean = false $includeIsDeprecated: Boolean = false $includeVersion: Boolean = false $includeRealmId: Boolean = false $includeCreateUserId: Boolean = false $includeCreateTime: Boolean = false $includeUpdateUserId: Boolean = false $includeUpdateTime: Boolean = false $includeCreateGroupId: Boolean = false $includeId: Boolean = false $includeName: Boolean = false $includeDescription: Boolean = false ) {
+  realmList(id: $idname: $namedescription: $descriptionincludeDeprecated: $includeDeprecatedversion: $versionrealmId: $realmIdcreateUserId: $createUserIdcreateTime: $createTimeupdateUserId: $updateUserIdupdateTime: $updateTimecreateGroupId: $createGroupIdorderBy: $orderBygroupBy: $groupBynot: $notcond: $condexs: $exsfirst: $firstlast: $lastoffset: $offsetafter: $afterbefore: $before)  {
+    id @include(if: $includeId)
+    name @include(if: $includeName)
+    description @include(if: $includeDescription)
+    isDeprecated @include(if: $includeIsDeprecated)
+    version @include(if: $includeVersion)
+    realmId @include(if: $includeRealmId)
+    createUserId @include(if: $includeCreateUserId)
+    createTime @include(if: $includeCreateTime)
+    updateUserId @include(if: $includeUpdateUserId)
+    updateTime @include(if: $includeUpdateTime)
+    createGroupId @include(if: $includeCreateGroupId)
+      idCount @include(if: $includeIdCount)
+      idMax @include(if: $includeIdMax)
+      idMin @include(if: $includeIdMin)
+      nameCount @include(if: $includeNameCount)
+      nameMax @include(if: $includeNameMax)
+      nameMin @include(if: $includeNameMin)
+      descriptionCount @include(if: $includeDescriptionCount)
+      descriptionMax @include(if: $includeDescriptionMax)
+      descriptionMin @include(if: $includeDescriptionMin)
+  }
+}

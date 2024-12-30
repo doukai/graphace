@@ -1,5 +1,5 @@
-query Query_permissionRoleRelation_permission($permissionRoleRelation_id: StringExpression, $name: StringExpression, $description: StringExpression, $field: StringExpression, $type: StringExpression, $permissionType: PermissionTypeExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $permissionRoleRelation: PermissionRoleRelationExpression, $groupBy: [String!]) {
-  permissionRoleRelation(id: $permissionRoleRelation_id)  {
+query Query_permissionRoleRelation_permission($permissionRoleRelation_id: StringExpression $name: StringExpression $description: StringExpression $field: StringExpression $type: StringExpression $permissionType: PermissionTypeExpression $roles: RoleExpression $realm: RealmExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $permissionRoleRelation: PermissionRoleRelationExpression $groupBy: [String!] $includeName: Boolean = true $includeDescription: Boolean = true $includeField: Boolean = true $includeType: Boolean = true $includePermissionType: Boolean = true $includeIsDeprecated: Boolean = true $includeVersion: Boolean = true $includeRealmId: Boolean = true $includeCreateUserId: Boolean = true $includeCreateTime: Boolean = true $includeUpdateUserId: Boolean = true $includeUpdateTime: Boolean = true $includeCreateGroupId: Boolean = true $includeRoles: Boolean = true $includeRealm: Boolean = true ) {
+  permissionRoleRelation(id: $permissionRoleRelation_id )  {
     id
     roleRef
     permissionRef
@@ -11,26 +11,26 @@ query Query_permissionRoleRelation_permission($permissionRoleRelation_id: String
     updateUserId
     updateTime
     createGroupId
-    permission(name: $name description: $description field: $field type: $type permissionType: $permissionType roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId permissionRoleRelation: $permissionRoleRelation groupBy: $groupBy)  {
-      name
-      description
-      field
-      type
-      permissionType
-      isDeprecated
-      version
-      realmId
-      createUserId
-      createTime
-      updateUserId
-      updateTime
-      createGroupId
-      roles {
+    permission(name: $name description: $description field: $field type: $type permissionType: $permissionType roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId permissionRoleRelation: $permissionRoleRelation groupBy: $groupBy )  {
+      name @include(if: $includeName)
+      description @include(if: $includeDescription)
+      field @include(if: $includeField)
+      type @include(if: $includeType)
+      permissionType @include(if: $includePermissionType)
+      isDeprecated @include(if: $includeIsDeprecated)
+      version @include(if: $includeVersion)
+      realmId @include(if: $includeRealmId)
+      createUserId @include(if: $includeCreateUserId)
+      createTime @include(if: $includeCreateTime)
+      updateUserId @include(if: $includeUpdateUserId)
+      updateTime @include(if: $includeUpdateTime)
+      createGroupId @include(if: $includeCreateGroupId)
+      roles @include(if: $includeRoles) {
         id
         name
         description
       }
-      realm {
+      realm @include(if: $includeRealm) {
         name
         description
       }

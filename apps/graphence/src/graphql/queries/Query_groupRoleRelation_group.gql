@@ -1,5 +1,5 @@
-query Query_groupRoleRelation_group($groupRoleRelation_id: StringExpression, $id: StringExpression, $name: StringExpression, $description: StringExpression, $path: StringExpression, $deep: IntExpression, $parentId: StringExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $groupUserRelation: GroupUserRelationExpression, $groupRoleRelation: GroupRoleRelationExpression, $groupBy: [String!]) {
-  groupRoleRelation(id: $groupRoleRelation_id)  {
+query Query_groupRoleRelation_group($groupRoleRelation_id: StringExpression $id: StringExpression $name: StringExpression $description: StringExpression $path: StringExpression $deep: IntExpression $parentId: StringExpression $parent: GroupExpression $subGroups: GroupExpression $users: UserExpression $roles: RoleExpression $realm: RealmExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $groupUserRelation: GroupUserRelationExpression $groupRoleRelation: GroupRoleRelationExpression $groupBy: [String!] $includeId: Boolean = true $includeName: Boolean = true $includeDescription: Boolean = true $includePath: Boolean = true $includeDeep: Boolean = true $includeParentId: Boolean = true $includeIsDeprecated: Boolean = true $includeVersion: Boolean = true $includeRealmId: Boolean = true $includeCreateUserId: Boolean = true $includeCreateTime: Boolean = true $includeUpdateUserId: Boolean = true $includeUpdateTime: Boolean = true $includeCreateGroupId: Boolean = true $includeParent: Boolean = true $includeSubGroups: Boolean = true $includeUsers: Boolean = true $includeRoles: Boolean = true $includeRealm: Boolean = true ) {
+  groupRoleRelation(id: $groupRoleRelation_id )  {
     id
     roleRef
     groupRef
@@ -11,42 +11,42 @@ query Query_groupRoleRelation_group($groupRoleRelation_id: StringExpression, $id
     updateUserId
     updateTime
     createGroupId
-    group(id: $id name: $name description: $description path: $path deep: $deep parentId: $parentId parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupUserRelation: $groupUserRelation groupRoleRelation: $groupRoleRelation groupBy: $groupBy)  {
-      id
-      name
-      description
-      path
-      deep
-      parentId
-      isDeprecated
-      version
-      realmId
-      createUserId
-      createTime
-      updateUserId
-      updateTime
-      createGroupId
-      parent {
+    group(id: $id name: $name description: $description path: $path deep: $deep parentId: $parentId parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupUserRelation: $groupUserRelation groupRoleRelation: $groupRoleRelation groupBy: $groupBy )  {
+      id @include(if: $includeId)
+      name @include(if: $includeName)
+      description @include(if: $includeDescription)
+      path @include(if: $includePath)
+      deep @include(if: $includeDeep)
+      parentId @include(if: $includeParentId)
+      isDeprecated @include(if: $includeIsDeprecated)
+      version @include(if: $includeVersion)
+      realmId @include(if: $includeRealmId)
+      createUserId @include(if: $includeCreateUserId)
+      createTime @include(if: $includeCreateTime)
+      updateUserId @include(if: $includeUpdateUserId)
+      updateTime @include(if: $includeUpdateTime)
+      createGroupId @include(if: $includeCreateGroupId)
+      parent @include(if: $includeParent) {
         id
         name
         description
       }
-      subGroups {
+      subGroups @include(if: $includeSubGroups) {
         id
         name
         description
       }
-      users {
+      users @include(if: $includeUsers) {
         id
         name
         description
       }
-      roles {
+      roles @include(if: $includeRoles) {
         id
         name
         description
       }
-      realm {
+      realm @include(if: $includeRealm) {
         name
         description
       }

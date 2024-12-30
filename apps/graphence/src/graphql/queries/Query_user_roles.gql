@@ -1,5 +1,5 @@
-query Query_user_roles($user_id: StringExpression, $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $groups: GroupExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!]) {
-  user(id: $user_id)  {
+query Query_user_roles($user_id: StringExpression $id: StringExpression $name: StringExpression $description: StringExpression $users: UserExpression $groups: GroupExpression $composites: RoleExpression $permissions: PermissionExpression $realm: RealmExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $first: Int $last: Int $offset: Int $orderBy: RoleOrderBy $groupBy: [String!] $includeId: Boolean = true $includeName: Boolean = true $includeDescription: Boolean = true $includeIsDeprecated: Boolean = true $includeVersion: Boolean = true $includeRealmId: Boolean = true $includeCreateUserId: Boolean = true $includeCreateTime: Boolean = true $includeUpdateUserId: Boolean = true $includeUpdateTime: Boolean = true $includeCreateGroupId: Boolean = true $includeUsers: Boolean = true $includeGroups: Boolean = true $includeComposites: Boolean = true $includeRealm: Boolean = true ) {
+  user(id: $user_id )  {
     id
     name
     description
@@ -16,37 +16,37 @@ query Query_user_roles($user_id: StringExpression, $id: StringExpression, $name:
     updateUserId
     updateTime
     createGroupId
-    rolesConnection(id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy)  {
+    rolesConnection(id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy )  {
       totalCount
       edges {
         node {
-          id
-          name
-          description
-          isDeprecated
-          version
-          realmId
-          createUserId
-          createTime
-          updateUserId
-          updateTime
-          createGroupId
-          users {
+          id @include(if: $includeId)
+          name @include(if: $includeName)
+          description @include(if: $includeDescription)
+          isDeprecated @include(if: $includeIsDeprecated)
+          version @include(if: $includeVersion)
+          realmId @include(if: $includeRealmId)
+          createUserId @include(if: $includeCreateUserId)
+          createTime @include(if: $includeCreateTime)
+          updateUserId @include(if: $includeUpdateUserId)
+          updateTime @include(if: $includeUpdateTime)
+          createGroupId @include(if: $includeCreateGroupId)
+          users @include(if: $includeUsers) {
             id
             name
             description
           }
-          groups {
+          groups @include(if: $includeGroups) {
             id
             name
             description
           }
-          composites {
+          composites @include(if: $includeComposites) {
             id
             name
             description
           }
-          realm {
+          realm @include(if: $includeRealm) {
             name
             description
           }

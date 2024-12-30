@@ -1,22 +1,22 @@
-mutation Mutation_groupRoleRelationList($id: ID, $roleRef: String, $role: RoleInput, $groupRef: String, $group: GroupInput, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $list: [GroupRoleRelationInput], $where: GroupRoleRelationExpression) {
-  groupRoleRelationList(id: $id roleRef: $roleRef role: $role groupRef: $groupRef group: $group isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId list: $list where: $where) {
-    id
-    roleRef
-    groupRef
-    isDeprecated
-    version
-    realmId
-    createUserId
-    createTime
-    updateUserId
-    updateTime
-    createGroupId
-    role {
+mutation Mutation_groupRoleRelationList($id: ID $roleRef: String $role: RoleInput $groupRef: String $group: GroupInput $isDeprecated: Boolean $version: Int $realmId: Int $createUserId: String $createTime: Timestamp $updateUserId: String $updateTime: Timestamp $createGroupId: String $list: [GroupRoleRelationInput] $where: GroupRoleRelationExpression $includeId: Boolean = true $includeRoleRef: Boolean = true $includeGroupRef: Boolean = true $includeIsDeprecated: Boolean = true $includeVersion: Boolean = true $includeRealmId: Boolean = true $includeCreateUserId: Boolean = true $includeCreateTime: Boolean = true $includeUpdateUserId: Boolean = true $includeUpdateTime: Boolean = true $includeCreateGroupId: Boolean = true $includeRole: Boolean = true $includeGroup: Boolean = true ) {
+  groupRoleRelationList(id: $id roleRef: $roleRef role: $role groupRef: $groupRef group: $group isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId list: $list where: $where ) {
+    id @include(if: $includeId)
+    roleRef @include(if: $includeRoleRef)
+    groupRef @include(if: $includeGroupRef)
+    isDeprecated @include(if: $includeIsDeprecated)
+    version @include(if: $includeVersion)
+    realmId @include(if: $includeRealmId)
+    createUserId @include(if: $includeCreateUserId)
+    createTime @include(if: $includeCreateTime)
+    updateUserId @include(if: $includeUpdateUserId)
+    updateTime @include(if: $includeUpdateTime)
+    createGroupId @include(if: $includeCreateGroupId)
+    role @include(if: $includeRole) {
       id
       name
       description
     }
-    group {
+    group @include(if: $includeGroup) {
       id
       name
       description

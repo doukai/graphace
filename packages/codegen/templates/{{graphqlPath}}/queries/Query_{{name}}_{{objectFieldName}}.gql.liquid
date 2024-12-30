@@ -1,17 +1,17 @@
 query Query_{{ name }}_{{ objectField.name }}
   {%- if objectField.connectionField %}
   {%- assign connectionArgs = objectField.parentArgs | concat: objectField.connectionField.args %}
-  {%- if connectionArgs.length > 0 -%}
-  ({% for arg in connectionArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %})
+  {%- if connectionArgs.length > 0 or objectField.fields and objectField.fields.length > 0 or objectField.namedFields and objectField.namedFields.length > 0 or objectField.fileFields and objectField.fileFields > 0 -%}
+  ({% for arg in connectionArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }} {% endfor %}{% for field in objectField.fields %}$include{{ field.name | pascalCase }}: Boolean = true {% endfor %}{% for field in objectField.namedFields %}$include{{ field.name | pascalCase }}: Boolean = true {% endfor %}{% for field in objectField.fileFields %}$include{{ field.name | pascalCase }}: Boolean = true {% endfor %})
   {%- endif %}
   {%- else %}
   {%- assign objectFieldArgs = objectField.parentArgs | concat: objectField.args %}
-  {%- if objectFieldArgs.length > 0 -%}
-  ({% for arg in objectFieldArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %})
+  {%- if objectFieldArgs.length > 0 or objectField.fields and objectField.fields.length > 0 or objectField.namedFields and objectField.namedFields.length > 0 or objectField.fileFields and objectField.fileFields > 0 -%}
+  ({% for arg in objectFieldArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }} {% endfor %}{% for field in objectField.fields %}$include{{ field.name | pascalCase }}: Boolean = true {% endfor %}{% for field in objectField.namedFields %}$include{{ field.name | pascalCase }}: Boolean = true {% endfor %}{% for field in objectField.fileFields %}$include{{ field.name | pascalCase }}: Boolean = true {% endfor %})
   {%- endif %}
   {%- endif %} {
   {{ name }}
-    {%- if objectField.parentArgs and objectField.parentArgs.length > 0 %}({% for arg in objectField.parentArgs %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %}{% if objectField.parentArgs and objectField.parentArgs.length > 0 %} {% endif %}
+    {%- if objectField.parentArgs and objectField.parentArgs.length > 0 %}({% for arg in objectField.parentArgs %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %} {% endfor %}){% endif %}{% if objectField.parentArgs and objectField.parentArgs.length > 0 %} {% endif %}
     {%- if isConnection %} {
     totalCount
     edges {
@@ -26,24 +26,24 @@ query Query_{{ name }}_{{ objectField.name }}
           edges {
             node {
               {%- for field in objectField.fields %}
-              {{ field.name }}
+              {{ field.name }} @include(if: $include{{ field.name | pascalCase }})
               {%- endfor %}
               {%- for field in objectField.namedFields %}
               {%- if field.select %}
-              {{ field.name }} {
+              {{ field.name }} @include(if: $include{{ field.name | pascalCase }}) {
                 {{ field.fieldTypeIdName }}
                 name
                 description
               }
               {%- else %}
-              {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
+              {{ field.name }}{% if field.isListType %}(first: 3){% endif %} @include(if: $include{{ field.name | pascalCase }}) {
                 name
                 description
               }
               {%- endif %}
               {%- endfor %}
               {%- for field in objectField.fileFields %}
-              {{ field.name }} {
+              {{ field.name }} @include(if: $include{{ field.name | pascalCase }}) {
                 id
                 name
               }
@@ -54,24 +54,24 @@ query Query_{{ name }}_{{ objectField.name }}
         {%- else %}
         {{ objectField.name }} {
           {%- for field in objectField.fields %}
-          {{ field.name }}
+          {{ field.name }} @include(if: $include{{ field.name | pascalCase }})
           {%- endfor %}
           {%- for field in objectField.namedFields %}
           {%- if field.select %}
-          {{ field.name }} {
+          {{ field.name }} @include(if: $include{{ field.name | pascalCase }}) {
             {{ field.fieldTypeIdName }}
             name
             description
           }
           {%- else %}
-          {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
+          {{ field.name }}{% if field.isListType %}(first: 3){% endif %} @include(if: $include{{ field.name | pascalCase }}) {
             name
             description
           }
           {%- endif %}
           {%- endfor %}
           {%- for field in objectField.fileFields %}
-          {{ field.name }} {
+          {{ field.name }} @include(if: $include{{ field.name | pascalCase }}) {
             id
             name
           }
@@ -90,30 +90,30 @@ query Query_{{ name }}_{{ objectField.name }}
     {%- if objectField.isListType and objectField.connectionField %}
     {{ objectField.name }}Connection 
     {%- if objectField.connectionField.args and objectField.connectionField.args.length > 0 -%}
-    ({% for arg in objectField.connectionField.args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})
+    ({% for arg in objectField.connectionField.args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %} {% endfor %})
     {%- endif %}{% if objectField.connectionField.args and objectField.connectionField.args.length > 0 %} {% endif %} {
       totalCount
       edges {
         node {
           {%- for field in objectField.fields %}
-          {{ field.name }}
+          {{ field.name }} @include(if: $include{{ field.name | pascalCase }})
           {%- endfor %}
           {%- for field in objectField.namedFields %}
           {%- if field.select %}
-          {{ field.name }} {
+          {{ field.name }} @include(if: $include{{ field.name | pascalCase }}) {
             {{ field.fieldTypeIdName }}
             name
             description
           }
           {%- else %}
-          {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
+          {{ field.name }}{% if field.isListType %}(first: 3){% endif %} @include(if: $include{{ field.name | pascalCase }}) {
             name
             description
           }
           {%- endif %}
           {%- endfor %}
           {%- for field in objectField.fileFields %}
-          {{ field.name }} {
+          {{ field.name }} @include(if: $include{{ field.name | pascalCase }}) {
             id
             name
           }
@@ -124,27 +124,27 @@ query Query_{{ name }}_{{ objectField.name }}
     {%- else %}
     {{ objectField.name }} 
     {%- if objectField.args and objectField.args.length > 0 -%}
-    ({% for arg in objectField.args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})
+    ({% for arg in objectField.args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %} {% endfor %})
     {%- endif %}{% if objectField.args and objectField.args.length > 0 %} {% endif %} {
       {%- for field in objectField.fields %}
-      {{ field.name }}
+      {{ field.name }} @include(if: $include{{ field.name | pascalCase }})
       {%- endfor %}
       {%- for field in objectField.namedFields %}
       {%- if field.select %}
-      {{ field.name }} {
+      {{ field.name }} @include(if: $include{{ field.name | pascalCase }}) {
         {{ field.fieldTypeIdName }}
         name
         description
       }
       {%- else %}
-      {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
+      {{ field.name }}{% if field.isListType %}(first: 3){% endif %} @include(if: $include{{ field.name | pascalCase }}) {
         name
         description
       }
       {%- endif %}
       {%- endfor %}
       {%- for field in objectField.fileFields %}
-      {{ field.name }} {
+      {{ field.name }} @include(if: $include{{ field.name | pascalCase }}) {
         id
         name
       }

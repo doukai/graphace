@@ -1,25 +1,25 @@
-query Query_groupRoleRelationConnection($id: StringExpression, $roleRef: StringExpression, $role: RoleExpression, $groupRef: StringExpression, $group: GroupExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $orderBy: GroupRoleRelationOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [GroupRoleRelationExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
-  groupRoleRelationConnection(id: $id roleRef: $roleRef role: $role groupRef: $groupRef group: $group includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before)  {
+query Query_groupRoleRelationConnection($id: StringExpression $roleRef: StringExpression $role: RoleExpression $groupRef: StringExpression $group: GroupExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $orderBy: GroupRoleRelationOrderBy $groupBy: [String!] $not: Boolean $cond: Conditional $exs: [GroupRoleRelationExpression] $first: Int $last: Int $offset: Int $after: ID $before: ID $includeId: Boolean = true $includeRoleRef: Boolean = true $includeGroupRef: Boolean = true $includeIsDeprecated: Boolean = true $includeVersion: Boolean = true $includeRealmId: Boolean = true $includeCreateUserId: Boolean = true $includeCreateTime: Boolean = true $includeUpdateUserId: Boolean = true $includeUpdateTime: Boolean = true $includeCreateGroupId: Boolean = true $includeRole: Boolean = true $includeGroup: Boolean = true ) {
+  groupRoleRelationConnection(id: $id roleRef: $roleRef role: $role groupRef: $groupRef group: $group includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before )  {
     totalCount
     edges {
       node {
-        id
-        roleRef
-        groupRef
-        isDeprecated
-        version
-        realmId
-        createUserId
-        createTime
-        updateUserId
-        updateTime
-        createGroupId
-        role {
+        id @include(if: $includeId)
+        roleRef @include(if: $includeRoleRef)
+        groupRef @include(if: $includeGroupRef)
+        isDeprecated @include(if: $includeIsDeprecated)
+        version @include(if: $includeVersion)
+        realmId @include(if: $includeRealmId)
+        createUserId @include(if: $includeCreateUserId)
+        createTime @include(if: $includeCreateTime)
+        updateUserId @include(if: $includeUpdateUserId)
+        updateTime @include(if: $includeUpdateTime)
+        createGroupId @include(if: $includeCreateGroupId)
+        role @include(if: $includeRole) {
           id
           name
           description
         }
-        group {
+        group @include(if: $includeGroup) {
           id
           name
           description

@@ -1,17 +1,17 @@
-mutation Mutation_permissionRoleRelationList($id: ID, $roleRef: String, $role: RoleInput, $permissionRef: String, $permission: PermissionInput, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $list: [PermissionRoleRelationInput], $where: PermissionRoleRelationExpression) {
-  permissionRoleRelationList(id: $id roleRef: $roleRef role: $role permissionRef: $permissionRef permission: $permission isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId list: $list where: $where) {
-    id
-    roleRef
-    permissionRef
-    isDeprecated
-    version
-    realmId
-    createUserId
-    createTime
-    updateUserId
-    updateTime
-    createGroupId
-    role {
+mutation Mutation_permissionRoleRelationList($id: ID $roleRef: String $role: RoleInput $permissionRef: String $permission: PermissionInput $isDeprecated: Boolean $version: Int $realmId: Int $createUserId: String $createTime: Timestamp $updateUserId: String $updateTime: Timestamp $createGroupId: String $list: [PermissionRoleRelationInput] $where: PermissionRoleRelationExpression $includeId: Boolean = true $includeRoleRef: Boolean = true $includePermissionRef: Boolean = true $includeIsDeprecated: Boolean = true $includeVersion: Boolean = true $includeRealmId: Boolean = true $includeCreateUserId: Boolean = true $includeCreateTime: Boolean = true $includeUpdateUserId: Boolean = true $includeUpdateTime: Boolean = true $includeCreateGroupId: Boolean = true $includeRole: Boolean = true ) {
+  permissionRoleRelationList(id: $id roleRef: $roleRef role: $role permissionRef: $permissionRef permission: $permission isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId list: $list where: $where ) {
+    id @include(if: $includeId)
+    roleRef @include(if: $includeRoleRef)
+    permissionRef @include(if: $includePermissionRef)
+    isDeprecated @include(if: $includeIsDeprecated)
+    version @include(if: $includeVersion)
+    realmId @include(if: $includeRealmId)
+    createUserId @include(if: $includeCreateUserId)
+    createTime @include(if: $includeCreateTime)
+    updateUserId @include(if: $includeUpdateUserId)
+    updateTime @include(if: $includeUpdateTime)
+    createGroupId @include(if: $includeCreateGroupId)
+    role @include(if: $includeRole) {
       id
       name
       description

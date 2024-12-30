@@ -1,33 +1,33 @@
-mutation Mutation_role($id: ID, $name: String, $description: String, $users: [UserInput], $groups: [GroupInput], $composites: [RoleInput], $permissions: [PermissionInput], $realm: RealmInput, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $roleUserRelation: [RoleUserRelationInput], $groupRoleRelation: [GroupRoleRelationInput], $roleCompositeRelation: [RoleCompositeRelationInput], $permissionRoleRelation: [PermissionRoleRelationInput], $input: RoleInput, $where: RoleExpression) {
-  role(id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId roleUserRelation: $roleUserRelation groupRoleRelation: $groupRoleRelation roleCompositeRelation: $roleCompositeRelation permissionRoleRelation: $permissionRoleRelation input: $input where: $where) {
-    id
-    name
-    description
-    isDeprecated
-    version
-    realmId
-    createUserId
-    createTime
-    updateUserId
-    updateTime
-    createGroupId
-    syncRolePolicy
-    users {
+mutation Mutation_role($id: ID $name: String $description: String $users: [UserInput] $groups: [GroupInput] $composites: [RoleInput] $permissions: [PermissionInput] $realm: RealmInput $isDeprecated: Boolean $version: Int $realmId: Int $createUserId: String $createTime: Timestamp $updateUserId: String $updateTime: Timestamp $createGroupId: String $roleUserRelation: [RoleUserRelationInput] $groupRoleRelation: [GroupRoleRelationInput] $roleCompositeRelation: [RoleCompositeRelationInput] $permissionRoleRelation: [PermissionRoleRelationInput] $input: RoleInput $where: RoleExpression $includeId: Boolean = true $includeName: Boolean = true $includeDescription: Boolean = true $includeIsDeprecated: Boolean = true $includeVersion: Boolean = true $includeRealmId: Boolean = true $includeCreateUserId: Boolean = true $includeCreateTime: Boolean = true $includeUpdateUserId: Boolean = true $includeUpdateTime: Boolean = true $includeCreateGroupId: Boolean = true $includeSyncRolePolicy: Boolean = true $includeUsers: Boolean = true $includeGroups: Boolean = true $includeComposites: Boolean = true $includeRealm: Boolean = true ) {
+  role(id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId roleUserRelation: $roleUserRelation groupRoleRelation: $groupRoleRelation roleCompositeRelation: $roleCompositeRelation permissionRoleRelation: $permissionRoleRelation input: $input where: $where ) {
+    id @include(if: $includeId)
+    name @include(if: $includeName)
+    description @include(if: $includeDescription)
+    isDeprecated @include(if: $includeIsDeprecated)
+    version @include(if: $includeVersion)
+    realmId @include(if: $includeRealmId)
+    createUserId @include(if: $includeCreateUserId)
+    createTime @include(if: $includeCreateTime)
+    updateUserId @include(if: $includeUpdateUserId)
+    updateTime @include(if: $includeUpdateTime)
+    createGroupId @include(if: $includeCreateGroupId)
+    syncRolePolicy @include(if: $includeSyncRolePolicy)
+    users @include(if: $includeUsers) {
       id
       name
       description
     }
-    groups {
+    groups @include(if: $includeGroups) {
       id
       name
       description
     }
-    composites {
+    composites @include(if: $includeComposites) {
       id
       name
       description
     }
-    realm {
+    realm @include(if: $includeRealm) {
       name
       description
     }

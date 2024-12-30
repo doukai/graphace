@@ -1,41 +1,41 @@
-mutation Mutation_group($id: ID, $name: String, $description: String, $path: String, $deep: Int, $parentId: String, $parent: GroupInput, $subGroups: [GroupInput], $users: [UserInput], $roles: [RoleInput], $realm: RealmInput, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $groupUserRelation: [GroupUserRelationInput], $groupRoleRelation: [GroupRoleRelationInput], $input: GroupInput, $where: GroupExpression) {
-  group(id: $id name: $name description: $description path: $path deep: $deep parentId: $parentId parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupUserRelation: $groupUserRelation groupRoleRelation: $groupRoleRelation input: $input where: $where) {
-    id
-    name
-    description
-    path
-    deep
-    parentId
-    isDeprecated
-    version
-    realmId
-    createUserId
-    createTime
-    updateUserId
-    updateTime
-    createGroupId
-    syncGroupPolicy
-    parent {
+mutation Mutation_group($id: ID $name: String $description: String $path: String $deep: Int $parentId: String $parent: GroupInput $subGroups: [GroupInput] $users: [UserInput] $roles: [RoleInput] $realm: RealmInput $isDeprecated: Boolean $version: Int $realmId: Int $createUserId: String $createTime: Timestamp $updateUserId: String $updateTime: Timestamp $createGroupId: String $groupUserRelation: [GroupUserRelationInput] $groupRoleRelation: [GroupRoleRelationInput] $input: GroupInput $where: GroupExpression $includeId: Boolean = true $includeName: Boolean = true $includeDescription: Boolean = true $includePath: Boolean = true $includeDeep: Boolean = true $includeParentId: Boolean = true $includeIsDeprecated: Boolean = true $includeVersion: Boolean = true $includeRealmId: Boolean = true $includeCreateUserId: Boolean = true $includeCreateTime: Boolean = true $includeUpdateUserId: Boolean = true $includeUpdateTime: Boolean = true $includeCreateGroupId: Boolean = true $includeSyncGroupPolicy: Boolean = true $includeParent: Boolean = true $includeSubGroups: Boolean = true $includeUsers: Boolean = true $includeRoles: Boolean = true $includeRealm: Boolean = true ) {
+  group(id: $id name: $name description: $description path: $path deep: $deep parentId: $parentId parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupUserRelation: $groupUserRelation groupRoleRelation: $groupRoleRelation input: $input where: $where ) {
+    id @include(if: $includeId)
+    name @include(if: $includeName)
+    description @include(if: $includeDescription)
+    path @include(if: $includePath)
+    deep @include(if: $includeDeep)
+    parentId @include(if: $includeParentId)
+    isDeprecated @include(if: $includeIsDeprecated)
+    version @include(if: $includeVersion)
+    realmId @include(if: $includeRealmId)
+    createUserId @include(if: $includeCreateUserId)
+    createTime @include(if: $includeCreateTime)
+    updateUserId @include(if: $includeUpdateUserId)
+    updateTime @include(if: $includeUpdateTime)
+    createGroupId @include(if: $includeCreateGroupId)
+    syncGroupPolicy @include(if: $includeSyncGroupPolicy)
+    parent @include(if: $includeParent) {
       id
       name
       description
     }
-    subGroups {
+    subGroups @include(if: $includeSubGroups) {
       id
       name
       description
     }
-    users {
+    users @include(if: $includeUsers) {
       id
       name
       description
     }
-    roles {
+    roles @include(if: $includeRoles) {
       id
       name
       description
     }
-    realm {
+    realm @include(if: $includeRealm) {
       name
       description
     }

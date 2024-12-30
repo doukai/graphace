@@ -1,12 +1,12 @@
-query Query_policyList {
+query Query_policyList($includeId: Boolean = true $includePolicy: Boolean = true $includeV0: Boolean = true $includeV1: Boolean = true $includeV2: Boolean = true $includeV3: Boolean = true $includeV4: Boolean = true $includeV5: Boolean = true ) {
   policyList {
-    id
-    policy
-    v0
-    v1
-    v2
-    v3
-    v4
-    v5
+    id @include(if: $includeId)
+    policy @include(if: $includePolicy)
+    v0 @include(if: $includeV0)
+    v1 @include(if: $includeV1)
+    v2 @include(if: $includeV2)
+    v3 @include(if: $includeV3)
+    v4 @include(if: $includeV4)
+    v5 @include(if: $includeV5)
   }
 }

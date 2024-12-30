@@ -4,7 +4,7 @@ import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
 import * as changeCase from "change-case";
 import { assertObjectType, isEnumType, isObjectType, type GraphQLSchema, isNonNullType, assertEnumType } from 'graphql';
-import { isOperationType, isConnection, isRelation, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getFileFields, getNamedFields, getScalarNames, getBaseScalarNames, getEnumNames, getEnumValues, initConfig, inGraphQLField, inListField, inDetailField, componentFields, getSelectComponentFieldImports, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, getNamedStructObjectNames, inComponentEnum, isInnerEnum, getObjectNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField, fieldTypeIsList, isSelectField, isNamedStruct, isTreeStruct, inComponentObject, hasFileField, getAggFields, getNonListObjectFields, getListObjectFields } from 'graphace-codegen-commons';
+import { isOperationType, isConnection, isRelation, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getObjectAggFields, getFileFields, getNamedFields, getScalarNames, getBaseScalarNames, getEnumNames, getEnumValues, initConfig, inGraphQLField, inListField, inDetailField, componentFields, getSelectComponentFieldImports, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, getNamedStructObjectNames, inComponentEnum, isInnerEnum, getObjectNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField, fieldTypeIsList, isSelectField, isNamedStruct, isTreeStruct, inComponentObject, hasFileField, getAggFields, getNonListObjectFields, getListObjectFields } from 'graphace-codegen-commons';
 import type { Template } from 'graphace-codegen-commons';
 import { buildFileContent } from "./builder.js";
 
@@ -185,6 +185,32 @@ const renders: Record<Template, Render> = {
                         fileFields: getFileFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         namedFields: getNamedFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         objectField: objectField
+                    }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${config.name} undefined`);
+    },
+    '{{graphqlPath}}/queries/Query_{{name}}_agg.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const operationFields = schema.getQueryType()?.getFields();
+        if (operationFields) {
+            const field = Object.keys(operationFields)
+                .map(key => operationFields[key])
+                .find(field => field.name === config.name);
+            if (field) {
+                const fieldType = getFieldType(field.type);
+                const idFieldName = getIDFieldName(fieldType);
+                const aggFields = getAggFields(schema, fieldType)?.filter(field => !isConnection(field.fieldName)).filter(field => field.fieldName === idFieldName || inListField(fieldType.name, field.fieldName, field.fieldTypeName));
+
+                return {
+                    content: buildFileContent(config.template, {
+                        name: field.name,
+                        idName: idFieldName,
+                        args: field.args,
+                        isConnection: isConnection(field.name),
+                        fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
+                        aggFields: componentFields(fieldType.name, aggFields),
                     }),
                 };
             }

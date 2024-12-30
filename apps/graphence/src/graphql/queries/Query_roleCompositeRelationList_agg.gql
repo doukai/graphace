@@ -1,0 +1,40 @@
+query Query_roleCompositeRelationList($id: StringExpression $roleRef: StringExpression $role: RoleExpression $compositeRef: StringExpression $composite: RoleExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $orderBy: RoleCompositeRelationOrderBy $groupBy: [String!] $not: Boolean $cond: Conditional $exs: [RoleCompositeRelationExpression] $first: Int $last: Int $offset: Int $after: ID $before: ID $includeId: Boolean = false $includeRoleRef: Boolean = false $includeCompositeRef: Boolean = false $includeIsDeprecated: Boolean = false $includeVersion: Boolean = false $includeRealmId: Boolean = false $includeCreateUserId: Boolean = false $includeCreateTime: Boolean = false $includeUpdateUserId: Boolean = false $includeUpdateTime: Boolean = false $includeCreateGroupId: Boolean = false $includeId: Boolean = false $includeRole: Boolean = false $includeComposite: Boolean = false ) {
+  roleCompositeRelationList(id: $idroleRef: $roleRefrole: $rolecompositeRef: $compositeRefcomposite: $compositeincludeDeprecated: $includeDeprecatedversion: $versionrealmId: $realmIdcreateUserId: $createUserIdcreateTime: $createTimeupdateUserId: $updateUserIdupdateTime: $updateTimecreateGroupId: $createGroupIdorderBy: $orderBygroupBy: $groupBynot: $notcond: $condexs: $exsfirst: $firstlast: $lastoffset: $offsetafter: $afterbefore: $before)  {
+    id @include(if: $includeId)
+    roleRef @include(if: $includeRoleRef)
+    compositeRef @include(if: $includeCompositeRef)
+    isDeprecated @include(if: $includeIsDeprecated)
+    version @include(if: $includeVersion)
+    realmId @include(if: $includeRealmId)
+    createUserId @include(if: $includeCreateUserId)
+    createTime @include(if: $includeCreateTime)
+    updateUserId @include(if: $includeUpdateUserId)
+    updateTime @include(if: $includeUpdateTime)
+    createGroupId @include(if: $includeCreateGroupId)
+      idCount @include(if: $includeIdCount)
+      idMax @include(if: $includeIdMax)
+      idMin @include(if: $includeIdMin)
+    role @include(if: $includeRole) {
+        idCount @include(if: $includeRoleIdCount)
+        idMax @include(if: $includeRoleIdMax)
+        idMin @include(if: $includeRoleIdMin)
+        nameCount @include(if: $includeRoleNameCount)
+        nameMax @include(if: $includeRoleNameMax)
+        nameMin @include(if: $includeRoleNameMin)
+        descriptionCount @include(if: $includeRoleDescriptionCount)
+        descriptionMax @include(if: $includeRoleDescriptionMax)
+        descriptionMin @include(if: $includeRoleDescriptionMin)
+    }
+    composite @include(if: $includeComposite) {
+        idCount @include(if: $includeCompositeIdCount)
+        idMax @include(if: $includeCompositeIdMax)
+        idMin @include(if: $includeCompositeIdMin)
+        nameCount @include(if: $includeCompositeNameCount)
+        nameMax @include(if: $includeCompositeNameMax)
+        nameMin @include(if: $includeCompositeNameMin)
+        descriptionCount @include(if: $includeCompositeDescriptionCount)
+        descriptionMax @include(if: $includeCompositeDescriptionMax)
+        descriptionMin @include(if: $includeCompositeDescriptionMin)
+    }
+  }
+}

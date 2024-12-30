@@ -1,22 +1,22 @@
-mutation Mutation_roleCompositeRelation($id: ID, $roleRef: String, $role: RoleInput, $compositeRef: String, $composite: RoleInput, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $input: RoleCompositeRelationInput, $where: RoleCompositeRelationExpression) {
-  roleCompositeRelation(id: $id roleRef: $roleRef role: $role compositeRef: $compositeRef composite: $composite isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId input: $input where: $where) {
-    id
-    roleRef
-    compositeRef
-    isDeprecated
-    version
-    realmId
-    createUserId
-    createTime
-    updateUserId
-    updateTime
-    createGroupId
-    role {
+mutation Mutation_roleCompositeRelation($id: ID $roleRef: String $role: RoleInput $compositeRef: String $composite: RoleInput $isDeprecated: Boolean $version: Int $realmId: Int $createUserId: String $createTime: Timestamp $updateUserId: String $updateTime: Timestamp $createGroupId: String $input: RoleCompositeRelationInput $where: RoleCompositeRelationExpression $includeId: Boolean = true $includeRoleRef: Boolean = true $includeCompositeRef: Boolean = true $includeIsDeprecated: Boolean = true $includeVersion: Boolean = true $includeRealmId: Boolean = true $includeCreateUserId: Boolean = true $includeCreateTime: Boolean = true $includeUpdateUserId: Boolean = true $includeUpdateTime: Boolean = true $includeCreateGroupId: Boolean = true $includeRole: Boolean = true $includeComposite: Boolean = true ) {
+  roleCompositeRelation(id: $id roleRef: $roleRef role: $role compositeRef: $compositeRef composite: $composite isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId input: $input where: $where ) {
+    id @include(if: $includeId)
+    roleRef @include(if: $includeRoleRef)
+    compositeRef @include(if: $includeCompositeRef)
+    isDeprecated @include(if: $includeIsDeprecated)
+    version @include(if: $includeVersion)
+    realmId @include(if: $includeRealmId)
+    createUserId @include(if: $includeCreateUserId)
+    createTime @include(if: $includeCreateTime)
+    updateUserId @include(if: $includeUpdateUserId)
+    updateTime @include(if: $includeUpdateTime)
+    createGroupId @include(if: $includeCreateGroupId)
+    role @include(if: $includeRole) {
       id
       name
       description
     }
-    composite {
+    composite @include(if: $includeComposite) {
       id
       name
       description

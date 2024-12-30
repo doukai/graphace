@@ -1,0 +1,3 @@
+query Query_jsonSchema($name: String ) {
+  jsonSchema(name: $name) 
+}
