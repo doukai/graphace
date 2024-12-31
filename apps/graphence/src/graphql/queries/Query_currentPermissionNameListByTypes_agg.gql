@@ -1,3 +1,0 @@
-query Query_currentPermissionNameListByTypes_agg($types: [String] ) {
-  currentPermissionNameListByTypes(types: $types )
-}

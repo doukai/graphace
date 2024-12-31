@@ -4,7 +4,6 @@ export type Template =
     '{{i18nPath}}/{{i18nDescription}}/graphql/index.ts' |
     '{{graphqlPath}}/queries/Query_{{name}}.gql' |
     '{{graphqlPath}}/queries/Query_{{name}}_{{objectFieldName}}.gql' |
-    '{{graphqlPath}}/queries/Query_{{name}}_agg.gql' |
     '{{graphqlPath}}/mutations/Mutation_{{name}}.gql' |
     '{{graphqlPath}}/mutations/Mutation_{{name}}_{{objectFieldName}}.gql' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Form.svelte' |

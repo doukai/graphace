@@ -1,3 +1,0 @@
-query Query_jsonSchema_agg($name: String ) {
-  jsonSchema(name: $name )
-}

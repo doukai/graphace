@@ -1,4 +1,4 @@
-mutation Mutation_roleCompositeRelation_role($roleCompositeRelation_id: String, $roleCompositeRelation_role: RoleInput$id: StringExpression$name: StringExpression$description: StringExpression$users: UserExpression$groups: GroupExpression$composites: RoleExpression$permissions: PermissionExpression$realm: RealmExpression$includeDeprecated: Boolean$version: IntExpression$realmId: IntExpression$createUserId: StringExpression$createTime: StringExpression$updateUserId: StringExpression$updateTime: StringExpression$createGroupId: StringExpression$roleUserRelation: RoleUserRelationExpression$groupRoleRelation: GroupRoleRelationExpression$roleCompositeRelation: RoleCompositeRelationExpression$permissionRoleRelation: PermissionRoleRelationExpression$groupBy: [String!]$include_id: Boolean = true $include_name: Boolean = true $include_description: Boolean = true $include_isDeprecated: Boolean = true $include_version: Boolean = true $include_realmId: Boolean = true $include_createUserId: Boolean = true $include_createTime: Boolean = true $include_updateUserId: Boolean = true $include_updateTime: Boolean = true $include_createGroupId: Boolean = true $include_syncRolePolicy: Boolean = true $include_users: Boolean = true $include_groups: Boolean = true $include_composites: Boolean = true $include_realm: Boolean = true ) {
+mutation Mutation_roleCompositeRelation_role($roleCompositeRelation_id: String, $roleCompositeRelation_role: RoleInput$id: StringExpression$name: StringExpression$description: StringExpression$users: UserExpression$groups: GroupExpression$composites: RoleExpression$permissions: PermissionExpression$realm: RealmExpression$includeDeprecated: Boolean$version: IntExpression$realmId: IntExpression$createUserId: StringExpression$createTime: StringExpression$updateUserId: StringExpression$updateTime: StringExpression$createGroupId: StringExpression$roleUserRelation: RoleUserRelationExpression$groupRoleRelation: GroupRoleRelationExpression$roleCompositeRelation: RoleCompositeRelationExpression$permissionRoleRelation: PermissionRoleRelationExpression$groupBy: [String!]) {
   roleCompositeRelation(where: { id: { val: $roleCompositeRelation_id } }  role: $roleCompositeRelation_role ) @merge {
     id
     roleRef
@@ -12,34 +12,34 @@ mutation Mutation_roleCompositeRelation_role($roleCompositeRelation_id: String, 
     updateTime
     createGroupId
     role(id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId roleUserRelation: $roleUserRelation groupRoleRelation: $groupRoleRelation roleCompositeRelation: $roleCompositeRelation permissionRoleRelation: $permissionRoleRelation groupBy: $groupBy ) {
-      id @include(if: $include_id)
-      name @include(if: $include_name)
-      description @include(if: $include_description)
-      isDeprecated @include(if: $include_isDeprecated)
-      version @include(if: $include_version)
-      realmId @include(if: $include_realmId)
-      createUserId @include(if: $include_createUserId)
-      createTime @include(if: $include_createTime)
-      updateUserId @include(if: $include_updateUserId)
-      updateTime @include(if: $include_updateTime)
-      createGroupId @include(if: $include_createGroupId)
-      syncRolePolicy @include(if: $include_syncRolePolicy)
-      users @include(if: $include_users) {
+      id
+      name
+      description
+      isDeprecated
+      version
+      realmId
+      createUserId
+      createTime
+      updateUserId
+      updateTime
+      createGroupId
+      syncRolePolicy
+      users {
         id
         name
         description
       }
-      groups @include(if: $include_groups) {
+      groups {
         id
         name
         description
       }
-      composites @include(if: $include_composites) {
+      composites {
         id
         name
         description
       }
-      realm @include(if: $include_realm) {
+      realm {
         name
         description
       }

@@ -1,25 +1,25 @@
-mutation Mutation_permission($name: ID $description: String $field: String $type: String $permissionType: PermissionType $roles: [RoleInput] $realm: RealmInput $isDeprecated: Boolean $version: Int $realmId: Int $createUserId: String $createTime: Timestamp $updateUserId: String $updateTime: Timestamp $createGroupId: String $permissionRoleRelation: [PermissionRoleRelationInput] $input: PermissionInput $where: PermissionExpression $include_name: Boolean = true $include_description: Boolean = true $include_field: Boolean = true $include_type: Boolean = true $include_permissionType: Boolean = true $include_isDeprecated: Boolean = true $include_version: Boolean = true $include_realmId: Boolean = true $include_createUserId: Boolean = true $include_createTime: Boolean = true $include_updateUserId: Boolean = true $include_updateTime: Boolean = true $include_createGroupId: Boolean = true $include_syncPermissionPolicy: Boolean = true $include_roles: Boolean = true $include_realm: Boolean = true ) {
+mutation Mutation_permission($name: ID $description: String $field: String $type: String $permissionType: PermissionType $roles: [RoleInput] $realm: RealmInput $isDeprecated: Boolean $version: Int $realmId: Int $createUserId: String $createTime: Timestamp $updateUserId: String $updateTime: Timestamp $createGroupId: String $permissionRoleRelation: [PermissionRoleRelationInput] $input: PermissionInput $where: PermissionExpression ) {
   permission(name: $name description: $description field: $field type: $type permissionType: $permissionType roles: $roles realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId permissionRoleRelation: $permissionRoleRelation input: $input where: $where ) {
-    name @include(if: $include_name)
-    description @include(if: $include_description)
-    field @include(if: $include_field)
-    type @include(if: $include_type)
-    permissionType @include(if: $include_permissionType)
-    isDeprecated @include(if: $include_isDeprecated)
-    version @include(if: $include_version)
-    realmId @include(if: $include_realmId)
-    createUserId @include(if: $include_createUserId)
-    createTime @include(if: $include_createTime)
-    updateUserId @include(if: $include_updateUserId)
-    updateTime @include(if: $include_updateTime)
-    createGroupId @include(if: $include_createGroupId)
-    syncPermissionPolicy @include(if: $include_syncPermissionPolicy)
-    roles @include(if: $include_roles) {
+    name
+    description
+    field
+    type
+    permissionType
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    syncPermissionPolicy
+    roles {
       id
       name
       description
     }
-    realm @include(if: $include_realm) {
+    realm {
       name
       description
     }

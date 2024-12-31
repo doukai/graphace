@@ -1,4 +1,4 @@
-mutation Mutation_group_users($group_id: String, $group_users: [UserInput]$id: StringExpression$name: StringExpression$description: StringExpression$lastName: StringExpression$login: StringExpression$salt: StringExpression$hash: StringExpression$email: StringExpression$phones: StringExpression$disable: BooleanExpression$groups: GroupExpression$roles: RoleExpression$realm: RealmExpression$includeDeprecated: Boolean$version: IntExpression$realmId: IntExpression$createUserId: StringExpression$createTime: StringExpression$updateUserId: StringExpression$updateTime: StringExpression$createGroupId: StringExpression$userPhonesRelation: UserPhonesRelationExpression$groupUserRelation: GroupUserRelationExpression$roleUserRelation: RoleUserRelationExpression$first: Int$last: Int$offset: Int$orderBy: UserOrderBy$groupBy: [String!]$include_id: Boolean = true $include_name: Boolean = true $include_description: Boolean = true $include_lastName: Boolean = true $include_login: Boolean = true $include_email: Boolean = true $include_phones: Boolean = true $include_disable: Boolean = true $include_isDeprecated: Boolean = true $include_version: Boolean = true $include_realmId: Boolean = true $include_createUserId: Boolean = true $include_createTime: Boolean = true $include_updateUserId: Boolean = true $include_updateTime: Boolean = true $include_createGroupId: Boolean = true $include_syncUserPolicy: Boolean = true $include_groups: Boolean = true $include_roles: Boolean = true $include_realm: Boolean = true ) {
+mutation Mutation_group_users($group_id: String, $group_users: [UserInput]$id: StringExpression$name: StringExpression$description: StringExpression$lastName: StringExpression$login: StringExpression$salt: StringExpression$hash: StringExpression$email: StringExpression$phones: StringExpression$disable: BooleanExpression$groups: GroupExpression$roles: RoleExpression$realm: RealmExpression$includeDeprecated: Boolean$version: IntExpression$realmId: IntExpression$createUserId: StringExpression$createTime: StringExpression$updateUserId: StringExpression$updateTime: StringExpression$createGroupId: StringExpression$userPhonesRelation: UserPhonesRelationExpression$groupUserRelation: GroupUserRelationExpression$roleUserRelation: RoleUserRelationExpression$first: Int$last: Int$offset: Int$orderBy: UserOrderBy$groupBy: [String!]) {
   group(where: { id: { val: $group_id } }  users: $group_users ) @merge {
     id
     name
@@ -19,34 +19,34 @@ mutation Mutation_group_users($group_id: String, $group_users: [UserInput]$id: S
       totalCount
       edges {
         node {
-          id @include(if: $include_id)
-          name @include(if: $include_name)
-          description @include(if: $include_description)
-          lastName @include(if: $include_lastName)
-          login @include(if: $include_login)
-          email @include(if: $include_email)
-          phones @include(if: $include_phones)
-          disable @include(if: $include_disable)
-          isDeprecated @include(if: $include_isDeprecated)
-          version @include(if: $include_version)
-          realmId @include(if: $include_realmId)
-          createUserId @include(if: $include_createUserId)
-          createTime @include(if: $include_createTime)
-          updateUserId @include(if: $include_updateUserId)
-          updateTime @include(if: $include_updateTime)
-          createGroupId @include(if: $include_createGroupId)
-          syncUserPolicy @include(if: $include_syncUserPolicy)
-          groups @include(if: $include_groups) {
+          id
+          name
+          description
+          lastName
+          login
+          email
+          phones
+          disable
+          isDeprecated
+          version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
+          syncUserPolicy
+          groups {
             id
             name
             description
           }
-          roles @include(if: $include_roles) {
+          roles {
             id
             name
             description
           }
-          realm @include(if: $include_realm) {
+          realm {
             name
             description
           }

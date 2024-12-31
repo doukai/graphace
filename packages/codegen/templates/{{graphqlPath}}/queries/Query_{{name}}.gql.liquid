@@ -1,6 +1,6 @@
 query Query_{{ name }}
-  {%- if args and args.length > 0 or fields and fields.length > 0 or namedFields and namedFields.length > 0 or fileFields and fileFields > 0 -%}
-  ({% for arg in args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }} {% endfor %}{% for field in fields %}$include_{{ field.name }}: Boolean = true {% endfor %}{% for field in namedFields %}$include_{{ field.name }}: Boolean = true {% endfor %}{% for field in fileFields %}$include_{{ field.name }}: Boolean = true {% endfor %})
+  {%- if args and args.length > 0 -%}
+  ({% for arg in args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }} {% endfor %})
   {%- endif %} {
   {{ name }}
     {%- if args and args.length > 0 %}({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %} {% endfor %}){% endif %}
@@ -10,26 +10,26 @@ query Query_{{ name }}
       node {
         {%- if fields %}
         {%- for field in fields %}
-        {{ field.name }} @include(if: $include_{{ field.name }})
+        {{ field.name }}
         {%- endfor %}
         {%- endif %}
         {%- if namedFields or fileFields %}
         {%- for field in namedFields %}
         {%- if field.select %}
-        {{ field.name }} @include(if: $include_{{ field.name }}) {
+        {{ field.name }} {
           {{ field.fieldTypeIdName }}
           name
           description
         }
         {%- else %}
-        {{ field.name }}{% if field.isListType %}(first: 3){% endif %} @include(if: $include_{{ field.name }}) {
+        {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
           name
           description
         }
         {%- endif %}
         {%- endfor %}
         {%- for field in fileFields %}
-        {{ field.name }} @include(if: $include_{{ field.name }}) {
+        {{ field.name }} {
           id
           name
         }
@@ -42,26 +42,26 @@ query Query_{{ name }}
     {%- if fields or namedFields or fileFields %} {
     {%- if fields %}
     {%- for field in fields %}
-    {{ field.name }} @include(if: $include_{{ field.name }})
+    {{ field.name }}
     {%- endfor %}
     {%- endif %}
     {%- if namedFields %}
     {%- for field in namedFields %}
     {%- if field.select %}
-    {{ field.name }} @include(if: $include_{{ field.name }}) {
+    {{ field.name }} {
       {{ field.fieldTypeIdName }}
       name
       description
     }
     {%- else %}
-    {{ field.name }}{% if field.isListType %}(first: 3){% endif %} @include(if: $include_{{ field.name }}) {
+    {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
       name
       description
     }
     {%- endif %}
     {%- endfor %}
     {%- for field in fileFields %}
-    {{ field.name }} @include(if: $include_{{ field.name }}) {
+    {{ field.name }} {
       id
       name
     }

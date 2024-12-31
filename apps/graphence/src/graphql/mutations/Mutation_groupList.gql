@@ -1,41 +1,41 @@
-mutation Mutation_groupList($id: ID $name: String $description: String $path: String $deep: Int $parentId: String $parent: GroupInput $subGroups: [GroupInput] $users: [UserInput] $roles: [RoleInput] $realm: RealmInput $isDeprecated: Boolean $version: Int $realmId: Int $createUserId: String $createTime: Timestamp $updateUserId: String $updateTime: Timestamp $createGroupId: String $groupUserRelation: [GroupUserRelationInput] $groupRoleRelation: [GroupRoleRelationInput] $list: [GroupInput] $where: GroupExpression $include_id: Boolean = true $include_name: Boolean = true $include_description: Boolean = true $include_path: Boolean = true $include_deep: Boolean = true $include_parentId: Boolean = true $include_isDeprecated: Boolean = true $include_version: Boolean = true $include_realmId: Boolean = true $include_createUserId: Boolean = true $include_createTime: Boolean = true $include_updateUserId: Boolean = true $include_updateTime: Boolean = true $include_createGroupId: Boolean = true $include_syncGroupPolicy: Boolean = true $include_parent: Boolean = true $include_subGroups: Boolean = true $include_users: Boolean = true $include_roles: Boolean = true $include_realm: Boolean = true ) {
+mutation Mutation_groupList($id: ID $name: String $description: String $path: String $deep: Int $parentId: String $parent: GroupInput $subGroups: [GroupInput] $users: [UserInput] $roles: [RoleInput] $realm: RealmInput $isDeprecated: Boolean $version: Int $realmId: Int $createUserId: String $createTime: Timestamp $updateUserId: String $updateTime: Timestamp $createGroupId: String $groupUserRelation: [GroupUserRelationInput] $groupRoleRelation: [GroupRoleRelationInput] $list: [GroupInput] $where: GroupExpression ) {
   groupList(id: $id name: $name description: $description path: $path deep: $deep parentId: $parentId parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupUserRelation: $groupUserRelation groupRoleRelation: $groupRoleRelation list: $list where: $where ) {
-    id @include(if: $include_id)
-    name @include(if: $include_name)
-    description @include(if: $include_description)
-    path @include(if: $include_path)
-    deep @include(if: $include_deep)
-    parentId @include(if: $include_parentId)
-    isDeprecated @include(if: $include_isDeprecated)
-    version @include(if: $include_version)
-    realmId @include(if: $include_realmId)
-    createUserId @include(if: $include_createUserId)
-    createTime @include(if: $include_createTime)
-    updateUserId @include(if: $include_updateUserId)
-    updateTime @include(if: $include_updateTime)
-    createGroupId @include(if: $include_createGroupId)
-    syncGroupPolicy @include(if: $include_syncGroupPolicy)
-    parent @include(if: $include_parent) {
+    id
+    name
+    description
+    path
+    deep
+    parentId
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    syncGroupPolicy
+    parent {
       id
       name
       description
     }
-    subGroups @include(if: $include_subGroups) {
+    subGroups {
       id
       name
       description
     }
-    users @include(if: $include_users) {
+    users {
       id
       name
       description
     }
-    roles @include(if: $include_roles) {
+    roles {
       id
       name
       description
     }
-    realm @include(if: $include_realm) {
+    realm {
       name
       description
     }

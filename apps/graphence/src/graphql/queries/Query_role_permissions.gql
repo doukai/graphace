@@ -1,4 +1,4 @@
-query Query_role_permissions($role_id: StringExpression $name: StringExpression $description: StringExpression $field: StringExpression $type: StringExpression $permissionType: PermissionTypeExpression $roles: RoleExpression $realm: RealmExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $first: Int $last: Int $offset: Int $orderBy: PermissionOrderBy $groupBy: [String!] $include_name: Boolean = true $include_description: Boolean = true $include_field: Boolean = true $include_type: Boolean = true $include_permissionType: Boolean = true $include_isDeprecated: Boolean = true $include_version: Boolean = true $include_realmId: Boolean = true $include_createUserId: Boolean = true $include_createTime: Boolean = true $include_updateUserId: Boolean = true $include_updateTime: Boolean = true $include_createGroupId: Boolean = true $include_roles: Boolean = true $include_realm: Boolean = true ) {
+query Query_role_permissions($role_id: StringExpression $name: StringExpression $description: StringExpression $field: StringExpression $type: StringExpression $permissionType: PermissionTypeExpression $roles: RoleExpression $realm: RealmExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $first: Int $last: Int $offset: Int $orderBy: PermissionOrderBy $groupBy: [String!] ) {
   role(id: $role_id ) {
     id
     name
@@ -15,25 +15,25 @@ query Query_role_permissions($role_id: StringExpression $name: StringExpression 
       totalCount
       edges {
         node {
-          name @include(if: $include_name)
-          description @include(if: $include_description)
-          field @include(if: $include_field)
-          type @include(if: $include_type)
-          permissionType @include(if: $include_permissionType)
-          isDeprecated @include(if: $include_isDeprecated)
-          version @include(if: $include_version)
-          realmId @include(if: $include_realmId)
-          createUserId @include(if: $include_createUserId)
-          createTime @include(if: $include_createTime)
-          updateUserId @include(if: $include_updateUserId)
-          updateTime @include(if: $include_updateTime)
-          createGroupId @include(if: $include_createGroupId)
-          roles @include(if: $include_roles) {
+          name
+          description
+          field
+          type
+          permissionType
+          isDeprecated
+          version
+          realmId
+          createUserId
+          createTime
+          updateUserId
+          updateTime
+          createGroupId
+          roles {
             id
             name
             description
           }
-          realm @include(if: $include_realm) {
+          realm {
             name
             description
           }

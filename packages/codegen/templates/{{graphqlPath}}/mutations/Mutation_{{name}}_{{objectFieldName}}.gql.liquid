@@ -1,13 +1,13 @@
 mutation Mutation_{{ name }}_{{ objectField.name }}
   {%- if objectField.connectionField %}
   {%- assign connectionArgs = objectField.parentArgs | concat: objectField.connectionField.args %}
-  {%- if connectionArgs.length > 0 or objectField.fields and objectField.fields.length > 0 or objectField.namedFields and objectField.namedFields.length > 0 or objectField.fileFields and objectField.fileFields > 0 -%}
-  (${{ name }}_{{ idName }}: String, {% for arg in connectionArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% endfor %}{% for field in objectField.fields %}$include_{{ field.name }}: Boolean = true {% endfor %}{% for field in objectField.namedFields %}$include_{{ field.name }}: Boolean = true {% endfor %}{% for field in objectField.fileFields %}$include_{{ field.name }}: Boolean = true {% endfor %})
+  {%- if connectionArgs.length > 0 -%}
+  (${{ name }}_{{ idName }}: String, {% for arg in connectionArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% endfor %})
   {%- endif %}
   {%- else %}
   {%- assign objectFieldArgs = objectField.parentArgs | concat: objectField.args %}
-  {%- if objectFieldArgs.length > 0 or objectField.fields and objectField.fields.length > 0 or objectField.namedFields and objectField.namedFields.length > 0 or objectField.fileFields and objectField.fileFields > 0 -%}
-  (${{ name }}_{{ idName }}: String, {% for arg in objectFieldArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% endfor %}{% for field in objectField.fields %}$include_{{ field.name }}: Boolean = true {% endfor %}{% for field in objectField.namedFields %}$include_{{ field.name }}: Boolean = true {% endfor %}{% for field in objectField.fileFields %}$include_{{ field.name }}: Boolean = true {% endfor %})
+  {%- if objectFieldArgs.length > 0 -%}
+  (${{ name }}_{{ idName }}: String, {% for arg in objectFieldArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% endfor %})
   {%- endif %}
   {%- endif %} {
   {{ name }}
@@ -25,24 +25,24 @@ mutation Mutation_{{ name }}_{{ objectField.name }}
       edges {
         node {
           {%- for field in objectField.fields %}
-          {{ field.name }} @include(if: $include_{{ field.name }})
+          {{ field.name }}
           {%- endfor %}
           {%- for field in objectField.namedFields %}
           {%- if field.select %}
-          {{ field.name }} @include(if: $include_{{ field.name }}) {
+          {{ field.name }} {
             {{ field.fieldTypeIdName }}
             name
             description
           }
           {%- else %}
-          {{ field.name }}{% if field.isListType %}(first: 3){% endif %} @include(if: $include_{{ field.name }}) {
+          {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
             name
             description
           }
           {%- endif %}
           {%- endfor %}
           {%- for field in objectField.fileFields %}
-          {{ field.name }} @include(if: $include_{{ field.name }}) {
+          {{ field.name }} {
             id
             name
           }
@@ -56,24 +56,24 @@ mutation Mutation_{{ name }}_{{ objectField.name }}
     ({% for arg in objectField.args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %} {% endfor %})
     {%- endif %}{% if objectField.args and objectField.args.length > 0 %}{% endif %} {
       {%- for field in objectField.fields %}
-      {{ field.name }} @include(if: $include_{{ field.name }})
+      {{ field.name }}
       {%- endfor %}
       {%- for field in objectField.namedFields %}
       {%- if field.select %}
-      {{ field.name }} @include(if: $include_{{ field.name }}) {
+      {{ field.name }} {
         {{ field.fieldTypeIdName }}
         name
         description
       }
       {%- else %}
-      {{ field.name }}{% if field.isListType %}(first: 3){% endif %} @include(if: $include_{{ field.name }}) {
+      {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
         name
         description
       }
       {%- endif %}
       {%- endfor %}
       {%- for field in objectField.fileFields %}
-      {{ field.name }} @include(if: $include_{{ field.name }}) {
+      {{ field.name }} {
         id
         name
       }

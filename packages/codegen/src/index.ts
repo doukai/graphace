@@ -192,32 +192,6 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${config.name} undefined`);
     },
-    '{{graphqlPath}}/queries/Query_{{name}}_agg.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const operationFields = schema.getQueryType()?.getFields();
-        if (operationFields) {
-            const field = Object.keys(operationFields)
-                .map(key => operationFields[key])
-                .find(field => field.name === config.name);
-            if (field) {
-                const fieldType = getFieldType(field.type);
-                const idFieldName = getIDFieldName(fieldType);
-                const aggFields = getAggFields(schema, fieldType)?.filter(field => !isConnection(field.fieldName)).filter(field => field.fieldName === idFieldName || inListField(fieldType.name, field.fieldName, field.fieldTypeName));
-
-                return {
-                    content: buildFileContent(config.template, {
-                        name: field.name,
-                        idName: idFieldName,
-                        args: field.args,
-                        isConnection: isConnection(field.name),
-                        fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
-                        aggFields: componentFields(fieldType.name, aggFields),
-                    }),
-                };
-            }
-        }
-        console.error(config);
-        throw new Error(`${config.name} undefined`);
-    },
     '{{graphqlPath}}/mutations/Mutation_{{name}}.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const operationFields = schema.getMutationType()?.getFields();
         if (operationFields) {

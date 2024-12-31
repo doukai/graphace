@@ -1,43 +1,43 @@
-query Query_groupConnection($id: StringExpression $name: StringExpression $description: StringExpression $path: StringExpression $deep: IntExpression $parentId: StringExpression $parent: GroupExpression $subGroups: GroupExpression $users: UserExpression $roles: RoleExpression $realm: RealmExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $groupUserRelation: GroupUserRelationExpression $groupRoleRelation: GroupRoleRelationExpression $orderBy: GroupOrderBy $groupBy: [String!] $not: Boolean $cond: Conditional $exs: [GroupExpression] $first: Int $last: Int $offset: Int $after: ID $before: ID $include_id: Boolean = true $include_name: Boolean = true $include_description: Boolean = true $include_path: Boolean = true $include_deep: Boolean = true $include_parentId: Boolean = true $include_isDeprecated: Boolean = true $include_version: Boolean = true $include_realmId: Boolean = true $include_createUserId: Boolean = true $include_createTime: Boolean = true $include_updateUserId: Boolean = true $include_updateTime: Boolean = true $include_createGroupId: Boolean = true $include_parent: Boolean = true $include_subGroups: Boolean = true $include_users: Boolean = true $include_roles: Boolean = true $include_realm: Boolean = true ) {
+query Query_groupConnection($id: StringExpression $name: StringExpression $description: StringExpression $path: StringExpression $deep: IntExpression $parentId: StringExpression $parent: GroupExpression $subGroups: GroupExpression $users: UserExpression $roles: RoleExpression $realm: RealmExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $groupUserRelation: GroupUserRelationExpression $groupRoleRelation: GroupRoleRelationExpression $orderBy: GroupOrderBy $groupBy: [String!] $not: Boolean $cond: Conditional $exs: [GroupExpression] $first: Int $last: Int $offset: Int $after: ID $before: ID ) {
   groupConnection(id: $id name: $name description: $description path: $path deep: $deep parentId: $parentId parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupUserRelation: $groupUserRelation groupRoleRelation: $groupRoleRelation orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before ) {
     totalCount
     edges {
       node {
-        id @include(if: $include_id)
-        name @include(if: $include_name)
-        description @include(if: $include_description)
-        path @include(if: $include_path)
-        deep @include(if: $include_deep)
-        parentId @include(if: $include_parentId)
-        isDeprecated @include(if: $include_isDeprecated)
-        version @include(if: $include_version)
-        realmId @include(if: $include_realmId)
-        createUserId @include(if: $include_createUserId)
-        createTime @include(if: $include_createTime)
-        updateUserId @include(if: $include_updateUserId)
-        updateTime @include(if: $include_updateTime)
-        createGroupId @include(if: $include_createGroupId)
-        parent @include(if: $include_parent) {
+        id
+        name
+        description
+        path
+        deep
+        parentId
+        isDeprecated
+        version
+        realmId
+        createUserId
+        createTime
+        updateUserId
+        updateTime
+        createGroupId
+        parent {
           id
           name
           description
         }
-        subGroups @include(if: $include_subGroups) {
+        subGroups {
           id
           name
           description
         }
-        users @include(if: $include_users) {
+        users {
           id
           name
           description
         }
-        roles @include(if: $include_roles) {
+        roles {
           id
           name
           description
         }
-        realm @include(if: $include_realm) {
+        realm {
           name
           description
         }
