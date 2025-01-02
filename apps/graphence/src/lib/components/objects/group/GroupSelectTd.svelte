@@ -116,7 +116,7 @@
 				}}
 			/>
 			{#if !readonly && !disabled}
-				<div class="tooltip flex items-center" data-tip={$LL.uiGraphql.table.td.save()}>
+				<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.td.save()}>
 					<button
 						class="btn btn-square btn-primary md:btn-sm"
 						on:click|preventDefault={(e) => mutation()}
@@ -124,7 +124,7 @@
 						<Icon src={Check} class="h-5 w-5" />
 					</button>
 				</div>
-				<div class="tooltip flex items-center" data-tip={$LL.uiGraphql.table.td.clear()}>
+				<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.td.clear()}>
 					<button
 						class="btn btn-square btn-outline btn-error md:btn-sm"
 						on:click|preventDefault={(e) => clean()}

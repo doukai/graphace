@@ -108,12 +108,12 @@
 				<Toggle {name} bind:value={_expression.val} className="md:toggle-sm w-full" />
 			{/if}
 			<select class="select select-bordered md:select-sm w-full" bind:value={_sort}>
-				<option value={undefined} selected>{$LL.uiGraphql.table.th.noSort()}</option>
-				<option value="ASC">{$LL.uiGraphql.table.th.asc()}</option>
-				<option value="DESC">{$LL.uiGraphql.table.th.desc()}</option>
+				<option value={undefined} selected>{$LL.ui_graphql.table.th.noSort()}</option>
+				<option value="ASC">{$LL.ui_graphql.table.th.asc()}</option>
+				<option value="DESC">{$LL.ui_graphql.table.th.desc()}</option>
 			</select>
 			<div class="flex space-x-1">
-				<div class="tooltip flex items-center" data-tip={$LL.uiGraphql.table.th.filter()}>
+				<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.th.filter()}>
 					<button
 						class="btn btn-square btn-primary md:btn-sm"
 						on:click|preventDefault={(e) => filter()}
@@ -121,7 +121,7 @@
 						<Icon src={Check} class="h-5 w-5" />
 					</button>
 				</div>
-				<div class="tooltip flex items-center" data-tip={$LL.uiGraphql.table.th.cancel()}>
+				<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.th.cancel()}>
 					<button
 						class="btn btn-square btn-outline btn-error md:btn-sm"
 						on:click|preventDefault={(e) => clear()}

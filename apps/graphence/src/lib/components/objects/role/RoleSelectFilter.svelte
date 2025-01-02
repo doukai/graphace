@@ -52,7 +52,7 @@
 	{#if opr === 'IN' || opr === 'NIN' || opr === 'BT' || opr === 'NBT'}
 		<RoleSelect
 			{name}
-			placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+			placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
 			list
 			bind:value
 			{className}
@@ -63,7 +63,7 @@
 	{:else}
 		<RoleSelect
 			{name}
-			placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+			placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
 			bind:value
 			{className}
 			{containerClassName}

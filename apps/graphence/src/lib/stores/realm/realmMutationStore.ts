@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import type { LoadEvent } from '@sveltejs/kit';
 import { type Field, type Directive, type GraphQLError, fieldToString, directiveToString } from '@graphace/graphql';
-import type { Realm, RealmListMutationArguments } from '~/';
+import type { Realm, RealmListMutationArguments } from '~/lib/types/schema';
 
 export async function createRealmListMutationStore(params: { event: LoadEvent }): Promise<RealmListMutationStore> {
     const data: Writable<{ isFetching: boolean, response: { data?: { realmList: Realm[] | null | undefined }, errors?: GraphQLError[] | null | undefined } }> = writable({
@@ -18,7 +18,7 @@ export async function createRealmListMutationStore(params: { event: LoadEvent })
         if (fields && fields.length > 0) {
             update((data) => ({ ...data, isFetching: true }));
             let query = `mutation Mutation_realmList($id: ID, $name: String, $description: String, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $list: [RealmInput], $where: RealmExpression) {
-    realmList(id: $id name: $name description: $description isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId list: $list where: $where)${directives ? ' ' + directives.map(directive => directiveToString(directive)).join(' ') : ''} {
+    realmList(id: $id name: $name description: $description isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId list: $list where: $where)${directives?.map(directive => ' ' + directiveToString(directive)) || ''} {
         ${fields.map((field) => fieldToString(field)).join('\r\n')}
     }
 }`;

@@ -15,7 +15,7 @@ export const fieldToString = (field: Field): string => {
     ${field.fields.map(subField => fieldToString(subField)).join('\r\n')}
 }`;
     } else {
-        return `${field.alias ? field.alias + ':' : ''}${field.name}${field.directives ? ' ' + field.directives.map(directive => directiveToString(directive)).join(' ') : ''}`;
+        return `${field.alias ? field.alias + ':' : ''}${field.name}${field.directives?.map(directive => ' ' + directiveToString(directive)) || ''}`;
     }
 }
 

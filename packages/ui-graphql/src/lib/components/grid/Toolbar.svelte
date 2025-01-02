@@ -40,14 +40,14 @@
 
 <div use:melt={$root} class="flex p-1 bg-base-200 rounded space-x-1">
 	<button class="btn btn-xs" use:melt={$button} on:click={(e) => dispatch('query', {})}>
-		{$LL.uiGraphql.grid.buttons.refresh()}
+		{$LL.ui_graphql.grid.buttons.refresh()}
 	</button>
 	<button
 		class="btn btn-xs btn-secondary"
 		use:melt={$button}
 		on:click={(e) => dispatch('mutation', {})}
 	>
-		{$LL.uiGraphql.grid.buttons.save()}
+		{$LL.ui_graphql.grid.buttons.save()}
 	</button>
 	<div class="hidden md:divider md:divider-horizontal md:m-0" use:melt={$separator} />
 	<button
@@ -63,7 +63,7 @@
 			dispatch('change', { source });
 		}}
 	>
-		{$LL.uiGraphql.grid.buttons.new()}
+		{$LL.ui_graphql.grid.buttons.new()}
 	</button>
 	<button
 		class="btn btn-xs btn-primary"
@@ -74,7 +74,7 @@
 			dispatch('change', { source });
 		}}
 	>
-		{$LL.uiGraphql.grid.buttons.append()}
+		{$LL.ui_graphql.grid.buttons.append()}
 	</button>
 	{#if rowIndex !== undefined && source[rowIndex]?.isDeprecated === true}
 		<button
@@ -91,7 +91,7 @@
 			class="btn btn-xs btn-success"
 			use:melt={$button}
 		>
-			{$LL.uiGraphql.grid.buttons.canel()}
+			{$LL.ui_graphql.grid.buttons.canel()}
 		</button>
 	{/if}
 	{#if rowIndex !== undefined && !source[rowIndex]?.isDeprecated}
@@ -114,7 +114,7 @@
 			class="btn btn-xs btn-error"
 			use:melt={$button}
 		>
-			{$LL.uiGraphql.grid.buttons.remove()}
+			{$LL.ui_graphql.grid.buttons.remove()}
 		</button>
 	{/if}
 	<div class="hidden md:divider md:divider-horizontal md:m-0" use:melt={$separator} />
@@ -124,14 +124,14 @@
 		use:melt={$button}
 		disabled={fields.length === 0}
 	>
-		{$LL.uiGraphql.grid.buttons.export()}
+		{$LL.ui_graphql.grid.buttons.export()}
 	</button>
 	<Dialog
-		title={$LL.uiGraphql.grid.buttons.import()}
+		title={$LL.ui_graphql.grid.buttons.import()}
 		className="btn-xs btn-info"
 		disabled={fields.length === 0}
 	>
-		<span slot="button">{$LL.uiGraphql.grid.buttons.import()}</span>
+		<span slot="button">{$LL.ui_graphql.grid.buttons.import()}</span>
 		<input
 			type="file"
 			class="file-input file-input-bordered w-full"
@@ -147,7 +147,7 @@
 			class="btn"
 			use:melt={$button}
 		>
-			{$LL.uiGraphql.grid.buttons.ok()}
+			{$LL.ui_graphql.grid.buttons.ok()}
 		</button>
 	</Dialog>
 </div>

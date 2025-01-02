@@ -187,12 +187,12 @@
 			{/if}
 		</div>
 		<div class="flex justify-center space-x-1 pt-1">
-			<div class="tooltip" data-tip={$LL.uiGraphql.table.th.filter()}>
+			<div class="tooltip" data-tip={$LL.ui_graphql.table.th.filter()}>
 				<button class="btn btn-square btn-primary md:btn-sm" on:click={(e) => filter()}>
 					<Icon src={Check} class="h-5 w-5" />
 				</button>
 			</div>
-			<div class="tooltip" data-tip={$LL.uiGraphql.table.th.cancel()}>
+			<div class="tooltip" data-tip={$LL.ui_graphql.table.th.cancel()}>
 				<button class="btn btn-square btn-outline btn-error md:btn-sm" on:click={(e) => clear()}>
 					<Icon src={XMark} class="h-5 w-5" />
 				</button>

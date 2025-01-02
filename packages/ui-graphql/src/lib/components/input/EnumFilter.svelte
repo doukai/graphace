@@ -49,7 +49,7 @@
 	</div>
 	{#if _expression.opr === 'IN' || _expression.opr === 'NIN' || _expression.opr === 'BT' || _expression.opr === 'NBT'}
 		<EnumInput
-			placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+			placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
 			{className}
 			{name}
 			bind:value={_expression.arr}
@@ -58,7 +58,7 @@
 		/>
 	{:else}
 		<EnumInput
-			placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+			placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
 			{className}
 			{name}
 			bind:value={_expression.val}

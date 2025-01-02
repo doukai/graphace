@@ -1,7 +1,7 @@
 /* eslint-disable */
 import type { BaseTranslation } from '../../i18n-types'
 
-const en_uiGraphql = {
+const en_ui_graphql = {
 	table: {
 		removeModalTitle: 'Remove row?',
 		editBtn: 'Edit',
@@ -49,4 +49,4 @@ const en_uiGraphql = {
 	},
 } satisfies BaseTranslation
 
-export default en_uiGraphql
+export default en_ui_graphql

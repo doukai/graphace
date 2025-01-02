@@ -476,8 +476,8 @@
 				value: group.value,
 				label: group.label,
 				options: group.options?.flatMap((option) => [
-					{ value: option.value, label: option.label + $LL.uiGraphql.table.th.asc(), node: 'ASC' },
-					{ value: option.value, label: option.label + $LL.uiGraphql.table.th.desc(), node: 'DESC' }
+					{ value: option.value, label: option.label + $LL.ui_graphql.table.th.asc(), node: 'ASC' },
+					{ value: option.value, label: option.label + $LL.ui_graphql.table.th.desc(), node: 'DESC' }
 				])
 			};
 		});
@@ -611,7 +611,10 @@
 	};
 
 	export const queryPage = (toPageNumber?: number | undefined) => {
-		dispatch('query', { fields: buildFields(), queryArguments: buildArguments(toPageNumber) });
+		dispatch('query', {
+			fields: [...groupByColumns.map((option) => ({ name: option.value })), ...buildFields()],
+			queryArguments: buildArguments(toPageNumber)
+		});
 	};
 
 	queryPage();

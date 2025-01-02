@@ -1,7 +1,7 @@
 /* eslint-disable */
 import type { NamespaceUiGraphqlTranslation } from '../../i18n-types'
 
-const zh_uiGraphql = {
+const zh_ui_graphql = {
 	table: {
 		removeModalTitle: '确认删除?',
 		editBtn: '编辑',
@@ -49,4 +49,4 @@ const zh_uiGraphql = {
 	},
 } satisfies NamespaceUiGraphqlTranslation
 
-export default zh_uiGraphql
+export default zh_ui_graphql

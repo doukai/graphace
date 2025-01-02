@@ -27,7 +27,7 @@
 
 <FormItem {label} let:id>
 	<div {id} class="justify-start h-full flex items-center">
-		<div class="tooltip" data-tip={$LL.uiGraphql.table.editBtn()}>
+		<div class="tooltip" data-tip={$LL.ui_graphql.table.editBtn()}>
 			{#if _namedStruct}
 				{#if Array.isArray(_namedStruct)}
 					{#if _namedStruct.length > 0 && _namedStruct.some((item) => item.name)}

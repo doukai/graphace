@@ -47,7 +47,7 @@
 	</div>
 	{#if _expression.opr === 'IN' || _expression.opr === 'NIN' || _expression.opr === 'BT' || _expression.opr === 'NBT'}
 		<StringInput
-			placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+			placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
 			{className}
 			{addBtnClassName}
 			{name}
@@ -56,7 +56,7 @@
 		/>
 	{:else}
 		<StringInput
-			placeholder={$LL.uiGraphql.table.th.filterPlaceholder()}
+			placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
 			{className}
 			{addBtnClassName}
 			{name}

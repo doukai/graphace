@@ -913,7 +913,8 @@ const renders: Record<Template, Render> = {
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
-                        args: schema.getQueryType()?.getFields()[`${changeCase.camelCase(typeName)}Connection`].args
+                        args: schema.getQueryType()?.getFields()[`${changeCase.camelCase(typeName)}Connection`].args,
+                        schemaTypesPath: config.schemaTypesPath
                     }),
                 };
             }
@@ -929,7 +930,8 @@ const renders: Record<Template, Render> = {
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
-                        args: schema.getMutationType()?.getFields()[`${changeCase.camelCase(typeName)}List`].args
+                        args: schema.getMutationType()?.getFields()[`${changeCase.camelCase(typeName)}List`].args,
+                        schemaTypesPath: config.schemaTypesPath
                     }),
                 };
             }

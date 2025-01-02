@@ -12,10 +12,18 @@ const localeTranslationLoaders = {
 
 const localeNamespaceLoaders = {
 	en: {
-		uiGraphql: () => import('./en/uiGraphql')
+		errors: () => import('./en/errors'),
+		graphence: () => import('./en/graphence'),
+		graphql: () => import('./en/graphql'),
+		ui: () => import('./en/ui'),
+		ui_graphql: () => import('./en/ui_graphql')
 	},
 	zh: {
-		uiGraphql: () => import('./zh/uiGraphql')
+		errors: () => import('./zh/errors'),
+		graphence: () => import('./zh/graphence'),
+		graphql: () => import('./zh/graphql'),
+		ui: () => import('./zh/ui'),
+		ui_graphql: () => import('./zh/ui_graphql')
 	}
 }
 

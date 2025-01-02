@@ -18,7 +18,7 @@ export async function create{{ name }}ListMutationStore(params: { event: LoadEve
         if (fields && fields.length > 0) {
             update((data) => ({ ...data, isFetching: true }));
             let query = `mutation Mutation_{{ name | paramCase }}List({% for arg in args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %}) {
-    {{ name | paramCase }}List({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})${directives ? ' ' + directives.map(directive => directiveToString(directive)).join(' ') : ''} {
+    {{ name | paramCase }}List({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})${directives?.map(directive => ' ' + directiveToString(directive)) || ''} {
         ${fields.map((field) => fieldToString(field)).join('\r\n')}
     }
 }`;

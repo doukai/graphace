@@ -18,11 +18,10 @@ export async function create{{ name }}ConnectionQueryStore(params: { event: Load
         if (fields && fields.length > 0 || queryArguments.groupBy && queryArguments.groupBy.length > 0) {
             update((data) => ({ ...data, isFetching: true }));
             let query = `query Query_{{ name | paramCase }}Connection({% for arg in args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %}) {
-    {{ name | paramCase }}Connection({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})${directives ? ' ' + directives.map(directive => directiveToString(directive)).join(' ') : ''} {
+    {{ name | paramCase }}Connection({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})${directives?.map(directive => ' ' + directiveToString(directive)) || ''} {
         totalCount
         edges {
             node {
-                ${(queryArguments.groupBy || []).join('\r\n')}
                 ${fields.map((field) => fieldToString(field)).join('\r\n')}
             }
         }

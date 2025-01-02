@@ -13,7 +13,7 @@ export type Translation = RootTranslation & DisallowNamespaces
 
 export type Translations = RootTranslation &
 {
-	uiGraphql: NamespaceUiGraphqlTranslation
+	ui_graphql: NamespaceUiGraphqlTranslation
 }
 
 type RootTranslation = {}
@@ -172,18 +172,18 @@ export type NamespaceUiGraphqlTranslation = {
 }
 
 export type Namespaces =
-	| 'uiGraphql'
+	| 'ui_graphql'
 
 type DisallowNamespaces = {
 	/**
-	 * reserved for 'uiGraphql'-namespace\
-	 * you need to use the `./uiGraphql/index.ts` file instead
+	 * reserved for 'ui_graphql'-namespace\
+	 * you need to use the `./ui_graphql/index.ts` file instead
 	 */
-	uiGraphql?: "[typesafe-i18n] reserved for 'uiGraphql'-namespace. You need to use the `./uiGraphql/index.ts` file instead."
+	ui_graphql?: "[typesafe-i18n] reserved for 'ui_graphql'-namespace. You need to use the `./ui_graphql/index.ts` file instead."
 }
 
 export type TranslationFunctions = {
-	uiGraphql: {
+	ui_graphql: {
 		table: {
 			/**
 			 * Remove row?
