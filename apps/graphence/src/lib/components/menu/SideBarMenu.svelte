@@ -5,46 +5,65 @@
 	import { init } from '@graphace/ui';
 	import { page } from '$app/stores';
 	import Iconify from '@iconify/svelte';
-	import type { NamespaceGraphqlTranslation, TranslationFunctions } from '$i18n/i18n-types';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { locale } from '$i18n/i18n-svelte';
 	import pages from '~/lib/data/pages.json';
 
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 	const permissions = getContext('permissions') as PermissionsStore;
-
-	const menus = pages.map((page) => {
-		return {
-			...page,
-			name: page.name as keyof NamespaceGraphqlTranslation['objects']
-		};
-	});
 </script>
 
-<li class="menu-title flex flex-row gap-4">
-	<span class="text-base-content">
-		<Iconify class="w-5 h-5" icon="material-symbols:view-module" />
-	</span>
-	<span>{$LL.graphence.components.sideBarMenu.modules()}</span>
-</li>
-{#each menus as { href, name, authPermissions, icon }}
-	{#if permissions.auth(...(authPermissions || []))}
+{#each pages as menu}
+	{#if menu.menus}
+		<li>
+			<h2 class="menu-title flex flex-row gap-2">
+				{#if menu.icon}
+					<span class="text-base-content">
+						<Iconify class="w-5 h-5" icon={menu.icon} />
+					</span>
+				{/if}
+				<span>{$LL.graphence.components.sideBarMenu[menu.name]()}</span>
+			</h2>
+			<ul>
+				{#each menu.menus as menu}
+					{#if permissions.auth(...(menu.authPermissions || []))}
+						<li>
+							<a
+								href={null}
+								on:click|preventDefault={(e) => {
+									init(`/${$locale}${menu.href}`);
+								}}
+								class={$page.url.pathname === `/${$locale}${menu.href}` ||
+								$page.url.pathname.startsWith(`/${$locale}${menu.href}/`)
+									? 'active'
+									: ''}
+							>
+								{#if menu.icon}
+									<Iconify class="w-5 h-5" icon={menu.icon} />
+								{/if}
+								<span>{$LL.graphql.objects[menu.name].name()}</span>
+							</a>
+						</li>
+					{/if}
+				{/each}
+			</ul>
+		</li>
+	{:else if permissions.auth(...(menu.authPermissions || []))}
 		<li>
 			<a
 				href={null}
 				on:click|preventDefault={(e) => {
-					init(`/${$locale}${href}`);
+					init(`/${$locale}${menu.href}`);
 				}}
-				class={$page.url.pathname === `/${$locale}${href}` ||
-				($page.url.pathname.startsWith(`/${$locale}${href}/`) &&
-					!$page.url.pathname.startsWith(`/${$locale}${href}/agg`) &&
-					!$page.url.pathname.startsWith(`/${$locale}${href}/grid`))
+				class={$page.url.pathname === `/${$locale}${menu.href}` ||
+				$page.url.pathname.startsWith(`/${$locale}${menu.href}/`)
 					? 'active'
 					: ''}
 			>
-				{#if icon}
-					<Iconify class="w-5 h-5" {icon} />
+				{#if menu.icon}
+					<Iconify class="w-5 h-5" icon={menu.icon} />
 				{/if}
-				<span>{$LL.graphql.objects[name].name()}</span>
+				<span>{$LL.graphql.objects[menu.name].name()}</span>
 			</a>
 		</li>
 	{/if}

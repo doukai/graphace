@@ -71,9 +71,9 @@
 	bind:value={selected}
 	on:change={(e) => {
 		if (Array.isArray(e.detail.value)) {
-			value = e.detail.value.map((item) => ({ id: item.value, name: item.label }));
+			value = e.detail.value.map((item) => ({% raw %}{{% endraw %} {{ idName }}: item.value, name: item.label }));
 		} else if (e.detail.value && !Array.isArray(e.detail.value)) {
-			value = { id: e.detail.value.value, name: e.detail.value.label };
+			value = {% raw %}{{% endraw %} {{ idName }}: e.detail.value.value, name: e.detail.value.label };
 		} else {
 			value = undefined;
 		}
