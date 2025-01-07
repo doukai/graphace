@@ -5,7 +5,6 @@ const en_ui = {
 	menu: {
 		menu: 'Menu',
 		open: 'Open Menu',
-		more: 'More'
 	},
 	cursor: {
 		size: 'Size',

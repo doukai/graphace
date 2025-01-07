@@ -5,7 +5,6 @@ const zh_ui = {
 	menu: {
 		menu: '菜单',
 		open: '打开菜单',
-		more: '更多'
 	},
 	cursor: {
 		size: '条数',

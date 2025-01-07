@@ -2681,10 +2681,6 @@ export type NamespaceUiTranslation = {
 		 * O​p​e​n​ ​M​e​n​u
 		 */
 		open: string
-		/**
-		 * M​o​r​e
-		 */
-		more: string
 	}
 	cursor: {
 		/**
@@ -5759,10 +5755,6 @@ export type TranslationFunctions = {
 			 * Open Menu
 			 */
 			open: () => LocalizedString
-			/**
-			 * More
-			 */
-			more: () => LocalizedString
 		}
 		cursor: {
 			/**
