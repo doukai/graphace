@@ -1,5 +1,5 @@
-mutation Mutation_role_composites($role_id: String, $role_composites: [RoleInput]$id: StringExpression$name: StringExpression$description: StringExpression$users: UserExpression$groups: GroupExpression$composites: RoleExpression$permissions: PermissionExpression$realm: RealmExpression$includeDeprecated: Boolean$version: IntExpression$realmId: IntExpression$createUserId: StringExpression$createTime: StringExpression$updateUserId: StringExpression$updateTime: StringExpression$createGroupId: StringExpression$roleUserRelation: RoleUserRelationExpression$groupRoleRelation: GroupRoleRelationExpression$roleCompositeRelation: RoleCompositeRelationExpression$permissionRoleRelation: PermissionRoleRelationExpression$first: Int$last: Int$offset: Int$orderBy: RoleOrderBy$groupBy: [String!]) {
-  role(where: { id: { val: $role_id } }  composites: $role_composites ) @merge {
+mutation Mutation_role_composites($role_id: String, $role_composites: [RoleInput], $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $groups: GroupExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $roleUserRelation: RoleUserRelationExpression, $groupRoleRelation: GroupRoleRelationExpression, $roleCompositeRelation: RoleCompositeRelationExpression, $permissionRoleRelation: PermissionRoleRelationExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!]) {
+  role(where: { id: { val: $role_id } } composites: $role_composites) @merge {
     id
     name
     description
@@ -12,7 +12,7 @@ mutation Mutation_role_composites($role_id: String, $role_composites: [RoleInput
     updateTime
     createGroupId
     syncRolePolicy
-    compositesConnection(id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId roleUserRelation: $roleUserRelation groupRoleRelation: $groupRoleRelation roleCompositeRelation: $roleCompositeRelation permissionRoleRelation: $permissionRoleRelation first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy ) {
+    compositesConnection(id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId roleUserRelation: $roleUserRelation groupRoleRelation: $groupRoleRelation roleCompositeRelation: $roleCompositeRelation permissionRoleRelation: $permissionRoleRelation first: $first last: $last offset: $offset orderBy: $orderBy groupBy: $groupBy) {
       totalCount
       edges {
         node {

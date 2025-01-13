@@ -779,6 +779,55 @@ export const createGrid = (
         }
     };
 
+    const errorsToGlobalErrors = <T>(typeName: string, errors: Record<number, Errors>, queryFields: Field[], nodes: (T | null | undefined)[] | undefined): Record<string, Errors>[] | undefined => {
+        if (errors && Object.keys(errors).length) {
+            const join = queryFields.find((field) => typeFieldTypeHasList(typeName, field.name));
+            return nodes?.flatMap((node, nodeIndex) => {
+                if (join) {
+                    const array = node?.[join.name as keyof T];
+                    if (Array.isArray(array)) {
+                        return array
+                            .map((_, index) => {
+                                if (join.fields && join.fields.length > 0) {
+                                    return Object.keys(errors[nodeIndex]?.iterms?.[join.name]?.iterms?.[index]?.iterms || {})
+                                        .filter((key) => !join.fields.some((subField) => key === subField.name))
+                                        .map((key) => [
+                                            `${join.name}.${key}`,
+                                            errors[nodeIndex]?.iterms?.[join.name]?.iterms?.[index]?.iterms?.[key]
+                                        ]) || []
+                                } else {
+                                    return [];
+                                }
+                            })
+                            .map((item) =>
+                                Object.fromEntries([
+                                    ...item,
+                                    ...Object.keys(errors[nodeIndex]?.iterms || {})
+                                        .filter((key) => !queryFields.some((subField) => key === subField.name))
+                                        .map((key) => [
+                                            key,
+                                            errors[nodeIndex]?.iterms?.[key]
+                                        ]) || []
+                                ])
+                            );
+                    }
+                }
+                return [
+                    Object.fromEntries(
+                        Object.keys(errors[nodeIndex]?.iterms || {})
+                            .filter((key) => !queryFields.some((subField) => key === subField.name))
+                            .map((key) => [
+                                key,
+                                errors[nodeIndex]?.iterms?.[key]
+                            ]) || []
+                    )
+                ];
+            });
+        } else {
+            return [];
+        }
+    };
+
     const sourceToMutationList = <T>(typeName: string, idFieldName: string, queryFields: Field[], source: DataType[]): T[] => {
         const join = queryFields.find((field) => typeFieldTypeHasList(typeName, field.name));
         if (join) {
@@ -982,6 +1031,7 @@ export const createGrid = (
         nodesToSource,
         nodesToAggSource,
         errorsToGridErrors,
+        errorsToGlobalErrors,
         sourceToMutationList,
         exportToXlsx,
         importFromXlsx

@@ -2,16 +2,16 @@ mutation Mutation_{{ name }}_{{ objectField.name }}
   {%- if objectField.connectionField %}
   {%- assign connectionArgs = objectField.parentArgs | concat: objectField.connectionField.args %}
   {%- if connectionArgs.length > 0 -%}
-  (${{ name }}_{{ idName }}: String, {% for arg in connectionArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% endfor %})
+  (${{ name }}_{{ idName }}: String, {% for arg in connectionArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %})
   {%- endif %}
   {%- else %}
   {%- assign objectFieldArgs = objectField.parentArgs | concat: objectField.args %}
   {%- if objectFieldArgs.length > 0 -%}
-  (${{ name }}_{{ idName }}: String, {% for arg in objectFieldArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% endfor %})
+  (${{ name }}_{{ idName }}: String, {% for arg in objectFieldArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %})
   {%- endif %}
   {%- endif %} {
   {{ name }}
-    {%- if objectField.parentArgs and objectField.parentArgs.length > 0 %}(where: { {{ idName }}: { val: ${{ name }}_{{ idName }} } }  {% for arg in objectField.parentArgs %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %} {% endfor %}) @merge{% endif %}{% if objectField.parentArgs and objectField.parentArgs.length > 0 %}{% endif %}
+    {%- if objectField.parentArgs and objectField.parentArgs.length > 0 %}(where: { {{ idName }}: { val: ${{ name }}_{{ idName }} } } {% for arg in objectField.parentArgs %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %}) @merge{% endif %}
     {%- if fields %} {
     {%- for field in fields %}
     {{ field.name }}
@@ -19,8 +19,8 @@ mutation Mutation_{{ name }}_{{ objectField.name }}
     {%- if objectField.isListType and objectField.connectionField %}
     {{ objectField.name }}Connection 
     {%- if objectField.connectionField.args and objectField.connectionField.args.length > 0 -%}
-    ({% for arg in objectField.connectionField.args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %} {% endfor %})
-    {%- endif %}{% if objectField.connectionField.args and objectField.connectionField.args.length > 0 %}{% endif %} {
+    ({% for arg in objectField.connectionField.args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})
+    {%- endif %} {
       totalCount
       edges {
         node {
@@ -53,8 +53,8 @@ mutation Mutation_{{ name }}_{{ objectField.name }}
     {%- else %}
     {{ objectField.name }} 
     {%- if objectField.args and objectField.args.length > 0 -%}
-    ({% for arg in objectField.args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %} {% endfor %})
-    {%- endif %}{% if objectField.args and objectField.args.length > 0 %}{% endif %} {
+    ({% for arg in objectField.args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})
+    {%- endif %} {
       {%- for field in objectField.fields %}
       {{ field.name }}
       {%- endfor %}

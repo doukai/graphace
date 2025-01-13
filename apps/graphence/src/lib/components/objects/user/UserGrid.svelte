@@ -8,7 +8,12 @@
 	import { messageBoxs, notifications } from '@graphace/ui';
 	import { GridToolbar } from '@graphace/ui-graphql';
 	import UserQuery from '~/lib/components/objects/user/User.svelte';
-	import type { User, UserConnection, UserConnectionQueryArguments, UserListMutationArguments } from '~/lib/types/schema';
+	import type {
+		User,
+		UserConnection,
+		UserConnectionQueryArguments,
+		UserListMutationArguments
+	} from '~/lib/types/schema';
 	import {
 		getGridTheme,
 		createEditors,
@@ -18,9 +23,10 @@
 		nodesToSource,
 		sourceToMutationList,
 		exportToXlsx,
-		importFromXlsx
+		importFromXlsx,
+		errorsToGlobalErrors
 	} from '~/utils';
-	
+
 	export let connection: UserConnection;
 	export let fields: Field[] = [];
 	export let queryArguments: UserConnectionQueryArguments = {};
@@ -80,7 +86,21 @@
 	$: totalCount = connection?.totalCount || 0;
 	$: source = nodesToSource<User>(typeName, queryFields, nodes) || [];
 	$: gridErrors = errorsToGridErrors<User>(typeName, errors, queryFields, nodes);
+	$: globalErrors = errorsToGlobalErrors<User>(typeName, errors, queryFields, nodes);
 	$: columns = fieldsToColumns(typeName, fields, source, gridErrors, getFieldName);
+
+	$: if (Object.keys(globalErrors || {}).length) {
+		messageBoxs.open({
+			title: $LL.graphence.message.saveFailed(),
+			content: JSON.stringify(globalErrors),
+			buttonName: $LL.ui.button.back(),
+			buttonType: 'neutral',
+			confirm: () => {
+				queryPage(1);
+				return true;
+			}
+		});
+	}
 
 	const editors = createEditors(() => gridErrors);
 
@@ -156,8 +176,7 @@
 						fields,
 						connection?.edges?.map((edge) => edge?.node)
 					)
-			})
-		}
+			})}
 		on:import={(e) => importFromXlsx(columns, e.detail.file).then((data) => (source = data))}
 	/>
 	<RevoGrid

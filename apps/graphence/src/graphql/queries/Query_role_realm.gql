@@ -1,5 +1,5 @@
-query Query_role_realm($role_id: StringExpression $id: StringExpression $name: StringExpression $description: StringExpression $includeDeprecated: Boolean $version: IntExpression $realmId: IntExpression $createUserId: StringExpression $createTime: StringExpression $updateUserId: StringExpression $updateTime: StringExpression $createGroupId: StringExpression $groupBy: [String!] ) {
-  role(id: $role_id ) {
+query Query_role_realm($role_id: StringExpression, $id: StringExpression, $name: StringExpression, $description: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $groupBy: [String!]) {
+  role(id: $role_id) {
     id
     name
     description
@@ -11,7 +11,7 @@ query Query_role_realm($role_id: StringExpression $id: StringExpression $name: S
     updateUserId
     updateTime
     createGroupId
-    realm(id: $id name: $name description: $description includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupBy: $groupBy ) {
+    realm(id: $id name: $name description: $description includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupBy: $groupBy) {
       id
       name
       description

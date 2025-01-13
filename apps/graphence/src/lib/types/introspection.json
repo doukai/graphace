@@ -90010,8 +90010,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "FIELD_DEFINITION"
+          "FIELD_DEFINITION",
+          "FIELD"
         ],
         "args": [
           {
@@ -90141,8 +90141,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "FIELD_DEFINITION"
+          "FIELD_DEFINITION",
+          "FIELD"
         ],
         "args": [
           {
@@ -90164,8 +90164,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "INPUT_OBJECT"
+          "INPUT_OBJECT",
+          "OBJECT"
         ],
         "args": [
           {
@@ -90203,8 +90203,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FRAGMENT_SPREAD",
           "FIELD",
+          "FRAGMENT_SPREAD",
           "INLINE_FRAGMENT"
         ],
         "args": [
@@ -90239,8 +90239,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "INPUT_OBJECT"
+          "INPUT_OBJECT",
+          "OBJECT"
         ],
         "args": [
           {
@@ -90263,10 +90263,10 @@
         "isRepeatable": false,
         "locations": [
           "MUTATION",
-          "QUERY",
-          "SUBSCRIPTION",
           "INPUT_OBJECT",
-          "FIELD_DEFINITION"
+          "FIELD_DEFINITION",
+          "SUBSCRIPTION",
+          "QUERY"
         ],
         "args": [
           {
@@ -90353,10 +90353,10 @@
         "isRepeatable": false,
         "locations": [
           "MUTATION",
-          "QUERY",
-          "SUBSCRIPTION",
           "INPUT_OBJECT",
-          "FIELD_DEFINITION"
+          "FIELD_DEFINITION",
+          "SUBSCRIPTION",
+          "QUERY"
         ],
         "args": [
           {
@@ -90394,10 +90394,10 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "INPUT_FIELD_DEFINITION",
           "INPUT_OBJECT",
-          "FIELD_DEFINITION"
+          "FIELD_DEFINITION",
+          "OBJECT",
+          "INPUT_FIELD_DEFINITION"
         ],
         "args": [
           {
@@ -90958,10 +90958,10 @@
         "isRepeatable": false,
         "locations": [
           "MUTATION",
-          "QUERY",
+          "FIELD_DEFINITION",
           "OBJECT",
           "SUBSCRIPTION",
-          "FIELD_DEFINITION"
+          "QUERY"
         ],
         "args": [
           {
@@ -91061,8 +91061,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FRAGMENT_SPREAD",
           "FIELD",
+          "FRAGMENT_SPREAD",
           "INLINE_FRAGMENT"
         ],
         "args": [
