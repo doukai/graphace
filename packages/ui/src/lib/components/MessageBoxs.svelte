@@ -135,7 +135,7 @@
 		<ModalContent>
 			{#if messageBox.props.content}
 				<p class="py-4">
-					{messageBox.props.content}
+					{@html messageBox.props.content}
 				</p>
 			{/if}
 		</ModalContent>
