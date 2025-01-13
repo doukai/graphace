@@ -68,7 +68,9 @@ export function inGraphQLField(typeName: string, fieldName: string, fieldTypeNam
         )
         .some(fieldConfig => fieldConfig.name === fieldName) &&
         builderConfig?.objects?.find(objectConfig => objectConfig.name === originalFieldTypeName)?.ignore !== true &&
-        builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true;
+        builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true &&
+        (!isRelation(originalFieldTypeName) || (builderConfig?.includeRelation || false)) &&
+        (!isRef(fieldName) || (builderConfig?.includeRef || false));
 }
 
 export function inListField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
