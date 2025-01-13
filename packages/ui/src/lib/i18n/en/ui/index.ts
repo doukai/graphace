@@ -3,7 +3,8 @@ import type { BaseTranslation } from '../../i18n-types'
 const en: BaseTranslation = {
 	menu: {
 		menu: "Menu",
-		open: "Open Menu"
+		open: "Open Menu",
+		more: 'More'
 	},
 	cursor: {
 		size: "Size",
