@@ -3,6 +3,7 @@ export type Template =
     '{{i18nPath}}/{{i18nDefault}}/graphql/index.ts' |
     '{{i18nPath}}/{{i18nDescription}}/graphql/index.ts' |
     '{{graphqlPath}}/queries/Query_{{name}}.gql' |
+    '{{graphqlPath}}/queries/Query_{{name}}_includes.gql' |
     '{{graphqlPath}}/queries/Query_{{name}}_{{objectFieldName}}.gql' |
     '{{graphqlPath}}/mutations/Mutation_{{name}}.gql' |
     '{{graphqlPath}}/mutations/Mutation_{{name}}_{{objectFieldName}}.gql' |

@@ -1,5 +1,5 @@
 import * as changeCase from "change-case";
-import { assertScalarType, assertObjectType, isEnumType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLEnumValue, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType, type GraphQLSchema, type GraphQLObjectType } from 'graphql';
+import { assertScalarType, assertObjectType, isEnumType, isInputObjectType, isListType, isNonNullType, isObjectType, isScalarType, type GraphQLEnumValue, type GraphQLField, type GraphQLNamedType, type GraphQLOutputType, type GraphQLSchema, type GraphQLObjectType, isLeafType } from 'graphql';
 
 export const aggregateSuffix = ["Count", "Sum", "Avg", "Max", "Min", "Aggregate"];
 export const listSuffix = "List";
@@ -43,7 +43,29 @@ export const fieldTypeIsNamedStruct = (type: GraphQLOutputType): boolean => {
     return isObjectType(type) && assertObjectType(type).getInterfaces().some(interfaceType => interfaceType.name === namedStructInterfaceName) || false;
 }
 
-export const getScalarFields = (field?: GraphQLField<any, any, any>): GraphQLField<any, any, any>[] | undefined => {
+export const getFields = (field?: GraphQLField<any, any, any>): GraphQLField<any, any, any>[] | undefined => {
+    if (field?.type) {
+        const fieldType = getFieldType(field.type);
+        if (isConnection(field.name)) {
+            if (isObjectType(fieldType)) {
+                const edgesType = getFieldType(fieldType.getFields().edges.type);
+                if (isObjectType(edgesType)) {
+                    const nodeType = getFieldType(edgesType.getFields().node.type);
+                    if (isObjectType(nodeType)) {
+                        return Object.values(nodeType.getFields());
+                    }
+                }
+            }
+        } else {
+            if (isObjectType(fieldType)) {
+                return Object.values(fieldType.getFields());
+            }
+        }
+    }
+    return undefined;
+}
+
+export const getLeafAndAggregateFields = (field?: GraphQLField<any, any, any>): GraphQLField<any, any, any>[] | undefined => {
     if (field?.type) {
         const fieldType = getFieldType(field.type);
         if (isConnection(field.name)) {
@@ -53,7 +75,31 @@ export const getScalarFields = (field?: GraphQLField<any, any, any>): GraphQLFie
                     const nodeType = getFieldType(edgesType.getFields().node.type);
                     if (isObjectType(nodeType)) {
                         return Object.values(nodeType.getFields())
-                            .filter(field => !isObjectType(getFieldType(field.type)))
+                            .filter(field => isLeafType(getFieldType(field.type)));
+                    }
+                }
+            }
+        } else {
+            if (isObjectType(fieldType)) {
+                return Object.values(fieldType.getFields())
+                    .filter(field => isLeafType(getFieldType(field.type)));
+            }
+        }
+    }
+    return undefined;
+}
+
+export const getLeafFields = (field?: GraphQLField<any, any, any>): GraphQLField<any, any, any>[] | undefined => {
+    if (field?.type) {
+        const fieldType = getFieldType(field.type);
+        if (isConnection(field.name)) {
+            if (isObjectType(fieldType)) {
+                const edgesType = getFieldType(fieldType.getFields().edges.type);
+                if (isObjectType(edgesType)) {
+                    const nodeType = getFieldType(edgesType.getFields().node.type);
+                    if (isObjectType(nodeType)) {
+                        return Object.values(nodeType.getFields())
+                            .filter(field => isLeafType(getFieldType(field.type)))
                             .filter(field => !isAggregate(field.name));
                     }
                 }
@@ -61,32 +107,8 @@ export const getScalarFields = (field?: GraphQLField<any, any, any>): GraphQLFie
         } else {
             if (isObjectType(fieldType)) {
                 return Object.values(fieldType.getFields())
-                    .filter(field => !isObjectType(getFieldType(field.type)))
+                    .filter(field => isLeafType(getFieldType(field.type)))
                     .filter(field => !isAggregate(field.name));
-            }
-        }
-    }
-    return undefined;
-}
-
-export const getScalarAndAggregateFields = (field?: GraphQLField<any, any, any>): GraphQLField<any, any, any>[] | undefined => {
-    if (field?.type) {
-        const fieldType = getFieldType(field.type);
-        if (isConnection(field.name)) {
-            if (isObjectType(fieldType)) {
-                const edgesType = getFieldType(fieldType.getFields().edges.type);
-                if (isObjectType(edgesType)) {
-                    const nodeType = getFieldType(edgesType.getFields().node.type);
-                    if (isObjectType(nodeType)) {
-                        return Object.values(nodeType.getFields())
-                            .filter(field => !isObjectType(getFieldType(field.type)));
-                    }
-                }
-            }
-        } else {
-            if (isObjectType(fieldType)) {
-                return Object.values(fieldType.getFields())
-                    .filter(field => !isObjectType(getFieldType(field.type)));
             }
         }
     }

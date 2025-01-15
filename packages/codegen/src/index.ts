@@ -4,7 +4,7 @@ import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
 import * as changeCase from "change-case";
 import { assertObjectType, isEnumType, isObjectType, type GraphQLSchema, isNonNullType, assertEnumType } from 'graphql';
-import { isOperationType, isConnection, isRelation, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getFileFields, getNamedFields, getScalarNames, getBaseScalarNames, getEnumNames, getEnumValues, initConfig, inGraphQLField, inListField, inDetailField, componentFields, getSelectComponentFieldImports, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, getNamedStructObjectNames, inComponentEnum, isInnerEnum, getObjectNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField, fieldTypeIsList, isSelectField, isNamedStruct, isTreeStruct, inComponentObject, hasFileField, getAggFields, getNonListObjectFields, getListObjectFields, isAggregate, getScalarAndAggregateFields } from 'graphace-codegen-commons';
+import { isOperationType, isConnection, isRelation, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getLeafFields, getFileFields, getNamedFields, getScalarNames, getBaseScalarNames, getEnumNames, getEnumValues, initConfig, inGraphQLField, inListField, inDetailField, componentFields, getSelectComponentFieldImports, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, getNamedStructObjectNames, inComponentEnum, isInnerEnum, getObjectNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField, fieldTypeIsList, isSelectField, isNamedStruct, isTreeStruct, inComponentObject, hasFileField, getAggFields, getNonListObjectFields, getListObjectFields, isAggregate, getLeafAndAggregateFields, getFieldInfos } from 'graphace-codegen-commons';
 import type { Template } from 'graphace-codegen-commons';
 import { buildFileContent } from "./builder.js";
 
@@ -107,7 +107,7 @@ const renders: Record<Template, Render> = {
             ),
         };
     },
-    '{{graphqlPath}}/queries/Query_{{name}}_agg.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{graphqlPath}}/queries/Query_{{name}}.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const operationFields = schema.getQueryType()?.getFields();
         if (operationFields) {
             const field = Object.keys(operationFields)
@@ -121,14 +121,8 @@ const renders: Record<Template, Render> = {
                         name: field.name,
                         idName: idFieldName,
                         args: field.args,
-                        variables: [
-                            ...field.args,
-                            ...[...getScalarAndAggregateFields(field) || [], ...getFileFields(field) || [], ...getNamedFields(field) || []]
-                                .filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
-                                .map(field => ({ name: `include_${field.name}`, type: 'Boolean', default: isAggregate(field.name) ? 'false' : 'true' }))
-                        ],
                         isConnection: isConnection(field.name),
-                        fields: getScalarAndAggregateFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
+                        fields: getLeafFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         fileFields: getFileFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         namedFields: getNamedFields(field)
                             ?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
@@ -138,9 +132,53 @@ const renders: Record<Template, Render> = {
                                     ...field,
                                     fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
                                     select: isSelectField(fieldType.name, field.name, getFieldType(field.type).name),
-                                    fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
+                                    fields: getLeafFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
                                 }
                             })
+                    }),
+                };
+            }
+        }
+        console.error(config);
+        throw new Error(`${config.name} undefined`);
+    },
+    '{{graphqlPath}}/queries/Query_{{name}}_includes.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const operationFields = schema.getQueryType()?.getFields();
+        if (operationFields) {
+            const field = Object.keys(operationFields)
+                .map(key => operationFields[key])
+                .find(field => field.name === config.name);
+            if (field) {
+                const fieldType = getFieldType(field.type);
+                const idFieldName = getIDFieldName(fieldType);
+                const fields = getFields(field)
+                    ?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
+                    .filter(field => !isConnection(getFieldType(field.type).name))
+                    .map(field => ({
+                        ...field,
+                        subFields: isObjectType(getFieldType(field.type)) ? getLeafAndAggregateFields(field) : undefined
+                    }));
+                return {
+                    content: buildFileContent(config.template, {
+                        name: field.name,
+                        idName: idFieldName,
+                        args: field.args,
+                        variables: [
+                            ...field.args,
+                            ...(fields || [])
+                                .flatMap(field => {
+                                    if (field.subFields) {
+                                        return [
+                                            { name: `include_${field.name}`, type: 'Boolean', default: 'false' },
+                                            ...field.subFields.map(subField => ({ name: `include_${field.name}_${subField.name}`, type: 'Boolean', default: 'false' }))
+                                        ];
+                                    } else {
+                                        return [{ name: `include_${field.name}`, type: 'Boolean', default: 'false' }];
+                                    }
+                                })
+                        ],
+                        isConnection: isConnection(field.name),
+                        fields: fields,
                     }),
                 };
             }
@@ -164,16 +202,10 @@ const renders: Record<Template, Render> = {
                     objectField = {
                         name: subField?.name,
                         args: subField?.args,
-                        variables: [
-                            ...(getConnectionField(fieldType, subField?.name) || subField).args,
-                            ...[...getScalarAndAggregateFields(subField) || [], ...getFileFields(subField) || [], ...getNamedFields(subField) || []]
-                                .filter(field => inGraphQLField(subFieldType.name, field.name, getFieldType(field.type).name, 'query'))
-                                .map(field => ({ name: `include_${field.name}`, type: 'Boolean', default: isAggregate(field.name) ? 'false' : 'true' }))
-                        ],
                         parentArgs: field.args.filter(arg => arg.name === idFieldName).map(arg => { return { name: arg.name, alias: `${field.name}_${arg.name}`, type: arg.type } }),
                         isListType: fieldTypeIsList(subField?.type),
                         connectionField: getConnectionField(fieldType, subField?.name),
-                        fields: getScalarAndAggregateFields(subField)?.filter(field => inGraphQLField(subFieldType.name, field.name, getFieldType(field.type).name, 'query')),
+                        fields: getLeafFields(subField)?.filter(field => inGraphQLField(subFieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         fileFields: getFileFields(subField)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         namedFields: getNamedFields(subField)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
                             .map(field => {
@@ -182,7 +214,7 @@ const renders: Record<Template, Render> = {
                                     ...field,
                                     fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
                                     select: isSelectField(subFieldType.name, field.name, getFieldType(field.type).name),
-                                    fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
+                                    fields: getLeafFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
                                 }
                             })
                     }
@@ -192,14 +224,8 @@ const renders: Record<Template, Render> = {
                         name: field.name,
                         idName: idFieldName,
                         args: field.args,
-                        variables: [
-                            ...field.args,
-                            ...[...getScalarAndAggregateFields(field) || [], ...getFileFields(field) || [], ...getNamedFields(field) || []]
-                                .filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
-                                .map(field => ({ name: `include_${field.name}`, type: 'Boolean', default: isAggregate(field.name) ? 'false' : 'true' }))
-                        ],
                         isConnection: isConnection(field.name),
-                        fields: getScalarAndAggregateFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
+                        fields: getLeafFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         fileFields: getFileFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         namedFields: getNamedFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         objectField: objectField
@@ -224,7 +250,7 @@ const renders: Record<Template, Render> = {
                         name: field.name,
                         idName: idFieldName,
                         args: field.args,
-                        fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
+                        fields: getLeafFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
                         fileFields: getFileFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
                         namedFields: getNamedFields(field)
                             ?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation'))
@@ -234,7 +260,7 @@ const renders: Record<Template, Render> = {
                                     ...field,
                                     fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
                                     select: isSelectField(fieldType.name, field.name, getFieldType(field.type).name),
-                                    fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation'))
+                                    fields: getLeafFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation'))
                                 }
                             })
                     }),
@@ -263,7 +289,7 @@ const renders: Record<Template, Render> = {
                         parentArgs: field.args.filter(arg => arg.name === subField?.name).map(arg => { return { name: arg.name, alias: `${field.name}_${arg.name}`, type: arg.type } }),
                         isListType: fieldTypeIsList(subField?.type),
                         connectionField: getConnectionField(fieldType, subField?.name),
-                        fields: getScalarFields(subField)?.filter(field => inGraphQLField(subFieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
+                        fields: getLeafFields(subField)?.filter(field => inGraphQLField(subFieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
                         fileFields: getFileFields(subField)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
                         namedFields: getNamedFields(subField)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation'))
                             .map(field => {
@@ -272,7 +298,7 @@ const renders: Record<Template, Render> = {
                                     ...field,
                                     fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
                                     select: isSelectField(subFieldType.name, field.name, getFieldType(field.type).name),
-                                    fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation'))
+                                    fields: getLeafFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation'))
                                 }
                             })
                     }
@@ -282,7 +308,7 @@ const renders: Record<Template, Render> = {
                         name: field.name,
                         idName: idFieldName,
                         args: field.args,
-                        fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
+                        fields: getLeafFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
                         fileFields: getFileFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
                         namedFields: getNamedFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
                         objectField: objectField
@@ -298,7 +324,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inDetailField(typeName, field.fieldName, field.fieldTypeName));
+                const fields = getFieldInfos(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inDetailField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -330,7 +356,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inDetailField(typeName, field.fieldName, field.fieldTypeName));
+                const fields = getFieldInfos(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inDetailField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -362,7 +388,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
+                const fields = getFieldInfos(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -395,7 +421,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
+                const fields = getFieldInfos(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -428,7 +454,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
+                const fields = getFieldInfos(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -458,7 +484,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
+                const fields = getFieldInfos(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -488,7 +514,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
+                const fields = getFieldInfos(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -518,7 +544,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
+                const fields = getFieldInfos(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -550,7 +576,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
+                const fields = getFieldInfos(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -582,7 +608,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
+                const fields = getFieldInfos(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -616,7 +642,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
+                const fields = getFieldInfos(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -649,7 +675,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type);
+                const fields = getFieldInfos(schema, type);
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -668,7 +694,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type);
+                const fields = getFieldInfos(schema, type);
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -689,7 +715,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
+                const fields = getFieldInfos(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -708,7 +734,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
+                const fields = getFieldInfos(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -728,7 +754,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => field.fieldName === getIDFieldName(type) || inListField(typeName, field.fieldName, field.fieldTypeName));
+                const fields = getFieldInfos(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => field.fieldName === getIDFieldName(type) || inListField(typeName, field.fieldName, field.fieldTypeName));
                 const nonListObjectFields = getNonListObjectFields(schema, type)
                     ?.filter(field => !isConnection(field.fieldName))
                     .filter(field => field.fieldName === getIDFieldName(type) || inListField(typeName, field.fieldName, field.fieldTypeName))
@@ -760,7 +786,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => field.fieldName === getIDFieldName(type) || inListField(typeName, field.fieldName, field.fieldTypeName));
+                const fields = getFieldInfos(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => field.fieldName === getIDFieldName(type) || inListField(typeName, field.fieldName, field.fieldTypeName));
                 const aggFields = getAggFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => field.fieldName === getIDFieldName(type) || inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
@@ -1199,7 +1225,7 @@ const renders: Record<Template, Render> = {
                             objectFieldName: objectField.name,
                             objectFieldTypeName: objectFieldType.name,
                             objectFieldTypeIdName: getIDFieldName(objectFieldType),
-                            objectFieldTypeFields: getFields(schema, objectFieldType),
+                            objectFieldTypeFields: getFieldInfos(schema, objectFieldType),
                             formPath: `${config.componentsPath}/objects`,
                             schemaTypesPath: config.schemaTypesPath,
                             isNonNullType: isNonNullType(objectField.type),
@@ -1264,7 +1290,7 @@ const renders: Record<Template, Render> = {
                             objectFieldName: objectField.name,
                             objectFieldTypeName: objectFieldType.name,
                             objectFieldTypeIdName: getIDFieldName(objectFieldType),
-                            objectFieldTypeFields: getFields(schema, objectFieldType),
+                            objectFieldTypeFields: getFieldInfos(schema, objectFieldType),
                             tablePath: `${config.componentsPath}/objects`,
                             schemaTypesPath: config.schemaTypesPath,
                             isNonNullType: isNonNullType(objectField.type),
@@ -1332,7 +1358,7 @@ const renders: Record<Template, Render> = {
                             objectFieldName: objectField.name,
                             objectFieldTypeName: objectFieldType.name,
                             objectFieldTypeIdName: getIDFieldName(objectFieldType),
-                            objectFieldTypeFields: getFields(schema, objectFieldType),
+                            objectFieldTypeFields: getFieldInfos(schema, objectFieldType),
                             connectionField: connectionField,
                             tablePath: `${config.componentsPath}/objects`,
                             schemaTypesPath: config.schemaTypesPath,
@@ -1397,7 +1423,7 @@ const renders: Record<Template, Render> = {
                             objectFieldName: objectField.name,
                             objectFieldTypeName: objectFieldType.name,
                             objectFieldTypeIdName: getIDFieldName(objectFieldType),
-                            objectFieldTypeFields: getFields(schema, objectFieldType),
+                            objectFieldTypeFields: getFieldInfos(schema, objectFieldType),
                             connectionField: connectionField,
                             formPath: `${config.componentsPath}/objects`,
                             schemaTypesPath: config.schemaTypesPath,
@@ -1463,7 +1489,7 @@ const renders: Record<Template, Render> = {
                             objectFieldName: objectField.name,
                             objectFieldTypeName: objectFieldType.name,
                             objectFieldTypeIdName: getIDFieldName(objectFieldType),
-                            objectFieldTypeFields: getFields(schema, objectFieldType),
+                            objectFieldTypeFields: getFieldInfos(schema, objectFieldType),
                             connectionField: connectionField,
                             tablePath: `${config.componentsPath}/objects`,
                             schemaTypesPath: config.schemaTypesPath,
@@ -1576,7 +1602,7 @@ const renders: Record<Template, Render> = {
                             objectFieldName: objectField.name,
                             objectFieldTypeName: objectFieldType.name,
                             objectFieldTypeIdName: getIDFieldName(objectFieldType),
-                            objectFieldTypeFields: getFields(schema, objectFieldType),
+                            objectFieldTypeFields: getFieldInfos(schema, objectFieldType),
                             formPath: `${config.componentsPath}/objects`,
                             schemaTypesPath: config.schemaTypesPath,
                             queryTypeName: getQueryTypeName(),
@@ -1640,7 +1666,7 @@ const renders: Record<Template, Render> = {
                             objectFieldName: objectField.name,
                             objectFieldTypeName: objectFieldType.name,
                             objectFieldTypeIdName: getIDFieldName(objectFieldType),
-                            objectFieldTypeFields: getFields(schema, objectFieldType),
+                            objectFieldTypeFields: getFieldInfos(schema, objectFieldType),
                             tablePath: `${config.componentsPath}/objects`,
                             schemaTypesPath: config.schemaTypesPath,
                             isNonNullType: isNonNullType(objectField.type),
@@ -1706,7 +1732,7 @@ const renders: Record<Template, Render> = {
                             objectFieldName: objectField.name,
                             objectFieldTypeName: objectFieldType.name,
                             objectFieldTypeIdName: getIDFieldName(objectFieldType),
-                            objectFieldTypeFields: getFields(schema, objectFieldType),
+                            objectFieldTypeFields: getFieldInfos(schema, objectFieldType),
                             connectionField: connectionField,
                             tablePath: `${config.componentsPath}/objects`,
                             schemaTypesPath: config.schemaTypesPath,
@@ -1771,7 +1797,7 @@ const renders: Record<Template, Render> = {
                             objectFieldName: objectField.name,
                             objectFieldTypeName: objectFieldType.name,
                             objectFieldTypeIdName: getIDFieldName(objectFieldType),
-                            objectFieldTypeFields: getFields(schema, objectFieldType),
+                            objectFieldTypeFields: getFieldInfos(schema, objectFieldType),
                             connectionField: connectionField,
                             formPath: `${config.componentsPath}/objects`,
                             schemaTypesPath: config.schemaTypesPath,
@@ -1837,7 +1863,7 @@ const renders: Record<Template, Render> = {
                             objectFieldName: objectField.name,
                             objectFieldTypeName: objectFieldType.name,
                             objectFieldTypeIdName: getIDFieldName(objectFieldType),
-                            objectFieldTypeFields: getFields(schema, objectFieldType),
+                            objectFieldTypeFields: getFieldInfos(schema, objectFieldType),
                             connectionField: connectionField,
                             tablePath: `${config.componentsPath}/objects`,
                             schemaTypesPath: config.schemaTypesPath,
@@ -1907,7 +1933,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
+                const fields = getFieldInfos(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,
@@ -1945,7 +1971,7 @@ const renders: Record<Template, Render> = {
         if (typeName) {
             const type = schema.getType(typeName);
             if (type && isObjectType(type)) {
-                const fields = getFields(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
+                const fields = getFieldInfos(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
                 return {
                     content: buildFileContent(config.template, {
                         name: type?.name,

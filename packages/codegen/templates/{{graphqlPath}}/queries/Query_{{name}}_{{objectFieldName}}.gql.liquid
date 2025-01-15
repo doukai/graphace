@@ -1,13 +1,13 @@
 query Query_{{ name }}_{{ objectField.name }}
   {%- if objectField.connectionField %}
-  {%- assign connectionArgs = objectField.parentArgs | concat: objectField.connectionField.args %}
-  {%- if connectionArgs.length > 0 -%}
-  ({% for arg in connectionArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %})
+  {%- assign args = objectField.parentArgs | concat: objectField.connectionField.args %}
+  {%- if args.length > 0 -%}
+  ({% for arg in args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %})
   {%- endif %}
   {%- else %}
-  {%- assign objectFieldArgs = objectField.parentArgs | concat: objectField.args %}
-  {%- if objectFieldArgs.length > 0 -%}
-  ({% for arg in objectFieldArgs %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %})
+  {%- assign args = objectField.parentArgs | concat: objectField.args %}
+  {%- if args.length > 0 -%}
+  ({% for arg in args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %})
   {%- endif %}
   {%- endif %} {
   {{ name }}
@@ -15,19 +15,23 @@ query Query_{{ name }}_{{ objectField.name }}
     {%- if isConnection %} {
     totalCount
     edges {
-      node
-        {%- if fields %} {
+      node {
+        {%- if fields %}
         {%- for field in fields %}
         {{ field.name }}
         {%- endfor %}
+        {%- endif %}
         {%- if objectField.isListType and objectField.connectionField %}
         {{ objectField.name }}Connection {
           totalCount
           edges {
             node {
+              {%- if objectField.fields %}
               {%- for field in objectField.fields %}
               {{ field.name }}
               {%- endfor %}
+              {%- endif %}
+              {%- if objectField.namedFields %}
               {%- for field in objectField.namedFields %}
               {%- if field.select %}
               {{ field.name }} {
@@ -42,20 +46,26 @@ query Query_{{ name }}_{{ objectField.name }}
               }
               {%- endif %}
               {%- endfor %}
+              {%- endif %}
+              {%- if objectField.fileFields %}
               {%- for field in objectField.fileFields %}
               {{ field.name }} {
                 id
                 name
               }
               {%- endfor %}
+              {%- endif %}
             }
           }
         }
         {%- else %}
         {{ objectField.name }} {
+          {%- if objectField.fields %}
           {%- for field in objectField.fields %}
           {{ field.name }}
           {%- endfor %}
+          {%- endif %}
+          {%- if objectField.namedFields %}
           {%- for field in objectField.namedFields %}
           {%- if field.select %}
           {{ field.name }} {
@@ -70,23 +80,26 @@ query Query_{{ name }}_{{ objectField.name }}
           }
           {%- endif %}
           {%- endfor %}
+          {%- endif %}
+          {%- if objectField.fileFields %}
           {%- for field in objectField.fileFields %}
           {{ field.name }} {
             id
             name
           }
           {%- endfor %}
+          {%- endif %}
         }
-        {%- endif %}
         {%- endif %}
       }
     }
   }
-    {%- else %}
-    {%- if fields %} {
+    {%- else %} {
+    {%- if fields %}
     {%- for field in fields %}
     {{ field.name }}
     {%- endfor %}
+    {%- endif %}
     {%- if objectField.isListType and objectField.connectionField %}
     {{ objectField.name }}Connection 
     {%- if objectField.connectionField.args and objectField.connectionField.args.length > 0 -%}
@@ -95,9 +108,12 @@ query Query_{{ name }}_{{ objectField.name }}
       totalCount
       edges {
         node {
+          {%- if objectField.fields %}
           {%- for field in objectField.fields %}
           {{ field.name }}
           {%- endfor %}
+          {%- endif %}
+          {%- if objectField.namedFields %}
           {%- for field in objectField.namedFields %}
           {%- if field.select %}
           {{ field.name }} {
@@ -112,12 +128,15 @@ query Query_{{ name }}_{{ objectField.name }}
           }
           {%- endif %}
           {%- endfor %}
+          {%- endif %}
+          {%- if objectField.fileFields %}
           {%- for field in objectField.fileFields %}
           {{ field.name }} {
             id
             name
           }
           {%- endfor %}
+          {%- endif %}
         }
       }
     }
@@ -126,9 +145,12 @@ query Query_{{ name }}_{{ objectField.name }}
     {%- if objectField.args and objectField.args.length > 0 -%}
     ({% for arg in objectField.args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})
     {%- endif %} {
+      {%- if objectField.fields %}
       {%- for field in objectField.fields %}
       {{ field.name }}
       {%- endfor %}
+      {%- endif %}
+      {%- if objectField.namedFields %}
       {%- for field in objectField.namedFields %}
       {%- if field.select %}
       {{ field.name }} {
@@ -143,15 +165,17 @@ query Query_{{ name }}_{{ objectField.name }}
       }
       {%- endif %}
       {%- endfor %}
+      {%- endif %}
+      {%- if objectField.fileFields %}
       {%- for field in objectField.fileFields %}
       {{ field.name }} {
         id
         name
       }
       {%- endfor %}
+      {%- endif %}
     }
     {%- endif %}
     {%- endif %}
   }
-    {%- endif %}
 }

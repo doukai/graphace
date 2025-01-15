@@ -4,7 +4,7 @@ mutation Mutation_{{ name }}
   {%- endif %} {
   {{ name }}
     {%- if args and args.length > 0 %}({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %}
-    {%- if fields or namedFields %} {
+    {%- if fields or namedFields or fileFields %} {
     {%- if fields %}
     {%- for field in fields %}
     {{ field.name }}
@@ -25,6 +25,8 @@ mutation Mutation_{{ name }}
     }
     {%- endif %}
     {%- endfor %}
+    {%- endif %}
+    {%- if fileFields %}
     {%- for field in fileFields %}
     {{ field.name }} {
       id

@@ -142,7 +142,7 @@ export function isSelectField(typeName: string, fieldName: string, fieldTypeName
         false
 }
 
-export const getFields = (schema: GraphQLSchema, type: GraphQLNamedType): FieldInfo[] | undefined => {
+export const getFieldInfos = (schema: GraphQLSchema, type: GraphQLNamedType): FieldInfo[] | undefined => {
     if (isObjectType(type) || isInputObjectType(type)) {
         return Object.values(type.getFields())
             .filter(field => !isAggregate(field.name))

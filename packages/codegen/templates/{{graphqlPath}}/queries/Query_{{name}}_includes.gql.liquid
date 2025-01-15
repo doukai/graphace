@@ -1,0 +1,39 @@
+query Query_{{ name }}_includes
+  {%- if variables and variables.length > 0 -%}
+  ({% for variable in variables %}{% if variable.alias %}${{ variable.alias }}{% else %}${{ variable.name }}{% endif %}: {{ variable.type }}{% if variable.default %} = {{ variable.default }}{% endif %}{% if forloop.last == false %}, {% endif %}{% endfor %})
+  {%- endif %} {
+  {{ name }}
+    {%- if args and args.length > 0 %}({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %}
+    {%- if isConnection %} {
+    totalCount
+    edges {
+      node {
+        {%- if fields %}
+        {%- for field in fields %}
+        {{ field.name }} @include(if: $include_{{ field.name }})
+        {%- if field.subFields %} {
+          {%- for subField in field.subFields %}
+          {{ subField.name }} @include(if: $include_{{ field.name }}_{{ subField.name }})
+          {%- endfor %}
+        }
+        {%- endif %}
+        {%- endfor %}
+        {%- endif %}
+      }
+    }
+  }
+    {%- else %}
+    {%- if fields %} {
+    {%- for field in fields %}
+    {{ field.name }} @include(if: $include_{{ field.name }})
+    {%- if field.subFields %} {
+      {%- for subField in field.subFields %}
+      {{ subField.name }} @include(if: $include_{{ field.name }}_{{ subField.name }})
+      {%- endfor %}
+    }
+    {%- endif %}
+    {%- endfor %}
+  }
+    {%- endif %}
+    {%- endif %}
+}

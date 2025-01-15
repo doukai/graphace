@@ -120,6 +120,33 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         generateOptions.push(
             ...targetQueryFields
+                .map(field => {
+                    const template = '{{graphqlPath}}/queries/Query_{{name}}_includes.gql';
+                    const scope = { graphqlPath, name: field.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            appName: options.presetConfig.appName || _appName,
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: field.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetQueryFields
                 .filter(field => !isInvokeField(field.name, getFieldType(field.type).name, fieldTypeIsList(field.type)))
                 .filter(field => !fieldTypeIsList(field.type))
                 .filter(field => !isConnection(getFieldType(field.type).name))
