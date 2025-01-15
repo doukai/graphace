@@ -4,7 +4,7 @@ import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
 import * as changeCase from "change-case";
 import { assertObjectType, isEnumType, isObjectType, type GraphQLSchema, isNonNullType, assertEnumType } from 'graphql';
-import { isOperationType, isConnection, isRelation, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getFileFields, getNamedFields, getScalarNames, getBaseScalarNames, getEnumNames, getEnumValues, initConfig, inGraphQLField, inListField, inDetailField, componentFields, getSelectComponentFieldImports, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, getNamedStructObjectNames, inComponentEnum, isInnerEnum, getObjectNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField, fieldTypeIsList, isSelectField, isNamedStruct, isTreeStruct, inComponentObject, hasFileField, getAggFields, getNonListObjectFields, getListObjectFields } from 'graphace-codegen-commons';
+import { isOperationType, isConnection, isRelation, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getScalarFields, getFileFields, getNamedFields, getScalarNames, getBaseScalarNames, getEnumNames, getEnumValues, initConfig, inGraphQLField, inListField, inDetailField, componentFields, getSelectComponentFieldImports, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, getNamedStructObjectNames, inComponentEnum, isInnerEnum, getObjectNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField, fieldTypeIsList, isSelectField, isNamedStruct, isTreeStruct, inComponentObject, hasFileField, getAggFields, getNonListObjectFields, getListObjectFields, isAggregate, getScalarAndAggregateFields } from 'graphace-codegen-commons';
 import type { Template } from 'graphace-codegen-commons';
 import { buildFileContent } from "./builder.js";
 
@@ -107,7 +107,7 @@ const renders: Record<Template, Render> = {
             ),
         };
     },
-    '{{graphqlPath}}/queries/Query_{{name}}.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{graphqlPath}}/queries/Query_{{name}}_agg.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const operationFields = schema.getQueryType()?.getFields();
         if (operationFields) {
             const field = Object.keys(operationFields)
@@ -121,8 +121,14 @@ const renders: Record<Template, Render> = {
                         name: field.name,
                         idName: idFieldName,
                         args: field.args,
+                        variables: [
+                            ...field.args,
+                            ...[...getScalarAndAggregateFields(field) || [], ...getFileFields(field) || [], ...getNamedFields(field) || []]
+                                .filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
+                                .map(field => ({ name: `include_${field.name}`, type: 'Boolean', default: isAggregate(field.name) ? 'false' : 'true' }))
+                        ],
                         isConnection: isConnection(field.name),
-                        fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
+                        fields: getScalarAndAggregateFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         fileFields: getFileFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         namedFields: getNamedFields(field)
                             ?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
@@ -158,10 +164,16 @@ const renders: Record<Template, Render> = {
                     objectField = {
                         name: subField?.name,
                         args: subField?.args,
+                        variables: [
+                            ...(getConnectionField(fieldType, subField?.name) || subField).args,
+                            ...[...getScalarAndAggregateFields(subField) || [], ...getFileFields(subField) || [], ...getNamedFields(subField) || []]
+                                .filter(field => inGraphQLField(subFieldType.name, field.name, getFieldType(field.type).name, 'query'))
+                                .map(field => ({ name: `include_${field.name}`, type: 'Boolean', default: isAggregate(field.name) ? 'false' : 'true' }))
+                        ],
                         parentArgs: field.args.filter(arg => arg.name === idFieldName).map(arg => { return { name: arg.name, alias: `${field.name}_${arg.name}`, type: arg.type } }),
                         isListType: fieldTypeIsList(subField?.type),
                         connectionField: getConnectionField(fieldType, subField?.name),
-                        fields: getScalarFields(subField)?.filter(field => inGraphQLField(subFieldType.name, field.name, getFieldType(field.type).name, 'query')),
+                        fields: getScalarAndAggregateFields(subField)?.filter(field => inGraphQLField(subFieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         fileFields: getFileFields(subField)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         namedFields: getNamedFields(subField)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
                             .map(field => {
@@ -180,8 +192,14 @@ const renders: Record<Template, Render> = {
                         name: field.name,
                         idName: idFieldName,
                         args: field.args,
+                        variables: [
+                            ...field.args,
+                            ...[...getScalarAndAggregateFields(field) || [], ...getFileFields(field) || [], ...getNamedFields(field) || []]
+                                .filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
+                                .map(field => ({ name: `include_${field.name}`, type: 'Boolean', default: isAggregate(field.name) ? 'false' : 'true' }))
+                        ],
                         isConnection: isConnection(field.name),
-                        fields: getScalarFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
+                        fields: getScalarAndAggregateFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         fileFields: getFileFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         namedFields: getNamedFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         objectField: objectField
