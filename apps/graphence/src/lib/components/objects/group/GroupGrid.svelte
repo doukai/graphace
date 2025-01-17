@@ -86,33 +86,35 @@
 
 	const mutation = () => {
 		nodes = sourceToMutationList(typeName, idFieldName, queryFields, source);
-		dispatch('mutation', {
-			fields: queryFields,
-			mutationArguments: { list: nodes },
-			directives: [{ name: 'uniqueMerge' }],
-			then: (list) => {
-				if (list) {
-					nodes = list;
+		if (nodes && nodes.length > 0) {
+			dispatch('mutation', {
+				fields: queryFields,
+				mutationArguments: { list: nodes },
+				directives: [{ name: 'uniqueMerge' }],
+				then: (list) => {
+					if (list) {
+						nodes = list;
+					}
+					notifications.success($LL.graphence.message.saveSuccess());
+				},
+				catch: (graphQLErrors) => {
+					console.error(graphQLErrors);
+					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
+					if (globalError) {
+						messageBoxs.open({
+							title: $LL.graphence.message.saveFailed(),
+							content: globalError,
+							buttonName: $LL.ui.button.back(),
+							buttonType: 'neutral',
+							confirm: () => {
+								queryPage(1);
+								return true;
+							}
+						});
+					}
 				}
-				notifications.success($LL.graphence.message.saveSuccess());
-			},
-			catch: (graphQLErrors) => {
-				console.error(graphQLErrors);
-				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
-				if (globalError) {
-					messageBoxs.open({
-						title: $LL.graphence.message.saveFailed(),
-						content: globalError,
-						buttonName: $LL.ui.button.back(),
-						buttonType: 'neutral',
-						confirm: () => {
-							queryPage(1);
-							return true;
-						}
-					});
-				}
-			}
-		});
+			});
+		}
 	};
 </script>
 

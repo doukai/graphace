@@ -6,7 +6,7 @@
 	import RoleAggGrid from '~/lib/components/objects/role/RoleAggGrid.svelte';
 	import type { RoleConnectionQueryStore } from '~/lib/stores/role/roleQueryStore';
 	import type { RoleListMutationStore } from '~/lib/stores/role/roleMutationStore';
-	import type { RoleConnection } from '~/';
+	import type { RoleConnection } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { buildGraphQLErrors, validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -80,7 +80,7 @@
 					)
 					.then((response) => {
 						if (response?.errors) {
-							errors = buildGraphQLErrors(response.errors).list.iterms || {};
+							errors = buildGraphQLErrors(response.errors).list?.iterms || {};
 							e.detail.catch(response.errors);
 						} else {
 							e.detail.then(response?.data?.roleList);
@@ -88,7 +88,7 @@
 					});
 				})
 				.catch((validErrors) => {
-					errors = validErrors.list.iterms;
+					errors = validErrors.list?.iterms;
 				});
 		}}
 	/>

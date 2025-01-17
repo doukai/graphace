@@ -479,7 +479,7 @@
 			<span class="loading loading-bars loading-lg" />
 		</div>
 	{:else}
-		<slot {getFieldName} {getGrouByName} />
+		<slot />
 	{/if}
 </div>
 {#if showFooter}

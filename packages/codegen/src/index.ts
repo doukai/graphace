@@ -1958,6 +1958,7 @@ const renders: Record<Template, Render> = {
                         name: type?.name,
                         idName: getIDFieldName(type),
                         gridPath: `${config.componentsPath}/objects`,
+                        schemaTypesPath: config.schemaTypesPath,
                         storesPath: config.storesPath
                     }),
                 };

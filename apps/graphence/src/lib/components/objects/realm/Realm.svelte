@@ -473,7 +473,7 @@
 			<span class="loading loading-bars loading-lg" />
 		</div>
 	{:else}
-		<slot {getFieldName} />
+		<slot />
 	{/if}
 </div>
 {#if showFooter}

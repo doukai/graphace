@@ -45,6 +45,7 @@
 	<button
 		class="btn btn-xs btn-secondary"
 		use:melt={$button}
+		disabled={fields.length === 0}
 		on:click={(e) => dispatch('mutation', {})}
 	>
 		{$LL.ui_graphql.grid.buttons.save()}

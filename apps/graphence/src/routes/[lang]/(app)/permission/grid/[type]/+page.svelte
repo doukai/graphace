@@ -6,7 +6,7 @@
 	import PermissionAggGrid from '~/lib/components/objects/permission/PermissionAggGrid.svelte';
 	import type { PermissionConnectionQueryStore } from '~/lib/stores/permission/permissionQueryStore';
 	import type { PermissionListMutationStore } from '~/lib/stores/permission/permissionMutationStore';
-	import type { PermissionConnection } from '~/';
+	import type { PermissionConnection } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { buildGraphQLErrors, validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -80,7 +80,7 @@
 					)
 					.then((response) => {
 						if (response?.errors) {
-							errors = buildGraphQLErrors(response.errors).list.iterms || {};
+							errors = buildGraphQLErrors(response.errors).list?.iterms || {};
 							e.detail.catch(response.errors);
 						} else {
 							e.detail.then(response?.data?.permissionList);
@@ -88,7 +88,7 @@
 					});
 				})
 				.catch((validErrors) => {
-					errors = validErrors.list.iterms;
+					errors = validErrors.list?.iterms;
 				});
 		}}
 	/>

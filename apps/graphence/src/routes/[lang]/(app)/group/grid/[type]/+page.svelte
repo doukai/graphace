@@ -6,7 +6,7 @@
 	import GroupAggGrid from '~/lib/components/objects/group/GroupAggGrid.svelte';
 	import type { GroupConnectionQueryStore } from '~/lib/stores/group/groupQueryStore';
 	import type { GroupListMutationStore } from '~/lib/stores/group/groupMutationStore';
-	import type { GroupConnection } from '~/';
+	import type { GroupConnection } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { buildGraphQLErrors, validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -80,7 +80,7 @@
 					)
 					.then((response) => {
 						if (response?.errors) {
-							errors = buildGraphQLErrors(response.errors).list.iterms || {};
+							errors = buildGraphQLErrors(response.errors).list?.iterms || {};
 							e.detail.catch(response.errors);
 						} else {
 							e.detail.then(response?.data?.groupList);
@@ -88,7 +88,7 @@
 					});
 				})
 				.catch((validErrors) => {
-					errors = validErrors.list.iterms;
+					errors = validErrors.list?.iterms;
 				});
 		}}
 	/>
