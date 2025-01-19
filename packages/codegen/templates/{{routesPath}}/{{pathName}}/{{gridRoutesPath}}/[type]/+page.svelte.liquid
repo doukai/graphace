@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons';
+	import { createConnectionField, Field } from '@graphace/graphql';
 	import { Card, urlName } from '@graphace/ui';
+	import type { OperationStore } from '@graphace/ui-graphql';
 	import {{ name }}Grid from '~/{{ gridPath }}/{{ name | paramCase }}/{{ name }}Grid.svelte';
 	import {{ name }}AggGrid from '~/{{ gridPath }}/{{ name | paramCase }}/{{ name }}AggGrid.svelte';
-	import type { {{ name }}ConnectionQueryStore } from '~/{{ storesPath }}/{{ name | paramCase }}/{{ name | camelCase }}QueryStore';
-	import type { {{ name }}ListMutationStore } from '~/{{ storesPath }}/{{ name | paramCase }}/{{ name | camelCase }}MutationStore';
-	import type { {{ name }}Connection } from '~/{{ schemaTypesPath }}';
+	import type { {{ name }}, {{ name }}Connection } from '~/{{ schemaTypesPath }}';
 	import type { PageData } from './$houdini';
 	import { buildGraphQLErrors, validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -25,8 +25,8 @@
 	$: showFilterButton = data.fields;
 	$: showBookmarkButton = data.showBookmarkButton;
 
-	const {{ name }}ConnectionQuery = data.{{ name }}ConnectionQuery as {{ name }}ConnectionQueryStore;
-	const {{ name }}ListMutation = data.{{ name }}ListMutation as {{ name }}ListMutationStore;
+	const {{ name }}ConnectionQuery = data.{{ name }}ConnectionQuery as OperationStore<{{ name }}Connection>;
+	const {{ name }}ListMutation = data.{{ name }}ListMutation as OperationStore<{{ name }}[]>;
 
 	const components: Record<string, any> = {
 		mutation: {{ name }}Grid,
@@ -51,7 +51,16 @@
 		{showBookmarkButton}
 		on:query={(e) => {
 			errors = {};
-			{{ name }}ConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
+			{{ name }}ConnectionQuery.fetch({
+				fields: [
+					createConnectionField({
+						name: '{{ name | camelCase }}Connction',
+						fields: e.detail.fields,
+						arguments: e.detail.queryArguments,
+						directives: e.detail.directives
+					})
+				]
+			}).then((response) => {
 				connection = response?.data?.{{ name | camelCase }}Connection;
 				if (e.detail.catch && response?.errors) {
 					e.detail.catch(response.errors);
@@ -61,7 +70,16 @@
 			});
 		}}
 		on:exportQuery={(e) => {
-			{{ name }}ConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
+			{{ name }}ConnectionQuery.fetch({
+				fields: [
+					createConnectionField({
+						name: '{{ name | camelCase }}Connction',
+						fields: e.detail.fields,
+						arguments: e.detail.queryArguments,
+						directives: e.detail.directives
+					})
+				]
+			}).then((response) => {
 				if (e.detail.catch && response?.errors) {
 					e.detail.catch(response.errors);
 				} else if (e.detail.then) {
@@ -73,12 +91,16 @@
 			validate('Mutation_{{ name | camelCase }}List_Arguments', e.detail.mutationArguments, $locale)
 				.then((data) => {
 					errors = {};
-					{{ name }}ListMutation.fetch(
-						e.detail.fields,
-						e.detail.mutationArguments,
-						e.detail.directives
-					)
-					.then((response) => {
+					{{ name }}ListMutation.fetch({
+						fields: [
+							new Field({
+								name: '{{ name | camelCase }}List',
+								fields: e.detail.fields,
+								arguments: e.detail.mutationArguments,
+								directives: e.detail.directives
+							})
+						]
+					}).then((response) => {
 						if (response?.errors) {
 							errors = buildGraphQLErrors(response.errors).list?.iterms || {};
 							e.detail.catch(response.errors);

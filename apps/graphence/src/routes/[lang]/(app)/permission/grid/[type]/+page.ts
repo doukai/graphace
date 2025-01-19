@@ -1,7 +1,8 @@
 import type { LoadEvent } from '@sveltejs/kit';
+import { createConnectionField } from '@graphace/graphql';
+import { createQueryStore, createMutationStore } from '@graphace/ui-graphql';
 import type { LayoutLoad } from '$types';
-import { createPermissionConnectionQueryStore } from '~/lib/stores/permission/permissionQueryStore';
-import { createPermissionListMutationStore } from '~/lib/stores/permission/permissionMutationStore';
+import type { Permission, PermissionConnection } from '~/lib/types/schema';
 import { permissions } from '~/utils';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
@@ -22,8 +23,8 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        PermissionConnectionQuery: (await createPermissionConnectionQueryStore({ event, fields, queryArguments })),
-        PermissionListMutation: (await createPermissionListMutationStore({ event }))
+        PermissionConnectionQuery: (await createQueryStore<PermissionConnection>(event, { fields: [createConnectionField({ name: 'permissionConnction', fields })] })),
+        PermissionListMutation: (await createMutationStore<Permission[]>(event))
     };
 }
 export const prerender = false;

@@ -1,7 +1,8 @@
 import type { LoadEvent } from '@sveltejs/kit';
+import { createConnectionField } from '@graphace/graphql';
+import { createQueryStore, createMutationStore } from '@graphace/ui-graphql';
 import type { LayoutLoad } from '$types';
-import { createGroupConnectionQueryStore } from '~/lib/stores/group/groupQueryStore';
-import { createGroupListMutationStore } from '~/lib/stores/group/groupMutationStore';
+import type { Group, GroupConnection } from '~/lib/types/schema';
 import { permissions } from '~/utils';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
@@ -22,8 +23,8 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        GroupConnectionQuery: (await createGroupConnectionQueryStore({ event, fields, queryArguments })),
-        GroupListMutation: (await createGroupListMutationStore({ event }))
+        GroupConnectionQuery: (await createQueryStore<GroupConnection>(event, { fields: [createConnectionField({ name: 'groupConnction', fields })] })),
+        GroupListMutation: (await createMutationStore<Group[]>(event))
     };
 }
 export const prerender = false;

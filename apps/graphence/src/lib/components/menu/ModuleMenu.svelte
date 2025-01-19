@@ -11,10 +11,10 @@
 
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
-	function toAgg(aggPath: string) {
+	function to(path: string) {
 		let urlParts: string[] = $page.url.pathname.split('/');
 		if (urlParts.length > 2) {
-			init(`/${$locale}/${urlParts[2]}${aggPath}`);
+			init(`/${$locale}/${urlParts[2]}${path}`);
 		}
 	}
 </script>
@@ -42,21 +42,9 @@
 						<a
 							href={null}
 							on:click|preventDefault={(e) => {
-								toAgg(`/agg/table`);
+								to(`/chart/bar`);
 							}}
-							class={$page.url.pathname.endsWith(`/agg/table`) ? 'active' : ''}
-						>
-							<Iconify class="w-5 h-5" icon="material-symbols:table-chart-outline" />
-							<span>{$LL.graphence.components.sideBarMenu.table()}</span>
-						</a>
-					</li>
-					<li>
-						<a
-							href={null}
-							on:click|preventDefault={(e) => {
-								toAgg(`/agg/bar`);
-							}}
-							class={$page.url.pathname.endsWith(`/agg/bar`) ? 'active' : ''}
+							class={$page.url.pathname.endsWith(`/chart/bar`) ? 'active' : ''}
 						>
 							<Iconify class="w-5 h-5" icon="material-symbols:bar-chart" />
 							<span>{$LL.graphence.components.sideBarMenu.bar()}</span>
@@ -66,9 +54,9 @@
 						<a
 							href={null}
 							on:click|preventDefault={(e) => {
-								toAgg(`/agg/line`);
+								to(`/chart/line`);
 							}}
-							class={$page.url.pathname.endsWith(`/agg/line`) ? 'active' : ''}
+							class={$page.url.pathname.endsWith(`/chart/line`) ? 'active' : ''}
 						>
 							<Iconify class="w-5 h-5" icon="material-symbols:show-chart" />
 							<span>{$LL.graphence.components.sideBarMenu.line()}</span>
@@ -78,9 +66,9 @@
 						<a
 							href={null}
 							on:click|preventDefault={(e) => {
-								toAgg(`/agg/pie`);
+								to(`/chart/pie`);
 							}}
-							class={$page.url.pathname.endsWith(`/agg/pie`) ? 'active' : ''}
+							class={$page.url.pathname.endsWith(`/chart/pie`) ? 'active' : ''}
 						>
 							<Iconify class="w-5 h-5" icon="material-symbols:pie-chart-outline" />
 							<span>{$LL.graphence.components.sideBarMenu.pie()}</span>
@@ -100,7 +88,7 @@
 						<a
 							href={null}
 							on:click|preventDefault={(e) => {
-								toAgg(`/grid/agg`);
+								to(`/grid/agg`);
 							}}
 							class={$page.url.pathname.endsWith(`/grid/agg`) ? 'active' : ''}
 						>
@@ -112,7 +100,7 @@
 						<a
 							href={null}
 							on:click|preventDefault={(e) => {
-								toAgg(`/grid/mutation`);
+								to(`/grid/mutation`);
 							}}
 							class={$page.url.pathname.endsWith(`/grid/mutation`) ? 'active' : ''}
 						>

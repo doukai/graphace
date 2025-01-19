@@ -1,22 +1,42 @@
-import { Directive, directiveToString } from "./Directive.js";
+import { Directive } from "./Directive.js";
 
-export type Field = {
+export class Field {
     name: string;
-    alias?: string | null | undefined;
-    arguments?: unknown | undefined;
-    parent?: Field | null | undefined;
-    fields?: Field[] | null | undefined;
-    directives?: Directive[] | null | undefined;
+    alias?: string | undefined;
+    arguments?: Record<string, unknown> | undefined;
+    fields?: Field[] | undefined;
+    directives?: Directive[] | undefined;
+    constructor(params: { name: string, alias?: string | undefined, arguments?: Record<string, unknown> | undefined, fields?: Field[] | undefined, directives?: Directive[] | undefined }) {
+        this.name = params.name;
+        this.alias = params.alias;
+        this.arguments = params.arguments;
+        this.fields = params.fields;
+        this.directives = params.directives;
+    }
+    public getDeep = (): number => {
+        return this.fields?.reduce((deep, field) => {
+            if (field.fields) {
+                const subDeep = field.getDeep() + 1;
+                if (subDeep > deep) {
+                    return subDeep;
+                }
+            }
+            return deep;
+        }, 1) || 1
+    }
+    public toString = (): string => {
+        if (this.fields && this.fields.length > 0) {
+            return `${this.alias ? this.alias + ':' : ''}${this.name}}${this.arguments ? `(${Object.entries(this.arguments).map(([k, v]) => `${k}: ${JSON.stringify(v)}`).join(', ')})` : ''}${this.directives?.map(directive => ' ' + directive) || ''} {
+        ${this.fields.join('\r\n')}
+    }`;
+        } else {
+            return `${this.alias ? this.alias + ':' : ''}${this.name}}${this.arguments ? `(${Object.entries(this.arguments).map(([k, v]) => `${k}: ${JSON.stringify(v)}`).join(', ')})` : ''}${this.directives?.map(directive => ' ' + directive) || ''}`;
+        }
+    }
 }
 
-export const fieldToString = (field: Field): string => {
-    if (field.fields && field.fields.length > 0) {
-        return `${field.alias ? field.alias + ':' : ''}${field.name} {
-    ${field.fields.map(subField => fieldToString(subField)).join('\r\n')}
-}`;
-    } else {
-        return `${field.alias ? field.alias + ':' : ''}${field.name}${field.directives?.map(directive => ' ' + directiveToString(directive)) || ''}`;
-    }
+export const createConnectionField = (params: { name: string, alias?: string | undefined, arguments?: Record<string, unknown> | undefined, fields?: Field[] | undefined, directives?: Directive[] | undefined }): Field => {
+    return new Field({ ...params, fields: [new Field({ name: 'totalCount' }), new Field({ name: 'edges', fields: [new Field({ name: 'node', fields: params.fields })] })] })
 }
 
 export const fieldsDeep = (fields: Field[]): number => {

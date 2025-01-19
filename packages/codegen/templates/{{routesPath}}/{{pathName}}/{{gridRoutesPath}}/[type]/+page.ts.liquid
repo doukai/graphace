@@ -1,7 +1,8 @@
 import type { LoadEvent } from '@sveltejs/kit';
+import { createConnectionField } from '@graphace/graphql';
+import { createQueryStore, createMutationStore } from '@graphace/ui-graphql';
 import type { LayoutLoad } from '$types';
-import { create{{ name }}ConnectionQueryStore } from '~/{{ storesPath }}/{{ name | paramCase }}/{{ name | camelCase }}QueryStore';
-import { create{{ name }}ListMutationStore } from '~/{{ storesPath }}/{{ name | paramCase }}/{{ name | camelCase }}MutationStore';
+import type { {{ name }}, {{ name }}Connection } from '~/{{ schemaTypesPath }}';
 {%- if useAuth %}
 import { permissions } from '~/utils';
 {%- endif %}
@@ -24,8 +25,8 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        {{ name }}ConnectionQuery: (await create{{ name }}ConnectionQueryStore({ event, fields, queryArguments })),
-        {{ name }}ListMutation: (await create{{ name }}ListMutationStore({ event }))
+        {{ name }}ConnectionQuery: (await createQueryStore<{{ name }}Connection>(event, { fields: [createConnectionField({ name: '{{ name | camelCase }}Connction', fields })] })),
+        {{ name }}ListMutation: (await createMutationStore<{{ name }}[]>(event))
     };
 }
 export const prerender = false;

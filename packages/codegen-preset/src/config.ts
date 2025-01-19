@@ -10,7 +10,7 @@ export interface GraphacePresetConfig {
 
   routesPath?: string;
 
-  aggRoutesPath?: string;
+  chartRoutesPath?: string;
 
   gridRoutesPath?: string;
 

@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons';
+	import { createConnectionField, Field } from '@graphace/graphql';
 	import { Card, urlName } from '@graphace/ui';
+	import type { OperationStore } from '@graphace/ui-graphql';
 	import GroupGrid from '~/lib/components/objects/group/GroupGrid.svelte';
 	import GroupAggGrid from '~/lib/components/objects/group/GroupAggGrid.svelte';
-	import type { GroupConnectionQueryStore } from '~/lib/stores/group/groupQueryStore';
-	import type { GroupListMutationStore } from '~/lib/stores/group/groupMutationStore';
-	import type { GroupConnection } from '~/lib/types/schema';
+	import type { Group, GroupConnection } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { buildGraphQLErrors, validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -25,8 +25,8 @@
 	$: showFilterButton = data.fields;
 	$: showBookmarkButton = data.showBookmarkButton;
 
-	const GroupConnectionQuery = data.GroupConnectionQuery as GroupConnectionQueryStore;
-	const GroupListMutation = data.GroupListMutation as GroupListMutationStore;
+	const GroupConnectionQuery = data.GroupConnectionQuery as OperationStore<GroupConnection>;
+	const GroupListMutation = data.GroupListMutation as OperationStore<Group[]>;
 
 	const components: Record<string, any> = {
 		mutation: GroupGrid,
@@ -51,7 +51,16 @@
 		{showBookmarkButton}
 		on:query={(e) => {
 			errors = {};
-			GroupConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
+			GroupConnectionQuery.fetch({
+				fields: [
+					createConnectionField({
+						name: 'groupConnction',
+						fields: e.detail.fields,
+						arguments: e.detail.queryArguments,
+						directives: e.detail.directives
+					})
+				]
+			}).then((response) => {
 				connection = response?.data?.groupConnection;
 				if (e.detail.catch && response?.errors) {
 					e.detail.catch(response.errors);
@@ -61,7 +70,16 @@
 			});
 		}}
 		on:exportQuery={(e) => {
-			GroupConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
+			GroupConnectionQuery.fetch({
+				fields: [
+					createConnectionField({
+						name: 'groupConnction',
+						fields: e.detail.fields,
+						arguments: e.detail.queryArguments,
+						directives: e.detail.directives
+					})
+				]
+			}).then((response) => {
 				if (e.detail.catch && response?.errors) {
 					e.detail.catch(response.errors);
 				} else if (e.detail.then) {
@@ -73,12 +91,16 @@
 			validate('Mutation_groupList_Arguments', e.detail.mutationArguments, $locale)
 				.then((data) => {
 					errors = {};
-					GroupListMutation.fetch(
-						e.detail.fields,
-						e.detail.mutationArguments,
-						e.detail.directives
-					)
-					.then((response) => {
+					GroupListMutation.fetch({
+						fields: [
+							new Field({
+								name: 'groupList',
+								fields: e.detail.fields,
+								arguments: e.detail.mutationArguments,
+								directives: e.detail.directives
+							})
+						]
+					}).then((response) => {
 						if (response?.errors) {
 							errors = buildGraphQLErrors(response.errors).list?.iterms || {};
 							e.detail.catch(response.errors);

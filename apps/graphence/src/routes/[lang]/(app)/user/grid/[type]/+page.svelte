@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons';
+	import { createConnectionField, Field } from '@graphace/graphql';
 	import { Card, urlName } from '@graphace/ui';
+	import type { OperationStore } from '@graphace/ui-graphql';
 	import UserGrid from '~/lib/components/objects/user/UserGrid.svelte';
 	import UserAggGrid from '~/lib/components/objects/user/UserAggGrid.svelte';
-	import type { UserConnectionQueryStore } from '~/lib/stores/user/userQueryStore';
-	import type { UserListMutationStore } from '~/lib/stores/user/userMutationStore';
-	import type { UserConnection } from '~/lib/types/schema';
+	import type { User, UserConnection } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { buildGraphQLErrors, validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -25,8 +25,8 @@
 	$: showFilterButton = data.fields;
 	$: showBookmarkButton = data.showBookmarkButton;
 
-	const UserConnectionQuery = data.UserConnectionQuery as UserConnectionQueryStore;
-	const UserListMutation = data.UserListMutation as UserListMutationStore;
+	const UserConnectionQuery = data.UserConnectionQuery as OperationStore<UserConnection>;
+	const UserListMutation = data.UserListMutation as OperationStore<User[]>;
 
 	const components: Record<string, any> = {
 		mutation: UserGrid,
@@ -51,7 +51,16 @@
 		{showBookmarkButton}
 		on:query={(e) => {
 			errors = {};
-			UserConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
+			UserConnectionQuery.fetch({
+				fields: [
+					createConnectionField({
+						name: 'userConnction',
+						fields: e.detail.fields,
+						arguments: e.detail.queryArguments,
+						directives: e.detail.directives
+					})
+				]
+			}).then((response) => {
 				connection = response?.data?.userConnection;
 				if (e.detail.catch && response?.errors) {
 					e.detail.catch(response.errors);
@@ -61,7 +70,16 @@
 			});
 		}}
 		on:exportQuery={(e) => {
-			UserConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
+			UserConnectionQuery.fetch({
+				fields: [
+					createConnectionField({
+						name: 'userConnction',
+						fields: e.detail.fields,
+						arguments: e.detail.queryArguments,
+						directives: e.detail.directives
+					})
+				]
+			}).then((response) => {
 				if (e.detail.catch && response?.errors) {
 					e.detail.catch(response.errors);
 				} else if (e.detail.then) {
@@ -73,12 +91,16 @@
 			validate('Mutation_userList_Arguments', e.detail.mutationArguments, $locale)
 				.then((data) => {
 					errors = {};
-					UserListMutation.fetch(
-						e.detail.fields,
-						e.detail.mutationArguments,
-						e.detail.directives
-					)
-					.then((response) => {
+					UserListMutation.fetch({
+						fields: [
+							new Field({
+								name: 'userList',
+								fields: e.detail.fields,
+								arguments: e.detail.mutationArguments,
+								directives: e.detail.directives
+							})
+						]
+					}).then((response) => {
 						if (response?.errors) {
 							errors = buildGraphQLErrors(response.errors).list?.iterms || {};
 							e.detail.catch(response.errors);

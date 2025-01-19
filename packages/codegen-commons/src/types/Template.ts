@@ -39,8 +39,6 @@ export type Template =
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Filter.svelte' |
     '{{componentsPath}}/enums/{{pathName}}/index.ts' |
     '{{componentsPath}}/enums/index.ts' |
-    '{{storesPath}}/{{pathName}}/{{name}}QueryStore.ts' |
-    '{{storesPath}}/{{pathName}}/{{name}}MutationStore.ts' |
     '{{routesPath}}/{{pathName}}/+page.svelte' |
     '{{routesPath}}/{{pathName}}/+page.ts' |
     '{{routesPath}}/{{pathName}}/[id]/+page.svelte' |
@@ -67,7 +65,7 @@ export type Template =
     '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/_/+page.ts' |
     '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/__/+page.svelte' |
     '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/__/+page.ts' |
-    '{{routesPath}}/{{pathName}}/{{aggRoutesPath}}/[type]/+page.svelte' |
-    '{{routesPath}}/{{pathName}}/{{aggRoutesPath}}/[type]/+page.ts' |
+    '{{routesPath}}/{{pathName}}/{{chartRoutesPath}}/[type]/+page.svelte' |
+    '{{routesPath}}/{{pathName}}/{{chartRoutesPath}}/[type]/+page.ts' |
     '{{routesPath}}/{{pathName}}/{{gridRoutesPath}}/[type]/+page.svelte' |
     '{{routesPath}}/{{pathName}}/{{gridRoutesPath}}/[type]/+page.ts'

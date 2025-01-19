@@ -1,12 +1,11 @@
-export type Directive = {
+export class Directive {
     name: string;
-    arguments?: unknown | undefined;
-}
-
-export const directiveToString = (directive: Directive): string => {
-    if (directive.arguments) {
-        return `@${directive.name}(${Object.entries(directive.arguments).map(argument => JSON.stringify(argument)).join(', ')})`;
-    } else {
-        return `@${directive.name}`;
+    arguments?: Record<string, unknown> | undefined;
+    constructor(params: { name: string, arguments?: Record<string, unknown> | undefined }) {
+        this.name = params.name;
+        this.arguments = params.arguments;
+    }
+    public toString = (): string => {
+        return `@${this.name}${this.arguments ? `(${Object.entries(this.arguments).map(([k, v]) => `${k}: ${JSON.stringify(v)}`).join(', ')})` : ''}`;
     }
 }

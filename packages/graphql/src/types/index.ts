@@ -19,5 +19,6 @@ export * from "./Sort.js";
 export * from "./NamedStruct.js";
 export * from "./TreeStruct.js";
 export * from "./NodeTree.js";
+export * from "./Operation.js";
 export * from "./Field.js";
 export * from "./Directive.js";

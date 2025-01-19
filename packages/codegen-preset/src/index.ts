@@ -11,7 +11,7 @@ const _componentsPath = 'lib/components';
 const _storesPath = 'lib/stores';
 const _dataPath = 'lib/data';
 const _routesPath = 'routes/[lang]/(app)';
-const _aggRoutesPath = 'agg';
+const _chartRoutesPath = 'chart';
 const _gridRoutesPath = 'grid';
 const _i18nPath = 'lib/i18n';
 const _i18nDefault = 'en';
@@ -24,7 +24,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         const storesPath = `${options.baseOutputDir}/${options.presetConfig.storesPath || _storesPath}`;
         const dataPath = `${options.baseOutputDir}/${options.presetConfig.dataPath || _dataPath}`;
         const routesPath = `${options.baseOutputDir}/${options.presetConfig.routesPath || _routesPath}`;
-        const aggRoutesPath = options.presetConfig.aggRoutesPath || _aggRoutesPath;
+        const chartRoutesPath = options.presetConfig.chartRoutesPath || _chartRoutesPath;
         const gridRoutesPath = options.presetConfig.gridRoutesPath || _gridRoutesPath;
         const i18nPath = `${options.baseOutputDir}/${options.presetConfig.i18nPath || _i18nPath}`;
         const i18nDefault = options.presetConfig.i18nDefault || _i18nDefault;
@@ -1232,8 +1232,8 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         generateOptions.push(
             ...targetRouteObjectType
                 .map(type => {
-                    const template = '{{routesPath}}/{{pathName}}/{{aggRoutesPath}}/[type]/+page.svelte';
-                    const scope = { routesPath, aggRoutesPath, pathName: changeCase.paramCase(type.name) };
+                    const template = '{{routesPath}}/{{pathName}}/{{chartRoutesPath}}/[type]/+page.svelte';
+                    const scope = { routesPath, chartRoutesPath, pathName: changeCase.paramCase(type.name) };
                     return {
                         filename: buildPath(template, scope),
                         documents: options.documents,
@@ -1260,8 +1260,8 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         generateOptions.push(
             ...targetRouteObjectType
                 .map(type => {
-                    const template = '{{routesPath}}/{{pathName}}/{{aggRoutesPath}}/[type]/+page.ts';
-                    const scope = { routesPath, aggRoutesPath, pathName: changeCase.paramCase(type.name) };
+                    const template = '{{routesPath}}/{{pathName}}/{{chartRoutesPath}}/[type]/+page.ts';
+                    const scope = { routesPath, chartRoutesPath, pathName: changeCase.paramCase(type.name) };
                     return {
                         filename: buildPath(template, scope),
                         documents: options.documents,
@@ -1942,32 +1942,32 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 })
         );
 
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .map(type => {
-                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}AggTable.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        documents: options.documents,
-                        plugins: options.plugins,
-                        pluginMap: options.pluginMap,
-                        config: {
-                            appName: options.presetConfig.appName || _appName,
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                            routesPath: options.presetConfig.graphqlPath || _routesPath,
-                            builder: options.presetConfig.builder,
-                            useAuth: options.presetConfig.useAuth,
-                            template,
-                            name: type.name
-                        },
-                        schema: options.schema,
-                        schemaAst: options.schemaAst,
-                        skipDocumentsValidation: true,
-                    };
-                })
-        );
+        // generateOptions.push(
+        //     ...targetComponentObjectTypes
+        //         .map(type => {
+        //             const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}AggTable.svelte';
+        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+        //             return {
+        //                 filename: buildPath(template, scope),
+        //                 documents: options.documents,
+        //                 plugins: options.plugins,
+        //                 pluginMap: options.pluginMap,
+        //                 config: {
+        //                     appName: options.presetConfig.appName || _appName,
+        //                     graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+        //                     componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+        //                     routesPath: options.presetConfig.graphqlPath || _routesPath,
+        //                     builder: options.presetConfig.builder,
+        //                     useAuth: options.presetConfig.useAuth,
+        //                     template,
+        //                     name: type.name
+        //                 },
+        //                 schema: options.schema,
+        //                 schemaAst: options.schemaAst,
+        //                 skipDocumentsValidation: true,
+        //             };
+        //         })
+        // );
 
         generateOptions.push(
             ...targetComponentObjectTypes
@@ -2072,60 +2072,6 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 schemaAst: options.schemaAst,
                 skipDocumentsValidation: true,
             }
-        );
-
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .map(type => {
-                    const template = '{{storesPath}}/{{pathName}}/{{name}}QueryStore.ts';
-                    const scope = { storesPath, pathName: changeCase.paramCase(type.name), name: changeCase.camelCase(type.name) };
-                    return {
-                        filename: buildPath(template, scope),
-                        documents: options.documents,
-                        plugins: options.plugins,
-                        pluginMap: options.pluginMap,
-                        config: {
-                            appName: options.presetConfig.appName || _appName,
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                            routesPath: options.presetConfig.graphqlPath || _routesPath,
-                            builder: options.presetConfig.builder,
-                            useAuth: options.presetConfig.useAuth,
-                            template,
-                            name: type.name
-                        },
-                        schema: options.schema,
-                        schemaAst: options.schemaAst,
-                        skipDocumentsValidation: true,
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .map(type => {
-                    const template = '{{storesPath}}/{{pathName}}/{{name}}MutationStore.ts';
-                    const scope = { storesPath, pathName: changeCase.paramCase(type.name), name: changeCase.camelCase(type.name) };
-                    return {
-                        filename: buildPath(template, scope),
-                        documents: options.documents,
-                        plugins: options.plugins,
-                        pluginMap: options.pluginMap,
-                        config: {
-                            appName: options.presetConfig.appName || _appName,
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-                            routesPath: options.presetConfig.graphqlPath || _routesPath,
-                            builder: options.presetConfig.builder,
-                            useAuth: options.presetConfig.useAuth,
-                            template,
-                            name: type.name
-                        },
-                        schema: options.schema,
-                        schemaAst: options.schemaAst,
-                        skipDocumentsValidation: true,
-                    };
-                })
         );
 
         generateOptions.push(

@@ -1,12 +1,12 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import { createConnectionField } from '@graphace/graphql';
-import { createQueryStore, createMutationStore } from '@graphace/ui-graphql';
+import { createQueryStore } from '@graphace/ui-graphql';
 import type { LayoutLoad } from '$types';
-import type { Realm, RealmConnection } from '~/lib/types/schema';
+import type { RoleConnection } from '~/lib/types/schema';
 import { permissions } from '~/utils';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await permissions.getTypes('Realm');
+    await permissions.getTypes('Role', 'User', 'Group', 'Permission', 'Realm');
     const fields = JSON.parse(event.url.searchParams.get('fields') || '[]');
     const queryArguments = JSON.parse(event.url.searchParams.get('queryArguments') || '{}');
     const showHeader = !event.url.searchParams.has('hideHeader');
@@ -23,9 +23,6 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        RealmConnectionQuery: (await createQueryStore<RealmConnection>(event, { fields: [createConnectionField({ name: 'realmConnction', fields })] })),
-        RealmListMutation: (await createMutationStore<Realm[]>(event))
+        RoleConnectionQuery: (await createQueryStore<RoleConnection>(event, { fields: [createConnectionField({ name: 'roleConnction', fields })] }))
     };
 }
-export const prerender = false;
-export const ssr = false;

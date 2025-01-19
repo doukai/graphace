@@ -1910,7 +1910,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/{{pathName}}/{{aggRoutesPath}}/[type]/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/{{chartRoutesPath}}/[type]/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -1919,7 +1919,8 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         idName: getIDFieldName(type),
-                        aggPath: `${config.componentsPath}/objects`,
+                        chartPath: `${config.componentsPath}/objects`,
+                        schemaTypesPath: config.schemaTypesPath,
                         storesPath: config.storesPath
                     }),
                 };
@@ -1928,7 +1929,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${typeName} undefined`);
     },
-    '{{routesPath}}/{{pathName}}/{{aggRoutesPath}}/[type]/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{routesPath}}/{{pathName}}/{{chartRoutesPath}}/[type]/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
             const type = schema.getType(typeName);
@@ -1939,6 +1940,7 @@ const renders: Record<Template, Render> = {
                         name: type?.name,
                         idName: getIDFieldName(type),
                         objects: getObjectNames(fields),
+                        schemaTypesPath: config.schemaTypesPath,
                         storesPath: config.storesPath,
                         useAuth: config.useAuth
                     }),
@@ -1978,6 +1980,7 @@ const renders: Record<Template, Render> = {
                         name: type?.name,
                         idName: getIDFieldName(type),
                         objects: getObjectNames(fields),
+                        schemaTypesPath: config.schemaTypesPath,
                         storesPath: config.storesPath,
                         useAuth: config.useAuth
                     }),

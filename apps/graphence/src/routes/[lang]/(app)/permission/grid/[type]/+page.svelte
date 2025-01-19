@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons';
+	import { createConnectionField, Field } from '@graphace/graphql';
 	import { Card, urlName } from '@graphace/ui';
+	import type { OperationStore } from '@graphace/ui-graphql';
 	import PermissionGrid from '~/lib/components/objects/permission/PermissionGrid.svelte';
 	import PermissionAggGrid from '~/lib/components/objects/permission/PermissionAggGrid.svelte';
-	import type { PermissionConnectionQueryStore } from '~/lib/stores/permission/permissionQueryStore';
-	import type { PermissionListMutationStore } from '~/lib/stores/permission/permissionMutationStore';
-	import type { PermissionConnection } from '~/lib/types/schema';
+	import type { Permission, PermissionConnection } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { buildGraphQLErrors, validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -25,8 +25,8 @@
 	$: showFilterButton = data.fields;
 	$: showBookmarkButton = data.showBookmarkButton;
 
-	const PermissionConnectionQuery = data.PermissionConnectionQuery as PermissionConnectionQueryStore;
-	const PermissionListMutation = data.PermissionListMutation as PermissionListMutationStore;
+	const PermissionConnectionQuery = data.PermissionConnectionQuery as OperationStore<PermissionConnection>;
+	const PermissionListMutation = data.PermissionListMutation as OperationStore<Permission[]>;
 
 	const components: Record<string, any> = {
 		mutation: PermissionGrid,
@@ -51,7 +51,16 @@
 		{showBookmarkButton}
 		on:query={(e) => {
 			errors = {};
-			PermissionConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
+			PermissionConnectionQuery.fetch({
+				fields: [
+					createConnectionField({
+						name: 'permissionConnction',
+						fields: e.detail.fields,
+						arguments: e.detail.queryArguments,
+						directives: e.detail.directives
+					})
+				]
+			}).then((response) => {
 				connection = response?.data?.permissionConnection;
 				if (e.detail.catch && response?.errors) {
 					e.detail.catch(response.errors);
@@ -61,7 +70,16 @@
 			});
 		}}
 		on:exportQuery={(e) => {
-			PermissionConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
+			PermissionConnectionQuery.fetch({
+				fields: [
+					createConnectionField({
+						name: 'permissionConnction',
+						fields: e.detail.fields,
+						arguments: e.detail.queryArguments,
+						directives: e.detail.directives
+					})
+				]
+			}).then((response) => {
 				if (e.detail.catch && response?.errors) {
 					e.detail.catch(response.errors);
 				} else if (e.detail.then) {
@@ -73,12 +91,16 @@
 			validate('Mutation_permissionList_Arguments', e.detail.mutationArguments, $locale)
 				.then((data) => {
 					errors = {};
-					PermissionListMutation.fetch(
-						e.detail.fields,
-						e.detail.mutationArguments,
-						e.detail.directives
-					)
-					.then((response) => {
+					PermissionListMutation.fetch({
+						fields: [
+							new Field({
+								name: 'permissionList',
+								fields: e.detail.fields,
+								arguments: e.detail.mutationArguments,
+								directives: e.detail.directives
+							})
+						]
+					}).then((response) => {
 						if (response?.errors) {
 							errors = buildGraphQLErrors(response.errors).list?.iterms || {};
 							e.detail.catch(response.errors);

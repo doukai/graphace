@@ -1,7 +1,8 @@
 import type { LoadEvent } from '@sveltejs/kit';
+import { createConnectionField } from '@graphace/graphql';
+import { createQueryStore, createMutationStore } from '@graphace/ui-graphql';
 import type { LayoutLoad } from '$types';
-import { createRoleConnectionQueryStore } from '~/lib/stores/role/roleQueryStore';
-import { createRoleListMutationStore } from '~/lib/stores/role/roleMutationStore';
+import type { Role, RoleConnection } from '~/lib/types/schema';
 import { permissions } from '~/utils';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
@@ -22,8 +23,8 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        RoleConnectionQuery: (await createRoleConnectionQueryStore({ event, fields, queryArguments })),
-        RoleListMutation: (await createRoleListMutationStore({ event }))
+        RoleConnectionQuery: (await createQueryStore<RoleConnection>(event, { fields: [createConnectionField({ name: 'roleConnction', fields })] })),
+        RoleListMutation: (await createMutationStore<Role[]>(event))
     };
 }
 export const prerender = false;

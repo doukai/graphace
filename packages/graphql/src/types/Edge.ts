@@ -1,4 +1,4 @@
-export type Edge = {
+export type Edge<T> = {
     cursor: string;
-    node: Record<string, any>;
+    node: T;
 }

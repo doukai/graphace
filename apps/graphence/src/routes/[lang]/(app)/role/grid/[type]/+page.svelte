@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import type { Errors } from '@graphace/commons';
+	import { createConnectionField, Field } from '@graphace/graphql';
 	import { Card, urlName } from '@graphace/ui';
+	import type { OperationStore } from '@graphace/ui-graphql';
 	import RoleGrid from '~/lib/components/objects/role/RoleGrid.svelte';
 	import RoleAggGrid from '~/lib/components/objects/role/RoleAggGrid.svelte';
-	import type { RoleConnectionQueryStore } from '~/lib/stores/role/roleQueryStore';
-	import type { RoleListMutationStore } from '~/lib/stores/role/roleMutationStore';
-	import type { RoleConnection } from '~/lib/types/schema';
+	import type { Role, RoleConnection } from '~/lib/types/schema';
 	import type { PageData } from './$houdini';
 	import { buildGraphQLErrors, validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
@@ -25,8 +25,8 @@
 	$: showFilterButton = data.fields;
 	$: showBookmarkButton = data.showBookmarkButton;
 
-	const RoleConnectionQuery = data.RoleConnectionQuery as RoleConnectionQueryStore;
-	const RoleListMutation = data.RoleListMutation as RoleListMutationStore;
+	const RoleConnectionQuery = data.RoleConnectionQuery as OperationStore<RoleConnection>;
+	const RoleListMutation = data.RoleListMutation as OperationStore<Role[]>;
 
 	const components: Record<string, any> = {
 		mutation: RoleGrid,
@@ -51,7 +51,16 @@
 		{showBookmarkButton}
 		on:query={(e) => {
 			errors = {};
-			RoleConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
+			RoleConnectionQuery.fetch({
+				fields: [
+					createConnectionField({
+						name: 'roleConnction',
+						fields: e.detail.fields,
+						arguments: e.detail.queryArguments,
+						directives: e.detail.directives
+					})
+				]
+			}).then((response) => {
 				connection = response?.data?.roleConnection;
 				if (e.detail.catch && response?.errors) {
 					e.detail.catch(response.errors);
@@ -61,7 +70,16 @@
 			});
 		}}
 		on:exportQuery={(e) => {
-			RoleConnectionQuery.fetch(e.detail.fields, e.detail.queryArguments).then((response) => {
+			RoleConnectionQuery.fetch({
+				fields: [
+					createConnectionField({
+						name: 'roleConnction',
+						fields: e.detail.fields,
+						arguments: e.detail.queryArguments,
+						directives: e.detail.directives
+					})
+				]
+			}).then((response) => {
 				if (e.detail.catch && response?.errors) {
 					e.detail.catch(response.errors);
 				} else if (e.detail.then) {
@@ -73,12 +91,16 @@
 			validate('Mutation_roleList_Arguments', e.detail.mutationArguments, $locale)
 				.then((data) => {
 					errors = {};
-					RoleListMutation.fetch(
-						e.detail.fields,
-						e.detail.mutationArguments,
-						e.detail.directives
-					)
-					.then((response) => {
+					RoleListMutation.fetch({
+						fields: [
+							new Field({
+								name: 'roleList',
+								fields: e.detail.fields,
+								arguments: e.detail.mutationArguments,
+								directives: e.detail.directives
+							})
+						]
+					}).then((response) => {
 						if (response?.errors) {
 							errors = buildGraphQLErrors(response.errors).list?.iterms || {};
 							e.detail.catch(response.errors);
