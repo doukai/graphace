@@ -30,7 +30,7 @@
 		"i18n:export": "tsx src/lib/i18n/export.ts"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^2.1.1",
+		"@sveltejs/adapter-auto": "^3.2.5",
 		"@sveltejs/kit": "^2.5.28",
 		"@sveltejs/package": "^2.3.2",
 		"eslint-config-custom": "workspace:*",
@@ -54,7 +54,7 @@
 		"@melt-ui/svelte": ">=0.83.0",
 		"@revolist/svelte-datagrid": ">=4.0.0",
 		"@steeze-ui/heroicons": ">=2.3.0",
-		"@steeze-ui/svelte-icon": ">=1.4.0",
+		"@steeze-ui/svelte-icon": ">=1.5.0",
 		"@sveltejs/kit": ">=2.0.0",
 		"@sveltejs/vite-plugin-svelte": ">=3.0.0",
 		"xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",

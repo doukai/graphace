@@ -1,5 +1,10 @@
 module.exports = {
-    content: ['./src/**/*.{html,js,svelte,ts}', '../../packages/**/src/**/*.{html,js,svelte,ts}'],
+    content: [
+        './src/lib/components/**/*.{html,js,svelte,ts}',
+        './src/routes/**/*.{html,js,svelte,ts}',
+        './node_modules/@graphace/ui/dist/components/**/*.{html,js,svelte,ts}',
+        './node_modules/@graphace/ui-graphql/dist/components/**/*.{html,js,svelte,ts}'
+    ],
     theme: {
         extend: {
             fontFamily: {

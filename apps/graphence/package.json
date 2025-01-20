@@ -50,7 +50,7 @@
 		"@revolist/revogrid-column-numeral": "^1.0.2",
 		"@revolist/svelte-datagrid": "<4.10.34",
 		"@steeze-ui/heroicons": "^2.3.0",
-		"@steeze-ui/svelte-icon": "~1.4.1",
+		"@steeze-ui/svelte-icon": "~1.5.0",
 		"@sveltejs/adapter-auto": "^3.2.5",
 		"@sveltejs/adapter-node": "^2.1.2",
 		"@sveltejs/kit": "^2.5.28",
