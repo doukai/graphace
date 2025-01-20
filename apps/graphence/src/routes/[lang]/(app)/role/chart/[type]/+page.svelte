@@ -48,7 +48,7 @@
 			RoleConnectionQuery.fetch({
 				fields: [
 					createConnectionField({
-						name: 'roleConnction',
+						name: 'roleConnection',
 						fields: e.detail.fields,
 						arguments: e.detail.queryArguments,
 						directives: e.detail.directives

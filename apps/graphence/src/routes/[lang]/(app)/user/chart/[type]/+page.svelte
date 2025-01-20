@@ -48,7 +48,7 @@
 			UserConnectionQuery.fetch({
 				fields: [
 					createConnectionField({
-						name: 'userConnction',
+						name: 'userConnection',
 						fields: e.detail.fields,
 						arguments: e.detail.queryArguments,
 						directives: e.detail.directives

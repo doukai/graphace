@@ -1,3 +1,4 @@
+import { valueToString } from "./Arguments.js";
 import { Directive } from "./Directive.js";
 
 export class Field {
@@ -26,11 +27,11 @@ export class Field {
     }
     public toString = (): string => {
         if (this.fields && this.fields.length > 0) {
-            return `${this.alias ? this.alias + ':' : ''}${this.name}}${this.arguments ? `(${Object.entries(this.arguments).map(([k, v]) => `${k}: ${JSON.stringify(v)}`).join(', ')})` : ''}${this.directives?.map(directive => ' ' + directive) || ''} {
-        ${this.fields.join('\r\n')}
+            return `${this.alias ? this.alias + ':' : ''}${this.name}${this.arguments ? `(${Object.entries(this.arguments).filter(([k, v]) => v !== undefined).map(([k, v]) => `${k}: ${valueToString(v)}`).join(', ')})` : ''}${this.directives?.map(directive => ' ' + directive.toString()) || ''} {
+        ${this.fields.map(field => field.toString()).join('\r\n')}
     }`;
         } else {
-            return `${this.alias ? this.alias + ':' : ''}${this.name}}${this.arguments ? `(${Object.entries(this.arguments).map(([k, v]) => `${k}: ${JSON.stringify(v)}`).join(', ')})` : ''}${this.directives?.map(directive => ' ' + directive) || ''}`;
+            return `${this.alias ? this.alias + ':' : ''}${this.name}${this.arguments ? `(${Object.entries(this.arguments).filter(([k, v]) => v !== undefined).map(([k, v]) => `${k}: ${valueToString(v)}`).join(', ')})` : ''}${this.directives?.map(directive => ' ' + directive.toString()) || ''}`;
         }
     }
 }

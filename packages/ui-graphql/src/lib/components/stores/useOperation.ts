@@ -19,7 +19,7 @@ export async function createQueryStore<T>(event: LoadEvent, params: { fields: Fi
             const response = await event.fetch('/graphql', {
                 method: 'POST',
                 body: JSON.stringify({
-                    query: query
+                    query: query.toString()
                 })
             });
 
@@ -56,7 +56,7 @@ export async function createMutationStore<T>(event: LoadEvent): Promise<Operatio
             const response = await event.fetch('/graphql', {
                 method: 'POST',
                 body: JSON.stringify({
-                    query: query
+                    query: query.toString()
                 })
             });
 

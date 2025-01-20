@@ -6,7 +6,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { AdjustmentsHorizontal, Funnel, Bookmark } from '@steeze-ui/heroicons';
 	import type { PermissionsStore } from '@graphace/commons';
-	import type { Field } from '@graphace/graphql';
+	import { Field } from '@graphace/graphql';
 	import { Combobox, type Group as G, Pagination, type Option } from '@graphace/ui';
 	import UserFilter from '~/lib/components/objects/user/UserFilter.svelte';
 	import type { UserConnectionQueryArguments } from '~/lib/types/schema';
@@ -296,20 +296,20 @@
 					if (fields.some((field) => field.name === option.group?.value)) {
 						fields
 							.find((field) => field.name === option.group?.value)
-							?.fields?.push({ name: option.value });
+							?.fields?.push(new Field({ name: option.value }));
 					} else {
-						fields.push({
+						fields.push(new Field({
 							name: option.group.value,
-							fields: [{ name: option.value }]
-						});
+							fields: [new Field({ name: option.value })]
+						}));
 					}
 				} else {
-					fields.push({ name: option.value });
+					fields.push(new Field({ name: option.value }));
 				}
 				return fields;
 			}, <Field[]>[]),
 			...(join && joinColumns && joinColumns.length > 0
-				? [{ name: join.value, fields: joinColumns?.map((column) => ({ name: column.value })) }]
+				? [new Field({ name: join.value, fields: joinColumns?.map((column) => new Field({ name: column.value })) })]
 				: [])
 		];
 	};
@@ -324,14 +324,14 @@
 			if (field.fields) {
 				const idFieldName = getIdFieldName(typeName, field.name);
 				if (!field.fields.some((subField) => subField.name === idFieldName)) {
-					field.fields.push({ name: idFieldName! });
+					field.fields.push(new Field({ name: idFieldName! }));
 				}
 			}
 			return field;
 		});
 
 		if (!queryFields.some((subField) => subField.name === idFieldName)) {
-			queryFields.push({ name: idFieldName });
+			queryFields.push(new Field({ name: idFieldName }));
 		}
 
 		return queryFields;

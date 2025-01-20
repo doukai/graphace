@@ -48,7 +48,7 @@
 			RealmConnectionQuery.fetch({
 				fields: [
 					createConnectionField({
-						name: 'realmConnction',
+						name: 'realmConnection',
 						fields: e.detail.fields,
 						arguments: e.detail.queryArguments,
 						directives: e.detail.directives

@@ -22,3 +22,4 @@ export * from "./NodeTree.js";
 export * from "./Operation.js";
 export * from "./Field.js";
 export * from "./Directive.js";
+export * from "./Arguments.js";

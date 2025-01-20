@@ -54,7 +54,7 @@
 			PermissionConnectionQuery.fetch({
 				fields: [
 					createConnectionField({
-						name: 'permissionConnction',
+						name: 'permissionConnection',
 						fields: e.detail.fields,
 						arguments: e.detail.queryArguments,
 						directives: e.detail.directives
@@ -73,7 +73,7 @@
 			PermissionConnectionQuery.fetch({
 				fields: [
 					createConnectionField({
-						name: 'permissionConnction',
+						name: 'permissionConnection',
 						fields: e.detail.fields,
 						arguments: e.detail.queryArguments,
 						directives: e.detail.directives

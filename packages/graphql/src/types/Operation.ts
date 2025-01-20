@@ -13,8 +13,8 @@ export class Operation {
         this.directives = params.directives;
     }
     public toString = (): string => {
-        return `${this.operationType} ${this.name + ' ' || ''}${this.directives?.map(directive => ' ' + directive) || ''} {
-        ${this.fields.join('\r\n')}
+        return `${this.operationType} ${this.name ? this.name + ' ' : ''}${this.directives?.map(directive => ' ' + directive.toString()) || ''} {
+        ${this.fields.map(field => field.toString()).join('\r\n')}
     }`;
     }
 }

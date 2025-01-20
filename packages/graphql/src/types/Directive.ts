@@ -1,3 +1,5 @@
+import { valueToString } from "./Arguments.js";
+
 export class Directive {
     name: string;
     arguments?: Record<string, unknown> | undefined;
@@ -6,6 +8,6 @@ export class Directive {
         this.arguments = params.arguments;
     }
     public toString = (): string => {
-        return `@${this.name}${this.arguments ? `(${Object.entries(this.arguments).map(([k, v]) => `${k}: ${JSON.stringify(v)}`).join(', ')})` : ''}`;
+        return `@${this.name}${this.arguments ? `(${Object.entries(this.arguments).filter(([k, v]) => v !== undefined).map(([k, v]) => `${k}: ${valueToString(v)}`).join(', ')})` : ''}`;
     }
 }

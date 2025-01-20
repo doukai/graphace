@@ -48,7 +48,7 @@
 			GroupConnectionQuery.fetch({
 				fields: [
 					createConnectionField({
-						name: 'groupConnction',
+						name: 'groupConnection',
 						fields: e.detail.fields,
 						arguments: e.detail.queryArguments,
 						directives: e.detail.directives
