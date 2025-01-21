@@ -1,4 +1,3 @@
-import { redirect } from '@sveltejs/kit';
 import { browser } from '$app/environment';
 import { goto } from '$app/navigation';
 import { env } from '$env/dynamic/public';
@@ -11,20 +10,15 @@ const authPlugin: ClientPlugin = () => {
 			if (value.errors) {
 				console.error(value.errors);
 				if (value.errors?.map(error => error.extensions).some(extensions => extensions?.code == -40100)) {
-					const loginPathName = `/${ctx.session?.locale}/login`;
-					if (browser) {
-						const queryString = window.location.search;
-						const urlParams = new URLSearchParams(queryString);
-						if (urlParams.has('from')) {
-							goto(loginPathName + '?from=' + urlParams.get('from'));
-						} else if (window.location.pathname !== loginPathName) {
-							goto(loginPathName + '?from=' + window.location.pathname);
-						} else {
-							goto(loginPathName);
-						}
-					} else {
-						throw redirect(307, loginPathName);
+					let loginPathName = `/${ctx.session?.locale}/login`;
+					const search = window.location.search;
+					const urlSearchParams = new URLSearchParams(search);
+					if (urlSearchParams.has('from')) {
+						loginPathName += '?from=' + urlSearchParams.get('from');
+					} else if (window.location.pathname !== loginPathName) {
+						loginPathName += '?from=' + window.location.pathname;
 					}
+					goto(loginPathName);
 				}
 			}
 			// keep the information flowing to the user
@@ -39,19 +33,20 @@ export default new HoudiniClient({
 		authPlugin
 	],
 	fetchParams({ session, document }) {
+		let headers = {
+			Authorization: `${session?.token}`,
+		};
+
 		if (document.name === 'Mutation_singleUpload' || document.name === 'Mutation_multipleUpload') {
 			return {
-				headers: {
-					Authorization: `${session?.token}`,
-				},
+				headers
 			}
-		} else {
-			return {
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `${session?.token}`,
-				},
-			}
+		}
+		return {
+			headers: {
+				...headers,
+				'Content-Type': 'application/json'
+			},
 		}
 	}
 });

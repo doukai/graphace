@@ -14,7 +14,6 @@ export const {
     nodesToSource,
     nodesToAggSource,
     errorsToGridErrors,
-    errorsToGlobalErrors,
     sourceToMutationList,
     exportToXlsx,
     importFromXlsx

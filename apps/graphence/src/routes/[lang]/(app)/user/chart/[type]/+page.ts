@@ -1,9 +1,8 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import { createConnectionField } from '@graphace/graphql';
-import { createQueryStore } from '@graphace/ui-graphql';
 import type { LayoutLoad } from '$types';
 import type { UserConnection } from '~/lib/types/schema';
-import { permissions } from '~/utils';
+import { permissions, createQueryStore } from '~/utils';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     await permissions.getTypes('User', 'Group', 'Role', 'Realm');

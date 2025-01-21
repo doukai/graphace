@@ -38,7 +38,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const loginPathName = `/${locale}/login`;
 	if (!token && event.url.pathname !== loginPathName) {
-		toLoginPage(loginPathName, event.url.pathname);
+		toLoginPage(loginPathName, event);
 	} else {
 		setSession(event, { token, locale });
 		if (!event.locals.jwt && token) {
@@ -48,29 +48,41 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	// replace html lang attribute with correct language
 	const response = await resolve(event, { transformPageChunk: ({ html }) => html.replace('%lang%', locale) });
-	if (event.url.pathname !== loginPathName && response?.status === 401) {
+	if (response?.status === 401 && event.url.pathname !== loginPathName) {
 		if (request.headers.get('Content-Type')?.includes('application/json')) {
 			return json({ errors: [{ message: '-40100: unauthorized', extensions: { code: -40100 } }] }, { status: 401 });
 		}
-		toLoginPage(loginPathName, event.url.pathname);
+		toLoginPage(loginPathName, event);
 	}
 	return response;
 }
 
-export const handleError: HandleServerError = async ({ error, event }) => {
+export const handleError: HandleServerError = async ({ error, event, status }) => {
 	console.error(error);
 	const { headers } = event.request;
 	headers.delete('Accept');
 	const [, lang] = event.url.pathname.split('/');
 	const locale = isLocale(lang) ? (lang as Locales) : getPreferredLocale(event);
-	toLoginPage(`/${locale}/login`);
+	let errorPathName = `/${locale}/error/${status}`;
+	if (browser) {
+		goto(errorPathName);
+	} else {
+		throw redirect(307, errorPathName);
+	}
 };
 
-const toLoginPage = (loginPathName: string, fromPathName?: string) => {
+const toLoginPage = (loginPathName: string, event: RequestEvent) => {
+	const search = event.url.search;
+	const urlSearchParams = new URLSearchParams(search);
+	if (urlSearchParams.has('from')) {
+		loginPathName += '?from=' + urlSearchParams.get('from');
+	} else if (event.url.pathname !== loginPathName) {
+		loginPathName += '?from=' + event.url.pathname;
+	}
 	if (browser) {
-		goto(loginPathName + (fromPathName ? '?from=' + fromPathName : ''));
+		goto(loginPathName);
 	} else {
-		throw redirect(307, loginPathName + (fromPathName ? '?from=' + fromPathName : ''));
+		throw redirect(307, loginPathName);
 	}
 }
 
