@@ -949,40 +949,6 @@ const renders: Record<Template, Render> = {
             ),
         };
     },
-    '{{storesPath}}/{{pathName}}/{{name}}QueryStore.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.name;
-        if (typeName) {
-            const type = schema.getType(typeName);
-            if (type && isObjectType(type)) {
-                return {
-                    content: buildFileContent(config.template, {
-                        name: type?.name,
-                        args: schema.getQueryType()?.getFields()[`${changeCase.camelCase(typeName)}Connection`].args,
-                        schemaTypesPath: config.schemaTypesPath
-                    }),
-                };
-            }
-        }
-        console.error(config);
-        throw new Error(`${typeName} undefined`);
-    },
-    '{{storesPath}}/{{pathName}}/{{name}}MutationStore.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.name;
-        if (typeName) {
-            const type = schema.getType(typeName);
-            if (type && isObjectType(type)) {
-                return {
-                    content: buildFileContent(config.template, {
-                        name: type?.name,
-                        args: schema.getMutationType()?.getFields()[`${changeCase.camelCase(typeName)}List`].args,
-                        schemaTypesPath: config.schemaTypesPath
-                    }),
-                };
-            }
-        }
-        console.error(config);
-        throw new Error(`${typeName} undefined`);
-    },
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Item.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const typeName = config.name;
         if (typeName) {
