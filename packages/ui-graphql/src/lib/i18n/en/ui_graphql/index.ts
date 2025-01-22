@@ -44,6 +44,9 @@ const en: BaseTranslation = {
 			canel: 'Canel',
 			export: 'Export',
 			import: 'Import'
+		},
+		message: {
+			requiredField: 'Missing required fields'
 		}
 	}
 }

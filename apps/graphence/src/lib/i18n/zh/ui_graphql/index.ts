@@ -46,6 +46,9 @@ const zh_ui_graphql = {
 			'export': '导出',
 			'import': '导入',
 		},
+		message: {
+			requiredField: '缺少必要的字段',
+		},
 	},
 } satisfies NamespaceUiGraphqlTranslation
 

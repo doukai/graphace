@@ -168,6 +168,12 @@ export type NamespaceUiGraphqlTranslation = {
 			 */
 			'import': string
 		}
+		message: {
+			/**
+			 * M​i​s​s​i​n​g​ ​r​e​q​u​i​r​e​d​ ​f​i​e​l​d​s
+			 */
+			requiredField: string
+		}
 	}
 }
 
@@ -332,6 +338,12 @@ export type TranslationFunctions = {
 				 * Import
 				 */
 				'import': () => LocalizedString
+			}
+			message: {
+				/**
+				 * Missing required fields
+				 */
+				requiredField: () => LocalizedString
 			}
 		}
 	}

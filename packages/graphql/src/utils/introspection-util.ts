@@ -1,18 +1,9 @@
-import type { __Schema, __Type } from '../types';
+import type { __Field, __Schema, __Type } from '../types';
 
 export const createIntrospection = (__schema: __Schema) => {
 
-    const getType = (typeName: string, fieldName?: string): __Type | null | undefined => {
-        const typeDefinition = __schema.types?.find((type) => type.name === typeName) as __Type;
-        if (fieldName) {
-            const fieldDefinition = typeDefinition?.fields?.find((field) => field.name === fieldName);
-            const fieldType = getFieldType(fieldDefinition?.type)
-            if (fieldType?.name) {
-                return getType(fieldType.name);
-            }
-            return undefined;
-        }
-        return typeDefinition;
+    const getType = (typeName: string): __Type | null | undefined => {
+        return __schema.types?.find((type) => type.name === typeName) as __Type;
     };
 
     const isScalar = (typeName: string): boolean => {
@@ -47,6 +38,13 @@ export const createIntrospection = (__schema: __Schema) => {
         return getType(typeName)?.kind === 'LIST' || false;
     };
 
+    const getField = (typeName: string, fieldName: string, subFieldName?: string): __Field | null | undefined => {
+        if (subFieldName) {
+            return getTypeFieldType(typeName, fieldName)?.fields?.find((field) => field.name === subFieldName);
+        }
+        return getType(typeName)?.fields?.find((field) => field.name === fieldName);
+    };
+
     const getFieldType = (fieldType: __Type | null | undefined): __Type | null | undefined => {
         if (fieldType) {
             if (fieldType.kind === 'LIST' || fieldType.kind === 'NON_NULL') {
@@ -57,13 +55,12 @@ export const createIntrospection = (__schema: __Schema) => {
     };
 
     const getTypeFieldType = (typeName: string, fieldName: string, subFieldName?: string): __Type | null | undefined => {
-        const fieldDefinition = getType(typeName)?.fields?.find((field) => field.name === fieldName);
-        const fieldType = getFieldType(fieldDefinition?.type);
-        if (subFieldName && fieldType) {
-            const subFieldDefinition = fieldType?.fields?.find((field) => field.name === subFieldName);
+        if (subFieldName) {
+            const subFieldDefinition = getField(typeName, fieldName, subFieldName);
             return getFieldType(subFieldDefinition?.type);
         }
-        return fieldType;
+        const fieldDefinition = getField(typeName, fieldName);
+        return getFieldType(fieldDefinition?.type);
     };
 
     const getFieldTypeName = (fieldType: __Type | null | undefined): string | null | undefined => {
@@ -85,12 +82,11 @@ export const createIntrospection = (__schema: __Schema) => {
     };
 
     const typeFieldTypeHasList = (typeName: string, fieldName: string, subFieldName?: string): boolean => {
-        const fieldDefinition = getType(typeName)?.fields?.find((field) => field.name === fieldName);
         if (subFieldName) {
-            const fieldType = getFieldType(fieldDefinition?.type);
-            const subFieldDefinition = fieldType?.fields?.find((field) => field.name === subFieldName);
+            const subFieldDefinition = getField(typeName, fieldName, subFieldName);
             return fieldHasList(subFieldDefinition?.type);
         }
+        const fieldDefinition = getField(typeName, fieldName);
         return fieldHasList(fieldDefinition?.type);
     };
 
@@ -102,26 +98,23 @@ export const createIntrospection = (__schema: __Schema) => {
     };
 
     const typeFieldTypeIsNonNull = (typeName: string, fieldName: string, subFieldName?: string): boolean => {
-        const fieldDefinition = getType(typeName)?.fields?.find((field) => field.name === fieldName);
         if (subFieldName) {
-            const fieldType = getFieldType(fieldDefinition?.type);
-            const subFieldDefinition = fieldType?.fields?.find((field) => field.name === subFieldName);
+            const subFieldDefinition = getField(typeName, fieldName, subFieldName);
             return fieldTypeIsNonNull(subFieldDefinition?.type);
         }
+        const fieldDefinition = getField(typeName, fieldName);
         return fieldTypeIsNonNull(fieldDefinition?.type);
     };
 
     const getIdFieldName = (typeName: string, fieldName?: string): string | null | undefined => {
-        const typeDefinition = getType(typeName);
         if (fieldName) {
-            const fieldDefinition = typeDefinition?.fields?.find((field) => field.name === fieldName);
-            const fieldType = getFieldType(fieldDefinition?.type)
-            if (fieldType?.name) {
-                return getIdFieldName(fieldType.name);
+            const fieldTypeName = getTypeFieldTypeName(typeName, fieldName);
+            if (fieldTypeName) {
+                return getIdFieldName(fieldTypeName);
             }
             return undefined;
         }
-        return typeDefinition?.fields?.find((field) => getFieldTypeName(field.type) === 'ID')?.name;
+        return getType(typeName)?.fields?.find((field) => getFieldTypeName(field.type) === 'ID')?.name;
     };
 
     return {
@@ -134,8 +127,10 @@ export const createIntrospection = (__schema: __Schema) => {
         isUnion,
         isNonNull,
         isList,
+        getField,
         getFieldType,
         getFieldTypeName,
+        getTypeFieldType,
         getTypeFieldTypeName,
         fieldHasList,
         typeFieldTypeHasList,

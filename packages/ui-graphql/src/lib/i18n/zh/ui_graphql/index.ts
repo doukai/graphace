@@ -44,6 +44,9 @@ const zh: NamespaceUiGraphqlTranslation = {
 			canel: '撤销',
 			export: '导出',
 			import: '导入'
+		},
+		message: {
+			requiredField: '缺少必要的字段'
 		}
 	}
 }

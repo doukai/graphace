@@ -20,7 +20,7 @@ export const createGrid = (
     getFieldLabel: (objectName: string, fieldName: string) => string
 ) => {
 
-    const { getTypeFieldTypeName, getType, isEnum, typeFieldTypeHasList, getFieldType } = createIntrospection(__schema);
+    const { getTypeFieldTypeName, getType, isEnum, typeFieldTypeHasList } = createIntrospection(__schema);
 
     const getGridTheme = (theme: string | undefined): string | undefined => {
         if (theme) {
@@ -550,46 +550,43 @@ export const createGrid = (
     };
 
     const getTypeFieldName = (value: any, typeName: string, fieldName: string, subFieldName?: string): any | null | undefined => {
-        const typeDefinition = getType(typeName);
-        const fieldDefinition = typeDefinition?.fields?.find((field) => field.name === fieldName);
-        const fieldTypeDefinition = getFieldType(fieldDefinition?.type);
         if (subFieldName) {
-            const subFieldDefinition = fieldTypeDefinition?.fields?.find((field) => field.name === subFieldName);
-            const subFieldTypeDefinition = getFieldType(subFieldDefinition?.type);
-            if (subFieldTypeDefinition?.name) {
+            const subFieldTypeName = getTypeFieldTypeName(typeName, fieldName, subFieldName);
+            if (subFieldTypeName) {
                 if (Array.isArray(value)) {
-                    if (subFieldTypeDefinition.name === 'Boolean') {
+                    if (subFieldTypeName === 'Boolean') {
                         return value.map(item => booleanValueToName(item));
-                    } else if (isEnum(subFieldTypeDefinition.name)) {
-                        return value.map(item => enumValueToName(subFieldTypeDefinition.name!, item));
+                    } else if (isEnum(subFieldTypeName)) {
+                        return value.map(item => enumValueToName(subFieldTypeName, item));
                     } else {
                         return value;
                     }
                 } else {
-                    if (subFieldTypeDefinition.name === 'Boolean') {
+                    if (subFieldTypeName === 'Boolean') {
                         return booleanValueToName(value);
-                    } else if (isEnum(subFieldTypeDefinition.name)) {
-                        return enumValueToName(subFieldTypeDefinition.name, value);
+                    } else if (isEnum(subFieldTypeName)) {
+                        return enumValueToName(subFieldTypeName, value);
                     } else {
                         return value;
                     }
                 }
             }
         }
-        if (fieldTypeDefinition?.name) {
+        const fieldTypeName = getTypeFieldTypeName(typeName, fieldName);
+        if (fieldTypeName) {
             if (Array.isArray(value)) {
-                if (fieldTypeDefinition.name === 'Boolean') {
+                if (fieldTypeName === 'Boolean') {
                     return value.map(item => booleanValueToName(item));
-                } else if (isEnum(fieldTypeDefinition.name)) {
-                    return value.map(item => enumValueToName(fieldTypeDefinition.name!, item));
+                } else if (isEnum(fieldTypeName)) {
+                    return value.map(item => enumValueToName(fieldTypeName, item));
                 } else {
                     return value;
                 }
             } else {
-                if (fieldTypeDefinition.name === 'Boolean') {
+                if (fieldTypeName === 'Boolean') {
                     return booleanValueToName(value);
-                } else if (isEnum(fieldTypeDefinition.name)) {
-                    return enumValueToName(fieldTypeDefinition.name, value);
+                } else if (isEnum(fieldTypeName)) {
+                    return enumValueToName(fieldTypeName, value);
                 } else {
                     return value;
                 }
@@ -598,46 +595,43 @@ export const createGrid = (
     };
 
     const getTypeFieldValue = (value: any, typeName: string, fieldName: string, subFieldName?: string): any | null | undefined => {
-        const typeDefinition = getType(typeName);
-        const fieldDefinition = typeDefinition?.fields?.find((field) => field.name === fieldName);
-        const fieldTypeDefinition = getFieldType(fieldDefinition?.type);
         if (subFieldName) {
-            const subFieldDefinition = fieldTypeDefinition?.fields?.find((field) => field.name === subFieldName);
-            const subFieldTypeDefinition = getFieldType(subFieldDefinition?.type);
-            if (subFieldTypeDefinition?.name) {
+            const subFieldTypeName = getTypeFieldTypeName(typeName, fieldName, subFieldName);
+            if (subFieldTypeName) {
                 if (Array.isArray(value)) {
-                    if (subFieldTypeDefinition.name === 'Boolean') {
+                    if (subFieldTypeName === 'Boolean') {
                         return value.map(item => booleanNameToValue(item));
-                    } else if (isEnum(subFieldTypeDefinition.name)) {
-                        return value.map(item => enumNameToValue(subFieldTypeDefinition.name!, item));
+                    } else if (isEnum(subFieldTypeName)) {
+                        return value.map(item => enumNameToValue(subFieldTypeName, item));
                     } else {
                         return value;
                     }
                 } else {
-                    if (subFieldTypeDefinition.name === 'Boolean') {
+                    if (subFieldTypeName === 'Boolean') {
                         return booleanNameToValue(value);
-                    } else if (isEnum(subFieldTypeDefinition.name)) {
-                        return enumNameToValue(subFieldTypeDefinition.name, value);
+                    } else if (isEnum(subFieldTypeName)) {
+                        return enumNameToValue(subFieldTypeName, value);
                     } else {
                         return value;
                     }
                 }
             }
         }
-        if (fieldTypeDefinition?.name) {
+        const fieldTypeName = getTypeFieldTypeName(typeName, fieldName);
+        if (fieldTypeName) {
             if (Array.isArray(value)) {
-                if (fieldTypeDefinition.name === 'Boolean') {
+                if (fieldTypeName === 'Boolean') {
                     return value.map(item => booleanNameToValue(item));
-                } else if (isEnum(fieldTypeDefinition.name)) {
-                    return value.map(item => enumNameToValue(fieldTypeDefinition.name!, item));
+                } else if (isEnum(fieldTypeName)) {
+                    return value.map(item => enumNameToValue(fieldTypeName, item));
                 } else {
                     return value;
                 }
             } else {
-                if (fieldTypeDefinition.name === 'Boolean') {
+                if (fieldTypeName === 'Boolean') {
                     return booleanNameToValue(value);
-                } else if (isEnum(fieldTypeDefinition.name)) {
-                    return enumNameToValue(fieldTypeDefinition.name, value);
+                } else if (isEnum(fieldTypeName)) {
+                    return enumNameToValue(fieldTypeName, value);
                 } else {
                     return value;
                 }

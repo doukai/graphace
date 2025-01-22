@@ -1,9 +1,9 @@
 module.exports = {
     content: [
-        './src/lib/components/**/*.{html,js,svelte,ts}',
+        './src/lib/**/*.{html,js,svelte,ts}',
         './src/routes/**/*.{html,js,svelte,ts}',
-        './node_modules/@graphace/ui/dist/components/**/*.{html,js,svelte,ts}',
-        './node_modules/@graphace/ui-graphql/dist/components/**/*.{html,js,svelte,ts}'
+        './node_modules/@graphace/ui/dist/**/*.{html,js,svelte,ts}',
+        './node_modules/@graphace/ui-graphql/dist/**/*.{html,js,svelte,ts}'
     ],
     theme: {
         extend: {

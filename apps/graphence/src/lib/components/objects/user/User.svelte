@@ -11,7 +11,7 @@
 	import UserFilter from '~/lib/components/objects/user/UserFilter.svelte';
 	import type { UserConnectionQueryArguments } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	import { getIdFieldName, getType } from '~/utils';
+	import { getIdFieldName } from '~/utils';
 	
 	export let fields: Field[] = [];
 	export let queryFields: Field[] = [];
@@ -326,40 +326,12 @@
 				if (!field.fields.some((subField) => subField.name === idFieldName)) {
 					field.fields.push(new Field({ name: idFieldName! }));
 				}
-				
-				if (
-					getType(typeName, field.name)
-						?.fields?.filter((__field) => __field.type.kind === 'NON_NULL')
-						.some((__field) => !field.fields?.some((subField) => subField.name === __field.name))
-				) {
-					field.fields.push(
-						...(getType(typeName, field.name)
-							?.fields?.filter((__field) => __field.type.kind === 'NON_NULL')
-							?.filter(
-								(__field) => !field.fields?.some((subField) => subField.name === __field.name)
-							)
-							?.map((__field) => new Field({ name: __field.name })) || [])
-					);
-				}
 			}
 			return field;
 		});
 
 		if (!queryFields.some((subField) => subField.name === idFieldName)) {
 			queryFields.push(new Field({ name: idFieldName }));
-		}
-
-		if (
-			getType(typeName)
-				?.fields?.filter((__field) => __field.type.kind === 'NON_NULL')
-				.some((__field) => !queryFields?.some((subField) => subField.name === __field.name))
-		) {
-			queryFields.push(
-				...(getType(typeName)
-					?.fields?.filter((__field) => __field.type.kind === 'NON_NULL')
-					?.filter((__field) => !queryFields?.some((subField) => subField.name === __field.name))
-					?.map((__field) => new Field({ name: __field.name })) || [])
-			);
 		}
 
 		return queryFields;

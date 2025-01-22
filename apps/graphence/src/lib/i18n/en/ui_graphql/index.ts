@@ -46,6 +46,9 @@ const en_ui_graphql = {
 			'export': 'Export',
 			'import': 'Import',
 		},
+		message: {
+			requiredField: 'Missing required fields',
+		},
 	},
 } satisfies BaseTranslation
 

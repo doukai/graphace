@@ -18,7 +18,9 @@
 		nodesToSource,
 		sourceToMutationList,
 		exportToXlsx,
-		importFromXlsx
+		importFromXlsx,
+		getType,
+		getTypeFieldType
 	} from '~/utils';
 	
 	export let connection: GroupConnection;
@@ -85,6 +87,40 @@
 	const editors = createEditors(() => gridErrors);
 
 	const mutation = () => {
+		const nonNullFields = [
+			...(getType(typeName)
+				?.fields?.filter((__field) => __field.type.kind === 'NON_NULL')
+				?.filter((__field) => !queryFields?.some((subField) => subField.name === __field.name))
+				?.map((__field) => getFieldName(__field.name)) || []),
+			...queryFields
+				.filter((field) => field.fields && field.fields.length > 0)
+				.filter((field) =>
+					getTypeFieldType(typeName, field.name)
+						?.fields?.filter((__field) => __field.type.kind === 'NON_NULL')
+						.some((__field) => !field.fields?.some((subField) => subField.name === __field.name))
+				)
+				.flatMap((field) =>
+					getTypeFieldType(typeName, field.name)
+						?.fields?.filter((__field) => __field.type.kind === 'NON_NULL')
+						?.filter((__field) => !field.fields?.some((subField) => subField.name === __field.name))
+						?.map((__field) => getFieldName(field.name, __field.name))
+				)
+		];
+
+		if (nonNullFields && nonNullFields.length > 0) {
+			messageBoxs.open({
+				title: $LL.ui_graphql.grid.message.requiredField(),
+				content: `<ul class="list-none">${nonNullFields.map((field) => `<li>${field}</li>`)}</ul>`,
+				buttonName: $LL.ui.button.back(),
+				buttonType: 'neutral',
+				confirm: () => {
+					queryPage(1);
+					return true;
+				}
+			});
+			return;
+		}
+		
 		nodes = sourceToMutationList(typeName, idFieldName, queryFields, source);
 		if (nodes && nodes.length > 0) {
 			dispatch('mutation', {
