@@ -10,7 +10,7 @@ import type {
 } from '@revolist/svelte-datagrid';
 import { read, utils, writeFileXLSX } from 'xlsx';
 import type { Errors } from '@graphace/commons';
-import { fieldsDeep, createIntrospection, type __Schema, type __Type, type Field } from '@graphace/graphql';
+import { fieldsDeep, createIntrospection, type __Schema, type __Type, Field } from '@graphace/graphql';
 
 export const createGrid = (
     __schema: __Schema,
@@ -552,10 +552,10 @@ export const createGrid = (
     const getTypeFieldName = (value: any, typeName: string, fieldName: string, subFieldName?: string): any | null | undefined => {
         const typeDefinition = getType(typeName);
         const fieldDefinition = typeDefinition?.fields?.find((field) => field.name === fieldName);
-        const fieldTypeDefinition = getFieldType(fieldDefinition?.type as __Type | null | undefined);
+        const fieldTypeDefinition = getFieldType(fieldDefinition?.type);
         if (subFieldName) {
             const subFieldDefinition = fieldTypeDefinition?.fields?.find((field) => field.name === subFieldName);
-            const subFieldTypeDefinition = getFieldType(subFieldDefinition?.type as __Type | null | undefined);
+            const subFieldTypeDefinition = getFieldType(subFieldDefinition?.type);
             if (subFieldTypeDefinition?.name) {
                 if (Array.isArray(value)) {
                     if (subFieldTypeDefinition.name === 'Boolean') {
@@ -600,10 +600,10 @@ export const createGrid = (
     const getTypeFieldValue = (value: any, typeName: string, fieldName: string, subFieldName?: string): any | null | undefined => {
         const typeDefinition = getType(typeName);
         const fieldDefinition = typeDefinition?.fields?.find((field) => field.name === fieldName);
-        const fieldTypeDefinition = getFieldType(fieldDefinition?.type as __Type | null | undefined);
+        const fieldTypeDefinition = getFieldType(fieldDefinition?.type);
         if (subFieldName) {
             const subFieldDefinition = fieldTypeDefinition?.fields?.find((field) => field.name === subFieldName);
-            const subFieldTypeDefinition = getFieldType(subFieldDefinition?.type as __Type | null | undefined);
+            const subFieldTypeDefinition = getFieldType(subFieldDefinition?.type);
             if (subFieldTypeDefinition?.name) {
                 if (Array.isArray(value)) {
                     if (subFieldTypeDefinition.name === 'Boolean') {
@@ -831,7 +831,7 @@ export const createGrid = (
                 } else {
                     nodes.push(
                         Object.fromEntries(
-                            [...queryFields, { name: 'isDeprecated' }].map((field) => {
+                            [...queryFields, new Field({ name: 'isDeprecated' })].map((field) => {
                                 if (field.fields && field.fields.length > 0) {
                                     const object = Object.fromEntries(
                                         field.fields.map((subField) => [
@@ -859,7 +859,7 @@ export const createGrid = (
         } else {
             return source?.map((row) =>
                 Object.fromEntries(
-                    [...queryFields, { name: 'isDeprecated' }].map((field) => {
+                    [...queryFields, new Field({ name: 'isDeprecated' })].map((field) => {
                         if (field.fields && field.fields.length > 0) {
                             const object = Object.fromEntries(
                                 field.fields.map((subField) => [

@@ -1,6 +1,6 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import { createConnectionField } from '@graphace/graphql';
-import { createQueryStore } from '@graphace/ui-graphql';
+import { createQueryStore } from '~/utils';
 import type { LayoutLoad } from '$types';
 import type { GroupConnection } from '~/lib/types/schema';
 import { permissions } from '~/utils';

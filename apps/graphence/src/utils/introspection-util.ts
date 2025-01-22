@@ -3,11 +3,20 @@ import { __schema } from '~/lib/types/introspection.json';
 
 export const {
     getType,
+    isScalar,
     isEnum,
-    getTypeFieldTypeName,
+    isObject,
+    isInputObject,
+    isInterface,
+    isUnion,
+    isNonNull,
+    isList,
     getFieldType,
     getFieldTypeName,
-    typeFieldTypeHasList,
+    getTypeFieldTypeName,
     fieldHasList,
+    typeFieldTypeHasList,
+    fieldTypeIsNonNull,
+    typeFieldTypeIsNonNull,
     getIdFieldName
-} = createIntrospection(__schema as unknown as __Schema);
+} = createIntrospection(__schema as __Schema);

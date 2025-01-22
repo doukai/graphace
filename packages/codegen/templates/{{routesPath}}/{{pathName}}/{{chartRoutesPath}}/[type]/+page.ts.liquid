@@ -1,6 +1,6 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import { createConnectionField } from '@graphace/graphql';
-import { createQueryStore } from '@graphace/ui-graphql';
+import { createQueryStore } from '~/utils';
 import type { LayoutLoad } from '$types';
 import type { {{ name }}Connection } from '~/{{ schemaTypesPath }}';
 {%- if useAuth %}
