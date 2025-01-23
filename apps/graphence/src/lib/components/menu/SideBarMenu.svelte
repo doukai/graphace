@@ -14,7 +14,7 @@
 </script>
 
 {#each pages as menu}
-	{#if menu.menus}
+	{#if menu.menus && menu.menus.some((menu) => permissions.auth(...(menu.authPermissions || [])))}
 		<li>
 			<h2 class="menu-title flex flex-row gap-2">
 				{#if menu.icon}
@@ -48,7 +48,7 @@
 				{/each}
 			</ul>
 		</li>
-	{:else if permissions.auth(...(menu.authPermissions || []))}
+	{:else if !menu.menus && permissions.auth(...(menu.authPermissions || []))}
 		<li>
 			<a
 				href={null}
