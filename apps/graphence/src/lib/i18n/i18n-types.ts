@@ -41,6 +41,28 @@ export type NamespaceErrorsTranslation = {
 		 */
 		'-99999': string
 	}
+	http: {
+		/**
+		 * B​a​d​ ​R​e​q​u​e​s​t
+		 */
+		'400': string
+		/**
+		 * N​o​t​ ​F​o​u​n​d
+		 */
+		'404': string
+		/**
+		 * R​e​q​u​e​s​t​ ​T​i​m​e​o​u​t
+		 */
+		'408': string
+		/**
+		 * I​n​t​e​r​n​a​l​ ​S​e​r​v​e​r​ ​E​r​r​o​r
+		 */
+		'500': string
+		/**
+		 * U​n​k​n​o​w​n​ ​E​r​r​o​r
+		 */
+		unknown: string
+	}
 }
 
 export type NamespaceGraphenceTranslation = {
@@ -3129,6 +3151,28 @@ export type TranslationFunctions = {
 			 * Requet error
 			 */
 			'-99999': () => LocalizedString
+		}
+		http: {
+			/**
+			 * Bad Request
+			 */
+			'400': () => LocalizedString
+			/**
+			 * Not Found
+			 */
+			'404': () => LocalizedString
+			/**
+			 * Request Timeout
+			 */
+			'408': () => LocalizedString
+			/**
+			 * Internal Server Error
+			 */
+			'500': () => LocalizedString
+			/**
+			 * Unknown Error
+			 */
+			unknown: () => LocalizedString
 		}
 	}
 	graphence: {
