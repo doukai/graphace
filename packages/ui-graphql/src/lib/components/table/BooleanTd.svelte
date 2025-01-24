@@ -59,20 +59,24 @@
 				{#if Array.isArray(value)}
 					{#if value.length > 3}
 						{value
-							.filter((item) => item)
+							.filter((item) => item !== null && item !== undefined)
 							.slice(0, 3)
+							.map((item) => (item ? $LL.ui_graphql.text.true() : $LL.ui_graphql.text.false()))
 							.join(',')
 							.concat('...')}
 					{:else if value.length > 0}
-						{value.filter((item) => item).join(',')}
+						{value
+							.filter((item) => item !== null && item !== undefined)
+							.map((item) => (item ? $LL.ui_graphql.text.true() : $LL.ui_graphql.text.false()))
+							.join(',')}
 					{:else}
 						<Icon src={Minus} class="h-5 w-5" />
 					{/if}
 				{:else}
 					<Icon src={Minus} class="h-5 w-5" />
 				{/if}
-			{:else if value}
-				{value}
+			{:else if value !== null && value !== undefined}
+				{value ? $LL.ui_graphql.text.true() : $LL.ui_graphql.text.false()}
 			{:else}
 				<Icon src={Minus} class="h-5 w-5" />
 			{/if}

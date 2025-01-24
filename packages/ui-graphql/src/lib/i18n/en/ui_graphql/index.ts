@@ -1,6 +1,10 @@
 import type { BaseTranslation } from '../../i18n-types'
 
 const en: BaseTranslation = {
+	text: {
+		true: 'Yes',
+		false: 'No'
+	},
 	table: {
 		removeModalTitle: "Remove row?",
 		editBtn: "Edit",

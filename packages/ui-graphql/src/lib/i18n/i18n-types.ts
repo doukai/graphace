@@ -19,6 +19,16 @@ export type Translations = RootTranslation &
 type RootTranslation = {}
 
 export type NamespaceUiGraphqlTranslation = {
+	text: {
+		/**
+		 * Y​e​s
+		 */
+		'true': string
+		/**
+		 * N​o
+		 */
+		'false': string
+	}
 	table: {
 		/**
 		 * R​e​m​o​v​e​ ​r​o​w​?
@@ -190,6 +200,16 @@ type DisallowNamespaces = {
 
 export type TranslationFunctions = {
 	ui_graphql: {
+		text: {
+			/**
+			 * Yes
+			 */
+			'true': () => LocalizedString
+			/**
+			 * No
+			 */
+			'false': () => LocalizedString
+		}
 		table: {
 			/**
 			 * Remove row?
