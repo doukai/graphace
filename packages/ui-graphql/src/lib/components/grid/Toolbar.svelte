@@ -131,6 +131,7 @@
 		title={$LL.ui_graphql.grid.buttons.import()}
 		className="btn-xs btn-info"
 		disabled={fields.length === 0}
+		showButton = {true}
 	>
 		<span slot="button">{$LL.ui_graphql.grid.buttons.import()}</span>
 		<input
