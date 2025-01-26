@@ -11,6 +11,10 @@
 		dialog.showModal();
 	};
 
+	export const close = () => {
+		dialog.close();
+	};
+
 	const dispatch = createEventDispatcher<{
 		close: {};
 	}>();
