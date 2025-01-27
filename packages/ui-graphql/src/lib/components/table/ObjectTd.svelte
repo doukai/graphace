@@ -14,6 +14,7 @@
 	export let namedStruct: NamedStruct | (NamedStruct | null | undefined)[] | null | undefined =
 		undefined;
 	export let errors: Errors | undefined = undefined;
+	export let btnClassName: string = 'btn btn-square btn-xs btn-ghost';
 
 	let _namedStruct = namedStruct;
 	namedStruct = undefined;
@@ -57,12 +58,14 @@
 						</a>
 					{:else}
 						<button
-							class="btn btn-square btn-xs btn-ghost"
+							class={btnClassName}
 							on:click|preventDefault={(e) => {
 								dispatch('gotoField', { path, name });
 							}}
 						>
-							<Icon src={Link} class="h-5 w-5" />
+							<slot>
+								<Icon src={Link} class="h-5 w-5" />
+							</slot>
 						</button>
 					{/if}
 				{:else if _namedStruct.name}
@@ -77,22 +80,26 @@
 					</a>
 				{:else}
 					<button
-						class="btn btn-square btn-xs btn-ghost"
+						class={btnClassName}
 						on:click|preventDefault={(e) => {
 							dispatch('gotoField', { path, name });
 						}}
 					>
-						<Icon src={Link} class="h-5 w-5" />
+						<slot>
+							<Icon src={Link} class="h-5 w-5" />
+						</slot>
 					</button>
 				{/if}
 			{:else}
 				<button
-					class="btn btn-square btn-xs btn-ghost"
+					class={btnClassName}
 					on:click|preventDefault={(e) => {
 						dispatch('gotoField', { path, name });
 					}}
 				>
-					<Icon src={Link} class="h-5 w-5" />
+					<slot>
+						<Icon src={Link} class="h-5 w-5" />
+					</slot>
 				</button>
 			{/if}
 		</div>

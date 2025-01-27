@@ -42,11 +42,11 @@
 		<span class="text-xl font-semibold">{title}</span>
 	</div>
 	<div class="flex justify-between w-full md:w-auto space-x-1">
-		{#if showSearchInput}
-			<div class="flex">
+		<div class="flex">
+			{#if showSearchInput}
 				<SearchInput on:search />
-			</div>
-		{/if}
+			{/if}
+		</div>
 		<div class="flex space-x-1">
 			{#if showRemoveButton}
 				<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.remove()}>

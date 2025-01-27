@@ -3,10 +3,12 @@
 	import type { Readable } from 'svelte/store';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Bars4 } from '@steeze-ui/heroicons';
+	import { Bars4, ChevronLeft } from '@steeze-ui/heroicons';
+	import { ot, canBack } from '~/components/stores/useNavigate.js';
 	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let showMenuButton: boolean = true;
+	export let showBackButton: boolean = false;
 
 	let scrollY: number;
 	$: switchNavbarStyle = scrollY > 40 ? true : false;
@@ -24,6 +26,18 @@
 >
 	<nav class="navbar w-full">
 		<div class="flex flex-1 md:gap-1 lg:gap-2">
+			{#if showBackButton && $canBack}
+				<div class="tooltip tooltip-bottom" data-tip={$LL.ui.button.back()}>
+					<button
+						class="btn btn-square btn-ghost"
+						on:click|preventDefault={(e) => {
+							ot();
+						}}
+					>
+						<Icon src={ChevronLeft} class="h-5 w-5" solid />
+					</button>
+				</div>
+			{/if}
 			{#if showMenuButton}
 				<span
 					class="tooltip tooltip-bottom before:text-xs before:content-[attr(data-tip)]"
