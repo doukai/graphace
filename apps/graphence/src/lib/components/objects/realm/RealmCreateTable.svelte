@@ -31,14 +31,13 @@
 	let selectedRowList: (number | undefined)[] = [];
 
 	const removeRow = (row: number) => {
-		nodes?.splice(row, 1);
+		nodes = [...(nodes || []).splice(row, 1)];
 		dispatch('mutation', { nodes });
 	};
 
 	const removeRows = () => {
-		dispatch('mutation', {
-			nodes: nodes?.filter((_, index) => !selectedRowList.includes(index))
-		});
+		nodes = [...(nodes || []).filter((_, index) => !selectedRowList.includes(index))];
+		dispatch('mutation', { nodes });
 		selectedRowList = [];
 	};
 </script>
@@ -107,7 +106,7 @@
 						<StringTd
 							name="name"
 							bind:value={node.name}
-							readonly
+							readonly={!permissions.auth('Realm::name::WRITE')}
 							errors={errors[row]?.iterms?.name}
 						/>
 						{/if}
@@ -115,7 +114,7 @@
 						<StringTd
 							name="description"
 							bind:value={node.description}
-							readonly
+							readonly={!permissions.auth('Realm::description::WRITE')}
 							errors={errors[row]?.iterms?.description}
 						/>
 						{/if}

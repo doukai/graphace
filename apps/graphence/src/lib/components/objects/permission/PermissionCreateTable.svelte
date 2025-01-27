@@ -33,14 +33,13 @@
 	let selectedRowList: (number | undefined)[] = [];
 
 	const removeRow = (row: number) => {
-		nodes?.splice(row, 1);
+		nodes = [...(nodes || []).splice(row, 1)];
 		dispatch('mutation', { nodes });
 	};
 
 	const removeRows = () => {
-		dispatch('mutation', {
-			nodes: nodes?.filter((_, index) => !selectedRowList.includes(index))
-		});
+		nodes = [...(nodes || []).filter((_, index) => !selectedRowList.includes(index))];
+		dispatch('mutation', { nodes });
 		selectedRowList = [];
 	};
 </script>
@@ -132,7 +131,7 @@
 						<StringTd
 							name="description"
 							bind:value={node.description}
-							readonly
+							readonly={!permissions.auth('Permission::description::WRITE')}
 							errors={errors[row]?.iterms?.description}
 						/>
 						{/if}
@@ -140,7 +139,7 @@
 						<StringTd
 							name="field"
 							bind:value={node.field}
-							readonly
+							readonly={!permissions.auth('Permission::field::WRITE')}
 							errors={errors[row]?.iterms?.field}
 						/>
 						{/if}
@@ -148,7 +147,7 @@
 						<StringTd
 							name="type"
 							bind:value={node.type}
-							readonly
+							readonly={!permissions.auth('Permission::type::WRITE')}
 							errors={errors[row]?.iterms?.type}
 						/>
 						{/if}
@@ -156,7 +155,7 @@
 						<PermissionTypeTd
 							name="permissionType"
 							bind:value={node.permissionType}
-							readonly
+							readonly={!permissions.auth('Permission::permissionType::WRITE')}
 							errors={errors[row]?.iterms?.permissionType}
 						/>
 						{/if}

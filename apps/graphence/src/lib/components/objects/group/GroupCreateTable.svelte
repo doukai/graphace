@@ -31,14 +31,13 @@
 	let selectedRowList: (number | undefined)[] = [];
 
 	const removeRow = (row: number) => {
-		nodes?.splice(row, 1);
+		nodes = [...(nodes || []).splice(row, 1)];
 		dispatch('mutation', { nodes });
 	};
 
 	const removeRows = () => {
-		dispatch('mutation', {
-			nodes: nodes?.filter((_, index) => !selectedRowList.includes(index))
-		});
+		nodes = [...(nodes || []).filter((_, index) => !selectedRowList.includes(index))];
+		dispatch('mutation', { nodes });
 		selectedRowList = [];
 	};
 </script>
@@ -131,7 +130,7 @@
 						<StringTd
 							name="name"
 							bind:value={node.name}
-							readonly
+							readonly={!permissions.auth('Group::name::WRITE')}
 							errors={errors[row]?.iterms?.name}
 						/>
 						{/if}
@@ -139,7 +138,7 @@
 						<StringTd
 							name="description"
 							bind:value={node.description}
-							readonly
+							readonly={!permissions.auth('Group::description::WRITE')}
 							errors={errors[row]?.iterms?.description}
 						/>
 						{/if}
@@ -147,7 +146,7 @@
 						<StringTd
 							name="path"
 							bind:value={node.path}
-							readonly
+							readonly={!permissions.auth('Group::path::WRITE')}
 							errors={errors[row]?.iterms?.path}
 						/>
 						{/if}
@@ -155,7 +154,7 @@
 						<IntTd
 							name="deep"
 							bind:value={node.deep}
-							readonly
+							readonly={!permissions.auth('Group::deep::WRITE')}
 							errors={errors[row]?.iterms?.deep}
 						/>
 						{/if}
@@ -163,7 +162,7 @@
 						<StringTd
 							name="parentId"
 							bind:value={node.parentId}
-							readonly
+							readonly={!permissions.auth('Group::parentId::WRITE')}
 							errors={errors[row]?.iterms?.parentId}
 						/>
 						{/if}

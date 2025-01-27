@@ -31,14 +31,13 @@
 	let selectedRowList: (number | undefined)[] = [];
 
 	const removeRow = (row: number) => {
-		nodes?.splice(row, 1);
+		nodes = [...(nodes || []).splice(row, 1)];
 		dispatch('mutation', { nodes });
 	};
 
 	const removeRows = () => {
-		dispatch('mutation', {
-			nodes: nodes?.filter((_, index) => !selectedRowList.includes(index))
-		});
+		nodes = [...(nodes || []).filter((_, index) => !selectedRowList.includes(index))];
+		dispatch('mutation', { nodes });
 		selectedRowList = [];
 	};
 </script>
@@ -131,7 +130,7 @@
 						<StringTd
 							name="name"
 							bind:value={node.name}
-							readonly
+							readonly={!permissions.auth('User::name::WRITE')}
 							errors={errors[row]?.iterms?.name}
 						/>
 						{/if}
@@ -139,7 +138,7 @@
 						<StringTd
 							name="description"
 							bind:value={node.description}
-							readonly
+							readonly={!permissions.auth('User::description::WRITE')}
 							errors={errors[row]?.iterms?.description}
 						/>
 						{/if}
@@ -147,7 +146,7 @@
 						<StringTd
 							name="lastName"
 							bind:value={node.lastName}
-							readonly
+							readonly={!permissions.auth('User::lastName::WRITE')}
 							errors={errors[row]?.iterms?.lastName}
 						/>
 						{/if}
@@ -155,7 +154,7 @@
 						<StringTd
 							name="login"
 							bind:value={node.login}
-							readonly
+							readonly={!permissions.auth('User::login::WRITE')}
 							errors={errors[row]?.iterms?.login}
 						/>
 						{/if}
@@ -163,7 +162,7 @@
 						<StringTd
 							name="email"
 							bind:value={node.email}
-							readonly
+							readonly={!permissions.auth('User::email::WRITE')}
 							errors={errors[row]?.iterms?.email}
 						/>
 						{/if}
@@ -172,7 +171,7 @@
 							name="phones"
 							bind:value={node.phones}
 							list
-							readonly
+							readonly={!permissions.auth('User::phones::WRITE')}
 							errors={errors[row]?.iterms?.phones}
 						/>
 						{/if}
@@ -180,7 +179,7 @@
 						<BooleanTd
 							name="disable"
 							bind:value={node.disable}
-							readonly
+							readonly={!permissions.auth('User::disable::WRITE')}
 							errors={errors[row]?.iterms?.disable}
 						/>
 						{/if}
