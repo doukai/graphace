@@ -143,7 +143,7 @@
 						<ObjectTd name="composites" namedStruct={node.composites} errors={errors[row]?.iterms?.composites} path="_/composites" on:gotoField />
 						{/if}
 						{#if permissions.auth('Role::permissions::*')}
-						<ObjectTd name="permissions"  errors={errors[row]?.iterms?.permissions} path="_/permissions" on:gotoField />
+						<ObjectTd name="permissions" errors={errors[row]?.iterms?.permissions} path="_/permissions" on:gotoField />
 						{/if}
 						{#if permissions.auth('Role::realm::*')}
 						<ObjectTd name="realm" namedStruct={node.realm} errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />

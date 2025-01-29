@@ -1,0 +1,183 @@
+import type { LoadEvent } from '@sveltejs/kit';
+import { type GraphQLStore } from "@graphace/ui-graphql";
+import { createGraphQLQueryStore } from '~/utils';
+import type { Query{{ name | pascalCase }}Args, {{ objectField.fieldTypeName }} } from '~/{{ schemaTypesPath }}';
+
+const query = /* GraphQL */ `query Query_{{ name }}_{{ objectField.name }}
+  {%- if objectField.connectionField -%}
+  (${{ name }}_{{ idName }}: String{% if objectField.connectionField.args and objectField.connectionField.args.length > 0 %}, {% for arg in objectField.connectionField.args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %}{% endif %})
+  {%- else -%}
+  (${{ name }}_{{ idName }}: String{% if objectField.args and objectField.args.length > 0 %}, {% for arg in objectField.args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %}{% endif %})
+  {%- endif %} {
+  {{ name }}({{ idName }}: ${{ name }}_{{ idName }})
+    {%- if isConnection %} {
+    totalCount
+    edges {
+      node {
+        {%- if fields %}
+        {%- for field in fields %}
+        {{ field.name }}
+        {%- endfor %}
+        {%- endif %}
+        {%- if objectField.isListType and objectField.connectionField %}
+        {{ objectField.name }}Connection {
+          totalCount
+          edges {
+            node {
+              {%- if objectField.fields %}
+              {%- for field in objectField.fields %}
+              {{ field.name }}
+              {%- endfor %}
+              {%- endif %}
+              {%- if objectField.namedFields %}
+              {%- for field in objectField.namedFields %}
+              {%- if field.select %}
+              {{ field.name }} {
+                {{ field.fieldTypeIdName }}
+                name
+                description
+              }
+              {%- else %}
+              {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
+                name
+                description
+              }
+              {%- endif %}
+              {%- endfor %}
+              {%- endif %}
+              {%- if objectField.fileFields %}
+              {%- for field in objectField.fileFields %}
+              {{ field.name }} {
+                id
+                name
+              }
+              {%- endfor %}
+              {%- endif %}
+            }
+          }
+        }
+        {%- else %}
+        {{ objectField.name }} {
+          {%- if objectField.fields %}
+          {%- for field in objectField.fields %}
+          {{ field.name }}
+          {%- endfor %}
+          {%- endif %}
+          {%- if objectField.namedFields %}
+          {%- for field in objectField.namedFields %}
+          {%- if field.select %}
+          {{ field.name }} {
+            {{ field.fieldTypeIdName }}
+            name
+            description
+          }
+          {%- else %}
+          {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
+            name
+            description
+          }
+          {%- endif %}
+          {%- endfor %}
+          {%- endif %}
+          {%- if objectField.fileFields %}
+          {%- for field in objectField.fileFields %}
+          {{ field.name }} {
+            id
+            name
+          }
+          {%- endfor %}
+          {%- endif %}
+        }
+        {%- endif %}
+      }
+    }
+  }
+    {%- else %} {
+    {%- if fields %}
+    {%- for field in fields %}
+    {{ field.name }}
+    {%- endfor %}
+    {%- endif %}
+    {%- if objectField.isListType and objectField.connectionField %}
+    {{ objectField.name }}Connection 
+    {%- if objectField.connectionField.args and objectField.connectionField.args.length > 0 -%}
+    ({% for arg in objectField.connectionField.args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})
+    {%- endif %} {
+      totalCount
+      edges {
+        node {
+          {%- if objectField.fields %}
+          {%- for field in objectField.fields %}
+          {{ field.name }}
+          {%- endfor %}
+          {%- endif %}
+          {%- if objectField.namedFields %}
+          {%- for field in objectField.namedFields %}
+          {%- if field.select %}
+          {{ field.name }} {
+            {{ field.fieldTypeIdName }}
+            name
+            description
+          }
+          {%- else %}
+          {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
+            name
+            description
+          }
+          {%- endif %}
+          {%- endfor %}
+          {%- endif %}
+          {%- if objectField.fileFields %}
+          {%- for field in objectField.fileFields %}
+          {{ field.name }} {
+            id
+            name
+          }
+          {%- endfor %}
+          {%- endif %}
+        }
+      }
+    }
+    {%- else %}
+    {{ objectField.name }} 
+    {%- if objectField.args and objectField.args.length > 0 -%}
+    ({% for arg in objectField.args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})
+    {%- endif %} {
+      {%- if objectField.fields %}
+      {%- for field in objectField.fields %}
+      {{ field.name }}
+      {%- endfor %}
+      {%- endif %}
+      {%- if objectField.namedFields %}
+      {%- for field in objectField.namedFields %}
+      {%- if field.select %}
+      {{ field.name }} {
+        {{ field.fieldTypeIdName }}
+        name
+        description
+      }
+      {%- else %}
+      {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
+        name
+        description
+      }
+      {%- endif %}
+      {%- endfor %}
+      {%- endif %}
+      {%- if objectField.fileFields %}
+      {%- for field in objectField.fileFields %}
+      {{ field.name }} {
+        id
+        name
+      }
+      {%- endfor %}
+      {%- endif %}
+    }
+    {%- endif %}
+    {%- endif %}
+  }
+}`;
+
+export async function createQuery{{ name | pascalCase }}Store(event: LoadEvent, variables: { {{ name }}_{{ idName }}: string } & Query{{ name | pascalCase }}Args): Promise<GraphQLStore<{{ objectField.fieldTypeName }}{% if isList %}[]{% endif %}, { {{ name }}_{{ idName }}: string } & Query{{ name | pascalCase }}Args>> {
+  return createGraphQLQueryStore<{{ objectField.fieldTypeName }}{% if isList %}[]{% endif %}, Query{{ name | pascalCase }}Args>(query, event, variables);
+}

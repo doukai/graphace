@@ -2,8 +2,13 @@ import { redirect, type LoadEvent } from '@sveltejs/kit';
 import { browser } from '$app/environment';
 import { goto } from '$app/navigation';
 import type { Directive, Field, GraphQLError } from '@graphace/graphql';
-import type { OperationStore } from '@graphace/ui-graphql';
-import { createQueryStore as createQuery, createMutationStore as createMutation } from '@graphace/ui-graphql';
+import type { GraphQLStore, OperationStore } from '@graphace/ui-graphql';
+import {
+    createQueryStore as createQuery,
+    createMutationStore as createMutation,
+    createGraphQLQueryStore as createGraphQLQuery,
+    createGraphQLMutationStore as createGraphQLMutation
+} from '@graphace/ui-graphql';
 import { env } from '$env/dynamic/public';
 
 const authInterceptor = <T>(event: LoadEvent, response: { data?: Record<string, T | null> | undefined, errors?: GraphQLError[] | null | undefined }): void => {
@@ -46,6 +51,34 @@ export async function createMutationStore<T>(event: LoadEvent): Promise<Operatio
     const { subscribe, fetch } = mutationStore;
 
     mutationStore.subscribe(data => {
+        authInterceptor(event, data.response);
+    })
+
+    return {
+        subscribe,
+        fetch
+    };
+}
+
+export async function createGraphQLQueryStore<T, V>(query: string, event: LoadEvent, variables: V): Promise<GraphQLStore<T, V>> {
+    const graphQLQueryStore = await createGraphQLQuery<T, V>(event, browser ? '/graphql' : env.PUBLIC_GRAPHQL_URL, query, variables);
+    const { subscribe, fetch } = graphQLQueryStore;
+
+    graphQLQueryStore.subscribe(data => {
+        authInterceptor(event, data.response);
+    })
+
+    return {
+        subscribe,
+        fetch
+    };
+}
+
+export async function createGraphQLMutationStore<T, V>(query: string, event: LoadEvent): Promise<GraphQLStore<T, V>> {
+    const graphQLQueryStore = await createGraphQLMutation<T, V>(event, browser ? '/graphql' : env.PUBLIC_GRAPHQL_URL, query);
+    const { subscribe, fetch } = graphQLQueryStore;
+
+    graphQLQueryStore.subscribe(data => {
         authInterceptor(event, data.response);
     })
 

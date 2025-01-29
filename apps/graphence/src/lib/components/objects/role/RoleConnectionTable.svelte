@@ -434,7 +434,7 @@
 							/>
 							{/if}
 							{#if permissions.auth('Role::permissions::*')}
-							<ObjectTd name="permissions"  errors={errors[row]?.iterms?.permissions} path={`${node.id}/permissions`} on:gotoField />
+							<ObjectTd name="permissions" errors={errors[row]?.iterms?.permissions} path={`${node.id}/permissions`} on:gotoField />
 							{/if}
 							{#if permissions.auth('Role::realm::*')}
 							<ObjectTd name="realm" namedStruct={node.realm} errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />

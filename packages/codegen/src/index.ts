@@ -3,8 +3,8 @@
 import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import type { GraphacePluginConfig } from './config.js';
 import * as changeCase from "change-case";
-import { assertObjectType, isEnumType, isObjectType, type GraphQLSchema, isNonNullType, assertEnumType } from 'graphql';
-import { isOperationType, isConnection, isRelation, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getLeafFields, getFileFields, getNamedFields, getScalarNames, getBaseScalarNames, getEnumNames, getEnumValues, initConfig, inGraphQLField, inListField, inDetailField, componentFields, getSelectComponentFieldImports, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, getNamedStructObjectNames, inComponentEnum, isInnerEnum, getObjectNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField, fieldTypeIsList, isSelectField, isNamedStruct, isTreeStruct, inComponentObject, hasFileField, getAggFields, getNonListObjectFields, getListObjectFields, isAggregate, getLeafAndAggregateFields, getFieldInfos } from 'graphace-codegen-commons';
+import { assertObjectType, isEnumType, isObjectType, type GraphQLSchema, isNonNullType, assertEnumType, isScalarType } from 'graphql';
+import { isOperationType, isConnection, isRelation, isEdge, isPageInfo, isIntrospection, getIDFieldName, getFieldType, getFields, getField, getSubField, getConnectionField, getLeafFields, getFileFields, getNamedFields, getScalarNames, getBaseScalarNames, getEnumNames, getEnumValues, initConfig, inGraphQLField, inListField, inDetailField, componentFields, getSelectComponentFieldImports, componentFieldImports, getObjectArrayImports, getObjectArrayComponent, getObjectImports, getObjectComponent, getNamedStructObjectNames, inComponentEnum, isInnerEnum, getObjectNames, getQueryTypeName, getMutationTypeName, getSubscriptionTypeName, getPairField, fieldTypeIsList, isSelectField, isNamedStruct, isTreeStruct, inComponentObject, hasFileField, getAggFields, getNonListObjectFields, getListObjectFields, getTSTypeName, getFieldInfos } from 'graphace-codegen-commons';
 import type { Template } from 'graphace-codegen-commons';
 import { buildFileContent } from "./builder.js";
 
@@ -107,7 +107,7 @@ const renders: Record<Template, Render> = {
             ),
         };
     },
-    '{{graphqlPath}}/queries/Query_{{name}}.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{storesPath}}/query/query_{{name}}_store.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const operationFields = schema.getQueryType()?.getFields();
         if (operationFields) {
             const field = Object.keys(operationFields)
@@ -119,6 +119,10 @@ const renders: Record<Template, Render> = {
                 return {
                     content: buildFileContent(config.template, {
                         name: field.name,
+                        fieldTypeName: fieldType.name,
+                        tsTypeName: getTSTypeName(fieldType.name),
+                        isList: fieldTypeIsList(field.type),
+                        isScalar: isScalarType(fieldType),
                         idName: idFieldName,
                         args: field.args,
                         isConnection: isConnection(field.name),
@@ -134,7 +138,8 @@ const renders: Record<Template, Render> = {
                                     select: isSelectField(fieldType.name, field.name, getFieldType(field.type).name),
                                     fields: getLeafFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
                                 }
-                            })
+                            }),
+                        schemaTypesPath: config.schemaTypesPath
                     }),
                 };
             }
@@ -142,51 +147,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${config.name} undefined`);
     },
-    '{{graphqlPath}}/queries/Query_{{name}}_includes.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const operationFields = schema.getQueryType()?.getFields();
-        if (operationFields) {
-            const field = Object.keys(operationFields)
-                .map(key => operationFields[key])
-                .find(field => field.name === config.name);
-            if (field) {
-                const fieldType = getFieldType(field.type);
-                const idFieldName = getIDFieldName(fieldType);
-                const fields = getFields(field)
-                    ?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query'))
-                    .filter(field => !isConnection(getFieldType(field.type).name))
-                    .map(field => ({
-                        ...field,
-                        subFields: isObjectType(getFieldType(field.type)) ? getLeafAndAggregateFields(field) : undefined
-                    }));
-                return {
-                    content: buildFileContent(config.template, {
-                        name: field.name,
-                        idName: idFieldName,
-                        args: field.args,
-                        variables: [
-                            ...field.args,
-                            ...(fields || [])
-                                .flatMap(field => {
-                                    if (field.subFields) {
-                                        return [
-                                            { name: `include_${field.name}`, type: 'Boolean', default: 'false' },
-                                            ...field.subFields.map(subField => ({ name: `include_${field.name}_${subField.name}`, type: 'Boolean', default: 'false' }))
-                                        ];
-                                    } else {
-                                        return [{ name: `include_${field.name}`, type: 'Boolean', default: 'false' }];
-                                    }
-                                })
-                        ],
-                        isConnection: isConnection(field.name),
-                        fields: fields,
-                    }),
-                };
-            }
-        }
-        console.error(config);
-        throw new Error(`${config.name} undefined`);
-    },
-    '{{graphqlPath}}/queries/Query_{{name}}_{{objectFieldName}}.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{storesPath}}/query/query_{{name}}_{{objectFieldName}}_store.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const operationFields = schema.getQueryType()?.getFields();
         if (operationFields) {
             const field = Object.keys(operationFields)
@@ -201,8 +162,9 @@ const renders: Record<Template, Render> = {
                     const subFieldType = getFieldType(subField?.type);
                     objectField = {
                         name: subField?.name,
+                        fieldTypeName: subFieldType.name,
+                        isList: fieldTypeIsList(subField.type),
                         args: subField?.args,
-                        parentArgs: field.args.filter(arg => arg.name === idFieldName).map(arg => { return { name: arg.name, alias: `${field.name}_${arg.name}`, type: arg.type } }),
                         isListType: fieldTypeIsList(subField?.type),
                         connectionField: getConnectionField(fieldType, subField?.name),
                         fields: getLeafFields(subField)?.filter(field => inGraphQLField(subFieldType.name, field.name, getFieldType(field.type).name, 'query')),
@@ -228,7 +190,8 @@ const renders: Record<Template, Render> = {
                         fields: getLeafFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         fileFields: getFileFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
                         namedFields: getNamedFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'query')),
-                        objectField: objectField
+                        objectField: objectField,
+                        schemaTypesPath: config.schemaTypesPath
                     }),
                 };
             }
@@ -236,7 +199,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${config.name} undefined`);
     },
-    '{{graphqlPath}}/mutations/Mutation_{{name}}.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{storesPath}}/mutation/mutation_{{name}}_store.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const operationFields = schema.getMutationType()?.getFields();
         if (operationFields) {
             const field = Object.keys(operationFields)
@@ -248,6 +211,10 @@ const renders: Record<Template, Render> = {
                 return {
                     content: buildFileContent(config.template, {
                         name: field.name,
+                        fieldTypeName: fieldType.name,
+                        isList: fieldTypeIsList(field.type),
+                        isScalar: isScalarType(fieldType),
+                        tsTypeName: getTSTypeName(fieldType.name),
                         idName: idFieldName,
                         args: field.args,
                         fields: getLeafFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
@@ -262,7 +229,8 @@ const renders: Record<Template, Render> = {
                                     select: isSelectField(fieldType.name, field.name, getFieldType(field.type).name),
                                     fields: getLeafFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation'))
                                 }
-                            })
+                            }),
+                        schemaTypesPath: config.schemaTypesPath
                     }),
                 };
             }
@@ -270,7 +238,7 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${config.name} undefined`);
     },
-    '{{graphqlPath}}/mutations/Mutation_{{name}}_{{objectFieldName}}.gql': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    '{{storesPath}}/mutation/mutation_{{name}}_{{objectFieldName}}_store.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const operationFields = schema.getMutationType()?.getFields();
         if (operationFields) {
             const field = Object.keys(operationFields)
@@ -285,8 +253,9 @@ const renders: Record<Template, Render> = {
                     const subFieldType = getFieldType(subField?.type);
                     objectField = {
                         name: subField?.name,
+                        fieldTypeName: subFieldType.name,
+                        isList: fieldTypeIsList(subField.type),
                         args: subField?.args,
-                        parentArgs: field.args.filter(arg => arg.name === subField?.name).map(arg => { return { name: arg.name, alias: `${field.name}_${arg.name}`, type: arg.type } }),
                         isListType: fieldTypeIsList(subField?.type),
                         connectionField: getConnectionField(fieldType, subField?.name),
                         fields: getLeafFields(subField)?.filter(field => inGraphQLField(subFieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
@@ -311,7 +280,8 @@ const renders: Record<Template, Render> = {
                         fields: getLeafFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
                         fileFields: getFileFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
                         namedFields: getNamedFields(field)?.filter(field => inGraphQLField(fieldType.name, field.name, getFieldType(field.type).name, 'mutation')),
-                        objectField: objectField
+                        objectField: objectField,
+                        schemaTypesPath: config.schemaTypesPath
                     }),
                 };
             }

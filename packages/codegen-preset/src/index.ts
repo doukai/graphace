@@ -94,8 +94,8 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         generateOptions.push(
             ...targetQueryFields
                 .map(field => {
-                    const template = '{{graphqlPath}}/queries/Query_{{name}}.gql';
-                    const scope = { graphqlPath, name: field.name };
+                    const template = '{{storesPath}}/query/query_{{name}}_store.ts';
+                    const scope = { storesPath, name: field.name };
                     return {
                         filename: buildPath(template, scope),
                         documents: options.documents,
@@ -103,7 +103,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         pluginMap: options.pluginMap,
                         config: {
                             appName: options.presetConfig.appName || _appName,
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -158,8 +158,8 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 })
                 .map(objectField => {
                     const { name, objectFieldName } = objectField;
-                    const template = '{{graphqlPath}}/queries/Query_{{name}}_{{objectFieldName}}.gql';
-                    const scope = { graphqlPath, name, objectFieldName };
+                    const template = '{{storesPath}}/query/query_{{name}}_{{objectFieldName}}_store.ts';
+                    const scope = { storesPath, name, objectFieldName };
                     return {
                         filename: buildPath(template, scope),
                         documents: options.documents,
@@ -167,7 +167,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         pluginMap: options.pluginMap,
                         config: {
                             appName: options.presetConfig.appName || _appName,
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -186,8 +186,8 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         generateOptions.push(
             ...targetMutationFields
                 .map(field => {
-                    const template = '{{graphqlPath}}/mutations/Mutation_{{name}}.gql';
-                    const scope = { graphqlPath, name: field.name };
+                    const template = '{{storesPath}}/mutation/mutation_{{name}}_store.ts';
+                    const scope = { storesPath, name: field.name };
                     return {
                         filename: buildPath(template, scope),
                         documents: options.documents,
@@ -195,7 +195,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         pluginMap: options.pluginMap,
                         config: {
                             appName: options.presetConfig.appName || _appName,
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -222,8 +222,8 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 })
                 .map(objectField => {
                     const { name, objectFieldName } = objectField;
-                    const template = '{{graphqlPath}}/mutations/Mutation_{{name}}_{{objectFieldName}}.gql';
-                    const scope = { graphqlPath, name, objectFieldName };
+                    const template = '{{storesPath}}/mutation/mutation_{{name}}_{{objectFieldName}}_store.ts';
+                    const scope = { storesPath, name, objectFieldName };
                     return {
                         filename: buildPath(template, scope),
                         documents: options.documents,
@@ -231,7 +231,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         pluginMap: options.pluginMap,
                         config: {
                             appName: options.presetConfig.appName || _appName,
-                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,

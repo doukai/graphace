@@ -90202,42 +90202,6 @@
         ]
       },
       {
-        "name": "include",
-        "description": null,
-        "isRepeatable": false,
-        "locations": [
-          "FIELD",
-          "FRAGMENT_SPREAD",
-          "INLINE_FRAGMENT"
-        ],
-        "args": [
-          {
-            "name": "package",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": "\"io.graphoenix.core\"",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "if",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
-            },
-            "defaultValue": "true",
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ]
-      },
-      {
         "name": "interface",
         "description": null,
         "isRepeatable": false,
@@ -90265,11 +90229,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "SUBSCRIPTION",
-          "MUTATION",
-          "FIELD_DEFINITION",
           "QUERY",
-          "INPUT_OBJECT"
+          "MUTATION",
+          "SUBSCRIPTION",
+          "INPUT_OBJECT",
+          "FIELD_DEFINITION"
         ],
         "args": [
           {
@@ -90355,11 +90319,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "SUBSCRIPTION",
-          "MUTATION",
-          "FIELD_DEFINITION",
           "QUERY",
-          "INPUT_OBJECT"
+          "MUTATION",
+          "SUBSCRIPTION",
+          "INPUT_OBJECT",
+          "FIELD_DEFINITION"
         ],
         "args": [
           {
@@ -90398,9 +90362,9 @@
         "isRepeatable": false,
         "locations": [
           "OBJECT",
-          "FIELD_DEFINITION",
           "INPUT_FIELD_DEFINITION",
-          "INPUT_OBJECT"
+          "INPUT_OBJECT",
+          "FIELD_DEFINITION"
         ],
         "args": [
           {
@@ -90960,11 +90924,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "SUBSCRIPTION",
+          "QUERY",
           "MUTATION",
           "OBJECT",
-          "FIELD_DEFINITION",
-          "QUERY"
+          "SUBSCRIPTION",
+          "FIELD_DEFINITION"
         ],
         "args": [
           {
@@ -91054,42 +91018,6 @@
               }
             },
             "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ]
-      },
-      {
-        "name": "skip",
-        "description": null,
-        "isRepeatable": false,
-        "locations": [
-          "FIELD",
-          "FRAGMENT_SPREAD",
-          "INLINE_FRAGMENT"
-        ],
-        "args": [
-          {
-            "name": "package",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": "\"io.graphoenix.core\"",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "if",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
-            },
-            "defaultValue": "true",
             "isDeprecated": false,
             "deprecationReason": null
           }

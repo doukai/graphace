@@ -361,6 +361,27 @@ export const getBaseScalarNames = (fields: FieldInfo[] | undefined): string[] | 
     return baseScalarNames?.filter((baseScalarName, index) => baseScalarNames.indexOf(baseScalarName) == index);
 }
 
+export const getTSTypeName = (typeName: string): string => {
+    switch (typeName) {
+        case "Boolean":
+            return "boolean";
+        case "ID":
+        case "String":
+        case "Date":
+        case "Time":
+        case "DateTime":
+        case "Timestamp":
+            return "string";
+        case "Int":
+        case "BigInteger":
+        case "Float":
+        case "BigDecimal":
+            return "number";
+        default:
+            return typeName;
+    }
+}
+
 export const getEnumNames = (fields: FieldInfo[] | undefined): string[] | undefined => {
     const enumNames = fields?.filter(field => !isInnerEnum(field.fieldName))
         .filter(field => field.isEnumType)

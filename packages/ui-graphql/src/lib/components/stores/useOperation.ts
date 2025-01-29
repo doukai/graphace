@@ -43,6 +43,44 @@ export async function createQueryStore<T>(event: LoadEvent, url: string | URL, p
     };
 }
 
+export async function createGraphQLQueryStore<T, V>(event: LoadEvent, url: string | URL, query: string, variables: V): Promise<GraphQLStore<T, V>> {
+    const data: Writable<{ isFetching: boolean, response: { data?: Record<string, T | null> | undefined, errors?: GraphQLError[] | null | undefined } }> = writable({
+        isFetching: false,
+        response: {}
+    });
+
+    const { subscribe, set, update } = data;
+
+    const fetch = async (variables: V) => {
+        update((data) => ({ ...data, isFetching: true }));
+
+        const response = await event.fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                query: query,
+                variables: variables
+            })
+        });
+
+        const json = await response.json();
+        set({
+            isFetching: false,
+            response: json
+        });
+        return json;
+    }
+
+    await fetch(variables);
+
+    return {
+        subscribe,
+        fetch
+    };
+}
+
 export async function createMutationStore<T>(event: LoadEvent, url: string | URL): Promise<OperationStore<T>> {
     const data: Writable<{ isFetching: boolean, response: { data?: Record<string, T | null> | undefined, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
@@ -81,6 +119,42 @@ export async function createMutationStore<T>(event: LoadEvent, url: string | URL
     };
 }
 
+export async function createGraphQLMutationStore<T, V>(event: LoadEvent, url: string | URL, query: string): Promise<GraphQLStore<T, V>> {
+    const data: Writable<{ isFetching: boolean, response: { data?: Record<string, T | null> | undefined, errors?: GraphQLError[] | null | undefined } }> = writable({
+        isFetching: false,
+        response: {}
+    });
+
+    const { subscribe, set, update } = data;
+
+    const fetch = async (variables: V) => {
+        update((data) => ({ ...data, isFetching: true }));
+
+        const response = await event.fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                query: query,
+                variables: variables
+            })
+        });
+
+        const json = await response.json();
+        set({
+            isFetching: false,
+            response: json
+        });
+        return json;
+    }
+
+    return {
+        subscribe,
+        fetch
+    };
+}
+
 export type OperationStore<T> = {
     subscribe: (this: void, run: Subscriber<{
         isFetching: boolean;
@@ -90,4 +164,15 @@ export type OperationStore<T> = {
         response: { data?: Record<string, T | null> | undefined, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
     fetch: (params: { fields: Field[], name?: string | undefined, directives?: Directive[] }) => Promise<{ data?: Record<string, T | null> | undefined, errors?: GraphQLError[] | null | undefined }>;
+}
+
+export type GraphQLStore<T, V> = {
+    subscribe: (this: void, run: Subscriber<{
+        isFetching: boolean;
+        response: { data?: Record<string, T | null> | undefined, errors?: GraphQLError[] | null | undefined };
+    }>, invalidate?: Invalidator<{
+        isFetching: boolean;
+        response: { data?: Record<string, T | null> | undefined, errors?: GraphQLError[] | null | undefined };
+    }> | undefined) => Unsubscriber;
+    fetch: (variables: V) => Promise<{ data?: Record<string, T | null> | undefined, errors?: GraphQLError[] | null | undefined }>;
 }

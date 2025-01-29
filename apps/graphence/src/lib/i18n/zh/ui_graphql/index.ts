@@ -2,6 +2,10 @@
 import type { NamespaceUiGraphqlTranslation } from '../../i18n-types'
 
 const zh_ui_graphql = {
+	text: {
+		'true': '是',
+		'false': '否',
+	},
 	table: {
 		removeModalTitle: '确认删除?',
 		editBtn: '编辑',
