@@ -1,7 +1,7 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLQueryStore } from '~/utils';
-import type { QueryPermissionArgs, Role } from '~/lib/types/schema';
+import type { QueryRoleConnectionArgs, Permission } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `query Query_permission_roles($permission_name: String, $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $groups: GroupExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $roleUserRelation: RoleUserRelationExpression, $groupRoleRelation: GroupRoleRelationExpression, $roleCompositeRelation: RoleCompositeRelationExpression, $permissionRoleRelation: PermissionRoleRelationExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!]) {
   permission(name: $permission_name) {
@@ -58,6 +58,8 @@ const query = /* GraphQL */ `query Query_permission_roles($permission_name: Stri
   }
 }`;
 
-export async function createQueryPermissionStore(event: LoadEvent, variables: { permission_name: string } & QueryPermissionArgs): Promise<GraphQLStore<Role, { permission_name: string } & QueryPermissionArgs>> {
-  return createGraphQLQueryStore<Role, QueryPermissionArgs>(query, event, variables);
+export async function createQuery_permission_roles_Store(event: LoadEvent, variables: { permission_name: string } & QueryRoleConnectionArgs): Promise<Query_permission_roles_Store> {
+  return createGraphQLQueryStore<Permission, { permission_name: string } & QueryRoleConnectionArgs>(query, event, variables);
 }
+
+export type Query_permission_roles_Store = GraphQLStore<Permission, { permission_name: string } & QueryRoleConnectionArgs>;

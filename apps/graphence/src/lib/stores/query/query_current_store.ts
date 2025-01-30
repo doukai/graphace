@@ -15,6 +15,8 @@ const query = /* GraphQL */ `query query_current {
   }
 }`;
 
-export async function createQueryCurrentStore(event: LoadEvent, variables: undefined): Promise<GraphQLStore<Current, undefined>> {
+export async function createQuery_current_Store(event: LoadEvent, variables: undefined): Promise<Query_current_Store> {
   return createGraphQLQueryStore<Current, undefined>(query, event, variables);
 }
+
+export type Query_current_Store = GraphQLStore<Current, undefined>;

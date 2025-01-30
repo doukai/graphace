@@ -1,7 +1,9 @@
 import type { LoadEvent } from '@sveltejs/kit';
-import type { LayoutLoad } from '$types';
+import type { LayoutLoad } from './$types';
 import { type Errors, getNode, getErrors } from '@graphace/commons';
-import { load_Query_permission_realm } from '$houdini';
+import { createQuery_permission_realm_Store } from '~/lib/stores/query/query_permission_realm_store';
+import { createMutation_permission_realm_Store } from '~/lib/stores/mutation/mutation_permission_realm_store';
+import { createMutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
 import type { MutationRealmArgs } from '~/lib/types/schema';
 import { permissions } from '~/utils';
 
@@ -12,6 +14,8 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
     return {
         node,
         errors,
-        ...(await load_Query_permission_realm({ event, variables: { permission_name: { val: event.params.id } } }))
+        query_permission_realm_Store: await createQuery_permission_realm_Store( event, { permission_name: { val: event.params.id } } ),
+        mutation_permission_realm_Store: await createMutation_permission_realm_Store(event),
+        mutation_realm_Store: await createMutation_realm_Store(event)
     };
 }

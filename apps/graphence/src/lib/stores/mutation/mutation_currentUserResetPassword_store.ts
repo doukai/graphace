@@ -40,6 +40,8 @@ const query = /* GraphQL */ `mutation Mutation_currentUserResetPassword($passwor
   }
 }`;
 
-export async function createMutationCurrentUserResetPasswordStore(event: LoadEvent): Promise<GraphQLStore<User, MutationCurrentUserResetPasswordArgs>> {
+export async function createMutation_currentUserResetPassword_Store(event: LoadEvent): Promise<Mutation_currentUserResetPassword_Store> {
   return createGraphQLMutationStore<User, MutationCurrentUserResetPasswordArgs>(query, event);
 }
+
+export type Mutation_currentUserResetPassword_Store = GraphQLStore<User, MutationCurrentUserResetPasswordArgs>;

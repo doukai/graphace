@@ -1,7 +1,7 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLQueryStore } from '~/utils';
-import type { Query{{ name | pascalCase }}Args, {{ objectField.fieldTypeName }} } from '~/{{ schemaTypesPath }}';
+import type { Query{{ objectField.fieldTypeName | pascalCase }}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}Args, {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
 
 const query = /* GraphQL */ `query Query_{{ name }}_{{ objectField.name }}
   {%- if objectField.connectionField -%}
@@ -178,6 +178,8 @@ const query = /* GraphQL */ `query Query_{{ name }}_{{ objectField.name }}
   }
 }`;
 
-export async function createQuery{{ name | pascalCase }}Store(event: LoadEvent, variables: { {{ name }}_{{ idName }}: string } & Query{{ name | pascalCase }}Args): Promise<GraphQLStore<{{ objectField.fieldTypeName }}{% if isList %}[]{% endif %}, { {{ name }}_{{ idName }}: string } & Query{{ name | pascalCase }}Args>> {
-  return createGraphQLQueryStore<{{ objectField.fieldTypeName }}{% if isList %}[]{% endif %}, Query{{ name | pascalCase }}Args>(query, event, variables);
+export async function createQuery_{{ name }}_{{ objectField.name }}_Store(event: LoadEvent, variables: { {{ name }}_{{ idName }}: string } & Query{{ objectField.fieldTypeName | pascalCase }}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}Args): Promise<Query_{{ name }}_{{ objectField.name }}_Store> {
+  return createGraphQLQueryStore<{{ fieldTypeName }}{% if isList %}[]{% endif %}, { {{ name }}_{{ idName }}: string } & Query{{ objectField.fieldTypeName | pascalCase }}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}Args>(query, event, variables);
 }
+
+export type Query_{{ name }}_{{ objectField.name }}_Store = GraphQLStore<{{ fieldTypeName }}{% if isList %}[]{% endif %}, { {{ name }}_{{ idName }}: string } & Query{{ objectField.fieldTypeName | pascalCase }}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}Args>;

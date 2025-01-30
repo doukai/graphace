@@ -1,7 +1,7 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
-import type { Mutation{{ name | pascalCase }}Args, {{ objectField.fieldTypeName }} } from '~/{{ schemaTypesPath }}';
+import type { Mutation{{ objectField.fieldTypeName | pascalCase }}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}Args, {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
 
 const query = /* GraphQL */ `mutation Mutation_{{ name }}_{{ objectField.name }}
   {%- if objectField.connectionField -%}
@@ -94,6 +94,8 @@ const query = /* GraphQL */ `mutation Mutation_{{ name }}_{{ objectField.name }}
   }
 }`;
 
-export async function createMutation{{ name | pascalCase }}Store(event: LoadEvent): Promise<GraphQLStore<{{ objectField.fieldTypeName }}{% if isList %}[]{% endif %}, { {{ name }}_{{ idName }}: string } & Mutation{{ name | pascalCase }}Args>> {
-  return createGraphQLMutationStore<{{ objectField.fieldTypeName }}{% if isList %}[]{% endif %}, Mutation{{ name | pascalCase }}Args>(query, event);
+export async function createMutation_{{ name }}_{{ objectField.name }}_Store(event: LoadEvent): Promise<Mutation_{{ name }}_{{ objectField.name }}_Store> {
+  return createGraphQLMutationStore<{{ fieldTypeName }}{% if isList %}[]{% endif %}, { {{ name }}_{{ idName }}: string } & Mutation{{ objectField.fieldTypeName | pascalCase }}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}Args>(query, event);
 }
+
+export type Mutation_{{ name }}_{{ objectField.name }}_Store = GraphQLStore<{{ fieldTypeName }}{% if isList %}[]{% endif %}, { {{ name }}_{{ idName }}: string } & Mutation{{ objectField.fieldTypeName | pascalCase }}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}Args>;

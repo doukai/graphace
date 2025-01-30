@@ -1,11 +1,13 @@
 import type { LoadEvent } from '@sveltejs/kit';
-import type { LayoutLoad } from '$types';
-import { load_Query_group } from '$houdini';
+import type { LayoutLoad } from './$types';
+import { createQuery_group_Store } from '~/lib/stores/query/query_group_store';
+import { createMutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
 import { permissions } from '~/utils';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     await permissions.getTypes('Group');
     return {
-        ...(await load_Query_group({ event, variables: { id: { val: event.params.id } } }))
+        query_group_Store: await createQuery_group_Store(event, { id: { val: event.params.id } }),
+        mutation_group_Store: await createMutation_group_Store(event)
     };
 }

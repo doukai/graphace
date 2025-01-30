@@ -16,6 +16,8 @@ const query = /* GraphQL */ `query query_policyList {
   }
 }`;
 
-export async function createQueryPolicyListStore(event: LoadEvent, variables: undefined): Promise<GraphQLStore<Policy[], undefined>> {
+export async function createQuery_policyList_Store(event: LoadEvent, variables: undefined): Promise<Query_policyList_Store> {
   return createGraphQLQueryStore<Policy[], undefined>(query, event, variables);
 }
+
+export type Query_policyList_Store = GraphQLStore<Policy[], undefined>;

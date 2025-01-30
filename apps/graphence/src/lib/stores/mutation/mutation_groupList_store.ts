@@ -48,6 +48,8 @@ const query = /* GraphQL */ `mutation Mutation_groupList($id: ID, $name: String,
   }
 }`;
 
-export async function createMutationGroupListStore(event: LoadEvent): Promise<GraphQLStore<Group[], MutationGroupListArgs>> {
+export async function createMutation_groupList_Store(event: LoadEvent): Promise<Mutation_groupList_Store> {
   return createGraphQLMutationStore<Group[], MutationGroupListArgs>(query, event);
 }
+
+export type Mutation_groupList_Store = GraphQLStore<Group[], MutationGroupListArgs>;

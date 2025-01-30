@@ -5,22 +5,24 @@
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
 	import RealmCreateForm from '~/lib/components/objects/realm/RealmCreateForm.svelte';
+	import type { Query_permission_realm_Store } from '~/lib/stores/query/query_permission_realm_store';
+	import type { Mutation_permission_realm_Store } from '~/lib/stores/mutation/mutation_permission_realm_store';
+	import type { Mutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
 	import type { RealmInput, MutationRealmArgs } from '~/lib/types/schema';
-	import { Query_permission_realmStore, Mutation_permission_realmStore, Mutation_realmStore } from '$houdini';
-	import type { PageData } from './$houdini';
+	import type { PageData } from './$types';
 	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Permission.fields.realm.name());
-	$: Query_permission_realm = data.Query_permission_realm as Query_permission_realmStore;
-	$: permission = $Query_permission_realm.data?.permission;
+	$: query_permission_realm_Store = data.query_permission_realm_Store as Query_permission_realm_Store;
+	$: permission = $query_permission_realm_Store.response.data?.permission;
 	$: node = permission?.realm;
 	$: createNode = data.node;
 	$: errors = data.errors as Record<string, Errors>;
-	const Mutation_permission_realm = new Mutation_permission_realmStore();
-	const Mutation_realm = new Mutation_realmStore();
+	$: mutation_permission_realm_Store = data.mutation_permission_realm_Store as Mutation_permission_realm_Store;
+	$: mutation_realm_Store = data.mutation_realm_Store as Mutation_realm_Store;
 
 	const mutation = (
 		event: CustomEvent<{
@@ -32,7 +34,7 @@
 		validate('Mutation_realm_Arguments', event.detail.args, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_realm.mutate(event.detail.args)
+				mutation_realm_Store.fetch(event.detail.args)
 					.then((result) => {
 						if (result.errors) {
 							event.detail.catch(result.errors);
@@ -56,7 +58,7 @@
 		validate('Mutation_permission_Arguments', { where: { name: { val: permission?.name } }, realm: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_permission_realm.mutate({
+				mutation_permission_realm_Store.fetch({
 					permission_name: permission?.name,
 					permission_realm: event.detail.args
 				})
@@ -103,7 +105,7 @@
 			showRemoveButton={false}
 			showUnbindButton={true}
 			showBackButton={$canBack}
-			isFetching={$Query_permission_realm.fetching}
+			isFetching={$query_permission_realm_Store.isFetching}
 			on:mutation={mutation}
 			on:parentMutation={parentMutation}
 			on:gotoField={gotoField}

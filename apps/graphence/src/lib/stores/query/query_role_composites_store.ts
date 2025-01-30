@@ -1,7 +1,7 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLQueryStore } from '~/utils';
-import type { QueryRoleArgs, Role } from '~/lib/types/schema';
+import type { QueryRoleConnectionArgs, Role } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `query Query_role_composites($role_id: String, $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $groups: GroupExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $roleUserRelation: RoleUserRelationExpression, $groupRoleRelation: GroupRoleRelationExpression, $roleCompositeRelation: RoleCompositeRelationExpression, $permissionRoleRelation: PermissionRoleRelationExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!]) {
   role(id: $role_id) {
@@ -56,6 +56,8 @@ const query = /* GraphQL */ `query Query_role_composites($role_id: String, $id: 
   }
 }`;
 
-export async function createQueryRoleStore(event: LoadEvent, variables: { role_id: string } & QueryRoleArgs): Promise<GraphQLStore<Role, { role_id: string } & QueryRoleArgs>> {
-  return createGraphQLQueryStore<Role, QueryRoleArgs>(query, event, variables);
+export async function createQuery_role_composites_Store(event: LoadEvent, variables: { role_id: string } & QueryRoleConnectionArgs): Promise<Query_role_composites_Store> {
+  return createGraphQLQueryStore<Role, { role_id: string } & QueryRoleConnectionArgs>(query, event, variables);
 }
+
+export type Query_role_composites_Store = GraphQLStore<Role, { role_id: string } & QueryRoleConnectionArgs>;

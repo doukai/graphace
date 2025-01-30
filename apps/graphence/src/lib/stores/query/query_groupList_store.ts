@@ -47,6 +47,8 @@ const query = /* GraphQL */ `query query_groupList($id: StringExpression, $name:
   }
 }`;
 
-export async function createQueryGroupListStore(event: LoadEvent, variables: QueryGroupListArgs): Promise<GraphQLStore<Group[], QueryGroupListArgs>> {
+export async function createQuery_groupList_Store(event: LoadEvent, variables: QueryGroupListArgs): Promise<Query_groupList_Store> {
   return createGraphQLQueryStore<Group[], QueryGroupListArgs>(query, event, variables);
 }
+
+export type Query_groupList_Store = GraphQLStore<Group[], QueryGroupListArgs>;

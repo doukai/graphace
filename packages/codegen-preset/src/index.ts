@@ -260,6 +260,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -287,6 +288,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -314,6 +316,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -341,6 +344,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -381,6 +385,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -422,6 +427,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -463,6 +469,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -504,6 +511,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -545,6 +553,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -586,6 +595,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -627,6 +637,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -668,6 +679,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -709,6 +721,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -750,6 +763,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -778,6 +792,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -805,6 +820,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -845,6 +861,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -886,6 +903,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -927,6 +945,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -968,6 +987,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1009,6 +1029,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1050,6 +1071,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1091,6 +1113,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1132,6 +1155,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1173,6 +1197,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1214,6 +1239,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1354,6 +1380,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1381,6 +1408,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1408,6 +1436,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1435,6 +1464,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1462,6 +1492,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1489,6 +1520,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1516,6 +1548,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1543,6 +1576,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1570,6 +1604,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1598,6 +1633,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1626,6 +1662,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1653,6 +1690,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1680,6 +1718,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1709,6 +1748,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1737,6 +1777,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1765,6 +1806,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1793,6 +1835,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1820,6 +1863,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1847,6 +1891,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1874,6 +1919,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1901,6 +1947,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1928,6 +1975,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -1982,6 +2030,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -2009,6 +2058,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -2036,6 +2086,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -2061,6 +2112,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 config: {
                     appName: options.presetConfig.appName || _appName,
                     graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                    storesPath: options.presetConfig.storesPath || _storesPath,
                     componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                     routesPath: options.presetConfig.graphqlPath || _routesPath,
                     dataPath: options.presetConfig.dataPath || _dataPath,
@@ -2087,6 +2139,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -2114,6 +2167,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -2141,6 +2195,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -2168,6 +2223,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         config: {
                             appName: options.presetConfig.appName || _appName,
                             graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            storesPath: options.presetConfig.storesPath || _storesPath,
                             componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                             routesPath: options.presetConfig.graphqlPath || _routesPath,
                             builder: options.presetConfig.builder,
@@ -2193,6 +2249,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 config: {
                     appName: options.presetConfig.appName || _appName,
                     graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                    storesPath: options.presetConfig.storesPath || _storesPath,
                     componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                     routesPath: options.presetConfig.graphqlPath || _routesPath,
                     dataPath: options.presetConfig.dataPath || _dataPath,
@@ -2217,6 +2274,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 config: {
                     appName: options.presetConfig.appName || _appName,
                     graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                    storesPath: options.presetConfig.storesPath || _storesPath,
                     componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                     routesPath: options.presetConfig.graphqlPath || _routesPath,
                     dataPath: options.presetConfig.dataPath || _dataPath,
@@ -2245,6 +2303,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                     config: {
                         appName: options.presetConfig.appName || _appName,
                         graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                        storesPath: options.presetConfig.storesPath || _storesPath,
                         componentsPath: options.presetConfig.graphqlPath || _componentsPath,
                         routesPath: options.presetConfig.graphqlPath || _routesPath,
                         dataPath: options.presetConfig.dataPath || _dataPath,

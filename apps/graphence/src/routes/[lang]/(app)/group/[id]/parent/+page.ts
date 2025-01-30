@@ -1,7 +1,9 @@
 import type { LoadEvent } from '@sveltejs/kit';
-import type { LayoutLoad } from '$types';
+import type { LayoutLoad } from './$types';
 import { type Errors, getNode, getErrors } from '@graphace/commons';
-import { load_Query_group_parent } from '$houdini';
+import { createQuery_group_parent_Store } from '~/lib/stores/query/query_group_parent_store';
+import { createMutation_group_parent_Store } from '~/lib/stores/mutation/mutation_group_parent_store';
+import { createMutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
 import type { MutationGroupArgs } from '~/lib/types/schema';
 import { permissions } from '~/utils';
 
@@ -12,6 +14,8 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
     return {
         node,
         errors,
-        ...(await load_Query_group_parent({ event, variables: { group_id: { val: event.params.id } } }))
+        query_group_parent_Store: await createQuery_group_parent_Store( event, { group_id: { val: event.params.id } } ),
+        mutation_group_parent_Store: await createMutation_group_parent_Store(event),
+        mutation_group_Store: await createMutation_group_Store(event)
     };
 }

@@ -1,7 +1,9 @@
 import type { LoadEvent } from '@sveltejs/kit';
-import type { LayoutLoad } from '$types';
+import type { LayoutLoad } from './$types';
 import { type Errors, getNode, getErrors } from '@graphace/commons';
-import { load_Query_group_realm } from '$houdini';
+import { createQuery_group_realm_Store } from '~/lib/stores/query/query_group_realm_store';
+import { createMutation_group_realm_Store } from '~/lib/stores/mutation/mutation_group_realm_store';
+import { createMutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
 import type { MutationRealmArgs } from '~/lib/types/schema';
 import { permissions } from '~/utils';
 
@@ -12,6 +14,8 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
     return {
         node,
         errors,
-        ...(await load_Query_group_realm({ event, variables: { group_id: { val: event.params.id } } }))
+        query_group_realm_Store: await createQuery_group_realm_Store( event, { group_id: { val: event.params.id } } ),
+        mutation_group_realm_Store: await createMutation_group_realm_Store(event),
+        mutation_realm_Store: await createMutation_realm_Store(event)
     };
 }

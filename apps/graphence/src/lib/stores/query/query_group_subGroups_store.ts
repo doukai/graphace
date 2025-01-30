@@ -1,7 +1,7 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLQueryStore } from '~/utils';
-import type { QueryGroupArgs, Group } from '~/lib/types/schema';
+import type { QueryGroupConnectionArgs, Group } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `query Query_group_subGroups($group_id: String, $id: StringExpression, $name: StringExpression, $description: StringExpression, $path: StringExpression, $deep: IntExpression, $parentId: StringExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $groupUserRelation: GroupUserRelationExpression, $groupRoleRelation: GroupRoleRelationExpression, $first: Int, $last: Int, $offset: Int, $orderBy: GroupOrderBy, $groupBy: [String!]) {
   group(id: $group_id) {
@@ -67,6 +67,8 @@ const query = /* GraphQL */ `query Query_group_subGroups($group_id: String, $id:
   }
 }`;
 
-export async function createQueryGroupStore(event: LoadEvent, variables: { group_id: string } & QueryGroupArgs): Promise<GraphQLStore<Group, { group_id: string } & QueryGroupArgs>> {
-  return createGraphQLQueryStore<Group, QueryGroupArgs>(query, event, variables);
+export async function createQuery_group_subGroups_Store(event: LoadEvent, variables: { group_id: string } & QueryGroupConnectionArgs): Promise<Query_group_subGroups_Store> {
+  return createGraphQLQueryStore<Group, { group_id: string } & QueryGroupConnectionArgs>(query, event, variables);
 }
+
+export type Query_group_subGroups_Store = GraphQLStore<Group, { group_id: string } & QueryGroupConnectionArgs>;

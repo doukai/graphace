@@ -44,6 +44,8 @@ const query = /* GraphQL */ `query query_userConnection($id: StringExpression, $
   }
 }`;
 
-export async function createQueryUserConnectionStore(event: LoadEvent, variables: QueryUserConnectionArgs): Promise<GraphQLStore<UserConnection, QueryUserConnectionArgs>> {
+export async function createQuery_userConnection_Store(event: LoadEvent, variables: QueryUserConnectionArgs): Promise<Query_userConnection_Store> {
   return createGraphQLQueryStore<UserConnection, QueryUserConnectionArgs>(query, event, variables);
 }
+
+export type Query_userConnection_Store = GraphQLStore<UserConnection, QueryUserConnectionArgs>;

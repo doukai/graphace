@@ -20,6 +20,8 @@ const query = /* GraphQL */ `mutation Mutation_realm($id: ID, $name: String, $de
   }
 }`;
 
-export async function createMutationRealmStore(event: LoadEvent): Promise<GraphQLStore<Realm, MutationRealmArgs>> {
+export async function createMutation_realm_Store(event: LoadEvent): Promise<Mutation_realm_Store> {
   return createGraphQLMutationStore<Realm, MutationRealmArgs>(query, event);
 }
+
+export type Mutation_realm_Store = GraphQLStore<Realm, MutationRealmArgs>;

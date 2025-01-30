@@ -3,20 +3,24 @@
 	import type { Errors } from '@graphace/commons';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import {{ name }}Form from '~/{{ formPath }}/{{ name | paramCase }}/{{ name }}Form.svelte';
+	import type { Query_{{ name | paramCase }}_Store } from '~/{{ storesPath }}/query/query_{{ name | paramCase }}_store';
+	import type { Mutation_{{ name | paramCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | paramCase }}_store';
+	{%- if hasFileField %}
+	import type { Mutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
+	{%- endif %}
 	import type { GraphQLError } from '@graphace/graphql';
 	import type { {{ name }}Input, {{ mutationTypeName }}{{ name }}Args } from '~/{{ schemaTypesPath }}';
-	import { Query_{{ name | camelCase }}Store, Mutation_{{ name | camelCase }}Store{% if hasFileField %}, Mutation_singleUploadStore{% endif %} } from '$houdini';
-	import type { PageData } from './$houdini';
+	import type { PageData } from './$types';
 	import { validate } from '~/utils';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: Query_{{ name | camelCase }} = data.Query_{{ name | camelCase }} as Query_{{ name | camelCase }}Store;
-	$: node = $Query_{{ name | camelCase }}.data?.{{ name | camelCase }};
+	$: query_{{ name | camelCase }}_Store = data.query_{{ name | camelCase }}_Store as Query_{{ name | camelCase }}_Store;
+	$: node = $query_{{ name | camelCase }}_Store.response.data?.{{ name | camelCase }};
 	$: urlName($page.url, node?.name || '');
-	const Mutation_{{ name | camelCase }} = new Mutation_{{ name | camelCase }}Store();
+	$: mutation_{{ name | camelCase }}_Store = data.mutation_{{ name | camelCase }}_Store as Mutation_{{ name | camelCase }}_Store;
 	{%- if hasFileField %}
-	const Mutation_singleUpload = new Mutation_singleUploadStore();
+	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store as Mutation_singleUpload_Store;
 	{%- endif %}
 	let errors: Record<string, Errors> = {};
 
@@ -30,7 +34,7 @@
 		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', event.detail.args, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_{{ name | camelCase }}.mutate(event.detail.args)
+				mutation_{{ name | camelCase }}_Store.fetch(event.detail.args)
 					.then((result) => {
 						if (result.errors) {
 							event.detail.catch(result.errors);
@@ -58,13 +62,13 @@
 		showBackButton={$canBack}
 		{node}
 		{errors}
-		isFetching={$Query_{{ name| camelCase }}.fetching}
+		isFetching={$query_{{ name| camelCase }}_Store.isFetching}
 		on:mutation={mutation}
 		on:back={back}
 		on:gotoField={gotoField}
 		{%- if hasFileField %}
 		on:upload={(e) => {
-			Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
+			mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
 				e.detail.then(result.data?.singleUpload)
 			);
 		}}

@@ -1,11 +1,13 @@
 import type { LoadEvent } from '@sveltejs/kit';
-import type { LayoutLoad } from '$types';
-import { load_Query_permission } from '$houdini';
+import type { LayoutLoad } from './$types';
+import { createQuery_permission_Store } from '~/lib/stores/query/query_permission_store';
+import { createMutation_permission_Store } from '~/lib/stores/mutation/mutation_permission_store';
 import { permissions } from '~/utils';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     await permissions.getTypes('Permission');
     return {
-        ...(await load_Query_permission({ event, variables: { name: { val: event.params.id } } }))
+        query_permission_Store: await createQuery_permission_Store(event, { name: { val: event.params.id } }),
+        mutation_permission_Store: await createMutation_permission_Store(event)
     };
 }

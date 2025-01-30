@@ -5,12 +5,17 @@
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	{%- if connectionField %}
 	import {{ name }}ConnectionTable from '~/{{ tablePath }}/{{ name | paramCase }}/{{ name }}ConnectionTable.svelte';
+	import type { Query_{{ name | paramCase }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ name | paramCase }}Connection_store';
 	{%- else %}
 	import {{ name }}Table from '~/{{ tablePath }}/{{ name | paramCase }}/{{ name }}Table.svelte';
+	import type { Query_{{ name | paramCase }}List_Store } from '~/{{ storesPath }}/query/query_{{ name | paramCase }}List_store';
+	{%- endif %}
+	import type { Mutation_{{ name | paramCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | paramCase }}_store';
+	{%- if hasFileField %}
+	import type { Mutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
 	{%- endif %}
 	import type { {{ name }}Input, {% if connectionField %}{{ queryTypeName }}{{ name }}ConnectionArgs{% else %}{{ queryTypeName }}{{ name }}ListArgs{% endif %}, {{ mutationTypeName }}{{ name }}Args } from '~/{{ schemaTypesPath }}';
-	import { {% if connectionField %}Query_{{ name | camelCase }}ConnectionStore{% else %}Query_{{ name | camelCase }}ListStore{% endif %}, Mutation_{{ name | camelCase }}Store{% if hasFileField %}, Mutation_singleUploadStore{% endif %} } from '$houdini';
-	import type { PageData } from './$houdini';
+	import type { PageData } from './$types';
 	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
@@ -18,16 +23,16 @@
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.{{ name }}.name());
 	{%- if connectionField %}
-	$: Query_{{ name | camelCase }}Connection = data.Query_{{ name | camelCase }}Connection as Query_{{ name | camelCase }}ConnectionStore;
-	$: nodes = $Query_{{ name | camelCase }}Connection.data?.{{ name | camelCase }}Connection?.edges?.map((edge) => edge?.node);
-	$: totalCount = $Query_{{ name | camelCase }}Connection.data?.{{ name | camelCase }}Connection?.totalCount || 0;
+	$: query_{{ name | camelCase }}Connection_Store = data.query_{{ name | camelCase }}Connection_Store as Query_{{ name | camelCase }}Connection_Store;
+	$: nodes = $query_{{ name | camelCase }}Connection_Store.response.data?.{{ name | camelCase }}Connection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $query_{{ name | camelCase }}Connection_Store.response.data?.{{ name | camelCase }}Connection?.totalCount || 0;
 	{%- else %}
-	$: Query_{{ name | camelCase }}List = data.Query_{{ name | camelCase }}List as Query_{{ name | camelCase }}ListStore;
-	$: nodes = $Query_{{ name | camelCase }}List.data?.{{ name | camelCase }}List;
+	$: query_{{ name | camelCase }}List_Store = data.query_{{ name | camelCase }}List_Store as Query_{{ name | camelCase }}List_Store;
+	$: nodes = $query_{{ name | camelCase }}List_Store.response.data?.{{ name | camelCase }}List;
 	{%- endif %}
-	const Mutation_{{ name | camelCase }} = new Mutation_{{ name | camelCase }}Store();
+	$: mutation_{{ name | camelCase }}_Store = data.mutation_{{ name | camelCase }}_Store as Mutation_{{ name | camelCase }}_Store;
 	{%- if hasFileField %}
-	const Mutation_singleUpload = new Mutation_singleUploadStore();
+	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store as Mutation_singleUpload_Store;
 	{%- endif %}
 	let errors: Record<number, Errors> = {};
 
@@ -43,9 +48,9 @@
 		}>
 	) => {
 		{%- if connectionField %}
-		Query_{{ name | camelCase }}Connection.fetch({ variables: event.detail.args })
+		query_{{ name | camelCase }}Connection_Store.fetch(event.detail.args)
 		{%- else %}
-		Query_{{ name | camelCase }}List.fetch({ variables: event.detail.args })
+		query_{{ name | camelCase }}List_Store.fetch(event.detail.args)
 		{%- endif %}
 			.then((result) => {
 				if (result.errors) {
@@ -73,7 +78,7 @@
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				{{ mutationTypeName }}_{{ name | camelCase }}.mutate(event.detail.args)
+				mutation_{{ name | camelCase }}_Store.fetch(event.detail.args)
 					.then((result) => {
 						if (result.errors) {
 							event.detail.catch(result.errors);
@@ -114,7 +119,7 @@
 		{nodes}
 		{totalCount}
 		{errors}
-		isFetching={$Query_{{ name | camelCase }}Connection.fetching}
+		isFetching={$query_{{ name | camelCase }}Connection_Store.isFetching}
 		on:fetch={fetch}
 		on:mutation={mutation}
 		on:edit={edit}
@@ -122,7 +127,7 @@
 		on:gotoField={gotoField}
 		{%- if hasFileField %}
 		on:upload={(e) => {
-			Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
+			mutation_singleUpload_Store.mutate({ file: e.detail.file }).then((result) =>
 				e.detail.then(result.data?.singleUpload)
 			);
 		}}
@@ -134,7 +139,7 @@
 		showBackButton={$canBack}
 		{nodes}
 		{errors}
-		isFetching={$Query_{{ name | camelCase }}List.fetching}
+		isFetching={$query_{{ name | camelCase }}List_Store.isFetching}
 		on:fetch={fetch}
 		on:mutation={mutation}
 		on:edit={edit}
@@ -142,7 +147,7 @@
 		on:gotoField={gotoField}
 		{%- if hasFileField %}
 		on:upload={(e) => {
-			Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
+			mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
 				e.detail.then(result.data?.singleUpload)
 			);
 		}}

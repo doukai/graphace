@@ -20,6 +20,8 @@ const query = /* GraphQL */ `query query_realmList($id: StringExpression, $name:
   }
 }`;
 
-export async function createQueryRealmListStore(event: LoadEvent, variables: QueryRealmListArgs): Promise<GraphQLStore<Realm[], QueryRealmListArgs>> {
+export async function createQuery_realmList_Store(event: LoadEvent, variables: QueryRealmListArgs): Promise<Query_realmList_Store> {
   return createGraphQLQueryStore<Realm[], QueryRealmListArgs>(query, event, variables);
 }
+
+export type Query_realmList_Store = GraphQLStore<Realm[], QueryRealmListArgs>;

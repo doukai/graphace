@@ -5,22 +5,24 @@
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import GroupForm from '~/lib/components/objects/group/GroupForm.svelte';
 	import GroupCreateForm from '~/lib/components/objects/group/GroupCreateForm.svelte';
+	import type { Query_group_parent_Store } from '~/lib/stores/query/query_group_parent_store';
+	import type { Mutation_group_parent_Store } from '~/lib/stores/mutation/mutation_group_parent_store';
+	import type { Mutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
 	import type { GroupInput, MutationGroupArgs } from '~/lib/types/schema';
-	import { Query_group_parentStore, Mutation_group_parentStore, Mutation_groupStore } from '$houdini';
-	import type { PageData } from './$houdini';
+	import type { PageData } from './$types';
 	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Group.fields.parent.name());
-	$: Query_group_parent = data.Query_group_parent as Query_group_parentStore;
-	$: group = $Query_group_parent.data?.group;
+	$: query_group_parent_Store = data.query_group_parent_Store as Query_group_parent_Store;
+	$: group = $query_group_parent_Store.response.data?.group;
 	$: node = group?.parent;
 	$: createNode = data.node;
 	$: errors = data.errors as Record<string, Errors>;
-	const Mutation_group_parent = new Mutation_group_parentStore();
-	const Mutation_group = new Mutation_groupStore();
+	$: mutation_group_parent_Store = data.mutation_group_parent_Store as Mutation_group_parent_Store;
+	$: mutation_group_Store = data.mutation_group_Store as Mutation_group_Store;
 
 	const mutation = (
 		event: CustomEvent<{
@@ -32,7 +34,7 @@
 		validate('Mutation_group_Arguments', event.detail.args, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_group.mutate(event.detail.args)
+				mutation_group_Store.fetch(event.detail.args)
 					.then((result) => {
 						if (result.errors) {
 							event.detail.catch(result.errors);
@@ -56,7 +58,7 @@
 		validate('Mutation_group_Arguments', { where: { id: { val: group?.id } }, parent: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_group_parent.mutate({
+				mutation_group_parent_Store.fetch({
 					group_id: group?.id,
 					group_parent: event.detail.args
 				})
@@ -103,7 +105,7 @@
 			showRemoveButton={false}
 			showUnbindButton={true}
 			showBackButton={$canBack}
-			isFetching={$Query_group_parent.fetching}
+			isFetching={$query_group_parent_Store.isFetching}
 			on:mutation={mutation}
 			on:parentMutation={parentMutation}
 			on:gotoField={gotoField}

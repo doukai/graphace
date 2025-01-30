@@ -5,22 +5,24 @@
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
 	import RealmCreateForm from '~/lib/components/objects/realm/RealmCreateForm.svelte';
+	import type { Query_group_realm_Store } from '~/lib/stores/query/query_group_realm_store';
+	import type { Mutation_group_realm_Store } from '~/lib/stores/mutation/mutation_group_realm_store';
+	import type { Mutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
 	import type { RealmInput, MutationRealmArgs } from '~/lib/types/schema';
-	import { Query_group_realmStore, Mutation_group_realmStore, Mutation_realmStore } from '$houdini';
-	import type { PageData } from './$houdini';
+	import type { PageData } from './$types';
 	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Group.fields.realm.name());
-	$: Query_group_realm = data.Query_group_realm as Query_group_realmStore;
-	$: group = $Query_group_realm.data?.group;
+	$: query_group_realm_Store = data.query_group_realm_Store as Query_group_realm_Store;
+	$: group = $query_group_realm_Store.response.data?.group;
 	$: node = group?.realm;
 	$: createNode = data.node;
 	$: errors = data.errors as Record<string, Errors>;
-	const Mutation_group_realm = new Mutation_group_realmStore();
-	const Mutation_realm = new Mutation_realmStore();
+	$: mutation_group_realm_Store = data.mutation_group_realm_Store as Mutation_group_realm_Store;
+	$: mutation_realm_Store = data.mutation_realm_Store as Mutation_realm_Store;
 
 	const mutation = (
 		event: CustomEvent<{
@@ -32,7 +34,7 @@
 		validate('Mutation_realm_Arguments', event.detail.args, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_realm.mutate(event.detail.args)
+				mutation_realm_Store.fetch(event.detail.args)
 					.then((result) => {
 						if (result.errors) {
 							event.detail.catch(result.errors);
@@ -56,7 +58,7 @@
 		validate('Mutation_group_Arguments', { where: { id: { val: group?.id } }, realm: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_group_realm.mutate({
+				mutation_group_realm_Store.fetch({
 					group_id: group?.id,
 					group_realm: event.detail.args
 				})
@@ -103,7 +105,7 @@
 			showRemoveButton={false}
 			showUnbindButton={true}
 			showBackButton={$canBack}
-			isFetching={$Query_group_realm.fetching}
+			isFetching={$query_group_realm_Store.isFetching}
 			on:mutation={mutation}
 			on:parentMutation={parentMutation}
 			on:gotoField={gotoField}

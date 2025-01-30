@@ -7,6 +7,8 @@ const query = /* GraphQL */ `mutation Mutation_login($login: String!, $password:
   login(login: $login password: $password)
 }`;
 
-export async function createMutationLoginStore(event: LoadEvent): Promise<GraphQLStore<string, MutationLoginArgs>> {
+export async function createMutation_login_Store(event: LoadEvent): Promise<Mutation_login_Store> {
   return createGraphQLMutationStore<string, MutationLoginArgs>(query, event);
 }
+
+export type Mutation_login_Store = GraphQLStore<string, MutationLoginArgs>;

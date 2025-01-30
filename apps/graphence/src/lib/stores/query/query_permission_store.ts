@@ -31,6 +31,8 @@ const query = /* GraphQL */ `query query_permission($name: StringExpression, $de
   }
 }`;
 
-export async function createQueryPermissionStore(event: LoadEvent, variables: QueryPermissionArgs): Promise<GraphQLStore<Permission, QueryPermissionArgs>> {
+export async function createQuery_permission_Store(event: LoadEvent, variables: QueryPermissionArgs): Promise<Query_permission_Store> {
   return createGraphQLQueryStore<Permission, QueryPermissionArgs>(query, event, variables);
 }
+
+export type Query_permission_Store = GraphQLStore<Permission, QueryPermissionArgs>;

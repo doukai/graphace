@@ -7,6 +7,8 @@ const query = /* GraphQL */ `query query_jsonSchema($name: String) {
   jsonSchema(name: $name)
 }`;
 
-export async function createQueryJsonSchemaStore(event: LoadEvent, variables: QueryJsonSchemaArgs): Promise<GraphQLStore<string, QueryJsonSchemaArgs>> {
+export async function createQuery_jsonSchema_Store(event: LoadEvent, variables: QueryJsonSchemaArgs): Promise<Query_jsonSchema_Store> {
   return createGraphQLQueryStore<string, QueryJsonSchemaArgs>(query, event, variables);
 }
+
+export type Query_jsonSchema_Store = GraphQLStore<string, QueryJsonSchemaArgs>;

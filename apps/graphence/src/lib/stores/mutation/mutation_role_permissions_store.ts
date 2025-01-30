@@ -1,7 +1,7 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
-import type { MutationRoleArgs, Permission } from '~/lib/types/schema';
+import type { MutationPermissionConnectionArgs, Role } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `mutation Mutation_role_permissions($role_id: String, $name: StringExpression, $description: StringExpression, $field: StringExpression, $type: StringExpression, $permissionType: PermissionTypeExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: PermissionOrderBy, $groupBy: [String!]) {
   role(where: { id: { val: $role_id } }) @merge {
@@ -50,6 +50,8 @@ const query = /* GraphQL */ `mutation Mutation_role_permissions($role_id: String
   }
 }`;
 
-export async function createMutationRoleStore(event: LoadEvent): Promise<GraphQLStore<Permission, { role_id: string } & MutationRoleArgs>> {
-  return createGraphQLMutationStore<Permission, MutationRoleArgs>(query, event);
+export async function createMutation_role_permissions_Store(event: LoadEvent): Promise<Mutation_role_permissions_Store> {
+  return createGraphQLMutationStore<Role, { role_id: string } & MutationPermissionConnectionArgs>(query, event);
 }
+
+export type Mutation_role_permissions_Store = GraphQLStore<Role, { role_id: string } & MutationPermissionConnectionArgs>;

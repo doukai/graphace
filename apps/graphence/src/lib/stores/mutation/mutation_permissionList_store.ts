@@ -32,6 +32,8 @@ const query = /* GraphQL */ `mutation Mutation_permissionList($name: ID, $descri
   }
 }`;
 
-export async function createMutationPermissionListStore(event: LoadEvent): Promise<GraphQLStore<Permission[], MutationPermissionListArgs>> {
+export async function createMutation_permissionList_Store(event: LoadEvent): Promise<Mutation_permissionList_Store> {
   return createGraphQLMutationStore<Permission[], MutationPermissionListArgs>(query, event);
 }
+
+export type Mutation_permissionList_Store = GraphQLStore<Permission[], MutationPermissionListArgs>;

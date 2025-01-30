@@ -52,6 +52,8 @@ const query = /* GraphQL */ `query query_groupConnection($id: StringExpression, 
   }
 }`;
 
-export async function createQueryGroupConnectionStore(event: LoadEvent, variables: QueryGroupConnectionArgs): Promise<GraphQLStore<GroupConnection, QueryGroupConnectionArgs>> {
+export async function createQuery_groupConnection_Store(event: LoadEvent, variables: QueryGroupConnectionArgs): Promise<Query_groupConnection_Store> {
   return createGraphQLQueryStore<GroupConnection, QueryGroupConnectionArgs>(query, event, variables);
 }
+
+export type Query_groupConnection_Store = GraphQLStore<GroupConnection, QueryGroupConnectionArgs>;

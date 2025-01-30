@@ -39,6 +39,8 @@ const query = /* GraphQL */ `query query_roleList($id: StringExpression, $name: 
   }
 }`;
 
-export async function createQueryRoleListStore(event: LoadEvent, variables: QueryRoleListArgs): Promise<GraphQLStore<Role[], QueryRoleListArgs>> {
+export async function createQuery_roleList_Store(event: LoadEvent, variables: QueryRoleListArgs): Promise<Query_roleList_Store> {
   return createGraphQLQueryStore<Role[], QueryRoleListArgs>(query, event, variables);
 }
+
+export type Query_roleList_Store = GraphQLStore<Role[], QueryRoleListArgs>;

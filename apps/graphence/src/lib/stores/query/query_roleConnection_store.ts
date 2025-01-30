@@ -44,6 +44,8 @@ const query = /* GraphQL */ `query query_roleConnection($id: StringExpression, $
   }
 }`;
 
-export async function createQueryRoleConnectionStore(event: LoadEvent, variables: QueryRoleConnectionArgs): Promise<GraphQLStore<RoleConnection, QueryRoleConnectionArgs>> {
+export async function createQuery_roleConnection_Store(event: LoadEvent, variables: QueryRoleConnectionArgs): Promise<Query_roleConnection_Store> {
   return createGraphQLQueryStore<RoleConnection, QueryRoleConnectionArgs>(query, event, variables);
 }
+
+export type Query_roleConnection_Store = GraphQLStore<RoleConnection, QueryRoleConnectionArgs>;

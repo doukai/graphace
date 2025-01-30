@@ -39,6 +39,8 @@ const query = /* GraphQL */ `query query_userList($id: StringExpression, $name: 
   }
 }`;
 
-export async function createQueryUserListStore(event: LoadEvent, variables: QueryUserListArgs): Promise<GraphQLStore<User[], QueryUserListArgs>> {
+export async function createQuery_userList_Store(event: LoadEvent, variables: QueryUserListArgs): Promise<Query_userList_Store> {
   return createGraphQLQueryStore<User[], QueryUserListArgs>(query, event, variables);
 }
+
+export type Query_userList_Store = GraphQLStore<User[], QueryUserListArgs>;

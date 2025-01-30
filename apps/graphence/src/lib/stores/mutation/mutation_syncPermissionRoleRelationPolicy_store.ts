@@ -7,6 +7,8 @@ const query = /* GraphQL */ `mutation Mutation_syncPermissionRoleRelationPolicy(
   syncPermissionRoleRelationPolicy(roleId: $roleId permissionNameList: $permissionNameList removedPermissionNameList: $removedPermissionNameList)
 }`;
 
-export async function createMutationSyncPermissionRoleRelationPolicyStore(event: LoadEvent): Promise<GraphQLStore<boolean, MutationSyncPermissionRoleRelationPolicyArgs>> {
+export async function createMutation_syncPermissionRoleRelationPolicy_Store(event: LoadEvent): Promise<Mutation_syncPermissionRoleRelationPolicy_Store> {
   return createGraphQLMutationStore<boolean, MutationSyncPermissionRoleRelationPolicyArgs>(query, event);
 }
+
+export type Mutation_syncPermissionRoleRelationPolicy_Store = GraphQLStore<boolean, MutationSyncPermissionRoleRelationPolicyArgs>;
