@@ -60,7 +60,7 @@
 				errors = {};
 				mutation_group_parent_Store.fetch({
 					group_id: group?.id,
-					group_parent: event.detail.args
+					...event.detail.args
 				})
 					.then((result) => {
 						if (result.errors) {

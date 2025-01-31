@@ -4,9 +4,9 @@
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import GroupCreateForm from '~/lib/components/objects/group/GroupCreateForm.svelte';
-	import { Mutation_user_groupsStore } from '$houdini';
+	import type { Mutation_user_groups_Store } from '~/lib/stores/mutation/mutation_user_groups_store';
 	import type { GroupInput, MutationGroupArgs } from '~/lib/types/schema';
-	import type { PageData } from './$houdini';
+	import type { PageData } from './$types';
 	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
@@ -16,8 +16,7 @@
 	$: node = data.node as MutationGroupArgs;
 	$: id = data.id as string;
 	$: errors = data.errors as Record<string, Errors>;
-
-	const Mutation_user_groups = new Mutation_user_groupsStore();
+	$: mutation_user_groups_Store = data.mutation_user_groups_Store as Mutation_user_groups_Store;
 
 	const mutation = (
 		event: CustomEvent<{
@@ -29,7 +28,7 @@
 		validate('Mutation_user_Arguments', { id: id, groups: [event.detail.args] }, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_user_groups.mutate({
+				mutation_user_groups_Store.fetch({
 					user_id: id,
 					user_groups: [event.detail.args]
 				})

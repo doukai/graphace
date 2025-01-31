@@ -87,7 +87,7 @@ const query = /* GraphQL */ `query query_{{ name }}
 }`;
 
 export async function createQuery_{{ name }}_Store(event: LoadEvent, variables: {% if args and args.length > 0 %}Query{{ name | pascalCase }}Args{% else %}undefined{% endif %}): Promise<Query_{{ name }}_Store> {
-  return createGraphQLQueryStore<{{ tsTypeName }}{% if isList %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ name | pascalCase }}Args{% else %}undefined{% endif %}>(query, event, variables);
+  return createGraphQLQueryStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ name | pascalCase }}Args{% else %}undefined{% endif %}>(query, event, variables);
 }
 
-export type Query_{{ name }}_Store = GraphQLStore<{{ tsTypeName }}{% if isList %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ name | pascalCase }}Args{% else %}undefined{% endif %}>;
+export type Query_{{ name }}_Store = GraphQLStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ name | pascalCase }}Args{% else %}undefined{% endif %}>;

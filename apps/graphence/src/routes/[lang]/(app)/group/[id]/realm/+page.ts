@@ -14,7 +14,7 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
     return {
         node,
         errors,
-        query_group_realm_Store: await createQuery_group_realm_Store( event, { group_id: { val: event.params.id } } ),
+        query_group_realm_Store: await createQuery_group_realm_Store(event, { group_id: { val: event.params.id } }),
         mutation_group_realm_Store: await createMutation_group_realm_Store(event),
         mutation_realm_Store: await createMutation_realm_Store(event)
     };

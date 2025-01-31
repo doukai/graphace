@@ -121,7 +121,7 @@ const renders: Record<Template, Render> = {
                         name: field.name,
                         fieldTypeName: fieldType.name,
                         tsTypeName: getTSTypeName(fieldType.name),
-                        isList: fieldTypeIsList(field.type),
+                        isListType: fieldTypeIsList(field?.type),
                         isScalar: isScalarType(fieldType),
                         idName: idFieldName,
                         args: field.args,
@@ -163,7 +163,6 @@ const renders: Record<Template, Render> = {
                     objectField = {
                         name: subField?.name,
                         fieldTypeName: subFieldType.name,
-                        isList: fieldTypeIsList(subField.type),
                         args: subField?.args,
                         isListType: fieldTypeIsList(subField?.type),
                         connectionField: getConnectionField(fieldType, subField?.name),
@@ -213,7 +212,7 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         name: field.name,
                         fieldTypeName: fieldType.name,
-                        isList: fieldTypeIsList(field.type),
+                        isListType: fieldTypeIsList(field?.type),
                         isScalar: isScalarType(fieldType),
                         tsTypeName: getTSTypeName(fieldType.name),
                         idName: idFieldName,
@@ -255,7 +254,6 @@ const renders: Record<Template, Render> = {
                     objectField = {
                         name: subField?.name,
                         fieldTypeName: subFieldType.name,
-                        isList: fieldTypeIsList(subField.type),
                         args: subField?.args,
                         isListType: fieldTypeIsList(subField?.type),
                         connectionField: getConnectionField(fieldType, subField?.name),

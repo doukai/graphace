@@ -60,7 +60,7 @@
 				errors = {};
 				mutation_user_realm_Store.fetch({
 					user_id: user?.id,
-					user_realm: event.detail.args
+					...event.detail.args
 				})
 					.then((result) => {
 						if (result.errors) {

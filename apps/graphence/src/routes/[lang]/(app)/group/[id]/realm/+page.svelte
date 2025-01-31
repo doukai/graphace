@@ -60,7 +60,7 @@
 				errors = {};
 				mutation_group_realm_Store.fetch({
 					group_id: group?.id,
-					group_realm: event.detail.args
+					...event.detail.args
 				})
 					.then((result) => {
 						if (result.errors) {

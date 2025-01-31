@@ -1,7 +1,7 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLQueryStore } from '~/utils';
-import type { QueryRealmListArgs, Group } from '~/lib/types/schema';
+import type { QueryRealmArgs, Group } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `query Query_group_realm($group_id: String, $id: StringExpression, $name: StringExpression, $description: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $groupBy: [String!]) {
   group(id: $group_id) {
@@ -35,8 +35,8 @@ const query = /* GraphQL */ `query Query_group_realm($group_id: String, $id: Str
   }
 }`;
 
-export async function createQuery_group_realm_Store(event: LoadEvent, variables: { group_id: string } & QueryRealmListArgs): Promise<Query_group_realm_Store> {
-  return createGraphQLQueryStore<Group, { group_id: string } & QueryRealmListArgs>(query, event, variables);
+export async function createQuery_group_realm_Store(event: LoadEvent, variables: { group_id: string } & QueryRealmArgs): Promise<Query_group_realm_Store> {
+  return createGraphQLQueryStore<Group, { group_id: string } & QueryRealmArgs>(query, event, variables);
 }
 
-export type Query_group_realm_Store = GraphQLStore<Group, { group_id: string } & QueryRealmListArgs>;
+export type Query_group_realm_Store = GraphQLStore<Group, { group_id: string } & QueryRealmArgs>;

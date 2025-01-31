@@ -1,6 +1,8 @@
 import type { LoadEvent } from '@sveltejs/kit';
-import type { LayoutLoad } from '$types';
-import { load_Query_groupConnection } from '$houdini';
+import type { LayoutLoad } from './$types';
+import { createQuery_groupConnection_Store } from '~/lib/stores/query/query_groupConnection_store';
+import { createMutation_group_parent_Store } from '~/lib/stores/mutation/mutation_group_parent_store';
+import { createMutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
 import { permissions } from '~/utils';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
@@ -9,6 +11,8 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
     return {
         id: event.params.id,
         notBelongToParent,
-        ...(await load_Query_groupConnection({ event, variables: { first: 10, exs: [notBelongToParent] } }))
+        query_groupConnection_Store: await createQuery_groupConnection_Store(event, { first: 10, exs: [notBelongToParent] }),
+        mutation_group_parent_Store: await createMutation_group_parent_Store(event),
+        mutation_group_Store: await createMutation_group_Store(event)
     };
 }

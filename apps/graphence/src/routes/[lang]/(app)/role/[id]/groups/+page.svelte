@@ -4,9 +4,11 @@
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import GroupConnectionTable from '~/lib/components/objects/group/GroupConnectionTable.svelte';
+	import type { Query_role_groups_Store } from '~/lib/stores/query/query_role_groups_store';
+	import type { Mutation_role_groups_Store } from '~/lib/stores/mutation/mutation_role_groups_store';
+	import type { Mutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
 	import type { GroupInput, MutationGroupArgs, QueryGroupConnectionArgs } from '~/lib/types/schema';
-	import { Query_role_groupsStore, Mutation_groupStore, Mutation_role_groupsStore } from '$houdini';
-	import type { PageData } from './$houdini';
+	import type { PageData } from './$types';
 	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
@@ -14,12 +16,12 @@
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Role.fields.groups.name());
 	$: id = data.id as string;
-	$: Query_role_groups = data.Query_role_groups as Query_role_groupsStore;
-	$: role = $Query_role_groups.data?.role;
-	$: nodes = $Query_role_groups.data?.role?.groupsConnection?.edges?.map((edge) => edge?.node);
-	$: totalCount = $Query_role_groups.data?.role?.groupsConnection?.totalCount || 0;
-	const Mutation_group = new Mutation_groupStore();
-	const Mutation_role_groups = new Mutation_role_groupsStore();
+	$: query_role_groups_Store = data.query_role_groups_Store as Query_role_groups_Store;
+	$: role = $query_role_groups_Store.response.data?.role;
+	$: nodes = $query_role_groups_Store.response.data?.role?.groupsConnection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $query_role_groups_Store.response.data?.role?.groupsConnection?.totalCount || 0;
+	$: mutation_role_groups_Store = data.mutation_role_groups_Store as Mutation_role_groups_Store;
+	$: mutation_group_Store = data.mutation_group_Store as Mutation_group_Store;
 	let errors: Record<number, Errors> = {};
 
 	const fetch = (
@@ -29,9 +31,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		Query_role_groups.fetch({
-			variables: { role_id: { val: role?.id }, ...event.detail.args }
-		})
+		query_role_groups_Store.fetch({ role_id: { val: role?.id }, ...event.detail.args })
 			.then((result) => {
 				if (result.errors) {
 					event.detail.catch(result.errors);
@@ -54,7 +54,7 @@
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_group.mutate(event.detail.args)
+				mutation_group_Store.fetch(event.detail.args)
 					.then((result) => {
 						if (result.errors) {
 							event.detail.catch(result.errors);
@@ -80,7 +80,7 @@
 		validate('Mutation_role_Arguments', { where: { id: { val: id }}, groups: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_role_groups.mutate({
+				mutation_role_groups_Store.fetch({
 					role_id: id,
 					role_groups: event.detail.args
 				})
@@ -133,7 +133,7 @@
 		{nodes}
 		{totalCount}
 		{errors}
-		isFetching={$Query_role_groups.fetching}
+		isFetching={$query_role_groups_Store.isFetching}
 		on:fetch={fetch}
 		on:mutation={mutation}
 		on:parentMutation={parentMutation}

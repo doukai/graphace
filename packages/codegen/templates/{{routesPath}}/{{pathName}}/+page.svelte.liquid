@@ -127,7 +127,7 @@
 		on:gotoField={gotoField}
 		{%- if hasFileField %}
 		on:upload={(e) => {
-			mutation_singleUpload_Store.mutate({ file: e.detail.file }).then((result) =>
+			mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
 				e.detail.then(result.data?.singleUpload)
 			);
 		}}

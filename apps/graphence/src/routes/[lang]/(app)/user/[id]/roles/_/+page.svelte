@@ -4,9 +4,9 @@
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import RoleCreateForm from '~/lib/components/objects/role/RoleCreateForm.svelte';
-	import { Mutation_user_rolesStore } from '$houdini';
+	import type { Mutation_user_roles_Store } from '~/lib/stores/mutation/mutation_user_roles_store';
 	import type { RoleInput, MutationRoleArgs } from '~/lib/types/schema';
-	import type { PageData } from './$houdini';
+	import type { PageData } from './$types';
 	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
@@ -16,8 +16,7 @@
 	$: node = data.node as MutationRoleArgs;
 	$: id = data.id as string;
 	$: errors = data.errors as Record<string, Errors>;
-
-	const Mutation_user_roles = new Mutation_user_rolesStore();
+	$: mutation_user_roles_Store = data.mutation_user_roles_Store as Mutation_user_roles_Store;
 
 	const mutation = (
 		event: CustomEvent<{
@@ -29,7 +28,7 @@
 		validate('Mutation_user_Arguments', { id: id, roles: [event.detail.args] }, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_user_roles.mutate({
+				mutation_user_roles_Store.fetch({
 					user_id: id,
 					user_roles: [event.detail.args]
 				})

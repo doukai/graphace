@@ -8,9 +8,14 @@
 	{%- else %}
 	import {{ objectFieldTypeName }}Table from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}Table.svelte';
 	{%- endif %}
+	import type { Query_{{ name | paramCase }}_{{ objectFieldName }}_Store } from '~/{{ storesPath }}/query/query_{{ name | paramCase }}_{{ objectFieldName }}_store';
+	import type { Mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ objectFieldName }}_store';
+	import type { Mutation_{{ objectFieldTypeName | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ objectFieldTypeName | camelCase }}_store';
+	{%- if hasFileField %}
+	import type { Mutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
+	{%- endif %}
 	import type { {{ objectFieldTypeName }}Input, {{ mutationTypeName }}{{ objectFieldTypeName }}Args, {% if connectionField %}{{ queryTypeName }}{{ objectFieldTypeName }}ConnectionArgs{% else %}{{ queryTypeName }}{{ objectFieldTypeName }}ListArgs{% endif %} } from '~/{{ schemaTypesPath }}';
-	import { Query_{{ name | camelCase }}_{{ objectFieldName }}Store, Mutation_{{ objectFieldTypeName | camelCase }}Store, Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store{% if hasFileField %}, Mutation_singleUploadStore{% endif %} } from '$houdini';
-	import type { PageData } from './$houdini';
+	import type { PageData } from './$types';
 	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
@@ -18,18 +23,18 @@
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.{{ name }}.fields.{{ objectFieldName }}.name());
 	$: {{ idName }} = data.{{ idName }} as string;
-	$: Query_{{ name | camelCase }}_{{ objectFieldName }} = data.Query_{{ name | camelCase }}_{{ objectFieldName }} as Query_{{ name | camelCase }}_{{ objectFieldName }}Store;
-	$: {{ name | camelCase }} = $Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }};
+	$: query_{{ name | camelCase }}_{{ objectFieldName }}_Store = data.query_{{ name | camelCase }}_{{ objectFieldName }}_Store as Query_{{ name | camelCase }}_{{ objectFieldName }}_Store;
+	$: {{ name | camelCase }} = $query_{{ name | camelCase }}_{{ objectFieldName }}_Store.response.data?.{{ name | camelCase }};
 	{%- if connectionField %}
-	$: nodes = $Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }}?.{{ objectFieldName }}Connection?.edges?.map((edge) => edge?.node);
-	$: totalCount = $Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }}?.{{ objectFieldName }}Connection?.totalCount || 0;
+	$: nodes = $query_{{ name | camelCase }}_{{ objectFieldName }}_Store.response.data?.{{ name | camelCase }}?.{{ objectFieldName }}Connection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $query_{{ name | camelCase }}_{{ objectFieldName }}_Store.response.data?.{{ name | camelCase }}?.{{ objectFieldName }}Connection?.totalCount || 0;
 	{%- else %}
-	$: nodes = $Query_{{ name | camelCase }}_{{ objectFieldName }}.data?.{{ name | camelCase }}?.{{ objectFieldName }};
+	$: nodes = $query_{{ name | camelCase }}_{{ objectFieldName }}_Store.response.data?.{{ name | camelCase }}?.{{ objectFieldName }};
 	{%- endif %}
-	const Mutation_{{ objectFieldTypeName | camelCase }} = new Mutation_{{ objectFieldTypeName | camelCase }}Store();
-	const Mutation_{{ name | camelCase }}_{{ objectFieldName }} = new Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store();
+	$: mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store = data.mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store as Mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store;
+	$: mutation_{{ objectFieldTypeName | camelCase }}_Store = data.mutation_{{ objectFieldTypeName | camelCase }}_Store as Mutation_{{ objectFieldTypeName | camelCase }}_Store;
 	{%- if hasFileField %}
-	const Mutation_singleUpload = new Mutation_singleUploadStore();
+	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store as Mutation_singleUpload_Store;
 	{%- endif %}
 	let errors: Record<number, Errors> = {};
 
@@ -44,9 +49,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		Query_{{ name | camelCase }}_{{ objectFieldName }}.fetch({
-			variables: { {{ name | camelCase }}_{{ idName }}: { val: {{ name | camelCase }}?.{{ idName }} }, ...event.detail.args }
-		})
+		query_{{ name | camelCase }}_{{ objectFieldName }}_Store.fetch({ {{ name | camelCase }}_{{ idName }}: { val: {{ name | camelCase }}?.{{ idName }} }, ...event.detail.args })
 			.then((result) => {
 				if (result.errors) {
 					event.detail.catch(result.errors);
@@ -73,7 +76,7 @@
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_{{ objectFieldTypeName | camelCase }}.mutate(event.detail.args)
+				mutation_{{ objectFieldTypeName | camelCase }}_Store.fetch(event.detail.args)
 					.then((result) => {
 						if (result.errors) {
 							event.detail.catch(result.errors);
@@ -99,7 +102,7 @@
 		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { where: { {{ idName }}: { val: {{ idName }} }}, {{ objectFieldName }}: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_{{ name | camelCase }}_{{ objectFieldName }}.mutate({
+				mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store.fetch({
 					{{ name | camelCase }}_{{ idName }}: {{ idName }},
 					{{ name | camelCase }}_{{ objectFieldName }}: event.detail.args
 				})
@@ -153,7 +156,7 @@
 		{nodes}
 		{totalCount}
 		{errors}
-		isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
+		isFetching={$query_{{ name | camelCase }}_{{ objectFieldName }}_Store.isFetching}
 		on:fetch={fetch}
 		on:mutation={mutation}
 		on:parentMutation={parentMutation}
@@ -164,7 +167,7 @@
 		on:back={back}
 	{%- if hasFileField %}
 		on:upload={(e) => {
-			Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
+			mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
 				e.detail.then(result.data?.singleUpload)
 			);
 		}}
@@ -179,7 +182,7 @@
 		showBackButton={$canBack}
 		{nodes}
 		{errors}
-		isFetching={$Query_{{ name | camelCase }}_{{ objectFieldName }}.fetching}
+		isFetching={$query_{{ name | camelCase }}_{{ objectFieldName }}_Store.isFetching}
 		on:fetch={fetch}
 		on:mutation={mutation}
 		on:parentMutation={parentMutation}
@@ -190,7 +193,7 @@
 		on:back={back}
 		{%- if hasFileField %}
 		on:upload={(e) => {
-			Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
+			mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
 				e.detail.then(result.data?.singleUpload)
 			);
 		}}

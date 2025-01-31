@@ -1,6 +1,10 @@
 import type { LoadEvent } from '@sveltejs/kit';
-import type { LayoutLoad } from '$types';
+import type { LayoutLoad } from './$types';
 import { type Errors, getNode, getErrors } from '@graphace/commons';
+import { createMutation_{{ name | camelCase }}_{{ objectFieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ objectFieldName }}_store';
+{%- if hasFileField %}
+import { createMutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
+{%- endif %}
 import type { {{ mutationTypeName }}{{ objectFieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
 {%- if useAuth %}
 import { permissions } from '~/utils';
@@ -12,5 +16,13 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
     {%- endif %}
     const node: {{ mutationTypeName }}{{ objectFieldTypeName }}Args = getNode(event.url) || {};
 	const errors: Record<string, Errors> = getErrors(event.url) || {};
-    return { {{ idName }}: event.params.id, node, errors };
+    return { 
+        {{ idName }}: event.params.id, 
+        node, 
+        errors, 
+        {%- if hasFileField %}
+        mutation_singleUpload_Store = await createMutation_singleUpload_Store(event),
+        {%- endif %}
+        mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store: await createMutation_{{ name | camelCase }}_{{ objectFieldName }}_Store(event)
+    };
 }

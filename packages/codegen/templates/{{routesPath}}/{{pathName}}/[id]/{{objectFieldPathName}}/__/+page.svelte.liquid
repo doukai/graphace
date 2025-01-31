@@ -5,12 +5,18 @@
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	{%- if connectionField %}
 	import {{ objectFieldTypeName }}SelectConnectionTable from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}SelectConnectionTable.svelte';
+	import type { Query_{{ objectFieldTypeName | paramCase }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ objectFieldTypeName | paramCase }}Connection_store';
 	{%- else %}
 	import {{ objectFieldTypeName }}SelectTable from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}SelectTable.svelte';
+	import type { Query_{{ objectFieldTypeName | paramCase }}List_Store } from '~/{{ storesPath }}/query/query_{{ objectFieldTypeName | paramCase }}List_store';
+	{%- endif %}
+	import type { Mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ objectFieldName }}_store';
+	import type { Mutation_{{ objectFieldTypeName | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ objectFieldTypeName | camelCase }}_store';
+	{%- if hasFileField %}
+	import type { Mutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
 	{%- endif %}
 	import type { {{ objectFieldTypeName }}Input, {% if connectionField %}{{ queryTypeName }}{{ objectFieldTypeName }}ConnectionArgs{% else %}{{ queryTypeName }}{{ objectFieldTypeName }}ListArgs{% endif %}, {{ mutationTypeName }}{{ objectFieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
-	import { {% if connectionField %}Query_{{ objectFieldTypeName | camelCase }}ConnectionStore{% else %}Query_{{ objectFieldTypeName | camelCase }}ListStore{% endif %}, Mutation_{{ objectFieldTypeName | camelCase }}Store, Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store{% if hasFileField %}, Mutation_singleUploadStore{% endif %} } from '$houdini';
-	import type { PageData } from './$houdini';
+	import type { PageData } from './$types';
 	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
@@ -19,20 +25,20 @@
 	$: urlName($page.url, $LL.graphql.objects.{{ name }}.fields.{{ objectFieldName }}.name(), PageType.SELECT);
 	$: {{ idName }} = data.{{ idName }} as string;
 	{%- if connectionField %}
-	$: Query_{{ objectFieldTypeName | camelCase }}Connection = data.Query_{{ objectFieldTypeName | camelCase }}Connection as Query_{{ objectFieldTypeName | camelCase }}ConnectionStore;
-	$: nodes = $Query_{{ objectFieldTypeName | camelCase }}Connection.data?.{{ objectFieldTypeName | camelCase }}Connection?.edges?.map((edge) => edge?.node);
-	$: totalCount = $Query_{{ objectFieldTypeName | camelCase }}Connection.data?.{{ objectFieldTypeName | camelCase }}Connection?.totalCount || 0;
+	$: query_{{ objectFieldTypeName | camelCase }}Connection_Store = data.query_{{ objectFieldTypeName | camelCase }}Connection_Store as Query_{{ objectFieldTypeName | camelCase }}Connection_Store;
+	$: nodes = $query_{{ objectFieldTypeName | camelCase }}Connection_Store.response.data?.{{ objectFieldTypeName | camelCase }}Connection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $query_{{ objectFieldTypeName | camelCase }}Connection_Store.response.data?.{{ objectFieldTypeName | camelCase }}Connection?.totalCount || 0;
 	{%- else %}
-	$: Query_{{ objectFieldTypeName | camelCase }}List = data.Query_{{ objectFieldTypeName | camelCase }}List as Query_{{ objectFieldTypeName | camelCase }}ListStore;
-	$: nodes = $Query_{{ objectFieldTypeName | camelCase }}List.data?.{{ objectFieldTypeName | camelCase }}List;
+	$: query_{{ objectFieldTypeName | camelCase }}List_Store = data.query_{{ objectFieldTypeName | camelCase }}List_Store as Query_{{ objectFieldTypeName | camelCase }}List_Store;
+	$: nodes = $query_{{ objectFieldTypeName | camelCase }}List_Store.response.data?.{{ objectFieldTypeName | camelCase }}List;
 	{%- endif %}
 	{%- if pairField %}
 	const notBelongToParent = data.notBelongToParent;
 	{%- endif %}
-	const Mutation_{{ objectFieldTypeName | camelCase }} = new Mutation_{{ objectFieldTypeName | camelCase }}Store();
-	const Mutation_{{ name | camelCase }}_{{ objectFieldName }} = new Mutation_{{ name | camelCase }}_{{ objectFieldName }}Store();
+	$: mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store = data.mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store as Mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store;
+	$: mutation_{{ objectFieldTypeName | camelCase }}_Store = data.mutation_{{ objectFieldTypeName | camelCase }}_Store as Mutation_{{ objectFieldTypeName | camelCase }}_Store;
 	{%- if hasFileField %}
-	const Mutation_singleUpload = new Mutation_singleUploadStore();
+	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store as Mutation_singleUpload_Store;
 	{%- endif %}
 	let errors: Record<number, Errors> = {};
 
@@ -48,9 +54,9 @@
 		}>
 	) => {
 		{%- if connectionField %}
-		Query_{{ objectFieldTypeName | camelCase }}Connection.fetch({ variables: event.detail.args })
+		query_{{ objectFieldTypeName | camelCase }}Connection_Store.fetch(event.detail.args)
 		{%- else %}
-		Query_{{ objectFieldTypeName | camelCase }}List.fetch({ variables: event.detail.args })
+		query_{{ objectFieldTypeName | camelCase }}List_Store.fetch(event.detail.args)
 		{%- endif %}
 			.then((result) => {
 				if (result.errors) {
@@ -78,7 +84,7 @@
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_{{ objectFieldTypeName | camelCase }}.mutate(event.detail.args)
+				mutation_{{ objectFieldTypeName | camelCase }}_Store.fetch(event.detail.args)
 					.then((result) => {
 						if (result.errors) {
 							event.detail.catch(result.errors);
@@ -105,7 +111,7 @@
 			.then((data) => {
 				errors = {};
 				if (!Array.isArray(event.detail.selected)) {
-					Mutation_{{ name | camelCase }}_{{ objectFieldName }}.mutate({
+					mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store.fetch({
 						{{ name | camelCase }}_{{ idName }}: {{ idName }},
 						{{ name | camelCase }}_{{ objectFieldName }}: event.detail.selected
 					})
@@ -139,14 +145,14 @@
 		{%- if pairField %}
 		args={ { exs: [notBelongToParent] } }
 		{%- endif %}
-		isFetching={$Query_{{ objectFieldTypeName | camelCase }}Connection.fetching}
+		isFetching={$query_{{ objectFieldTypeName | camelCase }}Connection_Store.isFetching}
 		on:fetch={fetch}
 		on:mutation={mutation}
 		on:select={select}
 		on:back={back}
 		{%- if hasFileField %}
 		on:upload={(e) => {
-			Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
+			mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
 				e.detail.then(result.data?.singleUpload)
 			);
 		}}
@@ -161,14 +167,14 @@
 		{%- if pairField %}
 		args={ { exs: [notBelongToParent] } }
 		{%- endif %}
-		isFetching={$Query_{{ objectFieldTypeName | camelCase }}List.fetching}
+		isFetching={$query_{{ objectFieldTypeName | camelCase }}List_Store.isFetching}
 		on:fetch={fetch}
 		on:mutation={mutation}
 		on:select={select}
 		on:back={back}
 		{%- if hasFileField %}
 		on:upload={(e) => {
-			Mutation_singleUpload.mutate({ file: e.detail.file }).then((result) =>
+			mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
 				e.detail.then(result.data?.singleUpload)
 			);
 		}}

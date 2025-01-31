@@ -60,7 +60,7 @@
 				errors = {};
 				mutation_permission_realm_Store.fetch({
 					permission_name: permission?.name,
-					permission_realm: event.detail.args
+					...event.detail.args
 				})
 					.then((result) => {
 						if (result.errors) {

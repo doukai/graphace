@@ -4,9 +4,11 @@
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import GroupConnectionTable from '~/lib/components/objects/group/GroupConnectionTable.svelte';
+	import type { Query_group_subGroups_Store } from '~/lib/stores/query/query_group_subGroups_store';
+	import type { Mutation_group_subGroups_Store } from '~/lib/stores/mutation/mutation_group_subGroups_store';
+	import type { Mutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
 	import type { GroupInput, MutationGroupArgs, QueryGroupConnectionArgs } from '~/lib/types/schema';
-	import { Query_group_subGroupsStore, Mutation_groupStore, Mutation_group_subGroupsStore } from '$houdini';
-	import type { PageData } from './$houdini';
+	import type { PageData } from './$types';
 	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
@@ -14,12 +16,12 @@
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Group.fields.subGroups.name());
 	$: id = data.id as string;
-	$: Query_group_subGroups = data.Query_group_subGroups as Query_group_subGroupsStore;
-	$: group = $Query_group_subGroups.data?.group;
-	$: nodes = $Query_group_subGroups.data?.group?.subGroupsConnection?.edges?.map((edge) => edge?.node);
-	$: totalCount = $Query_group_subGroups.data?.group?.subGroupsConnection?.totalCount || 0;
-	const Mutation_group = new Mutation_groupStore();
-	const Mutation_group_subGroups = new Mutation_group_subGroupsStore();
+	$: query_group_subGroups_Store = data.query_group_subGroups_Store as Query_group_subGroups_Store;
+	$: group = $query_group_subGroups_Store.response.data?.group;
+	$: nodes = $query_group_subGroups_Store.response.data?.group?.subGroupsConnection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $query_group_subGroups_Store.response.data?.group?.subGroupsConnection?.totalCount || 0;
+	$: mutation_group_subGroups_Store = data.mutation_group_subGroups_Store as Mutation_group_subGroups_Store;
+	$: mutation_group_Store = data.mutation_group_Store as Mutation_group_Store;
 	let errors: Record<number, Errors> = {};
 
 	const fetch = (
@@ -29,9 +31,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		Query_group_subGroups.fetch({
-			variables: { group_id: { val: group?.id }, ...event.detail.args }
-		})
+		query_group_subGroups_Store.fetch({ group_id: { val: group?.id }, ...event.detail.args })
 			.then((result) => {
 				if (result.errors) {
 					event.detail.catch(result.errors);
@@ -54,7 +54,7 @@
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_group.mutate(event.detail.args)
+				mutation_group_Store.fetch(event.detail.args)
 					.then((result) => {
 						if (result.errors) {
 							event.detail.catch(result.errors);
@@ -80,7 +80,7 @@
 		validate('Mutation_group_Arguments', { where: { id: { val: id }}, subGroups: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_group_subGroups.mutate({
+				mutation_group_subGroups_Store.fetch({
 					group_id: id,
 					group_subGroups: event.detail.args
 				})
@@ -133,7 +133,7 @@
 		{nodes}
 		{totalCount}
 		{errors}
-		isFetching={$Query_group_subGroups.fetching}
+		isFetching={$query_group_subGroups_Store.isFetching}
 		on:fetch={fetch}
 		on:mutation={mutation}
 		on:parentMutation={parentMutation}

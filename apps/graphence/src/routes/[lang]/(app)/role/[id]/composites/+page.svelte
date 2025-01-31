@@ -4,9 +4,11 @@
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import RoleConnectionTable from '~/lib/components/objects/role/RoleConnectionTable.svelte';
+	import type { Query_role_composites_Store } from '~/lib/stores/query/query_role_composites_store';
+	import type { Mutation_role_composites_Store } from '~/lib/stores/mutation/mutation_role_composites_store';
+	import type { Mutation_role_Store } from '~/lib/stores/mutation/mutation_role_store';
 	import type { RoleInput, MutationRoleArgs, QueryRoleConnectionArgs } from '~/lib/types/schema';
-	import { Query_role_compositesStore, Mutation_roleStore, Mutation_role_compositesStore } from '$houdini';
-	import type { PageData } from './$houdini';
+	import type { PageData } from './$types';
 	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
@@ -14,12 +16,12 @@
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Role.fields.composites.name());
 	$: id = data.id as string;
-	$: Query_role_composites = data.Query_role_composites as Query_role_compositesStore;
-	$: role = $Query_role_composites.data?.role;
-	$: nodes = $Query_role_composites.data?.role?.compositesConnection?.edges?.map((edge) => edge?.node);
-	$: totalCount = $Query_role_composites.data?.role?.compositesConnection?.totalCount || 0;
-	const Mutation_role = new Mutation_roleStore();
-	const Mutation_role_composites = new Mutation_role_compositesStore();
+	$: query_role_composites_Store = data.query_role_composites_Store as Query_role_composites_Store;
+	$: role = $query_role_composites_Store.response.data?.role;
+	$: nodes = $query_role_composites_Store.response.data?.role?.compositesConnection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $query_role_composites_Store.response.data?.role?.compositesConnection?.totalCount || 0;
+	$: mutation_role_composites_Store = data.mutation_role_composites_Store as Mutation_role_composites_Store;
+	$: mutation_role_Store = data.mutation_role_Store as Mutation_role_Store;
 	let errors: Record<number, Errors> = {};
 
 	const fetch = (
@@ -29,9 +31,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		Query_role_composites.fetch({
-			variables: { role_id: { val: role?.id }, ...event.detail.args }
-		})
+		query_role_composites_Store.fetch({ role_id: { val: role?.id }, ...event.detail.args })
 			.then((result) => {
 				if (result.errors) {
 					event.detail.catch(result.errors);
@@ -54,7 +54,7 @@
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_role.mutate(event.detail.args)
+				mutation_role_Store.fetch(event.detail.args)
 					.then((result) => {
 						if (result.errors) {
 							event.detail.catch(result.errors);
@@ -80,7 +80,7 @@
 		validate('Mutation_role_Arguments', { where: { id: { val: id }}, composites: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_role_composites.mutate({
+				mutation_role_composites_Store.fetch({
 					role_id: id,
 					role_composites: event.detail.args
 				})
@@ -133,7 +133,7 @@
 		{nodes}
 		{totalCount}
 		{errors}
-		isFetching={$Query_role_composites.fetching}
+		isFetching={$query_role_composites_Store.isFetching}
 		on:fetch={fetch}
 		on:mutation={mutation}
 		on:parentMutation={parentMutation}

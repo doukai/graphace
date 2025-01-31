@@ -14,7 +14,7 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
     return {
         node,
         errors,
-        query_permission_realm_Store: await createQuery_permission_realm_Store( event, { permission_name: { val: event.params.id } } ),
+        query_permission_realm_Store: await createQuery_permission_realm_Store(event, { permission_name: { val: event.params.id } }),
         mutation_permission_realm_Store: await createMutation_permission_realm_Store(event),
         mutation_realm_Store: await createMutation_realm_Store(event)
     };

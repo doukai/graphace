@@ -4,9 +4,11 @@
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import RealmSelectConnectionTable from '~/lib/components/objects/realm/RealmSelectConnectionTable.svelte';
+	import type { Query_realmConnection_Store } from '~/lib/stores/query/query_realmConnection_store';
+	import type { Mutation_role_realm_Store } from '~/lib/stores/mutation/mutation_role_realm_store';
+	import type { Mutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
 	import type { RealmInput, QueryRealmConnectionArgs, MutationRealmArgs } from '~/lib/types/schema';
-	import { Query_realmConnectionStore, Mutation_realmStore, Mutation_role_realmStore } from '$houdini';
-	import type { PageData } from './$houdini';
+	import type { PageData } from './$types';
 	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
@@ -14,11 +16,11 @@
 	export let data: PageData;
 	$: urlName($page.url, $LL.graphql.objects.Role.fields.realm.name(), PageType.SELECT);
 	$: id = data.id as string;
-	$: Query_realmConnection = data.Query_realmConnection as Query_realmConnectionStore;
-	$: nodes = $Query_realmConnection.data?.realmConnection?.edges?.map((edge) => edge?.node);
-	$: totalCount = $Query_realmConnection.data?.realmConnection?.totalCount || 0;
-	const Mutation_realm = new Mutation_realmStore();
-	const Mutation_role_realm = new Mutation_role_realmStore();
+	$: query_realmConnection_Store = data.query_realmConnection_Store as Query_realmConnection_Store;
+	$: nodes = $query_realmConnection_Store.response.data?.realmConnection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $query_realmConnection_Store.response.data?.realmConnection?.totalCount || 0;
+	$: mutation_role_realm_Store = data.mutation_role_realm_Store as Mutation_role_realm_Store;
+	$: mutation_realm_Store = data.mutation_realm_Store as Mutation_realm_Store;
 	let errors: Record<number, Errors> = {};
 
 	const fetch = (
@@ -28,7 +30,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		Query_realmConnection.fetch({ variables: event.detail.args })
+		query_realmConnection_Store.fetch(event.detail.args)
 			.then((result) => {
 				if (result.errors) {
 					event.detail.catch(result.errors);
@@ -51,7 +53,7 @@
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_realm.mutate(event.detail.args)
+				mutation_realm_Store.fetch(event.detail.args)
 					.then((result) => {
 						if (result.errors) {
 							event.detail.catch(result.errors);
@@ -78,9 +80,9 @@
 			.then((data) => {
 				errors = {};
 				if (!Array.isArray(event.detail.selected)) {
-					Mutation_role_realm.mutate({
+					mutation_role_realm_Store.fetch({
 						role_id: id,
-						role_realm: event.detail.selected
+						...event.detail.selected
 					})
 						.then((result) => {
 							if (result.errors) {
@@ -108,7 +110,7 @@
 		{nodes}
 		{totalCount}
 		{errors}
-		isFetching={$Query_realmConnection.fetching}
+		isFetching={$query_realmConnection_Store.isFetching}
 		on:fetch={fetch}
 		on:mutation={mutation}
 		on:select={select}

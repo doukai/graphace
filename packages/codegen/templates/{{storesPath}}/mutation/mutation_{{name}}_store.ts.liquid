@@ -49,7 +49,7 @@ const query = /* GraphQL */ `mutation Mutation_{{ name }}
 }`;
 
 export async function createMutation_{{ name }}_Store(event: LoadEvent): Promise<Mutation_{{ name }}_Store> {
-  return createGraphQLMutationStore<{{ tsTypeName }}{% if isList %}[]{% endif %}, {% if args and args.length > 0 %}Mutation{{ name | pascalCase }}Args{% else %}undefined{% endif %}>(query, event);
+  return createGraphQLMutationStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Mutation{{ name | pascalCase }}Args{% else %}undefined{% endif %}>(query, event);
 }
 
-export type Mutation_{{ name }}_Store = GraphQLStore<{{ tsTypeName }}{% if isList %}[]{% endif %}, {% if args and args.length > 0 %}Mutation{{ name | pascalCase }}Args{% else %}undefined{% endif %}>;
+export type Mutation_{{ name }}_Store = GraphQLStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Mutation{{ name | pascalCase }}Args{% else %}undefined{% endif %}>;

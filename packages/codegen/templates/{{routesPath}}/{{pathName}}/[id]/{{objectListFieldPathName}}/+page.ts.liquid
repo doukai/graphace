@@ -1,6 +1,11 @@
 import type { LoadEvent } from '@sveltejs/kit';
-import type { LayoutLoad } from '$types';
-import { load_Query_{{ name | camelCase }}_{{ objectFieldName }} } from '$houdini';
+import type { LayoutLoad } from './$types';
+import { createQuery_{{ name | camelCase }}_{{ objectFieldName }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_{{ objectFieldName }}_store';
+import { createMutation_{{ name | camelCase }}_{{ objectFieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ objectFieldName }}_store';
+import { createMutation_{{ objectFieldTypeName | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ objectFieldTypeName | camelCase }}_store';
+{%- if hasFileField %}
+import { createMutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
+{%- endif %}
 {%- if useAuth %}
 import { permissions } from '~/utils';
 {%- endif %}
@@ -11,6 +16,11 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
     {%- endif %}
     return {
         id: event.params.id,
-        ...(await load_Query_{{ name | camelCase }}_{{ objectFieldName }}({ event, variables: { {{ name | camelCase }}_{{ idName }}: { val: event.params.id }{% if connectionField %}, first: 10{% endif %} } }))
+        {%- if hasFileField %}
+        mutation_singleUpload_Store = await createMutation_singleUpload_Store(event),
+        {%- endif %}
+        query_{{ name | camelCase }}_{{ objectFieldName }}_Store: await createQuery_{{ name | camelCase }}_{{ objectFieldName }}_Store(event, { {{ name | camelCase }}_{{ idName }}: { val: event.params.id{% if connectionField %}, first: 10{% endif %} } }),
+        mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store: await createMutation_{{ name | camelCase }}_{{ objectFieldName }}_Store(event),
+        mutation_{{ objectFieldTypeName | camelCase }}_Store: await createMutation_{{ objectFieldTypeName | camelCase }}_Store(event)
     };
 }
