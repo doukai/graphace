@@ -1,6 +1,6 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
-import { createGraphQLQueryStore } from '~/utils';
+import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryGroupListArgs } from '~/lib/types/schema';
 import type { Group } from '~/lib/types/schema';
 
@@ -47,8 +47,12 @@ const query = /* GraphQL */ `query query_groupList($id: StringExpression, $name:
   }
 }`;
 
-export async function createQuery_groupList_Store(event: LoadEvent, variables: QueryGroupListArgs): Promise<Query_groupList_Store> {
-  return createGraphQLQueryStore<Group[], QueryGroupListArgs>(query, event, variables);
+export function createQuery_groupList_Store(event: LoadEvent | RequestEvent): Query_groupList_Store {
+  return createGraphQLQueryStore<Group[], QueryGroupListArgs>(query, event);
+}
+
+export async function fetchQuery_groupList_Store(event: LoadEvent | RequestEvent, variables: QueryGroupListArgs): Promise<Query_groupList_Store> {
+  return fetchGraphQLQueryStore<Group[], QueryGroupListArgs>(query, event, variables);
 }
 
 export type Query_groupList_Store = GraphQLStore<Group[], QueryGroupListArgs>;

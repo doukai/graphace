@@ -3,7 +3,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Funnel } from '@steeze-ui/heroicons';
 	import RealmFilter from '~/lib/components/objects/realm/RealmFilter.svelte';
-	import type { RealmExpression } from '$houdini';
+	import type { RealmExpression } from '~/lib/types/schema';
 
 	export let name: string;
 	export let expression: RealmExpression | null | undefined;

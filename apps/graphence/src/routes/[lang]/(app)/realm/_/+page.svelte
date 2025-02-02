@@ -1,22 +1,24 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import { type Errors, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
+	import { type Errors, type JsonSchema, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import RealmCreateForm from '~/lib/components/objects/realm/RealmCreateForm.svelte';
+	import type { Mutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
 	import type { RealmInput, MutationRealmArgs } from '~/lib/types/schema';
-	import { Mutation_realmStore } from '$houdini';
-	import type { PageData } from './$houdini';
-	import { validate } from '~/utils';
+	import type { PageData } from './$types';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: urlName($page.url, $LL.graphql.objects.Realm.name(), PageType.CREATE);
 	$: node = data.node as MutationRealmArgs;
 	$: errors = data.errors as Record<number, Errors>;
-
-	const Mutation_realm = new Mutation_realmStore();
+	$: mutation_realm_Store = data.mutation_realm_Store as Mutation_realm_Store;
 
 	const mutation = (
 		event: CustomEvent<{
@@ -27,7 +29,7 @@
 	) => {
 		validate('Mutation_realm_Arguments', event.detail.args, $locale)
 			.then((data) => {
-				Mutation_realm.mutate(event.detail.args)
+				mutation_realm_Store.fetch(event.detail.args)
 					.then((result) => {
 						if (result.errors) {
 							event.detail.catch(result.errors);

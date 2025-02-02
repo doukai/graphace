@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { Card, SearchInput } from '@graphace/ui';
+	import type { StructQueryStores } from '@graphace/ui-graphql';
 	import {{ name }}TreeMenu from '~/lib/components/objects/{{ name | camelCase }}/{{ name }}TreeMenu.svelte';
-	import { Operator, graphql } from '$houdini';
-	import type { {{ name }}RootNodesQueryVariables } from './$houdini';
 
 	export let currentDeep = 0;
 	export let deeps = 2;
@@ -10,21 +10,8 @@
 	export let active{{ name }}Id: string | null | undefined = undefined;
 	export let {{ name | camelCase }}Name: string | undefined = undefined;
 
-	export const _{{ name }}RootNodesQueryVariables: {{ name }}RootNodesQueryVariables = ({ props }) => {
-		return { deep: { opr: Operator.LT, val: deeps } };
-	};
-
-	const {{ name }}RootNodesQuery = graphql(`
-		query {{ name }}RootNodesQuery($deep: IntExpression) @load {
-			{{ name | camelCase }}List(deep: $deep) {
-				{{ idName }}
-				name
-				path
-				deep
-				parentId
-			}
-		}
-	`);
+	const { treeQueryStore } = getContext<StructQueryStores>('structQueryStores');
+	treeQueryStore.fetch({ fieldName: '{{ name | camelCase }}List', idName: '{{ idName }}' }, { deep: { opr: 'LT', val: deeps } });
 
 	let queryNodes: ({{ name | camelCase }}Name?: string | null | undefined) => void;
 </script>
@@ -44,5 +31,5 @@
 	{/if}
 	<div class="divider" />
 
-	<{{ name }}TreeMenu bind:active{{ name }}Id bind:{{ name | camelCase }}Name treeStructs={$GroupRootNodesQuery.data?.groupList} {currentDeep} {deeps} on:change bind:queryNodes />
+	<{{ name }}TreeMenu bind:active{{ name }}Id bind:{{ name | camelCase }}Name treeStructs={$treeQueryStore.response.data?.{{ name | camelCase }}List} {currentDeep} {deeps} on:change bind:queryNodes />
 </Card>

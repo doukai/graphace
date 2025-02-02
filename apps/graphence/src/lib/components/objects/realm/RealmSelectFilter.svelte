@@ -6,7 +6,6 @@
 	import RealmSelect from '~/lib/components/objects/realm/RealmSelect.svelte';
 	import type { RealmInput } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let expression: StringExpression | null | undefined;
 	export let name: string;
@@ -17,6 +16,7 @@
 	export let tagClassName: string = '';
 	export let menuClassName: string = '';
 
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	let opr: Operator | null | undefined = undefined;
 	let value: RealmInput | (RealmInput | null | undefined)[] | null | undefined = undefined;
 

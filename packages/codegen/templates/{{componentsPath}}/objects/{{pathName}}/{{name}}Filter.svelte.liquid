@@ -25,9 +25,10 @@
 	import type { {{ name }}Expression } from '~/{{ schemaTypesPath }}';
 
 	export let expression: {{ name }}Expression | null | undefined;
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
+
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	{%- if useAuth %}
-	const permissions = getContext('permissions') as PermissionsStore;
+	const permissions = getContext<PermissionsStore>('permissions');
 	{%- endif %}
 
 	let _expression = {

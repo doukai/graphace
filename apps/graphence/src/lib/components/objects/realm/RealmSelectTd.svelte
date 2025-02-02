@@ -5,7 +5,7 @@
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import RealmSelect from './RealmSelect.svelte';
-	import type { RealmInput } from '$houdini';
+	import type { RealmInput } from '~/lib/types/schema';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
@@ -17,7 +17,8 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
 		save: {};

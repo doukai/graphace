@@ -1,10 +1,10 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
-import type { MutationRealmArgs, Group } from '~/lib/types/schema';
+import type { QueryRealmArgs, RealmInput, Group } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `mutation Mutation_group_realm($group_id: String, $id: StringExpression, $name: StringExpression, $description: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $groupBy: [String!]) {
-  group(where: { id: { val: $group_id } }) @merge {
+const query = /* GraphQL */ `mutation Mutation_group_realm($group_id: String, $group_realm: RealmInput, $id: StringExpression, $name: StringExpression, $description: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $groupBy: [String!]) {
+  group(where: { id: { val: $group_id } }, group_realm: $group_realm) @merge {
     id
     name
     description
@@ -36,8 +36,8 @@ const query = /* GraphQL */ `mutation Mutation_group_realm($group_id: String, $i
   }
 }`;
 
-export async function createMutation_group_realm_Store(event: LoadEvent): Promise<Mutation_group_realm_Store> {
-  return createGraphQLMutationStore<Group, { group_id: string } & MutationRealmArgs>(query, event);
+export function createMutation_group_realm_Store(event: LoadEvent | RequestEvent): Mutation_group_realm_Store {
+  return createGraphQLMutationStore<Group, { group_id: string, group_realm: RealmInput } & QueryRealmArgs>(query, event);
 }
 
-export type Mutation_group_realm_Store = GraphQLStore<Group, { group_id: string } & MutationRealmArgs>;
+export type Mutation_group_realm_Store = GraphQLStore<Group, { group_id: string, group_realm: RealmInput } & QueryRealmArgs>;

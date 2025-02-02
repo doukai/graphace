@@ -1,6 +1,6 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
-import { createGraphQLQueryStore } from '~/utils';
+import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryUserListArgs } from '~/lib/types/schema';
 import type { User } from '~/lib/types/schema';
 
@@ -39,8 +39,12 @@ const query = /* GraphQL */ `query query_userList($id: StringExpression, $name: 
   }
 }`;
 
-export async function createQuery_userList_Store(event: LoadEvent, variables: QueryUserListArgs): Promise<Query_userList_Store> {
-  return createGraphQLQueryStore<User[], QueryUserListArgs>(query, event, variables);
+export function createQuery_userList_Store(event: LoadEvent | RequestEvent): Query_userList_Store {
+  return createGraphQLQueryStore<User[], QueryUserListArgs>(query, event);
+}
+
+export async function fetchQuery_userList_Store(event: LoadEvent | RequestEvent, variables: QueryUserListArgs): Promise<Query_userList_Store> {
+  return fetchGraphQLQueryStore<User[], QueryUserListArgs>(query, event, variables);
 }
 
 export type Query_userList_Store = GraphQLStore<User[], QueryUserListArgs>;

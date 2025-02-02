@@ -8,7 +8,8 @@
 	export let errors: Record<string, Errors> = {};
 	export let authErrorCodes: number[] = [];
 	export let logining: boolean = false;
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	$: authErrorMessageKeys = authErrorCodes.map(
 		(code) => ('' + code) as keyof NamespaceErrorsTranslation['code']

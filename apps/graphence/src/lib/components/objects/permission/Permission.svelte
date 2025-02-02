@@ -31,8 +31,8 @@
 	export let showBookmarkButton: boolean = false;
 	export let className: string = '';
 
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
-	const permissions = getContext('permissions') as PermissionsStore;
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
+	const permissions = getContext<PermissionsStore>('permissions');
 	const typeName = 'Permission';
 	const idFieldName = 'name';
 	

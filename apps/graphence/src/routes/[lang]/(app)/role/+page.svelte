@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import type { Errors } from '@graphace/commons';
+	import type { Errors, JsonSchema } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import RoleConnectionTable from '~/lib/components/objects/role/RoleConnectionTable.svelte';
@@ -8,11 +9,13 @@
 	import type { Mutation_role_Store } from '~/lib/stores/mutation/mutation_role_store';
 	import type { RoleInput, QueryRoleConnectionArgs, MutationRoleArgs } from '~/lib/types/schema';
 	import type { PageData } from './$types';
-	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: urlName($page.url, $LL.graphql.objects.Role.name());
 	$: query_roleConnection_Store = data.query_roleConnection_Store as Query_roleConnection_Store;
 	$: nodes = $query_roleConnection_Store.response.data?.roleConnection?.edges?.map((edge) => edge?.node);

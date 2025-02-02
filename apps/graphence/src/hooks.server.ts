@@ -4,7 +4,6 @@ import { initAcceptLanguageHeaderDetector } from 'typesafe-i18n/detectors';
 import jwt_decode from "jwt-decode";
 import { browser } from '$app/environment';
 import { goto } from '$app/navigation';
-import { setSession } from '$houdini';
 import { detectLocale, i18n, isLocale } from '$i18n/i18n-util';
 import { loadAllLocales } from '$i18n/i18n-util.sync';
 
@@ -40,7 +39,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 	if (!token && event.url.pathname !== loginPathName) {
 		toLoginPage(loginPathName, event);
 	} else {
-		setSession(event, { token, locale });
 		if (!event.locals.jwt && token) {
 			event.locals.jwt = jwt_decode(token.substring(7));
 		}

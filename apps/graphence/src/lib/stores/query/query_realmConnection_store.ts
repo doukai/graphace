@@ -1,6 +1,6 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
-import { createGraphQLQueryStore } from '~/utils';
+import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryRealmConnectionArgs } from '~/lib/types/schema';
 import type { RealmConnection } from '~/lib/types/schema';
 
@@ -25,8 +25,12 @@ const query = /* GraphQL */ `query query_realmConnection($id: StringExpression, 
   }
 }`;
 
-export async function createQuery_realmConnection_Store(event: LoadEvent, variables: QueryRealmConnectionArgs): Promise<Query_realmConnection_Store> {
-  return createGraphQLQueryStore<RealmConnection, QueryRealmConnectionArgs>(query, event, variables);
+export function createQuery_realmConnection_Store(event: LoadEvent | RequestEvent): Query_realmConnection_Store {
+  return createGraphQLQueryStore<RealmConnection, QueryRealmConnectionArgs>(query, event);
+}
+
+export async function fetchQuery_realmConnection_Store(event: LoadEvent | RequestEvent, variables: QueryRealmConnectionArgs): Promise<Query_realmConnection_Store> {
+  return fetchGraphQLQueryStore<RealmConnection, QueryRealmConnectionArgs>(query, event, variables);
 }
 
 export type Query_realmConnection_Store = GraphQLStore<RealmConnection, QueryRealmConnectionArgs>;

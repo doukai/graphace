@@ -1,17 +1,20 @@
-import { redirect, type LoadEvent } from '@sveltejs/kit';
+import { redirect, type LoadEvent, type RequestEvent } from '@sveltejs/kit';
 import { browser } from '$app/environment';
 import { goto } from '$app/navigation';
 import type { Directive, Field, GraphQLError } from '@graphace/graphql';
-import type { GraphQLStore, OperationStore } from '@graphace/ui-graphql';
+import type { GraphQLStore, OperationStore, StructQueryStores } from '@graphace/ui-graphql';
 import {
-    createQueryStore as createQuery,
-    createMutationStore as createMutation,
-    createGraphQLQueryStore as createGraphQLQuery,
-    createGraphQLMutationStore as createGraphQLMutation
+    createQueryStore as _createQueryStore,
+    fetchQueryStore as _fetchQueryStore,
+    createMutationStore as _createMutationStore,
+    createGraphQLQueryStore as _createGraphQLQueryStore,
+    fetchGraphQLQueryStore as _fetchGraphQLQueryStore,
+    createGraphQLMutationStore as _createGraphQLMutationStore,
+    createStructQueryStores as _createStructQueryStores
 } from '@graphace/ui-graphql';
 import { env } from '$env/dynamic/public';
 
-const authInterceptor = <T>(event: LoadEvent, response: { data?: Record<string, T | null> | undefined, errors?: GraphQLError[] | null | undefined }): void => {
+const authInterceptor = <T>(event: LoadEvent | RequestEvent, response: { data?: Record<string, T | null> | undefined, errors?: GraphQLError[] | null | undefined }): void => {
     if (response.errors) {
         if (response.errors?.map(error => error.extensions).some(extensions => extensions?.code == -40100)) {
             const [, lang] = event.url.pathname.split('/');
@@ -32,8 +35,8 @@ const authInterceptor = <T>(event: LoadEvent, response: { data?: Record<string, 
     }
 }
 
-export async function createQueryStore<T>(event: LoadEvent, params: { fields: Field[], name?: string | undefined, directives?: Directive[] }): Promise<OperationStore<T>> {
-    const queryStore = await createQuery<T>(event, browser ? '/graphql' : env.PUBLIC_GRAPHQL_URL, params);
+export function createQueryStore<T>(event: LoadEvent): OperationStore<T> {
+    const queryStore = _createQueryStore<T>(event, browser ? '/graphql' : env.PUBLIC_GRAPHQL_URL);
     const { subscribe, fetch } = queryStore;
 
     queryStore.subscribe(data => {
@@ -46,8 +49,22 @@ export async function createQueryStore<T>(event: LoadEvent, params: { fields: Fi
     };
 }
 
-export async function createMutationStore<T>(event: LoadEvent): Promise<OperationStore<T>> {
-    const mutationStore = await createMutation<T>(event, browser ? '/graphql' : env.PUBLIC_GRAPHQL_URL);
+export async function fetchQueryStore<T>(event: LoadEvent, params: { fields: Field[], name?: string | undefined, directives?: Directive[] | undefined }): Promise<OperationStore<T>> {
+    const queryStore = await _fetchQueryStore<T>(event, browser ? '/graphql' : env.PUBLIC_GRAPHQL_URL, params);
+    const { subscribe, fetch } = queryStore;
+
+    queryStore.subscribe(data => {
+        authInterceptor(event, data.response);
+    })
+
+    return {
+        subscribe,
+        fetch
+    };
+}
+
+export function createMutationStore<T>(event: LoadEvent | RequestEvent): OperationStore<T> {
+    const mutationStore = _createMutationStore<T>(event, browser ? '/graphql' : env.PUBLIC_GRAPHQL_URL);
     const { subscribe, fetch } = mutationStore;
 
     mutationStore.subscribe(data => {
@@ -60,8 +77,8 @@ export async function createMutationStore<T>(event: LoadEvent): Promise<Operatio
     };
 }
 
-export async function createGraphQLQueryStore<T, V>(query: string, event: LoadEvent, variables: V): Promise<GraphQLStore<T, V>> {
-    const graphQLQueryStore = await createGraphQLQuery<T, V>(event, browser ? '/graphql' : env.PUBLIC_GRAPHQL_URL, query, variables);
+export function createGraphQLQueryStore<T, V>(query: string, event: LoadEvent | RequestEvent): GraphQLStore<T, V> {
+    const graphQLQueryStore = _createGraphQLQueryStore<T, V>(event, browser ? '/graphql' : env.PUBLIC_GRAPHQL_URL, query);
     const { subscribe, fetch } = graphQLQueryStore;
 
     graphQLQueryStore.subscribe(data => {
@@ -74,8 +91,8 @@ export async function createGraphQLQueryStore<T, V>(query: string, event: LoadEv
     };
 }
 
-export async function createGraphQLMutationStore<T, V>(query: string, event: LoadEvent): Promise<GraphQLStore<T, V>> {
-    const graphQLQueryStore = await createGraphQLMutation<T, V>(event, browser ? '/graphql' : env.PUBLIC_GRAPHQL_URL, query);
+export async function fetchGraphQLQueryStore<T, V>(query: string, event: LoadEvent | RequestEvent, variables?: V | undefined): Promise<GraphQLStore<T, V>> {
+    const graphQLQueryStore = await _fetchGraphQLQueryStore<T, V>(event, browser ? '/graphql' : env.PUBLIC_GRAPHQL_URL, query, variables);
     const { subscribe, fetch } = graphQLQueryStore;
 
     graphQLQueryStore.subscribe(data => {
@@ -86,4 +103,33 @@ export async function createGraphQLMutationStore<T, V>(query: string, event: Loa
         subscribe,
         fetch
     };
+}
+
+export function createGraphQLMutationStore<T, V>(query: string, event: LoadEvent | RequestEvent): GraphQLStore<T, V> {
+    const graphQLQueryStore = _createGraphQLMutationStore<T, V>(event, browser ? '/graphql' : env.PUBLIC_GRAPHQL_URL, query);
+    const { subscribe, fetch } = graphQLQueryStore;
+
+    graphQLQueryStore.subscribe(data => {
+        authInterceptor(event, data.response);
+    })
+
+    return {
+        subscribe,
+        fetch
+    };
+}
+
+export function createStructQueryStores(event: LoadEvent | RequestEvent): StructQueryStores {
+    const structQueryStore = _createStructQueryStores(event, browser ? '/graphql' : env.PUBLIC_GRAPHQL_URL);
+    const { namedQueryStore, treeQueryStore } = structQueryStore;
+
+    namedQueryStore.subscribe(data => {
+        authInterceptor(event, data.response);
+    });
+
+    treeQueryStore.subscribe(data => {
+        authInterceptor(event, data.response);
+    });
+
+    return structQueryStore;
 }

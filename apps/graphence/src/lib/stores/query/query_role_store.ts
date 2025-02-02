@@ -1,6 +1,6 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
-import { createGraphQLQueryStore } from '~/utils';
+import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryRoleArgs } from '~/lib/types/schema';
 import type { Role } from '~/lib/types/schema';
 
@@ -39,8 +39,12 @@ const query = /* GraphQL */ `query query_role($id: StringExpression, $name: Stri
   }
 }`;
 
-export async function createQuery_role_Store(event: LoadEvent, variables: QueryRoleArgs): Promise<Query_role_Store> {
-  return createGraphQLQueryStore<Role, QueryRoleArgs>(query, event, variables);
+export function createQuery_role_Store(event: LoadEvent | RequestEvent): Query_role_Store {
+  return createGraphQLQueryStore<Role, QueryRoleArgs>(query, event);
+}
+
+export async function fetchQuery_role_Store(event: LoadEvent | RequestEvent, variables: QueryRoleArgs): Promise<Query_role_Store> {
+  return fetchGraphQLQueryStore<Role, QueryRoleArgs>(query, event, variables);
 }
 
 export type Query_role_Store = GraphQLStore<Role, QueryRoleArgs>;

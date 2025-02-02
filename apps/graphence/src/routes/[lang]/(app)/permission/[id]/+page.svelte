@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import type { Errors } from '@graphace/commons';
+	import type { Errors, JsonSchema } from '@graphace/commons';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import PermissionForm from '~/lib/components/objects/permission/PermissionForm.svelte';
 	import type { Query_permission_Store } from '~/lib/stores/query/query_permission_store';
@@ -8,10 +9,12 @@
 	import type { GraphQLError } from '@graphace/graphql';
 	import type { PermissionInput, MutationPermissionArgs } from '~/lib/types/schema';
 	import type { PageData } from './$types';
-	import { validate } from '~/utils';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: query_permission_Store = data.query_permission_Store as Query_permission_Store;
 	$: node = $query_permission_Store.response.data?.permission;
 	$: urlName($page.url, node?.name || '');

@@ -1,7 +1,7 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
-import { createGraphQLQueryStore } from '~/utils';
-import type { Query{{ objectField.fieldTypeName | pascalCase }}{% if objectField.isListType %}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}{% endif %}Args, {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
+import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
+import type { Query{{ objectField.fieldTypeName | pascalCase }}{% if objectField.isListType %}{% if objectField.connectionField %}Connection{% else %}List{% endif %}{% endif %}Args, {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
 
 const query = /* GraphQL */ `query Query_{{ name }}_{{ objectField.name }}
   {%- if objectField.connectionField -%}
@@ -178,8 +178,12 @@ const query = /* GraphQL */ `query Query_{{ name }}_{{ objectField.name }}
   }
 }`;
 
-export async function createQuery_{{ name }}_{{ objectField.name }}_Store(event: LoadEvent, variables: { {{ name }}_{{ idName }}: string } & Query{{ objectField.fieldTypeName | pascalCase }}{% if objectField.isListType %}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}{% endif %}Args): Promise<Query_{{ name }}_{{ objectField.name }}_Store> {
-  return createGraphQLQueryStore<{{ fieldTypeName }}, { {{ name }}_{{ idName }}: string } & Query{{ objectField.fieldTypeName | pascalCase }}{% if objectField.isListType %}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}{% endif %}Args>(query, event, variables);
+export function createQuery_{{ name }}_{{ objectField.name }}_Store(event: LoadEvent | RequestEvent): Query_{{ name }}_{{ objectField.name }}_Store {
+  return createGraphQLQueryStore<{{ fieldTypeName }}, { {{ name }}_{{ idName }}: string } & Query{{ objectField.fieldTypeName | pascalCase }}{% if objectField.isListType %}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}{% endif %}Args>(query, event);
+}
+
+export async function fetchQuery_{{ name }}_{{ objectField.name }}_Store(event: LoadEvent | RequestEvent, variables: { {{ name }}_{{ idName }}: string } & Query{{ objectField.fieldTypeName | pascalCase }}{% if objectField.isListType %}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}{% endif %}Args): Promise<Query_{{ name }}_{{ objectField.name }}_Store> {
+  return fetchGraphQLQueryStore<{{ fieldTypeName }}, { {{ name }}_{{ idName }}: string } & Query{{ objectField.fieldTypeName | pascalCase }}{% if objectField.isListType %}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}{% endif %}Args>(query, event, variables);
 }
 
 export type Query_{{ name }}_{{ objectField.name }}_Store = GraphQLStore<{{ fieldTypeName }}, { {{ name }}_{{ idName }}: string } & Query{{ objectField.fieldTypeName | pascalCase }}{% if objectField.isListType %}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}{% endif %}Args>;

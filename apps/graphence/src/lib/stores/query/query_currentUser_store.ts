@@ -1,6 +1,6 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
-import { createGraphQLQueryStore } from '~/utils';
+import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { User } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `query query_currentUser {
@@ -38,8 +38,12 @@ const query = /* GraphQL */ `query query_currentUser {
   }
 }`;
 
-export async function createQuery_currentUser_Store(event: LoadEvent, variables: undefined): Promise<Query_currentUser_Store> {
-  return createGraphQLQueryStore<User, undefined>(query, event, variables);
+export function createQuery_currentUser_Store(event: LoadEvent | RequestEvent): Query_currentUser_Store {
+  return createGraphQLQueryStore<User, undefined>(query, event);
+}
+
+export async function fetchQuery_currentUser_Store(event: LoadEvent | RequestEvent, variables: undefined): Promise<Query_currentUser_Store> {
+  return fetchGraphQLQueryStore<User, undefined>(query, event, variables);
 }
 
 export type Query_currentUser_Store = GraphQLStore<User, undefined>;

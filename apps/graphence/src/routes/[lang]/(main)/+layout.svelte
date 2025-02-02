@@ -2,8 +2,6 @@
 	import '../../../app.css';
 	import { setContext } from 'svelte';
 	import { NavBar, LocaleSelect, ThemeSelect } from '@graphace/ui';
-	import { permissions } from '~/utils/auth-util';
-	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/utils/validate-util';
 	import { setLocale } from '$i18n/i18n-svelte';
 	import LL from '$i18n/i18n-svelte';
 	import type { LayoutData } from './$types';
@@ -11,10 +9,10 @@
 	export let data: LayoutData;
 	// at the very top, set the locale before you access the store and before the actual rendering takes place
 	setLocale(data.locale);
+	setContext('permissions', data.permissions);
+	setContext('jsonSchema', data.jsonSchema);
+	setContext('structQueryStores', data.structQueryStores);
 	setContext('LL', LL);
-	setContext('permissions', permissions);
-	setContext('buildGraphQLErrors', buildGraphQLErrors);
-	setContext('buildGlobalGraphQLErrorMessage', buildGlobalGraphQLErrorMessage);
 </script>
 
 <svelte:head>

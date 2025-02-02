@@ -4,7 +4,6 @@
 	import type { NumberExpression } from '@graphace/graphql';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { OperatorSelect, NumberInput } from '.';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let expression: NumberExpression | null | undefined;
 	export let name: string;
@@ -12,6 +11,8 @@
 	export let className: string = '';
 	export let selectClassName: string = '';
 	export let addBtnClassName: string = '';
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	let _expression: NumberExpression | null | undefined = {};
 

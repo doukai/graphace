@@ -1,4 +1,4 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
 import type { MutationRoleArgs } from '~/lib/types/schema';
@@ -40,7 +40,7 @@ const query = /* GraphQL */ `mutation Mutation_role($id: ID, $name: String, $des
   }
 }`;
 
-export async function createMutation_role_Store(event: LoadEvent): Promise<Mutation_role_Store> {
+export function createMutation_role_Store(event: LoadEvent | RequestEvent): Mutation_role_Store {
   return createGraphQLMutationStore<Role, MutationRoleArgs>(query, event);
 }
 

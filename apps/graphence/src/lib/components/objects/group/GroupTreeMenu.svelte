@@ -1,8 +1,13 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	import { graphql, type GroupNodesQuery$input, Operator } from '$houdini';
-	import { type NodeTree, type TreeStruct, buildTree } from '@graphace/graphql';
+	import { createEventDispatcher, getContext } from 'svelte';
+	import {
+		type NodeTree,
+		type TreeStruct,
+		type QueryTreeStructArgs,
+		buildTree
+	} from '@graphace/graphql';
 	import { MenuTreeLoading } from '@graphace/ui';
+	import type { StructQueryStores } from '@graphace/ui-graphql';
 
 	export let nodeTrees: NodeTree[] | null | undefined = undefined;
 	export let treeStructs: (TreeStruct | null | undefined)[] | null | undefined = undefined;
@@ -18,17 +23,7 @@
 		};
 	}>();
 
-	const GroupNodesQuery = graphql(`
-		query GroupNodesQuery($path: StringExpression, $deep: IntExpression, $name: StringExpression) {
-			groupList(deep: $deep, path: $path, name: $name) {
-				id
-				name
-				path
-				deep
-				parentId
-			}
-		}
-	`);
+	const { treeQueryStore } = getContext<StructQueryStores>('structQueryStores');
 
 	$: if (treeStructs) {
 		nodeTrees = buildTree(treeStructs, parent);
@@ -39,21 +34,18 @@
 	}
 
 	export const queryNodes = (groupName?: string | null | undefined) => {
-		let variables: GroupNodesQuery$input;
+		let variables: QueryTreeStructArgs;
 		if (groupName) {
 			variables = {
-				deep: undefined,
-				path: undefined,
-				name: { opr: Operator.LK, val: `%${groupName}%` }
+				name: { opr: 'LK', val: `%${groupName}%` }
 			};
 		} else {
 			variables = {
-				deep: { opr: Operator.LT, val: currentDeep + deeps },
-				path: { opr: Operator.LK, val: `${(parent?.path || '') + (parent?.id || '') + '/'}%` },
-				name: undefined
+				deep: { opr: 'LT', val: currentDeep + deeps },
+				path: { opr: 'LK', val: `${(parent?.path || '') + (parent?.id || '') + '/'}%` }
 			};
 		}
-		GroupNodesQuery.fetch({ variables }).then((result) => {
+		treeQueryStore.fetch({ fieldName: 'groupList', idName: 'id' }, variables).then((result) => {
 			treeStructs = result.data?.groupList;
 			nodeTrees = buildTree(treeStructs, parent);
 		});
@@ -78,7 +70,7 @@
 				>
 					{nodeTree.node?.name}
 				</a>
-				{#if $GroupNodesQuery.fetching}
+				{#if $treeQueryStore.isFetching}
 					<MenuTreeLoading />
 				{:else if nodeTree.children}
 					<svelte:self

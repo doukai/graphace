@@ -5,10 +5,11 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Bars4, ChevronLeft } from '@steeze-ui/heroicons';
 	import { ot, canBack } from '~/components/stores/useNavigate.js';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let showMenuButton: boolean = true;
 	export let showBackButton: boolean = false;
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	let scrollY: number;
 	$: switchNavbarStyle = scrollY > 40 ? true : false;

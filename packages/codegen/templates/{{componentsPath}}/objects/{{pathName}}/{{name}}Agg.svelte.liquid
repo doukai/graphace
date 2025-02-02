@@ -28,8 +28,10 @@
 	export let showBookmarkButton: boolean = false;
 	export let className: string = '';
 
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
-	const permissions = getContext('permissions') as PermissionsStore;
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
+	{%- if useAuth %}
+	const permissions = getContext<PermissionsStore>('permissions');
+	{%- endif %}
 	
 	const dispatch = createEventDispatcher<{
 		query: { fields: Field[]; queryArguments: {{ name }}ConnectionQueryArguments };

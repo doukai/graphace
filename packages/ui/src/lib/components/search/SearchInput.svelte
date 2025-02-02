@@ -7,7 +7,9 @@
 	import { MagnifyingGlass } from '@steeze-ui/heroicons';
 	export let name: string | undefined = undefined;
 	export let value: string | undefined = undefined;
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
+
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
+		
 	const dispatch = createEventDispatcher<{
 		search: { value: string | undefined };
 	}>();

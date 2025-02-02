@@ -7,6 +7,7 @@
 	import { IDItem, StringItem, ObjectItem } from '@graphace/ui-graphql';
 	import PermissionTypeItem from '~/lib/components/enums/permission-type/PermissionTypeItem.svelte';
 	import RoleSelectItem from '~/lib/components/objects/role/RoleSelectItem.svelte';
+	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/utils';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { PermissionInput } from '~/lib/types/schema';
 
@@ -15,10 +16,9 @@
 	export let showRemoveButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
 	export let showBackButton: boolean = true;
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
-	const permissions = getContext('permissions') as PermissionsStore;
-	const buildGraphQLErrors = getContext('buildGraphQLErrors') as GraphQLErrorsFunction;
-	const buildGlobalGraphQLErrorMessage = getContext('buildGlobalGraphQLErrorMessage') as GlobalGraphQLErrorMessageFunction;
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
+	const permissions = getContext<PermissionsStore>('permissions');
 
 	const dispatch = createEventDispatcher<{
 		mutation: {

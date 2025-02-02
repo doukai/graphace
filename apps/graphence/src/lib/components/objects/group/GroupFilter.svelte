@@ -14,8 +14,9 @@
 	import type { GroupExpression } from '~/lib/types/schema';
 
 	export let expression: GroupExpression | null | undefined;
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
-	const permissions = getContext('permissions') as PermissionsStore;
+
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
+	const permissions = getContext<PermissionsStore>('permissions');
 
 	let _expression = {
 		id: undefined,

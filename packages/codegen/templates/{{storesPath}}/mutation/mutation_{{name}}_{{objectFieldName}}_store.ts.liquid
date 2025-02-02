@@ -1,15 +1,15 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
-import type { Mutation{{ objectField.fieldTypeName | pascalCase }}{% if objectField.isListType %}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}{% endif %}Args, {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
+import type { Query{{ objectField.fieldTypeName | pascalCase }}{% if objectField.isListType %}{% if objectField.connectionField %}Connection{% else %}List{% endif %}{% endif %}Args, {{ objectField.fieldTypeName }}Input, {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
 
 const query = /* GraphQL */ `mutation Mutation_{{ name }}_{{ objectField.name }}
   {%- if objectField.connectionField -%}
-  (${{ name }}_{{ idName }}: String{% if objectField.connectionField.args and objectField.connectionField.args.length > 0 %}, {% for arg in objectField.connectionField.args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %}{% endif %})
+  (${{ name }}_{{ idName }}: String, ${{ name }}_{{ objectField.name }}: {% if objectField.isListType %}[{{ objectField.fieldTypeName }}Input]{% else %}{{ objectField.fieldTypeName }}Input{% endif %}{% if objectField.connectionField.args and objectField.connectionField.args.length > 0 %}, {% for arg in objectField.connectionField.args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %}{% endif %})
   {%- else -%}
-  (${{ name }}_{{ idName }}: String{% if objectField.args and objectField.args.length > 0 %}, {% for arg in objectField.args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %}{% endif %})
+  (${{ name }}_{{ idName }}: String, ${{ name }}_{{ objectField.name }}: {% if objectField.isListType %}[{{ objectField.fieldTypeName }}Input]{% else %}{{ objectField.fieldTypeName }}Input{% endif %}{% if objectField.args and objectField.args.length > 0 %}, {% for arg in objectField.args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %}{% endif %})
   {%- endif %} {
-  {{ name }}(where: { {{ idName }}: { val: ${{ name }}_{{ idName }} } }) @merge {
+  {{ name }}(where: { {{ idName }}: { val: ${{ name }}_{{ idName }} } }, {{ name }}_{{ objectField.name }}: ${{ name }}_{{ objectField.name }}) @merge {
     {%- if fields %}
     {%- for field in fields %}
     {{ field.name }}
@@ -94,8 +94,8 @@ const query = /* GraphQL */ `mutation Mutation_{{ name }}_{{ objectField.name }}
   }
 }`;
 
-export async function createMutation_{{ name }}_{{ objectField.name }}_Store(event: LoadEvent): Promise<Mutation_{{ name }}_{{ objectField.name }}_Store> {
-  return createGraphQLMutationStore<{{ fieldTypeName }}, { {{ name }}_{{ idName }}: string } & Mutation{{ objectField.fieldTypeName | pascalCase }}{% if objectField.isListType %}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}{% endif %}Args>(query, event);
+export function createMutation_{{ name }}_{{ objectField.name }}_Store(event: LoadEvent | RequestEvent): Mutation_{{ name }}_{{ objectField.name }}_Store {
+  return createGraphQLMutationStore<{{ fieldTypeName }}, { {{ name }}_{{ idName }}: string, {{ name }}_{{ objectField.name }}: {% if objectField.isListType %}[{{ objectField.fieldTypeName }}Input]{% else %}{{ objectField.fieldTypeName }}Input{% endif %} } & Query{{ objectField.fieldTypeName | pascalCase }}{% if objectField.isListType %}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}{% endif %}Args>(query, event);
 }
 
-export type Mutation_{{ name }}_{{ objectField.name }}_Store = GraphQLStore<{{ fieldTypeName }}, { {{ name }}_{{ idName }}: string } & Mutation{{ objectField.fieldTypeName | pascalCase }}{% if objectField.isListType %}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}{% endif %}Args>;
+export type Mutation_{{ name }}_{{ objectField.name }}_Store = GraphQLStore<{{ fieldTypeName }}, { {{ name }}_{{ idName }}: string, {{ name }}_{{ objectField.name }}: {% if objectField.isListType %}[{{ objectField.fieldTypeName }}Input]{% else %}{{ objectField.fieldTypeName }}Input{% endif %} } & Query{{ objectField.fieldTypeName | pascalCase }}{% if objectField.isListType %}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}{% endif %}Args>;

@@ -5,7 +5,7 @@
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import GroupSelect from './GroupSelect.svelte';
-	import type { GroupInput } from '$houdini';
+	import type { GroupInput } from '~/lib/types/schema';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
@@ -17,7 +17,8 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
 		save: {};

@@ -1,22 +1,24 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import { type Errors, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
+	import { type Errors, type JsonSchema, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import PermissionCreateForm from '~/lib/components/objects/permission/PermissionCreateForm.svelte';
+	import type { Mutation_permission_Store } from '~/lib/stores/mutation/mutation_permission_store';
 	import type { PermissionInput, MutationPermissionArgs } from '~/lib/types/schema';
-	import { Mutation_permissionStore } from '$houdini';
-	import type { PageData } from './$houdini';
-	import { validate } from '~/utils';
+	import type { PageData } from './$types';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: urlName($page.url, $LL.graphql.objects.Permission.name(), PageType.CREATE);
 	$: node = data.node as MutationPermissionArgs;
 	$: errors = data.errors as Record<number, Errors>;
-
-	const Mutation_permission = new Mutation_permissionStore();
+	$: mutation_permission_Store = data.mutation_permission_Store as Mutation_permission_Store;
 
 	const mutation = (
 		event: CustomEvent<{
@@ -27,7 +29,7 @@
 	) => {
 		validate('Mutation_permission_Arguments', event.detail.args, $locale)
 			.then((data) => {
-				Mutation_permission.mutate(event.detail.args)
+				mutation_permission_Store.fetch(event.detail.args)
 					.then((result) => {
 						if (result.errors) {
 							event.detail.catch(result.errors);

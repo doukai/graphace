@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Errors } from '@graphace/commons';
 	import type { Option } from '@graphace/ui';
-	import { ObjectSelect } from '@graphace/ui-graphql';
-	import { graphql, type UserInput, Operator } from '$houdini';
+	import { type StructQueryStores, ObjectSelect } from '@graphace/ui-graphql';
+	import type { UserInput } from '~/lib/types/schema';
 
 	export let value: UserInput | (UserInput | null | undefined)[] | null | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
@@ -24,23 +24,15 @@
 		};
 	}>();
 
-	const UserNameListQuery = graphql(`
-		query UserNameListQuery($name: StringExpression, $first: Int) {
-			userList(name: $name, first: $first) {
-				id
-				name
-				description
-			}
-		}
-	`);
+	const { namedQueryStore } = getContext<StructQueryStores>('structQueryStores');
 
 	$: options =
-		$UserNameListQuery.data?.userList?.map((item) => ({
+		$namedQueryStore.response.data?.userList?.map((item) => ({
 			label: item?.name,
 			value: item?.id
 		})) || [];
 
-	$: loading = $UserNameListQuery.fetching;
+	$: loading = $namedQueryStore.isFetching;
 
 	let selected: Option | Option[] | undefined;
 
@@ -81,11 +73,15 @@
 	}}
 	on:search={(e) => {
 		if (e.detail.searchValue) {
-			UserNameListQuery.fetch({
-				variables: { name: { opr: Operator.LK, val: `%${e.detail.searchValue}%` } }
-			});
+			namedQueryStore.fetch(
+				{ fieldName: 'userList', idName: 'id' },
+				{ name: { opr: 'LK', val: `%${e.detail.searchValue}%` } }
+			);
 		} else {
-			UserNameListQuery.fetch({ variables: { name: undefined, first: 10 } });
+			namedQueryStore.fetch(
+				{ fieldName: 'userList', idName: 'id' },
+				{ name: undefined, first: 10 }
+			);
 		}
 	}}
 />

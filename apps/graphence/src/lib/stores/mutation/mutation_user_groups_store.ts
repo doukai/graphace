@@ -1,10 +1,10 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
-import type { MutationGroupConnectionArgs, User } from '~/lib/types/schema';
+import type { QueryGroupConnectionArgs, GroupInput, User } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `mutation Mutation_user_groups($user_id: String, $id: StringExpression, $name: StringExpression, $description: StringExpression, $path: StringExpression, $deep: IntExpression, $parentId: StringExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: GroupOrderBy, $groupBy: [String!]) {
-  user(where: { id: { val: $user_id } }) @merge {
+const query = /* GraphQL */ `mutation Mutation_user_groups($user_id: String, $user_groups: [GroupInput], $id: StringExpression, $name: StringExpression, $description: StringExpression, $path: StringExpression, $deep: IntExpression, $parentId: StringExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: GroupOrderBy, $groupBy: [String!]) {
+  user(where: { id: { val: $user_id } }, user_groups: $user_groups) @merge {
     id
     name
     description
@@ -71,8 +71,8 @@ const query = /* GraphQL */ `mutation Mutation_user_groups($user_id: String, $id
   }
 }`;
 
-export async function createMutation_user_groups_Store(event: LoadEvent): Promise<Mutation_user_groups_Store> {
-  return createGraphQLMutationStore<User, { user_id: string } & MutationGroupConnectionArgs>(query, event);
+export function createMutation_user_groups_Store(event: LoadEvent | RequestEvent): Mutation_user_groups_Store {
+  return createGraphQLMutationStore<User, { user_id: string, user_groups: [GroupInput] } & QueryGroupConnectionArgs>(query, event);
 }
 
-export type Mutation_user_groups_Store = GraphQLStore<User, { user_id: string } & MutationGroupConnectionArgs>;
+export type Mutation_user_groups_Store = GraphQLStore<User, { user_id: string, user_groups: [GroupInput] } & QueryGroupConnectionArgs>;

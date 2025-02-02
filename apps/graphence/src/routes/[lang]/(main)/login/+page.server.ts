@@ -1,6 +1,6 @@
 import { type ServerLoadEvent, fail, redirect } from '@sveltejs/kit';
-import { graphql } from '$houdini'
-import { getSchemaErrors } from '~/utils';
+import { createMutation_login_Store } from '~/lib/stores/mutation/mutation_login_store';
+import { getJsonSchema } from '~/utils';
 import type { Actions } from './$types';
 
 export const actions = {
@@ -9,20 +9,19 @@ export const actions = {
         const data = await event.request.formData();
         const login = data.get('login')?.toString() || undefined;
         const password = data.get('password')?.toString() || undefined;
+
+        const { getSchemaErrors } = getJsonSchema(event);
+
         const errors = await getSchemaErrors({ "$id": "#Mutation_login_Arguments", "type": "object", "properties": { "login": { "type": "string" }, "password": { "type": "string" } }, "additionalProperties": true, "required": ["login", "password"] }, { login, password }, event.locals.locale);
 
         if (errors) {
             return fail(400, { errors, logining: false });
         }
 
-        const loginMutation = graphql(`
-            mutation Login($login: String!, $password: String!) {
-                login(login: $login, password: $password)
-            }
-        `);
+        const mutation_login_Store = createMutation_login_Store(event);
 
         if (login && password) {
-            const result = await loginMutation.mutate({ login, password }, { event });
+            const result = await mutation_login_Store.fetch({ login, password });
             if (result.data?.login) {
                 cookies.set('Authorization', "Bearer " + result.data?.login, { path: '/', secure: false });
                 const from = event.url.searchParams.get('from');

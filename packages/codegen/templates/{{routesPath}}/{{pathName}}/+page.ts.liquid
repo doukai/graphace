@@ -1,23 +1,23 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
-import { {% if connectionField %}createQuery_{{ name | camelCase }}Connection_Store{% else %}createQuery_{{ name | camelCase }}List_Store{% endif %} } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}{% if connectionField %}Connection{% else %}List{% endif %}_store';
+import { {% if connectionField %}fetchQuery_{{ name | camelCase }}Connection_Store{% else %}createQuery_{{ name | camelCase }}List_Store{% endif %} } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}{% if connectionField %}Connection{% else %}List{% endif %}_store';
 import { createMutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
 {%- if hasFileField %}
 import { createMutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
 {%- endif %}
 {%- if useAuth %}
-import { permissions } from '~/utils';
+import { getPermissionsStore } from '~/utils';
 {%- endif %}
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     {%- if useAuth %}
-    await permissions.getTypes('{{ name }}');
+    await getPermissionsStore(event).getTypes('{{ name }}');
     {%- endif %}
     return {
         {%- if hasFileField %}
-        mutation_singleUpload_Store = await createMutation_singleUpload_Store(event),
+        mutation_singleUpload_Store = createMutation_singleUpload_Store(event),
         {%- endif %}
-        query_{{ name | camelCase }}{% if connectionField %}Connection{% else %}List{% endif %}_Store: await createQuery_{{ name | camelCase }}{% if connectionField %}Connection{% else %}List{% endif %}_Store(event, { first: 10 }),
-        mutation_{{ name | camelCase }}_Store: await createMutation_{{ name | camelCase }}_Store(event)
+        query_{{ name | camelCase }}{% if connectionField %}Connection{% else %}List{% endif %}_Store: await fetchQuery_{{ name | camelCase }}{% if connectionField %}Connection{% else %}List{% endif %}_Store(event, { first: 10 }),
+        mutation_{{ name | camelCase }}_Store: createMutation_{{ name | camelCase }}_Store(event)
     };
 }

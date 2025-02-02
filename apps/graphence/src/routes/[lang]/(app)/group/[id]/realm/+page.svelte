@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import { type Errors, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
+	import { type Errors, type JsonSchema, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
@@ -10,11 +11,13 @@
 	import type { Mutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
 	import type { RealmInput, MutationRealmArgs } from '~/lib/types/schema';
 	import type { PageData } from './$types';
-	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: urlName($page.url, $LL.graphql.objects.Group.fields.realm.name());
 	$: query_group_realm_Store = data.query_group_realm_Store as Query_group_realm_Store;
 	$: group = $query_group_realm_Store.response.data?.group;
@@ -60,7 +63,7 @@
 				errors = {};
 				mutation_group_realm_Store.fetch({
 					group_id: group?.id,
-					...event.detail.args
+					group_realm: event.detail.args
 				})
 					.then((result) => {
 						if (result.errors) {

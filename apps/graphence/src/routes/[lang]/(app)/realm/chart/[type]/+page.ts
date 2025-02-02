@@ -1,12 +1,12 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import { createConnectionField } from '@graphace/graphql';
-import { createQueryStore } from '~/utils';
+import { fetchQueryStore } from '~/utils';
 import type { LayoutLoad } from '$types';
 import type { RealmConnection } from '~/lib/types/schema';
-import { permissions } from '~/utils';
+import { getPermissionsStore } from '~/utils';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await permissions.getTypes('Realm');
+    await getPermissionsStore().getTypes('Realm');
     const fields = JSON.parse(event.url.searchParams.get('fields') || '[]');
     const queryArguments = JSON.parse(event.url.searchParams.get('queryArguments') || '{}');
     const showHeader = !event.url.searchParams.has('hideHeader');
@@ -23,6 +23,6 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        RealmConnectionQuery: (await createQueryStore<RealmConnection>(event, { fields: [createConnectionField({ name: 'realmConnection', fields })] }))
+        RealmConnectionQuery: (await fetchQueryStore<RealmConnection>(event, { fields: [createConnectionField({ name: 'realmConnection', fields })] }))
     };
 }

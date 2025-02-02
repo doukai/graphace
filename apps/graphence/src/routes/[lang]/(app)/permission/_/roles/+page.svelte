@@ -4,7 +4,7 @@
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import RoleCreateTable from '~/lib/components/objects/role/RoleCreateTable.svelte';
 	import type { MutationRoleArgs } from '~/lib/types/schema';
-	import type { PageData } from './$houdini';
+	import type { PageData } from './$types';
 	import LL from '$i18n/i18n-svelte';
 
 	export let data: PageData;

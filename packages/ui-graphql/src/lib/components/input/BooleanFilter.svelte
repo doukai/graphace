@@ -4,7 +4,6 @@
 	import type { BooleanExpression } from '@graphace/graphql';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { OperatorSelect, BooleanInput } from '.';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let expression: BooleanExpression | null | undefined;
 	export let name: string;
@@ -12,6 +11,8 @@
 	export let className: string = '';
 	export let selectClassName: string = '';
 	export let addBtnClassName: string = '';
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	let _expression: BooleanExpression | null | undefined = {};
 

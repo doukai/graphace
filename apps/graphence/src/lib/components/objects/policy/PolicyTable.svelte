@@ -11,7 +11,8 @@
 	export let isFetching: boolean;
 	export let errors: Record<number, Errors> = {};
 	export let showBackButton: boolean = true;
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
 		fetch: {

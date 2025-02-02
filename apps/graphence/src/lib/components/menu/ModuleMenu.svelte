@@ -8,8 +8,8 @@
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { locale } from '$i18n/i18n-svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	function to(path: string) {
 		let urlParts: string[] = $page.url.pathname.split('/');

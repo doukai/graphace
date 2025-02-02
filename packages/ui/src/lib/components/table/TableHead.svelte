@@ -14,7 +14,6 @@
 		InboxArrowDown,
 		ArchiveBoxXMark
 	} from '@steeze-ui/heroicons';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let title: string = '';
 	export let showSearchInput: boolean = true;
@@ -25,6 +24,8 @@
 	export let showBackButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
 	export let showSelectButton: boolean = false;
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
 		create: {};

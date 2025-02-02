@@ -7,7 +7,7 @@
 	import UserLine from '~/lib/components/objects/user/UserLine.svelte';
 	import UserPie from '~/lib/components/objects/user/UserPie.svelte';
 	import type { UserConnection } from '~/lib/types/schema';
-	import type { PageData } from './$houdini';
+	import type { PageData } from './$types';
 	import LL from '$i18n/i18n-svelte';
 
 	export let data: PageData;

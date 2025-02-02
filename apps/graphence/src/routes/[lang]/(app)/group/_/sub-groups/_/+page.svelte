@@ -5,7 +5,7 @@
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import GroupCreateForm from '~/lib/components/objects/group/GroupCreateForm.svelte';
 	import type { GroupInput, MutationGroupArgs } from '~/lib/types/schema';
-	import type { PageData } from './$houdini';
+	import type { PageData } from './$types';
 	import LL from '$i18n/i18n-svelte';
 
 	export let data: PageData;

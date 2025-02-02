@@ -3,7 +3,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Funnel } from '@steeze-ui/heroicons';
 	import PermissionFilter from '~/lib/components/objects/permission/PermissionFilter.svelte';
-	import type { PermissionExpression } from '$houdini';
+	import type { PermissionExpression } from '~/lib/types/schema';
 
 	export let name: string;
 	export let expression: PermissionExpression | null | undefined;

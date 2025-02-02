@@ -1,25 +1,30 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import type { Errors } from '@graphace/commons';
+	import type { Errors, JsonSchema } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import GroupSelectConnectionTable from '~/lib/components/objects/group/GroupSelectConnectionTable.svelte';
+	import type { Query_groupConnection_Store } from '~/lib/stores/query/query_groupConnection_store';
+	import type { Mutation_role_groups_Store } from '~/lib/stores/mutation/mutation_role_groups_store';
+	import type { Mutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
 	import type { GroupInput, QueryGroupConnectionArgs, MutationGroupArgs } from '~/lib/types/schema';
-	import { Query_groupConnectionStore, Mutation_groupStore, Mutation_role_groupsStore } from '$houdini';
-	import type { PageData } from './$houdini';
-	import { validate } from '~/utils';
+	import type { PageData } from './$types';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: urlName($page.url, $LL.graphql.objects.Role.fields.groups.name(), PageType.SELECT);
 	$: id = data.id as string;
-	$: Query_groupConnection = data.Query_groupConnection as Query_groupConnectionStore;
-	$: nodes = $Query_groupConnection.data?.groupConnection?.edges?.map((edge) => edge?.node);
-	$: totalCount = $Query_groupConnection.data?.groupConnection?.totalCount || 0;
+	$: query_groupConnection_Store = data.query_groupConnection_Store as Query_groupConnection_Store;
+	$: nodes = $query_groupConnection_Store.response.data?.groupConnection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $query_groupConnection_Store.response.data?.groupConnection?.totalCount || 0;
 	const notBelongToParent = data.notBelongToParent;
-	const Mutation_group = new Mutation_groupStore();
-	const Mutation_role_groups = new Mutation_role_groupsStore();
+	$: mutation_role_groups_Store = data.mutation_role_groups_Store as Mutation_role_groups_Store;
+	$: mutation_group_Store = data.mutation_group_Store as Mutation_group_Store;
 	let errors: Record<number, Errors> = {};
 
 	const fetch = (
@@ -29,7 +34,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		Query_groupConnection.fetch({ variables: event.detail.args })
+		query_groupConnection_Store.fetch(event.detail.args)
 			.then((result) => {
 				if (result.errors) {
 					event.detail.catch(result.errors);
@@ -52,7 +57,7 @@
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_group.mutate(event.detail.args)
+				mutation_group_Store.fetch(event.detail.args)
 					.then((result) => {
 						if (result.errors) {
 							event.detail.catch(result.errors);
@@ -70,7 +75,7 @@
 
 	const select = (
 		event: CustomEvent<{
-			selected: MutationGroupArgs | null | undefined | (MutationGroupArgs | null | undefined)[];
+			selected: GroupInput | null | undefined | (GroupInput | null | undefined)[];
 			then: () => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
@@ -79,7 +84,7 @@
 			.then((data) => {
 				errors = {};
 				if (Array.isArray(event.detail.selected)) {
-					Mutation_role_groups.mutate({
+					mutation_role_groups_Store.fetch({
 						role_id: id,
 						role_groups: event.detail.selected
 					})
@@ -109,7 +114,7 @@
 		{totalCount}
 		{errors}
 		args={{ exs: [notBelongToParent] }}
-		isFetching={$Query_groupConnection.fetching}
+		isFetching={$query_groupConnection_Store.isFetching}
 		on:fetch={fetch}
 		on:mutation={mutation}
 		on:select={select}

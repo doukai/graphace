@@ -1,18 +1,22 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import type { Errors } from '@graphace/commons';
+	import type { Errors, JsonSchema  } from '@graphace/commons';
 	import { createConnectionField, Field } from '@graphace/graphql';
 	import { Card, urlName } from '@graphace/ui';
 	import type { OperationStore } from '@graphace/ui-graphql';
 	import PermissionGrid from '~/lib/components/objects/permission/PermissionGrid.svelte';
 	import PermissionAggGrid from '~/lib/components/objects/permission/PermissionAggGrid.svelte';
 	import type { Permission, PermissionConnection } from '~/lib/types/schema';
-	import type { PageData } from './$houdini';
-	import { buildGraphQLErrors, validate } from '~/utils';
+	import type { PageData } from './$types';
+	import { buildGraphQLErrors } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: urlName($page.url, $LL.graphql.objects.Permission.name());
 	let connection: PermissionConnection | null | undefined = {};
 	let errors: Record<number, Errors> = {};

@@ -7,7 +7,6 @@
 	import type { NamedStruct } from '@graphace/graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Link } from '@steeze-ui/heroicons';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let path: string;
 	export let name: string;
@@ -15,6 +14,8 @@
 		undefined;
 	export let errors: Errors | undefined = undefined;
 	export let btnClassName: string = 'btn btn-square btn-xs btn-ghost';
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	let _namedStruct = namedStruct;
 	namedStruct = undefined;

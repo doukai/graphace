@@ -1,8 +1,13 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	import { graphql, type {{ name }}NodesQuery$input, Operator } from '$houdini';
-	import { type NodeTree, type TreeStruct, buildTree } from '@graphace/graphql';
+	import { createEventDispatcher, getContext } from 'svelte';
+	import {
+		type NodeTree,
+		type TreeStruct,
+		type QueryTreeStructArgs,
+		buildTree
+	} from '@graphace/graphql';
 	import { MenuTreeLoading } from '@graphace/ui';
+	import type { StructQueryStores } from '@graphace/ui-graphql';
 
 	export let nodeTrees: NodeTree[] | null | undefined = undefined;
 	export let treeStructs: (TreeStruct | null | undefined)[] | null | undefined = undefined;
@@ -18,17 +23,7 @@
 		};
 	}>();
 
-	const {{ name }}NodesQuery = graphql(`
-		query {{ name }}NodesQuery($path: StringExpression, $deep: IntExpression, $name: StringExpression) {
-			{{ name | camelCase }}List(deep: $deep, path: $path, name: $name) {
-				{{ idName }}
-				name
-				path
-				deep
-				parentId
-			}
-		}
-	`);
+	const { treeQueryStore } = getContext<StructQueryStores>('structQueryStores');
 
 	$: if (treeStructs) {
 		nodeTrees = buildTree(treeStructs, parent);
@@ -39,21 +34,18 @@
 	}
 
 	export const queryNodes = ({{ name | camelCase }}Name?: string | null | undefined) => {
-		let variables: {{ name }}NodesQuery$input;
+		let variables: QueryTreeStructArgs;
 		if ({{ name | camelCase }}Name) {
 			variables = {
-				deep: undefined,
-				path: undefined,
-				name: { opr: Operator.LK, val: {{ "`" | escape }}%${% raw %}{{% endraw %}{{ name | camelCase }}Name}%{{ "`" | escape }} }
+				name: { opr: 'LK', val: {{ "`" | escape }}%${% raw %}{{% endraw %}{{ name | camelCase }}Name}%{{ "`" | escape }} }
 			};
 		} else {
 			variables = {
-				deep: { opr: Operator.LT, val: currentDeep + deeps },
-				path: { opr: Operator.LK, val: `${(parent?.path || '') + (parent?.{{ idName }} || '') + '/'}%` },
-				name: undefined
+				deep: { opr: 'LT', val: currentDeep + deeps },
+				path: { opr: 'LK', val: `${(parent?.path || '') + (parent?.{{ idName }} || '') + '/'}%` }
 			};
 		}
-		{{ name }}NodesQuery.fetch({ variables }).then((result) => {
+		treeQueryStore.fetch({ fieldName: '{{ name | camelCase }}List', idName: '{{ idName }}' }, variables).then((result) => {
 			treeStructs = result.data?.{{ name | camelCase }}List;
 			nodeTrees = buildTree(treeStructs, parent);
 		});
@@ -78,7 +70,7 @@
 				>
 					{nodeTree.node?.name}
 				</a>
-				{#if ${{ name }}NodesQuery.fetching}
+				{#if $treeQueryStore.isFetching}
 					<MenuTreeLoading />
 				{:else if nodeTree.children}
 					<svelte:self

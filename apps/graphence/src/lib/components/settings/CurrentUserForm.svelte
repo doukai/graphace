@@ -11,16 +11,17 @@
 	import { StringItem } from '@graphace/ui-graphql';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { UserInput } from '~/lib/types/schema';
+
 	export let node: UserInput | null | undefined;
 	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
 	export let showBackButton: boolean = true;
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
-	const buildGraphQLErrors = getContext('buildGraphQLErrors') as GraphQLErrorsFunction;
-	const buildGlobalGraphQLErrorMessage = getContext(
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
+	const buildGraphQLErrors = getContext<GraphQLErrorsFunction>('buildGraphQLErrors');
+	const buildGlobalGraphQLErrorMessage = getContext<GlobalGraphQLErrorMessageFunction>(
 		'buildGlobalGraphQLErrorMessage'
-	) as GlobalGraphQLErrorMessageFunction;
+	);
 
 	const dispatch = createEventDispatcher<{
 		mutation: {

@@ -1,22 +1,24 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import { type Errors, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
+	import { type Errors, type JsonSchema, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import RoleCreateForm from '~/lib/components/objects/role/RoleCreateForm.svelte';
+	import type { Mutation_role_Store } from '~/lib/stores/mutation/mutation_role_store';
 	import type { RoleInput, MutationRoleArgs } from '~/lib/types/schema';
-	import { Mutation_roleStore } from '$houdini';
-	import type { PageData } from './$houdini';
-	import { validate } from '~/utils';
+	import type { PageData } from './$types';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: urlName($page.url, $LL.graphql.objects.Role.name(), PageType.CREATE);
 	$: node = data.node as MutationRoleArgs;
 	$: errors = data.errors as Record<number, Errors>;
-
-	const Mutation_role = new Mutation_roleStore();
+	$: mutation_role_Store = data.mutation_role_Store as Mutation_role_Store;
 
 	const mutation = (
 		event: CustomEvent<{
@@ -27,7 +29,7 @@
 	) => {
 		validate('Mutation_role_Arguments', event.detail.args, $locale)
 			.then((data) => {
-				Mutation_role.mutate(event.detail.args)
+				mutation_role_Store.fetch(event.detail.args)
 					.then((result) => {
 						if (result.errors) {
 							event.detail.catch(result.errors);

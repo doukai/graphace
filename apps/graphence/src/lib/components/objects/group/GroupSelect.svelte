@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Errors } from '@graphace/commons';
 	import type { Option } from '@graphace/ui';
-	import { ObjectSelect } from '@graphace/ui-graphql';
-	import { graphql, type GroupInput, Operator } from '$houdini';
+	import { type StructQueryStores, ObjectSelect } from '@graphace/ui-graphql';
+	import type { GroupInput } from '~/lib/types/schema';
 
 	export let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
@@ -24,23 +24,15 @@
 		};
 	}>();
 
-	const GroupNameListQuery = graphql(`
-		query GroupNameListQuery($name: StringExpression, $first: Int) {
-			groupList(name: $name, first: $first) {
-				id
-				name
-				description
-			}
-		}
-	`);
+	const { namedQueryStore } = getContext<StructQueryStores>('structQueryStores');
 
 	$: options =
-		$GroupNameListQuery.data?.groupList?.map((item) => ({
+		$namedQueryStore.response.data?.groupList?.map((item) => ({
 			label: item?.name,
 			value: item?.id
 		})) || [];
 
-	$: loading = $GroupNameListQuery.fetching;
+	$: loading = $namedQueryStore.isFetching;
 
 	let selected: Option | Option[] | undefined;
 
@@ -81,11 +73,15 @@
 	}}
 	on:search={(e) => {
 		if (e.detail.searchValue) {
-			GroupNameListQuery.fetch({
-				variables: { name: { opr: Operator.LK, val: `%${e.detail.searchValue}%` } }
-			});
+			namedQueryStore.fetch(
+				{ fieldName: 'groupList', idName: 'id' },
+				{ name: { opr: 'LK', val: `%${e.detail.searchValue}%` } }
+			);
 		} else {
-			GroupNameListQuery.fetch({ variables: { name: undefined, first: 10 } });
+			namedQueryStore.fetch(
+				{ fieldName: 'groupList', idName: 'id' },
+				{ name: undefined, first: 10 }
+			);
 		}
 	}}
 />

@@ -1,6 +1,6 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
-import { createGraphQLQueryStore } from '~/utils';
+import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryRealmArgs } from '~/lib/types/schema';
 import type { Realm } from '~/lib/types/schema';
 
@@ -20,8 +20,12 @@ const query = /* GraphQL */ `query query_realm($id: StringExpression, $name: Str
   }
 }`;
 
-export async function createQuery_realm_Store(event: LoadEvent, variables: QueryRealmArgs): Promise<Query_realm_Store> {
-  return createGraphQLQueryStore<Realm, QueryRealmArgs>(query, event, variables);
+export function createQuery_realm_Store(event: LoadEvent | RequestEvent): Query_realm_Store {
+  return createGraphQLQueryStore<Realm, QueryRealmArgs>(query, event);
+}
+
+export async function fetchQuery_realm_Store(event: LoadEvent | RequestEvent, variables: QueryRealmArgs): Promise<Query_realm_Store> {
+  return fetchGraphQLQueryStore<Realm, QueryRealmArgs>(query, event, variables);
 }
 
 export type Query_realm_Store = GraphQLStore<Realm, QueryRealmArgs>;

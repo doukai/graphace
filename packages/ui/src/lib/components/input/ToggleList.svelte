@@ -6,6 +6,7 @@
 	import { nanoid } from 'nanoid';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus, PlusSmall, MinusSmall } from '@steeze-ui/heroicons';
+	
 	export let name: string;
 	export let value: (boolean | null | undefined)[] | null | undefined;
 	export let errors: Errors | undefined = undefined;
@@ -14,7 +15,8 @@
 	export let id: string = nanoid();
 	export let className: string = '';
 	export let addBtnClassName: string = '';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
+
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const addItem = (index: number) => {
 		if (!value) {

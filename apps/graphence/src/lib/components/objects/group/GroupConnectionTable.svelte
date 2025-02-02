@@ -14,6 +14,7 @@
 	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
+	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/utils';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type {
 		GroupOrderBy,
@@ -30,10 +31,9 @@
 	export let showUnbindButton: boolean = false;
 	export let showBackButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
-	const permissions = getContext('permissions') as PermissionsStore;
-	const buildGraphQLErrors = getContext('buildGraphQLErrors') as GraphQLErrorsFunction;
-	const buildGlobalGraphQLErrorMessage = getContext('buildGlobalGraphQLErrorMessage') as GlobalGraphQLErrorMessageFunction;
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
+	const permissions = getContext<PermissionsStore>('permissions');
 
 	const dispatch = createEventDispatcher<{
 		fetch: {

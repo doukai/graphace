@@ -9,7 +9,6 @@
 	import { Input, InputList } from '@graphace/ui';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let value: string | (string | null | undefined)[] | null | undefined;
 	export let list: boolean = false;
@@ -18,6 +17,8 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
 		save: {};

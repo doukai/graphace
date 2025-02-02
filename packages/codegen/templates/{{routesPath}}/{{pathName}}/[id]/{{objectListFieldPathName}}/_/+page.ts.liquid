@@ -7,12 +7,12 @@ import { createMutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/m
 {%- endif %}
 import type { {{ mutationTypeName }}{{ objectFieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
 {%- if useAuth %}
-import { permissions } from '~/utils';
+import { getPermissionsStore } from '~/utils';
 {%- endif %}
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     {%- if useAuth %}
-    await permissions.getTypes('{{ objectFieldTypeName }}');
+    await getPermissionsStore(event).getTypes('{{ objectFieldTypeName }}');
     {%- endif %}
     const node: {{ mutationTypeName }}{{ objectFieldTypeName }}Args = getNode(event.url) || {};
 	const errors: Record<string, Errors> = getErrors(event.url) || {};
@@ -21,8 +21,8 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         node, 
         errors, 
         {%- if hasFileField %}
-        mutation_singleUpload_Store = await createMutation_singleUpload_Store(event),
+        mutation_singleUpload_Store = createMutation_singleUpload_Store(event),
         {%- endif %}
-        mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store: await createMutation_{{ name | camelCase }}_{{ objectFieldName }}_Store(event)
+        mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store: createMutation_{{ name | camelCase }}_{{ objectFieldName }}_Store(event)
     };
 }

@@ -9,8 +9,8 @@
 	import { locale } from '$i18n/i18n-svelte';
 	import pages from '~/lib/data/pages.json';
 
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
-	const permissions = getContext('permissions') as PermissionsStore;
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
+	const permissions = getContext<PermissionsStore>('permissions');
 </script>
 
 {#each pages as menu}

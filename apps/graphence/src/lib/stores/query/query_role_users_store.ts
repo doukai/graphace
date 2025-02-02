@@ -1,6 +1,6 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
-import { createGraphQLQueryStore } from '~/utils';
+import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryUserConnectionArgs, Role } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `query Query_role_users($role_id: String, $id: StringExpression, $name: StringExpression, $description: StringExpression, $lastName: StringExpression, $login: StringExpression, $salt: StringExpression, $hash: StringExpression, $email: StringExpression, $phones: StringExpression, $disable: BooleanExpression, $groups: GroupExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $userPhonesRelation: UserPhonesRelationExpression, $groupUserRelation: GroupUserRelationExpression, $roleUserRelation: RoleUserRelationExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserOrderBy, $groupBy: [String!]) {
@@ -56,8 +56,12 @@ const query = /* GraphQL */ `query Query_role_users($role_id: String, $id: Strin
   }
 }`;
 
-export async function createQuery_role_users_Store(event: LoadEvent, variables: { role_id: string } & QueryUserConnectionArgs): Promise<Query_role_users_Store> {
-  return createGraphQLQueryStore<Role, { role_id: string } & QueryUserConnectionArgs>(query, event, variables);
+export function createQuery_role_users_Store(event: LoadEvent | RequestEvent): Query_role_users_Store {
+  return createGraphQLQueryStore<Role, { role_id: string } & QueryUserConnectionArgs>(query, event);
+}
+
+export async function fetchQuery_role_users_Store(event: LoadEvent | RequestEvent, variables: { role_id: string } & QueryUserConnectionArgs): Promise<Query_role_users_Store> {
+  return fetchGraphQLQueryStore<Role, { role_id: string } & QueryUserConnectionArgs>(query, event, variables);
 }
 
 export type Query_role_users_Store = GraphQLStore<Role, { role_id: string } & QueryUserConnectionArgs>;

@@ -1,6 +1,6 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
-import { createGraphQLQueryStore } from '~/utils';
+import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryGroupConnectionArgs } from '~/lib/types/schema';
 import type { GroupConnection } from '~/lib/types/schema';
 
@@ -52,8 +52,12 @@ const query = /* GraphQL */ `query query_groupConnection($id: StringExpression, 
   }
 }`;
 
-export async function createQuery_groupConnection_Store(event: LoadEvent, variables: QueryGroupConnectionArgs): Promise<Query_groupConnection_Store> {
-  return createGraphQLQueryStore<GroupConnection, QueryGroupConnectionArgs>(query, event, variables);
+export function createQuery_groupConnection_Store(event: LoadEvent | RequestEvent): Query_groupConnection_Store {
+  return createGraphQLQueryStore<GroupConnection, QueryGroupConnectionArgs>(query, event);
+}
+
+export async function fetchQuery_groupConnection_Store(event: LoadEvent | RequestEvent, variables: QueryGroupConnectionArgs): Promise<Query_groupConnection_Store> {
+  return fetchGraphQLQueryStore<GroupConnection, QueryGroupConnectionArgs>(query, event, variables);
 }
 
 export type Query_groupConnection_Store = GraphQLStore<GroupConnection, QueryGroupConnectionArgs>;

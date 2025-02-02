@@ -651,6 +651,7 @@ const renders: Record<Template, Render> = {
                         name: type?.name,
                         idName: getIDFieldName(type),
                         fields: componentFields(typeName, fields),
+                        schemaTypesPath: config.schemaTypesPath,
                         appName: config.appName
                     }),
                 };
@@ -691,6 +692,7 @@ const renders: Record<Template, Render> = {
                         name: type?.name,
                         idName: getIDFieldName(type),
                         fields: componentFields(typeName, fields),
+                        schemaTypesPath: config.schemaTypesPath,
                         appName: config.appName
                     }),
                 };
@@ -1087,6 +1089,7 @@ const renders: Record<Template, Render> = {
                         name: type?.name,
                         idName: getIDFieldName(type),
                         connectionField: connectionField,
+                        schemaTypesPath: config.schemaTypesPath,
                         storesPath: config.storesPath,
                         queryTypeName: getQueryTypeName(),
                         mutationTypeName: getMutationTypeName(),
@@ -1136,6 +1139,7 @@ const renders: Record<Template, Render> = {
                         name: type?.name,
                         idName: getIDFieldName(type),
                         queryTypeName: getQueryTypeName(),
+                        schemaTypesPath: config.schemaTypesPath,
                         storesPath: config.storesPath,
                         mutationTypeName: getMutationTypeName(),
                         subscriptionTypeName: getSubscriptionTypeName(),
@@ -1337,6 +1341,7 @@ const renders: Record<Template, Render> = {
                             objectFieldTypeName: objectFieldType.name,
                             objectFieldTypeIdName: getIDFieldName(objectFieldType),
                             connectionField: connectionField,
+                            schemaTypesPath: config.schemaTypesPath,
                             storesPath: config.storesPath,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
@@ -1473,6 +1478,7 @@ const renders: Record<Template, Render> = {
                             objectFieldTypeName: objectFieldType.name,
                             objectFieldTypeIdName: getIDFieldName(objectFieldType),
                             connectionField: connectionField,
+                            schemaTypesPath: config.schemaTypesPath,
                             storesPath: config.storesPath,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
@@ -1723,6 +1729,7 @@ const renders: Record<Template, Render> = {
                             objectFieldTypeName: objectFieldType.name,
                             objectFieldTypeIdName: getIDFieldName(objectFieldType),
                             connectionField: connectionField,
+                            schemaTypesPath: config.schemaTypesPath,
                             storesPath: config.storesPath,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),
@@ -1858,6 +1865,7 @@ const renders: Record<Template, Render> = {
                             objectFieldTypeName: objectFieldType.name,
                             objectFieldTypeIdName: getIDFieldName(objectFieldType),
                             connectionField: connectionField,
+                            schemaTypesPath: config.schemaTypesPath,
                             storesPath: config.storesPath,
                             queryTypeName: getQueryTypeName(),
                             mutationTypeName: getMutationTypeName(),

@@ -1,22 +1,24 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import { type Errors, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
+	import { type Errors, type JsonSchema, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import UserCreateForm from '~/lib/components/objects/user/UserCreateForm.svelte';
+	import type { Mutation_user_Store } from '~/lib/stores/mutation/mutation_user_store';
 	import type { UserInput, MutationUserArgs } from '~/lib/types/schema';
-	import { Mutation_userStore } from '$houdini';
-	import type { PageData } from './$houdini';
-	import { validate } from '~/utils';
+	import type { PageData } from './$types';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: urlName($page.url, $LL.graphql.objects.User.name(), PageType.CREATE);
 	$: node = data.node as MutationUserArgs;
 	$: errors = data.errors as Record<number, Errors>;
-
-	const Mutation_user = new Mutation_userStore();
+	$: mutation_user_Store = data.mutation_user_Store as Mutation_user_Store;
 
 	const mutation = (
 		event: CustomEvent<{
@@ -27,7 +29,7 @@
 	) => {
 		validate('Mutation_user_Arguments', event.detail.args, $locale)
 			.then((data) => {
-				Mutation_user.mutate(event.detail.args)
+				mutation_user_Store.fetch(event.detail.args)
 					.then((result) => {
 						if (result.errors) {
 							event.detail.catch(result.errors);

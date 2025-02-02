@@ -4,7 +4,6 @@
 	import type { StringExpression } from '@graphace/graphql';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { OperatorSelect, TimeInput } from '.';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let expression: StringExpression | null | undefined;
 	export let name: string;
@@ -12,6 +11,8 @@
 	export let className: string = '';
 	export let selectClassName: string = '';
 	export let addBtnClassName: string = '';
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	let _expression: StringExpression | null | undefined = {};
 

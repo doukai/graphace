@@ -6,7 +6,6 @@
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import type { RoleInput } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let expression: StringExpression | null | undefined;
 	export let name: string;
@@ -17,6 +16,7 @@
 	export let tagClassName: string = '';
 	export let menuClassName: string = '';
 
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	let opr: Operator | null | undefined = undefined;
 	let value: RoleInput | (RoleInput | null | undefined)[] | null | undefined = undefined;
 

@@ -1,6 +1,6 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
-import { createGraphQLQueryStore } from '~/utils';
+import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryPermissionConnectionArgs } from '~/lib/types/schema';
 import type { PermissionConnection } from '~/lib/types/schema';
 
@@ -36,8 +36,12 @@ const query = /* GraphQL */ `query query_permissionConnection($name: StringExpre
   }
 }`;
 
-export async function createQuery_permissionConnection_Store(event: LoadEvent, variables: QueryPermissionConnectionArgs): Promise<Query_permissionConnection_Store> {
-  return createGraphQLQueryStore<PermissionConnection, QueryPermissionConnectionArgs>(query, event, variables);
+export function createQuery_permissionConnection_Store(event: LoadEvent | RequestEvent): Query_permissionConnection_Store {
+  return createGraphQLQueryStore<PermissionConnection, QueryPermissionConnectionArgs>(query, event);
+}
+
+export async function fetchQuery_permissionConnection_Store(event: LoadEvent | RequestEvent, variables: QueryPermissionConnectionArgs): Promise<Query_permissionConnection_Store> {
+  return fetchGraphQLQueryStore<PermissionConnection, QueryPermissionConnectionArgs>(query, event, variables);
 }
 
 export type Query_permissionConnection_Store = GraphQLStore<PermissionConnection, QueryPermissionConnectionArgs>;

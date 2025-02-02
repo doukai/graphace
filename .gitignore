@@ -14,9 +14,6 @@ coverage
 # svelte
 .svelte-kit
 
-# houdini
-$houdini
-
 # misc
 .DS_Store
 *.pem

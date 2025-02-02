@@ -1,18 +1,22 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import type { Errors } from '@graphace/commons';
+	import type { Errors, JsonSchema  } from '@graphace/commons';
 	import { createConnectionField, Field } from '@graphace/graphql';
 	import { Card, urlName } from '@graphace/ui';
 	import type { OperationStore } from '@graphace/ui-graphql';
 	import RealmGrid from '~/lib/components/objects/realm/RealmGrid.svelte';
 	import RealmAggGrid from '~/lib/components/objects/realm/RealmAggGrid.svelte';
 	import type { Realm, RealmConnection } from '~/lib/types/schema';
-	import type { PageData } from './$houdini';
-	import { buildGraphQLErrors, validate } from '~/utils';
+	import type { PageData } from './$types';
+	import { buildGraphQLErrors } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: urlName($page.url, $LL.graphql.objects.Realm.name());
 	let connection: RealmConnection | null | undefined = {};
 	let errors: Record<number, Errors> = {};

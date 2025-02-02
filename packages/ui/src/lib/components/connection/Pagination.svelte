@@ -8,7 +8,8 @@
 	export let pageNumber: number = 1;
 	export let totalCount: number = 0;
 	export let siblingCount: number = 1;
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
+
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const dispatch = createEventDispatcher<{
 		pageChange: {};
 		sizeChange: {};

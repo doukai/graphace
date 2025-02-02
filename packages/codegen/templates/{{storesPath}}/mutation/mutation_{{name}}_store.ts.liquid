@@ -1,4 +1,4 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
 {%- if args and args.length > 0 %}
@@ -48,7 +48,7 @@ const query = /* GraphQL */ `mutation Mutation_{{ name }}
   {%- endif %}
 }`;
 
-export async function createMutation_{{ name }}_Store(event: LoadEvent): Promise<Mutation_{{ name }}_Store> {
+export function createMutation_{{ name }}_Store(event: LoadEvent | RequestEvent): Mutation_{{ name }}_Store {
   return createGraphQLMutationStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Mutation{{ name | pascalCase }}Args{% else %}undefined{% endif %}>(query, event);
 }
 

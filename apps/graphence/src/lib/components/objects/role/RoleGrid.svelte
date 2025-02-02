@@ -35,10 +35,10 @@
 	export let showFilterButton: boolean = true;
 	export let showBookmarkButton: boolean = false;
 
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
+	const themeStore = getContext<Writable<string | undefined>>('theme');
 	const typeName = 'Role';
 	const idFieldName = 'id';
-	const themeStore = getContext('theme') as Writable<string | undefined>;
 
 	const columnTypes = {
 		numeric: new NumberColumnType()

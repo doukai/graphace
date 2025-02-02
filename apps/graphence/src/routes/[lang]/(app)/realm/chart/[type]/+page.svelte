@@ -7,7 +7,7 @@
 	import RealmLine from '~/lib/components/objects/realm/RealmLine.svelte';
 	import RealmPie from '~/lib/components/objects/realm/RealmPie.svelte';
 	import type { RealmConnection } from '~/lib/types/schema';
-	import type { PageData } from './$houdini';
+	import type { PageData } from './$types';
 	import LL from '$i18n/i18n-svelte';
 
 	export let data: PageData;

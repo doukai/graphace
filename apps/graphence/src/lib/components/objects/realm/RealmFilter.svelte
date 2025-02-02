@@ -11,8 +11,9 @@
 	import type { RealmExpression } from '~/lib/types/schema';
 
 	export let expression: RealmExpression | null | undefined;
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
-	const permissions = getContext('permissions') as PermissionsStore;
+
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
+	const permissions = getContext<PermissionsStore>('permissions');
 
 	let _expression = {
 		id: undefined,

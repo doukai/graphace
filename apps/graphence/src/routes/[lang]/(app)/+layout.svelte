@@ -18,8 +18,6 @@
 	} from '@graphace/ui';
 	import Iconify from '@iconify/svelte';
 	import { setLocale } from '$i18n/i18n-svelte';
-	import { permissions } from '~/utils/auth-util';
-	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/utils/validate-util';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 	import type { NamespaceGraphqlTranslation } from '$i18n/i18n-types';
@@ -32,10 +30,10 @@
 	export let data: LayoutData;
 	// at the very top, set the locale before you access the store and before the actual rendering takes place
 	setLocale(data.locale);
+	setContext('permissions', data.permissions);
+	setContext('jsonSchema', data.jsonSchema);
+	setContext('structQueryStores', data.structQueryStores);
 	setContext('LL', LL);
-	setContext('permissions', permissions);
-	setContext('buildGraphQLErrors', buildGraphQLErrors);
-	setContext('buildGlobalGraphQLErrorMessage', buildGlobalGraphQLErrorMessage);
 	setContext('theme', writable(undefined));
 
 	let drawersidebar: HTMLDivElement;

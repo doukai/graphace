@@ -16,7 +16,7 @@
 		"dist"
 	],
 	"scripts": {
-		"prepare": "tsx src/lib/i18n/import.ts && houdini pull-schema && graphql-codegen && svelte-kit sync",
+		"prepare": "tsx src/lib/i18n/import.ts && svelte-kit sync",
 		"dev": "concurrently --kill-others \"vite dev\" \"typesafe-i18n\"",
 		"build": "tsx src/lib/i18n/import.ts && typesafe-i18n --no-watch && vite build",
 		"build:package": "tsx src/lib/i18n/export.ts && vite build && npm run package",
@@ -26,10 +26,8 @@
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check --ignore-path=../../.prettierignore . && TIMING=1 eslint \"src\"",
 		"format": "prettier --write --ignore-path=../../.prettierignore .",
-		"generate": "concurrently --kill-others \"houdini generate\" \"graphql-codegen\" \"typesafe-i18n\"",
+		"generate": "concurrently --kill-others \"graphql-codegen\" \"typesafe-i18n\"",
 		"graphql:codegen": "graphql-codegen",
-		"houdini:generate": "houdini generate",
-		"houdini:pull-schema": "houdini pull-schema",
 		"i18n": "typesafe-i18n",
 		"i18n:import": "tsx src/lib/i18n/import.ts",
 		"i18n:export": "tsx src/lib/i18n/export.ts"
@@ -73,8 +71,6 @@
 		"graphace-codegen": "workspace:*",
 		"graphace-codegen-preset": "workspace:*",
 		"graphql": "^16.9.0",
-		"houdini": "^1.2.64",
-		"houdini-svelte": "^1.2.64",
 		"jwt-decode": "^3.1.2",
 		"lodash": "^4.17.21",
 		"nanoid": "^4.0.2",

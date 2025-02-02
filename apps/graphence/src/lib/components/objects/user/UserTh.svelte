@@ -3,7 +3,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Funnel } from '@steeze-ui/heroicons';
 	import UserFilter from '~/lib/components/objects/user/UserFilter.svelte';
-	import type { UserExpression } from '$houdini';
+	import type { UserExpression } from '~/lib/types/schema';
 
 	export let name: string;
 	export let expression: UserExpression | null | undefined;

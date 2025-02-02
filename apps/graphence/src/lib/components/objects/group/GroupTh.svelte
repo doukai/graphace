@@ -3,7 +3,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Funnel } from '@steeze-ui/heroicons';
 	import GroupFilter from '~/lib/components/objects/group/GroupFilter.svelte';
-	import type { GroupExpression } from '$houdini';
+	import type { GroupExpression } from '~/lib/types/schema';
 
 	export let name: string;
 	export let expression: GroupExpression | null | undefined;

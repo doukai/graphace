@@ -1,10 +1,10 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
-import type { MutationUserConnectionArgs, Role } from '~/lib/types/schema';
+import type { QueryUserConnectionArgs, UserInput, Role } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `mutation Mutation_role_users($role_id: String, $id: StringExpression, $name: StringExpression, $description: StringExpression, $lastName: StringExpression, $login: StringExpression, $salt: StringExpression, $hash: StringExpression, $email: StringExpression, $phones: StringExpression, $disable: BooleanExpression, $groups: GroupExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $userPhonesRelation: UserPhonesRelationExpression, $groupUserRelation: GroupUserRelationExpression, $roleUserRelation: RoleUserRelationExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserOrderBy, $groupBy: [String!]) {
-  role(where: { id: { val: $role_id } }) @merge {
+const query = /* GraphQL */ `mutation Mutation_role_users($role_id: String, $role_users: [UserInput], $id: StringExpression, $name: StringExpression, $description: StringExpression, $lastName: StringExpression, $login: StringExpression, $salt: StringExpression, $hash: StringExpression, $email: StringExpression, $phones: StringExpression, $disable: BooleanExpression, $groups: GroupExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $userPhonesRelation: UserPhonesRelationExpression, $groupUserRelation: GroupUserRelationExpression, $roleUserRelation: RoleUserRelationExpression, $first: Int, $last: Int, $offset: Int, $orderBy: UserOrderBy, $groupBy: [String!]) {
+  role(where: { id: { val: $role_id } }, role_users: $role_users) @merge {
     id
     name
     description
@@ -58,8 +58,8 @@ const query = /* GraphQL */ `mutation Mutation_role_users($role_id: String, $id:
   }
 }`;
 
-export async function createMutation_role_users_Store(event: LoadEvent): Promise<Mutation_role_users_Store> {
-  return createGraphQLMutationStore<Role, { role_id: string } & MutationUserConnectionArgs>(query, event);
+export function createMutation_role_users_Store(event: LoadEvent | RequestEvent): Mutation_role_users_Store {
+  return createGraphQLMutationStore<Role, { role_id: string, role_users: [UserInput] } & QueryUserConnectionArgs>(query, event);
 }
 
-export type Mutation_role_users_Store = GraphQLStore<Role, { role_id: string } & MutationUserConnectionArgs>;
+export type Mutation_role_users_Store = GraphQLStore<Role, { role_id: string, role_users: [UserInput] } & QueryUserConnectionArgs>;

@@ -30,7 +30,6 @@
 	export let menuClassName: string = '';
 	export let groupClassName: string = '';
 	export let labelClassName: string = '';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let options: Option[] | null | undefined = [];
 	export let groups: Group[] | null | undefined = undefined;
@@ -41,6 +40,8 @@
 	export let disabled = false;
 	export let placeholder: string = '';
 	export let loading: boolean = false;
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
 		search: { searchValue: string | null | undefined };

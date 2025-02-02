@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import type { Errors } from '@graphace/commons';
+	import type { Errors, JsonSchema } from '@graphace/commons';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import {{ name }}Form from '~/{{ formPath }}/{{ name | paramCase }}/{{ name }}Form.svelte';
 	import type { Query_{{ name | paramCase }}_Store } from '~/{{ storesPath }}/query/query_{{ name | paramCase }}_store';
@@ -11,10 +12,12 @@
 	import type { GraphQLError } from '@graphace/graphql';
 	import type { {{ name }}Input, {{ mutationTypeName }}{{ name }}Args } from '~/{{ schemaTypesPath }}';
 	import type { PageData } from './$types';
-	import { validate } from '~/utils';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: query_{{ name | camelCase }}_Store = data.query_{{ name | camelCase }}_Store as Query_{{ name | camelCase }}_Store;
 	$: node = $query_{{ name | camelCase }}_Store.response.data?.{{ name | camelCase }};
 	$: urlName($page.url, node?.name || '');

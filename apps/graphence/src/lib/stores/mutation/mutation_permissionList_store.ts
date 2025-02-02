@@ -1,4 +1,4 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
 import type { MutationPermissionListArgs } from '~/lib/types/schema';
@@ -32,7 +32,7 @@ const query = /* GraphQL */ `mutation Mutation_permissionList($name: ID, $descri
   }
 }`;
 
-export async function createMutation_permissionList_Store(event: LoadEvent): Promise<Mutation_permissionList_Store> {
+export function createMutation_permissionList_Store(event: LoadEvent | RequestEvent): Mutation_permissionList_Store {
   return createGraphQLMutationStore<Permission[], MutationPermissionListArgs>(query, event);
 }
 

@@ -1,12 +1,12 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import { createConnectionField } from '@graphace/graphql';
-import { createQueryStore, createMutationStore } from '~/utils';
+import { fetchQueryStore, createMutationStore } from '~/utils';
 import type { LayoutLoad } from '$types';
 import type { User, UserConnection } from '~/lib/types/schema';
-import { permissions } from '~/utils';
+import { getPermissionsStore } from '~/utils';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await permissions.getTypes('User', 'Group', 'Role', 'Realm');
+    await getPermissionsStore().getTypes('User', 'Group', 'Role', 'Realm');    
     const fields = JSON.parse(event.url.searchParams.get('fields') || '[]');
     const queryArguments = JSON.parse(event.url.searchParams.get('queryArguments') || '{}');
     const showHeader = !event.url.searchParams.has('hideHeader');
@@ -23,8 +23,8 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        UserConnectionQuery: (await createQueryStore<UserConnection>(event, { fields: [createConnectionField({ name: 'userConnection', fields })] })),
-        UserListMutation: (await createMutationStore<User[]>(event))
+        UserConnectionQuery: (await fetchQueryStore<UserConnection>(event, { fields: [createConnectionField({ name: 'userConnection', fields })] })),
+        UserListMutation: (createMutationStore<User[]>(event))
     };
 }
 export const prerender = false;

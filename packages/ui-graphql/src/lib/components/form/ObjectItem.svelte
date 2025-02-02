@@ -15,7 +15,8 @@
 	export let namedStruct: NamedStruct | (NamedStruct | null | undefined)[] | null | undefined =
 		undefined;
 	export let errors: Errors | undefined = undefined;
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	let _namedStruct = namedStruct;
 	namedStruct = undefined;

@@ -24,6 +24,7 @@
 	{%- endif %}
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
+	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/utils';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type {
 		{{ name }}OrderBy,
@@ -40,12 +41,11 @@
 	export let showUnbindButton: boolean = false;
 	export let showBackButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	{%- if useAuth %}
-	const permissions = getContext('permissions') as PermissionsStore;
+	const permissions = getContext<PermissionsStore>('permissions');
 	{%- endif %}
-	const buildGraphQLErrors = getContext('buildGraphQLErrors') as GraphQLErrorsFunction;
-	const buildGlobalGraphQLErrorMessage = getContext('buildGlobalGraphQLErrorMessage') as GlobalGraphQLErrorMessageFunction;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {

@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import type { Errors } from '@graphace/commons';
+	import type { Errors, JsonSchema } from '@graphace/commons';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import RoleForm from '~/lib/components/objects/role/RoleForm.svelte';
 	import type { Query_role_Store } from '~/lib/stores/query/query_role_store';
@@ -8,10 +9,12 @@
 	import type { GraphQLError } from '@graphace/graphql';
 	import type { RoleInput, MutationRoleArgs } from '~/lib/types/schema';
 	import type { PageData } from './$types';
-	import { validate } from '~/utils';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: query_role_Store = data.query_role_Store as Query_role_Store;
 	$: node = $query_role_Store.response.data?.role;
 	$: urlName($page.url, node?.name || '');

@@ -5,8 +5,8 @@
 	import Avatar from 'svelte-boring-avatars';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { locale } from '$i18n/i18n-svelte';
-
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	let size = 40;
 	let square = false;

@@ -1,17 +1,20 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import { type Errors, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
+	import { type Errors, type JsonSchema, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import GroupCreateForm from '~/lib/components/objects/group/GroupCreateForm.svelte';
 	import type { Mutation_user_groups_Store } from '~/lib/stores/mutation/mutation_user_groups_store';
 	import type { GroupInput, MutationGroupArgs } from '~/lib/types/schema';
 	import type { PageData } from './$types';
-	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: urlName($page.url, $LL.graphql.objects.User.fields.groups.name(), PageType.CREATE);
 	$: node = data.node as MutationGroupArgs;
 	$: id = data.id as string;

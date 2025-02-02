@@ -21,8 +21,7 @@ const config = {
     },
     alias: {
       '~': path.resolve('./src'),
-      $i18n: 'src/lib/i18n',
-      $houdini: path.resolve('.', '$houdini')
+      $i18n: 'src/lib/i18n'
     }
   }
 };

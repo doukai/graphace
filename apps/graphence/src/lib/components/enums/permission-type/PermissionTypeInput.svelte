@@ -14,7 +14,7 @@
 	export let placeholder: string = '';
 	export let containerClassName: string = '';
 	export let className: string = '';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	$: enums = [
 		{ name: $LL.graphql.enums.PermissionType.values.READ.name(), value: 'READ', description: '读取' },

@@ -1,4 +1,4 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
 import type { MutationLoginArgs } from '~/lib/types/schema';
@@ -7,7 +7,7 @@ const query = /* GraphQL */ `mutation Mutation_login($login: String!, $password:
   login(login: $login password: $password)
 }`;
 
-export async function createMutation_login_Store(event: LoadEvent): Promise<Mutation_login_Store> {
+export function createMutation_login_Store(event: LoadEvent | RequestEvent): Mutation_login_Store {
   return createGraphQLMutationStore<string, MutationLoginArgs>(query, event);
 }
 

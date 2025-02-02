@@ -13,8 +13,9 @@
 	import type { PermissionExpression } from '~/lib/types/schema';
 
 	export let expression: PermissionExpression | null | undefined;
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
-	const permissions = getContext('permissions') as PermissionsStore;
+
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
+	const permissions = getContext<PermissionsStore>('permissions');
 
 	let _expression = {
 		name: undefined,

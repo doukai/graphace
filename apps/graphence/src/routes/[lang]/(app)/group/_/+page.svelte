@@ -1,22 +1,24 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import { type Errors, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
+	import { type Errors, type JsonSchema, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import GroupCreateForm from '~/lib/components/objects/group/GroupCreateForm.svelte';
+	import type { Mutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
 	import type { GroupInput, MutationGroupArgs } from '~/lib/types/schema';
-	import { Mutation_groupStore } from '$houdini';
-	import type { PageData } from './$houdini';
-	import { validate } from '~/utils';
+	import type { PageData } from './$types';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: urlName($page.url, $LL.graphql.objects.Group.name(), PageType.CREATE);
 	$: node = data.node as MutationGroupArgs;
 	$: errors = data.errors as Record<number, Errors>;
-
-	const Mutation_group = new Mutation_groupStore();
+	$: mutation_group_Store = data.mutation_group_Store as Mutation_group_Store;
 
 	const mutation = (
 		event: CustomEvent<{
@@ -27,7 +29,7 @@
 	) => {
 		validate('Mutation_group_Arguments', event.detail.args, $locale)
 			.then((data) => {
-				Mutation_group.mutate(event.detail.args)
+				mutation_group_Store.fetch(event.detail.args)
 					.then((result) => {
 						if (result.errors) {
 							event.detail.catch(result.errors);

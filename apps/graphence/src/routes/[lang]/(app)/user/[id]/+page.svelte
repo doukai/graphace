@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import type { Errors } from '@graphace/commons';
+	import type { Errors, JsonSchema } from '@graphace/commons';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import UserForm from '~/lib/components/objects/user/UserForm.svelte';
 	import type { Query_user_Store } from '~/lib/stores/query/query_user_store';
@@ -8,10 +9,12 @@
 	import type { GraphQLError } from '@graphace/graphql';
 	import type { UserInput, MutationUserArgs } from '~/lib/types/schema';
 	import type { PageData } from './$types';
-	import { validate } from '~/utils';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: query_user_Store = data.query_user_Store as Query_user_Store;
 	$: node = $query_user_Store.response.data?.user;
 	$: urlName($page.url, node?.name || '');

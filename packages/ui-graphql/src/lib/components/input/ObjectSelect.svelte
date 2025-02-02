@@ -4,7 +4,6 @@
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import type { Errors } from '@graphace/commons';
 	import { Combobox, type Option } from '@graphace/ui';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let list: boolean | undefined = false;
 	export let id: string | null = null;
@@ -20,6 +19,8 @@
 	export let containerClassName: string = '';
 	export let tagClassName: string = '';
 	export let menuClassName: string = '';
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 </script>
 
 <div class="form-control w-full">

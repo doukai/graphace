@@ -1,21 +1,29 @@
 import type { LoadEvent } from '@sveltejs/kit';
-import type { LayoutLoad } from '$types';
+import type { LayoutLoad } from './$types';
 import { type Errors, getNode, getErrors } from '@graphace/commons';
+import { fetchQuery_{{ objectFieldTypeName | camelCase }}{% if connectionField %}Connection{% else %}List{% endif %}_Store } from '~/{{ storesPath }}/query/query_{{ objectFieldTypeName | camelCase }}{% if connectionField %}Connection{% else %}List{% endif %}_store';
+import { createMutation_{{ objectFieldTypeName | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ objectFieldTypeName | camelCase }}_store';
+{%- if hasFileField %}
+import { createMutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
+{%- endif %}
 import type { {{ mutationTypeName }}{{ objectFieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
-import { {% if connectionField %}load_Query_{{ objectFieldTypeName | camelCase }}Connection{% else %}load_Query_{{ objectFieldTypeName | camelCase }}List{% endif %} } from '$houdini';
 {%- if useAuth %}
-import { permissions } from '~/utils';
+import { getPermissionsStore } from '~/utils';
 {%- endif %}
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     {%- if useAuth %}
-    await permissions.getTypes('{{ objectFieldTypeName }}');
+    await getPermissionsStore(event).getTypes('{{ objectFieldTypeName }}');
     {%- endif %}
     const nodes: {{ mutationTypeName }}{{ objectFieldTypeName }}Args[] = getNode(event.url) || [];
 	const errors: Record<number, Errors> = getErrors(event.url) || {};
     return {
         nodes,
         errors,
-        ...(await {% if connectionField %}load_Query_{{ objectFieldTypeName | camelCase }}Connection({ event, variables: { first: 10 } })){% else %}load_Query_{{ objectFieldTypeName | camelCase }}List({ event })){% endif %}
+        {%- if hasFileField %}
+        mutation_singleUpload_Store = createMutation_singleUpload_Store(event),
+        {%- endif %}
+        query_{{ objectFieldTypeName | camelCase }}{% if connectionField %}Connection{% else %}List{% endif %}_Store: await fetchQuery_{{ objectFieldTypeName | camelCase }}{% if connectionField %}Connection{% else %}List{% endif %}_Store(event{% if connectionField %}, { first: 10 }{% endif %}),
+        mutation_{{ objectFieldTypeName | camelCase }}_Store: createMutation_{{ objectFieldTypeName | camelCase }}_Store(event)
     };
 }

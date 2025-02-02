@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import type { Errors } from '@graphace/commons';
+	import type { Errors, JsonSchema } from '@graphace/commons';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import GroupForm from '~/lib/components/objects/group/GroupForm.svelte';
 	import type { Query_group_Store } from '~/lib/stores/query/query_group_store';
@@ -8,10 +9,12 @@
 	import type { GraphQLError } from '@graphace/graphql';
 	import type { GroupInput, MutationGroupArgs } from '~/lib/types/schema';
 	import type { PageData } from './$types';
-	import { validate } from '~/utils';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: query_group_Store = data.query_group_Store as Query_group_Store;
 	$: node = $query_group_Store.response.data?.group;
 	$: urlName($page.url, node?.name || '');

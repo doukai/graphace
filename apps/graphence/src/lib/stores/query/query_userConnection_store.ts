@@ -1,6 +1,6 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
-import { createGraphQLQueryStore } from '~/utils';
+import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryUserConnectionArgs } from '~/lib/types/schema';
 import type { UserConnection } from '~/lib/types/schema';
 
@@ -44,8 +44,12 @@ const query = /* GraphQL */ `query query_userConnection($id: StringExpression, $
   }
 }`;
 
-export async function createQuery_userConnection_Store(event: LoadEvent, variables: QueryUserConnectionArgs): Promise<Query_userConnection_Store> {
-  return createGraphQLQueryStore<UserConnection, QueryUserConnectionArgs>(query, event, variables);
+export function createQuery_userConnection_Store(event: LoadEvent | RequestEvent): Query_userConnection_Store {
+  return createGraphQLQueryStore<UserConnection, QueryUserConnectionArgs>(query, event);
+}
+
+export async function fetchQuery_userConnection_Store(event: LoadEvent | RequestEvent, variables: QueryUserConnectionArgs): Promise<Query_userConnection_Store> {
+  return fetchGraphQLQueryStore<UserConnection, QueryUserConnectionArgs>(query, event, variables);
 }
 
 export type Query_userConnection_Store = GraphQLStore<UserConnection, QueryUserConnectionArgs>;

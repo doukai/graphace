@@ -1,18 +1,22 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import type { Errors } from '@graphace/commons';
+	import type { Errors, JsonSchema  } from '@graphace/commons';
 	import { createConnectionField, Field } from '@graphace/graphql';
 	import { Card, urlName } from '@graphace/ui';
 	import type { OperationStore } from '@graphace/ui-graphql';
 	import GroupGrid from '~/lib/components/objects/group/GroupGrid.svelte';
 	import GroupAggGrid from '~/lib/components/objects/group/GroupAggGrid.svelte';
 	import type { Group, GroupConnection } from '~/lib/types/schema';
-	import type { PageData } from './$houdini';
-	import { buildGraphQLErrors, validate } from '~/utils';
+	import type { PageData } from './$types';
+	import { buildGraphQLErrors } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: urlName($page.url, $LL.graphql.objects.Group.name());
 	let connection: GroupConnection | null | undefined = {};
 	let errors: Record<number, Errors> = {};

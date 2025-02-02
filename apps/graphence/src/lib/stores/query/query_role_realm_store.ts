@@ -1,6 +1,6 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
-import { createGraphQLQueryStore } from '~/utils';
+import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryRealmArgs, Role } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `query Query_role_realm($role_id: String, $id: StringExpression, $name: StringExpression, $description: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $groupBy: [String!]) {
@@ -32,8 +32,12 @@ const query = /* GraphQL */ `query Query_role_realm($role_id: String, $id: Strin
   }
 }`;
 
-export async function createQuery_role_realm_Store(event: LoadEvent, variables: { role_id: string } & QueryRealmArgs): Promise<Query_role_realm_Store> {
-  return createGraphQLQueryStore<Role, { role_id: string } & QueryRealmArgs>(query, event, variables);
+export function createQuery_role_realm_Store(event: LoadEvent | RequestEvent): Query_role_realm_Store {
+  return createGraphQLQueryStore<Role, { role_id: string } & QueryRealmArgs>(query, event);
+}
+
+export async function fetchQuery_role_realm_Store(event: LoadEvent | RequestEvent, variables: { role_id: string } & QueryRealmArgs): Promise<Query_role_realm_Store> {
+  return fetchGraphQLQueryStore<Role, { role_id: string } & QueryRealmArgs>(query, event, variables);
 }
 
 export type Query_role_realm_Store = GraphQLStore<Role, { role_id: string } & QueryRealmArgs>;

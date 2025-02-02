@@ -7,8 +7,6 @@
 	import type { Field } from '@graphace/graphql';
 	import type { Cell, DataType } from '@revolist/svelte-datagrid';
 
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
-
 	export let fields: Field[] = [];
 	export let source: DataType[] = [];
 	export let idFieldName: string;
@@ -21,6 +19,8 @@
 		colType?: string,
 		rowType?: string
 	) => Promise<void>;
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	let file: File;
 

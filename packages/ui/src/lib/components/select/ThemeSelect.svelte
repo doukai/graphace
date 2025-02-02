@@ -5,9 +5,9 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Swatch, ChevronDown, Check } from '@steeze-ui/heroicons';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
-
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
-	const themeStore = getContext('theme') as Writable<string | undefined>;
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
+	const themeStore = getContext<Writable<string | undefined>>('theme');
 
 	onMount(() => {
 		themeChange(false);

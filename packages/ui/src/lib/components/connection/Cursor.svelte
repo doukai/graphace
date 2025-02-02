@@ -8,7 +8,8 @@
 	export let hasPreviousPage: boolean = false;
 	export let startCursor: string;
 	export let endCursor: string;
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
+
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const dispatch = createEventDispatcher<{
 		previous: { selectedPageSize: number; before: string };
 		next: { selectedPageSize: number; after: string };

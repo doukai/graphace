@@ -3,7 +3,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Funnel } from '@steeze-ui/heroicons';
 	import {{ name }}Filter from '~/{{ objectsPath }}/{{ name | paramCase }}/{{ name }}Filter.svelte';
-	import type { {{ name }}Expression } from '$houdini';
+	import type { {{ name }}Expression } from '~/{{ schemaTypesPath }}';
 
 	export let name: string;
 	export let expression: {{ name }}Expression | null | undefined;

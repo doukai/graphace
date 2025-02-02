@@ -3,7 +3,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Funnel } from '@steeze-ui/heroicons';
 	import RoleFilter from '~/lib/components/objects/role/RoleFilter.svelte';
-	import type { RoleExpression } from '$houdini';
+	import type { RoleExpression } from '~/lib/types/schema';
 
 	export let name: string;
 	export let expression: RoleExpression | null | undefined;

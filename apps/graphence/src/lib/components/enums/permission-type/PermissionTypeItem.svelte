@@ -13,7 +13,7 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	$: enums = [
 		{ name: $LL.graphql.enums.PermissionType.values.READ.name(), value: 'READ', description: '读取' },

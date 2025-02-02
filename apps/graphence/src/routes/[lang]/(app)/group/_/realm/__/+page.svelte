@@ -1,23 +1,27 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import { type Errors, updateNodeParam, updateErrorsParam, getNodeParam, getErrorsParam } from '@graphace/commons';
+	import { type Errors, type JsonSchema, updateNodeParam, updateErrorsParam, getNodeParam, getErrorsParam } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import RealmSelectConnectionTable from '~/lib/components/objects/realm/RealmSelectConnectionTable.svelte';
+	import type { Query_realmConnection_Store } from '~/lib/stores/query/query_realmConnection_store';
+	import type { Mutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
 	import type { RealmInput, QueryRealmConnectionArgs, MutationRealmArgs } from '~/lib/types/schema';
-	import { Query_realmConnectionStore, Mutation_realmStore } from '$houdini';
-	import type { PageData } from './$houdini';
-	import { validate } from '~/utils';
+	import type { PageData } from './$types';
 	import { locale } from '$i18n/i18n-svelte';
 	import LL from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: urlName($page.url, $LL.graphql.objects.Group.fields.realm.name(), PageType.SELECT);
 	$: errors = data.errors as Record<number, Errors>;
-	$: Query_realmConnection = data.Query_realmConnection as Query_realmConnectionStore;
-	$: nodes = $Query_realmConnection.data?.realmConnection?.edges?.map((edge) => edge?.node);
-	$: totalCount = $Query_realmConnection.data?.realmConnection?.totalCount || 0;
-	const Mutation_realm = new Mutation_realmStore();
+	$: query_realmConnection_Store = data.query_realmConnection_Store as Query_realmConnection_Store;
+	$: nodes = $query_realmConnection_Store.response.data?.realmConnection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $query_realmConnection_Store.response.data?.realmConnection?.totalCount || 0;
+	$: mutation_realm_Store = data.mutation_realm_Store as Mutation_realm_Store;
 
 	const fetch = (
 		event: CustomEvent<{
@@ -26,7 +30,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		Query_realmConnection.fetch({ variables: event.detail.args })
+		query_realmConnection_Store.fetch(event.detail.args)
 			.then((result) => {
 				if (result.errors) {
 					event.detail.catch(result.errors);
@@ -49,7 +53,7 @@
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_realm.mutate(event.detail.args)
+				mutation_realm_Store.fetch(event.detail.args)
 					.then((result) => {
 						if (result.errors) {
 							event.detail.catch(result.errors);
@@ -67,7 +71,7 @@
 
 	const select = (
 		event: CustomEvent<{
-			selected: MutationRealmArgs | null | undefined | (MutationRealmArgs | null | undefined)[];
+			selected: RealmInput | null | undefined | (RealmInput | null | undefined)[];
 			then: () => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
@@ -95,7 +99,7 @@
 		{nodes}
 		{totalCount}
 		{errors}
-		isFetching={$Query_realmConnection.fetching}
+		isFetching={$query_realmConnection_Store.isFetching}
 		on:fetch={fetch}
 		on:mutation={mutation}
 		on:select={select}

@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import type { Errors } from '@graphace/commons';
+	import type { Errors, JsonSchema } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	{%- if connectionField %}
@@ -17,11 +18,13 @@
 	{%- endif %}
 	import type { {{ objectFieldTypeName }}Input, {% if connectionField %}{{ queryTypeName }}{{ objectFieldTypeName }}ConnectionArgs{% else %}{{ queryTypeName }}{{ objectFieldTypeName }}ListArgs{% endif %}, {{ mutationTypeName }}{{ objectFieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
 	import type { PageData } from './$types';
-	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: urlName($page.url, $LL.graphql.objects.{{ name }}.fields.{{ objectFieldName }}.name(), PageType.SELECT);
 	$: {{ idName }} = data.{{ idName }} as string;
 	{%- if connectionField %}
@@ -102,7 +105,7 @@
 
 	const select = (
 		event: CustomEvent<{
-			selected: {{ mutationTypeName }}{{ objectFieldTypeName }}Args | null | undefined | ({{ mutationTypeName }}{{ objectFieldTypeName }}Args | null | undefined)[];
+			selected: {{ objectFieldTypeName }}Input | null | undefined | ({{ objectFieldTypeName }}Input | null | undefined)[];
 			then: () => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>

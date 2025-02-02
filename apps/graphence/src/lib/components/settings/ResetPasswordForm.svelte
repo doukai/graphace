@@ -10,11 +10,11 @@
 
 	export let errors: Record<string, Errors> = {};
 	export let showBackButton: boolean = true;
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
-	const buildGlobalGraphQLErrorMessage = getContext(
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
+	const buildGlobalGraphQLErrorMessage = getContext<GlobalGraphQLErrorMessageFunction>(
 		'buildGlobalGraphQLErrorMessage'
-	) as GlobalGraphQLErrorMessageFunction;
+	);
 
 	const dispatch = createEventDispatcher<{
 		mutation: {

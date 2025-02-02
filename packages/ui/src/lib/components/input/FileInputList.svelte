@@ -6,6 +6,7 @@
 	import { nanoid } from 'nanoid';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus, PlusSmall, MinusSmall } from '@steeze-ui/heroicons';
+	
 	export let name: string;
 	export let value: (FileInfo | null | undefined)[] | null | undefined;
 	export let placeholder: string = '';
@@ -17,7 +18,8 @@
 	export let disabled = false;
 	export let downloadUrl = '/download';
 	export let id: string = nanoid();
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
+
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
 		upload: {

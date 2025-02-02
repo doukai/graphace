@@ -17,8 +17,9 @@
 	export let showSaveButton: boolean = true;
 	export let showBackButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
-	const permissions = getContext('permissions') as PermissionsStore;
+
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
+	const permissions = getContext<PermissionsStore>('permissions');
 
 	const dispatch = createEventDispatcher<{
 		edit: { row: number };

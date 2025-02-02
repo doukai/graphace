@@ -1,4 +1,4 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
 import type { MutationCurrentUserUpdateArgs } from '~/lib/types/schema';
@@ -40,7 +40,7 @@ const query = /* GraphQL */ `mutation Mutation_currentUserUpdate($userInput: Use
   }
 }`;
 
-export async function createMutation_currentUserUpdate_Store(event: LoadEvent): Promise<Mutation_currentUserUpdate_Store> {
+export function createMutation_currentUserUpdate_Store(event: LoadEvent | RequestEvent): Mutation_currentUserUpdate_Store {
   return createGraphQLMutationStore<User, MutationCurrentUserUpdateArgs>(query, event);
 }
 

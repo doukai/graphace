@@ -10,12 +10,13 @@
 	import OperatorSelect from '../input/OperatorSelect.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel, BarsArrowDown, BarsArrowUp } from '@steeze-ui/heroicons';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
 
 	export let name: string;
 	export let enums: { name: string; value: string | null | undefined; description?: string }[];
 	export let expression: StringExpression | null | undefined;
 	export let sort: Sort | null | undefined = undefined;
+	
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	let _expression: StringExpression = { opr: 'EQ', val: undefined, arr: [] };
 	let _sort: Sort | undefined = undefined;

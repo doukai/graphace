@@ -1,6 +1,6 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
-import { createGraphQLQueryStore } from '~/utils';
+import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryPermissionListArgs } from '~/lib/types/schema';
 import type { Permission } from '~/lib/types/schema';
 
@@ -31,8 +31,12 @@ const query = /* GraphQL */ `query query_permissionList($name: StringExpression,
   }
 }`;
 
-export async function createQuery_permissionList_Store(event: LoadEvent, variables: QueryPermissionListArgs): Promise<Query_permissionList_Store> {
-  return createGraphQLQueryStore<Permission[], QueryPermissionListArgs>(query, event, variables);
+export function createQuery_permissionList_Store(event: LoadEvent | RequestEvent): Query_permissionList_Store {
+  return createGraphQLQueryStore<Permission[], QueryPermissionListArgs>(query, event);
+}
+
+export async function fetchQuery_permissionList_Store(event: LoadEvent | RequestEvent, variables: QueryPermissionListArgs): Promise<Query_permissionList_Store> {
+  return fetchGraphQLQueryStore<Permission[], QueryPermissionListArgs>(query, event, variables);
 }
 
 export type Query_permissionList_Store = GraphQLStore<Permission[], QueryPermissionListArgs>;

@@ -3,16 +3,16 @@ import type { LayoutLoad } from './$types';
 import { type Errors, getNode, getErrors } from '@graphace/commons';
 import { createMutation_user_roles_Store } from '~/lib/stores/mutation/mutation_user_roles_store';
 import type { MutationRoleArgs } from '~/lib/types/schema';
-import { permissions } from '~/utils';
+import { getPermissionsStore } from '~/utils';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await permissions.getTypes('Role');
+    await getPermissionsStore().getTypes('Role');
     const node: MutationRoleArgs = getNode(event.url) || {};
 	const errors: Record<string, Errors> = getErrors(event.url) || {};
     return { 
         id: event.params.id, 
         node, 
         errors,
-        mutation_user_roles_Store: await createMutation_user_roles_Store(event)
+        mutation_user_roles_Store: createMutation_user_roles_Store(event)
     };
 }

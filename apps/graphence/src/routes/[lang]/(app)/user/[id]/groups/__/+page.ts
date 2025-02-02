@@ -1,14 +1,18 @@
 import type { LoadEvent } from '@sveltejs/kit';
-import type { LayoutLoad } from '$types';
-import { load_Query_groupConnection } from '$houdini';
-import { permissions } from '~/utils';
+import type { LayoutLoad } from './$types';
+import { fetchQuery_groupConnection_Store } from '~/lib/stores/query/query_groupConnection_store';
+import { createMutation_user_groups_Store } from '~/lib/stores/mutation/mutation_user_groups_store';
+import { createMutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
+import { getPermissionsStore } from '~/utils';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await permissions.getTypes('Group');
+    await getPermissionsStore().getTypes('Group');
     const notBelongToParent = { not: true, users: { id: { val: event.params.id } } };
     return {
         id: event.params.id,
         notBelongToParent,
-        ...(await load_Query_groupConnection({ event, variables: { first: 10, exs: [notBelongToParent] } }))
+        query_groupConnection_Store: await fetchQuery_groupConnection_Store(event, { first: 10, exs: [notBelongToParent] }),
+        mutation_user_groups_Store: createMutation_user_groups_Store(event),
+        mutation_group_Store: createMutation_group_Store(event)
     };
 }

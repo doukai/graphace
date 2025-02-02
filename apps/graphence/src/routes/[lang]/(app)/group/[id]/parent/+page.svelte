@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import { type Errors, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
+	import { type Errors, type JsonSchema, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import GroupForm from '~/lib/components/objects/group/GroupForm.svelte';
@@ -10,11 +11,13 @@
 	import type { Mutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
 	import type { GroupInput, MutationGroupArgs } from '~/lib/types/schema';
 	import type { PageData } from './$types';
-	import { validate } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: urlName($page.url, $LL.graphql.objects.Group.fields.parent.name());
 	$: query_group_parent_Store = data.query_group_parent_Store as Query_group_parent_Store;
 	$: group = $query_group_parent_Store.response.data?.group;
@@ -60,7 +63,7 @@
 				errors = {};
 				mutation_group_parent_Store.fetch({
 					group_id: group?.id,
-					...event.detail.args
+					group_parent: event.detail.args
 				})
 					.then((result) => {
 						if (result.errors) {

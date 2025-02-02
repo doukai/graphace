@@ -10,13 +10,15 @@
 		InboxArrowDown,
 		ArchiveBoxXMark
 	} from '@steeze-ui/heroicons';
+
 	export let title: string;
 	export let showSaveButton: boolean = true;
 	export let showRemoveButton: boolean = true;
 	export let showUnbindButton: boolean = false;
 	export let showBackButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
+
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
 		save: {};

@@ -115,7 +115,8 @@
 	import type { Readable, Subscriber, Unsubscriber } from 'svelte/store';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { Modal, ModalContent, ModalActions } from './modal';
-	const LL = getContext('LL') as Readable<TranslationFunctions>;
+
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const buttonClassName = (buttonType: string | undefined) => {
 		if (buttonType) {

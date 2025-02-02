@@ -5,17 +5,19 @@
 	import CurrentUserForm from '~/lib/components/settings/CurrentUserForm.svelte';
 	import type { GraphQLError } from '@graphace/graphql';
 	import type { UserInput } from '~/lib/types/schema';
-	import { Query_currentUserStore, Mutation_currentUserUpdateStore } from '$houdini';
-	import type { PageData } from './$houdini';
+	import type { Query_currentUser_Store } from '~/lib/stores/query/query_currentUser_store';
+	import type { Mutation_currentUserUpdate_Store } from '~/lib/stores/mutation/mutation_currentUserUpdate_store';
+	import type { PageData } from './$types';
 	import { validate } from '~/utils';
 	import { locale } from '$i18n/i18n-svelte';
 	import LL from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: Query_currentUser = data.Query_currentUser as Query_currentUserStore;
-	$: node = $Query_currentUser.data?.currentUser;
+	$: query_currentUser_Store = data.query_currentUser_Store as Query_currentUser_Store;
+	$: node = $query_currentUser_Store.response.data?.currentUser;
 	$: urlName($page.url, $LL.graphence.components.userMenu.profile());
-	const Mutation_currentUserUpdate = new Mutation_currentUserUpdateStore();
+	$: mutation_currentUserUpdate_Store =
+		data.mutation_currentUserUpdate_Store as Mutation_currentUserUpdate_Store;
 	let errors: Record<string, Errors> = {};
 
 	const mutation = (
@@ -28,7 +30,7 @@
 		validate('Mutation_currentUserUpdate_Arguments', { userInput: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
-				Mutation_currentUserUpdate.mutate({ userInput: event.detail.args }).then((result) => {
+				mutation_currentUserUpdate_Store.fetch({ userInput: event.detail.args }).then((result) => {
 					if (result.errors) {
 						event.detail.catch(result.errors);
 					} else {
@@ -51,7 +53,7 @@
 		showBackButton={$canBack}
 		{node}
 		{errors}
-		isFetching={$Query_currentUser.fetching}
+		isFetching={$query_currentUser_Store.isFetching}
 		on:mutation={mutation}
 		on:back={back}
 	/>

@@ -1,25 +1,30 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { page } from '$app/stores';
-	import type { Errors } from '@graphace/commons';
+	import type { Errors, JsonSchema } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import PermissionSelectConnectionTable from '~/lib/components/objects/permission/PermissionSelectConnectionTable.svelte';
+	import type { Query_permissionConnection_Store } from '~/lib/stores/query/query_permissionConnection_store';
+	import type { Mutation_role_permissions_Store } from '~/lib/stores/mutation/mutation_role_permissions_store';
+	import type { Mutation_permission_Store } from '~/lib/stores/mutation/mutation_permission_store';
 	import type { PermissionInput, QueryPermissionConnectionArgs, MutationPermissionArgs } from '~/lib/types/schema';
-	import { Query_permissionConnectionStore, Mutation_permissionStore, Mutation_role_permissionsStore } from '$houdini';
-	import type { PageData } from './$houdini';
-	import { validate } from '~/utils';
+	import type { PageData } from './$types';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: urlName($page.url, $LL.graphql.objects.Role.fields.permissions.name(), PageType.SELECT);
 	$: id = data.id as string;
-	$: Query_permissionConnection = data.Query_permissionConnection as Query_permissionConnectionStore;
-	$: nodes = $Query_permissionConnection.data?.permissionConnection?.edges?.map((edge) => edge?.node);
-	$: totalCount = $Query_permissionConnection.data?.permissionConnection?.totalCount || 0;
+	$: query_permissionConnection_Store = data.query_permissionConnection_Store as Query_permissionConnection_Store;
+	$: nodes = $query_permissionConnection_Store.response.data?.permissionConnection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $query_permissionConnection_Store.response.data?.permissionConnection?.totalCount || 0;
 	const notBelongToParent = data.notBelongToParent;
-	const Mutation_permission = new Mutation_permissionStore();
-	const Mutation_role_permissions = new Mutation_role_permissionsStore();
+	$: mutation_role_permissions_Store = data.mutation_role_permissions_Store as Mutation_role_permissions_Store;
+	$: mutation_permission_Store = data.mutation_permission_Store as Mutation_permission_Store;
 	let errors: Record<number, Errors> = {};
 
 	const fetch = (
@@ -29,7 +34,7 @@
 			catch: (errors: GraphQLError[]) => void;
 		}>
 	) => {
-		Query_permissionConnection.fetch({ variables: event.detail.args })
+		query_permissionConnection_Store.fetch(event.detail.args)
 			.then((result) => {
 				if (result.errors) {
 					event.detail.catch(result.errors);
@@ -52,7 +57,7 @@
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				Mutation_permission.mutate(event.detail.args)
+				mutation_permission_Store.fetch(event.detail.args)
 					.then((result) => {
 						if (result.errors) {
 							event.detail.catch(result.errors);
@@ -70,7 +75,7 @@
 
 	const select = (
 		event: CustomEvent<{
-			selected: MutationPermissionArgs | null | undefined | (MutationPermissionArgs | null | undefined)[];
+			selected: PermissionInput | null | undefined | (PermissionInput | null | undefined)[];
 			then: () => void;
 			catch: (errors: GraphQLError[]) => void;
 		}>
@@ -79,7 +84,7 @@
 			.then((data) => {
 				errors = {};
 				if (Array.isArray(event.detail.selected)) {
-					Mutation_role_permissions.mutate({
+					mutation_role_permissions_Store.fetch({
 						role_id: id,
 						role_permissions: event.detail.selected
 					})
@@ -109,7 +114,7 @@
 		{totalCount}
 		{errors}
 		args={{ exs: [notBelongToParent] }}
-		isFetching={$Query_permissionConnection.fetching}
+		isFetching={$query_permissionConnection_Store.isFetching}
 		on:fetch={fetch}
 		on:mutation={mutation}
 		on:select={select}

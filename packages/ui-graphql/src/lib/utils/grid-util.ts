@@ -10,7 +10,7 @@ import type {
 } from '@revolist/svelte-datagrid';
 import { read, utils, writeFileXLSX } from 'xlsx';
 import type { Errors } from '@graphace/commons';
-import { fieldsDeep, createIntrospection, type __Schema, type __Type, Field } from '@graphace/graphql';
+import { fieldsDeep, type __Schema, type __Type, Field } from '@graphace/graphql';
 
 export const createGrid = (
     __schema: __Schema,
@@ -19,8 +19,6 @@ export const createGrid = (
     getObjectLabel: (objectName: string) => string,
     getFieldLabel: (objectName: string, fieldName: string) => string
 ) => {
-
-    const { getTypeFieldTypeName, getType, isEnum, typeFieldTypeHasList } = createIntrospection(__schema);
 
     const getGridTheme = (theme: string | undefined): string | undefined => {
         if (theme) {
@@ -42,17 +40,17 @@ export const createGrid = (
     };
 
     const getGridType = (typeName: string, filedName: string, subFiledName?: string): Record<string, any> | undefined => {
-        const fieldTypeName = getTypeFieldTypeName(typeName, filedName, subFiledName);
-        if (fieldTypeName) {
-            if (isEnum(fieldTypeName)) {
+        const subFiled = __schema.getType(typeName).getField(filedName).type.getNamedType().getField(subFiledName);
+        if (subFiled) {
+            if (subFiled.type.getNamedType().isEnum()) {
                 return {
                     editor: 'enum',
-                    source: getType(fieldTypeName)
+                    source: subFiled.type.getNamedType()
                         ?.enumValues
-                        ?.map(enumValue => ({ label: getEnumValueLabel(fieldTypeName, enumValue.name), value: enumValue.name }))
+                        ?.map(enumValue => ({ label: getEnumValueLabel(subFiled.type.getNamedType().name, enumValue.name), value: enumValue.name }))
                 };
             }
-            switch (fieldTypeName) {
+            switch (subFiled.type.getNamedType().name) {
                 case 'Boolean':
                     return { editor: 'boolean' };
                 case 'Int':
@@ -536,17 +534,14 @@ export const createGrid = (
     };
 
     const enumNameToValue = (typeName: string, name: string | null | undefined): string | null | undefined => {
-        return getType(typeName)
-            ?.enumValues
-            ?.filter(enumValue => getEnumValueLabel(typeName, enumValue.name) === name)
-            ?.map(enumValue => enumValue.name)?.[0];
+        return __schema.getType(typeName)
+            ?.getEnumValues()
+            ?.find(enumValue => getEnumValueLabel(typeName, enumValue.name) === name)
+            .name
     };
 
     const enumValueToName = (typeName: string, value: string | null | undefined): string | null | undefined => {
-        return getType(typeName)
-            ?.enumValues
-            ?.filter(enumValue => enumValue.name === value)
-            ?.map(enumValue => getEnumValueLabel(typeName, enumValue.name))?.[0];
+        return getEnumValueLabel(typeName, value);
     };
 
     const getTypeFieldName = (value: any, typeName: string, fieldName: string, subFieldName?: string): any | null | undefined => {
