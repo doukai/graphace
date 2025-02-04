@@ -2,6 +2,7 @@
 	import { onMount, createEventDispatcher } from 'svelte';
 	import Typeahead from 'svelte-typeahead';
 	import { getOS } from '@graphace/commons';
+	import { z_index } from '~';
 
 	export let data: any[];
 	export let label: string | undefined;
@@ -10,6 +11,8 @@
 	export let inputAfterSelect: 'clear' | 'update' | 'keep' = 'clear';
 
 	const dispatch = createEventDispatcher();
+
+	const z_class = z_index.top(1);
 
 	let os: string;
 	onMount(() => {
@@ -34,7 +37,7 @@
 <!-- svelte-ignore a11y-label-has-associated-control -->
 <label class="searchbox relative mx-3 w-full" bind:this={seachboxEl}>
 	<svg
-		class="pointer-events-none absolute z-10 my-3.5 ml-4 stroke-current opacity-60 text-base-content"
+		class="pointer-events-none absolute {z_class} my-3.5 ml-4 stroke-current opacity-60 text-base-content"
 		width="16"
 		height="16"
 		xmlns="http://www.w3.org/2000/svg"

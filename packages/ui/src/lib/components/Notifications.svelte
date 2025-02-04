@@ -100,7 +100,9 @@
 	};
 </script>
 
-<div class="fixed inset-0 z-50 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start">
+<div
+	class="fixed inset-0 z-[999] flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start"
+>
 	<div class="w-full flex flex-col items-center space-y-4">
 		{#each $notifications as notification (notification.id)}
 			<div class="min-w-[50vw]" animate:flip transition:fly={{ y: 30 }}>

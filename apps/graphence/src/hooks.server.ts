@@ -39,7 +39,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 	if (!token && event.url.pathname !== loginPathName) {
 		toLoginPage(loginPathName, event);
 	} else {
-		// cookies.set('Authorization', "Bearer " + token, { path: '/', secure: false });
 		if (!event.locals.jwt && token) {
 			event.locals.jwt = jwt_decode(token.substring(7));
 		}

@@ -6,7 +6,7 @@
 	import { fade } from 'svelte/transition';
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import type { StringExpression, Sort } from '@graphace/graphql';
-	import { Input, InputList } from '@graphace/ui';
+	import { Input, InputList, z_index } from '@graphace/ui';
 	import OperatorSelect from '../input/OperatorSelect.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel, BarsArrowDown, BarsArrowUp } from '@steeze-ui/heroicons';
@@ -14,8 +14,10 @@
 	export let name: string;
 	export let expression: StringExpression | null | undefined;
 	export let sort: Sort | null | undefined = undefined;
-	
+
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
+
+	const z_class5 = z_index.top(5);
 
 	let _expression: StringExpression = { opr: 'EQ', val: undefined, arr: [] };
 	let _sort: Sort | undefined = undefined;
@@ -86,8 +88,8 @@
 </td>
 
 {#if $open}
-	<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
-	<div class="p-1 rounded-xl bg-base-100 shadow z-[50]" use:melt={$content}>
+	<div use:melt={$overlay} class="fixed inset-0 {z_class5}" />
+	<div class="p-1 rounded-xl bg-base-100 shadow {z_class5}" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div
 			class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1 max-w-xs md:max-w-md"

@@ -14,7 +14,8 @@
 		to,
 		PageType,
 		init,
-		history
+		history,
+		z_index
 	} from '@graphace/ui';
 	import Iconify from '@iconify/svelte';
 	import { setLocale } from '$i18n/i18n-svelte';
@@ -35,6 +36,8 @@
 	setContext('structQueryStores', data.structQueryStores);
 	setContext('LL', LL);
 	setContext('theme', writable(undefined));
+
+	const z_class = z_index.top(1);
 
 	let drawersidebar: HTMLDivElement;
 	let drawerSidebarScrollY = 0;
@@ -178,7 +181,7 @@
 		</main>
 	</div>
 	<div
-		class="drawer-side z-40 lg:hidden"
+		class="drawer-side {z_class} lg:hidden"
 		style="scroll-behavior: smooth; scroll-padding-top: {navbarScrollPadding};"
 		bind:this={drawersidebar}
 		on:scroll={parseSidebarScroll}

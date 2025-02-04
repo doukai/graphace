@@ -6,7 +6,7 @@
 	import { fade } from 'svelte/transition';
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import type { Errors } from '@graphace/commons';
-	import { DateInput, DateInputList } from '@graphace/ui';
+	import { DateInput, DateInputList, z_index } from '@graphace/ui';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
 
@@ -17,8 +17,11 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
-	
+
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
+
+	const z_class3 = z_index.top(3);
+	const z_class5 = z_index.top(5);
 
 	const dispatch = createEventDispatcher<{
 		save: {};
@@ -53,7 +56,7 @@
 
 <td>
 	<div
-		class={errors ? 'tooltip tooltip-open tooltip-error hover:z-30' : ''}
+		class={errors ? `tooltip tooltip-open tooltip-error hover:${z_class3}` : ''}
 		data-tip={errors?.errors?.map((error) => error.message).join(', ')}
 	>
 		<a class="group link inline-flex" href={null} use:melt={$trigger}>
@@ -83,8 +86,8 @@
 </td>
 
 {#if $open}
-	<div use:melt={$overlay} class="fixed inset-0 z-[50]" />
-	<div class="p-1 rounded-xl bg-base-100 shadow z-[50]" use:melt={$content}>
+	<div use:melt={$overlay} class="fixed inset-0 {z_class5}" />
+	<div class="p-1 rounded-xl bg-base-100 shadow {z_class5}" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="flex items-center space-x-1" transition:fade={{ duration: 100 }}>
 			{#if list}

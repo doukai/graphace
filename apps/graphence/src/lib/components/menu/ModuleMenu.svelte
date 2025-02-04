@@ -1,15 +1,17 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import { init } from '@graphace/ui';
+	import { init, z_index } from '@graphace/ui';
 	import { page } from '$app/stores';
 	import { EllipsisVertical } from '@steeze-ui/heroicons';
 	import Iconify from '@iconify/svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { locale } from '$i18n/i18n-svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	
+
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
+
+	const z_class6 = z_index.top(6);
 
 	function to(path: string) {
 		let urlParts: string[] = $page.url.pathname.split('/');
@@ -29,7 +31,10 @@
 			</label>
 		</div>
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-		<ul tabindex="0" class="dropdown-content z-[60] menu p-2 shadow bg-base-100 rounded-box w-52">
+		<ul
+			tabindex="0"
+			class="dropdown-content {z_class6} menu p-2 shadow bg-base-100 rounded-box w-52"
+		>
 			<li>
 				<h2 class="menu-title flex flex-row gap-2">
 					<span class="text-base-content">

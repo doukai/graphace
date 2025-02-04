@@ -5,25 +5,25 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Bars4, ChevronLeft } from '@steeze-ui/heroicons';
 	import { ot, canBack } from '~/components/stores/useNavigate.js';
+	import { z_index } from '~';
 
 	export let showMenuButton: boolean = true;
 	export let showBackButton: boolean = false;
-	
+
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	let scrollY: number;
 	$: switchNavbarStyle = scrollY > 40 ? true : false;
+	const z_class3 = z_index.top(3);
 </script>
 
 <svelte:window bind:scrollY />
 
 <div
 	class={`
-		sticky top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 ${
-			switchNavbarStyle
-				? 'bg-base-100 text-base-content shadow-sm'
-				: 'bg-base-100 text-base-content'
-		}`}
+		sticky top-0 ${z_class3} flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 ${
+		switchNavbarStyle ? 'bg-base-100 text-base-content shadow-sm' : 'bg-base-100 text-base-content'
+	}`}
 >
 	<nav class="navbar w-full">
 		<div class="flex flex-1 md:gap-1 lg:gap-2">

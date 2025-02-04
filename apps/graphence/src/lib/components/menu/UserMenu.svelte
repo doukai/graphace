@@ -2,11 +2,14 @@
 	import { getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import { jwt } from '@graphace/commons';
+	import { z_index } from '@graphace/ui';
 	import Avatar from 'svelte-boring-avatars';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { locale } from '$i18n/i18n-svelte';
-	
+
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
+
+	const z_class = z_index.top(1);
 
 	let size = 40;
 	let square = false;
@@ -25,7 +28,7 @@
 	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 	<ul
 		tabindex="0"
-		class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+		class="mt-3 {z_class} p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
 	>
 		<li>
 			<a href={`/${$locale}/settings/account`}>{$LL.graphence.components.userMenu.profile()}</a>

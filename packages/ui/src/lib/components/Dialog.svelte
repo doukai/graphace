@@ -1,18 +1,21 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import { z_index, z_class } from '.';
 	export let title: string = '';
 	export let disabled: boolean = false;
 	export let className: string = '';
 	export let showButton: boolean = false;
 
-	let dialog: HTMLDialogElement;
+	let checked: boolean = false;
+
+	z_index.next();
 
 	export const showModal = () => {
-		dialog.showModal();
+		checked = true;
 	};
 
 	export const close = () => {
-		dialog.close();
+		checked = false;
 	};
 
 	const dispatch = createEventDispatcher<{
@@ -25,12 +28,13 @@
 		<slot name="button" />
 	</button>
 {/if}
-<dialog bind:this={dialog} class="modal modal-bottom sm:modal-middle">
+<input type="checkbox" bind:checked id="my_modal_6" class="modal-toggle" />
+<div class="modal modal-bottom sm:modal-middle {$z_class}">
 	<div class="modal-box">
 		<button
 			class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
 			on:click|preventDefault={(e) => {
-				dialog.close();
+				close();
 				dispatch('close');
 			}}
 		>
@@ -44,4 +48,4 @@
 			<slot name="action" />
 		</div>
 	</div>
-</dialog>
+</div>

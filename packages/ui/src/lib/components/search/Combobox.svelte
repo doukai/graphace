@@ -23,6 +23,8 @@
 	import { Check, ChevronUp, ChevronDown, XMark } from '@steeze-ui/heroicons';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { createEventDispatcher } from 'svelte';
+	import { z_index } from '~';
+
 	export let rootClassName: string = '';
 	export let className: string = 'sm:input-xs md:input-sm';
 	export let containerClassName: string = '';
@@ -30,7 +32,6 @@
 	export let menuClassName: string = '';
 	export let groupClassName: string = '';
 	export let labelClassName: string = '';
-
 	export let options: Option[] | null | undefined = [];
 	export let groups: Group[] | null | undefined = undefined;
 	export let value: Option | Option[] | null | undefined = undefined;
@@ -40,7 +41,7 @@
 	export let disabled = false;
 	export let placeholder: string = '';
 	export let loading: boolean = false;
-	
+
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
@@ -86,6 +87,8 @@
 			return false;
 		}
 	});
+
+	const z_class = z_index.top(1);
 
 	$: $tags = Array.isArray(value)
 		? value.map((item) => ({ id: (item.group?.value || '') + item.value, value: item.label }))
@@ -159,7 +162,7 @@
 			/>
 		</div>
 	</div>
-	<div class="absolute right-2 top-1/2 z-10 -translate-y-1/2">
+	<div class="absolute right-2 top-1/2 {z_class} -translate-y-1/2">
 		{#if $open}
 			<Icon src={ChevronUp} class="size-4" />
 		{:else}
@@ -169,7 +172,7 @@
 </div>
 {#if $open}
 	<ul
-		class="menu shadow rounded-xl bg-base-100 w-full z-[100] max-h-80 flex-nowrap overflow-auto {menuClassName}"
+		class="menu shadow rounded-xl bg-base-100 w-full {z_class} max-h-80 flex-nowrap overflow-auto {menuClassName}"
 		use:melt={$menu}
 		transition:fly={{ duration: 150, y: -5 }}
 	>

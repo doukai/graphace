@@ -5,6 +5,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons';
 	import type { NamedStruct } from '@graphace/graphql';
+	import type { z_index } from '@graphace/ui';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Link } from '@steeze-ui/heroicons';
 
@@ -14,8 +15,11 @@
 		undefined;
 	export let errors: Errors | undefined = undefined;
 	export let btnClassName: string = 'btn btn-square btn-xs btn-ghost';
-	
+
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
+
+	const z_class3 = z_index.top(3);
+	const z_class5 = z_index.top(5);
 
 	let _namedStruct = namedStruct;
 	namedStruct = undefined;
@@ -27,7 +31,7 @@
 
 <td>
 	<div
-		class={errors ? 'tooltip tooltip-open tooltip-error hover:z-30' : ''}
+		class={errors ? `tooltip tooltip-open tooltip-error hover:${z_class3}` : ''}
 		data-tip={(errors?.errors || [])
 			.concat(
 				(errors?.iterms ? Object.values(errors?.iterms) : []).flatMap((error) => error.errors)
@@ -36,7 +40,7 @@
 			.map((error) => error.message)
 			.join(', ')}
 	>
-		<div class="tooltip hover:z-30" data-tip={$LL.ui_graphql.table.editBtn()}>
+		<div class="tooltip hover:{z_class3}" data-tip={$LL.ui_graphql.table.editBtn()}>
 			{#if _namedStruct}
 				{#if Array.isArray(_namedStruct)}
 					{#if _namedStruct.length > 0 && _namedStruct.some((item) => item.name)}
