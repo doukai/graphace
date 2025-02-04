@@ -6,7 +6,7 @@ import { createMutation_user_Store } from '~/lib/stores/mutation/mutation_user_s
 import { getPermissionsStore } from '~/utils';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await getPermissionsStore().getTypes('User');
+    await getPermissionsStore(event).getTypes('User');
     const notBelongToParent = { not: true, roles: { id: { val: event.params.id } } };
     return {
         id: event.params.id,

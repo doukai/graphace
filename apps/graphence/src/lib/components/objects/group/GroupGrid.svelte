@@ -10,6 +10,7 @@
 	import GroupQuery from '~/lib/components/objects/group/Group.svelte';
 	import type { Group, GroupConnection, GroupConnectionQueryArguments, GroupListMutationArguments } from '~/lib/types/schema';
 	import {
+		__schema,
 		getGridTheme,
 		createEditors,
 		buildGlobalGraphQLErrorMessage,
@@ -18,9 +19,7 @@
 		nodesToSource,
 		sourceToMutationList,
 		exportToXlsx,
-		importFromXlsx,
-		getType,
-		getTypeFieldType
+		importFromXlsx
 	} from '~/utils';
 	
 	export let connection: GroupConnection;
@@ -88,22 +87,36 @@
 
 	const mutation = () => {
 		const nonNullFields = [
-			...(getType(typeName)
-				?.fields?.filter((__field) => __field.type.kind === 'NON_NULL')
-				?.filter((__field) => !queryFields?.some((subField) => subField.name === __field.name))
-				?.map((__field) => getFieldName(__field.name)) || []),
+			...(__schema
+				.getType(typeName)
+				?.getFields()
+				?.filter((__field) => __field.getType().isNonNull())
+				?.filter((__field) => !queryFields?.some((subField) => subField.name === __field.getName()))
+				?.map((__field) => getFieldName(__field.getName()!)) || []),
 			...queryFields
 				.filter((field) => field.fields && field.fields.length > 0)
 				.filter((field) =>
-					getTypeFieldType(typeName, field.name)
-						?.fields?.filter((__field) => __field.type.kind === 'NON_NULL')
-						.some((__field) => !field.fields?.some((subField) => subField.name === __field.name))
+					__schema
+						.getType(
+							__schema.getType(typeName)?.getField(field.name)?.getType().getNamedType()?.getName()!
+						)
+						?.getFields()
+						?.filter((__field) => __field.getType().isNonNull())
+						.some(
+							(__field) => !field.fields?.some((subField) => subField.name === __field.getName())
+						)
 				)
 				.flatMap((field) =>
-					getTypeFieldType(typeName, field.name)
-						?.fields?.filter((__field) => __field.type.kind === 'NON_NULL')
-						?.filter((__field) => !field.fields?.some((subField) => subField.name === __field.name))
-						?.map((__field) => getFieldName(field.name, __field.name))
+					__schema
+						.getType(
+							__schema.getType(typeName)?.getField(field.name)?.getType().getNamedType()?.getName()!
+						)
+						?.getFields()
+						?.filter((__field) => __field.getType().isNonNull())
+						?.filter(
+							(__field) => !field.fields?.some((subField) => subField.name === __field.getName())
+						)
+						?.map((__field) => getFieldName(field.name, __field.getName()!))
 				)
 		];
 

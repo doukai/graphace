@@ -40,17 +40,19 @@ export const createGrid = (
     };
 
     const getGridType = (typeName: string, filedName: string, subFiledName?: string): Record<string, any> | undefined => {
-        const subFiled = __schema.getType(typeName).getField(filedName).type.getNamedType().getField(subFiledName);
-        if (subFiled) {
-            if (subFiled.type.getNamedType().isEnum()) {
+        const filed = subFiledName ?
+            __schema.getType(__schema.getType(typeName)?.getField(filedName)?.getType().getNamedType().getName())?.getField(subFiledName) :
+            __schema.getType(typeName)?.getField(filedName);
+        if (filed) {
+            if (filed.getType().getNamedType().isEnum()) {
                 return {
                     editor: 'enum',
-                    source: subFiled.type.getNamedType()
-                        ?.enumValues
-                        ?.map(enumValue => ({ label: getEnumValueLabel(subFiled.type.getNamedType().name, enumValue.name), value: enumValue.name }))
+                    source: __schema.getType(filed.getType().getNamedType().getName())
+                        ?.getEnumValues()
+                        ?.map(enumValue => ({ label: getEnumValueLabel(filed.getType().getNamedType().getName(), enumValue.getName()), value: enumValue.getName() }))
                 };
             }
-            switch (subFiled.type.getNamedType().name) {
+            switch (filed.getType().getNamedType().getName()) {
                 case 'Boolean':
                     return { editor: 'boolean' };
                 case 'Int':
@@ -536,8 +538,8 @@ export const createGrid = (
     const enumNameToValue = (typeName: string, name: string | null | undefined): string | null | undefined => {
         return __schema.getType(typeName)
             ?.getEnumValues()
-            ?.find(enumValue => getEnumValueLabel(typeName, enumValue.name) === name)
-            .name
+            ?.find(enumValue => getEnumValueLabel(typeName, enumValue.getName()) === name)
+            .getName()
     };
 
     const enumValueToName = (typeName: string, value: string | null | undefined): string | null | undefined => {
@@ -546,42 +548,42 @@ export const createGrid = (
 
     const getTypeFieldName = (value: any, typeName: string, fieldName: string, subFieldName?: string): any | null | undefined => {
         if (subFieldName) {
-            const subFieldTypeName = getTypeFieldTypeName(typeName, fieldName, subFieldName);
-            if (subFieldTypeName) {
+            const subFieldType = __schema.getType(__schema.getType(typeName)?.getField(fieldName)?.getType().getNamedType().getName())?.getField(subFieldName)?.getType().getNamedType();
+            if (subFieldType) {
                 if (Array.isArray(value)) {
-                    if (subFieldTypeName === 'Boolean') {
+                    if (subFieldType.getName() === 'Boolean') {
                         return value.map(item => booleanValueToName(item));
-                    } else if (isEnum(subFieldTypeName)) {
-                        return value.map(item => enumValueToName(subFieldTypeName, item));
+                    } else if (subFieldType.isEnum()) {
+                        return value.map(item => enumValueToName(subFieldType.getName(), item));
                     } else {
                         return value;
                     }
                 } else {
-                    if (subFieldTypeName === 'Boolean') {
+                    if (subFieldType.getName() === 'Boolean') {
                         return booleanValueToName(value);
-                    } else if (isEnum(subFieldTypeName)) {
-                        return enumValueToName(subFieldTypeName, value);
+                    } else if (subFieldType.isEnum()) {
+                        return enumValueToName(subFieldType.getName(), value);
                     } else {
                         return value;
                     }
                 }
             }
         }
-        const fieldTypeName = getTypeFieldTypeName(typeName, fieldName);
-        if (fieldTypeName) {
+        const fieldType = __schema.getType(typeName)?.getField(fieldName)?.getType().getNamedType();
+        if (fieldType) {
             if (Array.isArray(value)) {
-                if (fieldTypeName === 'Boolean') {
+                if (fieldType.getName() === 'Boolean') {
                     return value.map(item => booleanValueToName(item));
-                } else if (isEnum(fieldTypeName)) {
-                    return value.map(item => enumValueToName(fieldTypeName, item));
+                } else if (fieldType.isEnum()) {
+                    return value.map(item => enumValueToName(fieldType.getName(), item));
                 } else {
                     return value;
                 }
             } else {
-                if (fieldTypeName === 'Boolean') {
+                if (fieldType.getName() === 'Boolean') {
                     return booleanValueToName(value);
-                } else if (isEnum(fieldTypeName)) {
-                    return enumValueToName(fieldTypeName, value);
+                } else if (fieldType.isEnum()) {
+                    return enumValueToName(fieldType.getName(), value);
                 } else {
                     return value;
                 }
@@ -591,42 +593,42 @@ export const createGrid = (
 
     const getTypeFieldValue = (value: any, typeName: string, fieldName: string, subFieldName?: string): any | null | undefined => {
         if (subFieldName) {
-            const subFieldTypeName = getTypeFieldTypeName(typeName, fieldName, subFieldName);
-            if (subFieldTypeName) {
+            const subFieldType = __schema.getType(__schema.getType(typeName)?.getField(fieldName)?.getType().getNamedType().getName())?.getField(subFieldName)?.getType().getNamedType();
+            if (subFieldType) {
                 if (Array.isArray(value)) {
-                    if (subFieldTypeName === 'Boolean') {
+                    if (subFieldType.getName() === 'Boolean') {
                         return value.map(item => booleanNameToValue(item));
-                    } else if (isEnum(subFieldTypeName)) {
-                        return value.map(item => enumNameToValue(subFieldTypeName, item));
+                    } else if (subFieldType.isEnum()) {
+                        return value.map(item => enumNameToValue(subFieldType.getName(), item));
                     } else {
                         return value;
                     }
                 } else {
-                    if (subFieldTypeName === 'Boolean') {
+                    if (subFieldType.getName() === 'Boolean') {
                         return booleanNameToValue(value);
-                    } else if (isEnum(subFieldTypeName)) {
-                        return enumNameToValue(subFieldTypeName, value);
+                    } else if (subFieldType.isEnum()) {
+                        return enumNameToValue(subFieldType.getName(), value);
                     } else {
                         return value;
                     }
                 }
             }
         }
-        const fieldTypeName = getTypeFieldTypeName(typeName, fieldName);
-        if (fieldTypeName) {
+        const fieldType = __schema.getType(typeName)?.getField(fieldName)?.getType().getNamedType();
+        if (fieldType) {
             if (Array.isArray(value)) {
-                if (fieldTypeName === 'Boolean') {
+                if (fieldType.getName() === 'Boolean') {
                     return value.map(item => booleanNameToValue(item));
-                } else if (isEnum(fieldTypeName)) {
-                    return value.map(item => enumNameToValue(fieldTypeName, item));
+                } else if (fieldType.isEnum()) {
+                    return value.map(item => enumNameToValue(fieldType.getName(), item));
                 } else {
                     return value;
                 }
             } else {
-                if (fieldTypeName === 'Boolean') {
+                if (fieldType.getName() === 'Boolean') {
                     return booleanNameToValue(value);
-                } else if (isEnum(fieldTypeName)) {
-                    return enumNameToValue(fieldTypeName, value);
+                } else if (fieldType.isEnum()) {
+                    return enumNameToValue(fieldType.getName(), value);
                 } else {
                     return value;
                 }
@@ -635,7 +637,7 @@ export const createGrid = (
     };
 
     const nodesToSource = <T>(typeName: string, queryFields: Field[], nodes: (T | null | undefined)[] | undefined): DataType[] | undefined => {
-        const join = queryFields.find((field) => typeFieldTypeHasList(typeName, field.name));
+        const join = queryFields.find((field) => __schema.getType(typeName)?.getField(field.name)?.getType().hasList());
         return nodes?.flatMap((node) => {
             if (join) {
                 const array = node?.[join.name as keyof T];
@@ -713,7 +715,7 @@ export const createGrid = (
 
     const errorsToGridErrors = <T>(typeName: string, errors: Record<number, Errors>, queryFields: Field[], nodes: (T | null | undefined)[] | undefined): Record<string, Errors>[] | undefined => {
         if (errors && Object.keys(errors).length) {
-            const join = queryFields.find((field) => typeFieldTypeHasList(typeName, field.name));
+            const join = queryFields.find((field) => __schema.getType(typeName)?.getField(field.name)?.getType().hasList());
             return nodes?.flatMap((node, nodeIndex) => {
                 if (join) {
                     const array = node?.[join.name as keyof T];
@@ -769,7 +771,7 @@ export const createGrid = (
     };
 
     const sourceToMutationList = <T>(typeName: string, idFieldName: string, queryFields: Field[], source: DataType[]): T[] => {
-        const join = queryFields.find((field) => typeFieldTypeHasList(typeName, field.name));
+        const join = queryFields.find((field) => __schema.getType(typeName)?.getField(field.name)?.getType().hasList());
         if (join) {
             return source?.reduce((nodes: T[], row) => {
                 const object = Object.fromEntries(
@@ -871,7 +873,7 @@ export const createGrid = (
     };
 
     const exportToXlsx = <T>(typeName: string, fields: Field[], nodes: (T | null | undefined)[] | undefined): void => {
-        const join = fields.find((field) => typeFieldTypeHasList(typeName, field.name));
+        const join = fields.find((field) => __schema.getType(typeName)?.getField(field.name)?.getType().hasList());
         const json = nodes?.flatMap((node) => {
             if (join) {
                 const array = node?.[join.name as keyof T];
@@ -880,9 +882,9 @@ export const createGrid = (
                         .map((item) => {
                             if (join.fields && join.fields.length > 0) {
                                 return join.fields.map((subField) => {
-                                    const subFieldTypeName = getTypeFieldTypeName(typeName, join.name);
+                                    const subFieldType = __schema.getType(typeName)?.getField(join.name)?.getType().getNamedType();
                                     return [
-                                        getFieldLabel(typeName, join.name) + getFieldLabel(subFieldTypeName!, subField.name),
+                                        getFieldLabel(typeName, join.name) + getFieldLabel(subFieldType.getName(), subField.name),
                                         getTypeFieldName(item?.[subField.name as keyof typeof item], typeName, join.name, subField.name)
                                     ]
                                 });
@@ -899,9 +901,9 @@ export const createGrid = (
                                         if (field.fields && field.fields.length > 0) {
                                             const object = node?.[field.name as keyof T];
                                             return field.fields.map((subField) => {
-                                                const subFieldTypeName = getTypeFieldTypeName(typeName, field.name);
+                                                const subFieldType = __schema.getType(typeName)?.getField(field.name)?.getType().getNamedType();
                                                 return [
-                                                    getFieldLabel(typeName, field.name) + getFieldLabel(subFieldTypeName!, subField.name),
+                                                    getFieldLabel(typeName, field.name) + getFieldLabel(subFieldType.getName(), subField.name),
                                                     getTypeFieldName(object?.[subField.name as keyof typeof object], typeName, field.name, subField.name)
                                                 ]
                                             });
@@ -919,9 +921,9 @@ export const createGrid = (
                         if (field.fields && field.fields.length > 0) {
                             const object = node?.[field.name as keyof T];
                             return field.fields.map((subField) => {
-                                const subFieldTypeName = getTypeFieldTypeName(typeName, field.name);
+                                const subFieldType = __schema.getType(typeName)?.getField(field.name)?.getType().getNamedType();
                                 return [
-                                    getFieldLabel(typeName, field.name) + getFieldLabel(subFieldTypeName!, subField.name),
+                                    getFieldLabel(typeName, field.name) + getFieldLabel(subFieldType.getName(), subField.name),
                                     getTypeFieldName(object?.[subField.name as keyof typeof object], typeName, field.name, subField.name)
                                 ]
                             });

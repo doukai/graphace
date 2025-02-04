@@ -6,7 +6,7 @@ import { createMutation_role_Store } from '~/lib/stores/mutation/mutation_role_s
 import { getPermissionsStore } from '~/utils';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await getPermissionsStore().getTypes('Role');
+    await getPermissionsStore(event).getTypes('Role');
     return {
         id: event.params.id,
         query_permission_roles_Store: await fetchQuery_permission_roles_Store(event, { permission_name: { val: event.params.id, first: 10 } }),

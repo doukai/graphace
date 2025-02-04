@@ -10,8 +10,8 @@
 	import { Combobox, type Group as G, Pagination, type Option } from '@graphace/ui';
 	import GroupFilter from '~/lib/components/objects/group/GroupFilter.svelte';
 	import type { GroupConnectionQueryArguments } from '~/lib/types/schema';
+	import { __schema } from '~/utils';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	import { getIdFieldName } from '~/utils';
 	
 	export let fields: Field[] = [];
 	export let queryFields: Field[] = [];
@@ -411,7 +411,12 @@
 	const buildQueryFields = (): Field[] => {
 		queryFields = optionsToFields().map((field) => {
 			if (field.fields) {
-				const idFieldName = getIdFieldName(typeName, field.name);
+				const idFieldName = __schema
+					.getType(
+						__schema.getType(typeName)?.getField(field.name)?.getType().getNamedType()?.getName()!
+					)
+					?.getIDField()
+					?.getName();
 				if (!field.fields.some((subField) => subField.name === idFieldName)) {
 					field.fields.push(new Field({ name: idFieldName! }));
 				}

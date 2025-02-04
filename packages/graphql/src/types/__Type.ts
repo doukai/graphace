@@ -1,23 +1,42 @@
-import type { __EnumValue, __Field, __InputValue, __TypeKind } from "./";
+import { __EnumValue, __Field, __InputValue, __Schema, __TypeKind } from "./index.js";
 
 export class __Type {
-    kind!: __TypeKind;
-    name?: string | null | undefined;
-    description?: string | null | undefined;
-    fields?: __Field[] | null | undefined;
-    interfaces?: __Type[] | null | undefined;
-    possibleTypes?: __Type[] | null | undefined;
-    enumValues?: __EnumValue[] | null | undefined;
-    inputFields?: __InputValue[] | null | undefined;
-    ofType?: __Type | null | undefined;
+    private kind: __TypeKind;
+    private name?: string | null | undefined;
+    private description?: string | null | undefined;
+    private fields?: __Field[] | null | undefined;
+    private interfaces?: __Type[] | null | undefined;
+    private possibleTypes?: __Type[] | null | undefined;
+    private enumValues?: __EnumValue[] | null | undefined;
+    private inputFields?: __InputValue[] | null | undefined;
+    private ofType?: __Type | null | undefined;
+    constructor(__type: any) {
+        this.kind = __type.kind;
+        this.name = __type.name;
+        this.description = __type.description;
+        this.fields = __type.fields?.map((__field: any) => new __Field(__field));
+        this.interfaces = __type.interfaces?.map((__interface: any) => new __Type(__interface));
+        this.enumValues = __type.enumValues?.map((__enumValue: any) => new __EnumValue(__enumValue));
+        this.inputFields = __type.inputFields?.map((__inputValue: any) => new __InputValue(__inputValue));
+        this.ofType = __type.ofType ? new __Type(__type.ofType) : null;
+    }
+    public getKind = (): __TypeKind => {
+        return this.kind;
+    }
+    public getName = (): string | null | undefined => {
+        return this.name;
+    }
+    public getDescription = (): string | null | undefined => {
+        return this.description;
+    }
     public getFields = (): __Field[] | null | undefined => {
         return this.fields;
     }
     public getField = (name: string): __Field | undefined => {
-        return this.fields?.find((field) => field.name === name);
+        return this.fields?.find((field) => field.getName() === name);
     }
     public getIDField = (): __Field | undefined => {
-        return this.fields?.find((field) => field.type.getNamedType()?.name === 'ID');
+        return this.fields?.find((field) => field.getType().getNamedType()?.name === 'ID');
     }
     public getInterfacess = (): __Type[] | null | undefined => {
         return this.interfaces;
@@ -35,13 +54,16 @@ export class __Type {
         return this.enumValues;
     }
     public getEnumValue = (name: string): __EnumValue | undefined => {
-        return this.enumValues?.find((enumValue) => enumValue.name === name);
+        return this.enumValues?.find((enumValue) => enumValue.getName() === name);
     }
     public getInputFields = (): __InputValue[] | null | undefined => {
         return this.inputFields;
     }
     public getInputField = (name: string): __InputValue | undefined => {
-        return this.inputFields?.find((inputField) => inputField.name === name);
+        return this.inputFields?.find((inputField) => inputField.getName() === name);
+    }
+    public getOfType = (): __Type | null | undefined => {
+        return this.ofType;
     }
     public isScalar = (): boolean => {
         return this.kind === 'SCALAR' || false;

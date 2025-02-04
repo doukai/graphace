@@ -7,7 +7,7 @@ import type { MutationGroupArgs } from '~/lib/types/schema';
 import { getPermissionsStore } from '~/utils';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await getPermissionsStore().getTypes('Group');
+    await getPermissionsStore(event).getTypes('Group');
     const nodes: MutationGroupArgs[] = getNode(event.url) || [];
 	const errors: Record<number, Errors> = getErrors(event.url) || {};
     return {

@@ -5,7 +5,7 @@ import { createMutation_realm_Store } from '~/lib/stores/mutation/mutation_realm
 import { getPermissionsStore } from '~/utils';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await getPermissionsStore().getTypes('Realm');
+    await getPermissionsStore(event).getTypes('Realm');
     return {
         query_realm_Store: await fetchQuery_realm_Store(event, { id: { val: event.params.id } }),
         mutation_realm_Store: createMutation_realm_Store(event)

@@ -1,8 +1,7 @@
+import type { ServerLoadEvent } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 
-export const load: LayoutServerLoad = async ({ locals: { locale, LL, jwt } }) => {
-	console.info(LL.log({ fileName: '+layout.server.ts' }));
-
-	// pass locale information from "server-context" to "shared server + client context"
+export const load: LayoutServerLoad = async (event: ServerLoadEvent) => {
+	const { locals: { locale, jwt } } = event;
 	return { locale, jwt };
 }

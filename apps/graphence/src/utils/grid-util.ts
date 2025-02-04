@@ -1,5 +1,5 @@
 import { get } from 'svelte/store';
-import type { __Schema } from '@graphace/graphql';
+import { __Schema } from '@graphace/graphql';
 import { createGrid } from '@graphace/ui-graphql';
 import LL from '$i18n/i18n-svelte';
 import type { NamespaceGraphqlTranslation } from '$i18n/i18n-types';
@@ -18,7 +18,7 @@ export const {
     exportToXlsx,
     importFromXlsx
 } = createGrid(
-    __schema as unknown as __Schema,
+    new __Schema(__schema),
     (boolean) => {
         if (boolean === true) {
             return get(LL).graphence.components.grid.boolean.true();

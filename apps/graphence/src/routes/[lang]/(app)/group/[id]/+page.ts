@@ -5,7 +5,7 @@ import { createMutation_group_Store } from '~/lib/stores/mutation/mutation_group
 import { getPermissionsStore } from '~/utils';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await getPermissionsStore().getTypes('Group');
+    await getPermissionsStore(event).getTypes('Group');
     return {
         query_group_Store: await fetchQuery_group_Store(event, { id: { val: event.params.id } }),
         mutation_group_Store: createMutation_group_Store(event)
