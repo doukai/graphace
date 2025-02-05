@@ -3,7 +3,7 @@
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import type { GraphQLError } from '@graphace/graphql';
-	import { Table, TableHead, TableLoading, TableEmpty, notifications } from '@graphace/ui';
+	import { Table, TableHead, TableLoading, TableEmpty, notifications, z_index } from '@graphace/ui';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { Policy } from '~/lib/types/schema';
 
@@ -11,8 +11,9 @@
 	export let isFetching: boolean;
 	export let errors: Record<number, Errors> = {};
 	export let showBackButton: boolean = true;
-	
+
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
+	const z_class2 = z_index.top(2);
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -49,7 +50,7 @@
 <div class="divider" />
 <Table>
 	<thead>
-		<tr class="z-20">
+		<tr class={z_class2}>
 			<th>{$LL.graphql.objects.Policy.fields.policy.name()}</th>
 			<th>{$LL.graphql.objects.Policy.fields.v0.name()}</th>
 			<th>{$LL.graphql.objects.Policy.fields.v1.name()}</th>

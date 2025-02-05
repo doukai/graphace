@@ -2,7 +2,8 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import { createPopover, melt } from '@melt-ui/svelte';
-	import type { PermissionsStore } from '@graphace/commons'; 
+	import type { PermissionsStore } from '@graphace/commons';
+	import { z_index } from '@graphace/ui'; 
 	import { StringFilter } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark } from '@steeze-ui/heroicons';
@@ -14,6 +15,8 @@
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const permissions = getContext<PermissionsStore>('permissions');
+
+	const z_class9 = z_index.top(9);
 
 	let _expression = {
 		id: undefined,
@@ -72,8 +75,8 @@
 <slot trigger={$trigger} />
 
 {#if $open}
-	<div use:melt={$overlay} class="fixed inset-0 z-[100]" />
-	<div class="p-1 rounded-xl bg-base-200 shadow z-[100]" use:melt={$content}>
+	<div use:melt={$overlay} class="fixed inset-0 {z_class9}" />
+	<div class="p-1 rounded-xl bg-base-200 shadow {z_class9}" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="space-y-1 max-h-60 overflow-y-auto">
 			{#if permissions.auth('Realm::id::*')}

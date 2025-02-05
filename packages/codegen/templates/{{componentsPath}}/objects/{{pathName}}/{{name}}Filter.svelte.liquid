@@ -4,6 +4,7 @@
 	{%- if useAuth %}
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import type { PermissionsStore } from '@graphace/commons';
+	import { z_index } from '@graphace/ui';
 	{%- endif %} 
 	import { {% for scalar in scalars %}{{ scalar }}Filter{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -30,6 +31,8 @@
 	{%- if useAuth %}
 	const permissions = getContext<PermissionsStore>('permissions');
 	{%- endif %}
+
+	const z_class9 = z_index.top(9);
 
 	let _expression = {
 		{%- if isNamedStruct %}
@@ -126,8 +129,8 @@
 <slot trigger={$trigger} />
 
 {#if $open}
-	<div use:melt={$overlay} class="fixed inset-0 z-[100]" />
-	<div class="p-1 rounded-xl bg-base-200 shadow z-[100]" use:melt={$content}>
+	<div use:melt={$overlay} class="fixed inset-0 {z_class9}" />
+	<div class="p-1 rounded-xl bg-base-200 shadow {z_class9}" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="space-y-1 max-h-60 overflow-y-auto">
 			{%- if fields %}

@@ -3,7 +3,7 @@
 	import type { Readable } from 'svelte/store';
 	import type { Errors, PermissionsStore} from '@graphace/commons';
 	import type { GraphQLError, GlobalGraphQLErrorMessageFunction, GraphQLErrorsFunction } from '@graphace/graphql';
-	import { Table, TableHead, TableLoading, TableEmpty, Pagination, messageBoxs, notifications } from '@graphace/ui';
+	import { Table, TableHead, TableLoading, TableEmpty, Pagination, messageBoxs, notifications, z_index } from '@graphace/ui';
 	import { ObjectTd, StringTh, StringTd } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
@@ -27,6 +27,9 @@
 	
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const permissions = getContext<PermissionsStore>('permissions');
+	const z_class = z_index.top(1);
+	const z_class2 = z_index.top(2);
+	const z_class3 = z_index.top(3);
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -290,7 +293,7 @@
 <div class="divider" />
 <Table className="table-zebra table-pin-rows table-pin-cols md:table-sm">
 	<thead>
-		<tr class="z-20">
+		<tr class="{z_class2}">
 			<th class="w-12">
 				<label>
 					<input
@@ -334,7 +337,7 @@
 				{#each nodes as node, row}
 					{#if node && node.id}
 						<tr class="hover">
-							<th class="z-10 w-12">
+							<th class="{z_class} w-12">
 								<label>
 									<input type="checkbox" class="checkbox md:checkbox-sm" bind:group={selectedIdList} value={ node.id } />
 								</label>
@@ -358,7 +361,7 @@
 							/>
 							{/if}
 							{#if permissions.auth('Realm::*::WRITE')}
-							<th class="z-10 hover:z-30 w-24">
+							<th class="{z_class} hover:{z_class3} w-24">
 								<div class="flex space-x-1">
 									<div class="tooltip" data-tip={$LL.graphence.components.table.editBtn()}>
 										<button

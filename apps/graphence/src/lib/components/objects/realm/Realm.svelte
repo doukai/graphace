@@ -7,7 +7,7 @@
 	import { AdjustmentsHorizontal, Funnel, Bookmark } from '@steeze-ui/heroicons';
 	import type { PermissionsStore } from '@graphace/commons';
 	import { Field } from '@graphace/graphql';
-	import { Combobox, type Group as G, Pagination, type Option } from '@graphace/ui';
+	import { Combobox, type Group as G, Pagination, type Option, z_index } from '@graphace/ui';
 	import RealmFilter from '~/lib/components/objects/realm/RealmFilter.svelte';
 	import type { RealmConnectionQueryArguments } from '~/lib/types/schema';
 	import { __schema } from '~/utils';
@@ -48,6 +48,8 @@
 		forceVisible: true,
 		preventScroll: true
 	});
+
+	const z_class9 = z_index.top(9);
 
 	$: selectOptions = [
 		{
@@ -345,9 +347,9 @@
 				</button>
 			</div>
 			{#if $open}
-				<div use:melt={$overlay} class="fixed inset-0 z-[100]" />
+				<div use:melt={$overlay} class="fixed inset-0 {z_class9}" />
 				<div
-					class="p-1 rounded-xl bg-base-200 shadow z-[100]"
+					class="p-1 rounded-xl bg-base-200 shadow {z_class9}"
 					use:melt={$content}
 				>
 					<div use:melt={$arrow} />

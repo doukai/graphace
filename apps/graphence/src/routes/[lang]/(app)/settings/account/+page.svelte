@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { Errors } from '@graphace/commons';
+	import type { Errors, JsonSchema } from '@graphace/commons';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import CurrentUserForm from '~/lib/components/settings/CurrentUserForm.svelte';
 	import type { GraphQLError } from '@graphace/graphql';
@@ -8,11 +8,14 @@
 	import type { Query_currentUser_Store } from '~/lib/stores/query/query_currentUser_store';
 	import type { Mutation_currentUserUpdate_Store } from '~/lib/stores/mutation/mutation_currentUserUpdate_store';
 	import type { PageData } from './$types';
-	import { validate } from '~/utils';
 	import { locale } from '$i18n/i18n-svelte';
 	import LL from '$i18n/i18n-svelte';
+	import { getContext } from 'svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: query_currentUser_Store = data.query_currentUser_Store as Query_currentUser_Store;
 	$: node = $query_currentUser_Store.response.data?.currentUser;
 	$: urlName($page.url, $LL.graphence.components.userMenu.profile());

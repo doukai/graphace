@@ -5,7 +5,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons';
 	import type { NamedStruct } from '@graphace/graphql';
-	import type { z_index } from '@graphace/ui';
+	import { z_index } from '@graphace/ui';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Link } from '@steeze-ui/heroicons';
 
@@ -19,7 +19,6 @@
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const z_class3 = z_index.top(3);
-	const z_class5 = z_index.top(5);
 
 	let _namedStruct = namedStruct;
 	namedStruct = undefined;

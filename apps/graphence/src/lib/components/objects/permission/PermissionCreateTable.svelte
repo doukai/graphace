@@ -2,7 +2,7 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import type { Errors, PermissionsStore} from '@graphace/commons';
-	import { Table, TableHead, TableEmpty, messageBoxs } from '@graphace/ui';
+	import { Table, TableHead, TableEmpty, messageBoxs, z_index } from '@graphace/ui';
 	import { ObjectTd, IDTh, IDTd, StringTh, StringTd } from '@graphace/ui-graphql';
 	import PermissionTypeTh from '~/lib/components/enums/permission-type/PermissionTypeTh.svelte';
 	import PermissionTypeTd from '~/lib/components/enums/permission-type/PermissionTypeTd.svelte';
@@ -20,6 +20,9 @@
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const permissions = getContext<PermissionsStore>('permissions');
+	const z_class = z_index.top(1);
+	const z_class2 = z_index.top(2);
+	const z_class3 = z_index.top(3);
 
 	const dispatch = createEventDispatcher<{
 		edit: { row: number };
@@ -71,7 +74,7 @@
 <div class="divider" />
 <Table className="table-zebra table-pin-rows table-pin-cols md:table-sm">
 	<thead>
-		<tr class="z-20">
+		<tr class="{z_class2}">
 			<th class="w-12">
 				<label>
 					<input
@@ -115,7 +118,7 @@
 			{#each nodes as node, row}
 				{#if node}
 					<tr class="hover">
-						<th class="z-10 w-12">
+						<th class="{z_class} w-12">
 							<label>
 								<input type="checkbox" class="checkbox md:checkbox-sm" bind:group={selectedRowList} value={row} />
 							</label>
@@ -167,7 +170,7 @@
 						<ObjectTd name="realm" namedStruct={node.realm} errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
 						{/if}
 						{#if permissions.auth('Permission::*::WRITE')}
-						<th class="z-10 hover:z-30 w-24">
+						<th class="{z_class} hover:{z_class3} w-24">
 							<div class="flex space-x-1">
 								<div class="tooltip" data-tip={$LL.graphence.components.table.editBtn()}>
 									<button

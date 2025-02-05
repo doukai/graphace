@@ -37,7 +37,7 @@
 	setContext('LL', LL);
 	setContext('theme', writable(undefined));
 
-	const z_class = z_index.top(1);
+	const z_class9 = z_index.top(9);
 
 	let drawersidebar: HTMLDivElement;
 	let drawerSidebarScrollY = 0;
@@ -181,7 +181,7 @@
 		</main>
 	</div>
 	<div
-		class="drawer-side {z_class} lg:hidden"
+		class="drawer-side z-[998] lg:hidden"
 		style="scroll-behavior: smooth; scroll-padding-top: {navbarScrollPadding};"
 		bind:this={drawersidebar}
 		on:scroll={parseSidebarScroll}

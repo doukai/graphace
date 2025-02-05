@@ -1,17 +1,20 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { Errors } from '@graphace/commons';
+	import type { Errors, JsonSchema } from '@graphace/commons';
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	import ResetPasswordForm from '~/lib/components/settings/ResetPasswordForm.svelte';
 	import type { GraphQLError } from '@graphace/graphql';
 	import type { UserInput } from '~/lib/types/schema';
 	import type { Mutation_currentUserResetPassword_Store } from '~/lib/stores/mutation/mutation_currentUserResetPassword_store';
 	import type { PageData } from './$types';
-	import { validate } from '~/utils';
 	import { locale } from '$i18n/i18n-svelte';
 	import LL from '$i18n/i18n-svelte';
+	import { getContext } from 'svelte';
 
 	export let data: PageData;
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+
 	$: urlName($page.url, $LL.graphence.components.userMenu.password());
 	$: mutation_currentUserResetPassword =
 		data.mutation_currentUserResetPassword_Store as Mutation_currentUserResetPassword_Store;
