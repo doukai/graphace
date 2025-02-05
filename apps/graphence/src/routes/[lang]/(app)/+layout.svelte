@@ -83,14 +83,12 @@
 		closeDrawer();
 	}
 
-	let searchIndex = pages.flatMap((page) =>
-		pages.map((page) => {
-			return {
-				...page,
-				name: $LL.graphql.objects[page.name as keyof NamespaceGraphqlTranslation['objects']].name()
-			};
-		})
-	);
+	let searchIndex = pages
+		.flatMap((page) => page.menus || [page])
+		.map((page) => ({
+			...page,
+			name: $LL.graphql.objects[page.name as keyof NamespaceGraphqlTranslation['objects']].name()
+		}));
 </script>
 
 <svelte:head>

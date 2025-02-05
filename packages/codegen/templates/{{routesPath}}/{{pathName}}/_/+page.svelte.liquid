@@ -5,7 +5,7 @@
 	import type { GraphQLError } from '@graphace/graphql';
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	import {{ name }}CreateForm from '~/{{ formPath }}/{{ name | paramCase }}/{{ name }}CreateForm.svelte';
-	import type { Mutation_{{ name | paramCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | paramCase }}_store';
+	import type { Mutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
 	{%- if hasFileField %}
 	import type { Mutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
 	{%- endif %}

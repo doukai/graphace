@@ -6,12 +6,12 @@
 	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
 	{%- if connectionField %}
 	import {{ name }}ConnectionTable from '~/{{ tablePath }}/{{ name | paramCase }}/{{ name }}ConnectionTable.svelte';
-	import type { Query_{{ name | paramCase }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ name | paramCase }}Connection_store';
+	import type { Query_{{ name | camelCase }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}Connection_store';
 	{%- else %}
 	import {{ name }}Table from '~/{{ tablePath }}/{{ name | paramCase }}/{{ name }}Table.svelte';
-	import type { Query_{{ name | paramCase }}List_Store } from '~/{{ storesPath }}/query/query_{{ name | paramCase }}List_store';
+	import type { Query_{{ name | camelCase }}List_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}List_store';
 	{%- endif %}
-	import type { Mutation_{{ name | paramCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | paramCase }}_store';
+	import type { Mutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
 	{%- if hasFileField %}
 	import type { Mutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
 	{%- endif %}

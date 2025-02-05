@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { PageData } from './$types';
 	import { init } from '@graphace/ui';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
 </script>

@@ -6,10 +6,10 @@
 	import { Card, ot, to, urlName, canBack, PageType } from '@graphace/ui';
 	{%- if connectionField %}
 	import {{ objectFieldTypeName }}SelectConnectionTable from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}SelectConnectionTable.svelte';
-	import type { Query_{{ objectFieldTypeName | paramCase }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ objectFieldTypeName | paramCase }}Connection_store';
+	import type { Query_{{ objectFieldTypeName | camelCase }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ objectFieldTypeName | camelCase }}Connection_store';
 	{%- else %}
 	import {{ objectFieldTypeName }}SelectTable from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}SelectTable.svelte';
-	import type { Query_{{ objectFieldTypeName | paramCase }}List_Store } from '~/{{ storesPath }}/query/query_{{ objectFieldTypeName | paramCase }}List_store';
+	import type { Query_{{ objectFieldTypeName | camelCase }}List_Store } from '~/{{ storesPath }}/query/query_{{ objectFieldTypeName | camelCase }}List_store';
 	{%- endif %}
 	import type { Mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ objectFieldName }}_store';
 	import type { Mutation_{{ objectFieldTypeName | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ objectFieldTypeName | camelCase }}_store';

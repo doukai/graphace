@@ -9,7 +9,7 @@
 	{%- else %}
 	import {{ objectFieldTypeName }}Table from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}Table.svelte';
 	{%- endif %}
-	import type { Query_{{ name | paramCase }}_{{ objectFieldName }}_Store } from '~/{{ storesPath }}/query/query_{{ name | paramCase }}_{{ objectFieldName }}_store';
+	import type { Query_{{ name | camelCase }}_{{ objectFieldName }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_{{ objectFieldName }}_store';
 	import type { Mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ objectFieldName }}_store';
 	import type { Mutation_{{ objectFieldTypeName | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ objectFieldTypeName | camelCase }}_store';
 	{%- if hasFileField %}
