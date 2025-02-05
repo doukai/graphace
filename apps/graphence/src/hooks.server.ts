@@ -37,6 +37,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const loginPathName = `/${locale}/login`;
 	if (!token && event.url.pathname !== loginPathName) {
+		if (event.url.pathname === '/graphql') {
+			return await resolve(event, { transformPageChunk: ({ html }) => html.replace('%lang%', locale) });
+		}
 		toLoginPage(loginPathName, event);
 	} else {
 		if (!event.locals.jwt && token) {
