@@ -9,10 +9,9 @@
 		Plus,
 		Trash,
 		ListBullet,
-		Link,
+		Check,
 		ArrowUturnLeft,
-		InboxArrowDown,
-		ArchiveBoxXMark
+		XMark
 	} from '@steeze-ui/heroicons';
 
 	export let title: string = '';
@@ -77,7 +76,7 @@
 							dispatch('unbind');
 						}}
 					>
-						<Icon src={ArchiveBoxXMark} class="h-6 w-6" solid />
+						<Icon src={XMark} class="h-6 w-6" solid />
 					</button>
 				</div>
 				<button
@@ -117,7 +116,7 @@
 							dispatch('save');
 						}}
 					>
-						<Icon src={InboxArrowDown} class="h-6 w-6" solid />
+						<Icon src={Check} class="h-6 w-6" solid />
 					</button>
 				</div>
 				<button
@@ -157,7 +156,7 @@
 							dispatch('select');
 						}}
 					>
-						<Icon src={Link} class="h-6 w-6" solid />
+						<Icon src={Check} class="h-6 w-6" solid />
 					</button>
 				</div>
 				<button
