@@ -26,13 +26,14 @@
 	import type { {{ name }}Expression } from '~/{{ schemaTypesPath }}';
 
 	export let expression: {{ name }}Expression | null | undefined;
+	export let zIndex: number | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	{%- if useAuth %}
 	const permissions = getContext<PermissionsStore>('permissions');
 	{%- endif %}
 
-	const z_class9 = z_index.top(9);
+	const z_class8 = zIndex || z_index.top(8);
 
 	let _expression = {
 		{%- if isNamedStruct %}
@@ -129,8 +130,8 @@
 <slot trigger={$trigger} />
 
 {#if $open}
-	<div use:melt={$overlay} class="fixed inset-0 {z_class9}" />
-	<div class="p-1 rounded-xl bg-base-200 shadow {z_class9}" use:melt={$content}>
+	<div use:melt={$overlay} class="fixed inset-0 {z_class8}" />
+	<div class="p-1 rounded-xl bg-base-200 shadow {z_class8}" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="space-y-1 max-h-60 overflow-y-auto">
 			{%- if fields %}

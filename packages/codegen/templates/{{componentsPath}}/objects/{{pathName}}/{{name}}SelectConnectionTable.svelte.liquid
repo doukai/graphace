@@ -30,14 +30,15 @@
 	export let errors: Record<number, Errors> = {};
 	export let multipleSelect: boolean = true;
 	export let showBackButton: boolean = true;
+	export let zIndex: number | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	{%- if useAuth %}
 	const permissions = getContext<PermissionsStore>('permissions');
 	{%- endif %}
-	const z_class = z_index.top(1);
-	const z_class2 = z_index.top(2);
-	const z_class3 = z_index.top(3);
+	const z_class = zIndex || z_index.top(1);
+	const z_class2 = z_class + 1;
+	const z_class3 = z_class + 2;
 
 	const dispatch = createEventDispatcher<{
 		fetch: {

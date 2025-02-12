@@ -18,6 +18,7 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
+	export let zIndex: number | undefined = undefined;
 	
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
@@ -25,8 +26,8 @@
 		save: {};
 	}>();
 
-	const z_class3 = z_index.top(3);
-	const z_class9 = z_index.top(9);
+	const z_class3 = zIndex || z_index.top(3);
+	const z_class9 = z_class3 + 6;
 
 	let selected: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
 	selected = value;

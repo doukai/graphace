@@ -41,6 +41,7 @@
 	export let disabled = false;
 	export let placeholder: string = '';
 	export let loading: boolean = false;
+	export let zIndex: number | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
@@ -88,7 +89,7 @@
 		}
 	});
 
-	const z_class = z_index.top(1);
+	const z_class9 = zIndex || z_index.top(9);
 
 	$: $tags = Array.isArray(value)
 		? value.map((item) => ({ id: (item.group?.value || '') + item.value, value: item.label }))
@@ -162,7 +163,7 @@
 			/>
 		</div>
 	</div>
-	<div class="absolute right-2 top-1/2 {z_class} -translate-y-1/2">
+	<div class="absolute right-2 top-1/2 {z_class9} -translate-y-1/2">
 		{#if $open}
 			<Icon src={ChevronUp} class="size-4" />
 		{:else}
@@ -172,7 +173,7 @@
 </div>
 {#if $open}
 	<ul
-		class="menu shadow rounded-xl bg-base-100 w-full {z_class} max-h-80 flex-nowrap overflow-auto {menuClassName}"
+		class="menu shadow rounded-xl bg-base-100 w-full {z_class9} max-h-80 flex-nowrap overflow-auto {menuClassName}"
 		use:melt={$menu}
 		transition:fly={{ duration: 150, y: -5 }}
 	>

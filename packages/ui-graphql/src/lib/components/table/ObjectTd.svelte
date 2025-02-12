@@ -15,10 +15,11 @@
 		undefined;
 	export let errors: Errors | undefined = undefined;
 	export let btnClassName: string = 'btn btn-square btn-xs btn-ghost';
+	export let zIndex: number | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
-	const z_class3 = z_index.top(3);
+	const z_class3 = zIndex || z_index.top(3);
 
 	let _namedStruct = namedStruct;
 	namedStruct = undefined;

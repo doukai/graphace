@@ -9,12 +9,13 @@
 
 	export let showMenuButton: boolean = true;
 	export let showBackButton: boolean = false;
+	export let zIndex: number | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	let scrollY: number;
 	$: switchNavbarStyle = scrollY > 40 ? true : false;
-	const z_class3 = z_index.top(3);
+	const z_class3 = zIndex || z_index.top(3);
 </script>
 
 <svelte:window bind:scrollY />

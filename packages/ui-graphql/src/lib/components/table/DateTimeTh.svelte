@@ -14,10 +14,11 @@
 	export let name: string;
 	export let expression: StringExpression | null | undefined;
 	export let sort: Sort | null | undefined = undefined;
+	export let zIndex: number | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
-	const z_class5 = z_index.top(5);
+	const z_class5 = zIndex || z_index.top(5);
 
 	let _expression: StringExpression = { opr: 'EQ', val: undefined, arr: [] };
 	let _sort: Sort | undefined = undefined;

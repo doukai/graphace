@@ -213,7 +213,7 @@ function createZIndex() {
     const { subscribe, set, update } = z_index;
     return {
         subscribe,
-        next: () => update(($z_index) => $z_index + 10),
+        next: (n?: number | undefined) => update(($z_index) => $z_index + (n || 10)),
         top: (n?: number | undefined) => z_classes[get(z_index) + (n || 0)],
         topHover: (n?: number | undefined) => z_hover_classes[get(z_index) + (n || 0)],
         reset: () => set(0)
