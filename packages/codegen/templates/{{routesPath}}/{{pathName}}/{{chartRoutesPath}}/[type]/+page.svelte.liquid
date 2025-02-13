@@ -3,9 +3,11 @@
 	import { createConnectionField } from '@graphace/graphql';
 	import { Card, urlName } from '@graphace/ui';
 	import type { OperationStore } from '@graphace/ui-graphql';
+	import {{ name }}Agg from '~/{{ chartPath }}/{{ name | paramCase }}/{{ name }}Agg.svelte';
 	import {{ name }}Bar from '~/{{ chartPath }}/{{ name | paramCase }}/{{ name }}Bar.svelte';
 	import {{ name }}Line from '~/{{ chartPath }}/{{ name | paramCase }}/{{ name }}Line.svelte';
 	import {{ name }}Pie from '~/{{ chartPath }}/{{ name | paramCase }}/{{ name }}Pie.svelte';
+	import {{ name }}AggTable from '~/{{ chartPath }}/{{ name | paramCase }}/{{ name }}AggTable.svelte';
 	import type { {{ name }}Connection } from '~/{{ schemaTypesPath }}';
 	import type { PageData } from './$types';
 	import LL from '$i18n/i18n-svelte';
@@ -21,22 +23,22 @@
 	$: showFilterButton = data.fields;
 	$: showBookmarkButton = data.showBookmarkButton;
 
-	const {{ name }}ConnectionQuery = data.{{ name }}ConnectionQuery as OperationStore<{{ name }}Connection>;
+	$: {{ name | camelCase }}ConnectionQuery = data.{{ name | camelCase }}ConnectionQuery as OperationStore<{{ name }}Connection>;
+	$: connection = ${{ name | camelCase }}ConnectionQuery.response?.data?.{{ name | camelCase }}Connection || {};
+	$: totalCount = connection?.totalCount || 0;
 
 	const components: Record<string, any> = {
 		bar: {{ name }}Bar,
 		line: {{ name }}Line,
-		pie: {{ name }}Pie
+		pie: {{ name }}Pie,
+		table: {{ name }}AggTable
 	};
 
 	$: component = components[data.type];
 </script>
 
 <Card>
-	<svelte:component
-		this={component}
-		isFetching={${{ name }}ConnectionQuery.isFetching}
-		connection={${{ name }}ConnectionQuery.response.data?.{{ name | camelCase }}Connection}
+	<{{ name }}Agg
 		{fields}
 		{queryArguments}
 		{showHeader}
@@ -44,8 +46,11 @@
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
+		isFetching={${{ name | camelCase }}ConnectionQuery.isFetching}
+		{totalCount}
+		className="p-0 md:h-screen"
 		on:query={(e) =>
-			{{ name }}ConnectionQuery.fetch({
+			{{ name | camelCase }}ConnectionQuery.fetch({
 				fields: [
 					createConnectionField({
 						name: '{{ name | camelCase }}Connection',
@@ -55,5 +60,18 @@
 					})
 				]
 			})}
-	/>
+		let:fields
+		let:queryArguments
+		let:getFieldName
+		let:getGrouByName
+	>
+		<svelte:component
+			this={component}
+			{connection}
+			{fields}
+			{queryArguments}
+			{getFieldName}
+			{getGrouByName}
+		/>
+	</{{ name }}Agg>
 </Card>

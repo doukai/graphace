@@ -129,89 +129,87 @@
 
 <slot trigger={$trigger} />
 
-{#if $open}
-	<div use:melt={$overlay} class="fixed inset-0 {z_class8}" />
-	<div class="p-1 rounded-xl bg-base-200 shadow {z_class8}" use:melt={$content}>
-		<div use:melt={$arrow} />
-		<div class="space-y-1 max-h-60 overflow-y-auto">
-			{%- if fields %}
-			{%- if isNamedStruct %}
-			{%- if useAuth %}
-			{#if permissions.auth('{{ name }}::{{ idName }}::*')}
+<div use:melt={$overlay} class="{$open ? '' : 'hidden'} fixed inset-0 {z_class8}" />
+<div class="{$open ? '' : 'hidden'} p-1 rounded-xl bg-base-200 shadow {z_class8}" use:melt={$content}>
+	<div use:melt={$arrow} />
+	<div class="space-y-1 max-h-60 overflow-y-auto">
+		{%- if fields %}
+		{%- if isNamedStruct %}
+		{%- if useAuth %}
+		{#if permissions.auth('{{ name }}::{{ idName }}::*')}
+		{%- endif %}
+		<{{ name }}SelectFilter
+			label={$LL.graphql.objects.{{ name }}.name()}
+			name="{{ idName }}"
+			bind:expression={_expression.{{ idName }}}
+			className="md:input-sm"
+			selectClassName="md:select-sm w-full"
+			containerClassName="md:min-h-8 max-w-xs"
+			tagClassName="md:badge-sm"
+			menuClassName="md:menu-sm"
+		/>
+		<div class="divider m-0 md:hidden" />
+		{%- if useAuth %}
+		{/if}
+		{%- endif %}
+		{%- endif %}
+		{%- for field in fields %}
+		{%- if field.isScalarType or field.isEnumType %}
+		{%- if useAuth %}
+		{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
+		{%- endif %}
+		<{{ field.fieldTypeName }}Filter
+			label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+			name="{{ field.fieldName }}"
+			bind:expression={_expression.{{ field.fieldName }}}
+			{%- if field.isEnumType %}
+			className="md:select-sm"
+			{%- elsif field.fieldTypeName == "Boolean" %}
+			className="md:toggle-sm"
+			addBtnClassName="md:btn-sm"
+			{%- else %}
+			className="md:input-sm"
+			addBtnClassName="md:btn-sm"
 			{%- endif %}
-			<{{ name }}SelectFilter
-				label={$LL.graphql.objects.{{ name }}.name()}
-				name="{{ idName }}"
-				bind:expression={_expression.{{ idName }}}
-				className="md:input-sm"
-				selectClassName="md:select-sm w-full"
-				containerClassName="md:min-h-8 max-w-xs"
-				tagClassName="md:badge-sm"
-				menuClassName="md:menu-sm"
-			/>
-			<div class="divider m-0 md:hidden" />
-			{%- if useAuth %}
-			{/if}
-			{%- endif %}
-			{%- endif %}
-			{%- for field in fields %}
-			{%- if field.isScalarType or field.isEnumType %}
-			{%- if useAuth %}
-			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
-			{%- endif %}
-			<{{ field.fieldTypeName }}Filter
-				label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-				name="{{ field.fieldName }}"
-				bind:expression={_expression.{{ field.fieldName }}}
-				{%- if field.isEnumType %}
-				className="md:select-sm"
-				{%- elsif field.fieldTypeName == "Boolean" %}
-				className="md:toggle-sm"
-				addBtnClassName="md:btn-sm"
-				{%- else %}
-				className="md:input-sm"
-				addBtnClassName="md:btn-sm"
-				{%- endif %}
-				selectClassName="md:select-sm w-full"
-			/>
-			<div class="divider m-0 md:hidden" />
-			{%- if useAuth %}
-			{/if}
-			{%- endif %}
-			{%- endif %}
-			{%- if field.isNamed %}
-			{%- if useAuth %}
-			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
-			{%- endif %}
-			<{{ field.fieldTypeName }}SelectFilter
-				label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-				name="{{ field.fieldName }}"
-				bind:expression={_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}}
-				className="md:input-sm"
-				containerClassName="md:min-h-8 max-w-xs"
-				tagClassName="md:badge-sm"
-				menuClassName="md:menu-sm"
-				selectClassName="md:select-sm w-full"
-			/>
-			<div class="divider m-0 md:hidden" />
-			{%- if useAuth %}
-			{/if}
-			{%- endif %}
-			{%- endif %}
-			{%- endfor %}
-			{%- endif %}
+			selectClassName="md:select-sm w-full"
+		/>
+		<div class="divider m-0 md:hidden" />
+		{%- if useAuth %}
+		{/if}
+		{%- endif %}
+		{%- endif %}
+		{%- if field.isNamed %}
+		{%- if useAuth %}
+		{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
+		{%- endif %}
+		<{{ field.fieldTypeName }}SelectFilter
+			label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+			name="{{ field.fieldName }}"
+			bind:expression={_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}}
+			className="md:input-sm"
+			containerClassName="md:min-h-8 max-w-xs"
+			tagClassName="md:badge-sm"
+			menuClassName="md:menu-sm"
+			selectClassName="md:select-sm w-full"
+		/>
+		<div class="divider m-0 md:hidden" />
+		{%- if useAuth %}
+		{/if}
+		{%- endif %}
+		{%- endif %}
+		{%- endfor %}
+		{%- endif %}
+	</div>
+	<div class="flex justify-center space-x-1 pt-1">
+		<div class="tooltip" data-tip={$LL.ui_graphql.table.th.filter()}>
+			<button class="btn btn-square btn-primary md:btn-sm" on:click={(e) => filter()}>
+				<Icon src={Check} class="h-5 w-5" />
+			</button>
 		</div>
-		<div class="flex justify-center space-x-1 pt-1">
-			<div class="tooltip" data-tip={$LL.ui_graphql.table.th.filter()}>
-				<button class="btn btn-square btn-primary md:btn-sm" on:click={(e) => filter()}>
-					<Icon src={Check} class="h-5 w-5" />
-				</button>
-			</div>
-			<div class="tooltip" data-tip={$LL.ui_graphql.table.th.cancel()}>
-				<button class="btn btn-square btn-outline btn-error md:btn-sm" on:click={(e) => clear()}>
-					<Icon src={XMark} class="h-5 w-5" />
-				</button>
-			</div>
+		<div class="tooltip" data-tip={$LL.ui_graphql.table.th.cancel()}>
+			<button class="btn btn-square btn-outline btn-error md:btn-sm" on:click={(e) => clear()}>
+				<Icon src={XMark} class="h-5 w-5" />
+			</button>
 		</div>
 	</div>
-{/if}
+</div>

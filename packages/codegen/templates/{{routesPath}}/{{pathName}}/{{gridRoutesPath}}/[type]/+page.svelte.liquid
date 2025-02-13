@@ -5,6 +5,8 @@
 	import { createConnectionField, Field } from '@graphace/graphql';
 	import { Card, urlName } from '@graphace/ui';
 	import type { OperationStore } from '@graphace/ui-graphql';
+	import {{ name }}Query from '~/{{ gridPath }}/{{ name | paramCase }}/{{ name }}.svelte';
+	import {{ name }}Agg from '~/{{ gridPath }}/{{ name | paramCase }}/{{ name }}Agg.svelte';
 	import {{ name }}Grid from '~/{{ gridPath }}/{{ name | paramCase }}/{{ name }}Grid.svelte';
 	import {{ name }}AggGrid from '~/{{ gridPath }}/{{ name | paramCase }}/{{ name }}AggGrid.svelte';
 	import type { {{ name }}, {{ name }}Connection } from '~/{{ schemaTypesPath }}';
@@ -29,33 +31,41 @@
 	$: showFilterButton = data.fields;
 	$: showBookmarkButton = data.showBookmarkButton;
 
-	const {{ name }}ConnectionQuery = data.{{ name }}ConnectionQuery as OperationStore<{{ name }}Connection>;
-	const {{ name }}ListMutation = data.{{ name }}ListMutation as OperationStore<{{ name }}[]>;
+	$: {{ name | camelCase }}ConnectionQuery = data.{{ name | camelCase }}ConnectionQuery as OperationStore<{{ name }}Connection>;
+	$: connection = ${{ name | camelCase }}ConnectionQuery.response?.data?.{{ name | camelCase }}Connection || {};
+	$: totalCount = connection?.totalCount || 0;
+	const {{ name | camelCase }}ListMutation = data.{{ name | camelCase }}ListMutation as OperationStore<{{ name }}[]>;
 
 	const components: Record<string, any> = {
 		mutation: {{ name }}Grid,
 		agg: {{ name }}AggGrid
 	};
 
+	const wrappers: Record<string, any> = {
+		mutation: {{ name }}Query,
+		agg: {{ name }}Agg
+	};
+
 	$: component = components[data.type];
+	$: wrapper = wrappers[data.type];
 </script>
 
 <Card>
 	<svelte:component
-		this={component}
-		isFetching={${{ name }}ConnectionQuery.isFetching}
-		{connection}
+		this={wrapper}
 		{fields}
-		{errors}
 		{queryArguments}
 		{showHeader}
 		{showFooter}
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
+		isFetching={${{ name | camelCase }}ConnectionQuery.isFetching}
+		{totalCount}
+		className="p-0 md:h-screen"
 		on:query={(e) => {
 			errors = {};
-			{{ name }}ConnectionQuery.fetch({
+			{{ name | camelCase }}ConnectionQuery.fetch({
 				fields: [
 					createConnectionField({
 						name: '{{ name | camelCase }}Connection',
@@ -73,49 +83,69 @@
 				}
 			});
 		}}
-		on:exportQuery={(e) => {
-			{{ name }}ConnectionQuery.fetch({
-				fields: [
-					createConnectionField({
-						name: '{{ name | camelCase }}Connection',
-						fields: e.detail.fields,
-						arguments: e.detail.queryArguments,
-						directives: e.detail.directives
-					})
-				]
-			}).then((response) => {
-				if (e.detail.catch && response?.errors) {
-					e.detail.catch(response.errors);
-				} else if (e.detail.then) {
-					e.detail.then(response?.data?.{{ name | camelCase }}Connection);
-				}
-			});
-		}}
-		on:mutation={(e) => {
-			validate('Mutation_{{ name | camelCase }}List_Arguments', e.detail.mutationArguments, $locale)
-				.then((data) => {
-					errors = {};
-					{{ name }}ListMutation.fetch({
-						fields: [
-							new Field({
-								name: '{{ name | camelCase }}List',
-								fields: e.detail.fields,
-								arguments: e.detail.mutationArguments,
-								directives: e.detail.directives
-							})
-						]
-					}).then((response) => {
-						if (response?.errors) {
-							errors = buildGraphQLErrors(response.errors).list?.iterms || {};
-							e.detail.catch(response.errors);
-						} else {
-							e.detail.then(response?.data?.{{ name | camelCase }}List);
-						}
-					});
-				})
-				.catch((validErrors) => {
-					errors = validErrors.list?.iterms;
+		let:fields
+		let:queryFields
+		let:queryArguments
+		let:getFieldName
+		let:getGrouByName
+		let:queryPage
+		let:buildArguments
+	>
+		<svelte:component
+			this={component}
+			{connection}
+			{fields}
+			{errors}
+			{queryFields}
+			{queryArguments}
+			{getFieldName}
+			{getGrouByName}
+			{queryPage}
+			{buildArguments}
+			on:exportQuery={(e) => {
+				{{ name | camelCase }}ConnectionQuery.fetch({
+					fields: [
+						createConnectionField({
+							name: '{{ name | camelCase }}Connection',
+							fields: e.detail.fields,
+							arguments: e.detail.queryArguments,
+							directives: e.detail.directives
+						})
+					]
+				}).then((response) => {
+					if (e.detail.catch && response?.errors) {
+						e.detail.catch(response.errors);
+					} else if (e.detail.then) {
+						e.detail.then(response?.data?.{{ name | camelCase }}Connection);
+					}
 				});
-		}}
-	/>
+			}}
+			on:mutation={(e) => {
+				validate('Mutation_{{ name | camelCase }}List_Arguments', e.detail.mutationArguments, $locale)
+					.then((data) => {
+						errors = {};
+						{{ name | camelCase }}ListMutation.fetch({
+							fields: [
+								new Field({
+									name: '{{ name | camelCase }}List',
+									fields: e.detail.fields,
+									arguments: e.detail.mutationArguments,
+									directives: e.detail.directives
+								})
+							]
+						}).then((response) => {
+							if (response?.errors) {
+								errors = buildGraphQLErrors(response.errors).list?.iterms || {};
+								e.detail.catch(response.errors);
+							} else {
+								e.detail.then(response?.data?.{{ name | camelCase }}List);
+							}
+						});
+					})
+					.catch((validErrors) => {
+						errors = validErrors.list?.iterms;
+					});
+			}}
+		/>
+	</svelte:component>
 </Card>

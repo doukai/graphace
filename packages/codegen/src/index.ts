@@ -739,7 +739,7 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         name: type?.name,
                         idName: getIDFieldName(type),
-                        leafFields: componentFields(typeName, fields)?.filter(field => field.isLeafType).filter(field => !field.isListType),
+                        leafFields: componentFields(typeName, fields)?.filter(field => field.isLeafType),
                         nonListObjectFields: componentFields(typeName, nonListObjectFields),
                         listObjectFields: componentFields(typeName, listObjectFields),
                         schemaTypesPath: config.schemaTypesPath,

@@ -118,33 +118,6 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 })
         );
 
-        // generateOptions.push(
-        //     ...targetQueryFields
-        //         .map(field => {
-        //             const template = '{{graphqlPath}}/queries/Query_{{name}}_includes.gql';
-        //             const scope = { graphqlPath, name: field.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 documents: options.documents,
-        //                 plugins: options.plugins,
-        //                 pluginMap: options.pluginMap,
-        //                 config: {
-        //                     appName: options.presetConfig.appName || _appName,
-        //                     graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-        //                     componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-        //                     routesPath: options.presetConfig.graphqlPath || _routesPath,
-        //                     builder: options.presetConfig.builder,
-        //                     useAuth: options.presetConfig.useAuth,
-        //                     template,
-        //                     name: field.name
-        //                 },
-        //                 schema: options.schema,
-        //                 schemaAst: options.schemaAst,
-        //                 skipDocumentsValidation: true,
-        //             };
-        //         })
-        // );
-
         generateOptions.push(
             ...targetQueryFields
                 .filter(field => !isInvokeField(field.name, getFieldType(field.type).name, fieldTypeIsList(field.type)))
@@ -1990,32 +1963,32 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 })
         );
 
-        // generateOptions.push(
-        //     ...targetComponentObjectTypes
-        //         .map(type => {
-        //             const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}AggTable.svelte';
-        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 documents: options.documents,
-        //                 plugins: options.plugins,
-        //                 pluginMap: options.pluginMap,
-        //                 config: {
-        //                     appName: options.presetConfig.appName || _appName,
-        //                     graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
-        //                     componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-        //                     routesPath: options.presetConfig.graphqlPath || _routesPath,
-        //                     builder: options.presetConfig.builder,
-        //                     useAuth: options.presetConfig.useAuth,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 schema: options.schema,
-        //                 schemaAst: options.schemaAst,
-        //                 skipDocumentsValidation: true,
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}AggTable.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        documents: options.documents,
+                        plugins: options.plugins,
+                        pluginMap: options.pluginMap,
+                        config: {
+                            appName: options.presetConfig.appName || _appName,
+                            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
+                            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
+                            routesPath: options.presetConfig.graphqlPath || _routesPath,
+                            builder: options.presetConfig.builder,
+                            useAuth: options.presetConfig.useAuth,
+                            template,
+                            name: type.name
+                        },
+                        schema: options.schema,
+                        schemaAst: options.schemaAst,
+                        skipDocumentsValidation: true,
+                    };
+                })
+        );
 
         generateOptions.push(
             ...targetComponentObjectTypes

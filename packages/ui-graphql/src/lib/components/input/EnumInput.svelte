@@ -26,6 +26,7 @@
 		{disabled}
 		multiple
 	>
+		<option value={undefined} />
 		{#each enums as item}
 			<option value={item.value}>{item.name}</option>
 		{/each}
@@ -41,6 +42,7 @@
 		{readonly}
 		{disabled}
 	>
+		<option value={undefined} />
 		{#each enums as item}
 			<option value={item.value}>{item.name}</option>
 		{/each}

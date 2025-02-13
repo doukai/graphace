@@ -124,27 +124,11 @@ export const createGrid = (
                             'div',
                             {},
                             createElement(
-                                'select',
+                                'input',
                                 {
-                                    class: 'select select-xs w-full',
+                                    class: 'input input-xs w-full',
                                     value: column.value
-                                },
-                                [
-                                    createElement(
-                                        'option',
-                                        {
-                                            value: getBooleanLabel(true)
-                                        },
-                                        getBooleanLabel(true)
-                                    ),
-                                    createElement(
-                                        'option',
-                                        {
-                                            value: getBooleanLabel(false)
-                                        },
-                                        getBooleanLabel(false)
-                                    )
-                                ]
+                                }
                             )
                         );
                     },
@@ -179,7 +163,7 @@ export const createGrid = (
                             createElement(
                                 'input',
                                 {
-                                    type: "number",
+                                    type: column.value.includes && column.value.includes(",") ? undefined : "number",
                                     class: 'input input-xs w-full',
                                     value: column.value
                                 }
@@ -217,7 +201,7 @@ export const createGrid = (
                             createElement(
                                 'input',
                                 {
-                                    type: "date",
+                                    type: column.value.includes && column.value.includes(",") ? undefined : "date",
                                     class: 'input input-xs w-full',
                                     value: column.value
                                 }
@@ -253,9 +237,9 @@ export const createGrid = (
                             'div',
                             {},
                             createElement(
-                                'time',
+                                'input',
                                 {
-                                    type: "date",
+                                    type: column.value.includes && column.value.includes(",") ? undefined : "time",
                                     class: 'input input-xs w-full',
                                     value: column.value
                                 }
@@ -291,9 +275,9 @@ export const createGrid = (
                             'div',
                             {},
                             createElement(
-                                'time',
+                                'input',
                                 {
-                                    type: "datetime-local",
+                                    type: column.value.includes && column.value.includes(",") ? undefined : "datetime-local",
                                     class: 'input input-xs w-full',
                                     value: column.value
                                 }
@@ -329,9 +313,9 @@ export const createGrid = (
                             'div',
                             {},
                             createElement(
-                                'select',
+                                'input',
                                 {
-                                    class: 'select select-xs w-full',
+                                    class: 'input input-xs w-full',
                                     value: column.value
                                 }
                             )
@@ -344,14 +328,14 @@ export const createGrid = (
                                 this.element.className = 'tooltip tooltip-open tooltip-right tooltip-error';
                                 this.element.setAttribute('data-tip', message);
                             }
-                            if (this.editCell) {
-                                column.column.source.forEach((item: { label: string }) => {
-                                    const option = document.createElement("option");
-                                    option.value = item.label;
-                                    option.text = item.label;
-                                    ((this.element as HTMLDivElement)?.children[0] as HTMLSelectElement).appendChild(option);
-                                })
-                            }
+                            // if (this.editCell) {
+                            //     column.column.source.forEach((item: { label: string }) => {
+                            //         const option = document.createElement("option");
+                            //         option.value = item.label;
+                            //         option.text = item.label;
+                            //         ((this.element as HTMLDivElement)?.children[0] as HTMLSelectElement).appendChild(option);
+                            //     })
+                            // }
                             ((this.element as HTMLDivElement)?.children[0] as HTMLSelectElement)?.focus();
                         }
                     },
@@ -552,11 +536,11 @@ export const createGrid = (
             if (subFieldType) {
                 if (Array.isArray(value)) {
                     if (subFieldType.getName() === 'Boolean') {
-                        return value.map(item => booleanValueToName(item));
+                        return value.map(item => booleanValueToName(item)).join(',');
                     } else if (subFieldType.isEnum()) {
-                        return value.map(item => enumValueToName(subFieldType.getName(), item));
+                        return value.map(item => enumValueToName(subFieldType.getName(), item)).join(',');
                     } else {
-                        return value;
+                        return value.join(',');
                     }
                 } else {
                     if (subFieldType.getName() === 'Boolean') {
@@ -573,11 +557,11 @@ export const createGrid = (
         if (fieldType) {
             if (Array.isArray(value)) {
                 if (fieldType.getName() === 'Boolean') {
-                    return value.map(item => booleanValueToName(item));
+                    return value.map(item => booleanValueToName(item)).join(',');
                 } else if (fieldType.isEnum()) {
-                    return value.map(item => enumValueToName(fieldType.getName(), item));
+                    return value.map(item => enumValueToName(fieldType.getName(), item)).join(',');
                 } else {
-                    return value;
+                    return value.join(',');
                 }
             } else {
                 if (fieldType.getName() === 'Boolean') {
@@ -592,52 +576,127 @@ export const createGrid = (
     };
 
     const getTypeFieldValue = (value: any, typeName: string, fieldName: string, subFieldName?: string): any | null | undefined => {
+        if (value === null || value === undefined) {
+            return value;
+        }
         if (subFieldName) {
             const subFieldType = __schema.getType(__schema.getType(typeName)?.getField(fieldName)?.getType().getNamedType().getName())?.getField(subFieldName)?.getType().getNamedType();
+            const hasList = __schema.getType(__schema.getType(typeName)?.getField(fieldName)?.getType().getNamedType().getName())?.getField(subFieldName)?.getType().hasList();
             if (subFieldType) {
-                if (Array.isArray(value)) {
-                    if (subFieldType.getName() === 'Boolean') {
-                        return value.map(item => booleanNameToValue(item));
-                    } else if (subFieldType.isEnum()) {
-                        return value.map(item => enumNameToValue(subFieldType.getName(), item));
+                if (hasList && value.includes && value.includes(',')) {
+                    if (subFieldType.isEnum()) {
+                        return value.split(',').map(item => enumNameToValue(subFieldType.getName(), item));
                     } else {
-                        return value;
+                        switch (subFieldType.getName()) {
+                            case 'Boolean':
+                                return value.split(',').map(item => booleanNameToValue(item));
+                            case 'Int':
+                            case 'BigInteger':
+                                return value.split(',').map(item => Number.parseInt(item));
+                            case 'Float':
+                            case 'BigDecimal':
+                                return value.split(',').map(item => Number.parseFloat(item));
+                            default:
+                                return value.split(',');
+                        }
+                    }
+                } else if (hasList) {
+                    if (subFieldType.isEnum()) {
+                        return [enumNameToValue(subFieldType.getName(), value)];
+                    } else {
+                        switch (subFieldType.getName()) {
+                            case 'Boolean':
+                                return [booleanNameToValue(value)];
+                            case 'Int':
+                            case 'BigInteger':
+                                return [Number.parseInt(value)];
+                            case 'Float':
+                            case 'BigDecimal':
+                                return [Number.parseFloat(value)];
+                            default:
+                                return [value];
+                        }
                     }
                 } else {
-                    if (subFieldType.getName() === 'Boolean') {
-                        return booleanNameToValue(value);
-                    } else if (subFieldType.isEnum()) {
+                    if (subFieldType.isEnum()) {
                         return enumNameToValue(subFieldType.getName(), value);
                     } else {
-                        return value;
+                        switch (subFieldType.getName()) {
+                            case 'Boolean':
+                                return booleanNameToValue(value);
+                            case 'Int':
+                            case 'BigInteger':
+                                return Number.parseInt(value);
+                            case 'Float':
+                            case 'BigDecimal':
+                                return Number.parseFloat(value);
+                            default:
+                                return value;
+                        }
                     }
                 }
             }
         }
         const fieldType = __schema.getType(typeName)?.getField(fieldName)?.getType().getNamedType();
+        const hasList = __schema.getType(typeName)?.getField(fieldName)?.getType().hasList();
         if (fieldType) {
-            if (Array.isArray(value)) {
-                if (fieldType.getName() === 'Boolean') {
-                    return value.map(item => booleanNameToValue(item));
-                } else if (fieldType.isEnum()) {
-                    return value.map(item => enumNameToValue(fieldType.getName(), item));
+            if (value.includes && value.includes(',')) {
+                if (fieldType.isEnum()) {
+                    return value.split(',').map(item => enumNameToValue(fieldType.getName(), item));
                 } else {
-                    return value;
+                    switch (fieldType.getName()) {
+                        case 'Boolean':
+                            return value.split(',').map(item => booleanNameToValue(item));
+                        case 'Int':
+                        case 'BigInteger':
+                            return value.split(',').map(item => Number.parseInt(item));
+                        case 'Float':
+                        case 'BigDecimal':
+                            return value.split(',').map(item => Number.parseFloat(item));
+                        default:
+                            return value.split(',');
+                    }
+                }
+            } else if (hasList) {
+                if (fieldType.isEnum()) {
+                    return [enumNameToValue(fieldType.getName(), value)];
+                } else {
+                    switch (fieldType.getName()) {
+                        case 'Boolean':
+                            return [booleanNameToValue(value)];
+                        case 'Int':
+                        case 'BigInteger':
+                            return [Number.parseInt(value)];
+                        case 'Float':
+                        case 'BigDecimal':
+                            return [Number.parseFloat(value)];
+                        default:
+                            return [value];
+                    }
                 }
             } else {
-                if (fieldType.getName() === 'Boolean') {
-                    return booleanNameToValue(value);
-                } else if (fieldType.isEnum()) {
+                if (fieldType.isEnum()) {
                     return enumNameToValue(fieldType.getName(), value);
                 } else {
-                    return value;
+                    switch (fieldType.getName()) {
+                        case 'Boolean':
+                            return booleanNameToValue(value);
+                        case 'Int':
+                        case 'BigInteger':
+                            return Number.parseInt(value);
+                        case 'Float':
+                        case 'BigDecimal':
+                            return Number.parseFloat(value);
+                        default:
+                            return value;
+                    }
                 }
             }
         }
     };
 
     const nodesToSource = <T>(typeName: string, queryFields: Field[], nodes: (T | null | undefined)[] | undefined): DataType[] | undefined => {
-        const join = queryFields.find((field) => __schema.getType(typeName)?.getField(field.name)?.getType().hasList());
+        const join = queryFields.find((field) => __schema.getType(typeName)?.getField(field.name)?.getType().getNamedType().isObject() && __schema.getType(typeName)?.getField(field.name)?.getType().hasList());
         return nodes?.flatMap((node) => {
             if (join) {
                 const array = node?.[join.name as keyof T];
@@ -715,7 +774,7 @@ export const createGrid = (
 
     const errorsToGridErrors = <T>(typeName: string, errors: Record<number, Errors>, queryFields: Field[], nodes: (T | null | undefined)[] | undefined): Record<string, Errors>[] | undefined => {
         if (errors && Object.keys(errors).length) {
-            const join = queryFields.find((field) => __schema.getType(typeName)?.getField(field.name)?.getType().hasList());
+            const join = queryFields.find((field) => __schema.getType(typeName)?.getField(field.name)?.getType().getNamedType().isObject() && __schema.getType(typeName)?.getField(field.name)?.getType().hasList());
             return nodes?.flatMap((node, nodeIndex) => {
                 if (join) {
                     const array = node?.[join.name as keyof T];
@@ -771,7 +830,7 @@ export const createGrid = (
     };
 
     const sourceToMutationList = <T>(typeName: string, idFieldName: string, queryFields: Field[], source: DataType[]): T[] => {
-        const join = queryFields.find((field) => __schema.getType(typeName)?.getField(field.name)?.getType().hasList());
+        const join = queryFields.find((field) => __schema.getType(typeName)?.getField(field.name)?.getType().getNamedType().isObject() && __schema.getType(typeName)?.getField(field.name)?.getType().hasList());
         if (join) {
             return source?.reduce((nodes: T[], row) => {
                 const object = Object.fromEntries(
@@ -873,7 +932,7 @@ export const createGrid = (
     };
 
     const exportToXlsx = <T>(typeName: string, fields: Field[], nodes: (T | null | undefined)[] | undefined): void => {
-        const join = fields.find((field) => __schema.getType(typeName)?.getField(field.name)?.getType().hasList());
+        const join = fields.find((field) => __schema.getType(typeName)?.getField(field.name)?.getType().getNamedType().isObject() && __schema.getType(typeName)?.getField(field.name)?.getType().hasList());
         const json = nodes?.flatMap((node) => {
             if (join) {
                 const array = node?.[join.name as keyof T];

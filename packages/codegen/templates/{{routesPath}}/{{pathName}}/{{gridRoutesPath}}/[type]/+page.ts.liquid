@@ -27,8 +27,8 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        {{ name }}ConnectionQuery: (await fetchQueryStore<{{ name }}Connection>(event, { fields: [createConnectionField({ name: '{{ name | camelCase }}Connection', fields })] })),
-        {{ name }}ListMutation: (createMutationStore<{{ name }}[]>(event))
+        {{ name | camelCase }}ConnectionQuery: (await fetchQueryStore<{{ name }}Connection>(event, { fields: [createConnectionField({ name: '{{ name | camelCase }}Connection', fields })] })),
+        {{ name | camelCase }}ListMutation: (createMutationStore<{{ name }}[]>(event))
     };
 }
 export const prerender = false;
