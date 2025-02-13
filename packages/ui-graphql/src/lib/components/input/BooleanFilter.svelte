@@ -5,7 +5,7 @@
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { OperatorSelect, BooleanInput } from '.';
 
-	export let expression: BooleanExpression | null | undefined;
+	export let value: BooleanExpression | null | undefined;
 	export let name: string;
 	export let label: string;
 	export let className: string = '';
@@ -17,13 +17,13 @@
 	let _expression: BooleanExpression | null | undefined = {};
 
 	$: if (_expression.val) {
-		expression = { opr: _expression.opr, val: _expression.val, arr: undefined };
+		value = { opr: _expression.opr, val: _expression.val, arr: undefined };
 	} else if (_expression.arr && _expression.arr.length > 0) {
-		expression = { opr: _expression.opr, val: undefined, arr: _expression.arr };
+		value = { opr: _expression.opr, val: undefined, arr: _expression.arr };
 	} else if (_expression.opr === 'NIL' || _expression.opr === 'NNIL') {
-		expression = { opr: _expression.opr, val: undefined, arr: undefined };
+		value = { opr: _expression.opr, val: undefined, arr: undefined };
 	} else {
-		expression = undefined;
+		value = undefined;
 	}
 
 	const oprChange = (): void => {

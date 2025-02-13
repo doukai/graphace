@@ -3,8 +3,8 @@
 	import { StringTh } from '.';
 
 	export let name: string;
-	export let expression: StringExpression | null | undefined;
+	export let value: StringExpression | null | undefined;
 	export let sort: Sort | null | undefined = undefined;
 </script>
 
-<StringTh {name} bind:expression bind:sort on:filter />
+<StringTh {name} bind:value bind:sort on:filter />

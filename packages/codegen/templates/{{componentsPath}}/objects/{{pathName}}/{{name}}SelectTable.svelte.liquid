@@ -34,6 +34,9 @@
 	{%- if useAuth %}
 	const permissions = getContext<PermissionsStore>('permissions');
 	{%- endif %}
+	const z_class = z_index.top(1);
+	const z_class2 = z_index.top(2);
+	const z_class3 = z_index.top(3);
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -207,7 +210,7 @@
 			{%- if field.inQueryArgs %}
 			<{{ field.fieldTypeName }}Th
 				name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-				bind:expression={args.{{ field.fieldName }}}
+				bind:value={args.{{ field.fieldName }}}
 				{%- if field.isListType == false %}
 				bind:sort={orderBy.{{ field.fieldName }}}
 				{%- endif %}

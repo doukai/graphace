@@ -5,7 +5,7 @@
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { OperatorSelect, DateTimeInput } from '.';
 
-	export let expression: StringExpression | null | undefined;
+	export let value: StringExpression | null | undefined;
 	export let name: string;
 	export let label: string;
 	export let className: string = '';
@@ -17,14 +17,19 @@
 	let _expression: StringExpression | null | undefined = {};
 
 	$: if (_expression.val) {
-		expression = { opr: _expression.opr, val: _expression.val, arr: undefined };
+		value = { opr: _expression.opr, val: _expression.val, arr: undefined };
 	} else if (_expression.arr && _expression.arr.length > 0) {
-		expression = { opr: _expression.opr, val: undefined, arr: _expression.arr };
+		value = { opr: _expression.opr, val: undefined, arr: _expression.arr };
 	} else if (_expression.opr === 'NIL' || _expression.opr === 'NNIL') {
-		expression = { opr: _expression.opr, val: undefined, arr: undefined };
+		value = { opr: _expression.opr, val: undefined, arr: undefined };
 	} else {
-		expression = undefined;
+		value = undefined;
 	}
+
+	const change = (): void => {
+		_expression.arr = [];
+		_expression.val = undefined;
+	};
 
 	const oprChange = (): void => {
 		_expression.arr = [];

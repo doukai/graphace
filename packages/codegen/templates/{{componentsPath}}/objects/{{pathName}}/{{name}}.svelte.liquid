@@ -30,7 +30,6 @@
 	export let showFilterButton: boolean = true;
 	export let showBookmarkButton: boolean = false;
 	export let className: string = '';
-	export let zIndex: number | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	{%- if useAuth %}
@@ -58,7 +57,7 @@
 		preventScroll: true
 	});
 
-	const z_class7 = zIndex || z_index.top(7);
+	const z_class7 = z_index.top(7);
 
 	$: selectOptions = [
 		{
@@ -493,7 +492,7 @@
 		{/if}
 		{#if showFilterButton}
 			<{{ name }}Filter
-				bind:expression={queryArguments}
+				bind:value={queryArguments}
 				let:trigger
 				on:filter={(e) => {
 					queryArguments = buildArguments();

@@ -2,11 +2,10 @@
 	import { z_index } from '~';
 
 	export let drawerSidebarScrollY: number;
-	export let zIndex: number | undefined = undefined;
 
 	$: switchNavbarStyle = drawerSidebarScrollY > 40 ? true : false;
-	const z_class = zIndex || z_index.top(1);
-	const z_class2 = z_class + 1;
+	const z_class = z_index.top(1);
+	const z_class2 = z_index.top(2);
 </script>
 
 <div

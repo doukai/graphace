@@ -13,13 +13,12 @@
 
 	export let name: string;
 	export let enums: { name: string; value: string | null | undefined; description?: string }[];
-	export let expression: StringExpression | null | undefined;
+	export let value: StringExpression | null | undefined;
 	export let sort: Sort | null | undefined = undefined;
-	export let zIndex: number | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
-	const z_class5 = zIndex || z_index.top(5);
+	const z_class5 = z_index.top(5);
 
 	let _expression: StringExpression = { opr: 'EQ', val: undefined, arr: [] };
 	let _sort: Sort | undefined = undefined;
@@ -30,13 +29,13 @@
 
 	const filter = (): void => {
 		if (_expression.val) {
-			expression = { opr: _expression.opr, val: _expression.val, arr: undefined };
+			value = { opr: _expression.opr, val: _expression.val, arr: undefined };
 		} else if (_expression.arr && _expression.arr.length > 0) {
-			expression = { opr: _expression.opr, val: undefined, arr: _expression.arr };
+			value = { opr: _expression.opr, val: undefined, arr: _expression.arr };
 		} else if (_expression.opr === 'NIL' || _expression.opr === 'NNIL') {
-			expression = { opr: _expression.opr, val: undefined, arr: undefined };
+			value = { opr: _expression.opr, val: undefined, arr: undefined };
 		} else {
-			expression = undefined;
+			value = undefined;
 		}
 		sort = _sort;
 		dispatch('filter');
@@ -48,7 +47,7 @@
 		_expression.arr = [];
 		_expression.val = undefined;
 		_sort = undefined;
-		expression = undefined;
+		value = undefined;
 		sort = undefined;
 		dispatch('filter');
 		$open = false;
@@ -71,7 +70,7 @@
 <td>
 	<a class="link group inline-flex" href={null} use:melt={$trigger}>
 		{name}
-		{#if expression?.val || (expression?.arr && expression.arr.length > 0)}
+		{#if value?.val || (value?.arr && value.arr.length > 0)}
 			<span class="ml-1 flex-none">
 				<Icon src={Funnel} class="h-5 w-5" />
 			</span>

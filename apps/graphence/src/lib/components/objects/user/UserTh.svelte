@@ -6,14 +6,14 @@
 	import type { UserExpression } from '~/lib/types/schema';
 
 	export let name: string;
-	export let expression: UserExpression | null | undefined;
+	export let value: UserExpression | null | undefined;
 </script>
 
-<UserFilter bind:expression let:trigger on:filter>
+<UserFilter bind:value let:trigger on:filter>
 	<td>
 		<a class="link group inline-flex" href={null} use:melt={trigger}>
 			{name}
-			{#if expression && Object.keys(expression).length > 0}
+			{#if value && Object.keys(value).length > 0}
 				<span class="flex-none">
 					<Icon src={Funnel} class="h-5 w-5" />
 				</span>

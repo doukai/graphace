@@ -16,12 +16,11 @@
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
-	export let zIndex: number | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
-	const z_class3 = zIndex || z_index.top(3);
-	const z_class5 = z_class3 + 2;
+	const z_class3 = z_index.top(3);
+	const z_class5 = z_index.top(5);
 
 	const dispatch = createEventDispatcher<{
 		save: {};

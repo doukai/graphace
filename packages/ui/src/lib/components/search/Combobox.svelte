@@ -41,7 +41,6 @@
 	export let disabled = false;
 	export let placeholder: string = '';
 	export let loading: boolean = false;
-	export let zIndex: number | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
@@ -89,7 +88,7 @@
 		}
 	});
 
-	const z_class9 = zIndex || z_index.top(9);
+	const z_class9 = z_index.top(9);
 
 	$: $tags = Array.isArray(value)
 		? value.map((item) => ({ id: (item.group?.value || '') + item.value, value: item.label }))

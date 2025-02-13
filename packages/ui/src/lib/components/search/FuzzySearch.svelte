@@ -9,11 +9,10 @@
 	export let placeholder: string | undefined;
 	export let limit: number = 10;
 	export let inputAfterSelect: 'clear' | 'update' | 'keep' = 'clear';
-	export let zIndex: number | undefined = undefined;
 
 	const dispatch = createEventDispatcher();
 
-	const z_class = zIndex || z_index.top(1);
+	const z_class = z_index.top(1);
 
 	let os: string;
 	onMount(() => {

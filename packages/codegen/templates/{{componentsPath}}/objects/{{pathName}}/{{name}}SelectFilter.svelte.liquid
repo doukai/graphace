@@ -7,7 +7,7 @@
 	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 
-	export let expression: StringExpression | null | undefined;
+	export let value: StringExpression | null | undefined;
 	export let name: string;
 	export let label: string;
 	export let className: string = '';
@@ -18,23 +18,23 @@
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	let opr: Operator | null | undefined = undefined;
-	let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
+	let input: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
 
-	$: if (value && !Array.isArray(value)) {
-		expression = { opr: opr, val: value?.{{ idName }}, arr: undefined };
-	} else if (value && Array.isArray(value) && value.length > 0) {
-		expression = { opr: opr, val: undefined, arr: value?.map((item) => item?.{{ idName }}) };
+	$: if (input && !Array.isArray(input)) {
+		value = { opr: opr, val: input?.{{ idName }}, arr: undefined };
+	} else if (input && Array.isArray(input) && input.length > 0) {
+		value = { opr: opr, val: undefined, arr: input?.map((item) => item?.{{ idName }}) };
 	} else if (opr === 'NIL' || opr === 'NNIL') {
-		expression = { opr: opr, val: undefined, arr: undefined };
+		value = { opr: opr, val: undefined, arr: undefined };
 	} else {
-		expression = undefined;
+		value = undefined;
 	}
 
 	const oprChange = (): void => {
-		if (Array.isArray(value)) {
-			value = [];
-		} else if (value) {
-			value = undefined;
+		if (Array.isArray(input)) {
+			input = [];
+		} else if (input) {
+			input = undefined;
 		}
 	};
 </script>
@@ -54,7 +54,7 @@
 			{name}
 			placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
 			list
-			bind:value
+			bind:value={input}
 			{className}
 			{containerClassName}
 			{tagClassName}
@@ -64,7 +64,7 @@
 		<{{ name }}Select
 			{name}
 			placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
-			bind:value
+			bind:value={input}
 			{className}
 			{containerClassName}
 			{tagClassName}
