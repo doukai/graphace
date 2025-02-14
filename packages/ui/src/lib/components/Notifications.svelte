@@ -1,11 +1,5 @@
 <script lang="ts" context="module">
-	import {
-		writable,
-		derived,
-		type Writable,
-		type Unsubscriber,
-		type Subscriber
-	} from 'svelte/store';
+	import { writable, type Unsubscriber, type Subscriber } from 'svelte/store';
 	import { nanoid } from 'nanoid';
 
 	type NotificationComponent = {
@@ -17,45 +11,55 @@
 		type: string | undefined;
 		message: string;
 		timeout: number;
+		callback?: () => void;
 	};
 
-	const notificationsStore = writable<NotificationComponent[]>([]);
-
-	function send(message: string, type: string | undefined, timeout = 3000) {
-		notificationsStore.update((notification) => {
-			return [...notification, { id: nanoid(), props: { type, message, timeout } }];
-		});
-	}
-
 	function createNotificationStore() {
-		const notifications = derived<Writable<NotificationComponent[]>, NotificationComponent[]>(
-			notificationsStore,
-			($notificationsStore, set) => {
-				set($notificationsStore);
-				if ($notificationsStore.length > 0) {
-					const timer = setTimeout(() => {
-						notificationsStore.update((notifications) => {
-							notifications.shift();
-							return notifications;
-						});
-					}, $notificationsStore[0].props.timeout);
-					return () => {
-						clearTimeout(timer);
-					};
-				}
+		const notifications = writable<NotificationComponent[]>([]);
+
+		notifications.subscribe(($notifications) => {
+			if ($notifications.length > 0) {
+				const lastNotification = $notifications.at(-1);
+				const timer = setTimeout(() => {
+					notifications.update(($notifications) =>
+						$notifications.filter((notification) => notification.id !== lastNotification.id)
+					);
+					if (lastNotification.props.callback) {
+						lastNotification.props.callback();
+					}
+				}, lastNotification.props.timeout);
+				return () => {
+					clearTimeout(timer);
+				};
 			}
-		);
+		});
+
+		const send = (
+			message: string,
+			type: string | undefined,
+			timeout = 3000,
+			callback?: () => void
+		) => {
+			notifications.update((notification) => {
+				return [...notification, { id: nanoid(), props: { type, message, timeout, callback } }];
+			});
+		};
 
 		const { subscribe } = notifications;
 
 		return {
 			subscribe,
 			send,
-			default: (msg: string, timeout = 3000) => send(msg, undefined, timeout),
-			info: (msg: string, timeout = 3000) => send(msg, 'info', timeout),
-			success: (msg: string, timeout = 3000) => send(msg, 'success', timeout),
-			warning: (msg: string, timeout = 3000) => send(msg, 'warning', timeout),
-			error: (msg: string, timeout = 3000) => send(msg, 'error', timeout)
+			default: (msg: string, timeout = 3000, callback?: () => void) =>
+				send(msg, undefined, timeout, callback),
+			info: (msg: string, timeout = 3000, callback?: () => void) =>
+				send(msg, 'info', timeout, callback),
+			success: (msg: string, timeout = 3000, callback?: () => void) =>
+				send(msg, 'success', timeout, callback),
+			warning: (msg: string, timeout = 3000, callback?: () => void) =>
+				send(msg, 'warning', timeout, callback),
+			error: (msg: string, timeout = 3000, callback?: () => void) =>
+				send(msg, 'error', timeout, callback)
 		};
 	}
 
@@ -65,12 +69,12 @@
 			run: Subscriber<NotificationComponent[]>,
 			invalidate?: (value?: NotificationComponent[]) => void
 		) => Unsubscriber;
-		send: (message: string, type: string, timeout?: number) => void;
-		default: (msg: string, timeout?: number) => void;
-		info: (msg: string, timeout?: number) => void;
-		success: (msg: string, timeout?: number) => void;
-		warning: (msg: string, timeout?: number) => void;
-		error: (msg: string, timeout?: number) => void;
+		send: (message: string, type: string, timeout?: number, callback?: () => void) => void;
+		default: (msg: string, timeout?: number, callback?: () => void) => void;
+		info: (msg: string, timeout?: number, callback?: () => void) => void;
+		success: (msg: string, timeout?: number, callback?: () => void) => void;
+		warning: (msg: string, timeout?: number, callback?: () => void) => void;
+		error: (msg: string, timeout?: number, callback?: () => void) => void;
 	} = createNotificationStore();
 </script>
 

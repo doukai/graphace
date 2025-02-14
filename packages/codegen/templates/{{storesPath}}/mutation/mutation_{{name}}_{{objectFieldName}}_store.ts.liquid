@@ -9,7 +9,7 @@ const query = /* GraphQL */ `mutation Mutation_{{ name }}_{{ objectField.name }}
   {%- else -%}
   (${{ name }}_{{ idName }}: String, ${{ name }}_{{ objectField.name }}: {% if objectField.isListType %}[{{ objectField.fieldTypeName }}Input]{% else %}{{ objectField.fieldTypeName }}Input{% endif %}{% if objectField.args and objectField.args.length > 0 %}, {% for arg in objectField.args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %}{% endif %})
   {%- endif %} {
-  {{ name }}(where: { {{ idName }}: { val: ${{ name }}_{{ idName }} } }, {{ name }}_{{ objectField.name }}: ${{ name }}_{{ objectField.name }}) @merge {
+  {{ name }}(where: { {{ idName }}: { val: ${{ name }}_{{ idName }} } }, {{ objectField.name }}: ${{ name }}_{{ objectField.name }}) @merge {
     {%- if fields %}
     {%- for field in fields %}
     {{ field.name }}
