@@ -234,7 +234,7 @@
 		<tbody>
 			{#if nodes && nodes.length > 0}
 				{#each nodes as node, row}
-					{#if node && node.{{ idName }}}
+					{#if node}
 						<tr class="hover">
 							<th class="{z_class} w-12">
 								<label>
@@ -268,7 +268,7 @@
 								{%- else %}
 								readonly
 								{%- endif %}
-								errors={errors[row]?.iterms?.{{ field.fieldName }}}
+								errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
 							/>
 							{%- endif %}
 							{%- if useAuth %}

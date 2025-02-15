@@ -153,13 +153,13 @@
 							{%- else %}
 							readonly
 							{%- endif %}
-							errors={errors[row]?.iterms?.{{ field.fieldName }}}
+							errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
 							{%- if field.fieldTypeName == 'File' %}
 							on:upload
 							{%- endif %}
 						/>
 						{%- else %}
-						<ObjectTd name="{{ field.fieldName }}"{% if field.isNamed %} namedStruct={node.{{ field.fieldName }}}{% endif %} errors={errors[row]?.iterms?.{{ field.fieldName }}} path="_/{{ field.fieldName | paramCase }}" on:gotoField />
+						<ObjectTd name="{{ field.fieldName }}"{% if field.isNamed %} namedStruct={node.{{ field.fieldName }}}{% endif %} errors={errors?.[row]?.iterms?.{{ field.fieldName }}} path="_/{{ field.fieldName | paramCase }}" on:gotoField />
 						{%- endif %}
 						{%- endif %}
 						{%- endif %}
