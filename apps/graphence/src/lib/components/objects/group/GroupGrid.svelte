@@ -179,7 +179,7 @@
 				)
 		})
 	}
-	on:import={(e) => importFromXlsx(columns, e.detail.file).then((data) => (source = data))}
+	on:import={(e) => importFromXlsx(typeName, columns, e.detail.file).then((data) => (source = data))}
 />
 <RevoGrid
 	{source}
