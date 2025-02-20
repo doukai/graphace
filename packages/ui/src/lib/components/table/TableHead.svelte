@@ -5,14 +5,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import SearchInput from '../search/SearchInput.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import {
-		Plus,
-		Trash,
-		ListBullet,
-		Check,
-		ArrowUturnLeft,
-		XMark
-	} from '@steeze-ui/heroicons';
+	import { Plus, Trash, ListBullet, Check, ArrowUturnLeft, XMark } from '@steeze-ui/heroicons';
 
 	export let title: string = '';
 	export let showSearchInput: boolean = true;
@@ -23,7 +16,7 @@
 	export let showBackButton: boolean = true;
 	export let showGotoSelectButton: boolean = false;
 	export let showSelectButton: boolean = false;
-	
+
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
@@ -188,6 +181,7 @@
 					{$LL.ui.button.back()}
 				</button>
 			{/if}
+			<slot />
 		</div>
 	</div>
 </div>
