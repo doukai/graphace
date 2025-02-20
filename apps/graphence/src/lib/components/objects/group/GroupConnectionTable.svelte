@@ -322,7 +322,7 @@
 			{#if permissions.auth('Group::name::*')}
 			<StringTh
 				name={$LL.graphql.objects.Group.fields.name.name()}
-				bind:expression={args.name}
+				bind:value={args.name}
 				bind:sort={orderBy.name}
 				on:filter={(e) => queryPage(1)}
 			/>
@@ -330,7 +330,7 @@
 			{#if permissions.auth('Group::description::*')}
 			<StringTh
 				name={$LL.graphql.objects.Group.fields.description.name()}
-				bind:expression={args.description}
+				bind:value={args.description}
 				bind:sort={orderBy.description}
 				on:filter={(e) => queryPage(1)}
 			/>
@@ -338,7 +338,7 @@
 			{#if permissions.auth('Group::path::*')}
 			<StringTh
 				name={$LL.graphql.objects.Group.fields.path.name()}
-				bind:expression={args.path}
+				bind:value={args.path}
 				bind:sort={orderBy.path}
 				on:filter={(e) => queryPage(1)}
 			/>
@@ -346,7 +346,7 @@
 			{#if permissions.auth('Group::deep::*')}
 			<IntTh
 				name={$LL.graphql.objects.Group.fields.deep.name()}
-				bind:expression={args.deep}
+				bind:value={args.deep}
 				bind:sort={orderBy.deep}
 				on:filter={(e) => queryPage(1)}
 			/>
@@ -354,7 +354,7 @@
 			{#if permissions.auth('Group::parentId::*')}
 			<StringTh
 				name={$LL.graphql.objects.Group.fields.parentId.name()}
-				bind:expression={args.parentId}
+				bind:value={args.parentId}
 				bind:sort={orderBy.parentId}
 				on:filter={(e) => queryPage(1)}
 			/>
@@ -362,35 +362,35 @@
 			{#if permissions.auth('Group::parent::*')}
 			<GroupTh
 				name={$LL.graphql.objects.Group.fields.parent.name()}
-				bind:expression={args.parent}
+				bind:value={args.parent}
 				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Group::subGroups::*')}
 			<GroupTh
 				name={$LL.graphql.objects.Group.fields.subGroups.name()}
-				bind:expression={args.subGroups}
+				bind:value={args.subGroups}
 				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Group::users::*')}
 			<UserTh
 				name={$LL.graphql.objects.Group.fields.users.name()}
-				bind:expression={args.users}
+				bind:value={args.users}
 				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Group::roles::*')}
 			<RoleTh
 				name={$LL.graphql.objects.Group.fields.roles.name()}
-				bind:expression={args.roles}
+				bind:value={args.roles}
 				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Group::realm::*')}
 			<RealmTh
 				name={$LL.graphql.objects.Group.fields.realm.name()}
-				bind:expression={args.realm}
+				bind:value={args.realm}
 				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
@@ -405,7 +405,7 @@
 		<tbody>
 			{#if nodes && nodes.length > 0}
 				{#each nodes as node, row}
-					{#if node && node.id}
+					{#if node}
 						<tr class="hover">
 							<th class="{z_class} w-12">
 								<label>
@@ -418,7 +418,7 @@
 								bind:value={node.name}
 								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Group::name::WRITE')}
-								errors={errors[row]?.iterms?.name}
+								errors={errors?.[row]?.iterms?.name}
 							/>
 							{/if}
 							{#if permissions.auth('Group::description::*')}
@@ -427,7 +427,7 @@
 								bind:value={node.description}
 								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Group::description::WRITE')}
-								errors={errors[row]?.iterms?.description}
+								errors={errors?.[row]?.iterms?.description}
 							/>
 							{/if}
 							{#if permissions.auth('Group::path::*')}
@@ -436,7 +436,7 @@
 								bind:value={node.path}
 								on:save={(e) => updateField({ path: node?.path, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Group::path::WRITE')}
-								errors={errors[row]?.iterms?.path}
+								errors={errors?.[row]?.iterms?.path}
 							/>
 							{/if}
 							{#if permissions.auth('Group::deep::*')}
@@ -445,7 +445,7 @@
 								bind:value={node.deep}
 								on:save={(e) => updateField({ deep: node?.deep, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Group::deep::WRITE')}
-								errors={errors[row]?.iterms?.deep}
+								errors={errors?.[row]?.iterms?.deep}
 							/>
 							{/if}
 							{#if permissions.auth('Group::parentId::*')}
@@ -454,14 +454,14 @@
 								bind:value={node.parentId}
 								on:save={(e) => updateField({ parentId: node?.parentId, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Group::parentId::WRITE')}
-								errors={errors[row]?.iterms?.parentId}
+								errors={errors?.[row]?.iterms?.parentId}
 							/>
 							{/if}
 							{#if permissions.auth('Group::parent::*')}
 							<GroupSelectTd
 								name="parent"
 								bind:value={node.parent}
-								errors={errors[row]?.iterms?.parent}
+								errors={errors?.[row]?.iterms?.parent}
 								readonly={!permissions.auth('Group::parent::WRITE')}
 								on:save={(e) =>
 									updateField({ parent: node?.parent, where: { id: { val: node?.id } } }, row)}
@@ -472,7 +472,7 @@
 								name="subGroups"
 								bind:value={node.subGroups}
 								list
-								errors={errors[row]?.iterms?.subGroups}
+								errors={errors?.[row]?.iterms?.subGroups}
 								readonly={!permissions.auth('Group::subGroups::WRITE')}
 								on:save={(e) =>
 									updateField({ subGroups: node?.subGroups, where: { id: { val: node?.id } } }, row)}
@@ -483,7 +483,7 @@
 								name="users"
 								bind:value={node.users}
 								list
-								errors={errors[row]?.iterms?.users}
+								errors={errors?.[row]?.iterms?.users}
 								readonly={!permissions.auth('Group::users::WRITE')}
 								on:save={(e) =>
 									updateField({ users: node?.users, where: { id: { val: node?.id } } }, row)}
@@ -494,14 +494,14 @@
 								name="roles"
 								bind:value={node.roles}
 								list
-								errors={errors[row]?.iterms?.roles}
+								errors={errors?.[row]?.iterms?.roles}
 								readonly={!permissions.auth('Group::roles::WRITE')}
 								on:save={(e) =>
 									updateField({ roles: node?.roles, where: { id: { val: node?.id } } }, row)}
 							/>
 							{/if}
 							{#if permissions.auth('Group::realm::*')}
-							<ObjectTd name="realm" namedStruct={node.realm} errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+							<ObjectTd name="realm" namedStruct={node.realm} errors={errors?.[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
 							{/if}
 							{#if permissions.auth('Group::*::WRITE')}
 							<th class="{z_class} hover:{z_class3} w-24">

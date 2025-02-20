@@ -319,7 +319,7 @@
 			{#if permissions.auth('Role::name::*')}
 			<StringTh
 				name={$LL.graphql.objects.Role.fields.name.name()}
-				bind:expression={args.name}
+				bind:value={args.name}
 				bind:sort={orderBy.name}
 				on:filter={(e) => queryPage(1)}
 			/>
@@ -327,7 +327,7 @@
 			{#if permissions.auth('Role::description::*')}
 			<StringTh
 				name={$LL.graphql.objects.Role.fields.description.name()}
-				bind:expression={args.description}
+				bind:value={args.description}
 				bind:sort={orderBy.description}
 				on:filter={(e) => queryPage(1)}
 			/>
@@ -335,35 +335,35 @@
 			{#if permissions.auth('Role::users::*')}
 			<UserTh
 				name={$LL.graphql.objects.Role.fields.users.name()}
-				bind:expression={args.users}
+				bind:value={args.users}
 				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Role::groups::*')}
 			<GroupTh
 				name={$LL.graphql.objects.Role.fields.groups.name()}
-				bind:expression={args.groups}
+				bind:value={args.groups}
 				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Role::composites::*')}
 			<RoleTh
 				name={$LL.graphql.objects.Role.fields.composites.name()}
-				bind:expression={args.composites}
+				bind:value={args.composites}
 				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Role::permissions::*')}
 			<PermissionTh
 				name={$LL.graphql.objects.Role.fields.permissions.name()}
-				bind:expression={args.permissions}
+				bind:value={args.permissions}
 				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('Role::realm::*')}
 			<RealmTh
 				name={$LL.graphql.objects.Role.fields.realm.name()}
-				bind:expression={args.realm}
+				bind:value={args.realm}
 				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
@@ -378,7 +378,7 @@
 		<tbody>
 			{#if nodes && nodes.length > 0}
 				{#each nodes as node, row}
-					{#if node && node.id}
+					{#if node}
 						<tr class="hover">
 							<th class="{z_class} w-12">
 								<label>
@@ -391,7 +391,7 @@
 								bind:value={node.name}
 								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Role::name::WRITE')}
-								errors={errors[row]?.iterms?.name}
+								errors={errors?.[row]?.iterms?.name}
 							/>
 							{/if}
 							{#if permissions.auth('Role::description::*')}
@@ -400,7 +400,7 @@
 								bind:value={node.description}
 								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Role::description::WRITE')}
-								errors={errors[row]?.iterms?.description}
+								errors={errors?.[row]?.iterms?.description}
 							/>
 							{/if}
 							{#if permissions.auth('Role::users::*')}
@@ -408,7 +408,7 @@
 								name="users"
 								bind:value={node.users}
 								list
-								errors={errors[row]?.iterms?.users}
+								errors={errors?.[row]?.iterms?.users}
 								readonly={!permissions.auth('Role::users::WRITE')}
 								on:save={(e) =>
 									updateField({ users: node?.users, where: { id: { val: node?.id } } }, row)}
@@ -419,7 +419,7 @@
 								name="groups"
 								bind:value={node.groups}
 								list
-								errors={errors[row]?.iterms?.groups}
+								errors={errors?.[row]?.iterms?.groups}
 								readonly={!permissions.auth('Role::groups::WRITE')}
 								on:save={(e) =>
 									updateField({ groups: node?.groups, where: { id: { val: node?.id } } }, row)}
@@ -430,17 +430,17 @@
 								name="composites"
 								bind:value={node.composites}
 								list
-								errors={errors[row]?.iterms?.composites}
+								errors={errors?.[row]?.iterms?.composites}
 								readonly={!permissions.auth('Role::composites::WRITE')}
 								on:save={(e) =>
 									updateField({ composites: node?.composites, where: { id: { val: node?.id } } }, row)}
 							/>
 							{/if}
 							{#if permissions.auth('Role::permissions::*')}
-							<ObjectTd name="permissions" errors={errors[row]?.iterms?.permissions} path={`${node.id}/permissions`} on:gotoField />
+							<ObjectTd name="permissions" errors={errors?.[row]?.iterms?.permissions} path={`${node.id}/permissions`} on:gotoField />
 							{/if}
 							{#if permissions.auth('Role::realm::*')}
-							<ObjectTd name="realm" namedStruct={node.realm} errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+							<ObjectTd name="realm" namedStruct={node.realm} errors={errors?.[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
 							{/if}
 							{#if permissions.auth('Role::*::WRITE')}
 							<th class="{z_class} hover:{z_class3} w-24">

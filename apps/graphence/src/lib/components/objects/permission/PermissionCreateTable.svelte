@@ -128,7 +128,7 @@
 							name="name"
 							bind:value={node.name}
 							readonly
-							errors={errors[row]?.iterms?.name}
+							errors={errors?.[row]?.iterms?.name}
 						/>
 						{/if}
 						{#if permissions.auth('Permission::description::*')}
@@ -136,7 +136,7 @@
 							name="description"
 							bind:value={node.description}
 							readonly={!permissions.auth('Permission::description::WRITE')}
-							errors={errors[row]?.iterms?.description}
+							errors={errors?.[row]?.iterms?.description}
 						/>
 						{/if}
 						{#if permissions.auth('Permission::field::*')}
@@ -144,7 +144,7 @@
 							name="field"
 							bind:value={node.field}
 							readonly={!permissions.auth('Permission::field::WRITE')}
-							errors={errors[row]?.iterms?.field}
+							errors={errors?.[row]?.iterms?.field}
 						/>
 						{/if}
 						{#if permissions.auth('Permission::type::*')}
@@ -152,7 +152,7 @@
 							name="type"
 							bind:value={node.type}
 							readonly={!permissions.auth('Permission::type::WRITE')}
-							errors={errors[row]?.iterms?.type}
+							errors={errors?.[row]?.iterms?.type}
 						/>
 						{/if}
 						{#if permissions.auth('Permission::permissionType::*')}
@@ -160,14 +160,14 @@
 							name="permissionType"
 							bind:value={node.permissionType}
 							readonly={!permissions.auth('Permission::permissionType::WRITE')}
-							errors={errors[row]?.iterms?.permissionType}
+							errors={errors?.[row]?.iterms?.permissionType}
 						/>
 						{/if}
 						{#if permissions.auth('Permission::roles::*')}
-						<ObjectTd name="roles" namedStruct={node.roles} errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
+						<ObjectTd name="roles" namedStruct={node.roles} errors={errors?.[row]?.iterms?.roles} path="_/roles" on:gotoField />
 						{/if}
 						{#if permissions.auth('Permission::realm::*')}
-						<ObjectTd name="realm" namedStruct={node.realm} errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
+						<ObjectTd name="realm" namedStruct={node.realm} errors={errors?.[row]?.iterms?.realm} path="_/realm" on:gotoField />
 						{/if}
 						{#if permissions.auth('Permission::*::WRITE')}
 						<th class="{z_class} hover:{z_class3} w-24">

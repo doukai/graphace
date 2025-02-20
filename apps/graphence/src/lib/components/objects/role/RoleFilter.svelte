@@ -14,12 +14,12 @@
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { RoleExpression } from '~/lib/types/schema';
 
-	export let expression: RoleExpression | null | undefined;
+	export let value: RoleExpression | null | undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const permissions = getContext<PermissionsStore>('permissions');
 
-	const z_class9 = z_index.top(9);
+	const z_class8 = z_index.top(8);
 
 	let _expression = {
 		id: undefined,
@@ -37,43 +37,43 @@
 
 	const filter = (): void => {
 		if (_expression.id) {
-			expression = { ...expression, id: _expression.id };
+			value = { ...value, id: _expression.id };
 		} else {
-			expression = { ...expression, id: undefined };
+			value = { ...value, id: undefined };
 		}
 		if (_expression.name) {
-			expression = { ...expression, name: _expression.name };
+			value = { ...value, name: _expression.name };
 		} else {
-			expression = { ...expression, name: undefined };
+			value = { ...value, name: undefined };
 		}
 		if (_expression.description) {
-			expression = { ...expression, description: _expression.description };
+			value = { ...value, description: _expression.description };
 		} else {
-			expression = { ...expression, description: undefined };
+			value = { ...value, description: undefined };
 		}
 		if (_expression.users.id) {
-			expression = { ...expression, users: _expression.users };
+			value = { ...value, users: _expression.users };
 		} else {
-			expression = { ...expression, users: undefined };
+			value = { ...value, users: undefined };
 		}
 		if (_expression.groups.id) {
-			expression = { ...expression, groups: _expression.groups };
+			value = { ...value, groups: _expression.groups };
 		} else {
-			expression = { ...expression, groups: undefined };
+			value = { ...value, groups: undefined };
 		}
 		if (_expression.composites.id) {
-			expression = { ...expression, composites: _expression.composites };
+			value = { ...value, composites: _expression.composites };
 		} else {
-			expression = { ...expression, composites: undefined };
+			value = { ...value, composites: undefined };
 		}
 		if (_expression.realm.id) {
-			expression = { ...expression, realm: _expression.realm };
+			value = { ...value, realm: _expression.realm };
 		} else {
-			expression = { ...expression, realm: undefined };
+			value = { ...value, realm: undefined };
 		}
 
-		if (Object.values(expression).filter((item) => item).length === 0) {
-			expression = undefined;
+		if (Object.values(value).filter((item) => item).length === 0) {
+			value = undefined;
 		}
 		dispatch('filter', {});
 		$open = false;
@@ -89,7 +89,7 @@
 			composites: { id: undefined },
 			realm: { id: undefined }
 		};
-		expression = undefined;
+		value = undefined;
 		dispatch('filter', {});
 		$open = false;
 	};
@@ -106,15 +106,15 @@
 <slot trigger={$trigger} />
 
 {#if $open}
-	<div use:melt={$overlay} class="fixed inset-0 {z_class9}" />
-	<div class="p-1 rounded-xl bg-base-200 shadow {z_class9}" use:melt={$content}>
+	<div use:melt={$overlay} class="fixed inset-0 {z_class8}" />
+	<div class="p-1 rounded-xl bg-base-200 shadow {z_class8}" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="space-y-1 max-h-60 overflow-y-auto">
 			{#if permissions.auth('Role::id::*')}
 			<RoleSelectFilter
 				label={$LL.graphql.objects.Role.name()}
 				name="id"
-				bind:expression={_expression.id}
+				bind:value={_expression.id}
 				className="md:input-sm"
 				selectClassName="md:select-sm w-full"
 				containerClassName="md:min-h-8 max-w-xs"
@@ -127,7 +127,7 @@
 			<StringFilter
 				label={$LL.graphql.objects.Role.fields.name.name()}
 				name="name"
-				bind:expression={_expression.name}
+				bind:value={_expression.name}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -138,7 +138,7 @@
 			<StringFilter
 				label={$LL.graphql.objects.Role.fields.description.name()}
 				name="description"
-				bind:expression={_expression.description}
+				bind:value={_expression.description}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -149,7 +149,7 @@
 			<UserSelectFilter
 				label={$LL.graphql.objects.Role.fields.users.name()}
 				name="users"
-				bind:expression={_expression.users.id}
+				bind:value={_expression.users.id}
 				className="md:input-sm"
 				containerClassName="md:min-h-8 max-w-xs"
 				tagClassName="md:badge-sm"
@@ -162,7 +162,7 @@
 			<GroupSelectFilter
 				label={$LL.graphql.objects.Role.fields.groups.name()}
 				name="groups"
-				bind:expression={_expression.groups.id}
+				bind:value={_expression.groups.id}
 				className="md:input-sm"
 				containerClassName="md:min-h-8 max-w-xs"
 				tagClassName="md:badge-sm"
@@ -175,7 +175,7 @@
 			<RoleSelectFilter
 				label={$LL.graphql.objects.Role.fields.composites.name()}
 				name="composites"
-				bind:expression={_expression.composites.id}
+				bind:value={_expression.composites.id}
 				className="md:input-sm"
 				containerClassName="md:min-h-8 max-w-xs"
 				tagClassName="md:badge-sm"
@@ -188,7 +188,7 @@
 			<RealmSelectFilter
 				label={$LL.graphql.objects.Role.fields.realm.name()}
 				name="realm"
-				bind:expression={_expression.realm.id}
+				bind:value={_expression.realm.id}
 				className="md:input-sm"
 				containerClassName="md:min-h-8 max-w-xs"
 				tagClassName="md:badge-sm"

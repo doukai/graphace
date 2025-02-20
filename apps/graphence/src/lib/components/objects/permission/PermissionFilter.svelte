@@ -13,12 +13,12 @@
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { PermissionExpression } from '~/lib/types/schema';
 
-	export let expression: PermissionExpression | null | undefined;
+	export let value: PermissionExpression | null | undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const permissions = getContext<PermissionsStore>('permissions');
 
-	const z_class9 = z_index.top(9);
+	const z_class8 = z_index.top(8);
 
 	let _expression = {
 		name: undefined,
@@ -36,43 +36,43 @@
 
 	const filter = (): void => {
 		if (_expression.name) {
-			expression = { ...expression, name: _expression.name };
+			value = { ...value, name: _expression.name };
 		} else {
-			expression = { ...expression, name: undefined };
+			value = { ...value, name: undefined };
 		}
 		if (_expression.description) {
-			expression = { ...expression, description: _expression.description };
+			value = { ...value, description: _expression.description };
 		} else {
-			expression = { ...expression, description: undefined };
+			value = { ...value, description: undefined };
 		}
 		if (_expression.field) {
-			expression = { ...expression, field: _expression.field };
+			value = { ...value, field: _expression.field };
 		} else {
-			expression = { ...expression, field: undefined };
+			value = { ...value, field: undefined };
 		}
 		if (_expression.type) {
-			expression = { ...expression, type: _expression.type };
+			value = { ...value, type: _expression.type };
 		} else {
-			expression = { ...expression, type: undefined };
+			value = { ...value, type: undefined };
 		}
 		if (_expression.permissionType) {
-			expression = { ...expression, permissionType: _expression.permissionType };
+			value = { ...value, permissionType: _expression.permissionType };
 		} else {
-			expression = { ...expression, permissionType: undefined };
+			value = { ...value, permissionType: undefined };
 		}
 		if (_expression.roles.id) {
-			expression = { ...expression, roles: _expression.roles };
+			value = { ...value, roles: _expression.roles };
 		} else {
-			expression = { ...expression, roles: undefined };
+			value = { ...value, roles: undefined };
 		}
 		if (_expression.realm.id) {
-			expression = { ...expression, realm: _expression.realm };
+			value = { ...value, realm: _expression.realm };
 		} else {
-			expression = { ...expression, realm: undefined };
+			value = { ...value, realm: undefined };
 		}
 
-		if (Object.values(expression).filter((item) => item).length === 0) {
-			expression = undefined;
+		if (Object.values(value).filter((item) => item).length === 0) {
+			value = undefined;
 		}
 		dispatch('filter', {});
 		$open = false;
@@ -88,7 +88,7 @@
 			roles: { id: undefined },
 			realm: { id: undefined }
 		};
-		expression = undefined;
+		value = undefined;
 		dispatch('filter', {});
 		$open = false;
 	};
@@ -105,15 +105,15 @@
 <slot trigger={$trigger} />
 
 {#if $open}
-	<div use:melt={$overlay} class="fixed inset-0 {z_class9}" />
-	<div class="p-1 rounded-xl bg-base-200 shadow {z_class9}" use:melt={$content}>
+	<div use:melt={$overlay} class="fixed inset-0 {z_class8}" />
+	<div class="p-1 rounded-xl bg-base-200 shadow {z_class8}" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="space-y-1 max-h-60 overflow-y-auto">
 			{#if permissions.auth('Permission::name::*')}
 			<IDFilter
 				label={$LL.graphql.objects.Permission.fields.name.name()}
 				name="name"
-				bind:expression={_expression.name}
+				bind:value={_expression.name}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -124,7 +124,7 @@
 			<StringFilter
 				label={$LL.graphql.objects.Permission.fields.description.name()}
 				name="description"
-				bind:expression={_expression.description}
+				bind:value={_expression.description}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -135,7 +135,7 @@
 			<StringFilter
 				label={$LL.graphql.objects.Permission.fields.field.name()}
 				name="field"
-				bind:expression={_expression.field}
+				bind:value={_expression.field}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -146,7 +146,7 @@
 			<StringFilter
 				label={$LL.graphql.objects.Permission.fields.type.name()}
 				name="type"
-				bind:expression={_expression.type}
+				bind:value={_expression.type}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -157,7 +157,7 @@
 			<PermissionTypeFilter
 				label={$LL.graphql.objects.Permission.fields.permissionType.name()}
 				name="permissionType"
-				bind:expression={_expression.permissionType}
+				bind:value={_expression.permissionType}
 				className="md:select-sm"
 				selectClassName="md:select-sm w-full"
 			/>
@@ -167,7 +167,7 @@
 			<RoleSelectFilter
 				label={$LL.graphql.objects.Permission.fields.roles.name()}
 				name="roles"
-				bind:expression={_expression.roles.id}
+				bind:value={_expression.roles.id}
 				className="md:input-sm"
 				containerClassName="md:min-h-8 max-w-xs"
 				tagClassName="md:badge-sm"
@@ -180,7 +180,7 @@
 			<RealmSelectFilter
 				label={$LL.graphql.objects.Permission.fields.realm.name()}
 				name="realm"
-				bind:expression={_expression.realm.id}
+				bind:value={_expression.realm.id}
 				className="md:input-sm"
 				containerClassName="md:min-h-8 max-w-xs"
 				tagClassName="md:badge-sm"

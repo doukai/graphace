@@ -14,18 +14,12 @@
 	} from 'chart.js';
 	import autocolors from 'chartjs-plugin-autocolors';
 	import { type Field } from '@graphace/graphql';
-	import UserAgg from '~/lib/components/objects/user/UserAgg.svelte';
 	import type { User, UserConnection, UserConnectionQueryArguments } from '~/lib/types/schema';
 
 	export let connection: UserConnection;
 	export let fields: Field[] = [];
 	export let queryArguments: UserConnectionQueryArguments = {};
-	export let isFetching: boolean = false;
-	export let showHeader: boolean = true;
-	export let showFooter: boolean = true;
-	export let showOptionButton: boolean = true;
-	export let showFilterButton: boolean = true;
-	export let showBookmarkButton: boolean = false;
+	export let getFieldName: (fieldName: string, subFieldName?: string) => string;
 
 	Chart.register(
 		Title,
@@ -39,7 +33,6 @@
 	);
 
 	let data: ChartData<'line', (number | Point)[], unknown> = { datasets: [] };
-	let getFieldName: (fieldName: string, subFieldName?: string) => string;
 
 	$: if (connection) {
 		const nodes = connection?.edges?.map((edge) => edge?.node);
@@ -69,22 +62,6 @@
 			};
 		}
 	}
-	$: totalCount = connection?.totalCount || 0;
 </script>
 
-<UserAgg
-	bind:fields
-	bind:queryArguments
-	{isFetching}
-	{showHeader}
-	{showFooter}
-	{showOptionButton}
-	{showFilterButton}
-	{showBookmarkButton}
-	{totalCount}
-	on:query
-	on:bookmark
-	bind:getFieldName
->
-	<Line {data} options={{ responsive: true, maintainAspectRatio: false }} />
-</UserAgg>
+<Line {data} options={{ responsive: true, maintainAspectRatio: false }} />

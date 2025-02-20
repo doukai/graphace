@@ -135,7 +135,7 @@
 							name="name"
 							bind:value={node.name}
 							readonly={!permissions.auth('User::name::WRITE')}
-							errors={errors[row]?.iterms?.name}
+							errors={errors?.[row]?.iterms?.name}
 						/>
 						{/if}
 						{#if permissions.auth('User::description::*')}
@@ -143,7 +143,7 @@
 							name="description"
 							bind:value={node.description}
 							readonly={!permissions.auth('User::description::WRITE')}
-							errors={errors[row]?.iterms?.description}
+							errors={errors?.[row]?.iterms?.description}
 						/>
 						{/if}
 						{#if permissions.auth('User::lastName::*')}
@@ -151,7 +151,7 @@
 							name="lastName"
 							bind:value={node.lastName}
 							readonly={!permissions.auth('User::lastName::WRITE')}
-							errors={errors[row]?.iterms?.lastName}
+							errors={errors?.[row]?.iterms?.lastName}
 						/>
 						{/if}
 						{#if permissions.auth('User::login::*')}
@@ -159,7 +159,7 @@
 							name="login"
 							bind:value={node.login}
 							readonly={!permissions.auth('User::login::WRITE')}
-							errors={errors[row]?.iterms?.login}
+							errors={errors?.[row]?.iterms?.login}
 						/>
 						{/if}
 						{#if permissions.auth('User::email::*')}
@@ -167,7 +167,7 @@
 							name="email"
 							bind:value={node.email}
 							readonly={!permissions.auth('User::email::WRITE')}
-							errors={errors[row]?.iterms?.email}
+							errors={errors?.[row]?.iterms?.email}
 						/>
 						{/if}
 						{#if permissions.auth('User::phones::*')}
@@ -176,7 +176,7 @@
 							bind:value={node.phones}
 							list
 							readonly={!permissions.auth('User::phones::WRITE')}
-							errors={errors[row]?.iterms?.phones}
+							errors={errors?.[row]?.iterms?.phones}
 						/>
 						{/if}
 						{#if permissions.auth('User::disable::*')}
@@ -184,17 +184,17 @@
 							name="disable"
 							bind:value={node.disable}
 							readonly={!permissions.auth('User::disable::WRITE')}
-							errors={errors[row]?.iterms?.disable}
+							errors={errors?.[row]?.iterms?.disable}
 						/>
 						{/if}
 						{#if permissions.auth('User::groups::*')}
-						<ObjectTd name="groups" namedStruct={node.groups} errors={errors[row]?.iterms?.groups} path="_/groups" on:gotoField />
+						<ObjectTd name="groups" namedStruct={node.groups} errors={errors?.[row]?.iterms?.groups} path="_/groups" on:gotoField />
 						{/if}
 						{#if permissions.auth('User::roles::*')}
-						<ObjectTd name="roles" namedStruct={node.roles} errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
+						<ObjectTd name="roles" namedStruct={node.roles} errors={errors?.[row]?.iterms?.roles} path="_/roles" on:gotoField />
 						{/if}
 						{#if permissions.auth('User::realm::*')}
-						<ObjectTd name="realm" namedStruct={node.realm} errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
+						<ObjectTd name="realm" namedStruct={node.realm} errors={errors?.[row]?.iterms?.realm} path="_/realm" on:gotoField />
 						{/if}
 						{#if permissions.auth('User::*::WRITE')}
 						<th class="{z_class} hover:{z_class3} w-24">

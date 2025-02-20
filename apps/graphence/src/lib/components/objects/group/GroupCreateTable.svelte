@@ -135,7 +135,7 @@
 							name="name"
 							bind:value={node.name}
 							readonly={!permissions.auth('Group::name::WRITE')}
-							errors={errors[row]?.iterms?.name}
+							errors={errors?.[row]?.iterms?.name}
 						/>
 						{/if}
 						{#if permissions.auth('Group::description::*')}
@@ -143,7 +143,7 @@
 							name="description"
 							bind:value={node.description}
 							readonly={!permissions.auth('Group::description::WRITE')}
-							errors={errors[row]?.iterms?.description}
+							errors={errors?.[row]?.iterms?.description}
 						/>
 						{/if}
 						{#if permissions.auth('Group::path::*')}
@@ -151,7 +151,7 @@
 							name="path"
 							bind:value={node.path}
 							readonly={!permissions.auth('Group::path::WRITE')}
-							errors={errors[row]?.iterms?.path}
+							errors={errors?.[row]?.iterms?.path}
 						/>
 						{/if}
 						{#if permissions.auth('Group::deep::*')}
@@ -159,7 +159,7 @@
 							name="deep"
 							bind:value={node.deep}
 							readonly={!permissions.auth('Group::deep::WRITE')}
-							errors={errors[row]?.iterms?.deep}
+							errors={errors?.[row]?.iterms?.deep}
 						/>
 						{/if}
 						{#if permissions.auth('Group::parentId::*')}
@@ -167,23 +167,23 @@
 							name="parentId"
 							bind:value={node.parentId}
 							readonly={!permissions.auth('Group::parentId::WRITE')}
-							errors={errors[row]?.iterms?.parentId}
+							errors={errors?.[row]?.iterms?.parentId}
 						/>
 						{/if}
 						{#if permissions.auth('Group::parent::*')}
-						<ObjectTd name="parent" namedStruct={node.parent} errors={errors[row]?.iterms?.parent} path="_/parent" on:gotoField />
+						<ObjectTd name="parent" namedStruct={node.parent} errors={errors?.[row]?.iterms?.parent} path="_/parent" on:gotoField />
 						{/if}
 						{#if permissions.auth('Group::subGroups::*')}
-						<ObjectTd name="subGroups" namedStruct={node.subGroups} errors={errors[row]?.iterms?.subGroups} path="_/sub-groups" on:gotoField />
+						<ObjectTd name="subGroups" namedStruct={node.subGroups} errors={errors?.[row]?.iterms?.subGroups} path="_/sub-groups" on:gotoField />
 						{/if}
 						{#if permissions.auth('Group::users::*')}
-						<ObjectTd name="users" namedStruct={node.users} errors={errors[row]?.iterms?.users} path="_/users" on:gotoField />
+						<ObjectTd name="users" namedStruct={node.users} errors={errors?.[row]?.iterms?.users} path="_/users" on:gotoField />
 						{/if}
 						{#if permissions.auth('Group::roles::*')}
-						<ObjectTd name="roles" namedStruct={node.roles} errors={errors[row]?.iterms?.roles} path="_/roles" on:gotoField />
+						<ObjectTd name="roles" namedStruct={node.roles} errors={errors?.[row]?.iterms?.roles} path="_/roles" on:gotoField />
 						{/if}
 						{#if permissions.auth('Group::realm::*')}
-						<ObjectTd name="realm" namedStruct={node.realm} errors={errors[row]?.iterms?.realm} path="_/realm" on:gotoField />
+						<ObjectTd name="realm" namedStruct={node.realm} errors={errors?.[row]?.iterms?.realm} path="_/realm" on:gotoField />
 						{/if}
 						{#if permissions.auth('Group::*::WRITE')}
 						<th class="{z_class} hover:{z_class3} w-24">

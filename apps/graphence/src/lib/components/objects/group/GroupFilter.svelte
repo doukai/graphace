@@ -14,12 +14,12 @@
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { GroupExpression } from '~/lib/types/schema';
 
-	export let expression: GroupExpression | null | undefined;
+	export let value: GroupExpression | null | undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const permissions = getContext<PermissionsStore>('permissions');
 
-	const z_class9 = z_index.top(9);
+	const z_class8 = z_index.top(8);
 
 	let _expression = {
 		id: undefined,
@@ -41,63 +41,63 @@
 
 	const filter = (): void => {
 		if (_expression.id) {
-			expression = { ...expression, id: _expression.id };
+			value = { ...value, id: _expression.id };
 		} else {
-			expression = { ...expression, id: undefined };
+			value = { ...value, id: undefined };
 		}
 		if (_expression.name) {
-			expression = { ...expression, name: _expression.name };
+			value = { ...value, name: _expression.name };
 		} else {
-			expression = { ...expression, name: undefined };
+			value = { ...value, name: undefined };
 		}
 		if (_expression.description) {
-			expression = { ...expression, description: _expression.description };
+			value = { ...value, description: _expression.description };
 		} else {
-			expression = { ...expression, description: undefined };
+			value = { ...value, description: undefined };
 		}
 		if (_expression.path) {
-			expression = { ...expression, path: _expression.path };
+			value = { ...value, path: _expression.path };
 		} else {
-			expression = { ...expression, path: undefined };
+			value = { ...value, path: undefined };
 		}
 		if (_expression.deep) {
-			expression = { ...expression, deep: _expression.deep };
+			value = { ...value, deep: _expression.deep };
 		} else {
-			expression = { ...expression, deep: undefined };
+			value = { ...value, deep: undefined };
 		}
 		if (_expression.parentId) {
-			expression = { ...expression, parentId: _expression.parentId };
+			value = { ...value, parentId: _expression.parentId };
 		} else {
-			expression = { ...expression, parentId: undefined };
+			value = { ...value, parentId: undefined };
 		}
 		if (_expression.parent.id) {
-			expression = { ...expression, parent: _expression.parent };
+			value = { ...value, parent: _expression.parent };
 		} else {
-			expression = { ...expression, parent: undefined };
+			value = { ...value, parent: undefined };
 		}
 		if (_expression.subGroups.id) {
-			expression = { ...expression, subGroups: _expression.subGroups };
+			value = { ...value, subGroups: _expression.subGroups };
 		} else {
-			expression = { ...expression, subGroups: undefined };
+			value = { ...value, subGroups: undefined };
 		}
 		if (_expression.users.id) {
-			expression = { ...expression, users: _expression.users };
+			value = { ...value, users: _expression.users };
 		} else {
-			expression = { ...expression, users: undefined };
+			value = { ...value, users: undefined };
 		}
 		if (_expression.roles.id) {
-			expression = { ...expression, roles: _expression.roles };
+			value = { ...value, roles: _expression.roles };
 		} else {
-			expression = { ...expression, roles: undefined };
+			value = { ...value, roles: undefined };
 		}
 		if (_expression.realm.id) {
-			expression = { ...expression, realm: _expression.realm };
+			value = { ...value, realm: _expression.realm };
 		} else {
-			expression = { ...expression, realm: undefined };
+			value = { ...value, realm: undefined };
 		}
 
-		if (Object.values(expression).filter((item) => item).length === 0) {
-			expression = undefined;
+		if (Object.values(value).filter((item) => item).length === 0) {
+			value = undefined;
 		}
 		dispatch('filter', {});
 		$open = false;
@@ -117,7 +117,7 @@
 			roles: { id: undefined },
 			realm: { id: undefined }
 		};
-		expression = undefined;
+		value = undefined;
 		dispatch('filter', {});
 		$open = false;
 	};
@@ -134,15 +134,15 @@
 <slot trigger={$trigger} />
 
 {#if $open}
-	<div use:melt={$overlay} class="fixed inset-0 {z_class9}" />
-	<div class="p-1 rounded-xl bg-base-200 shadow {z_class9}" use:melt={$content}>
+	<div use:melt={$overlay} class="fixed inset-0 {z_class8}" />
+	<div class="p-1 rounded-xl bg-base-200 shadow {z_class8}" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="space-y-1 max-h-60 overflow-y-auto">
 			{#if permissions.auth('Group::id::*')}
 			<GroupSelectFilter
 				label={$LL.graphql.objects.Group.name()}
 				name="id"
-				bind:expression={_expression.id}
+				bind:value={_expression.id}
 				className="md:input-sm"
 				selectClassName="md:select-sm w-full"
 				containerClassName="md:min-h-8 max-w-xs"
@@ -155,7 +155,7 @@
 			<StringFilter
 				label={$LL.graphql.objects.Group.fields.name.name()}
 				name="name"
-				bind:expression={_expression.name}
+				bind:value={_expression.name}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -166,7 +166,7 @@
 			<StringFilter
 				label={$LL.graphql.objects.Group.fields.description.name()}
 				name="description"
-				bind:expression={_expression.description}
+				bind:value={_expression.description}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -177,7 +177,7 @@
 			<StringFilter
 				label={$LL.graphql.objects.Group.fields.path.name()}
 				name="path"
-				bind:expression={_expression.path}
+				bind:value={_expression.path}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -188,7 +188,7 @@
 			<IntFilter
 				label={$LL.graphql.objects.Group.fields.deep.name()}
 				name="deep"
-				bind:expression={_expression.deep}
+				bind:value={_expression.deep}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -199,7 +199,7 @@
 			<StringFilter
 				label={$LL.graphql.objects.Group.fields.parentId.name()}
 				name="parentId"
-				bind:expression={_expression.parentId}
+				bind:value={_expression.parentId}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -210,7 +210,7 @@
 			<GroupSelectFilter
 				label={$LL.graphql.objects.Group.fields.parent.name()}
 				name="parent"
-				bind:expression={_expression.parent.id}
+				bind:value={_expression.parent.id}
 				className="md:input-sm"
 				containerClassName="md:min-h-8 max-w-xs"
 				tagClassName="md:badge-sm"
@@ -223,7 +223,7 @@
 			<GroupSelectFilter
 				label={$LL.graphql.objects.Group.fields.subGroups.name()}
 				name="subGroups"
-				bind:expression={_expression.subGroups.id}
+				bind:value={_expression.subGroups.id}
 				className="md:input-sm"
 				containerClassName="md:min-h-8 max-w-xs"
 				tagClassName="md:badge-sm"
@@ -236,7 +236,7 @@
 			<UserSelectFilter
 				label={$LL.graphql.objects.Group.fields.users.name()}
 				name="users"
-				bind:expression={_expression.users.id}
+				bind:value={_expression.users.id}
 				className="md:input-sm"
 				containerClassName="md:min-h-8 max-w-xs"
 				tagClassName="md:badge-sm"
@@ -249,7 +249,7 @@
 			<RoleSelectFilter
 				label={$LL.graphql.objects.Group.fields.roles.name()}
 				name="roles"
-				bind:expression={_expression.roles.id}
+				bind:value={_expression.roles.id}
 				className="md:input-sm"
 				containerClassName="md:min-h-8 max-w-xs"
 				tagClassName="md:badge-sm"
@@ -262,7 +262,7 @@
 			<RealmSelectFilter
 				label={$LL.graphql.objects.Group.fields.realm.name()}
 				name="realm"
-				bind:expression={_expression.realm.id}
+				bind:value={_expression.realm.id}
 				className="md:input-sm"
 				containerClassName="md:min-h-8 max-w-xs"
 				tagClassName="md:badge-sm"

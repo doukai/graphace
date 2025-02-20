@@ -218,7 +218,7 @@
 			{#if permissions.auth('User::name::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.name.name()}
-				bind:expression={args.name}
+				bind:value={args.name}
 				bind:sort={orderBy.name}
 				on:filter={(e) => queryPage(1)}
 			/>
@@ -226,7 +226,7 @@
 			{#if permissions.auth('User::description::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.description.name()}
-				bind:expression={args.description}
+				bind:value={args.description}
 				bind:sort={orderBy.description}
 				on:filter={(e) => queryPage(1)}
 			/>
@@ -234,7 +234,7 @@
 			{#if permissions.auth('User::lastName::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.lastName.name()}
-				bind:expression={args.lastName}
+				bind:value={args.lastName}
 				bind:sort={orderBy.lastName}
 				on:filter={(e) => queryPage(1)}
 			/>
@@ -242,7 +242,7 @@
 			{#if permissions.auth('User::login::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.login.name()}
-				bind:expression={args.login}
+				bind:value={args.login}
 				bind:sort={orderBy.login}
 				on:filter={(e) => queryPage(1)}
 			/>
@@ -250,7 +250,7 @@
 			{#if permissions.auth('User::email::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.email.name()}
-				bind:expression={args.email}
+				bind:value={args.email}
 				bind:sort={orderBy.email}
 				on:filter={(e) => queryPage(1)}
 			/>
@@ -258,14 +258,14 @@
 			{#if permissions.auth('User::phones::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.phones.name()}
-				bind:expression={args.phones}
+				bind:value={args.phones}
 				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('User::disable::*')}
 			<BooleanTh
 				name={$LL.graphql.objects.User.fields.disable.name()}
-				bind:expression={args.disable}
+				bind:value={args.disable}
 				bind:sort={orderBy.disable}
 				on:filter={(e) => queryPage(1)}
 			/>
@@ -279,7 +279,7 @@
 		<tbody>
 			{#if nodes && nodes.length > 0}
 				{#each nodes as node, row}
-					{#if node && node.id}
+					{#if node}
 						<tr class="hover">
 							<th class="{z_class} w-12">
 								<label>
@@ -296,7 +296,7 @@
 								bind:value={node.name}
 								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::name::WRITE')}
-								errors={errors[row]?.iterms?.name}
+								errors={errors?.[row]?.iterms?.name}
 							/>
 							{/if}
 							{#if permissions.auth('User::description::*')}
@@ -305,7 +305,7 @@
 								bind:value={node.description}
 								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::description::WRITE')}
-								errors={errors[row]?.iterms?.description}
+								errors={errors?.[row]?.iterms?.description}
 							/>
 							{/if}
 							{#if permissions.auth('User::lastName::*')}
@@ -314,7 +314,7 @@
 								bind:value={node.lastName}
 								on:save={(e) => updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::lastName::WRITE')}
-								errors={errors[row]?.iterms?.lastName}
+								errors={errors?.[row]?.iterms?.lastName}
 							/>
 							{/if}
 							{#if permissions.auth('User::login::*')}
@@ -323,7 +323,7 @@
 								bind:value={node.login}
 								on:save={(e) => updateField({ login: node?.login, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::login::WRITE')}
-								errors={errors[row]?.iterms?.login}
+								errors={errors?.[row]?.iterms?.login}
 							/>
 							{/if}
 							{#if permissions.auth('User::email::*')}
@@ -332,7 +332,7 @@
 								bind:value={node.email}
 								on:save={(e) => updateField({ email: node?.email, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::email::WRITE')}
-								errors={errors[row]?.iterms?.email}
+								errors={errors?.[row]?.iterms?.email}
 							/>
 							{/if}
 							{#if permissions.auth('User::phones::*')}
@@ -342,7 +342,7 @@
 								list
 								on:save={(e) => updateField({ phones: node?.phones, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::phones::WRITE')}
-								errors={errors[row]?.iterms?.phones}
+								errors={errors?.[row]?.iterms?.phones}
 							/>
 							{/if}
 							{#if permissions.auth('User::disable::*')}
@@ -351,7 +351,7 @@
 								bind:value={node.disable}
 								on:save={(e) => updateField({ disable: node?.disable, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::disable::WRITE')}
-								errors={errors[row]?.iterms?.disable}
+								errors={errors?.[row]?.iterms?.disable}
 							/>
 							{/if}
 							<th class="{z_class} hover:{z_class3} w-12">

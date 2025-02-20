@@ -23,6 +23,9 @@
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const permissions = getContext<PermissionsStore>('permissions');
+	const z_class = z_index.top(1);
+	const z_class2 = z_index.top(2);
+	const z_class3 = z_index.top(3);
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -184,7 +187,7 @@
 			{#if permissions.auth('Group::name::*')}
 			<StringTh
 				name={$LL.graphql.objects.Group.fields.name.name()}
-				bind:expression={args.name}
+				bind:value={args.name}
 				bind:sort={orderBy.name}
 				on:filter={(e) => query()}
 			/>
@@ -192,7 +195,7 @@
 			{#if permissions.auth('Group::description::*')}
 			<StringTh
 				name={$LL.graphql.objects.Group.fields.description.name()}
-				bind:expression={args.description}
+				bind:value={args.description}
 				bind:sort={orderBy.description}
 				on:filter={(e) => query()}
 			/>
@@ -200,7 +203,7 @@
 			{#if permissions.auth('Group::path::*')}
 			<StringTh
 				name={$LL.graphql.objects.Group.fields.path.name()}
-				bind:expression={args.path}
+				bind:value={args.path}
 				bind:sort={orderBy.path}
 				on:filter={(e) => query()}
 			/>
@@ -208,7 +211,7 @@
 			{#if permissions.auth('Group::deep::*')}
 			<IntTh
 				name={$LL.graphql.objects.Group.fields.deep.name()}
-				bind:expression={args.deep}
+				bind:value={args.deep}
 				bind:sort={orderBy.deep}
 				on:filter={(e) => query()}
 			/>
@@ -216,7 +219,7 @@
 			{#if permissions.auth('Group::parentId::*')}
 			<StringTh
 				name={$LL.graphql.objects.Group.fields.parentId.name()}
-				bind:expression={args.parentId}
+				bind:value={args.parentId}
 				bind:sort={orderBy.parentId}
 				on:filter={(e) => query()}
 			/>
@@ -230,7 +233,7 @@
 		<tbody>
 			{#if nodes && nodes.length > 0}
 				{#each nodes as node, row}
-					{#if node && node.id}
+					{#if node}
 						<tr class="hover">
 							<th class="{z_class} w-12">
 								<label>
@@ -247,7 +250,7 @@
 								bind:value={node.name}
 								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Group::name::WRITE')}
-								errors={errors[row]?.iterms?.name}
+								errors={errors?.[row]?.iterms?.name}
 							/>
 							{/if}
 							{#if permissions.auth('Group::description::*')}
@@ -256,7 +259,7 @@
 								bind:value={node.description}
 								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Group::description::WRITE')}
-								errors={errors[row]?.iterms?.description}
+								errors={errors?.[row]?.iterms?.description}
 							/>
 							{/if}
 							{#if permissions.auth('Group::path::*')}
@@ -265,7 +268,7 @@
 								bind:value={node.path}
 								on:save={(e) => updateField({ path: node?.path, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Group::path::WRITE')}
-								errors={errors[row]?.iterms?.path}
+								errors={errors?.[row]?.iterms?.path}
 							/>
 							{/if}
 							{#if permissions.auth('Group::deep::*')}
@@ -274,7 +277,7 @@
 								bind:value={node.deep}
 								on:save={(e) => updateField({ deep: node?.deep, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Group::deep::WRITE')}
-								errors={errors[row]?.iterms?.deep}
+								errors={errors?.[row]?.iterms?.deep}
 							/>
 							{/if}
 							{#if permissions.auth('Group::parentId::*')}
@@ -283,7 +286,7 @@
 								bind:value={node.parentId}
 								on:save={(e) => updateField({ parentId: node?.parentId, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Group::parentId::WRITE')}
-								errors={errors[row]?.iterms?.parentId}
+								errors={errors?.[row]?.iterms?.parentId}
 							/>
 							{/if}
 							<th class="{z_class} hover:{z_class3} w-12">

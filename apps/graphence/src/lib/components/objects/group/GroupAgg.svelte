@@ -6,10 +6,10 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { AdjustmentsHorizontal, Funnel, Bookmark } from '@steeze-ui/heroicons';
 	import type { PermissionsStore } from '@graphace/commons';
-	import { Field } from '@graphace/graphql';
+	import { Field, Directive, type GraphQLError } from '@graphace/graphql';
 	import { Combobox, type Group as G, Pagination, type Option, z_index } from '@graphace/ui';
 	import GroupFilter from '~/lib/components/objects/group/GroupFilter.svelte';
-	import type { GroupConnectionQueryArguments } from '~/lib/types/schema';
+	import type { GroupConnection, GroupConnectionQueryArguments } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	
 	export let fields: Field[] = [];
@@ -32,7 +32,13 @@
 	const permissions = getContext<PermissionsStore>('permissions');
 	
 	const dispatch = createEventDispatcher<{
-		query: { fields: Field[]; queryArguments: GroupConnectionQueryArguments };
+		query: { 
+			fields: Field[];
+			queryArguments: GroupConnectionQueryArguments;
+			directives?: Directive[];
+			then?: (connection: GroupConnection | null | undefined) => void;
+			catch?: (errors: GraphQLError[]) => void;
+		};
 		bookmark: { fields: string; queryArguments: string };
 	}>();
 
@@ -44,7 +50,7 @@
 		preventScroll: true
 	});
 
-	const z_class9 = z_index.top(9);
+	const z_class7 = z_index.top(7);
 
 	$: selectOptions = [
 		{
@@ -653,7 +659,7 @@
 
 	let filteredGroupByOptions = groupByOptions;
 
-	if (fields && fields.length > 0) {
+	$: if (fields && fields.length > 0) {
 		selectColumns = fields.flatMap((field) => {
 			if (field.fields && field.fields.length > 0) {
 				return selectOptions
@@ -677,7 +683,7 @@
 		});
 	}
 
-	if (queryArguments.groupBy && queryArguments.groupBy.length > 0) {
+	$: if (queryArguments.groupBy && queryArguments.groupBy.length > 0) {
 		groupByColumns = groupByOptions.filter((option) =>
 			queryArguments.groupBy?.some((column) => option.value === column)
 		);
@@ -850,9 +856,12 @@
 	};
 
 	export const queryPage = (toPageNumber?: number | undefined) => {
+		if (toPageNumber) {
+			queryArguments.offset = (toPageNumber - 1) * pageSize;
+		}
 		dispatch('query', {
-			fields: [...groupByColumns.map((option) => new Field({ name: option.value })), ...buildFields()],
-			queryArguments: buildArguments(toPageNumber)
+			fields: [...groupByColumns.map((option) => new Field({ name: option.value })), ...fields],
+			queryArguments
 		});
 	};
 
@@ -891,6 +900,7 @@
 						!Array.isArray(e.detail.value) ||
 						e.detail.value.some((selectColumn) => selectColumn.value === orderColumn.value)
 				);
+				fields = optionsToFields();
 				queryPage(1);
 			}}
 		/>
@@ -901,9 +911,9 @@
 				</button>
 			</div>
 			{#if $open}
-				<div use:melt={$overlay} class="fixed inset-0 {z_class9}" />
+				<div use:melt={$overlay} class="fixed inset-0 {z_class7}" />
 				<div
-					class="p-1 rounded-xl bg-base-200 shadow {z_class9}"
+					class="p-1 rounded-xl bg-base-200 shadow {z_class7}"
 					use:melt={$content}
 				>
 					<div use:melt={$arrow} />
@@ -933,6 +943,7 @@
 										!Array.isArray(e.detail.value) ||
 										e.detail.value.some((groupColumn) => groupColumn.value === orderColumn.value)
 								);
+								queryArguments = buildArguments();
 								queryPage(1);
 							}}
 						/>
@@ -967,6 +978,7 @@
 								}
 							}}
 							on:change={(e) => {
+								queryArguments = buildArguments();
 								queryPage(1);
 							}}
 						/>
@@ -975,7 +987,14 @@
 			{/if}
 		{/if}
 		{#if showFilterButton}
-			<GroupFilter bind:expression={queryArguments} let:trigger on:filter={(e) => queryPage(1)}>
+			<GroupFilter
+				bind:value={queryArguments}
+				let:trigger
+				on:filter={(e) => {
+					queryArguments = buildArguments();
+					queryPage(1);
+				}}
+			>
 				<div class="tooltip" data-tip={$LL.graphence.components.agg.filter()}>
 					<button class="btn btn-square" use:melt={trigger}>
 						<Icon src={Funnel} class="h-5 w-5" />
@@ -989,8 +1008,8 @@
 					class="btn btn-square"
 					on:click={(e) =>
 						dispatch('bookmark', {
-							fields: JSON.stringify(buildFields()),
-							queryArguments: JSON.stringify(buildArguments())
+							fields: JSON.stringify(fields),
+							queryArguments: JSON.stringify(queryArguments)
 						})}
 				>
 					<Icon src={Bookmark} class="h-5 w-5" />
@@ -1006,7 +1025,16 @@
 			<span class="loading loading-bars loading-lg" />
 		</div>
 	{:else}
-		<slot />
+		<slot
+			{fields}
+			{queryArguments}
+			{selectOptions}
+			{groupByOptions}
+			{getFieldName}
+			{getGrouByName}
+			{queryPage}
+			{buildArguments}
+		/>
 	{/if}
 </div>
 {#if showFooter}

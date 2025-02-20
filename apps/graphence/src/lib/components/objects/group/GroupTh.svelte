@@ -6,14 +6,14 @@
 	import type { GroupExpression } from '~/lib/types/schema';
 
 	export let name: string;
-	export let expression: GroupExpression | null | undefined;
+	export let value: GroupExpression | null | undefined;
 </script>
 
-<GroupFilter bind:expression let:trigger on:filter>
+<GroupFilter bind:value let:trigger on:filter>
 	<td>
 		<a class="link group inline-flex" href={null} use:melt={trigger}>
 			{name}
-			{#if expression && Object.keys(expression).length > 0}
+			{#if value && Object.keys(value).length > 0}
 				<span class="flex-none">
 					<Icon src={Funnel} class="h-5 w-5" />
 				</span>

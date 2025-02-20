@@ -12,23 +12,16 @@
 	} from 'chart.js';
 	import autocolors from 'chartjs-plugin-autocolors';
 	import { type Field } from '@graphace/graphql';
-	import GroupAgg from '~/lib/components/objects/group/GroupAgg.svelte';
 	import type { Group, GroupConnection, GroupConnectionQueryArguments } from '~/lib/types/schema';
 
 	export let connection: GroupConnection;
 	export let fields: Field[] = [];
 	export let queryArguments: GroupConnectionQueryArguments = {};
-	export let isFetching: boolean = false;
-	export let showHeader: boolean = true;
-	export let showFooter: boolean = true;
-	export let showOptionButton: boolean = true;
-	export let showFilterButton: boolean = true;
-	export let showBookmarkButton: boolean = false;
+	export let getFieldName: (fieldName: string, subFieldName?: string) => string;
 
 	Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, autocolors);
 
 	let data: ChartData<'bar', (number | [number, number])[], unknown> = { datasets: [] };
-	let getFieldName: (fieldName: string, subFieldName?: string) => string;
 
 	$: if (connection) {
 		const nodes = connection?.edges?.map((edge) => edge?.node);
@@ -58,22 +51,6 @@
 			};
 		}
 	}
-	$: totalCount = connection?.totalCount || 0;
 </script>
 
-<GroupAgg
-	bind:fields
-	bind:queryArguments
-	{isFetching}
-	{showHeader}
-	{showFooter}
-	{showOptionButton}
-	{showFilterButton}
-	{showBookmarkButton}
-	{totalCount}
-	on:query
-	on:bookmark
-	bind:getFieldName
->
-	<Bar {data} options={{ responsive: true, maintainAspectRatio: false }} />
-</GroupAgg>
+<Bar {data} options={{ responsive: true, maintainAspectRatio: false }} />

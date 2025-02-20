@@ -6,7 +6,7 @@
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 
 	export let name: string;
-	export let expression: StringExpression | null | undefined;
+	export let value: StringExpression | null | undefined;
 	export let sort: Sort | null | undefined = undefined;
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
@@ -16,4 +16,4 @@
 	];
 </script>
 
-<EnumTh {name} {enums} bind:expression bind:sort on:filter />
+<EnumTh {name} {enums} bind:value bind:sort on:filter />

@@ -297,7 +297,7 @@
 			{#if permissions.auth('User::name::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.name.name()}
-				bind:expression={args.name}
+				bind:value={args.name}
 				bind:sort={orderBy.name}
 				on:filter={(e) => query()}
 			/>
@@ -305,7 +305,7 @@
 			{#if permissions.auth('User::description::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.description.name()}
-				bind:expression={args.description}
+				bind:value={args.description}
 				bind:sort={orderBy.description}
 				on:filter={(e) => query()}
 			/>
@@ -313,7 +313,7 @@
 			{#if permissions.auth('User::lastName::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.lastName.name()}
-				bind:expression={args.lastName}
+				bind:value={args.lastName}
 				bind:sort={orderBy.lastName}
 				on:filter={(e) => query()}
 			/>
@@ -321,7 +321,7 @@
 			{#if permissions.auth('User::login::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.login.name()}
-				bind:expression={args.login}
+				bind:value={args.login}
 				bind:sort={orderBy.login}
 				on:filter={(e) => query()}
 			/>
@@ -329,7 +329,7 @@
 			{#if permissions.auth('User::email::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.email.name()}
-				bind:expression={args.email}
+				bind:value={args.email}
 				bind:sort={orderBy.email}
 				on:filter={(e) => query()}
 			/>
@@ -337,14 +337,14 @@
 			{#if permissions.auth('User::phones::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.phones.name()}
-				bind:expression={args.phones}
+				bind:value={args.phones}
 				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if permissions.auth('User::disable::*')}
 			<BooleanTh
 				name={$LL.graphql.objects.User.fields.disable.name()}
-				bind:expression={args.disable}
+				bind:value={args.disable}
 				bind:sort={orderBy.disable}
 				on:filter={(e) => query()}
 			/>
@@ -352,21 +352,21 @@
 			{#if permissions.auth('User::groups::*')}
 			<GroupTh
 				name={$LL.graphql.objects.User.fields.groups.name()}
-				bind:expression={args.groups}
+				bind:value={args.groups}
 				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if permissions.auth('User::roles::*')}
 			<RoleTh
 				name={$LL.graphql.objects.User.fields.roles.name()}
-				bind:expression={args.roles}
+				bind:value={args.roles}
 				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if permissions.auth('User::realm::*')}
 			<RealmTh
 				name={$LL.graphql.objects.User.fields.realm.name()}
-				bind:expression={args.realm}
+				bind:value={args.realm}
 				on:filter={(e) => query()}
 			/>
 			{/if}
@@ -379,7 +379,7 @@
 		<tbody>
 			{#if nodes && nodes.length > 0}
 				{#each nodes as node, row}
-					{#if node && node.id}
+					{#if node}
 						<tr class="hover">
 							<th class="{z_class} w-12">
 								<label>
@@ -392,7 +392,7 @@
 								bind:value={node.name}
 								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::name::WRITE')}
-								errors={errors[row]?.iterms?.name}
+								errors={errors?.[row]?.iterms?.name}
 							/>
 							{/if}
 							{#if permissions.auth('User::description::*')}
@@ -401,7 +401,7 @@
 								bind:value={node.description}
 								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::description::WRITE')}
-								errors={errors[row]?.iterms?.description}
+								errors={errors?.[row]?.iterms?.description}
 							/>
 							{/if}
 							{#if permissions.auth('User::lastName::*')}
@@ -410,7 +410,7 @@
 								bind:value={node.lastName}
 								on:save={(e) => updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::lastName::WRITE')}
-								errors={errors[row]?.iterms?.lastName}
+								errors={errors?.[row]?.iterms?.lastName}
 							/>
 							{/if}
 							{#if permissions.auth('User::login::*')}
@@ -419,7 +419,7 @@
 								bind:value={node.login}
 								on:save={(e) => updateField({ login: node?.login, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::login::WRITE')}
-								errors={errors[row]?.iterms?.login}
+								errors={errors?.[row]?.iterms?.login}
 							/>
 							{/if}
 							{#if permissions.auth('User::email::*')}
@@ -428,7 +428,7 @@
 								bind:value={node.email}
 								on:save={(e) => updateField({ email: node?.email, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::email::WRITE')}
-								errors={errors[row]?.iterms?.email}
+								errors={errors?.[row]?.iterms?.email}
 							/>
 							{/if}
 							{#if permissions.auth('User::phones::*')}
@@ -438,7 +438,7 @@
 								list
 								on:save={(e) => updateField({ phones: node?.phones, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::phones::WRITE')}
-								errors={errors[row]?.iterms?.phones}
+								errors={errors?.[row]?.iterms?.phones}
 							/>
 							{/if}
 							{#if permissions.auth('User::disable::*')}
@@ -447,7 +447,7 @@
 								bind:value={node.disable}
 								on:save={(e) => updateField({ disable: node?.disable, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::disable::WRITE')}
-								errors={errors[row]?.iterms?.disable}
+								errors={errors?.[row]?.iterms?.disable}
 							/>
 							{/if}
 							{#if permissions.auth('User::groups::*')}
@@ -455,7 +455,7 @@
 								name="groups"
 								bind:value={node.groups}
 								list
-								errors={errors[row]?.iterms?.groups}
+								errors={errors?.[row]?.iterms?.groups}
 								readonly={!permissions.auth('User::groups::WRITE')}
 								on:save={(e) =>
 									updateField({ groups: node?.groups, where: { id: {val: node?.id } } }, row)}
@@ -466,14 +466,14 @@
 								name="roles"
 								bind:value={node.roles}
 								list
-								errors={errors[row]?.iterms?.roles}
+								errors={errors?.[row]?.iterms?.roles}
 								readonly={!permissions.auth('User::roles::WRITE')}
 								on:save={(e) =>
 									updateField({ roles: node?.roles, where: { id: {val: node?.id } } }, row)}
 							/>
 							{/if}
 							{#if permissions.auth('User::realm::*')}
-							<ObjectTd name="realm" namedStruct={node.realm} errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+							<ObjectTd name="realm" namedStruct={node.realm} errors={errors?.[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
 							{/if}
 							{#if permissions.auth('User::*::WRITE')}
 							<th class="{z_class} hover:{z_class3} w-24">

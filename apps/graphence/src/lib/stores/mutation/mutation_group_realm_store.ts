@@ -4,7 +4,7 @@ import { createGraphQLMutationStore } from '~/utils';
 import type { QueryRealmArgs, RealmInput, Group } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `mutation Mutation_group_realm($group_id: String, $group_realm: RealmInput, $id: StringExpression, $name: StringExpression, $description: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $groupBy: [String!]) {
-  group(where: { id: { val: $group_id } }, group_realm: $group_realm) @merge {
+  group(where: { id: { val: $group_id } }, realm: $group_realm) @merge {
     id
     name
     description
