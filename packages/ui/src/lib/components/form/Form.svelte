@@ -3,13 +3,7 @@
 	import type { Readable } from 'svelte/store';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import {
-		Trash,
-		ArrowUturnLeft,
-		Link,
-		Check,
-		XMark
-	} from '@steeze-ui/heroicons';
+	import { Trash, ArrowUturnLeft, Link, Check, XMark } from '@steeze-ui/heroicons';
 
 	export let title: string;
 	export let showSaveButton: boolean = true;
@@ -135,6 +129,7 @@
 				{$LL.ui.button.back()}
 			</button>
 		{/if}
+		<slot name="header" />
 	</div>
 </div>
 <div class="divider" />

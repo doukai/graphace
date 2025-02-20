@@ -95,6 +95,23 @@ export const createGrid = (
                             )
                         );
                     },
+                    beforeUpdate() {
+                        const a = column.value
+                        console.log(a);
+                    },
+                    getValue() {
+                        const a = column.value
+                        console.log(a);
+                    },
+                    beforeAutoSave(val?: any) {
+                        const a = column.value
+                        console.log(a);
+                        return true;
+                    },
+                    beforeDisconnect() {
+                        const a = column.value
+                        console.log(a);
+                    },
                     componentDidRender() {
                         if (this.element) {
                             const message = getErrors()?.[this.editCell?.y!]?.[column.prop]?.errors?.[0]?.message;
@@ -614,7 +631,7 @@ export const createGrid = (
                             case 'BigDecimal':
                                 return [Number.parseFloat(value)];
                             default:
-                                return [value];
+                                return ['' + value];
                         }
                     }
                 } else {
@@ -631,7 +648,7 @@ export const createGrid = (
                             case 'BigDecimal':
                                 return Number.parseFloat(value);
                             default:
-                                return value;
+                                return '' + value;
                         }
                     }
                 }
@@ -671,7 +688,7 @@ export const createGrid = (
                         case 'BigDecimal':
                             return [Number.parseFloat(value)];
                         default:
-                            return [value];
+                            return ['' + value];
                     }
                 }
             } else {
@@ -688,7 +705,7 @@ export const createGrid = (
                         case 'BigDecimal':
                             return Number.parseFloat(value);
                         default:
-                            return value;
+                            return '' + value;
                     }
                 }
             }
@@ -1001,7 +1018,7 @@ export const createGrid = (
         writeFileXLSX(wb, `${name}.xlsx`);
     };
 
-    const importFromXlsx = async (columns: ColumnRegular[] | ColumnGrouping[], file: File): Promise<DataType[]> => {
+    const importFromXlsx = async (typeName: string, columns: ColumnRegular[] | ColumnGrouping[], file: File): Promise<DataType[]> => {
         const data = await file.arrayBuffer();
         const wb = read(data);
         return utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]])
@@ -1012,9 +1029,12 @@ export const createGrid = (
                             const column = columns.find((column) => column.name === entry[0] || (column as ColumnGrouping).children?.some(child => child.name === entry[0]));
                             if (column) {
                                 if ((column as ColumnRegular).name == entry[0]) {
-                                    return [(column as ColumnRegular)?.prop, entry[1]];
+                                    const prop = (column as ColumnRegular)?.prop as string;
+                                    return [prop, getTypeFieldValue(entry[1], typeName, prop)];
                                 } else {
-                                    return [((column as ColumnGrouping).children?.find(child => child.name === entry[0]) as ColumnRegular)?.prop, entry[1]];
+                                    const prop = ((column as ColumnGrouping).children?.find(child => child.name === entry[0]) as ColumnRegular)?.prop as string;
+                                    const props = prop.split('.');
+                                    return [prop, getTypeFieldValue(entry[1], typeName, props[0], props[1])];
                                 }
                             }
                         })

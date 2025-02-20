@@ -213,9 +213,30 @@ function createZIndex() {
     const { subscribe, set, update } = z_index;
     return {
         subscribe,
-        next: (n?: number | undefined) => update(($z_index) => $z_index + (n || 10)),
-        top: (n?: number | undefined) => z_classes[get(z_index) + (n || 0)],
-        topHover: (n?: number | undefined) => z_hover_classes[get(z_index) + (n || 0)],
+        next: (n?: number | undefined) => update(($z_index) => {
+            const index = $z_index + (n || 10);
+            if (index > 100) {
+                return 0;
+            } else {
+                return index;
+            }
+        }),
+        top: (n?: number | undefined) => {
+            const index = get(z_index) + (n || 0);
+            if (index > 100) {
+                return z_classes[(n || 0)];
+            } else {
+                return z_classes[index];
+            }
+        },
+        topHover: (n?: number | undefined) => {
+            const index = get(z_index) + (n || 0);
+            if (index > 100) {
+                return z_hover_classes[(n || 0)];
+            } else {
+                return z_hover_classes[index];
+            }
+        },
         reset: () => set(0)
     };
 }
