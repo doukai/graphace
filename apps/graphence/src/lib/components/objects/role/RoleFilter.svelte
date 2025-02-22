@@ -14,73 +14,36 @@
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { RoleExpression } from '~/lib/types/schema';
 
-	export let expression: RoleExpression | null | undefined;
+	export let value: RoleExpression | null | undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const permissions = getContext<PermissionsStore>('permissions');
 
-	const z_class9 = z_index.top(9);
-
-	let _expression = {
-		id: undefined,
-		name: undefined,
-		description: undefined,
-		users: { id: undefined },
-		groups: { id: undefined },
-		composites: { id: undefined },
-		realm: { id: undefined }
-	};
+	const z_class8 = z_index.top(8);
 	
 	const dispatch = createEventDispatcher<{
 		filter: {};
 	}>();
 
-	const filter = (): void => {
-		if (_expression.id) {
-			expression = { ...expression, id: _expression.id };
-		} else {
-			expression = { ...expression, id: undefined };
+	if (value === null || value === undefined || Object.keys(value).length === 0) {
+		value = {
+			id: undefined,
+			name: undefined,
+			description: undefined,
+			users: { id: undefined },
+			groups: { id: undefined },
+			composites: { id: undefined },
+			realm: { id: undefined }
 		}
-		if (_expression.name) {
-			expression = { ...expression, name: _expression.name };
-		} else {
-			expression = { ...expression, name: undefined };
-		}
-		if (_expression.description) {
-			expression = { ...expression, description: _expression.description };
-		} else {
-			expression = { ...expression, description: undefined };
-		}
-		if (_expression.users.id) {
-			expression = { ...expression, users: _expression.users };
-		} else {
-			expression = { ...expression, users: undefined };
-		}
-		if (_expression.groups.id) {
-			expression = { ...expression, groups: _expression.groups };
-		} else {
-			expression = { ...expression, groups: undefined };
-		}
-		if (_expression.composites.id) {
-			expression = { ...expression, composites: _expression.composites };
-		} else {
-			expression = { ...expression, composites: undefined };
-		}
-		if (_expression.realm.id) {
-			expression = { ...expression, realm: _expression.realm };
-		} else {
-			expression = { ...expression, realm: undefined };
-		}
+	}
 
-		if (Object.values(expression).filter((item) => item).length === 0) {
-			expression = undefined;
-		}
+	const filter = (): void => {
 		dispatch('filter', {});
 		$open = false;
 	};
 
 	const clear = (): void => {
-		_expression = {
+		value = {
 			id: undefined,
 			name: undefined,
 			description: undefined,
@@ -89,7 +52,6 @@
 			composites: { id: undefined },
 			realm: { id: undefined }
 		};
-		expression = undefined;
 		dispatch('filter', {});
 		$open = false;
 	};
@@ -106,18 +68,18 @@
 <slot trigger={$trigger} />
 
 {#if $open}
-	<div use:melt={$overlay} class="fixed inset-0 {z_class9}" />
-	<div class="p-1 rounded-xl bg-base-200 shadow {z_class9}" use:melt={$content}>
+	<div use:melt={$overlay} class="fixed inset-0 {z_class8}" />
+	<div class="p-1 rounded-xl bg-base-200 shadow {z_class8}" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="space-y-1 max-h-60 overflow-y-auto">
 			{#if permissions.auth('Role::id::*')}
 			<RoleSelectFilter
 				label={$LL.graphql.objects.Role.name()}
 				name="id"
-				bind:expression={_expression.id}
+				bind:value={value.id}
 				className="md:input-sm"
 				selectClassName="md:select-sm w-full"
-				containerClassName="md:min-h-8 max-w-xs"
+				containerClassName="md:min-h-8"
 				tagClassName="md:badge-sm"
 				menuClassName="md:menu-sm"
 			/>
@@ -127,7 +89,7 @@
 			<StringFilter
 				label={$LL.graphql.objects.Role.fields.name.name()}
 				name="name"
-				bind:expression={_expression.name}
+				bind:value={value.name}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -138,7 +100,7 @@
 			<StringFilter
 				label={$LL.graphql.objects.Role.fields.description.name()}
 				name="description"
-				bind:expression={_expression.description}
+				bind:value={value.description}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -149,9 +111,9 @@
 			<UserSelectFilter
 				label={$LL.graphql.objects.Role.fields.users.name()}
 				name="users"
-				bind:expression={_expression.users.id}
+				bind:value={value.users.id}
 				className="md:input-sm"
-				containerClassName="md:min-h-8 max-w-xs"
+				containerClassName="md:min-h-8"
 				tagClassName="md:badge-sm"
 				menuClassName="md:menu-sm"
 				selectClassName="md:select-sm w-full"
@@ -162,9 +124,9 @@
 			<GroupSelectFilter
 				label={$LL.graphql.objects.Role.fields.groups.name()}
 				name="groups"
-				bind:expression={_expression.groups.id}
+				bind:value={value.groups.id}
 				className="md:input-sm"
-				containerClassName="md:min-h-8 max-w-xs"
+				containerClassName="md:min-h-8"
 				tagClassName="md:badge-sm"
 				menuClassName="md:menu-sm"
 				selectClassName="md:select-sm w-full"
@@ -175,9 +137,9 @@
 			<RoleSelectFilter
 				label={$LL.graphql.objects.Role.fields.composites.name()}
 				name="composites"
-				bind:expression={_expression.composites.id}
+				bind:value={value.composites.id}
 				className="md:input-sm"
-				containerClassName="md:min-h-8 max-w-xs"
+				containerClassName="md:min-h-8"
 				tagClassName="md:badge-sm"
 				menuClassName="md:menu-sm"
 				selectClassName="md:select-sm w-full"
@@ -188,9 +150,9 @@
 			<RealmSelectFilter
 				label={$LL.graphql.objects.Role.fields.realm.name()}
 				name="realm"
-				bind:expression={_expression.realm.id}
+				bind:value={value.realm.id}
 				className="md:input-sm"
-				containerClassName="md:min-h-8 max-w-xs"
+				containerClassName="md:min-h-8"
 				tagClassName="md:badge-sm"
 				menuClassName="md:menu-sm"
 				selectClassName="md:select-sm w-full"

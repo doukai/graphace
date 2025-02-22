@@ -25,6 +25,7 @@
 		{readonly}
 		{disabled}
 		multiple
+		on:change
 	>
 		<option value={undefined} />
 		{#each enums as item}
@@ -41,6 +42,7 @@
 		{className}
 		{readonly}
 		{disabled}
+		on:change
 	>
 		<option value={undefined} />
 		{#each enums as item}

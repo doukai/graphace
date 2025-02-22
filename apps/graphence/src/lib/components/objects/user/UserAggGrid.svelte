@@ -4,19 +4,14 @@
 	import { RevoGrid } from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import type { Field } from '@graphace/graphql';
-	import UserAgg from '~/lib/components/objects/user/UserAgg.svelte';
 	import type { UserConnection, UserConnectionQueryArguments } from '~/lib/types/schema';
 	import { getGridTheme, fieldsToAggColumns, nodesToAggSource } from '~/utils';
 
 	export let connection: UserConnection;
 	export let fields: Field[] = [];
 	export let queryArguments: UserConnectionQueryArguments = {};
-	export let isFetching: boolean = false;
-	export let showHeader: boolean = true;
-	export let showFooter: boolean = true;
-	export let showOptionButton: boolean = true;
-	export let showFilterButton: boolean = true;
-	export let showBookmarkButton: boolean = false;
+	export let getFieldName: (fieldName: string, subFieldName?: string) => string;
+	export let getGrouByName: (fieldName: string) => string;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const themeStore = getContext<Writable<string | undefined>>('theme');
@@ -26,12 +21,8 @@
 		numeric: new NumberColumnType()
 	};
 
-	let getFieldName: (fieldName: string, subFieldName?: string) => string;
-	let getGrouByName: (fieldName: string) => string;
-
 	$: theme = getGridTheme($themeStore);
 	$: nodes = connection?.edges?.map((edge) => edge?.node);
-	$: totalCount = connection?.totalCount || 0;
 
 	$: filter = {
 		localization: {
@@ -75,31 +66,14 @@
 	$: source = nodesToAggSource(typeName, queryArguments.groupBy || [], fields, nodes);
 </script>
 
-<UserAgg
-	bind:fields
-	bind:queryArguments
-	{isFetching}
-	{showHeader}
-	{showFooter}
-	{showOptionButton}
-	{showFilterButton}
-	{showBookmarkButton}
-	{totalCount}
-	className="p-0 md:h-screen"
-	on:query
-	on:bookmark
-	bind:getFieldName
-	bind:getGrouByName
->
-	<RevoGrid
-		{source}
-		{columns}
-		{filter}
-		range={true}
-		resize={true}
-		autoSizeColumn={true}
-		rowHeaders={true}
-		{columnTypes}
-		{theme}
-	/>
-</UserAgg>
+<RevoGrid
+	{source}
+	{columns}
+	{filter}
+	range={true}
+	resize={true}
+	autoSizeColumn={true}
+	rowHeaders={true}
+	{columnTypes}
+	{theme}
+/>

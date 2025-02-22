@@ -7,7 +7,7 @@
 
 	export let name: string;
 	export let value: StringExpression | null | undefined;
-	export let sort: Sort | null | undefined = undefined;
+	export let sort: Sort | null | undefined;
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	$: enums = [

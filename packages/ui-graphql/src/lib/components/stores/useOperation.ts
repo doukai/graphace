@@ -194,8 +194,8 @@ export function createNamedQueryStore(event: LoadEvent | RequestEvent, url: stri
     const { subscribe, set, update } = data;
 
     const fetch = async (query: { fieldName: string, idName: string }, variables?: QueryNamedStructArgs | undefined) => {
-        const graphql = /* GraphQL */ `query ${query.fieldName}NamedQuery($name: StringExpression, $first: Int) {
-	${query.fieldName}(name: $name, first: $first) {
+        const graphql = /* GraphQL */ `query ${query.fieldName}NamedQuery($${query.idName}: StringExpression, $name: StringExpression, $first: Int) {
+	${query.fieldName}(${query.idName}: $${query.idName}, name: $name, first: $first) {
 		${query.idName}
 		name
 		description

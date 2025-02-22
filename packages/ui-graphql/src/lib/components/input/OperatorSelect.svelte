@@ -3,7 +3,7 @@
 	import type { Readable } from 'svelte/store';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	export let className: string = '';
-	
+
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	export let value:
@@ -30,6 +30,7 @@
 </script>
 
 <select class="select select-bordered {className}" bind:value on:change>
+	<option value={undefined} />
 	<option value="EQ" selected>{$LL.ui_graphql.table.th.eq()}</option>
 	<option value="NEQ">{$LL.ui_graphql.table.th.neq()}</option>
 	<option value="LK">{$LL.ui_graphql.table.th.lk()}</option>

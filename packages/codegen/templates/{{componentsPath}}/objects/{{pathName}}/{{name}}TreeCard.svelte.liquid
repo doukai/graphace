@@ -7,8 +7,8 @@
 	export let currentDeep = 0;
 	export let deeps = 2;
 	export let showSearchInput: boolean = true;
-	export let active{{ name }}Id: string | null | undefined = undefined;
-	export let {{ name | camelCase }}Name: string | undefined = undefined;
+	export let active{{ name }}Id: string | null | undefined;
+	export let {{ name | camelCase }}Name: string | undefined;
 
 	const { treeQueryStore } = getContext<StructQueryStores>('structQueryStores');
 	treeQueryStore.fetch({ fieldName: '{{ name | camelCase }}List', idName: '{{ idName }}' }, { deep: { opr: 'LT', val: deeps } });

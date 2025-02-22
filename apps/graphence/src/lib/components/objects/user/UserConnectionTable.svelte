@@ -2,7 +2,7 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import type { Errors, PermissionsStore} from '@graphace/commons';
-	import type { GraphQLError, GlobalGraphQLErrorMessageFunction, GraphQLErrorsFunction } from '@graphace/graphql';
+	import { type GraphQLError, buildArguments } from '@graphace/graphql';
 	import { Table, TableHead, TableLoading, TableEmpty, Pagination, messageBoxs, notifications, z_index } from '@graphace/ui';
 	import { ObjectTd, StringTh, StringTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
@@ -61,8 +61,8 @@
 
 	export let args: QueryUserConnectionArgs = {};
 	export let orderBy: UserOrderBy = {};
-	export let after: string | undefined = undefined;
-	export let before: string | undefined = undefined;
+	export let after: string | undefined;
+	export let before: string | undefined;
 	export let pageNumber: number = 1;
 	export let pageSize: number = 10;
 
@@ -70,25 +70,27 @@
 	export let selectedIdList: (string | null | undefined)[] = [];
 
 	export const queryPage = (toPageNumber?: number | undefined) => {
+		let _args: QueryUserConnectionArgs = buildArguments(args);
+
 		if (Object.keys(orderBy).length > 0) {
-			args.orderBy = orderBy;
+			_args.orderBy = orderBy;
 		} else {
-			args.orderBy = undefined;
+			_args.orderBy = undefined;
 		}
 
 		if (after) {
-			args.after = after;
-			args.first = pageSize;
+			_args.after = after;
+			_args.first = pageSize;
 		} else if (before) {
-			args.before = before;
-			args.last = pageSize;
+			_args.before = before;
+			_args.last = pageSize;
 		} else {
-			args.offset = ((toPageNumber || pageNumber) - 1) * pageSize;
-			args.first = pageSize;
+			_args.offset = ((toPageNumber || pageNumber) - 1) * pageSize;
+			_args.first = pageSize;
 		}
 
 		dispatch('fetch', {
-			args,
+			args: _args,
 			then: (data) => {
 				errors = {};
 			},
@@ -100,38 +102,38 @@
 	};
 
 	export const search = (searchValue: string | undefined) => {
-		let args: QueryUserConnectionArgs = {};
+		let _args: QueryUserConnectionArgs = {};
 		if (searchValue) {
-			args.cond = 'OR';
-			args.name = { opr: 'LK', val: `%${searchValue}%` };
-			args.description = { opr: 'LK', val: `%${searchValue}%` };
-			args.lastName = { opr: 'LK', val: `%${searchValue}%` };
-			args.login = { opr: 'LK', val: `%${searchValue}%` };
-			args.email = { opr: 'LK', val: `%${searchValue}%` };
-			args.phones = { opr: 'LK', val: `%${searchValue}%` };
+			_args.cond = 'OR';
+			_args.name = { opr: 'LK', val: `%${searchValue}%` };
+			_args.description = { opr: 'LK', val: `%${searchValue}%` };
+			_args.lastName = { opr: 'LK', val: `%${searchValue}%` };
+			_args.login = { opr: 'LK', val: `%${searchValue}%` };
+			_args.email = { opr: 'LK', val: `%${searchValue}%` };
+			_args.phones = { opr: 'LK', val: `%${searchValue}%` };
 		} else {
-			args.cond = undefined;
-			args.name = undefined;
-			args.description = undefined;
-			args.lastName = undefined;
-			args.login = undefined;
-			args.email = undefined;
-			args.phones = undefined;
+			_args.cond = undefined;
+			_args.name = undefined;
+			_args.description = undefined;
+			_args.lastName = undefined;
+			_args.login = undefined;
+			_args.email = undefined;
+			_args.phones = undefined;
 		}
 		
 		if (after) {
-			args.after = after;
-			args.first = pageSize;
+			_args.after = after;
+			_args.first = pageSize;
 		} else if (before) {
-			args.before = before;
-			args.last = pageSize;
+			_args.before = before;
+			_args.last = pageSize;
 		} else {
-			args.offset = (pageNumber - 1) * pageSize;
-			args.first = pageSize;
+			_args.offset = (pageNumber - 1) * pageSize;
+			_args.first = pageSize;
 		}
 
 		dispatch('fetch', {
-			args,
+			args: _args,
 			then: (data) => {
 				errors = {};
 			},
@@ -324,7 +326,7 @@
 			{#if permissions.auth('User::name::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.name.name()}
-				bind:expression={args.name}
+				bind:value={args.name}
 				bind:sort={orderBy.name}
 				on:filter={(e) => queryPage(1)}
 			/>
@@ -332,7 +334,7 @@
 			{#if permissions.auth('User::description::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.description.name()}
-				bind:expression={args.description}
+				bind:value={args.description}
 				bind:sort={orderBy.description}
 				on:filter={(e) => queryPage(1)}
 			/>
@@ -340,7 +342,7 @@
 			{#if permissions.auth('User::lastName::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.lastName.name()}
-				bind:expression={args.lastName}
+				bind:value={args.lastName}
 				bind:sort={orderBy.lastName}
 				on:filter={(e) => queryPage(1)}
 			/>
@@ -348,7 +350,7 @@
 			{#if permissions.auth('User::login::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.login.name()}
-				bind:expression={args.login}
+				bind:value={args.login}
 				bind:sort={orderBy.login}
 				on:filter={(e) => queryPage(1)}
 			/>
@@ -356,7 +358,7 @@
 			{#if permissions.auth('User::email::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.email.name()}
-				bind:expression={args.email}
+				bind:value={args.email}
 				bind:sort={orderBy.email}
 				on:filter={(e) => queryPage(1)}
 			/>
@@ -364,14 +366,14 @@
 			{#if permissions.auth('User::phones::*')}
 			<StringTh
 				name={$LL.graphql.objects.User.fields.phones.name()}
-				bind:expression={args.phones}
+				bind:value={args.phones}
 				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('User::disable::*')}
 			<BooleanTh
 				name={$LL.graphql.objects.User.fields.disable.name()}
-				bind:expression={args.disable}
+				bind:value={args.disable}
 				bind:sort={orderBy.disable}
 				on:filter={(e) => queryPage(1)}
 			/>
@@ -379,21 +381,21 @@
 			{#if permissions.auth('User::groups::*')}
 			<GroupTh
 				name={$LL.graphql.objects.User.fields.groups.name()}
-				bind:expression={args.groups}
+				bind:value={args.groups}
 				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('User::roles::*')}
 			<RoleTh
 				name={$LL.graphql.objects.User.fields.roles.name()}
-				bind:expression={args.roles}
+				bind:value={args.roles}
 				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
 			{#if permissions.auth('User::realm::*')}
 			<RealmTh
 				name={$LL.graphql.objects.User.fields.realm.name()}
-				bind:expression={args.realm}
+				bind:value={args.realm}
 				on:filter={(e) => queryPage(1)}
 			/>
 			{/if}
@@ -408,7 +410,7 @@
 		<tbody>
 			{#if nodes && nodes.length > 0}
 				{#each nodes as node, row}
-					{#if node && node.id}
+					{#if node}
 						<tr class="hover">
 							<th class="{z_class} w-12">
 								<label>
@@ -421,7 +423,7 @@
 								bind:value={node.name}
 								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::name::WRITE')}
-								errors={errors[row]?.iterms?.name}
+								errors={errors?.[row]?.iterms?.name}
 							/>
 							{/if}
 							{#if permissions.auth('User::description::*')}
@@ -430,7 +432,7 @@
 								bind:value={node.description}
 								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::description::WRITE')}
-								errors={errors[row]?.iterms?.description}
+								errors={errors?.[row]?.iterms?.description}
 							/>
 							{/if}
 							{#if permissions.auth('User::lastName::*')}
@@ -439,7 +441,7 @@
 								bind:value={node.lastName}
 								on:save={(e) => updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::lastName::WRITE')}
-								errors={errors[row]?.iterms?.lastName}
+								errors={errors?.[row]?.iterms?.lastName}
 							/>
 							{/if}
 							{#if permissions.auth('User::login::*')}
@@ -448,7 +450,7 @@
 								bind:value={node.login}
 								on:save={(e) => updateField({ login: node?.login, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::login::WRITE')}
-								errors={errors[row]?.iterms?.login}
+								errors={errors?.[row]?.iterms?.login}
 							/>
 							{/if}
 							{#if permissions.auth('User::email::*')}
@@ -457,7 +459,7 @@
 								bind:value={node.email}
 								on:save={(e) => updateField({ email: node?.email, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::email::WRITE')}
-								errors={errors[row]?.iterms?.email}
+								errors={errors?.[row]?.iterms?.email}
 							/>
 							{/if}
 							{#if permissions.auth('User::phones::*')}
@@ -467,7 +469,7 @@
 								list
 								on:save={(e) => updateField({ phones: node?.phones, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::phones::WRITE')}
-								errors={errors[row]?.iterms?.phones}
+								errors={errors?.[row]?.iterms?.phones}
 							/>
 							{/if}
 							{#if permissions.auth('User::disable::*')}
@@ -476,7 +478,7 @@
 								bind:value={node.disable}
 								on:save={(e) => updateField({ disable: node?.disable, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('User::disable::WRITE')}
-								errors={errors[row]?.iterms?.disable}
+								errors={errors?.[row]?.iterms?.disable}
 							/>
 							{/if}
 							{#if permissions.auth('User::groups::*')}
@@ -484,7 +486,7 @@
 								name="groups"
 								bind:value={node.groups}
 								list
-								errors={errors[row]?.iterms?.groups}
+								errors={errors?.[row]?.iterms?.groups}
 								readonly={!permissions.auth('User::groups::WRITE')}
 								on:save={(e) =>
 									updateField({ groups: node?.groups, where: { id: { val: node?.id } } }, row)}
@@ -495,14 +497,14 @@
 								name="roles"
 								bind:value={node.roles}
 								list
-								errors={errors[row]?.iterms?.roles}
+								errors={errors?.[row]?.iterms?.roles}
 								readonly={!permissions.auth('User::roles::WRITE')}
 								on:save={(e) =>
 									updateField({ roles: node?.roles, where: { id: { val: node?.id } } }, row)}
 							/>
 							{/if}
 							{#if permissions.auth('User::realm::*')}
-							<ObjectTd name="realm" namedStruct={node.realm} errors={errors[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+							<ObjectTd name="realm" namedStruct={node.realm} errors={errors?.[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
 							{/if}
 							{#if permissions.auth('User::*::WRITE')}
 							<th class="{z_class} hover:{z_class3} w-24">

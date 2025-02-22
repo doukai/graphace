@@ -6,10 +6,10 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { AdjustmentsHorizontal, Funnel, Bookmark } from '@steeze-ui/heroicons';
 	import type { PermissionsStore } from '@graphace/commons';
-	import { Field } from '@graphace/graphql';
+	import { Field, Directive, type GraphQLError } from '@graphace/graphql';
 	import { Combobox, type Group as G, Pagination, type Option, z_index } from '@graphace/ui';
 	import GroupFilter from '~/lib/components/objects/group/GroupFilter.svelte';
-	import type { GroupConnectionQueryArguments } from '~/lib/types/schema';
+	import type { GroupConnection, GroupConnectionQueryArguments } from '~/lib/types/schema';
 	import { __schema } from '~/utils';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	
@@ -17,7 +17,7 @@
 	export let queryFields: Field[] = [];
 	export let queryArguments: GroupConnectionQueryArguments = {};
 	export let selectColumns: Option[] = [];
-	export let join: Option | undefined = undefined;
+	export let join: Option | undefined;
 	export let joinColumns: Option[] = [];
 	export let orderByColumns: Option[] = [];
 	export let totalCount: number = 0;
@@ -37,7 +37,13 @@
 	const idFieldName = 'id';
 	
 	const dispatch = createEventDispatcher<{
-		query: { fields: Field[]; queryArguments: GroupConnectionQueryArguments };
+		query: { 
+			fields: Field[];
+			queryArguments: GroupConnectionQueryArguments;
+			directives?: Directive[];
+			then?: (connection: GroupConnection | null | undefined) => void;
+			catch?: (errors: GraphQLError[]) => void;
+		};
 		bookmark: { fields: string; queryArguments: string };
 	}>();
 
@@ -49,7 +55,7 @@
 		preventScroll: true
 	});
 
-	const z_class9 = z_index.top(9);
+	const z_class7 = z_index.top(7);
 
 	$: selectOptions = [
 		{
@@ -293,7 +299,7 @@
 
 	let filteredJoinColumnOptions = joinColumnOptions;
 
-	if (fields && fields.length > 0) {
+	$: if (fields && fields.length > 0) {
 		selectColumns = fields.flatMap((field) => {
 			if (field.fields && field.fields.length > 0) {
 				return selectOptions
@@ -405,34 +411,6 @@
 		];
 	};
 
-	const buildFields = (): Field[] => {
-		fields = optionsToFields();
-		return fields;
-	};
-
-	const buildQueryFields = (): Field[] => {
-		queryFields = optionsToFields().map((field) => {
-			if (field.fields) {
-				const idFieldName = __schema
-					.getType(
-						__schema.getType(typeName)?.getField(field.name)?.getType().getNamedType()?.getName()!
-					)
-					?.getIDField()
-					?.getName();
-				if (!field.fields.some((subField) => subField.name === idFieldName)) {
-					field.fields.push(new Field({ name: idFieldName! }));
-				}
-			}
-			return field;
-		});
-
-		if (!queryFields.some((subField) => subField.name === idFieldName)) {
-			queryFields.push(new Field({ name: idFieldName }));
-		}
-
-		return queryFields;
-	};
-
 	export const buildArguments = (toPageNumber?: number | undefined, limit?: number | undefined): GroupConnectionQueryArguments => {
 		if (!queryArguments) {
 			queryArguments = {};
@@ -498,8 +476,27 @@
 	};
 
 	export const queryPage = (toPageNumber?: number | undefined) => {
-		buildFields();
-		dispatch('query', { fields: buildQueryFields(), queryArguments: buildArguments(toPageNumber) });
+		if (toPageNumber) {
+			queryArguments.offset = (toPageNumber - 1) * pageSize;
+		}
+		const _fields = optionsToFields();
+		if (!_fields.some((subField) => subField.name === idFieldName)) {
+			_fields.push(new Field({ name: idFieldName }));
+		}
+		_fields.forEach((field) => {
+			if (field.fields) {
+				const idFieldName = __schema
+					.getType(
+						__schema.getType(typeName)?.getField(field.name)?.getType().getNamedType()?.getName()!
+					)
+					?.getIDField()
+					?.getName();
+				if (!field.fields.some((subField) => subField.name === idFieldName)) {
+					field.fields.push(new Field({ name: idFieldName! }));
+				}
+			}
+		});
+		dispatch('query', { fields: _fields, queryArguments });
 	};
 
 	queryPage();
@@ -537,6 +534,7 @@
 						!Array.isArray(e.detail.value) ||
 						e.detail.value.some((selectColumn) => selectColumn.value === orderColumn.value)
 				);
+				fields = optionsToFields();
 				queryPage(1);
 			}}
 		/>
@@ -547,9 +545,9 @@
 				</button>
 			</div>
 			{#if $open}
-				<div use:melt={$overlay} class="fixed inset-0 {z_class9}" />
+				<div use:melt={$overlay} class="fixed inset-0 {z_class7}" />
 				<div
-					class="p-1 rounded-xl bg-base-200 shadow {z_class9}"
+					class="p-1 rounded-xl bg-base-200 shadow {z_class7}"
 					use:melt={$content}
 				>
 					<div use:melt={$arrow} />
@@ -559,7 +557,7 @@
 							options={filteredJoinOptions}
 							rootClassName="w-full"
 							className="md:input-xs"
-							containerClassName="md:min-h-8 max-w-xs"
+							containerClassName="md:min-h-8"
 							tagClassName="md:badge-sm"
 							groupClassName="md:input-group-sm"
 							bind:value={join}
@@ -583,6 +581,7 @@
 								}
 							}}
 							on:change={(e) => {
+								fields = optionsToFields();
 								queryPage(1);
 							}}
 						/>
@@ -592,7 +591,7 @@
 							options={filteredJoinColumnOptions}
 							rootClassName="w-full"
 							className="md:input-xs"
-							containerClassName="md:min-h-8 max-w-xs"
+							containerClassName="md:min-h-8"
 							tagClassName="md:badge-sm"
 							groupClassName="md:input-group-sm"
 							bind:value={joinColumns}
@@ -606,6 +605,7 @@
 								}
 							}}
 							on:change={(e) => {
+								fields = optionsToFields();
 								queryPage(1);
 							}}
 						/>
@@ -615,7 +615,7 @@
 							groups={filteredOrderByOptions}
 							rootClassName="w-full"
 							className="md:input-xs"
-							containerClassName="md:min-h-8 max-w-xs"
+							containerClassName="md:min-h-8"
 							tagClassName="md:badge-sm"
 							groupClassName="md:input-group-sm"
 							bind:value={orderByColumns}
@@ -640,6 +640,7 @@
 								}
 							}}
 							on:change={(e) => {
+								queryArguments = buildArguments();
 								queryPage(1);
 							}}
 						/>
@@ -648,7 +649,14 @@
 			{/if}
 		{/if}
 		{#if showFilterButton}
-			<GroupFilter bind:expression={queryArguments} let:trigger on:filter={(e) => queryPage(1)}>
+			<GroupFilter
+				bind:value={queryArguments}
+				let:trigger
+				on:filter={(e) => {
+					queryArguments = buildArguments();
+					queryPage(1);
+				}}
+			>
 				<div class="tooltip" data-tip={$LL.graphence.components.query.filter()}>
 					<button class="btn btn-square" use:melt={trigger}>
 						<Icon src={Funnel} class="h-5 w-5" />
@@ -662,8 +670,8 @@
 					class="btn btn-square"
 					on:click={(e) =>
 						dispatch('bookmark', {
-							fields: JSON.stringify(buildFields()),
-							queryArguments: JSON.stringify(buildArguments())
+							fields: JSON.stringify(fields),
+							queryArguments: JSON.stringify(queryArguments)
 						})}
 				>
 					<Icon src={Bookmark} class="h-5 w-5" />
@@ -674,13 +682,20 @@
 	<div class="divider" />
 {/if}
 <div class="card-body overflow-auto {className}">
-	<slot name="toolbar" />
 	{#if isFetching}
 		<div class="flex justify-center">
 			<span class="loading loading-bars loading-lg" />
 		</div>
 	{:else}
-		<slot />
+		<slot
+			{fields}
+			{queryFields}
+			{queryArguments}
+			{selectOptions}
+			{getFieldName}
+			{queryPage}
+			{buildArguments}
+		/>
 	{/if}
 </div>
 {#if showFooter}

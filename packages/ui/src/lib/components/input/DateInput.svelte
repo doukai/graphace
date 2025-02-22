@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons';
 	import { nanoid } from 'nanoid';
 	export let name: string;
@@ -9,6 +10,12 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let id: string = nanoid();
+
+	const dispatch = createEventDispatcher<{
+		change: {
+			value: string | null | undefined;
+		};
+	}>();
 </script>
 
 <div class="form-control w-full">
@@ -19,6 +26,9 @@
 		{placeholder}
 		class="input input-bordered {errors?.errors ? 'input-error' : ''} {className}"
 		bind:value
+		on:change={() => {
+			dispatch('change', { value });
+		}}
 		{readonly}
 		{disabled}
 	/>

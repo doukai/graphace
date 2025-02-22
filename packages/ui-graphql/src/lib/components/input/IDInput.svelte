@@ -23,4 +23,5 @@
 	{disabled}
 	{className}
 	{addBtnClassName}
+	on:change
 />

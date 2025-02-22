@@ -111,7 +111,7 @@
 							name="name"
 							bind:value={node.name}
 							readonly={!permissions.auth('Realm::name::WRITE')}
-							errors={errors[row]?.iterms?.name}
+							errors={errors?.[row]?.iterms?.name}
 						/>
 						{/if}
 						{#if permissions.auth('Realm::description::*')}
@@ -119,7 +119,7 @@
 							name="description"
 							bind:value={node.description}
 							readonly={!permissions.auth('Realm::description::WRITE')}
-							errors={errors[row]?.iterms?.description}
+							errors={errors?.[row]?.iterms?.description}
 						/>
 						{/if}
 						{#if permissions.auth('Realm::*::WRITE')}

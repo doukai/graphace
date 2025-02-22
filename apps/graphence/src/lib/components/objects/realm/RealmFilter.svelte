@@ -11,54 +11,36 @@
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { RealmExpression } from '~/lib/types/schema';
 
-	export let expression: RealmExpression | null | undefined;
+	export let value: RealmExpression | null | undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const permissions = getContext<PermissionsStore>('permissions');
 
-	const z_class9 = z_index.top(9);
-
-	let _expression = {
-		id: undefined,
-		name: undefined,
-		description: undefined
-	};
+	const z_class8 = z_index.top(8);
 	
 	const dispatch = createEventDispatcher<{
 		filter: {};
 	}>();
 
-	const filter = (): void => {
-		if (_expression.id) {
-			expression = { ...expression, id: _expression.id };
-		} else {
-			expression = { ...expression, id: undefined };
+	if (value === null || value === undefined || Object.keys(value).length === 0) {
+		value = {
+			id: undefined,
+			name: undefined,
+			description: undefined
 		}
-		if (_expression.name) {
-			expression = { ...expression, name: _expression.name };
-		} else {
-			expression = { ...expression, name: undefined };
-		}
-		if (_expression.description) {
-			expression = { ...expression, description: _expression.description };
-		} else {
-			expression = { ...expression, description: undefined };
-		}
+	}
 
-		if (Object.values(expression).filter((item) => item).length === 0) {
-			expression = undefined;
-		}
+	const filter = (): void => {
 		dispatch('filter', {});
 		$open = false;
 	};
 
 	const clear = (): void => {
-		_expression = {
+		value = {
 			id: undefined,
 			name: undefined,
 			description: undefined
 		};
-		expression = undefined;
 		dispatch('filter', {});
 		$open = false;
 	};
@@ -75,18 +57,18 @@
 <slot trigger={$trigger} />
 
 {#if $open}
-	<div use:melt={$overlay} class="fixed inset-0 {z_class9}" />
-	<div class="p-1 rounded-xl bg-base-200 shadow {z_class9}" use:melt={$content}>
+	<div use:melt={$overlay} class="fixed inset-0 {z_class8}" />
+	<div class="p-1 rounded-xl bg-base-200 shadow {z_class8}" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="space-y-1 max-h-60 overflow-y-auto">
 			{#if permissions.auth('Realm::id::*')}
 			<RealmSelectFilter
 				label={$LL.graphql.objects.Realm.name()}
 				name="id"
-				bind:expression={_expression.id}
+				bind:value={value.id}
 				className="md:input-sm"
 				selectClassName="md:select-sm w-full"
-				containerClassName="md:min-h-8 max-w-xs"
+				containerClassName="md:min-h-8"
 				tagClassName="md:badge-sm"
 				menuClassName="md:menu-sm"
 			/>
@@ -96,7 +78,7 @@
 			<StringFilter
 				label={$LL.graphql.objects.Realm.fields.name.name()}
 				name="name"
-				bind:expression={_expression.name}
+				bind:value={value.name}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -107,7 +89,7 @@
 			<StringFilter
 				label={$LL.graphql.objects.Realm.fields.description.name()}
 				name="description"
-				bind:expression={_expression.description}
+				bind:value={value.description}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"

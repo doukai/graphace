@@ -14,97 +14,40 @@
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { UserExpression } from '~/lib/types/schema';
 
-	export let expression: UserExpression | null | undefined;
+	export let value: UserExpression | null | undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const permissions = getContext<PermissionsStore>('permissions');
 
-	const z_class9 = z_index.top(9);
-
-	let _expression = {
-		id: undefined,
-		name: undefined,
-		description: undefined,
-		lastName: undefined,
-		login: undefined,
-		email: undefined,
-		phones: undefined,
-		disable: undefined,
-		groups: { id: undefined },
-		roles: { id: undefined },
-		realm: { id: undefined }
-	};
+	const z_class8 = z_index.top(8);
 	
 	const dispatch = createEventDispatcher<{
 		filter: {};
 	}>();
 
-	const filter = (): void => {
-		if (_expression.id) {
-			expression = { ...expression, id: _expression.id };
-		} else {
-			expression = { ...expression, id: undefined };
+	if (value === null || value === undefined || Object.keys(value).length === 0) {
+		value = {
+			id: undefined,
+			name: undefined,
+			description: undefined,
+			lastName: undefined,
+			login: undefined,
+			email: undefined,
+			phones: undefined,
+			disable: undefined,
+			groups: { id: undefined },
+			roles: { id: undefined },
+			realm: { id: undefined }
 		}
-		if (_expression.name) {
-			expression = { ...expression, name: _expression.name };
-		} else {
-			expression = { ...expression, name: undefined };
-		}
-		if (_expression.description) {
-			expression = { ...expression, description: _expression.description };
-		} else {
-			expression = { ...expression, description: undefined };
-		}
-		if (_expression.lastName) {
-			expression = { ...expression, lastName: _expression.lastName };
-		} else {
-			expression = { ...expression, lastName: undefined };
-		}
-		if (_expression.login) {
-			expression = { ...expression, login: _expression.login };
-		} else {
-			expression = { ...expression, login: undefined };
-		}
-		if (_expression.email) {
-			expression = { ...expression, email: _expression.email };
-		} else {
-			expression = { ...expression, email: undefined };
-		}
-		if (_expression.phones) {
-			expression = { ...expression, phones: _expression.phones };
-		} else {
-			expression = { ...expression, phones: undefined };
-		}
-		if (_expression.disable) {
-			expression = { ...expression, disable: _expression.disable };
-		} else {
-			expression = { ...expression, disable: undefined };
-		}
-		if (_expression.groups.id) {
-			expression = { ...expression, groups: _expression.groups };
-		} else {
-			expression = { ...expression, groups: undefined };
-		}
-		if (_expression.roles.id) {
-			expression = { ...expression, roles: _expression.roles };
-		} else {
-			expression = { ...expression, roles: undefined };
-		}
-		if (_expression.realm.id) {
-			expression = { ...expression, realm: _expression.realm };
-		} else {
-			expression = { ...expression, realm: undefined };
-		}
+	}
 
-		if (Object.values(expression).filter((item) => item).length === 0) {
-			expression = undefined;
-		}
+	const filter = (): void => {
 		dispatch('filter', {});
 		$open = false;
 	};
 
 	const clear = (): void => {
-		_expression = {
+		value = {
 			id: undefined,
 			name: undefined,
 			description: undefined,
@@ -117,7 +60,6 @@
 			roles: { id: undefined },
 			realm: { id: undefined }
 		};
-		expression = undefined;
 		dispatch('filter', {});
 		$open = false;
 	};
@@ -134,18 +76,18 @@
 <slot trigger={$trigger} />
 
 {#if $open}
-	<div use:melt={$overlay} class="fixed inset-0 {z_class9}" />
-	<div class="p-1 rounded-xl bg-base-200 shadow {z_class9}" use:melt={$content}>
+	<div use:melt={$overlay} class="fixed inset-0 {z_class8}" />
+	<div class="p-1 rounded-xl bg-base-200 shadow {z_class8}" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="space-y-1 max-h-60 overflow-y-auto">
 			{#if permissions.auth('User::id::*')}
 			<UserSelectFilter
 				label={$LL.graphql.objects.User.name()}
 				name="id"
-				bind:expression={_expression.id}
+				bind:value={value.id}
 				className="md:input-sm"
 				selectClassName="md:select-sm w-full"
-				containerClassName="md:min-h-8 max-w-xs"
+				containerClassName="md:min-h-8"
 				tagClassName="md:badge-sm"
 				menuClassName="md:menu-sm"
 			/>
@@ -155,7 +97,7 @@
 			<StringFilter
 				label={$LL.graphql.objects.User.fields.name.name()}
 				name="name"
-				bind:expression={_expression.name}
+				bind:value={value.name}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -166,7 +108,7 @@
 			<StringFilter
 				label={$LL.graphql.objects.User.fields.description.name()}
 				name="description"
-				bind:expression={_expression.description}
+				bind:value={value.description}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -177,7 +119,7 @@
 			<StringFilter
 				label={$LL.graphql.objects.User.fields.lastName.name()}
 				name="lastName"
-				bind:expression={_expression.lastName}
+				bind:value={value.lastName}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -188,7 +130,7 @@
 			<StringFilter
 				label={$LL.graphql.objects.User.fields.login.name()}
 				name="login"
-				bind:expression={_expression.login}
+				bind:value={value.login}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -199,7 +141,7 @@
 			<StringFilter
 				label={$LL.graphql.objects.User.fields.email.name()}
 				name="email"
-				bind:expression={_expression.email}
+				bind:value={value.email}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -210,7 +152,7 @@
 			<StringFilter
 				label={$LL.graphql.objects.User.fields.phones.name()}
 				name="phones"
-				bind:expression={_expression.phones}
+				bind:value={value.phones}
 				className="md:input-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -221,7 +163,7 @@
 			<BooleanFilter
 				label={$LL.graphql.objects.User.fields.disable.name()}
 				name="disable"
-				bind:expression={_expression.disable}
+				bind:value={value.disable}
 				className="md:toggle-sm"
 				addBtnClassName="md:btn-sm"
 				selectClassName="md:select-sm w-full"
@@ -232,9 +174,9 @@
 			<GroupSelectFilter
 				label={$LL.graphql.objects.User.fields.groups.name()}
 				name="groups"
-				bind:expression={_expression.groups.id}
+				bind:value={value.groups.id}
 				className="md:input-sm"
-				containerClassName="md:min-h-8 max-w-xs"
+				containerClassName="md:min-h-8"
 				tagClassName="md:badge-sm"
 				menuClassName="md:menu-sm"
 				selectClassName="md:select-sm w-full"
@@ -245,9 +187,9 @@
 			<RoleSelectFilter
 				label={$LL.graphql.objects.User.fields.roles.name()}
 				name="roles"
-				bind:expression={_expression.roles.id}
+				bind:value={value.roles.id}
 				className="md:input-sm"
-				containerClassName="md:min-h-8 max-w-xs"
+				containerClassName="md:min-h-8"
 				tagClassName="md:badge-sm"
 				menuClassName="md:menu-sm"
 				selectClassName="md:select-sm w-full"
@@ -258,9 +200,9 @@
 			<RealmSelectFilter
 				label={$LL.graphql.objects.User.fields.realm.name()}
 				name="realm"
-				bind:expression={_expression.realm.id}
+				bind:value={value.realm.id}
 				className="md:input-sm"
-				containerClassName="md:min-h-8 max-w-xs"
+				containerClassName="md:min-h-8"
 				tagClassName="md:badge-sm"
 				menuClassName="md:menu-sm"
 				selectClassName="md:select-sm w-full"

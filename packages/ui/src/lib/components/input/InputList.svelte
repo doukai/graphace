@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import type { Errors } from '@graphace/commons';
 	import { nanoid } from 'nanoid';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus, PlusSmall, MinusSmall } from '@steeze-ui/heroicons';
-	
+
 	export let name: string;
 	export let value: (string | null | undefined)[] | null | undefined;
 	export let placeholder: string = '';
@@ -16,7 +16,13 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let id: string = nanoid();
-	
+
+	const dispatch = createEventDispatcher<{
+		change: {
+			value: (string | null | undefined)[] | null | undefined;
+		};
+	}>();
+
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const addItem = (index: number) => {
@@ -51,6 +57,7 @@
 							if (item === '') {
 								item = null;
 							}
+							dispatch('change', { value });
 						}}
 						{readonly}
 						{disabled}

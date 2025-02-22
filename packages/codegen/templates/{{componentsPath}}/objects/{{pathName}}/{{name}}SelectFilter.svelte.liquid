@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import type { Operator, StringExpression } from '@graphace/graphql';
+	import type { StringExpression } from '@graphace/graphql';
 	import { OperatorSelect } from '@graphace/ui-graphql';
 	import {{ name }}Select from '~/{{ objectsPath }}/{{ name | paramCase }}/{{ name }}Select.svelte';
-	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 
 	export let value: StringExpression | null | undefined;
@@ -17,25 +16,17 @@
 	export let menuClassName: string = '';
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
-	let opr: Operator | null | undefined = undefined;
-	let input: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
 
-	$: if (input && !Array.isArray(input)) {
-		value = { opr: opr, val: input?.{{ idName }}, arr: undefined };
-	} else if (input && Array.isArray(input) && input.length > 0) {
-		value = { opr: opr, val: undefined, arr: input?.map((item) => item?.{{ idName }}) };
-	} else if (opr === 'NIL' || opr === 'NNIL') {
-		value = { opr: opr, val: undefined, arr: undefined };
-	} else {
-		value = undefined;
+	if (value === null || value === undefined || Object.keys(value).length === 0) {
+		value = { opr: 'EQ', val: undefined, arr: undefined };
 	}
 
 	const oprChange = (): void => {
-		if (Array.isArray(input)) {
-			input = [];
-		} else if (input) {
-			input = undefined;
-		}
+		value = {
+			...value,
+			val: undefined,
+			arr: undefined
+		};
 	};
 </script>
 
@@ -46,15 +37,16 @@
 			<span class="md:w-20 whitespace-nowrap">
 				{label}
 			</span>
-			<OperatorSelect className={selectClassName} bind:value={opr} on:change={(e) => oprChange()} />
+			<OperatorSelect className={selectClassName} bind:value={value.opr} on:change={(e) => oprChange()} />
 		</label>
 	</div>
-	{#if opr === 'IN' || opr === 'NIN' || opr === 'BT' || opr === 'NBT'}
+	{#if value.opr === 'IN' || value.opr === 'NIN' || value.opr === 'BT' || value.opr === 'NBT'}
 		<{{ name }}Select
 			{name}
 			placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
 			list
-			bind:value={input}
+			bind:val={value.val}
+			bind:arr={value.arr}
 			{className}
 			{containerClassName}
 			{tagClassName}
@@ -64,7 +56,8 @@
 		<{{ name }}Select
 			{name}
 			placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
-			bind:value={input}
+			bind:val={value.val}
+			bind:arr={value.arr}
 			{className}
 			{containerClassName}
 			{tagClassName}

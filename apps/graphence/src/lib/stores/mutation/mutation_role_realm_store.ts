@@ -4,7 +4,7 @@ import { createGraphQLMutationStore } from '~/utils';
 import type { QueryRealmArgs, RealmInput, Role } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `mutation Mutation_role_realm($role_id: String, $role_realm: RealmInput, $id: StringExpression, $name: StringExpression, $description: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $groupBy: [String!]) {
-  role(where: { id: { val: $role_id } }, role_realm: $role_realm) @merge {
+  role(where: { id: { val: $role_id } }, realm: $role_realm) @merge {
     id
     name
     description

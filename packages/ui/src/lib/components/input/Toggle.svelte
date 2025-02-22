@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
 	import { nanoid } from 'nanoid';
+	import { createEventDispatcher } from 'svelte';
 	export let name: string;
 	export let value: boolean | null | undefined;
 	export let errors: Errors | undefined = undefined;
@@ -8,6 +9,12 @@
 	export let disabled = false;
 	export let id: string = nanoid();
 	export let className: string = '';
+
+	const dispatch = createEventDispatcher<{
+		change: {
+			value: boolean | null | undefined;
+		};
+	}>();
 </script>
 
 <div class="form-control w-full">
@@ -17,6 +24,9 @@
 		{name}
 		class="toggle {className}"
 		bind:checked={value}
+		on:change={() => {
+			dispatch('change', { value });
+		}}
 		{readonly}
 		{disabled}
 	/>

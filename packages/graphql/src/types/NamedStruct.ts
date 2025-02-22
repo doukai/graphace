@@ -7,4 +7,9 @@ export type NamedStruct = {
     description?: string | null | undefined;
 }
 
-export type QueryNamedStructArgs = { name?: StringExpression | undefined, first?: number | undefined }
+export type QueryNamedStructArgs = {
+    [id: string]: StringExpression | number | undefined;
+} & {
+    name?: StringExpression | undefined,
+    first?: number | undefined
+}

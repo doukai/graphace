@@ -11,7 +11,7 @@
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
-	const z_class6 = z_index.top(6);
+	$: z_class6 = z_index.top(6);
 
 	function to(path: string) {
 		let urlParts: string[] = $page.url.pathname.split('/');

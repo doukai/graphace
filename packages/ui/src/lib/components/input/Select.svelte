@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons';
 	import { nanoid } from 'nanoid';
 	export let name: string;
@@ -11,6 +12,12 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let id: string = nanoid();
+
+	const dispatch = createEventDispatcher<{
+		change: {
+			value: string | (string | null | undefined)[] | null | undefined;
+		};
+	}>();
 
 	$: if (!value && multiple) {
 		value = [];
@@ -25,6 +32,9 @@
 			{placeholder}
 			class="select select-bordered {errors?.errors ? 'select-error' : ''} {className}"
 			bind:value
+			on:change={() => {
+				dispatch('change', { value });
+			}}
 			disabled={disabled || readonly}
 			multiple
 		>
@@ -37,6 +47,9 @@
 			{placeholder}
 			class="select select-bordered {errors?.errors ? 'select-error' : ''} {className}"
 			bind:value
+			on:change={() => {
+				dispatch('change', { value });
+			}}
 			disabled={disabled || readonly}
 		>
 			<slot />

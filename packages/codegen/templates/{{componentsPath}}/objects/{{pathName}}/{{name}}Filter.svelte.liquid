@@ -33,67 +33,40 @@
 	{%- endif %}
 
 	const z_class8 = z_index.top(8);
-
-	let _expression = {
-		{%- if isNamedStruct %}
-		{{ idName }}: undefined,
-		{%- endif %}
-		{%- if fields %}
-		{%- for field in fields %}
-		{%- if field.fieldName == idName %}
-		{%- if isNamedStruct == false %}
-		{{ field.fieldName }}: undefined{% if forloop.last == false %},{% endif %}
-		{%- endif %}
-		{%- elsif field.isScalarType or field.isEnumType %}
-		{{ field.fieldName }}: undefined{% if forloop.last == false %},{% endif %}
-		{%- endif %}
-		{%- if field.isNamed %}
-		{{ field.fieldName }}: { {{ field.fieldTypeIdName }}: undefined }{% if forloop.last == false %},{% endif %}
-		{%- endif %}
-		{%- endfor %}
-		{%- endif %}
-	};
 	
 	const dispatch = createEventDispatcher<{
 		filter: {};
 	}>();
 
-	const filter = (): void => {
-		{%- if isNamedStruct %}
-		if (_expression.{{ idName }}) {
-			value = { ...value, {{ idName }}: _expression.{{ idName }} };
-		} else {
-			value = { ...value, {{ idName }}: undefined };
+	if (value === null || value === undefined || Object.keys(value).length === 0) {
+		value = {
+			{%- if isNamedStruct %}
+			{{ idName }}: undefined,
+			{%- endif %}
+			{%- if fields %}
+			{%- for field in fields %}
+			{%- if field.fieldName == idName %}
+			{%- if isNamedStruct == false %}
+			{{ field.fieldName }}: undefined{% if forloop.last == false %},{% endif %}
+			{%- endif %}
+			{%- elsif field.isScalarType or field.isEnumType %}
+			{{ field.fieldName }}: undefined{% if forloop.last == false %},{% endif %}
+			{%- endif %}
+			{%- if field.isNamed %}
+			{{ field.fieldName }}: { {{ field.fieldTypeIdName }}: undefined }{% if forloop.last == false %},{% endif %}
+			{%- endif %}
+			{%- endfor %}
+			{%- endif %}
 		}
-		{%- endif %}
-		{%- if fields %}
-		{%- for field in fields %}
-		{%- if field.isScalarType or field.isEnumType %}
-		if (_expression.{{ field.fieldName }}) {
-			value = { ...value, {{ field.fieldName }}: _expression.{{ field.fieldName }} };
-		} else {
-			value = { ...value, {{ field.fieldName }}: undefined };
-		}
-		{%- endif %}
-		{%- if field.isNamed %}
-		if (_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}) {
-			value = { ...value, {{ field.fieldName }}: _expression.{{ field.fieldName }} };
-		} else {
-			value = { ...value, {{ field.fieldName }}: undefined };
-		}
-		{%- endif %}
-		{%- endfor %}
-		{%- endif %}
+	}
 
-		if (Object.values(value).filter((item) => item).length === 0) {
-			value = undefined;
-		}
+	const filter = (): void => {
 		dispatch('filter', {});
 		$open = false;
 	};
 
 	const clear = (): void => {
-		_expression = {
+		value = {
 			{%- if isNamedStruct %}
 			{{ idName }}: undefined,
 			{%- endif %}
@@ -112,7 +85,6 @@
 			{%- endfor %}
 			{%- endif %}
 		};
-		value = undefined;
 		dispatch('filter', {});
 		$open = false;
 	};
@@ -141,10 +113,10 @@
 			<{{ name }}SelectFilter
 				label={$LL.graphql.objects.{{ name }}.name()}
 				name="{{ idName }}"
-				bind:value={_expression.{{ idName }}}
+				bind:value={value.{{ idName }}}
 				className="md:input-sm"
 				selectClassName="md:select-sm w-full"
-				containerClassName="md:min-h-8 max-w-xs"
+				containerClassName="md:min-h-8"
 				tagClassName="md:badge-sm"
 				menuClassName="md:menu-sm"
 			/>
@@ -161,7 +133,7 @@
 			<{{ field.fieldTypeName }}Filter
 				label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 				name="{{ field.fieldName }}"
-				bind:value={_expression.{{ field.fieldName }}}
+				bind:value={value.{{ field.fieldName }}}
 				{%- if field.isEnumType %}
 				className="md:select-sm"
 				{%- elsif field.fieldTypeName == "Boolean" %}
@@ -185,9 +157,9 @@
 			<{{ field.fieldTypeName }}SelectFilter
 				label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 				name="{{ field.fieldName }}"
-				bind:value={_expression.{{ field.fieldName }}.{{ field.fieldTypeIdName }}}
+				bind:value={value.{{ field.fieldName }}.{{ field.fieldTypeIdName }}}
 				className="md:input-sm"
-				containerClassName="md:min-h-8 max-w-xs"
+				containerClassName="md:min-h-8"
 				tagClassName="md:badge-sm"
 				menuClassName="md:menu-sm"
 				selectClassName="md:select-sm w-full"

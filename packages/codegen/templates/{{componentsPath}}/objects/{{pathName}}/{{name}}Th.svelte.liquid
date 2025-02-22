@@ -2,18 +2,21 @@
 	import { melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Funnel } from '@steeze-ui/heroicons';
+	import { hasArguments } from '@graphace/graphql';
 	import {{ name }}Filter from '~/{{ objectsPath }}/{{ name | paramCase }}/{{ name }}Filter.svelte';
 	import type { {{ name }}Expression } from '~/{{ schemaTypesPath }}';
 
 	export let name: string;
 	export let value: {{ name }}Expression | null | undefined;
+
+	$: filtered = value && hasArguments(value);
 </script>
 
 <{{ name }}Filter bind:value let:trigger on:filter>
 	<td>
 		<a class="link group inline-flex" href={null} use:melt={trigger}>
 			{name}
-			{#if value && Object.keys(value).length > 0}
+			{#if filtered}
 				<span class="flex-none">
 					<Icon src={Funnel} class="h-5 w-5" />
 				</span>

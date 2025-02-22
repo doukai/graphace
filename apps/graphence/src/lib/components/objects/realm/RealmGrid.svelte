@@ -7,7 +7,6 @@
 	import { Field, Directive, type GraphQLError } from '@graphace/graphql';
 	import { messageBoxs, notifications } from '@graphace/ui';
 	import { GridToolbar } from '@graphace/ui-graphql';
-	import RealmQuery from '~/lib/components/objects/realm/Realm.svelte';
 	import type { Realm, RealmConnection, RealmConnectionQueryArguments, RealmListMutationArguments } from '~/lib/types/schema';
 	import {
 		__schema,
@@ -24,15 +23,12 @@
 	
 	export let connection: RealmConnection;
 	export let fields: Field[] = [];
-	export let queryArguments: RealmConnectionQueryArguments = {};
+	export let queryFields: Field[] = [];
 	export let errors: Record<number, Errors> = {};
 	export let exportLimit: number = 500;
-	export let isFetching: boolean = false;
-	export let showHeader: boolean = true;
-	export let showFooter: boolean = true;
-	export let showOptionButton: boolean = true;
-	export let showFilterButton: boolean = true;
-	export let showBookmarkButton: boolean = false;
+	export let getFieldName: (fieldName: string, subFieldName?: string) => string;
+	export let buildArguments: (toPageNumber?: number | undefined, limit?: number | undefined) => RealmConnectionQueryArguments;
+	export let queryPage: (toPageNumber?: number | undefined) => void;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const themeStore = getContext<Writable<string | undefined>>('theme');
@@ -54,21 +50,15 @@
 		exportQuery: {
 			fields: Field[];
 			queryArguments: RealmConnectionQueryArguments;
+			directives?: Directive[];
 			then?: (connection: RealmConnection | null | undefined) => void;
 			catch?: (errors: GraphQLError[]) => void;
 		};
 	}>();
 
-	let queryFields: Field[] = [];
 	let pageSize: number = 10;
-	let rowIndex: number | undefined = undefined;
-	let colIndex: number | undefined = undefined;
-	let getFieldName: (fieldName: string, subFieldName?: string) => string;
-	let queryPage: (toPageNumber?: number | undefined) => void;
-	let buildArguments: (
-		toPageNumber?: number | undefined,
-		limit?: number | undefined
-	) => RealmConnectionQueryArguments;
+	let rowIndex: number | undefined;
+	let colIndex: number | undefined;
 	let setCellsFocus: (
 		cellStart?: Cell,
 		cellEnd?: Cell,
@@ -78,7 +68,6 @@
 
 	$: theme = getGridTheme($themeStore);
 	$: nodes = connection?.edges?.map((edge) => edge?.node);
-	$: totalCount = connection?.totalCount || 0;
 	$: source = nodesToSource<Realm>(typeName, queryFields, nodes) || [];
 	$: gridErrors = errorsToGridErrors<Realm>(typeName, errors, queryFields, nodes);
 	$: columns = fieldsToColumns(typeName, fields, source, gridErrors, getFieldName);
@@ -123,7 +112,7 @@
 		if (nonNullFields && nonNullFields.length > 0) {
 			messageBoxs.open({
 				title: $LL.ui_graphql.grid.message.requiredField(),
-				content: `<ul class="list-none">${nonNullFields.map((field) => `<li>${field}</li>`)}</ul>`,
+				content: nonNullFields.join(', '),
 				buttonName: $LL.ui.button.back(),
 				buttonType: 'neutral',
 				confirm: () => {
@@ -167,64 +156,44 @@
 	};
 </script>
 
-<RealmQuery
-	bind:fields
-	bind:queryFields
-	bind:queryArguments
-	{isFetching}
-	{showHeader}
-	{showFooter}
-	{showOptionButton}
-	{showFilterButton}
-	{showBookmarkButton}
-	{totalCount}
-	className="p-0 md:h-screen"
-	on:query
-	on:bookmark
-	bind:getFieldName
-	bind:queryPage
-	bind:buildArguments
->
-	<GridToolbar
-		slot="toolbar"
-		{fields}
-		{source}
-		{idFieldName}
-		{rowIndex}
-		{colIndex}
-		{pageSize}
-		{setCellsFocus}
-		on:query={(e) => queryPage()}
-		on:mutation={(e) => mutation()}
-		on:change={(e) => (source = e.detail.source)}
-		on:export={(e) =>
-			dispatch('exportQuery', {
-				fields,
-				queryArguments: buildArguments(1, exportLimit),
-				then: (connection) =>
-					exportToXlsx(
-						typeName,
-						fields,
-						connection?.edges?.map((edge) => edge?.node)
-					)
-			})
-		}
-		on:import={(e) => importFromXlsx(columns, e.detail.file).then((data) => (source = data))}
-	/>
-	<RevoGrid
-		{source}
-		{columns}
-		range={true}
-		resize={true}
-		autoSizeColumn={true}
-		rowHeaders={true}
-		{columnTypes}
-		{theme}
-		{editors}
-		on:afterfocus={(e) => {
-			rowIndex = e.detail.rowIndex;
-			colIndex = e.detail.colIndex;
-		}}
-		bind:setCellsFocus
-	/>
-</RealmQuery>
+<GridToolbar
+	{fields}
+	{source}
+	{idFieldName}
+	{rowIndex}
+	{colIndex}
+	{pageSize}
+	{setCellsFocus}
+	on:query={(e) => queryPage()}
+	on:mutation={(e) => mutation()}
+	on:change={(e) => (source = e.detail.source)}
+	on:export={(e) =>
+		dispatch('exportQuery', {
+			fields,
+			queryArguments: buildArguments(1, exportLimit),
+			then: (connection) =>
+				exportToXlsx(
+					typeName,
+					fields,
+					connection?.edges?.map((edge) => edge?.node)
+				)
+		})
+	}
+	on:import={(e) => importFromXlsx(typeName, columns, e.detail.file).then((data) => (source = data))}
+/>
+<RevoGrid
+	{source}
+	{columns}
+	range={true}
+	resize={true}
+	autoSizeColumn={true}
+	rowHeaders={true}
+	{columnTypes}
+	{theme}
+	{editors}
+	on:afterfocus={(e) => {
+		rowIndex = e.detail.rowIndex;
+		colIndex = e.detail.colIndex;
+	}}
+	bind:setCellsFocus
+/>

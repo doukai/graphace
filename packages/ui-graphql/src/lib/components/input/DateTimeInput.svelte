@@ -23,7 +23,17 @@
 		{disabled}
 		{className}
 		{addBtnClassName}
+		on:change
 	/>
 {:else}
-	<DateTimeInput {placeholder} {name} bind:value {errors} {readonly} {disabled} {className} />
+	<DateTimeInput
+		{placeholder}
+		{name}
+		bind:value
+		{errors}
+		{readonly}
+		{disabled}
+		{className}
+		on:change
+	/>
 {/if}

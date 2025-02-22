@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import type { Errors } from '@graphace/commons';
@@ -16,6 +16,12 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let id: string = nanoid();
+
+	const dispatch = createEventDispatcher<{
+		change: {
+			value: (string | null | undefined)[] | null | undefined;
+		};
+	}>();
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
@@ -47,6 +53,9 @@
 							? 'input-error'
 							: ''} {className}"
 						bind:value={item}
+						on:change={() => {
+							dispatch('change', { value });
+						}}
 						{readonly}
 						{disabled}
 					/>

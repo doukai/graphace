@@ -23,8 +23,8 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        UserConnectionQuery: (await fetchQueryStore<UserConnection>(event, { fields: [createConnectionField({ name: 'userConnection', fields })] })),
-        UserListMutation: (createMutationStore<User[]>(event))
+        userConnectionQuery: (await fetchQueryStore<UserConnection>(event, { fields: [createConnectionField({ name: 'userConnection', fields })] })),
+        userListMutation: (createMutationStore<User[]>(event))
     };
 }
 export const prerender = false;

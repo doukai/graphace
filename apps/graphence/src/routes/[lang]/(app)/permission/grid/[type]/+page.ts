@@ -23,8 +23,8 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        PermissionConnectionQuery: (await fetchQueryStore<PermissionConnection>(event, { fields: [createConnectionField({ name: 'permissionConnection', fields })] })),
-        PermissionListMutation: (createMutationStore<Permission[]>(event))
+        permissionConnectionQuery: (await fetchQueryStore<PermissionConnection>(event, { fields: [createConnectionField({ name: 'permissionConnection', fields })] })),
+        permissionListMutation: (createMutationStore<Permission[]>(event))
     };
 }
 export const prerender = false;

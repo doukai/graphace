@@ -35,11 +35,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const { cookies, request } = event;
 	const token = cookies.get('Authorization');
 
+	const graphqlPathName = `/graphql`;
 	const loginPathName = `/${locale}/login`;
-	if (!token && event.url.pathname !== loginPathName) {
-		if (event.url.pathname === '/graphql') {
-			return await resolve(event, { transformPageChunk: ({ html }) => html.replace('%lang%', locale) });
-		}
+	const registerPathName = `/${locale}/register`;
+	if (event.url.pathname === graphqlPathName || event.url.pathname === loginPathName || event.url.pathname === registerPathName) {
+		return await resolve(event, { transformPageChunk: ({ html }) => html.replace('%lang%', locale) });
+	} else if (!token) {
 		toLoginPage(loginPathName, event);
 	} else {
 		if (!event.locals.jwt && token) {

@@ -4,7 +4,7 @@ import { createGraphQLMutationStore } from '~/utils';
 import type { QueryPermissionConnectionArgs, PermissionInput, Role } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `mutation Mutation_role_permissions($role_id: String, $role_permissions: [PermissionInput], $name: StringExpression, $description: StringExpression, $field: StringExpression, $type: StringExpression, $permissionType: PermissionTypeExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $first: Int, $last: Int, $offset: Int, $orderBy: PermissionOrderBy, $groupBy: [String!]) {
-  role(where: { id: { val: $role_id } }, role_permissions: $role_permissions) @merge {
+  role(where: { id: { val: $role_id } }, permissions: $role_permissions) @merge {
     id
     name
     description

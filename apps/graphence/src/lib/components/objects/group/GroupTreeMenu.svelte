@@ -9,13 +9,13 @@
 	import { MenuTreeLoading } from '@graphace/ui';
 	import type { StructQueryStores } from '@graphace/ui-graphql';
 
-	export let nodeTrees: NodeTree[] | null | undefined = undefined;
-	export let treeStructs: (TreeStruct | null | undefined)[] | null | undefined = undefined;
-	export let parent: TreeStruct | null | undefined = undefined;
+	export let nodeTrees: NodeTree[] | null | undefined;
+	export let treeStructs: (TreeStruct | null | undefined)[] | null | undefined;
+	export let parent: TreeStruct | null | undefined;
 	export let currentDeep = 0;
 	export let deeps = 2;
-	export let groupName: string | null | undefined = undefined;
-	export let activeGroupId: string | null | undefined = undefined;
+	export let groupName: string | null | undefined;
+	export let activeGroupId: string | null | undefined;
 
 	const dispatch = createEventDispatcher<{
 		change: {

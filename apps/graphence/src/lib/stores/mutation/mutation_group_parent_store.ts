@@ -4,7 +4,7 @@ import { createGraphQLMutationStore } from '~/utils';
 import type { QueryGroupArgs, GroupInput, Group } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `mutation Mutation_group_parent($group_id: String, $group_parent: GroupInput, $id: StringExpression, $name: StringExpression, $description: StringExpression, $path: StringExpression, $deep: IntExpression, $parentId: StringExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $groupBy: [String!]) {
-  group(where: { id: { val: $group_id } }, group_parent: $group_parent) @merge {
+  group(where: { id: { val: $group_id } }, parent: $group_parent) @merge {
     id
     name
     description

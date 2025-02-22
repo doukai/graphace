@@ -3,9 +3,11 @@
 	import { createConnectionField } from '@graphace/graphql';
 	import { Card, urlName } from '@graphace/ui';
 	import type { OperationStore } from '@graphace/ui-graphql';
+	import RoleAgg from '~/lib/components/objects/role/RoleAgg.svelte';
 	import RoleBar from '~/lib/components/objects/role/RoleBar.svelte';
 	import RoleLine from '~/lib/components/objects/role/RoleLine.svelte';
 	import RolePie from '~/lib/components/objects/role/RolePie.svelte';
+	import RoleAggTable from '~/lib/components/objects/role/RoleAggTable.svelte';
 	import type { RoleConnection } from '~/lib/types/schema';
 	import type { PageData } from './$types';
 	import LL from '$i18n/i18n-svelte';
@@ -21,22 +23,22 @@
 	$: showFilterButton = data.fields;
 	$: showBookmarkButton = data.showBookmarkButton;
 
-	const RoleConnectionQuery = data.RoleConnectionQuery as OperationStore<RoleConnection>;
+	$: roleConnectionQuery = data.roleConnectionQuery as OperationStore<RoleConnection>;
+	$: connection = $roleConnectionQuery.response?.data?.roleConnection || {};
+	$: totalCount = connection?.totalCount || 0;
 
 	const components: Record<string, any> = {
 		bar: RoleBar,
 		line: RoleLine,
-		pie: RolePie
+		pie: RolePie,
+		table: RoleAggTable
 	};
 
 	$: component = components[data.type];
 </script>
 
 <Card>
-	<svelte:component
-		this={component}
-		isFetching={$RoleConnectionQuery.isFetching}
-		connection={$RoleConnectionQuery.response.data?.roleConnection}
+	<RoleAgg
 		{fields}
 		{queryArguments}
 		{showHeader}
@@ -44,8 +46,11 @@
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
+		isFetching={$roleConnectionQuery.isFetching}
+		{totalCount}
+		className="p-0 md:h-screen"
 		on:query={(e) =>
-			RoleConnectionQuery.fetch({
+			roleConnectionQuery.fetch({
 				fields: [
 					createConnectionField({
 						name: 'roleConnection',
@@ -55,5 +60,18 @@
 					})
 				]
 			})}
-	/>
+		let:fields
+		let:queryArguments
+		let:getFieldName
+		let:getGrouByName
+	>
+		<svelte:component
+			this={component}
+			{connection}
+			{fields}
+			{queryArguments}
+			{getFieldName}
+			{getGrouByName}
+		/>
+	</RoleAgg>
 </Card>

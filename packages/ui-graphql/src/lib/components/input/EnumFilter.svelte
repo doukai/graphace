@@ -11,30 +11,20 @@
 	export let label: string;
 	export let className: string = '';
 	export let selectClassName: string = '';
-	
+
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
-	let _expression: StringExpression | null | undefined = {};
-
-	$: if (_expression.val) {
-		value = { opr: _expression.opr, val: _expression.val, arr: undefined };
-	} else if (_expression.arr && _expression.arr.length > 0) {
-		value = { opr: _expression.opr, val: undefined, arr: _expression.arr };
-	} else if (_expression.opr === 'NIL' || _expression.opr === 'NNIL') {
-		value = { opr: _expression.opr, val: undefined, arr: undefined };
-	} else {
-		value = undefined;
+	if (value === null || value === undefined || Object.keys(value).length === 0) {
+		value = { opr: 'EQ', val: undefined, arr: undefined };
 	}
 
 	const oprChange = (): void => {
-		_expression.arr = [];
-		_expression.val = undefined;
+		value.arr = [];
+		value.val = undefined;
 	};
 </script>
 
-<div
-	class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1"
->
+<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1">
 	<!-- svelte-ignore a11y-label-has-associated-control -->
 	<div class="form-control w-full md:w-60">
 		<label class="input-group max-sm:input-group-vertical md:input-group-sm">
@@ -43,27 +33,37 @@
 			</span>
 			<OperatorSelect
 				className={selectClassName}
-				bind:value={_expression.opr}
+				bind:value={value.opr}
 				on:change={(e) => oprChange()}
 			/>
 		</label>
 	</div>
-	{#if _expression.opr === 'IN' || _expression.opr === 'NIN' || _expression.opr === 'BT' || _expression.opr === 'NBT'}
+	{#if value.opr === 'IN' || value.opr === 'NIN' || value.opr === 'BT' || value.opr === 'NBT'}
 		<EnumInput
 			placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
 			{className}
 			{name}
-			bind:value={_expression.arr}
+			bind:value={value.arr}
 			{enums}
 			list
+			on:change={(e) => {
+				if (value.arr && value.arr.length > 0) {
+					value.val == undefined;
+				}
+			}}
 		/>
 	{:else}
 		<EnumInput
 			placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
 			{className}
 			{name}
-			bind:value={_expression.val}
+			bind:value={value.val}
 			{enums}
+			on:change={(e) => {
+				if (value.val) {
+					value.arr = [];
+				}
+			}}
 		/>
 	{/if}
 </div>

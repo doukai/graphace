@@ -2,7 +2,7 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import type { Errors{%- if useAuth -%}, PermissionsStore{%- endif -%} } from '@graphace/commons';
-	import type { GraphQLError, GlobalGraphQLErrorMessageFunction, GraphQLErrorsFunction } from '@graphace/graphql';
+	import { type GraphQLError, buildArguments } from '@graphace/graphql';
 	import { Table, TableHead, TableLoading, TableEmpty, Pagination, messageBoxs, notifications, z_index } from '@graphace/ui';
 	import { {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql';
 	{%- if imports %}
@@ -61,8 +61,8 @@
 	export let showSelectButton = false;
 	export let args: {{ queryTypeName }}{{ name }}ConnectionArgs = {};
 	export let orderBy: {{ name }}OrderBy = {};
-	export let after: string | undefined = undefined;
-	export let before: string | undefined = undefined;
+	export let after: string | undefined;
+	export let before: string | undefined;
 	export let pageNumber: number = 1;
 	export let pageSize: number = 10;
 
@@ -78,25 +78,27 @@
 	}
 
 	export const queryPage = (toPageNumber?: number | undefined) => {
+		let _args: {{ queryTypeName }}{{ name }}ConnectionArgs = buildArguments(args);
+
 		if (Object.keys(orderBy).length > 0) {
-			args.orderBy = orderBy;
+			_args.orderBy = orderBy;
 		} else {
-			args.orderBy = undefined;
+			_args.orderBy = undefined;
 		}
 
 		if (after) {
-			args.after = after;
-			args.first = pageSize;
+			_args.after = after;
+			_args.first = pageSize;
 		} else if (before) {
-			args.before = before;
-			args.last = pageSize;
+			_args.before = before;
+			_args.last = pageSize;
 		} else {
-			args.offset = ((toPageNumber || pageNumber) - 1) * pageSize;
-			args.first = pageSize;
+			_args.offset = ((toPageNumber || pageNumber) - 1) * pageSize;
+			_args.first = pageSize;
 		}
 
 		dispatch('fetch', {
-			args,
+			args: _args,
 			then: (data) => {
 				errors = {};
 			},
@@ -108,40 +110,40 @@
 	};
 
 	export const search = (searchValue: string | undefined) => {
-		let args: {{ queryTypeName }}{{ name }}ConnectionArgs = {};
+		let _args: {{ queryTypeName }}{{ name }}ConnectionArgs = {};
 		if (searchValue) {
-			args.cond = 'OR';
+			_args.cond = 'OR';
 			{%- if fields %}
 			{%- for field in fields %}
 			{%- if field.isScalarType and field.inQueryArgs and field.fieldTypeName == 'String' %}
-			args.{{ field.fieldName }} = { opr: 'LK', val: `%${searchValue}%` };
+			_args.{{ field.fieldName }} = { opr: 'LK', val: `%${searchValue}%` };
 			{%- endif %}
 			{%- endfor %}
 			{%- endif %}
 		} else {
-			args.cond = undefined;
+			_args.cond = undefined;
 			{%- if fields %}
 			{%- for field in fields %}
 			{%- if field.isScalarType and field.inQueryArgs and field.fieldTypeName == 'String' %}
-			args.{{ field.fieldName }} = undefined;
+			_args.{{ field.fieldName }} = undefined;
 			{%- endif %}
 			{%- endfor %}
 			{%- endif %}
 		}
 		
 		if (after) {
-			args.after = after;
-			args.first = pageSize;
+			_args.after = after;
+			_args.first = pageSize;
 		} else if (before) {
-			args.before = before;
-			args.last = pageSize;
+			_args.before = before;
+			_args.last = pageSize;
 		} else {
-			args.offset = (pageNumber - 1) * pageSize;
-			args.first = pageSize;
+			_args.offset = (pageNumber - 1) * pageSize;
+			_args.first = pageSize;
 		}
 
 		dispatch('fetch', {
-			args,
+			args: _args,
 			then: (data) => {
 				errors = {};
 			},

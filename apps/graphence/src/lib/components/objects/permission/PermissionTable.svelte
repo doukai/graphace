@@ -2,7 +2,7 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import type { Errors, PermissionsStore} from '@graphace/commons';
-	import type { GraphQLError, GlobalGraphQLErrorMessageFunction, GraphQLErrorsFunction } from '@graphace/graphql';
+	import { type GraphQLError, buildArguments } from '@graphace/graphql';
 	import { Table, TableHead, TableLoading, TableEmpty, messageBoxs, notifications, z_index } from '@graphace/ui';
 	import { ObjectTd, IDTh, IDTd, StringTh, StringTd } from '@graphace/ui-graphql';
 	import PermissionTypeTh from '~/lib/components/enums/permission-type/PermissionTypeTh.svelte';
@@ -65,14 +65,16 @@
 	export let selectedIdList: (string | null | undefined)[] = [];
 
 	export const query = () => {
+		let _args: QueryPermissionListArgs = buildArguments(args);
+
 		if (Object.keys(orderBy).length > 0) {
-			args.orderBy = orderBy;
+			_args.orderBy = orderBy;
 		} else {
-			args.orderBy = undefined;
+			_args.orderBy = undefined;
 		}
 
 		dispatch('fetch', {
-			args,
+			args: _args,
 			then: (data) => {
 				errors = {};
 			},
@@ -84,21 +86,21 @@
 	};
 
 	export const search = (searchValue: string | undefined) => {
-		let args: QueryPermissionListArgs = {};
+		let _args: QueryPermissionListArgs = {};
 		if (searchValue) {
-			args.cond = 'OR';
-			args.description = { opr: 'LK', val: `%${searchValue}%` };
-			args.field = { opr: 'LK', val: `%${searchValue}%` };
-			args.type = { opr: 'LK', val: `%${searchValue}%` };
+			_args.cond = 'OR';
+			_args.description = { opr: 'LK', val: `%${searchValue}%` };
+			_args.field = { opr: 'LK', val: `%${searchValue}%` };
+			_args.type = { opr: 'LK', val: `%${searchValue}%` };
 		} else {
-			args.cond = undefined;
-			args.description = undefined;
-			args.field = undefined;
-			args.type = undefined;
+			_args.cond = undefined;
+			_args.description = undefined;
+			_args.field = undefined;
+			_args.type = undefined;
 		}
 
 		dispatch('fetch', {
-			args,
+			args: _args,
 			then: (data) => {
 				errors = {};
 			},
@@ -291,7 +293,7 @@
 			{#if permissions.auth('Permission::name::*')}
 			<IDTh
 				name={$LL.graphql.objects.Permission.fields.name.name()}
-				bind:expression={args.name}
+				bind:value={args.name}
 				bind:sort={orderBy.name}
 				on:filter={(e) => query()}
 			/>
@@ -299,7 +301,7 @@
 			{#if permissions.auth('Permission::description::*')}
 			<StringTh
 				name={$LL.graphql.objects.Permission.fields.description.name()}
-				bind:expression={args.description}
+				bind:value={args.description}
 				bind:sort={orderBy.description}
 				on:filter={(e) => query()}
 			/>
@@ -307,7 +309,7 @@
 			{#if permissions.auth('Permission::field::*')}
 			<StringTh
 				name={$LL.graphql.objects.Permission.fields.field.name()}
-				bind:expression={args.field}
+				bind:value={args.field}
 				bind:sort={orderBy.field}
 				on:filter={(e) => query()}
 			/>
@@ -315,7 +317,7 @@
 			{#if permissions.auth('Permission::type::*')}
 			<StringTh
 				name={$LL.graphql.objects.Permission.fields.type.name()}
-				bind:expression={args.type}
+				bind:value={args.type}
 				bind:sort={orderBy.type}
 				on:filter={(e) => query()}
 			/>
@@ -323,7 +325,7 @@
 			{#if permissions.auth('Permission::permissionType::*')}
 			<PermissionTypeTh
 				name={$LL.graphql.objects.Permission.fields.permissionType.name()}
-				bind:expression={args.permissionType}
+				bind:value={args.permissionType}
 				bind:sort={orderBy.permissionType}
 				on:filter={(e) => query()}
 			/>
@@ -331,14 +333,14 @@
 			{#if permissions.auth('Permission::roles::*')}
 			<RoleTh
 				name={$LL.graphql.objects.Permission.fields.roles.name()}
-				bind:expression={args.roles}
+				bind:value={args.roles}
 				on:filter={(e) => query()}
 			/>
 			{/if}
 			{#if permissions.auth('Permission::realm::*')}
 			<RealmTh
 				name={$LL.graphql.objects.Permission.fields.realm.name()}
-				bind:expression={args.realm}
+				bind:value={args.realm}
 				on:filter={(e) => query()}
 			/>
 			{/if}
@@ -351,7 +353,7 @@
 		<tbody>
 			{#if nodes && nodes.length > 0}
 				{#each nodes as node, row}
-					{#if node && node.name}
+					{#if node}
 						<tr class="hover">
 							<th class="{z_class} w-12">
 								<label>
@@ -363,7 +365,7 @@
 								name="name"
 								bind:value={node.name}
 								readonly
-								errors={errors[row]?.iterms?.name}
+								errors={errors?.[row]?.iterms?.name}
 							/>
 							{/if}
 							{#if permissions.auth('Permission::description::*')}
@@ -372,7 +374,7 @@
 								bind:value={node.description}
 								on:save={(e) => updateField({ description: node?.description, where: { name: { val: node?.name } } }, row)}
 								readonly={!permissions.auth('Permission::description::WRITE')}
-								errors={errors[row]?.iterms?.description}
+								errors={errors?.[row]?.iterms?.description}
 							/>
 							{/if}
 							{#if permissions.auth('Permission::field::*')}
@@ -381,7 +383,7 @@
 								bind:value={node.field}
 								on:save={(e) => updateField({ field: node?.field, where: { name: { val: node?.name } } }, row)}
 								readonly={!permissions.auth('Permission::field::WRITE')}
-								errors={errors[row]?.iterms?.field}
+								errors={errors?.[row]?.iterms?.field}
 							/>
 							{/if}
 							{#if permissions.auth('Permission::type::*')}
@@ -390,7 +392,7 @@
 								bind:value={node.type}
 								on:save={(e) => updateField({ type: node?.type, where: { name: { val: node?.name } } }, row)}
 								readonly={!permissions.auth('Permission::type::WRITE')}
-								errors={errors[row]?.iterms?.type}
+								errors={errors?.[row]?.iterms?.type}
 							/>
 							{/if}
 							{#if permissions.auth('Permission::permissionType::*')}
@@ -399,7 +401,7 @@
 								bind:value={node.permissionType}
 								on:save={(e) => updateField({ permissionType: node?.permissionType, where: { name: { val: node?.name } } }, row)}
 								readonly={!permissions.auth('Permission::permissionType::WRITE')}
-								errors={errors[row]?.iterms?.permissionType}
+								errors={errors?.[row]?.iterms?.permissionType}
 							/>
 							{/if}
 							{#if permissions.auth('Permission::roles::*')}
@@ -407,14 +409,14 @@
 								name="roles"
 								bind:value={node.roles}
 								list
-								errors={errors[row]?.iterms?.roles}
+								errors={errors?.[row]?.iterms?.roles}
 								readonly={!permissions.auth('Permission::roles::WRITE')}
 								on:save={(e) =>
 									updateField({ roles: node?.roles, where: { name: {val: node?.name } } }, row)}
 							/>
 							{/if}
 							{#if permissions.auth('Permission::realm::*')}
-							<ObjectTd name="realm" namedStruct={node.realm} errors={errors[row]?.iterms?.realm} path={`${node.name}/realm`} on:gotoField />
+							<ObjectTd name="realm" namedStruct={node.realm} errors={errors?.[row]?.iterms?.realm} path={`${node.name}/realm`} on:gotoField />
 							{/if}
 							{#if permissions.auth('Permission::*::WRITE')}
 							<th class="{z_class} hover:{z_class3} w-24">

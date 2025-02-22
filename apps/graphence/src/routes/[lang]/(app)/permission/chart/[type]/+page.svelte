@@ -3,9 +3,11 @@
 	import { createConnectionField } from '@graphace/graphql';
 	import { Card, urlName } from '@graphace/ui';
 	import type { OperationStore } from '@graphace/ui-graphql';
+	import PermissionAgg from '~/lib/components/objects/permission/PermissionAgg.svelte';
 	import PermissionBar from '~/lib/components/objects/permission/PermissionBar.svelte';
 	import PermissionLine from '~/lib/components/objects/permission/PermissionLine.svelte';
 	import PermissionPie from '~/lib/components/objects/permission/PermissionPie.svelte';
+	import PermissionAggTable from '~/lib/components/objects/permission/PermissionAggTable.svelte';
 	import type { PermissionConnection } from '~/lib/types/schema';
 	import type { PageData } from './$types';
 	import LL from '$i18n/i18n-svelte';
@@ -21,22 +23,22 @@
 	$: showFilterButton = data.fields;
 	$: showBookmarkButton = data.showBookmarkButton;
 
-	const PermissionConnectionQuery = data.PermissionConnectionQuery as OperationStore<PermissionConnection>;
+	$: permissionConnectionQuery = data.permissionConnectionQuery as OperationStore<PermissionConnection>;
+	$: connection = $permissionConnectionQuery.response?.data?.permissionConnection || {};
+	$: totalCount = connection?.totalCount || 0;
 
 	const components: Record<string, any> = {
 		bar: PermissionBar,
 		line: PermissionLine,
-		pie: PermissionPie
+		pie: PermissionPie,
+		table: PermissionAggTable
 	};
 
 	$: component = components[data.type];
 </script>
 
 <Card>
-	<svelte:component
-		this={component}
-		isFetching={$PermissionConnectionQuery.isFetching}
-		connection={$PermissionConnectionQuery.response.data?.permissionConnection}
+	<PermissionAgg
 		{fields}
 		{queryArguments}
 		{showHeader}
@@ -44,8 +46,11 @@
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
+		isFetching={$permissionConnectionQuery.isFetching}
+		{totalCount}
+		className="p-0 md:h-screen"
 		on:query={(e) =>
-			PermissionConnectionQuery.fetch({
+			permissionConnectionQuery.fetch({
 				fields: [
 					createConnectionField({
 						name: 'permissionConnection',
@@ -55,5 +60,18 @@
 					})
 				]
 			})}
-	/>
+		let:fields
+		let:queryArguments
+		let:getFieldName
+		let:getGrouByName
+	>
+		<svelte:component
+			this={component}
+			{connection}
+			{fields}
+			{queryArguments}
+			{getFieldName}
+			{getGrouByName}
+		/>
+	</PermissionAgg>
 </Card>

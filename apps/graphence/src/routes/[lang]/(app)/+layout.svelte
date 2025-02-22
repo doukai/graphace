@@ -179,7 +179,7 @@
 		</main>
 	</div>
 	<div
-		class="drawer-side z-[998] lg:hidden"
+		class="drawer-side z-[998] lg:z-[1] lg:hidden"
 		style="scroll-behavior: smooth; scroll-padding-top: {navbarScrollPadding};"
 		bind:this={drawersidebar}
 		on:scroll={parseSidebarScroll}

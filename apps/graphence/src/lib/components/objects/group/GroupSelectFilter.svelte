@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import type { Operator, StringExpression } from '@graphace/graphql';
+	import type { StringExpression } from '@graphace/graphql';
 	import { OperatorSelect } from '@graphace/ui-graphql';
 	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
-	import type { GroupInput } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 
-	export let expression: StringExpression | null | undefined;
+	export let value: StringExpression | null | undefined;
 	export let name: string;
 	export let label: string;
 	export let className: string = '';
@@ -17,25 +16,17 @@
 	export let menuClassName: string = '';
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
-	let opr: Operator | null | undefined = undefined;
-	let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
 
-	$: if (value && !Array.isArray(value)) {
-		expression = { opr: opr, val: value?.id, arr: undefined };
-	} else if (value && Array.isArray(value) && value.length > 0) {
-		expression = { opr: opr, val: undefined, arr: value?.map((item) => item?.id) };
-	} else if (opr === 'NIL' || opr === 'NNIL') {
-		expression = { opr: opr, val: undefined, arr: undefined };
-	} else {
-		expression = undefined;
+	if (value === null || value === undefined || Object.keys(value).length === 0) {
+		value = { opr: 'EQ', val: undefined, arr: undefined };
 	}
 
 	const oprChange = (): void => {
-		if (Array.isArray(value)) {
-			value = [];
-		} else if (value) {
-			value = undefined;
-		}
+		value = {
+			...value,
+			val: undefined,
+			arr: undefined
+		};
 	};
 </script>
 
@@ -46,15 +37,16 @@
 			<span class="md:w-20 whitespace-nowrap">
 				{label}
 			</span>
-			<OperatorSelect className={selectClassName} bind:value={opr} on:change={(e) => oprChange()} />
+			<OperatorSelect className={selectClassName} bind:value={value.opr} on:change={(e) => oprChange()} />
 		</label>
 	</div>
-	{#if opr === 'IN' || opr === 'NIN' || opr === 'BT' || opr === 'NBT'}
+	{#if value.opr === 'IN' || value.opr === 'NIN' || value.opr === 'BT' || value.opr === 'NBT'}
 		<GroupSelect
 			{name}
 			placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
 			list
-			bind:value
+			bind:val={value.val}
+			bind:arr={value.arr}
 			{className}
 			{containerClassName}
 			{tagClassName}
@@ -64,7 +56,8 @@
 		<GroupSelect
 			{name}
 			placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
-			bind:value
+			bind:val={value.val}
+			bind:arr={value.arr}
 			{className}
 			{containerClassName}
 			{tagClassName}

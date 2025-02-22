@@ -3,23 +3,16 @@
 	import { Chart, Title, Tooltip, Legend, ArcElement, CategoryScale, type ChartData } from 'chart.js';
 	import autocolors from 'chartjs-plugin-autocolors';
 	import { type Field } from '@graphace/graphql';
-	import PermissionAgg from '~/lib/components/objects/permission/PermissionAgg.svelte';
 	import type { Permission, PermissionConnection, PermissionConnectionQueryArguments } from '~/lib/types/schema';
 
 	export let connection: PermissionConnection;
 	export let fields: Field[] = [];
 	export let queryArguments: PermissionConnectionQueryArguments = {};
-	export let isFetching: boolean = false;
-	export let showHeader: boolean = true;
-	export let showFooter: boolean = true;
-	export let showOptionButton: boolean = true;
-	export let showFilterButton: boolean = true;
-	export let showBookmarkButton: boolean = false;
+	export let getFieldName: (fieldName: string, subFieldName?: string) => string;
 
 	Chart.register(Title, Tooltip, Legend, ArcElement, CategoryScale, CategoryScale, autocolors);
 
 	let data: ChartData<'pie', number[], unknown> = { datasets: [] };
-	let getFieldName: (fieldName: string, subFieldName?: string) => string;
 
 	$: if (connection) {
 		const nodes = connection?.edges?.map((edge) => edge?.node);
@@ -49,33 +42,17 @@
 			};
 		}
 	}
-	$: totalCount = connection?.totalCount || 0;
 </script>
 
-<PermissionAgg
-	bind:fields
-	bind:queryArguments
-	{isFetching}
-	{showHeader}
-	{showFooter}
-	{showOptionButton}
-	{showFilterButton}
-	{showBookmarkButton}
-	{totalCount}
-	on:query
-	on:bookmark
-	bind:getFieldName
->
-	<Pie
-		{data}
-		options={{
-			responsive: true,
-			maintainAspectRatio: false,
-			plugins: {
-				autocolors: {
-					mode: 'data'
-				}
+<Pie
+	{data}
+	options={{
+		responsive: true,
+		maintainAspectRatio: false,
+		plugins: {
+			autocolors: {
+				mode: 'data'
 			}
-		}}
-	/>
-</PermissionAgg>
+		}
+	}}
+/>

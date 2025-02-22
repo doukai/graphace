@@ -860,8 +860,108 @@ export type GroupExpression = {
   exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
 };
 
+/** 组 查询表达式 */
+export type GroupExpressionBase = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 名称 */
+  name?: InputMaybe<StringExpression>;
+  /** 描述 */
+  description?: InputMaybe<StringExpression>;
+  /** 路径 */
+  path?: InputMaybe<StringExpression>;
+  /** 层级 */
+  deep?: InputMaybe<IntExpression>;
+  /** 上级ID */
+  parentId?: InputMaybe<StringExpression>;
+  /** 上级 */
+  parent?: InputMaybe<GroupExpression>;
+  /** 下级 */
+  subGroups?: InputMaybe<GroupExpression>;
+  /** 用户 */
+  users?: InputMaybe<UserExpression>;
+  /** 角色 */
+  roles?: InputMaybe<RoleExpression>;
+  /** 租户 */
+  realm?: InputMaybe<RealmExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 用户 组 关系 */
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  /** 角色 组 关系 */
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
+};
+
 /** 组 变更内容 */
 export type GroupInput = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 名称 */
+  name?: InputMaybe<Scalars['String']>;
+  /** 描述 */
+  description?: InputMaybe<Scalars['String']>;
+  /** 路径 */
+  path?: InputMaybe<Scalars['String']>;
+  /** 层级 */
+  deep?: InputMaybe<Scalars['Int']>;
+  /** 上级ID */
+  parentId?: InputMaybe<Scalars['String']>;
+  /** 上级 */
+  parent?: InputMaybe<GroupInput>;
+  /** 下级 */
+  subGroups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
+  /** 用户 */
+  users?: InputMaybe<Array<InputMaybe<UserInput>>>;
+  /** 角色 */
+  roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
+  /** 租户 */
+  realm?: InputMaybe<RealmInput>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 用户 组 关系 */
+  groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
+  /** 角色 组 关系 */
+  groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
+  /** 匹配条件 */
+  where?: InputMaybe<GroupExpression>;
+};
+
+/** 组 变更内容 */
+export type GroupInputBase = {
   /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 名称 */
@@ -1548,8 +1648,76 @@ export type GroupRoleRelationExpression = {
   exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
 };
 
+/** 角色 组 关系 查询表达式 */
+export type GroupRoleRelationExpressionBase = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 角色 引用 */
+  roleRef?: InputMaybe<StringExpression>;
+  /** 角色 */
+  role?: InputMaybe<RoleExpression>;
+  /** 组 引用 */
+  groupRef?: InputMaybe<StringExpression>;
+  /** 组 */
+  group?: InputMaybe<GroupExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
+};
+
 /** 角色 组 关系 变更内容 */
 export type GroupRoleRelationInput = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 角色 引用 */
+  roleRef?: InputMaybe<Scalars['String']>;
+  /** 角色 */
+  role?: InputMaybe<RoleInput>;
+  /** 组 引用 */
+  groupRef?: InputMaybe<Scalars['String']>;
+  /** 组 */
+  group?: InputMaybe<GroupInput>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 匹配条件 */
+  where?: InputMaybe<GroupRoleRelationExpression>;
+};
+
+/** 角色 组 关系 变更内容 */
+export type GroupRoleRelationInputBase = {
   /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 角色 引用 */
@@ -2188,8 +2356,76 @@ export type GroupUserRelationExpression = {
   exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
 };
 
+/** 用户 组 关系 查询表达式 */
+export type GroupUserRelationExpressionBase = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** 组 引用 */
+  groupRef?: InputMaybe<StringExpression>;
+  /** 组 */
+  group?: InputMaybe<GroupExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
+};
+
 /** 用户 组 关系 变更内容 */
 export type GroupUserRelationInput = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Scalars['String']>;
+  /** 用户 */
+  user?: InputMaybe<UserInput>;
+  /** 组 引用 */
+  groupRef?: InputMaybe<Scalars['String']>;
+  /** 组 */
+  group?: InputMaybe<GroupInput>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 匹配条件 */
+  where?: InputMaybe<GroupUserRelationExpression>;
+};
+
+/** 用户 组 关系 变更内容 */
+export type GroupUserRelationInputBase = {
   /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 用户 引用 */
@@ -2661,6 +2897,7 @@ export type Mutation = {
   currentUserUpdate?: Maybe<User>;
   currentUserResetPassword?: Maybe<User>;
   login?: Maybe<Scalars['String']>;
+  syncModelPolicy?: Maybe<Scalars['Boolean']>;
   syncPermissionRoleRelationPolicy?: Maybe<Scalars['Boolean']>;
 };
 
@@ -3725,8 +3962,88 @@ export type PermissionExpression = {
   exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
 };
 
+/** 权限 查询表达式 */
+export type PermissionExpressionBase = {
+  /** 名称 */
+  name?: InputMaybe<StringExpression>;
+  /** 描述 */
+  description?: InputMaybe<StringExpression>;
+  /** 字段 */
+  field?: InputMaybe<StringExpression>;
+  /** 实体 */
+  type?: InputMaybe<StringExpression>;
+  /** 权限类型 */
+  permissionType?: InputMaybe<PermissionTypeExpression>;
+  /** 角色 */
+  roles?: InputMaybe<RoleExpression>;
+  /** 租户 */
+  realm?: InputMaybe<RealmExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 角色 权限 关系 */
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
+};
+
 /** 权限 变更内容 */
 export type PermissionInput = {
+  /** 名称 */
+  name?: InputMaybe<Scalars['ID']>;
+  /** 描述 */
+  description?: InputMaybe<Scalars['String']>;
+  /** 字段 */
+  field?: InputMaybe<Scalars['String']>;
+  /** 实体 */
+  type?: InputMaybe<Scalars['String']>;
+  /** 权限类型 */
+  permissionType?: InputMaybe<PermissionType>;
+  /** 角色 */
+  roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
+  /** 租户 */
+  realm?: InputMaybe<RealmInput>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 角色 权限 关系 */
+  permissionRoleRelation?: InputMaybe<Array<InputMaybe<PermissionRoleRelationInput>>>;
+  /** 匹配条件 */
+  where?: InputMaybe<PermissionExpression>;
+};
+
+/** 权限 变更内容 */
+export type PermissionInputBase = {
   /** 名称 */
   name?: InputMaybe<Scalars['ID']>;
   /** 描述 */
@@ -4322,8 +4639,76 @@ export type PermissionRoleRelationExpression = {
   exs?: InputMaybe<Array<InputMaybe<PermissionRoleRelationExpression>>>;
 };
 
+/** 角色 权限 关系 查询表达式 */
+export type PermissionRoleRelationExpressionBase = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 角色 引用 */
+  roleRef?: InputMaybe<StringExpression>;
+  /** 角色 */
+  role?: InputMaybe<RoleExpression>;
+  /** 权限 引用 */
+  permissionRef?: InputMaybe<StringExpression>;
+  /** 权限 */
+  permission?: InputMaybe<PermissionExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<PermissionRoleRelationExpression>>>;
+};
+
 /** 角色 权限 关系 变更内容 */
 export type PermissionRoleRelationInput = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 角色 引用 */
+  roleRef?: InputMaybe<Scalars['String']>;
+  /** 角色 */
+  role?: InputMaybe<RoleInput>;
+  /** 权限 引用 */
+  permissionRef?: InputMaybe<Scalars['String']>;
+  /** 权限 */
+  permission?: InputMaybe<PermissionInput>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 匹配条件 */
+  where?: InputMaybe<PermissionRoleRelationExpression>;
+};
+
+/** 角色 权限 关系 变更内容 */
+export type PermissionRoleRelationInputBase = {
   /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 角色 引用 */
@@ -5960,8 +6345,68 @@ export type RealmExpression = {
   exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
 };
 
+/** 租户 查询表达式 */
+export type RealmExpressionBase = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 名称 */
+  name?: InputMaybe<StringExpression>;
+  /** 描述 */
+  description?: InputMaybe<StringExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
+};
+
 /** 租户 变更内容 */
 export type RealmInput = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 名称 */
+  name?: InputMaybe<Scalars['String']>;
+  /** 描述 */
+  description?: InputMaybe<Scalars['String']>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 匹配条件 */
+  where?: InputMaybe<RealmExpression>;
+};
+
+/** 租户 变更内容 */
+export type RealmInputBase = {
   /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 名称 */
@@ -7264,8 +7709,76 @@ export type RoleCompositeRelationExpression = {
   exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
 };
 
+/** 角色 角色 关系 查询表达式 */
+export type RoleCompositeRelationExpressionBase = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 角色 引用 */
+  roleRef?: InputMaybe<StringExpression>;
+  /** 角色 */
+  role?: InputMaybe<RoleExpression>;
+  /** 角色 引用 */
+  compositeRef?: InputMaybe<StringExpression>;
+  /** 角色 */
+  composite?: InputMaybe<RoleExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
+};
+
 /** 角色 角色 关系 变更内容 */
 export type RoleCompositeRelationInput = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 角色 引用 */
+  roleRef?: InputMaybe<Scalars['String']>;
+  /** 角色 */
+  role?: InputMaybe<RoleInput>;
+  /** 角色 引用 */
+  compositeRef?: InputMaybe<Scalars['String']>;
+  /** 角色 */
+  composite?: InputMaybe<RoleInput>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 匹配条件 */
+  where?: InputMaybe<RoleCompositeRelationExpression>;
+};
+
+/** 角色 角色 关系 变更内容 */
+export type RoleCompositeRelationInputBase = {
   /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 角色 引用 */
@@ -7786,8 +8299,104 @@ export type RoleExpression = {
   exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
 };
 
+/** 角色 查询表达式 */
+export type RoleExpressionBase = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 名称 */
+  name?: InputMaybe<StringExpression>;
+  /** 描述 */
+  description?: InputMaybe<StringExpression>;
+  /** 用户 */
+  users?: InputMaybe<UserExpression>;
+  /** 组 */
+  groups?: InputMaybe<GroupExpression>;
+  /** 组合 */
+  composites?: InputMaybe<RoleExpression>;
+  /** 权限 */
+  permissions?: InputMaybe<PermissionExpression>;
+  /** 租户 */
+  realm?: InputMaybe<RealmExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 用户 角色 关系 */
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  /** 角色 组 关系 */
+  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  /** 角色 角色 关系 */
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
+  /** 角色 权限 关系 */
+  permissionRoleRelation?: InputMaybe<PermissionRoleRelationExpression>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
+};
+
 /** 角色 变更内容 */
 export type RoleInput = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 名称 */
+  name?: InputMaybe<Scalars['String']>;
+  /** 描述 */
+  description?: InputMaybe<Scalars['String']>;
+  /** 用户 */
+  users?: InputMaybe<Array<InputMaybe<UserInput>>>;
+  /** 组 */
+  groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
+  /** 组合 */
+  composites?: InputMaybe<Array<InputMaybe<RoleInput>>>;
+  /** 权限 */
+  permissions?: InputMaybe<Array<InputMaybe<PermissionInput>>>;
+  /** 租户 */
+  realm?: InputMaybe<RealmInput>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 用户 角色 关系 */
+  roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
+  /** 角色 组 关系 */
+  groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
+  /** 角色 角色 关系 */
+  roleCompositeRelation?: InputMaybe<Array<InputMaybe<RoleCompositeRelationInput>>>;
+  /** 角色 权限 关系 */
+  permissionRoleRelation?: InputMaybe<Array<InputMaybe<PermissionRoleRelationInput>>>;
+  /** 匹配条件 */
+  where?: InputMaybe<RoleExpression>;
+};
+
+/** 角色 变更内容 */
+export type RoleInputBase = {
   /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 名称 */
@@ -8499,8 +9108,76 @@ export type RoleUserRelationExpression = {
   exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
 };
 
+/** 用户 角色 关系 查询表达式 */
+export type RoleUserRelationExpressionBase = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** 角色 引用 */
+  roleRef?: InputMaybe<StringExpression>;
+  /** 角色 */
+  role?: InputMaybe<RoleExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
+};
+
 /** 用户 角色 关系 变更内容 */
 export type RoleUserRelationInput = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Scalars['String']>;
+  /** 用户 */
+  user?: InputMaybe<UserInput>;
+  /** 角色 引用 */
+  roleRef?: InputMaybe<Scalars['String']>;
+  /** 角色 */
+  role?: InputMaybe<RoleInput>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 匹配条件 */
+  where?: InputMaybe<RoleUserRelationExpression>;
+};
+
+/** 用户 角色 关系 变更内容 */
+export type RoleUserRelationInputBase = {
   /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 用户 引用 */
@@ -10668,8 +11345,120 @@ export type UserExpression = {
   exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
 };
 
+/** 用户 查询表达式 */
+export type UserExpressionBase = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 姓名 */
+  name?: InputMaybe<StringExpression>;
+  /** 描述 */
+  description?: InputMaybe<StringExpression>;
+  /** 姓氏 */
+  lastName?: InputMaybe<StringExpression>;
+  /** 账号 */
+  login?: InputMaybe<StringExpression>;
+  /** 盐 */
+  salt?: InputMaybe<StringExpression>;
+  /** 哈希 */
+  hash?: InputMaybe<StringExpression>;
+  /** 邮箱 */
+  email?: InputMaybe<StringExpression>;
+  /** 手机号 */
+  phones?: InputMaybe<StringExpression>;
+  /** 禁用 */
+  disable?: InputMaybe<BooleanExpression>;
+  /** 组 */
+  groups?: InputMaybe<GroupExpression>;
+  /** 角色 */
+  roles?: InputMaybe<RoleExpression>;
+  /** 租户 */
+  realm?: InputMaybe<RealmExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 用户 手机号 关系 */
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  /** 用户 组 关系 */
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  /** 用户 角色 关系 */
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
+};
+
 /** 用户 变更内容 */
 export type UserInput = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 姓名 */
+  name?: InputMaybe<Scalars['String']>;
+  /** 描述 */
+  description?: InputMaybe<Scalars['String']>;
+  /** 姓氏 */
+  lastName?: InputMaybe<Scalars['String']>;
+  /** 账号 */
+  login?: InputMaybe<Scalars['String']>;
+  /** 盐 */
+  salt?: InputMaybe<Scalars['String']>;
+  /** 哈希 */
+  hash?: InputMaybe<Scalars['String']>;
+  /** 邮箱 */
+  email?: InputMaybe<Scalars['String']>;
+  /** 手机号 */
+  phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** 禁用 */
+  disable?: InputMaybe<Scalars['Boolean']>;
+  /** 组 */
+  groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
+  /** 角色 */
+  roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
+  /** 租户 */
+  realm?: InputMaybe<RealmInput>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 用户 手机号 关系 */
+  userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
+  /** 用户 组 关系 */
+  groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
+  /** 用户 角色 关系 */
+  roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
+  /** 匹配条件 */
+  where?: InputMaybe<UserExpression>;
+};
+
+/** 用户 变更内容 */
+export type UserInputBase = {
   /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 姓名 */
@@ -11315,8 +12104,72 @@ export type UserPhonesRelationExpression = {
   exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
 };
 
+/** 用户 手机号 关系 查询表达式 */
+export type UserPhonesRelationExpressionBase = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** 手机号 引用 */
+  phonesRef?: InputMaybe<StringExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
+};
+
 /** 用户 手机号 关系 变更内容 */
 export type UserPhonesRelationInput = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Scalars['String']>;
+  /** 用户 */
+  user?: InputMaybe<UserInput>;
+  /** 手机号 引用 */
+  phonesRef?: InputMaybe<Scalars['String']>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 匹配条件 */
+  where?: InputMaybe<UserPhonesRelationExpression>;
+};
+
+/** 用户 手机号 关系 变更内容 */
+export type UserPhonesRelationInputBase = {
   /** ID */
   id?: InputMaybe<Scalars['ID']>;
   /** 用户 引用 */

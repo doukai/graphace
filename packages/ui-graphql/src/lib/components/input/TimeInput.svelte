@@ -23,7 +23,8 @@
 		{disabled}
 		{className}
 		{addBtnClassName}
+		on:change
 	/>
 {:else}
-	<TimeInput {placeholder} {name} bind:value {errors} {readonly} {disabled} {className} />
+	<TimeInput {placeholder} {name} bind:value {errors} {readonly} {disabled} {className} on:change />
 {/if}

@@ -5,14 +5,16 @@
 	import { type StructQueryStores, ObjectSelect } from '@graphace/ui-graphql';
 	import type { RoleInput } from '~/lib/types/schema';
 
-	export let value: RoleInput | (RoleInput | null | undefined)[] | null | undefined = undefined;
-	export let errors: Errors | undefined = undefined;
+	export let value: RoleInput | (RoleInput | null | undefined)[] | null | undefined;
+	export let val: string | null | undefined;
+	export let arr: (string | null | undefined)[] | null | undefined = [];
+	export let errors: Errors | undefined;
 	export let list: boolean | undefined = false;
 	export let id: string | null = null;
 	export let name: string;
 	export let disabled = false;
 	export let readonly = false;
-	export let placeholder: string | null | undefined = undefined;
+	export let placeholder: string | null | undefined;
 	export let className: string = '';
 	export let containerClassName: string = '';
 	export let tagClassName: string = '';
@@ -25,6 +27,7 @@
 	}>();
 
 	const { namedQueryStore } = getContext<StructQueryStores>('structQueryStores');
+	const query = { fieldName: 'roleList', idName: 'id' };
 
 	$: options =
 		$namedQueryStore.response.data?.roleList?.map((item) => ({
@@ -43,6 +46,22 @@
 		}));
 	} else if (value) {
 		selected = { label: value.name, value: value.id };
+	} else if (val) {
+		namedQueryStore.fetch(query, { id: { opr: 'EQ', val } }).then(
+			(response) =>
+				(selected = response.data?.roleList?.map((item) => ({
+					label: item?.name,
+					value: item?.id
+				}))?.[0])
+		);
+	} else if (arr && arr.length > 0) {
+		namedQueryStore.fetch(query, { id: { opr: 'IN', arr } }).then(
+			(response) =>
+				(selected = response.data?.roleList?.map((item) => ({
+					label: item?.name,
+					value: item?.id
+				})))
+		);
 	}
 </script>
 
@@ -64,8 +83,12 @@
 	on:change={(e) => {
 		if (Array.isArray(e.detail.value)) {
 			value = e.detail.value.map((item) => ({ id: item.value, name: item.label }));
+			arr = value.map((item) => item?.id);
+			val = undefined;
 		} else if (e.detail.value && !Array.isArray(e.detail.value)) {
 			value = { id: e.detail.value.value, name: e.detail.value.label };
+			val = value.id;
+			arr = [];
 		} else {
 			value = undefined;
 		}
@@ -73,15 +96,9 @@
 	}}
 	on:search={(e) => {
 		if (e.detail.searchValue) {
-			namedQueryStore.fetch(
-				{ fieldName: 'roleList', idName: 'id' },
-				{ name: { opr: 'LK', val: `%${e.detail.searchValue}%` } }
-			);
+			namedQueryStore.fetch(query, { name: { opr: 'LK', val: `%${e.detail.searchValue}%` } });
 		} else {
-			namedQueryStore.fetch(
-				{ fieldName: 'roleList', idName: 'id' },
-				{ name: undefined, first: 10 }
-			);
+			namedQueryStore.fetch(query, { name: undefined, first: 10 });
 		}
 	}}
 />

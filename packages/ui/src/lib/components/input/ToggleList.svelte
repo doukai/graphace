@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import type { Errors } from '@graphace/commons';
 	import { nanoid } from 'nanoid';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus, PlusSmall, MinusSmall } from '@steeze-ui/heroicons';
-	
+
 	export let name: string;
 	export let value: (boolean | null | undefined)[] | null | undefined;
 	export let errors: Errors | undefined = undefined;
@@ -15,6 +15,12 @@
 	export let id: string = nanoid();
 	export let className: string = '';
 	export let addBtnClassName: string = '';
+
+	const dispatch = createEventDispatcher<{
+		change: {
+			value: (boolean | null | undefined)[] | null | undefined;
+		};
+	}>();
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
@@ -43,6 +49,9 @@
 						{name}
 						class="toggle {className}"
 						bind:checked={item}
+						on:change={() => {
+							dispatch('change', { value });
+						}}
 						{readonly}
 						{disabled}
 					/>

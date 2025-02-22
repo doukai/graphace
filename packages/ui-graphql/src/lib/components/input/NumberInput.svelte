@@ -23,7 +23,17 @@
 		{disabled}
 		{className}
 		{addBtnClassName}
+		on:change
 	/>
 {:else}
-	<NumberInput {placeholder} {name} bind:value {errors} {readonly} {disabled} {className} />
+	<NumberInput
+		{placeholder}
+		{name}
+		bind:value
+		{errors}
+		{readonly}
+		{disabled}
+		{className}
+		on:change
+	/>
 {/if}

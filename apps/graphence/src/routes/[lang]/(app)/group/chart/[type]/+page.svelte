@@ -3,9 +3,11 @@
 	import { createConnectionField } from '@graphace/graphql';
 	import { Card, urlName } from '@graphace/ui';
 	import type { OperationStore } from '@graphace/ui-graphql';
+	import GroupAgg from '~/lib/components/objects/group/GroupAgg.svelte';
 	import GroupBar from '~/lib/components/objects/group/GroupBar.svelte';
 	import GroupLine from '~/lib/components/objects/group/GroupLine.svelte';
 	import GroupPie from '~/lib/components/objects/group/GroupPie.svelte';
+	import GroupAggTable from '~/lib/components/objects/group/GroupAggTable.svelte';
 	import type { GroupConnection } from '~/lib/types/schema';
 	import type { PageData } from './$types';
 	import LL from '$i18n/i18n-svelte';
@@ -21,22 +23,22 @@
 	$: showFilterButton = data.fields;
 	$: showBookmarkButton = data.showBookmarkButton;
 
-	const GroupConnectionQuery = data.GroupConnectionQuery as OperationStore<GroupConnection>;
+	$: groupConnectionQuery = data.groupConnectionQuery as OperationStore<GroupConnection>;
+	$: connection = $groupConnectionQuery.response?.data?.groupConnection || {};
+	$: totalCount = connection?.totalCount || 0;
 
 	const components: Record<string, any> = {
 		bar: GroupBar,
 		line: GroupLine,
-		pie: GroupPie
+		pie: GroupPie,
+		table: GroupAggTable
 	};
 
 	$: component = components[data.type];
 </script>
 
 <Card>
-	<svelte:component
-		this={component}
-		isFetching={$GroupConnectionQuery.isFetching}
-		connection={$GroupConnectionQuery.response.data?.groupConnection}
+	<GroupAgg
 		{fields}
 		{queryArguments}
 		{showHeader}
@@ -44,8 +46,11 @@
 		{showOptionButton}
 		{showFilterButton}
 		{showBookmarkButton}
+		isFetching={$groupConnectionQuery.isFetching}
+		{totalCount}
+		className="p-0 md:h-screen"
 		on:query={(e) =>
-			GroupConnectionQuery.fetch({
+			groupConnectionQuery.fetch({
 				fields: [
 					createConnectionField({
 						name: 'groupConnection',
@@ -55,5 +60,18 @@
 					})
 				]
 			})}
-	/>
+		let:fields
+		let:queryArguments
+		let:getFieldName
+		let:getGrouByName
+	>
+		<svelte:component
+			this={component}
+			{connection}
+			{fields}
+			{queryArguments}
+			{getFieldName}
+			{getGrouByName}
+		/>
+	</GroupAgg>
 </Card>

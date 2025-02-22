@@ -104,6 +104,7 @@
 					className="md:select-sm"
 					multiple
 				>
+					<option value={undefined} />
 					{#each enums as item}
 						<option value={item.value}>{item.name}</option>
 					{/each}
@@ -118,6 +119,7 @@
 					{disabled}
 					className="md:select-sm"
 				>
+					<option value={undefined} />
 					{#each enums as item}
 						<option value={item.value}>{item.name}</option>
 					{/each}

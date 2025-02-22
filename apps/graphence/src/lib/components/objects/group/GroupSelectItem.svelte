@@ -4,16 +4,16 @@
 	import GroupSelect from './GroupSelect.svelte';
 	import type { GroupInput } from '~/lib/types/schema';
 
-	export let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
+	export let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined;
 	export let list: boolean = false;
 	export let name: string;
 	export let label: string;
-	export let errors: Errors | undefined = undefined;
+	export let errors: Errors | undefined;
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
 	
-	let selected: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
+	let selected: GroupInput | (GroupInput | null | undefined)[] | null | undefined;
 	selected = value;
 
 	if (Array.isArray(value)) {

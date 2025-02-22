@@ -109,6 +109,7 @@
 					multiple
 					className="md:select-sm w-full"
 				>
+					<option value={undefined} />
 					{#each enums as item}
 						<option value={item.value}>{item.name}</option>
 					{/each}
@@ -120,6 +121,7 @@
 					placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
 					className="md:select-sm w-full"
 				>
+					<option value={undefined} />
 					{#each enums as item}
 						<option value={item.value}>{item.name}</option>
 					{/each}

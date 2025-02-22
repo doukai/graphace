@@ -11,10 +11,10 @@
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 
-	export let value: RoleInput | (RoleInput | null | undefined)[] | null | undefined = undefined;
+	export let value: RoleInput | (RoleInput | null | undefined)[] | null | undefined;
 	export let list: boolean = false;
 	export let name: string;
-	export let errors: Errors | undefined = undefined;
+	export let errors: Errors | undefined;
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
@@ -28,7 +28,7 @@
 	const z_class3 = z_index.top(3);
 	const z_class9 = z_index.top(9);
 
-	let selected: RoleInput | (RoleInput | null | undefined)[] | null | undefined = undefined;
+	let selected: RoleInput | (RoleInput | null | undefined)[] | null | undefined;
 	selected = value;
 
 	let mutation = (): void => {
@@ -106,7 +106,7 @@
 				{readonly}
 				{placeholder}
 				className="md:input-xs"
-				containerClassName="md:textarea-sm md:min-h-6 max-w-xs"
+				containerClassName="md:textarea-sm md:min-h-6"
 				tagClassName="md:badge-sm"
 				menuClassName="md:menu-sm"
 				bind:value={selected}

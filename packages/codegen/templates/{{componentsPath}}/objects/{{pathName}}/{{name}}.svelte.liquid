@@ -17,7 +17,7 @@
 	export let queryFields: Field[] = [];
 	export let queryArguments: {{ name }}ConnectionQueryArguments = {};
 	export let selectColumns: Option[] = [];
-	export let join: Option | undefined = undefined;
+	export let join: Option | undefined;
 	export let joinColumns: Option[] = [];
 	export let orderByColumns: Option[] = [];
 	export let totalCount: number = 0;
@@ -247,29 +247,6 @@
 		];
 	};
 
-	const buildQueryFields = (): Field[] => {
-		queryFields = fields.map((field) => {
-			if (field.fields) {
-				const idFieldName = __schema
-					.getType(
-						__schema.getType(typeName)?.getField(field.name)?.getType().getNamedType()?.getName()!
-					)
-					?.getIDField()
-					?.getName();
-				if (!field.fields.some((subField) => subField.name === idFieldName)) {
-					field.fields.push(new Field({ name: idFieldName! }));
-				}
-			}
-			return field;
-		});
-
-		if (!queryFields.some((subField) => subField.name === idFieldName)) {
-			queryFields.push(new Field({ name: idFieldName }));
-		}
-
-		return queryFields;
-	};
-
 	export const buildArguments = (toPageNumber?: number | undefined, limit?: number | undefined): {{ name }}ConnectionQueryArguments => {
 		if (!queryArguments) {
 			queryArguments = {};
@@ -338,7 +315,24 @@
 		if (toPageNumber) {
 			queryArguments.offset = (toPageNumber - 1) * pageSize;
 		}
-		dispatch('query', { fields: buildQueryFields(), queryArguments });
+		const _fields = optionsToFields();
+		if (!_fields.some((subField) => subField.name === idFieldName)) {
+			_fields.push(new Field({ name: idFieldName }));
+		}
+		_fields.forEach((field) => {
+			if (field.fields) {
+				const idFieldName = __schema
+					.getType(
+						__schema.getType(typeName)?.getField(field.name)?.getType().getNamedType()?.getName()!
+					)
+					?.getIDField()
+					?.getName();
+				if (!field.fields.some((subField) => subField.name === idFieldName)) {
+					field.fields.push(new Field({ name: idFieldName! }));
+				}
+			}
+		});
+		dispatch('query', { fields: _fields, queryArguments });
 	};
 
 	queryPage();
@@ -399,7 +393,7 @@
 							options={filteredJoinOptions}
 							rootClassName="w-full"
 							className="md:input-xs"
-							containerClassName="md:min-h-8 max-w-xs"
+							containerClassName="md:min-h-8"
 							tagClassName="md:badge-sm"
 							groupClassName="md:input-group-sm"
 							bind:value={join}
@@ -433,7 +427,7 @@
 							options={filteredJoinColumnOptions}
 							rootClassName="w-full"
 							className="md:input-xs"
-							containerClassName="md:min-h-8 max-w-xs"
+							containerClassName="md:min-h-8"
 							tagClassName="md:badge-sm"
 							groupClassName="md:input-group-sm"
 							bind:value={joinColumns}
@@ -457,7 +451,7 @@
 							groups={filteredOrderByOptions}
 							rootClassName="w-full"
 							className="md:input-xs"
-							containerClassName="md:min-h-8 max-w-xs"
+							containerClassName="md:min-h-8"
 							tagClassName="md:badge-sm"
 							groupClassName="md:input-group-sm"
 							bind:value={orderByColumns}

@@ -2,7 +2,7 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import type { Errors, PermissionsStore} from '@graphace/commons';
-	import type { GraphQLError, GlobalGraphQLErrorMessageFunction, GraphQLErrorsFunction } from '@graphace/graphql';
+	import { type GraphQLError, buildArguments } from '@graphace/graphql';
 	import { Table, TableHead, TableLoading, TableEmpty, messageBoxs, notifications, z_index } from '@graphace/ui';
 	import { StringTh, StringTd } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -23,6 +23,9 @@
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const permissions = getContext<PermissionsStore>('permissions');
+	const z_class = z_index.top(1);
+	const z_class2 = z_index.top(2);
+	const z_class3 = z_index.top(3);
 
 	const dispatch = createEventDispatcher<{
 		fetch: {
@@ -59,14 +62,16 @@
 	}
 
 	export const query = () => {
+		let _args: QueryRealmListArgs = buildArguments(args);
+
 		if (Object.keys(orderBy).length > 0) {
-			args.orderBy = orderBy;
+			_args.orderBy = orderBy;
 		} else {
-			args.orderBy = undefined;
+			_args.orderBy = undefined;
 		}
 
 		dispatch('fetch', {
-			args,
+			args: _args,
 			then: (data) => {
 				errors = {};
 			},
@@ -78,19 +83,19 @@
 	};
 
 	export const search = (searchValue: string | undefined) => {
-		let args: QueryRealmListArgs = {};
+		let _args: QueryRealmListArgs = {};
 		if (searchValue) {
-			args.cond = 'OR';
-			args.name = { opr: 'LK', val: `%${searchValue}%` };
-			args.description = { opr: 'LK', val: `%${searchValue}%` };
+			_args.cond = 'OR';
+			_args.name = { opr: 'LK', val: `%${searchValue}%` };
+			_args.description = { opr: 'LK', val: `%${searchValue}%` };
 		} else {
-			args.cond = undefined;
-			args.name = undefined;
-			args.description = undefined;
+			_args.cond = undefined;
+			_args.name = undefined;
+			_args.description = undefined;
 		}
 
 		dispatch('fetch', {
-			args,
+			args: _args,
 			then: (data) => {
 				errors = {};
 			},
@@ -180,7 +185,7 @@
 			{#if permissions.auth('Realm::name::*')}
 			<StringTh
 				name={$LL.graphql.objects.Realm.fields.name.name()}
-				bind:expression={args.name}
+				bind:value={args.name}
 				bind:sort={orderBy.name}
 				on:filter={(e) => query()}
 			/>
@@ -188,7 +193,7 @@
 			{#if permissions.auth('Realm::description::*')}
 			<StringTh
 				name={$LL.graphql.objects.Realm.fields.description.name()}
-				bind:expression={args.description}
+				bind:value={args.description}
 				bind:sort={orderBy.description}
 				on:filter={(e) => query()}
 			/>
@@ -202,7 +207,7 @@
 		<tbody>
 			{#if nodes && nodes.length > 0}
 				{#each nodes as node, row}
-					{#if node && node.id}
+					{#if node}
 						<tr class="hover">
 							<th class="{z_class} w-12">
 								<label>
@@ -219,7 +224,7 @@
 								bind:value={node.name}
 								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Realm::name::WRITE')}
-								errors={errors[row]?.iterms?.name}
+								errors={errors?.[row]?.iterms?.name}
 							/>
 							{/if}
 							{#if permissions.auth('Realm::description::*')}
@@ -228,7 +233,7 @@
 								bind:value={node.description}
 								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } }, row)}
 								readonly={!permissions.auth('Realm::description::WRITE')}
-								errors={errors[row]?.iterms?.description}
+								errors={errors?.[row]?.iterms?.description}
 							/>
 							{/if}
 							<th class="{z_class} hover:{z_class3} w-12">
