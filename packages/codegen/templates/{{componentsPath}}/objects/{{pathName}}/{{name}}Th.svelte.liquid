@@ -7,7 +7,7 @@
 	import type { {{ name }}Expression } from '~/{{ schemaTypesPath }}';
 
 	export let name: string;
-	export let value: {{ name }}Expression | null | undefined;
+	export let value: {{ name }}Expression | null | undefined = undefined;
 
 	$: filtered = value && hasArguments(value);
 </script>

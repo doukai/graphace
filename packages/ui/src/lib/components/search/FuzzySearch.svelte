@@ -5,8 +5,8 @@
 	import { z_index } from '~';
 
 	export let data: any[];
-	export let label: string | undefined;
-	export let placeholder: string | undefined;
+	export let label: string | undefined = undefined;
+	export let placeholder: string | undefined = undefined;
 	export let limit: number = 10;
 	export let inputAfterSelect: 'clear' | 'update' | 'keep' = 'clear';
 

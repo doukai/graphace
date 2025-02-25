@@ -10,7 +10,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
 
-	export let value: string | (string | null | undefined)[] | null | undefined;
+	export let value: string | (string | null | undefined)[] | null | undefined = undefined;
 	export let enums: { name: string; value: string | null | undefined; description?: string }[];
 	export let list: boolean = false;
 	export let name: string;

@@ -2,7 +2,7 @@
 	import type { Errors } from '@graphace/commons';
 	import { DateTimeInput, DateTimeInputList } from '@graphace/ui';
 
-	export let value: string | (string | null | undefined)[] | null | undefined;
+	export let value: string | (string | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;
 	export let name: string;
 	export let errors: Errors | undefined = undefined;

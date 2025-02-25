@@ -5,7 +5,7 @@
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { OperatorSelect, NumberInput } from '.';
 
-	export let value: NumberExpression | null | undefined;
+	export let value: NumberExpression | null | undefined = undefined;
 	export let name: string;
 	export let label: string;
 	export let className: string = '';

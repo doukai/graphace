@@ -3,7 +3,7 @@
 	import { nanoid } from 'nanoid';
 	import { createEventDispatcher } from 'svelte';
 	export let name: string;
-	export let value: boolean | null | undefined;
+	export let value: boolean | null | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;

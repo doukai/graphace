@@ -12,7 +12,7 @@
 	import { Check, XMark, Funnel, BarsArrowDown, BarsArrowUp } from '@steeze-ui/heroicons';
 
 	export let name: string;
-	export let value: BooleanExpression | null | undefined;
+	export let value: BooleanExpression | null | undefined = undefined;
 	export let sort: Sort | null | undefined = undefined;
 
 	let _expression: BooleanExpression = { opr: 'EQ', val: undefined, arr: [] };

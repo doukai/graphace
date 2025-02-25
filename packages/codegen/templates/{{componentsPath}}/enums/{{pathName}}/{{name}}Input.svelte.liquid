@@ -5,10 +5,10 @@
 	import { EnumInput } from '@graphace/ui-graphql';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 
-	export let value: string | (string | null | undefined)[] | null | undefined;
+	export let value: string | (string | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;
 	export let name: string;
-	export let errors: Errors | undefined;
+	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';

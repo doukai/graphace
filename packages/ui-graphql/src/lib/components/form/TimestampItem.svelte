@@ -2,7 +2,7 @@
 	import type { Errors } from '@graphace/commons';
 	import { DateTimeItem } from '.';
 
-	export let value: string | (string | null | undefined)[] | null | undefined;
+	export let value: string | (string | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;
 	export let name: string;
 	export let label: string;

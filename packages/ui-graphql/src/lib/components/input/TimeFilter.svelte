@@ -5,7 +5,7 @@
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { OperatorSelect, TimeInput } from '.';
 
-	export let value: StringExpression | null | undefined;
+	export let value: StringExpression | null | undefined = undefined;
 	export let name: string;
 	export let label: string;
 	export let className: string = '';

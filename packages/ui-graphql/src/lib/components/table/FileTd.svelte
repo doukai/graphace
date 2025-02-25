@@ -10,7 +10,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
 
-	export let value: FileInfo | (FileInfo | null | undefined)[] | null | undefined;
+	export let value: FileInfo | (FileInfo | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;
 	export let name: string;
 	export let errors: Errors | undefined = undefined;

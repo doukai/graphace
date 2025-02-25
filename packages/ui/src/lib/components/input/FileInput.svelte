@@ -8,7 +8,7 @@
 	import { MinusSmall } from '@steeze-ui/heroicons';
 	
 	export let name: string;
-	export let value: FileInfo | null | undefined;
+	export let value: FileInfo | null | undefined = undefined;
 	export let placeholder: string = '';
 	export let className: string = '';
 	export let linkClassName: string = '';

@@ -25,7 +25,7 @@
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { {{ name }}Expression } from '~/{{ schemaTypesPath }}';
 
-	export let value: {{ name }}Expression | null | undefined;
+	export let value: {{ name }}Expression | null | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	{%- if useAuth %}

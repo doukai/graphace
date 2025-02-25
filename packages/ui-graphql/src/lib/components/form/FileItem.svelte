@@ -2,7 +2,7 @@
 	import type { Errors, FileInfo } from '@graphace/commons';
 	import { FormItem, FileInput, FileInputList } from '@graphace/ui';
 
-	export let value: FileInfo | (FileInfo | null | undefined)[] | null | undefined;
+	export let value: FileInfo | (FileInfo | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;
 	export let name: string;
 	export let label: string;

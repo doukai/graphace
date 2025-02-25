@@ -2,7 +2,7 @@
 	import type { Errors } from '@graphace/commons';
 	import { FormItem, Select } from '@graphace/ui';
 
-	export let value: string | (string | null | undefined)[] | null | undefined;
+	export let value: string | (string | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;
 	export let enums: { name: string; value: string | null | undefined; description?: string }[];
 	export let name: string;

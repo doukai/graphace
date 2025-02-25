@@ -5,7 +5,7 @@
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { OperatorSelect, BooleanInput } from '.';
 
-	export let value: BooleanExpression | null | undefined;
+	export let value: BooleanExpression | null | undefined = undefined;
 	export let name: string;
 	export let label: string;
 	export let className: string = '';

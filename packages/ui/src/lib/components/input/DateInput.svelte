@@ -3,7 +3,7 @@
 	import type { Errors } from '@graphace/commons';
 	import { nanoid } from 'nanoid';
 	export let name: string;
-	export let value: string | null | undefined;
+	export let value: string | null | undefined = undefined;
 	export let placeholder: string = '';
 	export let className: string = '';
 	export let errors: Errors | undefined = undefined;

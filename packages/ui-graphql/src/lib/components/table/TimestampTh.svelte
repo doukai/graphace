@@ -3,7 +3,7 @@
 	import { DateTimeTh } from '.';
 
 	export let name: string;
-	export let value: StringExpression | null | undefined;
+	export let value: StringExpression | null | undefined = undefined;
 	export let sort: Sort | null | undefined = undefined;
 </script>
 

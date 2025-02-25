@@ -8,7 +8,7 @@
 	import { Plus, PlusSmall, MinusSmall } from '@steeze-ui/heroicons';
 
 	export let name: string;
-	export let value: (boolean | null | undefined)[] | null | undefined;
+	export let value: (boolean | null | undefined)[] | null | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;

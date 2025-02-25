@@ -12,7 +12,7 @@
 	import { Check, XMark, Funnel, BarsArrowDown, BarsArrowUp } from '@steeze-ui/heroicons';
 
 	export let name: string;
-	export let value: NumberExpression | null | undefined;
+	export let value: NumberExpression | null | undefined = undefined;
 	export let sort: Sort | null | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');

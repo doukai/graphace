@@ -13,7 +13,7 @@
 
 	export let name: string;
 	export let enums: { name: string; value: string | null | undefined; description?: string }[];
-	export let value: StringExpression | null | undefined;
+	export let value: StringExpression | null | undefined = undefined;
 	export let sort: Sort | null | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
