@@ -1,5 +1,11 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
+	
+	let className: string | undefined = '';
+	export { className as class };
+	const contextClass = getContext<string>('ui.card') || '';
 </script>
-<div class="card w-full p-6 bg-base-100 shadow-xl md:max-h-[calc(100vh-8rem)]">
+
+<div class="card {className} {contextClass}">
 	<slot />
 </div>

@@ -3,16 +3,18 @@
 	import type { Readable } from 'svelte/store';
 	import { createPagination, melt } from '@melt-ui/svelte';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
-	export let pageSizeOptions: number[] = [10, 20, 30];
+
 	export let pageSize: number = 10;
 	export let pageNumber: number = 1;
 	export let totalCount: number = 0;
 	export let siblingCount: number = 1;
+	let className: string = '';
+	export { className as class };
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
+	const contextClass = getContext<string>('ui.pagination') || '';
 	const dispatch = createEventDispatcher<{
-		pageChange: {};
-		sizeChange: {};
+		pageChange: { pageNumber: number };
 	}>();
 
 	$: pageCount =
@@ -20,7 +22,7 @@
 
 	const {
 		elements: { root, pageTrigger, prevButton, nextButton },
-		states: { pages, range },
+		states: { pages },
 		options: { perPage, count }
 	} = createPagination({
 		count: totalCount,
@@ -29,7 +31,7 @@
 		siblingCount: siblingCount,
 		onPageChange: (args) => {
 			pageNumber = args.next;
-			dispatch('pageChange');
+			dispatch('pageChange', { pageNumber });
 			return args.next;
 		}
 	});
@@ -38,70 +40,55 @@
 	$: $perPage = pageSize;
 </script>
 
-<div class="hidden md:flex justify-between">
-	<div class="form-control">
-		<label class="input-group">
-			<span>{$LL.ui.pagination.size()}</span>
-			<select
-				class="select select-bordered"
-				bind:value={pageSize}
-				on:change={() => {
-					dispatch('sizeChange');
-				}}
-			>
-				{#each pageSizeOptions as pageSizeOption}
-					<option value={pageSizeOption}>{pageSizeOption}</option>
-				{/each}
-			</select>
-		</label>
-	</div>
-	<div class="flex items-center">
-		<span class="text-sm text-center font-semibold">
-			{$LL.ui.pagination.total({ total: totalCount })}
-		</span>
-	</div>
+<div class="hidden md:flex md:justify-between">
+	<slot {pageSize} {totalCount} />
 	<div class="join" use:melt={$root}>
 		<button
 			use:melt={$prevButton}
-			class="join-item btn data-[selected]:btn-active disabled:btn-disabled"
+			class="join-item btn {className} {contextClass} data-[selected]:btn-active disabled:btn-disabled"
 		>
 			«
 		</button>
 		{#each $pages as page (page.key)}
 			{#if page.type === 'ellipsis'}
-				<button class="join-item btn btn-disabled">...</button>
+				<button class="join-item btn {className} {contextClass} btn-disabled">...</button>
 			{:else}
-				<button class="join-item btn data-[selected]:btn-active" use:melt={$pageTrigger(page)}>
+				<button
+					class="join-item btn {className} {contextClass} data-[selected]:btn-active"
+					use:melt={$pageTrigger(page)}
+				>
 					{page.value}
 				</button>
 			{/if}
 		{/each}
 		<button
 			use:melt={$nextButton}
-			class="join-item btn data-[selected]:btn-active disabled:btn-disabled"
+			class="join-item btn {className} {contextClass} data-[selected]:btn-active disabled:btn-disabled"
 		>
 			»
 		</button>
 	</div>
 </div>
-<div class="flex justify-center md:hidden join">
+<div class="flex justify-center join md:hidden">
 	<button
-		class="join-item btn {pageNumber - 1 ? '' : 'btn-disabled'}"
+		class="join-item btn {className} {contextClass} {pageNumber - 1 ? '' : 'btn-disabled'}"
 		on:click={() => {
 			pageNumber = pageNumber - 1;
-			dispatch('pageChange');
+			dispatch('pageChange', { pageNumber });
 		}}
 	>
 		«
 	</button>
-	<button class="join-item btn">
+	<button class="join-item btn {className} {contextClass}">
 		{$LL.ui.pagination.current({ current: pageNumber })}
 	</button>
 	<button
-		class="join-item btn {pageNumber + 1 <= pageCount ? '' : 'btn-disabled'}"
+		class="join-item btn {className} {contextClass} {pageNumber + 1 <= pageCount
+			? ''
+			: 'btn-disabled'}"
 		on:click={() => {
 			pageNumber = pageNumber + 1;
-			dispatch('pageChange');
+			dispatch('pageChange', { pageNumber });
 		}}
 	>
 		»

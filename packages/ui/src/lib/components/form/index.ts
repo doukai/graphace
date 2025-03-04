@@ -1,7 +1,6 @@
 import Form from "./Form.svelte";
-import FormItem from "./FormItem.svelte";
-import FormLoading from "./FormLoading.svelte";
+import FormControl from "./FormControl.svelte";
 
 export {
-    Form, FormItem, FormLoading
+    Form, FormControl
 }
