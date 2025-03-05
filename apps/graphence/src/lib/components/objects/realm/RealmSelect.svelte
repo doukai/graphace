@@ -5,16 +5,16 @@
 	import { type StructQueryStores, ObjectSelect } from '@graphace/ui-graphql';
 	import type { RealmInput } from '~/lib/types/schema';
 
-	export let value: RealmInput | (RealmInput | null | undefined)[] | null | undefined;
-	export let val: string | null | undefined;
+	export let value: RealmInput | (RealmInput | null | undefined)[] | null | undefined = undefined;
+	export let val: string | null | undefined = undefined;
 	export let arr: (string | null | undefined)[] | null | undefined = [];
-	export let errors: Errors | undefined;
+	export let errors: Errors | undefined = undefined;
 	export let list: boolean | undefined = false;
 	export let id: string | null = null;
 	export let name: string;
 	export let disabled = false;
 	export let readonly = false;
-	export let placeholder: string | null | undefined;
+	export let placeholder: string | null | undefined = undefined;
 	export let className: string = '';
 	export let containerClassName: string = '';
 	export let tagClassName: string = '';

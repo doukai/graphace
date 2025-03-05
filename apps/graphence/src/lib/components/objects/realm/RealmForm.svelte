@@ -8,7 +8,7 @@
 	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/utils';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { RealmInput } from '~/lib/types/schema';
-	export let node: RealmInput | null | undefined;
+	export let node: RealmInput | null | undefined = undefined;
 	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
 	export let showRemoveButton: boolean = true;

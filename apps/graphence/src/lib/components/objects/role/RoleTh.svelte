@@ -7,7 +7,7 @@
 	import type { RoleExpression } from '~/lib/types/schema';
 
 	export let name: string;
-	export let value: RoleExpression | null | undefined;
+	export let value: RoleExpression | null | undefined = undefined;
 
 	$: filtered = value && hasArguments(value);
 </script>

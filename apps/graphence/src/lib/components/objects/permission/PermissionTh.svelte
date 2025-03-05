@@ -7,7 +7,7 @@
 	import type { PermissionExpression } from '~/lib/types/schema';
 
 	export let name: string;
-	export let value: PermissionExpression | null | undefined;
+	export let value: PermissionExpression | null | undefined = undefined;
 
 	$: filtered = value && hasArguments(value);
 </script>

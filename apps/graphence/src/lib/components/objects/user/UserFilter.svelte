@@ -14,7 +14,7 @@
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { UserExpression } from '~/lib/types/schema';
 
-	export let value: UserExpression | null | undefined;
+	export let value: UserExpression | null | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const permissions = getContext<PermissionsStore>('permissions');

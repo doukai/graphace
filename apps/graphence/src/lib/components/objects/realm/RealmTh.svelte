@@ -7,7 +7,7 @@
 	import type { RealmExpression } from '~/lib/types/schema';
 
 	export let name: string;
-	export let value: RealmExpression | null | undefined;
+	export let value: RealmExpression | null | undefined = undefined;
 
 	$: filtered = value && hasArguments(value);
 </script>

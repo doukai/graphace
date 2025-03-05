@@ -7,7 +7,7 @@
 	import type { GroupExpression } from '~/lib/types/schema';
 
 	export let name: string;
-	export let value: GroupExpression | null | undefined;
+	export let value: GroupExpression | null | undefined = undefined;
 
 	$: filtered = value && hasArguments(value);
 </script>

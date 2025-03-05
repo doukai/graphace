@@ -9,7 +9,7 @@
 	export let queryArguments: RealmConnectionQueryArguments = {};
 	export let nullString: string = '-';
 	export let getFieldName: (fieldName: string, subFieldName?: string) => string;
-	export let getGrouByName: (fieldName: string) => string | undefined;
+	export let getGrouByName: (fieldName: string) => string | undefined = undefined;
 
 	$: nodes = connection?.edges?.map((edge) => edge?.node);
 </script>

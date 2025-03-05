@@ -7,7 +7,7 @@
 	import type { UserExpression } from '~/lib/types/schema';
 
 	export let name: string;
-	export let value: UserExpression | null | undefined;
+	export let value: UserExpression | null | undefined = undefined;
 
 	$: filtered = value && hasArguments(value);
 </script>

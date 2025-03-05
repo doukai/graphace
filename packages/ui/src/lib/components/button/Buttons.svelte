@@ -30,56 +30,56 @@
 	{#if showRemoveButton}
 		<Button
 			text={$LL.ui.button.remove()}
-			class="btn-error btn-outline max-sm:btn-square md:hidden"
+			class="btn-error btn-outline max-sm:btn-square"
 			on:click={(e) => {
 				dispatch('remove');
 			}}
 		>
-			<Icon solt="sm" src={Trash} class="h-6 w-6" solid />
+			<Icon slot="sm" src={Trash} class="h-6 w-6" solid />
 		</Button>
 	{/if}
 	{#if showUnbindButton}
 		<Button
 			text={$LL.ui.button.unbind()}
-			class="btn-error btn-outline max-sm:btn-square md:hidden"
+			class="btn-error btn-outline max-sm:btn-square"
 			on:click={(e) => {
 				dispatch('unbind');
 			}}
 		>
-			<Icon src={XMark} class="h-6 w-6" solid />
+			<Icon slot="sm" src={XMark} class="h-6 w-6" solid />
 		</Button>
 	{/if}
 	{#if showSaveButton}
 		<Button
 			text={$LL.ui.button.save()}
-			class="btn-secondary max-sm:btn-square md:hidden"
+			class="btn-secondary max-sm:btn-square"
 			on:click={(e) => {
 				dispatch('save');
 			}}
 		>
-			<Icon src={Check} class="h-6 w-6" solid />
+			<Icon slot="sm" src={Check} class="h-6 w-6" solid />
 		</Button>
 	{/if}
 	{#if showSelectButton}
 		<Button
 			text={$LL.ui.button.select()}
-			class="btn-secondary btn-outline max-sm:btn-square md:hidden"
+			class="btn-secondary btn-outline max-sm:btn-square"
 			on:click={(e) => {
 				dispatch('select');
 			}}
 		>
-			<Icon src={Link} class="h-6 w-6" solid />
+			<Icon slot="sm" src={Link} class="h-6 w-6" solid />
 		</Button>
 	{/if}
 	{#if showBackButton}
 		<Button
 			text={$LL.ui.button.back()}
-			class="btn-neutral max-sm:btn-square md:hidden"
+			class="btn-neutral max-sm:btn-square"
 			on:click={(e) => {
 				dispatch('back');
 			}}
 		>
-			<Icon src={ArrowUturnLeft} class="h-6 w-6" solid />
+			<Icon slot="sm" src={ArrowUturnLeft} class="h-6 w-6" solid />
 		</Button>
 	{/if}
 	<slot />

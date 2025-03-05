@@ -7,8 +7,8 @@
 	export let currentDeep = 0;
 	export let deeps = 2;
 	export let showSearchInput: boolean = true;
-	export let activeGroupId: string | null | undefined;
-	export let groupName: string | undefined;
+	export let activeGroupId: string | null | undefined = undefined;
+	export let groupName: string | undefined = undefined;
 
 	const { treeQueryStore } = getContext<StructQueryStores>('structQueryStores');
 	treeQueryStore.fetch({ fieldName: 'groupList', idName: 'id' }, { deep: { opr: 'LT', val: deeps } });

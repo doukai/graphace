@@ -6,8 +6,8 @@
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 
 	export let name: string;
-	export let value: StringExpression | null | undefined;
-	export let sort: Sort | null | undefined;
+	export let value: StringExpression | null | undefined = undefined;
+	export let sort: Sort | null | undefined = undefined;
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	$: enums = [

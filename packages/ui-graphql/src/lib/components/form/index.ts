@@ -1,17 +1,29 @@
-import StringItem from "./StringItem.svelte";
-import NumberItem from "./NumberItem.svelte";
-import BooleanItem from "./BooleanItem.svelte";
-import EnumItem from "./EnumItem.svelte";
-import IDItem from "./IDItem.svelte";
-import IntItem from "./IntItem.svelte";
-import FloatItem from "./FloatItem.svelte";
-import DateTimeItem from "./DateTimeItem.svelte";
-import TimestampItem from "./TimestampItem.svelte";
-import DateItem from "./DateItem.svelte";
-import TimeItem from "./TimeItem.svelte";
-import FileItem from "./FileItem.svelte";
-import ObjectItem from "./ObjectItem.svelte";
+import IDFormControl from "./IDFormControl.svelte";
+import StringFormControl from "./StringFormControl.svelte";
+import NumberFormControl from "./NumberFormControl.svelte";
+import IntFormControl from "./IntFormControl.svelte";
+import FloatFormControl from "./FloatFormControl.svelte";
+import BooleanFormControl from "./BooleanFormControl.svelte";
+import DateTimeFormControl from "./DateTimeFormControl.svelte";
+import TimestampFormControl from "./TimestampFormControl.svelte";
+import DateFormControl from "./DateFormControl.svelte";
+import TimeFormControl from "./TimeFormControl.svelte";
+import FileFormControl from "./FileFormControl.svelte";
+import EnumFormControl from "./EnumFormControl.svelte";
+import ObjectFormControl from "./ObjectFormControl.svelte";
 
 export {
-    StringItem, NumberItem, BooleanItem, EnumItem, IDItem, IntItem, FloatItem, DateTimeItem, TimestampItem, DateItem, TimeItem, FileItem, ObjectItem
+    IDFormControl,
+    StringFormControl,
+    NumberFormControl,
+    IntFormControl,
+    FloatFormControl,
+    BooleanFormControl,
+    DateTimeFormControl,
+    TimestampFormControl,
+    DateFormControl,
+    TimeFormControl,
+    FileFormControl,
+    EnumFormControl,
+    ObjectFormControl
 }

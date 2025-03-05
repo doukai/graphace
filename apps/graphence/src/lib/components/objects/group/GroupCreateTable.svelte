@@ -9,7 +9,7 @@
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { GroupInput } from '~/lib/types/schema';
 
-	export let nodes: (GroupInput | null | undefined)[] | null | undefined;
+	export let nodes: (GroupInput | null | undefined)[] | null | undefined = undefined;
 	export let errors: Record<number, Errors> = {};
 	export let showRemoveButton: boolean = true;
 	export let showSaveButton: boolean = true;

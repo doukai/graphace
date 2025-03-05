@@ -17,7 +17,7 @@
 	export let queryFields: Field[] = [];
 	export let queryArguments: UserConnectionQueryArguments = {};
 	export let selectColumns: Option[] = [];
-	export let join: Option | undefined;
+	export let join: Option | undefined = undefined;
 	export let joinColumns: Option[] = [];
 	export let orderByColumns: Option[] = [];
 	export let totalCount: number = 0;

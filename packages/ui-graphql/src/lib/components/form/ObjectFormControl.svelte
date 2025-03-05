@@ -5,17 +5,16 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons';
 	import type { NamedStruct } from '@graphace/graphql';
-	import { FormItem } from '@graphace/ui';
+	import { FormControl } from '@graphace/ui';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Link } from '@steeze-ui/heroicons';
 
 	export let path: string;
 	export let name: string;
-	export let label: string;
 	export let namedStruct: NamedStruct | (NamedStruct | null | undefined)[] | null | undefined =
 		undefined;
 	export let errors: Errors | undefined = undefined;
-	
+
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	let _namedStruct = namedStruct;
@@ -26,7 +25,7 @@
 	}>();
 </script>
 
-<FormItem {label} let:id>
+<FormControl let:id>
 	<div {id} class="justify-start h-full flex items-center">
 		<div class="tooltip" data-tip={$LL.ui_graphql.table.editBtn()}>
 			{#if _namedStruct}
@@ -100,4 +99,4 @@
 			{/each}
 		</label>
 	{/if}
-</FormItem>
+</FormControl>

@@ -11,7 +11,7 @@
 	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/utils';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { RoleInput } from '~/lib/types/schema';
-	export let node: RoleInput | null | undefined;
+	export let node: RoleInput | null | undefined = undefined;
 	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
 	export let showRemoveButton: boolean = true;

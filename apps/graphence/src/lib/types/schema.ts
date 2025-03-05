@@ -2810,21 +2810,13 @@ export type JsonSchema = {
 };
 
 export type Meta = {
-  /** 已移除 */
   isDeprecated?: Maybe<Scalars['Boolean']>;
-  /** 版本 */
   version?: Maybe<Scalars['Int']>;
-  /** 域 */
   realmId?: Maybe<Scalars['Int']>;
-  /** 创建者 */
   createUserId?: Maybe<Scalars['String']>;
-  /** 创建时间 */
   createTime?: Maybe<Scalars['Timestamp']>;
-  /** 更新者 */
   updateUserId?: Maybe<Scalars['String']>;
-  /** 更新时间 */
   updateTime?: Maybe<Scalars['Timestamp']>;
-  /** 创建组 */
   createGroupId?: Maybe<Scalars['String']>;
 };
 

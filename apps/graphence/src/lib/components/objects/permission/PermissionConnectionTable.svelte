@@ -20,7 +20,7 @@
 		PermissionInput
 	} from '~/lib/types/schema';
 
-	export let nodes: (PermissionInput | null | undefined)[] | null | undefined;
+	export let nodes: (PermissionInput | null | undefined)[] | null | undefined = undefined;
 	export let totalCount: number = 0;
 	export let isFetching: boolean;
 	export let errors: Record<number, Errors> = {};
@@ -61,8 +61,8 @@
 
 	export let args: QueryPermissionConnectionArgs = {};
 	export let orderBy: PermissionOrderBy = {};
-	export let after: string | undefined;
-	export let before: string | undefined;
+	export let after: string | undefined = undefined;
+	export let before: string | undefined = undefined;
 	export let pageNumber: number = 1;
 	export let pageSize: number = 10;
 

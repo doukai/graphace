@@ -14,7 +14,7 @@
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { RoleExpression } from '~/lib/types/schema';
 
-	export let value: RoleExpression | null | undefined;
+	export let value: RoleExpression | null | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const permissions = getContext<PermissionsStore>('permissions');

@@ -4,11 +4,11 @@
 	import UserSelect from './UserSelect.svelte';
 	import type { UserInput } from '~/lib/types/schema';
 
-	export let value: UserInput | (UserInput | null | undefined)[] | null | undefined;
+	export let value: UserInput | (UserInput | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;
 	export let name: string;
 	export let label: string;
-	export let errors: Errors | undefined;
+	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';

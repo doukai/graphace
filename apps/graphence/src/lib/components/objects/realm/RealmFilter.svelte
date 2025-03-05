@@ -11,7 +11,7 @@
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { RealmExpression } from '~/lib/types/schema';
 
-	export let value: RealmExpression | null | undefined;
+	export let value: RealmExpression | null | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const permissions = getContext<PermissionsStore>('permissions');

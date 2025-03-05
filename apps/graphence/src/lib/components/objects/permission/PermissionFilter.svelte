@@ -13,7 +13,7 @@
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { PermissionExpression } from '~/lib/types/schema';
 
-	export let value: PermissionExpression | null | undefined;
+	export let value: PermissionExpression | null | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const permissions = getContext<PermissionsStore>('permissions');

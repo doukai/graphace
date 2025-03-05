@@ -15,7 +15,7 @@
 		UserInput
 	} from '~/lib/types/schema';
 
-	export let nodes: (UserInput | null | undefined)[] | null | undefined;
+	export let nodes: (UserInput | null | undefined)[] | null | undefined = undefined;
 	export let isFetching: boolean;
 	export let errors: Record<number, Errors> = {};
 	export let multipleSelect: boolean = true;
