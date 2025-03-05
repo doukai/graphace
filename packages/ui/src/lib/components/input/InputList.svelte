@@ -12,6 +12,8 @@
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
+	export let unique = true;
+	export let addOnPaste = true;
 	export let id: string = nanoid();
 	let className: string | undefined = 'min-h-12 p-1 gap-1';
 	export { className as class };
@@ -32,11 +34,11 @@
 		editable: !readonly,
 		placeholder: placeholder,
 		defaultTags: value?.map((item) => ({ id: item, value: item })) || [],
-		unique: true,
+		unique: unique,
 		add(tag) {
 			return { id: tag, value: tag };
 		},
-		addOnPaste: true,
+		addOnPaste: addOnPaste,
 		onTagsChange: ({ curr, next }) => {
 			value = [...next.map((tag) => tag.value)];
 			dispatch('change', { value });
@@ -47,14 +49,17 @@
 
 <div
 	use:melt={$root}
-	class="flex flex-wrap items-center textarea textarea-bordered {errors?.errors
+	class="flex flex-wrap items-center textarea textarea-bordered {errors?.errors ||
+	(errors?.iterms && Object.keys(errors?.iterms).length > 0)
 		? 'textarea-error focus-within:outline-error'
 		: 'focus-within:outline-base-content/20'}  focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 {className} {contextClass}"
 >
-	{#each $tags as t}
+	{#each $tags as t, index}
 		<div
 			use:melt={$tag(t)}
-			class="badge badge-neutral flex items-center pr-0 [word-break:break-word] data-[disabled]:bg-neutral-content data-[selected]:bg-neutral-focus data-[disabled]:hover:cursor-default data-[disabled]:focus:!outline-none data-[disabled]:focus:!ring-0"
+			class="badge {errors?.iterms?.[index]
+				? 'badge-error'
+				: 'badge-neutral'} flex items-center [word-break:break-word] data-[disabled]:bg-neutral-content data-[selected]:bg-neutral-focus data-[disabled]:hover:cursor-default data-[disabled]:focus:!outline-none data-[disabled]:focus:!ring-0"
 		>
 			<span>{t.value}</span>
 			<button
@@ -79,6 +84,6 @@
 		{name}
 		type="text"
 		{placeholder}
-		class="input px-1 h-5 min-w-20 shrink outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
+		class="input px-1 h-5 w-full min-w-20 shrink grow basis-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
 	/>
 </div>
