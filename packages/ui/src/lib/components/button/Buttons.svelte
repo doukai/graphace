@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { getContext, createEventDispatcher } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Trash, XMark, Check, Link, ArrowUturnLeft } from '@steeze-ui/heroicons';
+	import { Trash, XMark, Check, Plus, Link, ArrowUturnLeft } from '@steeze-ui/heroicons';
 	import Button from './Button.svelte';
+	import type { TranslationFunctions } from '~/i18n/i18n-types';
 
 	export let showRemoveButton: boolean = false;
 	export let showUnbindButton: boolean = false;
 	export let showSaveButton: boolean = false;
+	export let showCreateButton: boolean = true;
 	export let showSelectButton: boolean = false;
 	export let showBackButton: boolean = false;
 	let className: string | undefined = 'flex space-x-1';
@@ -21,6 +22,7 @@
 		remove: {};
 		unbind: {};
 		save: {};
+		create: {};
 		select: {};
 		back: {};
 	}>();
@@ -58,6 +60,17 @@
 			}}
 		>
 			<Icon slot="sm" src={Check} class="h-6 w-6" solid />
+		</Button>
+	{/if}
+	{#if showCreateButton}
+		<Button
+			text={$LL.ui.button.save()}
+			class="btn-primary max-sm:btn-square"
+			on:click={(e) => {
+				dispatch('create');
+			}}
+		>
+			<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
 		</Button>
 	{/if}
 	{#if showSelectButton}

@@ -1,53 +1,51 @@
 <script lang="ts" context="module">
-	export type ToastData = {
-		title: string;
-		type?: 'info' | 'success' | 'warning' | 'error' | undefined;
-		description?: string | undefined;
-	};
-</script>
-
-<script lang="ts">
-	import { setContext } from 'svelte';
 	import { createToaster } from '@melt-ui/svelte';
 	import { flip } from 'svelte/animate';
 	import { Toast } from '.';
 
-	$: ({
+	export type ToastData = {
+		title: string;
+		type?: 'info' | 'success' | 'warning' | 'error' | undefined;
+		description?: string | undefined;
+		closeDelay?: number | undefined;
+	};
+
+	const {
 		elements,
 		helpers: { addToast },
 		states: { toasts },
 		actions: { portal }
-	} = createToaster<ToastData>({ hover: 'pause' }));
+	} = createToaster<ToastData>();
 
 	export const toast = {
-		add: (
-			title: string,
-			type?: 'info' | 'success' | 'warning' | 'error' | undefined,
-			description?: string | undefined
-		) => addToast({ data: { title, type, description } }),
+		add: (param: ToastData) =>
+			addToast({
+				data: { title: param.title, type: param.type, description: param.description },
+				closeDelay: param.closeDelay || 3000
+			}),
 		send: (title: string, description?: string | undefined) =>
-			addToast({ data: { title, type: undefined, description } }),
+			addToast({ data: { title, type: undefined, description }, closeDelay: 3000 }),
 		info: (title: string, description?: string | undefined) =>
-			addToast({ data: { title, type: 'info', description } }),
+			addToast({ data: { title, type: 'info', description }, closeDelay: 3000 }),
 		success: (title: string, description?: string | undefined) =>
-			addToast({ data: { title, type: 'success', description } }),
+			addToast({ data: { title, type: 'success', description }, closeDelay: 3000 }),
 		warning: (title: string, description?: string | undefined) =>
-			addToast({ data: { title, type: 'warning', description } }),
+			addToast({ data: { title, type: 'warning', description }, closeDelay: 3000 }),
 		error: (title: string, description?: string | undefined) =>
-			addToast({ data: { title, type: 'error', description } })
+			addToast({ data: { title, type: 'error', description }, closeDelay: 3000 })
 	};
 </script>
 
-<button
-	class="inline-flex items-center justify-center rounded-xl bg-white px-4 py-3
-  font-medium leading-none text-magnum-700 shadow hover:opacity-75"
-	on:click={(e) => toast.send('test', 'test2')}
->
-	Show toast
-</button>
+<script lang="ts">
+	import { getContext } from 'svelte';
+	let className: string | undefined = 'right-0 top-0 m-4 gap-2 md:bottom-0';
+	export { className as class };
+
+	const contextClass = getContext<string>('ui.toasts') || '';
+</script>
 
 <div
-	class="fixed right-0 top-0 z-[9999] m-4 flex flex-col items-end gap-2 md:bottom-0 md:top-auto"
+	class="fixed z-[9999] flex flex-col items-end md:top-auto {className} {contextClass}"
 	use:portal
 >
 	{#each $toasts as toast (toast.id)}

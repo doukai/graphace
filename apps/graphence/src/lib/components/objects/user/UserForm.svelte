@@ -21,6 +21,7 @@
 		FileInputList,
 		FileInput,
 		Toggle,
+		toast,
 		Progress
 	} from '@graphace/ui';
 	import { StringFormControl, BooleanFormControl, ObjectFormControl } from '@graphace/ui-graphql';
@@ -54,8 +55,6 @@
 		gotoSelect: {};
 		back: {};
 	}>();
-
-	const toast = getContext('toast');
 
 	const save = (): void => {
 		if (node) {
@@ -158,7 +157,7 @@
 				showUnbindButton={permissions.auth('User::*::WRITE') && showUnbindButton}
 				showSelectButton={permissions.auth('User::*::WRITE') && showSelectButton}
 				{showBackButton}
-				on:remove={(e) => toast.send('test', 'test2')}
+				on:remove={(e) => toast.success('test')}
 			/>
 		</div>
 		<div class="divider" />

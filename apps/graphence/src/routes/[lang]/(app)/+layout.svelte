@@ -38,9 +38,6 @@
 	setContext('LL', LL);
 	setContext('theme', writable(undefined));
 
-	let toast;
-	setContext('toast', toast);
-
 	const z_class9 = z_index.top(9);
 
 	let drawersidebar: HTMLDivElement;
@@ -180,7 +177,7 @@
 			<slot />
 			<MessageBoxs />
 			<Notifications />
-			<Toasts bind:toast />
+			<Toasts />
 		</main>
 	</div>
 	<div
