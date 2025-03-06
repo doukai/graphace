@@ -21,15 +21,17 @@
 	}>();
 </script>
 
-<input
-	type="checkbox"
-	{id}
-	{name}
-	class="toggle {errors?.errors ? 'toggle-error' : ''} {className} {contextClass}"
-	bind:checked={value}
-	on:change={() => {
-		dispatch('change', { value });
-	}}
-	{readonly}
-	{disabled}
-/>
+<div class="flex h-full">
+	<input
+		type="checkbox"
+		{id}
+		{name}
+		class="toggle self-center {errors?.errors ? 'toggle-error' : ''} {className} {contextClass}"
+		bind:checked={value}
+		on:change={() => {
+			dispatch('change', { value });
+		}}
+		{readonly}
+		{disabled}
+	/>
+</div>

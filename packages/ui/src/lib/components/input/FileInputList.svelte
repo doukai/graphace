@@ -5,20 +5,20 @@
 	import type { Errors, FileInfo } from '@graphace/commons';
 	import { nanoid } from 'nanoid';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Plus, PlusSmall, MinusSmall } from '@steeze-ui/heroicons';
-	
+	import { Plus, MinusSmall } from '@steeze-ui/heroicons';
+
 	export let name: string;
 	export let value: (FileInfo | null | undefined)[] | null | undefined = undefined;
 	export let placeholder: string = '';
-	export let className: string = '';
-	export let linkClassName: string = '';
-	export let addBtnClassName: string = '';
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
 	export let downloadUrl = '/download';
 	export let id: string = nanoid();
+	let className: string | undefined = 'file-input-bordered';
+	export { className as class };
 
+	const contextClass = getContext<string>('ui.input-list') || '';
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
@@ -42,88 +42,54 @@
 	};
 </script>
 
-<div class="w-full">
-	<div {id} class="{errors?.errors ? 'border-2 border-error p-1 rounded-xl' : ''} space-y-2">
-		{#each value || [] as item, index}
-			<div class="flex items-center space-x-1">
-				<div class="form-control w-full">
-					{#if item}
-						<div class="input input-bordered flex items-center w-full {linkClassName}">
-							<a href={downloadUrl + '/' + item.id} class="link max-w-72" download>{item.name}</a>
-						</div>
-					{:else}
-						<input
-							type="file"
-							id={id + index}
-							{name}
-							{placeholder}
-							class="file-input file-input-bordered max-w-72 {errors?.iterms && errors.iterms[index]
-								? 'file-input-error'
-								: ''} {className}"
-							on:change={(e) => {
-								if (e.currentTarget?.files?.[0]) {
-									dispatch('upload', {
-										file: e.currentTarget.files[0],
-										then: (data) => {
-											item = data;
-										}
-									});
+<div {id} class="{errors?.errors ? 'border-2 border-error' : ''} space-y-2">
+	{#each value || [] as item, index}
+		<div class="flex justify-between">
+			{#if item}
+				<a href={downloadUrl + '/' + item.id} class="link" download>{item.name}</a>
+			{:else}
+				<input
+					type="file"
+					id={id + index}
+					{name}
+					{placeholder}
+					class="file-input {errors?.iterms && errors.iterms[index]
+						? 'file-input-error'
+						: ''} {className} {contextClass}"
+					on:change={(e) => {
+						if (e.currentTarget?.files?.[0]) {
+							dispatch('upload', {
+								file: e.currentTarget.files[0],
+								then: (data) => {
+									item = data;
 								}
-							}}
-							{readonly}
-							{disabled}
-						/>
-					{/if}
-					{#if errors?.iterms}
-						<label for={id + index} class="label">
-							<span class="label-text-alt">
-								{#each errors.iterms[index].errors || [] as error}
-									<p class="text-error">{error.message}</p>
-								{/each}
-							</span>
-						</label>
-					{/if}
-				</div>
-				<div class="tooltip flex items-center" data-tip={$LL.ui.inputList.add()}>
-					<button
-						class="btn btn-xs btn-square btn-outline"
-						on:click|preventDefault={(e) => {
-							addItem(index);
-						}}
-					>
-						<Icon src={PlusSmall} class="h-5 w-5" />
-					</button>
-				</div>
-				<div class="tooltip flex items-center" data-tip={$LL.ui.inputList.remove()}>
-					<button
-						class="btn btn-xs btn-square btn-outline"
-						on:click|preventDefault={(e) => {
-							removeItem(index);
-						}}
-					>
-						<Icon src={MinusSmall} class="h-5 w-5" />
-					</button>
-				</div>
-			</div>
-		{/each}
-		{#if (value || []).length === 0}
-			<div class="tooltip flex items-center" data-tip={$LL.ui.inputList.add()}>
+							});
+						}
+					}}
+					{readonly}
+					{disabled}
+				/>
+			{/if}
+			<div class="tooltip flex items-center" data-tip={$LL.ui.inputList.remove()}>
 				<button
-					class="btn btn-square btn-outline {addBtnClassName}"
+					class="btn btn-xs btn-square btn-outline"
 					on:click|preventDefault={(e) => {
-						addItem(0);
+						removeItem(index);
 					}}
 				>
-					<Icon src={Plus} class="h-5 w-5" />
+					<Icon src={MinusSmall} class="h-5 w-5" />
 				</button>
 			</div>
-		{/if}
+		</div>
+	{/each}
+	<div class="tooltip flex items-center" data-tip={$LL.ui.inputList.add()}>
+		<button
+			class="btn btn-square btn-outline w-full"
+			on:click|preventDefault={(e) => {
+				addItem(value.length);
+			}}
+		>
+			<Icon src={Plus} class="h-5 w-5" />
+		</button>
 	</div>
-	{#if errors?.errors}
-		<label for={id} class="label">
-			{#each errors.errors as error}
-				<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
-			{/each}
-		</label>
-	{/if}
 </div>

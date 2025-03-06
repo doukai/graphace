@@ -15,7 +15,8 @@
 		PageType,
 		init,
 		history,
-		z_index
+		z_index,
+		Toasts
 	} from '@graphace/ui';
 	import Iconify from '@iconify/svelte';
 	import { setLocale } from '$i18n/i18n-svelte';
@@ -36,6 +37,9 @@
 	setContext('structQueryStores', data.structQueryStores);
 	setContext('LL', LL);
 	setContext('theme', writable(undefined));
+
+	let toast;
+	setContext('toast', toast);
 
 	const z_class9 = z_index.top(9);
 
@@ -176,6 +180,7 @@
 			<slot />
 			<MessageBoxs />
 			<Notifications />
+			<Toasts bind:toast />
 		</main>
 	</div>
 	<div

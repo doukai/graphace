@@ -17,8 +17,11 @@
 		notifications,
 		Input,
 		FormControl,
-		InputList,
-		Toggle
+		ToggleList,
+		FileInputList,
+		FileInput,
+		Toggle,
+		Progress
 	} from '@graphace/ui';
 	import { StringFormControl, BooleanFormControl, ObjectFormControl } from '@graphace/ui-graphql';
 	// import GroupSelectItem from '~/lib/components/objects/group/GroupSelectItem.svelte';
@@ -51,6 +54,8 @@
 		gotoSelect: {};
 		back: {};
 	}>();
+
+	const toast = getContext('toast');
 
 	const save = (): void => {
 		if (node) {
@@ -153,6 +158,7 @@
 				showUnbindButton={permissions.auth('User::*::WRITE') && showUnbindButton}
 				showSelectButton={permissions.auth('User::*::WRITE') && showSelectButton}
 				{showBackButton}
+				on:remove={(e) => toast.send('test', 'test2')}
 			/>
 		</div>
 		<div class="divider" />
@@ -256,7 +262,7 @@
 				{#if permissions.auth('User::phones::*')}
 					<FormControl let:id errors={errors.phones}>
 						<Label {id} text={$LL.graphql.objects.User.fields.phones.name()} />
-						<InputList
+						<FileInput
 							{id}
 							name="phones"
 							bind:value={node.phones}
@@ -298,14 +304,7 @@
 					/>
 				{/if} -->
 				{#if permissions.auth('User::realm::*')}
-					<ObjectFormControl
-						name="realm"
-						namedStruct={node.realm}
-						path={`${node.id}/realm`}
-						label={$LL.graphql.objects.User.fields.realm.name()}
-						errors={errors.realm}
-						on:gotoField
-					/>
+					<Progress type="primary" value={55} />
 				{/if}
 			{/if}
 		</Form>

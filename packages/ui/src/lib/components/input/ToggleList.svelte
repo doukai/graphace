@@ -1,20 +1,16 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
-	import type { Readable } from 'svelte/store';
-	import type { TranslationFunctions } from '~/i18n/i18n-types';
-	import type { Errors } from '@graphace/commons';
-	import { nanoid } from 'nanoid';
+	import { createToggleGroup, melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Plus, PlusSmall, MinusSmall } from '@steeze-ui/heroicons';
+	import { XMark, Check, Plus, Minus } from '@steeze-ui/heroicons';
 
-	export let name: string;
 	export let value: (boolean | null | undefined)[] | null | undefined = undefined;
-	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
-	export let id: string = nanoid();
-	export let className: string = '';
-	export let addBtnClassName: string = '';
+	let className: string | undefined = 'flex flex-wrap';
+	export { className as class };
+
+	const contextClass = getContext<string>('ui.toggle-list') || '';
 
 	const dispatch = createEventDispatcher<{
 		change: {
@@ -22,89 +18,49 @@
 		};
 	}>();
 
-	const LL = getContext<Readable<TranslationFunctions>>('LL');
-
-	const addItem = (index: number) => {
-		if (!value) {
-			value = [];
+	const {
+		elements: { root, item }
+	} = createToggleGroup({
+		type: 'multiple',
+		disabled: disabled || readonly,
+		defaultValue: value.filter((item) => item === true).map((_, index) => index + ''),
+		onValueChange: ({ curr, next }) => {
+			value = value.map((_, index) => next.includes(index + ''));
+			dispatch('change', { value });
+			return next;
 		}
-		value = [...value.slice(0, index + 1), undefined, ...value.slice(index + 1)];
-	};
-
-	const removeItem = (index: number) => {
-		if (value) {
-			value = [...value.slice(0, index), ...value.slice(index + 1)];
-		}
-	};
+	});
 </script>
 
-<div class="w-full">
-	<div {id} class="{errors?.errors ? 'border-2 border-error p-1 rounded-xl' : ''} space-y-2">
-		{#each value || [] as item, index}
-			<div class="flex items-center space-x-1">
-				<div class="form-control w-full">
-					<input
-						type="checkbox"
-						id={id + index}
-						{name}
-						class="toggle {className}"
-						bind:checked={item}
-						on:change={() => {
-							dispatch('change', { value });
-						}}
-						{readonly}
-						{disabled}
-					/>
-					{#if errors?.iterms}
-						<label for={id + index} class="label">
-							<span class="label-text-alt">
-								{#each errors.iterms[index].errors || [] as error}
-									<p class="text-error">{error.message}</p>
-								{/each}
-							</span>
-						</label>
-					{/if}
-				</div>
-				<div class="tooltip flex items-center" data-tip={$LL.ui.inputList.add()}>
-					<button
-						class="btn btn-xs btn-square btn-outline"
-						on:click|preventDefault={(e) => {
-							addItem(index);
-						}}
-					>
-						<Icon src={PlusSmall} class="h-5 w-5" />
-					</button>
-				</div>
-				<div class="tooltip flex items-center" data-tip={$LL.ui.inputList.remove()}>
-					<button
-						class="btn btn-xs btn-square btn-outline"
-						on:click|preventDefault={(e) => {
-							removeItem(index);
-						}}
-					>
-						<Icon src={MinusSmall} class="h-5 w-5" />
-					</button>
-				</div>
-			</div>
-		{/each}
-		{#if (value || []).length === 0}
-			<div class="tooltip flex items-center" data-tip={$LL.ui.inputList.add()}>
-				<button
-					class="btn btn-square btn-outline {addBtnClassName}"
-					on:click|preventDefault={(e) => {
-						addItem(0);
-					}}
-				>
-					<Icon src={Plus} class="h-5 w-5" />
-				</button>
-			</div>
-		{/if}
-	</div>
-	{#if errors?.errors}
-		<label for={id} class="label">
-			{#each errors.errors as error}
-				<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
-			{/each}
-		</label>
-	{/if}
+<div
+	use:melt={$root}
+	class="join data-[orientation='vertical']:flex-col {className} {contextClass}"
+>
+	<button
+		class="btn btn-primary join-item shrink"
+		aria-label="-"
+		on:click|preventDefault={(e) => (value = [...value.slice(1)])}
+	>
+		<Icon src={Minus} class="h-5 w-5" />
+	</button>
+	{#each value as v, index}
+		<button
+			class="btn join-item shrink data-[state='on']:btn-neutral"
+			use:melt={$item(index + '')}
+			aria-label="index"
+		>
+			{#if v}
+				<Icon src={Check} class="h-5 w-5" />
+			{:else}
+				<Icon src={XMark} class="h-5 w-5" />
+			{/if}
+		</button>
+	{/each}
+	<button
+		class="btn btn-primary join-item shrink"
+		aria-label="+"
+		on:click|preventDefault={(e) => (value = [...value, false])}
+	>
+		<Icon src={Plus} class="h-5 w-5" />
+	</button>
 </div>
