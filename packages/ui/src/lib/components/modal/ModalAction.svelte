@@ -4,9 +4,9 @@
 	let className: string | undefined = '';
 	export { className as class };
 
-	const contextClass = getContext<string>('ui.navbar-end') || '';
+	const contextClass = getContext<string>('ui.modal-action') || '';
 </script>
 
-<div class="navbar-end {className} {contextClass}">
+<div class="modal-action {className} {contextClass}">
 	<slot />
 </div>

@@ -5,9 +5,9 @@
 	let className: string | undefined = '';
 	export { className as class };
 
-	const contextClass = getContext<string>('ui.navbar') || '';
+	const contextClass = getContext<string>('ui.menu') || '';
 </script>
 
-<div style="z-index: {zIndex || 'auto'};" class="navbar {className} {contextClass}">
+<ul style="z-index: {zIndex || 'auto'};" class="menu {className} {contextClass}">
 	<slot />
-</div>
+</ul>

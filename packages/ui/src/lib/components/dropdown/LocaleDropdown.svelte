@@ -9,10 +9,12 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
-	import { replaceLocaleInUrl } from '@graphace/commons';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Language, ChevronDown } from '@steeze-ui/heroicons';
 	import Iconify from '@iconify/svelte';
+	import { replaceLocaleInUrl } from '@graphace/commons';
+	import Dropdown from './Dropdown.svelte';
+	import DropdownContent from './DropdownContent.svelte';
 	import { setLocale, locale } from '~/i18n/i18n-svelte';
 	import type { Locales } from '~/i18n/i18n-types';
 	import { baseLocale } from '~/i18n/i18n-util';
@@ -61,15 +63,13 @@
 
 <svelte:window on:popstate={handlePopStateEvent} />
 
-<div title={locales[currentLocale].name} class="dropdown dropdown-end">
-	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-	<div tabindex="0" class="btn btn-ghost normal-case">
-		<Icon src={Language} class="h-5 w-5 stroke-current" />
-		<Icon src={ChevronDown} class="hidden h-2 w-2 fill-current opacity-60 sm:inline-block" />
-	</div>
-	<div
-		class="dropdown-content bg-base-200 text-base-content rounded-box top-px mt-16 w-56 overflow-y-auto shadow"
-	>
+<Dropdown class="dropdown-end">
+	<DropdownContent class="overflow-y-auto">
+		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+		<div tabindex="0" class="btn btn-ghost normal-case">
+			<Icon src={Language} class="h-5 w-5 stroke-current" />
+			<Icon src={ChevronDown} class="hidden h-2 w-2 fill-current opacity-60 sm:inline-block" />
+		</div>
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 		<ul class="menu menu-sm gap-1" tabindex="0">
 			{#each Object.entries(locales) as locale}
@@ -84,5 +84,5 @@
 				</li>
 			{/each}
 		</ul>
-	</div>
-</div>
+	</DropdownContent>
+</Dropdown>

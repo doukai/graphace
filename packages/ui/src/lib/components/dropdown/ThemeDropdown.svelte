@@ -4,19 +4,12 @@
 	import { themeChange } from 'theme-change';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Swatch, ChevronDown, Check } from '@steeze-ui/heroicons';
+	import Dropdown from './Dropdown.svelte';
+	import DropdownContent from './DropdownContent.svelte';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
-	
+
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
-	const themeStore = getContext<Writable<string | undefined>>('theme');
-
-	onMount(() => {
-		themeChange(false);
-	});
-
-	export let dropdownClasses = '';
-	export let btnClasses = 'btn-ghost';
-	export let contentClasses = 'mt-16';
-	let themes = [
+	export let themes = [
 		{
 			name: $LL.ui.themeSelect.themes.light,
 			id: 'light'
@@ -134,20 +127,24 @@
 			id: 'winter'
 		}
 	];
+
+	const themeStore = getContext<Writable<string | undefined>>('theme');
+
+	onMount(() => {
+		themeChange(false);
+	});
 </script>
 
-<div title={$LL.ui.themeSelect.btn()} class={`dropdown dropdown-end ${dropdownClasses}`}>
-	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-	<div tabindex="0" class={`btn normal-case ${btnClasses}`}>
-		<Icon src={Swatch} class="h-5 w-5 stroke-current" />
-		<span class="hidden font-normal md:inline">{$LL.ui.themeSelect.btn()}</span>
-		<Icon src={ChevronDown} class="hidden h-2 w-2 fill-current opacity-60 sm:inline-block" />
-	</div>
-	<div
-		class={`dropdown-content bg-base-200 text-base-content rounded-box top-px h-[70vh] max-h-96 w-56 overflow-y-auto shadow ${contentClasses}`}
-	>
+<Dropdown class="dropdown-end">
+	<DropdownContent class="overflow-y-auto">
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-		<div class="grid grid-cols-1 gap-3 p-3" tabindex="0">
+		<div tabindex="0" class="btn btn-ghost normal-case">
+			<Icon src={Swatch} class="h-5 w-5 stroke-current" />
+			<span class="hidden font-normal md:inline">{$LL.ui.themeSelect.btn()}</span>
+			<Icon src={ChevronDown} class="hidden h-2 w-2 fill-current opacity-60 sm:inline-block" />
+		</div>
+		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+		<div tabindex="0" class="grid grid-cols-1 gap-3 p-3">
 			{#each themes as theme}
 				<button
 					class="outline-base-content overflow-hidden rounded-lg text-left"
@@ -177,5 +174,5 @@
 				</button>
 			{/each}
 		</div>
-	</div>
-</div>
+	</DropdownContent>
+</Dropdown>

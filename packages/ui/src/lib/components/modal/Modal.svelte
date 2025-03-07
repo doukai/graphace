@@ -1,8 +1,13 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { getContext, createEventDispatcher } from 'svelte';
 	export let isModalOpen: boolean = false;
 	export let title: string = '';
-	export let className: string = '';
+
+	export let zIndex: number | undefined = undefined;
+	let className: string | undefined = 'modal-bottom sm:modal-middle';
+	export { className as class };
+
+	const contextClass = getContext<string>('ui.modal') || '';
 
 	let modal: HTMLDivElement;
 	$: if (isModalOpen) {
@@ -16,7 +21,12 @@
 	}>();
 </script>
 
-<div class="modal modal-bottom sm:modal-middle" class:modal-open={isModalOpen} bind:this={modal}>
+<div
+	style="z-index: {zIndex || 'auto'};"
+	class="modal {className} {contextClass}"
+	class:modal-open={isModalOpen}
+	bind:this={modal}
+>
 	<div class="modal-box {className}">
 		<button
 			class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"

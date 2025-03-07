@@ -2,6 +2,7 @@
 	import { createToaster } from '@melt-ui/svelte';
 	import { flip } from 'svelte/animate';
 	import { Toast } from '.';
+	import { zIndex } from '~';
 
 	export type ToastData = {
 		title: string;
@@ -45,7 +46,8 @@
 </script>
 
 <div
-	class="fixed z-[9999] flex flex-col items-end md:top-auto {className} {contextClass}"
+	style="z-index: {$zIndex + 1};"
+	class="fixed flex flex-col items-end md:top-auto {className} {contextClass}"
 	use:portal
 >
 	{#each $toasts as toast (toast.id)}

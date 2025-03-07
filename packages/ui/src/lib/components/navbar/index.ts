@@ -4,5 +4,8 @@ import NavBarCenter from "./NavBarCenter.svelte";
 import NavBarEnd from "./NavBarEnd.svelte";
 
 export {
-    NavBar, NavBarStart, NavBarCenter, NavBarEnd
+    NavBar,
+    NavBarStart,
+    NavBarCenter,
+    NavBarEnd
 }

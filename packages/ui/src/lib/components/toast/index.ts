@@ -3,5 +3,7 @@ import Toasts from "./Toasts.svelte";
 import Toast from "./Toast.svelte";
 
 export {
-    toast, Toasts, Toast
+    toast,
+    Toasts,
+    Toast
 }

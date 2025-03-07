@@ -19,6 +19,20 @@ export type Translations = RootTranslation &
 type RootTranslation = {}
 
 export type NamespaceUiTranslation = {
+	message: {
+		/**
+		 * C​a​n​c​e​l
+		 */
+		cancel: string
+		/**
+		 * C​o​n​f​i​r​m
+		 */
+		confirm: string
+		/**
+		 * N​o​ ​r​e​s​u​l​t
+		 */
+		empty: string
+	}
 	menu: {
 		/**
 		 * M​e​n​u
@@ -32,20 +46,6 @@ export type NamespaceUiTranslation = {
 		 * M​o​r​e
 		 */
 		more: string
-	}
-	cursor: {
-		/**
-		 * S​i​z​e
-		 */
-		size: string
-		/**
-		 * P​r​e​v​i​o​u​s
-		 */
-		previous: string
-		/**
-		 * N​e​x​t
-		 */
-		next: string
 	}
 	pagination: {
 		/**
@@ -71,12 +71,6 @@ export type NamespaceUiTranslation = {
 		 */
 		next: string
 	}
-	searchInput: {
-		/**
-		 * S​e​a​r​c​h
-		 */
-		placeholder: string
-	}
 	inputList: {
 		/**
 		 * A​d​d
@@ -87,31 +81,11 @@ export type NamespaceUiTranslation = {
 		 */
 		remove: string
 	}
-	table: {
-		/**
-		 * n​o​ ​r​e​s​u​l​t
-		 */
-		empty: string
-	}
-	messageBox: {
-		/**
-		 * C​a​n​c​e​l
-		 */
-		cancel: string
-		/**
-		 * C​o​n​f​i​r​m
-		 */
-		confirm: string
-	}
 	button: {
 		/**
 		 * S​e​a​r​c​h
 		 */
 		search: string
-		/**
-		 * C​r​e​a​t​e
-		 */
-		create: string
 		/**
 		 * R​e​m​o​v​e
 		 */
@@ -125,13 +99,17 @@ export type NamespaceUiTranslation = {
 		 */
 		save: string
 		/**
-		 * B​a​c​k
+		 * C​r​e​a​t​e
 		 */
-		back: string
+		create: string
 		/**
 		 * S​e​l​e​c​t
 		 */
 		select: string
+		/**
+		 * B​a​c​k
+		 */
+		back: string
 	}
 	themeSelect: {
 		/**
@@ -272,6 +250,20 @@ type DisallowNamespaces = {
 
 export type TranslationFunctions = {
 	ui: {
+		message: {
+			/**
+			 * Cancel
+			 */
+			cancel: () => LocalizedString
+			/**
+			 * Confirm
+			 */
+			confirm: () => LocalizedString
+			/**
+			 * No result
+			 */
+			empty: () => LocalizedString
+		}
 		menu: {
 			/**
 			 * Menu
@@ -285,20 +277,6 @@ export type TranslationFunctions = {
 			 * More
 			 */
 			more: () => LocalizedString
-		}
-		cursor: {
-			/**
-			 * Size
-			 */
-			size: () => LocalizedString
-			/**
-			 * Previous
-			 */
-			previous: () => LocalizedString
-			/**
-			 * Next
-			 */
-			next: () => LocalizedString
 		}
 		pagination: {
 			/**
@@ -322,12 +300,6 @@ export type TranslationFunctions = {
 			 */
 			next: () => LocalizedString
 		}
-		searchInput: {
-			/**
-			 * Search
-			 */
-			placeholder: () => LocalizedString
-		}
 		inputList: {
 			/**
 			 * Add
@@ -338,31 +310,11 @@ export type TranslationFunctions = {
 			 */
 			remove: () => LocalizedString
 		}
-		table: {
-			/**
-			 * no result
-			 */
-			empty: () => LocalizedString
-		}
-		messageBox: {
-			/**
-			 * Cancel
-			 */
-			cancel: () => LocalizedString
-			/**
-			 * Confirm
-			 */
-			confirm: () => LocalizedString
-		}
 		button: {
 			/**
 			 * Search
 			 */
 			search: () => LocalizedString
-			/**
-			 * Create
-			 */
-			create: () => LocalizedString
 			/**
 			 * Remove
 			 */
@@ -376,13 +328,17 @@ export type TranslationFunctions = {
 			 */
 			save: () => LocalizedString
 			/**
-			 * Back
+			 * Create
 			 */
-			back: () => LocalizedString
+			create: () => LocalizedString
 			/**
 			 * Select
 			 */
 			select: () => LocalizedString
+			/**
+			 * Back
+			 */
+			back: () => LocalizedString
 		}
 		themeSelect: {
 			/**

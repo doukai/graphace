@@ -4,9 +4,7 @@
 	let className: string | undefined = '';
 	export { className as class };
 
-	const contextClass = getContext<string>('ui.navbar-end') || '';
+	const contextClass = getContext<string>('ui.menu-title') || '';
 </script>
 
-<div class="navbar-end {className} {contextClass}">
-	<slot />
-</div>
+<li class="menu-title {className} {contextClass}"><slot /></li>

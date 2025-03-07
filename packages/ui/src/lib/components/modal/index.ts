@@ -1,7 +1,7 @@
 import Modal from "./Modal.svelte";
-import ModalActions from "./ModalActions.svelte";
-import ModalContent from "./ModalContent.svelte";
+import ModalAction from "./ModalAction.svelte";
 
 export {
-    Modal, ModalActions, ModalContent
+    Modal,
+    ModalAction
 }

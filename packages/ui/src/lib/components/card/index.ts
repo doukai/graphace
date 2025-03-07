@@ -4,5 +4,8 @@ import CardTitle from "./CardTitle.svelte";
 import CardActions from "./CardActions.svelte";
 
 export {
-    Card, CardBody, CardTitle, CardActions
+    Card,
+    CardBody,
+    CardTitle,
+    CardActions
 }

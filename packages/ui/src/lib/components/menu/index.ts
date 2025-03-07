@@ -1,6 +1,9 @@
-import MenuLoading from "./MenuLoading.svelte";
-import MenuTreeLoading from "./MenuTreeLoading.svelte";
+import Menu from "./Menu.svelte";
+import MenuTitle from "./MenuTitle.svelte";
+import MenuDetails from "./MenuDetails.svelte";
 
 export {
-    MenuLoading, MenuTreeLoading
+    Menu,
+    MenuTitle,
+    MenuDetails
 }
