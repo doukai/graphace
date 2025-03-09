@@ -1,24 +1,22 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { getContext, createEventDispatcher } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import type { TranslationFunctions } from '~/i18n/i18n-types';
-	import { createEventDispatcher } from 'svelte';
-	import type { Errors } from '@graphace/commons';
-	import type { NamedStruct } from '@graphace/graphql';
-	import { z_index } from '@graphace/ui';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Link } from '@steeze-ui/heroicons';
+	import type { Errors } from '@graphace/commons';
+	import type { NamedStruct } from '@graphace/graphql';
+	import type { TranslationFunctions } from '~/i18n/i18n-types';
 
 	export let path: string;
 	export let name: string;
 	export let namedStruct: NamedStruct | (NamedStruct | null | undefined)[] | null | undefined =
 		undefined;
 	export let errors: Errors | undefined = undefined;
-	export let btnClassName: string = 'btn btn-square btn-xs btn-ghost';
+	export let zIndex: number | undefined = 0;
+	let className: string | undefined = '';
+	export { className as class };
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
-
-	const z_class3 = z_index.top(3);
 
 	let _namedStruct = namedStruct;
 	namedStruct = undefined;
@@ -30,7 +28,7 @@
 
 <td>
 	<div
-		class={errors ? `tooltip tooltip-open tooltip-error hover:${z_class3}` : ''}
+		class="{errors ? `tooltip tooltip-open tooltip-error hover:z-[${zIndex + 3}]` : ''} {className}"
 		data-tip={(errors?.errors || [])
 			.concat(
 				(errors?.iterms ? Object.values(errors?.iterms) : []).flatMap((error) => error.errors)
@@ -39,7 +37,7 @@
 			.map((error) => error.message)
 			.join(', ')}
 	>
-		<div class="tooltip hover:{z_class3}" data-tip={$LL.ui_graphql.table.editBtn()}>
+		<div class="tooltip hover:z-[${zIndex + 3}]" data-tip={$LL.ui_graphql.table.editBtn()}>
 			{#if _namedStruct}
 				{#if Array.isArray(_namedStruct)}
 					{#if _namedStruct.length > 0 && _namedStruct.some((item) => item.name)}
@@ -62,7 +60,7 @@
 						</a>
 					{:else}
 						<button
-							class={btnClassName}
+							class="btn btn-square btn-xs btn-ghost"
 							on:click|preventDefault={(e) => {
 								dispatch('gotoField', { path, name });
 							}}
@@ -84,7 +82,7 @@
 					</a>
 				{:else}
 					<button
-						class={btnClassName}
+						class="btn btn-square btn-xs btn-ghost"
 						on:click|preventDefault={(e) => {
 							dispatch('gotoField', { path, name });
 						}}
@@ -96,7 +94,7 @@
 				{/if}
 			{:else}
 				<button
-					class={btnClassName}
+					class="btn btn-square btn-xs btn-ghost"
 					on:click|preventDefault={(e) => {
 						dispatch('gotoField', { path, name });
 					}}

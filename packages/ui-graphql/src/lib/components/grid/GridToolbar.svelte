@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import type { TranslationFunctions } from '~/i18n/i18n-types';
 	import { createToolbar, melt } from '@melt-ui/svelte';
-	import { Dialog } from '@graphace/ui';
-	import type { Field } from '@graphace/graphql';
 	import type { Cell, DataType } from '@revolist/svelte-datagrid';
+	import type { Field } from '@graphace/graphql';
+	import { Dialog } from '@graphace/ui';
+	import type { TranslationFunctions } from '~/i18n/i18n-types';
 
 	export let fields: Field[] = [];
 	export let source: DataType[] = [];
@@ -19,6 +19,8 @@
 		colType?: string,
 		rowType?: string
 	) => Promise<void>;
+	let className: string | undefined = 'p-1 space-x-1';
+	export { className as class };
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
@@ -38,7 +40,7 @@
 	} = createToolbar();
 </script>
 
-<div use:melt={$root} class="flex p-1 bg-base-200 rounded space-x-1">
+<div use:melt={$root} class="navbar {className}">
 	<button class="btn btn-xs" use:melt={$button} on:click={(e) => dispatch('query', {})}>
 		{$LL.ui_graphql.grid.buttons.refresh()}
 	</button>
@@ -50,7 +52,7 @@
 	>
 		{$LL.ui_graphql.grid.buttons.save()}
 	</button>
-	<div class="hidden md:divider md:divider-horizontal md:m-0" use:melt={$separator} />
+	<div class="divider divider-horizontal" use:melt={$separator} />
 	<button
 		class="btn btn-xs btn-primary pt-0"
 		use:melt={$button}
@@ -118,7 +120,7 @@
 			{$LL.ui_graphql.grid.buttons.remove()}
 		</button>
 	{/if}
-	<div class="hidden md:divider md:divider-horizontal md:m-0" use:melt={$separator} />
+	<div class="divider divider-horizontal" use:melt={$separator} />
 	<button
 		on:click={(e) => dispatch('export', { source })}
 		class="btn btn-xs btn-info"

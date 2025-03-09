@@ -1,4 +1,6 @@
 import Checkbox from "./Checkbox.svelte";
+import type { Option } from "./Combobox.svelte";
+import Combobox from "./Combobox.svelte";
 import DateInput from "./DateInput.svelte";
 import DateInputList from "./DateInputList.svelte";
 import DateTimeInput from "./DateTimeInput.svelte";
@@ -17,6 +19,8 @@ import ToggleList from "./ToggleList.svelte";
 
 export {
     Checkbox,
+    type Option,
+    Combobox,
     DateInput,
     DateInputList,
     DateTimeInput,

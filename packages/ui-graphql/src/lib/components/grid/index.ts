@@ -1,4 +1,4 @@
-import GridToolbar from "./Toolbar.svelte";
+import GridToolbar from "./GridToolbar.svelte";
 
 export {
     GridToolbar

@@ -8,6 +8,7 @@ import FloatFilter from "./FloatFilter.svelte";
 import IDFilter from "./IDFilter.svelte";
 import IntFilter from "./IntFilter.svelte";
 import NumberFilter from "./NumberFilter.svelte";
+import ObjectSelect from "./ObjectSelect.svelte";
 import OperatorSelect from "./OperatorSelect.svelte";
 import StringFilter from "./StringFilter.svelte";
 import TimeFilter from "./TimeFilter.svelte";
@@ -24,6 +25,7 @@ export {
     IDFilter,
     IntFilter,
     NumberFilter,
+    ObjectSelect,
     OperatorSelect,
     StringFilter,
     TimeFilter,
