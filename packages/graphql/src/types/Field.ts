@@ -5,6 +5,7 @@ export class Field {
     name: string;
     alias?: string | undefined;
     arguments?: Record<string, unknown> | undefined;
+    parent?: Field | undefined;
     fields?: Field[] | undefined;
     directives?: Directive[] | undefined;
     constructor(params: { name: string, alias?: string | undefined, arguments?: Record<string, unknown> | undefined, fields?: Field[] | undefined, directives?: Directive[] | undefined }) {

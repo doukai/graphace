@@ -5,6 +5,9 @@
 	export let name: string;
 	export let value: StringExpression | null | undefined = undefined;
 	export let sort: Sort | null | undefined = undefined;
+	export let zIndex: number | undefined = 0;
+	let className: string | undefined = undefined;
+	export { className as class };
 </script>
 
-<StringTh {name} bind:value bind:sort on:filter />
+<StringTh {name} bind:value bind:sort {zIndex} class={className} on:filter />

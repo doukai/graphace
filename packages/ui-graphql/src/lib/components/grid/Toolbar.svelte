@@ -19,7 +19,7 @@
 		colType?: string,
 		rowType?: string
 	) => Promise<void>;
-	
+
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	let file: File;
@@ -127,13 +127,12 @@
 	>
 		{$LL.ui_graphql.grid.buttons.export()}
 	</button>
-	<Dialog
-		title={$LL.ui_graphql.grid.buttons.import()}
-		className="btn-xs btn-info"
-		disabled={fields.length === 0}
-		showButton = {true}
-	>
-		<span slot="button">{$LL.ui_graphql.grid.buttons.import()}</span>
+	<Dialog title={$LL.ui_graphql.grid.buttons.import()}>
+		<svelte:fragment slot="trigger" let:trigger>
+			<button use:melt={trigger} disabled={fields.length === 0} class="btn btn-xs btn-info">
+				{$LL.ui_graphql.grid.buttons.import()}
+			</button>
+		</svelte:fragment>
 		<input
 			type="file"
 			class="file-input file-input-bordered w-full"

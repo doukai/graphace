@@ -1,29 +1,29 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { getContext, createEventDispatcher } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import type { TranslationFunctions } from '~/i18n/i18n-types';
-	import { createEventDispatcher } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { createPopover, melt } from '@melt-ui/svelte';
-	import type { StringExpression, Sort } from '@graphace/graphql';
-	import { Input, InputList, z_index } from '@graphace/ui';
-	import OperatorSelect from '../input/OperatorSelect.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel, BarsArrowDown, BarsArrowUp } from '@steeze-ui/heroicons';
+	import type { StringExpression, Sort } from '@graphace/graphql';
+	import StringFilter from '../input/StringFilter.svelte';
+	import SortSelect from '../input/SortSelect.svelte';
+	import type { TranslationFunctions } from '~/i18n/i18n-types';
 
 	export let name: string;
 	export let value: StringExpression | null | undefined = undefined;
 	export let sort: Sort | null | undefined = undefined;
+	export let zIndex: number | undefined = 0;
+	let className: string | undefined = '';
+	export { className as class };
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
-
-	const z_class5 = z_index.top(5);
 
 	let _expression: StringExpression = { opr: 'EQ', val: undefined, arr: [] };
 	let _sort: Sort | undefined = undefined;
 
 	const dispatch = createEventDispatcher<{
-		filter: {};
+		filter: { value: StringExpression | null | undefined; sort: Sort | null | undefined };
 	}>();
 
 	const filter = (): void => {
@@ -37,7 +37,7 @@
 			value = undefined;
 		}
 		sort = _sort;
-		dispatch('filter');
+		dispatch('filter', { value, sort });
 		$open = false;
 	};
 
@@ -48,13 +48,8 @@
 		_sort = undefined;
 		value = undefined;
 		sort = undefined;
-		dispatch('filter');
+		dispatch('filter', { value, sort });
 		$open = false;
-	};
-
-	const oprChange = (): void => {
-		_expression.arr = [];
-		_expression.val = undefined;
 	};
 
 	const {
@@ -67,7 +62,7 @@
 </script>
 
 <td>
-	<a class="link group inline-flex" href={null} use:melt={$trigger}>
+	<a class="link group inline-flex {className}" href={null} use:melt={$trigger}>
 		{name}
 		{#if value?.val || (value?.arr && value.arr.length > 0)}
 			<span class="ml-1 flex-none">
@@ -88,39 +83,15 @@
 </td>
 
 {#if $open}
-	<div use:melt={$overlay} class="fixed inset-0 {z_class5}" />
-	<div class="p-1 rounded-xl bg-base-100 shadow {z_class5}" use:melt={$content}>
+	<div use:melt={$overlay} class="fixed inset-0 z-[{zIndex + 5}]" />
+	<div class="p-1 rounded-xl bg-base-100 shadow z-[{zIndex + 5}]" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div
 			class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1 max-w-xs md:max-w-md"
 			transition:fade={{ duration: 100 }}
 		>
-			<OperatorSelect
-				bind:value={_expression.opr}
-				on:change={(e) => oprChange()}
-				className="md:select-sm w-full"
-			/>
-			{#if _expression.opr === 'IN' || _expression.opr === 'NIN' || _expression.opr === 'BT' || _expression.opr === 'NBT'}
-				<InputList
-					placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
-					{name}
-					bind:value={_expression.arr}
-					className="md:input-sm w-full"
-					addBtnClassName="md:btn-sm"
-				/>
-			{:else}
-				<Input
-					placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
-					{name}
-					bind:value={_expression.val}
-					className="md:input-sm w-full"
-				/>
-			{/if}
-			<select class="select select-bordered md:select-sm w-full" bind:value={_sort}>
-				<option value={undefined} selected>{$LL.ui_graphql.table.th.noSort()}</option>
-				<option value="ASC">{$LL.ui_graphql.table.th.asc()}</option>
-				<option value="DESC">{$LL.ui_graphql.table.th.desc()}</option>
-			</select>
+			<StringFilter bind:value={_expression} />
+			<SortSelect bind:value={_sort} />
 			<div class="flex space-x-1">
 				<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.th.filter()}>
 					<button

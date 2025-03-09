@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 
-	export let zIndex: number | undefined = undefined;
+	export let zIndex: number | undefined = 0;
 	let className: string | undefined = '';
 	export { className as class };
 
 	const contextClass = getContext<string>('ui.navbar') || '';
 </script>
 
-<div style="z-index: {zIndex || 'auto'};" class="navbar {className} {contextClass}">
+<div class="navbar z-[{zIndex}] {className} {contextClass}">
 	<slot />
 </div>

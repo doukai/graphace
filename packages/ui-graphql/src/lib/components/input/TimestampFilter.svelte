@@ -2,12 +2,10 @@
 	import type { StringExpression } from '@graphace/graphql';
 	import { DateTimeFilter } from '.';
 
+	export let name: string | undefined = undefined;
 	export let value: StringExpression | null | undefined = undefined;
-	export let name: string;
-	export let label: string;
-	export let className: string = '';
-	export let selectClassName: string = '';
-	export let addBtnClassName: string = '';
+	let className: string | undefined = undefined;
+	export { className as class };
 </script>
 
-<DateTimeFilter bind:value {name} {label} {className} {selectClassName} {addBtnClassName} />
+<DateTimeFilter {name} bind:value class={className} />

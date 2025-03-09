@@ -1,37 +1,30 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { getContext, createEventDispatcher } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import type { TranslationFunctions } from '~/i18n/i18n-types';
-	import { createEventDispatcher } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { createPopover, melt } from '@melt-ui/svelte';
-	import type { Errors } from '@graphace/commons';
-	import { DateInput, DateInputList, z_index } from '@graphace/ui';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
+	import type { Errors } from '@graphace/commons';
+	import type { TranslationFunctions } from '~/i18n/i18n-types';
 
 	export let value: string | (string | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;
-	export let name: string;
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
-	export let placeholder: string = '';
+	export let zIndex: number | undefined = 0;
+	let className: string | undefined = undefined;
+	export { className as class };
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
-	const z_class3 = z_index.top(3);
-	const z_class5 = z_index.top(5);
-
 	const dispatch = createEventDispatcher<{
-		save: {};
+		save: { value: string | (string | null | undefined)[] | null | undefined };
 	}>();
 
 	let mutation = (): void => {
-		if (Array.isArray(value)) {
-			value = value.filter((item) => item);
-		}
-		dispatch('save');
+		dispatch('save', { value });
 		$open = false;
 	};
 
@@ -41,7 +34,7 @@
 		} else {
 			value = null;
 		}
-		dispatch('save');
+		dispatch('save', { value });
 		$open = false;
 	};
 
@@ -56,7 +49,7 @@
 
 <td>
 	<div
-		class={errors ? `tooltip tooltip-open tooltip-error hover:${z_class3}` : ''}
+		class="{errors ? `tooltip tooltip-open tooltip-error hover:z-[${zIndex + 3}]` : ''} {className}"
 		data-tip={errors?.errors?.map((error) => error.message).join(', ')}
 	>
 		<a class="group link inline-flex" href={null} use:melt={$trigger}>
@@ -86,32 +79,11 @@
 </td>
 
 {#if $open}
-	<div use:melt={$overlay} class="fixed inset-0 {z_class5}" />
-	<div class="p-1 rounded-xl bg-base-100 shadow {z_class5}" use:melt={$content}>
+	<div use:melt={$overlay} class="fixed inset-0 z-[{zIndex + 5}]" />
+	<div class="p-1 rounded-xl bg-base-100 shadow z-[{zIndex + 5}]" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="flex items-center space-x-1" transition:fade={{ duration: 100 }}>
-			{#if list}
-				<DateInputList
-					{placeholder}
-					{name}
-					bind:value
-					{errors}
-					{readonly}
-					{disabled}
-					className="md:input-sm"
-					addBtnClassName="md:btn-sm"
-				/>
-			{:else}
-				<DateInput
-					{placeholder}
-					{name}
-					bind:value
-					{errors}
-					{readonly}
-					{disabled}
-					className="md:input-sm"
-				/>
-			{/if}
+			<slot />
 			{#if !readonly && !disabled}
 				<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.td.save()}>
 					<button

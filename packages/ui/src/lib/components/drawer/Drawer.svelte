@@ -2,7 +2,7 @@
 	import { getContext } from 'svelte';
 	import { nanoid } from 'nanoid';
 
-	export let zIndex: number | undefined = undefined;
+	export let zIndex: number | undefined = 0;
 	let className: string | undefined = 'lg:drawer-open';
 	export { className as class };
 
@@ -10,7 +10,7 @@
 	const id = nanoid();
 </script>
 
-<div style="z-index: {zIndex || 'auto'};" class="drawer {className} {contextClass}">
+<div class="drawer z-[{zIndex}] {className} {contextClass}">
 	<input {id} type="checkbox" class="drawer-toggle" />
 	<slot {id} />
 </div>

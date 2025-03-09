@@ -2,15 +2,14 @@
 	import { getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import type { StringExpression } from '@graphace/graphql';
+	import { OperatorSelect, EnumInput, EnumInputList } from '.';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
-	import { OperatorSelect, EnumInput } from '.';
 
 	export let value: StringExpression | null | undefined = undefined;
-	export let name: string;
+	export let name: string | undefined = undefined;
 	export let enums: { name: string; value: string | null | undefined; description?: string }[];
-	export let label: string;
-	export let className: string = '';
-	export let selectClassName: string = '';
+	let className: string | undefined = undefined;
+	export { className as class };
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
@@ -24,46 +23,31 @@
 	};
 </script>
 
-<div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1">
-	<!-- svelte-ignore a11y-label-has-associated-control -->
-	<div class="form-control w-full md:w-60">
-		<label class="input-group max-sm:input-group-vertical md:input-group-sm">
-			<span class="md:w-20 whitespace-nowrap">
-				{label}
-			</span>
-			<OperatorSelect
-				className={selectClassName}
-				bind:value={value.opr}
-				on:change={(e) => oprChange()}
-			/>
-		</label>
-	</div>
-	{#if value.opr === 'IN' || value.opr === 'NIN' || value.opr === 'BT' || value.opr === 'NBT'}
-		<EnumInput
-			placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
-			{className}
-			{name}
-			bind:value={value.arr}
-			{enums}
-			list
-			on:change={(e) => {
-				if (value.arr && value.arr.length > 0) {
-					value.val == undefined;
-				}
-			}}
-		/>
-	{:else}
-		<EnumInput
-			placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
-			{className}
-			{name}
-			bind:value={value.val}
-			{enums}
-			on:change={(e) => {
-				if (value.val) {
-					value.arr = [];
-				}
-			}}
-		/>
-	{/if}
-</div>
+<OperatorSelect bind:value={value.opr} on:change={(e) => oprChange()} />
+{#if value.opr === 'IN' || value.opr === 'NIN' || value.opr === 'BT' || value.opr === 'NBT'}
+	<EnumInputList
+		{name}
+		bind:value={value.arr}
+		{enums}
+		placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
+		class={className}
+		on:change={(e) => {
+			if (value.arr && value.arr.length > 0) {
+				value.val == undefined;
+			}
+		}}
+	/>
+{:else}
+	<EnumInput
+		{name}
+		bind:value={value.val}
+		{enums}
+		placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
+		class={className}
+		on:change={(e) => {
+			if (value.val) {
+				value.arr = [];
+			}
+		}}
+	/>
+{/if}

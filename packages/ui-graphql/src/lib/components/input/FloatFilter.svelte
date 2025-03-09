@@ -2,12 +2,10 @@
 	import type { NumberExpression } from '@graphace/graphql';
 	import { NumberFilter } from '.';
 
+	export let name: string | undefined = undefined;
 	export let value: NumberExpression | null | undefined = undefined;
-	export let name: string;
-	export let label: string;
-	export let className: string = '';
-	export let selectClassName: string = '';
-	export let addBtnClassName: string = '';
+	let className: string | undefined = undefined;
+	export { className as class };
 </script>
 
-<NumberFilter bind:value {name} {label} {className} {selectClassName} {addBtnClassName} />
+<NumberFilter {name} bind:value class={className} />

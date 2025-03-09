@@ -46,8 +46,7 @@
 </script>
 
 <div
-	style="z-index: {$zIndex + 1};"
-	class="fixed flex flex-col items-end md:top-auto {className} {contextClass}"
+	class="fixed flex flex-col items-end md:top-auto z-[{$zIndex + 1}] {className} {contextClass}"
 	use:portal
 >
 	{#each $toasts as toast (toast.id)}

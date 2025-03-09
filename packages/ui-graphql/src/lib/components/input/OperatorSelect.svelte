@@ -1,32 +1,14 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
+	import type { Operator } from '@graphace/graphql';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
-	export let className: string = '';
+
+	export let value: Operator | undefined;
+	let className: string | undefined = undefined;
+	export { className as class };
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
-
-	export let value:
-		| 'EQ'
-		| 'NEQ'
-		| 'LK'
-		| 'NLK'
-		| 'GT'
-		| 'NLTE'
-		| 'GTE'
-		| 'NLT'
-		| 'LT'
-		| 'NGTE'
-		| 'LTE'
-		| 'NGT'
-		| 'NIL'
-		| 'NNIL'
-		| 'IN'
-		| 'NIN'
-		| 'BT'
-		| 'NBT'
-		| null
-		| undefined;
 </script>
 
 <select class="select select-bordered {className}" bind:value on:change>

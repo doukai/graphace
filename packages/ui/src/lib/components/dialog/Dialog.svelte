@@ -3,7 +3,7 @@
 	import { createDialog, melt } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
 
-	export let zIndex: number | undefined = undefined;
+	export let zIndex: number | undefined = 0;
 	let className: string | undefined = '';
 	export { className as class };
 
@@ -25,16 +25,11 @@
 	};
 </script>
 
-<slot name="trigger" {trigger} />
+<slot name="trigger" trigger={$trigger} />
 
 {#if $isOpen}
 	<div class="" use:melt={$portalled}>
-		<div
-			use:melt={$overlay}
-			style="z-index: {zIndex || 'auto'};"
-			class="modal"
-			transition:fade={{ duration: 150 }}
-		/>
+		<div use:melt={$overlay} class="modal z-[{zIndex}]" transition:fade={{ duration: 150 }} />
 		<div
 			class="modal-box -translate-x-1/2 -translate-y-1/2 {className} {contextClass}"
 			use:melt={$content}

@@ -3,7 +3,7 @@
 	export let isModalOpen: boolean = false;
 	export let title: string = '';
 
-	export let zIndex: number | undefined = undefined;
+	export let zIndex: number | undefined = 0;
 	let className: string | undefined = 'modal-bottom sm:modal-middle';
 	export { className as class };
 
@@ -22,8 +22,7 @@
 </script>
 
 <div
-	style="z-index: {zIndex || 'auto'};"
-	class="modal {className} {contextClass}"
+	class="modal z-[{zIndex}] {className} {contextClass}"
 	class:modal-open={isModalOpen}
 	bind:this={modal}
 >
