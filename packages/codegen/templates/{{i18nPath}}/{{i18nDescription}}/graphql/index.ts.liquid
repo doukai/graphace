@@ -1,6 +1,6 @@
 import type { NamespaceGraphqlTranslation } from '../../i18n-types';
 
-const {{ lang }}: NamespaceGraphqlTranslation = {
+const {{ i18nDescription }}: NamespaceGraphqlTranslation = {
 {%- if objects %}
 	objects: {
 {%- for object in objects %}
@@ -35,4 +35,4 @@ const {{ lang }}: NamespaceGraphqlTranslation = {
 {%- endif %}
 }
 
-export default {{ lang }};
+export default {{ i18nDescription }};

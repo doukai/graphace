@@ -87,3 +87,10 @@
 		class="input px-1 h-5 w-full min-w-20 shrink grow basis-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
 	/>
 </div>
+{#if errors?.errors}
+	<label for={id} class="label">
+		{#each errors.errors as error}
+			<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+		{/each}
+	</label>
+{/if}

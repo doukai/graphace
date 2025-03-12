@@ -26,13 +26,13 @@ export type ObjectConfig = {
 export type FieldConfig = {
     name: string;
     ignore?: boolean;
-    inGraphQL?: boolean;
     inQuery?: boolean;
     inMutation?: boolean;
     inSubscription?: boolean;
+    inGraphQL?: boolean;
+    inRoute?: boolean;
     inList?: boolean;
     inDetail?: boolean;
-    inRoute?: boolean;
     select?: boolean;
     import?: string[];
     arrayImport?: string[];
@@ -62,22 +62,35 @@ export type ScalarConfig = {
 export type FieldInfo = {
     fieldName: string;
     fieldTypeName: string;
-    fieldTypeIdName: string;
+    tsTypeName: string;
+    fieldTypeIdName: string | undefined;
+    originalFieldName: string;
+    originalFieldTypeName: string;
+    args: InputInfo[] | undefined;
     isScalarType: boolean;
     isEnumType: boolean;
     isLeafType: boolean;
     isObjectType: boolean;
     isNonNullType: boolean;
     isListType: boolean;
+    isConnection: boolean;
+    isAggregate: boolean;
+    isNamed: boolean;
+    isFile: boolean;
+    isSelect?: boolean;
     inQueryArgs: boolean;
     inMutationArgs: boolean;
     inQuery?: boolean;
     inMutation?: boolean;
     inSubscription?: boolean;
-    isNamed: boolean;
-    select?: boolean;
-    component?: string;
-    originalFieldName?: string | undefined;
-    aggFieldList?: FieldInfo[] | undefined;
-    leafFieldList?: FieldInfo[] | undefined;
+    inGraphQL?: boolean;
+    inRoute?: boolean;
+    inList?: boolean;
+    inDetail?: boolean;
+}
+
+export type InputInfo = {
+    inputName: string;
+    inputType: string;
+    defaultValue: unknown;
 }

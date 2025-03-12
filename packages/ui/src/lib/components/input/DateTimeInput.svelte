@@ -2,7 +2,7 @@
 	import { getContext, createEventDispatcher } from 'svelte';
 	import { nanoid } from 'nanoid';
 	import type { Errors } from '@graphace/commons';
-	
+
 	export let name: string;
 	export let value: string | null | undefined = undefined;
 	export let placeholder: string = '';
@@ -35,3 +35,10 @@
 	{readonly}
 	{disabled}
 />
+{#if errors?.errors}
+	<label for={id} class="label">
+		{#each errors.errors as error}
+			<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+		{/each}
+	</label>
+{/if}

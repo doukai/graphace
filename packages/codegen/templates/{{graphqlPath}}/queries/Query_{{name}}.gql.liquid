@@ -1,77 +1,46 @@
-query Query_{{ name }}
-  {%- if args and args.length > 0 -%}
-  ({% for arg in args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %})
-  {%- endif %} {
-  {{ name }}
-    {%- if args and args.length > 0 %}({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %}
+{{ fields }}
+
+query Query_{{ fieldName }}{% if args and args.length > 0 -%}({% for arg in args %}${{ arg.inputName }}: {{ arg.inputType }}{% if forloop.last == false %}, {% endif %}{% endfor %}){% endif %} {
+  {{ fieldName }}{% if args and args.length > 0 %}({% for arg in args %}{{ arg.inputName }}: ${{ arg.inputName }}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %}
     {%- if isConnection %} {
     totalCount
     edges {
-      node {
-        {%- if fields %}
-        {%- for field in fields %}
-        {{ field.name }}
-        {%- endfor %}
-        {%- endif %}
-        {%- if namedFields %}
-        {%- for field in namedFields %}
-        {%- if field.select %}
-        {{ field.name }} {
+      node { 
+      {%- for field in fields %}
+        {%- if field.isLeafType %}
+        {{ field.fieldName }}
+        {%- elsif field.isFile %}
+        {{ field.fieldName }} {
+          id
+          name
+        }
+        {%- elsif field.isNamed %}
+        {{ field.fieldName }} {
           {{ field.fieldTypeIdName }}
           name
           description
         }
-        {%- else %}
-        {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
-          name
-          description
-        }
         {%- endif %}
-        {%- endfor %}
-        {%- endif %}
-        {%- if fileFields %}
-        {%- for field in fileFields %}
-        {{ field.name }} {
-          id
-          name
-        }
-        {%- endfor %}
-        {%- endif %}
+      {%- endfor %}
       }
     }
   }
-    {%- else %}
-    {%- if fields or namedFields or fileFields %} {
-    {%- if fields %}
-    {%- for field in fields %}
-    {{ field.name }}
-    {%- endfor %}
-    {%- endif %}
-    {%- if namedFields %}
-    {%- for field in namedFields %}
-    {%- if field.select %}
-    {{ field.name }} {
+  {%- else %} {
+  {%- for field in fields %}
+    {%- if field.isLeafType %}
+    {{ field.fieldName }}
+    {%- elsif field.isFile %}
+    {{ field.fieldName }} {
+      id
+      name
+    }
+    {%- elsif field.isNamed %}
+    {{ field.fieldName }} {
       {{ field.fieldTypeIdName }}
       name
       description
     }
-    {%- else %}
-    {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
-      name
-      description
-    }
     {%- endif %}
-    {%- endfor %}
-    {%- endif %}
-    {%- if fileFields %}
-    {%- for field in fileFields %}
-    {{ field.name }} {
-      id
-      name
-    }
-    {%- endfor %}
-    {%- endif %}
+  {%- endfor %}
   }
-    {%- endif %}
-    {%- endif %}
 }

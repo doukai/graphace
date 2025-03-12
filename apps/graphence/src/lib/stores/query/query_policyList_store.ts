@@ -3,7 +3,7 @@ import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { Policy } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `query query_policyList {
+const query = /* GraphQL */ `query Query_policyList {
   policyList {
     id
     policy

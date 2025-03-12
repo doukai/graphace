@@ -1,7 +1,34 @@
-import { isEnumType, isInputObjectType, isNonNullType, isObjectType, isScalarType, type GraphQLSchema, type GraphQLNamedType, isLeafType } from "graphql";
-import type { BuilderConfig, FieldInfo } from "./types/types";
-import { listSuffix, connectionSuffix, fieldInMutationArgs, fieldInQueryArgs, fieldTypeIsList, fieldTypeIsNamedStruct, getFieldType, getIDFieldName, isAggregate, isInnerEnum, isIntrospection, isRelation, isRef, getOriginalFieldName } from "./introspection";
-import * as changeCase from "change-case";
+import {
+    type GraphQLSchema,
+    type GraphQLNamedType,
+    isScalarType,
+    isEnumType,
+    isLeafType,
+    isObjectType,
+    isInputObjectType,
+    isNonNullType
+} from "graphql";
+import {
+    connectionSuffix,
+    fieldTypeIsList,
+    inputTypeIsList,
+    fieldTypeIsNamedStruct,
+    getInputType,
+    getFieldType,
+    getIDFieldName,
+    getOriginalFieldName,
+    fieldInMutationArgs,
+    fieldInQueryArgs,
+    isAggregate,
+    isInnerEnum,
+    isIntrospection,
+    isRelation,
+    isRef,
+    isConnection,
+    fieldTypeIsFile,
+    getOriginalTypeName,
+} from "./introspection";
+import type { BuilderConfig, FieldInfo, InputInfo } from "./types/types";
 
 let builderConfig: BuilderConfig | undefined = {};
 
@@ -31,22 +58,6 @@ export function inComponentObject(typeName: string): boolean {
 export function inRouteObject(typeName: string): boolean {
     const objectConfig = builderConfig?.objects?.find(objectConfig => objectConfig.name === typeName);
     return objectConfig?.inRoute !== false && objectConfig?.ignore !== true && (!isRelation(typeName) || (builderConfig?.includeRelation || false));
-}
-
-export function getObjectImports(typeName: string): string[] | undefined {
-    return builderConfig?.objects?.find(objectConfig => objectConfig.name === typeName)?.import;
-}
-
-export function getObjectArrayImports(typeName: string): string[] | undefined {
-    return builderConfig?.objects?.find(objectConfig => objectConfig.name === typeName)?.arrayImport;
-}
-
-export function getObjectComponent(typeName: string): string | undefined {
-    return builderConfig?.objects?.find(objectConfig => objectConfig.name === typeName)?.component;
-}
-
-export function getObjectArrayComponent(typeName: string): string | undefined {
-    return builderConfig?.objects?.find(objectConfig => objectConfig.name === typeName)?.arrayComponent;
 }
 
 export function inGraphQLField(typeName: string, fieldName: string, fieldTypeName: string, operationType?: 'query' | 'mutation' | 'subscription'): boolean {
@@ -89,12 +100,6 @@ export function inListField(typeName: string, fieldName: string, fieldTypeName: 
         builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true &&
         (!isRelation(originalFieldTypeName) || (builderConfig?.includeRelation || false)) &&
         (!isRef(fieldName) || (builderConfig?.includeRef || false));
-}
-
-export function isInvokeField(fieldName: string, fieldTypeName: string, fieldTypeIsList: boolean): boolean {
-    return fieldTypeIsList ?
-        changeCase.camelCase(fieldTypeName) + listSuffix !== fieldName :
-        changeCase.camelCase(fieldTypeName) !== fieldName;
 }
 
 export function inDetailField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
@@ -142,223 +147,259 @@ export function isSelectField(typeName: string, fieldName: string, fieldTypeName
         false
 }
 
-export const getFieldInfos = (schema: GraphQLSchema, type: GraphQLNamedType): FieldInfo[] | undefined => {
-    if (isObjectType(type) || isInputObjectType(type)) {
-        return Object.values(type.getFields())
-            .filter(field => !isAggregate(field.name))
-            .filter(field => !isIntrospection(field.name))
-            .map(field => {
-                return {
-                    fieldName: field.name,
-                    fieldTypeName: getFieldType(field.type).name,
-                    fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
-                    isScalarType: isScalarType(getFieldType(field.type)),
-                    isEnumType: isEnumType(getFieldType(field.type)),
-                    isLeafType: isLeafType(getFieldType(field.type)),
-                    isObjectType: isObjectType(getFieldType(field.type)),
-                    isNonNullType: isNonNullType(field.type),
-                    isListType: fieldTypeIsList(field.type),
-                    inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),
-                    inMutationArgs: fieldInMutationArgs(schema, type.name, field.name),
-                    isNamed: fieldTypeIsNamedStruct(field.type)
-                }
-            });
+export const getQueryFieldInfo = (schema: GraphQLSchema, name: string): FieldInfo | undefined => {
+    const field = schema.getQueryType()?.getFields()[name];
+    if (field) {
+        const fieldType = getFieldType(field.type);
+        return {
+            fieldName: field.name,
+            originalFieldName: getOriginalFieldName(field),
+            fieldTypeName: fieldType.name,
+            originalFieldTypeName: getOriginalTypeName(fieldType),
+            tsTypeName: getTSTypeName(fieldType.name),
+            fieldTypeIdName: getIDFieldName(fieldType),
+            args: field.args
+                ?.map(arg => ({
+                    inputName: arg.name,
+                    inputType: arg.type.toString(),
+                    defaultValue: arg.defaultValue
+                })),
+            isScalarType: isScalarType(fieldType),
+            isEnumType: isEnumType(fieldType),
+            isLeafType: isLeafType(fieldType),
+            isObjectType: isObjectType(fieldType),
+            isNonNullType: isNonNullType(field.type),
+            isListType: fieldTypeIsList(field.type),
+            isConnection: isConnection(field.name),
+            isAggregate: isAggregate(field.name),
+            isNamed: fieldTypeIsNamedStruct(field.type),
+            isFile: fieldTypeIsFile(field.type),
+            isSelect: false,
+            inQueryArgs: false,
+            inMutationArgs: false,
+            inGraphQL: inGraphQLField(getQueryTypeName(), name, fieldType.name, 'query'),
+            inRoute: inRouteField(getQueryTypeName(), name, fieldType.name),
+            inList: inListField(getQueryTypeName(), name, fieldType.name),
+            inDetail: inDetailField(getQueryTypeName(), name, fieldType.name)
+        }
     }
     return undefined;
 }
 
-export const getNonListObjectFields = (schema: GraphQLSchema, type: GraphQLNamedType): FieldInfo[] | undefined => {
-    if (isObjectType(type) || isInputObjectType(type)) {
-        return Object.values(type.getFields())
-            .filter(field => isObjectType(getFieldType(field.type)) && !fieldTypeIsList(field.type) && !isAggregate(field.name))
-            .filter(field => !isIntrospection(field.name))
-            .map(field => {
-                return {
-                    fieldName: field.name,
-                    fieldTypeName: getFieldType(field.type).name,
-                    fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
-                    isScalarType: isScalarType(getFieldType(field.type)),
-                    isEnumType: isEnumType(getFieldType(field.type)),
-                    isLeafType: isLeafType(getFieldType(field.type)),
-                    isObjectType: isObjectType(getFieldType(field.type)),
-                    isNonNullType: isNonNullType(field.type),
-                    isListType: fieldTypeIsList(field.type),
-                    inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),
-                    inMutationArgs: fieldInMutationArgs(schema, type.name, field.name),
-                    isNamed: fieldTypeIsNamedStruct(field.type),
-                    leafFieldList: getObjectLeafFields(schema, getFieldType(field.type))
-                }
-            });
+export const getMutationFieldInfo = (schema: GraphQLSchema, name: string): FieldInfo | undefined => {
+    const field = schema.getMutationType()?.getFields()[name];
+    if (field) {
+        const fieldType = getFieldType(field.type);
+        return {
+            fieldName: field.name,
+            originalFieldName: getOriginalFieldName(field),
+            fieldTypeName: fieldType.name,
+            originalFieldTypeName: getOriginalTypeName(fieldType),
+            tsTypeName: getTSTypeName(fieldType.name),
+            fieldTypeIdName: getIDFieldName(fieldType),
+            args: field.args
+                ?.map(arg => ({
+                    inputName: arg.name,
+                    inputType: arg.type.toString(),
+                    defaultValue: arg.defaultValue
+                })),
+            isScalarType: isScalarType(fieldType),
+            isEnumType: isEnumType(fieldType),
+            isLeafType: isLeafType(fieldType),
+            isObjectType: isObjectType(fieldType),
+            isNonNullType: isNonNullType(field.type),
+            isListType: fieldTypeIsList(field.type),
+            isConnection: isConnection(field.name),
+            isAggregate: isAggregate(field.name),
+            isNamed: fieldTypeIsNamedStruct(field.type),
+            isFile: fieldTypeIsFile(field.type),
+            isSelect: false,
+            inQueryArgs: false,
+            inMutationArgs: false,
+            inGraphQL: inGraphQLField(getMutationTypeName(), name, fieldType.name, 'mutation'),
+            inRoute: inRouteField(getMutationTypeName(), name, fieldType.name),
+            inList: inListField(getMutationTypeName(), name, fieldType.name),
+            inDetail: inDetailField(getMutationTypeName(), name, fieldType.name)
+        }
     }
     return undefined;
 }
 
-export const getListObjectFields = (schema: GraphQLSchema, type: GraphQLNamedType): FieldInfo[] | undefined => {
-    if (isObjectType(type) || isInputObjectType(type)) {
-        return Object.values(type.getFields())
-            .filter(field => isObjectType(getFieldType(field.type)) && fieldTypeIsList(field.type) && !isAggregate(field.name))
-            .filter(field => !isIntrospection(field.name))
-            .map(field => {
-                return {
-                    fieldName: field.name,
-                    fieldTypeName: getFieldType(field.type).name,
-                    fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
-                    isScalarType: isScalarType(getFieldType(field.type)),
-                    isEnumType: isEnumType(getFieldType(field.type)),
-                    isLeafType: isLeafType(getFieldType(field.type)),
-                    isObjectType: isObjectType(getFieldType(field.type)),
-                    isNonNullType: isNonNullType(field.type),
-                    isListType: fieldTypeIsList(field.type),
-                    inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),
-                    inMutationArgs: fieldInMutationArgs(schema, type.name, field.name),
-                    isNamed: fieldTypeIsNamedStruct(field.type),
-                    leafFieldList: getObjectLeafFields(schema, getFieldType(field.type))
-                }
-            });
+export const getObjectFieldInfos = (schema: GraphQLSchema, name: string, operationType?: 'query' | 'mutation' | 'subscription'): FieldInfo[] => {
+    const type = schema.getType(name);
+    if (isObjectType(type)) {
+        return getFieldInfos(schema, type, operationType);
     }
-    return undefined;
+    return [];
 }
 
-export const getObjectLeafFields = (schema: GraphQLSchema, type: GraphQLNamedType): FieldInfo[] | undefined => {
-    if (isObjectType(type) || isInputObjectType(type)) {
-        return Object.values(type.getFields())
-            .filter(field => isLeafType(getFieldType(field.type)))
-            .filter(field => !isAggregate(field.name))
-            .filter(field => !isIntrospection(field.name))
-            .map(field => {
-                return {
-                    fieldName: field.name,
-                    fieldTypeName: getFieldType(field.type).name,
-                    fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
-                    isScalarType: isScalarType(getFieldType(field.type)),
-                    isEnumType: isEnumType(getFieldType(field.type)),
-                    isLeafType: isLeafType(getFieldType(field.type)),
-                    isObjectType: isObjectType(getFieldType(field.type)),
-                    isNonNullType: isNonNullType(field.type),
-                    isListType: fieldTypeIsList(field.type),
-                    inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),
-                    inMutationArgs: fieldInMutationArgs(schema, type.name, field.name),
-                    isNamed: fieldTypeIsNamedStruct(field.type)
-                }
-            });
-    }
-    return undefined;
+export const getObjectFieldInfo = (schema: GraphQLSchema, name: string, fieldName: string, operationType?: 'query' | 'mutation' | 'subscription'): FieldInfo | undefined => {
+    return getObjectFieldInfos(schema, name, operationType)
+        .find(fileInfo => fileInfo.fieldName === fieldName);
 }
 
-export const getAggFields = (schema: GraphQLSchema, type: GraphQLNamedType): FieldInfo[] | undefined => {
-    if (isObjectType(type) || isInputObjectType(type)) {
+export const getFieldInfos = (schema: GraphQLSchema, type: GraphQLNamedType, operationType?: 'query' | 'mutation' | 'subscription'): FieldInfo[] => {
+    if (isObjectType(type)) {
         return Object.values(type.getFields())
-            .filter(field =>
-                isLeafType(getFieldType(field.type)) && getFieldType(field.type).name !== 'Boolean' && !fieldTypeIsList(field.type) && !isAggregate(field.name) ||
-                isObjectType(getFieldType(field.type)) && (!fieldTypeIsList(field.type) || isAggregate(field.name))
-            )
             .filter(field => !isIntrospection(field.name))
             .map(field => {
+                const fieldType = getFieldType(field.type);
                 return {
                     fieldName: field.name,
-                    fieldTypeName: getFieldType(field.type).name,
-                    fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
-                    isScalarType: isScalarType(getFieldType(field.type)),
-                    isEnumType: isEnumType(getFieldType(field.type)),
-                    isLeafType: isLeafType(getFieldType(field.type)),
-                    isObjectType: isObjectType(getFieldType(field.type)),
-                    isNonNullType: isNonNullType(field.type),
-                    isListType: fieldTypeIsList(field.type),
-                    inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),
-                    inMutationArgs: fieldInMutationArgs(schema, type.name, field.name),
-                    isNamed: fieldTypeIsNamedStruct(field.type),
                     originalFieldName: getOriginalFieldName(field),
-                    aggFieldList: isObjectType(getFieldType(field.type)) ? getObjectAggFields(schema, getFieldType(field.type)) : getLeafAggFields(schema, type, field.name)
-                }
-            });
-    }
-    return undefined;
-}
-
-export const getLeafAggFields = (schema: GraphQLSchema, type: GraphQLNamedType, originalFieldName: string): FieldInfo[] | undefined => {
-    if (isObjectType(type) || isInputObjectType(type)) {
-        return Object.values(type.getFields())
-            .filter(field => isLeafType(getFieldType(field.type)) && isAggregate(field.name))
-            .filter(field => !isIntrospection(field.name))
-            .filter(field => getOriginalFieldName(field) === originalFieldName)
-            .map(field => {
-                return {
-                    fieldName: field.name,
-                    fieldTypeName: getFieldType(field.type).name,
-                    fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
-                    isScalarType: isScalarType(getFieldType(field.type)),
-                    isEnumType: isEnumType(getFieldType(field.type)),
-                    isLeafType: isLeafType(getFieldType(field.type)),
-                    isObjectType: isObjectType(getFieldType(field.type)),
+                    fieldTypeName: fieldType.name,
+                    originalFieldTypeName: getOriginalTypeName(fieldType),
+                    tsTypeName: getTSTypeName(fieldType.name),
+                    fieldTypeIdName: getIDFieldName(fieldType),
+                    args: field.args
+                        ?.map(arg => ({
+                            inputName: arg.name,
+                            inputType: arg.type.toString(),
+                            defaultValue: arg.defaultValue
+                        })),
+                    isScalarType: isScalarType(fieldType),
+                    isEnumType: isEnumType(fieldType),
+                    isLeafType: isLeafType(fieldType),
+                    isObjectType: isObjectType(fieldType),
                     isNonNullType: isNonNullType(field.type),
                     isListType: fieldTypeIsList(field.type),
+                    isAggregate: isAggregate(field.name),
+                    isConnection: isConnection(field.name),
+                    isNamed: fieldTypeIsNamedStruct(field.type),
+                    isFile: fieldTypeIsFile(field.type),
+                    isSelect: isSelectField(type.name, field.name, fieldType.name),
                     inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),
                     inMutationArgs: fieldInMutationArgs(schema, type.name, field.name),
-                    isNamed: fieldTypeIsNamedStruct(field.type),
-                    originalFieldName: getOriginalFieldName(field)
+                    inGraphQL: inGraphQLField(type.name, field.name, fieldType.name, operationType),
+                    inRoute: inRouteField(type.name, field.name, fieldType.name),
+                    inList: inListField(type.name, field.name, fieldType.name),
+                    inDetail: inDetailField(type.name, field.name, fieldType.name)
                 }
             });
     }
-    return undefined;
+    return [];
 }
 
-export const getObjectAggFields = (schema: GraphQLSchema, type: GraphQLNamedType): FieldInfo[] | undefined => {
-    if (isObjectType(type) || isInputObjectType(type)) {
-        return Object.values(type.getFields())
-            .filter(field => isLeafType(getFieldType(field.type)) && isAggregate(field.name))
-            .filter(field => !isIntrospection(field.name))
-            .map(field => {
-                return {
-                    fieldName: field.name,
-                    fieldTypeName: getFieldType(field.type).name,
-                    fieldTypeIdName: getIDFieldName(getFieldType(field.type)) || '',
-                    isScalarType: isScalarType(getFieldType(field.type)),
-                    isEnumType: isEnumType(getFieldType(field.type)),
-                    isLeafType: isLeafType(getFieldType(field.type)),
-                    isObjectType: isObjectType(getFieldType(field.type)),
-                    isNonNullType: isNonNullType(field.type),
-                    isListType: fieldTypeIsList(field.type),
-                    inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),
-                    inMutationArgs: fieldInMutationArgs(schema, type.name, field.name),
-                    isNamed: fieldTypeIsNamedStruct(field.type),
-                    originalFieldName: getOriginalFieldName(field)
-                }
-            });
-    }
-    return undefined;
+export const getNonListObjectFieldInfos = (schema: GraphQLSchema, type: GraphQLNamedType): FieldInfo[] => {
+    return getFieldInfos(schema, type)
+        .filter(field => !field.isAggregate)
+        .filter(field => field.isObjectType && !field.isListType)
 }
 
-export const getScalarNames = (fields: FieldInfo[] | undefined): string[] | undefined => {
-    const scalarNames = fields?.filter(field => !isAggregate(field.fieldName))
+export const getListObjectFieldInfos = (schema: GraphQLSchema, type: GraphQLNamedType): FieldInfo[] => {
+    return getFieldInfos(schema, type)
+        .filter(field => !field.isAggregate)
+        .filter(field => field.isObjectType && field.isListType)
+}
+
+export const getLeafFieldInfos = (schema: GraphQLSchema, type: GraphQLNamedType): FieldInfo[] => {
+    return getFieldInfos(schema, type)
+        .filter(field => !field.isAggregate)
+        .filter(field => field.isLeafType)
+}
+
+export const getAggFieldInfos = (schema: GraphQLSchema, type: GraphQLNamedType): FieldInfo[] => {
+    return getFieldInfos(schema, type)
+        .filter(field =>
+            field.isLeafType && field.fieldTypeName !== 'Boolean' && !field.isListType && !field.isAggregate ||
+            field.isObjectType && (!field.isListType || field.isAggregate)
+        )
+}
+
+export const getLeafAggFieldInfos = (schema: GraphQLSchema, type: GraphQLNamedType, originalFieldName: string): FieldInfo[] => {
+    return getFieldInfos(schema, type)
+        .filter(field => field.isLeafType && field.isAggregate)
+        .filter(field => field.originalFieldName === originalFieldName);
+}
+
+export const getObjectAggFieldInfos = (schema: GraphQLSchema, type: GraphQLNamedType): FieldInfo[] => {
+    return getFieldInfos(schema, type)
+        .filter(field => field.isLeafType && field.isAggregate);
+}
+
+export const getScalarNames = (fields: FieldInfo[] | undefined): string[] => {
+    const scalarNames = fields
+        ?.filter(field => !isAggregate(field.fieldName))
         .filter(field => !isIntrospection(field.fieldName))
         .filter(field => field.isScalarType)
         .map(field => field.fieldTypeName);
-    return scalarNames?.filter((scalarName, index) => scalarNames.indexOf(scalarName) == index);
+    if (scalarNames) {
+        return Array.from(new Set(scalarNames));
+    }
+    return [];
 }
 
-export const getBaseScalarNames = (fields: FieldInfo[] | undefined): string[] | undefined => {
-    const baseScalarNames = getScalarNames(fields)?.map(typeName => {
-        switch (typeName) {
-            case "Boolean":
-                return "Boolean";
-            case "ID":
-            case "String":
-            case "Date":
-            case "Time":
-            case "DateTime":
-            case "Timestamp":
-                return "String";
-            case "Int":
-            case "BigInteger":
-                return "Int";
-            case "Float":
-            case "BigDecimal":
-                return "Float";
-            default:
-                return "String";
-        }
-    });
-    return baseScalarNames?.filter((baseScalarName, index) => baseScalarNames.indexOf(baseScalarName) == index);
+export const getBaseScalarNames = (fields: FieldInfo[] | undefined): string[] => {
+    const baseScalarNames = getScalarNames(fields)
+        ?.map(typeName => {
+            switch (typeName) {
+                case "Boolean":
+                    return "Boolean";
+                case "ID":
+                case "String":
+                case "Date":
+                case "Time":
+                case "DateTime":
+                case "Timestamp":
+                    return "String";
+                case "Int":
+                case "BigInteger":
+                    return "Int";
+                case "Float":
+                case "BigDecimal":
+                    return "Float";
+                default:
+                    return "String";
+            }
+        });
+    if (baseScalarNames) {
+        return Array.from(new Set(baseScalarNames));
+    }
+    return [];
+}
+
+export const getEnumNames = (fields: FieldInfo[] | undefined): string[] => {
+    const enumNames = fields
+        ?.filter(field => !isInnerEnum(field.fieldName))
+        .filter(field => field.isEnumType)
+        .map(field => field.fieldTypeName);
+    if (enumNames) {
+        return Array.from(new Set(enumNames));
+    }
+    return [];
+}
+
+export const getObjectNames = (fields: FieldInfo[] | undefined): string[] => {
+    const objectNames = fields
+        ?.filter(field => field.isObjectType)
+        .map(field => field.fieldTypeName);
+    if (objectNames) {
+        return Array.from(new Set(objectNames));
+    }
+    return [];
+}
+
+export const getNamedStructObjectNames = (fields: FieldInfo[] | undefined): string[] => {
+    const objectNames = fields
+        ?.filter(field => field.isObjectType)
+        .filter(field => field.isNamed)
+        .map(field => field.fieldTypeName);
+    if (objectNames) {
+        return Array.from(new Set(objectNames));
+    }
+    return [];
+}
+
+export function getSelectObjectNames(fields: FieldInfo[] | undefined): string[] {
+    const objectNames = fields
+        ?.filter(field => field.isObjectType)
+        ?.filter(field => field.isSelect)
+        .filter(field => field.isNamed)
+        .map(field => field.fieldTypeName);
+    if (objectNames) {
+        return Array.from(new Set(objectNames));
+    }
+    return [];
 }
 
 export const getTSTypeName = (typeName: string): string => {
@@ -382,122 +423,10 @@ export const getTSTypeName = (typeName: string): string => {
     }
 }
 
-export const getEnumNames = (fields: FieldInfo[] | undefined): string[] | undefined => {
-    const enumNames = fields?.filter(field => !isInnerEnum(field.fieldName))
-        .filter(field => field.isEnumType)
-        .map(field => field.fieldTypeName);
-    return enumNames?.filter((enumName, index) => enumNames.indexOf(enumName) == index);
-}
-
-export const getObjectNames = (fields: FieldInfo[] | undefined): string[] | undefined => {
-    const objectNames = fields?.filter(field => field.isObjectType)
-        .map(field => field.fieldTypeName);
-    return objectNames?.filter((objectName, index) => objectNames.indexOf(objectName) == index);
-}
-
-export const getNamedStructObjectNames = (fields: FieldInfo[] | undefined): string[] | undefined => {
-    const objectNames = fields?.filter(field => field.isNamed)
-        .map(field => field.fieldTypeName);
-    return objectNames?.filter((objectName, index) => objectNames.indexOf(objectName) == index);
-}
-
-export function componentFields(typeName: string, fields: FieldInfo[] | undefined): FieldInfo[] | undefined {
-    return fields?.map(field => {
-        return {
-            ...field,
-            select: (builderConfig?.objects || [])
-                .filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any')
-                .flatMap(objectConfig => objectConfig.fields || [])
-                .find(fieldConfig => fieldConfig.name === field.fieldName)?.select ||
-                builderConfig?.objects?.find(objectConfig => objectConfig.name === field.fieldTypeName)?.select,
-            component: field.isListType ? getFieldArrayComponent(typeName, field) : getFieldComponent(typeName, field),
-            inQuery: inGraphQLField(typeName, field.fieldName, field.fieldTypeName, 'query'),
-            inMutation: inGraphQLField(typeName, field.fieldName, field.fieldTypeName, 'mutation'),
-            inSubscription: inGraphQLField(typeName, field.fieldName, field.fieldTypeName, 'subscription')
-        };
-    });
-}
-
-export function componentFieldImports(typeName: string, fields: FieldInfo[] | undefined): string[] | undefined {
-    return fields?.flatMap(field => field.isListType ? getFieldArrayImport(typeName, field) || [] : getFieldImport(typeName, field) || []);
-}
-
-export function getSelectComponentFieldImports(typeName: string, fields: FieldInfo[] | undefined): string[] | undefined {
-    const selectTypes = fields
-        ?.filter(field =>
-            (builderConfig?.objects || [])
-                .filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any')
-                .flatMap(objectConfig => objectConfig.fields || [])
-                .find(fieldConfig => fieldConfig.name === field.fieldName)?.select ||
-            builderConfig?.objects?.find(objectConfig => objectConfig.name === field.fieldTypeName)?.select)
-        .filter(field => field.isNamed)
-        .map(field => field.fieldTypeName);
-    if (selectTypes) {
-        return Array.from(new Set(selectTypes));
-    }
-    return undefined;
-}
-
-export function getFieldImport(typeName: string, field: FieldInfo): string[] | undefined {
-    const fieldImport = (builderConfig?.objects || []).filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any').flatMap(objectConfig => objectConfig.fields || [])?.find(fieldConfig => fieldConfig.name === field.fieldName)?.import;
-    if (fieldImport) {
-        return Array.from(new Set(fieldImport));
-    } else if (field.isScalarType) {
-        return Array.from(new Set(builderConfig?.scalars?.find(scalarConfig => scalarConfig.name === field.fieldTypeName)?.import));
-    } else if (field.isEnumType) {
-        return Array.from(new Set(builderConfig?.enums?.find(enumConfig => enumConfig.name === field.fieldTypeName)?.import));
-    } else if (field.isObjectType) {
-        return Array.from(new Set(builderConfig?.objects?.find(objectConfig => objectConfig.name === field.fieldTypeName)?.import));
-    }
-    return undefined;
-}
-
-export function getFieldArrayImport(typeName: string, field: FieldInfo): string[] | undefined {
-    const fieldImport = (builderConfig?.objects || []).filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any').flatMap(objectConfig => objectConfig.fields || [])?.find(fieldConfig => fieldConfig.name === field.fieldName)?.arrayImport;
-    if (fieldImport) {
-        return Array.from(new Set(fieldImport));
-    } else if (field.isScalarType) {
-        return Array.from(new Set(builderConfig?.scalars?.find(scalarConfig => scalarConfig.name === field.fieldTypeName)?.arrayImport));
-    } else if (field.isEnumType) {
-        return Array.from(new Set(builderConfig?.enums?.find(enumConfig => enumConfig.name === field.fieldTypeName)?.arrayImport));
-    } else if (field.isObjectType) {
-        return Array.from(new Set(builderConfig?.objects?.find(objectConfig => objectConfig.name === field.fieldTypeName)?.arrayImport));
-    }
-    return undefined;
-}
-
-export function getFieldComponent(typeName: string, field: FieldInfo): string | undefined {
-    const fieldComponent = (builderConfig?.objects || []).filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any').flatMap(objectConfig => objectConfig.fields || [])?.find(fieldConfig => fieldConfig.name === field.fieldName)?.component;
-    if (fieldComponent) {
-        return fieldComponent;
-    } else if (field.isScalarType) {
-        return builderConfig?.scalars?.find(scalarConfig => scalarConfig.name === field.fieldTypeName)?.component;
-    } else if (field.isEnumType) {
-        return builderConfig?.enums?.find(enumConfig => enumConfig.name === field.fieldTypeName)?.component;
-    } else if (field.isObjectType) {
-        return builderConfig?.objects?.find(objectConfig => objectConfig.name === field.fieldTypeName)?.component;
-    }
-    return undefined;
-}
-
-export function getFieldArrayComponent(typeName: string, field: FieldInfo): string | undefined {
-    const fieldArrayComponent = (builderConfig?.objects || []).filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any').flatMap(objectConfig => objectConfig.fields || [])?.find(fieldConfig => fieldConfig.name === field.fieldName)?.arrayComponent;
-    if (fieldArrayComponent) {
-        return fieldArrayComponent;
-    } else if (field.isScalarType) {
-        return builderConfig?.scalars?.find(scalarConfig => scalarConfig.name === field.fieldTypeName)?.arrayComponent;
-    } else if (field.isEnumType) {
-        return builderConfig?.enums?.find(enumConfig => enumConfig.name === field.fieldTypeName)?.arrayComponent;
-    } else if (field.isObjectType) {
-        return builderConfig?.objects?.find(objectConfig => objectConfig.name === field.fieldTypeName)?.arrayComponent;
-    }
-    return undefined;
-}
-
 export function getQueryTypeName() { return builderConfig?.queryTypeName || 'Query' };
 
 export function getMutationTypeName() { return builderConfig?.mutationTypeName || 'Mutation' };
 
 export function getSubscriptionTypeName() { return builderConfig?.subscriptionTypeName || 'Subscription' };
 
-export const isOperationType = (name?: string): boolean => { return [builderConfig?.queryTypeName, builderConfig?.mutationTypeName, builderConfig?.subscriptionTypeName].some(typeName => name === typeName) };
+export const isOperationType = (name?: string): boolean => [builderConfig?.queryTypeName, builderConfig?.mutationTypeName, builderConfig?.subscriptionTypeName].some(typeName => name === typeName);

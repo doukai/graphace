@@ -22,7 +22,8 @@
 		FileInput,
 		Toggle,
 		toast,
-		Progress
+		Progress,
+		Loading
 	} from '@graphace/ui';
 	import { StringFormControl, BooleanFormControl, ObjectFormControl } from '@graphace/ui-graphql';
 	// import GroupSelectItem from '~/lib/components/objects/group/GroupSelectItem.svelte';
@@ -30,29 +31,28 @@
 	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/utils';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { UserInput } from '~/lib/types/schema';
-	export let node: UserInput | null | undefined = undefined;
+	export let value: UserInput | null | undefined = undefined;
 	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
 	export let showRemoveButton: boolean = true;
 	export let showUnbindButton: boolean = false;
 	export let showSelectButton: boolean = false;
 	export let showBackButton: boolean = true;
+	export let fields: {
+		id: { readonly: boolean; disabled: boolean; hidden: boolean };
+	} = {
+		id: { readonly: false, disabled: false, hidden: false }
+	};
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const permissions = getContext<PermissionsStore>('permissions');
 
 	const dispatch = createEventDispatcher<{
-		mutation: {
-			args: UserInput;
-			then: (data: UserInput | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		};
-		parentMutation: {
-			args: UserInput | null;
-			then: (data: UserInput | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		};
-		gotoSelect: {};
+		remove: { value: UserInput | null | undefined };
+		unbind: { value: UserInput | null | undefined };
+		save: { value: UserInput | null | undefined };
+		create: { value: UserInput | null | undefined };
+		select: { value: UserInput | null | undefined };
 		back: {};
 	}>();
 
@@ -149,66 +149,39 @@
 <Card class="bg-base-100">
 	<CardBody>
 		<div class="flex justify-end md:justify-between">
-			<span class="max-sm:hidden text-xl font-semibold self-center"
-				>{$LL.graphql.objects.User.name()}</span
-			>
+			<span class="max-sm:hidden text-xl font-semibold self-center">
+				{$LL.graphql.objects.User.name()}
+			</span>
 			<Buttons
 				showRemoveButton={permissions.auth('User::*::WRITE') && showRemoveButton}
 				showUnbindButton={permissions.auth('User::*::WRITE') && showUnbindButton}
 				showSelectButton={permissions.auth('User::*::WRITE') && showSelectButton}
 				{showBackButton}
-				on:remove={(e) => toast.success('test')}
+				on:save={(e) => dispatch('save', { value })}
+				on:remove={(e) => dispatch('remove', { value })}
+				on:unbind={(e) => dispatch('unbind', { value })}
+				on:select
+				on:back
 			/>
 		</div>
 		<div class="divider" />
-		<Form
-			class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2"
-			on:save={(e) => save()}
-			on:remove={(e) =>
-				messageBoxs.open({
-					title: $LL.graphence.components.table.removeModalTitle(),
-					buttonName: $LL.graphence.components.table.removeBtn(),
-					buttonType: 'error',
-					confirm: () => {
-						remove();
-						return true;
-					}
-				})}
-			on:unbind={(e) =>
-				messageBoxs.open({
-					title: $LL.graphence.components.table.unbindModalTitle(),
-					buttonName: $LL.graphence.components.table.unbindBtn(),
-					buttonType: 'error',
-					confirm: () => {
-						unbind();
-						return true;
-					},
-					button1: {
-						name: $LL.graphence.components.table.removeBtn(),
-						className: 'btn-error',
-						onClick: () => {
-							remove();
-							return true;
-						}
-					}
-				})}
-			on:gotoSelect
-			on:back
-		>
+		<Form class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
 			{#if isFetching}
-				TODO
+				<Loading />
 			{:else if node}
-				{#if permissions.auth('User::name::*')}
-					<FormControl let:id errors={errors.name}>
-						<Label {id} text={$LL.graphql.objects.User.fields.name.name()} />
-						<Input
-							{id}
-							name="name"
-							bind:value={node.name}
-							readonly={!permissions.auth('User::name::WRITE')}
-							errors={errors.name}
-						/>
-					</FormControl>
+				{#if !fields.id.hidden}
+					<slot name="id">
+						<FormControl let:id>
+							<Label {id} text={$LL.graphql.objects.User.fields.name.name()} />
+							<Input
+								{id}
+								name="name"
+								bind:value={node.name}
+								readonly={!permissions.auth('User::name::WRITE')}
+								errors={errors.name}
+							/>
+						</FormControl>
+					</slot>
 				{/if}
 				{#if permissions.auth('User::description::*')}
 					<FormControl let:id errors={errors.description}>

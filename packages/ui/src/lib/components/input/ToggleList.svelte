@@ -3,10 +3,14 @@
 	import { createToggleGroup, melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { XMark, Check, Plus, Minus } from '@steeze-ui/heroicons';
+	import { nanoid } from 'nanoid';
+	import type { Errors } from '@graphace/commons';
 
 	export let value: (boolean | null | undefined)[] | null | undefined = undefined;
+	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
+	export let id: string = nanoid();
 	let className: string | undefined = 'flex flex-wrap';
 	export { className as class };
 
@@ -57,6 +61,7 @@
 		</button>
 	{/each}
 	<button
+		{id}
 		class="btn btn-primary join-item shrink"
 		aria-label="+"
 		on:click|preventDefault={(e) => (value = [...value, false])}
@@ -64,3 +69,10 @@
 		<Icon src={Plus} class="h-5 w-5" />
 	</button>
 </div>
+{#if errors?.errors}
+	<label for={id} class="label">
+		{#each errors.errors as error}
+			<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+		{/each}
+	</label>
+{/if}

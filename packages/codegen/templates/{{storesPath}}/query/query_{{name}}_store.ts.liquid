@@ -4,94 +4,63 @@ import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 {%- if args and args.length > 0 %}
 import type { Query{{ name | pascalCase }}Args } from '~/{{ schemaTypesPath }}';
 {%- endif %}
-{%- if isScalar == false %}
+{%- if isScalarType == false %}
 import type { {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
 {%- endif %}
 
-const query = /* GraphQL */ `query query_{{ name }}
-  {%- if args and args.length > 0 -%}
-  ({% for arg in args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %})
-  {%- endif %} {
-  {{ name }}
-    {%- if args and args.length > 0 %}({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %}
-    {%- if isConnection %} {
+const query = /* GraphQL */ `query Query_{{ fieldName }}{% if args and args.length > 0 -%}({% for arg in args %}${{ arg.inputName }}: {{ arg.inputType }}{% if forloop.last == false %}, {% endif %}{% endfor %}){% endif %} {
+  {{ fieldName }}{% if args and args.length > 0 %}({% for arg in args %}{{ arg.inputName }}: ${{ arg.inputName }}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %}
+  {%- if fields and fields.length > 0 %} {
+    {%- if isConnection %}
     totalCount
     edges {
-      node {
-        {%- if fields %}
+      node { 
         {%- for field in fields %}
-        {{ field.name }}
-        {%- endfor %}
-        {%- endif %}
-        {%- if namedFields %}
-        {%- for field in namedFields %}
-        {%- if field.select %}
-        {{ field.name }} {
+        {%- if field.isLeafType and field.isAggregate == false %}
+        {{ field.fieldName }}
+        {%- elsif field.isFile %}
+        {{ field.fieldName }} {
+          id
+          name
+        }
+        {%- elsif field.isNamed and field.isAggregate == false %}
+        {{ field.fieldName }} {
           {{ field.fieldTypeIdName }}
           name
           description
         }
-        {%- else %}
-        {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
-          name
-          description
-        }
         {%- endif %}
         {%- endfor %}
-        {%- endif %}
-        {%- if fileFields %}
-        {%- for field in fileFields %}
-        {{ field.name }} {
-          id
-          name
-        }
-        {%- endfor %}
-        {%- endif %}
       }
     }
-  }
     {%- else %}
-    {%- if fields or namedFields or fileFields %} {
-    {%- if fields %}
     {%- for field in fields %}
-    {{ field.name }}
-    {%- endfor %}
-    {%- endif %}
-    {%- if namedFields %}
-    {%- for field in namedFields %}
-    {%- if field.select %}
-    {{ field.name }} {
+    {%- if field.isLeafType and field.isAggregate == false %}
+    {{ field.fieldName }}
+    {%- elsif field.isFile %}
+    {{ field.fieldName }} {
+      id
+      name
+    }
+    {%- elsif field.isNamed and field.isAggregate == false %}
+    {{ field.fieldName }} {
       {{ field.fieldTypeIdName }}
       name
       description
     }
-    {%- else %}
-    {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
-      name
-      description
-    }
     {%- endif %}
-    {%- endfor %}
-    {%- endif %}
-    {%- if fileFields %}
-    {%- for field in fileFields %}
-    {{ field.name }} {
-      id
-      name
-    }
     {%- endfor %}
     {%- endif %}
   }
-    {%- endif %}
-    {%- endif %}
+  {%- endif %}
 }`;
 
-export function createQuery_{{ name }}_Store(event: LoadEvent | RequestEvent): Query_{{ name }}_Store {
+export function createQuery_{{ fieldName }}_Store(event: LoadEvent | RequestEvent): Query_{{ fieldName }}_Store {
   return createGraphQLQueryStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ name | pascalCase }}Args{% else %}undefined{% endif %}>(query, event);
 }
 
-export async function fetchQuery_{{ name }}_Store(event: LoadEvent | RequestEvent, variables: {% if args and args.length > 0 %}Query{{ name | pascalCase }}Args{% else %}undefined{% endif %}): Promise<Query_{{ name }}_Store> {
+export async function fetchQuery_{{ fieldName }}_Store(event: LoadEvent | RequestEvent, variables: {% if args and args.length > 0 %}Query{{ name | pascalCase }}Args{% else %}undefined{% endif %}): Promise<Query_{{ fieldName }}_Store> {
   return fetchGraphQLQueryStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ name | pascalCase }}Args{% else %}undefined{% endif %}>(query, event, variables);
 }
 
-export type Query_{{ name }}_Store = GraphQLStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ name | pascalCase }}Args{% else %}undefined{% endif %}>;
+export type Query_{{ fieldName }}_Store = GraphQLStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ name | pascalCase }}Args{% else %}undefined{% endif %}>;

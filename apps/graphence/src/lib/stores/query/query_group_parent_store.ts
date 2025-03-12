@@ -19,21 +19,13 @@ const query = /* GraphQL */ `query Query_group_parent($group_id: String, $id: St
     updateUserId
     updateTime
     createGroupId
-    parent(id: $id name: $name description: $description path: $path deep: $deep parentId: $parentId parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupBy: $groupBy) {
+    parent(id: $id name: $name description: $description path: $path deep: $deep parentId: $parentId parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupUserRelation: $groupUserRelation groupRoleRelation: $groupRoleRelation groupBy: $groupBy not: $not cond: $cond exs: $exs) {
       id
       name
       description
       path
       deep
       parentId
-      isDeprecated
-      version
-      realmId
-      createUserId
-      createTime
-      updateUserId
-      updateTime
-      createGroupId
       parent {
         id
         name
@@ -55,9 +47,18 @@ const query = /* GraphQL */ `query Query_group_parent($group_id: String, $id: St
         description
       }
       realm {
+        id
         name
         description
       }
+      isDeprecated
+      version
+      realmId
+      createUserId
+      createTime
+      updateUserId
+      updateTime
+      createGroupId
     }
   }
 }`;

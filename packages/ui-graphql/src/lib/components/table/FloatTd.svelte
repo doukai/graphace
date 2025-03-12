@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
-	import { NumberTd } from '.';
+	import { IntTd } from '.';
 
 	export let value: number | (number | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;
@@ -12,4 +12,4 @@
 	export { className as class };
 </script>
 
-<NumberTd bind:value {list} {errors} {readonly} {disabled} {zIndex} class={className} on:save />
+<IntTd bind:value {list} {errors} {readonly} {disabled} {zIndex} class={className} on:save />

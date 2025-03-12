@@ -93,3 +93,10 @@
 		</button>
 	</div>
 </div>
+{#if errors?.errors}
+	<label for={id} class="label">
+		{#each errors.errors as error}
+			<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+		{/each}
+	</label>
+{/if}

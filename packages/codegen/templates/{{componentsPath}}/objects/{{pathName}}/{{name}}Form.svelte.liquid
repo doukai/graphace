@@ -5,222 +5,141 @@
 	import type { GraphQLError, GlobalGraphQLErrorMessageFunction, GraphQLErrorsFunction } from '@graphace/graphql';
 	import { Form, FormLoading, messageBoxs, notifications } from '@graphace/ui';
 	import { {% for scalar in scalars %}{{ scalar }}Item, {% endfor %}ObjectItem{% if hasFileField %}, FileItem{% endif %} } from '@graphace/ui-graphql';
-	{%- if imports %}
-	{%- for import in imports %}
-	{{ import }}
-	{%- endfor %}
-	{%- endif %}
 	{%- for enum in enums %}
 	import {{ enum }}Item from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Item.svelte';
 	{%- endfor %}
-	{%- if selectImports %}
 	{%- for selectType in selectImports %}
 	import {{ selectType }}SelectItem from '~/{{ objectsPath }}/{{ selectType | paramCase }}/{{ selectType }}SelectItem.svelte';
 	{%- endfor %}
-	{%- endif %}
 	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/utils';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
-	export let node: {{ name }}Input | null | undefined = undefined;
+	
+	export let value: {{ name }}Input | null | undefined = undefined;
 	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
 	export let showRemoveButton: boolean = true;
 	export let showUnbindButton: boolean = false;
-	export let showGotoSelectButton: boolean = false;
+	export let showSelectButton: boolean = false;
 	export let showBackButton: boolean = true;
-
-	const LL = getContext<Readable<TranslationFunctions>>('LL');
-	{%- if useAuth %}
-	const permissions = getContext<PermissionsStore>('permissions');
-	{%- endif %}
+	export let fields: {
+		{%- for field in fields %}
+		{{ field.fieldName }}: { readonly: boolean; disabled: boolean; hidden: boolean };
+		{%- endfor %}
+	} = {
+		{%- for field in fields %}
+		{{ field.fieldName }}: { readonly: false, disabled: false, hidden: false }{% if forloop.last == false %},{% endif %}
+		{%- endfor %}
+	};
 
 	const dispatch = createEventDispatcher<{
-		mutation: {
-			args: {{ name }}Input;
-			then: (data: {{ name }}Input | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		};
-		parentMutation: {
-			args: {{ name }}Input | null;
-			then: (data: {{ name }}Input | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		};
-		gotoSelect: {};
+		remove: { value: {{ name }}Input | null | undefined };
+		unbind: { value: {{ name }}Input | null | undefined };
+		save: { value: {{ name }}Input | null | undefined };
+		create: { value: {{ name }}Input | null | undefined };
+		select: {};
 		back: {};
 	}>();
-
-	const save = (): void => {
-		if (node) {
-			let args = { ...node };
-			dispatch('mutation', {
-				args: args,
-				then: (data) => {
-					node = data;
-					notifications.success($LL.{{ appName }}.message.saveSuccess());
-					dispatch('back', {});
-				},
-				catch: (graphQLErrors) => {
-					console.error(graphQLErrors);
-					errors = buildGraphQLErrors(graphQLErrors);
-					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
-					if (globalError) {
-						messageBoxs.open({
-							title: $LL.{{ appName }}.message.saveFailed(),
-							content: globalError,
-							buttonName: $LL.ui.button.back(),
-							buttonType: 'neutral',
-							confirm: () => {
-								dispatch('back', {});
-								return true;
-							}
-						});
-					}
-				}
-			});
-		}
-	};
-
-	const remove = (): void => {
-		if (node) {
-			dispatch('mutation', {
-				args: { where: { {{ idName }}: { val: node.{{ idName }} } }, isDeprecated: true },
-				then: (data) => {
-					notifications.success($LL.{{ appName }}.message.removeSuccess());
-					dispatch('back', {});
-				},
-				catch: (graphQLErrors) => {
-					console.error(graphQLErrors);
-					errors = buildGraphQLErrors(graphQLErrors);
-					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
-					if (globalError) {
-						messageBoxs.open({
-							title: $LL.{{ appName }}.message.removeFailed(),
-							content: globalError,
-							buttonName: $LL.ui.button.back(),
-							buttonType: 'neutral',
-							confirm: () => {
-								dispatch('back', {});
-								return true;
-							}
-						});
-					}
-				}
-			});
-		}
-	};
-
-	const unbind = (): void => {
-		if (node) {
-			dispatch('parentMutation', {
-				args: null,
-				then: (data) => {
-					notifications.success($LL.{{ appName }}.message.unbindSuccess());
-					dispatch('back', {});
-				},
-				catch: (graphQLErrors) => {
-					console.error(graphQLErrors);
-					errors = buildGraphQLErrors(graphQLErrors);
-					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
-					if (globalError) {
-						messageBoxs.open({
-							title: $LL.{{ appName }}.message.unbindFailed(),
-							content: globalError,
-							buttonName: $LL.ui.button.back(),
-							buttonType: 'neutral',
-							confirm: () => {
-								dispatch('back', {});
-								return true;
-							}
-						});
-					}
-				}
-			});
-		}
-	};
 </script>
 
-<Form
-	title={$LL.graphql.objects.{{ name }}.name()}
-	{%- if useAuth %}
-	showRemoveButton={permissions.auth('{{ name }}::*::WRITE') && showRemoveButton}
-	showUnbindButton={permissions.auth('{{ name }}::*::WRITE') && showUnbindButton}
-	showGotoSelectButton={permissions.auth('{{ name }}::*::WRITE') && showGotoSelectButton}
-	{%- else %}
-	{showRemoveButton}
-	{showUnbindButton}
-	{showGotoSelectButton}
-	{%- endif %}
-	{showBackButton}
-	on:save={(e) => save()}
-	on:remove={(e) =>
-		messageBoxs.open({
-			title: $LL.{{ appName }}.components.table.removeModalTitle(),
-			buttonName: $LL.{{ appName }}.components.table.removeBtn(),
-			buttonType: 'error',
-			confirm: () => {
-				remove();
-				return true;
-			}
-		})}
-	on:unbind={(e) =>
-		messageBoxs.open({
-			title: $LL.{{ appName }}.components.table.unbindModalTitle(),
-			buttonName: $LL.{{ appName }}.components.table.unbindBtn(),
-			buttonType: 'error',
-			confirm: () => {
-				unbind();
-				return true;
-			},
-			button1: {
-				name: $LL.{{ appName }}.components.table.removeBtn(),
-				className: 'btn-error',
-				onClick: () => {
-					remove();
-					return true;
-				}
-			}
-		})}
-	on:gotoSelect
-	on:back
->
+
+<div class="flex justify-end md:justify-between">
+	<span class="max-sm:hidden text-xl font-semibold self-center">
+		{$LL.graphql.objects.{{ name }}.name()}
+	</span>
+	<Buttons
+		{%- if useAuth %}
+		showRemoveButton={permissions.auth('{{ name }}::*::WRITE') && showRemoveButton}
+		showUnbindButton={permissions.auth('{{ name }}::*::WRITE') && showUnbindButton}
+		showSelectButton={permissions.auth('{{ name }}::*::WRITE') && showSelectButton}
+		{%- else %}
+		{showRemoveButton}
+		{showUnbindButton}
+		{showSelectButton}
+		{%- endif %}
+		{showBackButton}
+		on:save={(e) => dispatch('save', { value })}
+		on:remove={(e) => dispatch('remove', { value })}
+		on:unbind={(e) => dispatch('unbind', { value })}
+		on:select
+		on:back
+	/>
+</div>
+<div class="divider" />
+<Form class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
 	{#if isFetching}
-		<FormLoading rows={% raw %}{{% endraw %}{{rows}}} />
+		<Loading />
 	{:else}
-		{#if node}
-			{%- if fields %}
+		{#if value}
 			{%- for field in fields %}
-			{%- if useAuth %}
-			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
-			{%- endif %}
-			{%- if field.component %}
-			{{ field.component }}
-			{%- else %}
-			{%- if field.isScalarType or field.isEnumType or field.fieldTypeName == 'File' %}
-			<{{ field.fieldTypeName }}Item label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} name="{{ field.fieldName }}" bind:value={node.{{ field.fieldName }}}{% if useAuth %} readonly={!permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE')}{% endif %}{% if field.isListType %} list{% endif %}{% if field.inMutationArgs == false %} readonly{% endif %} errors={errors.{{ field.fieldName }}}{% if field.fieldTypeName == 'File' %} on:upload{% endif %} />
-			{%- else %}
-			{%- if field.select %}
-			<{{ field.fieldTypeName }}SelectItem
-				name="{{ field.fieldName }}"
-				label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-				errors={errors.{{ field.fieldName }}}
-				bind:value={node.{{ field.fieldName }}}
-				{%- if useAuth %}
-				readonly={!permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE')}
-				{%- endif %}
-				{%- if field.isListType %}
-				list
-				{%- endif %}
-			/>
-			{%- else %}
-			<ObjectItem name="{{ field.fieldName }}" {% if field.isNamed %}namedStruct={node.{{ field.fieldName }}}{% endif %} path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} errors={errors.{{ field.fieldName }}} on:gotoField />
-			{%- endif %}
-			{%- endif %}
-			{%- endif %}
-			{%- if useAuth %}
-			{/if}
-			{%- endif %}
+			<slot name="{{ field.fieldName }}">
+				{#if !fields.{{ field.fieldName }}.hidden}
+					<FormControl let:id>
+						<Label {id} text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} />
+						{%- if field.isScalarType or field.isEnumType or field.fieldTypeName == 'File' %}
+						<{{ field.fieldTypeName }}Input{% if field.isListType %}List{% endif %}
+						 	{id}
+							name="{{ field.fieldName }}"
+							bind:value={node.{{ field.fieldName }}}
+							errors={errors.{{ field.fieldName }}}
+							readonly={fields.{{ field.fieldName }}.readonly}
+							disabled={fields.{{ field.fieldName }}.disabled}
+							{%- if field.fieldTypeName == 'File' %}
+							on:upload
+							{%- endif %}
+						/>
+						{%- elsif field.select %}
+						<{{ field.fieldTypeName }}Select
+						 	{id}
+							name="{{ field.fieldName }}"
+							errors={errors.{{ field.fieldName }}}
+							bind:value={value.{{ field.fieldName }}}
+							readonly={fields.{{ field.fieldName }}.readonly}
+							disabled={fields.{{ field.fieldName }}.disabled}
+							{%- if field.isListType %}
+							list
+							{%- endif %}
+						/>
+						{%- else %}
+						<ObjectInput
+						 	{id}
+							name="{{ field.fieldName }}"
+							{%- if field.isNamed %}
+							namedStruct={value.{{ field.fieldName }}}
+							{%- endif %}
+							path={`${value.{{ idName }}}/{{ field.fieldName | paramCase }}`}
+							errors={errors.{{ field.fieldName }}}
+							readonly={fields.{{ field.fieldName }}.readonly}
+							disabled={fields.{{ field.fieldName }}.disabled}
+							on:gotoField
+						/>
+						{%- endif %}
+					</FormControl>
+				{/if}
+			</slot>
 			{%- endfor %}
-			{%- endif %}
+		{:else}
+			<Empty />
 		{/if}
 	{/if}
 </Form>
+<div class="divider" />
+<div class="flex justify-end">
+	<Buttons
+		{%- if useAuth %}
+		showRemoveButton={permissions.auth('{{ name }}::*::WRITE') && showRemoveButton}
+		showUnbindButton={permissions.auth('{{ name }}::*::WRITE') && showUnbindButton}
+		showSelectButton={permissions.auth('{{ name }}::*::WRITE') && showSelectButton}
+		{%- else %}
+		{showRemoveButton}
+		{showUnbindButton}
+		{showSelectButton}
+		{%- endif %}
+		{showBackButton}
+		on:save={(e) => dispatch('save', { value })}
+		on:remove={(e) => dispatch('remove', { value })}
+		on:unbind={(e) => dispatch('unbind', { value })}
+		on:select
+		on:back
+	/>
+</div>

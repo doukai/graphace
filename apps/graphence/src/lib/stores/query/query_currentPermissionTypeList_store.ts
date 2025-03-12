@@ -2,7 +2,7 @@ import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 
-const query = /* GraphQL */ `query query_currentPermissionTypeList {
+const query = /* GraphQL */ `query Query_currentPermissionTypeList {
   currentPermissionTypeList
 }`;
 

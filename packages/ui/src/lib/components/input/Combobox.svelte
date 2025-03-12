@@ -18,10 +18,12 @@
 	import type { Errors } from '@graphace/commons';
 	import Loading from '../loading/Loading.svelte';
 	import Empty from '../div/Empty.svelte';
+	import { nanoid } from 'nanoid';
 
 	export let options: Option[] | null | undefined = [];
 	export let value: Option | Option[] | null | undefined = undefined;
 	export let multiple: boolean = false;
+	export let id: string = nanoid();
 	export let name: string | undefined = undefined;
 	export let placeholder: string = '';
 	export let readonly = false;
@@ -155,6 +157,7 @@
 		{/each}
 		<input
 			use:melt={$input}
+			{id}
 			type="text"
 			class="input px-1 h-5 w-full min-w-20 shrink grow basis-0 border-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
 			on:focus={(e) => {
@@ -250,4 +253,11 @@
 			{/each}
 		{/if}
 	</ul>
+{/if}
+{#if errors?.errors}
+	<label for={id} class="label">
+		{#each errors.errors as error}
+			<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+		{/each}
+	</label>
 {/if}

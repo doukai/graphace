@@ -3,7 +3,7 @@ import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { User } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `query query_currentUser {
+const query = /* GraphQL */ `query Query_currentUser {
   currentUser {
     id
     name
@@ -13,14 +13,6 @@ const query = /* GraphQL */ `query query_currentUser {
     email
     phones
     disable
-    isDeprecated
-    version
-    realmId
-    createUserId
-    createTime
-    updateUserId
-    updateTime
-    createGroupId
     groups {
       id
       name
@@ -32,9 +24,18 @@ const query = /* GraphQL */ `query query_currentUser {
       description
     }
     realm {
+      id
       name
       description
     }
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
   }
 }`;
 

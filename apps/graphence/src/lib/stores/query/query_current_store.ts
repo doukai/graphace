@@ -3,7 +3,7 @@ import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { Current } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `query query_current {
+const query = /* GraphQL */ `query Query_current {
   current {
     id
     name

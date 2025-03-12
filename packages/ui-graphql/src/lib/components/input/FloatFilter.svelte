@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { NumberExpression } from '@graphace/graphql';
-	import { NumberFilter } from '.';
+	import { IntFilter } from '.';
 
 	export let name: string | undefined = undefined;
 	export let value: NumberExpression | null | undefined = undefined;
@@ -8,4 +8,4 @@
 	export { className as class };
 </script>
 
-<NumberFilter {name} bind:value class={className} />
+<IntFilter {name} bind:value class={className} />

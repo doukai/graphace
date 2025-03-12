@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { NumberExpression, Sort } from '@graphace/graphql';
-	import { NumberTh } from '.';
+	import { IntTh } from '.';
 
 	export let name: string;
 	export let value: NumberExpression | null | undefined = undefined;
@@ -10,4 +10,4 @@
 	export { className as class };
 </script>
 
-<NumberTh {name} bind:value bind:sort {zIndex} class={className} on:filter />
+<IntTh {name} bind:value bind:sort {zIndex} class={className} on:filter />

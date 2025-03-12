@@ -16,8 +16,6 @@ import IDTh from "./IDTh.svelte";
 import IDTd from "./IDTd.svelte";
 import IntTh from "./IntTh.svelte";
 import IntTd from "./IntTd.svelte";
-import NumberTh from "./NumberTh.svelte";
-import NumberTd from "./NumberTd.svelte";
 import ObjectTd from "./ObjectTd.svelte";
 import StringTh from "./StringTh.svelte";
 import StringTd from "./StringTd.svelte";
@@ -44,8 +42,6 @@ export {
     IDTd,
     IntTh,
     IntTd,
-    NumberTh,
-    NumberTd,
     ObjectTd,
     StringTh,
     StringTd,

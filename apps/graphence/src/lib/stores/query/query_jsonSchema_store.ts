@@ -3,7 +3,7 @@ import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryJsonSchemaArgs } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `query query_jsonSchema($name: String) {
+const query = /* GraphQL */ `query Query_jsonSchema($name: String) {
   jsonSchema(name: $name)
 }`;
 
