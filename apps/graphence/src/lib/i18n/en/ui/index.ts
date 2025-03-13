@@ -2,15 +2,15 @@
 import type { BaseTranslation } from '../../i18n-types'
 
 const en_ui = {
+	message: {
+		cancel: 'Cancel',
+		confirm: 'Confirm',
+		empty: 'No result',
+	},
 	menu: {
 		menu: 'Menu',
 		open: 'Open Menu',
 		more: 'More',
-	},
-	cursor: {
-		size: 'Size',
-		previous: 'Previous',
-		next: 'Next',
 	},
 	pagination: {
 		size: 'Size',
@@ -19,28 +19,18 @@ const en_ui = {
 		previous: 'Previous',
 		next: 'Next',
 	},
-	searchInput: {
-		placeholder: 'Search',
-	},
 	inputList: {
 		add: 'Add',
 		remove: 'Remove',
 	},
-	table: {
-		empty: 'no result',
-	},
-	messageBox: {
-		cancel: 'Cancel',
-		confirm: 'Confirm',
-	},
 	button: {
 		search: 'Search',
-		create: 'Create',
 		remove: 'Remove',
 		unbind: 'Unbind',
 		save: 'Save',
-		back: 'Back',
+		create: 'Create',
 		select: 'Select',
+		back: 'Back',
 	},
 	themeSelect: {
 		btn: 'Theme',

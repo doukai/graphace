@@ -15,10 +15,6 @@ export type ObjectConfig = {
     inRoute?: boolean;
     inComponent?: boolean;
     select?: boolean;
-    import?: string[];
-    arrayImport?: string[];
-    component?: string;
-    arrayComponent?: string;
     fields?: FieldConfig[];
     isContainer?: boolean;
 }
@@ -34,29 +30,29 @@ export type FieldConfig = {
     inList?: boolean;
     inDetail?: boolean;
     select?: boolean;
-    import?: string[];
-    arrayImport?: string[];
-    component?: string;
-    arrayComponent?: string;
 }
 
 export type EnumConfig = {
     name: string;
     ignore?: boolean;
     inComponent?: boolean;
-    import?: string[];
-    arrayImport?: string[];
-    component?: string;
-    arrayComponent?: string;
 }
 
 export type ScalarConfig = {
     name: string;
     ignore?: boolean;
-    import?: string[];
-    arrayImport?: string[];
-    component?: string;
-    arrayComponent?: string;
+}
+
+export type ObjectInfo = {
+    name: string;
+    idName: string | undefined;
+    scalars: string[];
+    baseScalars: string[];
+    enums: string[];
+    objects: string[];
+    selects: string[];
+    hasFileField: boolean;
+    fields: FieldInfo[];
 }
 
 export type FieldInfo = {
@@ -77,16 +73,16 @@ export type FieldInfo = {
     isAggregate: boolean;
     isNamed: boolean;
     isFile: boolean;
-    isSelect?: boolean;
+    isSelect: boolean;
     inQueryArgs: boolean;
     inMutationArgs: boolean;
-    inQuery?: boolean;
-    inMutation?: boolean;
-    inSubscription?: boolean;
-    inGraphQL?: boolean;
-    inRoute?: boolean;
-    inList?: boolean;
-    inDetail?: boolean;
+    inQuery: boolean;
+    inMutation: boolean;
+    inSubscription: boolean;
+    inGraphQL: boolean;
+    inRoute: boolean;
+    inList: boolean;
+    inDetail: boolean;
 }
 
 export type InputInfo = {

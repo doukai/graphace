@@ -24,7 +24,7 @@ const query = /* GraphQL */ `query Query_{{ fieldName }}_{{ objectFieldInfo.fiel
             name
           }
           {%- elsif field.isNamed and field.isAggregate == false %}
-          {{ field.fieldName }} {
+          {{ field.fieldName }}{% if field.isListType and field.isSelect == false %}(first: 3){% endif %} {
             {{ field.fieldTypeIdName }}
             name
             description
@@ -43,7 +43,7 @@ const query = /* GraphQL */ `query Query_{{ fieldName }}_{{ objectFieldInfo.fiel
         name
       }
       {%- elsif field.isNamed and field.isAggregate == false %}
-      {{ field.fieldName }} {
+      {{ field.fieldName }}{% if field.isListType and field.isSelect == false %}(first: 3){% endif %} {
         {{ field.fieldTypeIdName }}
         name
         description

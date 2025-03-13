@@ -2,7 +2,7 @@ import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 {%- if args and args.length > 0 %}
-import type { Query{{ name | pascalCase }}Args } from '~/{{ schemaTypesPath }}';
+import type { Query{{ fieldName | pascalCase }}Args } from '~/{{ schemaTypesPath }}';
 {%- endif %}
 {%- if isScalarType == false %}
 import type { {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
@@ -24,7 +24,7 @@ const query = /* GraphQL */ `query Query_{{ fieldName }}{% if args and args.leng
           name
         }
         {%- elsif field.isNamed and field.isAggregate == false %}
-        {{ field.fieldName }} {
+        {{ field.fieldName }}{% if field.isListType and field.isSelect == false %}(first: 3){% endif %} {
           {{ field.fieldTypeIdName }}
           name
           description
@@ -43,7 +43,7 @@ const query = /* GraphQL */ `query Query_{{ fieldName }}{% if args and args.leng
       name
     }
     {%- elsif field.isNamed and field.isAggregate == false %}
-    {{ field.fieldName }} {
+    {{ field.fieldName }}{% if field.isListType and field.isSelect == false %}(first: 3){% endif %} {
       {{ field.fieldTypeIdName }}
       name
       description
@@ -56,11 +56,11 @@ const query = /* GraphQL */ `query Query_{{ fieldName }}{% if args and args.leng
 }`;
 
 export function createQuery_{{ fieldName }}_Store(event: LoadEvent | RequestEvent): Query_{{ fieldName }}_Store {
-  return createGraphQLQueryStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ name | pascalCase }}Args{% else %}undefined{% endif %}>(query, event);
+  return createGraphQLQueryStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>(query, event);
 }
 
-export async function fetchQuery_{{ fieldName }}_Store(event: LoadEvent | RequestEvent, variables: {% if args and args.length > 0 %}Query{{ name | pascalCase }}Args{% else %}undefined{% endif %}): Promise<Query_{{ fieldName }}_Store> {
-  return fetchGraphQLQueryStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ name | pascalCase }}Args{% else %}undefined{% endif %}>(query, event, variables);
+export async function fetchQuery_{{ fieldName }}_Store(event: LoadEvent | RequestEvent, variables: {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}): Promise<Query_{{ fieldName }}_Store> {
+  return fetchGraphQLQueryStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>(query, event, variables);
 }
 
-export type Query_{{ fieldName }}_Store = GraphQLStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ name | pascalCase }}Args{% else %}undefined{% endif %}>;
+export type Query_{{ fieldName }}_Store = GraphQLStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>;

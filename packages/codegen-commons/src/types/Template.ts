@@ -3,10 +3,10 @@ export type Template =
     '{{i18nPath}}/{{i18nDefault}}/graphql/index.ts' |
     '{{i18nPath}}/{{i18nDescription}}/graphql/index.ts' |
     '{{storesPath}}/query/query_{{name}}_store.ts' |
-    '{{storesPath}}/query/query_{{name}}_{{objectFieldName}}_store.ts' //|
-    // '{{storesPath}}/mutation/mutation_{{name}}_store.ts' |
-    // '{{storesPath}}/mutation/mutation_{{name}}_{{objectFieldName}}_store.ts' |
-    // '{{componentsPath}}/objects/{{pathName}}/{{name}}Form.svelte' |
+    '{{storesPath}}/query/query_{{name}}_{{objectFieldName}}_store.ts' |
+    '{{storesPath}}/mutation/mutation_{{name}}_store.ts' |
+    '{{storesPath}}/mutation/mutation_{{name}}_{{objectFieldName}}_store.ts' |
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Form.svelte' //|
     // '{{componentsPath}}/objects/{{pathName}}/{{name}}CreateForm.svelte' |
     // '{{componentsPath}}/objects/{{pathName}}/{{name}}Table.svelte' |
     // '{{componentsPath}}/objects/{{pathName}}/{{name}}ConnectionTable.svelte' |

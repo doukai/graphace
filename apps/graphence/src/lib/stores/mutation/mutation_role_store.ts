@@ -9,15 +9,6 @@ const query = /* GraphQL */ `mutation Mutation_role($id: ID, $name: String, $des
     id
     name
     description
-    isDeprecated
-    version
-    realmId
-    createUserId
-    createTime
-    updateUserId
-    updateTime
-    createGroupId
-    syncRolePolicy
     users {
       id
       name
@@ -34,9 +25,19 @@ const query = /* GraphQL */ `mutation Mutation_role($id: ID, $name: String, $des
       description
     }
     realm {
+      id
       name
       description
     }
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    syncRolePolicy
   }
 }`;
 

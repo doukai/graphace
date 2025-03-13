@@ -1,36 +1,14 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import type { Errors, PermissionsStore } from '@graphace/commons';
-	import type {
-		GraphQLError,
-		GlobalGraphQLErrorMessageFunction,
-		GraphQLErrorsFunction
-	} from '@graphace/graphql';
-	import {
-		Label,
-		Card,
-		CardBody,
-		Form,
-		Buttons,
-		messageBoxs,
-		notifications,
-		Input,
-		FormControl,
-		ToggleList,
-		FileInputList,
-		FileInput,
-		Toggle,
-		toast,
-		Progress,
-		Loading
-	} from '@graphace/ui';
-	import { StringFormControl, BooleanFormControl, ObjectFormControl } from '@graphace/ui-graphql';
-	// import GroupSelectItem from '~/lib/components/objects/group/GroupSelectItem.svelte';
-	// import RoleSelectItem from '~/lib/components/objects/role/RoleSelectItem.svelte';
-	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/utils';
+	import type { Errors } from '@graphace/commons';
+	import { Buttons, Empty, Form, FormControl, Label, Loading } from '@graphace/ui';
+	import { IDInput, IDInputList, StringInput, StringInputList, BooleanInput, BooleanInputList, IntInput, IntInputList, TimestampInput, TimestampInputList, ObjectInput } from '@graphace/ui-graphql';
+	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
+	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { UserInput } from '~/lib/types/schema';
+	
 	export let value: UserInput | null | undefined = undefined;
 	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
@@ -39,246 +17,288 @@
 	export let showSelectButton: boolean = false;
 	export let showBackButton: boolean = true;
 	export let fields: {
-		id: { readonly: boolean; disabled: boolean; hidden: boolean };
+		name: { readonly: boolean; disabled: boolean; hidden: boolean };
+		description: { readonly: boolean; disabled: boolean; hidden: boolean };
+		lastName: { readonly: boolean; disabled: boolean; hidden: boolean };
+		login: { readonly: boolean; disabled: boolean; hidden: boolean };
+		email: { readonly: boolean; disabled: boolean; hidden: boolean };
+		phones: { readonly: boolean; disabled: boolean; hidden: boolean };
+		disable: { readonly: boolean; disabled: boolean; hidden: boolean };
+		groups: { readonly: boolean; disabled: boolean; hidden: boolean };
+		roles: { readonly: boolean; disabled: boolean; hidden: boolean };
+		realm: { readonly: boolean; disabled: boolean; hidden: boolean };
+		groupsAggregate: { readonly: boolean; disabled: boolean; hidden: boolean };
+		groupsConnection: { readonly: boolean; disabled: boolean; hidden: boolean };
+		rolesAggregate: { readonly: boolean; disabled: boolean; hidden: boolean };
+		rolesConnection: { readonly: boolean; disabled: boolean; hidden: boolean };
+		idCount: { readonly: boolean; disabled: boolean; hidden: boolean };
+		idMax: { readonly: boolean; disabled: boolean; hidden: boolean };
+		idMin: { readonly: boolean; disabled: boolean; hidden: boolean };
+		nameCount: { readonly: boolean; disabled: boolean; hidden: boolean };
+		nameMax: { readonly: boolean; disabled: boolean; hidden: boolean };
+		nameMin: { readonly: boolean; disabled: boolean; hidden: boolean };
+		descriptionCount: { readonly: boolean; disabled: boolean; hidden: boolean };
+		descriptionMax: { readonly: boolean; disabled: boolean; hidden: boolean };
+		descriptionMin: { readonly: boolean; disabled: boolean; hidden: boolean };
+		lastNameCount: { readonly: boolean; disabled: boolean; hidden: boolean };
+		lastNameMax: { readonly: boolean; disabled: boolean; hidden: boolean };
+		lastNameMin: { readonly: boolean; disabled: boolean; hidden: boolean };
+		loginCount: { readonly: boolean; disabled: boolean; hidden: boolean };
+		loginMax: { readonly: boolean; disabled: boolean; hidden: boolean };
+		loginMin: { readonly: boolean; disabled: boolean; hidden: boolean };
+		saltCount: { readonly: boolean; disabled: boolean; hidden: boolean };
+		saltMax: { readonly: boolean; disabled: boolean; hidden: boolean };
+		saltMin: { readonly: boolean; disabled: boolean; hidden: boolean };
+		hashCount: { readonly: boolean; disabled: boolean; hidden: boolean };
+		hashMax: { readonly: boolean; disabled: boolean; hidden: boolean };
+		hashMin: { readonly: boolean; disabled: boolean; hidden: boolean };
+		emailCount: { readonly: boolean; disabled: boolean; hidden: boolean };
+		emailMax: { readonly: boolean; disabled: boolean; hidden: boolean };
+		emailMin: { readonly: boolean; disabled: boolean; hidden: boolean };
 	} = {
-		id: { readonly: false, disabled: false, hidden: false }
+		name: { readonly: false, disabled: false, hidden: false },
+		description: { readonly: false, disabled: false, hidden: false },
+		lastName: { readonly: false, disabled: false, hidden: false },
+		login: { readonly: false, disabled: false, hidden: false },
+		email: { readonly: false, disabled: false, hidden: false },
+		phones: { readonly: false, disabled: false, hidden: false },
+		disable: { readonly: false, disabled: false, hidden: false },
+		groups: { readonly: false, disabled: false, hidden: false },
+		roles: { readonly: false, disabled: false, hidden: false },
+		realm: { readonly: false, disabled: false, hidden: false },
+		groupsAggregate: { readonly: false, disabled: false, hidden: false },
+		groupsConnection: { readonly: false, disabled: false, hidden: false },
+		rolesAggregate: { readonly: false, disabled: false, hidden: false },
+		rolesConnection: { readonly: false, disabled: false, hidden: false },
+		idCount: { readonly: false, disabled: false, hidden: false },
+		idMax: { readonly: false, disabled: false, hidden: false },
+		idMin: { readonly: false, disabled: false, hidden: false },
+		nameCount: { readonly: false, disabled: false, hidden: false },
+		nameMax: { readonly: false, disabled: false, hidden: false },
+		nameMin: { readonly: false, disabled: false, hidden: false },
+		descriptionCount: { readonly: false, disabled: false, hidden: false },
+		descriptionMax: { readonly: false, disabled: false, hidden: false },
+		descriptionMin: { readonly: false, disabled: false, hidden: false },
+		lastNameCount: { readonly: false, disabled: false, hidden: false },
+		lastNameMax: { readonly: false, disabled: false, hidden: false },
+		lastNameMin: { readonly: false, disabled: false, hidden: false },
+		loginCount: { readonly: false, disabled: false, hidden: false },
+		loginMax: { readonly: false, disabled: false, hidden: false },
+		loginMin: { readonly: false, disabled: false, hidden: false },
+		saltCount: { readonly: false, disabled: false, hidden: false },
+		saltMax: { readonly: false, disabled: false, hidden: false },
+		saltMin: { readonly: false, disabled: false, hidden: false },
+		hashCount: { readonly: false, disabled: false, hidden: false },
+		hashMax: { readonly: false, disabled: false, hidden: false },
+		hashMin: { readonly: false, disabled: false, hidden: false },
+		emailCount: { readonly: false, disabled: false, hidden: false },
+		emailMax: { readonly: false, disabled: false, hidden: false },
+		emailMin: { readonly: false, disabled: false, hidden: false }
 	};
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
-	const permissions = getContext<PermissionsStore>('permissions');
 
 	const dispatch = createEventDispatcher<{
 		remove: { value: UserInput | null | undefined };
 		unbind: { value: UserInput | null | undefined };
 		save: { value: UserInput | null | undefined };
 		create: { value: UserInput | null | undefined };
-		select: { value: UserInput | null | undefined };
+		select: {};
 		back: {};
 	}>();
-
-	const save = (): void => {
-		if (node) {
-			let args = { ...node };
-			dispatch('mutation', {
-				args: args,
-				then: (data) => {
-					node = data;
-					notifications.success($LL.graphence.message.saveSuccess());
-					dispatch('back', {});
-				},
-				catch: (graphQLErrors) => {
-					console.error(graphQLErrors);
-					errors = buildGraphQLErrors(graphQLErrors);
-					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
-					if (globalError) {
-						messageBoxs.open({
-							title: $LL.graphence.message.saveFailed(),
-							content: globalError,
-							buttonName: $LL.ui.button.back(),
-							buttonType: 'neutral',
-							confirm: () => {
-								dispatch('back', {});
-								return true;
-							}
-						});
-					}
-				}
-			});
-		}
-	};
-
-	const remove = (): void => {
-		if (node) {
-			dispatch('mutation', {
-				args: { where: { id: { val: node.id } }, isDeprecated: true },
-				then: (data) => {
-					notifications.success($LL.graphence.message.removeSuccess());
-					dispatch('back', {});
-				},
-				catch: (graphQLErrors) => {
-					console.error(graphQLErrors);
-					errors = buildGraphQLErrors(graphQLErrors);
-					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
-					if (globalError) {
-						messageBoxs.open({
-							title: $LL.graphence.message.removeFailed(),
-							content: globalError,
-							buttonName: $LL.ui.button.back(),
-							buttonType: 'neutral',
-							confirm: () => {
-								dispatch('back', {});
-								return true;
-							}
-						});
-					}
-				}
-			});
-		}
-	};
-
-	const unbind = (): void => {
-		if (node) {
-			dispatch('parentMutation', {
-				args: null,
-				then: (data) => {
-					notifications.success($LL.graphence.message.unbindSuccess());
-					dispatch('back', {});
-				},
-				catch: (graphQLErrors) => {
-					console.error(graphQLErrors);
-					errors = buildGraphQLErrors(graphQLErrors);
-					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
-					if (globalError) {
-						messageBoxs.open({
-							title: $LL.graphence.message.unbindFailed(),
-							content: globalError,
-							buttonName: $LL.ui.button.back(),
-							buttonType: 'neutral',
-							confirm: () => {
-								dispatch('back', {});
-								return true;
-							}
-						});
-					}
-				}
-			});
-		}
-	};
 </script>
 
-<Card class="bg-base-100">
-	<CardBody>
-		<div class="flex justify-end md:justify-between">
-			<span class="max-sm:hidden text-xl font-semibold self-center">
-				{$LL.graphql.objects.User.name()}
-			</span>
-			<Buttons
-				showRemoveButton={permissions.auth('User::*::WRITE') && showRemoveButton}
-				showUnbindButton={permissions.auth('User::*::WRITE') && showUnbindButton}
-				showSelectButton={permissions.auth('User::*::WRITE') && showSelectButton}
-				{showBackButton}
-				on:save={(e) => dispatch('save', { value })}
-				on:remove={(e) => dispatch('remove', { value })}
-				on:unbind={(e) => dispatch('unbind', { value })}
-				on:select
-				on:back
-			/>
-		</div>
-		<div class="divider" />
-		<Form class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
-			{#if isFetching}
-				<Loading />
-			{:else if node}
-				{#if !fields.id.hidden}
-					<slot name="id">
-						<FormControl let:id>
-							<Label {id} text={$LL.graphql.objects.User.fields.name.name()} />
-							<Input
-								{id}
-								name="name"
-								bind:value={node.name}
-								readonly={!permissions.auth('User::name::WRITE')}
-								errors={errors.name}
-							/>
-						</FormControl>
-					</slot>
+
+<div class="flex justify-end md:justify-between">
+	<span class="max-sm:hidden text-xl font-semibold self-center">
+		{$LL.graphql.objects.User.name()}
+	</span>
+	<Buttons
+		{showRemoveButton}
+		{showUnbindButton}
+		{showSelectButton}
+		{showBackButton}
+		on:save={(e) => dispatch('save', { value })}
+		on:remove={(e) => dispatch('remove', { value })}
+		on:unbind={(e) => dispatch('unbind', { value })}
+		on:select
+		on:back
+	/>
+</div>
+<div class="divider" />
+<Form class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
+	{#if isFetching}
+		<Loading />
+	{:else}
+		{#if value}
+			<slot name="name">
+				{#if !fields.name.hidden}
+					<FormControl let:id>
+						<Label {id} text={$LL.graphql.objects.User.fields.name.name()} />
+						<StringInput
+						 	{id}
+							name="name"
+							bind:value={value.name}
+							errors={errors.name}
+							readonly={fields.name.readonly}
+							disabled={fields.name.disabled}
+						/>
+					</FormControl>
 				{/if}
-				{#if permissions.auth('User::description::*')}
-					<FormControl let:id errors={errors.description}>
+			</slot>
+			<slot name="description">
+				{#if !fields.description.hidden}
+					<FormControl let:id>
 						<Label {id} text={$LL.graphql.objects.User.fields.description.name()} />
-						<Input
-							{id}
+						<StringInput
+						 	{id}
 							name="description"
-							bind:value={node.description}
-							readonly={!permissions.auth('User::description::WRITE')}
+							bind:value={value.description}
 							errors={errors.description}
+							readonly={fields.description.readonly}
+							disabled={fields.description.disabled}
 						/>
 					</FormControl>
 				{/if}
-				{#if permissions.auth('User::lastName::*')}
-					<FormControl let:id errors={errors.lastName}>
+			</slot>
+			<slot name="lastName">
+				{#if !fields.lastName.hidden}
+					<FormControl let:id>
 						<Label {id} text={$LL.graphql.objects.User.fields.lastName.name()} />
-						<Input
-							{id}
+						<StringInput
+						 	{id}
 							name="lastName"
-							bind:value={node.lastName}
-							readonly={!permissions.auth('User::lastName::WRITE')}
+							bind:value={value.lastName}
 							errors={errors.lastName}
+							readonly={fields.lastName.readonly}
+							disabled={fields.lastName.disabled}
 						/>
 					</FormControl>
 				{/if}
-				{#if permissions.auth('User::login::*')}
-					<FormControl let:id errors={errors.login}>
+			</slot>
+			<slot name="login">
+				{#if !fields.login.hidden}
+					<FormControl let:id>
 						<Label {id} text={$LL.graphql.objects.User.fields.login.name()} />
-						<Input
-							{id}
+						<StringInput
+						 	{id}
 							name="login"
-							bind:value={node.login}
-							readonly={!permissions.auth('User::login::WRITE')}
+							bind:value={value.login}
 							errors={errors.login}
+							readonly={fields.login.readonly}
+							disabled={fields.login.disabled}
 						/>
 					</FormControl>
 				{/if}
-				{#if permissions.auth('User::email::*')}
-					<FormControl let:id errors={errors.email}>
+			</slot>
+			<slot name="email">
+				{#if !fields.email.hidden}
+					<FormControl let:id>
 						<Label {id} text={$LL.graphql.objects.User.fields.email.name()} />
-						<Input
-							{id}
+						<StringInput
+						 	{id}
 							name="email"
-							bind:value={node.email}
-							readonly={!permissions.auth('User::email::WRITE')}
+							bind:value={value.email}
 							errors={errors.email}
+							readonly={fields.email.readonly}
+							disabled={fields.email.disabled}
 						/>
 					</FormControl>
 				{/if}
-				{#if permissions.auth('User::phones::*')}
-					<FormControl let:id errors={errors.phones}>
+			</slot>
+			<slot name="phones">
+				{#if !fields.phones.hidden}
+					<FormControl let:id>
 						<Label {id} text={$LL.graphql.objects.User.fields.phones.name()} />
-						<FileInput
-							{id}
+						<StringInputList
+						 	{id}
 							name="phones"
-							bind:value={node.phones}
-							readonly={!permissions.auth('User::phones::WRITE')}
+							bind:value={value.phones}
 							errors={errors.phones}
+							readonly={fields.phones.readonly}
+							disabled={fields.phones.disabled}
 						/>
 					</FormControl>
 				{/if}
-				{#if permissions.auth('User::disable::*')}
-					<FormControl let:id errors={errors.disable}>
+			</slot>
+			<slot name="disable">
+				{#if !fields.disable.hidden}
+					<FormControl let:id>
 						<Label {id} text={$LL.graphql.objects.User.fields.disable.name()} />
-						<Toggle
-							{id}
+						<BooleanInput
+						 	{id}
 							name="disable"
-							bind:value={node.disable}
-							readonly={!permissions.auth('User::disable::WRITE')}
+							bind:value={value.disable}
 							errors={errors.disable}
+							readonly={fields.disable.readonly}
+							disabled={fields.disable.disabled}
 						/>
 					</FormControl>
 				{/if}
-				<!-- {#if permissions.auth('User::groups::*')}
-					<GroupSelectItem
-						name="groups"
-						label={$LL.graphql.objects.User.fields.groups.name()}
-						errors={errors.groups}
-						bind:value={node.groups}
-						readonly={!permissions.auth('User::groups::WRITE')}
-						list
-					/>
+			</slot>
+			<slot name="groups">
+				{#if !fields.groups.hidden}
+					<FormControl let:id>
+						<Label {id} text={$LL.graphql.objects.User.fields.groups.name()} />
+						<GroupSelect
+						 	{id}
+							name="groups"
+							errors={errors.groups}
+							bind:value={value.groups}
+							readonly={fields.groups.readonly}
+							disabled={fields.groups.disabled}
+							list
+						/>
+					</FormControl>
 				{/if}
-				{#if permissions.auth('User::roles::*')}
-					<RoleSelectItem
-						name="roles"
-						label={$LL.graphql.objects.User.fields.roles.name()}
-						errors={errors.roles}
-						bind:value={node.roles}
-						readonly={!permissions.auth('User::roles::WRITE')}
-						list
-					/>
-				{/if} -->
-				{#if permissions.auth('User::realm::*')}
-					<Progress type="primary" value={55} />
+			</slot>
+			<slot name="roles">
+				{#if !fields.roles.hidden}
+					<FormControl let:id>
+						<Label {id} text={$LL.graphql.objects.User.fields.roles.name()} />
+						<RoleSelect
+						 	{id}
+							name="roles"
+							errors={errors.roles}
+							bind:value={value.roles}
+							readonly={fields.roles.readonly}
+							disabled={fields.roles.disabled}
+							list
+						/>
+					</FormControl>
 				{/if}
-			{/if}
-		</Form>
-	</CardBody>
-</Card>
+			</slot>
+			<slot name="realm">
+				{#if !fields.realm.hidden}
+					<FormControl let:id>
+						<Label {id} text={$LL.graphql.objects.User.fields.realm.name()} />
+						<ObjectInput
+							name="realm"
+							namedStruct={value.realm}
+							path={`${value.id}/realm`}
+							errors={errors.realm}
+							disabled={fields.realm.disabled}
+							on:gotoField
+						/>
+					</FormControl>
+				{/if}
+			</slot>
+		{:else}
+			<Empty />
+		{/if}
+	{/if}
+</Form>
+<div class="divider" />
+<div class="flex justify-end">
+	<Buttons
+		{showRemoveButton}
+		{showUnbindButton}
+		{showSelectButton}
+		{showBackButton}
+		on:save={(e) => dispatch('save', { value })}
+		on:remove={(e) => dispatch('remove', { value })}
+		on:unbind={(e) => dispatch('unbind', { value })}
+		on:select
+		on:back
+	/>
+</div>

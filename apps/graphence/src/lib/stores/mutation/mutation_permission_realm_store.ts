@@ -19,10 +19,22 @@ const query = /* GraphQL */ `mutation Mutation_permission_realm($permission_name
     updateTime
     createGroupId
     syncPermissionPolicy
-    realm(id: $id name: $name description: $description includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupBy: $groupBy) {
-      id
+    realm {
       name
       description
+      field
+      type
+      permissionType
+      roles {
+        id
+        name
+        description
+      }
+      realm {
+        id
+        name
+        description
+      }
       isDeprecated
       version
       realmId
@@ -31,6 +43,7 @@ const query = /* GraphQL */ `mutation Mutation_permission_realm($permission_name
       updateUserId
       updateTime
       createGroupId
+      syncPermissionPolicy
     }
   }
 }`;

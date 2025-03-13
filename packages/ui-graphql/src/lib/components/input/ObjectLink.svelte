@@ -13,6 +13,7 @@
 	export let namedStruct: NamedStruct | (NamedStruct | null | undefined)[] | null | undefined =
 		undefined;
 	export let errors: Errors | undefined = undefined;
+	export let disabled = false;
 	let className: string | undefined = undefined;
 	export { className as class };
 
@@ -60,6 +61,7 @@
 	{:else}
 		<button
 			{id}
+			{disabled}
 			class="btn btn-square btn-outline {errors ? 'btn-error' : ''} {className}"
 			on:click|preventDefault={(e) => {
 				dispatch('gotoField', { path, name });

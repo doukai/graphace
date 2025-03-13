@@ -1,5 +1,5 @@
 import * as changeCase from "change-case";
-import { assertEnumType, assertObjectType, GraphQLObjectType, isEnumType, isObjectType } from "graphql";
+import { assertEnumType, assertObjectType, isEnumType, isObjectType } from "graphql";
 import type { Types } from "@graphql-codegen/plugin-helpers";
 import {
     initConfig,
@@ -84,29 +84,49 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         const targetRouteObjectType = objectTypes
             .filter(type => inRouteObject(type.name));
 
-        const targetGraphQLObjectTypeFields = targetRouteObjectType
+        const targetQueryObjectTypeFields = targetRouteObjectType
             .flatMap(type =>
                 Object.values(type.getFields())
-                    .filter(field => isObjectType(getFieldType(field.type)))
-                    // .filter(field => !isConnection(getFieldType(field.type).name))
-                    .filter(field => !isEdge(getFieldType(field.type).name))
-                    .filter(field => !isPageInfo(getFieldType(field.type).name))
-                    .filter(field => !isIntrospection(getFieldType(field.type).name))
+                    .filter(field => {
+                        const fieldType = getFieldType(field.type);
+                        return isObjectType(fieldType) &&
+                            !isEdge(fieldType.name) &&
+                            !isPageInfo(fieldType.name) &&
+                            !isIntrospection(fieldType.name) &&
+                            inRouteField(type.name, field.name, fieldType.name)
+                    })
                     .filter(field => !isAggregate(field.name))
-                    .filter(field => inRouteField(type.name, field.name, getFieldType(field.type).name))
+                    .map(field => { return { name: type.name, objectFieldName: field.name } })
+            );
+
+        const targetMutationObjectTypeFields = targetRouteObjectType
+            .flatMap(type =>
+                Object.values(type.getFields())
+                    .filter(field => {
+                        const fieldType = getFieldType(field.type);
+                        return isObjectType(fieldType) &&
+                            !isConnection(fieldType.name) &&
+                            !isEdge(fieldType.name) &&
+                            !isPageInfo(fieldType.name) &&
+                            !isIntrospection(fieldType.name) &&
+                            inRouteField(type.name, field.name, fieldType.name)
+                    })
+                    .filter(field => !isAggregate(field.name))
                     .map(field => { return { name: type.name, objectFieldName: field.name } })
             );
 
         const targetRouteObjectTypeFields = targetRouteObjectType
             .flatMap(type =>
                 Object.values(type.getFields())
-                    .filter(field => isObjectType(getFieldType(field.type)))
-                    // .filter(field => !isConnection(getFieldType(field.type).name))
-                    .filter(field => !isEdge(getFieldType(field.type).name))
-                    .filter(field => !isPageInfo(getFieldType(field.type).name))
-                    .filter(field => !isIntrospection(getFieldType(field.type).name))
+                    .filter(field => {
+                        const fieldType = getFieldType(field.type);
+                        return isObjectType(fieldType) &&
+                            !isEdge(fieldType.name) &&
+                            !isPageInfo(fieldType.name) &&
+                            !isIntrospection(fieldType.name) &&
+                            inRouteField(type.name, field.name, fieldType.name)
+                    })
                     .filter(field => !isAggregate(field.name))
-                    .filter(field => inRouteField(type.name, field.name, getFieldType(field.type).name))
                     .filter(field => !fieldTypeIsList(field.type))
                     .map(field => { return { name: type.name, objectFieldName: field.name } })
             );
@@ -114,14 +134,16 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         const targetRouteListObjectTypeFields = targetRouteObjectType
             .flatMap(type =>
                 Object.values(type.getFields())
-                    .filter(field => isObjectType(getFieldType(field.type)))
-                    // .filter(field => !isConnection(getFieldType(field.type).name))
-                    .filter(field => !isEdge(getFieldType(field.type).name))
-                    .filter(field => !isPageInfo(getFieldType(field.type).name))
-                    .filter(field => !isIntrospection(getFieldType(field.type).name))
+                    .filter(field => {
+                        const fieldType = getFieldType(field.type);
+                        return isObjectType(fieldType) &&
+                            !isEdge(fieldType.name) &&
+                            !isPageInfo(fieldType.name) &&
+                            !isIntrospection(fieldType.name) &&
+                            inRouteField(type.name, field.name, fieldType.name)
+                    })
                     .filter(field => !isAggregate(field.name))
-                    .filter(field => inRouteField(type.name, field.name, getFieldType(field.type).name))
-                    .filter(field => !fieldTypeIsList(field.type))
+                    .filter(field => fieldTypeIsList(field.type))
                     .map(field => { return { name: type.name, objectFieldName: field.name } })
             );
 
@@ -179,7 +201,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         );
 
         generateOptions.push(
-            ...targetGraphQLObjectTypeFields
+            ...targetQueryObjectTypeFields
                 .map(objectField => {
                     const { name, objectFieldName } = objectField;
                     const template = '{{storesPath}}/query/query_{{name}}_{{objectFieldName}}_store.ts';
@@ -197,41 +219,41 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 })
         );
 
-        // generateOptions.push(
-        //     ...targetMutationFields
-        //         .map(field => {
-        //             const template = '{{storesPath}}/mutation/mutation_{{name}}_store.ts';
-        //             const scope = { storesPath, name: field.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: field.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetMutationFields
+                .map(field => {
+                    const template = '{{storesPath}}/mutation/mutation_{{name}}_store.ts';
+                    const scope = { storesPath, name: field.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: field.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
-        // generateOptions.push(
-        //     ...targetGraphQLObjectTypeFields
-        //         .map(objectField => {
-        //             const { name, objectFieldName } = objectField;
-        //             const template = '{{storesPath}}/mutation/mutation_{{name}}_{{objectFieldName}}_store.ts';
-        //             const scope = { storesPath, name, objectFieldName };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name,
-        //                     objectFieldName
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetMutationObjectTypeFields
+                .map(objectField => {
+                    const { name, objectFieldName } = objectField;
+                    const template = '{{storesPath}}/mutation/mutation_{{name}}_{{objectFieldName}}_store.ts';
+                    const scope = { storesPath, name: changeCase.camelCase(name), objectFieldName };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name,
+                            objectFieldName
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
         // generateOptions.push(
         //     ...targetRouteObjectType
@@ -868,22 +890,22 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         //         })
         // );
 
-        // generateOptions.push(
-        //     ...targetComponentObjectTypes
-        //         .map(type => {
-        //             const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Form.svelte';
-        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Form.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
         // generateOptions.push(
         //     ...targetComponentObjectTypes

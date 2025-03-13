@@ -1,101 +1,38 @@
 import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
-import type { Query{{ objectField.fieldTypeName | pascalCase }}{% if objectField.isListType %}{% if objectField.connectionField %}Connection{% else %}List{% endif %}{% endif %}Args, {{ objectField.fieldTypeName }}Input, {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
+import type { Query{{ objectFieldInfo.fieldTypeName | pascalCase }}{% if objectFieldInfo.isListType %}List{% endif %}Args, {{ objectFieldInfo.fieldTypeName }}Input, {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
 
-const query = /* GraphQL */ `mutation Mutation_{{ name }}_{{ objectField.name }}
-  {%- if objectField.connectionField -%}
-  (${{ name }}_{{ idName }}: String, ${{ name }}_{{ objectField.name }}: {% if objectField.isListType %}[{{ objectField.fieldTypeName }}Input]{% else %}{{ objectField.fieldTypeName }}Input{% endif %}{% if objectField.connectionField.args and objectField.connectionField.args.length > 0 %}, {% for arg in objectField.connectionField.args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %}{% endif %})
-  {%- else -%}
-  (${{ name }}_{{ idName }}: String, ${{ name }}_{{ objectField.name }}: {% if objectField.isListType %}[{{ objectField.fieldTypeName }}Input]{% else %}{{ objectField.fieldTypeName }}Input{% endif %}{% if objectField.args and objectField.args.length > 0 %}, {% for arg in objectField.args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %}{% endif %})
-  {%- endif %} {
-  {{ name }}(where: { {{ idName }}: { val: ${{ name }}_{{ idName }} } }, {{ objectField.name }}: ${{ name }}_{{ objectField.name }}) @merge {
-    {%- if fields %}
+const query = /* GraphQL */ `mutation Mutation_{{ fieldName }}_{{ objectFieldInfo.fieldName}}(${{ fieldName }}_{{ fieldTypeIdName }}: String, ${{ fieldName }}_{{ objectFieldInfo.fieldName}}: {% if objectFieldInfo.isListType %}[{{ objectFieldInfo.fieldTypeName }}Input]{% else %}{{ objectFieldInfo.fieldTypeName }}Input{% endif %}{% if objectFieldInfo.args and objectFieldInfo.args.length > 0 %}, {% for arg in objectFieldInfo.args %}${{ arg.inputName }}: {{ arg.inputType }}{% if forloop.last == false %}, {% endif %}{% endfor %}{% endif %}) {
+  {{ fieldName }}(where: { {{ fieldTypeIdName }}: { val: ${{ fieldName }}_{{ fieldTypeIdName }} } }, {{ objectFieldInfo.fieldName}}: ${{ fieldName }}_{{ objectFieldInfo.fieldName}}) @merge {
     {%- for field in fields %}
-    {{ field.name }}
-    {%- endfor %}
+    {%- if field.isLeafType and field.isAggregate == false %}
+    {{ field.fieldName }}
     {%- endif %}
-    {%- if objectField.isListType and objectField.connectionField %}
-    {{ objectField.name }}Connection 
-    {%- if objectField.connectionField.args and objectField.connectionField.args.length > 0 -%}
-    ({% for arg in objectField.connectionField.args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})
-    {%- endif %} {
-      totalCount
-      edges {
-        node {
-          {%- if objectField.fields %}
-          {%- for field in objectField.fields %}
-          {{ field.name }}
-          {%- endfor %}
-          {%- endif %}
-          {%- if objectField.namedFields %}
-          {%- for field in objectField.namedFields %}
-          {%- if field.select %}
-          {{ field.name }} {
-            {{ field.fieldTypeIdName }}
-            name
-            description
-          }
-          {%- else %}
-          {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
-            name
-            description
-          }
-          {%- endif %}
-          {%- endfor %}
-          {%- endif %}
-          {%- if objectField.fileFields %}
-          {%- for field in objectField.fileFields %}
-          {{ field.name }} {
-            id
-            name
-          }
-          {%- endfor %}
-          {%- endif %}
-        }
+    {%- endfor %}
+    {{ objectFieldInfo.fieldName}} {
+      {%- for field in objectFieldInfo.fields %}
+      {%- if field.isLeafType and field.isAggregate == false %}
+      {{ field.fieldName }}
+      {%- elsif field.isFile %}
+      {{ field.fieldName }} {
+        id
+        name
       }
-    }
-    {%- else %}
-    {{ objectField.name }} 
-    {%- if objectField.args and objectField.args.length > 0 -%}
-    ({% for arg in objectField.args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %})
-    {%- endif %} {
-      {%- if objectField.fields %}
-      {%- for field in objectField.fields %}
-      {{ field.name }}
-      {%- endfor %}
-      {%- endif %}
-      {%- if objectField.namedFields %}
-      {%- for field in objectField.namedFields %}
-      {%- if field.select %}
-      {{ field.name }} {
+      {%- elsif field.isNamed and field.isAggregate == false %}
+      {{ field.fieldName }}{% if field.isListType and field.isSelect == false %}(first: 3){% endif %} {
         {{ field.fieldTypeIdName }}
         name
         description
       }
-      {%- else %}
-      {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
-        name
-        description
-      }
       {%- endif %}
       {%- endfor %}
-      {%- endif %}
-      {%- if objectField.fileFields %}
-      {%- for field in objectField.fileFields %}
-      {{ field.name }} {
-        id
-        name
-      }
-      {%- endfor %}
-      {%- endif %}
     }
-    {%- endif %}
   }
 }`;
 
-export function createMutation_{{ name }}_{{ objectField.name }}_Store(event: LoadEvent | RequestEvent): Mutation_{{ name }}_{{ objectField.name }}_Store {
-  return createGraphQLMutationStore<{{ fieldTypeName }}, { {{ name }}_{{ idName }}: string, {{ name }}_{{ objectField.name }}: {% if objectField.isListType %}[{{ objectField.fieldTypeName }}Input]{% else %}{{ objectField.fieldTypeName }}Input{% endif %} } & Query{{ objectField.fieldTypeName | pascalCase }}{% if objectField.isListType %}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}{% endif %}Args>(query, event);
+export function createMutation_{{ fieldName }}_{{ objectFieldInfo.fieldName}}_Store(event: LoadEvent | RequestEvent): Mutation_{{ fieldName }}_{{ objectFieldInfo.fieldName}}_Store {
+  return createGraphQLMutationStore<{{ fieldTypeName }}, { {{ fieldName }}_{{ fieldTypeIdName }}: string, {{ fieldName }}_{{ objectFieldInfo.fieldName}}: {% if objectFieldInfo.isListType %}[{{ objectFieldInfo.fieldTypeName }}Input]{% else %}{{ objectFieldInfo.fieldTypeName }}Input{% endif %} } & Query{{ objectFieldInfo.fieldTypeName | pascalCase }}{% if objectFieldInfo.isListType %}List{% endif %}Args>(query, event);
 }
 
-export type Mutation_{{ name }}_{{ objectField.name }}_Store = GraphQLStore<{{ fieldTypeName }}, { {{ name }}_{{ idName }}: string, {{ name }}_{{ objectField.name }}: {% if objectField.isListType %}[{{ objectField.fieldTypeName }}Input]{% else %}{{ objectField.fieldTypeName }}Input{% endif %} } & Query{{ objectField.fieldTypeName | pascalCase }}{% if objectField.isListType %}{% if objectField.connectionField %}Connection{% else %}{{ queryTypeName }}List{% endif %}{% endif %}Args>;
+export type Mutation_{{ fieldName }}_{{ objectFieldInfo.fieldName}}_Store = GraphQLStore<{{ fieldTypeName }}, { {{ fieldName }}_{{ fieldTypeIdName }}: string, {{ fieldName }}_{{ objectFieldInfo.fieldName}}: {% if objectFieldInfo.isListType %}[{{ objectFieldInfo.fieldTypeName }}Input]{% else %}{{ objectFieldInfo.fieldTypeName }}Input{% endif %} } & Query{{ objectFieldInfo.fieldTypeName | pascalCase }}{% if objectFieldInfo.isListType %}List{% endif %}Args>;

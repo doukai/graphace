@@ -17,10 +17,30 @@ const query = /* GraphQL */ `mutation Mutation_role_realm($role_id: String, $rol
     updateTime
     createGroupId
     syncRolePolicy
-    realm(id: $id name: $name description: $description includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupBy: $groupBy) {
+    realm {
       id
       name
       description
+      users {
+        id
+        name
+        description
+      }
+      groups {
+        id
+        name
+        description
+      }
+      composites {
+        id
+        name
+        description
+      }
+      realm {
+        id
+        name
+        description
+      }
       isDeprecated
       version
       realmId
@@ -29,6 +49,7 @@ const query = /* GraphQL */ `mutation Mutation_role_realm($role_id: String, $rol
       updateUserId
       updateTime
       createGroupId
+      syncRolePolicy
     }
   }
 }`;

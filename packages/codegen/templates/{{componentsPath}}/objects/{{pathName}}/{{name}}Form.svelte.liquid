@@ -1,17 +1,16 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import type { Errors{%- if useAuth -%}, PermissionsStore{%- endif -%} } from '@graphace/commons';
-	import type { GraphQLError, GlobalGraphQLErrorMessageFunction, GraphQLErrorsFunction } from '@graphace/graphql';
-	import { Form, FormLoading, messageBoxs, notifications } from '@graphace/ui';
-	import { {% for scalar in scalars %}{{ scalar }}Item, {% endfor %}ObjectItem{% if hasFileField %}, FileItem{% endif %} } from '@graphace/ui-graphql';
+	import type { Errors } from '@graphace/commons';
+	import { Buttons, Empty, Form, FormControl, Label, Loading } from '@graphace/ui';
+	import { {% for scalar in scalars %}{{ scalar }}Input, {{ scalar }}InputList, {% endfor %}{% if hasFileField %}FileInput, {% endif %}ObjectInput } from '@graphace/ui-graphql';
 	{%- for enum in enums %}
-	import {{ enum }}Item from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Item.svelte';
+	import {{ enum }}Input from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Input.svelte';
+	import {{ enum }}InputList from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}InputList.svelte';
 	{%- endfor %}
-	{%- for selectType in selectImports %}
-	import {{ selectType }}SelectItem from '~/{{ objectsPath }}/{{ selectType | paramCase }}/{{ selectType }}SelectItem.svelte';
+	{%- for select in selects %}
+	import {{ select }}Select from '~/{{ componentsPath }}/objects/{{ select | paramCase }}/{{ select }}Select.svelte';
 	{%- endfor %}
-	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/utils';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	
@@ -32,6 +31,8 @@
 		{%- endfor %}
 	};
 
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
+
 	const dispatch = createEventDispatcher<{
 		remove: { value: {{ name }}Input | null | undefined };
 		unbind: { value: {{ name }}Input | null | undefined };
@@ -48,15 +49,9 @@
 		{$LL.graphql.objects.{{ name }}.name()}
 	</span>
 	<Buttons
-		{%- if useAuth %}
-		showRemoveButton={permissions.auth('{{ name }}::*::WRITE') && showRemoveButton}
-		showUnbindButton={permissions.auth('{{ name }}::*::WRITE') && showUnbindButton}
-		showSelectButton={permissions.auth('{{ name }}::*::WRITE') && showSelectButton}
-		{%- else %}
 		{showRemoveButton}
 		{showUnbindButton}
 		{showSelectButton}
-		{%- endif %}
 		{showBackButton}
 		on:save={(e) => dispatch('save', { value })}
 		on:remove={(e) => dispatch('remove', { value })}
@@ -72,15 +67,16 @@
 	{:else}
 		{#if value}
 			{%- for field in fields %}
+			{%- if field.isAggregate == false and field.isConnection == false %}
 			<slot name="{{ field.fieldName }}">
 				{#if !fields.{{ field.fieldName }}.hidden}
 					<FormControl let:id>
 						<Label {id} text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} />
-						{%- if field.isScalarType or field.isEnumType or field.fieldTypeName == 'File' %}
+						{%- if field.isScalarType or field.isEnumType or field.isFile %}
 						<{{ field.fieldTypeName }}Input{% if field.isListType %}List{% endif %}
 						 	{id}
 							name="{{ field.fieldName }}"
-							bind:value={node.{{ field.fieldName }}}
+							bind:value={value.{{ field.fieldName }}}
 							errors={errors.{{ field.fieldName }}}
 							readonly={fields.{{ field.fieldName }}.readonly}
 							disabled={fields.{{ field.fieldName }}.disabled}
@@ -88,7 +84,7 @@
 							on:upload
 							{%- endif %}
 						/>
-						{%- elsif field.select %}
+						{%- elsif field.isSelect %}
 						<{{ field.fieldTypeName }}Select
 						 	{id}
 							name="{{ field.fieldName }}"
@@ -102,14 +98,12 @@
 						/>
 						{%- else %}
 						<ObjectInput
-						 	{id}
 							name="{{ field.fieldName }}"
 							{%- if field.isNamed %}
 							namedStruct={value.{{ field.fieldName }}}
 							{%- endif %}
 							path={`${value.{{ idName }}}/{{ field.fieldName | paramCase }}`}
 							errors={errors.{{ field.fieldName }}}
-							readonly={fields.{{ field.fieldName }}.readonly}
 							disabled={fields.{{ field.fieldName }}.disabled}
 							on:gotoField
 						/>
@@ -117,6 +111,7 @@
 					</FormControl>
 				{/if}
 			</slot>
+			{%- endif %}
 			{%- endfor %}
 		{:else}
 			<Empty />
@@ -126,15 +121,9 @@
 <div class="divider" />
 <div class="flex justify-end">
 	<Buttons
-		{%- if useAuth %}
-		showRemoveButton={permissions.auth('{{ name }}::*::WRITE') && showRemoveButton}
-		showUnbindButton={permissions.auth('{{ name }}::*::WRITE') && showUnbindButton}
-		showSelectButton={permissions.auth('{{ name }}::*::WRITE') && showSelectButton}
-		{%- else %}
 		{showRemoveButton}
 		{showUnbindButton}
 		{showSelectButton}
-		{%- endif %}
 		{showBackButton}
 		on:save={(e) => dispatch('save', { value })}
 		on:remove={(e) => dispatch('remove', { value })}

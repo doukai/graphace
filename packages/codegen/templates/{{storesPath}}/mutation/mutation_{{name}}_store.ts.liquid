@@ -2,54 +2,37 @@ import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
 {%- if args and args.length > 0 %}
-import type { Mutation{{ name | pascalCase }}Args } from '~/{{ schemaTypesPath }}';
+import type { Mutation{{ fieldName | pascalCase }}Args } from '~/{{ schemaTypesPath }}';
 {%- endif %}
-{%- if isScalar == false %}
+{%- if isScalarType == false %}
 import type { {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
 {%- endif %}
 
-const query = /* GraphQL */ `mutation Mutation_{{ name }}
-  {%- if args and args.length > 0 -%}
-  ({% for arg in args %}{% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}: {{ arg.type }}{% if forloop.last == false %}, {% endif %}{% endfor %})
-  {%- endif %} {
-  {{ name }}
-    {%- if args and args.length > 0 %}({% for arg in args %}{{ arg.name }}: {% if arg.alias %}${{ arg.alias }}{% else %}${{ arg.name }}{% endif %}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %}
-    {%- if fields or namedFields or fileFields %} {
-    {%- if fields %}
+const query = /* GraphQL */ `mutation Mutation_{{ fieldName }}{% if args and args.length > 0 -%}({% for arg in args %}${{ arg.inputName }}: {{ arg.inputType }}{% if forloop.last == false %}, {% endif %}{% endfor %}){% endif %} {
+  {{ fieldName }}{% if args and args.length > 0 %}({% for arg in args %}{{ arg.inputName }}: ${{ arg.inputName }}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %}
+    {%- if fields and fields.length > 0 %} {
     {%- for field in fields %}
-    {{ field.name }}
-    {%- endfor %}
-    {%- endif %}
-    {%- if namedFields %}
-    {%- for field in namedFields %}
-    {%- if field.select %}
-    {{ field.name }} {
+    {%- if field.isLeafType and field.isAggregate == false %}
+    {{ field.fieldName }}
+    {%- elsif field.isFile %}
+    {{ field.fieldName }} {
+      id
+      name
+    }
+    {%- elsif field.isNamed and field.isAggregate == false %}
+    {{ field.fieldName }}{% if field.isListType and field.isSelect == false %}(first: 3){% endif %} {
       {{ field.fieldTypeIdName }}
       name
       description
     }
-    {%- else %}
-    {{ field.name }}{% if field.isListType %}(first: 3){% endif %} {
-      name
-      description
-    }
     {%- endif %}
     {%- endfor %}
-    {%- endif %}
-    {%- if fileFields %}
-    {%- for field in fileFields %}
-    {{ field.name }} {
-      id
-      name
-    }
-    {%- endfor %}
-    {%- endif %}
   }
   {%- endif %}
 }`;
 
-export function createMutation_{{ name }}_Store(event: LoadEvent | RequestEvent): Mutation_{{ name }}_Store {
-  return createGraphQLMutationStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Mutation{{ name | pascalCase }}Args{% else %}undefined{% endif %}>(query, event);
+export function createMutation_{{ fieldName }}_Store(event: LoadEvent | RequestEvent): Mutation_{{ fieldName }}_Store {
+  return createGraphQLMutationStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Mutation{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>(query, event);
 }
 
-export type Mutation_{{ name }}_Store = GraphQLStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Mutation{{ name | pascalCase }}Args{% else %}undefined{% endif %}>;
+export type Mutation_{{ fieldName }}_Store = GraphQLStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Mutation{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>;

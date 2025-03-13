@@ -20,22 +20,13 @@ const query = /* GraphQL */ `mutation Mutation_group_parent($group_id: String, $
     updateTime
     createGroupId
     syncGroupPolicy
-    parent(id: $id name: $name description: $description path: $path deep: $deep parentId: $parentId parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupBy: $groupBy) {
+    parent {
       id
       name
       description
       path
       deep
       parentId
-      isDeprecated
-      version
-      realmId
-      createUserId
-      createTime
-      updateUserId
-      updateTime
-      createGroupId
-      syncGroupPolicy
       parent {
         id
         name
@@ -57,9 +48,19 @@ const query = /* GraphQL */ `mutation Mutation_group_parent($group_id: String, $
         description
       }
       realm {
+        id
         name
         description
       }
+      isDeprecated
+      version
+      realmId
+      createUserId
+      createTime
+      updateUserId
+      updateTime
+      createGroupId
+      syncGroupPolicy
     }
   }
 }`;

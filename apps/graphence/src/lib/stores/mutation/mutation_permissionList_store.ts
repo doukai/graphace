@@ -11,6 +11,16 @@ const query = /* GraphQL */ `mutation Mutation_permissionList($name: ID, $descri
     field
     type
     permissionType
+    roles {
+      id
+      name
+      description
+    }
+    realm {
+      id
+      name
+      description
+    }
     isDeprecated
     version
     realmId
@@ -20,15 +30,6 @@ const query = /* GraphQL */ `mutation Mutation_permissionList($name: ID, $descri
     updateTime
     createGroupId
     syncPermissionPolicy
-    roles {
-      id
-      name
-      description
-    }
-    realm {
-      name
-      description
-    }
   }
 }`;
 

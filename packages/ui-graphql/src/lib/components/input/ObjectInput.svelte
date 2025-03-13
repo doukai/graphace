@@ -9,11 +9,12 @@
 	export let namedStruct: NamedStruct | (NamedStruct | null | undefined)[] | null | undefined =
 		undefined;
 	export let errors: Errors | undefined = undefined;
+	export let disabled = false;
 	let className: string | undefined = undefined;
 	export { className as class };
 </script>
 
-<ObjectLink {path} {name} {namedStruct} {errors} class={className} on:gotoField />
+<ObjectLink {path} {name} {namedStruct} {errors} {disabled} class={className} on:gotoField />
 {#if errors}
 	<label for={id} class="label">
 		{#each (errors?.errors || [])

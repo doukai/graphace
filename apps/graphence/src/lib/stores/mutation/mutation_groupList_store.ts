@@ -12,15 +12,6 @@ const query = /* GraphQL */ `mutation Mutation_groupList($id: ID, $name: String,
     path
     deep
     parentId
-    isDeprecated
-    version
-    realmId
-    createUserId
-    createTime
-    updateUserId
-    updateTime
-    createGroupId
-    syncGroupPolicy
     parent {
       id
       name
@@ -42,9 +33,19 @@ const query = /* GraphQL */ `mutation Mutation_groupList($id: ID, $name: String,
       description
     }
     realm {
+      id
       name
       description
     }
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    syncGroupPolicy
   }
 }`;
 

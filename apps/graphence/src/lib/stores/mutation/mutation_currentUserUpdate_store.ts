@@ -14,15 +14,6 @@ const query = /* GraphQL */ `mutation Mutation_currentUserUpdate($userInput: Use
     email
     phones
     disable
-    isDeprecated
-    version
-    realmId
-    createUserId
-    createTime
-    updateUserId
-    updateTime
-    createGroupId
-    syncUserPolicy
     groups {
       id
       name
@@ -34,9 +25,19 @@ const query = /* GraphQL */ `mutation Mutation_currentUserUpdate($userInput: Use
       description
     }
     realm {
+      id
       name
       description
     }
+    isDeprecated
+    version
+    realmId
+    createUserId
+    createTime
+    updateUserId
+    updateTime
+    createGroupId
+    syncUserPolicy
   }
 }`;
 
