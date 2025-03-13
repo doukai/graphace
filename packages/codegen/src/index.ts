@@ -220,34 +220,6 @@ const renders: Record<Template, Render> = {
                     ...config
                 }),
             };
-
-
-            // const type = schema.getType(typeName);
-            // if (type && isObjectType(type)) {
-            //     const fields = getFieldInfos(schema, type)
-            //         ?.filter(field => !isConnection(field.fieldName))
-            //         .filter(field => inDetailField(typeName, field.fieldName, field.fieldTypeName));
-            //     return {
-            //         content: buildFileContent(config.template, {
-            //             name: type?.name,
-            //             idName: getIDFieldName(type),
-            //             scalars: getScalarNames(fields),
-            //             enums: getEnumNames(fields),
-            //             selectTypes: getSelectTypes(typeName, fields),
-            //             fields: getFieldInfos(schema, type),
-            //             rows: fields?.length,
-            //             schemaTypesPath: config.schemaTypesPath,
-            //             enumsPath: `${config.componentsPath}/enums`,
-            //             objectsPath: `${config.componentsPath}/objects`,
-            //             queryTypeName: getQueryTypeName(),
-            //             mutationTypeName: getMutationTypeName(),
-            //             subscriptionTypeName: getSubscriptionTypeName(),
-            //             hasFileField: hasFileField(type),
-            //             useAuth: config.useAuth,
-            //             appName: config.appName
-            //         }),
-            //     };
-            // }
         }
         console.error(config);
         throw new Error(`${config.name} undefined`);
