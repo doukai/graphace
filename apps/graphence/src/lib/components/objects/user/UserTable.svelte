@@ -1,18 +1,16 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import type { Errors, PermissionsStore} from '@graphace/commons';
-	import { type GraphQLError, buildArguments } from '@graphace/graphql';
-	import { Table, TableHead, TableLoading, TableEmpty, messageBoxs, notifications, z_index } from '@graphace/ui';
-	import { ObjectTd, StringTh, StringTd, BooleanTh, BooleanTd } from '@graphace/ui-graphql';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
+	import type { Errors } from '@graphace/commons';
+	import { Buttons, Empty, Loading, Table } from '@graphace/ui';
+	import { type Option, StringTh, StringTd, BooleanTh, BooleanTd, ObjectTd } from '@graphace/ui-graphql';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
 	import GroupSelectTd from '~/lib/components/objects/group/GroupSelectTd.svelte';
 	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
-	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/utils';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type {
 		UserOrderBy,
@@ -20,540 +18,400 @@
 		UserInput
 	} from '~/lib/types/schema';
 
-	export let nodes: (UserInput | null | undefined)[] | null | undefined = undefined;
+	export let value: (UserInput | null | undefined)[] | null | undefined = undefined;
+	export let args: QueryUserListArgs = {};
+	export let orderBy: UserOrderBy = {};
+	export let selectedIdList: (string | null | undefined)[] = [];
 	export let isFetching: boolean;
 	export let errors: Record<number, Errors> = {};
-	export let showSaveButton: boolean = true;
-	export let showRemoveButton: boolean = true;
+	export let showEditButton: boolean = false;
+	export let showRemoveButton: boolean = false;
 	export let showUnbindButton: boolean = false;
-	export let showBackButton: boolean = true;
-	export let showGotoSelectButton: boolean = false;
+	export let showSaveButton: boolean = false;
+	export let showCreateButton: boolean = false;
+	export let showSelectButton: boolean = false;
+	export let showBackButton: boolean = false;
+	export let zIndex: number = 0;
+	let className: string | undefined = undefined;
+	export { className as class };
+	export let fields: {
+		name: Option;
+		description: Option;
+		lastName: Option;
+		login: Option;
+		email: Option;
+		phones: Option;
+		disable: Option;
+		groups: Option;
+		roles: Option;
+		realm: Option;
+	} = {
+		name: { readonly: false, disabled: false, hidden: false },
+		description: { readonly: false, disabled: false, hidden: false },
+		lastName: { readonly: false, disabled: false, hidden: false },
+		login: { readonly: false, disabled: false, hidden: false },
+		email: { readonly: false, disabled: false, hidden: false },
+		phones: { readonly: false, disabled: false, hidden: false },
+		disable: { readonly: false, disabled: false, hidden: false },
+		groups: { readonly: false, disabled: false, hidden: false },
+		roles: { readonly: false, disabled: false, hidden: false },
+		realm: { readonly: false, disabled: false, hidden: false }
+	};
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
-	const permissions = getContext<PermissionsStore>('permissions');
-	const z_class = z_index.top(1);
-	const z_class2 = z_index.top(2);
-	const z_class3 = z_index.top(3);
 
 	const dispatch = createEventDispatcher<{
-		fetch: {
-			args: QueryUserListArgs;
-			then: (data: (UserInput | null | undefined)[] | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		};
-		mutation: {
-			args: UserInput;
-			then: (data: UserInput | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		};
-		parentMutation: {
-			args: UserInput[];
-			then: (data: UserInput[] | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		};
-		edit: { id: string };
+		query: { args: QueryUserListArgs; orderBy: UserOrderBy };
+		remove: { value: UserInput | (UserInput | null | undefined)[] | null | undefined };
+		unbind: { value: UserInput | (UserInput | null | undefined)[] | null | undefined };
+		edit: { value: UserInput | (UserInput | null | undefined)[] | null | undefined };
+		save: { value: UserInput | (UserInput | null | undefined)[] | null | undefined };
+		select: { value: UserInput | (UserInput | null | undefined)[] | null | undefined };
 		create: {};
-		save: { nodes: (UserInput | null | undefined)[] | null | undefined };
-		gotoSelect: {};
 		back: {};
 	}>();
 
-	export let args: QueryUserListArgs = {};
-	export let orderBy: UserOrderBy = {};
-
 	let selectAll: boolean;
-	export let selectedIdList: (string | null | undefined)[] = [];
-
-	export const query = () => {
-		let _args: QueryUserListArgs = buildArguments(args);
-
-		if (Object.keys(orderBy).length > 0) {
-			_args.orderBy = orderBy;
-		} else {
-			_args.orderBy = undefined;
-		}
-
-		dispatch('fetch', {
-			args: _args,
-			then: (data) => {
-				errors = {};
-			},
-			catch: (errors) => {
-				console.error(errors);
-				notifications.error($LL.graphence.message.requestFailed());
-			}
-		});
-	};
-
-	export const search = (searchValue: string | undefined) => {
-		let _args: QueryUserListArgs = {};
-		if (searchValue) {
-			_args.cond = 'OR';
-			_args.name = { opr: 'LK', val: `%${searchValue}%` };
-			_args.description = { opr: 'LK', val: `%${searchValue}%` };
-			_args.lastName = { opr: 'LK', val: `%${searchValue}%` };
-			_args.login = { opr: 'LK', val: `%${searchValue}%` };
-			_args.email = { opr: 'LK', val: `%${searchValue}%` };
-			_args.phones = { opr: 'LK', val: `%${searchValue}%` };
-		} else {
-			_args.cond = undefined;
-			_args.name = undefined;
-			_args.description = undefined;
-			_args.lastName = undefined;
-			_args.login = undefined;
-			_args.email = undefined;
-			_args.phones = undefined;
-		}
-
-		dispatch('fetch', {
-			args: _args,
-			then: (data) => {
-				errors = {};
-			},
-			catch: (errors) => {
-				console.error(errors);
-				notifications.error($LL.graphence.message.requestFailed());
-			}
-		});
-	};
-
-	const updateField = (args: UserInput | null | undefined, row?: number) => {
-		if (args) {
-			dispatch('mutation', {
-				args,
-				then: (data) => {
-					if (nodes && row) {
-						nodes[row] = data;
-					}
-					notifications.success($LL.graphence.message.saveSuccess());
-				},
-				catch: (graphQLErrors) => {
-					console.error(graphQLErrors);
-					errors = buildGraphQLErrors(graphQLErrors);
-					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
-					if (globalError) {
-						messageBoxs.open({
-							title: $LL.graphence.message.saveFailed(),
-							content: globalError,
-							buttonName: $LL.ui.button.back(),
-							buttonType: 'neutral',
-							confirm: () => {
-								query();
-								return true;
-							}
-						});
-					}
-				}
-			});
-		}
-	}
-
-	const removeRow = (id: string) => {
-		dispatch('mutation', {
-			args: { where: { id: { val: id } }, isDeprecated: true },
-			then: (data) => {
-				notifications.success($LL.graphence.message.removeSuccess());
-				query();
-			},
-			catch: (graphQLErrors) => {
-				console.error(graphQLErrors);
-				errors = buildGraphQLErrors(graphQLErrors);
-				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
-				if (globalError) {
-					messageBoxs.open({
-						title: $LL.graphence.message.removeFailed(),
-						content: globalError,
-						buttonName: $LL.ui.button.back(),
-						buttonType: 'neutral',
-						confirm: () => {
-							query();
-							return true;
-						}
-					});
-				}
-			}
-		});
-	}
-
-	const removeRows = () => {
-		dispatch('mutation', {
-			args: {
-				where: { id: { opr: 'IN', arr: selectedIdList} },
-				isDeprecated: true
-			},
-			then: (data) => {
-				notifications.success($LL.graphence.message.removeSuccess());
-				query();
-			},
-			catch: (graphQLErrors) => {
-				console.error(graphQLErrors);
-				errors = buildGraphQLErrors(graphQLErrors);
-				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
-				if (globalError) {
-					messageBoxs.open({
-						title: $LL.graphence.message.removeFailed(),
-						content: globalError,
-						buttonName: $LL.ui.button.back(),
-						buttonType: 'neutral',
-						confirm: () => {
-							query();
-							return true;
-						}
-					});
-				}
-			}
-		});
-	};
-
-	const unbindRows = (selectedIdList: (string | null | undefined)[]) => {
-		dispatch('parentMutation', {
-			args: selectedIdList
-				.map((id) => {
-					return {where: { id: { val: id } }, isDeprecated: true};
-				}),
-			then: (data) => {
-				notifications.success($LL.graphence.message.unbindSuccess());
-				query();
-			},
-			catch: (graphQLErrors) => {
-				console.error(graphQLErrors);
-				errors = buildGraphQLErrors(graphQLErrors);
-				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
-				if (globalError) {
-					messageBoxs.open({
-						title: $LL.graphence.message.unbindFailed(),
-						content: globalError,
-						buttonName: $LL.ui.button.back(),
-						buttonType: 'neutral',
-						confirm: () => {
-							query();
-							return true;
-						}
-					});
-				}
-			}
-		});
-	};
 </script>
 
-<TableHead
-	title={$LL.graphql.objects.User.name()}
-	showRemoveButton={permissions.auth('User::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
-	showUnbindButton={permissions.auth('User::*::WRITE') && showUnbindButton && selectedIdList.length > 0}
-	showSaveButton={permissions.auth('User::*::WRITE') && showSaveButton}
-	showGotoSelectButton={permissions.auth('User::*::WRITE') && showGotoSelectButton}
-	{showBackButton}
-	on:create
-	on:search={(e) => search(e.detail.value)}
-	on:save={(e) => dispatch('save', { nodes })}
-	on:remove={(e) => {
-		messageBoxs.open({
-			title: $LL.graphence.components.table.removeModalTitle(),
-			buttonName: $LL.graphence.components.table.removeBtn(),
-			buttonType: 'error',
-			confirm: () => {
-				removeRows();
-				return true;
-			}
-		});
-	}}
-	on:unbind={(e) =>
-		messageBoxs.open({
-			title: $LL.graphence.components.table.unbindModalTitle(),
-			buttonName: $LL.graphence.components.table.unbindBtn(),
-			buttonType: 'error',
-			confirm: () => {
-				unbindRows(selectedIdList);
-				return true;
-			},
-			button1: {
-				name: $LL.graphence.components.table.removeBtn(),
-				className: 'btn-error',
-				onClick: () => {
-					removeRows();
-					return true;
-				}
-			}
-		})}
-	on:gotoSelect
-	on:back
-/>
+<div class="flex justify-end md:justify-between">
+	<span class="max-sm:hidden text-xl font-semibold self-center">
+		{$LL.graphql.objects.User.name()}
+	</span>
+	<Buttons
+		{showRemoveButton}
+		{showUnbindButton}
+		{showSaveButton}
+		{showCreateButton}
+		{showSelectButton}
+		{showBackButton}
+		on:save={(e) => dispatch('save', { value })}
+		on:remove={(e) =>
+			dispatch('remove', {
+				value: value?.filter((node) => selectedIdList.includes(node?.id))
+			})}
+		on:unbind={(e) =>
+			dispatch('unbind', {
+				value: value?.filter((node) => selectedIdList.includes(node?.id))
+			})}
+		on:select={(e) =>
+			dispatch('select', {
+				value: value?.filter((node) => selectedIdList.includes(node?.id))
+			})}
+		on:back
+	/>
+</div>
 <div class="divider" />
-<Table className="table-zebra table-pin-rows table-pin-cols md:table-sm">
+<Table {zIndex} class={className}>
 	<thead>
-		<tr class="{z_class2}">
-			<th class="w-12">
+		<tr class="z-[{zIndex + 2}]">
+			<th class="p-1">
 				<label>
 					<input
 						type="checkbox"
-						class="checkbox md:checkbox-sm"
+						class="checkbox"
 						bind:checked={selectAll}
 						on:change={(e) => {
-							if (nodes && nodes.length > 0) {
-								selectedIdList = selectAll ? nodes.map((node) => node?.id) : [];
+							if (value && value.length > 0) {
+								selectedIdList = selectAll ? value.map((node) => node?.id) : [];
 							}
 						}}
 					/>
 				</label>
 			</th>
-			{#if permissions.auth('User::name::*')}
-			<StringTh
-				name={$LL.graphql.objects.User.fields.name.name()}
-				bind:value={args.name}
-				bind:sort={orderBy.name}
-				on:filter={(e) => query()}
-			/>
+			{#if !fields.name.hidden}
+				<StringTh
+					name={$LL.graphql.objects.User.fields.name.name()}
+					bind:value={args.name}
+					bind:sort={orderBy.name}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
 			{/if}
-			{#if permissions.auth('User::description::*')}
-			<StringTh
-				name={$LL.graphql.objects.User.fields.description.name()}
-				bind:value={args.description}
-				bind:sort={orderBy.description}
-				on:filter={(e) => query()}
-			/>
+			{#if !fields.description.hidden}
+				<StringTh
+					name={$LL.graphql.objects.User.fields.description.name()}
+					bind:value={args.description}
+					bind:sort={orderBy.description}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
 			{/if}
-			{#if permissions.auth('User::lastName::*')}
-			<StringTh
-				name={$LL.graphql.objects.User.fields.lastName.name()}
-				bind:value={args.lastName}
-				bind:sort={orderBy.lastName}
-				on:filter={(e) => query()}
-			/>
+			{#if !fields.lastName.hidden}
+				<StringTh
+					name={$LL.graphql.objects.User.fields.lastName.name()}
+					bind:value={args.lastName}
+					bind:sort={orderBy.lastName}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
 			{/if}
-			{#if permissions.auth('User::login::*')}
-			<StringTh
-				name={$LL.graphql.objects.User.fields.login.name()}
-				bind:value={args.login}
-				bind:sort={orderBy.login}
-				on:filter={(e) => query()}
-			/>
+			{#if !fields.login.hidden}
+				<StringTh
+					name={$LL.graphql.objects.User.fields.login.name()}
+					bind:value={args.login}
+					bind:sort={orderBy.login}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
 			{/if}
-			{#if permissions.auth('User::email::*')}
-			<StringTh
-				name={$LL.graphql.objects.User.fields.email.name()}
-				bind:value={args.email}
-				bind:sort={orderBy.email}
-				on:filter={(e) => query()}
-			/>
+			{#if !fields.email.hidden}
+				<StringTh
+					name={$LL.graphql.objects.User.fields.email.name()}
+					bind:value={args.email}
+					bind:sort={orderBy.email}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
 			{/if}
-			{#if permissions.auth('User::phones::*')}
-			<StringTh
-				name={$LL.graphql.objects.User.fields.phones.name()}
-				bind:value={args.phones}
-				on:filter={(e) => query()}
-			/>
+			{#if !fields.phones.hidden}
+				<StringTh
+					name={$LL.graphql.objects.User.fields.phones.name()}
+					bind:value={args.phones}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
 			{/if}
-			{#if permissions.auth('User::disable::*')}
-			<BooleanTh
-				name={$LL.graphql.objects.User.fields.disable.name()}
-				bind:value={args.disable}
-				bind:sort={orderBy.disable}
-				on:filter={(e) => query()}
-			/>
+			{#if !fields.disable.hidden}
+				<BooleanTh
+					name={$LL.graphql.objects.User.fields.disable.name()}
+					bind:value={args.disable}
+					bind:sort={orderBy.disable}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
 			{/if}
-			{#if permissions.auth('User::groups::*')}
-			<GroupTh
-				name={$LL.graphql.objects.User.fields.groups.name()}
-				bind:value={args.groups}
-				on:filter={(e) => query()}
-			/>
+			{#if !fields.groups.hidden}
+				<GroupTh
+					name={$LL.graphql.objects.User.fields.groups.name()}
+					bind:value={args.groups}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
 			{/if}
-			{#if permissions.auth('User::roles::*')}
-			<RoleTh
-				name={$LL.graphql.objects.User.fields.roles.name()}
-				bind:value={args.roles}
-				on:filter={(e) => query()}
-			/>
+			{#if !fields.roles.hidden}
+				<RoleTh
+					name={$LL.graphql.objects.User.fields.roles.name()}
+					bind:value={args.roles}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
 			{/if}
-			{#if permissions.auth('User::realm::*')}
-			<RealmTh
-				name={$LL.graphql.objects.User.fields.realm.name()}
-				bind:value={args.realm}
-				on:filter={(e) => query()}
-			/>
+			{#if !fields.realm.hidden}
+				<RealmTh
+					name={$LL.graphql.objects.User.fields.realm.name()}
+					bind:value={args.realm}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
 			{/if}
 			<th />
 		</tr>
 	</thead>
+	<tbody>
 	{#if isFetching}
-		<TableLoading rows={10} cols={10 + 2}/>
+		<tr>
+			<td colspan="999">
+				<Loading />
+			</td>
+		</tr>
 	{:else}
-		<tbody>
-			{#if nodes && nodes.length > 0}
-				{#each nodes as node, row}
-					{#if node}
-						<tr class="hover">
-							<th class="{z_class} w-12">
-								<label>
-									<input type="checkbox" class="checkbox md:checkbox-sm" bind:group={selectedIdList} value={node.id} />
-								</label>
-							</th>
-							{#if permissions.auth('User::name::*')}
-							<StringTd
-								name="name"
-								bind:value={node.name}
-								on:save={(e) => updateField({ name: node?.name, where: { id: { val: node?.id } } }, row)}
-								readonly={!permissions.auth('User::name::WRITE')}
-								errors={errors?.[row]?.iterms?.name}
-							/>
+		{#if value && value.length > 0}
+			{#each value as node, row}
+				{#if node}
+					<tr class="hover">
+						<th class="z-[{zIndex}] p-1">
+							<label>
+								<input
+									type="checkbox"
+									class="checkbox"
+									bind:group={selectedIdList}
+									value={node.id}
+								/>
+							</label>
+						</th>
+						<slot name="name">
+							{#if !fields.name.hidden}
+								<StringTd
+									name="name"
+									bind:value={node.name}
+									on:save={(e) =>
+										dispatch('save', {
+											value: { name: node?.name, where: { id: { val: node?.id } } }
+										})}
+									readonly={fields.name.readonly}
+									disabled={fields.name.disabled}
+									errors={errors?.[row]?.iterms?.name}
+								/>
 							{/if}
-							{#if permissions.auth('User::description::*')}
-							<StringTd
-								name="description"
-								bind:value={node.description}
-								on:save={(e) => updateField({ description: node?.description, where: { id: { val: node?.id } } }, row)}
-								readonly={!permissions.auth('User::description::WRITE')}
-								errors={errors?.[row]?.iterms?.description}
-							/>
+						</slot>
+						<slot name="description">
+							{#if !fields.description.hidden}
+								<StringTd
+									name="description"
+									bind:value={node.description}
+									on:save={(e) =>
+										dispatch('save', {
+											value: { description: node?.description, where: { id: { val: node?.id } } }
+										})}
+									readonly={fields.description.readonly}
+									disabled={fields.description.disabled}
+									errors={errors?.[row]?.iterms?.description}
+								/>
 							{/if}
-							{#if permissions.auth('User::lastName::*')}
-							<StringTd
-								name="lastName"
-								bind:value={node.lastName}
-								on:save={(e) => updateField({ lastName: node?.lastName, where: { id: { val: node?.id } } }, row)}
-								readonly={!permissions.auth('User::lastName::WRITE')}
-								errors={errors?.[row]?.iterms?.lastName}
-							/>
+						</slot>
+						<slot name="lastName">
+							{#if !fields.lastName.hidden}
+								<StringTd
+									name="lastName"
+									bind:value={node.lastName}
+									on:save={(e) =>
+										dispatch('save', {
+											value: { lastName: node?.lastName, where: { id: { val: node?.id } } }
+										})}
+									readonly={fields.lastName.readonly}
+									disabled={fields.lastName.disabled}
+									errors={errors?.[row]?.iterms?.lastName}
+								/>
 							{/if}
-							{#if permissions.auth('User::login::*')}
-							<StringTd
-								name="login"
-								bind:value={node.login}
-								on:save={(e) => updateField({ login: node?.login, where: { id: { val: node?.id } } }, row)}
-								readonly={!permissions.auth('User::login::WRITE')}
-								errors={errors?.[row]?.iterms?.login}
-							/>
+						</slot>
+						<slot name="login">
+							{#if !fields.login.hidden}
+								<StringTd
+									name="login"
+									bind:value={node.login}
+									on:save={(e) =>
+										dispatch('save', {
+											value: { login: node?.login, where: { id: { val: node?.id } } }
+										})}
+									readonly={fields.login.readonly}
+									disabled={fields.login.disabled}
+									errors={errors?.[row]?.iterms?.login}
+								/>
 							{/if}
-							{#if permissions.auth('User::email::*')}
-							<StringTd
-								name="email"
-								bind:value={node.email}
-								on:save={(e) => updateField({ email: node?.email, where: { id: { val: node?.id } } }, row)}
-								readonly={!permissions.auth('User::email::WRITE')}
-								errors={errors?.[row]?.iterms?.email}
-							/>
+						</slot>
+						<slot name="email">
+							{#if !fields.email.hidden}
+								<StringTd
+									name="email"
+									bind:value={node.email}
+									on:save={(e) =>
+										dispatch('save', {
+											value: { email: node?.email, where: { id: { val: node?.id } } }
+										})}
+									readonly={fields.email.readonly}
+									disabled={fields.email.disabled}
+									errors={errors?.[row]?.iterms?.email}
+								/>
 							{/if}
-							{#if permissions.auth('User::phones::*')}
-							<StringTd
-								name="phones"
-								bind:value={node.phones}
-								list
-								on:save={(e) => updateField({ phones: node?.phones, where: { id: { val: node?.id } } }, row)}
-								readonly={!permissions.auth('User::phones::WRITE')}
-								errors={errors?.[row]?.iterms?.phones}
-							/>
+						</slot>
+						<slot name="phones">
+							{#if !fields.phones.hidden}
+								<StringTd
+									name="phones"
+									bind:value={node.phones}
+									list
+									on:save={(e) =>
+										dispatch('save', {
+											value: { phones: node?.phones, where: { id: { val: node?.id } } }
+										})}
+									readonly={fields.phones.readonly}
+									disabled={fields.phones.disabled}
+									errors={errors?.[row]?.iterms?.phones}
+								/>
 							{/if}
-							{#if permissions.auth('User::disable::*')}
-							<BooleanTd
-								name="disable"
-								bind:value={node.disable}
-								on:save={(e) => updateField({ disable: node?.disable, where: { id: { val: node?.id } } }, row)}
-								readonly={!permissions.auth('User::disable::WRITE')}
-								errors={errors?.[row]?.iterms?.disable}
-							/>
+						</slot>
+						<slot name="disable">
+							{#if !fields.disable.hidden}
+								<BooleanTd
+									name="disable"
+									bind:value={node.disable}
+									on:save={(e) =>
+										dispatch('save', {
+											value: { disable: node?.disable, where: { id: { val: node?.id } } }
+										})}
+									readonly={fields.disable.readonly}
+									disabled={fields.disable.disabled}
+									errors={errors?.[row]?.iterms?.disable}
+								/>
 							{/if}
-							{#if permissions.auth('User::groups::*')}
-							<GroupSelectTd
-								name="groups"
-								bind:value={node.groups}
-								list
-								errors={errors?.[row]?.iterms?.groups}
-								readonly={!permissions.auth('User::groups::WRITE')}
-								on:save={(e) =>
-									updateField({ groups: node?.groups, where: { id: {val: node?.id } } }, row)}
-							/>
+						</slot>
+						<slot name="groups">
+							{#if !fields.groups.hidden}
+								<GroupSelectTd
+									name="groups"
+									bind:value={node.groups}
+									list
+									errors={errors?.[row]?.iterms?.groups}
+									readonly={fields.groups.readonly}
+									disabled={fields.groups.disabled}
+									on:save={(e) =>
+										dispatch('save', {
+											value: { groups: node?.groups, where: { id: { val: node?.id } } }
+										})}
+								/>
 							{/if}
-							{#if permissions.auth('User::roles::*')}
-							<RoleSelectTd
-								name="roles"
-								bind:value={node.roles}
-								list
-								errors={errors?.[row]?.iterms?.roles}
-								readonly={!permissions.auth('User::roles::WRITE')}
-								on:save={(e) =>
-									updateField({ roles: node?.roles, where: { id: {val: node?.id } } }, row)}
-							/>
+						</slot>
+						<slot name="roles">
+							{#if !fields.roles.hidden}
+								<RoleSelectTd
+									name="roles"
+									bind:value={node.roles}
+									list
+									errors={errors?.[row]?.iterms?.roles}
+									readonly={fields.roles.readonly}
+									disabled={fields.roles.disabled}
+									on:save={(e) =>
+										dispatch('save', {
+											value: { roles: node?.roles, where: { id: { val: node?.id } } }
+										})}
+								/>
 							{/if}
-							{#if permissions.auth('User::realm::*')}
-							<ObjectTd name="realm" namedStruct={node.realm} errors={errors?.[row]?.iterms?.realm} path={`${node.id}/realm`} on:gotoField />
+						</slot>
+						<slot name="realm">
+							{#if !fields.realm.hidden}
+								<ObjectTd
+									namedStruct={node.realm}
+									errors={errors?.[row]?.iterms?.realm}
+									path={`${node.id}/realm`}
+									on:goto
+								/>
 							{/if}
-							{#if permissions.auth('User::*::WRITE')}
-							<th class="{z_class} hover:{z_class3} w-24">
-								<div class="flex space-x-1">
+						</slot>
+						<th class="z-[{zIndex}] hover:z-[{zIndex + 3}] p-1">
+							<div class="flex space-x-1">
+								{#if showEditButton}
 									<div class="tooltip" data-tip={$LL.graphence.components.table.editBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
-											on:click|preventDefault={(e) => {
-												if (node && node.id) {
-													dispatch('edit', {id: node.id});
-												}
-											}}
+											on:click|preventDefault={(e) => dispatch('edit', { value: node })}
 										>
 											<Icon src={PencilSquare} solid />
 										</button>
 									</div>
-									{#if showUnbindButton}
-										<div class="tooltip" data-tip={$LL.graphence.components.table.unbindBtn()}>
-											<button
-												class="btn btn-square btn-ghost btn-xs"
-												on:click|preventDefault={(e) => {
-													messageBoxs.open({
-														title: $LL.graphence.components.table.unbindModalTitle(),
-														buttonName: $LL.graphence.components.table.unbindBtn(),
-														buttonType: 'error',
-														confirm: () => {
-															if (node?.id) {
-																unbindRows([node.id]);
-															}
-															return true;
-														},
-														button1: {
-															name: $LL.graphence.components.table.removeBtn(),
-															className: 'btn-error',
-															onClick: () => {
-																if (node?.id) {
-																	removeRow(node.id);
-																}
-																return true;
-															}
-														}
-													});
-												}}
-											>
-												<Icon src={ArchiveBoxXMark} solid />
-											</button>
-										</div>
-									{:else}
-										<div class="tooltip" data-tip={$LL.graphence.components.table.removeBtn()}>
-											<button
-												class="btn btn-square btn-ghost btn-xs"
-												on:click|preventDefault={(e) => {
-													messageBoxs.open({
-														title: $LL.graphence.components.table.removeModalTitle(),
-														buttonName: $LL.graphence.components.table.removeBtn(),
-														buttonType: 'error',
-														confirm: () => {
-															if (node?.id) {
-																removeRow(node.id);
-															}
-															return true;
-														}
-													});
-												}}
-											>
-												<Icon src={Trash} solid />
-											</button>
-										</div>
-									{/if}
-								</div>
-							</th>
-							{/if}
-						</tr>
-					{/if}
-				{/each}
-			{:else}
-				<TableEmpty cols={10 + 2}/>
-			{/if}
-		</tbody>
+								{/if}
+								{#if showUnbindButton}
+									<div class="tooltip" data-tip={$LL.graphence.components.table.unbindBtn()}>
+										<button
+											class="btn btn-square btn-ghost btn-xs"
+											on:click|preventDefault={(e) => dispatch('unbind', { value: [node] })}
+										>
+											<Icon src={ArchiveBoxXMark} solid />
+										</button>
+									</div>
+								{/if}
+								{#if showRemoveButton}
+									<div class="tooltip" data-tip={$LL.graphence.components.table.removeBtn()}>
+										<button
+											class="btn btn-square btn-ghost btn-xs"
+											on:click|preventDefault={(e) => dispatch('remove', { value: [node] })}
+										>
+											<Icon src={Trash} solid />
+										</button>
+									</div>
+								{/if}
+							</div>
+						</th>
+					</tr>
+				{/if}
+			{/each}
+		{:else}
+			<tr>
+				<td colspan="999">
+					<Empty />
+				</td>
+			</tr>
+		{/if}
 	{/if}
+	</tbody>
 </Table>

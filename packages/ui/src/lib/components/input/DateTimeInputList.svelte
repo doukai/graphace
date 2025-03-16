@@ -6,7 +6,7 @@
 	import { XMark } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
 
-	export let name: string;
+	export let name: string | undefined = undefined;
 	export let value: (string | null | undefined)[] | null | undefined = undefined;
 	export let placeholder: string = '';
 	export let errors: Errors | undefined = undefined;
@@ -14,7 +14,7 @@
 	export let disabled = false;
 	export let unique = true;
 	export let addOnPaste = true;
-	export let id: string = nanoid();
+	export let id: string | undefined = nanoid();
 	let className: string | undefined = 'min-h-12 p-1 gap-1';
 	export { className as class };
 

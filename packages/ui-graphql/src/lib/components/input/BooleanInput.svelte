@@ -1,10 +1,11 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
-	import { Toggle } from '@graphace/ui';
+	import { Toggle, ToggleList } from '@graphace/ui';
 
-	export let id: string = undefined;
-	export let name: string = undefined;
-	export let value: boolean | null | undefined = undefined;
+	export let id: string | undefined = undefined;
+	export let name: string | undefined = undefined;
+	export let value: boolean | (boolean | null | undefined)[] | null | undefined = undefined;
+	export let list: boolean = false;
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
@@ -13,4 +14,8 @@
 	export { className as class };
 </script>
 
-<Toggle {id} {name} bind:value {errors} {readonly} {disabled} class={className} on:change />
+{#if list}
+	<ToggleList {id} bind:value {errors} {readonly} {disabled} class={className} on:change />
+{:else}
+	<Toggle {id} {name} bind:value {errors} {readonly} {disabled} class={className} on:change />
+{/if}

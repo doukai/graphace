@@ -5,11 +5,11 @@
 	import { EnumFilter } from '@graphace/ui-graphql';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 
+	export let id: string | undefined = undefined;
+	export let name: string | undefined = undefined;
 	export let value: StringExpression | null | undefined = undefined;
-	export let name: string;
-	export let label: string;
-	export let className: string = '';
-	export let selectClassName: string = '';
+	let className: string | undefined = undefined;
+	export { className as class };
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	$: enums = [
@@ -18,4 +18,4 @@
 	];
 </script>
 
-<EnumFilter bind:value {name} {enums} {label} {className} {selectClassName} />
+<EnumFilter {id} {name} bind:value {enums} class={className} />

@@ -5,15 +5,16 @@
 	import { EnumInput } from '@graphace/ui-graphql';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 
+	export let id: string | undefined = undefined;
+	export let name: string | undefined = undefined;
 	export let value: string | (string | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;
-	export let name: string;
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
-	export let containerClassName: string = '';
-	export let className: string = '';
+	let className: string | undefined = undefined;
+	export { className as class };
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	$: enums = [
@@ -22,4 +23,4 @@
 	];
 </script>
 
-<EnumInput bind:value {list} {enums} {name} {errors} {readonly} {disabled} {placeholder} {containerClassName} {className} />
+<EnumInput {id} {name} bind:value {list} {enums} {errors} {readonly} {disabled} {placeholder} class={className} />

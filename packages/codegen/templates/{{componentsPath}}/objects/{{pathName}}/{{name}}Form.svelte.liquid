@@ -3,10 +3,9 @@
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Form, FormControl, Label, Loading } from '@graphace/ui';
-	import { {% for scalar in scalars %}{{ scalar }}Input, {{ scalar }}InputList, {% endfor %}{% if hasFileField %}FileInput, {% endif %}ObjectInput } from '@graphace/ui-graphql';
+	import { type Option, {% for scalar in scalars %}{{ scalar }}Input, {% endfor %}{% if hasFileField %}FileInput, {% endif %}ObjectInput } from '@graphace/ui-graphql';
 	{%- for enum in enums %}
 	import {{ enum }}Input from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Input.svelte';
-	import {{ enum }}InputList from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}InputList.svelte';
 	{%- endfor %}
 	{%- for select in selects %}
 	import {{ select }}Select from '~/{{ componentsPath }}/objects/{{ select | paramCase }}/{{ select }}Select.svelte';
@@ -17,13 +16,16 @@
 	export let value: {{ name }}Input | null | undefined = undefined;
 	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
-	export let showRemoveButton: boolean = true;
+	export let showRemoveButton: boolean = false;
 	export let showUnbindButton: boolean = false;
 	export let showSelectButton: boolean = false;
-	export let showBackButton: boolean = true;
+	export let showBackButton: boolean = false;
+	let className: string | undefined =
+		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2';
+	export { className as class };
 	export let fields: {
 		{%- for field in fields %}
-		{{ field.fieldName }}: { readonly: boolean; disabled: boolean; hidden: boolean };
+		{{ field.fieldName }}: Option;
 		{%- endfor %}
 	} = {
 		{%- for field in fields %}
@@ -37,8 +39,6 @@
 		remove: { value: {{ name }}Input | null | undefined };
 		unbind: { value: {{ name }}Input | null | undefined };
 		save: { value: {{ name }}Input | null | undefined };
-		create: { value: {{ name }}Input | null | undefined };
-		select: {};
 		back: {};
 	}>();
 </script>
@@ -56,30 +56,31 @@
 		on:save={(e) => dispatch('save', { value })}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
-		on:select
 		on:back
 	/>
 </div>
 <div class="divider" />
-<Form class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
+<Form class={className}>
 	{#if isFetching}
 		<Loading />
 	{:else}
 		{#if value}
 			{%- for field in fields %}
-			{%- if field.isAggregate == false and field.isConnection == false %}
 			<slot name="{{ field.fieldName }}">
 				{#if !fields.{{ field.fieldName }}.hidden}
 					<FormControl let:id>
 						<Label {id} text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} />
 						{%- if field.isScalarType or field.isEnumType or field.isFile %}
-						<{{ field.fieldTypeName }}Input{% if field.isListType %}List{% endif %}
+						<{{ field.fieldTypeName }}Input
 						 	{id}
 							name="{{ field.fieldName }}"
 							bind:value={value.{{ field.fieldName }}}
 							errors={errors.{{ field.fieldName }}}
 							readonly={fields.{{ field.fieldName }}.readonly}
 							disabled={fields.{{ field.fieldName }}.disabled}
+							{%- if field.isListType %}
+							list
+							{%- endif %}
 							{%- if field.fieldTypeName == 'File' %}
 							on:upload
 							{%- endif %}
@@ -98,7 +99,6 @@
 						/>
 						{%- else %}
 						<ObjectInput
-							name="{{ field.fieldName }}"
 							{%- if field.isNamed %}
 							namedStruct={value.{{ field.fieldName }}}
 							{%- endif %}
@@ -111,7 +111,6 @@
 					</FormControl>
 				{/if}
 			</slot>
-			{%- endif %}
 			{%- endfor %}
 		{:else}
 			<Empty />
@@ -128,7 +127,6 @@
 		on:save={(e) => dispatch('save', { value })}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
-		on:select
 		on:back
 	/>
 </div>

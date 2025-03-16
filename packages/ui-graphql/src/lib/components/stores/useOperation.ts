@@ -196,7 +196,7 @@ export function createNamedQueryStore(event: LoadEvent | RequestEvent, url: stri
     const fetch = async (query: { fieldName: string, idName: string }, variables?: QueryNamedStructArgs | undefined) => {
         const graphql = /* GraphQL */ `query ${query.fieldName}NamedQuery($${query.idName}: StringExpression, $name: StringExpression, $first: Int) {
 	${query.fieldName}(${query.idName}: $${query.idName}, name: $name, first: $first) {
-		${query.idName}
+		id:${query.idName}
 		name
 		description
 	}
@@ -250,7 +250,7 @@ export function createTreeQueryStore(event: LoadEvent | RequestEvent, url: strin
     const fetch = async (query: { fieldName: string, idName: string }, variables?: QueryTreeStructArgs | undefined) => {
         const graphql = /* GraphQL */ `query ${query.fieldName}TreeQuery($deep: IntExpression) {
 	${query.fieldName}(deep: $deep) {
-		${query.idName}
+		id:${query.idName}
 		name
 		path
 		deep

@@ -46,13 +46,18 @@ export type ScalarConfig = {
 export type ObjectInfo = {
     name: string;
     idName: string | undefined;
+    fields: FieldInfo[];
+    hasFileField: boolean;
+    isConnection: boolean;
+    isNamed: boolean;
+}
+
+export type ImportInfo = {
     scalars: string[];
     baseScalars: string[];
     enums: string[];
     objects: string[];
     selects: string[];
-    hasFileField: boolean;
-    fields: FieldInfo[];
 }
 
 export type FieldInfo = {

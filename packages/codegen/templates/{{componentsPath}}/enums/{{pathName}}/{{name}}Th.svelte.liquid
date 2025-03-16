@@ -8,6 +8,8 @@
 	export let name: string;
 	export let value: StringExpression | null | undefined = undefined;
 	export let sort: Sort | null | undefined = undefined;
+	let className: string | undefined = undefined;
+	export { className as class };
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	$: enums = [
@@ -19,4 +21,4 @@
 	];
 </script>
 
-<EnumTh {name} {enums} bind:value bind:sort on:filter />
+<EnumTh {name} bind:value bind:sort {enums} class={className} on:filter />

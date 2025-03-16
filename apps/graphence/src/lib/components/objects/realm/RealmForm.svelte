@@ -3,41 +3,26 @@
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Form, FormControl, Label, Loading } from '@graphace/ui';
-	import { IDInput, IDInputList, StringInput, StringInputList, BooleanInput, BooleanInputList, IntInput, IntInputList, TimestampInput, TimestampInputList, ObjectInput } from '@graphace/ui-graphql';
+	import { type Option, StringInput, ObjectInput } from '@graphace/ui-graphql';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { RealmInput } from '~/lib/types/schema';
 	
 	export let value: RealmInput | null | undefined = undefined;
 	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
-	export let showRemoveButton: boolean = true;
+	export let showRemoveButton: boolean = false;
 	export let showUnbindButton: boolean = false;
 	export let showSelectButton: boolean = false;
-	export let showBackButton: boolean = true;
+	export let showBackButton: boolean = false;
+	let className: string | undefined =
+		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2';
+	export { className as class };
 	export let fields: {
-		name: { readonly: boolean; disabled: boolean; hidden: boolean };
-		description: { readonly: boolean; disabled: boolean; hidden: boolean };
-		idCount: { readonly: boolean; disabled: boolean; hidden: boolean };
-		idMax: { readonly: boolean; disabled: boolean; hidden: boolean };
-		idMin: { readonly: boolean; disabled: boolean; hidden: boolean };
-		nameCount: { readonly: boolean; disabled: boolean; hidden: boolean };
-		nameMax: { readonly: boolean; disabled: boolean; hidden: boolean };
-		nameMin: { readonly: boolean; disabled: boolean; hidden: boolean };
-		descriptionCount: { readonly: boolean; disabled: boolean; hidden: boolean };
-		descriptionMax: { readonly: boolean; disabled: boolean; hidden: boolean };
-		descriptionMin: { readonly: boolean; disabled: boolean; hidden: boolean };
+		name: Option;
+		description: Option;
 	} = {
 		name: { readonly: false, disabled: false, hidden: false },
-		description: { readonly: false, disabled: false, hidden: false },
-		idCount: { readonly: false, disabled: false, hidden: false },
-		idMax: { readonly: false, disabled: false, hidden: false },
-		idMin: { readonly: false, disabled: false, hidden: false },
-		nameCount: { readonly: false, disabled: false, hidden: false },
-		nameMax: { readonly: false, disabled: false, hidden: false },
-		nameMin: { readonly: false, disabled: false, hidden: false },
-		descriptionCount: { readonly: false, disabled: false, hidden: false },
-		descriptionMax: { readonly: false, disabled: false, hidden: false },
-		descriptionMin: { readonly: false, disabled: false, hidden: false }
+		description: { readonly: false, disabled: false, hidden: false }
 	};
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
@@ -46,8 +31,6 @@
 		remove: { value: RealmInput | null | undefined };
 		unbind: { value: RealmInput | null | undefined };
 		save: { value: RealmInput | null | undefined };
-		create: { value: RealmInput | null | undefined };
-		select: {};
 		back: {};
 	}>();
 </script>
@@ -65,12 +48,11 @@
 		on:save={(e) => dispatch('save', { value })}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
-		on:select
 		on:back
 	/>
 </div>
 <div class="divider" />
-<Form class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
+<Form class={className}>
 	{#if isFetching}
 		<Loading />
 	{:else}
@@ -120,7 +102,6 @@
 		on:save={(e) => dispatch('save', { value })}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
-		on:select
 		on:back
 	/>
 </div>

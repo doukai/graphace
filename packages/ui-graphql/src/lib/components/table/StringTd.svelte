@@ -6,15 +6,20 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
+	import { Td } from '@graphace/ui';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
+	import { StringInput } from '../input';
 
+	export let id: string | undefined = undefined;
+	export let name: string | undefined = undefined;
 	export let value: string | (string | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
+	export let placeholder: string = '';
 	export let zIndex: number | undefined = 0;
-	let className: string | undefined = undefined;
+	let className: string | undefined = 'p-1';
 	export { className as class };
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
@@ -47,61 +52,66 @@
 	});
 </script>
 
-<td>
-	<div
-		class="{errors ? `tooltip tooltip-open tooltip-error hover:z-[${zIndex + 3}]` : ''} {className}"
-		data-tip={errors?.errors?.map((error) => error.message).join(', ')}
-	>
-		<a class="group link inline-flex" href={null} use:melt={$trigger}>
-			{#if list}
-				{#if Array.isArray(value)}
-					{#if value.length > 3}
-						{value
-							.filter((item) => item)
-							.slice(0, 3)
-							.join(',')
-							.concat('...')}
-					{:else if value.length > 0}
-						{value.filter((item) => item).join(',')}
-					{:else}
-						<Icon src={Minus} class="h-5 w-5" />
-					{/if}
+<Td {errors} {zIndex}>
+	<a class="link inline-flex" href={null} use:melt={$trigger}>
+		{#if list}
+			{#if Array.isArray(value)}
+				{#if value.length > 3}
+					{value
+						.filter((item) => item)
+						.slice(0, 3)
+						.join(',')
+						.concat('...')}
+				{:else if value.length > 0}
+					{value.filter((item) => item).join(',')}
 				{:else}
 					<Icon src={Minus} class="h-5 w-5" />
 				{/if}
-			{:else if value}
-				{value}
 			{:else}
 				<Icon src={Minus} class="h-5 w-5" />
 			{/if}
-		</a>
-	</div>
-</td>
+		{:else if value}
+			{value}
+		{:else}
+			<Icon src={Minus} class="h-5 w-5" />
+		{/if}
+	</a>
+</Td>
 
 {#if $open}
 	<div use:melt={$overlay} class="fixed inset-0 z-[{zIndex + 5}]" />
-	<div class="p-1 rounded-xl bg-base-100 shadow z-[{zIndex + 5}]" use:melt={$content}>
+	<div class="z-[{zIndex + 5}] {className}" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="flex items-center space-x-1" transition:fade={{ duration: 100 }}>
-			<slot />
-			{#if !readonly && !disabled}
-				<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.td.save()}>
-					<button
-						class="btn btn-square btn-primary md:btn-sm"
-						on:click|preventDefault={(e) => mutation()}
-					>
-						<Icon src={Check} class="h-5 w-5" />
-					</button>
-				</div>
-				<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.td.clear()}>
-					<button
-						class="btn btn-square btn-outline btn-error md:btn-sm"
-						on:click|preventDefault={(e) => clean()}
-					>
-						<Icon src={XMark} class="h-5 w-5" />
-					</button>
-				</div>
-			{/if}
+			<StringInput
+				{id}
+				{name}
+				bind:value
+				{list}
+				on:save
+				{readonly}
+				{disabled}
+				{placeholder}
+				{errors}
+			/>
+			<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.td.save()}>
+				<button
+					{disabled}
+					class="btn btn-square btn-primary"
+					on:click|preventDefault={(e) => mutation()}
+				>
+					<Icon src={Check} class="h-5 w-5" />
+				</button>
+			</div>
+			<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.td.clear()}>
+				<button
+					{disabled}
+					class="btn btn-square btn-outline btn-error"
+					on:click|preventDefault={(e) => clean()}
+				>
+					<Icon src={XMark} class="h-5 w-5" />
+				</button>
+			</div>
 		</div>
 	</div>
 {/if}

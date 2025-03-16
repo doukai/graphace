@@ -55,7 +55,8 @@ import {
     getObjectFieldInfo,
     getMutationFieldInfo,
     getObjectFieldInfos,
-    getObjectInfo
+    getObjectInfo,
+    getImportInfo
 } from 'graphace-codegen-commons';
 import type { GraphacePluginConfig } from './config.js';
 import { buildFileContent } from "./builder.js";
@@ -212,11 +213,16 @@ const renders: Record<Template, Render> = {
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Form.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const objectInfo = getObjectInfo(schema, config.name!)
         if (objectInfo) {
+            const fields = objectInfo.fields
+                ?.filter(field => field.inDetail)
+                .filter(field => !field.isAggregate)
+                .filter(field => !field.isConnection);
+            const importInfo = getImportInfo(fields);
             return {
                 content: buildFileContent(config.template, {
                     ...objectInfo,
-                    fields: objectInfo.fields
-                        ?.filter(field => field.inDetail),
+                    fields,
+                    ...importInfo,
                     ...config
                 }),
             };
@@ -224,39 +230,106 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${config.name} undefined`);
     },
-    // '{{componentsPath}}/objects/{{pathName}}/{{name}}Table.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-    //     const typeName = config.name;
-    //     if (typeName) {
-    //         const type = schema.getType(typeName);
-    //         if (type && isObjectType(type)) {
-    //             const fields = getFieldInfos(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
-    //             return {
-    //                 content: buildFileContent(config.template, {
-    //                     name: type?.name,
-    //                     idName: getIDFieldName(type),
-    //                     scalars: new Set([...getScalarNames(fields) || [], 'String']),
-    //                     enums: getEnumNames(fields),
-    //                     objects: getObjectNames(fields),
-    //                     imports: componentFieldImports(typeName, fields),
-    //                     selectImports: getSelectComponentFieldImports(typeName, fields),
-    //                     fields: componentFields(typeName, fields),
-    //                     cols: fields?.length,
-    //                     schemaTypesPath: config.schemaTypesPath,
-    //                     enumsPath: `${config.componentsPath}/enums`,
-    //                     objectsPath: `${config.componentsPath}/objects`,
-    //                     queryTypeName: getQueryTypeName(),
-    //                     mutationTypeName: getMutationTypeName(),
-    //                     subscriptionTypeName: getSubscriptionTypeName(),
-    //                     hasFileField: hasFileField(type),
-    //                     useAuth: config.useAuth,
-    //                     appName: config.appName
-    //                 }),
-    //             };
-    //         }
-    //     }
-    //     console.error(config);
-    //     throw new Error(`${typeName} undefined`);
-    // },
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Table.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const objectInfo = getObjectInfo(schema, config.name!)
+        if (objectInfo) {
+            const fields = objectInfo.fields
+                ?.filter(field => field.inList)
+                .filter(field => !field.isAggregate)
+                .filter(field => !field.isConnection);
+            const importInfo = getImportInfo(fields);
+            return {
+                content: buildFileContent(config.template, {
+                    ...objectInfo,
+                    fields,
+                    ...importInfo,
+                    ...config
+                }),
+            };
+        }
+        console.error(config);
+        throw new Error(`${config.name} undefined`);
+    },
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Select.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const objectInfo = getObjectInfo(schema, config.name!)
+        if (objectInfo) {
+            const fields = objectInfo.fields
+                ?.filter(field => field.inList)
+                .filter(field => !field.isAggregate)
+                .filter(field => !field.isConnection);
+            const importInfo = getImportInfo(fields);
+            return {
+                content: buildFileContent(config.template, {
+                    ...objectInfo,
+                    fields,
+                    ...importInfo,
+                    ...config
+                }),
+            };
+        }
+        console.error(config);
+        throw new Error(`${config.name} undefined`);
+    },
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectFilter.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const objectInfo = getObjectInfo(schema, config.name!)
+        if (objectInfo) {
+            const fields = objectInfo.fields
+                ?.filter(field => field.inList)
+                .filter(field => !field.isAggregate)
+                .filter(field => !field.isConnection);
+            const importInfo = getImportInfo(fields);
+            return {
+                content: buildFileContent(config.template, {
+                    ...objectInfo,
+                    fields,
+                    ...importInfo,
+                    ...config
+                }),
+            };
+        }
+        console.error(config);
+        throw new Error(`${config.name} undefined`);
+    },
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectTd.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const objectInfo = getObjectInfo(schema, config.name!)
+        if (objectInfo) {
+            const fields = objectInfo.fields
+                ?.filter(field => field.inList)
+                .filter(field => !field.isAggregate)
+                .filter(field => !field.isConnection);
+            const importInfo = getImportInfo(fields);
+            return {
+                content: buildFileContent(config.template, {
+                    ...objectInfo,
+                    fields,
+                    ...importInfo,
+                    ...config
+                }),
+            };
+        }
+        console.error(config);
+        throw new Error(`${config.name} undefined`);
+    },
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Filter.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const objectInfo = getObjectInfo(schema, config.name!)
+        if (objectInfo) {
+            const fields = objectInfo.fields
+                ?.filter(field => field.inList)
+                .filter(field => !field.isAggregate)
+                .filter(field => !field.isConnection);
+            const importInfo = getImportInfo(fields);
+            return {
+                content: buildFileContent(config.template, {
+                    ...objectInfo,
+                    fields,
+                    ...importInfo,
+                    ...config
+                }),
+            };
+        }
+        console.error(config);
+        throw new Error(`${config.name} undefined`);
+    },
     // '{{componentsPath}}/objects/{{pathName}}/{{name}}ConnectionTable.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
     //     const typeName = config.name;
     //     if (typeName) {
@@ -354,40 +427,6 @@ const renders: Record<Template, Render> = {
     //     console.error(config);
     //     throw new Error(`${typeName} undefined`);
     // },
-    // '{{componentsPath}}/objects/{{pathName}}/{{name}}Filter.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-    //     const typeName = config.name;
-    //     if (typeName) {
-    //         const type = schema.getType(typeName);
-    //         if (type && isObjectType(type)) {
-    //             const fields = getFieldInfos(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
-    //             return {
-    //                 content: buildFileContent(config.template, {
-    //                     name: type?.name,
-    //                     isNamedStruct: type.getInterfaces().some(interfaceType => interfaceType.name === 'NamedStruct'),
-    //                     idName: getIDFieldName(type),
-    //                     scalars: new Set([...getScalarNames(fields) || [], 'String']),
-    //                     baseScalars: getBaseScalarNames(fields),
-    //                     enums: getEnumNames(fields),
-    //                     imports: componentFieldImports(typeName, fields),
-    //                     namedStructObjectNames: getNamedStructObjectNames(fields),
-    //                     fields: componentFields(typeName, fields),
-    //                     cols: fields?.length,
-    //                     schemaTypesPath: config.schemaTypesPath,
-    //                     enumsPath: `${config.componentsPath}/enums`,
-    //                     objectsPath: `${config.componentsPath}/objects`,
-    //                     queryTypeName: getQueryTypeName(),
-    //                     mutationTypeName: getMutationTypeName(),
-    //                     subscriptionTypeName: getSubscriptionTypeName(),
-    //                     hasFileField: hasFileField(type),
-    //                     useAuth: config.useAuth,
-    //                     appName: config.appName
-    //                 }),
-    //             };
-    //         }
-    //     }
-    //     console.error(config);
-    //     throw new Error(`${typeName} undefined`);
-    // },
     // '{{componentsPath}}/objects/{{pathName}}/{{name}}Th.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
     //     const typeName = config.name;
     //     if (typeName) {
@@ -413,67 +452,6 @@ const renders: Record<Template, Render> = {
     //                     subscriptionTypeName: getSubscriptionTypeName(),
     //                     hasFileField: hasFileField(type),
     //                     useAuth: config.useAuth,
-    //                     appName: config.appName
-    //                 }),
-    //             };
-    //         }
-    //     }
-    //     console.error(config);
-    //     throw new Error(`${typeName} undefined`);
-    // },
-    // '{{componentsPath}}/objects/{{pathName}}/{{name}}Select.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-    //     const typeName = config.name;
-    //     if (typeName) {
-    //         const type = schema.getType(typeName);
-    //         if (type && isObjectType(type)) {
-    //             const fields = getFieldInfos(schema, type);
-    //             return {
-    //                 content: buildFileContent(config.template, {
-    //                     name: type?.name,
-    //                     idName: getIDFieldName(type),
-    //                     fields: componentFields(typeName, fields),
-    //                     schemaTypesPath: config.schemaTypesPath,
-    //                     appName: config.appName
-    //                 }),
-    //             };
-    //         }
-    //     }
-    //     console.error(config);
-    //     throw new Error(`${typeName} undefined`);
-    // },
-    // '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectFilter.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-    //     const typeName = config.name;
-    //     if (typeName) {
-    //         const type = schema.getType(typeName);
-    //         if (type && isObjectType(type)) {
-    //             const fields = getFieldInfos(schema, type);
-    //             return {
-    //                 content: buildFileContent(config.template, {
-    //                     name: type?.name,
-    //                     idName: getIDFieldName(type),
-    //                     fields: componentFields(typeName, fields),
-    //                     objectsPath: `${config.componentsPath}/objects`,
-    //                     schemaTypesPath: config.schemaTypesPath,
-    //                     appName: config.appName
-    //                 }),
-    //             };
-    //         }
-    //     }
-    //     console.error(config);
-    //     throw new Error(`${typeName} undefined`);
-    // },
-    // '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectTd.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-    //     const typeName = config.name;
-    //     if (typeName) {
-    //         const type = schema.getType(typeName);
-    //         if (type && isObjectType(type)) {
-    //             const fields = getFieldInfos(schema, type)?.filter(field => !isConnection(field.fieldName)).filter(field => inListField(typeName, field.fieldName, field.fieldTypeName));
-    //             return {
-    //                 content: buildFileContent(config.template, {
-    //                     name: type?.name,
-    //                     idName: getIDFieldName(type),
-    //                     fields: componentFields(typeName, fields),
-    //                     schemaTypesPath: config.schemaTypesPath,
     //                     appName: config.appName
     //                 }),
     //             };
@@ -722,101 +700,71 @@ const renders: Record<Template, Render> = {
     //     console.error(config);
     //     throw new Error(`${typeName} undefined`);
     // },
-    // '{{componentsPath}}/enums/{{pathName}}/{{name}}Th.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-    //     const typeName = config.name;
-    //     if (typeName) {
-    //         const type = schema.getType(typeName);
-    //         if (type && isEnumType(type)) {
-    //             return {
-    //                 content: buildFileContent(config.template, {
-    //                     name: type?.name,
-    //                     enumValues: getEnumValues(type),
-    //                     queryTypeName: getQueryTypeName(),
-    //                     mutationTypeName: getMutationTypeName(),
-    //                     subscriptionTypeName: getSubscriptionTypeName(),
-    //                     appName: config.appName
-    //                 }),
-    //             };
-    //         }
-    //     }
-    //     console.error(config);
-    //     throw new Error(`${typeName} undefined`);
-    // },
-    // '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-    //     const typeName = config.name;
-    //     if (typeName) {
-    //         const type = schema.getType(typeName);
-    //         if (type && isEnumType(type)) {
-    //             return {
-    //                 content: buildFileContent(config.template, {
-    //                     name: type?.name,
-    //                     enumValues: getEnumValues(type),
-    //                     queryTypeName: getQueryTypeName(),
-    //                     mutationTypeName: getMutationTypeName(),
-    //                     subscriptionTypeName: getSubscriptionTypeName(),
-    //                     appName: config.appName
-    //                 }),
-    //             };
-    //         }
-    //     }
-    //     console.error(config);
-    //     throw new Error(`${typeName} undefined`);
-    // },
-    // '{{componentsPath}}/enums/{{pathName}}/{{name}}Input.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-    //     const typeName = config.name;
-    //     if (typeName) {
-    //         const type = schema.getType(typeName);
-    //         if (type && isEnumType(type)) {
-    //             return {
-    //                 content: buildFileContent(config.template, {
-    //                     name: type?.name,
-    //                     enumValues: getEnumValues(type),
-    //                     queryTypeName: getQueryTypeName(),
-    //                     mutationTypeName: getMutationTypeName(),
-    //                     subscriptionTypeName: getSubscriptionTypeName(),
-    //                     appName: config.appName
-    //                 }),
-    //             };
-    //         }
-    //     }
-    //     console.error(config);
-    //     throw new Error(`${typeName} undefined`);
-    // },
-    // '{{componentsPath}}/enums/{{pathName}}/{{name}}Filter.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-    //     const typeName = config.name;
-    //     if (typeName) {
-    //         const type = schema.getType(typeName);
-    //         if (type && isEnumType(type)) {
-    //             return {
-    //                 content: buildFileContent(config.template, {
-    //                     name: type?.name,
-    //                     enumValues: getEnumValues(type),
-    //                     queryTypeName: getQueryTypeName(),
-    //                     mutationTypeName: getMutationTypeName(),
-    //                     subscriptionTypeName: getSubscriptionTypeName(),
-    //                     appName: config.appName
-    //                 }),
-    //             };
-    //         }
-    //     }
-    //     console.error(config);
-    //     throw new Error(`${typeName} undefined`);
-    // },
-    // '{{componentsPath}}/enums/{{pathName}}/index.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-    //     const typeName = config.name;
-    //     if (typeName) {
-    //         const type = schema.getType(typeName);
-    //         if (type && isEnumType(type)) {
-    //             return {
-    //                 content: buildFileContent(config.template, {
-    //                     name: type?.name
-    //                 }),
-    //             };
-    //         }
-    //     }
-    //     console.error(config);
-    //     throw new Error(`${typeName} undefined`);
-    // },
+    '{{componentsPath}}/enums/{{pathName}}/{{name}}Th.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const type = schema.getType(config.name!);
+        if (type && isEnumType(type)) {
+            return {
+                content: buildFileContent(config.template, {
+                    name: type?.name,
+                    enumValues: getEnumValues(type)
+                }),
+            };
+        }
+        console.error(config);
+        throw new Error(`${config.name} undefined`);
+    },
+    '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const type = schema.getType(config.name!);
+        if (type && isEnumType(type)) {
+            return {
+                content: buildFileContent(config.template, {
+                    name: type?.name,
+                    enumValues: getEnumValues(type)
+                }),
+            };
+        }
+        console.error(config);
+        throw new Error(`${config.name} undefined`);
+    },
+    '{{componentsPath}}/enums/{{pathName}}/{{name}}Input.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const type = schema.getType(config.name!);
+        if (type && isEnumType(type)) {
+            return {
+                content: buildFileContent(config.template, {
+                    name: type?.name,
+                    enumValues: getEnumValues(type)
+                }),
+            };
+        }
+        console.error(config);
+        throw new Error(`${config.name} undefined`);
+    },
+    '{{componentsPath}}/enums/{{pathName}}/{{name}}Filter.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const type = schema.getType(config.name!);
+        if (type && isEnumType(type)) {
+            return {
+                content: buildFileContent(config.template, {
+                    name: type?.name,
+                    enumValues: getEnumValues(type)
+                }),
+            };
+        }
+        console.error(config);
+        throw new Error(`${config.name} undefined`);
+    },
+    '{{componentsPath}}/enums/{{pathName}}/index.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const type = schema.getType(config.name!);
+        if (type && isEnumType(type)) {
+            return {
+                content: buildFileContent(config.template, {
+                    name: type?.name,
+                    enumValues: getEnumValues(type)
+                }),
+            };
+        }
+        console.error(config);
+        throw new Error(`${config.name} undefined`);
+    },
     // '{{componentsPath}}/enums/index.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
     //     return {
     //         content: buildFileContent(config.template,

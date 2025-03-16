@@ -5,20 +5,18 @@
 	import { type StructQueryStores, ObjectSelect } from '@graphace/ui-graphql';
 	import type { GroupInput } from '~/lib/types/schema';
 
+	export let id: string | undefined = undefined;
+	export let name: string | undefined = undefined;
 	export let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
 	export let val: string | null | undefined = undefined;
 	export let arr: (string | null | undefined)[] | null | undefined = [];
 	export let errors: Errors | undefined = undefined;
 	export let list: boolean | undefined = false;
-	export let id: string | null = null;
-	export let name: string;
 	export let disabled = false;
 	export let readonly = false;
 	export let placeholder: string | null | undefined = undefined;
-	export let className: string = '';
-	export let containerClassName: string = '';
-	export let tagClassName: string = '';
-	export let menuClassName: string = '';
+	let className: string | undefined = undefined;
+	export { className as class };
 
 	const dispatch = createEventDispatcher<{
 		change: {
@@ -66,18 +64,15 @@
 </script>
 
 <ObjectSelect
-	{list}
 	{id}
 	{name}
+	{list}
 	{disabled}
 	{readonly}
 	{placeholder}
 	{errors}
 	{loading}
-	{className}
-	{containerClassName}
-	{tagClassName}
-	{menuClassName}
+	class={className}
 	bind:options
 	bind:value={selected}
 	on:change={(e) => {

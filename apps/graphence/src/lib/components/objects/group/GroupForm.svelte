@@ -3,7 +3,7 @@
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Form, FormControl, Label, Loading } from '@graphace/ui';
-	import { IDInput, IDInputList, StringInput, StringInputList, IntInput, IntInputList, BooleanInput, BooleanInputList, TimestampInput, TimestampInputList, ObjectInput } from '@graphace/ui-graphql';
+	import { type Option, StringInput, IntInput, ObjectInput } from '@graphace/ui-graphql';
 	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
 	import UserSelect from '~/lib/components/objects/user/UserSelect.svelte';
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
@@ -13,47 +13,24 @@
 	export let value: GroupInput | null | undefined = undefined;
 	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
-	export let showRemoveButton: boolean = true;
+	export let showRemoveButton: boolean = false;
 	export let showUnbindButton: boolean = false;
 	export let showSelectButton: boolean = false;
-	export let showBackButton: boolean = true;
+	export let showBackButton: boolean = false;
+	let className: string | undefined =
+		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2';
+	export { className as class };
 	export let fields: {
-		name: { readonly: boolean; disabled: boolean; hidden: boolean };
-		description: { readonly: boolean; disabled: boolean; hidden: boolean };
-		path: { readonly: boolean; disabled: boolean; hidden: boolean };
-		deep: { readonly: boolean; disabled: boolean; hidden: boolean };
-		parentId: { readonly: boolean; disabled: boolean; hidden: boolean };
-		parent: { readonly: boolean; disabled: boolean; hidden: boolean };
-		subGroups: { readonly: boolean; disabled: boolean; hidden: boolean };
-		users: { readonly: boolean; disabled: boolean; hidden: boolean };
-		roles: { readonly: boolean; disabled: boolean; hidden: boolean };
-		realm: { readonly: boolean; disabled: boolean; hidden: boolean };
-		subGroupsAggregate: { readonly: boolean; disabled: boolean; hidden: boolean };
-		subGroupsConnection: { readonly: boolean; disabled: boolean; hidden: boolean };
-		usersAggregate: { readonly: boolean; disabled: boolean; hidden: boolean };
-		usersConnection: { readonly: boolean; disabled: boolean; hidden: boolean };
-		rolesAggregate: { readonly: boolean; disabled: boolean; hidden: boolean };
-		rolesConnection: { readonly: boolean; disabled: boolean; hidden: boolean };
-		idCount: { readonly: boolean; disabled: boolean; hidden: boolean };
-		idMax: { readonly: boolean; disabled: boolean; hidden: boolean };
-		idMin: { readonly: boolean; disabled: boolean; hidden: boolean };
-		nameCount: { readonly: boolean; disabled: boolean; hidden: boolean };
-		nameMax: { readonly: boolean; disabled: boolean; hidden: boolean };
-		nameMin: { readonly: boolean; disabled: boolean; hidden: boolean };
-		descriptionCount: { readonly: boolean; disabled: boolean; hidden: boolean };
-		descriptionMax: { readonly: boolean; disabled: boolean; hidden: boolean };
-		descriptionMin: { readonly: boolean; disabled: boolean; hidden: boolean };
-		pathCount: { readonly: boolean; disabled: boolean; hidden: boolean };
-		pathMax: { readonly: boolean; disabled: boolean; hidden: boolean };
-		pathMin: { readonly: boolean; disabled: boolean; hidden: boolean };
-		parentIdCount: { readonly: boolean; disabled: boolean; hidden: boolean };
-		parentIdMax: { readonly: boolean; disabled: boolean; hidden: boolean };
-		parentIdMin: { readonly: boolean; disabled: boolean; hidden: boolean };
-		deepCount: { readonly: boolean; disabled: boolean; hidden: boolean };
-		deepSum: { readonly: boolean; disabled: boolean; hidden: boolean };
-		deepAvg: { readonly: boolean; disabled: boolean; hidden: boolean };
-		deepMax: { readonly: boolean; disabled: boolean; hidden: boolean };
-		deepMin: { readonly: boolean; disabled: boolean; hidden: boolean };
+		name: Option;
+		description: Option;
+		path: Option;
+		deep: Option;
+		parentId: Option;
+		parent: Option;
+		subGroups: Option;
+		users: Option;
+		roles: Option;
+		realm: Option;
 	} = {
 		name: { readonly: false, disabled: false, hidden: false },
 		description: { readonly: false, disabled: false, hidden: false },
@@ -64,33 +41,7 @@
 		subGroups: { readonly: false, disabled: false, hidden: false },
 		users: { readonly: false, disabled: false, hidden: false },
 		roles: { readonly: false, disabled: false, hidden: false },
-		realm: { readonly: false, disabled: false, hidden: false },
-		subGroupsAggregate: { readonly: false, disabled: false, hidden: false },
-		subGroupsConnection: { readonly: false, disabled: false, hidden: false },
-		usersAggregate: { readonly: false, disabled: false, hidden: false },
-		usersConnection: { readonly: false, disabled: false, hidden: false },
-		rolesAggregate: { readonly: false, disabled: false, hidden: false },
-		rolesConnection: { readonly: false, disabled: false, hidden: false },
-		idCount: { readonly: false, disabled: false, hidden: false },
-		idMax: { readonly: false, disabled: false, hidden: false },
-		idMin: { readonly: false, disabled: false, hidden: false },
-		nameCount: { readonly: false, disabled: false, hidden: false },
-		nameMax: { readonly: false, disabled: false, hidden: false },
-		nameMin: { readonly: false, disabled: false, hidden: false },
-		descriptionCount: { readonly: false, disabled: false, hidden: false },
-		descriptionMax: { readonly: false, disabled: false, hidden: false },
-		descriptionMin: { readonly: false, disabled: false, hidden: false },
-		pathCount: { readonly: false, disabled: false, hidden: false },
-		pathMax: { readonly: false, disabled: false, hidden: false },
-		pathMin: { readonly: false, disabled: false, hidden: false },
-		parentIdCount: { readonly: false, disabled: false, hidden: false },
-		parentIdMax: { readonly: false, disabled: false, hidden: false },
-		parentIdMin: { readonly: false, disabled: false, hidden: false },
-		deepCount: { readonly: false, disabled: false, hidden: false },
-		deepSum: { readonly: false, disabled: false, hidden: false },
-		deepAvg: { readonly: false, disabled: false, hidden: false },
-		deepMax: { readonly: false, disabled: false, hidden: false },
-		deepMin: { readonly: false, disabled: false, hidden: false }
+		realm: { readonly: false, disabled: false, hidden: false }
 	};
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
@@ -99,8 +50,6 @@
 		remove: { value: GroupInput | null | undefined };
 		unbind: { value: GroupInput | null | undefined };
 		save: { value: GroupInput | null | undefined };
-		create: { value: GroupInput | null | undefined };
-		select: {};
 		back: {};
 	}>();
 </script>
@@ -118,12 +67,11 @@
 		on:save={(e) => dispatch('save', { value })}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
-		on:select
 		on:back
 	/>
 </div>
 <div class="divider" />
-<Form class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
+<Form class={className}>
 	{#if isFetching}
 		<Loading />
 	{:else}
@@ -271,7 +219,6 @@
 					<FormControl let:id>
 						<Label {id} text={$LL.graphql.objects.Group.fields.realm.name()} />
 						<ObjectInput
-							name="realm"
 							namedStruct={value.realm}
 							path={`${value.id}/realm`}
 							errors={errors.realm}
@@ -296,7 +243,6 @@
 		on:save={(e) => dispatch('save', { value })}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
-		on:select
 		on:back
 	/>
 </div>

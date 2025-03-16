@@ -1,18 +1,16 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import type { Errors, PermissionsStore} from '@graphace/commons';
-	import { type GraphQLError, buildArguments } from '@graphace/graphql';
-	import { Table, TableHead, TableLoading, TableEmpty, messageBoxs, notifications, z_index } from '@graphace/ui';
-	import { ObjectTd, IDTh, IDTd, StringTh, StringTd } from '@graphace/ui-graphql';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
+	import type { Errors } from '@graphace/commons';
+	import { Buttons, Empty, Loading, Table } from '@graphace/ui';
+	import { type Option, IDTh, IDTd, StringTh, StringTd, ObjectTd } from '@graphace/ui-graphql';
 	import PermissionTypeTh from '~/lib/components/enums/permission-type/PermissionTypeTh.svelte';
 	import PermissionTypeTd from '~/lib/components/enums/permission-type/PermissionTypeTd.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
 	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
-	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/utils';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type {
 		PermissionOrderBy,
@@ -20,481 +18,320 @@
 		PermissionInput
 	} from '~/lib/types/schema';
 
-	export let nodes: (PermissionInput | null | undefined)[] | null | undefined = undefined;
+	export let value: (PermissionInput | null | undefined)[] | null | undefined = undefined;
+	export let args: QueryPermissionListArgs = {};
+	export let orderBy: PermissionOrderBy = {};
+	export let selectedIdList: (string | null | undefined)[] = [];
 	export let isFetching: boolean;
 	export let errors: Record<number, Errors> = {};
-	export let showSaveButton: boolean = true;
-	export let showRemoveButton: boolean = true;
+	export let showEditButton: boolean = false;
+	export let showRemoveButton: boolean = false;
 	export let showUnbindButton: boolean = false;
-	export let showBackButton: boolean = true;
-	export let showGotoSelectButton: boolean = false;
+	export let showSaveButton: boolean = false;
+	export let showCreateButton: boolean = false;
+	export let showSelectButton: boolean = false;
+	export let showBackButton: boolean = false;
+	export let zIndex: number = 0;
+	let className: string | undefined = undefined;
+	export { className as class };
+	export let fields: {
+		name: Option;
+		description: Option;
+		field: Option;
+		type: Option;
+		permissionType: Option;
+		roles: Option;
+		realm: Option;
+	} = {
+		name: { readonly: false, disabled: false, hidden: false },
+		description: { readonly: false, disabled: false, hidden: false },
+		field: { readonly: false, disabled: false, hidden: false },
+		type: { readonly: false, disabled: false, hidden: false },
+		permissionType: { readonly: false, disabled: false, hidden: false },
+		roles: { readonly: false, disabled: false, hidden: false },
+		realm: { readonly: false, disabled: false, hidden: false }
+	};
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
-	const permissions = getContext<PermissionsStore>('permissions');
-	const z_class = z_index.top(1);
-	const z_class2 = z_index.top(2);
-	const z_class3 = z_index.top(3);
 
 	const dispatch = createEventDispatcher<{
-		fetch: {
-			args: QueryPermissionListArgs;
-			then: (data: (PermissionInput | null | undefined)[] | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		};
-		mutation: {
-			args: PermissionInput;
-			then: (data: PermissionInput | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		};
-		parentMutation: {
-			args: PermissionInput[];
-			then: (data: PermissionInput[] | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		};
-		edit: { id: string };
+		query: { args: QueryPermissionListArgs; orderBy: PermissionOrderBy };
+		remove: { value: PermissionInput | (PermissionInput | null | undefined)[] | null | undefined };
+		unbind: { value: PermissionInput | (PermissionInput | null | undefined)[] | null | undefined };
+		edit: { value: PermissionInput | (PermissionInput | null | undefined)[] | null | undefined };
+		save: { value: PermissionInput | (PermissionInput | null | undefined)[] | null | undefined };
+		select: { value: PermissionInput | (PermissionInput | null | undefined)[] | null | undefined };
 		create: {};
-		save: { nodes: (PermissionInput | null | undefined)[] | null | undefined };
-		gotoSelect: {};
 		back: {};
 	}>();
 
-	export let args: QueryPermissionListArgs = {};
-	export let orderBy: PermissionOrderBy = {};
-
 	let selectAll: boolean;
-	export let selectedIdList: (string | null | undefined)[] = [];
-
-	export const query = () => {
-		let _args: QueryPermissionListArgs = buildArguments(args);
-
-		if (Object.keys(orderBy).length > 0) {
-			_args.orderBy = orderBy;
-		} else {
-			_args.orderBy = undefined;
-		}
-
-		dispatch('fetch', {
-			args: _args,
-			then: (data) => {
-				errors = {};
-			},
-			catch: (errors) => {
-				console.error(errors);
-				notifications.error($LL.graphence.message.requestFailed());
-			}
-		});
-	};
-
-	export const search = (searchValue: string | undefined) => {
-		let _args: QueryPermissionListArgs = {};
-		if (searchValue) {
-			_args.cond = 'OR';
-			_args.description = { opr: 'LK', val: `%${searchValue}%` };
-			_args.field = { opr: 'LK', val: `%${searchValue}%` };
-			_args.type = { opr: 'LK', val: `%${searchValue}%` };
-		} else {
-			_args.cond = undefined;
-			_args.description = undefined;
-			_args.field = undefined;
-			_args.type = undefined;
-		}
-
-		dispatch('fetch', {
-			args: _args,
-			then: (data) => {
-				errors = {};
-			},
-			catch: (errors) => {
-				console.error(errors);
-				notifications.error($LL.graphence.message.requestFailed());
-			}
-		});
-	};
-
-	const updateField = (args: PermissionInput | null | undefined, row?: number) => {
-		if (args) {
-			dispatch('mutation', {
-				args,
-				then: (data) => {
-					if (nodes && row) {
-						nodes[row] = data;
-					}
-					notifications.success($LL.graphence.message.saveSuccess());
-				},
-				catch: (graphQLErrors) => {
-					console.error(graphQLErrors);
-					errors = buildGraphQLErrors(graphQLErrors);
-					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
-					if (globalError) {
-						messageBoxs.open({
-							title: $LL.graphence.message.saveFailed(),
-							content: globalError,
-							buttonName: $LL.ui.button.back(),
-							buttonType: 'neutral',
-							confirm: () => {
-								query();
-								return true;
-							}
-						});
-					}
-				}
-			});
-		}
-	}
-
-	const removeRow = (id: string) => {
-		dispatch('mutation', {
-			args: { where: { name: { val: id } }, isDeprecated: true },
-			then: (data) => {
-				notifications.success($LL.graphence.message.removeSuccess());
-				query();
-			},
-			catch: (graphQLErrors) => {
-				console.error(graphQLErrors);
-				errors = buildGraphQLErrors(graphQLErrors);
-				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
-				if (globalError) {
-					messageBoxs.open({
-						title: $LL.graphence.message.removeFailed(),
-						content: globalError,
-						buttonName: $LL.ui.button.back(),
-						buttonType: 'neutral',
-						confirm: () => {
-							query();
-							return true;
-						}
-					});
-				}
-			}
-		});
-	}
-
-	const removeRows = () => {
-		dispatch('mutation', {
-			args: {
-				where: { name: { opr: 'IN', arr: selectedIdList} },
-				isDeprecated: true
-			},
-			then: (data) => {
-				notifications.success($LL.graphence.message.removeSuccess());
-				query();
-			},
-			catch: (graphQLErrors) => {
-				console.error(graphQLErrors);
-				errors = buildGraphQLErrors(graphQLErrors);
-				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
-				if (globalError) {
-					messageBoxs.open({
-						title: $LL.graphence.message.removeFailed(),
-						content: globalError,
-						buttonName: $LL.ui.button.back(),
-						buttonType: 'neutral',
-						confirm: () => {
-							query();
-							return true;
-						}
-					});
-				}
-			}
-		});
-	};
-
-	const unbindRows = (selectedIdList: (string | null | undefined)[]) => {
-		dispatch('parentMutation', {
-			args: selectedIdList
-				.map((id) => {
-					return {where: { name: { val: id } }, isDeprecated: true};
-				}),
-			then: (data) => {
-				notifications.success($LL.graphence.message.unbindSuccess());
-				query();
-			},
-			catch: (graphQLErrors) => {
-				console.error(graphQLErrors);
-				errors = buildGraphQLErrors(graphQLErrors);
-				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
-				if (globalError) {
-					messageBoxs.open({
-						title: $LL.graphence.message.unbindFailed(),
-						content: globalError,
-						buttonName: $LL.ui.button.back(),
-						buttonType: 'neutral',
-						confirm: () => {
-							query();
-							return true;
-						}
-					});
-				}
-			}
-		});
-	};
 </script>
 
-<TableHead
-	title={$LL.graphql.objects.Permission.name()}
-	showRemoveButton={permissions.auth('Permission::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
-	showUnbindButton={permissions.auth('Permission::*::WRITE') && showUnbindButton && selectedIdList.length > 0}
-	showSaveButton={permissions.auth('Permission::*::WRITE') && showSaveButton}
-	showGotoSelectButton={permissions.auth('Permission::*::WRITE') && showGotoSelectButton}
-	{showBackButton}
-	on:create
-	on:search={(e) => search(e.detail.value)}
-	on:save={(e) => dispatch('save', { nodes })}
-	on:remove={(e) => {
-		messageBoxs.open({
-			title: $LL.graphence.components.table.removeModalTitle(),
-			buttonName: $LL.graphence.components.table.removeBtn(),
-			buttonType: 'error',
-			confirm: () => {
-				removeRows();
-				return true;
-			}
-		});
-	}}
-	on:unbind={(e) =>
-		messageBoxs.open({
-			title: $LL.graphence.components.table.unbindModalTitle(),
-			buttonName: $LL.graphence.components.table.unbindBtn(),
-			buttonType: 'error',
-			confirm: () => {
-				unbindRows(selectedIdList);
-				return true;
-			},
-			button1: {
-				name: $LL.graphence.components.table.removeBtn(),
-				className: 'btn-error',
-				onClick: () => {
-					removeRows();
-					return true;
-				}
-			}
-		})}
-	on:gotoSelect
-	on:back
-/>
+<div class="flex justify-end md:justify-between">
+	<span class="max-sm:hidden text-xl font-semibold self-center">
+		{$LL.graphql.objects.Permission.name()}
+	</span>
+	<Buttons
+		{showRemoveButton}
+		{showUnbindButton}
+		{showSaveButton}
+		{showCreateButton}
+		{showSelectButton}
+		{showBackButton}
+		on:save={(e) => dispatch('save', { value })}
+		on:remove={(e) =>
+			dispatch('remove', {
+				value: value?.filter((node) => selectedIdList.includes(node?.name))
+			})}
+		on:unbind={(e) =>
+			dispatch('unbind', {
+				value: value?.filter((node) => selectedIdList.includes(node?.name))
+			})}
+		on:select={(e) =>
+			dispatch('select', {
+				value: value?.filter((node) => selectedIdList.includes(node?.name))
+			})}
+		on:back
+	/>
+</div>
 <div class="divider" />
-<Table className="table-zebra table-pin-rows table-pin-cols md:table-sm">
+<Table {zIndex} class={className}>
 	<thead>
-		<tr class="{z_class2}">
-			<th class="w-12">
+		<tr class="z-[{zIndex + 2}]">
+			<th class="p-1">
 				<label>
 					<input
 						type="checkbox"
-						class="checkbox md:checkbox-sm"
+						class="checkbox"
 						bind:checked={selectAll}
 						on:change={(e) => {
-							if (nodes && nodes.length > 0) {
-								selectedIdList = selectAll ? nodes.map((node) => node?.name) : [];
+							if (value && value.length > 0) {
+								selectedIdList = selectAll ? value.map((node) => node?.name) : [];
 							}
 						}}
 					/>
 				</label>
 			</th>
-			{#if permissions.auth('Permission::name::*')}
-			<IDTh
-				name={$LL.graphql.objects.Permission.fields.name.name()}
-				bind:value={args.name}
-				bind:sort={orderBy.name}
-				on:filter={(e) => query()}
-			/>
+			{#if !fields.name.hidden}
+				<IDTh
+					name={$LL.graphql.objects.Permission.fields.name.name()}
+					bind:value={args.name}
+					bind:sort={orderBy.name}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
 			{/if}
-			{#if permissions.auth('Permission::description::*')}
-			<StringTh
-				name={$LL.graphql.objects.Permission.fields.description.name()}
-				bind:value={args.description}
-				bind:sort={orderBy.description}
-				on:filter={(e) => query()}
-			/>
+			{#if !fields.description.hidden}
+				<StringTh
+					name={$LL.graphql.objects.Permission.fields.description.name()}
+					bind:value={args.description}
+					bind:sort={orderBy.description}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
 			{/if}
-			{#if permissions.auth('Permission::field::*')}
-			<StringTh
-				name={$LL.graphql.objects.Permission.fields.field.name()}
-				bind:value={args.field}
-				bind:sort={orderBy.field}
-				on:filter={(e) => query()}
-			/>
+			{#if !fields.field.hidden}
+				<StringTh
+					name={$LL.graphql.objects.Permission.fields.field.name()}
+					bind:value={args.field}
+					bind:sort={orderBy.field}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
 			{/if}
-			{#if permissions.auth('Permission::type::*')}
-			<StringTh
-				name={$LL.graphql.objects.Permission.fields.type.name()}
-				bind:value={args.type}
-				bind:sort={orderBy.type}
-				on:filter={(e) => query()}
-			/>
+			{#if !fields.type.hidden}
+				<StringTh
+					name={$LL.graphql.objects.Permission.fields.type.name()}
+					bind:value={args.type}
+					bind:sort={orderBy.type}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
 			{/if}
-			{#if permissions.auth('Permission::permissionType::*')}
-			<PermissionTypeTh
-				name={$LL.graphql.objects.Permission.fields.permissionType.name()}
-				bind:value={args.permissionType}
-				bind:sort={orderBy.permissionType}
-				on:filter={(e) => query()}
-			/>
+			{#if !fields.permissionType.hidden}
+				<PermissionTypeTh
+					name={$LL.graphql.objects.Permission.fields.permissionType.name()}
+					bind:value={args.permissionType}
+					bind:sort={orderBy.permissionType}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
 			{/if}
-			{#if permissions.auth('Permission::roles::*')}
-			<RoleTh
-				name={$LL.graphql.objects.Permission.fields.roles.name()}
-				bind:value={args.roles}
-				on:filter={(e) => query()}
-			/>
+			{#if !fields.roles.hidden}
+				<RoleTh
+					name={$LL.graphql.objects.Permission.fields.roles.name()}
+					bind:value={args.roles}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
 			{/if}
-			{#if permissions.auth('Permission::realm::*')}
-			<RealmTh
-				name={$LL.graphql.objects.Permission.fields.realm.name()}
-				bind:value={args.realm}
-				on:filter={(e) => query()}
-			/>
+			{#if !fields.realm.hidden}
+				<RealmTh
+					name={$LL.graphql.objects.Permission.fields.realm.name()}
+					bind:value={args.realm}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
 			{/if}
 			<th />
 		</tr>
 	</thead>
+	<tbody>
 	{#if isFetching}
-		<TableLoading rows={10} cols={7 + 2}/>
+		<tr>
+			<td colspan="999">
+				<Loading />
+			</td>
+		</tr>
 	{:else}
-		<tbody>
-			{#if nodes && nodes.length > 0}
-				{#each nodes as node, row}
-					{#if node}
-						<tr class="hover">
-							<th class="{z_class} w-12">
-								<label>
-									<input type="checkbox" class="checkbox md:checkbox-sm" bind:group={selectedIdList} value={node.name} />
-								</label>
-							</th>
-							{#if permissions.auth('Permission::name::*')}
-							<IDTd
-								name="name"
-								bind:value={node.name}
-								readonly
-								errors={errors?.[row]?.iterms?.name}
-							/>
+		{#if value && value.length > 0}
+			{#each value as node, row}
+				{#if node}
+					<tr class="hover">
+						<th class="z-[{zIndex}] p-1">
+							<label>
+								<input
+									type="checkbox"
+									class="checkbox"
+									bind:group={selectedIdList}
+									value={node.name}
+								/>
+							</label>
+						</th>
+						<slot name="name">
+							{#if !fields.name.hidden}
+								<IDTd
+									name="name"
+									bind:value={node.name}
+									readonly
+									errors={errors?.[row]?.iterms?.name}
+								/>
 							{/if}
-							{#if permissions.auth('Permission::description::*')}
-							<StringTd
-								name="description"
-								bind:value={node.description}
-								on:save={(e) => updateField({ description: node?.description, where: { name: { val: node?.name } } }, row)}
-								readonly={!permissions.auth('Permission::description::WRITE')}
-								errors={errors?.[row]?.iterms?.description}
-							/>
+						</slot>
+						<slot name="description">
+							{#if !fields.description.hidden}
+								<StringTd
+									name="description"
+									bind:value={node.description}
+									on:save={(e) =>
+										dispatch('save', {
+											value: { description: node?.description, where: { name: { val: node?.name } } }
+										})}
+									readonly={fields.description.readonly}
+									disabled={fields.description.disabled}
+									errors={errors?.[row]?.iterms?.description}
+								/>
 							{/if}
-							{#if permissions.auth('Permission::field::*')}
-							<StringTd
-								name="field"
-								bind:value={node.field}
-								on:save={(e) => updateField({ field: node?.field, where: { name: { val: node?.name } } }, row)}
-								readonly={!permissions.auth('Permission::field::WRITE')}
-								errors={errors?.[row]?.iterms?.field}
-							/>
+						</slot>
+						<slot name="field">
+							{#if !fields.field.hidden}
+								<StringTd
+									name="field"
+									bind:value={node.field}
+									on:save={(e) =>
+										dispatch('save', {
+											value: { field: node?.field, where: { name: { val: node?.name } } }
+										})}
+									readonly={fields.field.readonly}
+									disabled={fields.field.disabled}
+									errors={errors?.[row]?.iterms?.field}
+								/>
 							{/if}
-							{#if permissions.auth('Permission::type::*')}
-							<StringTd
-								name="type"
-								bind:value={node.type}
-								on:save={(e) => updateField({ type: node?.type, where: { name: { val: node?.name } } }, row)}
-								readonly={!permissions.auth('Permission::type::WRITE')}
-								errors={errors?.[row]?.iterms?.type}
-							/>
+						</slot>
+						<slot name="type">
+							{#if !fields.type.hidden}
+								<StringTd
+									name="type"
+									bind:value={node.type}
+									on:save={(e) =>
+										dispatch('save', {
+											value: { type: node?.type, where: { name: { val: node?.name } } }
+										})}
+									readonly={fields.type.readonly}
+									disabled={fields.type.disabled}
+									errors={errors?.[row]?.iterms?.type}
+								/>
 							{/if}
-							{#if permissions.auth('Permission::permissionType::*')}
-							<PermissionTypeTd
-								name="permissionType"
-								bind:value={node.permissionType}
-								on:save={(e) => updateField({ permissionType: node?.permissionType, where: { name: { val: node?.name } } }, row)}
-								readonly={!permissions.auth('Permission::permissionType::WRITE')}
-								errors={errors?.[row]?.iterms?.permissionType}
-							/>
+						</slot>
+						<slot name="permissionType">
+							{#if !fields.permissionType.hidden}
+								<PermissionTypeTd
+									name="permissionType"
+									bind:value={node.permissionType}
+									on:save={(e) =>
+										dispatch('save', {
+											value: { permissionType: node?.permissionType, where: { name: { val: node?.name } } }
+										})}
+									readonly={fields.permissionType.readonly}
+									disabled={fields.permissionType.disabled}
+									errors={errors?.[row]?.iterms?.permissionType}
+								/>
 							{/if}
-							{#if permissions.auth('Permission::roles::*')}
-							<RoleSelectTd
-								name="roles"
-								bind:value={node.roles}
-								list
-								errors={errors?.[row]?.iterms?.roles}
-								readonly={!permissions.auth('Permission::roles::WRITE')}
-								on:save={(e) =>
-									updateField({ roles: node?.roles, where: { name: {val: node?.name } } }, row)}
-							/>
+						</slot>
+						<slot name="roles">
+							{#if !fields.roles.hidden}
+								<RoleSelectTd
+									name="roles"
+									bind:value={node.roles}
+									list
+									errors={errors?.[row]?.iterms?.roles}
+									readonly={fields.roles.readonly}
+									disabled={fields.roles.disabled}
+									on:save={(e) =>
+										dispatch('save', {
+											value: { roles: node?.roles, where: { name: { val: node?.name } } }
+										})}
+								/>
 							{/if}
-							{#if permissions.auth('Permission::realm::*')}
-							<ObjectTd name="realm" namedStruct={node.realm} errors={errors?.[row]?.iterms?.realm} path={`${node.name}/realm`} on:gotoField />
+						</slot>
+						<slot name="realm">
+							{#if !fields.realm.hidden}
+								<ObjectTd
+									namedStruct={node.realm}
+									errors={errors?.[row]?.iterms?.realm}
+									path={`${node.name}/realm`}
+									on:goto
+								/>
 							{/if}
-							{#if permissions.auth('Permission::*::WRITE')}
-							<th class="{z_class} hover:{z_class3} w-24">
-								<div class="flex space-x-1">
+						</slot>
+						<th class="z-[{zIndex}] hover:z-[{zIndex + 3}] p-1">
+							<div class="flex space-x-1">
+								{#if showEditButton}
 									<div class="tooltip" data-tip={$LL.graphence.components.table.editBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
-											on:click|preventDefault={(e) => {
-												if (node && node.name) {
-													dispatch('edit', {id: node.name});
-												}
-											}}
+											on:click|preventDefault={(e) => dispatch('edit', { value: node })}
 										>
 											<Icon src={PencilSquare} solid />
 										</button>
 									</div>
-									{#if showUnbindButton}
-										<div class="tooltip" data-tip={$LL.graphence.components.table.unbindBtn()}>
-											<button
-												class="btn btn-square btn-ghost btn-xs"
-												on:click|preventDefault={(e) => {
-													messageBoxs.open({
-														title: $LL.graphence.components.table.unbindModalTitle(),
-														buttonName: $LL.graphence.components.table.unbindBtn(),
-														buttonType: 'error',
-														confirm: () => {
-															if (node?.name) {
-																unbindRows([node.name]);
-															}
-															return true;
-														},
-														button1: {
-															name: $LL.graphence.components.table.removeBtn(),
-															className: 'btn-error',
-															onClick: () => {
-																if (node?.name) {
-																	removeRow(node.name);
-																}
-																return true;
-															}
-														}
-													});
-												}}
-											>
-												<Icon src={ArchiveBoxXMark} solid />
-											</button>
-										</div>
-									{:else}
-										<div class="tooltip" data-tip={$LL.graphence.components.table.removeBtn()}>
-											<button
-												class="btn btn-square btn-ghost btn-xs"
-												on:click|preventDefault={(e) => {
-													messageBoxs.open({
-														title: $LL.graphence.components.table.removeModalTitle(),
-														buttonName: $LL.graphence.components.table.removeBtn(),
-														buttonType: 'error',
-														confirm: () => {
-															if (node?.name) {
-																removeRow(node.name);
-															}
-															return true;
-														}
-													});
-												}}
-											>
-												<Icon src={Trash} solid />
-											</button>
-										</div>
-									{/if}
-								</div>
-							</th>
-							{/if}
-						</tr>
-					{/if}
-				{/each}
-			{:else}
-				<TableEmpty cols={7 + 2}/>
-			{/if}
-		</tbody>
+								{/if}
+								{#if showUnbindButton}
+									<div class="tooltip" data-tip={$LL.graphence.components.table.unbindBtn()}>
+										<button
+											class="btn btn-square btn-ghost btn-xs"
+											on:click|preventDefault={(e) => dispatch('unbind', { value: [node] })}
+										>
+											<Icon src={ArchiveBoxXMark} solid />
+										</button>
+									</div>
+								{/if}
+								{#if showRemoveButton}
+									<div class="tooltip" data-tip={$LL.graphence.components.table.removeBtn()}>
+										<button
+											class="btn btn-square btn-ghost btn-xs"
+											on:click|preventDefault={(e) => dispatch('remove', { value: [node] })}
+										>
+											<Icon src={Trash} solid />
+										</button>
+									</div>
+								{/if}
+							</div>
+						</th>
+					</tr>
+				{/if}
+			{/each}
+		{:else}
+			<tr>
+				<td colspan="999">
+					<Empty />
+				</td>
+			</tr>
+		{/if}
 	{/if}
+	</tbody>
 </Table>

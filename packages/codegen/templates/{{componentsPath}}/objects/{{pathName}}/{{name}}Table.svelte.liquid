@@ -1,30 +1,21 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import type { Errors{%- if useAuth -%}, PermissionsStore{%- endif -%} } from '@graphace/commons';
-	import { type GraphQLError, buildArguments } from '@graphace/graphql';
-	import { Table, TableHead, TableLoading, TableEmpty, messageBoxs, notifications, z_index } from '@graphace/ui';
-	import { ObjectTd, {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td{% if forloop.last == false %}, {% endif %}{% endfor %}{% if hasFileField %}, FileTd{% endif %} } from '@graphace/ui-graphql';
-	{%- if imports %}
-	{%- for import in imports %}
-	{{ import }}
-	{%- endfor %}
-	{%- endif %}
-	{%- for enum in enums %}
-	import {{ enum }}Th from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Th.svelte';
-	import {{ enum }}Td from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Td.svelte';
-	{%- endfor %}
-	{%- for object in objects %}
-	import {{ object }}Th from '~/{{ objectsPath }}/{{ object | paramCase }}/{{ object }}Th.svelte';
-	{%- endfor %}
-	{%- if selectImports %}
-	{%- for selectType in selectImports %}
-	import {{ selectType }}SelectTd from '~/{{ objectsPath }}/{{ selectType | paramCase }}/{{ selectType }}SelectTd.svelte';
-	{%- endfor %}
-	{%- endif %}
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
-	import { buildGraphQLErrors, buildGlobalGraphQLErrorMessage } from '~/utils';
+	import type { Errors } from '@graphace/commons';
+	import { Buttons, Empty, Loading, Table } from '@graphace/ui';
+	import { type Option, {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td, {% endfor %}{% if hasFileField %}FileTd, {% endif %}ObjectTd } from '@graphace/ui-graphql';
+	{%- for enum in enums %}
+	import {{ enum }}Th from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Th.svelte';
+	import {{ enum }}Td from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Td.svelte';
+	{%- endfor %}
+	{%- for object in objects %}
+	import {{ object }}Th from '~/{{ componentsPath }}/objects/{{ object | paramCase }}/{{ object }}Th.svelte';
+	{%- endfor %}
+	{%- for select in selects %}
+	import {{ select }}SelectTd from '~/{{ componentsPath }}/objects/{{ select | paramCase }}/{{ select }}SelectTd.svelte';
+	{%- endfor %}
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type {
 		{{ name }}OrderBy,
@@ -32,473 +23,243 @@
 		{{ name }}Input
 	} from '~/{{ schemaTypesPath }}';
 
-	export let nodes: ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
+	export let value: ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
+	export let args: {{ queryTypeName }}{{ name }}ListArgs = {};
+	export let orderBy: {{ name }}OrderBy = {};
+	export let selectedIdList: (string | null | undefined)[] = [];
 	export let isFetching: boolean;
 	export let errors: Record<number, Errors> = {};
-	export let showSaveButton: boolean = true;
-	export let showRemoveButton: boolean = true;
+	export let showEditButton: boolean = false;
+	export let showRemoveButton: boolean = false;
 	export let showUnbindButton: boolean = false;
-	export let showBackButton: boolean = true;
-	export let showGotoSelectButton: boolean = false;
+	export let showSaveButton: boolean = false;
+	export let showCreateButton: boolean = false;
+	export let showSelectButton: boolean = false;
+	export let showBackButton: boolean = false;
+	export let zIndex: number = 0;
+	let className: string | undefined = undefined;
+	export { className as class };
+	export let fields: {
+		{%- for field in fields %}
+		{{ field.fieldName }}: Option;
+		{%- endfor %}
+	} = {
+		{%- for field in fields %}
+		{{ field.fieldName }}: { readonly: false, disabled: false, hidden: false }{% if forloop.last == false %},{% endif %}
+		{%- endfor %}
+	};
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
-	{%- if useAuth %}
-	const permissions = getContext<PermissionsStore>('permissions');
-	{%- endif %}
-	const z_class = z_index.top(1);
-	const z_class2 = z_index.top(2);
-	const z_class3 = z_index.top(3);
 
 	const dispatch = createEventDispatcher<{
-		fetch: {
-			args: {{ queryTypeName }}{{ name }}ListArgs;
-			then: (data: ({{ name }}Input | null | undefined)[] | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		};
-		mutation: {
-			args: {{ name }}Input;
-			then: (data: {{ name }}Input | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		};
-		parentMutation: {
-			args: {{ name }}Input[];
-			then: (data: {{ name }}Input[] | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		};
-		edit: { id: string };
+		query: { args: {{ queryTypeName }}{{ name }}ListArgs; orderBy: {{ name }}OrderBy };
+		remove: { value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined };
+		unbind: { value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined };
+		edit: { value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined };
+		save: { value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined };
+		select: { value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined };
 		create: {};
-		save: { nodes: ({{ name }}Input | null | undefined)[] | null | undefined };
-		gotoSelect: {};
 		back: {};
 	}>();
 
-	export let args: {{ queryTypeName }}{{ name }}ListArgs = {};
-	export let orderBy: {{ name }}OrderBy = {};
-
 	let selectAll: boolean;
-	export let selectedIdList: (string | null | undefined)[] = [];
-
-	export const query = () => {
-		let _args: {{ queryTypeName }}{{ name }}ListArgs = buildArguments(args);
-
-		if (Object.keys(orderBy).length > 0) {
-			_args.orderBy = orderBy;
-		} else {
-			_args.orderBy = undefined;
-		}
-
-		dispatch('fetch', {
-			args: _args,
-			then: (data) => {
-				errors = {};
-			},
-			catch: (errors) => {
-				console.error(errors);
-				notifications.error($LL.{{ appName }}.message.requestFailed());
-			}
-		});
-	};
-
-	export const search = (searchValue: string | undefined) => {
-		let _args: {{ queryTypeName }}{{ name }}ListArgs = {};
-		if (searchValue) {
-			_args.cond = 'OR';
-			{%- if fields %}
-			{%- for field in fields %}
-			{%- if field.isScalarType and field.inQueryArgs and field.fieldTypeName == 'String' %}
-			_args.{{ field.fieldName }} = { opr: 'LK', val: `%${searchValue}%` };
-			{%- endif %}
-			{%- endfor %}
-			{%- endif %}
-		} else {
-			_args.cond = undefined;
-			{%- if fields %}
-			{%- for field in fields %}
-			{%- if field.isScalarType and field.inQueryArgs and field.fieldTypeName == 'String' %}
-			_args.{{ field.fieldName }} = undefined;
-			{%- endif %}
-			{%- endfor %}
-			{%- endif %}
-		}
-
-		dispatch('fetch', {
-			args: _args,
-			then: (data) => {
-				errors = {};
-			},
-			catch: (errors) => {
-				console.error(errors);
-				notifications.error($LL.{{ appName }}.message.requestFailed());
-			}
-		});
-	};
-
-	const updateField = (args: {{ name }}Input | null | undefined, row?: number) => {
-		if (args) {
-			dispatch('mutation', {
-				args,
-				then: (data) => {
-					if (nodes && row) {
-						nodes[row] = data;
-					}
-					notifications.success($LL.{{ appName }}.message.saveSuccess());
-				},
-				catch: (graphQLErrors) => {
-					console.error(graphQLErrors);
-					errors = buildGraphQLErrors(graphQLErrors);
-					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
-					if (globalError) {
-						messageBoxs.open({
-							title: $LL.{{ appName }}.message.saveFailed(),
-							content: globalError,
-							buttonName: $LL.ui.button.back(),
-							buttonType: 'neutral',
-							confirm: () => {
-								query();
-								return true;
-							}
-						});
-					}
-				}
-			});
-		}
-	}
-
-	const removeRow = (id: string) => {
-		dispatch('mutation', {
-			args: { where: { {{ idName }}: { val: id } }, isDeprecated: true },
-			then: (data) => {
-				notifications.success($LL.{{ appName }}.message.removeSuccess());
-				query();
-			},
-			catch: (graphQLErrors) => {
-				console.error(graphQLErrors);
-				errors = buildGraphQLErrors(graphQLErrors);
-				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
-				if (globalError) {
-					messageBoxs.open({
-						title: $LL.{{ appName }}.message.removeFailed(),
-						content: globalError,
-						buttonName: $LL.ui.button.back(),
-						buttonType: 'neutral',
-						confirm: () => {
-							query();
-							return true;
-						}
-					});
-				}
-			}
-		});
-	}
-
-	const removeRows = () => {
-		dispatch('mutation', {
-			args: {
-				where: { {{ idName }}: { opr: 'IN', arr: selectedIdList} },
-				isDeprecated: true
-			},
-			then: (data) => {
-				notifications.success($LL.{{ appName }}.message.removeSuccess());
-				query();
-			},
-			catch: (graphQLErrors) => {
-				console.error(graphQLErrors);
-				errors = buildGraphQLErrors(graphQLErrors);
-				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
-				if (globalError) {
-					messageBoxs.open({
-						title: $LL.{{ appName }}.message.removeFailed(),
-						content: globalError,
-						buttonName: $LL.ui.button.back(),
-						buttonType: 'neutral',
-						confirm: () => {
-							query();
-							return true;
-						}
-					});
-				}
-			}
-		});
-	};
-
-	const unbindRows = (selectedIdList: (string | null | undefined)[]) => {
-		dispatch('parentMutation', {
-			args: selectedIdList
-				.map((id) => {
-					return {where: { {{ idName }}: { val: id } }, isDeprecated: true};
-				}),
-			then: (data) => {
-				notifications.success($LL.{{ appName }}.message.unbindSuccess());
-				query();
-			},
-			catch: (graphQLErrors) => {
-				console.error(graphQLErrors);
-				errors = buildGraphQLErrors(graphQLErrors);
-				const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
-				if (globalError) {
-					messageBoxs.open({
-						title: $LL.{{ appName }}.message.unbindFailed(),
-						content: globalError,
-						buttonName: $LL.ui.button.back(),
-						buttonType: 'neutral',
-						confirm: () => {
-							query();
-							return true;
-						}
-					});
-				}
-			}
-		});
-	};
 </script>
 
-<TableHead
-	title={$LL.graphql.objects.{{ name }}.name()}
-	{%- if useAuth %}
-	showRemoveButton={permissions.auth('{{ name }}::*::WRITE') && showRemoveButton && selectedIdList.length > 0}
-	showUnbindButton={permissions.auth('{{ name }}::*::WRITE') && showUnbindButton && selectedIdList.length > 0}
-	showSaveButton={permissions.auth('{{ name }}::*::WRITE') && showSaveButton}
-	showGotoSelectButton={permissions.auth('{{ name }}::*::WRITE') && showGotoSelectButton}
-	{%- else %}
-	showRemoveButton={showRemoveButton && selectedIdList.length > 0}
-	showUnbindButton={showUnbindButton && selectedIdList.length > 0}
-	{showSaveButton}
-	{showGotoSelectButton}
-	{%- endif %}
-	{showBackButton}
-	on:create
-	on:search={(e) => search(e.detail.value)}
-	on:save={(e) => dispatch('save', { nodes })}
-	on:remove={(e) => {
-		messageBoxs.open({
-			title: $LL.{{ appName }}.components.table.removeModalTitle(),
-			buttonName: $LL.{{ appName }}.components.table.removeBtn(),
-			buttonType: 'error',
-			confirm: () => {
-				removeRows();
-				return true;
-			}
-		});
-	{% raw %}}{% endraw %}}
-	on:unbind={(e) =>
-		messageBoxs.open({
-			title: $LL.{{ appName }}.components.table.unbindModalTitle(),
-			buttonName: $LL.{{ appName }}.components.table.unbindBtn(),
-			buttonType: 'error',
-			confirm: () => {
-				unbindRows(selectedIdList);
-				return true;
-			},
-			button1: {
-				name: $LL.{{ appName }}.components.table.removeBtn(),
-				className: 'btn-error',
-				onClick: () => {
-					removeRows();
-					return true;
-				}
-			}
-		})}
-	on:gotoSelect
-	on:back
-/>
+<div class="flex justify-end md:justify-between">
+	<span class="max-sm:hidden text-xl font-semibold self-center">
+		{$LL.graphql.objects.{{ name }}.name()}
+	</span>
+	<Buttons
+		{showRemoveButton}
+		{showUnbindButton}
+		{showSaveButton}
+		{showCreateButton}
+		{showSelectButton}
+		{showBackButton}
+		on:save={(e) => dispatch('save', { value })}
+		on:remove={(e) =>
+			dispatch('remove', {
+				value: value?.filter((node) => selectedIdList.includes(node?.{{ idName }}))
+			})}
+		on:unbind={(e) =>
+			dispatch('unbind', {
+				value: value?.filter((node) => selectedIdList.includes(node?.{{ idName }}))
+			})}
+		on:select={(e) =>
+			dispatch('select', {
+				value: value?.filter((node) => selectedIdList.includes(node?.{{ idName }}))
+			})}
+		on:back
+	/>
+</div>
 <div class="divider" />
-<Table className="table-zebra table-pin-rows table-pin-cols md:table-sm">
+<Table {zIndex} class={className}>
 	<thead>
-		<tr class="{z_class2}">
-			<th class="w-12">
+		<tr class="z-[{zIndex + 2}]">
+			<th class="p-1">
 				<label>
 					<input
 						type="checkbox"
-						class="checkbox md:checkbox-sm"
+						class="checkbox"
 						bind:checked={selectAll}
 						on:change={(e) => {
-							if (nodes && nodes.length > 0) {
-								selectedIdList = selectAll ? nodes.map((node) => node?.{{ idName }}) : [];
+							if (value && value.length > 0) {
+								selectedIdList = selectAll ? value.map((node) => node?.{{ idName }}) : [];
 							}
-						{% raw %}}{% endraw %}}
+						{% raw %}}}{% endraw %}
 					/>
 				</label>
 			</th>
-			{%- if fields %}
 			{%- for field in fields %}
-			{%- if useAuth %}
-			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
-			{%- endif %}
-			{%- if field.inQueryArgs %}
-			{%- if field.isScalarType or field.isEnumType %}
-			<{{ field.fieldTypeName }}Th
-				name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-				bind:value={args.{{ field.fieldName }}}
-				{%- if field.isListType == false %}
-				bind:sort={orderBy.{{ field.fieldName }}}
+			{#if !fields.{{ field.fieldName }}.hidden}
+				{%- if field.isScalarType or field.isEnumType %}
+				<{{ field.fieldTypeName }}Th
+					name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+					bind:value={args.{{ field.fieldName }}}
+					{%- if field.isListType == false %}
+					bind:sort={orderBy.{{ field.fieldName }}}
+					{%- endif %}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
+				{%- elsif field.isFile %}
+				<StringTh
+					name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+					bind:value={args.{{ field.fieldName }}.name}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
+				{%- elsif field.inQueryArgs %}
+				<{{ field.fieldTypeName }}Th
+					name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+					bind:value={args.{{ field.fieldName }}}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
+				{%- else %}
+				<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
 				{%- endif %}
-				on:filter={(e) => query()}
-			/>
-			{%- else %}
-			<{{ field.fieldTypeName }}Th
-				name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-				bind:value={args.{{ field.fieldName }}}
-				on:filter={(e) => query()}
-			/>
-			{%- endif %}
-			{%- else %}
-			<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
-			{%- endif %}
-			{%- if useAuth %}
 			{/if}
-			{%- endif %}
 			{%- endfor %}
-			{%- endif %}
 			<th />
 		</tr>
 	</thead>
+	<tbody>
 	{#if isFetching}
-		<TableLoading rows={10} cols={% raw %}{{% endraw %}{{cols}} + 2}/>
+		<tr>
+			<td colspan="999">
+				<Loading />
+			</td>
+		</tr>
 	{:else}
-		<tbody>
-			{#if nodes && nodes.length > 0}
-				{#each nodes as node, row}
-					{#if node}
-						<tr class="hover">
-							<th class="{z_class} w-12">
-								<label>
-									<input type="checkbox" class="checkbox md:checkbox-sm" bind:group={selectedIdList} value={node.{{ idName }}} />
-								</label>
-							</th>
-							{%- if fields %}
-							{%- for field in fields %}
-							{%- if useAuth %}
-							{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
-							{%- endif %}
-							{%- if field.component %}
-							{{ field.component }}
-							{%- else %}
-							{%- if field.isScalarType or field.isEnumType or field.fieldTypeName == 'File' %}
-							<{{ field.fieldTypeName }}Td
-								name="{{ field.fieldName }}"
-								bind:value={node.{{ field.fieldName }}}
-								{%- if field.isListType %}
-								list
-								{%- endif %}
-								{%- if field.inMutationArgs and field.fieldName != idName %}
-								on:save={(e) => updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }, row)}
-								{%- if useAuth %}
-								readonly={!permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE')}
-								{%- endif %}
+		{#if value && value.length > 0}
+			{#each value as node, row}
+				{#if node}
+					<tr class="hover">
+						<th class="z-[{zIndex}] p-1">
+							<label>
+								<input
+									type="checkbox"
+									class="checkbox"
+									bind:group={selectedIdList}
+									value={node.{{ idName }}}
+								/>
+							</label>
+						</th>
+						{%- for field in fields %}
+						<slot name="{{ field.fieldName }}">
+							{#if !fields.{{ field.fieldName }}.hidden}
+								{%- if field.isScalarType or field.isEnumType or field.isFile %}
+								<{{ field.fieldTypeName }}Td
+									name="{{ field.fieldName }}"
+									bind:value={node.{{ field.fieldName }}}
+									{%- if field.isListType %}
+									list
+									{%- endif %}
+									{%- if field.inMutationArgs and field.fieldName != idName %}
+									on:save={(e) =>
+										dispatch('save', {
+											value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
+										})}
+									readonly={fields.{{ field.fieldName }}.readonly}
+									disabled={fields.{{ field.fieldName }}.disabled}
+									{%- else %}
+									readonly
+									{%- endif %}
+									errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
+									{%- if field.isFile %}
+									on:upload
+									{%- endif %}
+								/>
+								{%- elsif field.isSelect %}
+								<{{ field.fieldTypeName }}SelectTd
+									name="{{ field.fieldName }}"
+									bind:value={node.{{ field.fieldName }}}
+									{%- if field.isListType %}
+									list
+									{%- endif %}
+									errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
+									readonly={fields.{{ field.fieldName }}.readonly}
+									disabled={fields.{{ field.fieldName }}.disabled}
+									on:save={(e) =>
+										dispatch('save', {
+											value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
+										})}
+								/>
 								{%- else %}
-								readonly
+								<ObjectTd
+									{%- if field.isNamed %}
+									namedStruct={node.{{ field.fieldName }}}
+									{%- endif %}
+									errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
+									path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`}
+									on:goto
+								/>
 								{%- endif %}
-								errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
-								{%- if field.fieldTypeName == 'File' %}
-								on:upload
-								{%- endif %}
-							/>
-							{%- else %}
-							{%- if field.select %}
-							<{{ field.fieldTypeName }}SelectTd
-								name="{{ field.fieldName }}"
-								bind:value={node.{{ field.fieldName }}}
-								{%- if field.isListType %}
-								list
-								{%- endif %}
-								errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
-								{%- if useAuth %}
-								readonly={!permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE')}
-								{%- endif %}
-								on:save={(e) =>
-									updateField({ {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: {val: node?.{{ idName }} } } }, row)}
-							/>
-							{%- else %}
-							<ObjectTd name="{{ field.fieldName }}"{% if field.isNamed %} namedStruct={node.{{ field.fieldName }}}{% endif %} errors={errors?.[row]?.iterms?.{{ field.fieldName }}} path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`} on:gotoField />
-							{%- endif %}
-							{%- endif %}
-							{%- endif %}
-							{%- if useAuth %}
 							{/if}
-							{%- endif %}
-							{%- endfor %}
-							{%- endif %}
-							{%- if useAuth %}
-							{#if permissions.auth('{{ name }}::*::WRITE')}
-							{%- endif %}
-							<th class="{z_class} hover:{z_class3} w-24">
-								<div class="flex space-x-1">
+						</slot>
+						{%- endfor %}
+						<th class="z-[{zIndex}] hover:z-[{zIndex + 3}] p-1">
+							<div class="flex space-x-1">
+								{#if showEditButton}
 									<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.editBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
-											on:click|preventDefault={(e) => {
-												if (node && node.{{ idName }}) {
-													dispatch('edit', {id: node.{{ idName }}});
-												}
-											{% raw %}}{% endraw %}}
+											on:click|preventDefault={(e) => dispatch('edit', { value: node })}
 										>
 											<Icon src={PencilSquare} solid />
 										</button>
 									</div>
-									{#if showUnbindButton}
-										<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.unbindBtn()}>
-											<button
-												class="btn btn-square btn-ghost btn-xs"
-												on:click|preventDefault={(e) => {
-													messageBoxs.open({
-														title: $LL.{{ appName }}.components.table.unbindModalTitle(),
-														buttonName: $LL.{{ appName }}.components.table.unbindBtn(),
-														buttonType: 'error',
-														confirm: () => {
-															if (node?.{{ idName }}) {
-																unbindRows([node.{{ idName }}]);
-															}
-															return true;
-														},
-														button1: {
-															name: $LL.{{ appName }}.components.table.removeBtn(),
-															className: 'btn-error',
-															onClick: () => {
-																if (node?.{{ idName }}) {
-																	removeRow(node.{{ idName }});
-																}
-																return true;
-															}
-														}
-													});
-												{% raw %}}{% endraw %}}
-											>
-												<Icon src={ArchiveBoxXMark} solid />
-											</button>
-										</div>
-									{:else}
-										<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.removeBtn()}>
-											<button
-												class="btn btn-square btn-ghost btn-xs"
-												on:click|preventDefault={(e) => {
-													messageBoxs.open({
-														title: $LL.{{ appName }}.components.table.removeModalTitle(),
-														buttonName: $LL.{{ appName }}.components.table.removeBtn(),
-														buttonType: 'error',
-														confirm: () => {
-															if (node?.{{ idName }}) {
-																removeRow(node.{{ idName }});
-															}
-															return true;
-														}
-													});
-												{% raw %}}{% endraw %}}
-											>
-												<Icon src={Trash} solid />
-											</button>
-										</div>
-									{/if}
-								</div>
-							</th>
-							{%- if useAuth %}
-							{/if}
-							{%- endif %}
-						</tr>
-					{/if}
-				{/each}
-			{:else}
-				<TableEmpty cols={% raw %}{{% endraw %}{{cols}} + 2}/>
-			{/if}
-		</tbody>
+								{/if}
+								{#if showUnbindButton}
+									<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.unbindBtn()}>
+										<button
+											class="btn btn-square btn-ghost btn-xs"
+											on:click|preventDefault={(e) => dispatch('unbind', { value: [node] })}
+										>
+											<Icon src={ArchiveBoxXMark} solid />
+										</button>
+									</div>
+								{/if}
+								{#if showRemoveButton}
+									<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.removeBtn()}>
+										<button
+											class="btn btn-square btn-ghost btn-xs"
+											on:click|preventDefault={(e) => dispatch('remove', { value: [node] })}
+										>
+											<Icon src={Trash} solid />
+										</button>
+									</div>
+								{/if}
+							</div>
+						</th>
+					</tr>
+				{/if}
+			{/each}
+		{:else}
+			<tr>
+				<td colspan="999">
+					<Empty />
+				</td>
+			</tr>
+		{/if}
 	{/if}
+	</tbody>
 </Table>

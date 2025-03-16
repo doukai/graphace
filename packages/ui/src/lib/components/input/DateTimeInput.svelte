@@ -3,13 +3,13 @@
 	import { nanoid } from 'nanoid';
 	import type { Errors } from '@graphace/commons';
 
-	export let name: string;
+	export let name: string | undefined = undefined;
 	export let value: string | null | undefined = undefined;
 	export let placeholder: string = '';
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
-	export let id: string = nanoid();
+	export let id: string | undefined = nanoid();
 	let className: string | undefined = 'input-bordered';
 	export { className as class };
 

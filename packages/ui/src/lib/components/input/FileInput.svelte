@@ -7,14 +7,14 @@
 	import type { Errors, FileInfo } from '@graphace/commons';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 
-	export let name: string;
+	export let name: string | undefined = undefined;
 	export let value: FileInfo | null | undefined = undefined;
 	export let placeholder: string = '';
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
 	export let downloadUrl = '/download';
-	export let id: string = nanoid();
+	export let id: string | undefined = nanoid();
 	let className: string | undefined = 'file-input-bordered';
 	export { className as class };
 

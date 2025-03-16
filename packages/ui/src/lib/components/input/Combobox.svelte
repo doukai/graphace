@@ -23,7 +23,7 @@
 	export let options: Option[] | null | undefined = [];
 	export let value: Option | Option[] | null | undefined = undefined;
 	export let multiple: boolean = false;
-	export let id: string = nanoid();
+	export let id: string | undefined = nanoid();
 	export let name: string | undefined = undefined;
 	export let placeholder: string = '';
 	export let readonly = false;

@@ -5,9 +5,10 @@
 	export let name: string;
 	export let value: StringExpression | null | undefined = undefined;
 	export let sort: Sort | null | undefined = undefined;
+	export let disabled = false;
 	export let zIndex: number | undefined = 0;
 	let className: string | undefined = undefined;
 	export { className as class };
 </script>
 
-<DateTimeTh {name} bind:value bind:sort {zIndex} class={className} on:filter />
+<DateTimeTh {name} bind:value bind:sort {disabled} {zIndex} class={className} on:filter />

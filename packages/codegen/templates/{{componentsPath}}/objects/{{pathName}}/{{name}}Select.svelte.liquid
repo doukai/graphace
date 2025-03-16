@@ -5,20 +5,18 @@
 	import { type StructQueryStores, ObjectSelect } from '@graphace/ui-graphql';
 	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
 
+	export let id: string | undefined = undefined;
+	export let name: string | undefined = undefined;
 	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
 	export let val: string | null | undefined = undefined;
 	export let arr: (string | null | undefined)[] | null | undefined = [];
 	export let errors: Errors | undefined = undefined;
 	export let list: boolean | undefined = false;
-	export let id: string | null = null;
-	export let name: string;
 	export let disabled = false;
 	export let readonly = false;
 	export let placeholder: string | null | undefined = undefined;
-	export let className: string = '';
-	export let containerClassName: string = '';
-	export let tagClassName: string = '';
-	export let menuClassName: string = '';
+	let className: string | undefined = undefined;
+	export { className as class };
 
 	const dispatch = createEventDispatcher<{
 		change: {
@@ -66,39 +64,36 @@
 </script>
 
 <ObjectSelect
-	{list}
 	{id}
 	{name}
+	{list}
 	{disabled}
 	{readonly}
 	{placeholder}
 	{errors}
 	{loading}
-	{className}
-	{containerClassName}
-	{tagClassName}
-	{menuClassName}
+	class={className}
 	bind:options
 	bind:value={selected}
 	on:change={(e) => {
 		if (Array.isArray(e.detail.value)) {
-			value = e.detail.value.map((item) => ({% raw %}{{% endraw %} {{ idName }}: item.value, name: item.label }));
+			value = e.detail.value.map((item) => ({ {{ idName }}: item.value, name: item.label }));
 			arr = value.map((item) => item?.{{ idName }});
 			val = undefined;
 		} else if (e.detail.value && !Array.isArray(e.detail.value)) {
-			value = {% raw %}{{% endraw %} {{ idName }}: e.detail.value.value, name: e.detail.value.label };
+			value = { {{ idName }}: e.detail.value.value, name: e.detail.value.label };
 			val = value.{{ idName }};
 			arr = [];
 		} else {
 			value = undefined;
 		}
 		dispatch('change', { value });
-	{% raw %}}{% endraw %}}
+	{% raw %}}}{% endraw %}
 	on:search={(e) => {
 		if (e.detail.searchValue) {
 			namedQueryStore.fetch(query, { name: { opr: 'LK', val: `%${e.detail.searchValue}%` } });
 		} else {
 			namedQueryStore.fetch(query, { name: undefined, first: 10 });
 		}
-	{% raw %}}{% endraw %}}
+	{% raw %}}}{% endraw %}
 />

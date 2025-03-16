@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { Errors } from '@graphace/commons';
-	import { TimeInput, TimeInputList } from '@graphace/ui';
+	import type { Errors, FileInfo } from '@graphace/commons';
+	import { FileInput, FileInputList } from '@graphace/ui';
 
 	export let id: string | undefined = undefined;
 	export let name: string | undefined = undefined;
-	export let value: string | (string | null | undefined)[] | null | undefined = undefined;
+	export let value: FileInfo | (FileInfo | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
@@ -15,7 +15,7 @@
 </script>
 
 {#if list}
-	<TimeInputList
+	<FileInputList
 		{id}
 		{name}
 		bind:value
@@ -27,7 +27,7 @@
 		on:change
 	/>
 {:else}
-	<TimeInput
+	<FileInput
 		{id}
 		{name}
 		bind:value

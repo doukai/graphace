@@ -22,11 +22,12 @@ import {
     isRelation,
     isRef,
     isConnection,
+    isNamedStruct,
     fieldTypeIsFile,
     getOriginalTypeName,
-    hasFileField,
+    hasFileField
 } from "./introspection";
-import type { BuilderConfig, ObjectInfo, FieldInfo } from "./types/types";
+import type { BuilderConfig, ObjectInfo, FieldInfo, ImportInfo } from "./types/types";
 
 let builderConfig: BuilderConfig | undefined = {};
 
@@ -170,16 +171,23 @@ export const getObjectInfo = (schema: GraphQLSchema, name: string): ObjectInfo |
         return {
             name,
             idName: getIDFieldName(type),
-            scalars: getScalarNames(fields),
-            baseScalars: getBaseScalarNames(fields),
-            enums: getEnumNames(fields),
-            objects: getObjectNames(fields),
-            selects: getSelectObjectNames(fields),
             hasFileField: hasFileField(type),
+            isConnection: isConnection(type.name),
+            isNamed: isNamedStruct(type),
             fields
         };
     }
     return undefined;
+}
+
+export const getImportInfo = (fields: FieldInfo[]): ImportInfo | undefined => {
+    return {
+        scalars: getScalarNames(fields),
+        baseScalars: getBaseScalarNames(fields),
+        enums: getEnumNames(fields),
+        objects: getObjectNames(fields),
+        selects: getSelectObjectNames(fields)
+    };
 }
 
 export const getQueryFieldInfo = (schema: GraphQLSchema, name: string): FieldInfo | undefined => {

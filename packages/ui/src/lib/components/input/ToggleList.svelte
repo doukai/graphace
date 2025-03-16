@@ -10,7 +10,7 @@
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
-	export let id: string = nanoid();
+	export let id: string | undefined = nanoid();
 	let className: string | undefined = 'flex flex-wrap';
 	export { className as class };
 

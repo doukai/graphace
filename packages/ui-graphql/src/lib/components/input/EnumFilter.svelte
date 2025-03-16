@@ -2,12 +2,15 @@
 	import { getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import type { StringExpression } from '@graphace/graphql';
-	import { OperatorSelect, EnumInput, EnumInputList } from '.';
+	import { Select } from '@graphace/ui';
+	import { OperatorSelect } from '.';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 
-	export let value: StringExpression | null | undefined = undefined;
+	export let id: string | undefined = undefined;
 	export let name: string | undefined = undefined;
+	export let value: StringExpression | null | undefined = undefined;
 	export let enums: { name: string; value: string | null | undefined; description?: string }[];
+	export let disabled = false;
 	let className: string | undefined = undefined;
 	export { className as class };
 
@@ -25,29 +28,42 @@
 
 <OperatorSelect bind:value={value.opr} on:change={(e) => oprChange()} />
 {#if value.opr === 'IN' || value.opr === 'NIN' || value.opr === 'BT' || value.opr === 'NBT'}
-	<EnumInputList
+	<Select
+		{id}
 		{name}
 		bind:value={value.arr}
-		{enums}
 		placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
+		{disabled}
 		class={className}
+		multiple
 		on:change={(e) => {
 			if (value.arr && value.arr.length > 0) {
 				value.val == undefined;
 			}
 		}}
-	/>
+	>
+		<option value={undefined} />
+		{#each enums as item}
+			<option value={item.value}>{item.name}</option>
+		{/each}
+	</Select>
 {:else}
-	<EnumInput
+	<Select
+		{id}
 		{name}
 		bind:value={value.val}
-		{enums}
 		placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
+		{disabled}
 		class={className}
 		on:change={(e) => {
 			if (value.val) {
 				value.arr = [];
 			}
 		}}
-	/>
+	>
+		<option value={undefined} />
+		{#each enums as item}
+			<option value={item.value}>{item.name}</option>
+		{/each}
+	</Select>
 {/if}

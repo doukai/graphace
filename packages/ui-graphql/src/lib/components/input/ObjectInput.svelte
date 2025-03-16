@@ -3,9 +3,8 @@
 	import type { NamedStruct } from '@graphace/graphql';
 	import ObjectLink from './ObjectLink.svelte';
 
-	export let id: string = undefined;
+	export let id: string | undefined = undefined;
 	export let path: string;
-	export let name: string;
 	export let namedStruct: NamedStruct | (NamedStruct | null | undefined)[] | null | undefined =
 		undefined;
 	export let errors: Errors | undefined = undefined;
@@ -14,7 +13,7 @@
 	export { className as class };
 </script>
 
-<ObjectLink {path} {name} {namedStruct} {errors} {disabled} class={className} on:gotoField />
+<ObjectLink {path} {namedStruct} {errors} {disabled} class={className} on:goto />
 {#if errors}
 	<label for={id} class="label">
 		{#each (errors?.errors || [])

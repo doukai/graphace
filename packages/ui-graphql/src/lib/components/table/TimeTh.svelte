@@ -13,6 +13,7 @@
 	export let name: string;
 	export let value: StringExpression | null | undefined = undefined;
 	export let sort: Sort | null | undefined = undefined;
+	export let disabled = false;
 	export let zIndex: number | undefined = 0;
 	let className: string | undefined = '';
 	export { className as class };
@@ -95,11 +96,12 @@
 			class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1 max-w-xs md:max-w-md"
 			transition:fade={{ duration: 100 }}
 		>
-			<TimeFilter bind:value={_expression} />
-			<SortSelect bind:value={_sort} />
+			<TimeFilter {disabled} bind:value={_expression} />
+			<SortSelect {disabled} bind:value={_sort} />
 			<div class="flex space-x-1">
 				<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.th.filter()}>
 					<button
+						{disabled}
 						class="btn btn-square btn-primary md:btn-sm"
 						on:click|preventDefault={(e) => filter()}
 					>
@@ -108,6 +110,7 @@
 				</div>
 				<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.th.cancel()}>
 					<button
+						{disabled}
 						class="btn btn-square btn-outline btn-error md:btn-sm"
 						on:click|preventDefault={(e) => clear()}
 					>

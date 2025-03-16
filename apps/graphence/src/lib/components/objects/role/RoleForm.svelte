@@ -3,7 +3,7 @@
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Form, FormControl, Label, Loading } from '@graphace/ui';
-	import { IDInput, IDInputList, StringInput, StringInputList, BooleanInput, BooleanInputList, IntInput, IntInputList, TimestampInput, TimestampInputList, ObjectInput } from '@graphace/ui-graphql';
+	import { type Option, StringInput, ObjectInput } from '@graphace/ui-graphql';
 	import UserSelect from '~/lib/components/objects/user/UserSelect.svelte';
 	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
@@ -13,35 +13,21 @@
 	export let value: RoleInput | null | undefined = undefined;
 	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
-	export let showRemoveButton: boolean = true;
+	export let showRemoveButton: boolean = false;
 	export let showUnbindButton: boolean = false;
 	export let showSelectButton: boolean = false;
-	export let showBackButton: boolean = true;
+	export let showBackButton: boolean = false;
+	let className: string | undefined =
+		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2';
+	export { className as class };
 	export let fields: {
-		name: { readonly: boolean; disabled: boolean; hidden: boolean };
-		description: { readonly: boolean; disabled: boolean; hidden: boolean };
-		users: { readonly: boolean; disabled: boolean; hidden: boolean };
-		groups: { readonly: boolean; disabled: boolean; hidden: boolean };
-		composites: { readonly: boolean; disabled: boolean; hidden: boolean };
-		permissions: { readonly: boolean; disabled: boolean; hidden: boolean };
-		realm: { readonly: boolean; disabled: boolean; hidden: boolean };
-		usersAggregate: { readonly: boolean; disabled: boolean; hidden: boolean };
-		usersConnection: { readonly: boolean; disabled: boolean; hidden: boolean };
-		groupsAggregate: { readonly: boolean; disabled: boolean; hidden: boolean };
-		groupsConnection: { readonly: boolean; disabled: boolean; hidden: boolean };
-		compositesAggregate: { readonly: boolean; disabled: boolean; hidden: boolean };
-		compositesConnection: { readonly: boolean; disabled: boolean; hidden: boolean };
-		permissionsAggregate: { readonly: boolean; disabled: boolean; hidden: boolean };
-		permissionsConnection: { readonly: boolean; disabled: boolean; hidden: boolean };
-		idCount: { readonly: boolean; disabled: boolean; hidden: boolean };
-		idMax: { readonly: boolean; disabled: boolean; hidden: boolean };
-		idMin: { readonly: boolean; disabled: boolean; hidden: boolean };
-		nameCount: { readonly: boolean; disabled: boolean; hidden: boolean };
-		nameMax: { readonly: boolean; disabled: boolean; hidden: boolean };
-		nameMin: { readonly: boolean; disabled: boolean; hidden: boolean };
-		descriptionCount: { readonly: boolean; disabled: boolean; hidden: boolean };
-		descriptionMax: { readonly: boolean; disabled: boolean; hidden: boolean };
-		descriptionMin: { readonly: boolean; disabled: boolean; hidden: boolean };
+		name: Option;
+		description: Option;
+		users: Option;
+		groups: Option;
+		composites: Option;
+		permissions: Option;
+		realm: Option;
 	} = {
 		name: { readonly: false, disabled: false, hidden: false },
 		description: { readonly: false, disabled: false, hidden: false },
@@ -49,24 +35,7 @@
 		groups: { readonly: false, disabled: false, hidden: false },
 		composites: { readonly: false, disabled: false, hidden: false },
 		permissions: { readonly: false, disabled: false, hidden: false },
-		realm: { readonly: false, disabled: false, hidden: false },
-		usersAggregate: { readonly: false, disabled: false, hidden: false },
-		usersConnection: { readonly: false, disabled: false, hidden: false },
-		groupsAggregate: { readonly: false, disabled: false, hidden: false },
-		groupsConnection: { readonly: false, disabled: false, hidden: false },
-		compositesAggregate: { readonly: false, disabled: false, hidden: false },
-		compositesConnection: { readonly: false, disabled: false, hidden: false },
-		permissionsAggregate: { readonly: false, disabled: false, hidden: false },
-		permissionsConnection: { readonly: false, disabled: false, hidden: false },
-		idCount: { readonly: false, disabled: false, hidden: false },
-		idMax: { readonly: false, disabled: false, hidden: false },
-		idMin: { readonly: false, disabled: false, hidden: false },
-		nameCount: { readonly: false, disabled: false, hidden: false },
-		nameMax: { readonly: false, disabled: false, hidden: false },
-		nameMin: { readonly: false, disabled: false, hidden: false },
-		descriptionCount: { readonly: false, disabled: false, hidden: false },
-		descriptionMax: { readonly: false, disabled: false, hidden: false },
-		descriptionMin: { readonly: false, disabled: false, hidden: false }
+		realm: { readonly: false, disabled: false, hidden: false }
 	};
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
@@ -75,8 +44,6 @@
 		remove: { value: RoleInput | null | undefined };
 		unbind: { value: RoleInput | null | undefined };
 		save: { value: RoleInput | null | undefined };
-		create: { value: RoleInput | null | undefined };
-		select: {};
 		back: {};
 	}>();
 </script>
@@ -94,12 +61,11 @@
 		on:save={(e) => dispatch('save', { value })}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
-		on:select
 		on:back
 	/>
 </div>
 <div class="divider" />
-<Form class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
+<Form class={className}>
 	{#if isFetching}
 		<Loading />
 	{:else}
@@ -187,7 +153,6 @@
 					<FormControl let:id>
 						<Label {id} text={$LL.graphql.objects.Role.fields.permissions.name()} />
 						<ObjectInput
-							name="permissions"
 							path={`${value.id}/permissions`}
 							errors={errors.permissions}
 							disabled={fields.permissions.disabled}
@@ -201,7 +166,6 @@
 					<FormControl let:id>
 						<Label {id} text={$LL.graphql.objects.Role.fields.realm.name()} />
 						<ObjectInput
-							name="realm"
 							namedStruct={value.realm}
 							path={`${value.id}/realm`}
 							errors={errors.realm}
@@ -226,7 +190,6 @@
 		on:save={(e) => dispatch('save', { value })}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
-		on:select
 		on:back
 	/>
 </div>

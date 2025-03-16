@@ -4,14 +4,17 @@
 	import type { Operator } from '@graphace/graphql';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 
-	export let value: Operator | undefined;
-	let className: string | undefined = undefined;
+	export let id: string | undefined = undefined;
+	export let name: string | undefined = undefined;
+	export let value: Operator | null | undefined;
+	export let disabled = false;
+	let className: string | undefined = 'select select-bordered';
 	export { className as class };
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 </script>
 
-<select class="select select-bordered {className}" bind:value on:change>
+<select {id} {name} class={className} bind:value {disabled} on:change>
 	<option value={undefined} />
 	<option value="EQ" selected>{$LL.ui_graphql.table.th.eq()}</option>
 	<option value="NEQ">{$LL.ui_graphql.table.th.neq()}</option>

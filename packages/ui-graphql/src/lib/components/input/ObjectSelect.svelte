@@ -2,8 +2,9 @@
 	import type { Errors } from '@graphace/commons';
 	import { type Option, Combobox } from '@graphace/ui';
 
+	export let id: string | undefined = undefined;
+	export let name: string | undefined = undefined;
 	export let list: boolean | undefined = false;
-	export let name: string;
 	export let disabled = false;
 	export let readonly = false;
 	export let placeholder: string | null | undefined = undefined;
@@ -17,8 +18,9 @@
 </script>
 
 <Combobox
-	multiple={list}
+	{id}
 	{name}
+	multiple={list}
 	{placeholder}
 	{disabled}
 	{readonly}

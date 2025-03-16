@@ -3,7 +3,7 @@
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Form, FormControl, Label, Loading } from '@graphace/ui';
-	import { IDInput, IDInputList, StringInput, StringInputList, BooleanInput, BooleanInputList, IntInput, IntInputList, TimestampInput, TimestampInputList, ObjectInput } from '@graphace/ui-graphql';
+	import { type Option, StringInput, BooleanInput, ObjectInput } from '@graphace/ui-graphql';
 	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
@@ -12,49 +12,24 @@
 	export let value: UserInput | null | undefined = undefined;
 	export let isFetching: boolean;
 	export let errors: Record<string, Errors> = {};
-	export let showRemoveButton: boolean = true;
+	export let showRemoveButton: boolean = false;
 	export let showUnbindButton: boolean = false;
 	export let showSelectButton: boolean = false;
-	export let showBackButton: boolean = true;
+	export let showBackButton: boolean = false;
+	let className: string | undefined =
+		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2';
+	export { className as class };
 	export let fields: {
-		name: { readonly: boolean; disabled: boolean; hidden: boolean };
-		description: { readonly: boolean; disabled: boolean; hidden: boolean };
-		lastName: { readonly: boolean; disabled: boolean; hidden: boolean };
-		login: { readonly: boolean; disabled: boolean; hidden: boolean };
-		email: { readonly: boolean; disabled: boolean; hidden: boolean };
-		phones: { readonly: boolean; disabled: boolean; hidden: boolean };
-		disable: { readonly: boolean; disabled: boolean; hidden: boolean };
-		groups: { readonly: boolean; disabled: boolean; hidden: boolean };
-		roles: { readonly: boolean; disabled: boolean; hidden: boolean };
-		realm: { readonly: boolean; disabled: boolean; hidden: boolean };
-		groupsAggregate: { readonly: boolean; disabled: boolean; hidden: boolean };
-		groupsConnection: { readonly: boolean; disabled: boolean; hidden: boolean };
-		rolesAggregate: { readonly: boolean; disabled: boolean; hidden: boolean };
-		rolesConnection: { readonly: boolean; disabled: boolean; hidden: boolean };
-		idCount: { readonly: boolean; disabled: boolean; hidden: boolean };
-		idMax: { readonly: boolean; disabled: boolean; hidden: boolean };
-		idMin: { readonly: boolean; disabled: boolean; hidden: boolean };
-		nameCount: { readonly: boolean; disabled: boolean; hidden: boolean };
-		nameMax: { readonly: boolean; disabled: boolean; hidden: boolean };
-		nameMin: { readonly: boolean; disabled: boolean; hidden: boolean };
-		descriptionCount: { readonly: boolean; disabled: boolean; hidden: boolean };
-		descriptionMax: { readonly: boolean; disabled: boolean; hidden: boolean };
-		descriptionMin: { readonly: boolean; disabled: boolean; hidden: boolean };
-		lastNameCount: { readonly: boolean; disabled: boolean; hidden: boolean };
-		lastNameMax: { readonly: boolean; disabled: boolean; hidden: boolean };
-		lastNameMin: { readonly: boolean; disabled: boolean; hidden: boolean };
-		loginCount: { readonly: boolean; disabled: boolean; hidden: boolean };
-		loginMax: { readonly: boolean; disabled: boolean; hidden: boolean };
-		loginMin: { readonly: boolean; disabled: boolean; hidden: boolean };
-		saltCount: { readonly: boolean; disabled: boolean; hidden: boolean };
-		saltMax: { readonly: boolean; disabled: boolean; hidden: boolean };
-		saltMin: { readonly: boolean; disabled: boolean; hidden: boolean };
-		hashCount: { readonly: boolean; disabled: boolean; hidden: boolean };
-		hashMax: { readonly: boolean; disabled: boolean; hidden: boolean };
-		hashMin: { readonly: boolean; disabled: boolean; hidden: boolean };
-		emailCount: { readonly: boolean; disabled: boolean; hidden: boolean };
-		emailMax: { readonly: boolean; disabled: boolean; hidden: boolean };
-		emailMin: { readonly: boolean; disabled: boolean; hidden: boolean };
+		name: Option;
+		description: Option;
+		lastName: Option;
+		login: Option;
+		email: Option;
+		phones: Option;
+		disable: Option;
+		groups: Option;
+		roles: Option;
+		realm: Option;
 	} = {
 		name: { readonly: false, disabled: false, hidden: false },
 		description: { readonly: false, disabled: false, hidden: false },
@@ -65,35 +40,7 @@
 		disable: { readonly: false, disabled: false, hidden: false },
 		groups: { readonly: false, disabled: false, hidden: false },
 		roles: { readonly: false, disabled: false, hidden: false },
-		realm: { readonly: false, disabled: false, hidden: false },
-		groupsAggregate: { readonly: false, disabled: false, hidden: false },
-		groupsConnection: { readonly: false, disabled: false, hidden: false },
-		rolesAggregate: { readonly: false, disabled: false, hidden: false },
-		rolesConnection: { readonly: false, disabled: false, hidden: false },
-		idCount: { readonly: false, disabled: false, hidden: false },
-		idMax: { readonly: false, disabled: false, hidden: false },
-		idMin: { readonly: false, disabled: false, hidden: false },
-		nameCount: { readonly: false, disabled: false, hidden: false },
-		nameMax: { readonly: false, disabled: false, hidden: false },
-		nameMin: { readonly: false, disabled: false, hidden: false },
-		descriptionCount: { readonly: false, disabled: false, hidden: false },
-		descriptionMax: { readonly: false, disabled: false, hidden: false },
-		descriptionMin: { readonly: false, disabled: false, hidden: false },
-		lastNameCount: { readonly: false, disabled: false, hidden: false },
-		lastNameMax: { readonly: false, disabled: false, hidden: false },
-		lastNameMin: { readonly: false, disabled: false, hidden: false },
-		loginCount: { readonly: false, disabled: false, hidden: false },
-		loginMax: { readonly: false, disabled: false, hidden: false },
-		loginMin: { readonly: false, disabled: false, hidden: false },
-		saltCount: { readonly: false, disabled: false, hidden: false },
-		saltMax: { readonly: false, disabled: false, hidden: false },
-		saltMin: { readonly: false, disabled: false, hidden: false },
-		hashCount: { readonly: false, disabled: false, hidden: false },
-		hashMax: { readonly: false, disabled: false, hidden: false },
-		hashMin: { readonly: false, disabled: false, hidden: false },
-		emailCount: { readonly: false, disabled: false, hidden: false },
-		emailMax: { readonly: false, disabled: false, hidden: false },
-		emailMin: { readonly: false, disabled: false, hidden: false }
+		realm: { readonly: false, disabled: false, hidden: false }
 	};
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
@@ -102,8 +49,6 @@
 		remove: { value: UserInput | null | undefined };
 		unbind: { value: UserInput | null | undefined };
 		save: { value: UserInput | null | undefined };
-		create: { value: UserInput | null | undefined };
-		select: {};
 		back: {};
 	}>();
 </script>
@@ -121,12 +66,11 @@
 		on:save={(e) => dispatch('save', { value })}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
-		on:select
 		on:back
 	/>
 </div>
 <div class="divider" />
-<Form class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
+<Form class={className}>
 	{#if isFetching}
 		<Loading />
 	{:else}
@@ -210,13 +154,14 @@
 				{#if !fields.phones.hidden}
 					<FormControl let:id>
 						<Label {id} text={$LL.graphql.objects.User.fields.phones.name()} />
-						<StringInputList
+						<StringInput
 						 	{id}
 							name="phones"
 							bind:value={value.phones}
 							errors={errors.phones}
 							readonly={fields.phones.readonly}
 							disabled={fields.phones.disabled}
+							list
 						/>
 					</FormControl>
 				{/if}
@@ -273,7 +218,6 @@
 					<FormControl let:id>
 						<Label {id} text={$LL.graphql.objects.User.fields.realm.name()} />
 						<ObjectInput
-							name="realm"
 							namedStruct={value.realm}
 							path={`${value.id}/realm`}
 							errors={errors.realm}
@@ -298,7 +242,6 @@
 		on:save={(e) => dispatch('save', { value })}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
-		on:select
 		on:back
 	/>
 </div>

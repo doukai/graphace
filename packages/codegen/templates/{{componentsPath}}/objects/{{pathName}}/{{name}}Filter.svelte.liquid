@@ -1,38 +1,31 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	{%- if useAuth %}
 	import { createPopover, melt } from '@melt-ui/svelte';
-	import type { PermissionsStore } from '@graphace/commons';
-	import { z_index } from '@graphace/ui';
-	{%- endif %} 
-	import { {% for scalar in scalars %}{{ scalar }}Filter{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark } from '@steeze-ui/heroicons';
+	import { {% for scalar in scalars %}{{ scalar }}Filter{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql';
 	{%- for enum in enums %}
-	import {{ enum }}Filter from '~/{{ enumsPath }}/{{ enum | paramCase }}/{{ enum }}Filter.svelte';
+	import {{ enum }}Filter from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Filter.svelte';
 	{%- endfor %}
-	{%- if isNamedStruct %}
-	import {{ name }}SelectFilter from '~/{{ objectsPath }}/{{ name | paramCase }}/{{ name }}SelectFilter.svelte';
+	{%- if isNamed %}
+	import {{ name }}SelectFilter from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}SelectFilter.svelte';
 	{%- endif %}
-	{%- if namedStructObjectNames %}
-	{%- for namedStructType in namedStructObjectNames %}
-	{%- if namedStructType != name %}
-	import {{ namedStructType }}SelectFilter from '~/{{ objectsPath }}/{{ namedStructType | paramCase }}/{{ namedStructType }}SelectFilter.svelte';
+	{%- for select in selects %}
+	{%- if select != name %}
+	import {{ select }}SelectFilter from '~/{{ componentsPath }}/objects/{{ select | paramCase }}/{{ select }}SelectFilter.svelte';
 	{%- endif %}
 	{%- endfor %}
-	{%- endif %}
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { {{ name }}Expression } from '~/{{ schemaTypesPath }}';
 
 	export let value: {{ name }}Expression | null | undefined = undefined;
+	export let disabled = false;
+	export let zIndex: number = 0;
+	let className: string | undefined = undefined;
+	export { className as class };
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
-	{%- if useAuth %}
-	const permissions = getContext<PermissionsStore>('permissions');
-	{%- endif %}
-
-	const z_class8 = z_index.top(8);
 	
 	const dispatch = createEventDispatcher<{
 		filter: {};
@@ -40,23 +33,13 @@
 
 	if (value === null || value === undefined || Object.keys(value).length === 0) {
 		value = {
-			{%- if isNamedStruct %}
-			{{ idName }}: undefined,
-			{%- endif %}
-			{%- if fields %}
 			{%- for field in fields %}
-			{%- if field.fieldName == idName %}
-			{%- if isNamedStruct == false %}
+			{%- if field.isScalarType or field.isEnumType %}
 			{{ field.fieldName }}: undefined{% if forloop.last == false %},{% endif %}
-			{%- endif %}
-			{%- elsif field.isScalarType or field.isEnumType %}
-			{{ field.fieldName }}: undefined{% if forloop.last == false %},{% endif %}
-			{%- endif %}
-			{%- if field.isNamed %}
+			{%- elsif field.isSelect %}
 			{{ field.fieldName }}: { {{ field.fieldTypeIdName }}: undefined }{% if forloop.last == false %},{% endif %}
 			{%- endif %}
 			{%- endfor %}
-			{%- endif %}
 		}
 	}
 
@@ -67,23 +50,13 @@
 
 	const clear = (): void => {
 		value = {
-			{%- if isNamedStruct %}
-			{{ idName }}: undefined,
-			{%- endif %}
-			{%- if fields %}
 			{%- for field in fields %}
-			{%- if field.fieldName == idName %}
-			{%- if isNamedStruct == false %}
+			{%- if field.isScalarType or field.isEnumType %}
 			{{ field.fieldName }}: undefined{% if forloop.last == false %},{% endif %}
-			{%- endif %}
-			{%- elsif field.isScalarType or field.isEnumType %}
-			{{ field.fieldName }}: undefined{% if forloop.last == false %},{% endif %}
-			{%- endif %}
-			{%- if field.isNamed %}
+			{%- elsif field.isSelect %}
 			{{ field.fieldName }}: { {{ field.fieldTypeIdName }}: undefined }{% if forloop.last == false %},{% endif %}
 			{%- endif %}
 			{%- endfor %}
-			{%- endif %}
 		};
 		dispatch('filter', {});
 		$open = false;
@@ -101,85 +74,52 @@
 <slot trigger={$trigger} />
 
 {#if $open}
-	<div use:melt={$overlay} class="fixed inset-0 {z_class8}" />
-	<div class="p-1 rounded-xl bg-base-200 shadow {z_class8}" use:melt={$content}>
+	<div use:melt={$overlay} class="fixed inset-0 z-[{zIndex + 5}]" />
+	<div class="z-[{zIndex + 5}] {className}" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="space-y-1 max-h-60 overflow-y-auto">
-			{%- if fields %}
-			{%- if isNamedStruct %}
-			{%- if useAuth %}
-			{#if permissions.auth('{{ name }}::{{ idName }}::*')}
-			{%- endif %}
+			{%- if isNamed %}
+			<span>{$LL.graphql.objects.{{ name }}.name()}</span>
 			<{{ name }}SelectFilter
-				label={$LL.graphql.objects.{{ name }}.name()}
 				name="{{ idName }}"
 				bind:value={value.{{ idName }}}
-				className="md:input-sm"
-				selectClassName="md:select-sm w-full"
-				containerClassName="md:min-h-8"
-				tagClassName="md:badge-sm"
-				menuClassName="md:menu-sm"
 			/>
 			<div class="divider m-0 md:hidden" />
-			{%- if useAuth %}
-			{/if}
-			{%- endif %}
 			{%- endif %}
 			{%- for field in fields %}
 			{%- if field.isScalarType or field.isEnumType %}
-			{%- if useAuth %}
-			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
-			{%- endif %}
+			<span>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</span>
 			<{{ field.fieldTypeName }}Filter
-				label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 				name="{{ field.fieldName }}"
 				bind:value={value.{{ field.fieldName }}}
-				{%- if field.isEnumType %}
-				className="md:select-sm"
-				{%- elsif field.fieldTypeName == "Boolean" %}
-				className="md:toggle-sm"
-				addBtnClassName="md:btn-sm"
-				{%- else %}
-				className="md:input-sm"
-				addBtnClassName="md:btn-sm"
-				{%- endif %}
-				selectClassName="md:select-sm w-full"
 			/>
 			<div class="divider m-0 md:hidden" />
-			{%- if useAuth %}
-			{/if}
-			{%- endif %}
-			{%- endif %}
-			{%- if field.isNamed %}
-			{%- if useAuth %}
-			{#if permissions.auth('{{ name }}::{{ field.fieldName }}::*')}
-			{%- endif %}
+			{%- elsif field.isSelect %}
+			<span>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</span>
 			<{{ field.fieldTypeName }}SelectFilter
-				label={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 				name="{{ field.fieldName }}"
 				bind:value={value.{{ field.fieldName }}.{{ field.fieldTypeIdName }}}
-				className="md:input-sm"
-				containerClassName="md:min-h-8"
-				tagClassName="md:badge-sm"
-				menuClassName="md:menu-sm"
-				selectClassName="md:select-sm w-full"
 			/>
 			<div class="divider m-0 md:hidden" />
-			{%- if useAuth %}
-			{/if}
-			{%- endif %}
 			{%- endif %}
 			{%- endfor %}
-			{%- endif %}
 		</div>
 		<div class="flex justify-center space-x-1 pt-1">
 			<div class="tooltip" data-tip={$LL.ui_graphql.table.th.filter()}>
-				<button class="btn btn-square btn-primary md:btn-sm" on:click={(e) => filter()}>
+				<button
+					{disabled}
+					class="btn btn-square btn-primary"
+					on:click|preventDefault={(e) => filter()}
+				>
 					<Icon src={Check} class="h-5 w-5" />
 				</button>
 			</div>
 			<div class="tooltip" data-tip={$LL.ui_graphql.table.th.cancel()}>
-				<button class="btn btn-square btn-outline btn-error md:btn-sm" on:click={(e) => clear()}>
+				<button
+					{disabled}
+					class="btn btn-square btn-outline btn-error"
+					on:click|preventDefault={(e) => clear()}
+				>
 					<Icon src={XMark} class="h-5 w-5" />
 				</button>
 			</div>

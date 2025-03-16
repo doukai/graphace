@@ -7,10 +7,12 @@ import {
     getIDFieldName,
     getQueryTypeName,
     getMutationTypeName,
+    getSubscriptionTypeName,
     isConnection,
     isAggregate,
     isEdge,
     isPageInfo,
+    isNamedStruct,
     isOperationType,
     isInnerEnum,
     isIntrospection,
@@ -159,6 +161,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             i18nDescription: options.presetConfig.i18nDescription,
             builder: options.presetConfig.builder,
             useAuth: options.presetConfig.useAuth,
+            queryTypeName: getQueryTypeName(),
+            mutationTypeName: getMutationTypeName(),
+            subscriptionTypeName: getSubscriptionTypeName(),
         };
 
         const _generateOptions = {
@@ -249,6 +254,197 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             template,
                             name,
                             objectFieldName
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Form.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Table.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .filter(type => isNamedStruct(type))
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Select.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .filter(type => isNamedStruct(type))
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectFilter.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .filter(type => isNamedStruct(type))
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectTd.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Filter.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentEnumTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Th.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentEnumTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentEnumTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Input.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentEnumTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Filter.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentEnumTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/enums/{{pathName}}/index.ts';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name) };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
                         },
                         ..._generateOptions
                     };
@@ -808,23 +1004,6 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         // generateOptions.push(
         //     ...targetComponentObjectTypes
         //         .map(type => {
-        //             const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Table.svelte';
-        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
-
-        // generateOptions.push(
-        //     ...targetComponentObjectTypes
-        //         .map(type => {
         //             const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}ConnectionTable.svelte';
         //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
         //             return {
@@ -890,44 +1069,10 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         //         })
         // );
 
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .map(type => {
-                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Form.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        config: {
-                            ..._config,
-                            template,
-                            name: type.name
-                        },
-                        ..._generateOptions
-                    };
-                })
-        );
-
         // generateOptions.push(
         //     ...targetComponentObjectTypes
         //         .map(type => {
         //             const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}CreateForm.svelte';
-        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
-
-        // generateOptions.push(
-        //     ...targetComponentObjectTypes
-        //         .map(type => {
-        //             const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Filter.svelte';
         //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
         //             return {
         //                 filename: buildPath(template, scope),
@@ -998,78 +1143,6 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         //     ...targetComponentEnumTypes
         //         .map(type => {
         //             const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Item.svelte';
-        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
-
-        // generateOptions.push(
-        //     ...targetComponentEnumTypes
-        //         .map(type => {
-        //             const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Th.svelte';
-        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-
-        //             };
-        //         })
-        // );
-
-        // generateOptions.push(
-        //     ...targetComponentObjectTypes
-        //         .filter(type => isNamedStruct(type))
-        //         .map(type => {
-        //             const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Select.svelte';
-        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
-
-        // generateOptions.push(
-        //     ...targetComponentObjectTypes
-        //         .filter(type => isNamedStruct(type))
-        //         .map(type => {
-        //             const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectFilter.svelte';
-        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
-
-        // generateOptions.push(
-        //     ...targetComponentObjectTypes
-        //         .filter(type => isNamedStruct(type))
-        //         .map(type => {
-        //             const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectTd.svelte';
         //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
         //             return {
         //                 filename: buildPath(template, scope),
@@ -1265,74 +1338,6 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         //         },
         //         ..._generateOptions
         //     }
-        // );
-
-        // generateOptions.push(
-        //     ...targetComponentEnumTypes
-        //         .map(type => {
-        //             const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte';
-        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
-
-        // generateOptions.push(
-        //     ...targetComponentEnumTypes
-        //         .map(type => {
-        //             const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Input.svelte';
-        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
-
-        // generateOptions.push(
-        //     ...targetComponentEnumTypes
-        //         .map(type => {
-        //             const template = '{{componentsPath}}/enums/{{pathName}}/{{name}}Filter.svelte';
-        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
-
-        // generateOptions.push(
-        //     ...targetComponentEnumTypes
-        //         .map(type => {
-        //             const template = '{{componentsPath}}/enums/{{pathName}}/index.ts';
-        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name) };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
         // );
 
         // const enumIndexTemplate = '{{componentsPath}}/enums/index.ts';
