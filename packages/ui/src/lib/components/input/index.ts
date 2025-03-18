@@ -11,6 +11,7 @@ import Input from "./Input.svelte";
 import InputList from "./InputList.svelte";
 import NumberInput from "./NumberInput.svelte";
 import NumberInputList from "./NumberInputList.svelte";
+import SearchInput from "./SearchInput.svelte";
 import Select from "./Select.svelte";
 import TimeInput from "./TimeInput.svelte";
 import TimeInputList from "./TimeInputList.svelte";
@@ -31,6 +32,7 @@ export {
     FileInputList,
     NumberInput,
     NumberInputList,
+    SearchInput,
     Select,
     TimeInput,
     TimeInputList,

@@ -7,7 +7,7 @@ import { getPermissionsStore } from '~/utils';
 export const load: LayoutLoad = async (event: LoadEvent) => {
     await getPermissionsStore(event).getTypes('User');
     return {
-        query_userConnection_Store: await fetchQuery_userConnection_Store(event, { first: 10 }),
+        query_userConnection_Store: await fetchQuery_userConnection_Store(event, { first: 30 }),
         mutation_user_Store: createMutation_user_Store(event)
     };
 }

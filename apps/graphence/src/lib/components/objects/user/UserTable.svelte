@@ -4,19 +4,22 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { Buttons, Empty, Loading, Table } from '@graphace/ui';
-	import { type Option, StringTh, StringTd, BooleanTh, BooleanTd, ObjectTd } from '@graphace/ui-graphql';
+	import { Buttons, Empty, Loading, SearchInput, Table } from '@graphace/ui';
+	import {
+		type Option,
+		StringTh,
+		StringTd,
+		BooleanTh,
+		BooleanTd,
+		ObjectTd
+	} from '@graphace/ui-graphql';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
 	import GroupSelectTd from '~/lib/components/objects/group/GroupSelectTd.svelte';
 	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	import type {
-		UserOrderBy,
-		QueryUserListArgs,
-		UserInput
-	} from '~/lib/types/schema';
+	import type { UserOrderBy, QueryUserListArgs, UserInput } from '~/lib/types/schema';
 
 	export let value: (UserInput | null | undefined)[] | null | undefined = undefined;
 	export let args: QueryUserListArgs = {};
@@ -61,6 +64,7 @@
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
+		search: { value: string | undefined };
 		query: { args: QueryUserListArgs; orderBy: UserOrderBy };
 		remove: { value: UserInput | (UserInput | null | undefined)[] | null | undefined };
 		unbind: { value: UserInput | (UserInput | null | undefined)[] | null | undefined };
@@ -74,13 +78,14 @@
 	let selectAll: boolean;
 </script>
 
-<div class="flex justify-end md:justify-between">
+<div class="flex md:justify-between">
 	<span class="max-sm:hidden text-xl font-semibold self-center">
 		{$LL.graphql.objects.User.name()}
 	</span>
 	<Buttons
-		{showRemoveButton}
-		{showUnbindButton}
+		class="flex space-x-1 max-sm:w-full"
+		showRemoveButton={showRemoveButton && selectedIdList.length > 0}
+		showUnbindButton={showUnbindButton && selectedIdList.length > 0}
 		{showSaveButton}
 		{showCreateButton}
 		{showSelectButton}
@@ -99,7 +104,9 @@
 				value: value?.filter((node) => selectedIdList.includes(node?.id))
 			})}
 		on:back
-	/>
+	>
+		<SearchInput slot="start" on:search />
+	</Buttons>
 </div>
 <div class="divider" />
 <Table {zIndex} class={className}>
@@ -199,14 +206,13 @@
 		</tr>
 	</thead>
 	<tbody>
-	{#if isFetching}
-		<tr>
-			<td colspan="999">
-				<Loading />
-			</td>
-		</tr>
-	{:else}
-		{#if value && value.length > 0}
+		{#if isFetching}
+			<tr>
+				<td colspan="999">
+					<Loading class="loading-lg" />
+				</td>
+			</tr>
+		{:else if value && value.length > 0}
 			{#each value as node, row}
 				{#if node}
 					<tr class="hover">
@@ -408,10 +414,9 @@
 		{:else}
 			<tr>
 				<td colspan="999">
-					<Empty />
+					<Empty class="badge-lg" />
 				</td>
 			</tr>
 		{/if}
-	{/if}
 	</tbody>
 </Table>

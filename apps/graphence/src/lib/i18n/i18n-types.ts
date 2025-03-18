@@ -149,7 +149,7 @@ export type NamespaceGraphenceTranslation = {
 			 */
 			label: string
 		}
-		table: {
+		alert: {
 			/**
 			 * R​e​m​o​v​e​ ​r​o​w​?
 			 */
@@ -158,6 +158,8 @@ export type NamespaceGraphenceTranslation = {
 			 * U​n​b​i​n​d​ ​r​o​w​?
 			 */
 			unbindModalTitle: string
+		}
+		table: {
 			/**
 			 * E​d​i​t
 			 */
@@ -3245,7 +3247,7 @@ export type TranslationFunctions = {
 				 */
 				label: () => LocalizedString
 			}
-			table: {
+			alert: {
 				/**
 				 * Remove row?
 				 */
@@ -3254,6 +3256,8 @@ export type TranslationFunctions = {
 				 * Unbind row?
 				 */
 				unbindModalTitle: () => LocalizedString
+			}
+			table: {
 				/**
 				 * Edit
 				 */

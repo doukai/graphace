@@ -29,6 +29,7 @@
 </script>
 
 <div class="{className} {contextClass}">
+	<slot name="start" />
 	{#if showRemoveButton}
 		<Button
 			text={$LL.ui.button.remove()}
@@ -64,7 +65,7 @@
 	{/if}
 	{#if showCreateButton}
 		<Button
-			text={$LL.ui.button.save()}
+			text={$LL.ui.button.create()}
 			class="btn-primary max-sm:btn-square"
 			on:click={(e) => {
 				dispatch('create');

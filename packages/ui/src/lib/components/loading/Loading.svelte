@@ -7,4 +7,6 @@
 	const contextClass = getContext<string>('ui.loading') || '';
 </script>
 
-<span class="loading {className} {contextClass}" />
+<div class="flex justify-center content-center w-full h-full">
+	<span class="loading {className} {contextClass}" />
+</div>

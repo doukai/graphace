@@ -28,9 +28,11 @@ const en: BaseTranslation = {
         search: {
             label: "Search"
         },
-        table: {
+        alert: {
             removeModalTitle: "Remove row?",
-            unbindModalTitle: "Unbind row?",
+            unbindModalTitle: "Unbind row?"
+        },
+        table: {
             editBtn: "Edit",
             removeBtn: "Remove",
             unbindBtn: "Unbind",

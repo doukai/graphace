@@ -15,11 +15,7 @@
 	import GroupSelectTd from '~/lib/components/objects/group/GroupSelectTd.svelte';
 	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	import type {
-		RoleOrderBy,
-		QueryRoleListArgs,
-		RoleInput
-	} from '~/lib/types/schema';
+	import type { RoleOrderBy, QueryRoleListArgs, RoleInput } from '~/lib/types/schema';
 
 	export let value: (RoleInput | null | undefined)[] | null | undefined = undefined;
 	export let args: QueryRoleListArgs = {};
@@ -76,8 +72,8 @@
 		{$LL.graphql.objects.Role.name()}
 	</span>
 	<Buttons
-		{showRemoveButton}
-		{showUnbindButton}
+		showRemoveButton={showRemoveButton && selectedIdList.length > 0}
+		showUnbindButton={showUnbindButton && selectedIdList.length > 0}
 		{showSaveButton}
 		{showCreateButton}
 		{showSelectButton}
@@ -171,14 +167,13 @@
 		</tr>
 	</thead>
 	<tbody>
-	{#if isFetching}
-		<tr>
-			<td colspan="999">
-				<Loading />
-			</td>
-		</tr>
-	{:else}
-		{#if value && value.length > 0}
+		{#if isFetching}
+			<tr>
+				<td colspan="999">
+					<Loading />
+				</td>
+			</tr>
+		{:else if value && value.length > 0}
 			{#each value as node, row}
 				{#if node}
 					<tr class="hover">
@@ -333,6 +328,5 @@
 				</td>
 			</tr>
 		{/if}
-	{/if}
 	</tbody>
 </Table>

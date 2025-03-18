@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '../../../app.css';
 	import { setContext } from 'svelte';
-	import { NavBar, LocaleSelect, ThemeSelect } from '@graphace/ui';
+	// import { NavBar, LocaleSelect, ThemeSelect } from '@graphace/ui';
 	import { setLocale } from '$i18n/i18n-svelte';
 	import LL from '$i18n/i18n-svelte';
 	import type { LayoutData } from './$types';
@@ -24,7 +24,7 @@
 	/>
 </svelte:head>
 
-<NavBar showMenuButton={false}>
+<!-- <NavBar showMenuButton={false}>
 	<ThemeSelect slot="option1" />
 	<LocaleSelect
 		locales={{
@@ -33,7 +33,7 @@
 		}}
 		slot="option2"
 	/>
-</NavBar>
+</NavBar> -->
 <main>
 	<slot />
 </main>

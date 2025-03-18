@@ -38,6 +38,7 @@
 	});
 </script>
 
+<!-- alert-info alert-success alert-warning alert-error -->
 <div
 	use:melt={$content(id)}
 	in:fly={{ duration: 150, x: '100%' }}

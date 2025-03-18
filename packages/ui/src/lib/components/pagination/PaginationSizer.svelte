@@ -5,7 +5,7 @@
 
 	export let pageSizeOptions: number[] = [10, 20, 30];
 	export let pageSize: number = 10;
-	let className: string = '';
+	let className: string = 'select-bordered';
 	export { className as class };
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');

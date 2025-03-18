@@ -25,6 +25,9 @@
 		if (!alertData.id) {
 			alertData.id = nanoid();
 		}
+		if (alertData.isModalOpen === undefined) {
+			alertData.isModalOpen = true;
+		}
 		alerts.update(($alerts) => {
 			return [...$alerts, alertData];
 		});
@@ -58,8 +61,8 @@
 			run: Subscriber<AlertData[]>,
 			invalidate?: (value?: AlertData[]) => void
 		) => Unsubscriber;
-		open: (alertData: AlertData) => void;
-		close: () => void;
+		open: (alertData: AlertData) => string;
+		close: (id?: string | undefined) => void;
 	} = createAlerts();
 </script>
 
@@ -83,7 +86,11 @@
 			<button
 				class="btn"
 				on:click={() => {
-					if (a.cancel && a.cancel()) {
+					if (a.cancel) {
+						if (a.cancel()) {
+							alert.close();
+						}
+					} else {
 						alert.close();
 					}
 				}}

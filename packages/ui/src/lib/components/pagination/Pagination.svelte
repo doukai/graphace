@@ -3,11 +3,13 @@
 	import type { Readable } from 'svelte/store';
 	import { createPagination, melt } from '@melt-ui/svelte';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
+	import { PaginationSizer, PaginationCounter } from '.';
 
 	export let pageSize: number = 10;
 	export let pageNumber: number = 1;
 	export let totalCount: number = 0;
 	export let siblingCount: number = 1;
+	export let pageSizeOptions: number[] = [10, 20, 30];
 	let className: string = '';
 	export { className as class };
 
@@ -41,7 +43,10 @@
 </script>
 
 <div class="hidden md:flex md:justify-between">
-	<slot {pageSize} {totalCount} />
+	<slot {pageSize} {totalCount}>
+		<PaginationSizer {pageSize} {pageSizeOptions} on:sizeChange />
+		<PaginationCounter {totalCount} />
+	</slot>
 	<div class="join" use:melt={$root}>
 		<button
 			use:melt={$prevButton}

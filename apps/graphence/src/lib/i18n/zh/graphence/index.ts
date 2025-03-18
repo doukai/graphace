@@ -28,9 +28,11 @@ const zh: NamespaceGraphenceTranslation = {
         search: {
             label: "搜索"
         },
-        table: {
+        alert: {
             removeModalTitle: "确认删除?",
-            unbindModalTitle: "确认移除?",
+            unbindModalTitle: "确认移除?"
+        },
+        table: {
             editBtn: "编辑",
             removeBtn: "删除",
             unbindBtn: "移除",

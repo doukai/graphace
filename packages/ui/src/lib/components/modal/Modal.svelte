@@ -26,7 +26,7 @@
 	class:modal-open={isModalOpen}
 	bind:this={modal}
 >
-	<div class="modal-box {className}">
+	<div class="modal-box">
 		<button
 			class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
 			on:click|preventDefault={(e) => {

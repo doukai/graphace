@@ -21,6 +21,9 @@
 	import { loadLocaleAsync } from '~/i18n/i18n-util.async';
 
 	export let locales: Record<string, LocaleItem>;
+	export let zIndex: number | undefined = 0;
+	let className: string | undefined = 'mt-2 max-h-96 w-56 overflow-y-auto';
+	export { className as class };
 
 	let currentLocale: string = baseLocale;
 
@@ -64,12 +67,12 @@
 <svelte:window on:popstate={handlePopStateEvent} />
 
 <Dropdown class="dropdown-end">
-	<DropdownContent class="overflow-y-auto">
-		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-		<div tabindex="0" class="btn btn-ghost normal-case">
-			<Icon src={Language} class="h-5 w-5 stroke-current" />
-			<Icon src={ChevronDown} class="hidden h-2 w-2 fill-current opacity-60 sm:inline-block" />
-		</div>
+	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+	<div tabindex="0" class="btn btn-ghost normal-case">
+		<Icon src={Language} class="h-5 w-5 stroke-current" />
+		<Icon src={ChevronDown} class="hidden h-2 w-2 fill-current opacity-60 sm:inline-block" />
+	</div>
+	<DropdownContent {zIndex} class={className}>
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 		<ul class="menu menu-sm gap-1" tabindex="0">
 			{#each Object.entries(locales) as locale}

@@ -127,6 +127,9 @@
 			id: 'winter'
 		}
 	];
+	export let zIndex: number | undefined = 0;
+	let className: string | undefined = 'mt-2 max-h-96 w-56 overflow-y-auto';
+	export { className as class };
 
 	const themeStore = getContext<Writable<string | undefined>>('theme');
 
@@ -136,13 +139,13 @@
 </script>
 
 <Dropdown class="dropdown-end">
-	<DropdownContent class="overflow-y-auto">
-		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-		<div tabindex="0" class="btn btn-ghost normal-case">
-			<Icon src={Swatch} class="h-5 w-5 stroke-current" />
-			<span class="hidden font-normal md:inline">{$LL.ui.themeSelect.btn()}</span>
-			<Icon src={ChevronDown} class="hidden h-2 w-2 fill-current opacity-60 sm:inline-block" />
-		</div>
+	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+	<div tabindex="0" class="btn btn-ghost normal-case">
+		<Icon src={Swatch} class="h-5 w-5 stroke-current" />
+		<span class="hidden font-normal md:inline">{$LL.ui.themeSelect.btn()}</span>
+		<Icon src={ChevronDown} class="hidden h-2 w-2 fill-current opacity-60 sm:inline-block" />
+	</div>
+	<DropdownContent {zIndex} class={className}>
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 		<div tabindex="0" class="grid grid-cols-1 gap-3 p-3">
 			{#each themes as theme}

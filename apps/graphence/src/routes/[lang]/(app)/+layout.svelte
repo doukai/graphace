@@ -3,20 +3,22 @@
 	import { onMount, setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	import {
-		SideBar,
 		Breadcrumbs,
+		Drawer,
 		NavBar,
-		Notifications,
-		MessageBoxs,
-		LocaleSelect,
-		ThemeSelect,
-		FuzzySearch,
+		Toast,
 		to,
-		PageType,
 		init,
 		history,
-		z_index,
-		Toasts
+		zIndex,
+		Alert,
+		Toasts,
+		DrawerContent,
+		DrawerSide,
+		NavBarStart,
+		NavBarEnd,
+		ThemeDropdown,
+		LocaleDropdown
 	} from '@graphace/ui';
 	import Iconify from '@iconify/svelte';
 	import { setLocale } from '$i18n/i18n-svelte';
@@ -24,10 +26,12 @@
 	import { locale } from '$i18n/i18n-svelte';
 	import type { NamespaceGraphqlTranslation } from '$i18n/i18n-types';
 	import SideBarMenu from '~/lib/components/menu/SideBarMenu.svelte';
-	import UserMenu from '~/lib/components/menu/UserMenu.svelte';
-	import ModuleMenu from '~/lib/components/menu/ModuleMenu.svelte';
+	// import UserMenu from '~/lib/components/menu/UserMenu.svelte';
+	// import ModuleMenu from '~/lib/components/menu/ModuleMenu.svelte';
 	import pages from '~/lib/data/pages.json';
 	import type { LayoutData } from './$types';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Bars4 } from '@steeze-ui/heroicons';
 
 	export let data: LayoutData;
 	// at the very top, set the locale before you access the store and before the actual rendering takes place
@@ -37,59 +41,60 @@
 	setContext('structQueryStores', data.structQueryStores);
 	setContext('LL', LL);
 	setContext('theme', writable(undefined));
+	setContext('ui.card', 'bg-base-100 shadow-xl');
+	setContext('ui.card-body', 'w-full md:max-h-[calc(100vh-5rem)]');
+	setContext('ui.dropdown-content', 'bg-base-200 text-base-content rounded-box shadow-xl');
 
-	const z_class9 = z_index.top(9);
+	// let drawersidebar: HTMLDivElement;
+	// let drawerSidebarScrollY = 0;
+	// function parseSidebarScroll() {
+	// 	drawerSidebarScrollY = drawersidebar.scrollTop;
+	// }
+	// onMount(() => {
+	// 	parseSidebarScroll();
+	// 	document.documentElement.style.scrollPaddingTop = '5rem';
+	// 	document.documentElement.style.scrollBehavior = 'smooth';
+	// });
 
-	let drawersidebar: HTMLDivElement;
-	let drawerSidebarScrollY = 0;
-	function parseSidebarScroll() {
-		drawerSidebarScrollY = drawersidebar.scrollTop;
-	}
-	onMount(() => {
-		parseSidebarScroll();
-		document.documentElement.style.scrollPaddingTop = '5rem';
-		document.documentElement.style.scrollBehavior = 'smooth';
-	});
+	// let checked = false;
+	// function closeDrawer() {
+	// 	checked = false;
+	// }
 
-	let checked = false;
-	function closeDrawer() {
-		checked = false;
-	}
+	// function openDrawer() {
+	// 	checked = true;
+	// }
 
-	function openDrawer() {
-		checked = true;
-	}
+	// let navbarScrollPadding = '5rem';
+	// function addScrollPaddingToNavbar() {
+	// 	navbarScrollPadding = '5rem';
+	// 	document.documentElement.style.scrollPaddingTop = '5rem';
+	// }
 
-	let navbarScrollPadding = '5rem';
-	function addScrollPaddingToNavbar() {
-		navbarScrollPadding = '5rem';
-		document.documentElement.style.scrollPaddingTop = '5rem';
-	}
+	// function removeScrollPaddingFromNavbar() {
+	// 	navbarScrollPadding = '0rem';
+	// 	document.documentElement.style.scrollPaddingTop = '0rem';
+	// }
 
-	function removeScrollPaddingFromNavbar() {
-		navbarScrollPadding = '0rem';
-		document.documentElement.style.scrollPaddingTop = '0rem';
-	}
+	// function onSelect(
+	// 	select: CustomEvent<{
+	// 		searched: string;
+	// 		selected: string | number | Record<string, any>;
+	// 		selectedIndex: number;
+	// 		original: string | number | Record<string, any>;
+	// 		originalIndex: number;
+	// 	}>
+	// ) {
+	// 	init('/' + $locale + searchIndex[select.detail.originalIndex].href);
+	// 	closeDrawer();
+	// }
 
-	function onSelect(
-		select: CustomEvent<{
-			searched: string;
-			selected: string | number | Record<string, any>;
-			selectedIndex: number;
-			original: string | number | Record<string, any>;
-			originalIndex: number;
-		}>
-	) {
-		init('/' + $locale + searchIndex[select.detail.originalIndex].href);
-		closeDrawer();
-	}
-
-	let searchIndex = pages
-		.flatMap((page) => page.menus || [page])
-		.map((page) => ({
-			...page,
-			name: $LL.graphql.objects[page.name as keyof NamespaceGraphqlTranslation['objects']].name()
-		}));
+	// let searchIndex = pages
+	// 	.flatMap((page) => page.menus || [page])
+	// 	.map((page) => ({
+	// 		...page,
+	// 		name: $LL.graphql.objects[page.name as keyof NamespaceGraphqlTranslation['objects']].name()
+	// 	}));
 </script>
 
 <svelte:head>
@@ -100,7 +105,81 @@
 		rel="stylesheet"
 	/>
 </svelte:head>
-<div class="drawer lg:drawer-open bg-base-100">
+
+<Drawer let:id>
+	<DrawerContent {id} class="bg-base-200">
+		<NavBar zIndex={$zIndex + 1} class="sticky top-0 bg-base-100">
+			<NavBarStart class="flex items-center space-x-1">
+				<span
+					class="tooltip tooltip-bottom before:text-xs before:content-[attr(data-tip)] lg:hidden"
+					data-tip={$LL.ui.menu.menu()}
+				>
+					<label
+						aria-label={$LL.ui.menu.open()}
+						for={id}
+						class="btn btn-square btn-ghost drawer-button"
+					>
+						<Icon src={Bars4} class="inline-block h-5 w-5 stroke-current md:h-6 md:w-6" />
+					</label>
+				</span>
+				<a
+					href={null}
+					on:click|preventDefault={(e) => {
+						init(`/${$locale}`);
+					}}
+					aria-current="page"
+					aria-label={$LL.graphence.path.home()}
+					class="btn btn-ghost px-0 lg:hidden"
+				>
+					<Iconify class="h-6 w-6" icon="logos:graphql" />
+					<div class="font-title inline-flex text-lg md:text-2xl">
+						<span class="lowercase">graph</span>
+						<span class="uppercase text-[#E535AB]">ACE</span>
+					</div>
+				</a>
+			</NavBarStart>
+			<NavBarEnd class="flex items-center space-x-1">
+				<ThemeDropdown zIndex={$zIndex + 1} />
+				<LocaleDropdown
+					zIndex={$zIndex + 1}
+					locales={{
+						en: { name: 'English', flag: 'twemoji:flag-united-kingdom' },
+						zh: { name: '简体中文', flag: 'twemoji:flag-china' }
+					}}
+				/>
+			</NavBarEnd>
+		</NavBar>
+		<main class="max-w-[100vw] p-1 md:p-2">
+			<slot />
+			<Toasts />
+			<Alert />
+		</main>
+	</DrawerContent>
+	<DrawerSide {id}>
+		<div
+			class="flex items-center w-full bg-base-100 sticky top-0 gap-2 bg-opacity-90 px-4 py-2 backdrop-blur"
+		>
+			<a
+				href={null}
+				on:click|preventDefault={(e) => {
+					init(`/${$locale}`);
+				}}
+				aria-current="page"
+				aria-label={$LL.graphence.path.home()}
+				class="flex-0 btn btn-ghost px-2"
+			>
+				<Iconify class="h-6 w-6" icon="logos:graphql" />
+				<div class="font-title inline-flex text-lg md:text-2xl">
+					<span class="lowercase">graph</span>
+					<span class="uppercase text-[#E535AB]">ACE</span>
+				</div>
+			</a>
+		</div>
+		<SideBarMenu />
+	</DrawerSide>
+</Drawer>
+
+<!-- <div class="drawer lg:drawer-open bg-base-100">
 	<input id="drawer" type="checkbox" class="drawer-toggle" bind:checked />
 	<div class="drawer-content bg-base-200">
 		<NavBar>
@@ -221,7 +300,7 @@
 			/>
 		</aside>
 	</div>
-</div>
+</div> -->
 
 <style global>
 	code[class*='language-'],
