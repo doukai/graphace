@@ -11,7 +11,7 @@
 		init,
 		history,
 		zIndex,
-		Alert,
+		Modals,
 		Toasts,
 		DrawerContent,
 		DrawerSide,
@@ -44,6 +44,7 @@
 	setContext('ui.card', 'bg-base-100 shadow-xl');
 	setContext('ui.card-body', 'w-full md:max-h-[calc(100vh-5rem)]');
 	setContext('ui.dropdown-content', 'bg-base-200 text-base-content rounded-box shadow-xl');
+	setContext('ui.popover-content', 'bg-base-200 rounded-box shadow-xl');
 
 	// let drawersidebar: HTMLDivElement;
 	// let drawerSidebarScrollY = 0;
@@ -152,7 +153,7 @@
 		<main class="max-w-[100vw] p-1 md:p-2">
 			<slot />
 			<Toasts />
-			<Alert />
+			<Modals />
 		</main>
 	</DrawerContent>
 	<DrawerSide {id}>

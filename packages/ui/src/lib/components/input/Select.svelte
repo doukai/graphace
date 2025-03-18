@@ -11,7 +11,7 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let id: string | undefined = nanoid();
-	let className: string | undefined = 'select-bordered';
+	let className: string | undefined = 'select-bordered w-full';
 	export { className as class };
 
 	const contextClass = getContext<string>('ui.select') || '';

@@ -1,23 +1,20 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { page } from '$app/stores';
 	import type { Errors, JsonSchema } from '@graphace/commons';
-	import type { GraphQLError } from '@graphace/graphql';
-	import { Card, ot, to, canBack, CardBody, Pagination, toast, alert } from '@graphace/ui';
+	import { Card, to, canBack, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import type { Query_userConnection_Store } from '~/lib/stores/query/query_userConnection_store';
 	import type { Mutation_user_Store } from '~/lib/stores/mutation/mutation_user_store';
-	import type { UserInput, QueryUserConnectionArgs, MutationUserArgs } from '~/lib/types/schema';
-	import type { PageData } from './$types';
-	import LL from '$i18n/i18n-svelte';
-	import { locale } from '$i18n/i18n-svelte';
 	import UserTable from '~/lib/components/objects/user/UserTable.svelte';
 	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
+	import type { QueryUserConnectionArgs, MutationUserArgs } from '~/lib/types/schema';
+	import LL from '$i18n/i18n-svelte';
+	import { locale } from '$i18n/i18n-svelte';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
 
 	const { validate } = getContext<JsonSchema>('jsonSchema');
 
-	// $: urlName($page.url, $LL.graphql.objects.User.name());
 	$: query_userConnection_Store = data.query_userConnection_Store as Query_userConnection_Store;
 	$: nodes = $query_userConnection_Store.response.data?.userConnection?.edges?.map(
 		(edge) => edge?.node
@@ -54,7 +51,7 @@
 						errors = buildGraphQLErrors(result.errors);
 						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
 						if (globalError) {
-							alert.open({
+							modal.open({
 								title: $LL.graphence.message.saveFailed(),
 								description: globalError,
 								confirm: () => {
@@ -115,7 +112,7 @@
 			}}
 			on:remove={(e) => {
 				if (e.detail.value) {
-					alert.open({
+					modal.open({
 						title: $LL.graphence.components.alert.removeModalTitle(),
 						confirm: () => {
 							if (Array.isArray(e.detail.value)) {

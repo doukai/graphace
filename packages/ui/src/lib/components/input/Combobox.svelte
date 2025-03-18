@@ -46,7 +46,7 @@
 		return option.label;
 	};
 	export let zIndex: number | undefined = 0;
-	let className: string | undefined = '';
+	let className: string | undefined = 'textarea-bordered w-full min-h-12 p-1 gap-1';
 	export { className as class };
 
 	const contextClass = getContext<string>('ui.combox') || '';
@@ -127,7 +127,7 @@
 <div class="relative">
 	<div
 		use:melt={$root}
-		class="flex flex-wrap items-center textarea textarea-bordered {errors?.errors ||
+		class="flex flex-wrap items-center textarea {errors?.errors ||
 		(errors?.iterms && Object.keys(errors?.iterms).length > 0)
 			? 'textarea-error focus-within:outline-error'
 			: 'focus-within:outline-base-content/20'}  focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 {className} {contextClass}"

@@ -1,4 +1,3 @@
-export * from "./alert";
 export * from "./breadcrumbs";
 export * from "./button";
 export * from "./card";
@@ -11,6 +10,7 @@ export * from "./input";
 export * from "./label";
 export * from "./loading";
 export * from "./menu";
+export * from "./modal";
 export * from "./navbar";
 export * from "./pagination";
 export * from "./stores";

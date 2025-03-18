@@ -15,9 +15,10 @@
 	export let sort: Sort | null | undefined = undefined;
 	export let disabled = false;
 	export let zIndex: number | undefined = 0;
-	let className: string | undefined = '';
+	let className: string | undefined = 'p-1';
 	export { className as class };
 
+	const contextClass = getContext<string>('ui.popover-content') || '';
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	let _expression: StringExpression = { opr: 'EQ', val: undefined, arr: [] };
@@ -85,10 +86,10 @@
 
 {#if $open}
 	<div use:melt={$overlay} class="fixed inset-0 z-[{zIndex + 5}]" />
-	<div class="p-1 rounded-xl bg-base-100 shadow z-[{zIndex + 5}]" use:melt={$content}>
+	<div class="z-[{zIndex + 5}] {className} {contextClass}" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div
-			class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 space-x-0 md:space-x-1 max-w-xs md:max-w-md"
+			class="flex items-center flex-col space-x-0 space-y-1 md:flex-row md:space-x-1 md:space-y-0"
 			transition:fade={{ duration: 100 }}
 		>
 			<DateFilter {disabled} bind:value={_expression} />

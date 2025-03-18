@@ -22,6 +22,7 @@
 	let className: string | undefined = 'p-1';
 	export { className as class };
 
+	const contextClass = getContext<string>('ui.popover-content') || '';
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
@@ -80,7 +81,7 @@
 
 {#if $open}
 	<div use:melt={$overlay} class="fixed inset-0 z-[{zIndex + 5}]" />
-	<div class="z-[{zIndex + 5}] {className}" use:melt={$content}>
+	<div class="z-[{zIndex + 5}] {className} {contextClass}" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="flex items-center space-x-1" transition:fade={{ duration: 100 }}>
 			<StringInput

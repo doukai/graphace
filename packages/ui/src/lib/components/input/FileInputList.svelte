@@ -15,7 +15,7 @@
 	export let disabled = false;
 	export let downloadUrl = '/download';
 	export let id: string | undefined = nanoid();
-	let className: string | undefined = 'file-input-bordered';
+	let className: string | undefined = 'file-input-bordered w-full';
 	export { className as class };
 
 	const contextClass = getContext<string>('ui.input-list') || '';

@@ -2,7 +2,7 @@
 	import { writable } from 'svelte/store';
 	import { nanoid } from 'nanoid';
 
-	export type AlertData = {
+	export type ModalData = {
 		id?: string | undefined;
 		title: string;
 		class?: string | undefined;
@@ -19,34 +19,34 @@
 			| undefined;
 	};
 
-	const alerts = writable<AlertData[]>([]);
+	const modals = writable<ModalData[]>([]);
 
-	function open(alertData: AlertData): string {
-		if (!alertData.id) {
-			alertData.id = nanoid();
+	function open(modalData: ModalData): string {
+		if (!modalData.id) {
+			modalData.id = nanoid();
 		}
-		if (alertData.isModalOpen === undefined) {
-			alertData.isModalOpen = true;
+		if (modalData.isModalOpen === undefined) {
+			modalData.isModalOpen = true;
 		}
-		alerts.update(($alerts) => {
-			return [...$alerts, alertData];
+		modals.update(($modals) => {
+			return [...$modals, modalData];
 		});
-		return alertData.id;
+		return modalData.id;
 	}
 
 	function close(id?: string | undefined) {
-		alerts.update(($alerts) => {
+		modals.update(($modals) => {
 			if (id) {
-				$alerts = $alerts.filter(($alert) => $alert.id !== id);
+				$modals = $modals.filter(($modal) => $modal.id !== id);
 			} else {
-				$alerts.pop();
+				$modals.pop();
 			}
-			return $alerts;
+			return $modals;
 		});
 	}
 
-	function createAlerts() {
-		const { subscribe } = alerts;
+	function createModals() {
+		const { subscribe } = modals;
 
 		return {
 			subscribe,
@@ -55,28 +55,28 @@
 		};
 	}
 
-	export const alert: {
+	export const modal: {
 		subscribe: (
 			this: void,
-			run: Subscriber<AlertData[]>,
-			invalidate?: (value?: AlertData[]) => void
+			run: Subscriber<ModalData[]>,
+			invalidate?: (value?: ModalData[]) => void
 		) => Unsubscriber;
-		open: (alertData: AlertData) => string;
+		open: (modalData: ModalData) => string;
 		close: (id?: string | undefined) => void;
-	} = createAlerts();
+	} = createModals();
 </script>
 
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { Modal, ModalAction } from '../modal';
+	import { Modal, ModalAction } from '.';
 	import type { Readable, Subscriber, Unsubscriber } from 'svelte/store';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 </script>
 
-{#each $alerts as a (a.id)}
-	<Modal class={a.class} isModalOpen={a.isModalOpen} title={a.title} on:close={() => alert.close()}>
+{#each $modals as a (a.id)}
+	<Modal class={a.class} isModalOpen={a.isModalOpen} title={a.title} on:close={() => modal.close()}>
 		{#if a.description}
 			<p class="py-4">
 				{@html a.description}
@@ -88,10 +88,10 @@
 				on:click={() => {
 					if (a.cancel) {
 						if (a.cancel()) {
-							alert.close();
+							modal.close();
 						}
 					} else {
-						alert.close();
+						modal.close();
 					}
 				}}
 			>
@@ -103,7 +103,7 @@
 						class="btn {button.class || ''}"
 						on:click={() => {
 							if (button.onClick()) {
-								alert.close();
+								modal.close();
 							}
 						}}
 					>
@@ -115,7 +115,7 @@
 				class="btn btn-primary"
 				on:click={() => {
 					if (a.confirm && a.confirm()) {
-						alert.close();
+						modal.close();
 					}
 				}}
 			>

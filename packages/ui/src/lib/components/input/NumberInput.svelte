@@ -10,7 +10,7 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let id: string | undefined = nanoid();
-	let className: string | undefined = 'input-bordered';
+	let className: string | undefined = 'input-bordered w-full';
 	export { className as class };
 
 	const contextClass = getContext<string>('ui.input') || '';
