@@ -9,6 +9,7 @@ const zh: NamespaceGraphenceTranslation = {
         forgot: "忘记密码?"
     },
     message: {
+        requestSuccess: "操作成功",
         saveSuccess: "保存成功",
         createSuccess: "创建成功",
         removeSuccess: "删除成功",
@@ -28,7 +29,7 @@ const zh: NamespaceGraphenceTranslation = {
         search: {
             label: "搜索"
         },
-        alert: {
+        modal: {
             removeModalTitle: "确认删除?",
             unbindModalTitle: "确认移除?"
         },

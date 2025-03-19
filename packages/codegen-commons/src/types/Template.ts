@@ -17,7 +17,9 @@ export type Template =
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Td.svelte' |
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Input.svelte' |
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Filter.svelte' |
-    '{{componentsPath}}/enums/{{pathName}}/index.ts' //|
+    '{{componentsPath}}/enums/{{pathName}}/index.ts' |
+    '{{routesPath}}/{{pathName}}/+page.svelte' |
+    '{{routesPath}}/{{pathName}}/+page.ts' //|
 // '{{componentsPath}}/objects/{{pathName}}/{{name}}ConnectionTable.svelte' |
 // '{{componentsPath}}/objects/{{pathName}}/{{name}}CreateTable.svelte' |
 // '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectTable.svelte' |
@@ -37,8 +39,6 @@ export type Template =
 // '{{componentsPath}}/objects/{{pathName}}/index.ts' |
 // '{{componentsPath}}/objects/index.ts' |
 // '{{componentsPath}}/enums/index.ts' |
-// '{{routesPath}}/{{pathName}}/+page.svelte' |
-// '{{routesPath}}/{{pathName}}/+page.ts' |
 // '{{routesPath}}/{{pathName}}/[id]/+page.svelte' |
 // '{{routesPath}}/{{pathName}}/[id]/+page.ts' |
 // '{{routesPath}}/{{pathName}}/[id]/{{objectFieldPathName}}/+page.svelte' |

@@ -90,6 +90,10 @@ export type NamespaceGraphenceTranslation = {
 	}
 	message: {
 		/**
+		 * R​e​q​u​e​s​t​ ​s​u​c​c​e​s​s
+		 */
+		requestSuccess: string
+		/**
 		 * S​a​v​e​ ​s​u​c​c​e​s​s
 		 */
 		saveSuccess: string
@@ -149,7 +153,7 @@ export type NamespaceGraphenceTranslation = {
 			 */
 			label: string
 		}
-		alert: {
+		modal: {
 			/**
 			 * R​e​m​o​v​e​ ​r​o​w​?
 			 */
@@ -3190,6 +3194,10 @@ export type TranslationFunctions = {
 		}
 		message: {
 			/**
+			 * Request success
+			 */
+			requestSuccess: () => LocalizedString
+			/**
 			 * Save success
 			 */
 			saveSuccess: () => LocalizedString
@@ -3247,7 +3255,7 @@ export type TranslationFunctions = {
 				 */
 				label: () => LocalizedString
 			}
-			alert: {
+			modal: {
 				/**
 				 * Remove row?
 				 */

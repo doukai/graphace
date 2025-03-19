@@ -4,6 +4,7 @@
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark } from '@steeze-ui/heroicons';
+	import { Form, FormControl, Label } from '@graphace/ui';
 	import { StringFilter } from '@graphace/ui-graphql';
 	import RealmSelectFilter from '~/lib/components/objects/realm/RealmSelectFilter.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
@@ -15,6 +16,7 @@
 	let className: string | undefined = undefined;
 	export { className as class };
 
+	const contextClass = getContext<string>('ui.popover-content') || '';
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	
 	const dispatch = createEventDispatcher<{
@@ -55,28 +57,24 @@
 
 {#if $open}
 	<div use:melt={$overlay} class="fixed inset-0 z-[{zIndex + 5}]" />
-	<div class="z-[{zIndex + 5}] {className}" use:melt={$content}>
+	<div class="z-[{zIndex + 5}] {className} {contextClass}" use:melt={$content}>
 		<div use:melt={$arrow} />
-		<div class="space-y-1 max-h-60 overflow-y-auto">
-			<span>{$LL.graphql.objects.Realm.name()}</span>
-			<RealmSelectFilter
-				name="id"
-				bind:value={value.id}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Realm.fields.name.name()}</span>
-			<StringFilter
-				name="name"
-				bind:value={value.name}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Realm.fields.description.name()}</span>
-			<StringFilter
-				name="description"
-				bind:value={value.description}
-			/>
-			<div class="divider m-0 md:hidden" />
-		</div>
+		<Form class="max-h-60 overflow-y-auto">
+			<FormControl let:id>
+				<Label {id} text={$LL.graphql.objects.Realm.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<RealmSelectFilter {id} name="id" bind:value={value.id} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Realm.fields.name.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<StringFilter {id} name="name" bind:value={value.name} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Realm.fields.description.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<StringFilter {id} name="description" bind:value={value.description} />
+				</div>
+			</FormControl>
+		</Form>
 		<div class="flex justify-center space-x-1 pt-1">
 			<div class="tooltip" data-tip={$LL.ui_graphql.table.th.filter()}>
 				<button

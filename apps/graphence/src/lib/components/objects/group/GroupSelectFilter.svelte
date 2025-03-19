@@ -6,8 +6,9 @@
 	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 
+	export let id: string | undefined = undefined;
+	export let name: string | undefined = undefined;
 	export let value: StringExpression | null | undefined = undefined;
-	export let name: string;
 	let className: string | undefined = undefined;
 	export { className as class };
 
@@ -30,6 +31,7 @@
 	<OperatorSelect bind:value={value.opr} on:change={(e) => oprChange()} />
 	{#if value.opr === 'IN' || value.opr === 'NIN' || value.opr === 'BT' || value.opr === 'NBT'}
 		<GroupSelect
+			{id}
 			{name}
 			placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
 			list
@@ -39,6 +41,7 @@
 		/>
 	{:else}
 		<GroupSelect
+			{id}
 			{name}
 			placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
 			bind:val={value.val}

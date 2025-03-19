@@ -4,7 +4,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { Buttons, Empty, Loading, Table } from '@graphace/ui';
+	import { Buttons, Empty, Loading, SearchInput, Table } from '@graphace/ui';
 	import { type Option, {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td, {% endfor %}{% if hasFileField %}FileTd, {% endif %}ObjectTd } from '@graphace/ui-graphql';
 	{%- for enum in enums %}
 	import {{ enum }}Th from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Th.svelte';

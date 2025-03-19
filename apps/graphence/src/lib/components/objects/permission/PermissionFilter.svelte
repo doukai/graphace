@@ -4,6 +4,7 @@
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark } from '@steeze-ui/heroicons';
+	import { Form, FormControl, Label } from '@graphace/ui';
 	import { IDFilter, StringFilter } from '@graphace/ui-graphql';
 	import PermissionTypeFilter from '~/lib/components/enums/permission-type/PermissionTypeFilter.svelte';
 	import RoleSelectFilter from '~/lib/components/objects/role/RoleSelectFilter.svelte';
@@ -16,6 +17,7 @@
 	let className: string | undefined = undefined;
 	export { className as class };
 
+	const contextClass = getContext<string>('ui.popover-content') || '';
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	
 	const dispatch = createEventDispatcher<{
@@ -64,46 +66,36 @@
 
 {#if $open}
 	<div use:melt={$overlay} class="fixed inset-0 z-[{zIndex + 5}]" />
-	<div class="z-[{zIndex + 5}] {className}" use:melt={$content}>
+	<div class="z-[{zIndex + 5}] {className} {contextClass}" use:melt={$content}>
 		<div use:melt={$arrow} />
-		<div class="space-y-1 max-h-60 overflow-y-auto">
-			<span>{$LL.graphql.objects.Permission.fields.name.name()}</span>
-			<IDFilter
-				name="name"
-				bind:value={value.name}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Permission.fields.description.name()}</span>
-			<StringFilter
-				name="description"
-				bind:value={value.description}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Permission.fields.field.name()}</span>
-			<StringFilter
-				name="field"
-				bind:value={value.field}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Permission.fields.type.name()}</span>
-			<StringFilter
-				name="type"
-				bind:value={value.type}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Permission.fields.permissionType.name()}</span>
-			<PermissionTypeFilter
-				name="permissionType"
-				bind:value={value.permissionType}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Permission.fields.roles.name()}</span>
-			<RoleSelectFilter
-				name="roles"
-				bind:value={value.roles.id}
-			/>
-			<div class="divider m-0 md:hidden" />
-		</div>
+		<Form class="max-h-60 overflow-y-auto">
+			<FormControl let:id>
+				<Label {id} text={$LL.graphql.objects.Permission.fields.name.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<IDFilter {id} name="name" bind:value={value.name} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Permission.fields.description.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<StringFilter {id} name="description" bind:value={value.description} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Permission.fields.field.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<StringFilter {id} name="field" bind:value={value.field} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Permission.fields.type.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<StringFilter {id} name="type" bind:value={value.type} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Permission.fields.permissionType.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<PermissionTypeFilter {id} name="permissionType" bind:value={value.permissionType} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Permission.fields.roles.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<RoleSelectFilter {id} name="roles" bind:value={value.roles.id} />
+				</div>
+			</FormControl>
+		</Form>
 		<div class="flex justify-center space-x-1 pt-1">
 			<div class="tooltip" data-tip={$LL.ui_graphql.table.th.filter()}>
 				<button

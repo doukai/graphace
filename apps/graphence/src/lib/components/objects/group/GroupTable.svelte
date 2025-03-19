@@ -4,7 +4,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { Buttons, Empty, Loading, Table } from '@graphace/ui';
+	import { Buttons, Empty, Loading, SearchInput, Table } from '@graphace/ui';
 	import { type Option, StringTh, StringTd, IntTh, IntTd, ObjectTd } from '@graphace/ui-graphql';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import UserTh from '~/lib/components/objects/user/UserTh.svelte';
@@ -63,6 +63,7 @@
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
+		search: { value: string | undefined };
 		query: { args: QueryGroupListArgs; orderBy: GroupOrderBy };
 		remove: { value: GroupInput | (GroupInput | null | undefined)[] | null | undefined };
 		unbind: { value: GroupInput | (GroupInput | null | undefined)[] | null | undefined };
@@ -76,13 +77,14 @@
 	let selectAll: boolean;
 </script>
 
-<div class="flex justify-end md:justify-between">
+<div class="flex md:justify-between">
 	<span class="max-sm:hidden text-xl font-semibold self-center">
 		{$LL.graphql.objects.Group.name()}
 	</span>
 	<Buttons
-		{showRemoveButton}
-		{showUnbindButton}
+		class="flex space-x-1 max-sm:w-full"
+		showRemoveButton={showRemoveButton && selectedIdList.length > 0}
+		showUnbindButton={showUnbindButton && selectedIdList.length > 0}
 		{showSaveButton}
 		{showCreateButton}
 		{showSelectButton}
@@ -101,7 +103,9 @@
 				value: value?.filter((node) => selectedIdList.includes(node?.id))
 			})}
 		on:back
-	/>
+	>
+		<SearchInput slot="start" on:search />
+	</Buttons>
 </div>
 <div class="divider" />
 <Table {zIndex} class={className}>
@@ -200,14 +204,13 @@
 		</tr>
 	</thead>
 	<tbody>
-	{#if isFetching}
-		<tr>
-			<td colspan="999">
-				<Loading />
-			</td>
-		</tr>
-	{:else}
-		{#if value && value.length > 0}
+		{#if isFetching}
+			<tr>
+				<td colspan="999">
+					<Loading class="loading-lg" />
+				</td>
+			</tr>
+		{:else if value && value.length > 0}
 			{#each value as node, row}
 				{#if node}
 					<tr class="hover">
@@ -385,7 +388,7 @@
 									<div class="tooltip" data-tip={$LL.graphence.components.table.unbindBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
-											on:click|preventDefault={(e) => dispatch('unbind', { value: [node] })}
+											on:click|preventDefault={(e) => dispatch('unbind', { value: node })}
 										>
 											<Icon src={ArchiveBoxXMark} solid />
 										</button>
@@ -395,7 +398,7 @@
 									<div class="tooltip" data-tip={$LL.graphence.components.table.removeBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
-											on:click|preventDefault={(e) => dispatch('remove', { value: [node] })}
+											on:click|preventDefault={(e) => dispatch('remove', { value: node })}
 										>
 											<Icon src={Trash} solid />
 										</button>
@@ -409,10 +412,9 @@
 		{:else}
 			<tr>
 				<td colspan="999">
-					<Empty />
+					<Empty class="badge-lg" />
 				</td>
 			</tr>
 		{/if}
-	{/if}
 	</tbody>
 </Table>

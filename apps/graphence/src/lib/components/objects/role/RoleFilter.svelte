@@ -4,6 +4,7 @@
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark } from '@steeze-ui/heroicons';
+	import { Form, FormControl, Label } from '@graphace/ui';
 	import { StringFilter } from '@graphace/ui-graphql';
 	import RoleSelectFilter from '~/lib/components/objects/role/RoleSelectFilter.svelte';
 	import UserSelectFilter from '~/lib/components/objects/user/UserSelectFilter.svelte';
@@ -17,6 +18,7 @@
 	let className: string | undefined = undefined;
 	export { className as class };
 
+	const contextClass = getContext<string>('ui.popover-content') || '';
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	
 	const dispatch = createEventDispatcher<{
@@ -63,46 +65,36 @@
 
 {#if $open}
 	<div use:melt={$overlay} class="fixed inset-0 z-[{zIndex + 5}]" />
-	<div class="z-[{zIndex + 5}] {className}" use:melt={$content}>
+	<div class="z-[{zIndex + 5}] {className} {contextClass}" use:melt={$content}>
 		<div use:melt={$arrow} />
-		<div class="space-y-1 max-h-60 overflow-y-auto">
-			<span>{$LL.graphql.objects.Role.name()}</span>
-			<RoleSelectFilter
-				name="id"
-				bind:value={value.id}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Role.fields.name.name()}</span>
-			<StringFilter
-				name="name"
-				bind:value={value.name}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Role.fields.description.name()}</span>
-			<StringFilter
-				name="description"
-				bind:value={value.description}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Role.fields.users.name()}</span>
-			<UserSelectFilter
-				name="users"
-				bind:value={value.users.id}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Role.fields.groups.name()}</span>
-			<GroupSelectFilter
-				name="groups"
-				bind:value={value.groups.id}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Role.fields.composites.name()}</span>
-			<RoleSelectFilter
-				name="composites"
-				bind:value={value.composites.id}
-			/>
-			<div class="divider m-0 md:hidden" />
-		</div>
+		<Form class="max-h-60 overflow-y-auto">
+			<FormControl let:id>
+				<Label {id} text={$LL.graphql.objects.Role.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<RoleSelectFilter {id} name="id" bind:value={value.id} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Role.fields.name.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<StringFilter {id} name="name" bind:value={value.name} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Role.fields.description.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<StringFilter {id} name="description" bind:value={value.description} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Role.fields.users.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<UserSelectFilter {id} name="users" bind:value={value.users.id} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Role.fields.groups.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<GroupSelectFilter {id} name="groups" bind:value={value.groups.id} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Role.fields.composites.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<RoleSelectFilter {id} name="composites" bind:value={value.composites.id} />
+				</div>
+			</FormControl>
+		</Form>
 		<div class="flex justify-center space-x-1 pt-1">
 			<div class="tooltip" data-tip={$LL.ui_graphql.table.th.filter()}>
 				<button

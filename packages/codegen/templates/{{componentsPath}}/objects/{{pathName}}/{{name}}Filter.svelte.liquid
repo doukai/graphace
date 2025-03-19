@@ -4,6 +4,7 @@
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark } from '@steeze-ui/heroicons';
+	import { Form, FormControl, Label } from '@graphace/ui';
 	import { {% for scalar in scalars %}{{ scalar }}Filter{% if forloop.last == false %}, {% endif %}{% endfor %} } from '@graphace/ui-graphql';
 	{%- for enum in enums %}
 	import {{ enum }}Filter from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Filter.svelte';
@@ -25,6 +26,7 @@
 	let className: string | undefined = undefined;
 	export { className as class };
 
+	const contextClass = getContext<string>('ui.popover-content') || '';
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	
 	const dispatch = createEventDispatcher<{
@@ -75,35 +77,31 @@
 
 {#if $open}
 	<div use:melt={$overlay} class="fixed inset-0 z-[{zIndex + 5}]" />
-	<div class="z-[{zIndex + 5}] {className}" use:melt={$content}>
+	<div class="z-[{zIndex + 5}] {className} {contextClass}" use:melt={$content}>
 		<div use:melt={$arrow} />
-		<div class="space-y-1 max-h-60 overflow-y-auto">
-			{%- if isNamed %}
-			<span>{$LL.graphql.objects.{{ name }}.name()}</span>
-			<{{ name }}SelectFilter
-				name="{{ idName }}"
-				bind:value={value.{{ idName }}}
-			/>
-			<div class="divider m-0 md:hidden" />
-			{%- endif %}
-			{%- for field in fields %}
-			{%- if field.isScalarType or field.isEnumType %}
-			<span>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</span>
-			<{{ field.fieldTypeName }}Filter
-				name="{{ field.fieldName }}"
-				bind:value={value.{{ field.fieldName }}}
-			/>
-			<div class="divider m-0 md:hidden" />
-			{%- elsif field.isSelect %}
-			<span>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</span>
-			<{{ field.fieldTypeName }}SelectFilter
-				name="{{ field.fieldName }}"
-				bind:value={value.{{ field.fieldName }}.{{ field.fieldTypeIdName }}}
-			/>
-			<div class="divider m-0 md:hidden" />
-			{%- endif %}
-			{%- endfor %}
-		</div>
+		<Form class="max-h-60 overflow-y-auto">
+			<FormControl let:id>
+				{%- if isNamed %}
+				<Label {id} text={$LL.graphql.objects.{{ name }}.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<{{ name }}SelectFilter {id} name="{{ idName }}" bind:value={value.{{ idName }}} />
+				</div>
+				{%- endif %}
+				{%- for field in fields %}
+				{%- if field.isScalarType or field.isEnumType %}
+				<Label {id} text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<{{ field.fieldTypeName }}Filter {id} name="{{ field.fieldName }}" bind:value={value.{{ field.fieldName }}} />
+				</div>
+				{%- elsif field.isSelect %}
+				<Label {id} text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<{{ field.fieldTypeName }}SelectFilter {id} name="{{ field.fieldName }}" bind:value={value.{{ field.fieldName }}.{{ field.fieldTypeIdName }}} />
+				</div>
+				{%- endif %}
+				{%- endfor %}
+			</FormControl>
+		</Form>
 		<div class="flex justify-center space-x-1 pt-1">
 			<div class="tooltip" data-tip={$LL.ui_graphql.table.th.filter()}>
 				<button

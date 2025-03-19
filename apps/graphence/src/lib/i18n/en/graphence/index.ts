@@ -9,6 +9,7 @@ const en: BaseTranslation = {
         forgot: "Forgot password?"
     },
     message: {
+        requestSuccess: "Request success",
         saveSuccess: "Save success",
         createSuccess: "Create success",
         removeSuccess: "Remove success",
@@ -28,7 +29,7 @@ const en: BaseTranslation = {
         search: {
             label: "Search"
         },
-        alert: {
+        modal: {
             removeModalTitle: "Remove row?",
             unbindModalTitle: "Unbind row?"
         },

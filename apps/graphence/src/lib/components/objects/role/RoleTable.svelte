@@ -4,7 +4,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { Buttons, Empty, Loading, Table } from '@graphace/ui';
+	import { Buttons, Empty, Loading, SearchInput, Table } from '@graphace/ui';
 	import { type Option, StringTh, StringTd, ObjectTd } from '@graphace/ui-graphql';
 	import UserTh from '~/lib/components/objects/user/UserTh.svelte';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
@@ -15,7 +15,11 @@
 	import GroupSelectTd from '~/lib/components/objects/group/GroupSelectTd.svelte';
 	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	import type { RoleOrderBy, QueryRoleListArgs, RoleInput } from '~/lib/types/schema';
+	import type {
+		RoleOrderBy,
+		QueryRoleListArgs,
+		RoleInput
+	} from '~/lib/types/schema';
 
 	export let value: (RoleInput | null | undefined)[] | null | undefined = undefined;
 	export let args: QueryRoleListArgs = {};
@@ -54,6 +58,7 @@
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
+		search: { value: string | undefined };
 		query: { args: QueryRoleListArgs; orderBy: RoleOrderBy };
 		remove: { value: RoleInput | (RoleInput | null | undefined)[] | null | undefined };
 		unbind: { value: RoleInput | (RoleInput | null | undefined)[] | null | undefined };
@@ -67,11 +72,12 @@
 	let selectAll: boolean;
 </script>
 
-<div class="flex justify-end md:justify-between">
+<div class="flex md:justify-between">
 	<span class="max-sm:hidden text-xl font-semibold self-center">
 		{$LL.graphql.objects.Role.name()}
 	</span>
 	<Buttons
+		class="flex space-x-1 max-sm:w-full"
 		showRemoveButton={showRemoveButton && selectedIdList.length > 0}
 		showUnbindButton={showUnbindButton && selectedIdList.length > 0}
 		{showSaveButton}
@@ -92,7 +98,9 @@
 				value: value?.filter((node) => selectedIdList.includes(node?.id))
 			})}
 		on:back
-	/>
+	>
+		<SearchInput slot="start" on:search />
+	</Buttons>
 </div>
 <div class="divider" />
 <Table {zIndex} class={className}>
@@ -170,7 +178,7 @@
 		{#if isFetching}
 			<tr>
 				<td colspan="999">
-					<Loading />
+					<Loading class="loading-lg" />
 				</td>
 			</tr>
 		{:else if value && value.length > 0}
@@ -300,7 +308,7 @@
 									<div class="tooltip" data-tip={$LL.graphence.components.table.unbindBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
-											on:click|preventDefault={(e) => dispatch('unbind', { value: [node] })}
+											on:click|preventDefault={(e) => dispatch('unbind', { value: node })}
 										>
 											<Icon src={ArchiveBoxXMark} solid />
 										</button>
@@ -310,7 +318,7 @@
 									<div class="tooltip" data-tip={$LL.graphence.components.table.removeBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
-											on:click|preventDefault={(e) => dispatch('remove', { value: [node] })}
+											on:click|preventDefault={(e) => dispatch('remove', { value: node })}
 										>
 											<Icon src={Trash} solid />
 										</button>
@@ -324,7 +332,7 @@
 		{:else}
 			<tr>
 				<td colspan="999">
-					<Empty />
+					<Empty class="badge-lg" />
 				</td>
 			</tr>
 		{/if}

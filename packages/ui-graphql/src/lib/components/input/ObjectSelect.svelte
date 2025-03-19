@@ -13,7 +13,7 @@
 	export let value: Option | Option[] | null | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
 	export let zIndex: number | undefined = 0;
-	let className: string | undefined = '';
+	let className: string | undefined = undefined;
 	export { className as class };
 </script>
 

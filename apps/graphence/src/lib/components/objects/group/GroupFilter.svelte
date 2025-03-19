@@ -4,6 +4,7 @@
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark } from '@steeze-ui/heroicons';
+	import { Form, FormControl, Label } from '@graphace/ui';
 	import { StringFilter, IntFilter } from '@graphace/ui-graphql';
 	import GroupSelectFilter from '~/lib/components/objects/group/GroupSelectFilter.svelte';
 	import UserSelectFilter from '~/lib/components/objects/user/UserSelectFilter.svelte';
@@ -17,6 +18,7 @@
 	let className: string | undefined = undefined;
 	export { className as class };
 
+	const contextClass = getContext<string>('ui.popover-content') || '';
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	
 	const dispatch = createEventDispatcher<{
@@ -71,70 +73,52 @@
 
 {#if $open}
 	<div use:melt={$overlay} class="fixed inset-0 z-[{zIndex + 5}]" />
-	<div class="z-[{zIndex + 5}] {className}" use:melt={$content}>
+	<div class="z-[{zIndex + 5}] {className} {contextClass}" use:melt={$content}>
 		<div use:melt={$arrow} />
-		<div class="space-y-1 max-h-60 overflow-y-auto">
-			<span>{$LL.graphql.objects.Group.name()}</span>
-			<GroupSelectFilter
-				name="id"
-				bind:value={value.id}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Group.fields.name.name()}</span>
-			<StringFilter
-				name="name"
-				bind:value={value.name}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Group.fields.description.name()}</span>
-			<StringFilter
-				name="description"
-				bind:value={value.description}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Group.fields.path.name()}</span>
-			<StringFilter
-				name="path"
-				bind:value={value.path}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Group.fields.deep.name()}</span>
-			<IntFilter
-				name="deep"
-				bind:value={value.deep}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Group.fields.parentId.name()}</span>
-			<StringFilter
-				name="parentId"
-				bind:value={value.parentId}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Group.fields.parent.name()}</span>
-			<GroupSelectFilter
-				name="parent"
-				bind:value={value.parent.id}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Group.fields.subGroups.name()}</span>
-			<GroupSelectFilter
-				name="subGroups"
-				bind:value={value.subGroups.id}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Group.fields.users.name()}</span>
-			<UserSelectFilter
-				name="users"
-				bind:value={value.users.id}
-			/>
-			<div class="divider m-0 md:hidden" />
-			<span>{$LL.graphql.objects.Group.fields.roles.name()}</span>
-			<RoleSelectFilter
-				name="roles"
-				bind:value={value.roles.id}
-			/>
-			<div class="divider m-0 md:hidden" />
-		</div>
+		<Form class="max-h-60 overflow-y-auto">
+			<FormControl let:id>
+				<Label {id} text={$LL.graphql.objects.Group.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<GroupSelectFilter {id} name="id" bind:value={value.id} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Group.fields.name.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<StringFilter {id} name="name" bind:value={value.name} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Group.fields.description.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<StringFilter {id} name="description" bind:value={value.description} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Group.fields.path.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<StringFilter {id} name="path" bind:value={value.path} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Group.fields.deep.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<IntFilter {id} name="deep" bind:value={value.deep} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Group.fields.parentId.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<StringFilter {id} name="parentId" bind:value={value.parentId} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Group.fields.parent.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<GroupSelectFilter {id} name="parent" bind:value={value.parent.id} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Group.fields.subGroups.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<GroupSelectFilter {id} name="subGroups" bind:value={value.subGroups.id} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Group.fields.users.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<UserSelectFilter {id} name="users" bind:value={value.users.id} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Group.fields.roles.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<RoleSelectFilter {id} name="roles" bind:value={value.roles.id} />
+				</div>
+			</FormControl>
+		</Form>
 		<div class="flex justify-center space-x-1 pt-1">
 			<div class="tooltip" data-tip={$LL.ui_graphql.table.th.filter()}>
 				<button

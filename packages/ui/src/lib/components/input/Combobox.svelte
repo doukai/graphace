@@ -76,11 +76,6 @@
 			value = Array.isArray(next) ? next.map((item) => item.value) : next?.value;
 			let original = Array.isArray(curr) ? curr.map((item) => item.value) : curr?.value;
 			dispatch('change', { value, original });
-			$tags = Array.isArray(value)
-				? value.map((item) => ({ id: getOptionId(item), value: getOptionLabel(item) }))
-				: value
-				? [{ id: getOptionId(value), value: getOptionLabel(value) }]
-				: [];
 			return next;
 		}
 	});
@@ -113,6 +108,12 @@
 		debounceTimer = setTimeout(callback, 450);
 	};
 
+	$: $tags = Array.isArray(value)
+		? value.map((item) => ({ id: getOptionId(item), value: getOptionLabel(item) }))
+		: value
+		? [{ id: getOptionId(value), value: getOptionLabel(value) }]
+		: [];
+
 	$: if (!$open) {
 		$inputValue = '';
 	}
@@ -139,7 +140,7 @@
 					? 'badge-error'
 					: 'badge-neutral'} flex items-center [word-break:break-word] data-[disabled]:bg-neutral-content data-[selected]:bg-neutral-focus data-[disabled]:hover:cursor-default data-[disabled]:focus:!outline-none data-[disabled]:focus:!ring-0"
 			>
-				<span class="flex items-center border-r p-1 bg-neutral border-white/10">{t.value}</span>
+				<span class="flex items-center border-r bg-neutral border-white/10">{t.value}</span>
 				<button
 					use:melt={$deleteTrigger(t)}
 					{disabled}
