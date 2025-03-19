@@ -12,6 +12,7 @@
 	export let errors: Record<string, Errors> = {};
 	export let showRemoveButton: boolean = false;
 	export let showUnbindButton: boolean = false;
+	export let showSaveButton: boolean = false;
 	export let showSelectButton: boolean = false;
 	export let showBackButton: boolean = false;
 	let className: string | undefined =
@@ -43,6 +44,7 @@
 	<Buttons
 		{showRemoveButton}
 		{showUnbindButton}
+		{showSaveButton}
 		{showSelectButton}
 		{showBackButton}
 		on:save={(e) => dispatch('save', { value })}
@@ -97,6 +99,7 @@
 	<Buttons
 		{showRemoveButton}
 		{showUnbindButton}
+		{showSaveButton}
 		{showSelectButton}
 		{showBackButton}
 		on:save={(e) => dispatch('save', { value })}

@@ -77,6 +77,7 @@
 	<CardBody>
 		<RealmTable
 			showRemoveButton={true}
+			showEditButton={true}
 			showCreateButton={true}
 			showBackButton={$canBack}
 			value={nodes}

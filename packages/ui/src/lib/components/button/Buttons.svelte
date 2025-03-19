@@ -9,7 +9,7 @@
 	export let showRemoveButton: boolean = false;
 	export let showUnbindButton: boolean = false;
 	export let showSaveButton: boolean = false;
-	export let showCreateButton: boolean = true;
+	export let showCreateButton: boolean = false;
 	export let showSelectButton: boolean = false;
 	export let showBackButton: boolean = false;
 	let className: string | undefined = 'flex space-x-1';

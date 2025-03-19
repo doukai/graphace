@@ -13,7 +13,7 @@
 		undefined;
 	export let errors: Errors | undefined = undefined;
 	export let disabled = false;
-	let className: string | undefined = undefined;
+	let className: string | undefined = '';
 	export { className as class };
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');

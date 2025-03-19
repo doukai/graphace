@@ -77,6 +77,7 @@
 	<CardBody>
 		<UserTable
 			showRemoveButton={true}
+			showEditButton={true}
 			showCreateButton={true}
 			showBackButton={$canBack}
 			value={nodes}
