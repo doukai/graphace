@@ -1,106 +1,87 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { page } from '$app/stores';
-	import { type Errors, type JsonSchema, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
-	import type { GraphQLError } from '@graphace/graphql';
-	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
-	import GroupForm from '~/lib/components/objects/group/GroupForm.svelte';
-	import GroupCreateForm from '~/lib/components/objects/group/GroupCreateForm.svelte';
+	import type { Errors, JsonSchema, PermissionsStore} from '@graphace/commons';
+	import { ot, to, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
+	import GroupForm from '~//group/GroupForm.svelte';
 	import type { Query_group_parent_Store } from '~/lib/stores/query/query_group_parent_store';
 	import type { Mutation_group_parent_Store } from '~/lib/stores/mutation/mutation_group_parent_store';
 	import type { Mutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
+	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
 	import type { GroupInput, MutationGroupArgs } from '~/lib/types/schema';
-	import type { PageData } from './$types';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
 
 	const { validate } = getContext<JsonSchema>('jsonSchema');
+	const permissions = getContext<PermissionsStore>('permissions');
 
-	$: urlName($page.url, $LL.graphql.objects.Group.fields.parent.name());
 	$: query_group_parent_Store = data.query_group_parent_Store as Query_group_parent_Store;
 	$: group = $query_group_parent_Store.response.data?.group;
 	$: node = group?.parent;
-	$: createNode = data.node;
-	$: errors = data.errors as Record<string, Errors>;
 	$: mutation_group_parent_Store = data.mutation_group_parent_Store as Mutation_group_parent_Store;
 	$: mutation_group_Store = data.mutation_group_Store as Mutation_group_Store;
+	$: errors = data.errors as Record<string, Errors>;
 
-	const mutation = (
-		event: CustomEvent<{
-			args: MutationGroupArgs;
-			then: (data: GroupInput | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		}>
-	) => {
-		validate('Mutation_group_Arguments', event.detail.args, $locale)
+	const mutation = (args: MutationGroupArgs) => {
+		validate('Mutation_group_Arguments', args, $locale)
 			.then((data) => {
 				errors = {};
-				mutation_group_Store.fetch(event.detail.args)
-					.then((result) => {
-						if (result.errors) {
-							event.detail.catch(result.errors);
-						} else {
-							event.detail.then(result?.data?.group);
+				mutation_group_Store.fetch(args).then((result) => {
+					if (result.errors) {
+						console.error(result.errors);
+						errors = buildGraphQLErrors(result.errors);
+						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+						if (globalError) {
+							modal.open({
+								title: $LL.graphence.message.requestFailed(),
+								description: globalError
+							});
 						}
-					});
+					} else {
+						toast.success($LL.graphence.message.requestSuccess());
+						ot();
+					}
+				});
 			})
 			.catch((validErrors) => {
 				errors = validErrors;
 			});
 	};
 
-	const parentMutation = (
-		event: CustomEvent<{
-			args: MutationGroupArgs | null;
-			then: (data: GroupInput | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		}>
-	) => {
+	const parentMutation = (args: MutationGroupArgs | null) => {
 		validate('Mutation_group_Arguments', { where: { id: { val: group?.id } }, parent: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
 				mutation_group_parent_Store.fetch({
 					group_id: group?.id,
-					group_parent: event.detail.args
-				})
-					.then((result) => {
-						if (result.errors) {
-							event.detail.catch(result.errors);
-						} else {
-							event.detail.then(result?.data?.group?.parent);
+					group_parent: args
+				}).then((result) => {
+					if (result.errors) {
+						console.error(result.errors);
+						errors = buildGraphQLErrors(result.errors);
+						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+						if (globalError) {
+							modal.open({
+								title: $LL.graphence.message.requestFailed(),
+								description: globalError
+							});
 						}
-					});
+					} else {
+						toast.success($LL.graphence.message.requestSuccess());
+						ot();
+					}
+				});
 			})
 			.catch((validErrors) => {
 				errors = validErrors.parent.iterms;
 			});
 	};
-
-	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
-		if (node) {
-			to(`../../group/${event.detail.path}`);
-		} else {
-			to(`../../group/${event.detail.path}`, {
-				node: updateNodeParam($page.url, createNode),
-				errors: updateErrorsParam($page.url, errors),
-				path: getChildPathParam($page.url, event.detail.name)
-			});
-		}
-	};
-
-	const gotoSelect = (event: CustomEvent<{}>) => {
-		to(`./parent/__`);
-	};
-
-	const back = (event: CustomEvent<{}>) => {
-		ot();
-	};
 </script>
 
 <Card>
-	{#if node}
+	<CardBody>
 		<GroupForm
 			showGotoSelectButton={true}
 			{node}
@@ -115,16 +96,5 @@
 			on:gotoSelect={gotoSelect}
 			on:back={back}
 		/>
-	{:else}
-		<GroupCreateForm
-			showGotoSelectButton={true}
-			showBackButton={$canBack}
-			node={createNode}
-			{errors}
-			on:mutation={parentMutation}
-			on:gotoField={gotoField}
-			on:gotoSelect={gotoSelect}
-			on:back={back}
-		/>
-	{/if}
+	</CardBody>
 </Card>

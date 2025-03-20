@@ -860,69 +860,50 @@ const renders: Record<Template, Render> = {
         throw new Error(`${config.name} undefined`);
     },
     '{{routesPath}}/{{pathName}}/[id]/{{objectFieldPathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.name;
-        if (typeName) {
-            const type = schema.getType(typeName);
-            if (type && isObjectType(type)) {
-                const objectField = getField(type, config.objectFieldName);
-                if (objectField?.type) {
-                    const objectFieldType = getFieldType(objectField.type);
-                    return {
-                        content: buildFileContent(config.template, {
-                            name: type?.name,
-                            idName: getIDFieldName(type),
-                            imports: getObjectImports(typeName),
-                            component: getObjectComponent(typeName),
-                            objectFieldName: objectField.name,
-                            objectFieldTypeName: objectFieldType.name,
-                            objectFieldTypeIdName: getIDFieldName(objectFieldType),
-                            objectFieldTypeFields: getFieldInfos(schema, objectFieldType),
-                            formPath: `${config.componentsPath}/objects`,
-                            schemaTypesPath: config.schemaTypesPath,
-                            storesPath: config.storesPath,
-                            isNonNullType: isNonNullType(objectField.type),
-                            queryTypeName: getQueryTypeName(),
-                            mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName(),
-                            hasFileField: hasFileField(objectFieldType),
-                            useAuth: config.useAuth
-                        }),
-                    };
-                }
+        const mutationFieldInfo = getMutationFieldInfo(schema, changeCase.camelCase(config.name!));
+        if (mutationFieldInfo) {
+            const objectFieldInfo = getObjectFieldInfo(schema, config.name!, config.objectFieldName!);
+            if (objectFieldInfo) {
+                return {
+                    content: buildFileContent(config.template, {
+                        ...mutationFieldInfo,
+                        fields: getObjectFieldInfos(schema, mutationFieldInfo.originalFieldTypeName)
+                            ?.filter(field => field.inGraphQL && field.inMutation),
+                        objectFieldInfo: {
+                            ...objectFieldInfo,
+                            fields: getObjectFieldInfos(schema, mutationFieldInfo.originalFieldTypeName)
+                                ?.filter(field => field.inGraphQL && field.inMutation)
+                        },
+                        ...config
+                    }),
+                };
             }
         }
         console.error(config);
-        throw new Error(`${typeName} undefined`);
+        throw new Error(`${config.name} undefined`);
     },
     '{{routesPath}}/{{pathName}}/[id]/{{objectFieldPathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const typeName = config.name;
-        if (typeName) {
-            const type = schema.getType(typeName);
-            if (type && isObjectType(type)) {
-                const objectField = getField(type, config.objectFieldName);
-                if (objectField?.type) {
-                    const objectFieldType = getFieldType(objectField.type);
-                    return {
-                        content: buildFileContent(config.template, {
-                            name: type?.name,
-                            idName: getIDFieldName(type),
-                            objectFieldName: objectField.name,
-                            objectFieldTypeName: objectFieldType.name,
-                            objectFieldTypeIdName: getIDFieldName(objectFieldType),
-                            schemaTypesPath: config.schemaTypesPath,
-                            storesPath: config.storesPath,
-                            queryTypeName: getQueryTypeName(),
-                            mutationTypeName: getMutationTypeName(),
-                            subscriptionTypeName: getSubscriptionTypeName(),
-                            hasFileField: hasFileField(objectFieldType),
-                            useAuth: config.useAuth
-                        }),
-                    };
-                }
+        const mutationFieldInfo = getMutationFieldInfo(schema, changeCase.camelCase(config.name!));
+        if (mutationFieldInfo) {
+            const objectFieldInfo = getObjectFieldInfo(schema, config.name!, config.objectFieldName!);
+            if (objectFieldInfo) {
+                return {
+                    content: buildFileContent(config.template, {
+                        ...mutationFieldInfo,
+                        fields: getObjectFieldInfos(schema, mutationFieldInfo.originalFieldTypeName)
+                            ?.filter(field => field.inGraphQL && field.inMutation),
+                        objectFieldInfo: {
+                            ...objectFieldInfo,
+                            fields: getObjectFieldInfos(schema, mutationFieldInfo.originalFieldTypeName)
+                                ?.filter(field => field.inGraphQL && field.inMutation)
+                        },
+                        ...config
+                    }),
+                };
             }
         }
         console.error(config);
-        throw new Error(`${typeName} undefined`);
+        throw new Error(`${config.name} undefined`);
     },
     // '{{routesPath}}/{{pathName}}/[id]/{{objectFieldPathName}}/__/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
     //     const typeName = config.name;

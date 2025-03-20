@@ -100,7 +100,18 @@
 				}
 			}}
 			on:remove={(e) => {
-				node = {};
+				if (e.detail.value) {
+					modal.open({
+						title: $LL.graphence.components.modal.removeModalTitle(),
+						confirm: () => {
+							mutation({
+								where: { id: { val: e.detail.value?.id } },
+								isDeprecated: true
+							});
+							return true;
+						}
+					});
+				}
 			}}
 			on:goto={(e) => to(`./${e.detail.path}`)}
 			on:back={(e) => ot()}

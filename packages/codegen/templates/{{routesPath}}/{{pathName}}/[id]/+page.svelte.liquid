@@ -80,7 +80,18 @@
 				}
 			{% raw %}}}{% endraw %}
 			on:remove={(e) => {
-				node = {};
+				if (e.detail.value) {
+					modal.open({
+						title: $LL.graphence.components.modal.removeModalTitle(),
+						confirm: () => {
+							mutation({
+								where: { id: { val: e.detail.value?.id } },
+								isDeprecated: true
+							});
+							return true;
+						}
+					});
+				}
 			{% raw %}}}{% endraw %}
 			on:goto={(e) => to(`./${e.detail.path}`)}
 			on:back={(e) => ot()}
@@ -89,7 +100,7 @@
 				mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
 					e.detail.then(result.data?.singleUpload)
 				);
-			}}
+			{% raw %}}}{% endraw %}
 			{%- endif %}
 		/>
 	</CardBody>

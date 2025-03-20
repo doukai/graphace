@@ -23,7 +23,9 @@ export type Template =
     '{{routesPath}}/{{pathName}}/[id]/+page.svelte' |
     '{{routesPath}}/{{pathName}}/[id]/+page.ts' |
     '{{routesPath}}/{{pathName}}/_/+page.svelte' |
-    '{{routesPath}}/{{pathName}}/_/+page.ts' //|
+    '{{routesPath}}/{{pathName}}/_/+page.ts' |
+    '{{routesPath}}/{{pathName}}/[id]/{{objectFieldPathName}}/+page.svelte' |
+    '{{routesPath}}/{{pathName}}/[id]/{{objectFieldPathName}}/+page.ts' //|
 // '{{componentsPath}}/objects/{{pathName}}/{{name}}ConnectionTable.svelte' |
 // '{{componentsPath}}/objects/{{pathName}}/{{name}}CreateTable.svelte' |
 // '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectTable.svelte' |
@@ -43,8 +45,6 @@ export type Template =
 // '{{componentsPath}}/objects/{{pathName}}/index.ts' |
 // '{{componentsPath}}/objects/index.ts' |
 // '{{componentsPath}}/enums/index.ts' |
-// '{{routesPath}}/{{pathName}}/[id]/{{objectFieldPathName}}/+page.svelte' |
-// '{{routesPath}}/{{pathName}}/[id]/{{objectFieldPathName}}/+page.ts' |
 // '{{routesPath}}/{{pathName}}/[id]/{{objectFieldPathName}}/__/+page.svelte' |
 // '{{routesPath}}/{{pathName}}/[id]/{{objectFieldPathName}}/__/+page.ts' |
 // '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.svelte' |

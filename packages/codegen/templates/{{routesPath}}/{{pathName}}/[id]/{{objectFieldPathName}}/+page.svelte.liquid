@@ -1,113 +1,96 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { page } from '$app/stores';
-	import { type Errors, type JsonSchema, updateNodeParam, updateErrorsParam, getChildPathParam } from '@graphace/commons';
-	import type { GraphQLError } from '@graphace/graphql';
-	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
-	import {{ objectFieldTypeName }}Form from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}Form.svelte';
-	import {{ objectFieldTypeName }}CreateForm from '~/{{ formPath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}CreateForm.svelte';
-	import type { Query_{{ name | camelCase }}_{{ objectFieldName }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_{{ objectFieldName }}_store';
-	import type { Mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ objectFieldName }}_store';
-	import type { Mutation_{{ objectFieldTypeName | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ objectFieldTypeName | camelCase }}_store';
+	import type { Errors, JsonSchema{%- if useAuth -%}, PermissionsStore{%- endif -%} } from '@graphace/commons';
+	import { ot, to, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
+	import {{ objectFieldInfo.fieldTypeName }}Form from '~/{{ formPath }}/{{ objectFieldInfo.fieldTypeName | paramCase }}/{{ objectFieldInfo.fieldTypeName }}Form.svelte';
+	import type { Query_{{ fieldTypeName | camelCase }}_{{ objectFieldName }}_Store } from '~/{{ storesPath }}/query/query_{{ fieldTypeName | camelCase }}_{{ objectFieldName }}_store';
+	import type { Mutation_{{ fieldTypeName | camelCase }}_{{ objectFieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ fieldTypeName | camelCase }}_{{ objectFieldName }}_store';
+	import type { Mutation_{{ objectFieldInfo.fieldTypeName | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ objectFieldInfo.fieldTypeName | camelCase }}_store';
 	{%- if hasFileField %}
 	import type { Mutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
 	{%- endif %}
-	import type { {{ objectFieldTypeName }}Input, {{ mutationTypeName }}{{ objectFieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
-	import type { PageData } from './$types';
+	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
+	import type { {{ objectFieldInfo.fieldTypeName }}Input, {{ mutationTypeName }}{{ objectFieldInfo.fieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
 
 	const { validate } = getContext<JsonSchema>('jsonSchema');
+	{%- if useAuth %}
+	const permissions = getContext<PermissionsStore>('permissions');
+	{%- endif %}
 
-	$: urlName($page.url, $LL.graphql.objects.{{ name }}.fields.{{ objectFieldName }}.name());
-	$: query_{{ name | camelCase }}_{{ objectFieldName }}_Store = data.query_{{ name | camelCase }}_{{ objectFieldName }}_Store as Query_{{ name | camelCase }}_{{ objectFieldName }}_Store;
-	$: {{ name | camelCase }} = $query_{{ name | camelCase }}_{{ objectFieldName }}_Store.response.data?.{{ name | camelCase }};
-	$: node = {{ name | camelCase }}?.{{ objectFieldName }};
-	$: createNode = data.node;
-	$: errors = data.errors as Record<string, Errors>;
-	$: mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store = data.mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store as Mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store;
-	$: mutation_{{ objectFieldTypeName | camelCase }}_Store = data.mutation_{{ objectFieldTypeName | camelCase }}_Store as Mutation_{{ objectFieldTypeName | camelCase }}_Store;
+	$: query_{{ fieldTypeName | camelCase }}_{{ objectFieldName }}_Store = data.query_{{ fieldTypeName | camelCase }}_{{ objectFieldName }}_Store as Query_{{ fieldTypeName | camelCase }}_{{ objectFieldName }}_Store;
+	$: {{ fieldTypeName | camelCase }} = $query_{{ fieldTypeName | camelCase }}_{{ objectFieldName }}_Store.response.data?.{{ fieldTypeName | camelCase }};
+	$: node = {{ fieldTypeName | camelCase }}?.{{ objectFieldName }};
+	$: mutation_{{ fieldTypeName | camelCase }}_{{ objectFieldName }}_Store = data.mutation_{{ fieldTypeName | camelCase }}_{{ objectFieldName }}_Store as Mutation_{{ fieldTypeName | camelCase }}_{{ objectFieldName }}_Store;
+	$: mutation_{{ objectFieldInfo.fieldTypeName | camelCase }}_Store = data.mutation_{{ objectFieldInfo.fieldTypeName | camelCase }}_Store as Mutation_{{ objectFieldInfo.fieldTypeName | camelCase }}_Store;
 	{%- if hasFileField %}
 	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store as Mutation_singleUpload_Store;
 	{%- endif %}
+	$: errors = data.errors as Record<string, Errors>;
 
-	const mutation = (
-		event: CustomEvent<{
-			args: {{ mutationTypeName }}{{ objectFieldTypeName }}Args;
-			then: (data: {{ objectFieldTypeName }}Input | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		}>
-	) => {
-		validate('{{ mutationTypeName }}_{{ objectFieldTypeName | camelCase }}_Arguments', event.detail.args, $locale)
+	const mutation = (args: {{ mutationTypeName }}{{ objectFieldInfo.fieldTypeName }}Args) => {
+		validate('{{ mutationTypeName }}_{{ objectFieldInfo.fieldTypeName | camelCase }}_Arguments', args, $locale)
 			.then((data) => {
 				errors = {};
-				mutation_{{ objectFieldTypeName | camelCase }}_Store.fetch(event.detail.args)
-					.then((result) => {
-						if (result.errors) {
-							event.detail.catch(result.errors);
-						} else {
-							event.detail.then(result?.data?.{{ objectFieldTypeName | camelCase }});
+				mutation_{{ objectFieldInfo.fieldTypeName | camelCase }}_Store.fetch(args).then((result) => {
+					if (result.errors) {
+						console.error(result.errors);
+						errors = buildGraphQLErrors(result.errors);
+						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+						if (globalError) {
+							modal.open({
+								title: $LL.graphence.message.requestFailed(),
+								description: globalError
+							});
 						}
-					});
+					} else {
+						toast.success($LL.graphence.message.requestSuccess());
+						ot();
+					}
+				});
 			})
 			.catch((validErrors) => {
 				errors = validErrors;
 			});
 	};
 
-	const parentMutation = (
-		event: CustomEvent<{
-			args: {{ mutationTypeName }}{{ objectFieldTypeName }}Args | null;
-			then: (data: {{ objectFieldTypeName }}Input | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		}>
-	) => {
-		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { where: { {{ idName }}: { val: {{ name | camelCase }}?.{{ idName }} } }, {{ objectFieldName }}: event.detail.args }, $locale)
+	const parentMutation = (args: {{ mutationTypeName }}{{ objectFieldInfo.fieldTypeName }}Args | null) => {
+		validate('{{ mutationTypeName }}_{{ fieldTypeName | camelCase }}_Arguments', { where: { {{ fieldTypeIdName }}: { val: {{ fieldTypeName | camelCase }}?.{{ fieldTypeIdName }} } }, {{ objectFieldName }}: event.detail.args }, $locale)
 			.then((data) => {
 				errors = {};
-				mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store.fetch({
-					{{ name | camelCase }}_{{ idName }}: {{ name | camelCase }}?.{{ idName }},
-					{{ name | camelCase }}_{{ objectFieldName }}: event.detail.args
-				})
-					.then((result) => {
-						if (result.errors) {
-							event.detail.catch(result.errors);
-						} else {
-							event.detail.then(result?.data?.{{ name | camelCase }}?.{{ objectFieldName }});
+				mutation_{{ fieldTypeName | camelCase }}_{{ objectFieldName }}_Store.fetch({
+					{{ fieldTypeName | camelCase }}_{{ fieldTypeIdName }}: {{ fieldTypeName | camelCase }}?.{{ fieldTypeIdName }},
+					{{ fieldTypeName | camelCase }}_{{ objectFieldName }}: args
+				}).then((result) => {
+					if (result.errors) {
+						console.error(result.errors);
+						errors = buildGraphQLErrors(result.errors);
+						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+						if (globalError) {
+							modal.open({
+								title: $LL.graphence.message.requestFailed(),
+								description: globalError
+							});
 						}
-					});
+					} else {
+						toast.success($LL.graphence.message.requestSuccess());
+						ot();
+					}
+				});
 			})
 			.catch((validErrors) => {
 				errors = validErrors.{{ objectFieldName }}.iterms;
 			});
 	};
-
-	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
-		if (node) {
-			to(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.path}`);
-		} else {
-			to(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.path}`, {
-				node: updateNodeParam($page.url, createNode),
-				errors: updateErrorsParam($page.url, errors),
-				path: getChildPathParam($page.url, event.detail.name)
-			});
-		}
-	};
-
-	const gotoSelect = (event: CustomEvent<{}>) => {
-		to(`./{{ objectFieldName | paramCase }}/__`);
-	};
-
-	const back = (event: CustomEvent<{}>) => {
-		ot();
-	};
 </script>
 
 <Card>
-	{#if node}
-		<{{ objectFieldTypeName }}Form
+	<CardBody>
+		<{{ objectFieldInfo.fieldTypeName }}Form
 			showGotoSelectButton={true}
 			{node}
 			{errors}
@@ -116,7 +99,7 @@
 			showUnbindButton={true}
 			{%- endif %}
 			showBackButton={$canBack}
-			isFetching={$query_{{ name | camelCase }}_{{ objectFieldName }}_Store.isFetching}
+			isFetching={$query_{{ fieldTypeName | camelCase }}_{{ objectFieldName }}_Store.isFetching}
 			on:mutation={mutation}
 			on:parentMutation={parentMutation}
 			on:gotoField={gotoField}
@@ -127,26 +110,8 @@
 				mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
 					e.detail.then(result.data?.singleUpload)
 				);
-			}}
+			{% raw %}}}{% endraw %}
 			{%- endif %}
 		/>
-	{:else}
-		<{{ objectFieldTypeName }}CreateForm
-			showGotoSelectButton={true}
-			showBackButton={$canBack}
-			node={createNode}
-			{errors}
-			on:mutation={parentMutation}
-			on:gotoField={gotoField}
-			on:gotoSelect={gotoSelect}
-			on:back={back}
-			{%- if hasFileField %}
-			on:upload={(e) => {
-				mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
-					e.detail.then(result.data?.singleUpload)
-				);
-			}}
-			{%- endif %}
-		/>
-	{/if}
+	</CardBody>
 </Card>
