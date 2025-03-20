@@ -3,7 +3,7 @@
 
 	export let errors: Errors | undefined = undefined;
 	export let zIndex: number | undefined = 0;
-	let className: string | undefined = 'btn-xs';
+	let className: string | undefined = '';
 	export { className as class };
 </script>
 

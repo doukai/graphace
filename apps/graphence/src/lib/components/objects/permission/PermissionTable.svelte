@@ -22,7 +22,7 @@
 	export let args: QueryPermissionListArgs = {};
 	export let orderBy: PermissionOrderBy = {};
 	export let selectedIdList: (string | null | undefined)[] = [];
-	export let isFetching: boolean;
+	export let isFetching: boolean = false;
 	export let errors: Record<number, Errors> = {};
 	export let showEditButton: boolean = false;
 	export let showRemoveButton: boolean = false;
@@ -94,6 +94,7 @@
 			dispatch('select', {
 				value: value?.filter((node) => selectedIdList.includes(node?.name))
 			})}
+		on:create
 		on:back
 	>
 		<SearchInput slot="start" on:search />
@@ -102,8 +103,8 @@
 <div class="divider" />
 <Table {zIndex} class={className}>
 	<thead>
-		<tr class="z-[{zIndex + 2}]">
-			<th class="p-1">
+		<tr>
+			<th>
 				<label>
 					<input
 						type="checkbox"
@@ -184,8 +185,8 @@
 		{:else if value && value.length > 0}
 			{#each value as node, row}
 				{#if node}
-					<tr class="hover">
-						<th class="z-[{zIndex}] p-1">
+					<tr>
+						<th>
 							<label>
 								<input
 									type="checkbox"
@@ -202,6 +203,7 @@
 									bind:value={node.name}
 									readonly
 									errors={errors?.[row]?.iterms?.name}
+									{zIndex}
 								/>
 							{/if}
 						</slot>
@@ -217,6 +219,7 @@
 									readonly={fields.description.readonly}
 									disabled={fields.description.disabled}
 									errors={errors?.[row]?.iterms?.description}
+									{zIndex}
 								/>
 							{/if}
 						</slot>
@@ -232,6 +235,7 @@
 									readonly={fields.field.readonly}
 									disabled={fields.field.disabled}
 									errors={errors?.[row]?.iterms?.field}
+									{zIndex}
 								/>
 							{/if}
 						</slot>
@@ -247,6 +251,7 @@
 									readonly={fields.type.readonly}
 									disabled={fields.type.disabled}
 									errors={errors?.[row]?.iterms?.type}
+									{zIndex}
 								/>
 							{/if}
 						</slot>
@@ -262,6 +267,7 @@
 									readonly={fields.permissionType.readonly}
 									disabled={fields.permissionType.disabled}
 									errors={errors?.[row]?.iterms?.permissionType}
+									{zIndex}
 								/>
 							{/if}
 						</slot>
@@ -278,6 +284,7 @@
 										dispatch('save', {
 											value: { roles: node?.roles, where: { name: { val: node?.name } } }
 										})}
+									{zIndex}
 								/>
 							{/if}
 						</slot>
@@ -288,10 +295,11 @@
 									errors={errors?.[row]?.iterms?.realm}
 									path={`${node.name}/realm`}
 									on:goto
+									{zIndex}
 								/>
 							{/if}
 						</slot>
-						<th class="z-[{zIndex}] hover:z-[{zIndex + 3}] p-1">
+						<th class="hover:z-[{zIndex + 3}]">
 							<div class="flex space-x-1">
 								{#if showEditButton}
 									<div class="tooltip" data-tip={$LL.graphence.components.table.editBtn()}>

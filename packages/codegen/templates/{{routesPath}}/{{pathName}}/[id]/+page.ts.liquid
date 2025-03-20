@@ -1,5 +1,4 @@
 import type { LoadEvent } from '@sveltejs/kit';
-import type { LayoutLoad } from './$types';
 import { fetchQuery_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_store';
 import { createMutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
 {%- if hasFileField %}
@@ -8,6 +7,7 @@ import { createMutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/m
 {%- if useAuth %}
 import { getPermissionsStore } from '~/utils';
 {%- endif %}
+import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     {%- if useAuth %}

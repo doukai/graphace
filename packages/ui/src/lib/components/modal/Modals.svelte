@@ -111,16 +111,18 @@
 					</button>
 				{/each}
 			{/if}
-			<button
-				class="btn btn-primary"
-				on:click={() => {
-					if (a.confirm && a.confirm()) {
-						modal.close();
-					}
-				}}
-			>
-				{$LL.ui.message.confirm()}
-			</button>
+			{#if a.confirm}
+				<button
+					class="btn btn-primary"
+					on:click={() => {
+						if (a.confirm && a.confirm()) {
+							modal.close();
+						}
+					}}
+				>
+					{$LL.ui.message.confirm()}
+				</button>
+			{/if}
 		</ModalAction>
 	</Modal>
 {/each}

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Errors, JsonSchema, PermissionsStore} from '@graphace/commons';
+	import { buildArguments } from '@graphace/graphql';
 	import { to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import PermissionTable from '~/lib/components/objects/permission/PermissionTable.svelte';
 	import type { Query_permissionConnection_Store } from '~/lib/stores/query/query_permissionConnection_store';
@@ -60,7 +61,7 @@
 							});
 						}
 					} else {
-						toast.success($LL.graphence.message.requestFailed());
+						toast.success($LL.graphence.message.requestSuccess());
 						query({ first: pageSize, offset: (pageNumber - 1) * pageSize });
 					}
 				});
@@ -135,6 +136,7 @@
 				}
 			}}
 			on:query={(e) => {
+				e.detail.args = buildArguments(e.detail.args);
 				if (Object.keys(e.detail.orderBy).length > 0) {
 					e.detail.args.orderBy = e.detail.orderBy;
 				}

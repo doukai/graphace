@@ -13,6 +13,7 @@
 		undefined;
 	export let errors: Errors | undefined = undefined;
 	export let disabled = false;
+	export let zIndex: number | undefined = 0;
 	let className: string | undefined = '';
 	export { className as class };
 
@@ -26,7 +27,7 @@
 	}>();
 </script>
 
-<div class="tooltip" data-tip={$LL.ui_graphql.table.editBtn()}>
+<div class="flex h-full items-center">
 	{#if _namedStruct && Array.isArray(_namedStruct) && _namedStruct.length > 0}
 		<a
 			{id}
@@ -58,15 +59,17 @@
 			{_namedStruct.name}
 		</a>
 	{:else}
-		<button
-			{id}
-			{disabled}
-			class="btn btn-square btn-outline {errors ? 'btn-error' : ''} {className}"
-			on:click|preventDefault={(e) => {
-				dispatch('goto', { path });
-			}}
-		>
-			<Icon src={Link} class="h-5 w-5" />
-		</button>
+		<div class="tooltip hover:z-[{zIndex + 3}]" data-tip={$LL.ui_graphql.table.editBtn()}>
+			<button
+				{id}
+				{disabled}
+				class="btn btn-square btn-outline {errors ? 'btn-error' : ''} {className}"
+				on:click|preventDefault={(e) => {
+					dispatch('goto', { path });
+				}}
+			>
+				<Icon src={Link} class="h-5 w-5" />
+			</button>
+		</div>
 	{/if}
 </div>

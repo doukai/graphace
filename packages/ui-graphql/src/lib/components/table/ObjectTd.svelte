@@ -13,6 +13,6 @@
 	export { className as class };
 </script>
 
-<Td {errors} {zIndex} class={className}>
-	<ObjectLink {path} {namedStruct} {errors} class={className} on:goto />
+<Td {errors} {zIndex}>
+	<ObjectLink {path} {namedStruct} {errors} class={className} {zIndex} on:goto />
 </Td>

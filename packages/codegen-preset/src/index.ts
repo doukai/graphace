@@ -123,6 +123,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                     .filter(field => {
                         const fieldType = getFieldType(field.type);
                         return isObjectType(fieldType) &&
+                            !isConnection(fieldType.name) &&
                             !isEdge(fieldType.name) &&
                             !isPageInfo(fieldType.name) &&
                             !isIntrospection(fieldType.name) &&
@@ -139,6 +140,7 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                     .filter(field => {
                         const fieldType = getFieldType(field.type);
                         return isObjectType(fieldType) &&
+                            !isConnection(fieldType.name) &&
                             !isEdge(fieldType.name) &&
                             !isPageInfo(fieldType.name) &&
                             !isIntrospection(fieldType.name) &&
@@ -709,39 +711,39 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         //         })
         // );
 
-        // generateOptions.push(
-        //     ...targetRouteObjectType
-        //         .map(type => {
-        //             const template = '{{routesPath}}/{{pathName}}/_/+page.svelte';
-        //             const scope = { routesPath, pathName: changeCase.paramCase(type.name) };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetRouteObjectType
+                .map(type => {
+                    const template = '{{routesPath}}/{{pathName}}/_/+page.svelte';
+                    const scope = { routesPath, pathName: changeCase.paramCase(type.name) };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
-        // generateOptions.push(
-        //     ...targetRouteObjectType
-        //         .map(type => {
-        //             const template = '{{routesPath}}/{{pathName}}/_/+page.ts';
-        //             const scope = { routesPath, pathName: changeCase.paramCase(type.name) };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetRouteObjectType
+                .map(type => {
+                    const template = '{{routesPath}}/{{pathName}}/_/+page.ts';
+                    const scope = { routesPath, pathName: changeCase.paramCase(type.name) };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
         // generateOptions.push(
         //     ...targetRouteObjectTypeFields

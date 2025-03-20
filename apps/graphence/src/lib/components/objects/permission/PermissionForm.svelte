@@ -10,7 +10,7 @@
 	import type { PermissionInput } from '~/lib/types/schema';
 	
 	export let value: PermissionInput | null | undefined = undefined;
-	export let isFetching: boolean;
+	export let isFetching: boolean = false;
 	export let errors: Record<string, Errors> = {};
 	export let showRemoveButton: boolean = false;
 	export let showUnbindButton: boolean = false;

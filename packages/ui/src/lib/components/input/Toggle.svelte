@@ -21,12 +21,12 @@
 	}>();
 </script>
 
-<div class="flex h-full">
+<div class="flex h-full items-center">
 	<input
 		type="checkbox"
 		{id}
 		{name}
-		class="toggle self-center {errors?.errors ? 'toggle-error' : ''} {className} {contextClass}"
+		class="toggle {errors?.errors ? 'toggle-error' : ''} {className} {contextClass}"
 		bind:checked={value}
 		on:change={() => {
 			dispatch('change', { value });

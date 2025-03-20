@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Errors, JsonSchema{%- if useAuth -%}, PermissionsStore{%- endif -%} } from '@graphace/commons';
+	import { buildArguments } from '@graphace/graphql';
 	import { to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import {{ name }}Table from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Table.svelte';
 	import type { Query_{{ name | camelCase }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}Connection_store';
@@ -68,7 +69,7 @@
 							});
 						}
 					} else {
-						toast.success($LL.graphence.message.requestFailed());
+						toast.success($LL.graphence.message.requestSuccess());
 						query({ first: pageSize, offset: (pageNumber - 1) * pageSize });
 					}
 				});
@@ -115,23 +116,24 @@
 				} else {
 					query({ first: pageSize, offset: 0 });
 				}
-			}}
+			{% raw %}}}{% endraw %}
 			on:query={(e) => {
+				e.detail.args = buildArguments(e.detail.args);
 				if (Object.keys(e.detail.orderBy).length > 0) {
 					e.detail.args.orderBy = e.detail.orderBy;
 				}
 				query(e.detail.args);
-			}}
+			{% raw %}}}{% endraw %}
 			on:save={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
 					mutation(e.detail.value);
 				}
-			}}
+			{% raw %}}}{% endraw %}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
 					to(`./{{ name | paramCase }}/${e.detail.value.id}`);
 				}
-			}}
+			{% raw %}}}{% endraw %}
 			on:remove={(e) => {
 				if (e.detail.value) {
 					modal.open({
@@ -152,7 +154,7 @@
 						}
 					});
 				}
-			}}
+			{% raw %}}}{% endraw %}
 			on:create={(e) => to('./{{ name | paramCase }}/_')}
 			on:goto={(e) => to(`./{{ name | paramCase }}/${e.detail.path}`)}
 			{%- if hasFileField %}
@@ -160,7 +162,7 @@
 				mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
 					e.detail.then(result.data?.singleUpload)
 				);
-			}}
+			{% raw %}}}{% endraw %}
 			{%- endif %}
 		/>
 		<div class="divider" />

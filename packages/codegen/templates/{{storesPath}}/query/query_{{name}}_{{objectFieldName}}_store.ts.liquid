@@ -4,7 +4,7 @@ import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { Query{{ objectFieldInfo.fieldTypeName | pascalCase }}{% if objectFieldInfo.isListType %}List{% endif %}Args, {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
 
 const query = /* GraphQL */ `query Query_{{ fieldName }}_{{ objectFieldInfo.fieldName }}(${{ fieldName }}_{{ fieldTypeIdName }}: String{% if objectFieldInfo.args and objectFieldInfo.args.length > 0 %}, {% for arg in objectFieldInfo.args %}${{ arg.inputName }}: {{ arg.inputType }}{% if forloop.last == false %}, {% endif %}{% endfor %}{% endif %}) {
-  {{ fieldName }}({{ fieldTypeIdName }}: ${{ fieldName }}_{{ fieldTypeIdName }}) {
+  {{ fieldName }}(where: { {{ fieldTypeIdName }}: { val: ${{ fieldName }}_{{ fieldTypeIdName }} } }) {
     {%- for field in fields %}
     {%- if field.isLeafType and field.isAggregate == false %}
     {{ field.fieldName }}
