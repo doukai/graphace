@@ -2,7 +2,7 @@
 	import { getContext } from 'svelte';
 	import type { Errors, JsonSchema, PermissionsStore} from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
-	import GroupForm from '~//group/GroupForm.svelte';
+	import GroupForm from '~/lib/components/objects/group/GroupForm.svelte';
 	import type { Query_group_parent_Store } from '~/lib/stores/query/query_group_parent_store';
 	import type { Mutation_group_parent_Store } from '~/lib/stores/mutation/mutation_group_parent_store';
 	import type { Mutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
@@ -23,6 +23,14 @@
 	$: mutation_group_parent_Store = data.mutation_group_parent_Store as Mutation_group_parent_Store;
 	$: mutation_group_Store = data.mutation_group_Store as Mutation_group_Store;
 	$: errors = data.errors as Record<string, Errors>;
+
+	let value = {};
+	let showUnbindButton = false;
+
+	$: if (node && Object.keys(node).length > 0) {
+		value = node;
+		showUnbindButton = true;
+	}
 
 	const mutation = (args: MutationGroupArgs) => {
 		validate('Mutation_group_Arguments', args, $locale)
@@ -50,8 +58,8 @@
 			});
 	};
 
-	const parentMutation = (args: MutationGroupArgs | null) => {
-		validate('Mutation_group_Arguments', { where: { id: { val: group?.id } }, parent: event.detail.args }, $locale)
+	const merge = (args: GroupInput | null) => {
+		validate('Mutation_group_Arguments', { where: { id: { val: group?.id } }, parent: args }, $locale)
 			.then((data) => {
 				errors = {};
 				mutation_group_parent_Store.fetch({
@@ -83,18 +91,94 @@
 <Card>
 	<CardBody>
 		<GroupForm
-			showGotoSelectButton={true}
-			{node}
-			{errors}
-			showRemoveButton={false}
-			showUnbindButton={true}
+			showSaveButton={true}
+			{showUnbindButton}
 			showBackButton={$canBack}
+			bind:value
+			{errors}
 			isFetching={$query_group_parent_Store.isFetching}
-			on:mutation={mutation}
-			on:parentMutation={parentMutation}
-			on:gotoField={gotoField}
-			on:gotoSelect={gotoSelect}
-			on:back={back}
+			fields={{
+				name: {
+					readonly: !permissions.auth('Group::name::WRITE'),
+					disabled: !permissions.auth('Group::name::WRITE'),
+					hidden: !permissions.auth('Group::name::READ')
+				},
+				description: {
+					readonly: !permissions.auth('Group::description::WRITE'),
+					disabled: !permissions.auth('Group::description::WRITE'),
+					hidden: !permissions.auth('Group::description::READ')
+				},
+				path: {
+					readonly: !permissions.auth('Group::path::WRITE'),
+					disabled: !permissions.auth('Group::path::WRITE'),
+					hidden: !permissions.auth('Group::path::READ')
+				},
+				deep: {
+					readonly: !permissions.auth('Group::deep::WRITE'),
+					disabled: !permissions.auth('Group::deep::WRITE'),
+					hidden: !permissions.auth('Group::deep::READ')
+				},
+				parentId: {
+					readonly: !permissions.auth('Group::parentId::WRITE'),
+					disabled: !permissions.auth('Group::parentId::WRITE'),
+					hidden: !permissions.auth('Group::parentId::READ')
+				},
+				parent: {
+					readonly: !permissions.auth('Group::parent::WRITE'),
+					disabled: !permissions.auth('Group::parent::WRITE'),
+					hidden: !permissions.auth('Group::parent::READ')
+				},
+				subGroups: {
+					readonly: !permissions.auth('Group::subGroups::WRITE'),
+					disabled: !permissions.auth('Group::subGroups::WRITE'),
+					hidden: !permissions.auth('Group::subGroups::READ')
+				},
+				users: {
+					readonly: !permissions.auth('Group::users::WRITE'),
+					disabled: !permissions.auth('Group::users::WRITE'),
+					hidden: !permissions.auth('Group::users::READ')
+				},
+				roles: {
+					readonly: !permissions.auth('Group::roles::WRITE'),
+					disabled: !permissions.auth('Group::roles::WRITE'),
+					hidden: !permissions.auth('Group::roles::READ')
+				},
+				realm: {
+					readonly: !permissions.auth('Group::realm::WRITE'),
+					disabled: !permissions.auth('Group::realm::WRITE'),
+					hidden: !permissions.auth('Group::realm::READ')
+				}
+			}}
+			on:save={(e) => {
+				if (e.detail.value) {
+					merge(e.detail.value);
+				}
+			}}
+			on:remove={(e) => {
+				if (e.detail.value) {
+					modal.open({
+						title: $LL.graphence.components.modal.removeModalTitle(),
+						confirm: () => {
+							mutation({
+								where: { id: { val: e.detail.value?.id } },
+								isDeprecated: true
+							});
+							return true;
+						}
+					});
+				}
+			}}
+			on:unbind={(e) => {
+				modal.open({
+					title: $LL.graphence.components.modal.unbindModalTitle(),
+					confirm: () => {
+						merge(null);
+						return true;
+					}
+				});
+			}}
+			on:goto={(e) => to(`../../${e.detail.path}`)}
+			on:back={(e) => ot()}
 		/>
 	</CardBody>
 </Card>

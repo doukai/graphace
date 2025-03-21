@@ -49,7 +49,6 @@
 	}>();
 </script>
 
-
 <div class="flex justify-end md:justify-between">
 	<span class="max-sm:hidden text-xl font-semibold self-center">
 		{$LL.graphql.objects.Role.name()}
@@ -70,116 +69,116 @@
 <Form class={className}>
 	{#if isFetching}
 		<Loading />
+	{:else if value}
+		<slot name="name">
+			{#if !fields.name.hidden}
+				<FormControl let:id>
+					<Label {id} text={$LL.graphql.objects.Role.fields.name.name()} />
+					<StringInput
+					 	{id}
+						name="name"
+						bind:value={value.name}
+						errors={errors.name}
+						readonly={fields.name.readonly}
+						disabled={fields.name.disabled}
+					/>
+				</FormControl>
+			{/if}
+		</slot>
+		<slot name="description">
+			{#if !fields.description.hidden}
+				<FormControl let:id>
+					<Label {id} text={$LL.graphql.objects.Role.fields.description.name()} />
+					<StringInput
+					 	{id}
+						name="description"
+						bind:value={value.description}
+						errors={errors.description}
+						readonly={fields.description.readonly}
+						disabled={fields.description.disabled}
+					/>
+				</FormControl>
+			{/if}
+		</slot>
+		<slot name="users">
+			{#if !fields.users.hidden}
+				<FormControl let:id>
+					<Label {id} text={$LL.graphql.objects.Role.fields.users.name()} />
+					<UserSelect
+					 	{id}
+						name="users"
+						errors={errors.users}
+						bind:value={value.users}
+						readonly={fields.users.readonly}
+						disabled={fields.users.disabled}
+						list
+					/>
+				</FormControl>
+			{/if}
+		</slot>
+		<slot name="groups">
+			{#if !fields.groups.hidden}
+				<FormControl let:id>
+					<Label {id} text={$LL.graphql.objects.Role.fields.groups.name()} />
+					<GroupSelect
+					 	{id}
+						name="groups"
+						errors={errors.groups}
+						bind:value={value.groups}
+						readonly={fields.groups.readonly}
+						disabled={fields.groups.disabled}
+						list
+					/>
+				</FormControl>
+			{/if}
+		</slot>
+		<slot name="composites">
+			{#if !fields.composites.hidden}
+				<FormControl let:id>
+					<Label {id} text={$LL.graphql.objects.Role.fields.composites.name()} />
+					<RoleSelect
+					 	{id}
+						name="composites"
+						errors={errors.composites}
+						bind:value={value.composites}
+						readonly={fields.composites.readonly}
+						disabled={fields.composites.disabled}
+						list
+					/>
+				</FormControl>
+			{/if}
+		</slot>
+		<slot name="permissions">
+			{#if !fields.permissions.hidden}
+				<FormControl let:id>
+					<Label {id} text={$LL.graphql.objects.Role.fields.permissions.name()} />
+					<ObjectInput
+						path={`${value.id}/permissions`}
+						errors={errors.permissions}
+						disabled={fields.permissions.disabled}
+						on:gotoField
+					/>
+				</FormControl>
+			{/if}
+		</slot>
+		<slot name="realm">
+			{#if !fields.realm.hidden}
+				<FormControl let:id>
+					<Label {id} text={$LL.graphql.objects.Role.fields.realm.name()} />
+					<ObjectInput
+						namedStruct={value.realm}
+						path={`${value.id}/realm`}
+						errors={errors.realm}
+						disabled={fields.realm.disabled}
+						on:gotoField
+					/>
+				</FormControl>
+			{/if}
+		</slot>
 	{:else}
-		{#if value}
-			<slot name="name">
-				{#if !fields.name.hidden}
-					<FormControl let:id>
-						<Label {id} text={$LL.graphql.objects.Role.fields.name.name()} />
-						<StringInput
-						 	{id}
-							name="name"
-							bind:value={value.name}
-							errors={errors.name}
-							readonly={fields.name.readonly}
-							disabled={fields.name.disabled}
-						/>
-					</FormControl>
-				{/if}
-			</slot>
-			<slot name="description">
-				{#if !fields.description.hidden}
-					<FormControl let:id>
-						<Label {id} text={$LL.graphql.objects.Role.fields.description.name()} />
-						<StringInput
-						 	{id}
-							name="description"
-							bind:value={value.description}
-							errors={errors.description}
-							readonly={fields.description.readonly}
-							disabled={fields.description.disabled}
-						/>
-					</FormControl>
-				{/if}
-			</slot>
-			<slot name="users">
-				{#if !fields.users.hidden}
-					<FormControl let:id>
-						<Label {id} text={$LL.graphql.objects.Role.fields.users.name()} />
-						<UserSelect
-						 	{id}
-							name="users"
-							errors={errors.users}
-							bind:value={value.users}
-							readonly={fields.users.readonly}
-							disabled={fields.users.disabled}
-							list
-						/>
-					</FormControl>
-				{/if}
-			</slot>
-			<slot name="groups">
-				{#if !fields.groups.hidden}
-					<FormControl let:id>
-						<Label {id} text={$LL.graphql.objects.Role.fields.groups.name()} />
-						<GroupSelect
-						 	{id}
-							name="groups"
-							errors={errors.groups}
-							bind:value={value.groups}
-							readonly={fields.groups.readonly}
-							disabled={fields.groups.disabled}
-							list
-						/>
-					</FormControl>
-				{/if}
-			</slot>
-			<slot name="composites">
-				{#if !fields.composites.hidden}
-					<FormControl let:id>
-						<Label {id} text={$LL.graphql.objects.Role.fields.composites.name()} />
-						<RoleSelect
-						 	{id}
-							name="composites"
-							errors={errors.composites}
-							bind:value={value.composites}
-							readonly={fields.composites.readonly}
-							disabled={fields.composites.disabled}
-							list
-						/>
-					</FormControl>
-				{/if}
-			</slot>
-			<slot name="permissions">
-				{#if !fields.permissions.hidden}
-					<FormControl let:id>
-						<Label {id} text={$LL.graphql.objects.Role.fields.permissions.name()} />
-						<ObjectInput
-							path={`${value.id}/permissions`}
-							errors={errors.permissions}
-							disabled={fields.permissions.disabled}
-							on:gotoField
-						/>
-					</FormControl>
-				{/if}
-			</slot>
-			<slot name="realm">
-				{#if !fields.realm.hidden}
-					<FormControl let:id>
-						<Label {id} text={$LL.graphql.objects.Role.fields.realm.name()} />
-						<ObjectInput
-							namedStruct={value.realm}
-							path={`${value.id}/realm`}
-							errors={errors.realm}
-							disabled={fields.realm.disabled}
-							on:gotoField
-						/>
-					</FormControl>
-				{/if}
-			</slot>
-		{:else}
+		<div class="col-span-full">
 			<Empty />
-		{/if}
+		</div>
 	{/if}
 </Form>
 <div class="divider" />

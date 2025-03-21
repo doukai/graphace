@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
+	import type { Errors, JsonSchema, PermissionsStore} from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
-	import RealmForm from '~//realm/RealmForm.svelte';
+	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
 	import type { Query_role_realm_Store } from '~/lib/stores/query/query_role_realm_store';
 	import type { Mutation_role_realm_Store } from '~/lib/stores/mutation/mutation_role_realm_store';
 	import type { Mutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
@@ -23,6 +23,14 @@
 	$: mutation_role_realm_Store = data.mutation_role_realm_Store as Mutation_role_realm_Store;
 	$: mutation_realm_Store = data.mutation_realm_Store as Mutation_realm_Store;
 	$: errors = data.errors as Record<string, Errors>;
+
+	let value = {};
+	let showUnbindButton = false;
+
+	$: if (node && Object.keys(node).length > 0) {
+		value = node;
+		showUnbindButton = true;
+	}
 
 	const mutation = (args: MutationRealmArgs) => {
 		validate('Mutation_realm_Arguments', args, $locale)
@@ -50,35 +58,29 @@
 			});
 	};
 
-	const parentMutation = (args: RealmInput | null) => {
-		validate(
-			'Mutation_role_Arguments',
-			{ where: { id: { val: role?.id } }, realm: event.detail.args },
-			$locale
-		)
+	const merge = (args: RealmInput | null) => {
+		validate('Mutation_role_Arguments', { where: { id: { val: role?.id } }, realm: args }, $locale)
 			.then((data) => {
 				errors = {};
-				mutation_role_realm_Store
-					.fetch({
-						role_id: role?.id,
-						role_realm: args
-					})
-					.then((result) => {
-						if (result.errors) {
-							console.error(result.errors);
-							errors = buildGraphQLErrors(result.errors);
-							const globalError = buildGlobalGraphQLErrorMessage(result.errors);
-							if (globalError) {
-								modal.open({
-									title: $LL.graphence.message.requestFailed(),
-									description: globalError
-								});
-							}
-						} else {
-							toast.success($LL.graphence.message.requestSuccess());
-							ot();
+				mutation_role_realm_Store.fetch({
+					role_id: role?.id,
+					role_realm: args
+				}).then((result) => {
+					if (result.errors) {
+						console.error(result.errors);
+						errors = buildGraphQLErrors(result.errors);
+						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+						if (globalError) {
+							modal.open({
+								title: $LL.graphence.message.requestFailed(),
+								description: globalError
+							});
 						}
-					});
+					} else {
+						toast.success($LL.graphence.message.requestSuccess());
+						ot();
+					}
+				});
 			})
 			.catch((validErrors) => {
 				errors = validErrors.realm.iterms;
@@ -89,18 +91,54 @@
 <Card>
 	<CardBody>
 		<RealmForm
-			showGotoSelectButton={true}
-			{node}
-			{errors}
-			showRemoveButton={false}
-			showUnbindButton={true}
+			showSaveButton={true}
+			{showUnbindButton}
 			showBackButton={$canBack}
+			bind:value
+			{errors}
 			isFetching={$query_role_realm_Store.isFetching}
-			on:mutation={mutation}
-			on:parentMutation={parentMutation}
-			on:gotoField={gotoField}
-			on:gotoSelect={gotoSelect}
-			on:back={back}
+			fields={{
+				name: {
+					readonly: !permissions.auth('Realm::name::WRITE'),
+					disabled: !permissions.auth('Realm::name::WRITE'),
+					hidden: !permissions.auth('Realm::name::READ')
+				},
+				description: {
+					readonly: !permissions.auth('Realm::description::WRITE'),
+					disabled: !permissions.auth('Realm::description::WRITE'),
+					hidden: !permissions.auth('Realm::description::READ')
+				}
+			}}
+			on:save={(e) => {
+				if (e.detail.value) {
+					merge(e.detail.value);
+				}
+			}}
+			on:remove={(e) => {
+				if (e.detail.value) {
+					modal.open({
+						title: $LL.graphence.components.modal.removeModalTitle(),
+						confirm: () => {
+							mutation({
+								where: { id: { val: e.detail.value?.id } },
+								isDeprecated: true
+							});
+							return true;
+						}
+					});
+				}
+			}}
+			on:unbind={(e) => {
+				modal.open({
+					title: $LL.graphence.components.modal.unbindModalTitle(),
+					confirm: () => {
+						merge(null);
+						return true;
+					}
+				});
+			}}
+			on:goto={(e) => to(`../../${e.detail.path}`)}
+			on:back={(e) => ot()}
 		/>
 	</CardBody>
 </Card>

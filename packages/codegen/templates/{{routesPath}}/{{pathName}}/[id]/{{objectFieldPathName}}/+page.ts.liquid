@@ -1,7 +1,7 @@
 import type { LoadEvent } from '@sveltejs/kit';
-import { fetchQuery_{{ fieldTypeName | camelCase }}_{{ objectFieldInfo.fieldName }}_Store } from '~/{{ storesPath }}/query/query_{{ fieldTypeName | camelCase }}_{{ objectFieldInfo.fieldName }}_store';
-import { createMutation_{{ fieldTypeName | camelCase }}_{{ objectFieldInfo.fieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ fieldTypeName | camelCase }}_{{ objectFieldInfo.fieldName }}_store';
-import { createMutation_{{ objectFieldInfo.fieldTypeName | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ objectFieldInfo.fieldTypeName | camelCase }}_store';
+import { fetchQuery_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_store';
+import { createMutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_store';
+import { createMutation_{{ fieldObjectInfo.name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ fieldObjectInfo.name | camelCase }}_store';
 {%- if hasFileField %}
 import { createMutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
 {%- endif %}
@@ -12,14 +12,14 @@ import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     {%- if useAuth %}
-    await getPermissionsStore(event).getTypes('{{ objectFieldInfo.fieldTypeName }}');
+    await getPermissionsStore(event).getTypes('{{ fieldObjectInfo.name }}');
     {%- endif %}
     return {
         {%- if hasFileField %}
         mutation_singleUpload_Store = createMutation_singleUpload_Store(event),
         {%- endif %}
-        query_{{ fieldTypeName | camelCase }}_{{ objectFieldInfo.fieldName }}_Store: await fetchQuery_{{ fieldTypeName | camelCase }}_{{ objectFieldInfo.fieldName }}_Store(event, { {{ fieldTypeName | camelCase }}_{{ idName }}: event.params.id }),
-        mutation_{{ fieldTypeName | camelCase }}_{{ objectFieldInfo.fieldName }}_Store: createMutation_{{ fieldTypeName | camelCase }}_{{ objectFieldInfo.fieldName }}_Store(event),
-        mutation_{{ objectFieldInfo.fieldTypeName | camelCase }}_Store: createMutation_{{ objectFieldInfo.fieldTypeName | camelCase }}_Store(event)
+        query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store: await fetchQuery_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store(event, { {{ name | camelCase }}_{{ idName }}: event.params.id }),
+        mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store: createMutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store(event),
+        mutation_{{ fieldObjectInfo.name | camelCase }}_Store: createMutation_{{ fieldObjectInfo.name | camelCase }}_Store(event)
     };
 }

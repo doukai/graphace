@@ -8,7 +8,7 @@ import type { LayoutLoad } from './$types';
 export const load: LayoutLoad = async (event: LoadEvent) => {
     await getPermissionsStore(event).getTypes('Realm');
     return {
-        query_permission_realm_Store: await fetchQuery_permission_realm_Store(event, { permission_: event.params.id }),
+        query_permission_realm_Store: await fetchQuery_permission_realm_Store(event, { permission_name: event.params.id }),
         mutation_permission_realm_Store: createMutation_permission_realm_Store(event),
         mutation_realm_Store: createMutation_realm_Store(event)
     };

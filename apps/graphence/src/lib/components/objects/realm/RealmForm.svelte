@@ -36,7 +36,6 @@
 	}>();
 </script>
 
-
 <div class="flex justify-end md:justify-between">
 	<span class="max-sm:hidden text-xl font-semibold self-center">
 		{$LL.graphql.objects.Realm.name()}
@@ -57,41 +56,41 @@
 <Form class={className}>
 	{#if isFetching}
 		<Loading />
+	{:else if value}
+		<slot name="name">
+			{#if !fields.name.hidden}
+				<FormControl let:id>
+					<Label {id} text={$LL.graphql.objects.Realm.fields.name.name()} />
+					<StringInput
+					 	{id}
+						name="name"
+						bind:value={value.name}
+						errors={errors.name}
+						readonly={fields.name.readonly}
+						disabled={fields.name.disabled}
+					/>
+				</FormControl>
+			{/if}
+		</slot>
+		<slot name="description">
+			{#if !fields.description.hidden}
+				<FormControl let:id>
+					<Label {id} text={$LL.graphql.objects.Realm.fields.description.name()} />
+					<StringInput
+					 	{id}
+						name="description"
+						bind:value={value.description}
+						errors={errors.description}
+						readonly={fields.description.readonly}
+						disabled={fields.description.disabled}
+					/>
+				</FormControl>
+			{/if}
+		</slot>
 	{:else}
-		{#if value}
-			<slot name="name">
-				{#if !fields.name.hidden}
-					<FormControl let:id>
-						<Label {id} text={$LL.graphql.objects.Realm.fields.name.name()} />
-						<StringInput
-						 	{id}
-							name="name"
-							bind:value={value.name}
-							errors={errors.name}
-							readonly={fields.name.readonly}
-							disabled={fields.name.disabled}
-						/>
-					</FormControl>
-				{/if}
-			</slot>
-			<slot name="description">
-				{#if !fields.description.hidden}
-					<FormControl let:id>
-						<Label {id} text={$LL.graphql.objects.Realm.fields.description.name()} />
-						<StringInput
-						 	{id}
-							name="description"
-							bind:value={value.description}
-							errors={errors.description}
-							readonly={fields.description.readonly}
-							disabled={fields.description.disabled}
-						/>
-					</FormControl>
-				{/if}
-			</slot>
-		{:else}
+		<div class="col-span-full">
 			<Empty />
-		{/if}
+		</div>
 	{/if}
 </Form>
 <div class="divider" />

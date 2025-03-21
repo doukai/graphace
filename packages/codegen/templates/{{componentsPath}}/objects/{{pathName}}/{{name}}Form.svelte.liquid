@@ -44,7 +44,6 @@
 	}>();
 </script>
 
-
 <div class="flex justify-end md:justify-between">
 	<span class="max-sm:hidden text-xl font-semibold self-center">
 		{$LL.graphql.objects.{{ name }}.name()}
@@ -65,58 +64,58 @@
 <Form class={className}>
 	{#if isFetching}
 		<Loading />
-	{:else}
-		{#if value}
-			{%- for field in fields %}
-			<slot name="{{ field.fieldName }}">
-				{#if !fields.{{ field.fieldName }}.hidden}
-					<FormControl let:id>
-						<Label {id} text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} />
-						{%- if field.isScalarType or field.isEnumType or field.isFile %}
-						<{{ field.fieldTypeName }}Input
-						 	{id}
-							name="{{ field.fieldName }}"
-							bind:value={value.{{ field.fieldName }}}
-							errors={errors.{{ field.fieldName }}}
-							readonly={fields.{{ field.fieldName }}.readonly}
-							disabled={fields.{{ field.fieldName }}.disabled}
-							{%- if field.isListType %}
-							list
-							{%- endif %}
-							{%- if field.fieldTypeName == 'File' %}
-							on:upload
-							{%- endif %}
-						/>
-						{%- elsif field.isSelect %}
-						<{{ field.fieldTypeName }}Select
-						 	{id}
-							name="{{ field.fieldName }}"
-							errors={errors.{{ field.fieldName }}}
-							bind:value={value.{{ field.fieldName }}}
-							readonly={fields.{{ field.fieldName }}.readonly}
-							disabled={fields.{{ field.fieldName }}.disabled}
-							{%- if field.isListType %}
-							list
-							{%- endif %}
-						/>
-						{%- else %}
-						<ObjectInput
-							{%- if field.isNamed %}
-							namedStruct={value.{{ field.fieldName }}}
-							{%- endif %}
-							path={`${value.{{ idName }}}/{{ field.fieldName | paramCase }}`}
-							errors={errors.{{ field.fieldName }}}
-							disabled={fields.{{ field.fieldName }}.disabled}
-							on:gotoField
-						/>
+	{:else if value}
+		{%- for field in fields %}
+		<slot name="{{ field.fieldName }}">
+			{#if !fields.{{ field.fieldName }}.hidden}
+				<FormControl let:id>
+					<Label {id} text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} />
+					{%- if field.isScalarType or field.isEnumType or field.isFile %}
+					<{{ field.fieldTypeName }}Input
+					 	{id}
+						name="{{ field.fieldName }}"
+						bind:value={value.{{ field.fieldName }}}
+						errors={errors.{{ field.fieldName }}}
+						readonly={fields.{{ field.fieldName }}.readonly}
+						disabled={fields.{{ field.fieldName }}.disabled}
+						{%- if field.isListType %}
+						list
 						{%- endif %}
-					</FormControl>
-				{/if}
-			</slot>
-			{%- endfor %}
-		{:else}
+						{%- if field.fieldTypeName == 'File' %}
+						on:upload
+						{%- endif %}
+					/>
+					{%- elsif field.isSelect %}
+					<{{ field.fieldTypeName }}Select
+					 	{id}
+						name="{{ field.fieldName }}"
+						errors={errors.{{ field.fieldName }}}
+						bind:value={value.{{ field.fieldName }}}
+						readonly={fields.{{ field.fieldName }}.readonly}
+						disabled={fields.{{ field.fieldName }}.disabled}
+						{%- if field.isListType %}
+						list
+						{%- endif %}
+					/>
+					{%- else %}
+					<ObjectInput
+						{%- if field.isNamed %}
+						namedStruct={value.{{ field.fieldName }}}
+						{%- endif %}
+						path={`${value.{{ idName }}}/{{ field.fieldName | paramCase }}`}
+						errors={errors.{{ field.fieldName }}}
+						disabled={fields.{{ field.fieldName }}.disabled}
+						on:gotoField
+					/>
+					{%- endif %}
+				</FormControl>
+			{/if}
+		</slot>
+		{%- endfor %}
+	{:else}
+		<div class="col-span-full">
 			<Empty />
-		{/if}
+		</div>
 	{/if}
 </Form>
 <div class="divider" />

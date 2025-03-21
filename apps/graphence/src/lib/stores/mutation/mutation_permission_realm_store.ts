@@ -20,21 +20,9 @@ const query = /* GraphQL */ `mutation Mutation_permission_realm($permission_name
     createGroupId
     syncPermissionPolicy
     realm {
+      id
       name
       description
-      field
-      type
-      permissionType
-      roles {
-        id
-        name
-        description
-      }
-      realm {
-        id
-        name
-        description
-      }
       isDeprecated
       version
       realmId
@@ -43,13 +31,12 @@ const query = /* GraphQL */ `mutation Mutation_permission_realm($permission_name
       updateUserId
       updateTime
       createGroupId
-      syncPermissionPolicy
     }
   }
 }`;
 
 export function createMutation_permission_realm_Store(event: LoadEvent | RequestEvent): Mutation_permission_realm_Store {
-  return createGraphQLMutationStore<Permission, { permission_name: string, permission_realm: RealmInput } & QueryRealmArgs>(query, event);
+  return createGraphQLMutationStore<Permission, { permission_name: string, permission_realm: RealmInput | null } & QueryRealmArgs>(query, event);
 }
 
-export type Mutation_permission_realm_Store = GraphQLStore<Permission, { permission_name: string, permission_realm: RealmInput } & QueryRealmArgs>;
+export type Mutation_permission_realm_Store = GraphQLStore<Permission, { permission_name: string, permission_realm: RealmInput | null } & QueryRealmArgs>;

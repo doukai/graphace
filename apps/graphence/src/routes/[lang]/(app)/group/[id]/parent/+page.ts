@@ -8,7 +8,7 @@ import type { LayoutLoad } from './$types';
 export const load: LayoutLoad = async (event: LoadEvent) => {
     await getPermissionsStore(event).getTypes('Group');
     return {
-        query_group_parent_Store: await fetchQuery_group_parent_Store(event, { group_: event.params.id }),
+        query_group_parent_Store: await fetchQuery_group_parent_Store(event, { group_id: event.params.id }),
         mutation_group_parent_Store: createMutation_group_parent_Store(event),
         mutation_group_Store: createMutation_group_Store(event)
     };

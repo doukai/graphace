@@ -18,20 +18,12 @@ const query = /* GraphQL */ `mutation Mutation_role_permissions($role_id: String
     createGroupId
     syncRolePolicy
     permissions {
-      id
       name
       description
-      users {
-        id
-        name
-        description
-      }
-      groups {
-        id
-        name
-        description
-      }
-      composites {
+      field
+      type
+      permissionType
+      roles {
         id
         name
         description
@@ -49,13 +41,13 @@ const query = /* GraphQL */ `mutation Mutation_role_permissions($role_id: String
       updateUserId
       updateTime
       createGroupId
-      syncRolePolicy
+      syncPermissionPolicy
     }
   }
 }`;
 
 export function createMutation_role_permissions_Store(event: LoadEvent | RequestEvent): Mutation_role_permissions_Store {
-  return createGraphQLMutationStore<Role, { role_id: string, role_permissions: [PermissionInput] } & QueryPermissionListArgs>(query, event);
+  return createGraphQLMutationStore<Role, { role_id: string, role_permissions: [PermissionInput] | null } & QueryPermissionListArgs>(query, event);
 }
 
-export type Mutation_role_permissions_Store = GraphQLStore<Role, { role_id: string, role_permissions: [PermissionInput] } & QueryPermissionListArgs>;
+export type Mutation_role_permissions_Store = GraphQLStore<Role, { role_id: string, role_permissions: [PermissionInput] | null } & QueryPermissionListArgs>;

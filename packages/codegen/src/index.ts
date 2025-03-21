@@ -199,7 +199,7 @@ const renders: Record<Template, Render> = {
                             ?.filter(field => field.inGraphQL && field.inMutation),
                         objectFieldInfo: {
                             ...objectFieldInfo,
-                            fields: getObjectFieldInfos(schema, mutationFieldInfo.originalFieldTypeName)
+                            fields: getObjectFieldInfos(schema, objectFieldInfo.originalFieldTypeName)
                                 ?.filter(field => field.inGraphQL && field.inMutation)
                         },
                         ...config
@@ -860,46 +860,54 @@ const renders: Record<Template, Render> = {
         throw new Error(`${config.name} undefined`);
     },
     '{{routesPath}}/{{pathName}}/[id]/{{objectFieldPathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const mutationFieldInfo = getMutationFieldInfo(schema, changeCase.camelCase(config.name!));
-        if (mutationFieldInfo) {
-            const objectFieldInfo = getObjectFieldInfo(schema, config.name!, config.objectFieldName!);
-            if (objectFieldInfo) {
-                return {
-                    content: buildFileContent(config.template, {
-                        ...mutationFieldInfo,
-                        fields: getObjectFieldInfos(schema, mutationFieldInfo.originalFieldTypeName)
-                            ?.filter(field => field.inGraphQL && field.inMutation),
-                        objectFieldInfo: {
-                            ...objectFieldInfo,
-                            fields: getObjectFieldInfos(schema, mutationFieldInfo.originalFieldTypeName)
-                                ?.filter(field => field.inGraphQL && field.inMutation)
-                        },
-                        ...config
-                    }),
-                };
+        const objectInfo = getObjectInfo(schema, config.name!)
+        if (objectInfo) {
+            const fieldInfo = getObjectFieldInfo(schema, config.name!, config.objectFieldName!);
+            if (fieldInfo) {
+                const fieldObjectInfo = getObjectInfo(schema, fieldInfo.fieldTypeName)
+                if (fieldObjectInfo) {
+                    const fields = fieldObjectInfo.fields
+                        ?.filter(field => field.inList)
+                        .filter(field => !field.isAggregate)
+                        .filter(field => !field.isConnection);
+                    const importInfo = getImportInfo(fields);
+                    return {
+                        content: buildFileContent(config.template, {
+                            ...objectInfo,
+                            fieldInfo,
+                            fieldObjectInfo: { ...fieldObjectInfo, fields },
+                            ...importInfo,
+                            ...config
+                        }),
+                    };
+                }
             }
         }
         console.error(config);
         throw new Error(`${config.name} undefined`);
     },
     '{{routesPath}}/{{pathName}}/[id]/{{objectFieldPathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const mutationFieldInfo = getMutationFieldInfo(schema, changeCase.camelCase(config.name!));
-        if (mutationFieldInfo) {
-            const objectFieldInfo = getObjectFieldInfo(schema, config.name!, config.objectFieldName!);
-            if (objectFieldInfo) {
-                return {
-                    content: buildFileContent(config.template, {
-                        ...mutationFieldInfo,
-                        fields: getObjectFieldInfos(schema, mutationFieldInfo.originalFieldTypeName)
-                            ?.filter(field => field.inGraphQL && field.inMutation),
-                        objectFieldInfo: {
-                            ...objectFieldInfo,
-                            fields: getObjectFieldInfos(schema, mutationFieldInfo.originalFieldTypeName)
-                                ?.filter(field => field.inGraphQL && field.inMutation)
-                        },
-                        ...config
-                    }),
-                };
+        const objectInfo = getObjectInfo(schema, config.name!)
+        if (objectInfo) {
+            const fieldInfo = getObjectFieldInfo(schema, config.name!, config.objectFieldName!);
+            if (fieldInfo) {
+                const fieldObjectInfo = getObjectInfo(schema, fieldInfo.fieldTypeName)
+                if (fieldObjectInfo) {
+                    const fields = fieldObjectInfo.fields
+                        ?.filter(field => field.inList)
+                        .filter(field => !field.isAggregate)
+                        .filter(field => !field.isConnection);
+                    const importInfo = getImportInfo(fields);
+                    return {
+                        content: buildFileContent(config.template, {
+                            ...objectInfo,
+                            fieldInfo,
+                            fieldObjectInfo: { ...fieldObjectInfo, fields },
+                            ...importInfo,
+                            ...config
+                        }),
+                    };
+                }
             }
         }
         console.error(config);

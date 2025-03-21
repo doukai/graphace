@@ -48,7 +48,6 @@
 	}>();
 </script>
 
-
 <div class="flex justify-end md:justify-between">
 	<span class="max-sm:hidden text-xl font-semibold self-center">
 		{$LL.graphql.objects.Permission.name()}
@@ -69,116 +68,116 @@
 <Form class={className}>
 	{#if isFetching}
 		<Loading />
+	{:else if value}
+		<slot name="name">
+			{#if !fields.name.hidden}
+				<FormControl let:id>
+					<Label {id} text={$LL.graphql.objects.Permission.fields.name.name()} />
+					<IDInput
+					 	{id}
+						name="name"
+						bind:value={value.name}
+						errors={errors.name}
+						readonly={fields.name.readonly}
+						disabled={fields.name.disabled}
+					/>
+				</FormControl>
+			{/if}
+		</slot>
+		<slot name="description">
+			{#if !fields.description.hidden}
+				<FormControl let:id>
+					<Label {id} text={$LL.graphql.objects.Permission.fields.description.name()} />
+					<StringInput
+					 	{id}
+						name="description"
+						bind:value={value.description}
+						errors={errors.description}
+						readonly={fields.description.readonly}
+						disabled={fields.description.disabled}
+					/>
+				</FormControl>
+			{/if}
+		</slot>
+		<slot name="field">
+			{#if !fields.field.hidden}
+				<FormControl let:id>
+					<Label {id} text={$LL.graphql.objects.Permission.fields.field.name()} />
+					<StringInput
+					 	{id}
+						name="field"
+						bind:value={value.field}
+						errors={errors.field}
+						readonly={fields.field.readonly}
+						disabled={fields.field.disabled}
+					/>
+				</FormControl>
+			{/if}
+		</slot>
+		<slot name="type">
+			{#if !fields.type.hidden}
+				<FormControl let:id>
+					<Label {id} text={$LL.graphql.objects.Permission.fields.type.name()} />
+					<StringInput
+					 	{id}
+						name="type"
+						bind:value={value.type}
+						errors={errors.type}
+						readonly={fields.type.readonly}
+						disabled={fields.type.disabled}
+					/>
+				</FormControl>
+			{/if}
+		</slot>
+		<slot name="permissionType">
+			{#if !fields.permissionType.hidden}
+				<FormControl let:id>
+					<Label {id} text={$LL.graphql.objects.Permission.fields.permissionType.name()} />
+					<PermissionTypeInput
+					 	{id}
+						name="permissionType"
+						bind:value={value.permissionType}
+						errors={errors.permissionType}
+						readonly={fields.permissionType.readonly}
+						disabled={fields.permissionType.disabled}
+					/>
+				</FormControl>
+			{/if}
+		</slot>
+		<slot name="roles">
+			{#if !fields.roles.hidden}
+				<FormControl let:id>
+					<Label {id} text={$LL.graphql.objects.Permission.fields.roles.name()} />
+					<RoleSelect
+					 	{id}
+						name="roles"
+						errors={errors.roles}
+						bind:value={value.roles}
+						readonly={fields.roles.readonly}
+						disabled={fields.roles.disabled}
+						list
+					/>
+				</FormControl>
+			{/if}
+		</slot>
+		<slot name="realm">
+			{#if !fields.realm.hidden}
+				<FormControl let:id>
+					<Label {id} text={$LL.graphql.objects.Permission.fields.realm.name()} />
+					<ObjectInput
+						namedStruct={value.realm}
+						path={`${value.name}/realm`}
+						errors={errors.realm}
+						disabled={fields.realm.disabled}
+						on:gotoField
+					/>
+				</FormControl>
+			{/if}
+		</slot>
 	{:else}
-		{#if value}
-			<slot name="name">
-				{#if !fields.name.hidden}
-					<FormControl let:id>
-						<Label {id} text={$LL.graphql.objects.Permission.fields.name.name()} />
-						<IDInput
-						 	{id}
-							name="name"
-							bind:value={value.name}
-							errors={errors.name}
-							readonly={fields.name.readonly}
-							disabled={fields.name.disabled}
-						/>
-					</FormControl>
-				{/if}
-			</slot>
-			<slot name="description">
-				{#if !fields.description.hidden}
-					<FormControl let:id>
-						<Label {id} text={$LL.graphql.objects.Permission.fields.description.name()} />
-						<StringInput
-						 	{id}
-							name="description"
-							bind:value={value.description}
-							errors={errors.description}
-							readonly={fields.description.readonly}
-							disabled={fields.description.disabled}
-						/>
-					</FormControl>
-				{/if}
-			</slot>
-			<slot name="field">
-				{#if !fields.field.hidden}
-					<FormControl let:id>
-						<Label {id} text={$LL.graphql.objects.Permission.fields.field.name()} />
-						<StringInput
-						 	{id}
-							name="field"
-							bind:value={value.field}
-							errors={errors.field}
-							readonly={fields.field.readonly}
-							disabled={fields.field.disabled}
-						/>
-					</FormControl>
-				{/if}
-			</slot>
-			<slot name="type">
-				{#if !fields.type.hidden}
-					<FormControl let:id>
-						<Label {id} text={$LL.graphql.objects.Permission.fields.type.name()} />
-						<StringInput
-						 	{id}
-							name="type"
-							bind:value={value.type}
-							errors={errors.type}
-							readonly={fields.type.readonly}
-							disabled={fields.type.disabled}
-						/>
-					</FormControl>
-				{/if}
-			</slot>
-			<slot name="permissionType">
-				{#if !fields.permissionType.hidden}
-					<FormControl let:id>
-						<Label {id} text={$LL.graphql.objects.Permission.fields.permissionType.name()} />
-						<PermissionTypeInput
-						 	{id}
-							name="permissionType"
-							bind:value={value.permissionType}
-							errors={errors.permissionType}
-							readonly={fields.permissionType.readonly}
-							disabled={fields.permissionType.disabled}
-						/>
-					</FormControl>
-				{/if}
-			</slot>
-			<slot name="roles">
-				{#if !fields.roles.hidden}
-					<FormControl let:id>
-						<Label {id} text={$LL.graphql.objects.Permission.fields.roles.name()} />
-						<RoleSelect
-						 	{id}
-							name="roles"
-							errors={errors.roles}
-							bind:value={value.roles}
-							readonly={fields.roles.readonly}
-							disabled={fields.roles.disabled}
-							list
-						/>
-					</FormControl>
-				{/if}
-			</slot>
-			<slot name="realm">
-				{#if !fields.realm.hidden}
-					<FormControl let:id>
-						<Label {id} text={$LL.graphql.objects.Permission.fields.realm.name()} />
-						<ObjectInput
-							namedStruct={value.realm}
-							path={`${value.name}/realm`}
-							errors={errors.realm}
-							disabled={fields.realm.disabled}
-							on:gotoField
-						/>
-					</FormControl>
-				{/if}
-			</slot>
-		{:else}
+		<div class="col-span-full">
 			<Empty />
-		{/if}
+		</div>
 	{/if}
 </Form>
 <div class="divider" />

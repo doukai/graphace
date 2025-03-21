@@ -26,26 +26,6 @@ const query = /* GraphQL */ `mutation Mutation_user_realm($user_id: String, $use
       id
       name
       description
-      lastName
-      login
-      email
-      phones
-      disable
-      groups {
-        id
-        name
-        description
-      }
-      roles {
-        id
-        name
-        description
-      }
-      realm {
-        id
-        name
-        description
-      }
       isDeprecated
       version
       realmId
@@ -54,13 +34,12 @@ const query = /* GraphQL */ `mutation Mutation_user_realm($user_id: String, $use
       updateUserId
       updateTime
       createGroupId
-      syncUserPolicy
     }
   }
 }`;
 
 export function createMutation_user_realm_Store(event: LoadEvent | RequestEvent): Mutation_user_realm_Store {
-  return createGraphQLMutationStore<User, { user_id: string, user_realm: RealmInput } & QueryRealmArgs>(query, event);
+  return createGraphQLMutationStore<User, { user_id: string, user_realm: RealmInput | null } & QueryRealmArgs>(query, event);
 }
 
-export type Mutation_user_realm_Store = GraphQLStore<User, { user_id: string, user_realm: RealmInput } & QueryRealmArgs>;
+export type Mutation_user_realm_Store = GraphQLStore<User, { user_id: string, user_realm: RealmInput | null } & QueryRealmArgs>;

@@ -21,26 +21,6 @@ const query = /* GraphQL */ `mutation Mutation_role_realm($role_id: String, $rol
       id
       name
       description
-      users {
-        id
-        name
-        description
-      }
-      groups {
-        id
-        name
-        description
-      }
-      composites {
-        id
-        name
-        description
-      }
-      realm {
-        id
-        name
-        description
-      }
       isDeprecated
       version
       realmId
@@ -49,13 +29,12 @@ const query = /* GraphQL */ `mutation Mutation_role_realm($role_id: String, $rol
       updateUserId
       updateTime
       createGroupId
-      syncRolePolicy
     }
   }
 }`;
 
 export function createMutation_role_realm_Store(event: LoadEvent | RequestEvent): Mutation_role_realm_Store {
-  return createGraphQLMutationStore<Role, { role_id: string, role_realm: RealmInput } & QueryRealmArgs>(query, event);
+  return createGraphQLMutationStore<Role, { role_id: string, role_realm: RealmInput | null } & QueryRealmArgs>(query, event);
 }
 
-export type Mutation_role_realm_Store = GraphQLStore<Role, { role_id: string, role_realm: RealmInput } & QueryRealmArgs>;
+export type Mutation_role_realm_Store = GraphQLStore<Role, { role_id: string, role_realm: RealmInput | null } & QueryRealmArgs>;

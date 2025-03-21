@@ -24,20 +24,12 @@ const query = /* GraphQL */ `mutation Mutation_group_users($group_id: String, $g
       id
       name
       description
-      path
-      deep
-      parentId
-      parent {
-        id
-        name
-        description
-      }
-      subGroups {
-        id
-        name
-        description
-      }
-      users {
+      lastName
+      login
+      email
+      phones
+      disable
+      groups {
         id
         name
         description
@@ -60,13 +52,13 @@ const query = /* GraphQL */ `mutation Mutation_group_users($group_id: String, $g
       updateUserId
       updateTime
       createGroupId
-      syncGroupPolicy
+      syncUserPolicy
     }
   }
 }`;
 
 export function createMutation_group_users_Store(event: LoadEvent | RequestEvent): Mutation_group_users_Store {
-  return createGraphQLMutationStore<Group, { group_id: string, group_users: [UserInput] } & QueryUserListArgs>(query, event);
+  return createGraphQLMutationStore<Group, { group_id: string, group_users: [UserInput] | null } & QueryUserListArgs>(query, event);
 }
 
-export type Mutation_group_users_Store = GraphQLStore<Group, { group_id: string, group_users: [UserInput] } & QueryUserListArgs>;
+export type Mutation_group_users_Store = GraphQLStore<Group, { group_id: string, group_users: [UserInput] | null } & QueryUserListArgs>;

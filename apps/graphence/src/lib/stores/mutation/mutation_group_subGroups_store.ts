@@ -66,7 +66,7 @@ const query = /* GraphQL */ `mutation Mutation_group_subGroups($group_id: String
 }`;
 
 export function createMutation_group_subGroups_Store(event: LoadEvent | RequestEvent): Mutation_group_subGroups_Store {
-  return createGraphQLMutationStore<Group, { group_id: string, group_subGroups: [GroupInput] } & QueryGroupListArgs>(query, event);
+  return createGraphQLMutationStore<Group, { group_id: string, group_subGroups: [GroupInput] | null } & QueryGroupListArgs>(query, event);
 }
 
-export type Mutation_group_subGroups_Store = GraphQLStore<Group, { group_id: string, group_subGroups: [GroupInput] } & QueryGroupListArgs>;
+export type Mutation_group_subGroups_Store = GraphQLStore<Group, { group_id: string, group_subGroups: [GroupInput] | null } & QueryGroupListArgs>;

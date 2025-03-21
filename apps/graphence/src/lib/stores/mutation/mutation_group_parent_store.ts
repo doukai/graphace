@@ -66,7 +66,7 @@ const query = /* GraphQL */ `mutation Mutation_group_parent($group_id: String, $
 }`;
 
 export function createMutation_group_parent_Store(event: LoadEvent | RequestEvent): Mutation_group_parent_Store {
-  return createGraphQLMutationStore<Group, { group_id: string, group_parent: GroupInput } & QueryGroupArgs>(query, event);
+  return createGraphQLMutationStore<Group, { group_id: string, group_parent: GroupInput | null } & QueryGroupArgs>(query, event);
 }
 
-export type Mutation_group_parent_Store = GraphQLStore<Group, { group_id: string, group_parent: GroupInput } & QueryGroupArgs>;
+export type Mutation_group_parent_Store = GraphQLStore<Group, { group_id: string, group_parent: GroupInput | null } & QueryGroupArgs>;

@@ -26,17 +26,17 @@ const query = /* GraphQL */ `mutation Mutation_user_roles($user_id: String, $use
       id
       name
       description
-      lastName
-      login
-      email
-      phones
-      disable
+      users {
+        id
+        name
+        description
+      }
       groups {
         id
         name
         description
       }
-      roles {
+      composites {
         id
         name
         description
@@ -54,13 +54,13 @@ const query = /* GraphQL */ `mutation Mutation_user_roles($user_id: String, $use
       updateUserId
       updateTime
       createGroupId
-      syncUserPolicy
+      syncRolePolicy
     }
   }
 }`;
 
 export function createMutation_user_roles_Store(event: LoadEvent | RequestEvent): Mutation_user_roles_Store {
-  return createGraphQLMutationStore<User, { user_id: string, user_roles: [RoleInput] } & QueryRoleListArgs>(query, event);
+  return createGraphQLMutationStore<User, { user_id: string, user_roles: [RoleInput] | null } & QueryRoleListArgs>(query, event);
 }
 
-export type Mutation_user_roles_Store = GraphQLStore<User, { user_id: string, user_roles: [RoleInput] } & QueryRoleListArgs>;
+export type Mutation_user_roles_Store = GraphQLStore<User, { user_id: string, user_roles: [RoleInput] | null } & QueryRoleListArgs>;
