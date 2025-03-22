@@ -19,7 +19,13 @@
 	$: query_group_Store = data.query_group_Store as Query_group_Store;
 	$: node = $query_group_Store.response.data?.group;
 	$: mutation_group_Store = data.mutation_group_Store as Mutation_group_Store;
+
+	let value = {};
 	let errors: Record<string, Errors> = {};
+
+	$: if (node && Object.keys(node).length > 0) {
+		value = node;
+	}
 
 	const mutation = (args: MutationGroupArgs) => {
 		validate('Mutation_group_Arguments', args, $locale)
@@ -54,7 +60,7 @@
 			showSaveButton={true}
 			showRemoveButton={true}
 			showBackButton={$canBack}
-			bind:value={node}
+			bind:value
 			{errors}
 			isFetching={$query_group_Store.isFetching}
 			fields={{

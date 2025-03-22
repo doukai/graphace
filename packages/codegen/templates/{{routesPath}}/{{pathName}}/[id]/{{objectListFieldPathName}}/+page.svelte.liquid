@@ -1,206 +1,221 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { page } from '$app/stores';
-	import type { Errors, JsonSchema } from '@graphace/commons';
-	import type { GraphQLError } from '@graphace/graphql';
-	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
-	{%- if connectionField %}
-	import {{ objectFieldTypeName }}ConnectionTable from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}ConnectionTable.svelte';
-	{%- else %}
-	import {{ objectFieldTypeName }}Table from '~/{{ tablePath }}/{{ objectFieldTypeName | paramCase }}/{{ objectFieldTypeName }}Table.svelte';
-	{%- endif %}
-	import type { Query_{{ name | camelCase }}_{{ objectFieldName }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_{{ objectFieldName }}_store';
-	import type { Mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ objectFieldName }}_store';
-	import type { Mutation_{{ objectFieldTypeName | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ objectFieldTypeName | camelCase }}_store';
+	import type { Errors, JsonSchema{%- if useAuth -%}, PermissionsStore{%- endif -%} } from '@graphace/commons';
+	import { buildArguments } from '@graphace/graphql';
+	import { ot, to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
+	import {{ fieldObjectInfo.name }}Table from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}Table.svelte';
+	import type { Query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_store';
+	import type { Mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_store';
+	import type { Mutation_{{ fieldObjectInfo.name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ fieldObjectInfo.name | camelCase }}_store';
 	{%- if hasFileField %}
 	import type { Mutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
 	{%- endif %}
-	import type { {{ objectFieldTypeName }}Input, {{ mutationTypeName }}{{ objectFieldTypeName }}Args, {% if connectionField %}{{ queryTypeName }}{{ objectFieldTypeName }}ConnectionArgs{% else %}{{ queryTypeName }}{{ objectFieldTypeName }}ListArgs{% endif %} } from '~/{{ schemaTypesPath }}';
-	import type { PageData } from './$types';
+	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
+	import type { {{ fieldObjectInfo.name }}Input, {{ mutationTypeName }}{{ fieldObjectInfo.name }}Args, {{ queryTypeName }}{{ fieldObjectInfo.name }}ConnectionArgs } from '~/{{ schemaTypesPath }}';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
 
 	const { validate } = getContext<JsonSchema>('jsonSchema');
-
-	$: urlName($page.url, $LL.graphql.objects.{{ name }}.fields.{{ objectFieldName }}.name());
-	$: {{ idName }} = data.{{ idName }} as string;
-	$: query_{{ name | camelCase }}_{{ objectFieldName }}_Store = data.query_{{ name | camelCase }}_{{ objectFieldName }}_Store as Query_{{ name | camelCase }}_{{ objectFieldName }}_Store;
-	$: {{ name | camelCase }} = $query_{{ name | camelCase }}_{{ objectFieldName }}_Store.response.data?.{{ name | camelCase }};
-	{%- if connectionField %}
-	$: nodes = $query_{{ name | camelCase }}_{{ objectFieldName }}_Store.response.data?.{{ name | camelCase }}?.{{ objectFieldName }}Connection?.edges?.map((edge) => edge?.node);
-	$: totalCount = $query_{{ name | camelCase }}_{{ objectFieldName }}_Store.response.data?.{{ name | camelCase }}?.{{ objectFieldName }}Connection?.totalCount || 0;
-	{%- else %}
-	$: nodes = $query_{{ name | camelCase }}_{{ objectFieldName }}_Store.response.data?.{{ name | camelCase }}?.{{ objectFieldName }};
+	{%- if useAuth %}
+	const permissions = getContext<PermissionsStore>('permissions');
 	{%- endif %}
-	$: mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store = data.mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store as Mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store;
-	$: mutation_{{ objectFieldTypeName | camelCase }}_Store = data.mutation_{{ objectFieldTypeName | camelCase }}_Store as Mutation_{{ objectFieldTypeName | camelCase }}_Store;
+
+	$: query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store = data.query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store as Query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store;
+	$: {{ name | camelCase }} = $query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.response.data?.{{ name | camelCase }};
+	$: nodes = $query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.response.data?.{{ name | camelCase }}?.{{ fieldInfo.fieldName }}Connection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.response.data?.{{ name | camelCase }}?.{{ fieldInfo.fieldName }}Connection?.totalCount || 0;
+	$: mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store = data.mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store as Mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store;
+	$: mutation_{{ fieldObjectInfo.name | camelCase }}_Store = data.mutation_{{ fieldObjectInfo.name | camelCase }}_Store as Mutation_{{ fieldObjectInfo.name | camelCase }}_Store;
 	{%- if hasFileField %}
 	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store as Mutation_singleUpload_Store;
 	{%- endif %}
+	let pageNumber: number = 1;
+	let pageSize: number = 10;
 	let errors: Record<number, Errors> = {};
 
-	const fetch = (
-		event: CustomEvent<{
-			{%- if connectionField %}
-			args: {{ queryTypeName }}{{ objectFieldTypeName }}ConnectionArgs;
-			{%- else %}
-			args: {{ queryTypeName }}{{ objectFieldTypeName }}ListArgs;
-			{%- endif %}
-			then: (data: ({{ objectFieldTypeName }}Input | null | undefined)[] | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		}>
-	) => {
-		query_{{ name | camelCase }}_{{ objectFieldName }}_Store.fetch({ {{ name | camelCase }}_{{ idName }}: { val: {{ name | camelCase }}?.{{ idName }} }, ...event.detail.args })
-			.then((result) => {
-				if (result.errors) {
-					event.detail.catch(result.errors);
-				} else {
-					{%- if connectionField %}
-					event.detail.then(result.data?.{{ name | camelCase }}?.{{ objectFieldName }}Connection?.edges?.map((edge) => edge?.node));
-					{%- else %}
-					event.detail.then(result.data?.{{ name | camelCase }}?.{{ objectFieldName }});
-					{%- endif %}
-				}
-			});
+	const query = (args: {{ queryTypeName }}{{ fieldObjectInfo.name }}ConnectionArgs) => {
+		query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.fetch({ {{ name | camelCase }}_{{ idName }}: {{ name | camelCase }}?.{{ idName }}, ...args }).then((result) => {
+			if (result.errors) {
+				console.error(errors);
+				toast.error($LL.graphence.message.requestFailed());
+			} else {
+				errors = {};
+			}
+		});
 	};
 
-	const mutation = (
-		event: CustomEvent<{
-			args: {{ mutationTypeName }}{{ objectFieldTypeName }}Args;
-			then: (data: {{ objectFieldTypeName }}Input | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		}>
-	) => {
-		const row = nodes?.map((node) => node?.{{ objectFieldTypeIdName }})?.indexOf(event.detail.args.{{ objectFieldTypeIdName }} || event.detail.args.where?.{{ objectFieldTypeIdName }}?.val || undefined);
-		validate('{{ mutationTypeName }}_{{ objectFieldTypeName | camelCase }}_Arguments', event.detail.args, $locale)
-			.then((data) => {
-				if (row !== -1 && row !== undefined && errors[row]) {
-					errors[row].iterms = {};
-				}
-				mutation_{{ objectFieldTypeName | camelCase }}_Store.fetch(event.detail.args)
-					.then((result) => {
-						if (result.errors) {
-							event.detail.catch(result.errors);
-						} else {
-							event.detail.then(result?.data?.{{ objectFieldTypeName | camelCase }});
-						}
-					});
-			})
-			.catch((validErrors) => {
-				if (row !== -1 && row !== undefined) {
-					errors[row] = { errors: errors[row]?.errors, iterms: validErrors };
-				}
-			});
-	};
-
-	const parentMutation = (
-		event: CustomEvent<{
-			args: {{ mutationTypeName }}{{ objectFieldTypeName }}Args[];
-			then: (data: {{ objectFieldTypeName }}Input[] | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		}>
-	) => {
-		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { where: { {{ idName }}: { val: {{ idName }} }}, {{ objectFieldName }}: event.detail.args }, $locale)
+	const mutation = (args: {{ mutationTypeName }}{{ fieldObjectInfo.name }}Args) => {
+		validate('{{ mutationTypeName }}_{{ fieldObjectInfo.name | camelCase }}_Arguments', args, $locale)
 			.then((data) => {
 				errors = {};
-				mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store.fetch({
-					{{ name | camelCase }}_{{ idName }}: {{ idName }},
-					{{ name | camelCase }}_{{ objectFieldName }}: event.detail.args
-				})
-					.then((result) => {
-						if (result.errors) {
-							event.detail.catch(result.errors);
-						} else {
-							event.detail.then(undefined);
+				mutation_{{ fieldObjectInfo.name | camelCase }}_Store.fetch(args).then((result) => {
+					if (result.errors) {
+						console.error(result.errors);
+						errors = buildGraphQLErrors(result.errors);
+						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+						if (globalError) {
+							modal.open({
+								title: $LL.graphence.message.requestFailed(),
+								description: globalError
+							});
 						}
-					});
+					} else {
+						toast.success($LL.graphence.message.requestSuccess());
+						ot();
+					}
+				});
 			})
 			.catch((validErrors) => {
-				errors = validErrors.{{ objectFieldName }}.iterms;
+				errors = validErrors;
 			});
 	};
 
-	const edit = (
-		event: CustomEvent<{
-			id: string;
-		}>
-	) => {
-		to(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.id}`);
+	const merge = (args: {{ fieldObjectInfo.name }}Input[]) => {
+		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { where: { {{ idName }}: { val: {{ name | camelCase }}?.{{ idName }} } }, {{ fieldInfo.fieldName }}: args }, $locale)
+			.then((data) => {
+				errors = {};
+				mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.fetch({
+					{{ name | camelCase }}_{{ idName }}: {{ name | camelCase }}?.{{ idName }},
+					{{ name | camelCase }}_{{ fieldInfo.fieldName }}: args
+				}).then((result) => {
+					if (result.errors) {
+						console.error(result.errors);
+						errors = buildGraphQLErrors(result.errors);
+						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+						if (globalError) {
+							modal.open({
+								title: $LL.graphence.message.requestFailed(),
+								description: globalError
+							});
+						}
+					} else {
+						toast.success($LL.graphence.message.requestSuccess());
+						ot();
+					}
+				});
+			})
+			.catch((validErrors) => {
+				errors = validErrors.{{ fieldInfo.fieldName }}.iterms;
+			});
 	};
-
-	const create = (event: CustomEvent<{}>) => {
-		to(`./{{ objectFieldName | paramCase }}/_`);
-	};
-	
-	const gotoField = (event: CustomEvent<{ path: string; name: string; }>) => {
-		to(`../../{{ objectFieldTypeName | paramCase }}/${event.detail.path}`);
-	};
-
-	const gotoSelect = (event: CustomEvent<{}>) => {
-		to(`./{{ objectFieldName | paramCase }}/__`);
-	};
-
-	const back = (event: CustomEvent<{}>) => {
-		ot();
-	};
-
 </script>
 
 <Card>
-	{%- if connectionField %}
-	<{{ objectFieldTypeName }}ConnectionTable
-		showSaveButton={false}
-		showRemoveButton={false}
-		showUnbindButton={true}
-		showGotoSelectButton={true}
-		showBackButton={$canBack}
-		{nodes}
-		{totalCount}
-		{errors}
-		isFetching={$query_{{ name | camelCase }}_{{ objectFieldName }}_Store.isFetching}
-		on:fetch={fetch}
-		on:mutation={mutation}
-		on:parentMutation={parentMutation}
-		on:edit={edit}
-		on:create={create}
-		on:gotoField={gotoField}
-		on:gotoSelect={gotoSelect}
-		on:back={back}
-	{%- if hasFileField %}
-		on:upload={(e) => {
-			mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
-				e.detail.then(result.data?.singleUpload)
-			);
-		}}
-	{%- endif %}
-	/>
-	{%- else %}
-	<{{ objectFieldTypeName }}Table
-		showSaveButton={false}
-		showRemoveButton={false}
-		showUnbindButton={true}
-		showGotoSelectButton={true}
-		showBackButton={$canBack}
-		{nodes}
-		{errors}
-		isFetching={$query_{{ name | camelCase }}_{{ objectFieldName }}_Store.isFetching}
-		on:fetch={fetch}
-		on:mutation={mutation}
-		on:parentMutation={parentMutation}
-		on:edit={edit}
-		on:create={create}
-		on:gotoField={gotoField}
-		on:gotoSelect={gotoSelect}
-		on:back={back}
-		{%- if hasFileField %}
-		on:upload={(e) => {
-			mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
-				e.detail.then(result.data?.singleUpload)
-			);
-		}}
-		{%- endif %}
-	/>
-	{%- endif %}
+	<CardBody>
+		<{{ fieldObjectInfo.name }}Table
+			showUnbindButton={true}
+			showEditButton={true}
+			showCreateButton={true}
+			showBackButton={$canBack}
+			value={nodes}
+			{errors}
+			isFetching={$query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.isFetching}
+			fields={% raw %}{{{% endraw %}
+				{%- for field in fieldObjectInfo.fields %}
+				{{ field.fieldName }}: {
+					readonly: !permissions.auth('{{ fieldObjectInfo.name }}::{{ field.fieldName }}::WRITE'),
+					disabled: !permissions.auth('{{ fieldObjectInfo.name }}::{{ field.fieldName }}::WRITE'),
+					hidden: !permissions.auth('{{ fieldObjectInfo.name }}::{{ field.fieldName }}::READ')
+				}{% if forloop.last == false %},{% endif %}
+				{%- endfor %}
+			{% raw %}}}{% endraw %}
+			on:search={(e) => {
+				if (e.detail.value) {
+					query({
+						cond: 'OR',
+						{%- for field in fieldObjectInfo.fields %}
+						{%- if field.isScalarType and field.inQueryArgs and field.fieldTypeName == 'String' %}
+						{{ field.fieldName }}: { opr: 'LK', val: e.detail.value },
+						{%- endif %}
+						{%- endfor %}
+						first: pageSize,
+						offset: 0
+					});
+				} else {
+					query({ first: pageSize, offset: 0 });
+				}
+			{% raw %}}}{% endraw %}
+			on:query={(e) => {
+				e.detail.args = buildArguments(e.detail.args);
+				if (Object.keys(e.detail.orderBy).length > 0) {
+					e.detail.args.orderBy = e.detail.orderBy;
+				}
+				query(e.detail.args);
+			{% raw %}}}{% endraw %}
+			on:save={(e) => {
+				if (e.detail.value && !Array.isArray(e.detail.value)) {
+					mutation(e.detail.value);
+				}
+			{% raw %}}}{% endraw %}
+			on:edit={(e) => {
+				if (e.detail.value && !Array.isArray(e.detail.value)) {
+					to(`./{{ name | paramCase }}/${e.detail.value.id}`);
+				}
+			{% raw %}}}{% endraw %}
+			on:remove={(e) => {
+				if (e.detail.value) {
+					modal.open({
+						title: $LL.graphence.components.modal.removeModalTitle(),
+						confirm: () => {
+							if (Array.isArray(e.detail.value)) {
+								mutation({
+									where: { id: { opr: 'IN', arr: e.detail.value.map((node) => node?.id) } },
+									isDeprecated: true
+								});
+							} else {
+								mutation({
+									where: { id: { val: e.detail.value?.id } },
+									isDeprecated: true
+								});
+							}
+							return true;
+						}
+					});
+				}
+			{% raw %}}}{% endraw %}
+			on:unbind={(e) => {
+				modal.open({
+					title: $LL.graphence.components.modal.unbindModalTitle(),
+					confirm: () => {
+						if (Array.isArray(e.detail.value)) {
+							merge(
+								e.detail.value.map((node) => ({
+									where: { id: { val: node?.id } },
+									isDeprecated: true
+								}))
+							);
+						} else {
+							merge([
+								{
+									where: { id: { val: e.detail.value?.id } },
+									isDeprecated: true
+								}
+							]);
+						}
+						return true;
+					}
+				});
+			{% raw %}}}{% endraw %}
+			on:create={(e) => to('./{{ name | paramCase }}/_')}
+			on:goto={(e) => to(`./{{ name | paramCase }}/${e.detail.path}`)}
+			{%- if hasFileField %}
+			on:upload={(e) => {
+				mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
+					e.detail.then(result.data?.singleUpload)
+				);
+			{% raw %}}}{% endraw %}
+			{%- endif %}
+		/>
+		<div class="divider" />
+		<Pagination
+			bind:pageSize
+			bind:pageNumber
+			{totalCount}
+			on:pageChange={(e) => query({ first: pageSize, offset: (pageNumber - 1) * pageSize })}
+			on:sizeChange={(e) => query({ first: pageSize, offset: 0 })}
+		/>
+	</CardBody>
 </Card>

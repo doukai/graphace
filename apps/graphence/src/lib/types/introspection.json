@@ -95155,8 +95155,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "INPUT_OBJECT",
-          "OBJECT"
+          "OBJECT",
+          "INPUT_OBJECT"
         ],
         "args": [
           {
@@ -95195,8 +95195,8 @@
         "isRepeatable": false,
         "locations": [
           "FRAGMENT_SPREAD",
-          "INLINE_FRAGMENT",
-          "FIELD"
+          "FIELD",
+          "INLINE_FRAGMENT"
         ],
         "args": [
           {
@@ -95230,8 +95230,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "INPUT_OBJECT",
-          "OBJECT"
+          "OBJECT",
+          "INPUT_OBJECT"
         ],
         "args": [
           {
@@ -95253,11 +95253,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "MUTATION",
           "SUBSCRIPTION",
+          "QUERY",
           "INPUT_OBJECT",
           "FIELD_DEFINITION",
-          "QUERY"
+          "MUTATION"
         ],
         "args": [
           {
@@ -95343,11 +95343,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "MUTATION",
           "SUBSCRIPTION",
+          "QUERY",
           "INPUT_OBJECT",
           "FIELD_DEFINITION",
-          "QUERY"
+          "MUTATION"
         ],
         "args": [
           {
@@ -95385,10 +95385,10 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "INPUT_FIELD_DEFINITION",
+          "OBJECT",
           "INPUT_OBJECT",
           "FIELD_DEFINITION",
-          "OBJECT"
+          "INPUT_FIELD_DEFINITION"
         ],
         "args": [
           {
@@ -95948,11 +95948,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "MUTATION",
+          "OBJECT",
           "SUBSCRIPTION",
-          "FIELD_DEFINITION",
           "QUERY",
-          "OBJECT"
+          "FIELD_DEFINITION",
+          "MUTATION"
         ],
         "args": [
           {
@@ -96053,8 +96053,8 @@
         "isRepeatable": false,
         "locations": [
           "FRAGMENT_SPREAD",
-          "INLINE_FRAGMENT",
-          "FIELD"
+          "FIELD",
+          "INLINE_FRAGMENT"
         ],
         "args": [
           {

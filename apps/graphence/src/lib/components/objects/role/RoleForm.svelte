@@ -109,6 +109,7 @@
 						name="users"
 						errors={errors.users}
 						bind:value={value.users}
+						where={true}
 						readonly={fields.users.readonly}
 						disabled={fields.users.disabled}
 						list
@@ -125,6 +126,7 @@
 						name="groups"
 						errors={errors.groups}
 						bind:value={value.groups}
+						where={true}
 						readonly={fields.groups.readonly}
 						disabled={fields.groups.disabled}
 						list
@@ -141,6 +143,7 @@
 						name="composites"
 						errors={errors.composites}
 						bind:value={value.composites}
+						where={true}
 						readonly={fields.composites.readonly}
 						disabled={fields.composites.disabled}
 						list

@@ -984,142 +984,114 @@ const renders: Record<Template, Render> = {
     //     console.error(config);
     //     throw new Error(`${typeName} undefined`);
     // },
-    // '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-    //     const typeName = config.name;
-    //     if (typeName) {
-    //         const type = schema.getType(typeName);
-    //         if (type && isObjectType(type)) {
-    //             const objectField = getField(type, config.objectFieldName);
-    //             if (objectField?.type) {
-    //                 const objectFieldType = getFieldType(objectField.type);
-    //                 const connectionField = getConnectionField(type, objectField.name);
-    //                 return {
-    //                     content: buildFileContent(config.template, {
-    //                         name: type?.name,
-    //                         idName: getIDFieldName(type),
-    //                         imports: getObjectArrayImports(typeName),
-    //                         component: getObjectArrayComponent(typeName),
-    //                         objectFieldName: objectField.name,
-    //                         objectFieldTypeName: objectFieldType.name,
-    //                         objectFieldTypeIdName: getIDFieldName(objectFieldType),
-    //                         objectFieldTypeFields: getFieldInfos(schema, objectFieldType),
-    //                         connectionField: connectionField,
-    //                         tablePath: `${config.componentsPath}/objects`,
-    //                         schemaTypesPath: config.schemaTypesPath,
-    //                         storesPath: config.storesPath,
-    //                         queryTypeName: getQueryTypeName(),
-    //                         mutationTypeName: getMutationTypeName(),
-    //                         subscriptionTypeName: getSubscriptionTypeName(),
-    //                         hasFileField: hasFileField(objectFieldType),
-    //                         useAuth: config.useAuth
-    //                     }),
-    //                 };
-    //             }
-    //         }
-    //     }
-    //     console.error(config);
-    //     throw new Error(`${typeName} undefined`);
-    // },
-    // '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-    //     const typeName = config.name;
-    //     if (typeName) {
-    //         const type = schema.getType(typeName);
-    //         if (type && isObjectType(type)) {
-    //             const objectField = getField(type, config.objectFieldName);
-    //             if (objectField?.type) {
-    //                 const objectFieldType = getFieldType(objectField.type);
-    //                 const connectionField = getConnectionField(type, objectField.name);
-    //                 return {
-    //                     content: buildFileContent(config.template, {
-    //                         name: type?.name,
-    //                         idName: getIDFieldName(type),
-    //                         objectFieldName: objectField.name,
-    //                         objectFieldTypeName: objectFieldType.name,
-    //                         objectFieldTypeIdName: getIDFieldName(objectFieldType),
-    //                         connectionField: connectionField,
-    //                         schemaTypesPath: config.schemaTypesPath,
-    //                         storesPath: config.storesPath,
-    //                         queryTypeName: getQueryTypeName(),
-    //                         mutationTypeName: getMutationTypeName(),
-    //                         subscriptionTypeName: getSubscriptionTypeName(),
-    //                         hasFileField: hasFileField(objectFieldType),
-    //                         useAuth: config.useAuth
-    //                     }),
-    //                 };
-    //             }
-    //         }
-    //     }
-    //     console.error(config);
-    //     throw new Error(`${typeName} undefined`);
-    // },
-    // '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-    //     const typeName = config.name;
-    //     if (typeName) {
-    //         const type = schema.getType(typeName);
-    //         if (type && isObjectType(type)) {
-    //             const objectField = getField(type, config.objectFieldName);
-    //             if (objectField?.type) {
-    //                 const objectFieldType = getFieldType(objectField.type);
-    //                 const connectionField = getConnectionField(type, objectField.name);
-    //                 return {
-    //                     content: buildFileContent(config.template, {
-    //                         name: type?.name,
-    //                         idName: getIDFieldName(type),
-    //                         imports: getObjectImports(typeName),
-    //                         component: getObjectComponent(typeName),
-    //                         objectFieldName: objectField.name,
-    //                         objectFieldTypeName: objectFieldType.name,
-    //                         objectFieldTypeIdName: getIDFieldName(objectFieldType),
-    //                         objectFieldTypeFields: getFieldInfos(schema, objectFieldType),
-    //                         connectionField: connectionField,
-    //                         formPath: `${config.componentsPath}/objects`,
-    //                         schemaTypesPath: config.schemaTypesPath,
-    //                         storesPath: config.storesPath,
-    //                         queryTypeName: getQueryTypeName(),
-    //                         mutationTypeName: getMutationTypeName(),
-    //                         subscriptionTypeName: getSubscriptionTypeName(),
-    //                         hasFileField: hasFileField(objectFieldType),
-    //                         useAuth: config.useAuth
-    //                     }),
-    //                 };
-    //             }
-    //         }
-    //     }
-    //     console.error(config);
-    //     throw new Error(`${typeName} undefined`);
-    // },
-    // '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-    //     const typeName = config.name;
-    //     if (typeName) {
-    //         const type = schema.getType(typeName);
-    //         if (type && isObjectType(type)) {
-    //             const objectField = getField(type, config.objectFieldName);
-    //             if (objectField?.type) {
-    //                 const objectFieldType = getFieldType(objectField.type);
-    //                 const connectionField = getConnectionField(type, objectField.name);
-    //                 return {
-    //                     content: buildFileContent(config.template, {
-    //                         name: type?.name,
-    //                         idName: getIDFieldName(type),
-    //                         objectFieldName: objectField.name,
-    //                         objectFieldTypeName: objectFieldType.name,
-    //                         objectFieldTypeIdName: getIDFieldName(objectFieldType),
-    //                         connectionField: connectionField,
-    //                         schemaTypesPath: config.schemaTypesPath,
-    //                         storesPath: config.storesPath,
-    //                         queryTypeName: getQueryTypeName(),
-    //                         mutationTypeName: getMutationTypeName(),
-    //                         subscriptionTypeName: getSubscriptionTypeName(),
-    //                         hasFileField: hasFileField(objectFieldType),
-    //                         useAuth: config.useAuth
-    //                     }),
-    //                 };
-    //             }
-    //         }
-    //     }
-    //     console.error(config);
-    //     throw new Error(`${typeName} undefined`);
-    // },
+    '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const objectInfo = getObjectInfo(schema, config.name!)
+        if (objectInfo) {
+            const fieldInfo = getObjectFieldInfo(schema, config.name!, config.objectFieldName!);
+            if (fieldInfo) {
+                const fieldObjectInfo = getObjectInfo(schema, fieldInfo.fieldTypeName)
+                if (fieldObjectInfo) {
+                    const fields = fieldObjectInfo.fields
+                        ?.filter(field => field.inList)
+                        .filter(field => !field.isAggregate)
+                        .filter(field => !field.isConnection);
+                    const importInfo = getImportInfo(fields);
+                    return {
+                        content: buildFileContent(config.template, {
+                            ...objectInfo,
+                            fieldInfo,
+                            fieldObjectInfo: { ...fieldObjectInfo, fields },
+                            ...importInfo,
+                            ...config
+                        }),
+                    };
+                }
+            }
+        }
+        console.error(config);
+        throw new Error(`${config.name} undefined`);
+    },
+    '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const objectInfo = getObjectInfo(schema, config.name!)
+        if (objectInfo) {
+            const fieldInfo = getObjectFieldInfo(schema, config.name!, config.objectFieldName!);
+            if (fieldInfo) {
+                const fieldObjectInfo = getObjectInfo(schema, fieldInfo.fieldTypeName)
+                if (fieldObjectInfo) {
+                    const fields = fieldObjectInfo.fields
+                        ?.filter(field => field.inList)
+                        .filter(field => !field.isAggregate)
+                        .filter(field => !field.isConnection);
+                    const importInfo = getImportInfo(fields);
+                    return {
+                        content: buildFileContent(config.template, {
+                            ...objectInfo,
+                            fieldInfo,
+                            fieldObjectInfo: { ...fieldObjectInfo, fields },
+                            ...importInfo,
+                            ...config
+                        }),
+                    };
+                }
+            }
+        }
+        console.error(config);
+        throw new Error(`${config.name} undefined`);
+    },
+    '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const objectInfo = getObjectInfo(schema, config.name!)
+        if (objectInfo) {
+            const fieldInfo = getObjectFieldInfo(schema, config.name!, config.objectFieldName!);
+            if (fieldInfo) {
+                const fieldObjectInfo = getObjectInfo(schema, fieldInfo.fieldTypeName)
+                if (fieldObjectInfo) {
+                    const fields = fieldObjectInfo.fields
+                        ?.filter(field => field.inList)
+                        .filter(field => !field.isAggregate)
+                        .filter(field => !field.isConnection);
+                    const importInfo = getImportInfo(fields);
+                    return {
+                        content: buildFileContent(config.template, {
+                            ...objectInfo,
+                            fieldInfo,
+                            fieldObjectInfo: { ...fieldObjectInfo, fields },
+                            ...importInfo,
+                            ...config
+                        }),
+                    };
+                }
+            }
+        }
+        console.error(config);
+        throw new Error(`${config.name} undefined`);
+    },
+    '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const objectInfo = getObjectInfo(schema, config.name!)
+        if (objectInfo) {
+            const fieldInfo = getObjectFieldInfo(schema, config.name!, config.objectFieldName!);
+            if (fieldInfo) {
+                const fieldObjectInfo = getObjectInfo(schema, fieldInfo.fieldTypeName)
+                if (fieldObjectInfo) {
+                    const fields = fieldObjectInfo.fields
+                        ?.filter(field => field.inList)
+                        .filter(field => !field.isAggregate)
+                        .filter(field => !field.isConnection);
+                    const importInfo = getImportInfo(fields);
+                    return {
+                        content: buildFileContent(config.template, {
+                            ...objectInfo,
+                            fieldInfo,
+                            fieldObjectInfo: { ...fieldObjectInfo, fields },
+                            ...importInfo,
+                            ...config
+                        }),
+                    };
+                }
+            }
+        }
+        console.error(config);
+        throw new Error(`${config.name} undefined`);
+    },
     // '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/__/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
     //     const typeName = config.name;
     //     if (typeName) {
@@ -1190,46 +1162,46 @@ const renders: Record<Template, Render> = {
     //     console.error(config);
     //     throw new Error(`${typeName} undefined`);
     // },
-    '{{routesPath}}/{{pathName}}/_/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const objectInfo = getObjectInfo(schema, config.name!)
-        if (objectInfo) {
-            const fields = objectInfo.fields
-                ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
-                .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
-            return {
-                content: buildFileContent(config.template, {
-                    ...objectInfo,
-                    fields,
-                    ...importInfo,
-                    ...config
-                }),
-            };
-        }
-        console.error(config);
-        throw new Error(`${config.name} undefined`);
-    },
-    '{{routesPath}}/{{pathName}}/_/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const objectInfo = getObjectInfo(schema, config.name!)
-        if (objectInfo) {
-            const fields = objectInfo.fields
-                ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
-                .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
-            return {
-                content: buildFileContent(config.template, {
-                    ...objectInfo,
-                    fields,
-                    ...importInfo,
-                    ...config
-                }),
-            };
-        }
-        console.error(config);
-        throw new Error(`${config.name} undefined`);
-    },
+    // '{{routesPath}}/{{pathName}}/_/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    //     const objectInfo = getObjectInfo(schema, config.name!)
+    //     if (objectInfo) {
+    //         const fields = objectInfo.fields
+    //             ?.filter(field => field.inList)
+    //             .filter(field => !field.isAggregate)
+    //             .filter(field => !field.isConnection);
+    //         const importInfo = getImportInfo(fields);
+    //         return {
+    //             content: buildFileContent(config.template, {
+    //                 ...objectInfo,
+    //                 fields,
+    //                 ...importInfo,
+    //                 ...config
+    //             }),
+    //         };
+    //     }
+    //     console.error(config);
+    //     throw new Error(`${config.name} undefined`);
+    // },
+    // '{{routesPath}}/{{pathName}}/_/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+    //     const objectInfo = getObjectInfo(schema, config.name!)
+    //     if (objectInfo) {
+    //         const fields = objectInfo.fields
+    //             ?.filter(field => field.inList)
+    //             .filter(field => !field.isAggregate)
+    //             .filter(field => !field.isConnection);
+    //         const importInfo = getImportInfo(fields);
+    //         return {
+    //             content: buildFileContent(config.template, {
+    //                 ...objectInfo,
+    //                 fields,
+    //                 ...importInfo,
+    //                 ...config
+    //             }),
+    //         };
+    //     }
+    //     console.error(config);
+    //     throw new Error(`${config.name} undefined`);
+    // },
     // '{{routesPath}}/{{pathName}}/_/{{objectFieldPathName}}/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
     //     const typeName = config.name;
     //     if (typeName) {

@@ -56,12 +56,6 @@
 		forceVisible: true,
 		preventScroll: true
 	});
-
-	if (Array.isArray(value)) {
-		value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
-	} else if (value) {
-		value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
-	}
 </script>
 
 
@@ -103,15 +97,7 @@
 				{readonly}
 				{placeholder}
 				bind:value={selected}
-				on:change={(e) => {
-					if (Array.isArray(e.detail.value)) {
-						value = e.detail.value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
-					} else if (e.detail.value && !Array.isArray(e.detail.value)) {
-						value = { where: { {{ idName }}: { val: e.detail.value.{{ idName }} } } };
-					} else {
-						value = undefined;
-					}
-				{% raw %}}}{% endraw %}
+				where={true}
 			/>
 			<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.td.save()}>
 				<button

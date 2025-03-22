@@ -22,10 +22,10 @@
 	$: node = user?.realm;
 	$: mutation_user_realm_Store = data.mutation_user_realm_Store as Mutation_user_realm_Store;
 	$: mutation_realm_Store = data.mutation_realm_Store as Mutation_realm_Store;
-	$: errors = data.errors as Record<string, Errors>;
 
 	let value = {};
 	let showUnbindButton = false;
+	let errors: Record<string, Errors> = {};
 
 	$: if (node && Object.keys(node).length > 0) {
 		value = node;

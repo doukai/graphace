@@ -160,6 +160,7 @@
 						name="parent"
 						errors={errors.parent}
 						bind:value={value.parent}
+						where={true}
 						readonly={fields.parent.readonly}
 						disabled={fields.parent.disabled}
 					/>
@@ -175,6 +176,7 @@
 						name="subGroups"
 						errors={errors.subGroups}
 						bind:value={value.subGroups}
+						where={true}
 						readonly={fields.subGroups.readonly}
 						disabled={fields.subGroups.disabled}
 						list
@@ -191,6 +193,7 @@
 						name="users"
 						errors={errors.users}
 						bind:value={value.users}
+						where={true}
 						readonly={fields.users.readonly}
 						disabled={fields.users.disabled}
 						list
@@ -207,6 +210,7 @@
 						name="roles"
 						errors={errors.roles}
 						bind:value={value.roles}
+						where={true}
 						readonly={fields.roles.readonly}
 						disabled={fields.roles.disabled}
 						list

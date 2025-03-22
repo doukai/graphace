@@ -30,10 +30,10 @@
 	{%- if hasFileField %}
 	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store as Mutation_singleUpload_Store;
 	{%- endif %}
-	$: errors = data.errors as Record<string, Errors>;
 
 	let value = {};
 	let showUnbindButton = false;
+	let errors: Record<string, Errors> = {};
 
 	$: if (node && Object.keys(node).length > 0) {
 		value = node;

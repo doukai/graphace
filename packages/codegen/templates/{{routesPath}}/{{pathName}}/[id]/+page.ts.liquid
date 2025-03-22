@@ -1,5 +1,5 @@
 import type { LoadEvent } from '@sveltejs/kit';
-import { fetchQuery_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_store';
+import { createQuery_{{ name | camelCase }}_Store, fetchQuery_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_store';
 import { createMutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
 {%- if hasFileField %}
 import { createMutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
@@ -17,7 +17,9 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         {%- if hasFileField %}
         mutation_singleUpload_Store = createMutation_singleUpload_Store(event),
         {%- endif %}
-        query_{{ name | camelCase }}_Store: await fetchQuery_{{ name | camelCase }}_Store(event, { {{ idName }}: { val: event.params.id } }),
+        query_{{ name | camelCase }}_Store: event.params.id === '_' ?
+            createQuery_{{ name | camelCase }}_Store(event) :
+            await fetchQuery_{{ name | camelCase }}_Store(event, { {{ idName }}: { val: event.params.id } }),
         mutation_{{ name | camelCase }}_Store: createMutation_{{ name | camelCase }}_Store(event)
     };
 }

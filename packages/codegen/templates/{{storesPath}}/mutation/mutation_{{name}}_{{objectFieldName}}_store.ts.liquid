@@ -1,9 +1,9 @@
 import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
-import type { Query{{ objectFieldInfo.fieldTypeName | pascalCase }}{% if objectFieldInfo.isListType %}List{% endif %}Args, {{ objectFieldInfo.fieldTypeName }}Input, {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
+import type { {{ objectFieldInfo.fieldTypeName }}Input, {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
 
-const query = /* GraphQL */ `mutation Mutation_{{ fieldName }}_{{ objectFieldInfo.fieldName}}(${{ fieldName }}_{{ fieldTypeIdName }}: String, ${{ fieldName }}_{{ objectFieldInfo.fieldName}}: {% if objectFieldInfo.isListType %}[{{ objectFieldInfo.fieldTypeName }}Input]{% else %}{{ objectFieldInfo.fieldTypeName }}Input{% endif %}{% if objectFieldInfo.args and objectFieldInfo.args.length > 0 %}, {% for arg in objectFieldInfo.args %}${{ arg.inputName }}: {{ arg.inputType }}{% if forloop.last == false %}, {% endif %}{% endfor %}{% endif %}) {
+const query = /* GraphQL */ `mutation Mutation_{{ fieldName }}_{{ objectFieldInfo.fieldName}}(${{ fieldName }}_{{ fieldTypeIdName }}: String, ${{ fieldName }}_{{ objectFieldInfo.fieldName}}: {{ objectFieldInfo.fieldTypeName }}Input{% if objectFieldInfo.isListType %}[]{% endif %}) {
   {{ fieldName }}(where: { {{ fieldTypeIdName }}: { val: ${{ fieldName }}_{{ fieldTypeIdName }} } }, {{ objectFieldInfo.fieldName}}: ${{ fieldName }}_{{ objectFieldInfo.fieldName}}) @merge {
     {%- for field in fields %}
     {%- if field.isLeafType and field.isAggregate == false %}
@@ -32,7 +32,7 @@ const query = /* GraphQL */ `mutation Mutation_{{ fieldName }}_{{ objectFieldInf
 }`;
 
 export function createMutation_{{ fieldName }}_{{ objectFieldInfo.fieldName}}_Store(event: LoadEvent | RequestEvent): Mutation_{{ fieldName }}_{{ objectFieldInfo.fieldName}}_Store {
-  return createGraphQLMutationStore<{{ fieldTypeName }}, { {{ fieldName }}_{{ fieldTypeIdName }}: string, {{ fieldName }}_{{ objectFieldInfo.fieldName}}: {% if objectFieldInfo.isListType %}[{{ objectFieldInfo.fieldTypeName }}Input]{% else %}{{ objectFieldInfo.fieldTypeName }}Input{% endif %}{% if objectFieldInfo.isNonNullType == false %} | null{% endif %} } & Query{{ objectFieldInfo.fieldTypeName | pascalCase }}{% if objectFieldInfo.isListType %}List{% endif %}Args>(query, event);
+  return createGraphQLMutationStore<{{ fieldTypeName }}, { {{ fieldName }}_{{ fieldTypeIdName }}: string, {{ fieldName }}_{{ objectFieldInfo.fieldName}}: {{ objectFieldInfo.fieldTypeName }}Input{% if objectFieldInfo.isListType %}[]{% endif %}{% if objectFieldInfo.isNonNullType == false %} | null{% endif %} }>(query, event);
 }
 
-export type Mutation_{{ fieldName }}_{{ objectFieldInfo.fieldName}}_Store = GraphQLStore<{{ fieldTypeName }}, { {{ fieldName }}_{{ fieldTypeIdName }}: string, {{ fieldName }}_{{ objectFieldInfo.fieldName}}: {% if objectFieldInfo.isListType %}[{{ objectFieldInfo.fieldTypeName }}Input]{% else %}{{ objectFieldInfo.fieldTypeName }}Input{% endif %}{% if objectFieldInfo.isNonNullType == false %} | null{% endif %} } & Query{{ objectFieldInfo.fieldTypeName | pascalCase }}{% if objectFieldInfo.isListType %}List{% endif %}Args>;
+export type Mutation_{{ fieldName }}_{{ objectFieldInfo.fieldName}}_Store = GraphQLStore<{{ fieldTypeName }}, { {{ fieldName }}_{{ fieldTypeIdName }}: string, {{ fieldName }}_{{ objectFieldInfo.fieldName}}: {{ objectFieldInfo.fieldTypeName }}Input{% if objectFieldInfo.isListType %}[]{% endif %}{% if objectFieldInfo.isNonNullType == false %} | null{% endif %} }>;

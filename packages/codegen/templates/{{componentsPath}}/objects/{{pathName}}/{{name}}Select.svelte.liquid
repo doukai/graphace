@@ -8,6 +8,7 @@
 	export let id: string | undefined = undefined;
 	export let name: string | undefined = undefined;
 	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
+	export let where = false;
 	export let val: string | null | undefined = undefined;
 	export let arr: (string | null | undefined)[] | null | undefined = [];
 	export let errors: Errors | undefined = undefined;
@@ -61,6 +62,14 @@
 				})))
 		);
 	}
+
+	if (where) {
+		if (Array.isArray(value)) {
+			value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
+		} else if (value) {
+			value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
+		}
+	}
 </script>
 
 <ObjectSelect
@@ -77,12 +86,20 @@
 	bind:value={selected}
 	on:change={(e) => {
 		if (Array.isArray(e.detail.value)) {
-			value = e.detail.value.map((item) => ({ {{ idName }}: item.value, name: item.label }));
-			arr = value.map((item) => item?.{{ idName }});
+			if (where) {
+				value = e.detail.value.map((item) => ({ where: { {{ idName }}: { val: item.value } } }));
+			} else {
+				value = e.detail.value.map((item) => ({ {{ idName }}: item.value, name: item.label }));
+			}
+			arr = e.detail.value.map((item) => item.value);
 			val = undefined;
 		} else if (e.detail.value && !Array.isArray(e.detail.value)) {
-			value = { {{ idName }}: e.detail.value.value, name: e.detail.value.label };
-			val = value.{{ idName }};
+			if (where) {
+				value = { where: { {{ idName }}: { val: e.detail.value.value } } };
+			} else {
+				value = { {{ idName }}: e.detail.value.value, name: e.detail.value.label };
+			}
+			val = e.detail.value.value;
 			arr = [];
 		} else {
 			value = undefined;

@@ -19,7 +19,13 @@
 	$: query_role_Store = data.query_role_Store as Query_role_Store;
 	$: node = $query_role_Store.response.data?.role;
 	$: mutation_role_Store = data.mutation_role_Store as Mutation_role_Store;
+
+	let value = {};
 	let errors: Record<string, Errors> = {};
+
+	$: if (node && Object.keys(node).length > 0) {
+		value = node;
+	}
 
 	const mutation = (args: MutationRoleArgs) => {
 		validate('Mutation_role_Arguments', args, $locale)
@@ -54,7 +60,7 @@
 			showSaveButton={true}
 			showRemoveButton={true}
 			showBackButton={$canBack}
-			bind:value={node}
+			bind:value
 			{errors}
 			isFetching={$query_role_Store.isFetching}
 			fields={{

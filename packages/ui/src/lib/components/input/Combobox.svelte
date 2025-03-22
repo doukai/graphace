@@ -140,11 +140,17 @@
 					? 'badge-error'
 					: 'badge-neutral'} flex items-center [word-break:break-word] data-[disabled]:bg-neutral-content data-[selected]:bg-neutral-focus data-[disabled]:hover:cursor-default data-[disabled]:focus:!outline-none data-[disabled]:focus:!ring-0"
 			>
-				<span class="flex items-center border-r bg-neutral border-white/10">{t.value}</span>
+				<span
+					class="flex items-center border-r {errors?.iterms?.[index]
+						? 'bg-error'
+						: 'bg-neutral'} border-white/10">{t.value}</span
+				>
 				<button
 					use:melt={$deleteTrigger(t)}
 					{disabled}
-					class="flex items-center h-full enabled:hover:bg-neutral-focus"
+					class="flex items-center h-full {errors?.iterms?.[index]
+						? 'enabled:hover:bg-error-focus'
+						: 'enabled:hover:bg-neutral-focus'}"
 				>
 					<Icon src={XMark} class="size-3" />
 				</button>

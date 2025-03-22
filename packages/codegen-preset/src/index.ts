@@ -597,81 +597,81 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         //         })
         // );
 
-        // generateOptions.push(
-        //     ...targetRouteListObjectTypeFields
-        //         .map(objectField => {
-        //             const { name, objectFieldName } = objectField;
-        //             const template = '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.svelte';
-        //             const scope = { routesPath, pathName: changeCase.paramCase(name), objectListFieldPathName: changeCase.paramCase(objectFieldName) };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name,
-        //                     objectFieldName
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetRouteListObjectTypeFields
+                .map(objectField => {
+                    const { name, objectFieldName } = objectField;
+                    const template = '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.svelte';
+                    const scope = { routesPath, pathName: changeCase.paramCase(name), objectListFieldPathName: changeCase.paramCase(objectFieldName) };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name,
+                            objectFieldName
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
-        // generateOptions.push(
-        //     ...targetRouteListObjectTypeFields
-        //         .map(objectField => {
-        //             const { name, objectFieldName } = objectField;
-        //             const template = '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.ts';
-        //             const scope = { routesPath, pathName: changeCase.paramCase(name), objectListFieldPathName: changeCase.paramCase(objectFieldName) };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name,
-        //                     objectFieldName
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetRouteListObjectTypeFields
+                .map(objectField => {
+                    const { name, objectFieldName } = objectField;
+                    const template = '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.ts';
+                    const scope = { routesPath, pathName: changeCase.paramCase(name), objectListFieldPathName: changeCase.paramCase(objectFieldName) };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name,
+                            objectFieldName
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
-        // generateOptions.push(
-        //     ...targetRouteListObjectTypeFields
-        //         .map(objectField => {
-        //             const { name, objectFieldName } = objectField;
-        //             const template = '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.svelte';
-        //             const scope = { routesPath, pathName: changeCase.paramCase(name), objectListFieldPathName: changeCase.paramCase(objectFieldName) };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name,
-        //                     objectFieldName
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetRouteListObjectTypeFields
+                .map(objectField => {
+                    const { name, objectFieldName } = objectField;
+                    const template = '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.svelte';
+                    const scope = { routesPath, pathName: changeCase.paramCase(name), objectListFieldPathName: changeCase.paramCase(objectFieldName) };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name,
+                            objectFieldName
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
-        // generateOptions.push(
-        //     ...targetRouteListObjectTypeFields
-        //         .map(objectField => {
-        //             const { name, objectFieldName } = objectField;
-        //             const template = '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.ts';
-        //             const scope = { routesPath, pathName: changeCase.paramCase(name), objectListFieldPathName: changeCase.paramCase(objectFieldName) };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name,
-        //                     objectFieldName
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetRouteListObjectTypeFields
+                .map(objectField => {
+                    const { name, objectFieldName } = objectField;
+                    const template = '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.ts';
+                    const scope = { routesPath, pathName: changeCase.paramCase(name), objectListFieldPathName: changeCase.paramCase(objectFieldName) };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name,
+                            objectFieldName
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
         // generateOptions.push(
         //     ...targetRouteListObjectTypeFields
@@ -711,39 +711,39 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         //         })
         // );
 
-        generateOptions.push(
-            ...targetRouteObjectType
-                .map(type => {
-                    const template = '{{routesPath}}/{{pathName}}/_/+page.svelte';
-                    const scope = { routesPath, pathName: changeCase.paramCase(type.name) };
-                    return {
-                        filename: buildPath(template, scope),
-                        config: {
-                            ..._config,
-                            template,
-                            name: type.name
-                        },
-                        ..._generateOptions
-                    };
-                })
-        );
+        // generateOptions.push(
+        //     ...targetRouteObjectType
+        //         .map(type => {
+        //             const template = '{{routesPath}}/{{pathName}}/_/+page.svelte';
+        //             const scope = { routesPath, pathName: changeCase.paramCase(type.name) };
+        //             return {
+        //                 filename: buildPath(template, scope),
+        //                 config: {
+        //                     ..._config,
+        //                     template,
+        //                     name: type.name
+        //                 },
+        //                 ..._generateOptions
+        //             };
+        //         })
+        // );
 
-        generateOptions.push(
-            ...targetRouteObjectType
-                .map(type => {
-                    const template = '{{routesPath}}/{{pathName}}/_/+page.ts';
-                    const scope = { routesPath, pathName: changeCase.paramCase(type.name) };
-                    return {
-                        filename: buildPath(template, scope),
-                        config: {
-                            ..._config,
-                            template,
-                            name: type.name
-                        },
-                        ..._generateOptions
-                    };
-                })
-        );
+        // generateOptions.push(
+        //     ...targetRouteObjectType
+        //         .map(type => {
+        //             const template = '{{routesPath}}/{{pathName}}/_/+page.ts';
+        //             const scope = { routesPath, pathName: changeCase.paramCase(type.name) };
+        //             return {
+        //                 filename: buildPath(template, scope),
+        //                 config: {
+        //                     ..._config,
+        //                     template,
+        //                     name: type.name
+        //                 },
+        //                 ..._generateOptions
+        //             };
+        //         })
+        // );
 
         // generateOptions.push(
         //     ...targetRouteObjectTypeFields

@@ -1,9 +1,9 @@
 import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
-import type { QueryUserListArgs, UserInput, Group } from '~/lib/types/schema';
+import type { UserInput, Group } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `mutation Mutation_group_users($group_id: String, $group_users: [UserInput], $id: StringExpression, $name: StringExpression, $description: StringExpression, $lastName: StringExpression, $login: StringExpression, $salt: StringExpression, $hash: StringExpression, $email: StringExpression, $phones: StringExpression, $disable: BooleanExpression, $groups: GroupExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $userPhonesRelation: UserPhonesRelationExpression, $groupUserRelation: GroupUserRelationExpression, $roleUserRelation: RoleUserRelationExpression, $groupBy: [String!], $first: Int, $last: Int, $offset: Int, $orderBy: UserOrderBy, $after: ID, $before: ID) {
+const query = /* GraphQL */ `mutation Mutation_group_users($group_id: String, $group_users: UserInput[]) {
   group(where: { id: { val: $group_id } }, users: $group_users) @merge {
     id
     name
@@ -58,7 +58,7 @@ const query = /* GraphQL */ `mutation Mutation_group_users($group_id: String, $g
 }`;
 
 export function createMutation_group_users_Store(event: LoadEvent | RequestEvent): Mutation_group_users_Store {
-  return createGraphQLMutationStore<Group, { group_id: string, group_users: [UserInput] | null } & QueryUserListArgs>(query, event);
+  return createGraphQLMutationStore<Group, { group_id: string, group_users: UserInput[] | null }>(query, event);
 }
 
-export type Mutation_group_users_Store = GraphQLStore<Group, { group_id: string, group_users: [UserInput] | null } & QueryUserListArgs>;
+export type Mutation_group_users_Store = GraphQLStore<Group, { group_id: string, group_users: UserInput[] | null }>;

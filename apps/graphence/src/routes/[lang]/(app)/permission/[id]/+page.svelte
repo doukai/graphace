@@ -19,7 +19,13 @@
 	$: query_permission_Store = data.query_permission_Store as Query_permission_Store;
 	$: node = $query_permission_Store.response.data?.permission;
 	$: mutation_permission_Store = data.mutation_permission_Store as Mutation_permission_Store;
+
+	let value = {};
 	let errors: Record<string, Errors> = {};
+
+	$: if (node && Object.keys(node).length > 0) {
+		value = node;
+	}
 
 	const mutation = (args: MutationPermissionArgs) => {
 		validate('Mutation_permission_Arguments', args, $locale)
@@ -54,7 +60,7 @@
 			showSaveButton={true}
 			showRemoveButton={true}
 			showBackButton={$canBack}
-			bind:value={node}
+			bind:value
 			{errors}
 			isFetching={$query_permission_Store.isFetching}
 			fields={{

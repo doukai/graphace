@@ -8,6 +8,7 @@
 	export let id: string | undefined = undefined;
 	export let name: string | undefined = undefined;
 	export let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
+	export let where = false;
 	export let val: string | null | undefined = undefined;
 	export let arr: (string | null | undefined)[] | null | undefined = [];
 	export let errors: Errors | undefined = undefined;
@@ -61,6 +62,14 @@
 				})))
 		);
 	}
+
+	if (where) {
+		if (Array.isArray(value)) {
+			value = value.map((item) => ({ where: { id: { val: item?.id } } }));
+		} else if (value) {
+			value = { where: { id: { val: value.id } } };
+		}
+	}
 </script>
 
 <ObjectSelect
@@ -77,12 +86,20 @@
 	bind:value={selected}
 	on:change={(e) => {
 		if (Array.isArray(e.detail.value)) {
-			value = e.detail.value.map((item) => ({ id: item.value, name: item.label }));
-			arr = value.map((item) => item?.id);
+			if (where) {
+				value = e.detail.value.map((item) => ({ where: { id: { val: item.value } } }));
+			} else {
+				value = e.detail.value.map((item) => ({ id: item.value, name: item.label }));
+			}
+			arr = e.detail.value.map((item) => item.value);
 			val = undefined;
 		} else if (e.detail.value && !Array.isArray(e.detail.value)) {
-			value = { id: e.detail.value.value, name: e.detail.value.label };
-			val = value.id;
+			if (where) {
+				value = { where: { id: { val: e.detail.value.value } } };
+			} else {
+				value = { id: e.detail.value.value, name: e.detail.value.label };
+			}
+			val = e.detail.value.value;
 			arr = [];
 		} else {
 			value = undefined;

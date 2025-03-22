@@ -22,10 +22,10 @@
 	$: node = group?.parent;
 	$: mutation_group_parent_Store = data.mutation_group_parent_Store as Mutation_group_parent_Store;
 	$: mutation_group_Store = data.mutation_group_Store as Mutation_group_Store;
-	$: errors = data.errors as Record<string, Errors>;
 
 	let value = {};
 	let showUnbindButton = false;
+	let errors: Record<string, Errors> = {};
 
 	$: if (node && Object.keys(node).length > 0) {
 		value = node;

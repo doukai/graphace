@@ -190,6 +190,7 @@
 						name="groups"
 						errors={errors.groups}
 						bind:value={value.groups}
+						where={true}
 						readonly={fields.groups.readonly}
 						disabled={fields.groups.disabled}
 						list
@@ -206,6 +207,7 @@
 						name="roles"
 						errors={errors.roles}
 						bind:value={value.roles}
+						where={true}
 						readonly={fields.roles.readonly}
 						disabled={fields.roles.disabled}
 						list

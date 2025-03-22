@@ -1,9 +1,9 @@
 import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
-import type { QueryGroupListArgs, GroupInput, User } from '~/lib/types/schema';
+import type { GroupInput, User } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `mutation Mutation_user_groups($user_id: String, $user_groups: [GroupInput], $id: StringExpression, $name: StringExpression, $description: StringExpression, $path: StringExpression, $deep: IntExpression, $parentId: StringExpression, $parent: GroupExpression, $subGroups: GroupExpression, $users: UserExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $groupBy: [String!], $first: Int, $last: Int, $offset: Int, $orderBy: GroupOrderBy, $after: ID, $before: ID) {
+const query = /* GraphQL */ `mutation Mutation_user_groups($user_id: String, $user_groups: GroupInput[]) {
   user(where: { id: { val: $user_id } }, groups: $user_groups) @merge {
     id
     name
@@ -68,7 +68,7 @@ const query = /* GraphQL */ `mutation Mutation_user_groups($user_id: String, $us
 }`;
 
 export function createMutation_user_groups_Store(event: LoadEvent | RequestEvent): Mutation_user_groups_Store {
-  return createGraphQLMutationStore<User, { user_id: string, user_groups: [GroupInput] | null } & QueryGroupListArgs>(query, event);
+  return createGraphQLMutationStore<User, { user_id: string, user_groups: GroupInput[] | null }>(query, event);
 }
 
-export type Mutation_user_groups_Store = GraphQLStore<User, { user_id: string, user_groups: [GroupInput] | null } & QueryGroupListArgs>;
+export type Mutation_user_groups_Store = GraphQLStore<User, { user_id: string, user_groups: GroupInput[] | null }>;

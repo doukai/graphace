@@ -1,28 +1,22 @@
 import type { LoadEvent } from '@sveltejs/kit';
-import type { LayoutLoad } from './$types';
-import { type Errors, getNode, getErrors } from '@graphace/commons';
-import { createMutation_{{ name | camelCase }}_{{ objectFieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ objectFieldName }}_store';
+import { createMutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_store';
 {%- if hasFileField %}
 import { createMutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
 {%- endif %}
-import type { {{ mutationTypeName }}{{ objectFieldTypeName }}Args } from '~/{{ schemaTypesPath }}';
 {%- if useAuth %}
 import { getPermissionsStore } from '~/utils';
 {%- endif %}
+import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     {%- if useAuth %}
-    await getPermissionsStore(event).getTypes('{{ objectFieldTypeName }}');
+    await getPermissionsStore(event).getTypes('{{ fieldObjectInfo.name }}');
     {%- endif %}
-    const node: {{ mutationTypeName }}{{ objectFieldTypeName }}Args = getNode(event.url) || {};
-	const errors: Record<string, Errors> = getErrors(event.url) || {};
-    return { 
-        {{ idName }}: event.params.id, 
-        node, 
-        errors, 
+    return {
+        {{ idName }}: event.params.id,
         {%- if hasFileField %}
         mutation_singleUpload_Store = createMutation_singleUpload_Store(event),
         {%- endif %}
-        mutation_{{ name | camelCase }}_{{ objectFieldName }}_Store: createMutation_{{ name | camelCase }}_{{ objectFieldName }}_Store(event)
+        mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store: createMutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store(event)
     };
 }

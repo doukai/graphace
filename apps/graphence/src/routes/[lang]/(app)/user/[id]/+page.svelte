@@ -19,7 +19,13 @@
 	$: query_user_Store = data.query_user_Store as Query_user_Store;
 	$: node = $query_user_Store.response.data?.user;
 	$: mutation_user_Store = data.mutation_user_Store as Mutation_user_Store;
+
+	let value = {};
 	let errors: Record<string, Errors> = {};
+
+	$: if (node && Object.keys(node).length > 0) {
+		value = node;
+	}
 
 	const mutation = (args: MutationUserArgs) => {
 		validate('Mutation_user_Arguments', args, $locale)
@@ -54,7 +60,7 @@
 			showSaveButton={true}
 			showRemoveButton={true}
 			showBackButton={$canBack}
-			bind:value={node}
+			bind:value
 			{errors}
 			isFetching={$query_user_Store.isFetching}
 			fields={{

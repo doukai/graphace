@@ -19,7 +19,13 @@
 	$: query_realm_Store = data.query_realm_Store as Query_realm_Store;
 	$: node = $query_realm_Store.response.data?.realm;
 	$: mutation_realm_Store = data.mutation_realm_Store as Mutation_realm_Store;
+
+	let value = {};
 	let errors: Record<string, Errors> = {};
+
+	$: if (node && Object.keys(node).length > 0) {
+		value = node;
+	}
 
 	const mutation = (args: MutationRealmArgs) => {
 		validate('Mutation_realm_Arguments', args, $locale)
@@ -54,7 +60,7 @@
 			showSaveButton={true}
 			showRemoveButton={true}
 			showBackButton={$canBack}
-			bind:value={node}
+			bind:value
 			{errors}
 			isFetching={$query_realm_Store.isFetching}
 			fields={{

@@ -27,7 +27,13 @@
 	{%- if hasFileField %}
 	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store as Mutation_singleUpload_Store;
 	{%- endif %}
+
+	let value = {};
 	let errors: Record<string, Errors> = {};
+
+	$: if (node && Object.keys(node).length > 0) {
+		value = node;
+	}
 
 	const mutation = (args: {{ mutationTypeName }}{{ name }}Args) => {
 		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', args, $locale)
@@ -62,7 +68,7 @@
 			showSaveButton={true}
 			showRemoveButton={true}
 			showBackButton={$canBack}
-			bind:value={node}
+			bind:value
 			{errors}
 			isFetching={$query_{{ name| camelCase }}_Store.isFetching}
 			fields={% raw %}{{{% endraw %}
