@@ -9,7 +9,7 @@ const query = /* GraphQL */ `mutation Mutation_roleList($id: ID, $name: String, 
     id
     name
     description
-    users {
+    users(first: 3) {
       id
       name
       description

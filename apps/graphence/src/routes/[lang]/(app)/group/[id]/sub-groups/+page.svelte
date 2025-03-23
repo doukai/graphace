@@ -4,7 +4,7 @@
 	import { buildArguments } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import GroupTable from '~/lib/components/objects/group/GroupTable.svelte';
-	import type { Query_group_subGroups_Store } from '~/lib/stores/query/query_group_subGroups_store';
+	import type { Query_group_subGroupsConnection_Store } from '~/lib/stores/query/query_group_subGroupsConnection_store';
 	import type { Mutation_group_subGroups_Store } from '~/lib/stores/mutation/mutation_group_subGroups_store';
 	import type { Mutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
 	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
@@ -18,10 +18,10 @@
 	const { validate } = getContext<JsonSchema>('jsonSchema');
 	const permissions = getContext<PermissionsStore>('permissions');
 
-	$: query_group_subGroups_Store = data.query_group_subGroups_Store as Query_group_subGroups_Store;
-	$: group = $query_group_subGroups_Store.response.data?.group;
-	$: nodes = $query_group_subGroups_Store.response.data?.group?.subGroupsConnection?.edges?.map((edge) => edge?.node);
-	$: totalCount = $query_group_subGroups_Store.response.data?.group?.subGroupsConnection?.totalCount || 0;
+	$: query_group_subGroupsConnection_Store = data.query_group_subGroupsConnection_Store as Query_group_subGroupsConnection_Store;
+	$: group = $query_group_subGroupsConnection_Store.response.data?.group;
+	$: nodes = $query_group_subGroupsConnection_Store.response.data?.group?.subGroupsConnection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $query_group_subGroupsConnection_Store.response.data?.group?.subGroupsConnection?.totalCount || 0;
 	$: mutation_group_subGroups_Store = data.mutation_group_subGroups_Store as Mutation_group_subGroups_Store;
 	$: mutation_group_Store = data.mutation_group_Store as Mutation_group_Store;
 	let pageNumber: number = 1;
@@ -29,7 +29,7 @@
 	let errors: Record<number, Errors> = {};
 
 	const query = (args: QueryGroupConnectionArgs) => {
-		query_group_subGroups_Store.fetch({ group_id: group?.id, ...args }).then((result) => {
+		query_group_subGroupsConnection_Store.fetch({ group_id: group?.id, ...args }).then((result) => {
 			if (result.errors) {
 				console.error(errors);
 				toast.error($LL.graphence.message.requestFailed());
@@ -104,7 +104,7 @@
 			showBackButton={$canBack}
 			value={nodes}
 			{errors}
-			isFetching={$query_group_subGroups_Store.isFetching}
+			isFetching={$query_group_subGroupsConnection_Store.isFetching}
 			fields={{
 				name: {
 					readonly: !permissions.auth('Group::name::WRITE'),
@@ -233,8 +233,8 @@
 					}
 				});
 			}}
-			on:create={(e) => to('./group/_')}
-			on:goto={(e) => to(`./group/${e.detail.path}`)}
+			on:create={(e) => to('./sub-groups/_')}
+			on:goto={(e) => to(`./sub-groups/${e.detail.path}`)}
 		/>
 		<div class="divider" />
 		<Pagination

@@ -22,6 +22,8 @@
 	const dispatch = createEventDispatcher<{
 		change: {
 			value: RealmInput | (RealmInput | null | undefined)[] | null | undefined;
+			val: string | null | undefined;
+			arr: (string | null | undefined)[] | null | undefined;
 		};
 	}>();
 
@@ -104,7 +106,7 @@
 		} else {
 			value = undefined;
 		}
-		dispatch('change', { value });
+		dispatch('change', { value, val, arr });
 	}}
 	on:search={(e) => {
 		if (e.detail.searchValue) {

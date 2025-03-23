@@ -4,7 +4,7 @@
 	import { buildArguments } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import RoleTable from '~/lib/components/objects/role/RoleTable.svelte';
-	import type { Query_role_composites_Store } from '~/lib/stores/query/query_role_composites_store';
+	import type { Query_role_compositesConnection_Store } from '~/lib/stores/query/query_role_compositesConnection_store';
 	import type { Mutation_role_composites_Store } from '~/lib/stores/mutation/mutation_role_composites_store';
 	import type { Mutation_role_Store } from '~/lib/stores/mutation/mutation_role_store';
 	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
@@ -18,10 +18,10 @@
 	const { validate } = getContext<JsonSchema>('jsonSchema');
 	const permissions = getContext<PermissionsStore>('permissions');
 
-	$: query_role_composites_Store = data.query_role_composites_Store as Query_role_composites_Store;
-	$: role = $query_role_composites_Store.response.data?.role;
-	$: nodes = $query_role_composites_Store.response.data?.role?.compositesConnection?.edges?.map((edge) => edge?.node);
-	$: totalCount = $query_role_composites_Store.response.data?.role?.compositesConnection?.totalCount || 0;
+	$: query_role_compositesConnection_Store = data.query_role_compositesConnection_Store as Query_role_compositesConnection_Store;
+	$: role = $query_role_compositesConnection_Store.response.data?.role;
+	$: nodes = $query_role_compositesConnection_Store.response.data?.role?.compositesConnection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $query_role_compositesConnection_Store.response.data?.role?.compositesConnection?.totalCount || 0;
 	$: mutation_role_composites_Store = data.mutation_role_composites_Store as Mutation_role_composites_Store;
 	$: mutation_role_Store = data.mutation_role_Store as Mutation_role_Store;
 	let pageNumber: number = 1;
@@ -29,7 +29,7 @@
 	let errors: Record<number, Errors> = {};
 
 	const query = (args: QueryRoleConnectionArgs) => {
-		query_role_composites_Store.fetch({ role_id: role?.id, ...args }).then((result) => {
+		query_role_compositesConnection_Store.fetch({ role_id: role?.id, ...args }).then((result) => {
 			if (result.errors) {
 				console.error(errors);
 				toast.error($LL.graphence.message.requestFailed());
@@ -104,7 +104,7 @@
 			showBackButton={$canBack}
 			value={nodes}
 			{errors}
-			isFetching={$query_role_composites_Store.isFetching}
+			isFetching={$query_role_compositesConnection_Store.isFetching}
 			fields={{
 				name: {
 					readonly: !permissions.auth('Role::name::WRITE'),
@@ -216,8 +216,8 @@
 					}
 				});
 			}}
-			on:create={(e) => to('./role/_')}
-			on:goto={(e) => to(`./role/${e.detail.path}`)}
+			on:create={(e) => to('./composites/_')}
+			on:goto={(e) => to(`./composites/${e.detail.path}`)}
 		/>
 		<div class="divider" />
 		<Pagination

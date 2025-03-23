@@ -4,7 +4,7 @@
 	import { buildArguments } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import {{ fieldObjectInfo.name }}Table from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}Table.svelte';
-	import type { Query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_store';
+	import type { Query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}Connection_store';
 	import type { Mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_store';
 	import type { Mutation_{{ fieldObjectInfo.name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ fieldObjectInfo.name | camelCase }}_store';
 	{%- if hasFileField %}
@@ -23,10 +23,10 @@
 	const permissions = getContext<PermissionsStore>('permissions');
 	{%- endif %}
 
-	$: query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store = data.query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store as Query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store;
-	$: {{ name | camelCase }} = $query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.response.data?.{{ name | camelCase }};
-	$: nodes = $query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.response.data?.{{ name | camelCase }}?.{{ fieldInfo.fieldName }}Connection?.edges?.map((edge) => edge?.node);
-	$: totalCount = $query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.response.data?.{{ name | camelCase }}?.{{ fieldInfo.fieldName }}Connection?.totalCount || 0;
+	$: query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}Connection_Store = data.query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}Connection_Store as Query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}Connection_Store;
+	$: {{ name | camelCase }} = $query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}Connection_Store.response.data?.{{ name | camelCase }};
+	$: nodes = $query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}Connection_Store.response.data?.{{ name | camelCase }}?.{{ fieldInfo.fieldName }}Connection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}Connection_Store.response.data?.{{ name | camelCase }}?.{{ fieldInfo.fieldName }}Connection?.totalCount || 0;
 	$: mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store = data.mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store as Mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store;
 	$: mutation_{{ fieldObjectInfo.name | camelCase }}_Store = data.mutation_{{ fieldObjectInfo.name | camelCase }}_Store as Mutation_{{ fieldObjectInfo.name | camelCase }}_Store;
 	{%- if hasFileField %}
@@ -37,7 +37,7 @@
 	let errors: Record<number, Errors> = {};
 
 	const query = (args: {{ queryTypeName }}{{ fieldObjectInfo.name }}ConnectionArgs) => {
-		query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.fetch({ {{ name | camelCase }}_{{ idName }}: {{ name | camelCase }}?.{{ idName }}, ...args }).then((result) => {
+		query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}Connection_Store.fetch({ {{ name | camelCase }}_{{ idName }}: {{ name | camelCase }}?.{{ idName }}, ...args }).then((result) => {
 			if (result.errors) {
 				console.error(errors);
 				toast.error($LL.graphence.message.requestFailed());
@@ -112,7 +112,7 @@
 			showBackButton={$canBack}
 			value={nodes}
 			{errors}
-			isFetching={$query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.isFetching}
+			isFetching={$query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}Connection_Store.isFetching}
 			fields={% raw %}{{{% endraw %}
 				{%- for field in fieldObjectInfo.fields %}
 				{{ field.fieldName }}: {
@@ -199,8 +199,8 @@
 					}
 				});
 			{% raw %}}}{% endraw %}
-			on:create={(e) => to('./{{ name | paramCase }}/_')}
-			on:goto={(e) => to(`./{{ name | paramCase }}/${e.detail.path}`)}
+			on:create={(e) => to('./{{ fieldInfo.fieldName | paramCase }}/_')}
+			on:goto={(e) => to(`./{{ fieldInfo.fieldName | paramCase }}/${e.detail.path}`)}
 			{%- if hasFileField %}
 			on:upload={(e) => {
 				mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>

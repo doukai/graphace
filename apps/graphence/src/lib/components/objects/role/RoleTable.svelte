@@ -11,7 +11,6 @@
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import PermissionTh from '~/lib/components/objects/permission/PermissionTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
-	import UserSelectTd from '~/lib/components/objects/user/UserSelectTd.svelte';
 	import GroupSelectTd from '~/lib/components/objects/group/GroupSelectTd.svelte';
 	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
@@ -230,17 +229,11 @@
 						</slot>
 						<slot name="users">
 							{#if !fields.users.hidden}
-								<UserSelectTd
-									name="users"
-									bind:value={node.users}
-									list
+								<ObjectTd
+									namedStruct={node.users}
 									errors={errors?.[row]?.iterms?.users}
-									readonly={fields.users.readonly}
-									disabled={fields.users.disabled}
-									on:save={(e) =>
-										dispatch('save', {
-											value: { users: node?.users, where: { id: { val: node?.id } } }
-										})}
+									path={`${node.id}/users`}
+									on:goto
 									{zIndex}
 								/>
 							{/if}

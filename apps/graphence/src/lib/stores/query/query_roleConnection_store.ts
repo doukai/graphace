@@ -12,7 +12,7 @@ const query = /* GraphQL */ `query Query_roleConnection($id: StringExpression, $
         id
         name
         description
-        users {
+        users(first: 3) {
           id
           name
           description

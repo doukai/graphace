@@ -3,7 +3,7 @@ import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
 import type { {{ objectFieldInfo.fieldTypeName }}Input, {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
 
-const query = /* GraphQL */ `mutation Mutation_{{ fieldName }}_{{ objectFieldInfo.fieldName}}(${{ fieldName }}_{{ fieldTypeIdName }}: String, ${{ fieldName }}_{{ objectFieldInfo.fieldName}}: {{ objectFieldInfo.fieldTypeName }}Input{% if objectFieldInfo.isListType %}[]{% endif %}) {
+const query = /* GraphQL */ `mutation Mutation_{{ fieldName }}_{{ objectFieldInfo.fieldName}}(${{ fieldName }}_{{ fieldTypeIdName }}: String, ${{ fieldName }}_{{ objectFieldInfo.fieldName}}: {% if objectFieldInfo.isListType %}[{{ objectFieldInfo.fieldTypeName }}Input]{% else %}{{ objectFieldInfo.fieldTypeName }}Input{% endif %}) {
   {{ fieldName }}(where: { {{ fieldTypeIdName }}: { val: ${{ fieldName }}_{{ fieldTypeIdName }} } }, {{ objectFieldInfo.fieldName}}: ${{ fieldName }}_{{ objectFieldInfo.fieldName}}) @merge {
     {%- for field in fields %}
     {%- if field.isLeafType and field.isAggregate == false %}

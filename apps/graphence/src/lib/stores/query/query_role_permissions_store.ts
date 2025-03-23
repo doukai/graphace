@@ -4,7 +4,7 @@ import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryPermissionListArgs, Role } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `query Query_role_permissions($role_id: String, $name: StringExpression, $description: StringExpression, $field: StringExpression, $type: StringExpression, $permissionType: PermissionTypeExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $groupBy: [String!], $first: Int, $last: Int, $offset: Int, $orderBy: PermissionOrderBy, $after: ID, $before: ID) {
-  role(where: { id: { val: $role_id } }) {
+  role(id: { val: $role_id }) {
     id
     name
     description

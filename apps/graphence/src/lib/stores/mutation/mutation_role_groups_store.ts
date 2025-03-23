@@ -3,7 +3,7 @@ import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
 import type { GroupInput, Role } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `mutation Mutation_role_groups($role_id: String, $role_groups: GroupInput[]) {
+const query = /* GraphQL */ `mutation Mutation_role_groups($role_id: String, $role_groups: [GroupInput]) {
   role(where: { id: { val: $role_id } }, groups: $role_groups) @merge {
     id
     name

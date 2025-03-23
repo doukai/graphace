@@ -126,6 +126,10 @@ const config: CodegenConfig = {
                             select: true,
                             fields: [
                                 {
+                                    name: 'users',
+                                    select: false
+                                },
+                                {
                                     name: 'permissions',
                                     // inRoute: false
                                 },

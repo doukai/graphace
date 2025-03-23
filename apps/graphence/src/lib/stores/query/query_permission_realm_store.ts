@@ -4,7 +4,7 @@ import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryRealmArgs, Permission } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `query Query_permission_realm($permission_name: String, $id: StringExpression, $name: StringExpression, $description: StringExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $groupBy: [String!]) {
-  permission(where: { name: { val: $permission_name } }) {
+  permission(name: { val: $permission_name }) {
     name
     description
     field

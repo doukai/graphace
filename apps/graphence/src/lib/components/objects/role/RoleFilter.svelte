@@ -7,7 +7,6 @@
 	import { Form, FormControl, Label } from '@graphace/ui';
 	import { StringFilter } from '@graphace/ui-graphql';
 	import RoleSelectFilter from '~/lib/components/objects/role/RoleSelectFilter.svelte';
-	import UserSelectFilter from '~/lib/components/objects/user/UserSelectFilter.svelte';
 	import GroupSelectFilter from '~/lib/components/objects/group/GroupSelectFilter.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { RoleExpression } from '~/lib/types/schema';
@@ -29,7 +28,6 @@
 		value = {
 			name: undefined,
 			description: undefined,
-			users: { id: undefined },
 			groups: { id: undefined },
 			composites: { id: undefined },
 		}
@@ -44,7 +42,6 @@
 		value = {
 			name: undefined,
 			description: undefined,
-			users: { id: undefined },
 			groups: { id: undefined },
 			composites: { id: undefined },
 		};
@@ -80,10 +77,6 @@
 				<Label {id} text={$LL.graphql.objects.Role.fields.description.name()} />
 				<div class="grid grid-cols-2 gap-1">
 					<StringFilter {id} name="description" bind:value={value.description} />
-				</div>
-				<Label {id} text={$LL.graphql.objects.Role.fields.users.name()} />
-				<div class="grid grid-cols-2 gap-1">
-					<UserSelectFilter {id} name="users" bind:value={value.users.id} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Role.fields.groups.name()} />
 				<div class="grid grid-cols-2 gap-1">

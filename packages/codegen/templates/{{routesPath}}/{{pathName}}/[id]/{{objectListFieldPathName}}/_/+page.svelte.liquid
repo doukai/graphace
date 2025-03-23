@@ -29,13 +29,13 @@
 	let value = {};
 	let errors: Record<string, Errors> = {};
 
-	const merge = (args: {{ fieldObjectInfo.name }}Input[]) => {
-		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { {{ idName }}, {{ fieldInfo.fieldName }}: [args] }, $locale)
+	const merge = (args: {{ fieldObjectInfo.name }}Input) => {
+		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { where: { {{ idName }}: { val: {{ idName }} } }, {{ fieldInfo.fieldName }}: [args] }, $locale)
 			.then((data) => {
 				errors = {};
 				mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.fetch({
 					{{ name | camelCase }}_{{ idName }}: {{ idName }},
-					{{ name | camelCase }}_{{ fieldInfo.fieldName }}: args
+					{{ name | camelCase }}_{{ fieldInfo.fieldName }}: [args]
 				}).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
@@ -54,7 +54,7 @@
 				});
 			})
 			.catch((validErrors) => {
-				errors = validErrors.{{ fieldInfo.fieldName }}.iterms;
+				errors = validErrors.{{ fieldInfo.fieldName }}?.iterms[0]?.iterms;
 			});
 	};
 </script>
@@ -77,7 +77,7 @@
 			{% raw %}}}{% endraw %}
 			on:save={(e) => {
 				if (e.detail.value) {
-					merge([e.detail.value]);
+					merge(e.detail.value);
 				}
 			{% raw %}}}{% endraw %}
 			on:goto={(e) => to(`../../${e.detail.path}`)}

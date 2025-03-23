@@ -1,7 +1,7 @@
 import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
-import { type GraphQLError, Operation, Field, Directive, type NamedStruct, type TreeStruct, type QueryTreeStructArgs, type QueryNamedStructArgs } from '@graphace/graphql';
+import { type GraphQLError, Operation, Field, Directive, type NamedStruct, type NamedStructExpression, type TreeStruct, type TreeStructExpression } from '@graphace/graphql';
 
 export function createQueryStore<T>(event: LoadEvent | RequestEvent, url: string | URL): OperationStore<T> {
     const data: Writable<{ isFetching: boolean, response: { data?: Record<string, T | null> | undefined, errors?: GraphQLError[] | null | undefined } }> = writable({
@@ -193,10 +193,10 @@ export function createNamedQueryStore(event: LoadEvent | RequestEvent, url: stri
 
     const { subscribe, set, update } = data;
 
-    const fetch = async (query: { fieldName: string, idName: string }, variables?: QueryNamedStructArgs | undefined) => {
-        const graphql = /* GraphQL */ `query ${query.fieldName}NamedQuery($${query.idName}: StringExpression, $name: StringExpression, $first: Int) {
-	${query.fieldName}(${query.idName}: $${query.idName}, name: $name, first: $first) {
-		id:${query.idName}
+    const fetch = async (query: { fieldName: string, idName: string }, variables?: NamedStructExpression & { first?: number | undefined } | undefined) => {
+        const graphql = /* GraphQL */ `query ${query.fieldName}NamedQuery($id: StringExpression, $name: StringExpression, $description: StringExpression, $first: Int) {
+	${query.fieldName}(${query.idName}: $id, name: $name, description: $description, first: $first) {
+		id: ${query.idName}
 		name
 		description
 	}
@@ -236,7 +236,7 @@ export type NamedQueryStore = {
         isFetching: boolean;
         response: { data?: Record<string, NamedStruct[] | null> | undefined, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (query: { fieldName: string, idName: string }, variables?: QueryNamedStructArgs | undefined) => Promise<{ data?: Record<string, NamedStruct[] | null> | undefined, errors?: GraphQLError[] | null | undefined }>;
+    fetch: (query: { fieldName: string, idName: string }, variables?: NamedStructExpression & { first?: number | undefined } | undefined) => Promise<{ data?: Record<string, NamedStruct[] | null> | undefined, errors?: GraphQLError[] | null | undefined }>;
 }
 
 export function createTreeQueryStore(event: LoadEvent | RequestEvent, url: string | URL): TreeQueryStore {
@@ -247,14 +247,12 @@ export function createTreeQueryStore(event: LoadEvent | RequestEvent, url: strin
 
     const { subscribe, set, update } = data;
 
-    const fetch = async (query: { fieldName: string, idName: string }, variables?: QueryTreeStructArgs | undefined) => {
-        const graphql = /* GraphQL */ `query ${query.fieldName}TreeQuery($deep: IntExpression) {
-	${query.fieldName}(deep: $deep) {
-		id:${query.idName}
-		name
-		path
-		deep
+    const fetch = async (query: { fieldName: string, idName: string }, variables?: TreeStructExpression & { first?: number | undefined } | undefined) => {
+        const graphql = /* GraphQL */ `query ${query.fieldName}TreeQuery($id: StringExpression, $parentId: StringExpression, $name: StringExpression, $first: Int) {
+	${query.fieldName}(${query.idName}: $id, parentId: $parentId, name: $name, first: $first) {
+		id: ${query.idName}
 		parentId
+		name
 	}
 }`;
         update((data) => ({ ...data, isFetching: true }));
@@ -292,7 +290,7 @@ export type TreeQueryStore = {
         isFetching: boolean;
         response: { data?: Record<string, TreeStruct[] | null> | undefined, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (query: { fieldName: string, idName: string }, variables?: QueryTreeStructArgs | undefined) => Promise<{ data?: Record<string, TreeStruct[] | null> | undefined, errors?: GraphQLError[] | null | undefined }>;
+    fetch: (query: { fieldName: string, idName: string }, variables?: TreeStructExpression & { first?: number | undefined } | undefined) => Promise<{ data?: Record<string, TreeStruct[] | null> | undefined, errors?: GraphQLError[] | null | undefined }>;
 }
 
 export function createStructQueryStores(event: LoadEvent | RequestEvent, url: string | URL): StructQueryStores {

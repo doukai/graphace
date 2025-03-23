@@ -3,7 +3,7 @@ import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
 import type { PermissionInput, Role } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `mutation Mutation_role_permissions($role_id: String, $role_permissions: PermissionInput[]) {
+const query = /* GraphQL */ `mutation Mutation_role_permissions($role_id: String, $role_permissions: [PermissionInput]) {
   role(where: { id: { val: $role_id } }, permissions: $role_permissions) @merge {
     id
     name

@@ -3,7 +3,7 @@ import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
 import type { RoleInput, Role } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `mutation Mutation_role_composites($role_id: String, $role_composites: RoleInput[]) {
+const query = /* GraphQL */ `mutation Mutation_role_composites($role_id: String, $role_composites: [RoleInput]) {
   role(where: { id: { val: $role_id } }, composites: $role_composites) @merge {
     id
     name
@@ -21,7 +21,7 @@ const query = /* GraphQL */ `mutation Mutation_role_composites($role_id: String,
       id
       name
       description
-      users {
+      users(first: 3) {
         id
         name
         description

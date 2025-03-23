@@ -10517,22 +10517,19 @@ export type SubscriptionPermissionRoleRelationConnectionArgs = {
 };
 
 export type TreeStruct = {
-  name?: Maybe<Scalars['String']>;
-  path?: Maybe<Scalars['String']>;
-  deep?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['ID']>;
   parentId?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 /** Query Expression Input for TreeStruct */
 export type TreeStructExpression = {
-  /** name */
-  name?: InputMaybe<StringExpression>;
-  /** path */
-  path?: InputMaybe<StringExpression>;
-  /** deep */
-  deep?: InputMaybe<IntExpression>;
+  /** id */
+  id?: InputMaybe<StringExpression>;
   /** parentId */
   parentId?: InputMaybe<StringExpression>;
+  /** name */
+  name?: InputMaybe<StringExpression>;
   /** Include Deprecated */
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   /** version */
@@ -10557,14 +10554,12 @@ export type TreeStructExpression = {
 
 /** Mutation Input for TreeStruct */
 export type TreeStructInput = {
-  /** name */
-  name?: InputMaybe<Scalars['String']>;
-  /** path */
-  path?: InputMaybe<Scalars['String']>;
-  /** deep */
-  deep?: InputMaybe<Scalars['Int']>;
+  /** id */
+  id?: InputMaybe<Scalars['ID']>;
   /** parentId */
   parentId?: InputMaybe<Scalars['String']>;
+  /** name */
+  name?: InputMaybe<Scalars['String']>;
   /** Is Deprecated */
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   /** version */

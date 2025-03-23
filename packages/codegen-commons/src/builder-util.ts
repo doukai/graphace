@@ -156,11 +156,11 @@ export function inRouteField(typeName: string, fieldName: string, fieldTypeName:
 }
 
 export function isSelectField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
-    return (builderConfig?.objects || [])
-        .filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any')
-        .flatMap(objectConfig => objectConfig.fields || [])
-        .find(fieldConfig => fieldConfig.name === fieldName)?.select ||
-        builderConfig?.objects?.find(objectConfig => objectConfig.name === fieldTypeName)?.select ||
+    return builderConfig?.objects?.find(objectConfig => objectConfig.name === fieldTypeName)?.select &&
+        (builderConfig?.objects || [])
+            .filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any')
+            .flatMap(objectConfig => objectConfig.fields || [])
+            .find(fieldConfig => fieldConfig.name === fieldName)?.select !== false ||
         false
 }
 

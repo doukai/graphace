@@ -4,7 +4,7 @@ import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryRoleConnectionArgs, Permission } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `query Query_permission_rolesConnection($permission_name: String, $id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $groups: GroupExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $roleUserRelation: RoleUserRelationExpression, $groupRoleRelation: GroupRoleRelationExpression, $roleCompositeRelation: RoleCompositeRelationExpression, $permissionRoleRelation: PermissionRoleRelationExpression, $first: Int, $last: Int, $offset: Int, $orderBy: RoleOrderBy, $groupBy: [String!]) {
-  permission(where: { name: { val: $permission_name } }) {
+  permission(name: { val: $permission_name }) {
     name
     description
     field
@@ -25,7 +25,7 @@ const query = /* GraphQL */ `query Query_permission_rolesConnection($permission_
           id
           name
           description
-          users {
+          users(first: 3) {
             id
             name
             description

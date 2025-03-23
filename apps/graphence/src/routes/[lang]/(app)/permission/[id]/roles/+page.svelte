@@ -4,7 +4,7 @@
 	import { buildArguments } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import RoleTable from '~/lib/components/objects/role/RoleTable.svelte';
-	import type { Query_permission_roles_Store } from '~/lib/stores/query/query_permission_roles_store';
+	import type { Query_permission_rolesConnection_Store } from '~/lib/stores/query/query_permission_rolesConnection_store';
 	import type { Mutation_permission_roles_Store } from '~/lib/stores/mutation/mutation_permission_roles_store';
 	import type { Mutation_role_Store } from '~/lib/stores/mutation/mutation_role_store';
 	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
@@ -18,10 +18,10 @@
 	const { validate } = getContext<JsonSchema>('jsonSchema');
 	const permissions = getContext<PermissionsStore>('permissions');
 
-	$: query_permission_roles_Store = data.query_permission_roles_Store as Query_permission_roles_Store;
-	$: permission = $query_permission_roles_Store.response.data?.permission;
-	$: nodes = $query_permission_roles_Store.response.data?.permission?.rolesConnection?.edges?.map((edge) => edge?.node);
-	$: totalCount = $query_permission_roles_Store.response.data?.permission?.rolesConnection?.totalCount || 0;
+	$: query_permission_rolesConnection_Store = data.query_permission_rolesConnection_Store as Query_permission_rolesConnection_Store;
+	$: permission = $query_permission_rolesConnection_Store.response.data?.permission;
+	$: nodes = $query_permission_rolesConnection_Store.response.data?.permission?.rolesConnection?.edges?.map((edge) => edge?.node);
+	$: totalCount = $query_permission_rolesConnection_Store.response.data?.permission?.rolesConnection?.totalCount || 0;
 	$: mutation_permission_roles_Store = data.mutation_permission_roles_Store as Mutation_permission_roles_Store;
 	$: mutation_role_Store = data.mutation_role_Store as Mutation_role_Store;
 	let pageNumber: number = 1;
@@ -29,7 +29,7 @@
 	let errors: Record<number, Errors> = {};
 
 	const query = (args: QueryRoleConnectionArgs) => {
-		query_permission_roles_Store.fetch({ permission_name: permission?.name, ...args }).then((result) => {
+		query_permission_rolesConnection_Store.fetch({ permission_name: permission?.name, ...args }).then((result) => {
 			if (result.errors) {
 				console.error(errors);
 				toast.error($LL.graphence.message.requestFailed());
@@ -104,7 +104,7 @@
 			showBackButton={$canBack}
 			value={nodes}
 			{errors}
-			isFetching={$query_permission_roles_Store.isFetching}
+			isFetching={$query_permission_rolesConnection_Store.isFetching}
 			fields={{
 				name: {
 					readonly: !permissions.auth('Role::name::WRITE'),
@@ -216,8 +216,8 @@
 					}
 				});
 			}}
-			on:create={(e) => to('./permission/_')}
-			on:goto={(e) => to(`./permission/${e.detail.path}`)}
+			on:create={(e) => to('./roles/_')}
+			on:goto={(e) => to(`./roles/${e.detail.path}`)}
 		/>
 		<div class="divider" />
 		<Pagination

@@ -29,9 +29,6 @@
 		save: {};
 	}>();
 
-	let selected: GroupInput | (GroupInput | null | undefined)[] | null | undefined;
-	selected = value;
-
 	let mutation = (): void => {
 		dispatch('save', {});
 		$open = false;
@@ -40,10 +37,8 @@
 	let clean = (): void => {
 		if (Array.isArray(value)) {
 			value = [];
-			selected = [];
 		} else {
 			value = null;
-			selected = undefined;
 		}
 		dispatch('save', {});
 		$open = false;
@@ -62,23 +57,23 @@
 <Td {errors} {zIndex}>
 	<a class="link inline-flex" href={null} use:melt={$trigger}>
 		{#if list}
-			{#if Array.isArray(selected)}
-				{#if selected.length > 3}
-					{selected
+			{#if Array.isArray(value)}
+				{#if value.length > 3}
+					{value
 						.map((item) => item?.name)
 						.slice(0, 3)
 						.join(',')
 						.concat('...')}
-				{:else if selected.length > 0}
-					{selected.map((item) => item?.name).join(',')}
+				{:else if value.length > 0}
+					{value.map((item) => item?.name).join(',')}
 				{:else}
 					<Icon src={Minus} class="h-5 w-5" />
 				{/if}
 			{:else}
 				<Icon src={Minus} class="h-5 w-5" />
 			{/if}
-		{:else if selected}
-			{selected.name}
+		{:else if value}
+			{value.name}
 		{:else}
 			<Icon src={Minus} class="h-5 w-5" />
 		{/if}
@@ -96,7 +91,7 @@
 				{disabled}
 				{readonly}
 				{placeholder}
-				bind:value={selected}
+				bind:value
 				where={true}
 			/>
 			<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.td.save()}>

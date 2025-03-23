@@ -4,7 +4,6 @@
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Form, FormControl, Label, Loading } from '@graphace/ui';
 	import { type Option, StringInput, ObjectInput } from '@graphace/ui-graphql';
-	import UserSelect from '~/lib/components/objects/user/UserSelect.svelte';
 	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
@@ -104,15 +103,12 @@
 			{#if !fields.users.hidden}
 				<FormControl let:id>
 					<Label {id} text={$LL.graphql.objects.Role.fields.users.name()} />
-					<UserSelect
-					 	{id}
-						name="users"
+					<ObjectInput
+						namedStruct={value.users}
+						path={`${value.id}/users`}
 						errors={errors.users}
-						bind:value={value.users}
-						where={true}
-						readonly={fields.users.readonly}
 						disabled={fields.users.disabled}
-						list
+						on:gotoField
 					/>
 				</FormControl>
 			{/if}

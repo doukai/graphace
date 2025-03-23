@@ -21,13 +21,13 @@
 	let value = {};
 	let errors: Record<string, Errors> = {};
 
-	const merge = (args: GroupInput[]) => {
-		validate('Mutation_role_Arguments', { id, groups: [args] }, $locale)
+	const merge = (args: GroupInput) => {
+		validate('Mutation_role_Arguments', { where: { id: { val: id } }, groups: [args] }, $locale)
 			.then((data) => {
 				errors = {};
 				mutation_role_groups_Store.fetch({
 					role_id: id,
-					role_groups: args
+					role_groups: [args]
 				}).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
@@ -46,7 +46,7 @@
 				});
 			})
 			.catch((validErrors) => {
-				errors = validErrors.groups.iterms;
+				errors = validErrors.groups?.iterms[0]?.iterms;
 			});
 	};
 </script>
@@ -112,7 +112,7 @@
 			}}
 			on:save={(e) => {
 				if (e.detail.value) {
-					merge([e.detail.value]);
+					merge(e.detail.value);
 				}
 			}}
 			on:goto={(e) => to(`../../${e.detail.path}`)}
