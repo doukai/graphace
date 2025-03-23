@@ -38,7 +38,7 @@ const authInterceptor = <T>(event: LoadEvent | RequestEvent, response: { data?: 
     }
 }
 
-export function createQueryStore<T>(event: LoadEvent): OperationStore<T> {
+export function createQueryStore<T>(event: LoadEvent | RequestEvent): OperationStore<T> {
     const queryStore = _createQueryStore<T>(event, getUrl(event));
     const { subscribe, fetch } = queryStore;
 
@@ -52,7 +52,7 @@ export function createQueryStore<T>(event: LoadEvent): OperationStore<T> {
     };
 }
 
-export async function fetchQueryStore<T>(event: LoadEvent, params: { fields: Field[], name?: string | undefined, directives?: Directive[] | undefined }): Promise<OperationStore<T>> {
+export async function fetchQueryStore<T>(event: LoadEvent | RequestEvent, params: { fields: Field[], name?: string | undefined, directives?: Directive[] | undefined }): Promise<OperationStore<T>> {
     const queryStore = await _fetchQueryStore<T>(event, getUrl(event), params);
     const { subscribe, fetch } = queryStore;
 

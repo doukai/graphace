@@ -110,7 +110,7 @@
 <Table {zIndex} class={className}>
 	<thead>
 		<tr>
-			<th>
+			<th class="w-0">
 				<label>
 					<input
 						type="checkbox"
@@ -200,7 +200,7 @@
 					on:filter={(e) => dispatch('query', { args, orderBy })}
 				/>
 			{/if}
-			<th />
+			<th class="w-0" />
 		</tr>
 	</thead>
 	<tbody>
@@ -213,7 +213,7 @@
 		{:else if value && value.length > 0}
 			{#each value as node, row}
 				{#if node}
-					<tr>
+					<tr class="hover">
 						<th>
 							<label>
 								<input

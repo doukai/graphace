@@ -14,7 +14,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	// read language slug
 	const [, lang] = event.url.pathname.split('/');
-
 	// redirect to base locale if no locale slug was found
 	if (!lang) {
 		const locale = getPreferredLocale(event);
@@ -35,21 +34,13 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const { cookies, request } = event;
 	const token = cookies.get('Authorization');
 
-	const graphqlPathName = `/graphql`;
-	const loginPathName = `/${locale}/login`;
-	const registerPathName = `/${locale}/register`;
-	if (event.url.pathname === graphqlPathName || event.url.pathname === loginPathName || event.url.pathname === registerPathName) {
-		return await resolve(event, { transformPageChunk: ({ html }) => html.replace('%lang%', locale) });
-	} else if (!token) {
-		toLoginPage(loginPathName, event);
-	} else {
-		if (!event.locals.jwt && token) {
-			event.locals.jwt = jwt_decode(token.substring(7));
-		}
+	if (!event.locals.jwt && token) {
+		event.locals.jwt = jwt_decode(token.substring(7));
 	}
 
 	// replace html lang attribute with correct language
 	const response = await resolve(event, { transformPageChunk: ({ html }) => html.replace('%lang%', locale) });
+	const loginPathName = `/${locale}/login`;
 	if (response?.status === 401 && event.url.pathname !== loginPathName) {
 		if (request.headers.get('Content-Type')?.includes('application/json')) {
 			return json({ errors: [{ message: '-40100: unauthorized', extensions: { code: -40100 } }] }, { status: 401 });
