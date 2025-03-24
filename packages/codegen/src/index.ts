@@ -250,6 +250,26 @@ const renders: Record<Template, Render> = {
         console.error(config);
         throw new Error(`${config.name} undefined`);
     },
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}TableDialog.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const objectInfo = getObjectInfo(schema, config.name!)
+        if (objectInfo) {
+            const fields = objectInfo.fields
+                ?.filter(field => field.inList)
+                .filter(field => !field.isAggregate)
+                .filter(field => !field.isConnection);
+            const importInfo = getImportInfo(fields);
+            return {
+                content: buildFileContent(config.template, {
+                    ...objectInfo,
+                    fields,
+                    ...importInfo,
+                    ...config
+                }),
+            };
+        }
+        console.error(config);
+        throw new Error(`${config.name} undefined`);
+    },
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Select.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const objectInfo = getObjectInfo(schema, config.name!)
         if (objectInfo) {

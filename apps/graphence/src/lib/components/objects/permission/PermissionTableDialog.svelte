@@ -6,13 +6,13 @@
 	import type { PermissionsStore } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { to, Pagination, Dialog, toast } from '@graphace/ui';
-	import { createQuery_userConnection_Store } from '~/lib/stores/query/query_userConnection_store';
-	import UserTable from '~/lib/components/objects/user/UserTable.svelte';
+	import { createQuery_permissionConnection_Store } from '~/lib/stores/query/query_permissionConnection_store';
+	import PermissionTable from '~/lib/components/objects/permission/PermissionTable.svelte';
 	import { getLoadEvent } from '~/utils';
-	import type { QueryUserConnectionArgs, UserInput } from '~/lib/types/schema';
+	import type { QueryPermissionConnectionArgs, PermissionInput } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 
-	export let value: UserInput | (UserInput | null | undefined)[] | null | undefined = undefined;
+	export let value: PermissionInput | (PermissionInput | null | undefined)[] | null | undefined = undefined;
 	export let singleChoice: boolean | undefined = false;
 	export let zIndex: number | undefined = 0;
 	let className: string | undefined = 'p-1';
@@ -21,15 +21,15 @@
 
 	const dispatch = createEventDispatcher<{
 		select: {
-			value: UserInput | (UserInput | null | undefined)[] | null | undefined;
+			value: PermissionInput | (PermissionInput | null | undefined)[] | null | undefined;
 		};
 	}>();
 
-	const query_userConnection_Store = createQuery_userConnection_Store(getLoadEvent());
-	$: nodes = $query_userConnection_Store.response.data?.userConnection?.edges?.map(
+	const query_permissionConnection_Store = createQuery_permissionConnection_Store(getLoadEvent());
+	$: nodes = $query_permissionConnection_Store.response.data?.permissionConnection?.edges?.map(
 		(edge) => edge?.node
 	);
-	$: totalCount = $query_userConnection_Store.response.data?.userConnection?.totalCount || 0;
+	$: totalCount = $query_permissionConnection_Store.response.data?.permissionConnection?.totalCount || 0;
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
 	let selectedIdList: (string | null | undefined)[] | undefined = [];
@@ -49,8 +49,8 @@
 		selectedIdList = [value.where?.id?.val];
 	}
 
-	const query = (args: QueryUserConnectionArgs) => {
-		query_userConnection_Store.fetch(args).then((result) => {
+	const query = (args: QueryPermissionConnectionArgs) => {
+		query_permissionConnection_Store.fetch(args).then((result) => {
 			if (result.errors) {
 				console.error(result.errors);
 				toast.error($LL.graphence.message.requestFailed());
@@ -71,51 +71,38 @@
 			</button>
 		</div>
 	</svelte:fragment>
-	<UserTable
+	<PermissionTable
 		value={nodes}
 		{selectedIdList}
 		showEditButton={true}
 		showCreateButton={true}
 		showSelectButton={!singleChoice || selectedIdList?.length === 1}
-		isFetching={$query_userConnection_Store.isFetching}
+		isFetching={$query_permissionConnection_Store.isFetching}
 		fields={{
 			name: {
 				readonly: true,
 				disabled: true,
-				hidden: !permissions.auth('User::name::READ')
+				hidden: !permissions.auth('Permission::name::READ')
 			},
 			description: {
 				readonly: true,
 				disabled: true,
-				hidden: !permissions.auth('User::description::READ')
+				hidden: !permissions.auth('Permission::description::READ')
 			},
-			lastName: {
+			field: {
 				readonly: true,
 				disabled: true,
-				hidden: !permissions.auth('User::lastName::READ')
+				hidden: !permissions.auth('Permission::field::READ')
 			},
-			login: {
+			type: {
 				readonly: true,
 				disabled: true,
-				hidden: !permissions.auth('User::login::READ')
+				hidden: !permissions.auth('Permission::type::READ')
 			},
-			email: {
+			permissionType: {
 				readonly: true,
 				disabled: true,
-				hidden: !permissions.auth('User::email::READ')
-			},
-			phones: {
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('User::phones::READ')
-			},
-			disable: {
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('User::disable::READ')
-			},
-			groups: {
-				hidden: true
+				hidden: !permissions.auth('Permission::permissionType::READ')
 			},
 			roles: {
 				hidden: true
@@ -163,10 +150,10 @@
 		}}
 		on:edit={(e) => {
 			if (e.detail.value && !Array.isArray(e.detail.value)) {
-				to(`./user/${e.detail.value.id}`);
+				to(`./permission/${e.detail.value.id}`);
 			}
 		}}
-		on:create={(e) => to('./user/_')}
+		on:create={(e) => to('./permission/_')}
 	/>
 	<div class="divider" />
 	<Pagination

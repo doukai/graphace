@@ -6,13 +6,13 @@
 	import type { PermissionsStore } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { to, Pagination, Dialog, toast } from '@graphace/ui';
-	import { createQuery_userConnection_Store } from '~/lib/stores/query/query_userConnection_store';
-	import UserTable from '~/lib/components/objects/user/UserTable.svelte';
+	import { createQuery_roleConnection_Store } from '~/lib/stores/query/query_roleConnection_store';
+	import RoleTable from '~/lib/components/objects/role/RoleTable.svelte';
 	import { getLoadEvent } from '~/utils';
-	import type { QueryUserConnectionArgs, UserInput } from '~/lib/types/schema';
+	import type { QueryRoleConnectionArgs, RoleInput } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 
-	export let value: UserInput | (UserInput | null | undefined)[] | null | undefined = undefined;
+	export let value: RoleInput | (RoleInput | null | undefined)[] | null | undefined = undefined;
 	export let singleChoice: boolean | undefined = false;
 	export let zIndex: number | undefined = 0;
 	let className: string | undefined = 'p-1';
@@ -21,15 +21,15 @@
 
 	const dispatch = createEventDispatcher<{
 		select: {
-			value: UserInput | (UserInput | null | undefined)[] | null | undefined;
+			value: RoleInput | (RoleInput | null | undefined)[] | null | undefined;
 		};
 	}>();
 
-	const query_userConnection_Store = createQuery_userConnection_Store(getLoadEvent());
-	$: nodes = $query_userConnection_Store.response.data?.userConnection?.edges?.map(
+	const query_roleConnection_Store = createQuery_roleConnection_Store(getLoadEvent());
+	$: nodes = $query_roleConnection_Store.response.data?.roleConnection?.edges?.map(
 		(edge) => edge?.node
 	);
-	$: totalCount = $query_userConnection_Store.response.data?.userConnection?.totalCount || 0;
+	$: totalCount = $query_roleConnection_Store.response.data?.roleConnection?.totalCount || 0;
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
 	let selectedIdList: (string | null | undefined)[] | undefined = [];
@@ -49,8 +49,8 @@
 		selectedIdList = [value.where?.id?.val];
 	}
 
-	const query = (args: QueryUserConnectionArgs) => {
-		query_userConnection_Store.fetch(args).then((result) => {
+	const query = (args: QueryRoleConnectionArgs) => {
+		query_roleConnection_Store.fetch(args).then((result) => {
 			if (result.errors) {
 				console.error(result.errors);
 				toast.error($LL.graphence.message.requestFailed());
@@ -71,53 +71,34 @@
 			</button>
 		</div>
 	</svelte:fragment>
-	<UserTable
+	<RoleTable
 		value={nodes}
 		{selectedIdList}
 		showEditButton={true}
 		showCreateButton={true}
 		showSelectButton={!singleChoice || selectedIdList?.length === 1}
-		isFetching={$query_userConnection_Store.isFetching}
+		isFetching={$query_roleConnection_Store.isFetching}
 		fields={{
 			name: {
 				readonly: true,
 				disabled: true,
-				hidden: !permissions.auth('User::name::READ')
+				hidden: !permissions.auth('Role::name::READ')
 			},
 			description: {
 				readonly: true,
 				disabled: true,
-				hidden: !permissions.auth('User::description::READ')
+				hidden: !permissions.auth('Role::description::READ')
 			},
-			lastName: {
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('User::lastName::READ')
-			},
-			login: {
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('User::login::READ')
-			},
-			email: {
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('User::email::READ')
-			},
-			phones: {
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('User::phones::READ')
-			},
-			disable: {
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('User::disable::READ')
+			users: {
+				hidden: true
 			},
 			groups: {
 				hidden: true
 			},
-			roles: {
+			composites: {
+				hidden: true
+			},
+			permissions: {
 				hidden: true
 			},
 			realm: {
@@ -163,10 +144,10 @@
 		}}
 		on:edit={(e) => {
 			if (e.detail.value && !Array.isArray(e.detail.value)) {
-				to(`./user/${e.detail.value.id}`);
+				to(`./role/${e.detail.value.id}`);
 			}
 		}}
-		on:create={(e) => to('./user/_')}
+		on:create={(e) => to('./role/_')}
 	/>
 	<div class="divider" />
 	<Pagination

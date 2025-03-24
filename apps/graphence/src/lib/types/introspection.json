@@ -95122,9 +95122,9 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
+          "FRAGMENT_SPREAD",
           "FIELD",
-          "INLINE_FRAGMENT",
-          "FRAGMENT_SPREAD"
+          "INLINE_FRAGMENT"
         ],
         "args": [
           {
@@ -95181,11 +95181,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD_DEFINITION",
-          "SUBSCRIPTION",
-          "INPUT_OBJECT",
           "QUERY",
-          "MUTATION"
+          "FIELD_DEFINITION",
+          "INPUT_OBJECT",
+          "MUTATION",
+          "SUBSCRIPTION"
         ],
         "args": [
           {
@@ -95271,11 +95271,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD_DEFINITION",
-          "SUBSCRIPTION",
-          "INPUT_OBJECT",
           "QUERY",
-          "MUTATION"
+          "FIELD_DEFINITION",
+          "INPUT_OBJECT",
+          "MUTATION",
+          "SUBSCRIPTION"
         ],
         "args": [
           {
@@ -95313,10 +95313,10 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
+          "INPUT_FIELD_DEFINITION",
           "FIELD_DEFINITION",
           "INPUT_OBJECT",
-          "OBJECT",
-          "INPUT_FIELD_DEFINITION"
+          "OBJECT"
         ],
         "args": [
           {
@@ -95876,11 +95876,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD_DEFINITION",
-          "SUBSCRIPTION",
-          "OBJECT",
           "QUERY",
-          "MUTATION"
+          "FIELD_DEFINITION",
+          "MUTATION",
+          "OBJECT",
+          "SUBSCRIPTION"
         ],
         "args": [
           {
@@ -95980,9 +95980,9 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
+          "FRAGMENT_SPREAD",
           "FIELD",
-          "INLINE_FRAGMENT",
-          "FRAGMENT_SPREAD"
+          "INLINE_FRAGMENT"
         ],
         "args": [
           {

@@ -5,21 +5,18 @@
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Loading, SearchInput, Table } from '@graphace/ui';
-	import {
-		type Option,
-		StringTh,
-		StringTd,
-		BooleanTh,
-		BooleanTd,
-		ObjectTd
-	} from '@graphace/ui-graphql';
+	import { type Option, StringTh, StringTd, BooleanTh, BooleanTd, ObjectTd } from '@graphace/ui-graphql';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
 	import GroupSelectTd from '~/lib/components/objects/group/GroupSelectTd.svelte';
 	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	import type { UserOrderBy, QueryUserListArgs, UserInput } from '~/lib/types/schema';
+	import type {
+		UserOrderBy,
+		QueryUserListArgs,
+		UserInput
+	} from '~/lib/types/schema';
 
 	export let value: (UserInput | null | undefined)[] | null | undefined = undefined;
 	export let args: QueryUserListArgs = {};
@@ -34,7 +31,6 @@
 	export let showCreateButton: boolean = false;
 	export let showSelectButton: boolean = false;
 	export let showBackButton: boolean = false;
-	export let showSearchInput: boolean = false;
 	export let zIndex: number = 0;
 	let className: string | undefined = undefined;
 	export { className as class };

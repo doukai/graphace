@@ -3,33 +3,38 @@
 	import { melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ListBullet } from '@steeze-ui/heroicons';
+	{%- if useAuth %}
 	import type { PermissionsStore } from '@graphace/commons';
+	{%- endif %}
 	import { buildArguments } from '@graphace/graphql';
 	import { to, Pagination, Dialog, toast } from '@graphace/ui';
-	import { createQuery_userConnection_Store } from '~/lib/stores/query/query_userConnection_store';
-	import UserTable from '~/lib/components/objects/user/UserTable.svelte';
+	import { createQuery_{{ name | camelCase }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}Connection_store';
+	import {{ name }}Table from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Table.svelte';
 	import { getLoadEvent } from '~/utils';
-	import type { QueryUserConnectionArgs, UserInput } from '~/lib/types/schema';
+	import type { {{ queryTypeName }}{{ name }}ConnectionArgs, {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	import LL from '$i18n/i18n-svelte';
 
-	export let value: UserInput | (UserInput | null | undefined)[] | null | undefined = undefined;
+	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
 	export let singleChoice: boolean | undefined = false;
 	export let zIndex: number | undefined = 0;
 	let className: string | undefined = 'p-1';
 	export { className as class };
+
+	{%- if useAuth %}
 	const permissions = getContext<PermissionsStore>('permissions');
+	{%- endif %}
 
 	const dispatch = createEventDispatcher<{
 		select: {
-			value: UserInput | (UserInput | null | undefined)[] | null | undefined;
+			value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined;
 		};
 	}>();
 
-	const query_userConnection_Store = createQuery_userConnection_Store(getLoadEvent());
-	$: nodes = $query_userConnection_Store.response.data?.userConnection?.edges?.map(
+	const query_{{ name | camelCase }}Connection_Store = createQuery_{{ name | camelCase }}Connection_Store(getLoadEvent());
+	$: nodes = $query_{{ name | camelCase }}Connection_Store.response.data?.{{ name | camelCase }}Connection?.edges?.map(
 		(edge) => edge?.node
 	);
-	$: totalCount = $query_userConnection_Store.response.data?.userConnection?.totalCount || 0;
+	$: totalCount = $query_{{ name | camelCase }}Connection_Store.response.data?.{{ name | camelCase }}Connection?.totalCount || 0;
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
 	let selectedIdList: (string | null | undefined)[] | undefined = [];
@@ -49,8 +54,8 @@
 		selectedIdList = [value.where?.id?.val];
 	}
 
-	const query = (args: QueryUserConnectionArgs) => {
-		query_userConnection_Store.fetch(args).then((result) => {
+	const query = (args: {{ queryTypeName }}{{ name }}ConnectionArgs) => {
+		query_{{ name | camelCase }}Connection_Store.fetch(args).then((result) => {
 			if (result.errors) {
 				console.error(result.errors);
 				toast.error($LL.graphence.message.requestFailed());
@@ -71,59 +76,26 @@
 			</button>
 		</div>
 	</svelte:fragment>
-	<UserTable
+	<{{ name }}Table
 		value={nodes}
 		{selectedIdList}
 		showEditButton={true}
 		showCreateButton={true}
 		showSelectButton={!singleChoice || selectedIdList?.length === 1}
-		isFetching={$query_userConnection_Store.isFetching}
-		fields={{
-			name: {
+		isFetching={$query_{{ name | camelCase }}Connection_Store.isFetching}
+		fields={% raw %}{{{% endraw %}
+			{%- for field in fields %}
+			{{ field.fieldName }}: {
+				{%- if field.isLeafType %}
 				readonly: true,
 				disabled: true,
-				hidden: !permissions.auth('User::name::READ')
-			},
-			description: {
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('User::description::READ')
-			},
-			lastName: {
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('User::lastName::READ')
-			},
-			login: {
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('User::login::READ')
-			},
-			email: {
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('User::email::READ')
-			},
-			phones: {
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('User::phones::READ')
-			},
-			disable: {
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('User::disable::READ')
-			},
-			groups: {
+				hidden: !permissions.auth('{{ name }}::{{ field.fieldName }}::READ')
+   				{%- else %}
 				hidden: true
-			},
-			roles: {
-				hidden: true
-			},
-			realm: {
-				hidden: true
-			}
-		}}
+    			{%- endif %}
+			}{% if forloop.last == false %},{% endif %}
+			{%- endfor %}
+		{% raw %}}}{% endraw %}
 		on:select={(e) => {
 			if (Array.isArray(e.detail.value)) {
 				if (singleChoice) {
@@ -136,7 +108,7 @@
 			}
 			dispatch('select', { value });
 			close();
-		}}
+		{% raw %}}}{% endraw %}
 		on:search={(e) => {
 			if (e.detail.value) {
 				query({
@@ -153,20 +125,20 @@
 			} else {
 				query({ first: pageSize, offset: 0 });
 			}
-		}}
+		{% raw %}}}{% endraw %}
 		on:query={(e) => {
 			e.detail.args = buildArguments(e.detail.args);
 			if (Object.keys(e.detail.orderBy).length > 0) {
 				e.detail.args.orderBy = e.detail.orderBy;
 			}
 			query(e.detail.args);
-		}}
+		{% raw %}}}{% endraw %}
 		on:edit={(e) => {
 			if (e.detail.value && !Array.isArray(e.detail.value)) {
-				to(`./user/${e.detail.value.id}`);
+				to(`./{{ name | camelCase }}/${e.detail.value.id}`);
 			}
-		}}
-		on:create={(e) => to('./user/_')}
+		{% raw %}}}{% endraw %}
+		on:create={(e) => to('./{{ name | camelCase }}/_')}
 	/>
 	<div class="divider" />
 	<Pagination
