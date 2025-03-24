@@ -6,7 +6,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { Td } from '@graphace/ui';
+	import { type Option, Td } from '@graphace/ui';
 	import UserSelect from './UserSelect.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { UserInput } from '~/lib/types/schema';
@@ -28,6 +28,17 @@
 	const dispatch = createEventDispatcher<{
 		save: {};
 	}>();
+
+	let selected: Option | Option[] | undefined;
+
+	if (Array.isArray(value)) {
+		selected = value?.map((item) => ({
+			label: item?.name,
+			value: item?.id
+		}));
+	} else if (value) {
+		selected = { label: value.name, value: value.id };
+	}
 
 	let mutation = (): void => {
 		dispatch('save', {});
@@ -53,27 +64,26 @@
 	});
 </script>
 
-
 <Td {errors} {zIndex}>
 	<a class="link inline-flex" href={null} use:melt={$trigger}>
 		{#if list}
-			{#if Array.isArray(value)}
-				{#if value.length > 3}
-					{value
-						.map((item) => item?.name)
+			{#if Array.isArray(selected)}
+				{#if selected.length > 3}
+					{selected
+						.map((item) => item?.label)
 						.slice(0, 3)
 						.join(',')
 						.concat('...')}
-				{:else if value.length > 0}
-					{value.map((item) => item?.name).join(',')}
+				{:else if selected.length > 0}
+					{selected.map((item) => item?.label).join(',')}
 				{:else}
 					<Icon src={Minus} class="h-5 w-5" />
 				{/if}
 			{:else}
 				<Icon src={Minus} class="h-5 w-5" />
 			{/if}
-		{:else if value}
-			{value.name}
+		{:else if selected}
+			{selected.label}
 		{:else}
 			<Icon src={Minus} class="h-5 w-5" />
 		{/if}
@@ -92,6 +102,7 @@
 				{readonly}
 				{placeholder}
 				bind:value
+				bind:selected
 				where={true}
 			/>
 			<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.td.save()}>

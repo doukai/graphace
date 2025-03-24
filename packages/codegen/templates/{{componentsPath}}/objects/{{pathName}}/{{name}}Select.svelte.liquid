@@ -8,6 +8,7 @@
 	export let id: string | undefined = undefined;
 	export let name: string | undefined = undefined;
 	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
+	export let selected: Option | Option[] | undefined = undefined;
 	export let where = false;
 	export let val: string | null | undefined = undefined;
 	export let arr: (string | null | undefined)[] | null | undefined = [];
@@ -38,17 +39,28 @@
 
 	$: loading = $namedQueryStore.isFetching;
 
-	let selected: Option | Option[] | undefined;
-
 	if (Array.isArray(value)) {
-		selected = value?.map((item) => ({
-			label: item?.name,
-			value: item?.{{ idName }}
-		}));
+		namedQueryStore
+			.fetch(query, {
+				id: { opr: 'IN', arr: value?.map((item) => item?.{{ idName }} || item?.where?.{{ idName }}?.val) }
+			})
+			.then(
+				(response) =>
+					(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
+						label: item?.name,
+						value: item?.id
+					})))
+			);
 	} else if (value) {
-		selected = { label: value.name, value: value.{{ idName }} };
+		namedQueryStore.fetch(query, { id: { opr: 'EQ', val: value.{{ idName }} || value.where?.{{ idName }}?.val } }).then(
+			(response) =>
+				(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
+					label: item?.name,
+					value: item?.id
+				}))?.[0])
+		);
 	} else if (val) {
-		namedQueryStore.fetch(query, { {{ idName }}: { opr: 'EQ', val } }).then(
+		namedQueryStore.fetch(query, { id: { opr: 'EQ', val } }).then(
 			(response) =>
 				(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
 					label: item?.name,
@@ -56,7 +68,7 @@
 				}))?.[0])
 		);
 	} else if (arr && arr.length > 0) {
-		namedQueryStore.fetch(query, { {{ idName }}: { opr: 'IN', arr } }).then(
+		namedQueryStore.fetch(query, { id: { opr: 'IN', arr } }).then(
 			(response) =>
 				(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
 					label: item?.name,
@@ -66,9 +78,9 @@
 	}
 
 	if (where) {
-		if (Array.isArray(value)) {
+		if (Array.isArray(value) && value.some((item) => !item?.where)) {
 			value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
-		} else if (value) {
+		} else if (value && !Array.isArray(value) && !value.where) {
 			value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
 		}
 	}

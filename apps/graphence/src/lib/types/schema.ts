@@ -10517,15 +10517,12 @@ export type SubscriptionPermissionRoleRelationConnectionArgs = {
 };
 
 export type TreeStruct = {
-  id?: Maybe<Scalars['ID']>;
   parentId?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
 };
 
 /** Query Expression Input for TreeStruct */
 export type TreeStructExpression = {
-  /** id */
-  id?: InputMaybe<StringExpression>;
   /** parentId */
   parentId?: InputMaybe<StringExpression>;
   /** name */
@@ -10554,8 +10551,6 @@ export type TreeStructExpression = {
 
 /** Mutation Input for TreeStruct */
 export type TreeStructInput = {
-  /** id */
-  id?: InputMaybe<Scalars['ID']>;
   /** parentId */
   parentId?: InputMaybe<Scalars['String']>;
   /** name */

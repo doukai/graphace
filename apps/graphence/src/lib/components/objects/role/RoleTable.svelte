@@ -4,7 +4,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { Buttons, Empty, Loading, SearchInput, Table } from '@graphace/ui';
+	import { Buttons, Empty, Loading, SearchInput, Table, Td } from '@graphace/ui';
 	import { type Option, StringTh, StringTd, ObjectTd } from '@graphace/ui-graphql';
 	import UserTh from '~/lib/components/objects/user/UserTh.svelte';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
@@ -14,11 +14,8 @@
 	import GroupSelectTd from '~/lib/components/objects/group/GroupSelectTd.svelte';
 	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	import type {
-		RoleOrderBy,
-		QueryRoleListArgs,
-		RoleInput
-	} from '~/lib/types/schema';
+	import type { RoleOrderBy, QueryRoleListArgs, RoleInput } from '~/lib/types/schema';
+	import UserTableDialog from '../user/UserTableDialog.svelte';
 
 	export let value: (RoleInput | null | undefined)[] | null | undefined = undefined;
 	export let args: QueryRoleListArgs = {};
@@ -229,13 +226,16 @@
 						</slot>
 						<slot name="users">
 							{#if !fields.users.hidden}
-								<ObjectTd
+								<!-- <ObjectTd
 									namedStruct={node.users}
 									errors={errors?.[row]?.iterms?.users}
 									path={`${node.id}/users`}
 									on:goto
 									{zIndex}
-								/>
+								/> -->
+								<Td>
+									<UserTableDialog {zIndex} class="btn-xs" bind:value={node.users} />
+								</Td>
 							{/if}
 						</slot>
 						<slot name="groups">

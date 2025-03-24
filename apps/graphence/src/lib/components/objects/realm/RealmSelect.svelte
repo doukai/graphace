@@ -8,6 +8,7 @@
 	export let id: string | undefined = undefined;
 	export let name: string | undefined = undefined;
 	export let value: RealmInput | (RealmInput | null | undefined)[] | null | undefined = undefined;
+	export let selected: Option | Option[] | undefined = undefined;
 	export let where = false;
 	export let val: string | null | undefined = undefined;
 	export let arr: (string | null | undefined)[] | null | undefined = [];
@@ -38,15 +39,26 @@
 
 	$: loading = $namedQueryStore.isFetching;
 
-	let selected: Option | Option[] | undefined;
-
 	if (Array.isArray(value)) {
-		selected = value?.map((item) => ({
-			label: item?.name,
-			value: item?.id
-		}));
+		namedQueryStore
+			.fetch(query, {
+				id: { opr: 'IN', arr: value?.map((item) => item?.id || item?.where?.id?.val) }
+			})
+			.then(
+				(response) =>
+					(selected = response.data?.realmList?.map((item) => ({
+						label: item?.name,
+						value: item?.id
+					})))
+			);
 	} else if (value) {
-		selected = { label: value.name, value: value.id };
+		namedQueryStore.fetch(query, { id: { opr: 'EQ', val: value.id || value.where?.id?.val } }).then(
+			(response) =>
+				(selected = response.data?.realmList?.map((item) => ({
+					label: item?.name,
+					value: item?.id
+				}))?.[0])
+		);
 	} else if (val) {
 		namedQueryStore.fetch(query, { id: { opr: 'EQ', val } }).then(
 			(response) =>
@@ -66,9 +78,9 @@
 	}
 
 	if (where) {
-		if (Array.isArray(value)) {
+		if (Array.isArray(value) && value.some((item) => !item?.where)) {
 			value = value.map((item) => ({ where: { id: { val: item?.id } } }));
-		} else if (value) {
+		} else if (value && !Array.isArray(value) && !value.where) {
 			value = { where: { id: { val: value.id } } };
 		}
 	}

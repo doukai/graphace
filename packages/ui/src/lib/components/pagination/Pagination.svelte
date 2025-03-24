@@ -44,7 +44,7 @@
 
 <div class="hidden md:flex md:justify-between">
 	<slot {pageSize} {totalCount}>
-		<PaginationSizer {pageSize} {pageSizeOptions} on:sizeChange />
+		<PaginationSizer bind:pageSize {pageSizeOptions} on:sizeChange />
 		<PaginationCounter {totalCount} />
 	</slot>
 	<div class="join" use:melt={$root}>
