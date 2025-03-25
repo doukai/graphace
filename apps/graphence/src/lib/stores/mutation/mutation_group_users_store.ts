@@ -29,12 +29,12 @@ const query = /* GraphQL */ `mutation Mutation_group_users($group_id: String, $g
       email
       phones
       disable
-      groups {
+      groups(first: 3) {
         id
         name
         description
       }
-      roles {
+      roles(first: 3) {
         id
         name
         description

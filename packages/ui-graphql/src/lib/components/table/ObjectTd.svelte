@@ -4,7 +4,8 @@
 	import ObjectLink from '../input/ObjectLink.svelte';
 	import { Td } from '@graphace/ui';
 
-	export let path: { path: string; name: string } | { path: string; name: string }[];
+	export let path: string;
+	export let name: string;
 	export let namedStruct: NamedStruct | (NamedStruct | null | undefined)[] | null | undefined =
 		undefined;
 	export let errors: Errors | undefined = undefined;
@@ -14,5 +15,5 @@
 </script>
 
 <Td {errors} {zIndex}>
-	<ObjectLink {path} {namedStruct} {errors} class={className} {zIndex} on:goto />
+	<ObjectLink {path} {name} {namedStruct} {errors} class={className} {zIndex} on:goto />
 </Td>

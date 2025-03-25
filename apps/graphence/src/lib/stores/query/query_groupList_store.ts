@@ -17,17 +17,17 @@ const query = /* GraphQL */ `query Query_groupList($id: StringExpression, $name:
       name
       description
     }
-    subGroups {
+    subGroups(first: 3) {
       id
       name
       description
     }
-    users {
+    users(first: 3) {
       id
       name
       description
     }
-    roles {
+    roles(first: 3) {
       id
       name
       description

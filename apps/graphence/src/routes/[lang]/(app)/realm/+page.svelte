@@ -123,7 +123,7 @@
 			}}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`./realm/${e.detail.value.id}`);
+					to(`realm/${e.detail.value.id}`, e.detail.value.name);
 				}
 			}}
 			on:remove={(e) => {
@@ -147,13 +147,8 @@
 					});
 				}
 			}}
-			on:create={(e) => to('./realm/_')}
-			on:goto={(e) => {
-				if (Array.isArray(e.detail.path)) {
-					add(`./realm/${e.detail.path[0].path}`, e.detail.path[0].name);
-					to(`./realm/${e.detail.path[1].path}`, e.detail.path[1].name);
-				}
-			}}
+			on:create={(e) => to('realm/_', '_')}
+			on:goto={(e) => to(`realm/${e.detail.path}`, e.detail.name)}
 		/>
 		<div class="divider" />
 		<Pagination

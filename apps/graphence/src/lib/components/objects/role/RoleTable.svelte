@@ -11,9 +11,9 @@
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import PermissionTh from '~/lib/components/objects/permission/PermissionTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
-	import GroupSelectTd from '~/lib/components/objects/group/GroupSelectTd.svelte';
-	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
 	import UserTableDialog from '~/lib/components/objects/user/UserTableDialog.svelte';
+	import GroupTableDialog from '~/lib/components/objects/group/GroupTableDialog.svelte';
+	import RoleTableDialog from '~/lib/components/objects/role/RoleTableDialog.svelte';
 	import PermissionTableDialog from '~/lib/components/objects/permission/PermissionTableDialog.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
@@ -237,16 +237,8 @@
 										namedStruct={node.users}
 										errors={errors?.[row]?.iterms?.users}
 										disabled={fields.users.disabled}
-										path={[
-											{
-												path: node.id,
-												name: node.name
-											},
-											{
-												path: `${node.id}/users`,
-												name: $LL.graphql.objects.Role.fields.users.name()
-											}
-										]}
+										path={`${node.id}/users`}
+										name={node.name + ':' + $LL.graphql.objects.Role.fields.users.name()}
 										on:goto
 										{zIndex}
 									/>
@@ -268,36 +260,58 @@
 						</slot>
 						<slot name="groups">
 							{#if !fields.groups.hidden}
-								<GroupSelectTd
-									name="groups"
-									bind:value={node.groups}
-									list
-									errors={errors?.[row]?.iterms?.groups}
-									readonly={fields.groups.readonly}
-									disabled={fields.groups.disabled}
-									on:save={(e) =>
-										dispatch('save', {
-											value: { groups: node?.groups, where: { id: { val: node?.id } } }
-										})}
-									{zIndex}
-								/>
+								{#if node.id}
+									<ObjectTd
+										namedStruct={node.groups}
+										errors={errors?.[row]?.iterms?.groups}
+										disabled={fields.groups.disabled}
+										path={`${node.id}/groups`}
+										name={node.name + ':' + $LL.graphql.objects.Role.fields.groups.name()}
+										on:goto
+										{zIndex}
+									/>
+								{:else}
+									<Td {zIndex}>
+										<GroupTableDialog
+											bind:value={node.groups}
+											readonly={fields.groups.readonly}
+											disabled={fields.groups.disabled}
+											on:select={(e) =>
+												dispatch('save', {
+													value: { groups: node?.groups, where: { id: { val: node?.id } } }
+												})}
+											class="btn-xs"
+										/>
+									</Td>
+								{/if}
 							{/if}
 						</slot>
 						<slot name="composites">
 							{#if !fields.composites.hidden}
-								<RoleSelectTd
-									name="composites"
-									bind:value={node.composites}
-									list
-									errors={errors?.[row]?.iterms?.composites}
-									readonly={fields.composites.readonly}
-									disabled={fields.composites.disabled}
-									on:save={(e) =>
-										dispatch('save', {
-											value: { composites: node?.composites, where: { id: { val: node?.id } } }
-										})}
-									{zIndex}
-								/>
+								{#if node.id}
+									<ObjectTd
+										namedStruct={node.composites}
+										errors={errors?.[row]?.iterms?.composites}
+										disabled={fields.composites.disabled}
+										path={`${node.id}/composites`}
+										name={node.name + ':' + $LL.graphql.objects.Role.fields.composites.name()}
+										on:goto
+										{zIndex}
+									/>
+								{:else}
+									<Td {zIndex}>
+										<RoleTableDialog
+											bind:value={node.composites}
+											readonly={fields.composites.readonly}
+											disabled={fields.composites.disabled}
+											on:select={(e) =>
+												dispatch('save', {
+													value: { composites: node?.composites, where: { id: { val: node?.id } } }
+												})}
+											class="btn-xs"
+										/>
+									</Td>
+								{/if}
 							{/if}
 						</slot>
 						<slot name="permissions">
@@ -306,16 +320,8 @@
 									<ObjectTd
 										errors={errors?.[row]?.iterms?.permissions}
 										disabled={fields.permissions.disabled}
-										path={[
-											{
-												path: node.id,
-												name: node.name
-											},
-											{
-												path: `${node.id}/permissions`,
-												name: $LL.graphql.objects.Role.fields.permissions.name()
-											}
-										]}
+										path={`${node.id}/permissions`}
+										name={node.name + ':' + $LL.graphql.objects.Role.fields.permissions.name()}
 										on:goto
 										{zIndex}
 									/>
@@ -342,16 +348,8 @@
 										namedStruct={node.realm}
 										errors={errors?.[row]?.iterms?.realm}
 										disabled={fields.realm.disabled}
-										path={[
-											{
-												path: node.id,
-												name: node.name
-											},
-											{
-												path: `${node.id}/realm`,
-												name: $LL.graphql.objects.Role.fields.realm.name()
-											}
-										]}
+										path={`${node.id}/realm`}
+										name={node.name + ':' + $LL.graphql.objects.Role.fields.realm.name()}
 										on:goto
 										{zIndex}
 									/>

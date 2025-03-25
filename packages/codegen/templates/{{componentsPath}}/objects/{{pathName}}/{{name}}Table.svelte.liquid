@@ -220,16 +220,8 @@
 										{%- endif %}
 										errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
 										disabled={fields.{{ field.fieldName }}.disabled}
-										path={[
-											{
-												path: node.{{ idName }},
-												name: node.{% if isNamed %}name{% else %}{{ idName }}{% endif %}
-											},
-											{
-												path: `${node.{{ idName }}}/{{ field.fieldName | paramCase }}`,
-												name: $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()
-											}
-										]}
+										path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`}
+										name={node.{% if isNamed %}name{% else %}{{ idName }}{% endif %} + ':' + $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 										on:goto
 										{zIndex}
 									/>

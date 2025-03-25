@@ -31,12 +31,12 @@ const query = /* GraphQL */ `mutation Mutation_user_roles($user_id: String, $use
         name
         description
       }
-      groups {
+      groups(first: 3) {
         id
         name
         description
       }
-      composites {
+      composites(first: 3) {
         id
         name
         description

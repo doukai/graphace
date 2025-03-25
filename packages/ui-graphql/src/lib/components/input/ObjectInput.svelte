@@ -4,7 +4,8 @@
 	import ObjectLink from './ObjectLink.svelte';
 
 	export let id: string | undefined = undefined;
-	export let path: { path: string; name: string } | { path: string; name: string }[];
+	export let path: string;
+	export let name: string;
 	export let namedStruct: NamedStruct | (NamedStruct | null | undefined)[] | null | undefined =
 		undefined;
 	export let errors: Errors | undefined = undefined;
@@ -13,7 +14,7 @@
 	export { className as class };
 </script>
 
-<ObjectLink {path} {namedStruct} {errors} {disabled} class={className} on:goto />
+<ObjectLink {path} {name} {namedStruct} {errors} {disabled} class={className} on:goto />
 {#if errors}
 	<label for={id} class="label">
 		{#each (errors?.errors || [])

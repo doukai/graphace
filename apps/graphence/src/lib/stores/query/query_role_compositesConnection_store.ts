@@ -28,12 +28,12 @@ const query = /* GraphQL */ `query Query_role_compositesConnection($role_id: Str
             name
             description
           }
-          groups {
+          groups(first: 3) {
             id
             name
             description
           }
-          composites {
+          composites(first: 3) {
             id
             name
             description

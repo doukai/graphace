@@ -7,8 +7,6 @@
 	import { Form, FormControl, Label } from '@graphace/ui';
 	import { StringFilter, BooleanFilter } from '@graphace/ui-graphql';
 	import UserSelectFilter from '~/lib/components/objects/user/UserSelectFilter.svelte';
-	import GroupSelectFilter from '~/lib/components/objects/group/GroupSelectFilter.svelte';
-	import RoleSelectFilter from '~/lib/components/objects/role/RoleSelectFilter.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { UserExpression } from '~/lib/types/schema';
 
@@ -34,8 +32,6 @@
 			email: undefined,
 			phones: undefined,
 			disable: undefined,
-			groups: { id: undefined },
-			roles: { id: undefined },
 		}
 	}
 
@@ -53,8 +49,6 @@
 			email: undefined,
 			phones: undefined,
 			disable: undefined,
-			groups: { id: undefined },
-			roles: { id: undefined },
 		};
 		dispatch('filter', {});
 		$open = false;
@@ -108,14 +102,6 @@
 				<Label {id} text={$LL.graphql.objects.User.fields.disable.name()} />
 				<div class="grid grid-cols-2 gap-1">
 					<BooleanFilter {id} name="disable" bind:value={value.disable} />
-				</div>
-				<Label {id} text={$LL.graphql.objects.User.fields.groups.name()} />
-				<div class="grid grid-cols-2 gap-1">
-					<GroupSelectFilter {id} name="groups" bind:value={value.groups.id} />
-				</div>
-				<Label {id} text={$LL.graphql.objects.User.fields.roles.name()} />
-				<div class="grid grid-cols-2 gap-1">
-					<RoleSelectFilter {id} name="roles" bind:value={value.roles.id} />
 				</div>
 			</FormControl>
 		</Form>

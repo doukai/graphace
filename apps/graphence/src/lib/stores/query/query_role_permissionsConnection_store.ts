@@ -25,7 +25,7 @@ const query = /* GraphQL */ `query Query_role_permissionsConnection($role_id: St
           field
           type
           permissionType
-          roles {
+          roles(first: 3) {
             id
             name
             description

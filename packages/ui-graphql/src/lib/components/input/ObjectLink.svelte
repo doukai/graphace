@@ -8,7 +8,8 @@
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 
 	export let id: string | undefined = undefined;
-	export let path: { path: string; name: string } | { path: string; name: string }[];
+	export let path: string;
+	export let name: string;
 	export let namedStruct: NamedStruct | (NamedStruct | null | undefined)[] | null | undefined =
 		undefined;
 	export let errors: Errors | undefined = undefined;
@@ -23,7 +24,7 @@
 	namedStruct = undefined;
 
 	const dispatch = createEventDispatcher<{
-		goto: { path: { path: string; name: string } | { path: string; name: string }[] };
+		goto: { path: string; name: string };
 	}>();
 </script>
 
@@ -34,7 +35,7 @@
 			class="link {errors ? 'link-error' : ''}"
 			href={null}
 			on:click|preventDefault={(e) => {
-				dispatch('goto', { path });
+				dispatch('goto', { path, name });
 			}}
 		>
 			{#if _namedStruct && _namedStruct.length > 3}
@@ -53,7 +54,7 @@
 			class="link {errors ? 'link-error' : ''}"
 			href={null}
 			on:click|preventDefault={(e) => {
-				dispatch('goto', { path });
+				dispatch('goto', { path, name });
 			}}
 		>
 			{_namedStruct.name}
@@ -65,7 +66,7 @@
 				{disabled}
 				class="btn btn-square btn-outline {errors ? 'btn-error' : ''} {className}"
 				on:click|preventDefault={(e) => {
-					dispatch('goto', { path });
+					dispatch('goto', { path, name });
 				}}
 			>
 				<Icon src={Link} class="h-5 w-5" />

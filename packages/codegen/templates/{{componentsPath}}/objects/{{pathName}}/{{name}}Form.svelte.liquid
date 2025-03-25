@@ -112,10 +112,8 @@
 							{%- endif %}
 							errors={errors.{{ field.fieldName }}}
 							disabled={fields.{{ field.fieldName }}.disabled}
-							path={% raw %}{{{% endraw %}
-								path: '{{ field.fieldName | paramCase }}',
-								name: $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()
-							{% raw %}}}{% endraw %}
+							path={`${value.{{ idName }}}/{{ field.fieldName | paramCase }}`}
+							name={value.{% if isNamed %}name{% else %}{{ idName }}{% endif %} + ':' + $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 							on:goto
 						/>
 					{:else}

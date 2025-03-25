@@ -29,17 +29,17 @@ const query = /* GraphQL */ `mutation Mutation_role_groups($role_id: String, $ro
         name
         description
       }
-      subGroups {
+      subGroups(first: 3) {
         id
         name
         description
       }
-      users {
+      users(first: 3) {
         id
         name
         description
       }
-      roles {
+      roles(first: 3) {
         id
         name
         description

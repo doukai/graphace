@@ -30,12 +30,12 @@ const query = /* GraphQL */ `query Query_permission_rolesConnection($permission_
             name
             description
           }
-          groups {
+          groups(first: 3) {
             id
             name
             description
           }
-          composites {
+          composites(first: 3) {
             id
             name
             description

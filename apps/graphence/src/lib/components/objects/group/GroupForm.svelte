@@ -4,9 +4,9 @@
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Form, FormControl, Label, Loading } from '@graphace/ui';
 	import { type Option, StringInput, IntInput, ObjectInput } from '@graphace/ui-graphql';
-	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
-	import UserSelect from '~/lib/components/objects/user/UserSelect.svelte';
-	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
+	import GroupTableDialog from '~/lib/components/objects/group/GroupTableDialog.svelte';
+	import UserTableDialog from '~/lib/components/objects/user/UserTableDialog.svelte';
+	import RoleTableDialog from '~/lib/components/objects/role/RoleTableDialog.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { GroupInput } from '~/lib/types/schema';
@@ -157,15 +157,23 @@
 			{#if !fields.parent.hidden}
 				<FormControl let:id>
 					<Label {id} text={$LL.graphql.objects.Group.fields.parent.name()} />
-					<GroupSelect
-					 	{id}
-						name="parent"
-						errors={errors.parent}
-						bind:value={value.parent}
-						where={true}
-						readonly={fields.parent.readonly}
-						disabled={fields.parent.disabled}
-					/>
+					{#if value.id}
+						<ObjectInput
+							namedStruct={value.parent}
+							errors={errors.parent}
+							disabled={fields.parent.disabled}
+							path={`${value.id}/parent`}
+							name={value.name + ':' + $LL.graphql.objects.Group.fields.parent.name()}
+							on:goto
+						/>
+					{:else}
+						<GroupTableDialog
+							bind:value={value.parent}
+							singleChoice={true}
+							readonly={fields.parent.readonly}
+							disabled={fields.parent.disabled}
+						/>
+					{/if}
 				</FormControl>
 			{/if}
 		</slot>
@@ -173,16 +181,22 @@
 			{#if !fields.subGroups.hidden}
 				<FormControl let:id>
 					<Label {id} text={$LL.graphql.objects.Group.fields.subGroups.name()} />
-					<GroupSelect
-					 	{id}
-						name="subGroups"
-						errors={errors.subGroups}
-						bind:value={value.subGroups}
-						where={true}
-						readonly={fields.subGroups.readonly}
-						disabled={fields.subGroups.disabled}
-						list
-					/>
+					{#if value.id}
+						<ObjectInput
+							namedStruct={value.subGroups}
+							errors={errors.subGroups}
+							disabled={fields.subGroups.disabled}
+							path={`${value.id}/sub-groups`}
+							name={value.name + ':' + $LL.graphql.objects.Group.fields.subGroups.name()}
+							on:goto
+						/>
+					{:else}
+						<GroupTableDialog
+							bind:value={value.subGroups}
+							readonly={fields.subGroups.readonly}
+							disabled={fields.subGroups.disabled}
+						/>
+					{/if}
 				</FormControl>
 			{/if}
 		</slot>
@@ -190,16 +204,22 @@
 			{#if !fields.users.hidden}
 				<FormControl let:id>
 					<Label {id} text={$LL.graphql.objects.Group.fields.users.name()} />
-					<UserSelect
-					 	{id}
-						name="users"
-						errors={errors.users}
-						bind:value={value.users}
-						where={true}
-						readonly={fields.users.readonly}
-						disabled={fields.users.disabled}
-						list
-					/>
+					{#if value.id}
+						<ObjectInput
+							namedStruct={value.users}
+							errors={errors.users}
+							disabled={fields.users.disabled}
+							path={`${value.id}/users`}
+							name={value.name + ':' + $LL.graphql.objects.Group.fields.users.name()}
+							on:goto
+						/>
+					{:else}
+						<UserTableDialog
+							bind:value={value.users}
+							readonly={fields.users.readonly}
+							disabled={fields.users.disabled}
+						/>
+					{/if}
 				</FormControl>
 			{/if}
 		</slot>
@@ -207,16 +227,22 @@
 			{#if !fields.roles.hidden}
 				<FormControl let:id>
 					<Label {id} text={$LL.graphql.objects.Group.fields.roles.name()} />
-					<RoleSelect
-					 	{id}
-						name="roles"
-						errors={errors.roles}
-						bind:value={value.roles}
-						where={true}
-						readonly={fields.roles.readonly}
-						disabled={fields.roles.disabled}
-						list
-					/>
+					{#if value.id}
+						<ObjectInput
+							namedStruct={value.roles}
+							errors={errors.roles}
+							disabled={fields.roles.disabled}
+							path={`${value.id}/roles`}
+							name={value.name + ':' + $LL.graphql.objects.Group.fields.roles.name()}
+							on:goto
+						/>
+					{:else}
+						<RoleTableDialog
+							bind:value={value.roles}
+							readonly={fields.roles.readonly}
+							disabled={fields.roles.disabled}
+						/>
+					{/if}
 				</FormControl>
 			{/if}
 		</slot>
@@ -229,10 +255,8 @@
 							namedStruct={value.realm}
 							errors={errors.realm}
 							disabled={fields.realm.disabled}
-							path={{
-								path: 'realm',
-								name: $LL.graphql.objects.Group.fields.realm.name()
-							}}
+							path={`${value.id}/realm`}
+							name={value.name + ':' + $LL.graphql.objects.Group.fields.realm.name()}
 							on:goto
 						/>
 					{:else}

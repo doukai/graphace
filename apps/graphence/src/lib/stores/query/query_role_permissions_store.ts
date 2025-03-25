@@ -22,7 +22,7 @@ const query = /* GraphQL */ `query Query_role_permissions($role_id: String, $nam
       field
       type
       permissionType
-      roles {
+      roles(first: 3) {
         id
         name
         description

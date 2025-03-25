@@ -14,12 +14,12 @@ const query = /* GraphQL */ `mutation Mutation_user($id: ID, $name: String, $des
     email
     phones
     disable
-    groups {
+    groups(first: 3) {
       id
       name
       description
     }
-    roles {
+    roles(first: 3) {
       id
       name
       description

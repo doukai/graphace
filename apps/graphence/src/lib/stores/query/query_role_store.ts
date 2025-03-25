@@ -14,12 +14,12 @@ const query = /* GraphQL */ `query Query_role($id: StringExpression, $name: Stri
       name
       description
     }
-    groups {
+    groups(first: 3) {
       id
       name
       description
     }
-    composites {
+    composites(first: 3) {
       id
       name
       description

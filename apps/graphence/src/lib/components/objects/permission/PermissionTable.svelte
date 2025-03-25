@@ -10,7 +10,7 @@
 	import PermissionTypeTd from '~/lib/components/enums/permission-type/PermissionTypeTd.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
-	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
+	import RoleTableDialog from '~/lib/components/objects/role/RoleTableDialog.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type {
@@ -274,19 +274,30 @@
 						</slot>
 						<slot name="roles">
 							{#if !fields.roles.hidden}
-								<RoleSelectTd
-									name="roles"
-									bind:value={node.roles}
-									list
-									errors={errors?.[row]?.iterms?.roles}
-									readonly={fields.roles.readonly}
-									disabled={fields.roles.disabled}
-									on:save={(e) =>
-										dispatch('save', {
-											value: { roles: node?.roles, where: { name: { val: node?.name } } }
-										})}
-									{zIndex}
-								/>
+								{#if node.name}
+									<ObjectTd
+										namedStruct={node.roles}
+										errors={errors?.[row]?.iterms?.roles}
+										disabled={fields.roles.disabled}
+										path={`${node.name}/roles`}
+										name={node.name + ':' + $LL.graphql.objects.Permission.fields.roles.name()}
+										on:goto
+										{zIndex}
+									/>
+								{:else}
+									<Td {zIndex}>
+										<RoleTableDialog
+											bind:value={node.roles}
+											readonly={fields.roles.readonly}
+											disabled={fields.roles.disabled}
+											on:select={(e) =>
+												dispatch('save', {
+													value: { roles: node?.roles, where: { name: { val: node?.name } } }
+												})}
+											class="btn-xs"
+										/>
+									</Td>
+								{/if}
 							{/if}
 						</slot>
 						<slot name="realm">
@@ -296,16 +307,8 @@
 										namedStruct={node.realm}
 										errors={errors?.[row]?.iterms?.realm}
 										disabled={fields.realm.disabled}
-										path={[
-											{
-												path: node.name,
-												name: node.name
-											},
-											{
-												path: `${node.name}/realm`,
-												name: $LL.graphql.objects.Permission.fields.realm.name()
-											}
-										]}
+										path={`${node.name}/realm`}
+										name={node.name + ':' + $LL.graphql.objects.Permission.fields.realm.name()}
 										on:goto
 										{zIndex}
 									/>

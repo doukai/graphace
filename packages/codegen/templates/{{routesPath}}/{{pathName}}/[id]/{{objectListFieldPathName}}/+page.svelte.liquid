@@ -152,7 +152,7 @@
 			{% raw %}}}{% endraw %}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`./{{ name | paramCase }}/${e.detail.value.id}`);
+					to(`../../{{ fieldObjectInfo.name | paramCase }}/${e.detail.value.id}`, e.detail.value.{% if fieldObjectInfo.isNamed %}name{% else %}{{ fieldObjectInfo.idName }}{% endif %});
 				}
 			{% raw %}}}{% endraw %}
 			on:remove={(e) => {
@@ -199,13 +199,8 @@
 					}
 				});
 			{% raw %}}}{% endraw %}
-			on:create={(e) => to('./{{ fieldInfo.fieldName | paramCase }}/_')}
-			on:goto={(e) => {
-				if (Array.isArray(e.detail.path)) {
-					add(`./{{ fieldInfo.fieldName | paramCase }}/${e.detail.path[0].path}`, e.detail.path[0].name);
-					to(`./{{ fieldInfo.fieldName | paramCase }}/${e.detail.path[1].path}`, e.detail.path[1].name);
-				}
-			}}
+			on:create={(e) => to('../../{{ fieldObjectInfo.name | paramCase }}/_', '_')}
+			on:goto={(e) => to(`../../{{ fieldObjectInfo.name | paramCase }}/${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
 			{%- if hasFileField %}
 			on:upload={(e) => {

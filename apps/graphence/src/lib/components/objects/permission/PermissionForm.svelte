@@ -5,7 +5,7 @@
 	import { Buttons, Empty, Form, FormControl, Label, Loading } from '@graphace/ui';
 	import { type Option, IDInput, StringInput, ObjectInput } from '@graphace/ui-graphql';
 	import PermissionTypeInput from '~/lib/components/enums/permission-type/PermissionTypeInput.svelte';
-	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
+	import RoleTableDialog from '~/lib/components/objects/role/RoleTableDialog.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { PermissionInput } from '~/lib/types/schema';
@@ -150,16 +150,22 @@
 			{#if !fields.roles.hidden}
 				<FormControl let:id>
 					<Label {id} text={$LL.graphql.objects.Permission.fields.roles.name()} />
-					<RoleSelect
-					 	{id}
-						name="roles"
-						errors={errors.roles}
-						bind:value={value.roles}
-						where={true}
-						readonly={fields.roles.readonly}
-						disabled={fields.roles.disabled}
-						list
-					/>
+					{#if value.name}
+						<ObjectInput
+							namedStruct={value.roles}
+							errors={errors.roles}
+							disabled={fields.roles.disabled}
+							path={`${value.name}/roles`}
+							name={value.name + ':' + $LL.graphql.objects.Permission.fields.roles.name()}
+							on:goto
+						/>
+					{:else}
+						<RoleTableDialog
+							bind:value={value.roles}
+							readonly={fields.roles.readonly}
+							disabled={fields.roles.disabled}
+						/>
+					{/if}
 				</FormControl>
 			{/if}
 		</slot>
@@ -172,10 +178,8 @@
 							namedStruct={value.realm}
 							errors={errors.realm}
 							disabled={fields.realm.disabled}
-							path={{
-								path: 'realm',
-								name: $LL.graphql.objects.Permission.fields.realm.name()
-							}}
+							path={`${value.name}/realm`}
+							name={value.name + ':' + $LL.graphql.objects.Permission.fields.realm.name()}
 							on:goto
 						/>
 					{:else}

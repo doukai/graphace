@@ -165,7 +165,7 @@
 			}}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`./group/${e.detail.value.id}`);
+					to(`group/${e.detail.value.id}`, e.detail.value.name);
 				}
 			}}
 			on:remove={(e) => {
@@ -189,13 +189,8 @@
 					});
 				}
 			}}
-			on:create={(e) => to('./group/_')}
-			on:goto={(e) => {
-				if (Array.isArray(e.detail.path)) {
-					add(`./group/${e.detail.path[0].path}`, e.detail.path[0].name);
-					to(`./group/${e.detail.path[1].path}`, e.detail.path[1].name);
-				}
-			}}
+			on:create={(e) => to('group/_', '_')}
+			on:goto={(e) => to(`group/${e.detail.path}`, e.detail.name)}
 		/>
 		<div class="divider" />
 		<Pagination
