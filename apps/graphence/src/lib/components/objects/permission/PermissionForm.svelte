@@ -6,6 +6,7 @@
 	import { type Option, IDInput, StringInput, ObjectInput } from '@graphace/ui-graphql';
 	import PermissionTypeInput from '~/lib/components/enums/permission-type/PermissionTypeInput.svelte';
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
+	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { PermissionInput } from '~/lib/types/schema';
 	
@@ -17,6 +18,7 @@
 	export let showSaveButton: boolean = false;
 	export let showSelectButton: boolean = false;
 	export let showBackButton: boolean = false;
+	export let zIndex: number = 0;
 	let className: string | undefined =
 		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2';
 	export { className as class };
@@ -165,13 +167,25 @@
 			{#if !fields.realm.hidden}
 				<FormControl let:id>
 					<Label {id} text={$LL.graphql.objects.Permission.fields.realm.name()} />
-					<ObjectInput
-						namedStruct={value.realm}
-						path={`${value.name}/realm`}
-						errors={errors.realm}
-						disabled={fields.realm.disabled}
-						on:gotoField
-					/>
+					{#if value.name}
+						<ObjectInput
+							namedStruct={value.realm}
+							errors={errors.realm}
+							disabled={fields.realm.disabled}
+							path={{
+								path: 'realm',
+								name: $LL.graphql.objects.Permission.fields.realm.name()
+							}}
+							on:goto
+						/>
+					{:else}
+						<RealmTableDialog
+							bind:value={value.realm}
+							singleChoice={true}
+							readonly={fields.realm.readonly}
+							disabled={fields.realm.disabled}
+						/>
+					{/if}
 				</FormControl>
 			{/if}
 		</slot>

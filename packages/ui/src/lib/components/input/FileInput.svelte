@@ -31,7 +31,7 @@
 </script>
 
 {#if value}
-	<div class="flex items-center justify-between h-full">
+	<div class="flex items-center justify-between">
 		<a href={downloadUrl + '/' + value.id} class="link" download>{value.name}</a>
 		<div class="tooltip flex iterms-center" data-tip={$LL.ui.inputList.remove()}>
 			<button

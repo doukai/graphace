@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { getContext, createEventDispatcher } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import type { TranslationFunctions } from '~/i18n/i18n-types';
-	import type { Errors } from '@graphace/commons';
-	import type { NamedStruct } from '@graphace/graphql';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Link } from '@steeze-ui/heroicons';
+	import type { Errors } from '@graphace/commons';
+	import type { NamedStruct } from '@graphace/graphql';
+	import type { TranslationFunctions } from '~/i18n/i18n-types';
 
 	export let id: string | undefined = undefined;
-	export let path: string;
+	export let path: { path: string; name: string } | { path: string; name: string }[];
 	export let namedStruct: NamedStruct | (NamedStruct | null | undefined)[] | null | undefined =
 		undefined;
 	export let errors: Errors | undefined = undefined;
@@ -23,11 +23,11 @@
 	namedStruct = undefined;
 
 	const dispatch = createEventDispatcher<{
-		goto: { path: string };
+		goto: { path: { path: string; name: string } | { path: string; name: string }[] };
 	}>();
 </script>
 
-<div class="flex h-full items-center">
+<div class="flex items-center">
 	{#if _namedStruct && Array.isArray(_namedStruct) && _namedStruct.length > 0}
 		<a
 			{id}

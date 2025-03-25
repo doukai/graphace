@@ -16,7 +16,8 @@
 
 	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
 	export let singleChoice: boolean | undefined = false;
-	export let zIndex: number | undefined = 0;
+	export let readonly = false;
+	export let disabled = false;
 	let className: string | undefined = 'p-1';
 	export { className as class };
 
@@ -41,17 +42,17 @@
 	let close: () => void;
 
 	if (Array.isArray(value)) {
-		value = value.map((item) => ({ where: { id: { val: item?.id } } }));
-		selectedIdList = value?.map((node) => node?.where?.id?.val);
+		value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
+		selectedIdList = value?.map((node) => node?.where?.{{ idName }}?.val);
 	} else if (value) {
-		value = { where: { id: { val: value.id } } };
-		selectedIdList = [value.where?.id?.val];
+		value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
+		selectedIdList = [value.where?.{{ idName }}?.val];
 	}
 
 	$: if (Array.isArray(value)) {
-		selectedIdList = value?.map((node) => node?.where?.id?.val);
+		selectedIdList = value?.map((node) => node?.where?.{{ idName }}?.val);
 	} else if (value) {
-		selectedIdList = [value.where?.id?.val];
+		selectedIdList = [value.where?.{{ idName }}?.val];
 	}
 
 	const query = (args: {{ queryTypeName }}{{ name }}ConnectionArgs) => {
@@ -65,87 +66,90 @@
 </script>
 
 <Dialog bind:close>
-	<svelte:fragment slot="trigger" let:trigger>
+	<div class="flex items-center" slot="trigger" let:trigger let:zIndex>
 		<div class="tooltip hover:z-[{zIndex + 3}]" data-tip={$LL.ui.button.select()}>
 			<button
 				use:melt={trigger}
 				class="btn btn-square btn-outline {className}"
+				{disabled}
 				on:click={(e) => query({ first: pageSize, offset: 0 })}
 			>
 				<Icon src={ListBullet} class="h-5 w-5" />
 			</button>
 		</div>
-	</svelte:fragment>
-	<{{ name }}Table
-		value={nodes}
-		{selectedIdList}
-		showEditButton={true}
-		showCreateButton={true}
-		showSelectButton={!singleChoice || selectedIdList?.length === 1}
-		isFetching={$query_{{ name | camelCase }}Connection_Store.isFetching}
-		fields={% raw %}{{{% endraw %}
-			{%- for field in fields %}
-			{{ field.fieldName }}: {
-				{%- if field.isLeafType %}
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('{{ name }}::{{ field.fieldName }}::READ')
-   				{%- else %}
-				hidden: true
-    			{%- endif %}
-			}{% if forloop.last == false %},{% endif %}
-			{%- endfor %}
-		{% raw %}}}{% endraw %}
-		on:select={(e) => {
-			if (Array.isArray(e.detail.value)) {
-				if (singleChoice) {
-					value = [{ where: { id: { val: e.detail.value?.[0]?.id } } }];
+	</div>
+	<svelte:fragment let:zIndex>
+		<{{ name }}Table
+			value={nodes}
+			bind:selectedIdList
+			showEditButton={!readonly}
+			showCreateButton={!readonly}
+			showSelectButton={!readonly && (!singleChoice || selectedIdList?.length === 1)}
+			isFetching={$query_{{ name | camelCase }}Connection_Store.isFetching}
+			{zIndex}
+			fields={% raw %}{{{% endraw %}
+				{%- for field in fields %}
+				{{ field.fieldName }}: {
+					{%- if field.isLeafType %}
+					readonly: true,
+					disabled: true,
+					hidden: !permissions.auth('{{ name }}::{{ field.fieldName }}::READ')
+					{%- else %}
+					hidden: true
+					{%- endif %}
+				}{% if forloop.last == false %},{% endif %}
+				{%- endfor %}
+			{% raw %}}}{% endraw %}
+			on:select={(e) => {
+				if (Array.isArray(e.detail.value)) {
+					if (singleChoice) {
+						value = [{ where: { {{ idName }}: { val: e.detail.value?.[0]?.{{ idName }} } } }];
+					} else {
+						value = e.detail.value.map((node) => ({ where: { {{ idName }}: { val: node?.{{ idName }} } } }));
+					}
 				} else {
-					value = e.detail.value.map((node) => ({ where: { id: { val: node?.id } } }));
+					value = [{ where: { {{ idName }}: { val: e.detail.value?.{{ idName }} } } }];
 				}
-			} else {
-				value = [{ where: { id: { val: e.detail.value?.id } } }];
-			}
-			dispatch('select', { value });
-			close();
-		{% raw %}}}{% endraw %}
-		on:search={(e) => {
-			if (e.detail.value) {
-				query({
-					cond: 'OR',
-					name: { opr: 'LK', val: e.detail.value },
-					description: { opr: 'LK', val: e.detail.value },
-					lastName: { opr: 'LK', val: e.detail.value },
-					login: { opr: 'LK', val: e.detail.value },
-					email: { opr: 'LK', val: e.detail.value },
-					phones: { opr: 'LK', val: e.detail.value },
-					first: pageSize,
-					offset: 0
-				});
-			} else {
-				query({ first: pageSize, offset: 0 });
-			}
-		{% raw %}}}{% endraw %}
-		on:query={(e) => {
-			e.detail.args = buildArguments(e.detail.args);
-			if (Object.keys(e.detail.orderBy).length > 0) {
-				e.detail.args.orderBy = e.detail.orderBy;
-			}
-			query(e.detail.args);
-		{% raw %}}}{% endraw %}
-		on:edit={(e) => {
-			if (e.detail.value && !Array.isArray(e.detail.value)) {
-				to(`./{{ name | camelCase }}/${e.detail.value.id}`);
-			}
-		{% raw %}}}{% endraw %}
-		on:create={(e) => to('./{{ name | camelCase }}/_')}
-	/>
-	<div class="divider" />
-	<Pagination
-		bind:pageSize
-		bind:pageNumber
-		{totalCount}
-		on:pageChange={(e) => query({ first: pageSize, offset: (pageNumber - 1) * pageSize })}
-		on:sizeChange={(e) => query({ first: pageSize, offset: 0 })}
-	/>
+				dispatch('select', { value });
+				close();
+			{% raw %}}}{% endraw %}
+			on:search={(e) => {
+				if (e.detail.value) {
+					query({
+						cond: 'OR',
+						{%- for field in fields %}
+						{%- if field.isScalarType and field.inQueryArgs and field.fieldTypeName == 'String' %}
+						{{ field.fieldName }}: { opr: 'LK', val: e.detail.value },
+						{%- endif %}
+						{%- endfor %}
+						first: pageSize,
+						offset: 0
+					});
+				} else {
+					query({ first: pageSize, offset: 0 });
+				}
+			{% raw %}}}{% endraw %}
+			on:query={(e) => {
+				e.detail.args = buildArguments(e.detail.args);
+				if (Object.keys(e.detail.orderBy).length > 0) {
+					e.detail.args.orderBy = e.detail.orderBy;
+				}
+				query(e.detail.args);
+			{% raw %}}}{% endraw %}
+			on:edit={(e) => {
+				if (e.detail.value && !Array.isArray(e.detail.value)) {
+					to(`./{{ name | camelCase }}/${e.detail.value.{{ idName }}}`);
+				}
+			{% raw %}}}{% endraw %}
+			on:create={(e) => to('./{{ name | camelCase }}/_')}
+		/>
+		<div class="divider" />
+		<Pagination
+			bind:pageSize
+			bind:pageNumber
+			{totalCount}
+			on:pageChange={(e) => query({ first: pageSize, offset: (pageNumber - 1) * pageSize })}
+			on:sizeChange={(e) => query({ first: pageSize, offset: 0 })}
+		/>
+	</svelte:fragment>
 </Dialog>

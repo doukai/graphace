@@ -2,7 +2,7 @@
 	import { getContext } from 'svelte';
 	import type { Errors, JsonSchema, PermissionsStore} from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
-	import { to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
+	import { to, add, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import RealmTable from '~/lib/components/objects/realm/RealmTable.svelte';
 	import type { Query_realmConnection_Store } from '~/lib/stores/query/query_realmConnection_store';
 	import type { Mutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
@@ -148,7 +148,12 @@
 				}
 			}}
 			on:create={(e) => to('./realm/_')}
-			on:goto={(e) => to(`./realm/${e.detail.path}`)}
+			on:goto={(e) => {
+				if (Array.isArray(e.detail.path)) {
+					add(`./realm/${e.detail.path[0].path}`, e.detail.path[0].name);
+					to(`./realm/${e.detail.path[1].path}`, e.detail.path[1].name);
+				}
+			}}
 		/>
 		<div class="divider" />
 		<Pagination

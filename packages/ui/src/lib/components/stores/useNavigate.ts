@@ -8,7 +8,7 @@ export const canBack = derived(
     ($history) => $history.length > 1
 );
 
-export function to(url: string | URL, name?: string, params?: Record<string, string | undefined>) {
+export function add(url: string | URL, name?: string, params?: Record<string, string | undefined>): URL {
     let toUrl: URL;
     if (typeof url === "string") {
         toUrl = new URL(url, window.location.href);
@@ -30,6 +30,18 @@ export function to(url: string | URL, name?: string, params?: Record<string, str
         }
         return $history;
     });
+    return toUrl;
+}
+
+export function to(url: string | URL, name?: string, params?: Record<string, string | undefined>) {
+    const toUrl = add(url, name, params);
+    history.update(($history) => {
+        const pathname = toUrl.pathname.split("/").splice(2).join("/");
+        if ($history.map(page => page.url.pathname.split("/").splice(2).join("/")).includes(pathname)) {
+            return $history.splice(0, $history.map(page => page.url.pathname.split("/").splice(2).join("/")).indexOf(pathname) + 1);
+        }
+        return $history;
+    });
     goto(toUrl);
 }
 
@@ -40,7 +52,7 @@ export function init(url: string | URL, name?: string, params?: Record<string, s
 
 export function ot(params?: Record<string, string | undefined>) {
     const $history = get(history);
-    const backPage = $history[$history.length - 1];
+    const backPage = $history[$history.length - 2];
     if (backPage) {
         if (params) {
             Object.entries(params).forEach(param => {

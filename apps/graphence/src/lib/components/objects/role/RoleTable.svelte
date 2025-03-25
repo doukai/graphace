@@ -4,7 +4,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { Buttons, Empty, Loading, SearchInput, Table } from '@graphace/ui';
+	import { Buttons, Empty, Loading, SearchInput, Table, Td } from '@graphace/ui';
 	import { type Option, StringTh, StringTd, ObjectTd } from '@graphace/ui-graphql';
 	import UserTh from '~/lib/components/objects/user/UserTh.svelte';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
@@ -13,6 +13,9 @@
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
 	import GroupSelectTd from '~/lib/components/objects/group/GroupSelectTd.svelte';
 	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
+	import UserTableDialog from '~/lib/components/objects/user/UserTableDialog.svelte';
+	import PermissionTableDialog from '~/lib/components/objects/permission/PermissionTableDialog.svelte';
+	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type {
 		RoleOrderBy,
@@ -229,13 +232,38 @@
 						</slot>
 						<slot name="users">
 							{#if !fields.users.hidden}
-								<ObjectTd
-									namedStruct={node.users}
-									errors={errors?.[row]?.iterms?.users}
-									path={`${node.id}/users`}
-									on:goto
-									{zIndex}
-								/>
+								{#if node.id}
+									<ObjectTd
+										namedStruct={node.users}
+										errors={errors?.[row]?.iterms?.users}
+										disabled={fields.users.disabled}
+										path={[
+											{
+												path: node.id,
+												name: node.name
+											},
+											{
+												path: `${node.id}/users`,
+												name: $LL.graphql.objects.Role.fields.users.name()
+											}
+										]}
+										on:goto
+										{zIndex}
+									/>
+								{:else}
+									<Td {zIndex}>
+										<UserTableDialog
+											bind:value={node.users}
+											readonly={fields.users.readonly}
+											disabled={fields.users.disabled}
+											on:select={(e) =>
+												dispatch('save', {
+													value: { users: node?.users, where: { id: { val: node?.id } } }
+												})}
+											class="btn-xs"
+										/>
+									</Td>
+								{/if}
 							{/if}
 						</slot>
 						<slot name="groups">
@@ -274,23 +302,74 @@
 						</slot>
 						<slot name="permissions">
 							{#if !fields.permissions.hidden}
-								<ObjectTd
-									errors={errors?.[row]?.iterms?.permissions}
-									path={`${node.id}/permissions`}
-									on:goto
-									{zIndex}
-								/>
+								{#if node.id}
+									<ObjectTd
+										errors={errors?.[row]?.iterms?.permissions}
+										disabled={fields.permissions.disabled}
+										path={[
+											{
+												path: node.id,
+												name: node.name
+											},
+											{
+												path: `${node.id}/permissions`,
+												name: $LL.graphql.objects.Role.fields.permissions.name()
+											}
+										]}
+										on:goto
+										{zIndex}
+									/>
+								{:else}
+									<Td {zIndex}>
+										<PermissionTableDialog
+											bind:value={node.permissions}
+											readonly={fields.permissions.readonly}
+											disabled={fields.permissions.disabled}
+											on:select={(e) =>
+												dispatch('save', {
+													value: { permissions: node?.permissions, where: { id: { val: node?.id } } }
+												})}
+											class="btn-xs"
+										/>
+									</Td>
+								{/if}
 							{/if}
 						</slot>
 						<slot name="realm">
 							{#if !fields.realm.hidden}
-								<ObjectTd
-									namedStruct={node.realm}
-									errors={errors?.[row]?.iterms?.realm}
-									path={`${node.id}/realm`}
-									on:goto
-									{zIndex}
-								/>
+								{#if node.id}
+									<ObjectTd
+										namedStruct={node.realm}
+										errors={errors?.[row]?.iterms?.realm}
+										disabled={fields.realm.disabled}
+										path={[
+											{
+												path: node.id,
+												name: node.name
+											},
+											{
+												path: `${node.id}/realm`,
+												name: $LL.graphql.objects.Role.fields.realm.name()
+											}
+										]}
+										on:goto
+										{zIndex}
+									/>
+								{:else}
+									<Td {zIndex}>
+										<RealmTableDialog
+											bind:value={node.realm}
+											singleChoice={true}
+											readonly={fields.realm.readonly}
+											disabled={fields.realm.disabled}
+											on:select={(e) =>
+												dispatch('save', {
+													value: { realm: node?.realm, where: { id: { val: node?.id } } }
+												})}
+											class="btn-xs"
+										/>
+									</Td>
+								{/if}
 							{/if}
 						</slot>
 						<th class="hover:z-[{zIndex + 3}]">

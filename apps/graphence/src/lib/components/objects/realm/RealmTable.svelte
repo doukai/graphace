@@ -4,7 +4,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { Buttons, Empty, Loading, SearchInput, Table } from '@graphace/ui';
+	import { Buttons, Empty, Loading, SearchInput, Table, Td } from '@graphace/ui';
 	import { type Option, StringTh, StringTd, ObjectTd } from '@graphace/ui-graphql';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type {

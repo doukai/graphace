@@ -32,6 +32,7 @@
 	import type { LayoutData } from './$types';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Bars4 } from '@steeze-ui/heroicons';
+	import ModuleMenu from '~/lib/components/menu/ModuleMenu.svelte';
 
 	export let data: LayoutData;
 	// at the very top, set the locale before you access the store and before the actual rendering takes place
@@ -151,6 +152,33 @@
 			</NavBarEnd>
 		</NavBar>
 		<main class="max-w-[100vw] p-1 md:p-2">
+			<div class="flex justify-between items-center pl-4">
+				<Breadcrumbs>
+					<li>
+						<a
+							href={null}
+							on:click|preventDefault={(e) => {
+								init(`/${$locale}`, $LL.graphence.path.home());
+							}}
+						>
+							<span>{$LL.graphence.path.home()}</span>
+						</a>
+					</li>
+					{#each $history as page}
+						<li>
+							<a
+								href={null}
+								on:click|preventDefault={(e) => {
+									to(page.url, page.name);
+								}}
+							>
+								{page.name}
+							</a>
+						</li>
+					{/each}
+				</Breadcrumbs>
+				<ModuleMenu />
+			</div>
 			<slot />
 			<Toasts />
 			<Modals />

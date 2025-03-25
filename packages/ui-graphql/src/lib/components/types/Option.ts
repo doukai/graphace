@@ -1,5 +1,5 @@
 export type Option = {
-    readonly: boolean;
-    disabled: boolean;
-    hidden: boolean
+    readonly?: boolean | undefined;
+    disabled?: boolean | undefined;
+    hidden?: boolean | undefined;
 }

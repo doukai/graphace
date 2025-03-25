@@ -14,7 +14,8 @@
 
 	export let value: PermissionInput | (PermissionInput | null | undefined)[] | null | undefined = undefined;
 	export let singleChoice: boolean | undefined = false;
-	export let zIndex: number | undefined = 0;
+	export let readonly = false;
+	export let disabled = false;
 	let className: string | undefined = 'p-1';
 	export { className as class };
 	const permissions = getContext<PermissionsStore>('permissions');
@@ -36,17 +37,17 @@
 	let close: () => void;
 
 	if (Array.isArray(value)) {
-		value = value.map((item) => ({ where: { id: { val: item?.id } } }));
-		selectedIdList = value?.map((node) => node?.where?.id?.val);
+		value = value.map((item) => ({ where: { name: { val: item?.name } } }));
+		selectedIdList = value?.map((node) => node?.where?.name?.val);
 	} else if (value) {
-		value = { where: { id: { val: value.id } } };
-		selectedIdList = [value.where?.id?.val];
+		value = { where: { name: { val: value.name } } };
+		selectedIdList = [value.where?.name?.val];
 	}
 
 	$: if (Array.isArray(value)) {
-		selectedIdList = value?.map((node) => node?.where?.id?.val);
+		selectedIdList = value?.map((node) => node?.where?.name?.val);
 	} else if (value) {
-		selectedIdList = [value.where?.id?.val];
+		selectedIdList = [value.where?.name?.val];
 	}
 
 	const query = (args: QueryPermissionConnectionArgs) => {
@@ -60,107 +61,108 @@
 </script>
 
 <Dialog bind:close>
-	<svelte:fragment slot="trigger" let:trigger>
+	<div class="flex items-center" slot="trigger" let:trigger let:zIndex>
 		<div class="tooltip hover:z-[{zIndex + 3}]" data-tip={$LL.ui.button.select()}>
 			<button
 				use:melt={trigger}
 				class="btn btn-square btn-outline {className}"
+				{disabled}
 				on:click={(e) => query({ first: pageSize, offset: 0 })}
 			>
 				<Icon src={ListBullet} class="h-5 w-5" />
 			</button>
 		</div>
-	</svelte:fragment>
-	<PermissionTable
-		value={nodes}
-		{selectedIdList}
-		showEditButton={true}
-		showCreateButton={true}
-		showSelectButton={!singleChoice || selectedIdList?.length === 1}
-		isFetching={$query_permissionConnection_Store.isFetching}
-		fields={{
-			name: {
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('Permission::name::READ')
-			},
-			description: {
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('Permission::description::READ')
-			},
-			field: {
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('Permission::field::READ')
-			},
-			type: {
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('Permission::type::READ')
-			},
-			permissionType: {
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('Permission::permissionType::READ')
-			},
-			roles: {
-				hidden: true
-			},
-			realm: {
-				hidden: true
-			}
-		}}
-		on:select={(e) => {
-			if (Array.isArray(e.detail.value)) {
-				if (singleChoice) {
-					value = [{ where: { id: { val: e.detail.value?.[0]?.id } } }];
-				} else {
-					value = e.detail.value.map((node) => ({ where: { id: { val: node?.id } } }));
+	</div>
+	<svelte:fragment let:zIndex>
+		<PermissionTable
+			value={nodes}
+			bind:selectedIdList
+			showEditButton={!readonly}
+			showCreateButton={!readonly}
+			showSelectButton={!readonly && (!singleChoice || selectedIdList?.length === 1)}
+			isFetching={$query_permissionConnection_Store.isFetching}
+			{zIndex}
+			fields={{
+				name: {
+					readonly: true,
+					disabled: true,
+					hidden: !permissions.auth('Permission::name::READ')
+				},
+				description: {
+					readonly: true,
+					disabled: true,
+					hidden: !permissions.auth('Permission::description::READ')
+				},
+				field: {
+					readonly: true,
+					disabled: true,
+					hidden: !permissions.auth('Permission::field::READ')
+				},
+				type: {
+					readonly: true,
+					disabled: true,
+					hidden: !permissions.auth('Permission::type::READ')
+				},
+				permissionType: {
+					readonly: true,
+					disabled: true,
+					hidden: !permissions.auth('Permission::permissionType::READ')
+				},
+				roles: {
+					hidden: true
+				},
+				realm: {
+					hidden: true
 				}
-			} else {
-				value = [{ where: { id: { val: e.detail.value?.id } } }];
-			}
-			dispatch('select', { value });
-			close();
-		}}
-		on:search={(e) => {
-			if (e.detail.value) {
-				query({
-					cond: 'OR',
-					name: { opr: 'LK', val: e.detail.value },
-					description: { opr: 'LK', val: e.detail.value },
-					lastName: { opr: 'LK', val: e.detail.value },
-					login: { opr: 'LK', val: e.detail.value },
-					email: { opr: 'LK', val: e.detail.value },
-					phones: { opr: 'LK', val: e.detail.value },
-					first: pageSize,
-					offset: 0
-				});
-			} else {
-				query({ first: pageSize, offset: 0 });
-			}
-		}}
-		on:query={(e) => {
-			e.detail.args = buildArguments(e.detail.args);
-			if (Object.keys(e.detail.orderBy).length > 0) {
-				e.detail.args.orderBy = e.detail.orderBy;
-			}
-			query(e.detail.args);
-		}}
-		on:edit={(e) => {
-			if (e.detail.value && !Array.isArray(e.detail.value)) {
-				to(`./permission/${e.detail.value.id}`);
-			}
-		}}
-		on:create={(e) => to('./permission/_')}
-	/>
-	<div class="divider" />
-	<Pagination
-		bind:pageSize
-		bind:pageNumber
-		{totalCount}
-		on:pageChange={(e) => query({ first: pageSize, offset: (pageNumber - 1) * pageSize })}
-		on:sizeChange={(e) => query({ first: pageSize, offset: 0 })}
-	/>
+			}}
+			on:select={(e) => {
+				if (Array.isArray(e.detail.value)) {
+					if (singleChoice) {
+						value = [{ where: { name: { val: e.detail.value?.[0]?.name } } }];
+					} else {
+						value = e.detail.value.map((node) => ({ where: { name: { val: node?.name } } }));
+					}
+				} else {
+					value = [{ where: { name: { val: e.detail.value?.name } } }];
+				}
+				dispatch('select', { value });
+				close();
+			}}
+			on:search={(e) => {
+				if (e.detail.value) {
+					query({
+						cond: 'OR',
+						description: { opr: 'LK', val: e.detail.value },
+						field: { opr: 'LK', val: e.detail.value },
+						type: { opr: 'LK', val: e.detail.value },
+						first: pageSize,
+						offset: 0
+					});
+				} else {
+					query({ first: pageSize, offset: 0 });
+				}
+			}}
+			on:query={(e) => {
+				e.detail.args = buildArguments(e.detail.args);
+				if (Object.keys(e.detail.orderBy).length > 0) {
+					e.detail.args.orderBy = e.detail.orderBy;
+				}
+				query(e.detail.args);
+			}}
+			on:edit={(e) => {
+				if (e.detail.value && !Array.isArray(e.detail.value)) {
+					to(`./permission/${e.detail.value.name}`);
+				}
+			}}
+			on:create={(e) => to('./permission/_')}
+		/>
+		<div class="divider" />
+		<Pagination
+			bind:pageSize
+			bind:pageNumber
+			{totalCount}
+			on:pageChange={(e) => query({ first: pageSize, offset: (pageNumber - 1) * pageSize })}
+			on:sizeChange={(e) => query({ first: pageSize, offset: 0 })}
+		/>
+	</svelte:fragment>
 </Dialog>

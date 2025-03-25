@@ -115,7 +115,7 @@
 					merge(e.detail.value);
 				}
 			}}
-			on:goto={(e) => to(`../../${e.detail.path}`)}
+			on:goto={(e) => to(`../../${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
 		/>
 	</CardBody>

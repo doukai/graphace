@@ -1,24 +1,16 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import { init, z_index } from '@graphace/ui';
 	import { page } from '$app/stores';
+	import { Icon } from '@steeze-ui/svelte-icon';
 	import { EllipsisVertical } from '@steeze-ui/heroicons';
 	import Iconify from '@iconify/svelte';
+	import { init, zIndex } from '@graphace/ui';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	import { locale } from '$i18n/i18n-svelte';
-	import { Icon } from '@steeze-ui/svelte-icon';
+
+	const zIndex6 = zIndex.top(6);
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
-
-	$: z_class6 = z_index.top(6);
-
-	function to(path: string) {
-		let urlParts: string[] = $page.url.pathname.split('/');
-		if (urlParts.length > 2) {
-			init(`/${$locale}/${urlParts[2]}${path}`);
-		}
-	}
 </script>
 
 {#if $page.url.pathname.split('/').length > 2}
@@ -33,7 +25,7 @@
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 		<ul
 			tabindex="0"
-			class="dropdown-content {z_class6} menu p-2 shadow bg-base-100 rounded-box w-52"
+			class="dropdown-content z-[{zIndex6}] menu p-2 shadow bg-base-100 rounded-box w-52"
 		>
 			<li>
 				<h2 class="menu-title flex flex-row gap-2">
@@ -47,9 +39,9 @@
 						<a
 							href={null}
 							on:click|preventDefault={(e) => {
-								to(`/chart/bar`);
+								init('./chart/bar', $LL.graphence.components.sideBarMenu.bar());
 							}}
-							class={$page.url.pathname.endsWith(`/chart/bar`) ? 'active' : ''}
+							class={$page.url.pathname.endsWith('/chart/bar') ? 'active' : ''}
 						>
 							<Iconify class="w-5 h-5" icon="material-symbols:bar-chart" />
 							<span>{$LL.graphence.components.sideBarMenu.bar()}</span>
@@ -59,9 +51,9 @@
 						<a
 							href={null}
 							on:click|preventDefault={(e) => {
-								to(`/chart/line`);
+								init('./chart/line', $LL.graphence.components.sideBarMenu.line());
 							}}
-							class={$page.url.pathname.endsWith(`/chart/line`) ? 'active' : ''}
+							class={$page.url.pathname.endsWith('/chart/line') ? 'active' : ''}
 						>
 							<Iconify class="w-5 h-5" icon="material-symbols:show-chart" />
 							<span>{$LL.graphence.components.sideBarMenu.line()}</span>
@@ -71,9 +63,9 @@
 						<a
 							href={null}
 							on:click|preventDefault={(e) => {
-								to(`/chart/pie`);
+								init('./chart/pie', $LL.graphence.components.sideBarMenu.pie());
 							}}
-							class={$page.url.pathname.endsWith(`/chart/pie`) ? 'active' : ''}
+							class={$page.url.pathname.endsWith('/chart/pie') ? 'active' : ''}
 						>
 							<Iconify class="w-5 h-5" icon="material-symbols:pie-chart-outline" />
 							<span>{$LL.graphence.components.sideBarMenu.pie()}</span>
@@ -93,9 +85,9 @@
 						<a
 							href={null}
 							on:click|preventDefault={(e) => {
-								to(`/grid/agg`);
+								init('./grid/agg', $LL.graphence.components.sideBarMenu.statistics());
 							}}
-							class={$page.url.pathname.endsWith(`/grid/agg`) ? 'active' : ''}
+							class={$page.url.pathname.endsWith('/grid/agg') ? 'active' : ''}
 						>
 							<Iconify class="w-5 h-5" icon="material-symbols:table-eye-sharp" />
 							<span>{$LL.graphence.components.sideBarMenu.statistics()}</span>
@@ -105,9 +97,9 @@
 						<a
 							href={null}
 							on:click|preventDefault={(e) => {
-								to(`/grid/mutation`);
+								init('./grid/mutation', $LL.graphence.components.sideBarMenu.mutation());
 							}}
-							class={$page.url.pathname.endsWith(`/grid/mutation`) ? 'active' : ''}
+							class={$page.url.pathname.endsWith('/grid/mutation') ? 'active' : ''}
 						>
 							<Iconify class="w-5 h-5" icon="material-symbols:table-edit-sharp" />
 							<span>{$LL.graphence.components.sideBarMenu.mutation()}</span>

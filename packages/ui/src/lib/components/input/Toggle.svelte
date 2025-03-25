@@ -21,7 +21,7 @@
 	}>();
 </script>
 
-<div class="flex h-full items-center">
+<div class="flex items-center">
 	<input
 		type="checkbox"
 		{id}

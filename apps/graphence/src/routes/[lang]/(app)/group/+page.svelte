@@ -2,7 +2,7 @@
 	import { getContext } from 'svelte';
 	import type { Errors, JsonSchema, PermissionsStore} from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
-	import { to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
+	import { to, add, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import GroupTable from '~/lib/components/objects/group/GroupTable.svelte';
 	import type { Query_groupConnection_Store } from '~/lib/stores/query/query_groupConnection_store';
 	import type { Mutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
@@ -190,7 +190,12 @@
 				}
 			}}
 			on:create={(e) => to('./group/_')}
-			on:goto={(e) => to(`./group/${e.detail.path}`)}
+			on:goto={(e) => {
+				if (Array.isArray(e.detail.path)) {
+					add(`./group/${e.detail.path[0].path}`, e.detail.path[0].name);
+					to(`./group/${e.detail.path[1].path}`, e.detail.path[1].name);
+				}
+			}}
 		/>
 		<div class="divider" />
 		<Pagination

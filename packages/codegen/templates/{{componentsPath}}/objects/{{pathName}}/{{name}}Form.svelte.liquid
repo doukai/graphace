@@ -10,6 +10,9 @@
 	{%- for select in selects %}
 	import {{ select }}Select from '~/{{ componentsPath }}/objects/{{ select | paramCase }}/{{ select }}Select.svelte';
 	{%- endfor %}
+	{%- for dialog in nonSelects %}
+	import {{ dialog }}TableDialog from '~/{{ componentsPath }}/objects/{{ dialog | paramCase }}/{{ dialog }}TableDialog.svelte';
+	{%- endfor %}
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	
@@ -21,6 +24,9 @@
 	export let showSaveButton: boolean = false;
 	export let showSelectButton: boolean = false;
 	export let showBackButton: boolean = false;
+	{%- if nonSelects.length > 0 %}
+	export let zIndex: number = 0;
+	{%- endif %}
 	let className: string | undefined =
 		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2';
 	export { className as class };
@@ -99,15 +105,29 @@
 						{%- endif %}
 					/>
 					{%- else %}
-					<ObjectInput
-						{%- if field.isNamed %}
-						namedStruct={value.{{ field.fieldName }}}
-						{%- endif %}
-						path={`${value.{{ idName }}}/{{ field.fieldName | paramCase }}`}
-						errors={errors.{{ field.fieldName }}}
-						disabled={fields.{{ field.fieldName }}.disabled}
-						on:gotoField
-					/>
+					{#if value.{{ idName }}}
+						<ObjectInput
+							{%- if field.isNamed %}
+							namedStruct={value.{{ field.fieldName }}}
+							{%- endif %}
+							errors={errors.{{ field.fieldName }}}
+							disabled={fields.{{ field.fieldName }}.disabled}
+							path={% raw %}{{{% endraw %}
+								path: '{{ field.fieldName | paramCase }}',
+								name: $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()
+							{% raw %}}}{% endraw %}
+							on:goto
+						/>
+					{:else}
+						<{{ field.fieldTypeName }}TableDialog
+							bind:value={value.{{ field.fieldName }}}
+							{%- if field.isListType == false %}
+							singleChoice={true}
+							{%- endif %}
+							readonly={fields.{{ field.fieldName }}.readonly}
+							disabled={fields.{{ field.fieldName }}.disabled}
+						/>
+					{/if}
 					{%- endif %}
 				</FormControl>
 			{/if}

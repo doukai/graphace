@@ -2,7 +2,7 @@
 	import { getContext } from 'svelte';
 	import type { Errors, JsonSchema{%- if useAuth -%}, PermissionsStore{%- endif -%} } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
-	import { ot, to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
+	import { ot, to, add, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import {{ fieldObjectInfo.name }}Table from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}Table.svelte';
 	import type { Query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}Connection_store';
 	import type { Mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_store';
@@ -200,7 +200,13 @@
 				});
 			{% raw %}}}{% endraw %}
 			on:create={(e) => to('./{{ fieldInfo.fieldName | paramCase }}/_')}
-			on:goto={(e) => to(`./{{ fieldInfo.fieldName | paramCase }}/${e.detail.path}`)}
+			on:goto={(e) => {
+				if (Array.isArray(e.detail.path)) {
+					add(`./{{ fieldInfo.fieldName | paramCase }}/${e.detail.path[0].path}`, e.detail.path[0].name);
+					to(`./{{ fieldInfo.fieldName | paramCase }}/${e.detail.path[1].path}`, e.detail.path[1].name);
+				}
+			}}
+			on:back={(e) => ot()}
 			{%- if hasFileField %}
 			on:upload={(e) => {
 				mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>

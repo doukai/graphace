@@ -4,7 +4,7 @@
 	import ObjectLink from '../input/ObjectLink.svelte';
 	import { Td } from '@graphace/ui';
 
-	export let path: string;
+	export let path: { path: string; name: string } | { path: string; name: string }[];
 	export let namedStruct: NamedStruct | (NamedStruct | null | undefined)[] | null | undefined =
 		undefined;
 	export let errors: Errors | undefined = undefined;

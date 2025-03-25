@@ -14,7 +14,8 @@
 
 	export let value: RealmInput | (RealmInput | null | undefined)[] | null | undefined = undefined;
 	export let singleChoice: boolean | undefined = false;
-	export let zIndex: number | undefined = 0;
+	export let readonly = false;
+	export let disabled = false;
 	let className: string | undefined = 'p-1';
 	export { className as class };
 	const permissions = getContext<PermissionsStore>('permissions');
@@ -60,86 +61,86 @@
 </script>
 
 <Dialog bind:close>
-	<svelte:fragment slot="trigger" let:trigger>
+	<div class="flex items-center" slot="trigger" let:trigger let:zIndex>
 		<div class="tooltip hover:z-[{zIndex + 3}]" data-tip={$LL.ui.button.select()}>
 			<button
 				use:melt={trigger}
 				class="btn btn-square btn-outline {className}"
+				{disabled}
 				on:click={(e) => query({ first: pageSize, offset: 0 })}
 			>
 				<Icon src={ListBullet} class="h-5 w-5" />
 			</button>
 		</div>
-	</svelte:fragment>
-	<RealmTable
-		value={nodes}
-		{selectedIdList}
-		showEditButton={true}
-		showCreateButton={true}
-		showSelectButton={!singleChoice || selectedIdList?.length === 1}
-		isFetching={$query_realmConnection_Store.isFetching}
-		fields={{
-			name: {
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('Realm::name::READ')
-			},
-			description: {
-				readonly: true,
-				disabled: true,
-				hidden: !permissions.auth('Realm::description::READ')
-			}
-		}}
-		on:select={(e) => {
-			if (Array.isArray(e.detail.value)) {
-				if (singleChoice) {
-					value = [{ where: { id: { val: e.detail.value?.[0]?.id } } }];
-				} else {
-					value = e.detail.value.map((node) => ({ where: { id: { val: node?.id } } }));
+	</div>
+	<svelte:fragment let:zIndex>
+		<RealmTable
+			value={nodes}
+			bind:selectedIdList
+			showEditButton={!readonly}
+			showCreateButton={!readonly}
+			showSelectButton={!readonly && (!singleChoice || selectedIdList?.length === 1)}
+			isFetching={$query_realmConnection_Store.isFetching}
+			{zIndex}
+			fields={{
+				name: {
+					readonly: true,
+					disabled: true,
+					hidden: !permissions.auth('Realm::name::READ')
+				},
+				description: {
+					readonly: true,
+					disabled: true,
+					hidden: !permissions.auth('Realm::description::READ')
 				}
-			} else {
-				value = [{ where: { id: { val: e.detail.value?.id } } }];
-			}
-			dispatch('select', { value });
-			close();
-		}}
-		on:search={(e) => {
-			if (e.detail.value) {
-				query({
-					cond: 'OR',
-					name: { opr: 'LK', val: e.detail.value },
-					description: { opr: 'LK', val: e.detail.value },
-					lastName: { opr: 'LK', val: e.detail.value },
-					login: { opr: 'LK', val: e.detail.value },
-					email: { opr: 'LK', val: e.detail.value },
-					phones: { opr: 'LK', val: e.detail.value },
-					first: pageSize,
-					offset: 0
-				});
-			} else {
-				query({ first: pageSize, offset: 0 });
-			}
-		}}
-		on:query={(e) => {
-			e.detail.args = buildArguments(e.detail.args);
-			if (Object.keys(e.detail.orderBy).length > 0) {
-				e.detail.args.orderBy = e.detail.orderBy;
-			}
-			query(e.detail.args);
-		}}
-		on:edit={(e) => {
-			if (e.detail.value && !Array.isArray(e.detail.value)) {
-				to(`./realm/${e.detail.value.id}`);
-			}
-		}}
-		on:create={(e) => to('./realm/_')}
-	/>
-	<div class="divider" />
-	<Pagination
-		bind:pageSize
-		bind:pageNumber
-		{totalCount}
-		on:pageChange={(e) => query({ first: pageSize, offset: (pageNumber - 1) * pageSize })}
-		on:sizeChange={(e) => query({ first: pageSize, offset: 0 })}
-	/>
+			}}
+			on:select={(e) => {
+				if (Array.isArray(e.detail.value)) {
+					if (singleChoice) {
+						value = [{ where: { id: { val: e.detail.value?.[0]?.id } } }];
+					} else {
+						value = e.detail.value.map((node) => ({ where: { id: { val: node?.id } } }));
+					}
+				} else {
+					value = [{ where: { id: { val: e.detail.value?.id } } }];
+				}
+				dispatch('select', { value });
+				close();
+			}}
+			on:search={(e) => {
+				if (e.detail.value) {
+					query({
+						cond: 'OR',
+						name: { opr: 'LK', val: e.detail.value },
+						description: { opr: 'LK', val: e.detail.value },
+						first: pageSize,
+						offset: 0
+					});
+				} else {
+					query({ first: pageSize, offset: 0 });
+				}
+			}}
+			on:query={(e) => {
+				e.detail.args = buildArguments(e.detail.args);
+				if (Object.keys(e.detail.orderBy).length > 0) {
+					e.detail.args.orderBy = e.detail.orderBy;
+				}
+				query(e.detail.args);
+			}}
+			on:edit={(e) => {
+				if (e.detail.value && !Array.isArray(e.detail.value)) {
+					to(`./realm/${e.detail.value.id}`);
+				}
+			}}
+			on:create={(e) => to('./realm/_')}
+		/>
+		<div class="divider" />
+		<Pagination
+			bind:pageSize
+			bind:pageNumber
+			{totalCount}
+			on:pageChange={(e) => query({ first: pageSize, offset: (pageNumber - 1) * pageSize })}
+			on:sizeChange={(e) => query({ first: pageSize, offset: 0 })}
+		/>
+	</svelte:fragment>
 </Dialog>

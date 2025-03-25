@@ -58,6 +58,7 @@ export type ImportInfo = {
     enums: string[];
     objects: string[];
     selects: string[];
+    nonSelects: string[];
 }
 
 export type FieldInfo = {

@@ -2,7 +2,7 @@
 	import { getContext } from 'svelte';
 	import type { Errors, JsonSchema, PermissionsStore} from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
-	import { ot, to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
+	import { ot, to, add, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import UserTable from '~/lib/components/objects/user/UserTable.svelte';
 	import type { Query_role_usersConnection_Store } from '~/lib/stores/query/query_role_usersConnection_store';
 	import type { Mutation_role_users_Store } from '~/lib/stores/mutation/mutation_role_users_store';
@@ -236,7 +236,13 @@
 				});
 			}}
 			on:create={(e) => to('./users/_')}
-			on:goto={(e) => to(`./users/${e.detail.path}`)}
+			on:goto={(e) => {
+				if (Array.isArray(e.detail.path)) {
+					add(`./users/${e.detail.path[0].path}`, e.detail.path[0].name);
+					to(`./users/${e.detail.path[1].path}`, e.detail.path[1].name);
+				}
+			}}
+			on:back={(e) => ot()}
 		/>
 		<div class="divider" />
 		<Pagination

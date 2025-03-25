@@ -2,7 +2,7 @@
 	import { getContext } from 'svelte';
 	import type { Errors, JsonSchema, PermissionsStore} from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
-	import { to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
+	import { to, add, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import PermissionTable from '~/lib/components/objects/permission/PermissionTable.svelte';
 	import type { Query_permissionConnection_Store } from '~/lib/stores/query/query_permissionConnection_store';
 	import type { Mutation_permission_Store } from '~/lib/stores/mutation/mutation_permission_store';
@@ -174,7 +174,12 @@
 				}
 			}}
 			on:create={(e) => to('./permission/_')}
-			on:goto={(e) => to(`./permission/${e.detail.path}`)}
+			on:goto={(e) => {
+				if (Array.isArray(e.detail.path)) {
+					add(`./permission/${e.detail.path[0].path}`, e.detail.path[0].name);
+					to(`./permission/${e.detail.path[1].path}`, e.detail.path[1].name);
+				}
+			}}
 		/>
 		<div class="divider" />
 		<Pagination

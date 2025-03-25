@@ -2,7 +2,7 @@
 	import { getContext } from 'svelte';
 	import type { Errors, JsonSchema{%- if useAuth -%}, PermissionsStore{%- endif -%} } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
-	import { to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
+	import { to, add, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import {{ name }}Table from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Table.svelte';
 	import type { Query_{{ name | camelCase }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}Connection_store';
 	import type { Mutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
@@ -156,7 +156,12 @@
 				}
 			{% raw %}}}{% endraw %}
 			on:create={(e) => to('./{{ name | paramCase }}/_')}
-			on:goto={(e) => to(`./{{ name | paramCase }}/${e.detail.path}`)}
+			on:goto={(e) => {
+				if (Array.isArray(e.detail.path)) {
+					add(`./{{ name | paramCase }}/${e.detail.path[0].path}`, e.detail.path[0].name);
+					to(`./{{ name | paramCase }}/${e.detail.path[1].path}`, e.detail.path[1].name);
+				}
+			}}
 			{%- if hasFileField %}
 			on:upload={(e) => {
 				mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>

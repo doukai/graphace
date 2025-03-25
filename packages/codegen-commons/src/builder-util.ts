@@ -186,7 +186,8 @@ export const getImportInfo = (fields: FieldInfo[]): ImportInfo | undefined => {
         baseScalars: getBaseScalarNames(fields),
         enums: getEnumNames(fields),
         objects: getObjectNames(fields),
-        selects: getSelectObjectNames(fields)
+        selects: getSelectObjectNames(fields),
+        nonSelects: getNonSelectObjectNames(fields)
     };
 }
 
@@ -447,6 +448,16 @@ export function getSelectObjectNames(fields: FieldInfo[] | undefined): string[] 
         ?.filter(field => field.isObjectType)
         ?.filter(field => field.isSelect)
         .filter(field => field.isNamed)
+        .map(field => field.fieldTypeName);
+    if (objectNames) {
+        return Array.from(new Set(objectNames));
+    }
+    return [];
+}
+export function getNonSelectObjectNames(fields: FieldInfo[] | undefined): string[] {
+    const objectNames = fields
+        ?.filter(field => field.isObjectType)
+        ?.filter(field => !field.isSelect)
         .map(field => field.fieldTypeName);
     if (objectNames) {
         return Array.from(new Set(objectNames));

@@ -4,13 +4,14 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { Buttons, Empty, Loading, SearchInput, Table } from '@graphace/ui';
+	import { Buttons, Empty, Loading, SearchInput, Table, Td } from '@graphace/ui';
 	import { type Option, IDTh, IDTd, StringTh, StringTd, ObjectTd } from '@graphace/ui-graphql';
 	import PermissionTypeTh from '~/lib/components/enums/permission-type/PermissionTypeTh.svelte';
 	import PermissionTypeTd from '~/lib/components/enums/permission-type/PermissionTypeTd.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
 	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
+	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type {
 		PermissionOrderBy,
@@ -290,13 +291,39 @@
 						</slot>
 						<slot name="realm">
 							{#if !fields.realm.hidden}
-								<ObjectTd
-									namedStruct={node.realm}
-									errors={errors?.[row]?.iterms?.realm}
-									path={`${node.name}/realm`}
-									on:goto
-									{zIndex}
-								/>
+								{#if node.name}
+									<ObjectTd
+										namedStruct={node.realm}
+										errors={errors?.[row]?.iterms?.realm}
+										disabled={fields.realm.disabled}
+										path={[
+											{
+												path: node.name,
+												name: node.name
+											},
+											{
+												path: `${node.name}/realm`,
+												name: $LL.graphql.objects.Permission.fields.realm.name()
+											}
+										]}
+										on:goto
+										{zIndex}
+									/>
+								{:else}
+									<Td {zIndex}>
+										<RealmTableDialog
+											bind:value={node.realm}
+											singleChoice={true}
+											readonly={fields.realm.readonly}
+											disabled={fields.realm.disabled}
+											on:select={(e) =>
+												dispatch('save', {
+													value: { realm: node?.realm, where: { name: { val: node?.name } } }
+												})}
+											class="btn-xs"
+										/>
+									</Td>
+								{/if}
 							{/if}
 						</slot>
 						<th class="hover:z-[{zIndex + 3}]">

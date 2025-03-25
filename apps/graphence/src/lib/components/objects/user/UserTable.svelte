@@ -4,13 +4,14 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { Buttons, Empty, Loading, SearchInput, Table } from '@graphace/ui';
+	import { Buttons, Empty, Loading, SearchInput, Table, Td } from '@graphace/ui';
 	import { type Option, StringTh, StringTd, BooleanTh, BooleanTd, ObjectTd } from '@graphace/ui-graphql';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
 	import GroupSelectTd from '~/lib/components/objects/group/GroupSelectTd.svelte';
 	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
+	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type {
 		UserOrderBy,
@@ -373,13 +374,39 @@
 						</slot>
 						<slot name="realm">
 							{#if !fields.realm.hidden}
-								<ObjectTd
-									namedStruct={node.realm}
-									errors={errors?.[row]?.iterms?.realm}
-									path={`${node.id}/realm`}
-									on:goto
-									{zIndex}
-								/>
+								{#if node.id}
+									<ObjectTd
+										namedStruct={node.realm}
+										errors={errors?.[row]?.iterms?.realm}
+										disabled={fields.realm.disabled}
+										path={[
+											{
+												path: node.id,
+												name: node.name
+											},
+											{
+												path: `${node.id}/realm`,
+												name: $LL.graphql.objects.User.fields.realm.name()
+											}
+										]}
+										on:goto
+										{zIndex}
+									/>
+								{:else}
+									<Td {zIndex}>
+										<RealmTableDialog
+											bind:value={node.realm}
+											singleChoice={true}
+											readonly={fields.realm.readonly}
+											disabled={fields.realm.disabled}
+											on:select={(e) =>
+												dispatch('save', {
+													value: { realm: node?.realm, where: { id: { val: node?.id } } }
+												})}
+											class="btn-xs"
+										/>
+									</Td>
+								{/if}
 							{/if}
 						</slot>
 						<th class="hover:z-[{zIndex + 3}]">

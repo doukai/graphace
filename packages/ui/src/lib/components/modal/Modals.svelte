@@ -1,6 +1,7 @@
 <script lang="ts" context="module">
 	import { writable } from 'svelte/store';
 	import { nanoid } from 'nanoid';
+	import { zIndex } from '~';
 
 	export type ModalData = {
 		id?: string | undefined;
@@ -8,6 +9,7 @@
 		class?: string | undefined;
 		description?: string | undefined;
 		isModalOpen?: boolean | undefined;
+		zIndex?: number | undefined;
 		cancel?: (() => boolean) | undefined;
 		confirm?: (() => boolean) | undefined;
 		buttons?:
@@ -27,6 +29,9 @@
 		}
 		if (modalData.isModalOpen === undefined) {
 			modalData.isModalOpen = true;
+		}
+		if (modalData.zIndex === undefined) {
+			modalData.zIndex = zIndex.next();
 		}
 		modals.update(($modals) => {
 			return [...$modals, modalData];
@@ -76,7 +81,13 @@
 </script>
 
 {#each $modals as a (a.id)}
-	<Modal class={a.class} isModalOpen={a.isModalOpen} title={a.title} on:close={() => modal.close()}>
+	<Modal
+		class={a.class}
+		isModalOpen={a.isModalOpen}
+		title={a.title}
+		zIndex={a.zIndex}
+		on:close={() => modal.close()}
+	>
 		{#if a.description}
 			<p class="py-4">
 				{@html a.description}
