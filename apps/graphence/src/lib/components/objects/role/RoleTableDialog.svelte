@@ -84,29 +84,39 @@
 			{zIndex}
 			fields={{
 				name: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('Role::name::WRITE'),
+					disabled: !permissions.auth('Role::name::WRITE'),
 					hidden: !permissions.auth('Role::name::READ')
 				},
 				description: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('Role::description::WRITE'),
+					disabled: !permissions.auth('Role::description::WRITE'),
 					hidden: !permissions.auth('Role::description::READ')
 				},
 				users: {
-					hidden: true
+					readonly: !permissions.auth('Role::users::WRITE'),
+					disabled: !permissions.auth('Role::users::WRITE'),
+					hidden: !permissions.auth('Role::users::READ')
 				},
 				groups: {
-					hidden: true
+					readonly: !permissions.auth('Role::groups::WRITE'),
+					disabled: !permissions.auth('Role::groups::WRITE'),
+					hidden: !permissions.auth('Role::groups::READ')
 				},
 				composites: {
-					hidden: true
+					readonly: !permissions.auth('Role::composites::WRITE'),
+					disabled: !permissions.auth('Role::composites::WRITE'),
+					hidden: !permissions.auth('Role::composites::READ')
 				},
 				permissions: {
-					hidden: true
+					readonly: !permissions.auth('Role::permissions::WRITE'),
+					disabled: !permissions.auth('Role::permissions::WRITE'),
+					hidden: !permissions.auth('Role::permissions::READ')
 				},
 				realm: {
-					hidden: true
+					readonly: !permissions.auth('Role::realm::WRITE'),
+					disabled: !permissions.auth('Role::realm::WRITE'),
+					hidden: !permissions.auth('Role::realm::READ')
 				}
 			}}
 			on:select={(e) => {

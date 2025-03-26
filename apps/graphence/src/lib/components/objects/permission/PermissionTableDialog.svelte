@@ -84,35 +84,39 @@
 			{zIndex}
 			fields={{
 				name: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('Permission::name::WRITE'),
+					disabled: !permissions.auth('Permission::name::WRITE'),
 					hidden: !permissions.auth('Permission::name::READ')
 				},
 				description: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('Permission::description::WRITE'),
+					disabled: !permissions.auth('Permission::description::WRITE'),
 					hidden: !permissions.auth('Permission::description::READ')
 				},
 				field: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('Permission::field::WRITE'),
+					disabled: !permissions.auth('Permission::field::WRITE'),
 					hidden: !permissions.auth('Permission::field::READ')
 				},
 				type: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('Permission::type::WRITE'),
+					disabled: !permissions.auth('Permission::type::WRITE'),
 					hidden: !permissions.auth('Permission::type::READ')
 				},
 				permissionType: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('Permission::permissionType::WRITE'),
+					disabled: !permissions.auth('Permission::permissionType::WRITE'),
 					hidden: !permissions.auth('Permission::permissionType::READ')
 				},
 				roles: {
-					hidden: true
+					readonly: !permissions.auth('Permission::roles::WRITE'),
+					disabled: !permissions.auth('Permission::roles::WRITE'),
+					hidden: !permissions.auth('Permission::roles::READ')
 				},
 				realm: {
-					hidden: true
+					readonly: !permissions.auth('Permission::realm::WRITE'),
+					disabled: !permissions.auth('Permission::realm::WRITE'),
+					hidden: !permissions.auth('Permission::realm::READ')
 				}
 			}}
 			on:select={(e) => {

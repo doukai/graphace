@@ -90,13 +90,9 @@
 			fields={% raw %}{{{% endraw %}
 				{%- for field in fields %}
 				{{ field.fieldName }}: {
-					{%- if field.isLeafType %}
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE'),
+					disabled: !permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE'),
 					hidden: !permissions.auth('{{ name }}::{{ field.fieldName }}::READ')
-					{%- else %}
-					hidden: true
-					{%- endif %}
 				}{% if forloop.last == false %},{% endif %}
 				{%- endfor %}
 			{% raw %}}}{% endraw %}

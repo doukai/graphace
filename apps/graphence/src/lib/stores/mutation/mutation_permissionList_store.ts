@@ -11,7 +11,7 @@ const query = /* GraphQL */ `mutation Mutation_permissionList($name: ID, $descri
     field
     type
     permissionType
-    roles(first: 3) {
+    roles {
       id
       name
       description

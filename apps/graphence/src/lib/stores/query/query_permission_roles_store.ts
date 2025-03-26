@@ -27,12 +27,12 @@ const query = /* GraphQL */ `query Query_permission_roles($permission_name: Stri
         name
         description
       }
-      groups(first: 3) {
+      groups {
         id
         name
         description
       }
-      composites(first: 3) {
+      composites {
         id
         name
         description

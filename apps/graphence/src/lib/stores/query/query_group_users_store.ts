@@ -28,12 +28,12 @@ const query = /* GraphQL */ `query Query_group_users($group_id: String, $id: Str
       email
       phones
       disable
-      groups(first: 3) {
+      groups {
         id
         name
         description
       }
-      roles(first: 3) {
+      roles {
         id
         name
         description

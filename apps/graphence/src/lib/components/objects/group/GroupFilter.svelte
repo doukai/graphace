@@ -7,6 +7,8 @@
 	import { Form, FormControl, Label } from '@graphace/ui';
 	import { StringFilter, IntFilter } from '@graphace/ui-graphql';
 	import GroupSelectFilter from '~/lib/components/objects/group/GroupSelectFilter.svelte';
+	import UserSelectFilter from '~/lib/components/objects/user/UserSelectFilter.svelte';
+	import RoleSelectFilter from '~/lib/components/objects/role/RoleSelectFilter.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { GroupExpression } from '~/lib/types/schema';
 
@@ -30,6 +32,10 @@
 			path: undefined,
 			deep: undefined,
 			parentId: undefined,
+			parent: { id: undefined },
+			subGroups: { id: undefined },
+			users: { id: undefined },
+			roles: { id: undefined },
 		}
 	}
 
@@ -45,6 +51,10 @@
 			path: undefined,
 			deep: undefined,
 			parentId: undefined,
+			parent: { id: undefined },
+			subGroups: { id: undefined },
+			users: { id: undefined },
+			roles: { id: undefined },
 		};
 		dispatch('filter', {});
 		$open = false;
@@ -90,6 +100,22 @@
 				<Label {id} text={$LL.graphql.objects.Group.fields.parentId.name()} />
 				<div class="grid grid-cols-2 gap-1">
 					<StringFilter {id} name="parentId" bind:value={value.parentId} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Group.fields.parent.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<GroupSelectFilter {id} name="parent" bind:value={value.parent.id} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Group.fields.subGroups.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<GroupSelectFilter {id} name="subGroups" bind:value={value.subGroups.id} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Group.fields.users.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<UserSelectFilter {id} name="users" bind:value={value.users.id} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Group.fields.roles.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<RoleSelectFilter {id} name="roles" bind:value={value.roles.id} />
 				</div>
 			</FormControl>
 		</Form>

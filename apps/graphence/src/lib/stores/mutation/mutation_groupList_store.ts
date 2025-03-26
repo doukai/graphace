@@ -17,17 +17,17 @@ const query = /* GraphQL */ `mutation Mutation_groupList($id: ID, $name: String,
       name
       description
     }
-    subGroups(first: 3) {
+    subGroups {
       id
       name
       description
     }
-    users(first: 3) {
+    users {
       id
       name
       description
     }
-    roles(first: 3) {
+    roles {
       id
       name
       description

@@ -23,7 +23,7 @@ const query = /* GraphQL */ `mutation Mutation_role_permissions($role_id: String
       field
       type
       permissionType
-      roles(first: 3) {
+      roles {
         id
         name
         description

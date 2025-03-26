@@ -14,12 +14,12 @@ const query = /* GraphQL */ `query Query_userList($id: StringExpression, $name: 
     email
     phones
     disable
-    groups(first: 3) {
+    groups {
       id
       name
       description
     }
-    roles(first: 3) {
+    roles {
       id
       name
       description

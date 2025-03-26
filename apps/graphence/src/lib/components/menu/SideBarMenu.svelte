@@ -15,7 +15,7 @@
 	import { page } from '$app/stores';
 	import Iconify from '@iconify/svelte';
 	import type { PermissionsStore } from '@graphace/commons';
-	import { init, Menu, MenuTitle } from '@graphace/ui';
+	import { init, zIndex, Menu, MenuTitle } from '@graphace/ui';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { locale } from '$i18n/i18n-svelte';
 	import pages from '~/lib/data/pages.json';
@@ -44,6 +44,7 @@
 								<a
 									href={null}
 									on:click|preventDefault={(e) => {
+										zIndex.reset();
 										init(`/${$locale}${subMenu.href}`, $LL.graphql.objects[subMenu.name].name());
 									}}
 									class={$page.url.pathname === `/${$locale}${subMenu.href}` ||
@@ -66,6 +67,7 @@
 				<a
 					href={null}
 					on:click|preventDefault={(e) => {
+						zIndex.reset();
 						init(`/${$locale}${menu.href}`, $LL.graphql.objects[menu.name].name());
 					}}
 					class={$page.url.pathname === `/${$locale}${menu.href}` ||

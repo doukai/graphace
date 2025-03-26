@@ -84,48 +84,54 @@
 			{zIndex}
 			fields={{
 				name: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('User::name::WRITE'),
+					disabled: !permissions.auth('User::name::WRITE'),
 					hidden: !permissions.auth('User::name::READ')
 				},
 				description: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('User::description::WRITE'),
+					disabled: !permissions.auth('User::description::WRITE'),
 					hidden: !permissions.auth('User::description::READ')
 				},
 				lastName: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('User::lastName::WRITE'),
+					disabled: !permissions.auth('User::lastName::WRITE'),
 					hidden: !permissions.auth('User::lastName::READ')
 				},
 				login: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('User::login::WRITE'),
+					disabled: !permissions.auth('User::login::WRITE'),
 					hidden: !permissions.auth('User::login::READ')
 				},
 				email: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('User::email::WRITE'),
+					disabled: !permissions.auth('User::email::WRITE'),
 					hidden: !permissions.auth('User::email::READ')
 				},
 				phones: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('User::phones::WRITE'),
+					disabled: !permissions.auth('User::phones::WRITE'),
 					hidden: !permissions.auth('User::phones::READ')
 				},
 				disable: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('User::disable::WRITE'),
+					disabled: !permissions.auth('User::disable::WRITE'),
 					hidden: !permissions.auth('User::disable::READ')
 				},
 				groups: {
-					hidden: true
+					readonly: !permissions.auth('User::groups::WRITE'),
+					disabled: !permissions.auth('User::groups::WRITE'),
+					hidden: !permissions.auth('User::groups::READ')
 				},
 				roles: {
-					hidden: true
+					readonly: !permissions.auth('User::roles::WRITE'),
+					disabled: !permissions.auth('User::roles::WRITE'),
+					hidden: !permissions.auth('User::roles::READ')
 				},
 				realm: {
-					hidden: true
+					readonly: !permissions.auth('User::realm::WRITE'),
+					disabled: !permissions.auth('User::realm::WRITE'),
+					hidden: !permissions.auth('User::realm::READ')
 				}
 			}}
 			on:select={(e) => {

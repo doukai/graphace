@@ -31,17 +31,17 @@ const query = /* GraphQL */ `query Query_role_groupsConnection($role_id: String,
             name
             description
           }
-          subGroups(first: 3) {
+          subGroups {
             id
             name
             description
           }
-          users(first: 3) {
+          users {
             id
             name
             description
           }
-          roles(first: 3) {
+          roles {
             id
             name
             description

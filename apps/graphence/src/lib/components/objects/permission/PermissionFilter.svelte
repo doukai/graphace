@@ -7,6 +7,7 @@
 	import { Form, FormControl, Label } from '@graphace/ui';
 	import { IDFilter, StringFilter } from '@graphace/ui-graphql';
 	import PermissionTypeFilter from '~/lib/components/enums/permission-type/PermissionTypeFilter.svelte';
+	import RoleSelectFilter from '~/lib/components/objects/role/RoleSelectFilter.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { PermissionExpression } from '~/lib/types/schema';
 
@@ -30,6 +31,7 @@
 			field: undefined,
 			type: undefined,
 			permissionType: undefined,
+			roles: { id: undefined },
 		}
 	}
 
@@ -45,6 +47,7 @@
 			field: undefined,
 			type: undefined,
 			permissionType: undefined,
+			roles: { id: undefined },
 		};
 		dispatch('filter', {});
 		$open = false;
@@ -86,6 +89,10 @@
 				<Label {id} text={$LL.graphql.objects.Permission.fields.permissionType.name()} />
 				<div class="grid grid-cols-2 gap-1">
 					<PermissionTypeFilter {id} name="permissionType" bind:value={value.permissionType} />
+				</div>
+				<Label {id} text={$LL.graphql.objects.Permission.fields.roles.name()} />
+				<div class="grid grid-cols-2 gap-1">
+					<RoleSelectFilter {id} name="roles" bind:value={value.roles.id} />
 				</div>
 			</FormControl>
 		</Form>

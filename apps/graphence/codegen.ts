@@ -101,8 +101,7 @@ const config: CodegenConfig = {
                         },
                         {
                             name: 'User',
-                            // inRoute: false,
-                            // select: true,
+                            select: true,
                             fields: [
                                 {
                                     name: 'salt',
@@ -123,15 +122,11 @@ const config: CodegenConfig = {
                         },
                         {
                             name: 'Role',
-                            // select: true,
+                            select: true,
                             fields: [
                                 {
                                     name: 'users',
                                     select: false
-                                },
-                                {
-                                    name: 'permissions',
-                                    // inRoute: false
                                 },
                                 {
                                     name: 'syncRolePolicy',
@@ -144,7 +139,7 @@ const config: CodegenConfig = {
                         },
                         {
                             name: 'Group',
-                            // select: true,
+                            select: true,
                             fields: [
                                 {
                                     name: 'syncGroupPolicy',

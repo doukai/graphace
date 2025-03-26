@@ -25,12 +25,12 @@ const query = /* GraphQL */ `query Query_role_users($role_id: String, $id: Strin
       email
       phones
       disable
-      groups(first: 3) {
+      groups {
         id
         name
         description
       }
-      roles(first: 3) {
+      roles {
         id
         name
         description

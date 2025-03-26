@@ -84,13 +84,13 @@
 			{zIndex}
 			fields={{
 				name: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('Realm::name::WRITE'),
+					disabled: !permissions.auth('Realm::name::WRITE'),
 					hidden: !permissions.auth('Realm::name::READ')
 				},
 				description: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('Realm::description::WRITE'),
+					disabled: !permissions.auth('Realm::description::WRITE'),
 					hidden: !permissions.auth('Realm::description::READ')
 				}
 			}}

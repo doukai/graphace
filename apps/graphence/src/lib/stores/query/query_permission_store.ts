@@ -11,7 +11,7 @@ const query = /* GraphQL */ `query Query_permission($name: StringExpression, $de
     field
     type
     permissionType
-    roles(first: 3) {
+    roles {
       id
       name
       description

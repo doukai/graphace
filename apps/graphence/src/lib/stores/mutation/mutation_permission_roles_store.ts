@@ -28,12 +28,12 @@ const query = /* GraphQL */ `mutation Mutation_permission_roles($permission_name
         name
         description
       }
-      groups(first: 3) {
+      groups {
         id
         name
         description
       }
-      composites(first: 3) {
+      composites {
         id
         name
         description

@@ -84,44 +84,54 @@
 			{zIndex}
 			fields={{
 				name: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('Group::name::WRITE'),
+					disabled: !permissions.auth('Group::name::WRITE'),
 					hidden: !permissions.auth('Group::name::READ')
 				},
 				description: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('Group::description::WRITE'),
+					disabled: !permissions.auth('Group::description::WRITE'),
 					hidden: !permissions.auth('Group::description::READ')
 				},
 				path: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('Group::path::WRITE'),
+					disabled: !permissions.auth('Group::path::WRITE'),
 					hidden: !permissions.auth('Group::path::READ')
 				},
 				deep: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('Group::deep::WRITE'),
+					disabled: !permissions.auth('Group::deep::WRITE'),
 					hidden: !permissions.auth('Group::deep::READ')
 				},
 				parentId: {
-					readonly: true,
-					disabled: true,
+					readonly: !permissions.auth('Group::parentId::WRITE'),
+					disabled: !permissions.auth('Group::parentId::WRITE'),
 					hidden: !permissions.auth('Group::parentId::READ')
 				},
 				parent: {
-					hidden: true
+					readonly: !permissions.auth('Group::parent::WRITE'),
+					disabled: !permissions.auth('Group::parent::WRITE'),
+					hidden: !permissions.auth('Group::parent::READ')
 				},
 				subGroups: {
-					hidden: true
+					readonly: !permissions.auth('Group::subGroups::WRITE'),
+					disabled: !permissions.auth('Group::subGroups::WRITE'),
+					hidden: !permissions.auth('Group::subGroups::READ')
 				},
 				users: {
-					hidden: true
+					readonly: !permissions.auth('Group::users::WRITE'),
+					disabled: !permissions.auth('Group::users::WRITE'),
+					hidden: !permissions.auth('Group::users::READ')
 				},
 				roles: {
-					hidden: true
+					readonly: !permissions.auth('Group::roles::WRITE'),
+					disabled: !permissions.auth('Group::roles::WRITE'),
+					hidden: !permissions.auth('Group::roles::READ')
 				},
 				realm: {
-					hidden: true
+					readonly: !permissions.auth('Group::realm::WRITE'),
+					disabled: !permissions.auth('Group::realm::WRITE'),
+					hidden: !permissions.auth('Group::realm::READ')
 				}
 			}}
 			on:select={(e) => {
