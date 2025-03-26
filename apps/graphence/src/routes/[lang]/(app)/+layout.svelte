@@ -22,8 +22,7 @@
 		ThemeDropdown,
 		LocaleDropdown
 	} from '@graphace/ui';
-	import SideBarMenu from '~/lib/components/menu/SideBarMenu.svelte';
-	import ModuleMenu from '~/lib/components/menu/ModuleMenu.svelte';
+	import { SideBarMenu, ModuleMenu, UserMenu } from '~/lib/components/menu';
 	import { setLocale, LL, locale } from '$i18n/i18n-svelte';
 	import type { LayoutData } from './$types';
 
@@ -50,7 +49,7 @@
 	/>
 </svelte:head>
 
-<Drawer let:id>
+<Drawer let:id class="lg:drawer-open overflow-hidden">
 	<DrawerContent {id} class="bg-base-200">
 		<NavBar zIndex={$zIndex + 1} class="sticky top-0 bg-base-100">
 			<NavBarStart class="flex items-center space-x-1">
@@ -91,6 +90,7 @@
 						zh: { name: '简体中文', flag: 'twemoji:flag-china' }
 					}}
 				/>
+				<UserMenu zIndex={$zIndex + 1} />
 			</NavBarEnd>
 		</NavBar>
 		<main class="max-w-[100vw] p-1 md:p-2">
@@ -126,26 +126,28 @@
 			<Modals />
 		</main>
 	</DrawerContent>
-	<DrawerSide {id}>
-		<div
-			class="flex items-center w-full bg-base-100 sticky top-0 gap-2 bg-opacity-90 px-4 py-2 backdrop-blur"
-		>
-			<a
-				href={null}
-				on:click|preventDefault={(e) => {
-					init(`/${$locale}`);
-				}}
-				aria-current="page"
-				aria-label={$LL.graphence.path.home()}
-				class="flex-0 btn btn-ghost px-2"
+	<DrawerSide {id} class="z-[{$zIndex + 2}] lg:z-[0]">
+		<div>
+			<div
+				class="bg-base-100 sticky top-0 items-center gap-2 bg-opacity-90 px-4 py-2 backdrop-blur max-lg:hidden"
 			>
-				<Iconify class="h-6 w-6" icon="logos:graphql" />
-				<div class="font-title inline-flex text-lg md:text-2xl">
-					<span class="lowercase">graph</span>
-					<span class="uppercase text-[#E535AB]">ACE</span>
-				</div>
-			</a>
+				<a
+					href={null}
+					on:click|preventDefault={(e) => {
+						init(`/${$locale}`);
+					}}
+					aria-current="page"
+					aria-label={$LL.graphence.path.home()}
+					class="flex-0 btn btn-ghost px-2"
+				>
+					<Iconify class="h-6 w-6" icon="logos:graphql" />
+					<div class="font-title inline-flex text-lg md:text-2xl">
+						<span class="lowercase">graph</span>
+						<span class="uppercase text-[#E535AB]">ACE</span>
+					</div>
+				</a>
+			</div>
+			<SideBarMenu />
 		</div>
-		<SideBarMenu />
 	</DrawerSide>
 </Drawer>

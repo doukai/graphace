@@ -1,90 +1,42 @@
 [
-	{
-        "name": "Group",
-        "tags": "Group",
-        "href": "/group",
-        "authPermissions": [
-            "Group::*::*"
-        ]
-	},
-	{
-        "name": "GroupRoleRelation",
-        "tags": "GroupRoleRelation",
-        "href": "/group-role-relation",
-        "authPermissions": [
-            "GroupRoleRelation::*::*"
-        ]
-	},
-	{
-        "name": "GroupUserRelation",
-        "tags": "GroupUserRelation",
-        "href": "/group-user-relation",
-        "authPermissions": [
-            "GroupUserRelation::*::*"
-        ]
-	},
-	{
-        "name": "Permission",
-        "tags": "Permission",
-        "href": "/permission",
-        "authPermissions": [
-            "Permission::*::*"
-        ]
-	},
-	{
-        "name": "PermissionRoleRelation",
-        "tags": "PermissionRoleRelation",
-        "href": "/permission-role-relation",
-        "authPermissions": [
-            "PermissionRoleRelation::*::*"
-        ]
-	},
-	{
+    {
         "name": "Realm",
         "tags": "Realm",
         "href": "/realm",
         "authPermissions": [
             "Realm::*::*"
         ]
-	},
-	{
-        "name": "Role",
-        "tags": "Role",
-        "href": "/role",
+    },
+    {
+        "name": "Group",
+        "tags": "Group",
+        "href": "/group",
         "authPermissions": [
-            "Role::*::*"
+            "Group::*::*"
         ]
-	},
-	{
-        "name": "RoleCompositeRelation",
-        "tags": "RoleCompositeRelation",
-        "href": "/role-composite-relation",
-        "authPermissions": [
-            "RoleCompositeRelation::*::*"
-        ]
-	},
-	{
-        "name": "RoleUserRelation",
-        "tags": "RoleUserRelation",
-        "href": "/role-user-relation",
-        "authPermissions": [
-            "RoleUserRelation::*::*"
-        ]
-	},
-	{
+    },
+    {
         "name": "User",
         "tags": "User",
         "href": "/user",
         "authPermissions": [
             "User::*::*"
         ]
-	},
-	{
-        "name": "UserPhonesRelation",
-        "tags": "UserPhonesRelation",
-        "href": "/user-phones-relation",
+    },
+    {
+        "name": "Role",
+        "tags": "Role",
+        "href": "/role",
         "authPermissions": [
-            "UserPhonesRelation::*::*"
+            "Role::*::*"
         ]
-	}
+    },
+    {
+        "name": "Permission",
+        "tags": "Permission",
+        "href": "/permission",
+        "authPermissions": [
+            "Permission::*::*"
+        ]
+    }
 ]

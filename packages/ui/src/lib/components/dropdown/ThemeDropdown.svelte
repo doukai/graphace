@@ -4,8 +4,7 @@
 	import { themeChange } from 'theme-change';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Swatch, ChevronDown, Check } from '@steeze-ui/heroicons';
-	import Dropdown from './Dropdown.svelte';
-	import DropdownContent from './DropdownContent.svelte';
+	import { Dropdown, DropdownContent } from '.';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');

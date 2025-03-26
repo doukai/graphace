@@ -5,6 +5,11 @@
 	import Avatar from 'svelte-boring-avatars';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { locale } from '$i18n/i18n-svelte';
+	import { Dropdown, DropdownContent } from '@graphace/ui';
+
+	export let zIndex: number | undefined = 0;
+	let className: string | undefined = 'mt-2 max-h-96 w-56 overflow-y-auto';
+	export { className as class };
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
@@ -14,7 +19,7 @@
 </script>
 
 {#if $jwt}
-	<div class="dropdown dropdown-end">
+	<Dropdown class="dropdown-end">
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label tabindex="0" class="btn btn-ghost btn-circle avatar">
@@ -23,19 +28,20 @@
 				<Avatar name={$jwt?.full_name} {size} {square} {colors} variant="beam" />
 			</div>
 		</label>
-		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-		<ul
-			tabindex="0"
-			class="mt-3 z-[999] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
-		>
-			<li>
-				<a href={`/${$locale}/settings/account`}>{$LL.graphence.components.userMenu.profile()}</a>
-			</li>
-			<li>
-				<a href={`/${$locale}/settings/password`}>{$LL.graphence.components.userMenu.password()}</a>
-			</li>
-			<div class="divider mt-0 mb-0" />
-			<li><a href={`/${$locale}/logout`}>{$LL.graphence.components.userMenu.logout()}</a></li>
-		</ul>
-	</div>
+		<DropdownContent {zIndex} class={className}>
+			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+			<ul tabindex="0" class="menu menu-sm">
+				<li>
+					<a href={`/${$locale}/settings/account`}>{$LL.graphence.components.userMenu.profile()}</a>
+				</li>
+				<li>
+					<a href={`/${$locale}/settings/password`}
+						>{$LL.graphence.components.userMenu.password()}</a
+					>
+				</li>
+				<div class="divider mt-0 mb-0" />
+				<li><a href={`/${$locale}/logout`}>{$LL.graphence.components.userMenu.logout()}</a></li>
+			</ul>
+		</DropdownContent>
+	</Dropdown>
 {/if}

@@ -4,7 +4,7 @@
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 
 	export let totalCount: number = 0;
-	let className: string = 'self-center';
+	let className: string = 'text-sm self-center font-semibold';
 	export { className as class };
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');

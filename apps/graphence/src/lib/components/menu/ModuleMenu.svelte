@@ -39,6 +39,7 @@
 						<a
 							href={null}
 							on:click|preventDefault={(e) => {
+								zIndex.reset();
 								init('./chart/bar', $LL.graphence.components.sideBarMenu.bar());
 							}}
 							class={$page.url.pathname.endsWith('/chart/bar') ? 'active' : ''}
@@ -51,6 +52,7 @@
 						<a
 							href={null}
 							on:click|preventDefault={(e) => {
+								zIndex.reset();
 								init('./chart/line', $LL.graphence.components.sideBarMenu.line());
 							}}
 							class={$page.url.pathname.endsWith('/chart/line') ? 'active' : ''}
@@ -63,6 +65,7 @@
 						<a
 							href={null}
 							on:click|preventDefault={(e) => {
+								zIndex.reset();
 								init('./chart/pie', $LL.graphence.components.sideBarMenu.pie());
 							}}
 							class={$page.url.pathname.endsWith('/chart/pie') ? 'active' : ''}
@@ -85,6 +88,7 @@
 						<a
 							href={null}
 							on:click|preventDefault={(e) => {
+								zIndex.reset();
 								init('./grid/agg', $LL.graphence.components.sideBarMenu.statistics());
 							}}
 							class={$page.url.pathname.endsWith('/grid/agg') ? 'active' : ''}
@@ -97,6 +101,7 @@
 						<a
 							href={null}
 							on:click|preventDefault={(e) => {
+								zIndex.reset();
 								init('./grid/mutation', $LL.graphence.components.sideBarMenu.mutation());
 							}}
 							class={$page.url.pathname.endsWith('/grid/mutation') ? 'active' : ''}

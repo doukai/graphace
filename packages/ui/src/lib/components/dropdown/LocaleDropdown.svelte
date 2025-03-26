@@ -13,8 +13,7 @@
 	import { Language, ChevronDown } from '@steeze-ui/heroicons';
 	import Iconify from '@iconify/svelte';
 	import { replaceLocaleInUrl } from '@graphace/commons';
-	import Dropdown from './Dropdown.svelte';
-	import DropdownContent from './DropdownContent.svelte';
+	import { Dropdown, DropdownContent } from '.';
 	import { setLocale, locale } from '~/i18n/i18n-svelte';
 	import type { Locales } from '~/i18n/i18n-types';
 	import { baseLocale } from '~/i18n/i18n-util';
