@@ -2,6 +2,7 @@
 	export type Option = {
 		label: string | null | undefined;
 		value?: string | null | undefined;
+		node?: any | null | undefined;
 		parent?: Option | null | undefined;
 		options?: Option[] | null | undefined;
 		disabled?: boolean | undefined;

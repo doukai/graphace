@@ -19,7 +19,7 @@ export function createQuery_current_Store(event: LoadEvent | RequestEvent): Quer
   return createGraphQLQueryStore<Current, undefined>(query, event);
 }
 
-export async function fetchQuery_current_Store(event: LoadEvent | RequestEvent, variables: undefined): Promise<Query_current_Store> {
+export async function fetchQuery_current_Store(event: LoadEvent | RequestEvent, variables?: undefined): Promise<Query_current_Store> {
   return fetchGraphQLQueryStore<Current, undefined>(query, event, variables);
 }
 

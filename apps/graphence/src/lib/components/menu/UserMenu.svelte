@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import { jwt } from '@graphace/commons';
 	import Avatar from 'svelte-boring-avatars';
+	import { jwt } from '@graphace/commons';
+	import { init, Dropdown, DropdownContent } from '@graphace/ui';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { locale } from '$i18n/i18n-svelte';
-	import { Dropdown, DropdownContent } from '@graphace/ui';
 
 	export let zIndex: number | undefined = 0;
 	let className: string | undefined = 'mt-2 max-h-96 w-56 overflow-y-auto';
@@ -32,12 +32,24 @@
 			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 			<ul tabindex="0" class="menu menu-sm">
 				<li>
-					<a href={`/${$locale}/settings/account`}>{$LL.graphence.components.userMenu.profile()}</a>
+					<a
+						href={null}
+						on:click|preventDefault={(e) => {
+							init(`/${$locale}/settings/account`, $LL.graphence.components.userMenu.profile());
+						}}
+					>
+						{$LL.graphence.components.userMenu.profile()}
+					</a>
 				</li>
 				<li>
-					<a href={`/${$locale}/settings/password`}
-						>{$LL.graphence.components.userMenu.password()}</a
+					<a
+						href={null}
+						on:click|preventDefault={(e) => {
+							init(`/${$locale}/settings/password`, $LL.graphence.components.userMenu.password());
+						}}
 					>
+						{$LL.graphence.components.userMenu.password()}
+					</a>
 				</li>
 				<div class="divider mt-0 mb-0" />
 				<li><a href={`/${$locale}/logout`}>{$LL.graphence.components.userMenu.logout()}</a></li>

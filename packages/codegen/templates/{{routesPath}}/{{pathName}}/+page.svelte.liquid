@@ -2,7 +2,7 @@
 	import { getContext } from 'svelte';
 	import type { Errors, JsonSchema{%- if useAuth -%}, PermissionsStore{%- endif -%} } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
-	import { to, add, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
+	import { to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import {{ name }}Table from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Table.svelte';
 	import type { Query_{{ name | camelCase }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}Connection_store';
 	import type { Mutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
@@ -11,8 +11,7 @@
 	{%- endif %}
 	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
 	import type { {{ queryTypeName }}{{ name }}ConnectionArgs, {{ mutationTypeName }}{{ name }}Args } from '~/{{ schemaTypesPath }}';
-	import LL from '$i18n/i18n-svelte';
-	import { locale } from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;

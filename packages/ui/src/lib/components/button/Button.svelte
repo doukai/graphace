@@ -15,7 +15,7 @@
 		</slot>
 	</button>
 </div>
-<button class="hidden md:flex btn {className} {contextClass}" on:click>
+<button class="btn {className} {contextClass} max-md:hidden" on:click>
 	<slot>
 		{text}
 	</slot>

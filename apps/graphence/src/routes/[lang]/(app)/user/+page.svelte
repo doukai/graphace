@@ -2,14 +2,13 @@
 	import { getContext } from 'svelte';
 	import type { Errors, JsonSchema, PermissionsStore} from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
-	import { to, add, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
+	import { to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import UserTable from '~/lib/components/objects/user/UserTable.svelte';
 	import type { Query_userConnection_Store } from '~/lib/stores/query/query_userConnection_store';
 	import type { Mutation_user_Store } from '~/lib/stores/mutation/mutation_user_store';
 	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
 	import type { QueryUserConnectionArgs, MutationUserArgs } from '~/lib/types/schema';
-	import LL from '$i18n/i18n-svelte';
-	import { locale } from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;

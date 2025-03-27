@@ -12,8 +12,7 @@
 	import type { {{ name }}, {{ name }}Connection } from '~/{{ schemaTypesPath }}';
 	import type { PageData } from './$types';
 	import { buildGraphQLErrors } from '~/utils';
-	import LL from '$i18n/i18n-svelte';
-	import { locale } from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let data: PageData;
 

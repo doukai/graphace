@@ -40,7 +40,7 @@
 							href={null}
 							on:click|preventDefault={(e) => {
 								zIndex.reset();
-								init('./chart/bar', $LL.graphence.components.sideBarMenu.bar());
+								init('/chart/bar', $LL.graphence.components.sideBarMenu.bar());
 							}}
 							class={$page.url.pathname.endsWith('/chart/bar') ? 'active' : ''}
 						>
@@ -53,7 +53,7 @@
 							href={null}
 							on:click|preventDefault={(e) => {
 								zIndex.reset();
-								init('./chart/line', $LL.graphence.components.sideBarMenu.line());
+								init('/chart/line', $LL.graphence.components.sideBarMenu.line());
 							}}
 							class={$page.url.pathname.endsWith('/chart/line') ? 'active' : ''}
 						>
@@ -66,7 +66,7 @@
 							href={null}
 							on:click|preventDefault={(e) => {
 								zIndex.reset();
-								init('./chart/pie', $LL.graphence.components.sideBarMenu.pie());
+								init('/chart/pie', $LL.graphence.components.sideBarMenu.pie());
 							}}
 							class={$page.url.pathname.endsWith('/chart/pie') ? 'active' : ''}
 						>
@@ -89,7 +89,7 @@
 							href={null}
 							on:click|preventDefault={(e) => {
 								zIndex.reset();
-								init('./grid/agg', $LL.graphence.components.sideBarMenu.statistics());
+								init('/grid/agg', $LL.graphence.components.sideBarMenu.statistics());
 							}}
 							class={$page.url.pathname.endsWith('/grid/agg') ? 'active' : ''}
 						>
@@ -102,7 +102,7 @@
 							href={null}
 							on:click|preventDefault={(e) => {
 								zIndex.reset();
-								init('./grid/mutation', $LL.graphence.components.sideBarMenu.mutation());
+								init('/grid/mutation', $LL.graphence.components.sideBarMenu.mutation());
 							}}
 							class={$page.url.pathname.endsWith('/grid/mutation') ? 'active' : ''}
 						>

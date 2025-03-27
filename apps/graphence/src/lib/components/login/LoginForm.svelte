@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import type { Errors } from '@graphace/commons';
 	import { nanoid } from 'nanoid';
+	import type { Errors } from '@graphace/commons';
 	import type { NamespaceErrorsTranslation, TranslationFunctions } from '$i18n/i18n-types';
 
 	export let errors: Record<string, Errors> = {};
 	export let authErrorCodes: number[] = [];
 	export let logining: boolean = false;
-	
+
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	$: authErrorMessageKeys = authErrorCodes.map(

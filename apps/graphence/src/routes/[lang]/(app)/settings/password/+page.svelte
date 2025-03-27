@@ -1,40 +1,39 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import type { Errors, JsonSchema } from '@graphace/commons';
-	import { Card, ot, to, urlName, canBack } from '@graphace/ui';
-	import ResetPasswordForm from '~/lib/components/settings/ResetPasswordForm.svelte';
-	import type { GraphQLError } from '@graphace/graphql';
-	import type { UserInput } from '~/lib/types/schema';
-	import type { Mutation_currentUserResetPassword_Store } from '~/lib/stores/mutation/mutation_currentUserResetPassword_store';
-	import type { PageData } from './$types';
-	import { locale } from '$i18n/i18n-svelte';
-	import LL from '$i18n/i18n-svelte';
 	import { getContext } from 'svelte';
+	import type { Errors, JsonSchema } from '@graphace/commons';
+	import { ot, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
+	import type { Mutation_currentUserResetPassword_Store } from '~/lib/stores/mutation/mutation_currentUserResetPassword_store';
+	import ResetPasswordForm from '~/lib/components/settings/ResetPasswordForm.svelte';
+	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
+	import { LL, locale } from '$i18n/i18n-svelte';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
 
 	const { validate } = getContext<JsonSchema>('jsonSchema');
 
-	$: urlName($page.url, $LL.graphence.components.userMenu.password());
 	$: mutation_currentUserResetPassword =
 		data.mutation_currentUserResetPassword_Store as Mutation_currentUserResetPassword_Store;
 	let errors: Record<string, Errors> = {};
 
-	const mutation = (
-		event: CustomEvent<{
-			args: { password: string; newPassword: string };
-			then: (data: UserInput | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
-		}>
-	) => {
-		validate('Mutation_currentUserResetPassword_Arguments', event.detail.args, $locale)
+	const mutation = (args: { password: string; newPassword: string }) => {
+		validate('Mutation_currentUserResetPassword_Arguments', args, $locale)
 			.then((data) => {
 				errors = {};
-				mutation_currentUserResetPassword.fetch(event.detail.args).then((result) => {
+				mutation_currentUserResetPassword.fetch(args).then((result) => {
 					if (result.errors) {
-						event.detail.catch(result.errors);
+						console.error(result.errors);
+						errors = buildGraphQLErrors(result.errors);
+						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+						if (globalError) {
+							modal.open({
+								title: $LL.graphence.message.requestFailed(),
+								description: globalError
+							});
+						}
 					} else {
-						event.detail.then(result?.data?.currentUserResetPassword);
+						toast.success($LL.graphence.message.requestSuccess());
+						ot();
 					}
 				});
 			})
@@ -42,12 +41,19 @@
 				errors = validErrors;
 			});
 	};
-
-	const back = (event: CustomEvent<{}>) => {
-		ot();
-	};
 </script>
 
 <Card>
-	<ResetPasswordForm showBackButton={$canBack} {errors} on:mutation={mutation} on:back={back} />
+	<CardBody>
+		<ResetPasswordForm
+			showBackButton={$canBack}
+			{errors}
+			on:save={(e) => {
+				if (e.detail.password && e.detail.newPassword) {
+					mutation({ password: e.detail.password, newPassword: e.detail.newPassword });
+				}
+			}}
+			on:back={(e) => ot()}
+		/>
+	</CardBody>
 </Card>

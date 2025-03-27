@@ -18,7 +18,6 @@
 	export let showSaveButton: boolean = false;
 	export let showSelectButton: boolean = false;
 	export let showBackButton: boolean = false;
-	export let zIndex: number = 0;
 	let className: string | undefined =
 		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2';
 	export { className as class };

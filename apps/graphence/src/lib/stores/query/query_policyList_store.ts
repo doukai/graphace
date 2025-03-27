@@ -20,7 +20,7 @@ export function createQuery_policyList_Store(event: LoadEvent | RequestEvent): Q
   return createGraphQLQueryStore<Policy[], undefined>(query, event);
 }
 
-export async function fetchQuery_policyList_Store(event: LoadEvent | RequestEvent, variables: undefined): Promise<Query_policyList_Store> {
+export async function fetchQuery_policyList_Store(event: LoadEvent | RequestEvent, variables?: undefined): Promise<Query_policyList_Store> {
   return fetchGraphQLQueryStore<Policy[], undefined>(query, event, variables);
 }
 

@@ -59,7 +59,7 @@ export function createQuery_{{ fieldName }}_Store(event: LoadEvent | RequestEven
   return createGraphQLQueryStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>(query, event);
 }
 
-export async function fetchQuery_{{ fieldName }}_Store(event: LoadEvent | RequestEvent, variables: {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}): Promise<Query_{{ fieldName }}_Store> {
+export async function fetchQuery_{{ fieldName }}_Store(event: LoadEvent | RequestEvent, variables{% if args == undefined or args.length == 0 %}?{% endif %}: {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}): Promise<Query_{{ fieldName }}_Store> {
   return fetchGraphQLQueryStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>(query, event, variables);
 }
 
