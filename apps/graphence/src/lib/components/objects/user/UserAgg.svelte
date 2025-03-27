@@ -507,7 +507,10 @@
 						field.fields!.flatMap((subField) =>
 							group.options
 								.filter((option) => option.value === subField.name)
-								.map((option) => ({ ...option, group: { value: group.value, label: group.label } }))
+								.map((option) => ({
+									...option,
+									parent: { value: group.value, label: group.label }
+								}))
 						)
 					);
 			} else {
@@ -516,7 +519,7 @@
 					.flatMap((group) =>
 						group.options
 							.filter((option) => option.value === field.name)
-							.map((option) => ({ ...option, group: { value: group.value, label: group.label } }))
+							.map((option) => ({ ...option, parent: { value: group.value, label: group.label } }))
 					);
 			}
 		});
@@ -578,7 +581,7 @@
 				return orderByOptions.flatMap((group) =>
 					(group.options || [])
 						.filter((option) => option.value === entry[0] && option.node === entry[1])
-						.map((option) => ({ ...option, group: group }))
+						.map((option) => ({ ...option, parent: group }))
 				);
 			} else {
 				return Object.entries(entry[1] || {}).flatMap((subEntry) =>
@@ -587,7 +590,7 @@
 						.flatMap((group) =>
 							(group.options || [])
 								.filter((option) => option.value === subEntry[0] && option.node === subEntry[1])
-								.map((option) => ({ ...option, group: group }))
+								.map((option) => ({ ...option, parent: group }))
 						)
 				);
 			}

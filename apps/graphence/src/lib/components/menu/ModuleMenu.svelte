@@ -2,9 +2,9 @@
 	import { getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import { page } from '$app/stores';
+	import Iconify from '@iconify/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { EllipsisVertical } from '@steeze-ui/heroicons';
-	import Iconify from '@iconify/svelte';
 	import { init, zIndex } from '@graphace/ui';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 
@@ -40,7 +40,10 @@
 							href={null}
 							on:click|preventDefault={(e) => {
 								zIndex.reset();
-								init('/chart/bar', $LL.graphence.components.sideBarMenu.bar());
+								init(
+									new URL('./chart/bar', window.location.href + '/'),
+									$LL.graphence.components.sideBarMenu.bar()
+								);
 							}}
 							class={$page.url.pathname.endsWith('/chart/bar') ? 'active' : ''}
 						>
@@ -53,7 +56,10 @@
 							href={null}
 							on:click|preventDefault={(e) => {
 								zIndex.reset();
-								init('/chart/line', $LL.graphence.components.sideBarMenu.line());
+								init(
+									new URL('./chart/line', window.location.href + '/'),
+									$LL.graphence.components.sideBarMenu.line()
+								);
 							}}
 							class={$page.url.pathname.endsWith('/chart/line') ? 'active' : ''}
 						>
@@ -66,7 +72,10 @@
 							href={null}
 							on:click|preventDefault={(e) => {
 								zIndex.reset();
-								init('/chart/pie', $LL.graphence.components.sideBarMenu.pie());
+								init(
+									new URL('./chart/pie', window.location.href + '/'),
+									$LL.graphence.components.sideBarMenu.pie()
+								);
 							}}
 							class={$page.url.pathname.endsWith('/chart/pie') ? 'active' : ''}
 						>
@@ -89,7 +98,11 @@
 							href={null}
 							on:click|preventDefault={(e) => {
 								zIndex.reset();
-								init('/grid/agg', $LL.graphence.components.sideBarMenu.statistics());
+								init(
+									new URL('./grid/agg', window.location.href + '/'),
+									$LL.graphence.components.sideBarMenu.statistics()
+								);
+								init('grid/agg', $LL.graphence.components.sideBarMenu.statistics());
 							}}
 							class={$page.url.pathname.endsWith('/grid/agg') ? 'active' : ''}
 						>
@@ -102,7 +115,10 @@
 							href={null}
 							on:click|preventDefault={(e) => {
 								zIndex.reset();
-								init('/grid/mutation', $LL.graphence.components.sideBarMenu.mutation());
+								init(
+									new URL('./grid/mutation', window.location.href + '/'),
+									$LL.graphence.components.sideBarMenu.mutation()
+								);
 							}}
 							class={$page.url.pathname.endsWith('/grid/mutation') ? 'active' : ''}
 						>

@@ -3,7 +3,7 @@
 	import { Card, CardBody } from '@graphace/ui';
 	import type { OperationStore } from '@graphace/ui-graphql';
 	import UserAgg from '~/lib/components/objects/user/UserAgg.svelte';
-	// import UserBar from '~/lib/components/objects/user/UserBar.svelte';
+	import UserBar from '~/lib/components/objects/user/UserBar.svelte';
 	// import UserLine from '~/lib/components/objects/user/UserLine.svelte';
 	// import UserPie from '~/lib/components/objects/user/UserPie.svelte';
 	// import UserAggTable from '~/lib/components/objects/user/UserAggTable.svelte';
@@ -24,14 +24,14 @@
 	$: connection = $userConnectionQuery.response?.data?.userConnection || {};
 	$: totalCount = connection?.totalCount || 0;
 
-	// const components: Record<string, any> = {
-	// 	bar: UserBar,
-	// 	line: UserLine,
-	// 	pie: UserPie,
-	// 	table: UserAggTable
-	// };
+	const components: Record<string, any> = {
+		bar: UserBar
+		// line: UserLine,
+		// pie: UserPie,
+		// table: UserAggTable
+	};
 
-	// $: component = components[data.type];
+	$: component = components[data.type];
 </script>
 
 <Card>
@@ -63,14 +63,14 @@
 			let:getFieldName
 			let:getGrouByName
 		>
-			<!-- <svelte:component
+			<svelte:component
 				this={component}
 				{connection}
 				{fields}
 				{queryArguments}
 				{getFieldName}
 				{getGrouByName}
-			/> -->
+			/>
 		</UserAgg>
 	</CardBody>
 </Card>

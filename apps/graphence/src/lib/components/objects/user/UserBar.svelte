@@ -21,36 +21,32 @@
 
 	Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, autocolors);
 
-	let data: ChartData<'bar', (number | [number, number])[], unknown> = { datasets: [] };
-
-	$: if (connection) {
-		const nodes = connection?.edges?.map((edge) => edge?.node);
-		if (nodes) {
-			data = {
-				labels: nodes?.map((node) =>
-					queryArguments.groupBy?.map((column) => node?.[column as keyof User]).join(' - ')
-				),
-				datasets: fields.flatMap((field) => {
-					if (field.fields && field.fields.length > 0) {
-						return field.fields.map((subField) => ({
-							label: getFieldName(field.name, subField.name),
-							data: nodes?.map((node) => {
-								const object = node?.[field.name as keyof User];
-								return object?.[subField.name as keyof typeof object];
-							})
-						}));
-					} else {
-						return [
-							{
-								label: getFieldName(field.name),
-								data: nodes?.map((node) => node?.[field.name as keyof User])
-							}
-						];
+	$: nodes = connection?.edges?.map((edge) => edge?.node) || [];
+	$: data = {
+		labels: nodes?.map((node) =>
+			queryArguments.groupBy?.map((column) => node?.[column as keyof User]).join(' - ')
+		),
+		datasets: fields.flatMap((field) => {
+			if (field.fields && field.fields.length > 0) {
+				return field.fields.map((subField) => ({
+					label: getFieldName(field.name, subField.name),
+					data: nodes?.map((node) => {
+						const object = node?.[field.name as keyof User];
+						return object?.[subField.name as keyof typeof object];
+					})
+				}));
+			} else {
+				return [
+					{
+						label: getFieldName(field.name),
+						data: nodes?.map((node) => node?.[field.name as keyof User])
 					}
-				})
-			};
-		}
-	}
+				];
+			}
+		})
+	};
 </script>
 
-<Bar {data} options={{ responsive: true, maintainAspectRatio: false }} />
+<div class="w-full">
+	<Bar {data} options={{ responsive: true, maintainAspectRatio: false }} />
+</div>

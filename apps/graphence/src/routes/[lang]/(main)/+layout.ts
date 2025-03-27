@@ -1,11 +1,11 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import { jwt as jwtStore } from '@graphace/commons';
 import { createJsonSchema, createPermissions, createStructQueryStores, setJsonSchema, setPermissionsStore } from '~/utils';
-import type { LayoutLoad } from './$types';
 import type { Locales } from '$i18n/i18n-types';
 import { namespaces } from '$i18n/i18n-util';
 import { loadLocaleAsync, loadNamespaceAsync } from '$i18n/i18n-util.async';
 import { setLocale } from '$i18n/i18n-svelte';
+import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
 	const locale: Locales = event.data?.locale;

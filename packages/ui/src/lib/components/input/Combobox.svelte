@@ -12,7 +12,7 @@
 
 <script lang="ts">
 	import { getContext, createEventDispatcher } from 'svelte';
-	import { fly } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { createCombobox, createTagsInput, melt, type Tag } from '@melt-ui/svelte';
 	import { Check, ChevronUp, ChevronDown, XMark } from '@steeze-ui/heroicons';
@@ -129,7 +129,7 @@
 <div class="relative">
 	<div
 		use:melt={$root}
-		class="flex flex-wrap items-center textarea {errors?.errors ||
+		class="flex flex-row flex-wrap items-center textarea {errors?.errors ||
 		(errors?.iterms && Object.keys(errors?.iterms).length > 0)
 			? 'textarea-error focus-within:outline-error'
 			: 'focus-within:outline-base-content/20'}  focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 {className} {contextClass}"
@@ -194,10 +194,10 @@
 </div>
 {#if $open}
 	<ul
-		class="menu shadow rounded-xl bg-base-100 w-full z-[{zIndex +
-			9}] max-h-80 mt-4 flex-nowrap overflow-auto"
+		class="menu shadow rounded-xl bg-base-100 z-[{zIndex +
+			9}] max-h-80 mt-4 flex-nowrap overflow-y-auto"
 		use:melt={$menu}
-		transition:fly={{ duration: 150, y: -5 }}
+		transition:fade={{ duration: 100 }}
 	>
 		{#if loading}
 			<li>
@@ -222,7 +222,7 @@
 							>
 								<!-- svelte-ignore a11y-missing-attribute -->
 								<a class="flex">
-									{#if $isSelected({ ...children, group: op })}
+									{#if $isSelected({ ...children, parent: op })}
 										<Icon src={Check} class="size-4" />
 									{:else}
 										<div class="size-4" />

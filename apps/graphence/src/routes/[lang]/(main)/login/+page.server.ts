@@ -12,7 +12,20 @@ export const actions = {
 
         const { getSchemaErrors } = getJsonSchema(event);
 
-        const errors = await getSchemaErrors({ "$id": "#Mutation_login_Arguments", "type": "object", "properties": { "login": { "type": "string" }, "password": { "type": "string" } }, "additionalProperties": true, "required": ["login", "password"] }, { login, password }, event.locals.locale);
+        const errors = await getSchemaErrors(
+            {
+                "$id": "#Mutation_login_Arguments",
+                "type": "object",
+                "properties": {
+                    "login": { "type": "string" },
+                    "password": { "type": "string" }
+                },
+                "additionalProperties": true,
+                "required": ["login", "password"]
+            },
+            { login, password },
+            event.locals.locale
+        );
 
         if (errors) {
             return fail(400, { errors, logining: false });
