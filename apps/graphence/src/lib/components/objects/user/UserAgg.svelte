@@ -608,14 +608,14 @@
 				if (fields.some((field) => field.name === option.parent?.value)) {
 					fields
 						.find((field) => field.name === option.parent?.value)
-						?.fields?.push(new Field({ name: option.value }));
+						?.fields?.push(new Field({ name: option.value! }));
 				} else {
 					fields.push(
-						new Field({ name: option.parent.value, fields: [new Field({ name: option.value })] })
+						new Field({ name: option.parent.value, fields: [new Field({ name: option.value! })] })
 					);
 				}
 			} else {
-				fields.push(new Field({ name: option.value }));
+				fields.push(new Field({ name: option.value! }));
 			}
 			return fields;
 		}, <Field[]>[]);
@@ -632,7 +632,7 @@
 		}
 
 		if (groupByColumns.length > 0) {
-			queryArguments.groupBy = groupByColumns.map((option) => option.value);
+			queryArguments.groupBy = groupByColumns.map((option) => option.value!);
 		} else {
 			queryArguments.groupBy = undefined;
 		}
@@ -644,16 +644,16 @@
 						if (groups.some((group) => group.value === option.parent?.value)) {
 							groups
 								.find((group) => group.value === option.parent?.value)
-								?.sorts?.push({ value: option.value, sort: option.node });
+								?.sorts?.push({ value: option.value!, sort: option.node });
 						} else {
 							if (option.parent?.value) {
 								groups.push({
 									value: option.parent?.value,
-									sorts: [{ value: option.value, sort: option.node }]
+									sorts: [{ value: option.value!, sort: option.node }]
 								});
 							} else {
 								groups.push({
-									value: option.value,
+									value: option.value!,
 									sort: option.node
 								});
 							}
@@ -705,7 +705,7 @@
 			queryArguments.offset = (toPageNumber - 1) * pageSize;
 		}
 		dispatch('query', {
-			fields: [...groupByColumns.map((option) => new Field({ name: option.value })), ...fields],
+			fields: [...groupByColumns.map((option) => new Field({ name: option.value! })), ...fields],
 			queryArguments
 		});
 	};
