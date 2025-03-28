@@ -22,6 +22,6 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        userConnectionQuery: (await fetchQueryStore<UserConnection>(event, { fields: [createConnectionField({ name: 'userConnection', fields })] }))
+        query_userConnection_Store: (await fetchQueryStore<UserConnection>(event, { fields: [createConnectionField({ name: 'userConnection', fields })] }))
     };
 }
