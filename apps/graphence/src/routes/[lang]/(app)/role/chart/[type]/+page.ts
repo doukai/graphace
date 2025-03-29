@@ -23,6 +23,6 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        roleConnectionQuery: (await fetchQueryStore<RoleConnection>(event, { fields: [createConnectionField({ name: 'roleConnection', fields })] }))
+        query_roleConnection_Store: (await fetchQueryStore<RoleConnection>(event, { fields: [createConnectionField({ name: 'roleConnection', fields })] }))
     };
 }

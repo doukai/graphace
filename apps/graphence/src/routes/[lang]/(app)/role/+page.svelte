@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import type { Errors, JsonSchema, PermissionsStore} from '@graphace/commons';
+	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import RoleTable from '~/lib/components/objects/role/RoleTable.svelte';
 	import type { Query_roleConnection_Store } from '~/lib/stores/query/query_roleConnection_store';
 	import type { Mutation_role_Store } from '~/lib/stores/mutation/mutation_role_store';
 	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
-	import type { QueryRoleConnectionArgs, MutationRoleArgs } from '~/lib/types/schema';
+	import type { QueryRoleConnectionArgs, RoleOrderBy, MutationRoleArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
@@ -20,12 +20,17 @@
 	$: nodes = $query_roleConnection_Store.response.data?.roleConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $query_roleConnection_Store.response.data?.roleConnection?.totalCount || 0;
 	$: mutation_role_Store = data.mutation_role_Store as Mutation_role_Store;
+	let args: QueryRoleConnectionArgs = {};
+	let orderBy: RoleOrderBy = {};
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
 	let errors: Record<number, Errors> = {};
 
-	const query = (args: QueryRoleConnectionArgs) => {
-		query_roleConnection_Store.fetch(args).then((result) => {
+	const query = (to?: number | undefined) => {
+		args.orderBy = orderBy;
+		args.first = pageSize;
+		args.offset = (to || pageNumber - 1) * pageSize;
+		query_roleConnection_Store.fetch(buildArguments(args)).then((result) => {
 			if (result.errors) {
 				console.error(errors);
 				toast.error($LL.graphence.message.requestFailed());
@@ -54,14 +59,14 @@
 								title: $LL.graphence.message.requestFailed(),
 								description: globalError,
 								confirm: () => {
-									query({ first: pageSize, offset: 0 });
+									query();
 									return true;
 								}
 							});
 						}
 					} else {
 						toast.success($LL.graphence.message.requestSuccess());
-						query({ first: pageSize, offset: (pageNumber - 1) * pageSize });
+						query();
 					}
 				});
 			})
@@ -81,6 +86,8 @@
 			showCreateButton={true}
 			showBackButton={$canBack}
 			value={nodes}
+			bind:args
+			bind:orderBy
 			{errors}
 			isFetching={$query_roleConnection_Store.isFetching}
 			fields={{
@@ -122,24 +129,19 @@
 			}}
 			on:search={(e) => {
 				if (e.detail.value) {
-					query({
+					args = {
 						cond: 'OR',
 						name: { opr: 'LK', val: e.detail.value },
 						description: { opr: 'LK', val: e.detail.value },
 						first: pageSize,
 						offset: 0
-					});
+					};
 				} else {
-					query({ first: pageSize, offset: 0 });
+					args = { first: pageSize, offset: 0 };
 				}
+				query();
 			}}
-			on:query={(e) => {
-				e.detail.args = buildArguments(e.detail.args);
-				if (Object.keys(e.detail.orderBy).length > 0) {
-					e.detail.args.orderBy = e.detail.orderBy;
-				}
-				query(e.detail.args);
-			}}
+			on:query={(e) => query()}
 			on:save={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
 					mutation(e.detail.value);
@@ -179,8 +181,8 @@
 			bind:pageSize
 			bind:pageNumber
 			{totalCount}
-			on:pageChange={(e) => query({ first: pageSize, offset: (pageNumber - 1) * pageSize })}
-			on:sizeChange={(e) => query({ first: pageSize, offset: 0 })}
+			on:pageChange={(e) => query()}
+			on:sizeChange={(e) => query(1)}
 		/>
 	</CardBody>
 </Card>

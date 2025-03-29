@@ -1,31 +1,34 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { createConnectionField } from '@graphace/graphql';
-	import { Card, urlName } from '@graphace/ui';
+	import { Field, Directive, buildArguments, createConnectionField } from '@graphace/graphql';
+	import { Card, CardBody, Pagination, toast } from '@graphace/ui';
 	import type { OperationStore } from '@graphace/ui-graphql';
-	import {{ name }}Agg from '~/{{ chartPath }}/{{ name | paramCase }}/{{ name }}Agg.svelte';
-	import {{ name }}Bar from '~/{{ chartPath }}/{{ name | paramCase }}/{{ name }}Bar.svelte';
-	import {{ name }}Line from '~/{{ chartPath }}/{{ name | paramCase }}/{{ name }}Line.svelte';
-	import {{ name }}Pie from '~/{{ chartPath }}/{{ name | paramCase }}/{{ name }}Pie.svelte';
-	import {{ name }}AggTable from '~/{{ chartPath }}/{{ name | paramCase }}/{{ name }}AggTable.svelte';
-	import type { {{ name }}Connection } from '~/{{ schemaTypesPath }}';
+	import {{ name }}Agg from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Agg.svelte';
+	import {{ name }}Bar from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Bar.svelte';
+	import {{ name }}Line from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Line.svelte';
+	import {{ name }}Pie from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Pie.svelte';
+	import {{ name }}AggTable from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}AggTable.svelte';
+	import type { Query{{ name }}ConnectionArgs, {{ name }}Connection } from '~/{{ schemaTypesPath }}';
+	import { LL } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
-	import LL from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, $LL.graphql.objects.{{ name }}.name());
 
-	$: fields = data.fields;
-	$: queryArguments = data.queryArguments;
 	$: showHeader = data.showHeader;
 	$: showFooter = data.showFooter;
 	$: showOptionButton = data.showOptionButton;
 	$: showFilterButton = data.fields;
 	$: showBookmarkButton = data.showBookmarkButton;
+	$: query_{{ name | paramCase }}Connection_Store = data.query_{{ name | paramCase }}Connection_Store as OperationStore<{{ name }}Connection>;
+	$: nodes = $query_{{ name | paramCase }}Connection_Store.response.data?.{{ name | paramCase }}Connection?.edges?.map(
+		(edge) => edge?.node
+	);
+	$: totalCount = $query_{{ name | paramCase }}Connection_Store.response.data?.{{ name | paramCase }}Connection?.totalCount || 0;
 
-	$: {{ name | camelCase }}ConnectionQuery = data.{{ name | camelCase }}ConnectionQuery as OperationStore<{{ name }}Connection>;
-	$: connection = ${{ name | camelCase }}ConnectionQuery.response?.data?.{{ name | camelCase }}Connection || {};
-	$: totalCount = connection?.totalCount || 0;
+	let fields: Field[] = data.fields || [];
+	let args: Query{{ name }}ConnectionArgs = data.args || {};
+	let directives: Directive[] | undefined = data.directives;
+	let pageNumber: number = 1;
+	let pageSize: number = 10;
 
 	const components: Record<string, any> = {
 		bar: {{ name }}Bar,
@@ -35,43 +38,65 @@
 	};
 
 	$: component = components[data.type];
+
+	const query = (to?: number | undefined) => {
+		args.first = pageSize;
+		args.offset = (to || pageNumber - 1) * pageSize;
+		query_{{ name | paramCase }}Connection_Store
+			.fetch({
+				fields: [
+					createConnectionField({
+						name: '{{ name | paramCase }}Connection',
+						args: buildArguments(args),
+						fields: [...(args?.groupBy?.map((name) => new Field({ name })) || []), ...fields],
+						directives
+					})
+				]
+			})
+			.then((result) => {
+				if (result.errors) {
+					console.error(result.errors);
+					toast.error($LL.graphence.message.requestFailed());
+				}
+			});
+	};
 </script>
 
 <Card>
-	<{{ name }}Agg
-		{fields}
-		{queryArguments}
-		{showHeader}
-		{showFooter}
-		{showOptionButton}
-		{showFilterButton}
-		{showBookmarkButton}
-		isFetching={${{ name | camelCase }}ConnectionQuery.isFetching}
-		{totalCount}
-		className="p-0 md:h-screen"
-		on:query={(e) =>
-			{{ name | camelCase }}ConnectionQuery.fetch({
-				fields: [
-					createConnectionField({
-						name: '{{ name | camelCase }}Connection',
-						fields: e.detail.fields,
-						arguments: e.detail.queryArguments,
-						directives: e.detail.directives
-					})
-				]
-			})}
-		let:fields
-		let:queryArguments
-		let:getFieldName
-		let:getGrouByName
-	>
-		<svelte:component
-			this={component}
-			{connection}
-			{fields}
-			{queryArguments}
-			{getFieldName}
-			{getGrouByName}
-		/>
-	</{{ name }}Agg>
+	<CardBody>
+		<{{ name }}Agg
+			bind:fields
+			bind:args
+			{showHeader}
+			{showOptionButton}
+			{showFilterButton}
+			{showBookmarkButton}
+			class="h-screen"
+			isFetching={$query_{{ name | paramCase }}Connection_Store.isFetching}
+			on:query={(e) => query()}
+			let:fields
+			let:args
+			let:getFieldName
+			let:getGrouByName
+		>
+			<svelte:component
+				this={component}
+				value={nodes}
+				{fields}
+				{args}
+				{getFieldName}
+				{getGrouByName}
+			/>
+		</{{ name }}Agg>
+		{#if showFooter}
+			<div class="divider" />
+			<Pagination
+				bind:pageSize
+				bind:pageNumber
+				{totalCount}
+				on:pageChange={(e) => query()}
+				on:sizeChange={(e) => query(1)}
+			/>
+		{/if}
+	</CardBody>
 </Card>

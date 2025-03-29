@@ -1,31 +1,34 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { createConnectionField } from '@graphace/graphql';
-	import { Card, urlName } from '@graphace/ui';
+	import { Field, Directive, buildArguments, createConnectionField } from '@graphace/graphql';
+	import { Card, CardBody, Pagination, toast } from '@graphace/ui';
 	import type { OperationStore } from '@graphace/ui-graphql';
 	import PermissionAgg from '~/lib/components/objects/permission/PermissionAgg.svelte';
 	import PermissionBar from '~/lib/components/objects/permission/PermissionBar.svelte';
 	import PermissionLine from '~/lib/components/objects/permission/PermissionLine.svelte';
 	import PermissionPie from '~/lib/components/objects/permission/PermissionPie.svelte';
 	import PermissionAggTable from '~/lib/components/objects/permission/PermissionAggTable.svelte';
-	import type { PermissionConnection } from '~/lib/types/schema';
+	import type { QueryPermissionConnectionArgs, PermissionConnection } from '~/lib/types/schema';
+	import { LL } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
-	import LL from '$i18n/i18n-svelte';
 
 	export let data: PageData;
-	$: urlName($page.url, $LL.graphql.objects.Permission.name());
 
-	$: fields = data.fields;
-	$: queryArguments = data.queryArguments;
 	$: showHeader = data.showHeader;
 	$: showFooter = data.showFooter;
 	$: showOptionButton = data.showOptionButton;
 	$: showFilterButton = data.fields;
 	$: showBookmarkButton = data.showBookmarkButton;
+	$: query_permissionConnection_Store = data.query_permissionConnection_Store as OperationStore<PermissionConnection>;
+	$: nodes = $query_permissionConnection_Store.response.data?.permissionConnection?.edges?.map(
+		(edge) => edge?.node
+	);
+	$: totalCount = $query_permissionConnection_Store.response.data?.permissionConnection?.totalCount || 0;
 
-	$: permissionConnectionQuery = data.permissionConnectionQuery as OperationStore<PermissionConnection>;
-	$: connection = $permissionConnectionQuery.response?.data?.permissionConnection || {};
-	$: totalCount = connection?.totalCount || 0;
+	let fields: Field[] = data.fields || [];
+	let args: QueryPermissionConnectionArgs = data.args || {};
+	let directives: Directive[] | undefined = data.directives;
+	let pageNumber: number = 1;
+	let pageSize: number = 10;
 
 	const components: Record<string, any> = {
 		bar: PermissionBar,
@@ -35,43 +38,65 @@
 	};
 
 	$: component = components[data.type];
-</script>
 
-<Card>
-	<PermissionAgg
-		{fields}
-		{queryArguments}
-		{showHeader}
-		{showFooter}
-		{showOptionButton}
-		{showFilterButton}
-		{showBookmarkButton}
-		isFetching={$permissionConnectionQuery.isFetching}
-		{totalCount}
-		className="p-0 md:h-screen"
-		on:query={(e) =>
-			permissionConnectionQuery.fetch({
+	const query = (to?: number | undefined) => {
+		args.first = pageSize;
+		args.offset = (to || pageNumber - 1) * pageSize;
+		query_permissionConnection_Store
+			.fetch({
 				fields: [
 					createConnectionField({
 						name: 'permissionConnection',
-						fields: e.detail.fields,
-						arguments: e.detail.queryArguments,
-						directives: e.detail.directives
+						args: buildArguments(args),
+						fields: [...(args?.groupBy?.map((name) => new Field({ name })) || []), ...fields],
+						directives
 					})
 				]
-			})}
-		let:fields
-		let:queryArguments
-		let:getFieldName
-		let:getGrouByName
-	>
-		<svelte:component
-			this={component}
-			{connection}
-			{fields}
-			{queryArguments}
-			{getFieldName}
-			{getGrouByName}
-		/>
-	</PermissionAgg>
+			})
+			.then((result) => {
+				if (result.errors) {
+					console.error(result.errors);
+					toast.error($LL.graphence.message.requestFailed());
+				}
+			});
+	};
+</script>
+
+<Card>
+	<CardBody>
+		<PermissionAgg
+			bind:fields
+			bind:args
+			{showHeader}
+			{showOptionButton}
+			{showFilterButton}
+			{showBookmarkButton}
+			class="h-screen"
+			isFetching={$query_permissionConnection_Store.isFetching}
+			on:query={(e) => query()}
+			let:fields
+			let:args
+			let:getFieldName
+			let:getGrouByName
+		>
+			<svelte:component
+				this={component}
+				value={nodes}
+				{fields}
+				{args}
+				{getFieldName}
+				{getGrouByName}
+			/>
+		</PermissionAgg>
+		{#if showFooter}
+			<div class="divider" />
+			<Pagination
+				bind:pageSize
+				bind:pageNumber
+				{totalCount}
+				on:pageChange={(e) => query()}
+				on:sizeChange={(e) => query(1)}
+			/>
+		{/if}
+	</CardBody>
 </Card>

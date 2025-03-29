@@ -1,78 +1,79 @@
 <script lang="ts">
-	import { createConnectionField, Directive, Field } from '@graphace/graphql';
+	import { Field, Directive, buildArguments, createConnectionField } from '@graphace/graphql';
 	import { Card, CardBody, Pagination, toast } from '@graphace/ui';
 	import type { OperationStore } from '@graphace/ui-graphql';
 	import UserAgg from '~/lib/components/objects/user/UserAgg.svelte';
 	import UserBar from '~/lib/components/objects/user/UserBar.svelte';
-	// import UserLine from '~/lib/components/objects/user/UserLine.svelte';
-	// import UserPie from '~/lib/components/objects/user/UserPie.svelte';
-	// import UserAggTable from '~/lib/components/objects/user/UserAggTable.svelte';
-	import type { QueryUserListArgs, UserConnection } from '~/lib/types/schema';
-	import { LL, locale } from '$i18n/i18n-svelte';
+	import UserLine from '~/lib/components/objects/user/UserLine.svelte';
+	import UserPie from '~/lib/components/objects/user/UserPie.svelte';
+	import UserAggTable from '~/lib/components/objects/user/UserAggTable.svelte';
+	import type { QueryUserConnectionArgs, UserConnection } from '~/lib/types/schema';
+	import { LL } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
-	$: fields = data.fields;
-	$: args = data.args;
 	$: showHeader = data.showHeader;
 	$: showFooter = data.showFooter;
 	$: showOptionButton = data.showOptionButton;
 	$: showFilterButton = data.fields;
 	$: showBookmarkButton = data.showBookmarkButton;
-
 	$: query_userConnection_Store = data.query_userConnection_Store as OperationStore<UserConnection>;
 	$: nodes = $query_userConnection_Store.response.data?.userConnection?.edges?.map(
 		(edge) => edge?.node
 	);
 	$: totalCount = $query_userConnection_Store.response.data?.userConnection?.totalCount || 0;
+
+	let fields: Field[] = data.fields || [];
+	let args: QueryUserConnectionArgs = data.args || {};
+	let directives: Directive[] | undefined = data.directives;
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
 
 	const components: Record<string, any> = {
-		bar: UserBar
-		// line: UserLine,
-		// pie: UserPie,
-		// table: UserAggTable
+		bar: UserBar,
+		line: UserLine,
+		pie: UserPie,
+		table: UserAggTable
 	};
 
 	$: component = components[data.type];
 
-	const query = (params: {
-		fields: Field[];
-		args: QueryUserListArgs;
-		directives?: Directive[];
-	}) => {
-		query_userConnection_Store.fetch(params).then((result) => {
-			if (result.errors) {
-				console.error(result.errors);
-				toast.error($LL.graphence.message.requestFailed());
-			}
-		});
+	const query = (to?: number | undefined) => {
+		args.first = pageSize;
+		args.offset = (to || pageNumber - 1) * pageSize;
+		query_userConnection_Store
+			.fetch({
+				fields: [
+					createConnectionField({
+						name: 'userConnection',
+						args: buildArguments(args),
+						fields: [...(args?.groupBy?.map((name) => new Field({ name })) || []), ...fields],
+						directives
+					})
+				]
+			})
+			.then((result) => {
+				if (result.errors) {
+					console.error(result.errors);
+					toast.error($LL.graphence.message.requestFailed());
+				}
+			});
 	};
 </script>
 
 <Card>
 	<CardBody>
 		<UserAgg
-			{fields}
-			{args}
+			bind:fields
+			bind:args
 			{showHeader}
 			{showOptionButton}
 			{showFilterButton}
 			{showBookmarkButton}
+			class="h-screen"
 			isFetching={$query_userConnection_Store.isFetching}
-			on:query={(e) =>
-				query_userConnection_Store.fetch({
-					fields: [
-						createConnectionField({
-							name: 'userConnection',
-							fields: e.detail.fields,
-							arguments: e.detail.args,
-							directives: e.detail.directives
-						})
-					]
-				})}
+			on:query={(e) => query()}
 			let:fields
 			let:args
 			let:getFieldName
@@ -93,8 +94,8 @@
 				bind:pageSize
 				bind:pageNumber
 				{totalCount}
-				on:pageChange={(e) => query({ first: pageSize, offset: (pageNumber - 1) * pageSize })}
-				on:sizeChange={(e) => query({ first: pageSize, offset: 0 })}
+				on:pageChange={(e) => query()}
+				on:sizeChange={(e) => query(1)}
 			/>
 		{/if}
 	</CardBody>

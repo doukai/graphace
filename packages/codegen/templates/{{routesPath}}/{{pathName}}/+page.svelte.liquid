@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import type { Errors, JsonSchema{%- if useAuth -%}, PermissionsStore{%- endif -%} } from '@graphace/commons';
+	import type { Errors, JsonSchema{% if useAuth %}, PermissionsStore{% endif %} } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import {{ name }}Table from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Table.svelte';
@@ -10,7 +10,7 @@
 	import type { Mutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
 	{%- endif %}
 	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
-	import type { {{ queryTypeName }}{{ name }}ConnectionArgs, {{ mutationTypeName }}{{ name }}Args } from '~/{{ schemaTypesPath }}';
+	import type { {{ queryTypeName }}{{ name }}ConnectionArgs, {{ name }}OrderBy, {{ mutationTypeName }}{{ name }}Args } from '~/{{ schemaTypesPath }}';
 	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
@@ -28,12 +28,17 @@
 	{%- if hasFileField %}
 	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store as Mutation_singleUpload_Store;
 	{%- endif %}
+	let args: Query{{ name }}ConnectionArgs = {};
+	let orderBy: {{ name }}OrderBy = {};
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
 	let errors: Record<number, Errors> = {};
 
-	const query = (args: {{ queryTypeName }}{{ name }}ConnectionArgs) => {
-		query_{{ name | camelCase }}Connection_Store.fetch(args).then((result) => {
+	const query = (to?: number | undefined) => {
+		args.orderBy = orderBy;
+		args.first = pageSize;
+		args.offset = (to || pageNumber - 1) * pageSize;
+		query_{{ name | camelCase }}Connection_Store.fetch(buildArguments(args)).then((result) => {
 			if (result.errors) {
 				console.error(errors);
 				toast.error($LL.graphence.message.requestFailed());
@@ -62,14 +67,14 @@
 								title: $LL.graphence.message.requestFailed(),
 								description: globalError,
 								confirm: () => {
-									query({ first: pageSize, offset: 0 });
+									query();
 									return true;
 								}
 							});
 						}
 					} else {
 						toast.success($LL.graphence.message.requestSuccess());
-						query({ first: pageSize, offset: (pageNumber - 1) * pageSize });
+						query();
 					}
 				});
 			})
@@ -89,6 +94,8 @@
 			showCreateButton={true}
 			showBackButton={$canBack}
 			value={nodes}
+			bind:args
+			bind:orderBy
 			{errors}
 			isFetching={$query_{{ name | camelCase }}Connection_Store.isFetching}
 			fields={% raw %}{{{% endraw %}
@@ -102,7 +109,7 @@
 			{% raw %}}}{% endraw %}
 			on:search={(e) => {
 				if (e.detail.value) {
-					query({
+					args = {
 						cond: 'OR',
 						{%- for field in fields %}
 						{%- if field.isScalarType and field.inQueryArgs and field.fieldTypeName == 'String' %}
@@ -111,18 +118,13 @@
 						{%- endfor %}
 						first: pageSize,
 						offset: 0
-					});
+					};
 				} else {
-					query({ first: pageSize, offset: 0 });
+					args = { first: pageSize, offset: 0 };
 				}
+				query();
 			{% raw %}}}{% endraw %}
-			on:query={(e) => {
-				e.detail.args = buildArguments(e.detail.args);
-				if (Object.keys(e.detail.orderBy).length > 0) {
-					e.detail.args.orderBy = e.detail.orderBy;
-				}
-				query(e.detail.args);
-			{% raw %}}}{% endraw %}
+			on:query={(e) => query()}
 			on:save={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
 					mutation(e.detail.value);
@@ -169,8 +171,8 @@
 			bind:pageSize
 			bind:pageNumber
 			{totalCount}
-			on:pageChange={(e) => query({ first: pageSize, offset: (pageNumber - 1) * pageSize })}
-			on:sizeChange={(e) => query({ first: pageSize, offset: 0 })}
+			on:pageChange={(e) => query()}
+			on:sizeChange={(e) => query(1)}
 		/>
 	</CardBody>
 </Card>

@@ -174,7 +174,8 @@ export const getObjectInfo = (schema: GraphQLSchema, name: string): ObjectInfo |
             hasFileField: hasFileField(type),
             isConnection: isConnection(type.name),
             isNamed: isNamedStruct(type),
-            fields
+            fields,
+            aggFields: getAggFieldInfos(schema, type)
         };
     }
     return undefined;
@@ -357,6 +358,10 @@ export const getAggFieldInfos = (schema: GraphQLSchema, type: GraphQLNamedType):
             field.isLeafType && field.fieldTypeName !== 'Boolean' && !field.isListType && !field.isAggregate ||
             field.isObjectType && (!field.isListType || field.isAggregate)
         )
+        .map(field => ({
+            ...field,
+            aggFields: field.isLeafType ? getLeafAggFieldInfos(schema, type, field.fieldName) : getObjectAggFieldInfos(schema, schema.getType(field.fieldTypeName)!)
+        }))
 }
 
 export const getLeafAggFieldInfos = (schema: GraphQLSchema, type: GraphQLNamedType, originalFieldName: string): FieldInfo[] => {

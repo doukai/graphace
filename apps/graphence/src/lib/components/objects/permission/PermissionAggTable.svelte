@@ -1,43 +1,48 @@
 <script lang="ts">
 	import { type Field } from '@graphace/graphql';
-	import { Table, TableEmpty } from '@graphace/ui';
+	import { Table, Empty } from '@graphace/ui';
 	import { FieldThs, FieldTds } from '@graphace/ui-graphql';
-	import type { PermissionConnection, PermissionConnectionQueryArguments } from '~/lib/types/schema';
+	import type { Permission, QueryPermissionListArgs } from '~/lib/types/schema';
 
-	export let connection: PermissionConnection;
+	export let value: (Permission | null | undefined)[] | null | undefined = undefined;
 	export let fields: Field[] = [];
-	export let queryArguments: PermissionConnectionQueryArguments = {};
+	export let args: QueryPermissionListArgs = {};
 	export let nullString: string = '-';
-	export let getFieldName: (fieldName: string, subFieldName?: string) => string;
-	export let getGrouByName: (fieldName: string) => string | undefined = undefined;
-
-	$: nodes = connection?.edges?.map((edge) => edge?.node);
+	export let getFieldName: (fieldName: string, subFieldName?: string) => string | undefined;
+	export let getGrouByName: (fieldName: string) => string | undefined;
+	export let zIndex: number = 0;
+	let className: string | undefined = undefined;
+	export { className as class };
 </script>
 
-<Table className="table-zebra table-pin-rows md:table-sm">
+<Table {zIndex} class={className}>
 	<thead>
-		<FieldThs className="border" {fields} {getFieldName} let:deep>
-			{#each queryArguments.groupBy || [] as groupByField}
-				<td class="border" rowspan={deep}>{getGrouByName(groupByField)}</td>
+		<FieldThs class="border" {fields} {getFieldName} let:deep>
+			{#each args.groupBy || [] as field}
+				<td class="border" rowspan={deep}>{getGrouByName(field)}</td>
 			{/each}
 		</FieldThs>
 	</thead>
 	<tbody>
-		{#if nodes && nodes.length > 0}
-			{#each nodes || [] as node}
+		{#if value && value.length > 0}
+			{#each value || [] as node}
 				<tr class="hover">
-					{#each queryArguments.groupBy || [] as groupByField}
-						{#if node?.[groupByField] == null}
+					{#each args.groupBy || [] as field}
+						{#if value?.[field] == null}
 							<td class="border">{nullString}</td>
 						{:else}
-							<td class="border">{node?.[groupByField]}</td>
+							<td class="border">{value?.[field]}</td>
 						{/if}
 					{/each}
-					<FieldTds className="border" {fields} {node} />
+					<FieldTds class="border" {fields} {node} />
 				</tr>
 			{/each}
 		{:else}
-			<TableEmpty cols={(queryArguments.groupBy?.length || 0) + fields.length} />
+			<tr>
+				<td colspan="999">
+					<Empty class="badge-lg" />
+				</td>
+			</tr>
 		{/if}
 	</tbody>
 </Table>

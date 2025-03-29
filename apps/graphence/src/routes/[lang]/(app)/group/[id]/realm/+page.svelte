@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import type { Errors, JsonSchema, PermissionsStore} from '@graphace/commons';
+	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
 	import type { Query_group_realm_Store } from '~/lib/stores/query/query_group_realm_store';

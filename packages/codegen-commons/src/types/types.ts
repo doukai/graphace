@@ -50,6 +50,7 @@ export type ObjectInfo = {
     hasFileField: boolean;
     isConnection: boolean;
     isNamed: boolean;
+    aggFields?: FieldInfo[] | undefined;
 }
 
 export type ImportInfo = {
@@ -89,6 +90,7 @@ export type FieldInfo = {
     inRoute: boolean;
     inList: boolean;
     inDetail: boolean;
+    aggFields?: FieldInfo[] | undefined;
 }
 
 export type InputInfo = {

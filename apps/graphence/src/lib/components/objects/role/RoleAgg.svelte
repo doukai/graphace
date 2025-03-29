@@ -1,45 +1,41 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import { fade } from 'svelte/transition';
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { AdjustmentsHorizontal, Funnel, Bookmark } from '@steeze-ui/heroicons';
 	import type { PermissionsStore } from '@graphace/commons';
-	import { Field, Directive, type GraphQLError } from '@graphace/graphql';
-	import { Combobox, type Group as G, Pagination, type Option, z_index } from '@graphace/ui';
+	import { Field, Directive } from '@graphace/graphql';
+	import { type Option, Combobox, Form, FormControl, Label, Loading } from '@graphace/ui';
 	import RoleFilter from '~/lib/components/objects/role/RoleFilter.svelte';
-	import type { RoleConnection, RoleConnectionQueryArguments } from '~/lib/types/schema';
+	import type { QueryRoleListArgs } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	
+
 	export let fields: Field[] = [];
-	export let queryArguments: RoleConnectionQueryArguments = {};
+	export let args: QueryRoleListArgs = {};
 	export let selectColumns: Option[] = [];
 	export let groupByColumns: Option[] = [];
 	export let orderByColumns: Option[] = [];
-	export let totalCount: number = 0;
-	export let pageNumber: number = 1;
-	export let pageSize: number = 10;
 	export let isFetching: boolean = false;
 	export let showHeader: boolean = true;
-	export let showFooter: boolean = true;
 	export let showOptionButton: boolean = true;
 	export let showFilterButton: boolean = true;
 	export let showBookmarkButton: boolean = false;
-	export let className: string = '';
+	export let zIndex: number = 0;
+	let className: string | undefined = undefined;
+	export { className as class };
 
+	const contextClass = getContext<string>('ui.popover-content') || '';
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const permissions = getContext<PermissionsStore>('permissions');
-	
+
 	const dispatch = createEventDispatcher<{
-		query: { 
+		query: {
 			fields: Field[];
-			queryArguments: RoleConnectionQueryArguments;
+			args: QueryRoleListArgs;
 			directives?: Directive[];
-			then?: (connection: RoleConnection | null | undefined) => void;
-			catch?: (errors: GraphQLError[]) => void;
 		};
-		bookmark: { fields: string; queryArguments: string };
+		bookmark: { fields: string; args: string; directives?: Directive[] };
 	}>();
 
 	const {
@@ -50,28 +46,7 @@
 		preventScroll: true
 	});
 
-	const z_class7 = z_index.top(7);
-
 	$: selectOptions = [
-		{
-			value: '',
-			label: $LL.graphql.objects.Role.fields.id.name(),
-			options: [
-				{
-					value: 'idCount',
-					label: $LL.graphql.objects.Role.fields.idCount.name()
-				},
-				{
-					value: 'idMax',
-					label: $LL.graphql.objects.Role.fields.idMax.name()
-				},
-				{
-					value: 'idMin',
-					label: $LL.graphql.objects.Role.fields.idMin.name()
-				},
-			],
-			disabled: !permissions.auth('Role::id::READ')
-		},
 		{
 			value: '',
 			label: $LL.graphql.objects.Role.fields.name.name(),
@@ -87,7 +62,7 @@
 				{
 					value: 'nameMin',
 					label: $LL.graphql.objects.Role.fields.nameMin.name()
-				},
+				}
 			],
 			disabled: !permissions.auth('Role::name::READ')
 		},
@@ -106,7 +81,7 @@
 				{
 					value: 'descriptionMin',
 					label: $LL.graphql.objects.Role.fields.descriptionMin.name()
-				},
+				}
 			],
 			disabled: !permissions.auth('Role::description::READ')
 		},
@@ -158,7 +133,7 @@
 					value: 'descriptionMin',
 					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.descriptionMin.name(),
 					disabled: !permissions.auth('Realm::description::READ')
-				},
+				}
 			],
 			disabled: !permissions.auth('Role::realm::READ')
 		},
@@ -285,7 +260,7 @@
 					value: 'emailMin',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.emailMin.name(),
 					disabled: !permissions.auth('User::email::READ')
-				},
+				}
 			],
 			disabled: !permissions.auth('Role::users::READ')
 		},
@@ -392,7 +367,7 @@
 					value: 'deepMin',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.deepMin.name(),
 					disabled: !permissions.auth('Group::deep::READ')
-				},
+				}
 			],
 			disabled: !permissions.auth('Role::groups::READ')
 		},
@@ -444,7 +419,7 @@
 					value: 'descriptionMin',
 					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.descriptionMin.name(),
 					disabled: !permissions.auth('Role::description::READ')
-				},
+				}
 			],
 			disabled: !permissions.auth('Role::composites::READ')
 		},
@@ -526,20 +501,15 @@
 					value: 'permissionTypeMin',
 					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.permissionTypeMin.name(),
 					disabled: !permissions.auth('Permission::permissionType::READ')
-				},
+				}
 			],
 			disabled: !permissions.auth('Role::permissions::READ')
-		},
+		}
 	];
 
 	let filteredSelectOptions = selectOptions;
 
 	$: groupByOptions = [
-		{
-			value: 'id',
-			label: $LL.graphql.objects.Role.fields.id.name(),
-			disabled: !permissions.auth('Role::id::READ')
-		},
 		{
 			value: 'name',
 			label: $LL.graphql.objects.Role.fields.name.name(),
@@ -563,7 +533,10 @@
 						field.fields!.flatMap((subField) =>
 							group.options
 								.filter((option) => option.value === subField.name)
-								.map((option) => ({ ...option, group: { value: group.value, label: group.label } }))
+								.map((option) => ({
+									...option,
+									parent: { value: group.value, label: group.label }
+								}))
 						)
 					);
 			} else {
@@ -572,15 +545,15 @@
 					.flatMap((group) =>
 						group.options
 							.filter((option) => option.value === field.name)
-							.map((option) => ({ ...option, group: { value: group.value, label: group.label } }))
+							.map((option) => ({ ...option, parent: { value: group.value, label: group.label } }))
 					);
 			}
 		});
 	}
 
-	$: if (queryArguments.groupBy && queryArguments.groupBy.length > 0) {
+	$: if (args.groupBy && args.groupBy.length > 0) {
 		groupByColumns = groupByOptions.filter((option) =>
-			queryArguments.groupBy?.some((column) => option.value === column)
+			args.groupBy?.some((column) => option.value === column)
 		);
 	}
 
@@ -588,49 +561,53 @@
 		...selectColumns,
 		...groupByColumns.map((option) => ({
 			...option,
-			group: { value: '', label: option.label }
+			parent: { value: '', label: option.label }
 		}))
 	]
 		.reduce((groups, option) => {
 			if (
 				groups.some(
-					(group) => group.value === option.group?.value && group.label === option.group?.label
+					(group) => group.value === option.parent?.value && group.label === option.parent?.label
 				)
 			) {
 				groups
 					.find(
-						(group) => group.value === option.group?.value && group.label === option.group?.label
+						(group) => group.value === option.parent?.value && group.label === option.parent?.label
 					)
 					?.options?.push(option);
 			} else {
 				groups.push({
-					value: option.group?.value,
-					label: option.group?.label,
+					value: option.parent?.value,
+					label: option.parent?.label,
 					options: [option]
 				});
 			}
 			return groups;
-		}, <G[]>[])
+		}, <Option[]>[])
 		.map((group) => {
 			return {
 				value: group.value,
 				label: group.label,
 				options: group.options?.flatMap((option) => [
 					{ value: option.value, label: option.label + $LL.ui_graphql.table.th.asc(), node: 'ASC' },
-					{ value: option.value, label: option.label + $LL.ui_graphql.table.th.desc(), node: 'DESC' }
+					{
+						value: option.value,
+						label: option.label + $LL.ui_graphql.table.th.desc(),
+						node: 'DESC'
+					}
 				])
 			};
 		});
 
 	let filteredOrderByOptions = orderByOptions;
 
-	$: if (queryArguments.orderBy && Object.keys(queryArguments.orderBy).length > 0) {
-		orderByColumns = Object.entries(queryArguments.orderBy).flatMap((entry) => {
+	$: if (args.orderBy && Object.keys(args.orderBy).length > 0) {
+		orderByColumns = Object.entries(args.orderBy).flatMap((entry) => {
 			if (entry[1] === 'ASC' || entry[1] === 'DESC') {
 				return orderByOptions.flatMap((group) =>
 					(group.options || [])
 						.filter((option) => option.value === entry[0] && option.node === entry[1])
-						.map((option) => ({ ...option, group: group }))
+						.map((option) => ({ ...option, parent: group }))
 				);
 			} else {
 				return Object.entries(entry[1] || {}).flatMap((subEntry) =>
@@ -639,71 +616,56 @@
 						.flatMap((group) =>
 							(group.options || [])
 								.filter((option) => option.value === subEntry[0] && option.node === subEntry[1])
-								.map((option) => ({ ...option, group: group }))
+								.map((option) => ({ ...option, parent: group }))
 						)
 				);
 			}
 		});
 	}
 
-	if (queryArguments.first) {
-		pageSize = queryArguments.first;
-	}
-
-	if (queryArguments.offset) {
-		pageNumber = queryArguments.offset / pageSize + 1;
-	}
-
 	const optionsToFields = (): Field[] => {
 		return selectColumns.reduce((fields, option) => {
-			if (option.group?.value) {
-				if (fields.some((field) => field.name === option.group?.value)) {
+			if (option.parent?.value) {
+				if (fields.some((field) => field.name === option.parent?.value)) {
 					fields
-						.find((field) => field.name === option.group?.value)
-						?.fields?.push(new Field({ name: option.value }));
+						.find((field) => field.name === option.parent?.value)
+						?.fields?.push(new Field({ name: option.value! }));
 				} else {
-					fields.push(new Field({ name: option.group.value, fields: [new Field({ name: option.value })] }));
+					fields.push(
+						new Field({ name: option.parent.value, fields: [new Field({ name: option.value! })] })
+					);
 				}
 			} else {
-				fields.push(new Field({ name: option.value }));
+				fields.push(new Field({ name: option.value! }));
 			}
 			return fields;
 		}, <Field[]>[]);
 	};
 
-	const buildFields = (): Field[] => {
-		fields = optionsToFields();
-		return fields;
-	};
-
-	const buildArguments = (toPageNumber?: number | undefined): RoleConnectionQueryArguments => {
-		if (!queryArguments) {
-			queryArguments = {};
-		}
-
+	const buildArguments = (): QueryRoleListArgs => {
 		if (groupByColumns.length > 0) {
-			queryArguments.groupBy = groupByColumns.map((option) => option.value);
+			args.groupBy = groupByColumns.map((option) => option.value!);
 		} else {
-			queryArguments.groupBy = undefined;
+			args.groupBy = undefined;
 		}
 
 		if (orderByColumns.length > 0) {
-			queryArguments.orderBy = Object.fromEntries(
+			args.orderBy = Object.fromEntries(
 				orderByColumns
 					.reduce((groups, option) => {
-						if (groups.some((group) => group.value === option.group?.value)) {
+						if (groups.some((group) => group.value === option.parent?.value)) {
 							groups
-								.find((group) => group.value === option.group?.value)
-								?.sorts?.push({ value: option.value, sort: option.node });
+								.find((group) => group.value === option.parent?.value)
+								?.sorts?.push({ value: option.value!, sort: option.node });
 						} else {
-							if (option.group?.value) {
+							if (option.parent?.value) {
 								groups.push({
-									value: option.group?.value,
-									sorts: [{ value: option.value, sort: option.node }]
+									value: option.parent?.value,
+									sorts: [{ value: option.value!, sort: option.node }]
 								});
 							} else {
 								groups.push({
-									value: option.value,
+									value: option.value!,
 									sort: option.node
 								});
 							}
@@ -722,27 +684,23 @@
 					})
 			);
 		} else {
-			queryArguments.orderBy = undefined;
+			args.orderBy = undefined;
 		}
-
-		queryArguments.offset = ((toPageNumber || pageNumber) - 1) * pageSize;
-		queryArguments.first = pageSize;
-		return queryArguments;
+		return args;
 	};
 
-	export const getFieldName = (fieldName: string, subFieldName?: string): string => {
+	export const getFieldName = (fieldName: string, subFieldName?: string): string | undefined => {
 		if (subFieldName) {
 			return selectOptions
-				.filter((group) => group.value === fieldName)
-				?.flatMap((group) => group.options.filter((option) => option.value === subFieldName))[0]
-				.label;
+				.find((option) => option.value === fieldName)
+				?.options?.find((option) => option.value === subFieldName)?.label;
 		} else {
 			return (
-				selectOptions
-					.filter((group) => !group.value)
-					?.flatMap((group) => group.options.filter((option) => option.value === fieldName))?.[0] ||
-				selectOptions.find((group) => group.value === fieldName)
-			).label;
+				selectOptions.find((option) => option.value === fieldName)?.label ||
+				selectOptions.flatMap((option) =>
+					option.options?.filter((option) => option.value === fieldName)
+				)?.[0]?.label
+			);
 		}
 	};
 
@@ -750,55 +708,49 @@
 		return groupByOptions.find((group) => group.value === fieldName)?.label;
 	};
 
-	export const queryPage = (toPageNumber?: number | undefined) => {
-		if (toPageNumber) {
-			queryArguments.offset = (toPageNumber - 1) * pageSize;
-		}
-		dispatch('query', {
-			fields: [...groupByColumns.map((option) => new Field({ name: option.value })), ...fields],
-			queryArguments
-		});
+	export const query = () => {
+		dispatch('query', { fields, args });
 	};
 
-	queryPage();
+	query();
 </script>
 
 {#if showHeader}
 	<div class="flex space-x-1">
-		<Combobox
-			title={$LL.graphence.components.agg.columns()}
-			multiple={true}
-			groups={filteredSelectOptions}
-			rootClassName="w-full"
-			bind:value={selectColumns}
-			on:search={(e) => {
-				if (e.detail.searchValue) {
-					filteredSelectOptions = selectOptions
-						.filter(
-							(group) =>
-								group.label.includes(e.detail.searchValue || '') ||
-								group.options.some((option) => option.label.includes(e.detail.searchValue || ''))
-						)
-						.map((group) => ({
-							...group,
-							options: group.options.filter((option) =>
-								option.label.includes(e.detail.searchValue || '')
+		<div class="w-full">
+			<Combobox
+				multiple={true}
+				options={filteredSelectOptions}
+				bind:value={selectColumns}
+				on:search={(e) => {
+					if (e.detail.searchValue) {
+						filteredSelectOptions = selectOptions
+							.filter(
+								(group) =>
+									group.label.includes(e.detail.searchValue || '') ||
+									group.options.some((option) => option.label.includes(e.detail.searchValue || ''))
 							)
-						}));
-				} else {
-					filteredSelectOptions = selectOptions;
-				}
-			}}
-			on:change={(e) => {
-				orderByColumns = orderByColumns.filter(
-					(orderColumn) =>
-						!Array.isArray(e.detail.value) ||
-						e.detail.value.some((selectColumn) => selectColumn.value === orderColumn.value)
-				);
-				fields = optionsToFields();
-				queryPage(1);
-			}}
-		/>
+							.map((group) => ({
+								...group,
+								options: group.options.filter((option) =>
+									option.label.includes(e.detail.searchValue || '')
+								)
+							}));
+					} else {
+						filteredSelectOptions = selectOptions;
+					}
+				}}
+				on:change={(e) => {
+					orderByColumns = orderByColumns.filter(
+						(orderColumn) =>
+							!Array.isArray(e.detail.value) ||
+							e.detail.value.some((selectColumn) => selectColumn.value === orderColumn.value)
+					);
+					fields = optionsToFields();
+					query();
+				}}
+			/>
+		</div>
 		{#if showOptionButton}
 			<div class="tooltip" data-tip={$LL.graphence.components.agg.option()}>
 				<button class="btn btn-square" use:melt={$trigger}>
@@ -806,88 +758,79 @@
 				</button>
 			</div>
 			{#if $open}
-				<div use:melt={$overlay} class="fixed inset-0 {z_class7}" />
-				<div
-					class="p-1 rounded-xl bg-base-200 shadow {z_class7}"
-					use:melt={$content}
-				>
+				<div use:melt={$overlay} class="fixed inset-0 z-[{zIndex + 7}]" />
+				<div class="p-1 z-[{zIndex + 7}] {contextClass}" use:melt={$content}>
 					<div use:melt={$arrow} />
-					<div class="space-y-1" transition:fade={{ duration: 100 }}>
-						<Combobox
-							title={$LL.graphence.components.agg.groupBy()}
-							multiple={true}
-							options={filteredGroupByOptions}
-							rootClassName="w-full"
-							className="md:input-xs"
-							containerClassName="md:min-h-8"
-							tagClassName="md:badge-sm"
-							groupClassName="md:input-group-sm"
-							bind:value={groupByColumns}
-							on:search={(e) => {
-								if (e.detail.searchValue) {
-									filteredGroupByOptions = groupByOptions.filter((option) =>
-										option.label.includes(e.detail.searchValue || '')
+					<Form class="max-h-60 overflow-y-auto">
+						<FormControl let:id>
+							<Label {id} text={$LL.graphence.components.agg.groupBy()} />
+							<Combobox
+								multiple={true}
+								options={filteredGroupByOptions}
+								bind:value={groupByColumns}
+								on:search={(e) => {
+									if (e.detail.searchValue) {
+										filteredGroupByOptions = groupByOptions.filter((option) =>
+											option.label.includes(e.detail.searchValue || '')
+										);
+									} else {
+										filteredGroupByOptions = groupByOptions;
+									}
+								}}
+								on:change={(e) => {
+									orderByColumns = orderByColumns.filter(
+										(orderColumn) =>
+											!Array.isArray(e.detail.value) ||
+											e.detail.value.some((groupColumn) => groupColumn.value === orderColumn.value)
 									);
-								} else {
-									filteredGroupByOptions = groupByOptions;
-								}
-							}}
-							on:change={(e) => {
-								orderByColumns = orderByColumns.filter(
-									(orderColumn) =>
-										!Array.isArray(e.detail.value) ||
-										e.detail.value.some((groupColumn) => groupColumn.value === orderColumn.value)
-								);
-								queryArguments = buildArguments();
-								queryPage(1);
-							}}
-						/>
-						<Combobox
-							title={$LL.graphence.components.agg.orderBy()}
-							multiple={true}
-							groups={filteredOrderByOptions}
-							rootClassName="w-full"
-							className="md:input-xs"
-							containerClassName="md:min-h-8"
-							tagClassName="md:badge-sm"
-							groupClassName="md:input-group-sm"
-							bind:value={orderByColumns}
-							on:search={(e) => {
-								if (e.detail.searchValue) {
-									filteredOrderByOptions = orderByOptions
-										.filter(
-											(group) =>
-												group.label?.includes(e.detail.searchValue || '') ||
-												group.options?.some((option) =>
+									args = buildArguments();
+									query();
+								}}
+							/>
+						</FormControl>
+						<FormControl let:id>
+							<Label {id} text={$LL.graphence.components.agg.orderBy()} />
+							<Combobox
+								multiple={true}
+								options={filteredOrderByOptions}
+								bind:value={orderByColumns}
+								on:search={(e) => {
+									if (e.detail.searchValue) {
+										filteredOrderByOptions = orderByOptions
+											.filter(
+												(group) =>
+													group.label?.includes(e.detail.searchValue || '') ||
+													group.options?.some((option) =>
+														option.label.includes(e.detail.searchValue || '')
+													)
+											)
+											.map((group) => ({
+												...group,
+												options: group.options?.filter((option) =>
 													option.label.includes(e.detail.searchValue || '')
 												)
-										)
-										.map((group) => ({
-											...group,
-											options: group.options?.filter((option) =>
-												option.label.includes(e.detail.searchValue || '')
-											)
-										}));
-								} else {
-									filteredOrderByOptions = orderByOptions;
-								}
-							}}
-							on:change={(e) => {
-								queryArguments = buildArguments();
-								queryPage(1);
-							}}
-						/>
-					</div>
+											}));
+									} else {
+										filteredOrderByOptions = orderByOptions;
+									}
+								}}
+								on:change={(e) => {
+									args = buildArguments();
+									query();
+								}}
+							/>
+						</FormControl>
+					</Form>
 				</div>
 			{/if}
 		{/if}
 		{#if showFilterButton}
 			<RoleFilter
-				bind:value={queryArguments}
+				bind:value={args}
 				let:trigger
 				on:filter={(e) => {
-					queryArguments = buildArguments();
-					queryPage(1);
+					args = buildArguments();
+					query();
 				}}
 			>
 				<div class="tooltip" data-tip={$LL.graphence.components.agg.filter()}>
@@ -904,7 +847,7 @@
 					on:click={(e) =>
 						dispatch('bookmark', {
 							fields: JSON.stringify(fields),
-							queryArguments: JSON.stringify(queryArguments)
+							args: JSON.stringify(args)
 						})}
 				>
 					<Icon src={Bookmark} class="h-5 w-5" />
@@ -914,31 +857,19 @@
 	</div>
 	<div class="divider" />
 {/if}
-<div class="card-body overflow-auto {className}">
+<div class="overflow-auto {className}">
 	{#if isFetching}
-		<div class="flex justify-center">
-			<span class="loading loading-bars loading-lg" />
-		</div>
+		<Loading class="loading-lg" />
 	{:else}
 		<slot
 			{fields}
-			{queryArguments}
+			{args}
 			{selectOptions}
 			{groupByOptions}
 			{getFieldName}
 			{getGrouByName}
-			{queryPage}
+			{query}
 			{buildArguments}
 		/>
 	{/if}
 </div>
-{#if showFooter}
-	<div class="divider" />
-	<Pagination
-		bind:pageNumber
-		bind:pageSize
-		{totalCount}
-		on:pageChange={(e) => queryPage()}
-		on:sizeChange={(e) => queryPage()}
-	/>
-{/if}

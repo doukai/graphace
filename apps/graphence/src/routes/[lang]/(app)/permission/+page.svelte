@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import type { Errors, JsonSchema, PermissionsStore} from '@graphace/commons';
+	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import PermissionTable from '~/lib/components/objects/permission/PermissionTable.svelte';
 	import type { Query_permissionConnection_Store } from '~/lib/stores/query/query_permissionConnection_store';
 	import type { Mutation_permission_Store } from '~/lib/stores/mutation/mutation_permission_store';
 	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
-	import type { QueryPermissionConnectionArgs, MutationPermissionArgs } from '~/lib/types/schema';
+	import type { QueryPermissionConnectionArgs, PermissionOrderBy, MutationPermissionArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
@@ -20,12 +20,17 @@
 	$: nodes = $query_permissionConnection_Store.response.data?.permissionConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $query_permissionConnection_Store.response.data?.permissionConnection?.totalCount || 0;
 	$: mutation_permission_Store = data.mutation_permission_Store as Mutation_permission_Store;
+	let args: QueryPermissionConnectionArgs = {};
+	let orderBy: PermissionOrderBy = {};
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
 	let errors: Record<number, Errors> = {};
 
-	const query = (args: QueryPermissionConnectionArgs) => {
-		query_permissionConnection_Store.fetch(args).then((result) => {
+	const query = (to?: number | undefined) => {
+		args.orderBy = orderBy;
+		args.first = pageSize;
+		args.offset = (to || pageNumber - 1) * pageSize;
+		query_permissionConnection_Store.fetch(buildArguments(args)).then((result) => {
 			if (result.errors) {
 				console.error(errors);
 				toast.error($LL.graphence.message.requestFailed());
@@ -54,14 +59,14 @@
 								title: $LL.graphence.message.requestFailed(),
 								description: globalError,
 								confirm: () => {
-									query({ first: pageSize, offset: 0 });
+									query();
 									return true;
 								}
 							});
 						}
 					} else {
 						toast.success($LL.graphence.message.requestSuccess());
-						query({ first: pageSize, offset: (pageNumber - 1) * pageSize });
+						query();
 					}
 				});
 			})
@@ -81,6 +86,8 @@
 			showCreateButton={true}
 			showBackButton={$canBack}
 			value={nodes}
+			bind:args
+			bind:orderBy
 			{errors}
 			isFetching={$query_permissionConnection_Store.isFetching}
 			fields={{
@@ -122,25 +129,20 @@
 			}}
 			on:search={(e) => {
 				if (e.detail.value) {
-					query({
+					args = {
 						cond: 'OR',
 						description: { opr: 'LK', val: e.detail.value },
 						field: { opr: 'LK', val: e.detail.value },
 						type: { opr: 'LK', val: e.detail.value },
 						first: pageSize,
 						offset: 0
-					});
+					};
 				} else {
-					query({ first: pageSize, offset: 0 });
+					args = { first: pageSize, offset: 0 };
 				}
+				query();
 			}}
-			on:query={(e) => {
-				e.detail.args = buildArguments(e.detail.args);
-				if (Object.keys(e.detail.orderBy).length > 0) {
-					e.detail.args.orderBy = e.detail.orderBy;
-				}
-				query(e.detail.args);
-			}}
+			on:query={(e) => query()}
 			on:save={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
 					mutation(e.detail.value);
@@ -180,8 +182,8 @@
 			bind:pageSize
 			bind:pageNumber
 			{totalCount}
-			on:pageChange={(e) => query({ first: pageSize, offset: (pageNumber - 1) * pageSize })}
-			on:sizeChange={(e) => query({ first: pageSize, offset: 0 })}
+			on:pageChange={(e) => query()}
+			on:sizeChange={(e) => query(1)}
 		/>
 	</CardBody>
 </Card>

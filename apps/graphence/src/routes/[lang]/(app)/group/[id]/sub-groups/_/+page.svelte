@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import type { Errors, JsonSchema, PermissionsStore} from '@graphace/commons';
+	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
 	import GroupForm from '~/lib/components/objects/group/GroupForm.svelte';
 	import type { Mutation_group_subGroups_Store } from '~/lib/stores/mutation/mutation_group_subGroups_store';

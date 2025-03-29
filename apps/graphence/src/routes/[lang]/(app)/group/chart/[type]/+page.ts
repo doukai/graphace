@@ -23,6 +23,6 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        groupConnectionQuery: (await fetchQueryStore<GroupConnection>(event, { fields: [createConnectionField({ name: 'groupConnection', fields })] }))
+        query_groupConnection_Store: (await fetchQueryStore<GroupConnection>(event, { fields: [createConnectionField({ name: 'groupConnection', fields })] }))
     };
 }

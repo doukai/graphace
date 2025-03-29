@@ -23,6 +23,6 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showOptionButton,
         showFilterButton,
         showBookmarkButton,
-        realmConnectionQuery: (await fetchQueryStore<RealmConnection>(event, { fields: [createConnectionField({ name: 'realmConnection', fields })] }))
+        query_realmConnection_Store: (await fetchQueryStore<RealmConnection>(event, { fields: [createConnectionField({ name: 'realmConnection', fields })] }))
     };
 }

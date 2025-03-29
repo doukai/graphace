@@ -4,14 +4,14 @@ import { Directive } from "./Directive.js";
 export class Field {
     name: string;
     alias?: string | undefined;
-    arguments?: Record<string, unknown> | undefined;
+    args?: Record<string, unknown> | undefined;
     parent?: Field | undefined;
     fields?: Field[] | undefined;
     directives?: Directive[] | undefined;
-    constructor(params: { name: string, alias?: string | undefined, arguments?: Record<string, unknown> | undefined, fields?: Field[] | undefined, directives?: Directive[] | undefined }) {
+    constructor(params: { name: string, alias?: string | undefined, args?: Record<string, unknown> | undefined, fields?: Field[] | undefined, directives?: Directive[] | undefined }) {
         this.name = params.name;
         this.alias = params.alias;
-        this.arguments = params.arguments;
+        this.args = params.args;
         this.fields = params.fields;
         this.directives = params.directives;
     }
@@ -28,16 +28,16 @@ export class Field {
     }
     public toString = (): string => {
         if (this.fields && this.fields.length > 0) {
-            return `${this.alias ? this.alias + ':' : ''}${this.name}${this.arguments ? `(${Object.entries(this.arguments).filter(([k, v]) => v !== undefined).map(([k, v]) => `${k}: ${valueToString(v)}`).join(', ')})` : ''}${this.directives?.map(directive => ' ' + directive.toString()) || ''} {
+            return `${this.alias ? this.alias + ':' : ''}${this.name}${this.args && Object.keys(this.args).length > 0 ? `(${Object.entries(this.args).filter(([k, v]) => v !== undefined).map(([k, v]) => `${k}: ${valueToString(v)}`).join(', ')})` : ''}${this.directives?.map(directive => ' ' + directive.toString()) || ''} {
         ${this.fields.map(field => field.toString()).join('\r\n')}
     }`;
         } else {
-            return `${this.alias ? this.alias + ':' : ''}${this.name}${this.arguments ? `(${Object.entries(this.arguments).filter(([k, v]) => v !== undefined).map(([k, v]) => `${k}: ${valueToString(v)}`).join(', ')})` : ''}${this.directives?.map(directive => ' ' + directive.toString()) || ''}`;
+            return `${this.alias ? this.alias + ':' : ''}${this.name}${this.args && Object.keys(this.args).length > 0 ? `(${Object.entries(this.args).filter(([k, v]) => v !== undefined).map(([k, v]) => `${k}: ${valueToString(v)}`).join(', ')})` : ''}${this.directives?.map(directive => ' ' + directive.toString()) || ''}`;
         }
     }
 }
 
-export const createConnectionField = (params: { name: string, alias?: string | undefined, arguments?: Record<string, unknown> | undefined, fields?: Field[] | undefined, directives?: Directive[] | undefined }): Field => {
+export const createConnectionField = (params: { name: string, alias?: string | undefined, args?: Record<string, unknown> | undefined, fields?: Field[] | undefined, directives?: Directive[] | undefined }): Field => {
     return new Field({ ...params, fields: [new Field({ name: 'totalCount' }), new Field({ name: 'edges', fields: [new Field({ name: 'node', fields: params.fields })] })] })
 }
 

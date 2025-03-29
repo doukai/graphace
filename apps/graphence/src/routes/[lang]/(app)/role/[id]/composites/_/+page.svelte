@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import type { Errors, JsonSchema, PermissionsStore} from '@graphace/commons';
+	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
 	import RoleForm from '~/lib/components/objects/role/RoleForm.svelte';
 	import type { Mutation_role_composites_Store } from '~/lib/stores/mutation/mutation_role_composites_store';

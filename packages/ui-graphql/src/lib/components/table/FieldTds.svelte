@@ -4,7 +4,8 @@
 	export let fields: Field[] = [];
 	export let node: unknown | null | undefined = {};
 	export let nullString: string = '-';
-	export let className: string = '';
+	let className: string | undefined = '';
+	export { className as class };
 </script>
 
 {#each fields || [] as field}

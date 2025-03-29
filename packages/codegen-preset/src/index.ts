@@ -952,39 +952,39 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         //         })
         // );
 
-        // generateOptions.push(
-        //     ...targetRouteObjectType
-        //         .map(type => {
-        //             const template = '{{routesPath}}/{{pathName}}/{{chartRoutesPath}}/[type]/+page.svelte';
-        //             const scope = { routesPath, chartRoutesPath, pathName: changeCase.paramCase(type.name) };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetRouteObjectType
+                .map(type => {
+                    const template = '{{routesPath}}/{{pathName}}/{{chartRoutesPath}}/[type]/+page.svelte';
+                    const scope = { routesPath, chartRoutesPath, pathName: changeCase.paramCase(type.name) };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
-        // generateOptions.push(
-        //     ...targetRouteObjectType
-        //         .map(type => {
-        //             const template = '{{routesPath}}/{{pathName}}/{{chartRoutesPath}}/[type]/+page.ts';
-        //             const scope = { routesPath, chartRoutesPath, pathName: changeCase.paramCase(type.name) };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetRouteObjectType
+                .map(type => {
+                    const template = '{{routesPath}}/{{pathName}}/{{chartRoutesPath}}/[type]/+page.ts';
+                    const scope = { routesPath, chartRoutesPath, pathName: changeCase.paramCase(type.name) };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
         // generateOptions.push(
         //     ...targetRouteObjectType
@@ -1210,90 +1210,90 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         //         })
         // );
 
-        // generateOptions.push(
-        //     ...targetComponentObjectTypes
-        //         .map(type => {
-        //             const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Agg.svelte';
-        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Agg.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
-        // generateOptions.push(
-        //     ...targetComponentObjectTypes
-        //         .map(type => {
-        //             const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Bar.svelte';
-        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Bar.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
-        // generateOptions.push(
-        //     ...targetComponentObjectTypes
-        //         .map(type => {
-        //             const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Line.svelte';
-        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Line.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
-        // generateOptions.push(
-        //     ...targetComponentObjectTypes
-        //         .map(type => {
-        //             const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Pie.svelte';
-        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Pie.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
-        // generateOptions.push(
-        //     ...targetComponentObjectTypes
-        //         .map(type => {
-        //             const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}AggTable.svelte';
-        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}AggTable.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
         // generateOptions.push(
         //     ...targetComponentObjectTypes

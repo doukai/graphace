@@ -2,8 +2,9 @@
 	import { type Field, fieldsDeep } from '@graphace/graphql';
 
 	export let fields: Field[] = [];
-	export let getFieldName: (fieldName: string, subFieldName?: string) => string;
-	export let className: string = '';
+	export let getFieldName: (fieldName: string, subFieldName?: string) => string | undefined;
+	let className: string | undefined = '';
+	export { className as class };
 
 	$: deep = fieldsDeep(fields);
 </script>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import type { Errors, JsonSchema, PermissionsStore} from '@graphace/commons';
+	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
 	import PermissionForm from '~/lib/components/objects/permission/PermissionForm.svelte';
 	import type { Query_permission_Store } from '~/lib/stores/query/query_permission_store';
