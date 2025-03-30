@@ -39,14 +39,14 @@ export type Template =
     // '{{componentsPath}}/objects/{{pathName}}/{{name}}TreeCard.svelte' |
     // '{{componentsPath}}/objects/{{pathName}}/{{name}}Th.svelte' |
     // '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectItem.svelte' |
-    // '{{componentsPath}}/objects/{{pathName}}/{{name}}.svelte' |
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Agg.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Bar.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Line.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Pie.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}AggTable.svelte' |
-    // '{{componentsPath}}/objects/{{pathName}}/{{name}}AggGrid.svelte' |
-    // '{{componentsPath}}/objects/{{pathName}}/{{name}}Grid.svelte' |
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}AggGrid.svelte' |
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Grid.svelte' |
     // '{{componentsPath}}/objects/{{pathName}}/index.ts' |
     // '{{componentsPath}}/objects/index.ts' |
     // '{{componentsPath}}/enums/index.ts' |
@@ -65,6 +65,6 @@ export type Template =
     // '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/__/+page.svelte' |
     // '{{routesPath}}/{{pathName}}/_/{{objectListFieldPathName}}/__/+page.ts' |
     '{{routesPath}}/{{pathName}}/{{chartRoutesPath}}/[type]/+page.svelte' |
-    '{{routesPath}}/{{pathName}}/{{chartRoutesPath}}/[type]/+page.ts' //|
-// '{{routesPath}}/{{pathName}}/{{gridRoutesPath}}/[type]/+page.svelte' |
-// '{{routesPath}}/{{pathName}}/{{gridRoutesPath}}/[type]/+page.ts'
+    '{{routesPath}}/{{pathName}}/{{chartRoutesPath}}/[type]/+page.ts' |
+    '{{routesPath}}/{{pathName}}/{{gridRoutesPath}}/[type]/+page.svelte' |
+    '{{routesPath}}/{{pathName}}/{{gridRoutesPath}}/[type]/+page.ts'

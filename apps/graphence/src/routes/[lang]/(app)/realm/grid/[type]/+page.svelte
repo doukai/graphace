@@ -1,151 +1,189 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { page } from '$app/stores';
-	import type { Errors, JsonSchema  } from '@graphace/commons';
-	import { createConnectionField, Field } from '@graphace/graphql';
-	import { Card, urlName } from '@graphace/ui';
+	import type { Errors, JsonSchema } from '@graphace/commons';
+	import { Field, Directive, buildArguments, createConnectionField } from '@graphace/graphql';
+	import { Card, CardBody, Pagination, modal, toast } from '@graphace/ui';
 	import type { OperationStore } from '@graphace/ui-graphql';
 	import RealmQuery from '~/lib/components/objects/realm/Realm.svelte';
 	import RealmAgg from '~/lib/components/objects/realm/RealmAgg.svelte';
 	import RealmGrid from '~/lib/components/objects/realm/RealmGrid.svelte';
 	import RealmAggGrid from '~/lib/components/objects/realm/RealmAggGrid.svelte';
-	import type { Realm, RealmConnection } from '~/lib/types/schema';
-	import type { PageData } from './$types';
-	import { buildGraphQLErrors } from '~/utils';
+	import type { QueryRealmConnectionArgs, Realm, RealmConnection } from '~/lib/types/schema';
+	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
 
 	const { validate } = getContext<JsonSchema>('jsonSchema');
 
-	$: urlName($page.url, $LL.graphql.objects.Realm.name());
-	let connection: RealmConnection | null | undefined = {};
-	let errors: Record<number, Errors> = {};
-
-	$: fields = data.fields;
-	$: queryArguments = data.queryArguments;
 	$: showHeader = data.showHeader;
 	$: showFooter = data.showFooter;
 	$: showOptionButton = data.showOptionButton;
 	$: showFilterButton = data.fields;
-	$: showBookmarkButton = data.showBookmarkButton;
 
-	$: realmConnectionQuery = data.realmConnectionQuery as OperationStore<RealmConnection>;
-	$: connection = $realmConnectionQuery.response?.data?.realmConnection || {};
-	$: totalCount = connection?.totalCount || 0;
-	const realmListMutation = data.realmListMutation as OperationStore<Realm[]>;
+	$: query_realmConnection_Store = data.query_realmConnection_Store as OperationStore<RealmConnection>;
+	$: nodes = $query_realmConnection_Store.response.data?.realmConnection?.edges?.map(
+		(edge) => edge?.node
+	);
+	$: totalCount = $query_realmConnection_Store.response.data?.realmConnection?.totalCount || 0;
+	const mutation_realmList_Store = data.mutation_realmList_Store as OperationStore<Realm[]>;
 
-	const components: Record<string, any> = {
-		mutation: RealmGrid,
-		agg: RealmAggGrid
-	};
+	let fields: Field[] = data.fields || [];
+	let queryFields: Field[] = data.fields || [];
+	let args: QueryRealmConnectionArgs = data.args || {};
+	let directives: Directive[] | undefined = data.directives;
+	let pageNumber: number = 1;
+	let pageSize: number = 10;
+	let errors: Record<number, Errors> = {};
 
-	const wrappers: Record<string, any> = {
-		mutation: RealmQuery,
-		agg: RealmAgg
-	};
-
-	$: component = components[data.type];
-	$: wrapper = wrappers[data.type];
-</script>
-
-<Card>
-	<svelte:component
-		this={wrapper}
-		{fields}
-		{queryArguments}
-		{showHeader}
-		{showFooter}
-		{showOptionButton}
-		{showFilterButton}
-		{showBookmarkButton}
-		isFetching={$realmConnectionQuery.isFetching}
-		{totalCount}
-		className="p-0 md:h-screen"
-		on:query={(e) => {
-			errors = {};
-			realmConnectionQuery.fetch({
+	const query = (to?: number | undefined) => {
+		errors = {};
+		args.first = pageSize;
+		args.offset = (to || pageNumber - 1) * pageSize;
+		query_realmConnection_Store
+			.fetch({
 				fields: [
 					createConnectionField({
 						name: 'realmConnection',
-						fields: e.detail.fields,
-						arguments: e.detail.queryArguments,
-						directives: e.detail.directives
+						args: buildArguments(args),
+						fields:
+							data.type === 'mutation'
+								? queryFields
+								: [...(args?.groupBy?.map((name) => new Field({ name })) || []), ...fields],
+						directives
 					})
 				]
-			}).then((response) => {
-				connection = response?.data?.realmConnection;
-				if (e.detail.catch && response?.errors) {
-					e.detail.catch(response.errors);
-				} else if (e.detail.then) {
-					e.detail.then(response?.data?.realmConnection);
+			})
+			.then((result) => {
+				if (result.errors) {
+					console.error(result.errors);
+					toast.error($LL.graphence.message.requestFailed());
 				}
 			});
-		}}
-		let:fields
-		let:queryFields
-		let:queryArguments
-		let:getFieldName
-		let:getGrouByName
-		let:queryPage
-		let:buildArguments
-	>
-		<svelte:component
-			this={component}
-			{connection}
-			{fields}
-			{errors}
-			{queryFields}
-			{queryArguments}
-			{getFieldName}
-			{getGrouByName}
-			{queryPage}
-			{buildArguments}
-			on:exportQuery={(e) => {
-				realmConnectionQuery.fetch({
-					fields: [
-						createConnectionField({
-							name: 'realmConnection',
-							fields: e.detail.fields,
-							arguments: e.detail.queryArguments,
-							directives: e.detail.directives
-						})
-					]
-				}).then((response) => {
-					if (e.detail.catch && response?.errors) {
-						e.detail.catch(response.errors);
-					} else if (e.detail.then) {
-						e.detail.then(response?.data?.realmConnection);
-					}
-				});
-			}}
-			on:mutation={(e) => {
-				validate('Mutation_realmList_Arguments', e.detail.mutationArguments, $locale)
-					.then((data) => {
-						errors = {};
-						realmListMutation.fetch({
-							fields: [
-								new Field({
-									name: 'realmList',
-									fields: e.detail.fields,
-									arguments: e.detail.mutationArguments,
-									directives: e.detail.directives
-								})
-							]
-						}).then((response) => {
-							if (response?.errors) {
-								errors = buildGraphQLErrors(response.errors).list?.iterms || {};
-								e.detail.catch(response.errors);
-							} else {
-								e.detail.then(response?.data?.realmList);
-							}
-						});
-					})
-					.catch((validErrors) => {
-						errors = validErrors.list?.iterms;
-					});
-			}}
-		/>
-	</svelte:component>
+	};
+</script>
+
+<Card>
+	<CardBody>
+		{#if data.type === 'mutation'}
+			<RealmQuery
+				bind:fields
+				bind:queryFields
+				bind:args
+				{showHeader}
+				{showOptionButton}
+				{showFilterButton}
+				isFetching={$query_realmConnection_Store.isFetching}
+				class="h-screen"
+				on:query={(e) => query()}
+				let:fields
+				let:queryFields
+				let:args
+				let:getFieldName
+				let:query
+				let:buildArguments
+			>
+				<RealmGrid
+					value={nodes}
+					{fields}
+					{errors}
+					{queryFields}
+					{args}
+					{getFieldName}
+					{query}
+					{buildArguments}
+					on:mutation={(e) => {
+						validate('Mutation_realmList_Arguments', e.detail.args, $locale)
+							.then((data) => {
+								errors = {};
+								mutation_realmList_Store
+									.fetch({
+										fields: [
+											new Field({
+												name: 'realmList',
+												fields: e.detail.fields,
+												args: e.detail.args,
+												directives: e.detail.directives
+											})
+										]
+									})
+									.then((result) => {
+										if (result.errors) {
+											console.error(result.errors);
+											errors = buildGraphQLErrors(result.errors);
+											const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+											if (globalError) {
+												modal.open({
+													title: $LL.graphence.message.requestFailed(),
+													description: globalError,
+													confirm: () => {
+														query();
+														return true;
+													}
+												});
+											}
+										} else {
+											toast.success($LL.graphence.message.requestSuccess());
+											query();
+										}
+									});
+							})
+							.catch((validErrors) => {
+								errors = validErrors.list?.iterms;
+							});
+					}}
+					on:exportQuery={(e) => {
+						query_realmConnection_Store
+							.fetch({
+								fields: [
+									createConnectionField({
+										name: 'realmConnection',
+										fields: e.detail.fields,
+										args: e.detail.args,
+										directives: e.detail.directives
+									})
+								]
+							})
+							.then((result) => {
+								if (result.errors) {
+									console.error(result.errors);
+									toast.error($LL.graphence.message.requestFailed());
+								} else if (e.detail.then) {
+									e.detail.then(result?.data?.realmConnection?.edges?.map((edge) => edge?.node));
+								}
+							});
+					}}
+				/>
+			</RealmQuery>
+		{:else}
+			<RealmAgg
+				bind:fields
+				bind:args
+				{showHeader}
+				{showOptionButton}
+				{showFilterButton}
+				isFetching={$query_realmConnection_Store.isFetching}
+				class="h-screen"
+				on:query={(e) => query()}
+				let:fields
+				let:args
+				let:getFieldName
+				let:getGrouByName
+			>
+				<RealmAggGrid value={nodes} {fields} {args} {getFieldName} {getGrouByName} />
+			</RealmAgg>
+		{/if}
+		{#if showFooter}
+			<div class="divider" />
+			<Pagination
+				bind:pageSize
+				bind:pageNumber
+				{totalCount}
+				on:pageChange={(e) => query()}
+				on:sizeChange={(e) => query(1)}
+			/>
+		{/if}
+	</CardBody>
 </Card>

@@ -17,7 +17,6 @@
 	$: showFooter = data.showFooter;
 	$: showOptionButton = data.showOptionButton;
 	$: showFilterButton = data.fields;
-	$: showBookmarkButton = data.showBookmarkButton;
 	$: query_realmConnection_Store = data.query_realmConnection_Store as OperationStore<RealmConnection>;
 	$: nodes = $query_realmConnection_Store.response.data?.realmConnection?.edges?.map(
 		(edge) => edge?.node
@@ -70,7 +69,6 @@
 			{showHeader}
 			{showOptionButton}
 			{showFilterButton}
-			{showBookmarkButton}
 			class="h-screen"
 			isFetching={$query_realmConnection_Store.isFetching}
 			on:query={(e) => query()}

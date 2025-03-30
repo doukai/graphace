@@ -365,7 +365,7 @@ export const createGrid = (
         }
     };
 
-    const fieldsToColumns = (typeName: string, fields: Field[], source: DataType[], gridErrors: Record<string, Errors>[] | undefined, getFieldName: (fieldName: string, subFieldName?: string) => string): ColumnRegular[] | ColumnGrouping[] => {
+    const fieldsToColumns = (typeName: string, fields: Field[], source: DataType[], gridErrors: Record<string, Errors>[] | undefined, getFieldName: (fieldName: string, subFieldName?: string | undefined) => string | undefined): ColumnRegular[] | ColumnGrouping[] => {
         return fieldsDeep(fields) === 1
             ? (fields.map((field) => ({
                 name: getFieldName(field.name),
@@ -445,7 +445,7 @@ export const createGrid = (
             }) as ColumnGrouping[]);
     };
 
-    const fieldsToAggColumns = (typeName: string, groupBy: string[], fields: Field[], getFieldName: (fieldName: string, subFieldName?: string) => string, getGrouByName: (fieldName: string) => string): ColumnRegular[] | ColumnGrouping[] => {
+    const fieldsToAggColumns = (typeName: string, groupBy: string[], fields: Field[], getFieldName: (fieldName: string, subFieldName?: string | undefined) => string | undefined, getGrouByName: (fieldName: string) => string | undefined): ColumnRegular[] | ColumnGrouping[] => {
         return fieldsDeep(fields) === 1
             ? ([
                 ...(groupBy || []).map((fieldName) => ({
@@ -712,7 +712,7 @@ export const createGrid = (
         }
     };
 
-    const nodesToSource = <T>(typeName: string, queryFields: Field[], nodes: (T | null | undefined)[] | undefined): DataType[] | undefined => {
+    const nodesToSource = <T>(typeName: string, queryFields: Field[], nodes: (T | null | undefined)[] | null | undefined): DataType[] | undefined => {
         const join = queryFields.find((field) => __schema.getType(typeName)?.getField(field.name)?.getType().getNamedType().isObject() && __schema.getType(typeName)?.getField(field.name)?.getType().hasList());
         return nodes?.flatMap((node) => {
             if (join) {
@@ -767,7 +767,7 @@ export const createGrid = (
         });
     };
 
-    const nodesToAggSource = <T>(typeName: string, groupBy: string[], fields: Field[], nodes: (T | null | undefined)[] | undefined): DataType[] | undefined => {
+    const nodesToAggSource = <T>(typeName: string, groupBy: string[], fields: Field[], nodes: (T | null | undefined)[] | null | undefined): DataType[] | undefined => {
         return nodes?.map((node) =>
             Object.fromEntries([
                 ...(groupBy || []).map((fieldName) => [
@@ -789,7 +789,7 @@ export const createGrid = (
         );
     };
 
-    const errorsToGridErrors = <T>(typeName: string, errors: Record<number, Errors>, queryFields: Field[], nodes: (T | null | undefined)[] | undefined): Record<string, Errors>[] | undefined => {
+    const errorsToGridErrors = <T>(typeName: string, errors: Record<number, Errors>, queryFields: Field[], nodes: (T | null | undefined)[] | null | undefined): Record<string, Errors>[] | undefined => {
         if (errors && Object.keys(errors).length) {
             const join = queryFields.find((field) => __schema.getType(typeName)?.getField(field.name)?.getType().getNamedType().isObject() && __schema.getType(typeName)?.getField(field.name)?.getType().hasList());
             return nodes?.flatMap((node, nodeIndex) => {
@@ -948,7 +948,7 @@ export const createGrid = (
         }
     };
 
-    const exportToXlsx = <T>(typeName: string, fields: Field[], nodes: (T | null | undefined)[] | undefined): void => {
+    const exportToXlsx = <T>(typeName: string, fields: Field[], nodes: (T | null | undefined)[] | null | undefined): void => {
         const join = fields.find((field) => __schema.getType(typeName)?.getField(field.name)?.getType().getNamedType().isObject() && __schema.getType(typeName)?.getField(field.name)?.getType().hasList());
         const json = nodes?.flatMap((node) => {
             if (join) {

@@ -174,7 +174,15 @@ export const getObjectInfo = (schema: GraphQLSchema, name: string): ObjectInfo |
             hasFileField: hasFileField(type),
             isConnection: isConnection(type.name),
             isNamed: isNamedStruct(type),
-            fields,
+            fields: fields?.map(field => {
+                if (field.isObjectType) {
+                    const fieldType = schema.getType(field.fieldTypeName);
+                    if (fieldType) {
+                        field.fields = getFieldInfos(schema, fieldType);
+                    }
+                }
+                return field;
+            }),
             aggFields: getAggFieldInfos(schema, type)
         };
     }

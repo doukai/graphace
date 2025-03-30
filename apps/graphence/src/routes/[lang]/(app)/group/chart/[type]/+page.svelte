@@ -17,7 +17,6 @@
 	$: showFooter = data.showFooter;
 	$: showOptionButton = data.showOptionButton;
 	$: showFilterButton = data.fields;
-	$: showBookmarkButton = data.showBookmarkButton;
 	$: query_groupConnection_Store = data.query_groupConnection_Store as OperationStore<GroupConnection>;
 	$: nodes = $query_groupConnection_Store.response.data?.groupConnection?.edges?.map(
 		(edge) => edge?.node
@@ -70,7 +69,6 @@
 			{showHeader}
 			{showOptionButton}
 			{showFilterButton}
-			{showBookmarkButton}
 			class="h-screen"
 			isFetching={$query_groupConnection_Store.isFetching}
 			on:query={(e) => query()}

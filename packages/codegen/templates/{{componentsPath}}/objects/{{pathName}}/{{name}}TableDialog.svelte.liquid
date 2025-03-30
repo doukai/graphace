@@ -59,7 +59,7 @@
 		query_{{ name | camelCase }}Connection_Store.fetch(args).then((result) => {
 			if (result.errors) {
 				console.error(result.errors);
-				toast.error($LL.graphence.message.requestFailed());
+				toast.error($LL.{{ appName }}.message.requestFailed());
 			}
 		});
 	};

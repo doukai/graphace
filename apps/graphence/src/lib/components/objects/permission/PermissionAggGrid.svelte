@@ -1,17 +1,17 @@
-<script lang='ts'>
+<script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Readable, Writable } from 'svelte/store';
 	import { RevoGrid } from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import type { Field } from '@graphace/graphql';
-	import type { PermissionConnection, PermissionConnectionQueryArguments } from '~/lib/types/schema';
+	import type { Permission, QueryPermissionListArgs } from '~/lib/types/schema';
 	import { getGridTheme, fieldsToAggColumns, nodesToAggSource } from '~/utils';
 
-	export let connection: PermissionConnection;
+	export let value: (Permission | null | undefined)[] | null | undefined = undefined;
 	export let fields: Field[] = [];
-	export let queryArguments: PermissionConnectionQueryArguments = {};
-	export let getFieldName: (fieldName: string, subFieldName?: string) => string;
-	export let getGrouByName: (fieldName: string) => string;
+	export let args: QueryPermissionListArgs = {};
+	export let getFieldName: (fieldName: string, subFieldName?: string) => string | undefined;
+	export let getGrouByName: (fieldName: string) => string | undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const themeStore = getContext<Writable<string | undefined>>('theme');
@@ -22,8 +22,6 @@
 	};
 
 	$: theme = getGridTheme($themeStore);
-	$: nodes = connection?.edges?.map((edge) => edge?.node);
-
 	$: filter = {
 		localization: {
 			captions: {
@@ -55,15 +53,14 @@
 			}
 		}
 	};
-
 	$: columns = fieldsToAggColumns(
 		typeName,
-		queryArguments.groupBy || [],
+		args.groupBy || [],
 		fields,
 		getFieldName,
 		getGrouByName
 	);
-	$: source = nodesToAggSource(typeName, queryArguments.groupBy || [], fields, nodes);
+	$: source = nodesToAggSource(typeName, args.groupBy || [], fields, value);
 </script>
 
 <RevoGrid

@@ -1,50 +1,45 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import { fade } from 'svelte/transition';
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { AdjustmentsHorizontal, Funnel, Bookmark } from '@steeze-ui/heroicons';
+	import { AdjustmentsHorizontal, Funnel } from '@steeze-ui/heroicons';
 	import type { PermissionsStore } from '@graphace/commons';
-	import { Field, Directive, type GraphQLError } from '@graphace/graphql';
-	import { Combobox, type Group as G, Pagination, type Option, z_index } from '@graphace/ui';
+	import { Field, Directive } from '@graphace/graphql';
+	import { type Option, Combobox, Form, FormControl, Label, Loading } from '@graphace/ui';
 	import RoleFilter from '~/lib/components/objects/role/RoleFilter.svelte';
-	import type { RoleConnection, RoleConnectionQueryArguments } from '~/lib/types/schema';
+	import type { QueryRoleListArgs } from '~/lib/types/schema';
 	import { __schema } from '~/utils';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	
+
 	export let fields: Field[] = [];
 	export let queryFields: Field[] = [];
-	export let queryArguments: RoleConnectionQueryArguments = {};
+	export let args: QueryRoleListArgs = {};
 	export let selectColumns: Option[] = [];
 	export let join: Option | undefined = undefined;
 	export let joinColumns: Option[] = [];
 	export let orderByColumns: Option[] = [];
-	export let totalCount: number = 0;
-	export let pageNumber: number = 1;
-	export let pageSize: number = 10;
 	export let isFetching: boolean = false;
 	export let showHeader: boolean = true;
-	export let showFooter: boolean = true;
 	export let showOptionButton: boolean = true;
 	export let showFilterButton: boolean = true;
-	export let showBookmarkButton: boolean = false;
-	export let className: string = '';
+	export let zIndex: number = 0;
+	let className: string | undefined = undefined;
+	export { className as class };
 
+	const contextClass = getContext<string>('ui.popover-content') || '';
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const permissions = getContext<PermissionsStore>('permissions');
 	const typeName = 'Role';
 	const idFieldName = 'id';
-	
+
 	const dispatch = createEventDispatcher<{
-		query: { 
+		query: {
 			fields: Field[];
-			queryArguments: RoleConnectionQueryArguments;
+			queryFields: Field[];
+			args: QueryRoleListArgs;
 			directives?: Directive[];
-			then?: (connection: RoleConnection | null | undefined) => void;
-			catch?: (errors: GraphQLError[]) => void;
 		};
-		bookmark: { fields: string; queryArguments: string };
 	}>();
 
 	const {
@@ -55,18 +50,11 @@
 		preventScroll: true
 	});
 
-	const z_class7 = z_index.top(7);
-
 	$: selectOptions = [
 		{
 			value: '',
 			label: $LL.graphql.objects.Role.name(),
 			options: [
-				{
-					value: 'id',
-					label: $LL.graphql.objects.Role.fields.id.name(),
-					disabled: !permissions.auth('Role::id::READ')
-				},
 				{
 					value: 'name',
 					label: $LL.graphql.objects.Role.fields.name.name(),
@@ -97,6 +85,46 @@
 					value: 'description',
 					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.description.name(),
 					disabled: !permissions.auth('Realm::description::READ')
+				},
+				{
+					value: 'isDeprecated',
+					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.isDeprecated.name(),
+					disabled: !permissions.auth('Realm::isDeprecated::READ')
+				},
+				{
+					value: 'version',
+					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.version.name(),
+					disabled: !permissions.auth('Realm::version::READ')
+				},
+				{
+					value: 'realmId',
+					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.realmId.name(),
+					disabled: !permissions.auth('Realm::realmId::READ')
+				},
+				{
+					value: 'createUserId',
+					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.createUserId.name(),
+					disabled: !permissions.auth('Realm::createUserId::READ')
+				},
+				{
+					value: 'createTime',
+					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.createTime.name(),
+					disabled: !permissions.auth('Realm::createTime::READ')
+				},
+				{
+					value: 'updateUserId',
+					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.updateUserId.name(),
+					disabled: !permissions.auth('Realm::updateUserId::READ')
+				},
+				{
+					value: 'updateTime',
+					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.updateTime.name(),
+					disabled: !permissions.auth('Realm::updateTime::READ')
+				},
+				{
+					value: 'createGroupId',
+					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.createGroupId.name(),
+					disabled: !permissions.auth('Realm::createGroupId::READ')
 				},
 			],
 			disabled: !permissions.auth('Role::realm::READ')
@@ -161,10 +189,50 @@
 					disabled: !permissions.auth('User::disable::READ')
 				},
 				{
+					value: 'isDeprecated',
+					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.isDeprecated.name(),
+					disabled: !permissions.auth('User::isDeprecated::READ')
+				},
+				{
+					value: 'version',
+					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.version.name(),
+					disabled: !permissions.auth('User::version::READ')
+				},
+				{
+					value: 'realmId',
+					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.realmId.name(),
+					disabled: !permissions.auth('User::realmId::READ')
+				},
+				{
+					value: 'createUserId',
+					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.createUserId.name(),
+					disabled: !permissions.auth('User::createUserId::READ')
+				},
+				{
+					value: 'createTime',
+					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.createTime.name(),
+					disabled: !permissions.auth('User::createTime::READ')
+				},
+				{
+					value: 'updateUserId',
+					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.updateUserId.name(),
+					disabled: !permissions.auth('User::updateUserId::READ')
+				},
+				{
+					value: 'updateTime',
+					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.updateTime.name(),
+					disabled: !permissions.auth('User::updateTime::READ')
+				},
+				{
+					value: 'createGroupId',
+					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.createGroupId.name(),
+					disabled: !permissions.auth('User::createGroupId::READ')
+				},
+				{
 					value: 'syncUserPolicy',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.syncUserPolicy.name(),
 					disabled: !permissions.auth('User::syncUserPolicy::READ')
-				},
+				}
 			],
 			disabled: !permissions.auth('Role::users::READ')
 		},
@@ -203,10 +271,50 @@
 					disabled: !permissions.auth('Group::parentId::READ')
 				},
 				{
+					value: 'isDeprecated',
+					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.isDeprecated.name(),
+					disabled: !permissions.auth('Group::isDeprecated::READ')
+				},
+				{
+					value: 'version',
+					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.version.name(),
+					disabled: !permissions.auth('Group::version::READ')
+				},
+				{
+					value: 'realmId',
+					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.realmId.name(),
+					disabled: !permissions.auth('Group::realmId::READ')
+				},
+				{
+					value: 'createUserId',
+					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.createUserId.name(),
+					disabled: !permissions.auth('Group::createUserId::READ')
+				},
+				{
+					value: 'createTime',
+					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.createTime.name(),
+					disabled: !permissions.auth('Group::createTime::READ')
+				},
+				{
+					value: 'updateUserId',
+					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.updateUserId.name(),
+					disabled: !permissions.auth('Group::updateUserId::READ')
+				},
+				{
+					value: 'updateTime',
+					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.updateTime.name(),
+					disabled: !permissions.auth('Group::updateTime::READ')
+				},
+				{
+					value: 'createGroupId',
+					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.createGroupId.name(),
+					disabled: !permissions.auth('Group::createGroupId::READ')
+				},
+				{
 					value: 'syncGroupPolicy',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.syncGroupPolicy.name(),
 					disabled: !permissions.auth('Group::syncGroupPolicy::READ')
-				},
+				}
 			],
 			disabled: !permissions.auth('Role::groups::READ')
 		},
@@ -229,6 +337,51 @@
 					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.description.name(),
 					disabled: !permissions.auth('Role::description::READ')
 				},
+				{
+					value: 'isDeprecated',
+					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.isDeprecated.name(),
+					disabled: !permissions.auth('Role::isDeprecated::READ')
+				},
+				{
+					value: 'version',
+					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.version.name(),
+					disabled: !permissions.auth('Role::version::READ')
+				},
+				{
+					value: 'realmId',
+					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.realmId.name(),
+					disabled: !permissions.auth('Role::realmId::READ')
+				},
+				{
+					value: 'createUserId',
+					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.createUserId.name(),
+					disabled: !permissions.auth('Role::createUserId::READ')
+				},
+				{
+					value: 'createTime',
+					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.createTime.name(),
+					disabled: !permissions.auth('Role::createTime::READ')
+				},
+				{
+					value: 'updateUserId',
+					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.updateUserId.name(),
+					disabled: !permissions.auth('Role::updateUserId::READ')
+				},
+				{
+					value: 'updateTime',
+					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.updateTime.name(),
+					disabled: !permissions.auth('Role::updateTime::READ')
+				},
+				{
+					value: 'createGroupId',
+					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.createGroupId.name(),
+					disabled: !permissions.auth('Role::createGroupId::READ')
+				},
+				{
+					value: 'syncRolePolicy',
+					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.syncRolePolicy.name(),
+					disabled: !permissions.auth('Role::syncRolePolicy::READ')
+				}
 			],
 			disabled: !permissions.auth('Role::composites::READ')
 		},
@@ -262,10 +415,50 @@
 					disabled: !permissions.auth('Permission::permissionType::READ')
 				},
 				{
+					value: 'isDeprecated',
+					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.isDeprecated.name(),
+					disabled: !permissions.auth('Permission::isDeprecated::READ')
+				},
+				{
+					value: 'version',
+					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.version.name(),
+					disabled: !permissions.auth('Permission::version::READ')
+				},
+				{
+					value: 'realmId',
+					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.realmId.name(),
+					disabled: !permissions.auth('Permission::realmId::READ')
+				},
+				{
+					value: 'createUserId',
+					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.createUserId.name(),
+					disabled: !permissions.auth('Permission::createUserId::READ')
+				},
+				{
+					value: 'createTime',
+					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.createTime.name(),
+					disabled: !permissions.auth('Permission::createTime::READ')
+				},
+				{
+					value: 'updateUserId',
+					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.updateUserId.name(),
+					disabled: !permissions.auth('Permission::updateUserId::READ')
+				},
+				{
+					value: 'updateTime',
+					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.updateTime.name(),
+					disabled: !permissions.auth('Permission::updateTime::READ')
+				},
+				{
+					value: 'createGroupId',
+					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.createGroupId.name(),
+					disabled: !permissions.auth('Permission::createGroupId::READ')
+				},
+				{
 					value: 'syncPermissionPolicy',
 					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.syncPermissionPolicy.name(),
 					disabled: !permissions.auth('Permission::syncPermissionPolicy::READ')
-				},
+				}
 			],
 			disabled: !permissions.auth('Role::permissions::READ')
 		},
@@ -308,41 +501,46 @@
 		});
 	}
 
-	$: orderByOptions = selectColumns.reduce((groups, option) => {
+	$: orderByOptions = selectColumns
+		.reduce((groups, option) => {
 			if (
 				groups.some(
-					(group) => group.value === option.group?.value && group.label === option.group?.label
+					(group) => group.value === option.parent?.value && group.label === option.parent?.label
 				)
 			) {
 				groups
 					.find(
-						(group) => group.value === option.group?.value && group.label === option.group?.label
+						(group) => group.value === option.parent?.value && group.label === option.parent?.label
 					)
 					?.options?.push(option);
 			} else {
 				groups.push({
-					value: option.group?.value,
-					label: option.group?.label,
+					value: option.parent?.value,
+					label: option.parent?.label,
 					options: [option]
 				});
 			}
 			return groups;
-		}, <G[]>[])
+		}, <Option[]>[])
 		.map((group) => {
 			return {
 				value: group.value,
 				label: group.label,
 				options: group.options?.flatMap((option) => [
 					{ value: option.value, label: option.label + $LL.ui_graphql.table.th.asc(), node: 'ASC' },
-					{ value: option.value, label: option.label + $LL.ui_graphql.table.th.desc(), node: 'DESC' }
+					{
+						value: option.value,
+						label: option.label + $LL.ui_graphql.table.th.desc(),
+						node: 'DESC'
+					}
 				])
 			};
 		});
 
 	let filteredOrderByOptions = orderByOptions;
 
-	$: if (queryArguments.orderBy && Object.keys(queryArguments.orderBy).length > 0) {
-		orderByColumns = Object.entries(queryArguments.orderBy).flatMap((entry) => {
+	$: if (args.orderBy && Object.keys(args.orderBy).length > 0) {
+		orderByColumns = Object.entries(args.orderBy).flatMap((entry) => {
 			if (entry[1] === 'ASC' || entry[1] === 'DESC') {
 				return orderByOptions.flatMap((group) =>
 					(group.options || [])
@@ -363,61 +561,56 @@
 		});
 	}
 
-	if (queryArguments.first) {
-		pageSize = queryArguments.first;
-	}
-
-	if (queryArguments.offset) {
-		pageNumber = queryArguments.offset / pageSize + 1;
-	}
-
 	const optionsToFields = (): Field[] => {
 		return [
 			...selectColumns.reduce((fields, option) => {
-				if (option.group?.value) {
-					if (fields.some((field) => field.name === option.group?.value)) {
+				if (option.parent?.value) {
+					if (fields.some((field) => field.name === option.parent?.value)) {
 						fields
-							.find((field) => field.name === option.group?.value)
-							?.fields?.push(new Field({ name: option.value }));
+							.find((field) => field.name === option.parent?.value)
+							?.fields?.push(new Field({ name: option.value! }));
 					} else {
-						fields.push(new Field({
-							name: option.group.value,
-							fields: [new Field({ name: option.value })]
-						}));
+						fields.push(
+							new Field({
+								name: option.parent.value,
+								fields: [new Field({ name: option.value! })]
+							})
+						);
 					}
 				} else {
-					fields.push(new Field({ name: option.value }));
+					fields.push(new Field({ name: option.value! }));
 				}
 				return fields;
 			}, <Field[]>[]),
 			...(join && joinColumns && joinColumns.length > 0
-				? [new Field({ name: join.value, fields: joinColumns?.map((column) => new Field({ name: column.value })) })]
+				? [
+						new Field({
+							name: join.value!,
+							fields: joinColumns?.map((column) => new Field({ name: column.value! }))
+						})
+				  ]
 				: [])
 		];
 	};
 
-	export const buildArguments = (toPageNumber?: number | undefined, limit?: number | undefined): RoleConnectionQueryArguments => {
-		if (!queryArguments) {
-			queryArguments = {};
-		}
-
+	export const buildArguments = (): QueryRoleListArgs => {
 		if (orderByColumns.length > 0) {
-			queryArguments.orderBy = Object.fromEntries(
+			args.orderBy = Object.fromEntries(
 				orderByColumns
 					.reduce((groups, option) => {
-						if (groups.some((group) => group.value === option.group?.value)) {
+						if (groups.some((group) => group.value === option.parent?.value)) {
 							groups
-								.find((group) => group.value === option.group?.value)
-								?.sorts?.push({ value: option.value, sort: option.node });
+								.find((group) => group.value === option.parent?.value)
+								?.sorts?.push({ value: option.value!, sort: option.node });
 						} else {
-							if (option.group?.value) {
+							if (option.parent?.value) {
 								groups.push({
-									value: option.group?.value,
-									sorts: [{ value: option.value, sort: option.node }]
+									value: option.parent?.value,
+									sorts: [{ value: option.value!, sort: option.node }]
 								});
 							} else {
 								groups.push({
-									value: option.value,
+									value: option.value!,
 									sort: option.node
 								});
 							}
@@ -436,39 +629,32 @@
 					})
 			);
 		} else {
-			queryArguments.orderBy = undefined;
+			args.orderBy = undefined;
 		}
-
-		queryArguments.offset = ((toPageNumber || pageNumber) - 1) * (limit || pageSize);
-		queryArguments.first = limit || pageSize;
-		return queryArguments;
+		return args;
 	};
 
-	export const getFieldName = (fieldName: string, subFieldName?: string): string => {
+	export const getFieldName = (fieldName: string, subFieldName?: string): string | undefined => {
 		if (subFieldName) {
 			return [...selectOptions, ...joinOptions]
-				.filter((group) => group.value === fieldName)
-				?.flatMap((group) => group.options.filter((option) => option.value === subFieldName))[0]
-				.label;
+				.find((option) => option.value === fieldName)
+				?.options?.find((option) => option.value === subFieldName)?.label;
 		} else {
 			return (
-				[...selectOptions, ...joinOptions]
-					.filter((group) => !group.value)
-					?.flatMap((group) => group.options.filter((option) => option.value === fieldName))?.[0] ||
-				[...selectOptions, ...joinOptions].find((group) => group.value === fieldName)
-			).label;
+				[...selectOptions, ...joinOptions].find((option) => option.value === fieldName)?.label ||
+				[...selectOptions, ...joinOptions].flatMap((option) =>
+					option.options?.filter((option) => option.value === fieldName)
+				)?.[0]?.label
+			);
 		}
 	};
 
-	export const queryPage = (toPageNumber?: number | undefined) => {
-		if (toPageNumber) {
-			queryArguments.offset = (toPageNumber - 1) * pageSize;
+	export const query = () => {
+		queryFields = optionsToFields();
+		if (!queryFields.some((subField) => subField.name === idFieldName)) {
+			queryFields.push(new Field({ name: idFieldName }));
 		}
-		const _fields = optionsToFields();
-		if (!_fields.some((subField) => subField.name === idFieldName)) {
-			_fields.push(new Field({ name: idFieldName }));
-		}
-		_fields.forEach((field) => {
+		queryFields.forEach((field) => {
 			if (field.fields) {
 				const idFieldName = __schema
 					.getType(
@@ -481,48 +667,48 @@
 				}
 			}
 		});
-		dispatch('query', { fields: _fields, queryArguments });
+		dispatch('query', { fields, queryFields, args });
 	};
 
-	queryPage();
+	query();
 </script>
 
 {#if showHeader}
 	<div class="flex space-x-1">
-		<Combobox
-			title={$LL.graphence.components.query.columns()}
-			multiple={true}
-			groups={filteredSelectOptions}
-			rootClassName="w-full"
-			bind:value={selectColumns}
-			on:search={(e) => {
-				if (e.detail.searchValue) {
-					filteredSelectOptions = selectOptions
-						.filter(
-							(group) =>
-								group.label.includes(e.detail.searchValue || '') ||
-								group.options.some((option) => option.label.includes(e.detail.searchValue || ''))
-						)
-						.map((group) => ({
-							...group,
-							options: group.options.filter((option) =>
-								option.label.includes(e.detail.searchValue || '')
+		<div class="w-full">
+			<Combobox
+				multiple={true}
+				options={filteredSelectOptions}
+				bind:value={selectColumns}
+				on:search={(e) => {
+					if (e.detail.searchValue) {
+						filteredSelectOptions = selectOptions
+							.filter(
+								(group) =>
+									group.label.includes(e.detail.searchValue || '') ||
+									group.options.some((option) => option.label.includes(e.detail.searchValue || ''))
 							)
-						}));
-				} else {
-					filteredSelectOptions = selectOptions;
-				}
-			}}
-			on:change={(e) => {
-				orderByColumns = orderByColumns.filter(
-					(orderColumn) =>
-						!Array.isArray(e.detail.value) ||
-						e.detail.value.some((selectColumn) => selectColumn.value === orderColumn.value)
-				);
-				fields = optionsToFields();
-				queryPage(1);
-			}}
-		/>
+							.map((group) => ({
+								...group,
+								options: group.options.filter((option) =>
+									option.label.includes(e.detail.searchValue || '')
+								)
+							}));
+					} else {
+						filteredSelectOptions = selectOptions;
+					}
+				}}
+				on:change={(e) => {
+					orderByColumns = orderByColumns.filter(
+						(orderColumn) =>
+							!Array.isArray(e.detail.value) ||
+							e.detail.value.some((selectColumn) => selectColumn.value === orderColumn.value)
+					);
+					fields = optionsToFields();
+					query();
+				}}
+			/>
+		</div>
 		{#if showOptionButton}
 			<div class="tooltip" data-tip={$LL.graphence.components.query.option()}>
 				<button class="btn btn-square" use:melt={$trigger}>
@@ -530,116 +716,104 @@
 				</button>
 			</div>
 			{#if $open}
-				<div use:melt={$overlay} class="fixed inset-0 {z_class7}" />
-				<div
-					class="p-1 rounded-xl bg-base-200 shadow {z_class7}"
-					use:melt={$content}
-				>
+				<div use:melt={$overlay} class="fixed inset-0 z-[{zIndex + 7}]" />
+				<div class="p-1 z-[{zIndex + 7}] {contextClass}" use:melt={$content}>
 					<div use:melt={$arrow} />
-					<div class="space-y-1" transition:fade={{ duration: 100 }}>
-						<Combobox
-							title={$LL.graphence.components.query.join()}
-							options={filteredJoinOptions}
-							rootClassName="w-full"
-							className="md:input-xs"
-							containerClassName="md:min-h-8"
-							tagClassName="md:badge-sm"
-							groupClassName="md:input-group-sm"
-							bind:value={join}
-							on:search={(e) => {
-								if (e.detail.searchValue) {
-									filteredJoinOptions =
-										joinOptions
-											?.filter((group) => group.label?.includes(e.detail.searchValue || ''))
-											.map((option) => ({
+					<Form class="max-h-60 overflow-y-auto">
+						<FormControl let:id>
+							<Label {id} text={$LL.graphence.components.query.join()} />
+							<Combobox
+								options={filteredJoinOptions}
+								bind:value={join}
+								on:search={(e) => {
+									if (e.detail.searchValue) {
+										filteredJoinOptions =
+											joinOptions
+												?.filter((group) => group.label?.includes(e.detail.searchValue || ''))
+												.map((option) => ({
+													value: option.value,
+													label: option.label,
+													disabled: option.disabled
+												})) || [];
+									} else {
+										filteredJoinOptions =
+											joinOptions?.map((option) => ({
 												value: option.value,
 												label: option.label,
 												disabled: option.disabled
 											})) || [];
-								} else {
-									filteredJoinOptions =
-										joinOptions?.map((option) => ({
-											value: option.value,
-											label: option.label,
-											disabled: option.disabled
-										})) || [];
-								}
-							}}
-							on:change={(e) => {
-								fields = optionsToFields();
-								queryPage(1);
-							}}
-						/>
-						<Combobox
-							title={$LL.graphence.components.query.joinColumns()}
-							multiple={true}
-							options={filteredJoinColumnOptions}
-							rootClassName="w-full"
-							className="md:input-xs"
-							containerClassName="md:min-h-8"
-							tagClassName="md:badge-sm"
-							groupClassName="md:input-group-sm"
-							bind:value={joinColumns}
-							on:search={(e) => {
-								if (e.detail.searchValue) {
-									filteredJoinColumnOptions = joinColumnOptions?.filter((option) =>
-										option.label?.includes(e.detail.searchValue || '')
-									);
-								} else {
-									filteredJoinColumnOptions = joinColumnOptions;
-								}
-							}}
-							on:change={(e) => {
-								fields = optionsToFields();
-								queryPage(1);
-							}}
-						/>
-						<Combobox
-							title={$LL.graphence.components.query.orderBy()}
-							multiple={true}
-							groups={filteredOrderByOptions}
-							rootClassName="w-full"
-							className="md:input-xs"
-							containerClassName="md:min-h-8"
-							tagClassName="md:badge-sm"
-							groupClassName="md:input-group-sm"
-							bind:value={orderByColumns}
-							on:search={(e) => {
-								if (e.detail.searchValue) {
-									filteredOrderByOptions = orderByOptions
-										.filter(
-											(group) =>
-												group.label?.includes(e.detail.searchValue || '') ||
-												group.options?.some((option) =>
+									}
+								}}
+								on:change={(e) => {
+									fields = optionsToFields();
+									query();
+								}}
+							/>
+						</FormControl>
+						<FormControl let:id>
+							<Label {id} text={$LL.graphence.components.query.joinColumns()} />
+							<Combobox
+								multiple={true}
+								options={filteredJoinColumnOptions}
+								bind:value={joinColumns}
+								on:search={(e) => {
+									if (e.detail.searchValue) {
+										filteredJoinColumnOptions = joinColumnOptions?.filter((option) =>
+											option.label?.includes(e.detail.searchValue || '')
+										);
+									} else {
+										filteredJoinColumnOptions = joinColumnOptions;
+									}
+								}}
+								on:change={(e) => {
+									fields = optionsToFields();
+									query();
+								}}
+							/>
+						</FormControl>
+						<FormControl let:id>
+							<Label {id} text={$LL.graphence.components.query.orderBy()} />
+							<Combobox
+								multiple={true}
+								options={filteredOrderByOptions}
+								bind:value={orderByColumns}
+								on:search={(e) => {
+									if (e.detail.searchValue) {
+										filteredOrderByOptions = orderByOptions
+											.filter(
+												(group) =>
+													group.label?.includes(e.detail.searchValue || '') ||
+													group.options?.some((option) =>
+														option.label.includes(e.detail.searchValue || '')
+													)
+											)
+											.map((group) => ({
+												...group,
+												options: group.options?.filter((option) =>
 													option.label.includes(e.detail.searchValue || '')
 												)
-										)
-										.map((group) => ({
-											...group,
-											options: group.options?.filter((option) =>
-												option.label.includes(e.detail.searchValue || '')
-											)
-										}));
-								} else {
-									filteredOrderByOptions = orderByOptions;
-								}
-							}}
-							on:change={(e) => {
-								queryArguments = buildArguments();
-								queryPage(1);
-							}}
-						/>
-					</div>
+											}));
+									} else {
+										filteredOrderByOptions = orderByOptions;
+									}
+								}}
+								on:change={(e) => {
+									args = buildArguments();
+									query();
+								}}
+							/>
+						</FormControl>
+					</Form>
 				</div>
 			{/if}
 		{/if}
 		{#if showFilterButton}
 			<RoleFilter
-				bind:value={queryArguments}
+				bind:value={args}
 				let:trigger
 				on:filter={(e) => {
-					queryArguments = buildArguments();
-					queryPage(1);
+					args = buildArguments();
+					query();
 				}}
 			>
 				<div class="tooltip" data-tip={$LL.graphence.components.query.filter()}>
@@ -649,47 +823,13 @@
 				</div>
 			</RoleFilter>
 		{/if}
-		{#if showBookmarkButton}
-			<div class="tooltip" data-tip={$LL.graphence.components.query.bookmark()}>
-				<button
-					class="btn btn-square"
-					on:click={(e) =>
-						dispatch('bookmark', {
-							fields: JSON.stringify(fields),
-							queryArguments: JSON.stringify(queryArguments)
-						})}
-				>
-					<Icon src={Bookmark} class="h-5 w-5" />
-				</button>
-			</div>
-		{/if}
 	</div>
 	<div class="divider" />
 {/if}
-<div class="card-body overflow-auto {className}">
+<div class="overflow-auto {className}">
 	{#if isFetching}
-		<div class="flex justify-center">
-			<span class="loading loading-bars loading-lg" />
-		</div>
+		<Loading class="loading-lg" />
 	{:else}
-		<slot
-			{fields}
-			{queryFields}
-			{queryArguments}
-			{selectOptions}
-			{getFieldName}
-			{queryPage}
-			{buildArguments}
-		/>
+		<slot {fields} {queryFields} {args} {selectOptions} {getFieldName} {query} {buildArguments} />
 	{/if}
 </div>
-{#if showFooter}
-	<div class="divider" />
-	<Pagination
-		bind:pageNumber
-		bind:pageSize
-		{totalCount}
-		on:pageChange={(e) => queryPage()}
-		on:sizeChange={(e) => queryPage()}
-	/>
-{/if}

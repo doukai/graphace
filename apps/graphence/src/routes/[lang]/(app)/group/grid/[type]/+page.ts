@@ -1,9 +1,8 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import { createConnectionField } from '@graphace/graphql';
-import { fetchQueryStore, createMutationStore } from '~/utils';
-import type { LayoutLoad } from './$types';
+import { fetchQueryStore, createMutationStore, getPermissionsStore } from '~/utils';
 import type { Group, GroupConnection } from '~/lib/types/schema';
-import { getPermissionsStore } from '~/utils';
+import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     await getPermissionsStore(event).getTypes('Group', 'User', 'Role', 'Realm');    
@@ -13,7 +12,6 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
     const showFooter = !event.url.searchParams.has('hideFooter');
     const showOptionButton = !event.url.searchParams.has('hideOptionButton');
     const showFilterButton = !event.url.searchParams.has('hideFilterButton');
-    const showBookmarkButton = event.url.searchParams.has('showBookmarkButton');
     return {
         type: event.params.type,
         fields,
@@ -22,9 +20,8 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showFooter,
         showOptionButton,
         showFilterButton,
-        showBookmarkButton,
-        groupConnectionQuery: (await fetchQueryStore<GroupConnection>(event, { fields: [createConnectionField({ name: 'groupConnection', fields })] })),
-        groupListMutation: (createMutationStore<Group[]>(event))
+        query_groupConnection_Store: (await fetchQueryStore<GroupConnection>(event, { fields: [createConnectionField({ name: 'groupConnection', fields })] })),
+        mutation_groupList_Store: (createMutationStore<Group[]>(event))
     };
 }
 export const prerender = false;

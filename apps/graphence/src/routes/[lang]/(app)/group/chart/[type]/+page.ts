@@ -13,7 +13,6 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
     const showFooter = !event.url.searchParams.has('hideFooter');
     const showOptionButton = !event.url.searchParams.has('hideOptionButton');
     const showFilterButton = !event.url.searchParams.has('hideFilterButton');
-    const showBookmarkButton = event.url.searchParams.has('showBookmarkButton');
     return {
         type: event.params.type,
         fields,
@@ -22,7 +21,6 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showFooter,
         showOptionButton,
         showFilterButton,
-        showBookmarkButton,
         query_groupConnection_Store: (await fetchQueryStore<GroupConnection>(event, { fields: [createConnectionField({ name: 'groupConnection', fields })] }))
     };
 }

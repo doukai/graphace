@@ -45,12 +45,12 @@
 						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
 						if (globalError) {
 							modal.open({
-								title: $LL.graphence.message.requestFailed(),
+								title: $LL.{{ appName }}.message.requestFailed(),
 								description: globalError
 							});
 						}
 					} else {
-						toast.success($LL.graphence.message.requestSuccess());
+						toast.success($LL.{{ appName }}.message.requestSuccess());
 						ot();
 					}
 				});
@@ -87,7 +87,7 @@
 			on:remove={(e) => {
 				if (e.detail.value) {
 					modal.open({
-						title: $LL.graphence.components.modal.removeModalTitle(),
+						title: $LL.{{ appName }}.components.modal.removeModalTitle(),
 						confirm: () => {
 							mutation({
 								where: { id: { val: e.detail.value?.id } },

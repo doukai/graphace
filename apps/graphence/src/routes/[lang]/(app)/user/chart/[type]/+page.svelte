@@ -17,7 +17,6 @@
 	$: showFooter = data.showFooter;
 	$: showOptionButton = data.showOptionButton;
 	$: showFilterButton = data.fields;
-	$: showBookmarkButton = data.showBookmarkButton;
 	$: query_userConnection_Store = data.query_userConnection_Store as OperationStore<UserConnection>;
 	$: nodes = $query_userConnection_Store.response.data?.userConnection?.edges?.map(
 		(edge) => edge?.node
@@ -70,7 +69,6 @@
 			{showHeader}
 			{showOptionButton}
 			{showFilterButton}
-			{showBookmarkButton}
 			class="h-screen"
 			isFetching={$query_userConnection_Store.isFetching}
 			on:query={(e) => query()}

@@ -3,7 +3,7 @@
 	import type { Readable } from 'svelte/store';
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { AdjustmentsHorizontal, Funnel, Bookmark } from '@steeze-ui/heroicons';
+	import { AdjustmentsHorizontal, Funnel } from '@steeze-ui/heroicons';
 	import type { PermissionsStore } from '@graphace/commons';
 	import { Field, Directive } from '@graphace/graphql';
 	import { type Option, Combobox, Form, FormControl, Label, Loading } from '@graphace/ui';
@@ -20,7 +20,6 @@
 	export let showHeader: boolean = true;
 	export let showOptionButton: boolean = true;
 	export let showFilterButton: boolean = true;
-	export let showBookmarkButton: boolean = false;
 	export let zIndex: number = 0;
 	let className: string | undefined = undefined;
 	export { className as class };
@@ -35,7 +34,6 @@
 			args: QueryRealmListArgs;
 			directives?: Directive[];
 		};
-		bookmark: { fields: string; args: string; directives?: Directive[] };
 	}>();
 
 	const {
@@ -64,7 +62,7 @@
 					label: $LL.graphql.objects.Realm.fields.nameMin.name()
 				}
 			],
-			disabled: !permissions.auth('Realm::name::READ')
+			hidden: !permissions.auth('Realm::name::READ')
 		},
 		{
 			value: '',
@@ -83,7 +81,7 @@
 					label: $LL.graphql.objects.Realm.fields.descriptionMin.name()
 				}
 			],
-			disabled: !permissions.auth('Realm::description::READ')
+			hidden: !permissions.auth('Realm::description::READ')
 		}
 	];
 
@@ -93,12 +91,12 @@
 		{
 			value: 'name',
 			label: $LL.graphql.objects.Realm.fields.name.name(),
-			disabled: !permissions.auth('Realm::name::READ')
+			hidden: !permissions.auth('Realm::name::READ')
 		},
 		{
 			value: 'description',
 			label: $LL.graphql.objects.Realm.fields.description.name(),
-			disabled: !permissions.auth('Realm::description::READ')
+			hidden: !permissions.auth('Realm::description::READ')
 		}
 	];
 
@@ -419,20 +417,6 @@
 					</button>
 				</div>
 			</RealmFilter>
-		{/if}
-		{#if showBookmarkButton}
-			<div class="tooltip" data-tip={$LL.graphence.components.agg.bookmark()}>
-				<button
-					class="btn btn-square"
-					on:click={(e) =>
-						dispatch('bookmark', {
-							fields: JSON.stringify(fields),
-							args: JSON.stringify(args)
-						})}
-				>
-					<Icon src={Bookmark} class="h-5 w-5" />
-				</button>
-			</div>
 		{/if}
 	</div>
 	<div class="divider" />

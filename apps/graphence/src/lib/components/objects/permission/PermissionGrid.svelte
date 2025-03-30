@@ -4,15 +4,14 @@
 	import { type Cell, RevoGrid } from '@revolist/svelte-datagrid';
 	import NumberColumnType from '@revolist/revogrid-column-numeral';
 	import type { Errors } from '@graphace/commons';
-	import { Field, Directive, type GraphQLError } from '@graphace/graphql';
-	import { messageBoxs, notifications } from '@graphace/ui';
+	import { Field, Directive } from '@graphace/graphql';
+	import { modal } from '@graphace/ui';
 	import { GridToolbar } from '@graphace/ui-graphql';
-	import type { Permission, PermissionConnection, PermissionConnectionQueryArguments, PermissionListMutationArguments } from '~/lib/types/schema';
+	import type { Permission, QueryPermissionListArgs, MutationPermissionListArgs } from '~/lib/types/schema';
 	import {
 		__schema,
 		getGridTheme,
 		createEditors,
-		buildGlobalGraphQLErrorMessage,
 		fieldsToColumns,
 		errorsToGridErrors,
 		nodesToSource,
@@ -20,15 +19,16 @@
 		exportToXlsx,
 		importFromXlsx
 	} from '~/utils';
-	
-	export let connection: PermissionConnection;
+
+	export let value: (Permission | null | undefined)[] | null | undefined = undefined;
 	export let fields: Field[] = [];
 	export let queryFields: Field[] = [];
+	export let args: QueryPermissionListArgs = {};
 	export let errors: Record<number, Errors> = {};
 	export let exportLimit: number = 500;
-	export let getFieldName: (fieldName: string, subFieldName?: string) => string;
-	export let buildArguments: (toPageNumber?: number | undefined, limit?: number | undefined) => PermissionConnectionQueryArguments;
-	export let queryPage: (toPageNumber?: number | undefined) => void;
+	export let getFieldName: (fieldName: string, subFieldName?: string) => string | undefined;
+	export let buildArguments: () => QueryPermissionListArgs;
+	export let query: () => void;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	const themeStore = getContext<Writable<string | undefined>>('theme');
@@ -42,17 +42,14 @@
 	const dispatch = createEventDispatcher<{
 		mutation: {
 			fields: Field[];
-			mutationArguments: PermissionListMutationArguments;
+			args: MutationPermissionListArgs;
 			directives?: Directive[];
-			then: (list: Permission[] | null | undefined) => void;
-			catch: (errors: GraphQLError[]) => void;
 		};
 		exportQuery: {
 			fields: Field[];
-			queryArguments: PermissionConnectionQueryArguments;
+			args: QueryPermissionListArgs;
 			directives?: Directive[];
-			then?: (connection: PermissionConnection | null | undefined) => void;
-			catch?: (errors: GraphQLError[]) => void;
+			then?: (value: (Permission | null | undefined)[] | null | undefined) => void;
 		};
 	}>();
 
@@ -67,9 +64,8 @@
 	) => Promise<void>;
 
 	$: theme = getGridTheme($themeStore);
-	$: nodes = connection?.edges?.map((edge) => edge?.node);
-	$: source = nodesToSource<Permission>(typeName, queryFields, nodes) || [];
-	$: gridErrors = errorsToGridErrors<Permission>(typeName, errors, queryFields, nodes);
+	$: source = nodesToSource<Permission>(typeName, queryFields, value) || [];
+	$: gridErrors = errorsToGridErrors<Permission>(typeName, errors, queryFields, value);
 	$: columns = fieldsToColumns(typeName, fields, source, gridErrors, getFieldName);
 
 	const editors = createEditors(() => gridErrors);
@@ -110,47 +106,23 @@
 		];
 
 		if (nonNullFields && nonNullFields.length > 0) {
-			messageBoxs.open({
+			modal.open({
 				title: $LL.ui_graphql.grid.message.requiredField(),
-				content: nonNullFields.join(', '),
-				buttonName: $LL.ui.button.back(),
-				buttonType: 'neutral',
+				description: nonNullFields.join(', '),
 				confirm: () => {
-					queryPage(1);
+					query();
 					return true;
 				}
 			});
 			return;
 		}
-		
-		nodes = sourceToMutationList(typeName, idFieldName, queryFields, source);
-		if (nodes && nodes.length > 0) {
+
+		value = sourceToMutationList(typeName, idFieldName, queryFields, source);
+		if (value && value.length > 0) {
 			dispatch('mutation', {
 				fields: queryFields,
-				mutationArguments: { list: nodes },
-				directives: [new Directive({ name: 'uniqueMerge' })],
-				then: (list) => {
-					if (list) {
-						nodes = list;
-					}
-					notifications.success($LL.graphence.message.saveSuccess());
-				},
-				catch: (graphQLErrors) => {
-					console.error(graphQLErrors);
-					const globalError = buildGlobalGraphQLErrorMessage(graphQLErrors);
-					if (globalError) {
-						messageBoxs.open({
-							title: $LL.graphence.message.saveFailed(),
-							content: globalError,
-							buttonName: $LL.ui.button.back(),
-							buttonType: 'neutral',
-							confirm: () => {
-								queryPage(1);
-								return true;
-							}
-						});
-					}
-				}
+				args: { list: value },
+				directives: [new Directive({ name: 'uniqueMerge' })]
 			});
 		}
 	};
@@ -164,22 +136,21 @@
 	{colIndex}
 	{pageSize}
 	{setCellsFocus}
-	on:query={(e) => queryPage()}
+	on:query={(e) => query()}
 	on:mutation={(e) => mutation()}
 	on:change={(e) => (source = e.detail.source)}
-	on:export={(e) =>
+	on:export={(e) => {
+		const args = buildArguments();
+		args.offset = 0;
+		args.first = exportLimit;
 		dispatch('exportQuery', {
 			fields,
-			queryArguments: buildArguments(1, exportLimit),
-			then: (connection) =>
-				exportToXlsx(
-					typeName,
-					fields,
-					connection?.edges?.map((edge) => edge?.node)
-				)
-		})
-	}
-	on:import={(e) => importFromXlsx(typeName, columns, e.detail.file).then((data) => (source = data))}
+			args,
+			then: (value) => exportToXlsx(typeName, fields, value)
+		});
+	}}
+	on:import={(e) =>
+		importFromXlsx(typeName, columns, e.detail.file).then((data) => (source = data))}
 />
 <RevoGrid
 	{source}

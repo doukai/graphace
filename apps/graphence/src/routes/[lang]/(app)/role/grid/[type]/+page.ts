@@ -1,9 +1,8 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import { createConnectionField } from '@graphace/graphql';
-import { fetchQueryStore, createMutationStore } from '~/utils';
-import type { LayoutLoad } from './$types';
+import { fetchQueryStore, createMutationStore, getPermissionsStore } from '~/utils';
 import type { Role, RoleConnection } from '~/lib/types/schema';
-import { getPermissionsStore } from '~/utils';
+import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     await getPermissionsStore(event).getTypes('Role', 'User', 'Group', 'Permission', 'Realm');    
@@ -13,7 +12,6 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
     const showFooter = !event.url.searchParams.has('hideFooter');
     const showOptionButton = !event.url.searchParams.has('hideOptionButton');
     const showFilterButton = !event.url.searchParams.has('hideFilterButton');
-    const showBookmarkButton = event.url.searchParams.has('showBookmarkButton');
     return {
         type: event.params.type,
         fields,
@@ -22,9 +20,8 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
         showFooter,
         showOptionButton,
         showFilterButton,
-        showBookmarkButton,
-        roleConnectionQuery: (await fetchQueryStore<RoleConnection>(event, { fields: [createConnectionField({ name: 'roleConnection', fields })] })),
-        roleListMutation: (createMutationStore<Role[]>(event))
+        query_roleConnection_Store: (await fetchQueryStore<RoleConnection>(event, { fields: [createConnectionField({ name: 'roleConnection', fields })] })),
+        mutation_roleList_Store: (createMutationStore<Role[]>(event))
     };
 }
 export const prerender = false;

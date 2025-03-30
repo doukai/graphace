@@ -17,7 +17,6 @@
 	$: showFooter = data.showFooter;
 	$: showOptionButton = data.showOptionButton;
 	$: showFilterButton = data.fields;
-	$: showBookmarkButton = data.showBookmarkButton;
 	$: query_permissionConnection_Store = data.query_permissionConnection_Store as OperationStore<PermissionConnection>;
 	$: nodes = $query_permissionConnection_Store.response.data?.permissionConnection?.edges?.map(
 		(edge) => edge?.node
@@ -70,7 +69,6 @@
 			{showHeader}
 			{showOptionButton}
 			{showFilterButton}
-			{showBookmarkButton}
 			class="h-screen"
 			isFetching={$query_permissionConnection_Store.isFetching}
 			on:query={(e) => query()}

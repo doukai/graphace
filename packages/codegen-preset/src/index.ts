@@ -986,39 +986,39 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 })
         );
 
-        // generateOptions.push(
-        //     ...targetRouteObjectType
-        //         .map(type => {
-        //             const template = '{{routesPath}}/{{pathName}}/{{gridRoutesPath}}/[type]/+page.svelte';
-        //             const scope = { routesPath, gridRoutesPath, pathName: changeCase.paramCase(type.name) };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetRouteObjectType
+                .map(type => {
+                    const template = '{{routesPath}}/{{pathName}}/{{gridRoutesPath}}/[type]/+page.svelte';
+                    const scope = { routesPath, gridRoutesPath, pathName: changeCase.paramCase(type.name) };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
-        // generateOptions.push(
-        //     ...targetRouteObjectType
-        //         .map(type => {
-        //             const template = '{{routesPath}}/{{pathName}}/{{gridRoutesPath}}/[type]/+page.ts';
-        //             const scope = { routesPath, gridRoutesPath, pathName: changeCase.paramCase(type.name) };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetRouteObjectType
+                .map(type => {
+                    const template = '{{routesPath}}/{{pathName}}/{{gridRoutesPath}}/[type]/+page.ts';
+                    const scope = { routesPath, gridRoutesPath, pathName: changeCase.paramCase(type.name) };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
         // generateOptions.push(
         //     ...targetComponentObjectTypes
@@ -1193,22 +1193,22 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         //         })
         // );
 
-        // generateOptions.push(
-        //     ...targetComponentObjectTypes
-        //         .map(type => {
-        //             const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}.svelte';
-        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
         generateOptions.push(
             ...targetComponentObjectTypes
@@ -1295,39 +1295,39 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 })
         );
 
-        // generateOptions.push(
-        //     ...targetComponentObjectTypes
-        //         .map(type => {
-        //             const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}AggGrid.svelte';
-        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}AggGrid.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
-        // generateOptions.push(
-        //     ...targetComponentObjectTypes
-        //         .map(type => {
-        //             const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Grid.svelte';
-        //             const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-        //             return {
-        //                 filename: buildPath(template, scope),
-        //                 config: {
-        //                     ..._config,
-        //                     template,
-        //                     name: type.name
-        //                 },
-        //                 ..._generateOptions
-        //             };
-        //         })
-        // );
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Grid.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
         // generateOptions.push(
         //     ...targetComponentObjectTypes

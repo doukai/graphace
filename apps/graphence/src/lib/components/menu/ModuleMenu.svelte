@@ -13,7 +13,7 @@
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 </script>
 
-{#if $page.url.pathname.split('/').length > 2}
+{#if $page.url.pathname.split('/').length === 3 || $page.url.pathname.split('/')[3] === 'chart'}
 	<div class="dropdown dropdown-end">
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 		<!-- svelte-ignore a11y-label-has-associated-control -->

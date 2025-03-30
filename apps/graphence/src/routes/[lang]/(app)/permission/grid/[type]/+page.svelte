@@ -1,151 +1,189 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { page } from '$app/stores';
-	import type { Errors, JsonSchema  } from '@graphace/commons';
-	import { createConnectionField, Field } from '@graphace/graphql';
-	import { Card, urlName } from '@graphace/ui';
+	import type { Errors, JsonSchema } from '@graphace/commons';
+	import { Field, Directive, buildArguments, createConnectionField } from '@graphace/graphql';
+	import { Card, CardBody, Pagination, modal, toast } from '@graphace/ui';
 	import type { OperationStore } from '@graphace/ui-graphql';
 	import PermissionQuery from '~/lib/components/objects/permission/Permission.svelte';
 	import PermissionAgg from '~/lib/components/objects/permission/PermissionAgg.svelte';
 	import PermissionGrid from '~/lib/components/objects/permission/PermissionGrid.svelte';
 	import PermissionAggGrid from '~/lib/components/objects/permission/PermissionAggGrid.svelte';
-	import type { Permission, PermissionConnection } from '~/lib/types/schema';
-	import type { PageData } from './$types';
-	import { buildGraphQLErrors } from '~/utils';
+	import type { QueryPermissionConnectionArgs, Permission, PermissionConnection } from '~/lib/types/schema';
+	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
 	import LL from '$i18n/i18n-svelte';
 	import { locale } from '$i18n/i18n-svelte';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
 
 	const { validate } = getContext<JsonSchema>('jsonSchema');
 
-	$: urlName($page.url, $LL.graphql.objects.Permission.name());
-	let connection: PermissionConnection | null | undefined = {};
-	let errors: Record<number, Errors> = {};
-
-	$: fields = data.fields;
-	$: queryArguments = data.queryArguments;
 	$: showHeader = data.showHeader;
 	$: showFooter = data.showFooter;
 	$: showOptionButton = data.showOptionButton;
 	$: showFilterButton = data.fields;
-	$: showBookmarkButton = data.showBookmarkButton;
 
-	$: permissionConnectionQuery = data.permissionConnectionQuery as OperationStore<PermissionConnection>;
-	$: connection = $permissionConnectionQuery.response?.data?.permissionConnection || {};
-	$: totalCount = connection?.totalCount || 0;
-	const permissionListMutation = data.permissionListMutation as OperationStore<Permission[]>;
+	$: query_permissionConnection_Store = data.query_permissionConnection_Store as OperationStore<PermissionConnection>;
+	$: nodes = $query_permissionConnection_Store.response.data?.permissionConnection?.edges?.map(
+		(edge) => edge?.node
+	);
+	$: totalCount = $query_permissionConnection_Store.response.data?.permissionConnection?.totalCount || 0;
+	const mutation_permissionList_Store = data.mutation_permissionList_Store as OperationStore<Permission[]>;
 
-	const components: Record<string, any> = {
-		mutation: PermissionGrid,
-		agg: PermissionAggGrid
-	};
+	let fields: Field[] = data.fields || [];
+	let queryFields: Field[] = data.fields || [];
+	let args: QueryPermissionConnectionArgs = data.args || {};
+	let directives: Directive[] | undefined = data.directives;
+	let pageNumber: number = 1;
+	let pageSize: number = 10;
+	let errors: Record<number, Errors> = {};
 
-	const wrappers: Record<string, any> = {
-		mutation: PermissionQuery,
-		agg: PermissionAgg
-	};
-
-	$: component = components[data.type];
-	$: wrapper = wrappers[data.type];
-</script>
-
-<Card>
-	<svelte:component
-		this={wrapper}
-		{fields}
-		{queryArguments}
-		{showHeader}
-		{showFooter}
-		{showOptionButton}
-		{showFilterButton}
-		{showBookmarkButton}
-		isFetching={$permissionConnectionQuery.isFetching}
-		{totalCount}
-		className="p-0 md:h-screen"
-		on:query={(e) => {
-			errors = {};
-			permissionConnectionQuery.fetch({
+	const query = (to?: number | undefined) => {
+		errors = {};
+		args.first = pageSize;
+		args.offset = (to || pageNumber - 1) * pageSize;
+		query_permissionConnection_Store
+			.fetch({
 				fields: [
 					createConnectionField({
 						name: 'permissionConnection',
-						fields: e.detail.fields,
-						arguments: e.detail.queryArguments,
-						directives: e.detail.directives
+						args: buildArguments(args),
+						fields:
+							data.type === 'mutation'
+								? queryFields
+								: [...(args?.groupBy?.map((name) => new Field({ name })) || []), ...fields],
+						directives
 					})
 				]
-			}).then((response) => {
-				connection = response?.data?.permissionConnection;
-				if (e.detail.catch && response?.errors) {
-					e.detail.catch(response.errors);
-				} else if (e.detail.then) {
-					e.detail.then(response?.data?.permissionConnection);
+			})
+			.then((result) => {
+				if (result.errors) {
+					console.error(result.errors);
+					toast.error($LL.graphence.message.requestFailed());
 				}
 			});
-		}}
-		let:fields
-		let:queryFields
-		let:queryArguments
-		let:getFieldName
-		let:getGrouByName
-		let:queryPage
-		let:buildArguments
-	>
-		<svelte:component
-			this={component}
-			{connection}
-			{fields}
-			{errors}
-			{queryFields}
-			{queryArguments}
-			{getFieldName}
-			{getGrouByName}
-			{queryPage}
-			{buildArguments}
-			on:exportQuery={(e) => {
-				permissionConnectionQuery.fetch({
-					fields: [
-						createConnectionField({
-							name: 'permissionConnection',
-							fields: e.detail.fields,
-							arguments: e.detail.queryArguments,
-							directives: e.detail.directives
-						})
-					]
-				}).then((response) => {
-					if (e.detail.catch && response?.errors) {
-						e.detail.catch(response.errors);
-					} else if (e.detail.then) {
-						e.detail.then(response?.data?.permissionConnection);
-					}
-				});
-			}}
-			on:mutation={(e) => {
-				validate('Mutation_permissionList_Arguments', e.detail.mutationArguments, $locale)
-					.then((data) => {
-						errors = {};
-						permissionListMutation.fetch({
-							fields: [
-								new Field({
-									name: 'permissionList',
-									fields: e.detail.fields,
-									arguments: e.detail.mutationArguments,
-									directives: e.detail.directives
-								})
-							]
-						}).then((response) => {
-							if (response?.errors) {
-								errors = buildGraphQLErrors(response.errors).list?.iterms || {};
-								e.detail.catch(response.errors);
-							} else {
-								e.detail.then(response?.data?.permissionList);
-							}
-						});
-					})
-					.catch((validErrors) => {
-						errors = validErrors.list?.iterms;
-					});
-			}}
-		/>
-	</svelte:component>
+	};
+</script>
+
+<Card>
+	<CardBody>
+		{#if data.type === 'mutation'}
+			<PermissionQuery
+				bind:fields
+				bind:queryFields
+				bind:args
+				{showHeader}
+				{showOptionButton}
+				{showFilterButton}
+				isFetching={$query_permissionConnection_Store.isFetching}
+				class="h-screen"
+				on:query={(e) => query()}
+				let:fields
+				let:queryFields
+				let:args
+				let:getFieldName
+				let:query
+				let:buildArguments
+			>
+				<PermissionGrid
+					value={nodes}
+					{fields}
+					{errors}
+					{queryFields}
+					{args}
+					{getFieldName}
+					{query}
+					{buildArguments}
+					on:mutation={(e) => {
+						validate('Mutation_permissionList_Arguments', e.detail.args, $locale)
+							.then((data) => {
+								errors = {};
+								mutation_permissionList_Store
+									.fetch({
+										fields: [
+											new Field({
+												name: 'permissionList',
+												fields: e.detail.fields,
+												args: e.detail.args,
+												directives: e.detail.directives
+											})
+										]
+									})
+									.then((result) => {
+										if (result.errors) {
+											console.error(result.errors);
+											errors = buildGraphQLErrors(result.errors);
+											const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+											if (globalError) {
+												modal.open({
+													title: $LL.graphence.message.requestFailed(),
+													description: globalError,
+													confirm: () => {
+														query();
+														return true;
+													}
+												});
+											}
+										} else {
+											toast.success($LL.graphence.message.requestSuccess());
+											query();
+										}
+									});
+							})
+							.catch((validErrors) => {
+								errors = validErrors.list?.iterms;
+							});
+					}}
+					on:exportQuery={(e) => {
+						query_permissionConnection_Store
+							.fetch({
+								fields: [
+									createConnectionField({
+										name: 'permissionConnection',
+										fields: e.detail.fields,
+										args: e.detail.args,
+										directives: e.detail.directives
+									})
+								]
+							})
+							.then((result) => {
+								if (result.errors) {
+									console.error(result.errors);
+									toast.error($LL.graphence.message.requestFailed());
+								} else if (e.detail.then) {
+									e.detail.then(result?.data?.permissionConnection?.edges?.map((edge) => edge?.node));
+								}
+							});
+					}}
+				/>
+			</PermissionQuery>
+		{:else}
+			<PermissionAgg
+				bind:fields
+				bind:args
+				{showHeader}
+				{showOptionButton}
+				{showFilterButton}
+				isFetching={$query_permissionConnection_Store.isFetching}
+				class="h-screen"
+				on:query={(e) => query()}
+				let:fields
+				let:args
+				let:getFieldName
+				let:getGrouByName
+			>
+				<PermissionAggGrid value={nodes} {fields} {args} {getFieldName} {getGrouByName} />
+			</PermissionAgg>
+		{/if}
+		{#if showFooter}
+			<div class="divider" />
+			<Pagination
+				bind:pageSize
+				bind:pageNumber
+				{totalCount}
+				on:pageChange={(e) => query()}
+				on:sizeChange={(e) => query(1)}
+			/>
+		{/if}
+	</CardBody>
 </Card>

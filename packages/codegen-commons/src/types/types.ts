@@ -90,6 +90,7 @@ export type FieldInfo = {
     inRoute: boolean;
     inList: boolean;
     inDetail: boolean;
+    fields?: FieldInfo[] | undefined;
     aggFields?: FieldInfo[] | undefined;
 }
 

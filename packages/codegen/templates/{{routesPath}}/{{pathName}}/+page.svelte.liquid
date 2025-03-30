@@ -41,7 +41,7 @@
 		query_{{ name | camelCase }}Connection_Store.fetch(buildArguments(args)).then((result) => {
 			if (result.errors) {
 				console.error(errors);
-				toast.error($LL.graphence.message.requestFailed());
+				toast.error($LL.{{ appName }}.message.requestFailed());
 			} else {
 				errors = {};
 			}
@@ -64,7 +64,7 @@
 						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
 						if (globalError) {
 							modal.open({
-								title: $LL.graphence.message.requestFailed(),
+								title: $LL.{{ appName }}.message.requestFailed(),
 								description: globalError,
 								confirm: () => {
 									query();
@@ -73,7 +73,7 @@
 							});
 						}
 					} else {
-						toast.success($LL.graphence.message.requestSuccess());
+						toast.success($LL.{{ appName }}.message.requestSuccess());
 						query();
 					}
 				});
@@ -138,7 +138,7 @@
 			on:remove={(e) => {
 				if (e.detail.value) {
 					modal.open({
-						title: $LL.graphence.components.modal.removeModalTitle(),
+						title: $LL.{{ appName }}.components.modal.removeModalTitle(),
 						confirm: () => {
 							if (Array.isArray(e.detail.value)) {
 								mutation({
