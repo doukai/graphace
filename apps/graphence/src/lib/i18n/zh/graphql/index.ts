@@ -2,32 +2,6 @@ import type { NamespaceGraphqlTranslation } from '../../i18n-types';
 
 const zh: NamespaceGraphqlTranslation = {
 	objects: {
-		Current: {
-			name: 'Current',
-			fields: {
-				id: {
-					name: 'ID',
-				},
-				name: {
-					name: '姓名',
-				},
-				lastName: {
-					name: '姓氏',
-				},
-				login: {
-					name: '账号',
-				},
-				realmId: {
-					name: '租户ID',
-				},
-				groups: {
-					name: '组',
-				},
-				roles: {
-					name: '角色',
-				}
-			}
-		},
 		Group: {
 			name: '组',
 			fields: {
@@ -299,35 +273,6 @@ const zh: NamespaceGraphqlTranslation = {
 				},
 				syncPermissionPolicy: {
 					name: 'syncPermissionPolicy',
-				}
-			}
-		},
-		Policy: {
-			name: 'Policy',
-			fields: {
-				id: {
-					name: 'id',
-				},
-				policy: {
-					name: 'policy',
-				},
-				v0: {
-					name: 'v0',
-				},
-				v1: {
-					name: 'v1',
-				},
-				v2: {
-					name: 'v2',
-				},
-				v3: {
-					name: 'v3',
-				},
-				v4: {
-					name: 'v4',
-				},
-				v5: {
-					name: 'v5',
 				}
 			}
 		},

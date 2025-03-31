@@ -1,5 +1,5 @@
 {%- if enums %}
-{%- for enumType in enums -%}
-export * from "./{{ enumType.name | paramCase }}/index.js";
+{%- for enum in enums -%}
+export * from "./{{ enum.name | paramCase }}/index.js";
 {% endfor %}
 {%- endif %}

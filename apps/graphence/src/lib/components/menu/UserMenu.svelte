@@ -51,7 +51,7 @@
 						{$LL.graphence.components.userMenu.password()}
 					</a>
 				</li>
-				<div class="divider mt-0 mb-0" />
+				<div class="divider my-0" />
 				<li><a href={`/${$locale}/logout`}>{$LL.graphence.components.userMenu.logout()}</a></li>
 			</ul>
 		</DropdownContent>

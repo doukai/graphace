@@ -128,43 +128,45 @@
 	};
 </script>
 
-<GridToolbar
-	{fields}
-	{source}
-	{idFieldName}
-	{rowIndex}
-	{colIndex}
-	{pageSize}
-	{setCellsFocus}
-	on:query={(e) => query()}
-	on:mutation={(e) => mutation()}
-	on:change={(e) => (source = e.detail.source)}
-	on:export={(e) => {
-		const args = buildArguments();
-		args.offset = 0;
-		args.first = exportLimit;
-		dispatch('exportQuery', {
-			fields,
-			args,
-			then: (value) => exportToXlsx(typeName, fields, value)
-		});
-	}}
-	on:import={(e) =>
-		importFromXlsx(typeName, columns, e.detail.file).then((data) => (source = data))}
-/>
-<RevoGrid
-	{source}
-	{columns}
-	range={true}
-	resize={true}
-	autoSizeColumn={true}
-	rowHeaders={true}
-	{columnTypes}
-	{theme}
-	{editors}
-	on:afterfocus={(e) => {
-		rowIndex = e.detail.rowIndex;
-		colIndex = e.detail.colIndex;
-	}}
-	bind:setCellsFocus
-/>
+<div class="h-full overflow-y-hidden">
+	<GridToolbar
+		{fields}
+		{source}
+		{idFieldName}
+		{rowIndex}
+		{colIndex}
+		{pageSize}
+		{setCellsFocus}
+		on:query={(e) => query()}
+		on:mutation={(e) => mutation()}
+		on:change={(e) => (source = e.detail.source)}
+		on:export={(e) => {
+			const args = buildArguments();
+			args.offset = 0;
+			args.first = exportLimit;
+			dispatch('exportQuery', {
+				fields,
+				args,
+				then: (value) => exportToXlsx(typeName, fields, value)
+			});
+		}}
+		on:import={(e) =>
+			importFromXlsx(typeName, columns, e.detail.file).then((data) => (source = data))}
+	/>
+	<RevoGrid
+		{source}
+		{columns}
+		range={true}
+		resize={true}
+		autoSizeColumn={true}
+		rowHeaders={true}
+		{columnTypes}
+		{theme}
+		{editors}
+		on:afterfocus={(e) => {
+			rowIndex = e.detail.rowIndex;
+			colIndex = e.detail.colIndex;
+		}}
+		bind:setCellsFocus
+	/>
+</div>

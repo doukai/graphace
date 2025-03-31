@@ -1,10 +1,6 @@
 import {{ name }}Form from "./{{ name }}Form.svelte";
-import {{ name }}CreateForm from "./{{ name }}CreateForm.svelte";
 import {{ name }}Table from "./{{ name }}Table.svelte";
-import {{ name }}ConnectionTable from "./{{ name }}ConnectionTable.svelte";
-import {{ name }}CreateTable from "./{{ name }}CreateTable.svelte";
-import {{ name }}SelectTable from "./{{ name }}SelectTable.svelte";
-import {{ name }}SelectConnectionTable from "./{{ name }}SelectConnectionTable.svelte";
+import {{ name }}TableDialog from "./{{ name }}TableDialog.svelte";
 import {{ name }}Filter from "./{{ name }}Filter.svelte";
 import {{ name }}Th from "./{{ name }}Th.svelte";
 import {{ name }} from "./{{ name }}.svelte";
@@ -15,17 +11,28 @@ import {{ name }}Pie from "./{{ name }}Pie.svelte";
 import {{ name }}Grid from "./{{ name }}Grid.svelte";
 import {{ name }}AggGrid from "./{{ name }}AggGrid.svelte";
 import {{ name }}AggTable from "./{{ name }}AggTable.svelte";
-{%- if isNamedStruct %}
+{%- if isNamed %}
 import {{ name }}Select from "./{{ name }}Select.svelte";
 import {{ name }}SelectFilter from "./{{ name }}SelectFilter.svelte";
-import {{ name }}SelectItem from "./{{ name }}SelectItem.svelte";
 import {{ name }}SelectTd from "./{{ name }}SelectTd.svelte";
-{%- endif %}
-{%- if isTreeStruct %}
-import {{ name }}TreeMenu from "./{{ name }}TreeMenu.svelte";
-import {{ name }}TreeCard from "./{{ name }}TreeCard.svelte";
 {%- endif %}
 
 export {
-  {{ name }}Form, {{ name }}CreateForm, {{ name }}Table, {{ name }}ConnectionTable, {{ name }}CreateTable, {{ name }}SelectTable, {{ name }}SelectConnectionTable, {{ name }}Filter, {{ name }}Th, {{ name }}, {{ name }}Agg, {{ name }}Bar, {{ name }}Line, {{ name }}Pie, {{ name }}Grid, {{ name }}AggGrid, {{ name }}AggTable{% if isNamedStruct %}, {{ name }}Select, {{ name }}SelectFilter, {{ name }}SelectItem, {{ name }}SelectTd{%- endif %}{% if isTreeStruct %}, {{ name }}TreeMenu, {{ name }}TreeCard{%- endif %}
+  {{ name }}Form,
+  {{ name }}Table,
+  {{ name }}TableDialog,
+  {{ name }}Filter,
+  {{ name }}Th,
+  {{ name }},
+  {{ name }}Agg,
+  {{ name }}Bar,
+  {{ name }}Line,
+  {{ name }}Pie,
+  {{ name }}Grid,
+  {{ name }}AggGrid,
+  {{ name }}AggTable{% if isNamed %},
+  {{ name }}Select,
+  {{ name }}SelectFilter,
+  {{ name }}SelectTd
+  {%- endif %}
 }

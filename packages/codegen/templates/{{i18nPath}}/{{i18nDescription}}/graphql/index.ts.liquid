@@ -1,38 +1,38 @@
 import type { NamespaceGraphqlTranslation } from '../../i18n-types';
 
 const {{ i18nDescription }}: NamespaceGraphqlTranslation = {
-{%- if objects %}
+	{%- if objects %}
 	objects: {
-{%- for object in objects %}
+		{%- for object in objects %}
 		{{ object.name }}: {
 			name: '{{ object.description | default: object.name }}',
 			fields: {
-{%- for field in object.fields %}
+				{%- for field in object.fields %}
 				{{ field.name }}: {
 					name: '{{ field.description | default: field.name }}',
 				}{%- if forloop.last == false -%},{%- endif %}
-{%- endfor %}
+				{%- endfor %}
 			}
 		}{%- if forloop.last == false -%},{%- endif %}
-{%- endfor %}
+		{%- endfor %}
 	},
-{%- endif %}
-{%- if enums %}
+	{%- endif %}
+	{%- if enums %}
 	enums: {
-{%- for enum in enums %}
+		{%- for enum in enums %}
 		{{ enum.name }}: {
 			name: '{{ enum.description | default: enum.name }}',
 			values: {
-{%- for value in enum.values %}
+				{%- for value in enum.values %}
 				{{ value.name }}: {
 					name: '{{ value.description | default: value.name }}',
 				}{%- if forloop.last == false -%},{%- endif %}
-{%- endfor %}
+				{%- endfor %}
 			}
 		}{%- if forloop.last == false -%},{%- endif %}
-{%- endfor %}
+		{%- endfor %}
 	}
-{%- endif %}
+	{%- endif %}
 }
 
 export default {{ i18nDescription }};

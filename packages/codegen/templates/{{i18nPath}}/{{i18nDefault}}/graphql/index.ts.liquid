@@ -1,38 +1,38 @@
 import type { BaseTranslation } from '../../i18n-types';
 
 const {{ i18nDefault }}: BaseTranslation = {
-{%- if objects %}
+	{%- if objects %}
 	objects: {
-{%- for object in objects %}
+		{%- for object in objects %}
 		{{ object.name }}: {
 			name: '{%- if i18nDefault == i18nDescription -%}{{ object.description }}{%- else -%}{{ object.name }}{%- endif -%}',
 			fields: {
-{%- for field in object.fields %}
+				{%- for field in object.fields %}
 				{{ field.name }}: {
 					name: '{%- if i18nDefault == i18nDescription -%}{{ field.description }}{%- else -%}{{ field.name }}{%- endif -%}',
 				}{%- if forloop.last == false -%},{%- endif %}
-{%- endfor %}
+				{%- endfor %}
 			}
 		}{%- if forloop.last == false -%},{%- endif %}
-{%- endfor %}
+		{%- endfor %}
 	},
-{%- endif %}
-{%- if enums %}
+	{%- endif %}
+	{%- if enums %}
 	enums: {
-{%- for enum in enums %}
+		{%- for enum in enums %}
 		{{ enum.name }}: {
 			name: '{%- if i18nDefault == i18nDescription -%}{{ enum.description }}{%- else -%}{{ enum.name }}{%- endif -%}',
 			values: {
-{%- for value in enum.values %}
+				{%- for value in enum.values %}
 				{{ value.name }}: {
 					name: '{%- if i18nDefault == i18nDescription -%}{{ value.description }}{%- else -%}{{ value.name }}{%- endif -%}',
 				}{%- if forloop.last == false -%},{%- endif %}
-{%- endfor %}
+				{%- endfor %}
 			}
 		}{%- if forloop.last == false -%},{%- endif %}
-{%- endfor %}
+		{%- endfor %}
 	}
-{%- endif %}
+	{%- endif %}
 }
 
 export default {{ i18nDefault }};

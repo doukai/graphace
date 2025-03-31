@@ -9,7 +9,7 @@
 	import { createQuery_permissionConnection_Store } from '~/lib/stores/query/query_permissionConnection_store';
 	import PermissionTable from '~/lib/components/objects/permission/PermissionTable.svelte';
 	import { getLoadEvent } from '~/utils';
-	import type { QueryPermissionConnectionArgs, PermissionInput } from '~/lib/types/schema';
+	import type { QueryPermissionConnectionArgs, PermissionOrderBy, PermissionInput } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 
 	export let value: PermissionInput | (PermissionInput | null | undefined)[] | null | undefined = undefined;
@@ -31,6 +31,8 @@
 		(edge) => edge?.node
 	);
 	$: totalCount = $query_permissionConnection_Store.response.data?.permissionConnection?.totalCount || 0;
+	let args: QueryPermissionConnectionArgs = {};
+	let orderBy: PermissionOrderBy = {};
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
 	let selectedIdList: (string | null | undefined)[] | undefined = [];
@@ -50,8 +52,11 @@
 		selectedIdList = [value.where?.name?.val];
 	}
 
-	const query = (args: QueryPermissionConnectionArgs) => {
-		query_permissionConnection_Store.fetch(args).then((result) => {
+	const query = (to?: number | undefined) => {
+		args.orderBy = orderBy;
+		args.first = pageSize;
+		args.offset = ((to || pageNumber) - 1) * pageSize;
+		query_permissionConnection_Store.fetch(buildArguments(args)).then((result) => {
 			if (result.errors) {
 				console.error(result.errors);
 				toast.error($LL.graphence.message.requestFailed());
@@ -67,7 +72,7 @@
 				use:melt={trigger}
 				class="btn btn-square btn-outline {className}"
 				{disabled}
-				on:click={(e) => query({ first: pageSize, offset: 0 })}
+				on:click={(e) => query(1)}
 			>
 				<Icon src={ListBullet} class="h-5 w-5" />
 			</button>
@@ -77,6 +82,8 @@
 		<PermissionTable
 			value={nodes}
 			bind:selectedIdList
+			bind:args
+			bind:orderBy
 			showEditButton={!readonly}
 			showCreateButton={!readonly}
 			showSelectButton={!readonly && (!singleChoice || selectedIdList?.length === 1)}
@@ -134,25 +141,20 @@
 			}}
 			on:search={(e) => {
 				if (e.detail.value) {
-					query({
+					args = {
 						cond: 'OR',
 						description: { opr: 'LK', val: e.detail.value },
 						field: { opr: 'LK', val: e.detail.value },
 						type: { opr: 'LK', val: e.detail.value },
 						first: pageSize,
 						offset: 0
-					});
+					};
 				} else {
-					query({ first: pageSize, offset: 0 });
+					args = { first: pageSize, offset: 0 };
 				}
+				query();
 			}}
-			on:query={(e) => {
-				e.detail.args = buildArguments(e.detail.args);
-				if (Object.keys(e.detail.orderBy).length > 0) {
-					e.detail.args.orderBy = e.detail.orderBy;
-				}
-				query(e.detail.args);
-			}}
+			on:query={(e) => query()}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
 					to(`./permission/${e.detail.value.name}`);
@@ -165,8 +167,8 @@
 			bind:pageSize
 			bind:pageNumber
 			{totalCount}
-			on:pageChange={(e) => query({ first: pageSize, offset: (pageNumber - 1) * pageSize })}
-			on:sizeChange={(e) => query({ first: pageSize, offset: 0 })}
+			on:pageChange={(e) => query()}
+			on:sizeChange={(e) => query(1)}
 		/>
 	</svelte:fragment>
 </Dialog>

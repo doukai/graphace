@@ -32,7 +32,7 @@
 	const query = (to?: number | undefined) => {
 		args.orderBy = orderBy;
 		args.first = pageSize;
-		args.offset = (to || pageNumber - 1) * pageSize;
+		args.offset = ((to || pageNumber) - 1) * pageSize;
 		query_user_rolesConnection_Store.fetch({ user_id: user?.id, ...buildArguments(args) }).then((result) => {
 			if (result.errors) {
 				console.error(errors);

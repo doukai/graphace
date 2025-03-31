@@ -8,35 +8,11 @@
         ]
 	},
 	{
-        "name": "GroupRoleRelation",
-        "tags": "GroupRoleRelation",
-        "href": "/group-role-relation",
-        "authPermissions": [
-            "GroupRoleRelation::*::*"
-        ]
-	},
-	{
-        "name": "GroupUserRelation",
-        "tags": "GroupUserRelation",
-        "href": "/group-user-relation",
-        "authPermissions": [
-            "GroupUserRelation::*::*"
-        ]
-	},
-	{
         "name": "Permission",
         "tags": "Permission",
         "href": "/permission",
         "authPermissions": [
             "Permission::*::*"
-        ]
-	},
-	{
-        "name": "PermissionRoleRelation",
-        "tags": "PermissionRoleRelation",
-        "href": "/permission-role-relation",
-        "authPermissions": [
-            "PermissionRoleRelation::*::*"
         ]
 	},
 	{
@@ -56,35 +32,11 @@
         ]
 	},
 	{
-        "name": "RoleCompositeRelation",
-        "tags": "RoleCompositeRelation",
-        "href": "/role-composite-relation",
-        "authPermissions": [
-            "RoleCompositeRelation::*::*"
-        ]
-	},
-	{
-        "name": "RoleUserRelation",
-        "tags": "RoleUserRelation",
-        "href": "/role-user-relation",
-        "authPermissions": [
-            "RoleUserRelation::*::*"
-        ]
-	},
-	{
         "name": "User",
         "tags": "User",
         "href": "/user",
         "authPermissions": [
             "User::*::*"
-        ]
-	},
-	{
-        "name": "UserPhonesRelation",
-        "tags": "UserPhonesRelation",
-        "href": "/user-phones-relation",
-        "authPermissions": [
-            "UserPhonesRelation::*::*"
         ]
 	}
 ]

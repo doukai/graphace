@@ -41,7 +41,7 @@
 	const query = (to?: number | undefined) => {
 		errors = {};
 		args.first = pageSize;
-		args.offset = (to || pageNumber - 1) * pageSize;
+		args.offset = ((to || pageNumber) - 1) * pageSize;
 		query_permissionConnection_Store
 			.fetch({
 				fields: [
@@ -63,6 +63,23 @@
 				}
 			});
 	};
+
+	const fetch = (params: {
+		fields: Field[];
+		args: QueryPermissionConnectionArgs;
+		directives?: Directive[];
+	}) => {
+		return query_permissionConnection_Store.fetch({
+			fields: [
+				createConnectionField({
+					name: 'permissionConnection',
+					args: buildArguments(params.args),
+					fields: params.fields,
+					directives: params.directives
+				})
+			]
+		});
+	};
 </script>
 
 <Card>
@@ -76,7 +93,7 @@
 				{showOptionButton}
 				{showFilterButton}
 				isFetching={$query_permissionConnection_Store.isFetching}
-				class="h-screen"
+				class="md:h-screen"
 				on:query={(e) => query()}
 				let:fields
 				let:queryFields
@@ -135,18 +152,11 @@
 							});
 					}}
 					on:exportQuery={(e) => {
-						query_permissionConnection_Store
-							.fetch({
-								fields: [
-									createConnectionField({
-										name: 'permissionConnection',
-										fields: e.detail.fields,
-										args: e.detail.args,
-										directives: e.detail.directives
-									})
-								]
-							})
-							.then((result) => {
+						fetch({
+							fields: e.detail.fields,
+							args: e.detail.args,
+							directives: e.detail.directives
+						}).then((result) => {
 								if (result.errors) {
 									console.error(result.errors);
 									toast.error($LL.graphence.message.requestFailed());
@@ -165,7 +175,7 @@
 				{showOptionButton}
 				{showFilterButton}
 				isFetching={$query_permissionConnection_Store.isFetching}
-				class="h-screen"
+				class="md:h-screen"
 				on:query={(e) => query()}
 				let:fields
 				let:args

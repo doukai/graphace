@@ -9,7 +9,7 @@
 	import { createQuery_realmConnection_Store } from '~/lib/stores/query/query_realmConnection_store';
 	import RealmTable from '~/lib/components/objects/realm/RealmTable.svelte';
 	import { getLoadEvent } from '~/utils';
-	import type { QueryRealmConnectionArgs, RealmInput } from '~/lib/types/schema';
+	import type { QueryRealmConnectionArgs, RealmOrderBy, RealmInput } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 
 	export let value: RealmInput | (RealmInput | null | undefined)[] | null | undefined = undefined;
@@ -31,6 +31,8 @@
 		(edge) => edge?.node
 	);
 	$: totalCount = $query_realmConnection_Store.response.data?.realmConnection?.totalCount || 0;
+	let args: QueryRealmConnectionArgs = {};
+	let orderBy: RealmOrderBy = {};
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
 	let selectedIdList: (string | null | undefined)[] | undefined = [];
@@ -50,8 +52,11 @@
 		selectedIdList = [value.where?.id?.val];
 	}
 
-	const query = (args: QueryRealmConnectionArgs) => {
-		query_realmConnection_Store.fetch(args).then((result) => {
+	const query = (to?: number | undefined) => {
+		args.orderBy = orderBy;
+		args.first = pageSize;
+		args.offset = ((to || pageNumber) - 1) * pageSize;
+		query_realmConnection_Store.fetch(buildArguments(args)).then((result) => {
 			if (result.errors) {
 				console.error(result.errors);
 				toast.error($LL.graphence.message.requestFailed());
@@ -67,7 +72,7 @@
 				use:melt={trigger}
 				class="btn btn-square btn-outline {className}"
 				{disabled}
-				on:click={(e) => query({ first: pageSize, offset: 0 })}
+				on:click={(e) => query(1)}
 			>
 				<Icon src={ListBullet} class="h-5 w-5" />
 			</button>
@@ -77,6 +82,8 @@
 		<RealmTable
 			value={nodes}
 			bind:selectedIdList
+			bind:args
+			bind:orderBy
 			showEditButton={!readonly}
 			showCreateButton={!readonly}
 			showSelectButton={!readonly && (!singleChoice || selectedIdList?.length === 1)}
@@ -109,24 +116,19 @@
 			}}
 			on:search={(e) => {
 				if (e.detail.value) {
-					query({
+					args = {
 						cond: 'OR',
 						name: { opr: 'LK', val: e.detail.value },
 						description: { opr: 'LK', val: e.detail.value },
 						first: pageSize,
 						offset: 0
-					});
+					};
 				} else {
-					query({ first: pageSize, offset: 0 });
+					args = { first: pageSize, offset: 0 };
 				}
+				query();
 			}}
-			on:query={(e) => {
-				e.detail.args = buildArguments(e.detail.args);
-				if (Object.keys(e.detail.orderBy).length > 0) {
-					e.detail.args.orderBy = e.detail.orderBy;
-				}
-				query(e.detail.args);
-			}}
+			on:query={(e) => query()}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
 					to(`./realm/${e.detail.value.id}`);
@@ -139,8 +141,8 @@
 			bind:pageSize
 			bind:pageNumber
 			{totalCount}
-			on:pageChange={(e) => query({ first: pageSize, offset: (pageNumber - 1) * pageSize })}
-			on:sizeChange={(e) => query({ first: pageSize, offset: 0 })}
+			on:pageChange={(e) => query()}
+			on:sizeChange={(e) => query(1)}
 		/>
 	</svelte:fragment>
 </Dialog>

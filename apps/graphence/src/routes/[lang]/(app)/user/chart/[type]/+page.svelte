@@ -40,7 +40,7 @@
 
 	const query = (to?: number | undefined) => {
 		args.first = pageSize;
-		args.offset = (to || pageNumber - 1) * pageSize;
+		args.offset = ((to || pageNumber) - 1) * pageSize;
 		query_userConnection_Store
 			.fetch({
 				fields: [
@@ -69,7 +69,7 @@
 			{showHeader}
 			{showOptionButton}
 			{showFilterButton}
-			class="h-screen"
+			class="md:h-screen"
 			isFetching={$query_userConnection_Store.isFetching}
 			on:query={(e) => query()}
 			let:fields

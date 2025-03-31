@@ -32,7 +32,7 @@
 	const query = (to?: number | undefined) => {
 		args.orderBy = orderBy;
 		args.first = pageSize;
-		args.offset = (to || pageNumber - 1) * pageSize;
+		args.offset = ((to || pageNumber) - 1) * pageSize;
 		query_group_usersConnection_Store.fetch({ group_id: group?.id, ...buildArguments(args) }).then((result) => {
 			if (result.errors) {
 				console.error(errors);

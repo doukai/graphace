@@ -19,7 +19,7 @@
 		colType?: string,
 		rowType?: string
 	) => Promise<void>;
-	let className: string | undefined = 'p-1 space-x-1';
+	let className: string | undefined = 'min-h-6 space-x-1 bg-base-200';
 	export { className as class };
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
@@ -52,9 +52,9 @@
 	>
 		{$LL.ui_graphql.grid.buttons.save()}
 	</button>
-	<div class="divider divider-horizontal" use:melt={$separator} />
+	<div class="divider divider-horizontal mx-0" use:melt={$separator} />
 	<button
-		class="btn btn-xs btn-primary pt-0"
+		class="btn btn-xs btn-primary"
 		use:melt={$button}
 		disabled={fields.length === 0}
 		on:click={(e) => {
@@ -120,7 +120,7 @@
 			{$LL.ui_graphql.grid.buttons.remove()}
 		</button>
 	{/if}
-	<div class="divider divider-horizontal" use:melt={$separator} />
+	<div class="divider divider-horizontal mx-0" use:melt={$separator} />
 	<button
 		on:click={(e) => dispatch('export', { source })}
 		class="btn btn-xs btn-info"

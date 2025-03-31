@@ -1,6 +1,6 @@
 [
-{%- if objects %}
-{%- for object in objects %}
+    {%- if objects %}
+    {%- for object in objects %}
 	{
         "name": "{{ object.name }}",
         "tags": "{{ object.name }}",
@@ -9,6 +9,6 @@
             "{{ object.name }}::*::*"
         ]{%- endif %}
 	}{%- if forloop.last == false -%},{%- endif %}
-{%- endfor %}
-{%- endif %}
+    {%- endfor %}
+    {%- endif %}
 ]
