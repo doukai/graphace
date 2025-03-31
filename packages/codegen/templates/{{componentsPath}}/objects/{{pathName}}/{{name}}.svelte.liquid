@@ -60,7 +60,7 @@
 				{
 					value: '{{ field.fieldName }}',
 					label: $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name(){%- if useAuth %},
-					disabled: !permissions.auth('{{ name }}::{{ field.fieldName }}::READ')
+					hidden: !permissions.auth('{{ name }}::{{ field.fieldName }}::READ')
 					{%- endif %}
 				}{% if forloop.last == false %},{% endif %}
 				{%- endif %}
@@ -79,13 +79,13 @@
 					value: '{{ subField.fieldName }}',
 					label: $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name() + $LL.graphql.objects.{{ field.fieldTypeName }}.fields.{{ subField.fieldName }}.name(),
 					{%- if useAuth %}
-					disabled: !permissions.auth('{{ field.fieldTypeName }}::{{ subField.fieldName }}::READ')
+					hidden: !permissions.auth('{{ field.fieldTypeName }}::{{ subField.fieldName }}::READ')
 					{%- endif %}
 				}{% if forloop.last == false %},{% endif %}
 				{%- endif %}
 				{%- endfor %}
 			]{%- if useAuth %},
-			disabled: !permissions.auth('{{ name }}::{{ field.fieldName }}::READ')
+			hidden: !permissions.auth('{{ name }}::{{ field.fieldName }}::READ')
 			{%- endif %}
 		},
 		{%- endif %}
@@ -107,13 +107,13 @@
 					value: '{{ subField.fieldName }}',
 					label: $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name() + $LL.graphql.objects.{{ field.fieldTypeName }}.fields.{{ subField.fieldName }}.name(),
 					{%- if useAuth %}
-					disabled: !permissions.auth('{{ field.fieldTypeName }}::{{ subField.fieldName }}::READ')
+					hidden: !permissions.auth('{{ field.fieldTypeName }}::{{ subField.fieldName }}::READ')
 					{%- endif %}
 				}{% if forloop.last == false %},{% endif %}
 				{%- endif %}
 				{%- endfor %}
 			]{%- if useAuth %},
-			disabled: !permissions.auth('{{ name }}::{{ field.fieldName }}::READ')
+			hidden: !permissions.auth('{{ name }}::{{ field.fieldName }}::READ')
 			{%- endif %}
 		},
 		{%- endif %}
@@ -124,7 +124,7 @@
 		joinOptions?.map((option) => ({
 			value: option.value,
 			label: option.label,
-			disabled: option.disabled
+			hidden: option.hidden
 		})) || [];
 
 	$: joinColumnOptions = join
@@ -389,14 +389,14 @@
 												.map((option) => ({
 													value: option.value,
 													label: option.label,
-													disabled: option.disabled
+													hidden: option.hidden
 												})) || [];
 									} else {
 										filteredJoinOptions =
 											joinOptions?.map((option) => ({
 												value: option.value,
 												label: option.label,
-												disabled: option.disabled
+												hidden: option.hidden
 											})) || [];
 									}
 								{% raw %}}}{% endraw %}

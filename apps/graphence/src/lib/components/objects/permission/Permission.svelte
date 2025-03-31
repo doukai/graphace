@@ -58,27 +58,27 @@
 				{
 					value: 'name',
 					label: $LL.graphql.objects.Permission.fields.name.name(),
-					disabled: !permissions.auth('Permission::name::READ')
+					hidden: !permissions.auth('Permission::name::READ')
 				},
 				{
 					value: 'description',
 					label: $LL.graphql.objects.Permission.fields.description.name(),
-					disabled: !permissions.auth('Permission::description::READ')
+					hidden: !permissions.auth('Permission::description::READ')
 				},
 				{
 					value: 'field',
 					label: $LL.graphql.objects.Permission.fields.field.name(),
-					disabled: !permissions.auth('Permission::field::READ')
+					hidden: !permissions.auth('Permission::field::READ')
 				},
 				{
 					value: 'type',
 					label: $LL.graphql.objects.Permission.fields.type.name(),
-					disabled: !permissions.auth('Permission::type::READ')
+					hidden: !permissions.auth('Permission::type::READ')
 				},
 				{
 					value: 'permissionType',
 					label: $LL.graphql.objects.Permission.fields.permissionType.name(),
-					disabled: !permissions.auth('Permission::permissionType::READ')
+					hidden: !permissions.auth('Permission::permissionType::READ')
 				},
 			]
 		},
@@ -89,60 +89,60 @@
 				{
 					value: 'id',
 					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.id.name(),
-					disabled: !permissions.auth('Realm::id::READ')
+					hidden: !permissions.auth('Realm::id::READ')
 				},
 				{
 					value: 'name',
 					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.name.name(),
-					disabled: !permissions.auth('Realm::name::READ')
+					hidden: !permissions.auth('Realm::name::READ')
 				},
 				{
 					value: 'description',
 					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.description.name(),
-					disabled: !permissions.auth('Realm::description::READ')
+					hidden: !permissions.auth('Realm::description::READ')
 				},
 				{
 					value: 'isDeprecated',
 					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.isDeprecated.name(),
-					disabled: !permissions.auth('Realm::isDeprecated::READ')
+					hidden: !permissions.auth('Realm::isDeprecated::READ')
 				},
 				{
 					value: 'version',
 					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.version.name(),
-					disabled: !permissions.auth('Realm::version::READ')
+					hidden: !permissions.auth('Realm::version::READ')
 				},
 				{
 					value: 'realmId',
 					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.realmId.name(),
-					disabled: !permissions.auth('Realm::realmId::READ')
+					hidden: !permissions.auth('Realm::realmId::READ')
 				},
 				{
 					value: 'createUserId',
 					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.createUserId.name(),
-					disabled: !permissions.auth('Realm::createUserId::READ')
+					hidden: !permissions.auth('Realm::createUserId::READ')
 				},
 				{
 					value: 'createTime',
 					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.createTime.name(),
-					disabled: !permissions.auth('Realm::createTime::READ')
+					hidden: !permissions.auth('Realm::createTime::READ')
 				},
 				{
 					value: 'updateUserId',
 					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.updateUserId.name(),
-					disabled: !permissions.auth('Realm::updateUserId::READ')
+					hidden: !permissions.auth('Realm::updateUserId::READ')
 				},
 				{
 					value: 'updateTime',
 					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.updateTime.name(),
-					disabled: !permissions.auth('Realm::updateTime::READ')
+					hidden: !permissions.auth('Realm::updateTime::READ')
 				},
 				{
 					value: 'createGroupId',
 					label: $LL.graphql.objects.Permission.fields.realm.name() + $LL.graphql.objects.Realm.fields.createGroupId.name(),
-					disabled: !permissions.auth('Realm::createGroupId::READ')
+					hidden: !permissions.auth('Realm::createGroupId::READ')
 				},
 			],
-			disabled: !permissions.auth('Permission::realm::READ')
+			hidden: !permissions.auth('Permission::realm::READ')
 		},
 	];
 
@@ -156,65 +156,65 @@
 				{
 					value: 'id',
 					label: $LL.graphql.objects.Permission.fields.roles.name() + $LL.graphql.objects.Role.fields.id.name(),
-					disabled: !permissions.auth('Role::id::READ')
+					hidden: !permissions.auth('Role::id::READ')
 				},
 				{
 					value: 'name',
 					label: $LL.graphql.objects.Permission.fields.roles.name() + $LL.graphql.objects.Role.fields.name.name(),
-					disabled: !permissions.auth('Role::name::READ')
+					hidden: !permissions.auth('Role::name::READ')
 				},
 				{
 					value: 'description',
 					label: $LL.graphql.objects.Permission.fields.roles.name() + $LL.graphql.objects.Role.fields.description.name(),
-					disabled: !permissions.auth('Role::description::READ')
+					hidden: !permissions.auth('Role::description::READ')
 				},
 				{
 					value: 'isDeprecated',
 					label: $LL.graphql.objects.Permission.fields.roles.name() + $LL.graphql.objects.Role.fields.isDeprecated.name(),
-					disabled: !permissions.auth('Role::isDeprecated::READ')
+					hidden: !permissions.auth('Role::isDeprecated::READ')
 				},
 				{
 					value: 'version',
 					label: $LL.graphql.objects.Permission.fields.roles.name() + $LL.graphql.objects.Role.fields.version.name(),
-					disabled: !permissions.auth('Role::version::READ')
+					hidden: !permissions.auth('Role::version::READ')
 				},
 				{
 					value: 'realmId',
 					label: $LL.graphql.objects.Permission.fields.roles.name() + $LL.graphql.objects.Role.fields.realmId.name(),
-					disabled: !permissions.auth('Role::realmId::READ')
+					hidden: !permissions.auth('Role::realmId::READ')
 				},
 				{
 					value: 'createUserId',
 					label: $LL.graphql.objects.Permission.fields.roles.name() + $LL.graphql.objects.Role.fields.createUserId.name(),
-					disabled: !permissions.auth('Role::createUserId::READ')
+					hidden: !permissions.auth('Role::createUserId::READ')
 				},
 				{
 					value: 'createTime',
 					label: $LL.graphql.objects.Permission.fields.roles.name() + $LL.graphql.objects.Role.fields.createTime.name(),
-					disabled: !permissions.auth('Role::createTime::READ')
+					hidden: !permissions.auth('Role::createTime::READ')
 				},
 				{
 					value: 'updateUserId',
 					label: $LL.graphql.objects.Permission.fields.roles.name() + $LL.graphql.objects.Role.fields.updateUserId.name(),
-					disabled: !permissions.auth('Role::updateUserId::READ')
+					hidden: !permissions.auth('Role::updateUserId::READ')
 				},
 				{
 					value: 'updateTime',
 					label: $LL.graphql.objects.Permission.fields.roles.name() + $LL.graphql.objects.Role.fields.updateTime.name(),
-					disabled: !permissions.auth('Role::updateTime::READ')
+					hidden: !permissions.auth('Role::updateTime::READ')
 				},
 				{
 					value: 'createGroupId',
 					label: $LL.graphql.objects.Permission.fields.roles.name() + $LL.graphql.objects.Role.fields.createGroupId.name(),
-					disabled: !permissions.auth('Role::createGroupId::READ')
+					hidden: !permissions.auth('Role::createGroupId::READ')
 				},
 				{
 					value: 'syncRolePolicy',
 					label: $LL.graphql.objects.Permission.fields.roles.name() + $LL.graphql.objects.Role.fields.syncRolePolicy.name(),
-					disabled: !permissions.auth('Role::syncRolePolicy::READ')
+					hidden: !permissions.auth('Role::syncRolePolicy::READ')
 				}
 			],
-			disabled: !permissions.auth('Permission::roles::READ')
+			hidden: !permissions.auth('Permission::roles::READ')
 		},
 	];
 
@@ -222,7 +222,7 @@
 		joinOptions?.map((option) => ({
 			value: option.value,
 			label: option.label,
-			disabled: option.disabled
+			hidden: option.hidden
 		})) || [];
 
 	$: joinColumnOptions = join
@@ -487,14 +487,14 @@
 												.map((option) => ({
 													value: option.value,
 													label: option.label,
-													disabled: option.disabled
+													hidden: option.hidden
 												})) || [];
 									} else {
 										filteredJoinOptions =
 											joinOptions?.map((option) => ({
 												value: option.value,
 												label: option.label,
-												disabled: option.disabled
+												hidden: option.hidden
 											})) || [];
 									}
 								}}

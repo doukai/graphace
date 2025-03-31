@@ -58,12 +58,12 @@
 				{
 					value: 'name',
 					label: $LL.graphql.objects.Realm.fields.name.name(),
-					disabled: !permissions.auth('Realm::name::READ')
+					hidden: !permissions.auth('Realm::name::READ')
 				},
 				{
 					value: 'description',
 					label: $LL.graphql.objects.Realm.fields.description.name(),
-					disabled: !permissions.auth('Realm::description::READ')
+					hidden: !permissions.auth('Realm::description::READ')
 				}
 			]
 		},
@@ -78,7 +78,7 @@
 		joinOptions?.map((option) => ({
 			value: option.value,
 			label: option.label,
-			disabled: option.disabled
+			hidden: option.hidden
 		})) || [];
 
 	$: joinColumnOptions = join
@@ -343,14 +343,14 @@
 												.map((option) => ({
 													value: option.value,
 													label: option.label,
-													disabled: option.disabled
+													hidden: option.hidden
 												})) || [];
 									} else {
 										filteredJoinOptions =
 											joinOptions?.map((option) => ({
 												value: option.value,
 												label: option.label,
-												disabled: option.disabled
+												hidden: option.hidden
 											})) || [];
 									}
 								}}
