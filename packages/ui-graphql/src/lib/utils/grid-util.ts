@@ -141,11 +141,27 @@ export const createGrid = (
                             'div',
                             {},
                             createElement(
-                                'input',
+                                'select',
                                 {
-                                    class: 'input input-xs w-full',
+                                    class: 'select select-xs w-full',
                                     value: column.value
-                                }
+                                },
+                                [
+                                    createElement(
+                                        'option',
+                                        {
+                                            value: getBooleanLabel(true)
+                                        },
+                                        getBooleanLabel(true)
+                                    ),
+                                    createElement(
+                                        'option',
+                                        {
+                                            value: getBooleanLabel(false)
+                                        },
+                                        getBooleanLabel(false)
+                                    )
+                                ]
                             )
                         );
                     },
@@ -330,9 +346,9 @@ export const createGrid = (
                             'div',
                             {},
                             createElement(
-                                'input',
+                                'select',
                                 {
-                                    class: 'input input-xs w-full',
+                                    class: 'select select-xs w-full',
                                     value: column.value
                                 }
                             )
@@ -345,14 +361,14 @@ export const createGrid = (
                                 this.element.className = 'tooltip tooltip-open tooltip-right tooltip-error';
                                 this.element.setAttribute('data-tip', message);
                             }
-                            // if (this.editCell) {
-                            //     column.column.source.forEach((item: { label: string }) => {
-                            //         const option = document.createElement("option");
-                            //         option.value = item.label;
-                            //         option.text = item.label;
-                            //         ((this.element as HTMLDivElement)?.children[0] as HTMLSelectElement).appendChild(option);
-                            //     })
-                            // }
+                            if (this.editCell) {
+                                column.column.source.forEach((item: { label: string }) => {
+                                    const option = document.createElement("option");
+                                    option.value = item.label;
+                                    option.text = item.label;
+                                    ((this.element as HTMLDivElement)?.children[0] as HTMLSelectElement).appendChild(option);
+                                })
+                            }
                             ((this.element as HTMLDivElement)?.children[0] as HTMLSelectElement)?.focus();
                         }
                     },

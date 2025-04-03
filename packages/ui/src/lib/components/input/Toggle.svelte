@@ -5,6 +5,7 @@
 
 	export let name: string | undefined = undefined;
 	export let value: boolean | null | undefined = undefined;
+	export let placeholder: string = '';
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
@@ -21,7 +22,7 @@
 	}>();
 </script>
 
-<div class="flex items-center">
+<div class="flex items-center tooltip" data-tip={placeholder}>
 	<input
 		type="checkbox"
 		{id}

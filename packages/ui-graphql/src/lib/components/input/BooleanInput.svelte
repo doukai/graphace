@@ -15,7 +15,26 @@
 </script>
 
 {#if list}
-	<ToggleList {id} bind:value {errors} {readonly} {disabled} class={className} on:change />
+	<ToggleList
+		{id}
+		bind:value
+		{placeholder}
+		{errors}
+		{readonly}
+		{disabled}
+		class={className}
+		on:change
+	/>
 {:else}
-	<Toggle {id} {name} bind:value {errors} {readonly} {disabled} class={className} on:change />
+	<Toggle
+		{id}
+		{name}
+		bind:value
+		{placeholder}
+		{errors}
+		{readonly}
+		{disabled}
+		class={className}
+		on:change
+	/>
 {/if}

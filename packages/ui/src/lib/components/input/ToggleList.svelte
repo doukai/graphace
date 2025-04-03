@@ -7,6 +7,7 @@
 	import type { Errors } from '@graphace/commons';
 
 	export let value: (boolean | null | undefined)[] | null | undefined = undefined;
+	export let placeholder: string = '';
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
@@ -38,7 +39,8 @@
 
 <div
 	use:melt={$root}
-	class="join data-[orientation='vertical']:flex-col {className} {contextClass}"
+	class="join data-[orientation='vertical']:flex-col tooltip {className} {contextClass}"
+	data-tip={placeholder}
 >
 	<button
 		class="btn btn-primary join-item shrink"
