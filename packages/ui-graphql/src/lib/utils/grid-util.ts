@@ -47,6 +47,7 @@ export const createGrid = (
             if (filed.getType().getNamedType().isEnum()) {
                 return {
                     editor: 'enum',
+                    hasList: filed.getType().hasList(),
                     source: __schema.getType(filed.getType().getNamedType().getName())
                         ?.getEnumValues()
                         ?.map(enumValue => ({ label: getEnumValueLabel(filed.getType().getNamedType().getName(), enumValue.getName()), value: enumValue.getName() }))
@@ -54,21 +55,39 @@ export const createGrid = (
             }
             switch (filed.getType().getNamedType().getName()) {
                 case 'Boolean':
-                    return { editor: 'boolean' };
+                    return {
+                        editor: 'boolean',
+                        hasList: filed.getType().hasList()
+                    };
                 case 'Int':
                 case 'Float':
                 case 'BigInteger':
                 case 'BigDecimal':
-                    return { columnType: 'numeric', editor: 'numeric' };
+                    return {
+                        columnType: 'numeric', editor: 'numeric',
+                        hasList: filed.getType().hasList()
+                    };
                 case 'Date':
-                    return { editor: 'date' };
+                    return {
+                        editor: 'date',
+                        hasList: filed.getType().hasList()
+                    };
                 case 'Time':
-                    return { editor: 'time' };
+                    return {
+                        editor: 'time',
+                        hasList: filed.getType().hasList()
+                    };
                 case 'DateTime':
                 case 'Timestamp':
-                    return { editor: 'datetime' };
+                    return {
+                        editor: 'datetime',
+                        hasList: filed.getType().hasList()
+                    };
             }
-            return { editor: 'string' };
+            return {
+                editor: 'string',
+                hasList: filed.getType().hasList()
+            };
         }
     };
 
@@ -83,34 +102,64 @@ export const createGrid = (
                     element: null,
                     editCell: undefined,
                     render(createElement: HyperFunc<VNode>) {
-                        return createElement(
-                            'div',
-                            {},
-                            createElement(
-                                'input',
-                                {
-                                    class: 'input input-xs w-full',
-                                    value: column.value
-                                }
-                            )
-                        );
-                    },
-                    beforeUpdate() {
-                        const a = column.value
-                        console.log(a);
-                    },
-                    getValue() {
-                        const a = column.value
-                        console.log(a);
-                    },
-                    beforeAutoSave(val?: any) {
-                        const a = column.value
-                        console.log(a);
-                        return true;
-                    },
-                    beforeDisconnect() {
-                        const a = column.value
-                        console.log(a);
+                        if (column.column.hasList) {
+                            return createElement(
+                                'div',
+                                { class: 'join w-full' },
+                                [
+                                    createElement(
+                                        'button',
+                                        {
+                                            class: 'btn btn-neutral btn-xs join-item',
+                                            onclick: () => {
+                                                const div = this.element as HTMLDivElement;
+                                                if (div.childNodes.length > 2) {
+                                                    div.removeChild(div.childNodes[1]);
+                                                }
+                                            }
+                                        },
+                                        '-'
+                                    ),
+                                    ...column.value
+                                        ?.split(',')
+                                        ?.map((item: any) =>
+                                            createElement(
+                                                'input',
+                                                {
+                                                    class: 'input input-bordered input-xs join-item',
+                                                    value: item
+                                                }
+                                            )
+                                        ) || [],
+                                    createElement(
+                                        'button',
+                                        {
+                                            class: 'btn btn-neutral btn-xs join-item',
+                                            onclick: () => {
+                                                const input = document.createElement('input');
+                                                input.className = 'input input-xs join-item';
+                                                input.value = '';
+                                                const div = this.element as HTMLDivElement;
+                                                div.insertBefore(input, div.childNodes[div.childNodes.length - 1]);
+                                            }
+                                        },
+                                        '+'
+                                    )
+                                ]
+                            );
+                        } else {
+                            return createElement(
+                                'div',
+                                {},
+                                createElement(
+                                    'input',
+                                    {
+                                        class: 'input input-bordered input-xs w-full',
+                                        value: column.value
+                                    }
+                                )
+                            );
+                        }
                     },
                     componentDidRender() {
                         if (this.element) {
@@ -123,7 +172,19 @@ export const createGrid = (
                         }
                     },
                     disconnectedCallback() {
-                        const value = ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value;
+                        let value = '';
+                        if (column.column.hasList) {
+                            const div = this.element as HTMLDivElement;
+                            if (div.childNodes.length > 2) {
+                                value = div.childNodes.values().toArray()
+                                    .slice(1, div.childNodes.length - 1)
+                                    .map(input => (input as HTMLInputElement).value)
+                                    .filter(item => item)
+                                    .join(',');
+                            }
+                        } else {
+                            value = ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value;
+                        }
                         save(value, true);
                     }
                 };
@@ -143,21 +204,34 @@ export const createGrid = (
                             createElement(
                                 'select',
                                 {
-                                    class: 'select select-xs w-full',
-                                    value: column.value
+                                    class: 'select select-bordered select-xs w-full',
+                                    multiple: column.column.hasList
                                 },
                                 [
                                     createElement(
                                         'option',
                                         {
-                                            value: getBooleanLabel(true)
+                                            value: ''
+                                        },
+                                        ''
+                                    ),
+                                    createElement(
+                                        'option',
+                                        {
+                                            value: getBooleanLabel(true),
+                                            selected: column.column.hasList ?
+                                                column.value?.split(',')?.some((text: string) => text === getBooleanLabel(true)) :
+                                                column.value === getBooleanLabel(true)
                                         },
                                         getBooleanLabel(true)
                                     ),
                                     createElement(
                                         'option',
                                         {
-                                            value: getBooleanLabel(false)
+                                            value: getBooleanLabel(false),
+                                            selected: column.column.hasList ?
+                                                column.value?.split(',')?.some((text: string) => text === getBooleanLabel(false)) :
+                                                column.value === getBooleanLabel(false)
                                         },
                                         getBooleanLabel(false)
                                     )
@@ -176,7 +250,15 @@ export const createGrid = (
                         }
                     },
                     disconnectedCallback() {
-                        const value = ((this.element as HTMLDivElement)?.children[0] as HTMLSelectElement)?.value;
+                        let value = '';
+                        if (column.column.hasList) {
+                            value = Object.values(((this.element as HTMLDivElement)?.children[0] as HTMLSelectElement)?.selectedOptions)
+                                .filter(selectedOption => selectedOption.value)
+                                .map(selectedOption => selectedOption.value)
+                                .join(",");
+                        } else {
+                            value = ((this.element as HTMLDivElement)?.children[0] as HTMLSelectElement)?.value;
+                        }
                         save(value, true);
                     }
                 };
@@ -190,18 +272,66 @@ export const createGrid = (
                     element: null,
                     editCell: undefined,
                     render(createElement: HyperFunc<VNode>) {
-                        return createElement(
-                            'div',
-                            {},
-                            createElement(
-                                'input',
-                                {
-                                    type: column.value.includes && column.value.includes(",") ? undefined : "number",
-                                    class: 'input input-xs w-full',
-                                    value: column.value
-                                }
-                            )
-                        );
+                        if (column.column.hasList) {
+                            return createElement(
+                                'div',
+                                { class: 'join w-full' },
+                                [
+                                    createElement(
+                                        'button',
+                                        {
+                                            class: 'btn btn-neutral btn-xs join-item',
+                                            onclick: () => {
+                                                const div = this.element as HTMLDivElement;
+                                                if (div.childNodes.length > 2) {
+                                                    div.removeChild(div.childNodes[1]);
+                                                }
+                                            }
+                                        },
+                                        '-'
+                                    ),
+                                    ...column.value
+                                        ?.split(',')
+                                        ?.map((item: any) =>
+                                            createElement(
+                                                'input',
+                                                {
+                                                    type: 'number',
+                                                    class: 'input input-bordered input-xs join-item',
+                                                    value: item
+                                                }
+                                            )
+                                        ) || [],
+                                    createElement(
+                                        'button',
+                                        {
+                                            class: 'btn btn-neutral btn-xs join-item',
+                                            onclick: () => {
+                                                const input = document.createElement('input');
+                                                input.className = 'input input-xs join-item';
+                                                input.value = '';
+                                                const div = this.element as HTMLDivElement;
+                                                div.insertBefore(input, div.childNodes[div.childNodes.length - 1]);
+                                            }
+                                        },
+                                        '+'
+                                    )
+                                ]
+                            );
+                        } else {
+                            return createElement(
+                                'div',
+                                {},
+                                createElement(
+                                    'input',
+                                    {
+                                        type: 'number',
+                                        class: 'input input-bordered input-xs w-full',
+                                        value: column.value
+                                    }
+                                )
+                            );
+                        }
                     },
                     componentDidRender() {
                         if (this.element) {
@@ -214,7 +344,19 @@ export const createGrid = (
                         }
                     },
                     disconnectedCallback() {
-                        const value = ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value;
+                        let value = '';
+                        if (column.column.hasList) {
+                            const div = this.element as HTMLDivElement;
+                            if (div.childNodes.length > 2) {
+                                value = div.childNodes.values().toArray()
+                                    .slice(1, div.childNodes.length - 1)
+                                    .map(input => (input as HTMLInputElement).value)
+                                    .filter(item => item !== null && item !== undefined)
+                                    .join(',');
+                            }
+                        } else {
+                            value = ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value;
+                        }
                         save(value, true);
                     }
                 };
@@ -228,18 +370,66 @@ export const createGrid = (
                     element: null,
                     editCell: undefined,
                     render(createElement: HyperFunc<VNode>) {
-                        return createElement(
-                            'div',
-                            {},
-                            createElement(
-                                'input',
-                                {
-                                    type: column.value.includes && column.value.includes(",") ? undefined : "date",
-                                    class: 'input input-xs w-full',
-                                    value: column.value
-                                }
-                            )
-                        );
+                        if (column.column.hasList) {
+                            return createElement(
+                                'div',
+                                { class: 'join w-full' },
+                                [
+                                    createElement(
+                                        'button',
+                                        {
+                                            class: 'btn btn-neutral btn-xs join-item',
+                                            onclick: () => {
+                                                const div = this.element as HTMLDivElement;
+                                                if (div.childNodes.length > 2) {
+                                                    div.removeChild(div.childNodes[1]);
+                                                }
+                                            }
+                                        },
+                                        '-'
+                                    ),
+                                    ...column.value
+                                        ?.split(',')
+                                        ?.map((item: any) =>
+                                            createElement(
+                                                'input',
+                                                {
+                                                    type: 'date',
+                                                    class: 'input input-bordered input-xs join-item',
+                                                    value: item
+                                                }
+                                            )
+                                        ) || [],
+                                    createElement(
+                                        'button',
+                                        {
+                                            class: 'btn btn-neutral btn-xs join-item',
+                                            onclick: () => {
+                                                const input = document.createElement('input');
+                                                input.className = 'input input-xs join-item';
+                                                input.value = '';
+                                                const div = this.element as HTMLDivElement;
+                                                div.insertBefore(input, div.childNodes[div.childNodes.length - 1]);
+                                            }
+                                        },
+                                        '+'
+                                    )
+                                ]
+                            );
+                        } else {
+                            return createElement(
+                                'div',
+                                {},
+                                createElement(
+                                    'input',
+                                    {
+                                        type: 'date',
+                                        class: 'input input-bordered input-xs w-full',
+                                        value: column.value
+                                    }
+                                )
+                            );
+                        }
                     },
                     componentDidRender() {
                         if (this.element) {
@@ -252,7 +442,19 @@ export const createGrid = (
                         }
                     },
                     disconnectedCallback() {
-                        const value = ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value;
+                        let value = '';
+                        if (column.column.hasList) {
+                            const div = this.element as HTMLDivElement;
+                            if (div.childNodes.length > 2) {
+                                value = div.childNodes.values().toArray()
+                                    .slice(1, div.childNodes.length - 1)
+                                    .map(input => (input as HTMLInputElement).value)
+                                    .filter(item => item)
+                                    .join(',');
+                            }
+                        } else {
+                            value = ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value;
+                        }
                         save(value, true);
                     }
                 };
@@ -266,18 +468,66 @@ export const createGrid = (
                     element: null,
                     editCell: undefined,
                     render(createElement: HyperFunc<VNode>) {
-                        return createElement(
-                            'div',
-                            {},
-                            createElement(
-                                'input',
-                                {
-                                    type: column.value.includes && column.value.includes(",") ? undefined : "time",
-                                    class: 'input input-xs w-full',
-                                    value: column.value
-                                }
-                            )
-                        );
+                        if (column.column.hasList) {
+                            return createElement(
+                                'div',
+                                { class: 'join w-full' },
+                                [
+                                    createElement(
+                                        'button',
+                                        {
+                                            class: 'btn btn-neutral btn-xs join-item',
+                                            onclick: () => {
+                                                const div = this.element as HTMLDivElement;
+                                                if (div.childNodes.length > 2) {
+                                                    div.removeChild(div.childNodes[1]);
+                                                }
+                                            }
+                                        },
+                                        '-'
+                                    ),
+                                    ...column.value
+                                        ?.split(',')
+                                        ?.map((item: any) =>
+                                            createElement(
+                                                'input',
+                                                {
+                                                    type: 'time',
+                                                    class: 'input input-bordered input-xs join-item',
+                                                    value: item
+                                                }
+                                            )
+                                        ) || [],
+                                    createElement(
+                                        'button',
+                                        {
+                                            class: 'btn btn-neutral btn-xs join-item',
+                                            onclick: () => {
+                                                const input = document.createElement('input');
+                                                input.className = 'input input-xs join-item';
+                                                input.value = '';
+                                                const div = this.element as HTMLDivElement;
+                                                div.insertBefore(input, div.childNodes[div.childNodes.length - 1]);
+                                            }
+                                        },
+                                        '+'
+                                    )
+                                ]
+                            );
+                        } else {
+                            return createElement(
+                                'div',
+                                {},
+                                createElement(
+                                    'input',
+                                    {
+                                        type: 'time',
+                                        class: 'input input-bordered input-xs w-full',
+                                        value: column.value
+                                    }
+                                )
+                            );
+                        }
                     },
                     componentDidRender() {
                         if (this.element) {
@@ -290,7 +540,19 @@ export const createGrid = (
                         }
                     },
                     disconnectedCallback() {
-                        const value = ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value;
+                        let value = '';
+                        if (column.column.hasList) {
+                            const div = this.element as HTMLDivElement;
+                            if (div.childNodes.length > 2) {
+                                value = div.childNodes.values().toArray()
+                                    .slice(1, div.childNodes.length - 1)
+                                    .map(input => (input as HTMLInputElement).value)
+                                    .filter(item => item)
+                                    .join(',');
+                            }
+                        } else {
+                            value = ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value;
+                        }
                         save(value, true);
                     }
                 };
@@ -304,18 +566,66 @@ export const createGrid = (
                     element: null,
                     editCell: undefined,
                     render(createElement: HyperFunc<VNode>) {
-                        return createElement(
-                            'div',
-                            {},
-                            createElement(
-                                'input',
-                                {
-                                    type: column.value.includes && column.value.includes(",") ? undefined : "datetime-local",
-                                    class: 'input input-xs w-full',
-                                    value: column.value
-                                }
-                            )
-                        );
+                        if (column.column.hasList) {
+                            return createElement(
+                                'div',
+                                { class: 'join w-full' },
+                                [
+                                    createElement(
+                                        'button',
+                                        {
+                                            class: 'btn btn-neutral btn-xs join-item',
+                                            onclick: () => {
+                                                const div = this.element as HTMLDivElement;
+                                                if (div.childNodes.length > 2) {
+                                                    div.removeChild(div.childNodes[1]);
+                                                }
+                                            }
+                                        },
+                                        '-'
+                                    ),
+                                    ...column.value
+                                        ?.split(',')
+                                        ?.map((item: any) =>
+                                            createElement(
+                                                'input',
+                                                {
+                                                    type: 'datetime-local',
+                                                    class: 'input input-bordered input-xs join-item',
+                                                    value: item
+                                                }
+                                            )
+                                        ) || [],
+                                    createElement(
+                                        'button',
+                                        {
+                                            class: 'btn btn-neutral btn-xs join-item',
+                                            onclick: () => {
+                                                const input = document.createElement('input');
+                                                input.className = 'input input-xs join-item';
+                                                input.value = '';
+                                                const div = this.element as HTMLDivElement;
+                                                div.insertBefore(input, div.childNodes[div.childNodes.length - 1]);
+                                            }
+                                        },
+                                        '+'
+                                    )
+                                ]
+                            );
+                        } else {
+                            return createElement(
+                                'div',
+                                {},
+                                createElement(
+                                    'input',
+                                    {
+                                        type: 'datetime-local',
+                                        class: 'input input-bordered input-xs w-full',
+                                        value: column.value
+                                    }
+                                )
+                            );
+                        }
                     },
                     componentDidRender() {
                         if (this.element) {
@@ -328,7 +638,19 @@ export const createGrid = (
                         }
                     },
                     disconnectedCallback() {
-                        const value = ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value;
+                        let value = '';
+                        if (column.column.hasList) {
+                            const div = this.element as HTMLDivElement;
+                            if (div.childNodes.length > 2) {
+                                value = div.childNodes.values().toArray()
+                                    .slice(1, div.childNodes.length - 1)
+                                    .map(input => (input as HTMLInputElement).value)
+                                    .filter(item => item)
+                                    .join(',');
+                            }
+                        } else {
+                            value = ((this.element as HTMLDivElement)?.children[0] as HTMLInputElement)?.value;
+                        }
                         save(value, true);
                     }
                 };
@@ -348,9 +670,18 @@ export const createGrid = (
                             createElement(
                                 'select',
                                 {
-                                    class: 'select select-xs w-full',
-                                    value: column.value
-                                }
+                                    class: 'select select-bordered select-xs w-full',
+                                    multiple: column.column.hasList
+                                },
+                                [
+                                    createElement(
+                                        'option',
+                                        {
+                                            value: ''
+                                        },
+                                        ''
+                                    )
+                                ]
                             )
                         );
                     },
@@ -366,6 +697,9 @@ export const createGrid = (
                                     const option = document.createElement("option");
                                     option.value = item.label;
                                     option.text = item.label;
+                                    option.selected = column.column.hasList ?
+                                        column.value?.split(',')?.some((text: string) => text === item.label) :
+                                        column.value === item.label;
                                     ((this.element as HTMLDivElement)?.children[0] as HTMLSelectElement).appendChild(option);
                                 })
                             }
@@ -373,7 +707,15 @@ export const createGrid = (
                         }
                     },
                     disconnectedCallback() {
-                        const value = ((this.element as HTMLDivElement)?.children[0] as HTMLSelectElement)?.value;
+                        let value = '';
+                        if (column.column.hasList) {
+                            value = Object.values(((this.element as HTMLDivElement)?.children[0] as HTMLSelectElement)?.selectedOptions)
+                                .filter(selectedOption => selectedOption.value)
+                                .map(selectedOption => selectedOption.value)
+                                .join(",");
+                        } else {
+                            value = ((this.element as HTMLDivElement)?.children[0] as HTMLSelectElement)?.value;
+                        }
                         save(value, true);
                     }
                 };
@@ -616,19 +958,21 @@ export const createGrid = (
             const subFieldType = __schema.getType(__schema.getType(typeName)?.getField(fieldName)?.getType().getNamedType().getName())?.getField(subFieldName)?.getType().getNamedType();
             const hasList = __schema.getType(__schema.getType(typeName)?.getField(fieldName)?.getType().getNamedType().getName())?.getField(subFieldName)?.getType().hasList();
             if (subFieldType) {
-                if (hasList && value.includes && value.includes(',')) {
+                if (value === '' || value === null || value === undefined) {
+                    return null;
+                } else if (hasList && typeof value === 'string' && value.includes(',')) {
                     if (subFieldType.isEnum()) {
-                        return value.split(',').map(item => enumNameToValue(subFieldType.getName(), item));
+                        return value.split(',').map((item: string) => enumNameToValue(subFieldType.getName(), item));
                     } else {
                         switch (subFieldType.getName()) {
                             case 'Boolean':
-                                return value.split(',').map(item => booleanNameToValue(item));
+                                return value.split(',').map((item: string) => booleanNameToValue(item));
                             case 'Int':
                             case 'BigInteger':
-                                return value.split(',').map(item => Number.parseInt(item));
+                                return value.split(',').map((item: string) => Number.parseInt(item));
                             case 'Float':
                             case 'BigDecimal':
-                                return value.split(',').map(item => Number.parseFloat(item));
+                                return value.split(',').map((item: string) => Number.parseFloat(item));
                             default:
                                 return value.split(',');
                         }
@@ -673,19 +1017,21 @@ export const createGrid = (
         const fieldType = __schema.getType(typeName)?.getField(fieldName)?.getType().getNamedType();
         const hasList = __schema.getType(typeName)?.getField(fieldName)?.getType().hasList();
         if (fieldType) {
-            if (value.includes && value.includes(',')) {
+            if (value === '' || value === null || value === undefined) {
+                return null;
+            } else if (typeof value === 'string' && value.includes(',')) {
                 if (fieldType.isEnum()) {
                     return value.split(',').map(item => enumNameToValue(fieldType.getName(), item));
                 } else {
                     switch (fieldType.getName()) {
                         case 'Boolean':
-                            return value.split(',').map(item => booleanNameToValue(item));
+                            return value.split(',').map((item: string) => booleanNameToValue(item));
                         case 'Int':
                         case 'BigInteger':
-                            return value.split(',').map(item => Number.parseInt(item));
+                            return value.split(',').map((item: string) => Number.parseInt(item));
                         case 'Float':
                         case 'BigDecimal':
-                            return value.split(',').map(item => Number.parseFloat(item));
+                            return value.split(',').map((item: string) => Number.parseFloat(item));
                         default:
                             return value.split(',');
                     }
@@ -865,101 +1211,103 @@ export const createGrid = (
     const sourceToMutationList = <T>(typeName: string, idFieldName: string, queryFields: Field[], source: DataType[]): T[] => {
         const join = queryFields.find((field) => __schema.getType(typeName)?.getField(field.name)?.getType().getNamedType().isObject() && __schema.getType(typeName)?.getField(field.name)?.getType().hasList());
         if (join) {
-            return source?.reduce((nodes: T[], row) => {
-                const object = Object.fromEntries(
-                    join!.fields?.map((subField) => [
-                        subField.name,
-                        getTypeFieldValue(row?.[`${join.name}.${subField.name}`], typeName, join.name, subField.name)
-                    ]) || []
-                );
-                if (
-                    Object.values(object).filter((value) => value).length > 0 &&
-                    row[idFieldName] &&
-                    nodes.some((node: T) => node[idFieldName] === row[idFieldName])
-                ) {
-                    nodes
-                        .find((node: T) => node[idFieldName] === row[idFieldName])
-                        ?.[join.name].push(
-                            Object.fromEntries(
-                                join!.fields?.map((subField) => [
-                                    subField.name,
-                                    getTypeFieldValue(row?.[`${join.name}.${subField.name}`], typeName, join.name, subField.name)
-                                ]) || []
-                            )
-                        );
-                } else if (
-                    Object.values(object).filter((value) => value).length > 0 &&
-                    nodes.some((node: T) =>
-                        queryFields
-                            .filter((field) => field.name !== join.name)
-                            .filter((field) => !field.fields)
-                            .every((field) => node[field.name] === row[field.name])
-                    )
-                ) {
-                    nodes
-                        .find((node: T) =>
+            return source
+                ?.reduce((nodes: T[], row) => {
+                    const object = Object.fromEntries(
+                        join!.fields?.map((subField) => [
+                            subField.name,
+                            getTypeFieldValue(row?.[`${join.name}.${subField.name}`], typeName, join.name, subField.name)
+                        ]) || []
+                    );
+                    if (
+                        Object.values(object).filter((value) => value).length > 0 &&
+                        row[idFieldName] &&
+                        nodes.some((node: T) => node[idFieldName] === row[idFieldName])
+                    ) {
+                        nodes
+                            .find((node: T) => node[idFieldName] === row[idFieldName])
+                            ?.[join.name].push(
+                                Object.fromEntries(
+                                    join!.fields?.map((subField) => [
+                                        subField.name,
+                                        getTypeFieldValue(row?.[`${join.name}.${subField.name}`], typeName, join.name, subField.name)
+                                    ]) || []
+                                )
+                            );
+                    } else if (
+                        Object.values(object).filter((value) => value).length > 0 &&
+                        nodes.some((node: T) =>
                             queryFields
                                 .filter((field) => field.name !== join.name)
                                 .filter((field) => !field.fields)
                                 .every((field) => node[field.name] === row[field.name])
                         )
-                        ?.[join.name].push(
-                            Object.fromEntries(
-                                join!.fields?.map((subField) => [
-                                    subField.name,
-                                    getTypeFieldValue(row?.[`${join.name}.${subField.name}`], typeName, join.name, subField.name)
-                                ]) || []
+                    ) {
+                        nodes
+                            .find((node: T) =>
+                                queryFields
+                                    .filter((field) => field.name !== join.name)
+                                    .filter((field) => !field.fields)
+                                    .every((field) => node[field.name] === row[field.name])
                             )
-                        );
-                } else {
-                    nodes.push(
-                        Object.fromEntries(
-                            [...queryFields, new Field({ name: 'isDeprecated' })].map((field) => {
-                                if (field.fields && field.fields.length > 0) {
-                                    const object = Object.fromEntries(
-                                        field.fields.map((subField) => [
-                                            subField.name,
-                                            getTypeFieldValue(row?.[`${field.name}.${subField.name}`], typeName, field.name, subField.name)
-                                        ])
-                                    );
-                                    if (Object.values(object).filter((value) => value).length > 0) {
-                                        return [field.name, field.name === join.name ? [object] : object];
-                                    }
-                                    return [field.name, field.name === join.name ? [] : null];
-                                } else {
-                                    return [
-                                        field.name,
-                                        field.name === join.name ? [getTypeFieldValue(row?.[field.name], typeName, field.name)] : getTypeFieldValue(row?.[field.name], typeName, field.name)
-                                    ];
-                                }
-                            })
-                        ) as T
-                    );
-                }
-                return nodes;
-            }, <T[]>[])
-                .filter(row => !Object.values(row).every(col => col === null || col === undefined));
-        } else {
-            return source?.map((row) =>
-                Object.fromEntries(
-                    [...queryFields, new Field({ name: 'isDeprecated' })].map((field) => {
-                        if (field.fields && field.fields.length > 0) {
-                            const object = Object.fromEntries(
-                                field.fields.map((subField) => [
-                                    subField.name,
-                                    getTypeFieldValue(row?.[`${field.name}.${subField.name}`], typeName, field.name, subField.name)
-                                ])
+                            ?.[join.name].push(
+                                Object.fromEntries(
+                                    join!.fields?.map((subField) => [
+                                        subField.name,
+                                        getTypeFieldValue(row?.[`${join.name}.${subField.name}`], typeName, join.name, subField.name)
+                                    ]) || []
+                                )
                             );
-                            if (Object.values(object).filter((value) => value).length > 0) {
-                                return [field.name, object];
+                    } else {
+                        nodes.push(
+                            Object.fromEntries(
+                                [...queryFields, new Field({ name: 'isDeprecated' })].map((field) => {
+                                    if (field.fields && field.fields.length > 0) {
+                                        const object = Object.fromEntries(
+                                            field.fields.map((subField) => [
+                                                subField.name,
+                                                getTypeFieldValue(row?.[`${field.name}.${subField.name}`], typeName, field.name, subField.name)
+                                            ])
+                                        );
+                                        if (Object.values(object).filter((value) => value).length > 0) {
+                                            return [field.name, field.name === join.name ? [object] : object];
+                                        }
+                                        return [field.name, field.name === join.name ? [] : null];
+                                    } else {
+                                        return [
+                                            field.name,
+                                            field.name === join.name ? [getTypeFieldValue(row?.[field.name], typeName, field.name)] : getTypeFieldValue(row?.[field.name], typeName, field.name)
+                                        ];
+                                    }
+                                })
+                            ) as T
+                        );
+                    }
+                    return nodes;
+                }, <T[]>[])
+                .filter((row: T) => !Object.values(row).every(col => col === null || col === undefined));
+        } else {
+            return source
+                ?.map((row) =>
+                    Object.fromEntries(
+                        [...queryFields, new Field({ name: 'isDeprecated' })].map((field) => {
+                            if (field.fields && field.fields.length > 0) {
+                                const object = Object.fromEntries(
+                                    field.fields.map((subField) => [
+                                        subField.name,
+                                        getTypeFieldValue(row?.[`${field.name}.${subField.name}`], typeName, field.name, subField.name)
+                                    ])
+                                );
+                                if (Object.values(object).filter((value) => value).length > 0) {
+                                    return [field.name, object];
+                                }
+                                return [field.name, null];
+                            } else {
+                                return [field.name, getTypeFieldValue(row?.[field.name], typeName, field.name)];
                             }
-                            return [field.name, null];
-                        } else {
-                            return [field.name, getTypeFieldValue(row?.[field.name], typeName, field.name)];
-                        }
-                    })
-                ) as T
-            )
+                        })
+                    ) as T
+                )
                 .filter(row => !Object.values(row).every(col => col === null || col === undefined));
         }
     };
