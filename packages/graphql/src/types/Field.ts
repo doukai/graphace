@@ -1,5 +1,5 @@
 import { valueToString } from "./Arguments.js";
-import { Directive } from "./Directive.js";
+import { createDirective, Directive } from "./Directive.js";
 
 export class Field {
     name: string;
@@ -34,6 +34,24 @@ export class Field {
         } else {
             return `${this.alias ? this.alias + ':' : ''}${this.name}${this.args && Object.keys(this.args).length > 0 ? `(${Object.entries(this.args).filter(([k, v]) => v !== undefined).map(([k, v]) => `${k}: ${valueToString(v)}`).join(', ')})` : ''}${this.directives?.map(directive => ' ' + directive.toString()) || ''}`;
         }
+    }
+}
+
+export const createFields = (params: any): Field[] | undefined => {
+    if (params) {
+        return params.map((field: any) => createField(field));
+    }
+}
+
+export const createField = (params: any): Field | undefined => {
+    if (params) {
+        return new Field({
+            name: params.name,
+            alias: params.alias,
+            args: params.args,
+            fields: params.fields?.map((field: any) => createField(field)),
+            directives: params.directives?.map((directive: any) => createDirective(directive))
+        });
     }
 }
 

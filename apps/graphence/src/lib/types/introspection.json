@@ -94929,8 +94929,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "FIELD_DEFINITION"
+          "FIELD_DEFINITION",
+          "FIELD"
         ],
         "args": [
           {
@@ -95060,8 +95060,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "FIELD_DEFINITION"
+          "FIELD_DEFINITION",
+          "FIELD"
         ],
         "args": [
           {
@@ -95083,8 +95083,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "INPUT_OBJECT"
+          "INPUT_OBJECT",
+          "OBJECT"
         ],
         "args": [
           {
@@ -95158,8 +95158,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "INPUT_OBJECT"
+          "INPUT_OBJECT",
+          "OBJECT"
         ],
         "args": [
           {
@@ -95181,11 +95181,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
+          "INPUT_OBJECT",
+          "QUERY",
           "FIELD_DEFINITION",
           "SUBSCRIPTION",
-          "QUERY",
-          "MUTATION",
-          "INPUT_OBJECT"
+          "MUTATION"
         ],
         "args": [
           {
@@ -95271,11 +95271,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
+          "INPUT_OBJECT",
+          "QUERY",
           "FIELD_DEFINITION",
           "SUBSCRIPTION",
-          "QUERY",
-          "MUTATION",
-          "INPUT_OBJECT"
+          "MUTATION"
         ],
         "args": [
           {
@@ -95313,10 +95313,10 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
-          "FIELD_DEFINITION",
           "INPUT_FIELD_DEFINITION",
-          "INPUT_OBJECT"
+          "INPUT_OBJECT",
+          "FIELD_DEFINITION",
+          "OBJECT"
         ],
         "args": [
           {
@@ -95876,11 +95876,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "OBJECT",
+          "QUERY",
           "FIELD_DEFINITION",
           "SUBSCRIPTION",
-          "QUERY",
-          "MUTATION"
+          "MUTATION",
+          "OBJECT"
         ],
         "args": [
           {

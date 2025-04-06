@@ -2,12 +2,21 @@ import { valueToString } from "./Arguments.js";
 
 export class Directive {
     name: string;
-    arguments?: Record<string, unknown> | undefined;
-    constructor(params: { name: string, arguments?: Record<string, unknown> | undefined }) {
+    args?: Record<string, unknown> | undefined;
+    constructor(params: { name: string, args?: Record<string, unknown> | undefined }) {
         this.name = params.name;
-        this.arguments = params.arguments;
+        this.args = params.args;
     }
     public toString = (): string => {
-        return `@${this.name}${this.arguments ? `(${Object.entries(this.arguments).filter(([k, v]) => v !== undefined).map(([k, v]) => `${k}: ${valueToString(v)}`).join(', ')})` : ''}`;
+        return `@${this.name}${this.args ? `(${Object.entries(this.args).filter(([k, v]) => v !== undefined).map(([k, v]) => `${k}: ${valueToString(v)}`).join(', ')})` : ''}`;
+    }
+}
+
+export const createDirective = (params: any): Directive | undefined => {
+    if (params) {
+        return new Directive({
+            name: params.name,
+            args: params.args
+        });
     }
 }

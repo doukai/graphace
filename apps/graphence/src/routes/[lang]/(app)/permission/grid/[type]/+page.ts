@@ -1,13 +1,13 @@
 import type { LoadEvent } from '@sveltejs/kit';
-import { createConnectionField } from '@graphace/graphql';
+import { createConnectionField, createFields } from '@graphace/graphql';
 import { fetchQueryStore, createMutationStore, getPermissionsStore } from '~/utils';
 import type { Permission, PermissionConnection } from '~/lib/types/schema';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     await getPermissionsStore(event).getTypes('Permission', 'Role', 'Realm');    
-    const fields = JSON.parse(event.url.searchParams.get('fields') || '[]');
-    const queryArguments = JSON.parse(event.url.searchParams.get('queryArguments') || '{}');
+    const fields = event.url.searchParams.has('fields') ? createFields(JSON.parse(event.url.searchParams.get('fields')!)) : undefined;
+    const args = event.url.searchParams.has('args') ? JSON.parse(event.url.searchParams.get('args')!) : undefined;
     const showHeader = !event.url.searchParams.has('hideHeader');
     const showFooter = !event.url.searchParams.has('hideFooter');
     const showOptionButton = !event.url.searchParams.has('hideOptionButton');
@@ -15,7 +15,7 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
     return {
         type: event.params.type,
         fields,
-        queryArguments,
+        args,
         showHeader,
         showFooter,
         showOptionButton,
