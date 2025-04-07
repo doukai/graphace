@@ -29,6 +29,17 @@ const query = /* GraphQL */ `mutation Mutation_currentUserResetPassword($passwor
       name
       description
     }
+    file {
+      id
+      name
+    }
+    files {
+      id
+      name
+    }
+    booleanList
+    intList
+    typeList
     isDeprecated
     version
     realmId

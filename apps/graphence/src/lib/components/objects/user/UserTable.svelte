@@ -5,13 +5,17 @@
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Loading, SearchInput, Table, Td } from '@graphace/ui';
-	import { type Option, StringTh, StringTd, BooleanTh, BooleanTd, ObjectTd } from '@graphace/ui-graphql';
+	import { type Option, StringTh, StringTd, BooleanTh, BooleanTd, IntTh, IntTd, FileTd, ObjectTd } from '@graphace/ui-graphql';
+	import PermissionTypeTh from '~/lib/components/enums/permission-type/PermissionTypeTh.svelte';
+	import PermissionTypeTd from '~/lib/components/enums/permission-type/PermissionTypeTd.svelte';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
+	import FileTh from '~/lib/components/objects/file/FileTh.svelte';
 	import GroupSelectTd from '~/lib/components/objects/group/GroupSelectTd.svelte';
 	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
+	import FileTableDialog from '~/lib/components/objects/file/FileTableDialog.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type {
 		UserOrderBy,
@@ -46,6 +50,11 @@
 		groups: Option;
 		roles: Option;
 		realm: Option;
+		file: Option;
+		files: Option;
+		booleanList: Option;
+		intList: Option;
+		typeList: Option;
 	} = {
 		name: { readonly: false, disabled: false, hidden: false },
 		description: { readonly: false, disabled: false, hidden: false },
@@ -56,7 +65,12 @@
 		disable: { readonly: false, disabled: false, hidden: false },
 		groups: { readonly: false, disabled: false, hidden: false },
 		roles: { readonly: false, disabled: false, hidden: false },
-		realm: { readonly: false, disabled: false, hidden: false }
+		realm: { readonly: false, disabled: false, hidden: false },
+		file: { readonly: false, disabled: false, hidden: false },
+		files: { readonly: false, disabled: false, hidden: false },
+		booleanList: { readonly: false, disabled: false, hidden: false },
+		intList: { readonly: false, disabled: false, hidden: false },
+		typeList: { readonly: false, disabled: false, hidden: false }
 	};
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
@@ -198,6 +212,41 @@
 				<RealmTh
 					name={$LL.graphql.objects.User.fields.realm.name()}
 					bind:value={args.realm}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
+			{/if}
+			{#if !fields.file.hidden}
+				<FileTh
+					name={$LL.graphql.objects.User.fields.file.name()}
+					bind:value={args.file}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
+			{/if}
+			{#if !fields.files.hidden}
+				<FileTh
+					name={$LL.graphql.objects.User.fields.files.name()}
+					bind:value={args.files}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
+			{/if}
+			{#if !fields.booleanList.hidden}
+				<BooleanTh
+					name={$LL.graphql.objects.User.fields.booleanList.name()}
+					bind:value={args.booleanList}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
+			{/if}
+			{#if !fields.intList.hidden}
+				<IntTh
+					name={$LL.graphql.objects.User.fields.intList.name()}
+					bind:value={args.intList}
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				/>
+			{/if}
+			{#if !fields.typeList.hidden}
+				<PermissionTypeTh
+					name={$LL.graphql.objects.User.fields.typeList.name()}
+					bind:value={args.typeList}
 					on:filter={(e) => dispatch('query', { args, orderBy })}
 				/>
 			{/if}
@@ -399,6 +448,112 @@
 										/>
 									</Td>
 								{/if}
+							{/if}
+						</slot>
+						<slot name="file">
+							{#if !fields.file.hidden}
+								{#if node.id}
+									<ObjectTd
+										errors={errors?.[row]?.iterms?.file}
+										disabled={fields.file.disabled}
+										path={`${node.id}/file`}
+										name={node.name + ':' + $LL.graphql.objects.User.fields.file.name()}
+										on:goto
+										{zIndex}
+									/>
+								{:else}
+									<Td {zIndex}>
+										<FileTableDialog
+											bind:value={node.file}
+											singleChoice={true}
+											readonly={fields.file.readonly}
+											disabled={fields.file.disabled}
+											on:select={(e) =>
+												dispatch('save', {
+													value: { file: node?.file, where: { id: { val: node?.id } } }
+												})}
+											class="btn-xs"
+										/>
+									</Td>
+								{/if}
+							{/if}
+						</slot>
+						<slot name="files">
+							{#if !fields.files.hidden}
+								{#if node.id}
+									<ObjectTd
+										errors={errors?.[row]?.iterms?.files}
+										disabled={fields.files.disabled}
+										path={`${node.id}/files`}
+										name={node.name + ':' + $LL.graphql.objects.User.fields.files.name()}
+										on:goto
+										{zIndex}
+									/>
+								{:else}
+									<Td {zIndex}>
+										<FileTableDialog
+											bind:value={node.files}
+											readonly={fields.files.readonly}
+											disabled={fields.files.disabled}
+											on:select={(e) =>
+												dispatch('save', {
+													value: { files: node?.files, where: { id: { val: node?.id } } }
+												})}
+											class="btn-xs"
+										/>
+									</Td>
+								{/if}
+							{/if}
+						</slot>
+						<slot name="booleanList">
+							{#if !fields.booleanList.hidden}
+								<BooleanTd
+									name="booleanList"
+									bind:value={node.booleanList}
+									list
+									on:save={(e) =>
+										dispatch('save', {
+											value: { booleanList: node?.booleanList, where: { id: { val: node?.id } } }
+										})}
+									readonly={fields.booleanList.readonly}
+									disabled={fields.booleanList.disabled}
+									errors={errors?.[row]?.iterms?.booleanList}
+									{zIndex}
+								/>
+							{/if}
+						</slot>
+						<slot name="intList">
+							{#if !fields.intList.hidden}
+								<IntTd
+									name="intList"
+									bind:value={node.intList}
+									list
+									on:save={(e) =>
+										dispatch('save', {
+											value: { intList: node?.intList, where: { id: { val: node?.id } } }
+										})}
+									readonly={fields.intList.readonly}
+									disabled={fields.intList.disabled}
+									errors={errors?.[row]?.iterms?.intList}
+									{zIndex}
+								/>
+							{/if}
+						</slot>
+						<slot name="typeList">
+							{#if !fields.typeList.hidden}
+								<PermissionTypeTd
+									name="typeList"
+									bind:value={node.typeList}
+									list
+									on:save={(e) =>
+										dispatch('save', {
+											value: { typeList: node?.typeList, where: { id: { val: node?.id } } }
+										})}
+									readonly={fields.typeList.readonly}
+									disabled={fields.typeList.disabled}
+									errors={errors?.[row]?.iterms?.typeList}
+									{zIndex}
+								/>
 							{/if}
 						</slot>
 						<th class="hover:z-[{zIndex + 3}]">

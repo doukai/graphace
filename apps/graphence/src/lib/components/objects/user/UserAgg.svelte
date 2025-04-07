@@ -193,6 +193,88 @@
 			hidden: !permissions.auth('User::realm::READ')
 		},
 		{
+			value: 'file',
+			label: $LL.graphql.objects.User.fields.file.name(),
+			options: [
+				{
+					value: 'idCount',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.idCount.name(),
+					hidden: !permissions.auth('File::id::READ')
+				},
+				{
+					value: 'idMax',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.idMax.name(),
+					hidden: !permissions.auth('File::id::READ')
+				},
+				{
+					value: 'idMin',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.idMin.name(),
+					hidden: !permissions.auth('File::id::READ')
+				},
+				{
+					value: 'nameCount',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.nameCount.name(),
+					hidden: !permissions.auth('File::name::READ')
+				},
+				{
+					value: 'nameMax',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.nameMax.name(),
+					hidden: !permissions.auth('File::name::READ')
+				},
+				{
+					value: 'nameMin',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.nameMin.name(),
+					hidden: !permissions.auth('File::name::READ')
+				},
+				{
+					value: 'contentTypeCount',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.contentTypeCount.name(),
+					hidden: !permissions.auth('File::contentType::READ')
+				},
+				{
+					value: 'contentTypeMax',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.contentTypeMax.name(),
+					hidden: !permissions.auth('File::contentType::READ')
+				},
+				{
+					value: 'contentTypeMin',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.contentTypeMin.name(),
+					hidden: !permissions.auth('File::contentType::READ')
+				},
+				{
+					value: 'contentCount',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.contentCount.name(),
+					hidden: !permissions.auth('File::content::READ')
+				},
+				{
+					value: 'contentMax',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.contentMax.name(),
+					hidden: !permissions.auth('File::content::READ')
+				},
+				{
+					value: 'contentMin',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.contentMin.name(),
+					hidden: !permissions.auth('File::content::READ')
+				},
+				{
+					value: 'urlCount',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.urlCount.name(),
+					hidden: !permissions.auth('File::url::READ')
+				},
+				{
+					value: 'urlMax',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.urlMax.name(),
+					hidden: !permissions.auth('File::url::READ')
+				},
+				{
+					value: 'urlMin',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.urlMin.name(),
+					hidden: !permissions.auth('File::url::READ')
+				}
+			],
+			hidden: !permissions.auth('User::file::READ')
+		},
+		{
 			value: 'groupsAggregate',
 			label: $LL.graphql.objects.User.fields.groups.name(),
 			options: [
@@ -391,6 +473,21 @@
 			label: $LL.graphql.objects.User.fields.disable.name(),
 			hidden: !permissions.auth('User::disable::READ')
 		},
+		{
+			value: 'booleanList',
+			label: $LL.graphql.objects.User.fields.booleanList.name(),
+			hidden: !permissions.auth('User::booleanList::READ')
+		},
+		{
+			value: 'intList',
+			label: $LL.graphql.objects.User.fields.intList.name(),
+			hidden: !permissions.auth('User::intList::READ')
+		},
+		{
+			value: 'typeList',
+			label: $LL.graphql.objects.User.fields.typeList.name(),
+			hidden: !permissions.auth('User::typeList::READ')
+		}
 	];
 
 	let filteredGroupByOptions = groupByOptions;

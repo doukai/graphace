@@ -5,7 +5,7 @@ import type { User, UserConnection } from '~/lib/types/schema';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await getPermissionsStore(event).getTypes('User', 'Group', 'Role', 'Realm');    
+    await getPermissionsStore(event).getTypes('User', 'Group', 'Role', 'Realm', 'File');    
     const fields = event.url.searchParams.has('fields') ? createFields(JSON.parse(event.url.searchParams.get('fields')!)) : undefined;
     const args = event.url.searchParams.has('args') ? JSON.parse(event.url.searchParams.get('args')!) : undefined;
     const showHeader = !event.url.searchParams.has('hideHeader');

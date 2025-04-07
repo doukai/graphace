@@ -2,6 +2,95 @@ import type { NamespaceGraphqlTranslation } from '../../i18n-types';
 
 const zh: NamespaceGraphqlTranslation = {
 	objects: {
+		File: {
+			name: '文件',
+			fields: {
+				id: {
+					name: 'ID',
+				},
+				name: {
+					name: '文件名',
+				},
+				contentType: {
+					name: '类型',
+				},
+				content: {
+					name: '内容',
+				},
+				url: {
+					name: 'URL',
+				},
+				isDeprecated: {
+					name: 'Is Deprecated',
+				},
+				version: {
+					name: 'Version',
+				},
+				realmId: {
+					name: 'Realm ID',
+				},
+				createUserId: {
+					name: 'Create User ID',
+				},
+				createTime: {
+					name: 'Create Time',
+				},
+				updateUserId: {
+					name: 'Update User ID',
+				},
+				updateTime: {
+					name: 'Update Time',
+				},
+				createGroupId: {
+					name: 'Create Group ID',
+				},
+				idCount: {
+					name: 'Count of 文件',
+				},
+				idMax: {
+					name: 'Max of ID',
+				},
+				idMin: {
+					name: 'Min of ID',
+				},
+				nameCount: {
+					name: 'Count of 文件名',
+				},
+				nameMax: {
+					name: 'Max of 文件名',
+				},
+				nameMin: {
+					name: 'Min of 文件名',
+				},
+				contentTypeCount: {
+					name: 'Count of 类型',
+				},
+				contentTypeMax: {
+					name: 'Max of 类型',
+				},
+				contentTypeMin: {
+					name: 'Min of 类型',
+				},
+				contentCount: {
+					name: 'Count of 内容',
+				},
+				contentMax: {
+					name: 'Max of 内容',
+				},
+				contentMin: {
+					name: 'Min of 内容',
+				},
+				urlCount: {
+					name: 'Count of URL',
+				},
+				urlMax: {
+					name: 'Max of URL',
+				},
+				urlMin: {
+					name: 'Min of URL',
+				}
+			}
+		},
 		Group: {
 			name: '组',
 			fields: {
@@ -526,6 +615,21 @@ const zh: NamespaceGraphqlTranslation = {
 				realm: {
 					name: '租户',
 				},
+				file: {
+					name: 'file',
+				},
+				files: {
+					name: 'files',
+				},
+				booleanList: {
+					name: 'booleanList',
+				},
+				intList: {
+					name: 'intList',
+				},
+				typeList: {
+					name: 'typeList',
+				},
 				isDeprecated: {
 					name: '已移除',
 				},
@@ -550,6 +654,9 @@ const zh: NamespaceGraphqlTranslation = {
 				createGroupId: {
 					name: '创建组',
 				},
+				fileUserRelation: {
+					name: '用户 文件 关系',
+				},
 				userPhonesRelation: {
 					name: '用户 手机号 关系',
 				},
@@ -558,6 +665,15 @@ const zh: NamespaceGraphqlTranslation = {
 				},
 				roleUserRelation: {
 					name: '用户 角色 关系',
+				},
+				userBooleanListRelation: {
+					name: '用户 booleanList 关系',
+				},
+				userIntListRelation: {
+					name: '用户 intList 关系',
+				},
+				userTypeListRelation: {
+					name: '用户 typeList 关系',
 				},
 				groupsAggregate: {
 					name: '组 统计字段',
@@ -588,6 +704,24 @@ const zh: NamespaceGraphqlTranslation = {
 				},
 				roleUserRelationConnection: {
 					name: '用户 角色 关系 连接',
+				},
+				userBooleanListRelationAggregate: {
+					name: '用户 booleanList 关系 统计字段',
+				},
+				userBooleanListRelationConnection: {
+					name: '用户 booleanList 关系 连接',
+				},
+				userIntListRelationAggregate: {
+					name: '用户 intList 关系 统计字段',
+				},
+				userIntListRelationConnection: {
+					name: '用户 intList 关系 连接',
+				},
+				userTypeListRelationAggregate: {
+					name: '用户 typeList 关系 统计字段',
+				},
+				userTypeListRelationConnection: {
+					name: '用户 typeList 关系 连接',
 				},
 				idCount: {
 					name: '用户 数量',

@@ -7,6 +7,7 @@
 	import type { Query_user_groupsConnection_Store } from '~/lib/stores/query/query_user_groupsConnection_store';
 	import type { Mutation_user_groups_Store } from '~/lib/stores/mutation/mutation_user_groups_store';
 	import type { Mutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
+	import type { Mutation_singleUpload_Store } from '~/lib/stores/mutation/mutation_singleUpload_store';
 	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
 	import type { GroupInput, MutationGroupArgs, QueryGroupConnectionArgs, UserOrderBy } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
@@ -23,6 +24,7 @@
 	$: totalCount = $query_user_groupsConnection_Store.response.data?.user?.groupsConnection?.totalCount || 0;
 	$: mutation_user_groups_Store = data.mutation_user_groups_Store as Mutation_user_groups_Store;
 	$: mutation_group_Store = data.mutation_group_Store as Mutation_group_Store;
+	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store as Mutation_singleUpload_Store;
 	let args: QueryGroupConnectionArgs = {};
 	let orderBy: GroupOrderBy = {};
 	let pageNumber: number = 1;
@@ -237,6 +239,11 @@
 			on:create={(e) => to('../../group/_', '_')}
 			on:goto={(e) => to(`../../group/${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
+			on:upload={(e) => {
+				mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
+					e.detail.then(result.data?.singleUpload)
+				);
+			}}
 		/>
 		<div class="divider" />
 		<Pagination

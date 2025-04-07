@@ -129,12 +129,6 @@
 					{%- endif %}
 					on:filter={(e) => dispatch('query', { args, orderBy })}
 				/>
-				{%- elsif field.isFile %}
-				<StringTh
-					name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-					bind:value={args.{{ field.fieldName }}.name}
-					on:filter={(e) => dispatch('query', { args, orderBy })}
-				/>
 				{%- elsif field.inQueryArgs %}
 				<{{ field.fieldTypeName }}Th
 					name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
@@ -173,7 +167,7 @@
 						{%- for field in fields %}
 						<slot name="{{ field.fieldName }}">
 							{#if !fields.{{ field.fieldName }}.hidden}
-								{%- if field.isScalarType or field.isEnumType or field.isFile %}
+								{%- if field.isScalarType or field.isEnumType %}
 								<{{ field.fieldTypeName }}Td
 									name="{{ field.fieldName }}"
 									bind:value={node.{{ field.fieldName }}}

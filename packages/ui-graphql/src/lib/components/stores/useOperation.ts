@@ -1,6 +1,7 @@
 import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
+import isPlainObject from "is-plain-obj";
 import { type GraphQLError, Operation, Field, Directive, type NamedStruct, type NamedStructExpression, type TreeStruct, type TreeStructExpression } from '@graphace/graphql';
 
 export function createQueryStore<T>(event: LoadEvent | RequestEvent, url: string | URL): OperationStore<T> {
@@ -138,23 +139,58 @@ export function createGraphQLMutationStore<T, V>(event: LoadEvent | RequestEvent
     const fetch = async (variables: V) => {
         update((data) => ({ ...data, isFetching: true }));
 
-        const response = await event.fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                query: query,
-                variables: variables
-            })
-        });
+        const { clone, files } = extractFiles(variables);
 
-        const json = await response.json();
-        set({
-            isFetching: false,
-            response: json
-        });
-        return json;
+        if (files.size) {
+            const form = new FormData();
+            form.set(
+                'operations',
+                JSON.stringify({
+                    query: query,
+                    variables: clone
+                })
+            );
+            const map: Record<string, Array<string>> = {};
+
+            let i = 0;
+            files.forEach((paths) => {
+                map[++i] = paths;
+            });
+            form.set('map', JSON.stringify(map));
+
+            i = 0;
+            files.forEach((paths, file) => {
+                form.set(`${++i}`, file as Blob, (file as File).name);
+            });
+
+            const response = await event.fetch(url, {
+                method: 'POST',
+                body: form as any
+            });
+            const json = await response.json();
+            set({
+                isFetching: false,
+                response: json
+            });
+            return json;
+        } else {
+            const response = await event.fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    query: query,
+                    variables: variables
+                })
+            });
+            const json = await response.json();
+            set({
+                isFetching: false,
+                response: json
+            });
+            return json;
+        }
     }
 
     return {
@@ -303,4 +339,94 @@ export function createStructQueryStores(event: LoadEvent | RequestEvent, url: st
 export type StructQueryStores = {
     namedQueryStore: NamedQueryStore,
     treeQueryStore: TreeQueryStore
+}
+
+export function extractFiles(value: any, path = "") {
+    if (!arguments.length) throw new TypeError("Argument 1 `value` is required.");
+
+
+    if (typeof path !== "string")
+        throw new TypeError("Argument 2 `path` must be a string.");
+
+    const clones = new Map();
+
+    const files = new Map();
+
+    function recurse(value: any, path: string | string[], recursed: Set<any>) {
+        if (isExtractableFile(value)) {
+            const filePaths = files.get(value);
+
+            filePaths ? filePaths.push(path) : files.set(value, [path]);
+
+            return null;
+        }
+
+        const valueIsList =
+            Array.isArray(value) ||
+            (typeof FileList !== "undefined" && value instanceof FileList);
+        const valueIsPlainObject = isPlainObject(value);
+
+        if (valueIsList || valueIsPlainObject) {
+            let clone = clones.get(value);
+
+            const uncloned = !clone;
+
+            if (uncloned) {
+                clone = valueIsList
+                    ? []
+                    : // Replicate if the plain object is an `Object` instance.
+                    value instanceof (Object)
+                        ? {}
+                        : Object.create(null);
+
+                clones.set(value, clone);
+            }
+
+            if (!recursed.has(value)) {
+                const pathPrefix = path ? `${path}.` : "";
+                const recursedDeeper = new Set(recursed).add(value);
+
+                if (valueIsList) {
+                    let index = 0;
+
+                    for (const item of value) {
+                        const itemClone = recurse(
+                            item,
+                            pathPrefix + index++,
+                            recursedDeeper
+                        );
+
+                        if (uncloned) clone.push(itemClone);
+                    }
+                } else
+                    for (const key in value) {
+                        const propertyClone = recurse(
+                            value[key],
+                            pathPrefix + key,
+                            recursedDeeper
+                        );
+
+                        if (uncloned)
+                            clone[key] =
+                                propertyClone;
+                    }
+            }
+
+            return clone;
+        }
+
+        return value;
+    }
+
+    return {
+        clone: recurse(value, path, new Set()),
+        files,
+    };
+}
+
+export function isExtractableFile(value: any) {
+    return (
+        (typeof File !== "undefined" && value instanceof File) ||
+        (typeof Blob !== "undefined" && value instanceof Blob)
+    );
 }

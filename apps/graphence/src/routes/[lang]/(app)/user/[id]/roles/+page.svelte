@@ -7,6 +7,7 @@
 	import type { Query_user_rolesConnection_Store } from '~/lib/stores/query/query_user_rolesConnection_store';
 	import type { Mutation_user_roles_Store } from '~/lib/stores/mutation/mutation_user_roles_store';
 	import type { Mutation_role_Store } from '~/lib/stores/mutation/mutation_role_store';
+	import type { Mutation_singleUpload_Store } from '~/lib/stores/mutation/mutation_singleUpload_store';
 	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
 	import type { RoleInput, MutationRoleArgs, QueryRoleConnectionArgs, UserOrderBy } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
@@ -23,6 +24,7 @@
 	$: totalCount = $query_user_rolesConnection_Store.response.data?.user?.rolesConnection?.totalCount || 0;
 	$: mutation_user_roles_Store = data.mutation_user_roles_Store as Mutation_user_roles_Store;
 	$: mutation_role_Store = data.mutation_role_Store as Mutation_role_Store;
+	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store as Mutation_singleUpload_Store;
 	let args: QueryRoleConnectionArgs = {};
 	let orderBy: RoleOrderBy = {};
 	let pageNumber: number = 1;
@@ -220,6 +222,11 @@
 			on:create={(e) => to('../../role/_', '_')}
 			on:goto={(e) => to(`../../role/${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
+			on:upload={(e) => {
+				mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
+					e.detail.then(result.data?.singleUpload)
+				);
+			}}
 		/>
 		<div class="divider" />
 		<Pagination

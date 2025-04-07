@@ -55,6 +55,1282 @@ export type Current = {
   roles?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
+/** 文件 */
+export type File = Meta & {
+  __typename?: 'File';
+  /** ID */
+  id?: Maybe<Scalars['ID']>;
+  /** 文件名 */
+  name?: Maybe<Scalars['String']>;
+  /** 类型 */
+  contentType?: Maybe<Scalars['String']>;
+  /** 内容 */
+  content?: Maybe<Scalars['String']>;
+  /** URL */
+  url?: Maybe<Scalars['String']>;
+  /** Is Deprecated */
+  isDeprecated?: Maybe<Scalars['Boolean']>;
+  /** Version */
+  version?: Maybe<Scalars['Int']>;
+  /** Realm ID */
+  realmId?: Maybe<Scalars['Int']>;
+  /** Create User ID */
+  createUserId?: Maybe<Scalars['String']>;
+  /** Create Time */
+  createTime?: Maybe<Scalars['Timestamp']>;
+  /** Update User ID */
+  updateUserId?: Maybe<Scalars['String']>;
+  /** Update Time */
+  updateTime?: Maybe<Scalars['Timestamp']>;
+  /** Create Group ID */
+  createGroupId?: Maybe<Scalars['String']>;
+  /** Count of 文件 */
+  idCount?: Maybe<Scalars['Int']>;
+  /** Max of ID */
+  idMax?: Maybe<Scalars['String']>;
+  /** Min of ID */
+  idMin?: Maybe<Scalars['String']>;
+  /** Count of 文件名 */
+  nameCount?: Maybe<Scalars['Int']>;
+  /** Max of 文件名 */
+  nameMax?: Maybe<Scalars['String']>;
+  /** Min of 文件名 */
+  nameMin?: Maybe<Scalars['String']>;
+  /** Count of 类型 */
+  contentTypeCount?: Maybe<Scalars['Int']>;
+  /** Max of 类型 */
+  contentTypeMax?: Maybe<Scalars['String']>;
+  /** Min of 类型 */
+  contentTypeMin?: Maybe<Scalars['String']>;
+  /** Count of 内容 */
+  contentCount?: Maybe<Scalars['Int']>;
+  /** Max of 内容 */
+  contentMax?: Maybe<Scalars['String']>;
+  /** Min of 内容 */
+  contentMin?: Maybe<Scalars['String']>;
+  /** Count of URL */
+  urlCount?: Maybe<Scalars['Int']>;
+  /** Max of URL */
+  urlMax?: Maybe<Scalars['String']>;
+  /** Min of URL */
+  urlMin?: Maybe<Scalars['String']>;
+};
+
+/** Connection Object for 文件 */
+export type FileConnection = {
+  __typename?: 'FileConnection';
+  /** Total */
+  totalCount?: Maybe<Scalars['Int']>;
+  /** Page Info */
+  pageInfo?: Maybe<PageInfo>;
+  /** Edges */
+  edges?: Maybe<Array<Maybe<FileEdge>>>;
+};
+
+/** Query Arguments for 文件 Connection */
+export type FileConnectionQueryArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 文件名 */
+  name?: InputMaybe<StringExpression>;
+  /** 类型 */
+  contentType?: InputMaybe<StringExpression>;
+  /** 内容 */
+  content?: InputMaybe<StringExpression>;
+  /** URL */
+  url?: InputMaybe<StringExpression>;
+  /** Include Deprecated */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** Version */
+  version?: InputMaybe<IntExpression>;
+  /** Realm ID */
+  realmId?: InputMaybe<IntExpression>;
+  /** Create User ID */
+  createUserId?: InputMaybe<StringExpression>;
+  /** Create Time */
+  createTime?: InputMaybe<StringExpression>;
+  /** Update User ID */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** Update Time */
+  updateTime?: InputMaybe<StringExpression>;
+  /** Create Group ID */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** Order By */
+  orderBy?: InputMaybe<FileOrderBy>;
+  /** Group By */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Not */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** Condition */
+  cond?: InputMaybe<Conditional>;
+  /** Expressions */
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  /** First */
+  first?: InputMaybe<Scalars['Int']>;
+  /** Last */
+  last?: InputMaybe<Scalars['Int']>;
+  /** Offset */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** After */
+  after?: InputMaybe<Scalars['ID']>;
+  /** Before */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** Subscription Arguments for 文件 List */
+export type FileConnectionSubscriptionArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 文件名 */
+  name?: InputMaybe<StringExpression>;
+  /** 类型 */
+  contentType?: InputMaybe<StringExpression>;
+  /** 内容 */
+  content?: InputMaybe<StringExpression>;
+  /** URL */
+  url?: InputMaybe<StringExpression>;
+  /** Include Deprecated */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** Version */
+  version?: InputMaybe<IntExpression>;
+  /** Realm ID */
+  realmId?: InputMaybe<IntExpression>;
+  /** Create User ID */
+  createUserId?: InputMaybe<StringExpression>;
+  /** Create Time */
+  createTime?: InputMaybe<StringExpression>;
+  /** Update User ID */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** Update Time */
+  updateTime?: InputMaybe<StringExpression>;
+  /** Create Group ID */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** Order By */
+  orderBy?: InputMaybe<FileOrderBy>;
+  /** Order By */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Not */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** Condition */
+  cond?: InputMaybe<Conditional>;
+  /** Expressions */
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  /** First */
+  first?: InputMaybe<Scalars['Int']>;
+  /** Last */
+  last?: InputMaybe<Scalars['Int']>;
+  /** Offset */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** After */
+  after?: InputMaybe<Scalars['ID']>;
+  /** Before */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** Edge Object for 文件 */
+export type FileEdge = {
+  __typename?: 'FileEdge';
+  /** Node */
+  node?: Maybe<File>;
+  /** Cursor */
+  cursor?: Maybe<Scalars['String']>;
+};
+
+/** Query Expression Input for 文件 */
+export type FileExpression = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 文件名 */
+  name?: InputMaybe<StringExpression>;
+  /** 类型 */
+  contentType?: InputMaybe<StringExpression>;
+  /** 内容 */
+  content?: InputMaybe<StringExpression>;
+  /** URL */
+  url?: InputMaybe<StringExpression>;
+  /** Include Deprecated */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** Version */
+  version?: InputMaybe<IntExpression>;
+  /** Realm ID */
+  realmId?: InputMaybe<IntExpression>;
+  /** Create User ID */
+  createUserId?: InputMaybe<StringExpression>;
+  /** Create Time */
+  createTime?: InputMaybe<StringExpression>;
+  /** Update User ID */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** Update Time */
+  updateTime?: InputMaybe<StringExpression>;
+  /** Create Group ID */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** Not */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** Condition */
+  cond?: InputMaybe<Conditional>;
+  /** Expressions */
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+};
+
+/** Query Expression Input for 文件 */
+export type FileExpressionBase = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 文件名 */
+  name?: InputMaybe<StringExpression>;
+  /** 类型 */
+  contentType?: InputMaybe<StringExpression>;
+  /** 内容 */
+  content?: InputMaybe<StringExpression>;
+  /** URL */
+  url?: InputMaybe<StringExpression>;
+  /** Include Deprecated */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** Version */
+  version?: InputMaybe<IntExpression>;
+  /** Realm ID */
+  realmId?: InputMaybe<IntExpression>;
+  /** Create User ID */
+  createUserId?: InputMaybe<StringExpression>;
+  /** Create Time */
+  createTime?: InputMaybe<StringExpression>;
+  /** Update User ID */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** Update Time */
+  updateTime?: InputMaybe<StringExpression>;
+  /** Create Group ID */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** Not */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** Condition */
+  cond?: InputMaybe<Conditional>;
+  /** Expressions */
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+};
+
+/** Mutation Input for 文件 */
+export type FileInput = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 文件名 */
+  name?: InputMaybe<Scalars['String']>;
+  /** 类型 */
+  contentType?: InputMaybe<Scalars['String']>;
+  /** 内容 */
+  content?: InputMaybe<Scalars['String']>;
+  /** URL */
+  url?: InputMaybe<Scalars['String']>;
+  /** Is Deprecated */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** Version */
+  version?: InputMaybe<Scalars['Int']>;
+  /** Realm ID */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** Create User ID */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** Create Time */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** Update User ID */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** Update Time */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** Create Group ID */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** Where */
+  where?: InputMaybe<FileExpression>;
+};
+
+/** Mutation Input for 文件 */
+export type FileInputBase = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 文件名 */
+  name?: InputMaybe<Scalars['String']>;
+  /** 类型 */
+  contentType?: InputMaybe<Scalars['String']>;
+  /** 内容 */
+  content?: InputMaybe<Scalars['String']>;
+  /** URL */
+  url?: InputMaybe<Scalars['String']>;
+  /** Is Deprecated */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** Version */
+  version?: InputMaybe<Scalars['Int']>;
+  /** Realm ID */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** Create User ID */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** Create Time */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** Update User ID */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** Update Time */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** Create Group ID */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** Where */
+  where?: InputMaybe<FileExpression>;
+};
+
+/** Mutation Arguments for 文件 List */
+export type FileListMutationArguments = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 文件名 */
+  name?: InputMaybe<Scalars['String']>;
+  /** 类型 */
+  contentType?: InputMaybe<Scalars['String']>;
+  /** 内容 */
+  content?: InputMaybe<Scalars['String']>;
+  /** URL */
+  url?: InputMaybe<Scalars['String']>;
+  /** Is Deprecated */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** Version */
+  version?: InputMaybe<Scalars['Int']>;
+  /** Realm ID */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** Create User ID */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** Create Time */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** Update User ID */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** Update Time */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** Create Group ID */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** Input List */
+  list?: InputMaybe<Array<InputMaybe<FileInput>>>;
+  /** Where */
+  where?: InputMaybe<FileExpression>;
+};
+
+/** Query Arguments for 文件 List */
+export type FileListQueryArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 文件名 */
+  name?: InputMaybe<StringExpression>;
+  /** 类型 */
+  contentType?: InputMaybe<StringExpression>;
+  /** 内容 */
+  content?: InputMaybe<StringExpression>;
+  /** URL */
+  url?: InputMaybe<StringExpression>;
+  /** Include Deprecated */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** Version */
+  version?: InputMaybe<IntExpression>;
+  /** Realm ID */
+  realmId?: InputMaybe<IntExpression>;
+  /** Create User ID */
+  createUserId?: InputMaybe<StringExpression>;
+  /** Create Time */
+  createTime?: InputMaybe<StringExpression>;
+  /** Update User ID */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** Update Time */
+  updateTime?: InputMaybe<StringExpression>;
+  /** Create Group ID */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** Order By */
+  orderBy?: InputMaybe<FileOrderBy>;
+  /** Group By */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Not */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** Condition */
+  cond?: InputMaybe<Conditional>;
+  /** Expressions */
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  /** First */
+  first?: InputMaybe<Scalars['Int']>;
+  /** Last */
+  last?: InputMaybe<Scalars['Int']>;
+  /** Offset */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** After */
+  after?: InputMaybe<Scalars['ID']>;
+  /** Before */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** Subscription Arguments for 文件 List */
+export type FileListSubscriptionArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 文件名 */
+  name?: InputMaybe<StringExpression>;
+  /** 类型 */
+  contentType?: InputMaybe<StringExpression>;
+  /** 内容 */
+  content?: InputMaybe<StringExpression>;
+  /** URL */
+  url?: InputMaybe<StringExpression>;
+  /** Include Deprecated */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** Version */
+  version?: InputMaybe<IntExpression>;
+  /** Realm ID */
+  realmId?: InputMaybe<IntExpression>;
+  /** Create User ID */
+  createUserId?: InputMaybe<StringExpression>;
+  /** Create Time */
+  createTime?: InputMaybe<StringExpression>;
+  /** Update User ID */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** Update Time */
+  updateTime?: InputMaybe<StringExpression>;
+  /** Create Group ID */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** Order By */
+  orderBy?: InputMaybe<FileOrderBy>;
+  /** Group By */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Not */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** Condition */
+  cond?: InputMaybe<Conditional>;
+  /** Expressions */
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  /** First */
+  first?: InputMaybe<Scalars['Int']>;
+  /** Input List */
+  last?: InputMaybe<Scalars['Int']>;
+  /** Offset */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** After */
+  after?: InputMaybe<Scalars['ID']>;
+  /** Before */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** Mutation Arguments for 文件 */
+export type FileMutationArguments = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 文件名 */
+  name?: InputMaybe<Scalars['String']>;
+  /** 类型 */
+  contentType?: InputMaybe<Scalars['String']>;
+  /** 内容 */
+  content?: InputMaybe<Scalars['String']>;
+  /** URL */
+  url?: InputMaybe<Scalars['String']>;
+  /** Is Deprecated */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** Version */
+  version?: InputMaybe<Scalars['Int']>;
+  /** Realm ID */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** Create User ID */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** Create Time */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** Update User ID */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** Update Time */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** Create Group ID */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** Input */
+  input?: InputMaybe<FileInput>;
+  /** Where */
+  where?: InputMaybe<FileExpression>;
+};
+
+/** Order Input for 文件 */
+export type FileOrderBy = {
+  /** ID */
+  id?: InputMaybe<Sort>;
+  /** 文件名 */
+  name?: InputMaybe<Sort>;
+  /** 类型 */
+  contentType?: InputMaybe<Sort>;
+  /** 内容 */
+  content?: InputMaybe<Sort>;
+  /** URL */
+  url?: InputMaybe<Sort>;
+  /** Is Deprecated */
+  isDeprecated?: InputMaybe<Sort>;
+  /** Version */
+  version?: InputMaybe<Sort>;
+  /** Realm ID */
+  realmId?: InputMaybe<Sort>;
+  /** Create User ID */
+  createUserId?: InputMaybe<Sort>;
+  /** Create Time */
+  createTime?: InputMaybe<Sort>;
+  /** Update User ID */
+  updateUserId?: InputMaybe<Sort>;
+  /** Update Time */
+  updateTime?: InputMaybe<Sort>;
+  /** Create Group ID */
+  createGroupId?: InputMaybe<Sort>;
+  /** Count of 文件 */
+  idCount?: InputMaybe<Sort>;
+  /** Max of ID */
+  idMax?: InputMaybe<Sort>;
+  /** Min of ID */
+  idMin?: InputMaybe<Sort>;
+  /** Count of 文件名 */
+  nameCount?: InputMaybe<Sort>;
+  /** Max of 文件名 */
+  nameMax?: InputMaybe<Sort>;
+  /** Min of 文件名 */
+  nameMin?: InputMaybe<Sort>;
+  /** Count of 类型 */
+  contentTypeCount?: InputMaybe<Sort>;
+  /** Max of 类型 */
+  contentTypeMax?: InputMaybe<Sort>;
+  /** Min of 类型 */
+  contentTypeMin?: InputMaybe<Sort>;
+  /** Count of 内容 */
+  contentCount?: InputMaybe<Sort>;
+  /** Max of 内容 */
+  contentMax?: InputMaybe<Sort>;
+  /** Min of 内容 */
+  contentMin?: InputMaybe<Sort>;
+  /** Count of URL */
+  urlCount?: InputMaybe<Sort>;
+  /** Max of URL */
+  urlMax?: InputMaybe<Sort>;
+  /** Min of URL */
+  urlMin?: InputMaybe<Sort>;
+};
+
+/** Query Arguments for 文件 */
+export type FileQueryArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 文件名 */
+  name?: InputMaybe<StringExpression>;
+  /** 类型 */
+  contentType?: InputMaybe<StringExpression>;
+  /** 内容 */
+  content?: InputMaybe<StringExpression>;
+  /** URL */
+  url?: InputMaybe<StringExpression>;
+  /** Include Deprecated */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** Version */
+  version?: InputMaybe<IntExpression>;
+  /** Realm ID */
+  realmId?: InputMaybe<IntExpression>;
+  /** Create User ID */
+  createUserId?: InputMaybe<StringExpression>;
+  /** Create Time */
+  createTime?: InputMaybe<StringExpression>;
+  /** Update User ID */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** Update Time */
+  updateTime?: InputMaybe<StringExpression>;
+  /** Create Group ID */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** Group By */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Not */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** Condition */
+  cond?: InputMaybe<Conditional>;
+  /** Expressions */
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+};
+
+/** Subscription Arguments for 文件 */
+export type FileSubscriptionArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 文件名 */
+  name?: InputMaybe<StringExpression>;
+  /** 类型 */
+  contentType?: InputMaybe<StringExpression>;
+  /** 内容 */
+  content?: InputMaybe<StringExpression>;
+  /** URL */
+  url?: InputMaybe<StringExpression>;
+  /** Include Deprecated */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** Version */
+  version?: InputMaybe<IntExpression>;
+  /** Realm ID */
+  realmId?: InputMaybe<IntExpression>;
+  /** Create User ID */
+  createUserId?: InputMaybe<StringExpression>;
+  /** Create Time */
+  createTime?: InputMaybe<StringExpression>;
+  /** Update User ID */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** Update Time */
+  updateTime?: InputMaybe<StringExpression>;
+  /** Create Group ID */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** Group By */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Not */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** Condition */
+  cond?: InputMaybe<Conditional>;
+  /** Expressions */
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+};
+
+/** 用户 文件 关系 */
+export type FileUserRelation = Meta & {
+  __typename?: 'FileUserRelation';
+  /** ID */
+  id?: Maybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: Maybe<Scalars['String']>;
+  /** 用户 */
+  user?: Maybe<User>;
+  /** 文件 引用 */
+  fileRef?: Maybe<Scalars['String']>;
+  /** 文件 */
+  file?: Maybe<File>;
+  /** 已移除 */
+  isDeprecated?: Maybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: Maybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: Maybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: Maybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: Maybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: Maybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: Maybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: Maybe<Scalars['String']>;
+  /** 用户 文件 关系 数量 */
+  idCount?: Maybe<Scalars['Int']>;
+  /** ID 最大值 */
+  idMax?: Maybe<Scalars['Int']>;
+  /** ID 最小值 */
+  idMin?: Maybe<Scalars['Int']>;
+  /** 用户 引用 数量 */
+  userRefCount?: Maybe<Scalars['Int']>;
+  /** 用户 引用 最大值 */
+  userRefMax?: Maybe<Scalars['String']>;
+  /** 用户 引用 最小值 */
+  userRefMin?: Maybe<Scalars['String']>;
+  /** 文件 引用 数量 */
+  fileRefCount?: Maybe<Scalars['Int']>;
+  /** 文件 引用 最大值 */
+  fileRefMax?: Maybe<Scalars['String']>;
+  /** 文件 引用 最小值 */
+  fileRefMin?: Maybe<Scalars['String']>;
+};
+
+
+/** 用户 文件 关系 */
+export type FileUserRelationUserArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
+  lastName?: InputMaybe<StringExpression>;
+  login?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
+  email?: InputMaybe<StringExpression>;
+  phones?: InputMaybe<StringExpression>;
+  disable?: InputMaybe<BooleanExpression>;
+  groups?: InputMaybe<GroupExpression>;
+  roles?: InputMaybe<RoleExpression>;
+  realm?: InputMaybe<RealmExpression>;
+  file?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
+  booleanList?: InputMaybe<BooleanExpression>;
+  intList?: InputMaybe<IntExpression>;
+  typeList?: InputMaybe<PermissionTypeExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+
+/** 用户 文件 关系 */
+export type FileUserRelationFileArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** 用户 文件 关系 连接 */
+export type FileUserRelationConnection = {
+  __typename?: 'FileUserRelationConnection';
+  /** 条数 */
+  totalCount?: Maybe<Scalars['Int']>;
+  /** 分页信息 */
+  pageInfo?: Maybe<PageInfo>;
+  /** 边缘 */
+  edges?: Maybe<Array<Maybe<FileUserRelationEdge>>>;
+};
+
+/** 用户 文件 关系连接 查询参数 */
+export type FileUserRelationConnectionQueryArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** 文件 引用 */
+  fileRef?: InputMaybe<StringExpression>;
+  /** 文件 */
+  file?: InputMaybe<FileExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 排序 */
+  orderBy?: InputMaybe<FileUserRelationOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** 用户 文件 关系列表 订阅参数 */
+export type FileUserRelationConnectionSubscriptionArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** 文件 引用 */
+  fileRef?: InputMaybe<StringExpression>;
+  /** 文件 */
+  file?: InputMaybe<FileExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 排序 */
+  orderBy?: InputMaybe<FileUserRelationOrderBy>;
+  /** 排序 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** 用户 文件 关系 边缘 */
+export type FileUserRelationEdge = {
+  __typename?: 'FileUserRelationEdge';
+  /** 节点 */
+  node?: Maybe<FileUserRelation>;
+  /** 游标 */
+  cursor?: Maybe<Scalars['String']>;
+};
+
+/** 用户 文件 关系 查询表达式 */
+export type FileUserRelationExpression = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** 文件 引用 */
+  fileRef?: InputMaybe<StringExpression>;
+  /** 文件 */
+  file?: InputMaybe<FileExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+};
+
+/** 用户 文件 关系 查询表达式 */
+export type FileUserRelationExpressionBase = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** 文件 引用 */
+  fileRef?: InputMaybe<StringExpression>;
+  /** 文件 */
+  file?: InputMaybe<FileExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+};
+
+/** 用户 文件 关系 变更内容 */
+export type FileUserRelationInput = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Scalars['String']>;
+  /** 用户 */
+  user?: InputMaybe<UserInput>;
+  /** 文件 引用 */
+  fileRef?: InputMaybe<Scalars['String']>;
+  /** 文件 */
+  file?: InputMaybe<FileInput>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 匹配条件 */
+  where?: InputMaybe<FileUserRelationExpression>;
+};
+
+/** 用户 文件 关系 变更内容 */
+export type FileUserRelationInputBase = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Scalars['String']>;
+  /** 用户 */
+  user?: InputMaybe<UserInput>;
+  /** 文件 引用 */
+  fileRef?: InputMaybe<Scalars['String']>;
+  /** 文件 */
+  file?: InputMaybe<FileInput>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 匹配条件 */
+  where?: InputMaybe<FileUserRelationExpression>;
+};
+
+/** 用户 文件 关系列表 变更参数  */
+export type FileUserRelationListMutationArguments = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Scalars['String']>;
+  /** 用户 */
+  user?: InputMaybe<UserInput>;
+  /** 文件 引用 */
+  fileRef?: InputMaybe<Scalars['String']>;
+  /** 文件 */
+  file?: InputMaybe<FileInput>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 变更内容列表 */
+  list?: InputMaybe<Array<InputMaybe<FileUserRelationInput>>>;
+  /** 匹配条件 */
+  where?: InputMaybe<FileUserRelationExpression>;
+};
+
+/** 用户 文件 关系列表 查询参数 */
+export type FileUserRelationListQueryArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** 文件 引用 */
+  fileRef?: InputMaybe<StringExpression>;
+  /** 文件 */
+  file?: InputMaybe<FileExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 排序 */
+  orderBy?: InputMaybe<FileUserRelationOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** 用户 文件 关系列表 订阅参数 */
+export type FileUserRelationListSubscriptionArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** 文件 引用 */
+  fileRef?: InputMaybe<StringExpression>;
+  /** 文件 */
+  file?: InputMaybe<FileExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 排序 */
+  orderBy?: InputMaybe<FileUserRelationOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 变更内容列表 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** 用户 文件 关系 变更参数 */
+export type FileUserRelationMutationArguments = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Scalars['String']>;
+  /** 用户 */
+  user?: InputMaybe<UserInput>;
+  /** 文件 引用 */
+  fileRef?: InputMaybe<Scalars['String']>;
+  /** 文件 */
+  file?: InputMaybe<FileInput>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 变更内容 */
+  input?: InputMaybe<FileUserRelationInput>;
+  /** 匹配条件 */
+  where?: InputMaybe<FileUserRelationExpression>;
+};
+
+/** 用户 文件 关系 排序 */
+export type FileUserRelationOrderBy = {
+  /** ID */
+  id?: InputMaybe<Sort>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Sort>;
+  /** 用户 */
+  user?: InputMaybe<UserOrderBy>;
+  /** 文件 引用 */
+  fileRef?: InputMaybe<Sort>;
+  /** 文件 */
+  file?: InputMaybe<FileOrderBy>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Sort>;
+  /** 版本 */
+  version?: InputMaybe<Sort>;
+  /** 域 */
+  realmId?: InputMaybe<Sort>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Sort>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Sort>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Sort>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Sort>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Sort>;
+  /** 用户 文件 关系 数量 */
+  idCount?: InputMaybe<Sort>;
+  /** ID 最大值 */
+  idMax?: InputMaybe<Sort>;
+  /** ID 最小值 */
+  idMin?: InputMaybe<Sort>;
+  /** 用户 引用 数量 */
+  userRefCount?: InputMaybe<Sort>;
+  /** 用户 引用 最大值 */
+  userRefMax?: InputMaybe<Sort>;
+  /** 用户 引用 最小值 */
+  userRefMin?: InputMaybe<Sort>;
+  /** 文件 引用 数量 */
+  fileRefCount?: InputMaybe<Sort>;
+  /** 文件 引用 最大值 */
+  fileRefMax?: InputMaybe<Sort>;
+  /** 文件 引用 最小值 */
+  fileRefMin?: InputMaybe<Sort>;
+};
+
+/** 用户 文件 关系 查询参数 */
+export type FileUserRelationQueryArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** 文件 引用 */
+  fileRef?: InputMaybe<StringExpression>;
+  /** 文件 */
+  file?: InputMaybe<FileExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 分组 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+};
+
+/** 用户 文件 关系 订阅参数 */
+export type FileUserRelationSubscriptionArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** 文件 引用 */
+  fileRef?: InputMaybe<StringExpression>;
+  /** 文件 */
+  file?: InputMaybe<FileExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 分组 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+};
+
 export type FloatExpression = {
   opr?: InputMaybe<Operator>;
   val?: InputMaybe<Scalars['Float']>;
@@ -255,6 +1531,11 @@ export type GroupUsersArgs = {
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  file?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
+  booleanList?: InputMaybe<BooleanExpression>;
+  intList?: InputMaybe<IntExpression>;
+  typeList?: InputMaybe<PermissionTypeExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -263,9 +1544,13 @@ export type GroupUsersArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -452,6 +1737,11 @@ export type GroupUsersAggregateArgs = {
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  file?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
+  booleanList?: InputMaybe<BooleanExpression>;
+  intList?: InputMaybe<IntExpression>;
+  typeList?: InputMaybe<PermissionTypeExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -460,9 +1750,13 @@ export type GroupUsersAggregateArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -486,6 +1780,11 @@ export type GroupUsersConnectionArgs = {
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  file?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
+  booleanList?: InputMaybe<BooleanExpression>;
+  intList?: InputMaybe<IntExpression>;
+  typeList?: InputMaybe<PermissionTypeExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -494,9 +1793,13 @@ export type GroupUsersConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -2159,6 +3462,11 @@ export type GroupUserRelationUserArgs = {
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  file?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
+  booleanList?: InputMaybe<BooleanExpression>;
+  intList?: InputMaybe<IntExpression>;
+  typeList?: InputMaybe<PermissionTypeExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -2167,9 +3475,13 @@ export type GroupUserRelationUserArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
@@ -2874,6 +4186,18 @@ export type Mutation = {
   roleUserRelation?: Maybe<RoleUserRelation>;
   /** 用户 角色 关系列表 变更接口 */
   roleUserRelationList?: Maybe<Array<Maybe<RoleUserRelation>>>;
+  /** 用户 booleanList 关系 变更接口 */
+  userBooleanListRelation?: Maybe<UserBooleanListRelation>;
+  /** 用户 booleanList 关系列表 变更接口 */
+  userBooleanListRelationList?: Maybe<Array<Maybe<UserBooleanListRelation>>>;
+  /** 用户 intList 关系 变更接口 */
+  userIntListRelation?: Maybe<UserIntListRelation>;
+  /** 用户 intList 关系列表 变更接口 */
+  userIntListRelationList?: Maybe<Array<Maybe<UserIntListRelation>>>;
+  /** 用户 typeList 关系 变更接口 */
+  userTypeListRelation?: Maybe<UserTypeListRelation>;
+  /** 用户 typeList 关系列表 变更接口 */
+  userTypeListRelationList?: Maybe<Array<Maybe<UserTypeListRelation>>>;
   /** 角色 组 关系 变更接口 */
   groupRoleRelation?: Maybe<GroupRoleRelation>;
   /** 角色 组 关系列表 变更接口 */
@@ -2886,11 +4210,21 @@ export type Mutation = {
   permissionRoleRelation?: Maybe<PermissionRoleRelation>;
   /** 角色 权限 关系列表 变更接口 */
   permissionRoleRelationList?: Maybe<Array<Maybe<PermissionRoleRelation>>>;
+  /** 用户 文件 关系 变更接口 */
+  fileUserRelation?: Maybe<FileUserRelation>;
+  /** 用户 文件 关系列表 变更接口 */
+  fileUserRelationList?: Maybe<Array<Maybe<FileUserRelation>>>;
   currentUserUpdate?: Maybe<User>;
   currentUserResetPassword?: Maybe<User>;
   login?: Maybe<Scalars['String']>;
   syncModelPolicy?: Maybe<Scalars['Boolean']>;
   syncPermissionRoleRelationPolicy?: Maybe<Scalars['Boolean']>;
+  /** Mutation Field for 文件 */
+  file?: Maybe<File>;
+  /** Mutation Field for 文件 List */
+  fileList?: Maybe<Array<Maybe<File>>>;
+  singleUpload?: Maybe<File>;
+  multipleUpload?: Maybe<Array<Maybe<File>>>;
 };
 
 
@@ -2909,6 +4243,11 @@ export type MutationUserArgs = {
   groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
   roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
   realm?: InputMaybe<RealmInput>;
+  file?: InputMaybe<FileInput>;
+  files?: InputMaybe<Array<InputMaybe<FileInput>>>;
+  booleanList?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
+  intList?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  typeList?: InputMaybe<Array<InputMaybe<PermissionType>>>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -2917,9 +4256,13 @@ export type MutationUserArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  fileUserRelation?: InputMaybe<Array<InputMaybe<FileUserRelationInput>>>;
   userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
   groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
   roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
+  userBooleanListRelation?: InputMaybe<Array<InputMaybe<UserBooleanListRelationInput>>>;
+  userIntListRelation?: InputMaybe<Array<InputMaybe<UserIntListRelationInput>>>;
+  userTypeListRelation?: InputMaybe<Array<InputMaybe<UserTypeListRelationInput>>>;
   input?: InputMaybe<UserInput>;
   where?: InputMaybe<UserExpression>;
 };
@@ -2940,6 +4283,11 @@ export type MutationUserListArgs = {
   groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
   roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
   realm?: InputMaybe<RealmInput>;
+  file?: InputMaybe<FileInput>;
+  files?: InputMaybe<Array<InputMaybe<FileInput>>>;
+  booleanList?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
+  intList?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  typeList?: InputMaybe<Array<InputMaybe<PermissionType>>>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
   realmId?: InputMaybe<Scalars['Int']>;
@@ -2948,9 +4296,13 @@ export type MutationUserListArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  fileUserRelation?: InputMaybe<Array<InputMaybe<FileUserRelationInput>>>;
   userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
   groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
   roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
+  userBooleanListRelation?: InputMaybe<Array<InputMaybe<UserBooleanListRelationInput>>>;
+  userIntListRelation?: InputMaybe<Array<InputMaybe<UserIntListRelationInput>>>;
+  userTypeListRelation?: InputMaybe<Array<InputMaybe<UserTypeListRelationInput>>>;
   list?: InputMaybe<Array<InputMaybe<UserInput>>>;
   where?: InputMaybe<UserExpression>;
 };
@@ -3267,6 +4619,120 @@ export type MutationRoleUserRelationListArgs = {
 
 
 /** Mutation */
+export type MutationUserBooleanListRelationArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  booleanListRef?: InputMaybe<Scalars['Boolean']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<UserBooleanListRelationInput>;
+  where?: InputMaybe<UserBooleanListRelationExpression>;
+};
+
+
+/** Mutation */
+export type MutationUserBooleanListRelationListArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  booleanListRef?: InputMaybe<Scalars['Boolean']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  list?: InputMaybe<Array<InputMaybe<UserBooleanListRelationInput>>>;
+  where?: InputMaybe<UserBooleanListRelationExpression>;
+};
+
+
+/** Mutation */
+export type MutationUserIntListRelationArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  intListRef?: InputMaybe<Scalars['Int']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<UserIntListRelationInput>;
+  where?: InputMaybe<UserIntListRelationExpression>;
+};
+
+
+/** Mutation */
+export type MutationUserIntListRelationListArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  intListRef?: InputMaybe<Scalars['Int']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  list?: InputMaybe<Array<InputMaybe<UserIntListRelationInput>>>;
+  where?: InputMaybe<UserIntListRelationExpression>;
+};
+
+
+/** Mutation */
+export type MutationUserTypeListRelationArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  typeListRef?: InputMaybe<PermissionType>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<UserTypeListRelationInput>;
+  where?: InputMaybe<UserTypeListRelationExpression>;
+};
+
+
+/** Mutation */
+export type MutationUserTypeListRelationListArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  typeListRef?: InputMaybe<PermissionType>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  list?: InputMaybe<Array<InputMaybe<UserTypeListRelationInput>>>;
+  where?: InputMaybe<UserTypeListRelationExpression>;
+};
+
+
+/** Mutation */
 export type MutationGroupRoleRelationArgs = {
   id?: InputMaybe<Scalars['ID']>;
   roleRef?: InputMaybe<Scalars['String']>;
@@ -3387,6 +4853,46 @@ export type MutationPermissionRoleRelationListArgs = {
 
 
 /** Mutation */
+export type MutationFileUserRelationArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  fileRef?: InputMaybe<Scalars['String']>;
+  file?: InputMaybe<FileInput>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<FileUserRelationInput>;
+  where?: InputMaybe<FileUserRelationExpression>;
+};
+
+
+/** Mutation */
+export type MutationFileUserRelationListArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  userRef?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UserInput>;
+  fileRef?: InputMaybe<Scalars['String']>;
+  file?: InputMaybe<FileInput>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  list?: InputMaybe<Array<InputMaybe<FileUserRelationInput>>>;
+  where?: InputMaybe<FileUserRelationExpression>;
+};
+
+
+/** Mutation */
 export type MutationCurrentUserUpdateArgs = {
   userInput: UserInput;
 };
@@ -3413,6 +4919,58 @@ export type MutationSyncPermissionRoleRelationPolicyArgs = {
   removedPermissionNameList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
+
+/** Mutation */
+export type MutationFileArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
+  contentType?: InputMaybe<Scalars['String']>;
+  content?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<FileInput>;
+  where?: InputMaybe<FileExpression>;
+};
+
+
+/** Mutation */
+export type MutationFileListArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
+  contentType?: InputMaybe<Scalars['String']>;
+  content?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  list?: InputMaybe<Array<InputMaybe<FileInput>>>;
+  where?: InputMaybe<FileExpression>;
+};
+
+
+/** Mutation */
+export type MutationSingleUploadArgs = {
+  file?: InputMaybe<Scalars['Upload']>;
+};
+
+
+/** Mutation */
+export type MutationMultipleUploadArgs = {
+  files?: InputMaybe<Array<InputMaybe<Scalars['Upload']>>>;
+};
+
 export type Mutation_CurrentUserResetPassword_Arguments = {
   password: Scalars['String'];
   newPassword: Scalars['String'];
@@ -3425,6 +4983,14 @@ export type Mutation_CurrentUserUpdate_Arguments = {
 export type Mutation_Login_Arguments = {
   login: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type Mutation_MultipleUpload_Arguments = {
+  files?: InputMaybe<Array<InputMaybe<Scalars['Upload']>>>;
+};
+
+export type Mutation_SingleUpload_Arguments = {
+  file?: InputMaybe<Scalars['Upload']>;
 };
 
 export type Mutation_SyncPermissionRoleRelationPolicy_Arguments = {
@@ -5166,6 +6732,24 @@ export type Query = {
   roleUserRelationList?: Maybe<Array<Maybe<RoleUserRelation>>>;
   /** 用户 角色 关系连接 查询接口 */
   roleUserRelationConnection?: Maybe<RoleUserRelationConnection>;
+  /** 用户 booleanList 关系 查询接口 */
+  userBooleanListRelation?: Maybe<UserBooleanListRelation>;
+  /** 用户 booleanList 关系列表 查询接口 */
+  userBooleanListRelationList?: Maybe<Array<Maybe<UserBooleanListRelation>>>;
+  /** 用户 booleanList 关系连接 查询接口 */
+  userBooleanListRelationConnection?: Maybe<UserBooleanListRelationConnection>;
+  /** 用户 intList 关系 查询接口 */
+  userIntListRelation?: Maybe<UserIntListRelation>;
+  /** 用户 intList 关系列表 查询接口 */
+  userIntListRelationList?: Maybe<Array<Maybe<UserIntListRelation>>>;
+  /** 用户 intList 关系连接 查询接口 */
+  userIntListRelationConnection?: Maybe<UserIntListRelationConnection>;
+  /** 用户 typeList 关系 查询接口 */
+  userTypeListRelation?: Maybe<UserTypeListRelation>;
+  /** 用户 typeList 关系列表 查询接口 */
+  userTypeListRelationList?: Maybe<Array<Maybe<UserTypeListRelation>>>;
+  /** 用户 typeList 关系连接 查询接口 */
+  userTypeListRelationConnection?: Maybe<UserTypeListRelationConnection>;
   /** 角色 组 关系 查询接口 */
   groupRoleRelation?: Maybe<GroupRoleRelation>;
   /** 角色 组 关系列表 查询接口 */
@@ -5184,12 +6768,24 @@ export type Query = {
   permissionRoleRelationList?: Maybe<Array<Maybe<PermissionRoleRelation>>>;
   /** 角色 权限 关系连接 查询接口 */
   permissionRoleRelationConnection?: Maybe<PermissionRoleRelationConnection>;
+  /** 用户 文件 关系 查询接口 */
+  fileUserRelation?: Maybe<FileUserRelation>;
+  /** 用户 文件 关系列表 查询接口 */
+  fileUserRelationList?: Maybe<Array<Maybe<FileUserRelation>>>;
+  /** 用户 文件 关系连接 查询接口 */
+  fileUserRelationConnection?: Maybe<FileUserRelationConnection>;
   current?: Maybe<Current>;
   currentUser?: Maybe<User>;
   currentPermissionTypeList?: Maybe<Array<Maybe<Scalars['String']>>>;
   currentPermissionNameListByTypes?: Maybe<Array<Maybe<Scalars['String']>>>;
   policyList?: Maybe<Array<Maybe<Policy>>>;
   jsonSchema?: Maybe<Scalars['String']>;
+  /** Query Field for 文件 */
+  file?: Maybe<File>;
+  /** Query Field for 文件 List */
+  fileList?: Maybe<Array<Maybe<File>>>;
+  /** Query Field for 文件 Connection */
+  fileConnection?: Maybe<FileConnection>;
 };
 
 
@@ -5208,6 +6804,11 @@ export type QueryUserArgs = {
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  file?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
+  booleanList?: InputMaybe<BooleanExpression>;
+  intList?: InputMaybe<IntExpression>;
+  typeList?: InputMaybe<PermissionTypeExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -5216,9 +6817,13 @@ export type QueryUserArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
@@ -5241,6 +6846,11 @@ export type QueryUserListArgs = {
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  file?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
+  booleanList?: InputMaybe<BooleanExpression>;
+  intList?: InputMaybe<IntExpression>;
+  typeList?: InputMaybe<PermissionTypeExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -5249,9 +6859,13 @@ export type QueryUserListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   orderBy?: InputMaybe<UserOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -5280,6 +6894,11 @@ export type QueryUserConnectionArgs = {
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  file?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
+  booleanList?: InputMaybe<BooleanExpression>;
+  intList?: InputMaybe<IntExpression>;
+  typeList?: InputMaybe<PermissionTypeExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -5288,9 +6907,13 @@ export type QueryUserConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   orderBy?: InputMaybe<UserOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -5896,6 +7519,231 @@ export type QueryRoleUserRelationConnectionArgs = {
 
 
 /** Query */
+export type QueryUserBooleanListRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  booleanListRef?: InputMaybe<BooleanExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<UserBooleanListRelationExpression>>>;
+};
+
+
+/** Query */
+export type QueryUserBooleanListRelationListArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  booleanListRef?: InputMaybe<BooleanExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<UserBooleanListRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<UserBooleanListRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Query */
+export type QueryUserBooleanListRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  booleanListRef?: InputMaybe<BooleanExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<UserBooleanListRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<UserBooleanListRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Query */
+export type QueryUserIntListRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  intListRef?: InputMaybe<IntExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<UserIntListRelationExpression>>>;
+};
+
+
+/** Query */
+export type QueryUserIntListRelationListArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  intListRef?: InputMaybe<IntExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<UserIntListRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<UserIntListRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Query */
+export type QueryUserIntListRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  intListRef?: InputMaybe<IntExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<UserIntListRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<UserIntListRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Query */
+export type QueryUserTypeListRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  typeListRef?: InputMaybe<PermissionTypeExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<UserTypeListRelationExpression>>>;
+};
+
+
+/** Query */
+export type QueryUserTypeListRelationListArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  typeListRef?: InputMaybe<PermissionTypeExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<UserTypeListRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<UserTypeListRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Query */
+export type QueryUserTypeListRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  typeListRef?: InputMaybe<PermissionTypeExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<UserTypeListRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<UserTypeListRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Query */
 export type QueryGroupRoleRelationArgs = {
   id?: InputMaybe<StringExpression>;
   roleRef?: InputMaybe<StringExpression>;
@@ -6130,6 +7978,84 @@ export type QueryPermissionRoleRelationConnectionArgs = {
 
 
 /** Query */
+export type QueryFileUserRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+};
+
+
+/** Query */
+export type QueryFileUserRelationListArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Query */
+export type QueryFileUserRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Query */
 export type QueryCurrentPermissionNameListByTypesArgs = {
   types?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
@@ -6138,6 +8064,84 @@ export type QueryCurrentPermissionNameListByTypesArgs = {
 /** Query */
 export type QueryJsonSchemaArgs = {
   name?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Query */
+export type QueryFileArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+};
+
+
+/** Query */
+export type QueryFileListArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Query */
+export type QueryFileConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
 };
 
 export type Query_CurrentPermissionNameListByTypes_Arguments = {
@@ -6801,6 +8805,11 @@ export type RoleUsersArgs = {
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  file?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
+  booleanList?: InputMaybe<BooleanExpression>;
+  intList?: InputMaybe<IntExpression>;
+  typeList?: InputMaybe<PermissionTypeExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -6809,9 +8818,13 @@ export type RoleUsersArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -7040,6 +9053,11 @@ export type RoleUsersAggregateArgs = {
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  file?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
+  booleanList?: InputMaybe<BooleanExpression>;
+  intList?: InputMaybe<IntExpression>;
+  typeList?: InputMaybe<PermissionTypeExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -7048,9 +9066,13 @@ export type RoleUsersAggregateArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -7074,6 +9096,11 @@ export type RoleUsersConnectionArgs = {
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  file?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
+  booleanList?: InputMaybe<BooleanExpression>;
+  intList?: InputMaybe<IntExpression>;
+  typeList?: InputMaybe<PermissionTypeExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -7082,9 +9109,13 @@ export type RoleUsersConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -8904,6 +10935,11 @@ export type RoleUserRelationUserArgs = {
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  file?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
+  booleanList?: InputMaybe<BooleanExpression>;
+  intList?: InputMaybe<IntExpression>;
+  typeList?: InputMaybe<PermissionTypeExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -8912,9 +10948,13 @@ export type RoleUserRelationUserArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
@@ -9560,6 +11600,24 @@ export type Subscription = {
   roleUserRelationList?: Maybe<Array<Maybe<RoleUserRelation>>>;
   /** 用户 角色 关系连接 订阅接口 */
   roleUserRelationConnection?: Maybe<RoleUserRelationConnection>;
+  /** 用户 booleanList 关系 订阅接口 */
+  userBooleanListRelation?: Maybe<UserBooleanListRelation>;
+  /** 用户 booleanList 关系列表 订阅接口 */
+  userBooleanListRelationList?: Maybe<Array<Maybe<UserBooleanListRelation>>>;
+  /** 用户 booleanList 关系连接 订阅接口 */
+  userBooleanListRelationConnection?: Maybe<UserBooleanListRelationConnection>;
+  /** 用户 intList 关系 订阅接口 */
+  userIntListRelation?: Maybe<UserIntListRelation>;
+  /** 用户 intList 关系列表 订阅接口 */
+  userIntListRelationList?: Maybe<Array<Maybe<UserIntListRelation>>>;
+  /** 用户 intList 关系连接 订阅接口 */
+  userIntListRelationConnection?: Maybe<UserIntListRelationConnection>;
+  /** 用户 typeList 关系 订阅接口 */
+  userTypeListRelation?: Maybe<UserTypeListRelation>;
+  /** 用户 typeList 关系列表 订阅接口 */
+  userTypeListRelationList?: Maybe<Array<Maybe<UserTypeListRelation>>>;
+  /** 用户 typeList 关系连接 订阅接口 */
+  userTypeListRelationConnection?: Maybe<UserTypeListRelationConnection>;
   /** 角色 组 关系 订阅接口 */
   groupRoleRelation?: Maybe<GroupRoleRelation>;
   /** 角色 组 关系列表 订阅接口 */
@@ -9578,6 +11636,18 @@ export type Subscription = {
   permissionRoleRelationList?: Maybe<Array<Maybe<PermissionRoleRelation>>>;
   /** 角色 权限 关系连接 订阅接口 */
   permissionRoleRelationConnection?: Maybe<PermissionRoleRelationConnection>;
+  /** 用户 文件 关系 订阅接口 */
+  fileUserRelation?: Maybe<FileUserRelation>;
+  /** 用户 文件 关系列表 订阅接口 */
+  fileUserRelationList?: Maybe<Array<Maybe<FileUserRelation>>>;
+  /** 用户 文件 关系连接 订阅接口 */
+  fileUserRelationConnection?: Maybe<FileUserRelationConnection>;
+  /** Subscription Field for 文件 */
+  file?: Maybe<File>;
+  /** Subscription Field for 文件 List */
+  fileList?: Maybe<Array<Maybe<File>>>;
+  /** Subscription Field for 文件 Connection */
+  fileConnection?: Maybe<FileConnection>;
 };
 
 
@@ -9596,6 +11666,11 @@ export type SubscriptionUserArgs = {
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  file?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
+  booleanList?: InputMaybe<BooleanExpression>;
+  intList?: InputMaybe<IntExpression>;
+  typeList?: InputMaybe<PermissionTypeExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -9604,9 +11679,13 @@ export type SubscriptionUserArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
@@ -9629,6 +11708,11 @@ export type SubscriptionUserListArgs = {
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  file?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
+  booleanList?: InputMaybe<BooleanExpression>;
+  intList?: InputMaybe<IntExpression>;
+  typeList?: InputMaybe<PermissionTypeExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -9637,9 +11721,13 @@ export type SubscriptionUserListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   orderBy?: InputMaybe<UserOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -9668,6 +11756,11 @@ export type SubscriptionUserConnectionArgs = {
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  file?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
+  booleanList?: InputMaybe<BooleanExpression>;
+  intList?: InputMaybe<IntExpression>;
+  typeList?: InputMaybe<PermissionTypeExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -9676,9 +11769,13 @@ export type SubscriptionUserConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   orderBy?: InputMaybe<UserOrderBy>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   not?: InputMaybe<Scalars['Boolean']>;
@@ -10284,6 +12381,231 @@ export type SubscriptionRoleUserRelationConnectionArgs = {
 
 
 /** Subscription */
+export type SubscriptionUserBooleanListRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  booleanListRef?: InputMaybe<BooleanExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<UserBooleanListRelationExpression>>>;
+};
+
+
+/** Subscription */
+export type SubscriptionUserBooleanListRelationListArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  booleanListRef?: InputMaybe<BooleanExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<UserBooleanListRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<UserBooleanListRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Subscription */
+export type SubscriptionUserBooleanListRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  booleanListRef?: InputMaybe<BooleanExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<UserBooleanListRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<UserBooleanListRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Subscription */
+export type SubscriptionUserIntListRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  intListRef?: InputMaybe<IntExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<UserIntListRelationExpression>>>;
+};
+
+
+/** Subscription */
+export type SubscriptionUserIntListRelationListArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  intListRef?: InputMaybe<IntExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<UserIntListRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<UserIntListRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Subscription */
+export type SubscriptionUserIntListRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  intListRef?: InputMaybe<IntExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<UserIntListRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<UserIntListRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Subscription */
+export type SubscriptionUserTypeListRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  typeListRef?: InputMaybe<PermissionTypeExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<UserTypeListRelationExpression>>>;
+};
+
+
+/** Subscription */
+export type SubscriptionUserTypeListRelationListArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  typeListRef?: InputMaybe<PermissionTypeExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<UserTypeListRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<UserTypeListRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Subscription */
+export type SubscriptionUserTypeListRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  typeListRef?: InputMaybe<PermissionTypeExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<UserTypeListRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<UserTypeListRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Subscription */
 export type SubscriptionGroupRoleRelationArgs = {
   id?: InputMaybe<StringExpression>;
   roleRef?: InputMaybe<StringExpression>;
@@ -10516,6 +12838,162 @@ export type SubscriptionPermissionRoleRelationConnectionArgs = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
+
+/** Subscription */
+export type SubscriptionFileUserRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+};
+
+
+/** Subscription */
+export type SubscriptionFileUserRelationListArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Subscription */
+export type SubscriptionFileUserRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileUserRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileUserRelationExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Subscription */
+export type SubscriptionFileArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+};
+
+
+/** Subscription */
+export type SubscriptionFileListArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Subscription */
+export type SubscriptionFileConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  orderBy?: InputMaybe<FileOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
 export type TreeStruct = {
   parentId?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -10602,6 +13080,11 @@ export type User = NamedStruct & Meta & {
   roles?: Maybe<Array<Maybe<Role>>>;
   /** 租户 */
   realm?: Maybe<Realm>;
+  file?: Maybe<File>;
+  files?: Maybe<Array<Maybe<File>>>;
+  booleanList?: Maybe<Array<Maybe<Scalars['Boolean']>>>;
+  intList?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  typeList?: Maybe<Array<Maybe<PermissionType>>>;
   /** 已移除 */
   isDeprecated?: Maybe<Scalars['Boolean']>;
   /** 版本 */
@@ -10618,12 +13101,20 @@ export type User = NamedStruct & Meta & {
   updateTime?: Maybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: Maybe<Scalars['String']>;
+  /** 用户 文件 关系 */
+  fileUserRelation?: Maybe<Array<Maybe<FileUserRelation>>>;
   /** 用户 手机号 关系 */
   userPhonesRelation?: Maybe<Array<Maybe<UserPhonesRelation>>>;
   /** 用户 组 关系 */
   groupUserRelation?: Maybe<Array<Maybe<GroupUserRelation>>>;
   /** 用户 角色 关系 */
   roleUserRelation?: Maybe<Array<Maybe<RoleUserRelation>>>;
+  /** 用户 booleanList 关系 */
+  userBooleanListRelation?: Maybe<Array<Maybe<UserBooleanListRelation>>>;
+  /** 用户 intList 关系 */
+  userIntListRelation?: Maybe<Array<Maybe<UserIntListRelation>>>;
+  /** 用户 typeList 关系 */
+  userTypeListRelation?: Maybe<Array<Maybe<UserTypeListRelation>>>;
   /** 组 统计字段 */
   groupsAggregate?: Maybe<Group>;
   /** 组 连接 */
@@ -10644,6 +13135,18 @@ export type User = NamedStruct & Meta & {
   roleUserRelationAggregate?: Maybe<RoleUserRelation>;
   /** 用户 角色 关系 连接 */
   roleUserRelationConnection?: Maybe<RoleUserRelationConnection>;
+  /** 用户 booleanList 关系 统计字段 */
+  userBooleanListRelationAggregate?: Maybe<UserBooleanListRelation>;
+  /** 用户 booleanList 关系 连接 */
+  userBooleanListRelationConnection?: Maybe<UserBooleanListRelationConnection>;
+  /** 用户 intList 关系 统计字段 */
+  userIntListRelationAggregate?: Maybe<UserIntListRelation>;
+  /** 用户 intList 关系 连接 */
+  userIntListRelationConnection?: Maybe<UserIntListRelationConnection>;
+  /** 用户 typeList 关系 统计字段 */
+  userTypeListRelationAggregate?: Maybe<UserTypeListRelation>;
+  /** 用户 typeList 关系 连接 */
+  userTypeListRelationConnection?: Maybe<UserTypeListRelationConnection>;
   /** 用户 数量 */
   idCount?: Maybe<Scalars['Int']>;
   /** ID 最大值 */
@@ -10787,6 +13290,117 @@ export type UserRealmArgs = {
 
 
 /** 用户 */
+export type UserFileArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+
+/** 用户 */
+export type UserFilesArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<FileOrderBy>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** 用户 */
+export type UserBooleanListArgs = {
+  opr?: InputMaybe<Operator>;
+  val?: InputMaybe<Scalars['Boolean']>;
+  arr?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  sort?: InputMaybe<Sort>;
+  after?: InputMaybe<Scalars['Boolean']>;
+  before?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** 用户 */
+export type UserIntListArgs = {
+  opr?: InputMaybe<Operator>;
+  val?: InputMaybe<Scalars['Int']>;
+  arr?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  sort?: InputMaybe<Sort>;
+  after?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['Int']>;
+};
+
+
+/** 用户 */
+export type UserTypeListArgs = {
+  opr?: InputMaybe<Operator>;
+  val?: InputMaybe<PermissionType>;
+  arr?: InputMaybe<Array<InputMaybe<PermissionType>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  sort?: InputMaybe<Sort>;
+  after?: InputMaybe<PermissionType>;
+  before?: InputMaybe<PermissionType>;
+};
+
+
+/** 用户 */
+export type UserFileUserRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  fileRef?: InputMaybe<StringExpression>;
+  file?: InputMaybe<FileExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<FileUserRelationOrderBy>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** 用户 */
 export type UserUserPhonesRelationArgs = {
   id?: InputMaybe<StringExpression>;
   userRef?: InputMaybe<StringExpression>;
@@ -10855,6 +13469,78 @@ export type UserRoleUserRelationArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RoleUserRelationOrderBy>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** 用户 */
+export type UserUserBooleanListRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  booleanListRef?: InputMaybe<BooleanExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserBooleanListRelationOrderBy>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** 用户 */
+export type UserUserIntListRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  intListRef?: InputMaybe<IntExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserIntListRelationOrderBy>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** 用户 */
+export type UserUserTypeListRelationArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  typeListRef?: InputMaybe<PermissionTypeExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserTypeListRelationOrderBy>;
   after?: InputMaybe<Scalars['ID']>;
   before?: InputMaybe<Scalars['ID']>;
 };
@@ -11105,6 +13791,734 @@ export type UserRoleUserRelationConnectionArgs = {
   groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
+
+/** 用户 */
+export type UserUserBooleanListRelationAggregateArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  booleanListRef?: InputMaybe<BooleanExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserBooleanListRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+
+/** 用户 */
+export type UserUserBooleanListRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  booleanListRef?: InputMaybe<BooleanExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserBooleanListRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+
+/** 用户 */
+export type UserUserIntListRelationAggregateArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  intListRef?: InputMaybe<IntExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserIntListRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+
+/** 用户 */
+export type UserUserIntListRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  intListRef?: InputMaybe<IntExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserIntListRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+
+/** 用户 */
+export type UserUserTypeListRelationAggregateArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  typeListRef?: InputMaybe<PermissionTypeExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserTypeListRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+
+/** 用户 */
+export type UserUserTypeListRelationConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  userRef?: InputMaybe<StringExpression>;
+  user?: InputMaybe<UserExpression>;
+  typeListRef?: InputMaybe<PermissionTypeExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserTypeListRelationOrderBy>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** 用户 booleanList 关系 */
+export type UserBooleanListRelation = Meta & {
+  __typename?: 'UserBooleanListRelation';
+  /** ID */
+  id?: Maybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: Maybe<Scalars['String']>;
+  /** 用户 */
+  user?: Maybe<User>;
+  /** booleanList 引用 */
+  booleanListRef?: Maybe<Scalars['Boolean']>;
+  /** 已移除 */
+  isDeprecated?: Maybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: Maybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: Maybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: Maybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: Maybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: Maybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: Maybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: Maybe<Scalars['String']>;
+  /** 用户 booleanList 关系 数量 */
+  idCount?: Maybe<Scalars['Int']>;
+  /** ID 最大值 */
+  idMax?: Maybe<Scalars['Int']>;
+  /** ID 最小值 */
+  idMin?: Maybe<Scalars['Int']>;
+  /** 用户 引用 数量 */
+  userRefCount?: Maybe<Scalars['Int']>;
+  /** 用户 引用 最大值 */
+  userRefMax?: Maybe<Scalars['String']>;
+  /** 用户 引用 最小值 */
+  userRefMin?: Maybe<Scalars['String']>;
+};
+
+
+/** 用户 booleanList 关系 */
+export type UserBooleanListRelationUserArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
+  lastName?: InputMaybe<StringExpression>;
+  login?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
+  email?: InputMaybe<StringExpression>;
+  phones?: InputMaybe<StringExpression>;
+  disable?: InputMaybe<BooleanExpression>;
+  groups?: InputMaybe<GroupExpression>;
+  roles?: InputMaybe<RoleExpression>;
+  realm?: InputMaybe<RealmExpression>;
+  file?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
+  booleanList?: InputMaybe<BooleanExpression>;
+  intList?: InputMaybe<IntExpression>;
+  typeList?: InputMaybe<PermissionTypeExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** 用户 booleanList 关系 连接 */
+export type UserBooleanListRelationConnection = {
+  __typename?: 'UserBooleanListRelationConnection';
+  /** 条数 */
+  totalCount?: Maybe<Scalars['Int']>;
+  /** 分页信息 */
+  pageInfo?: Maybe<PageInfo>;
+  /** 边缘 */
+  edges?: Maybe<Array<Maybe<UserBooleanListRelationEdge>>>;
+};
+
+/** 用户 booleanList 关系连接 查询参数 */
+export type UserBooleanListRelationConnectionQueryArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** booleanList 引用 */
+  booleanListRef?: InputMaybe<BooleanExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 排序 */
+  orderBy?: InputMaybe<UserBooleanListRelationOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserBooleanListRelationExpression>>>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** 用户 booleanList 关系列表 订阅参数 */
+export type UserBooleanListRelationConnectionSubscriptionArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** booleanList 引用 */
+  booleanListRef?: InputMaybe<BooleanExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 排序 */
+  orderBy?: InputMaybe<UserBooleanListRelationOrderBy>;
+  /** 排序 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserBooleanListRelationExpression>>>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** 用户 booleanList 关系 边缘 */
+export type UserBooleanListRelationEdge = {
+  __typename?: 'UserBooleanListRelationEdge';
+  /** 节点 */
+  node?: Maybe<UserBooleanListRelation>;
+  /** 游标 */
+  cursor?: Maybe<Scalars['String']>;
+};
+
+/** 用户 booleanList 关系 查询表达式 */
+export type UserBooleanListRelationExpression = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** booleanList 引用 */
+  booleanListRef?: InputMaybe<BooleanExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserBooleanListRelationExpression>>>;
+};
+
+/** 用户 booleanList 关系 查询表达式 */
+export type UserBooleanListRelationExpressionBase = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** booleanList 引用 */
+  booleanListRef?: InputMaybe<BooleanExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserBooleanListRelationExpression>>>;
+};
+
+/** 用户 booleanList 关系 变更内容 */
+export type UserBooleanListRelationInput = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Scalars['String']>;
+  /** 用户 */
+  user?: InputMaybe<UserInput>;
+  /** booleanList 引用 */
+  booleanListRef?: InputMaybe<Scalars['Boolean']>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 匹配条件 */
+  where?: InputMaybe<UserBooleanListRelationExpression>;
+};
+
+/** 用户 booleanList 关系 变更内容 */
+export type UserBooleanListRelationInputBase = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Scalars['String']>;
+  /** 用户 */
+  user?: InputMaybe<UserInput>;
+  /** booleanList 引用 */
+  booleanListRef?: InputMaybe<Scalars['Boolean']>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 匹配条件 */
+  where?: InputMaybe<UserBooleanListRelationExpression>;
+};
+
+/** 用户 booleanList 关系列表 变更参数  */
+export type UserBooleanListRelationListMutationArguments = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Scalars['String']>;
+  /** 用户 */
+  user?: InputMaybe<UserInput>;
+  /** booleanList 引用 */
+  booleanListRef?: InputMaybe<Scalars['Boolean']>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 变更内容列表 */
+  list?: InputMaybe<Array<InputMaybe<UserBooleanListRelationInput>>>;
+  /** 匹配条件 */
+  where?: InputMaybe<UserBooleanListRelationExpression>;
+};
+
+/** 用户 booleanList 关系列表 查询参数 */
+export type UserBooleanListRelationListQueryArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** booleanList 引用 */
+  booleanListRef?: InputMaybe<BooleanExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 排序 */
+  orderBy?: InputMaybe<UserBooleanListRelationOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserBooleanListRelationExpression>>>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** 用户 booleanList 关系列表 订阅参数 */
+export type UserBooleanListRelationListSubscriptionArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** booleanList 引用 */
+  booleanListRef?: InputMaybe<BooleanExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 排序 */
+  orderBy?: InputMaybe<UserBooleanListRelationOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserBooleanListRelationExpression>>>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 变更内容列表 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** 用户 booleanList 关系 变更参数 */
+export type UserBooleanListRelationMutationArguments = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Scalars['String']>;
+  /** 用户 */
+  user?: InputMaybe<UserInput>;
+  /** booleanList 引用 */
+  booleanListRef?: InputMaybe<Scalars['Boolean']>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 变更内容 */
+  input?: InputMaybe<UserBooleanListRelationInput>;
+  /** 匹配条件 */
+  where?: InputMaybe<UserBooleanListRelationExpression>;
+};
+
+/** 用户 booleanList 关系 排序 */
+export type UserBooleanListRelationOrderBy = {
+  /** ID */
+  id?: InputMaybe<Sort>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Sort>;
+  /** 用户 */
+  user?: InputMaybe<UserOrderBy>;
+  /** booleanList 引用 */
+  booleanListRef?: InputMaybe<Sort>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Sort>;
+  /** 版本 */
+  version?: InputMaybe<Sort>;
+  /** 域 */
+  realmId?: InputMaybe<Sort>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Sort>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Sort>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Sort>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Sort>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Sort>;
+  /** 用户 booleanList 关系 数量 */
+  idCount?: InputMaybe<Sort>;
+  /** ID 最大值 */
+  idMax?: InputMaybe<Sort>;
+  /** ID 最小值 */
+  idMin?: InputMaybe<Sort>;
+  /** 用户 引用 数量 */
+  userRefCount?: InputMaybe<Sort>;
+  /** 用户 引用 最大值 */
+  userRefMax?: InputMaybe<Sort>;
+  /** 用户 引用 最小值 */
+  userRefMin?: InputMaybe<Sort>;
+};
+
+/** 用户 booleanList 关系 查询参数 */
+export type UserBooleanListRelationQueryArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** booleanList 引用 */
+  booleanListRef?: InputMaybe<BooleanExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 分组 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserBooleanListRelationExpression>>>;
+};
+
+/** 用户 booleanList 关系 订阅参数 */
+export type UserBooleanListRelationSubscriptionArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** booleanList 引用 */
+  booleanListRef?: InputMaybe<BooleanExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 分组 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserBooleanListRelationExpression>>>;
+};
+
 /** 用户 连接 */
 export type UserConnection = {
   __typename?: 'UserConnection';
@@ -11144,6 +14558,16 @@ export type UserConnectionQueryArguments = {
   roles?: InputMaybe<RoleExpression>;
   /** 租户 */
   realm?: InputMaybe<RealmExpression>;
+  /** file */
+  file?: InputMaybe<FileExpression>;
+  /** files */
+  files?: InputMaybe<FileExpression>;
+  /** booleanList */
+  booleanList?: InputMaybe<BooleanExpression>;
+  /** intList */
+  intList?: InputMaybe<IntExpression>;
+  /** typeList */
+  typeList?: InputMaybe<PermissionTypeExpression>;
   /** 包含已移除 */
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   /** 版本 */
@@ -11160,12 +14584,20 @@ export type UserConnectionQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** 用户 文件 关系 */
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   /** 用户 手机号 关系 */
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   /** 用户 组 关系 */
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  /** 用户 booleanList 关系 */
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  /** 用户 intList 关系 */
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  /** 用户 typeList 关系 */
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   /** 排序 */
   orderBy?: InputMaybe<UserOrderBy>;
   /** 分组 */
@@ -11216,6 +14648,16 @@ export type UserConnectionSubscriptionArguments = {
   roles?: InputMaybe<RoleExpression>;
   /** 租户 */
   realm?: InputMaybe<RealmExpression>;
+  /** file */
+  file?: InputMaybe<FileExpression>;
+  /** files */
+  files?: InputMaybe<FileExpression>;
+  /** booleanList */
+  booleanList?: InputMaybe<BooleanExpression>;
+  /** intList */
+  intList?: InputMaybe<IntExpression>;
+  /** typeList */
+  typeList?: InputMaybe<PermissionTypeExpression>;
   /** 包含已移除 */
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   /** 版本 */
@@ -11232,12 +14674,20 @@ export type UserConnectionSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** 用户 文件 关系 */
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   /** 用户 手机号 关系 */
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   /** 用户 组 关系 */
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  /** 用户 booleanList 关系 */
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  /** 用户 intList 关系 */
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  /** 用户 typeList 关系 */
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   /** 排序 */
   orderBy?: InputMaybe<UserOrderBy>;
   /** 排序 */
@@ -11297,6 +14747,16 @@ export type UserExpression = {
   roles?: InputMaybe<RoleExpression>;
   /** 租户 */
   realm?: InputMaybe<RealmExpression>;
+  /** file */
+  file?: InputMaybe<FileExpression>;
+  /** files */
+  files?: InputMaybe<FileExpression>;
+  /** booleanList */
+  booleanList?: InputMaybe<BooleanExpression>;
+  /** intList */
+  intList?: InputMaybe<IntExpression>;
+  /** typeList */
+  typeList?: InputMaybe<PermissionTypeExpression>;
   /** 包含已移除 */
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   /** 版本 */
@@ -11313,12 +14773,20 @@ export type UserExpression = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** 用户 文件 关系 */
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   /** 用户 手机号 关系 */
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   /** 用户 组 关系 */
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  /** 用户 booleanList 关系 */
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  /** 用户 intList 关系 */
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  /** 用户 typeList 关系 */
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11355,6 +14823,16 @@ export type UserExpressionBase = {
   roles?: InputMaybe<RoleExpression>;
   /** 租户 */
   realm?: InputMaybe<RealmExpression>;
+  /** file */
+  file?: InputMaybe<FileExpression>;
+  /** files */
+  files?: InputMaybe<FileExpression>;
+  /** booleanList */
+  booleanList?: InputMaybe<BooleanExpression>;
+  /** intList */
+  intList?: InputMaybe<IntExpression>;
+  /** typeList */
+  typeList?: InputMaybe<PermissionTypeExpression>;
   /** 包含已移除 */
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   /** 版本 */
@@ -11371,12 +14849,20 @@ export type UserExpressionBase = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** 用户 文件 关系 */
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   /** 用户 手机号 关系 */
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   /** 用户 组 关系 */
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  /** 用户 booleanList 关系 */
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  /** 用户 intList 关系 */
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  /** 用户 typeList 关系 */
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11413,6 +14899,16 @@ export type UserInput = {
   roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
   /** 租户 */
   realm?: InputMaybe<RealmInput>;
+  /** file */
+  file?: InputMaybe<FileInput>;
+  /** files */
+  files?: InputMaybe<Array<InputMaybe<FileInput>>>;
+  /** booleanList */
+  booleanList?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
+  /** intList */
+  intList?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  /** typeList */
+  typeList?: InputMaybe<Array<InputMaybe<PermissionType>>>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   /** 版本 */
@@ -11429,12 +14925,20 @@ export type UserInput = {
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: InputMaybe<Scalars['String']>;
+  /** 用户 文件 关系 */
+  fileUserRelation?: InputMaybe<Array<InputMaybe<FileUserRelationInput>>>;
   /** 用户 手机号 关系 */
   userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
   /** 用户 组 关系 */
   groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
+  /** 用户 booleanList 关系 */
+  userBooleanListRelation?: InputMaybe<Array<InputMaybe<UserBooleanListRelationInput>>>;
+  /** 用户 intList 关系 */
+  userIntListRelation?: InputMaybe<Array<InputMaybe<UserIntListRelationInput>>>;
+  /** 用户 typeList 关系 */
+  userTypeListRelation?: InputMaybe<Array<InputMaybe<UserTypeListRelationInput>>>;
   /** 匹配条件 */
   where?: InputMaybe<UserExpression>;
 };
@@ -11467,6 +14971,16 @@ export type UserInputBase = {
   roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
   /** 租户 */
   realm?: InputMaybe<RealmInput>;
+  /** file */
+  file?: InputMaybe<FileInput>;
+  /** files */
+  files?: InputMaybe<Array<InputMaybe<FileInput>>>;
+  /** booleanList */
+  booleanList?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
+  /** intList */
+  intList?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  /** typeList */
+  typeList?: InputMaybe<Array<InputMaybe<PermissionType>>>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   /** 版本 */
@@ -11483,14 +14997,638 @@ export type UserInputBase = {
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: InputMaybe<Scalars['String']>;
+  /** 用户 文件 关系 */
+  fileUserRelation?: InputMaybe<Array<InputMaybe<FileUserRelationInput>>>;
   /** 用户 手机号 关系 */
   userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
   /** 用户 组 关系 */
   groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
+  /** 用户 booleanList 关系 */
+  userBooleanListRelation?: InputMaybe<Array<InputMaybe<UserBooleanListRelationInput>>>;
+  /** 用户 intList 关系 */
+  userIntListRelation?: InputMaybe<Array<InputMaybe<UserIntListRelationInput>>>;
+  /** 用户 typeList 关系 */
+  userTypeListRelation?: InputMaybe<Array<InputMaybe<UserTypeListRelationInput>>>;
   /** 匹配条件 */
   where?: InputMaybe<UserExpression>;
+};
+
+/** 用户 intList 关系 */
+export type UserIntListRelation = Meta & {
+  __typename?: 'UserIntListRelation';
+  /** ID */
+  id?: Maybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: Maybe<Scalars['String']>;
+  /** 用户 */
+  user?: Maybe<User>;
+  /** intList 引用 */
+  intListRef?: Maybe<Scalars['Int']>;
+  /** 已移除 */
+  isDeprecated?: Maybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: Maybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: Maybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: Maybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: Maybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: Maybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: Maybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: Maybe<Scalars['String']>;
+  /** 用户 intList 关系 数量 */
+  idCount?: Maybe<Scalars['Int']>;
+  /** ID 最大值 */
+  idMax?: Maybe<Scalars['Int']>;
+  /** ID 最小值 */
+  idMin?: Maybe<Scalars['Int']>;
+  /** 用户 引用 数量 */
+  userRefCount?: Maybe<Scalars['Int']>;
+  /** 用户 引用 最大值 */
+  userRefMax?: Maybe<Scalars['String']>;
+  /** 用户 引用 最小值 */
+  userRefMin?: Maybe<Scalars['String']>;
+  /** intList 引用 数量 */
+  intListRefCount?: Maybe<Scalars['Int']>;
+  /** intList 引用 合计 */
+  intListRefSum?: Maybe<Scalars['Int']>;
+  /** intList 引用 平均值 */
+  intListRefAvg?: Maybe<Scalars['Int']>;
+  /** intList 引用 最大值 */
+  intListRefMax?: Maybe<Scalars['Int']>;
+  /** intList 引用 最小值 */
+  intListRefMin?: Maybe<Scalars['Int']>;
+};
+
+
+/** 用户 intList 关系 */
+export type UserIntListRelationUserArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
+  lastName?: InputMaybe<StringExpression>;
+  login?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
+  email?: InputMaybe<StringExpression>;
+  phones?: InputMaybe<StringExpression>;
+  disable?: InputMaybe<BooleanExpression>;
+  groups?: InputMaybe<GroupExpression>;
+  roles?: InputMaybe<RoleExpression>;
+  realm?: InputMaybe<RealmExpression>;
+  file?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
+  booleanList?: InputMaybe<BooleanExpression>;
+  intList?: InputMaybe<IntExpression>;
+  typeList?: InputMaybe<PermissionTypeExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** 用户 intList 关系 连接 */
+export type UserIntListRelationConnection = {
+  __typename?: 'UserIntListRelationConnection';
+  /** 条数 */
+  totalCount?: Maybe<Scalars['Int']>;
+  /** 分页信息 */
+  pageInfo?: Maybe<PageInfo>;
+  /** 边缘 */
+  edges?: Maybe<Array<Maybe<UserIntListRelationEdge>>>;
+};
+
+/** 用户 intList 关系连接 查询参数 */
+export type UserIntListRelationConnectionQueryArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** intList 引用 */
+  intListRef?: InputMaybe<IntExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 排序 */
+  orderBy?: InputMaybe<UserIntListRelationOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserIntListRelationExpression>>>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** 用户 intList 关系列表 订阅参数 */
+export type UserIntListRelationConnectionSubscriptionArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** intList 引用 */
+  intListRef?: InputMaybe<IntExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 排序 */
+  orderBy?: InputMaybe<UserIntListRelationOrderBy>;
+  /** 排序 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserIntListRelationExpression>>>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** 用户 intList 关系 边缘 */
+export type UserIntListRelationEdge = {
+  __typename?: 'UserIntListRelationEdge';
+  /** 节点 */
+  node?: Maybe<UserIntListRelation>;
+  /** 游标 */
+  cursor?: Maybe<Scalars['String']>;
+};
+
+/** 用户 intList 关系 查询表达式 */
+export type UserIntListRelationExpression = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** intList 引用 */
+  intListRef?: InputMaybe<IntExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserIntListRelationExpression>>>;
+};
+
+/** 用户 intList 关系 查询表达式 */
+export type UserIntListRelationExpressionBase = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** intList 引用 */
+  intListRef?: InputMaybe<IntExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserIntListRelationExpression>>>;
+};
+
+/** 用户 intList 关系 变更内容 */
+export type UserIntListRelationInput = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Scalars['String']>;
+  /** 用户 */
+  user?: InputMaybe<UserInput>;
+  /** intList 引用 */
+  intListRef?: InputMaybe<Scalars['Int']>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 匹配条件 */
+  where?: InputMaybe<UserIntListRelationExpression>;
+};
+
+/** 用户 intList 关系 变更内容 */
+export type UserIntListRelationInputBase = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Scalars['String']>;
+  /** 用户 */
+  user?: InputMaybe<UserInput>;
+  /** intList 引用 */
+  intListRef?: InputMaybe<Scalars['Int']>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 匹配条件 */
+  where?: InputMaybe<UserIntListRelationExpression>;
+};
+
+/** 用户 intList 关系列表 变更参数  */
+export type UserIntListRelationListMutationArguments = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Scalars['String']>;
+  /** 用户 */
+  user?: InputMaybe<UserInput>;
+  /** intList 引用 */
+  intListRef?: InputMaybe<Scalars['Int']>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 变更内容列表 */
+  list?: InputMaybe<Array<InputMaybe<UserIntListRelationInput>>>;
+  /** 匹配条件 */
+  where?: InputMaybe<UserIntListRelationExpression>;
+};
+
+/** 用户 intList 关系列表 查询参数 */
+export type UserIntListRelationListQueryArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** intList 引用 */
+  intListRef?: InputMaybe<IntExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 排序 */
+  orderBy?: InputMaybe<UserIntListRelationOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserIntListRelationExpression>>>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** 用户 intList 关系列表 订阅参数 */
+export type UserIntListRelationListSubscriptionArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** intList 引用 */
+  intListRef?: InputMaybe<IntExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 排序 */
+  orderBy?: InputMaybe<UserIntListRelationOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserIntListRelationExpression>>>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 变更内容列表 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** 用户 intList 关系 变更参数 */
+export type UserIntListRelationMutationArguments = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Scalars['String']>;
+  /** 用户 */
+  user?: InputMaybe<UserInput>;
+  /** intList 引用 */
+  intListRef?: InputMaybe<Scalars['Int']>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 变更内容 */
+  input?: InputMaybe<UserIntListRelationInput>;
+  /** 匹配条件 */
+  where?: InputMaybe<UserIntListRelationExpression>;
+};
+
+/** 用户 intList 关系 排序 */
+export type UserIntListRelationOrderBy = {
+  /** ID */
+  id?: InputMaybe<Sort>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Sort>;
+  /** 用户 */
+  user?: InputMaybe<UserOrderBy>;
+  /** intList 引用 */
+  intListRef?: InputMaybe<Sort>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Sort>;
+  /** 版本 */
+  version?: InputMaybe<Sort>;
+  /** 域 */
+  realmId?: InputMaybe<Sort>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Sort>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Sort>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Sort>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Sort>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Sort>;
+  /** 用户 intList 关系 数量 */
+  idCount?: InputMaybe<Sort>;
+  /** ID 最大值 */
+  idMax?: InputMaybe<Sort>;
+  /** ID 最小值 */
+  idMin?: InputMaybe<Sort>;
+  /** 用户 引用 数量 */
+  userRefCount?: InputMaybe<Sort>;
+  /** 用户 引用 最大值 */
+  userRefMax?: InputMaybe<Sort>;
+  /** 用户 引用 最小值 */
+  userRefMin?: InputMaybe<Sort>;
+  /** intList 引用 数量 */
+  intListRefCount?: InputMaybe<Sort>;
+  /** intList 引用 合计 */
+  intListRefSum?: InputMaybe<Sort>;
+  /** intList 引用 平均值 */
+  intListRefAvg?: InputMaybe<Sort>;
+  /** intList 引用 最大值 */
+  intListRefMax?: InputMaybe<Sort>;
+  /** intList 引用 最小值 */
+  intListRefMin?: InputMaybe<Sort>;
+};
+
+/** 用户 intList 关系 查询参数 */
+export type UserIntListRelationQueryArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** intList 引用 */
+  intListRef?: InputMaybe<IntExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 分组 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserIntListRelationExpression>>>;
+};
+
+/** 用户 intList 关系 订阅参数 */
+export type UserIntListRelationSubscriptionArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** intList 引用 */
+  intListRef?: InputMaybe<IntExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 分组 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserIntListRelationExpression>>>;
 };
 
 /** 用户列表 变更参数  */
@@ -11521,6 +15659,16 @@ export type UserListMutationArguments = {
   roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
   /** 租户 */
   realm?: InputMaybe<RealmInput>;
+  /** file */
+  file?: InputMaybe<FileInput>;
+  /** files */
+  files?: InputMaybe<Array<InputMaybe<FileInput>>>;
+  /** booleanList */
+  booleanList?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
+  /** intList */
+  intList?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  /** typeList */
+  typeList?: InputMaybe<Array<InputMaybe<PermissionType>>>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   /** 版本 */
@@ -11537,12 +15685,20 @@ export type UserListMutationArguments = {
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: InputMaybe<Scalars['String']>;
+  /** 用户 文件 关系 */
+  fileUserRelation?: InputMaybe<Array<InputMaybe<FileUserRelationInput>>>;
   /** 用户 手机号 关系 */
   userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
   /** 用户 组 关系 */
   groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
+  /** 用户 booleanList 关系 */
+  userBooleanListRelation?: InputMaybe<Array<InputMaybe<UserBooleanListRelationInput>>>;
+  /** 用户 intList 关系 */
+  userIntListRelation?: InputMaybe<Array<InputMaybe<UserIntListRelationInput>>>;
+  /** 用户 typeList 关系 */
+  userTypeListRelation?: InputMaybe<Array<InputMaybe<UserTypeListRelationInput>>>;
   /** 变更内容列表 */
   list?: InputMaybe<Array<InputMaybe<UserInput>>>;
   /** 匹配条件 */
@@ -11577,6 +15733,16 @@ export type UserListQueryArguments = {
   roles?: InputMaybe<RoleExpression>;
   /** 租户 */
   realm?: InputMaybe<RealmExpression>;
+  /** file */
+  file?: InputMaybe<FileExpression>;
+  /** files */
+  files?: InputMaybe<FileExpression>;
+  /** booleanList */
+  booleanList?: InputMaybe<BooleanExpression>;
+  /** intList */
+  intList?: InputMaybe<IntExpression>;
+  /** typeList */
+  typeList?: InputMaybe<PermissionTypeExpression>;
   /** 包含已移除 */
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   /** 版本 */
@@ -11593,12 +15759,20 @@ export type UserListQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** 用户 文件 关系 */
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   /** 用户 手机号 关系 */
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   /** 用户 组 关系 */
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  /** 用户 booleanList 关系 */
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  /** 用户 intList 关系 */
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  /** 用户 typeList 关系 */
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   /** 排序 */
   orderBy?: InputMaybe<UserOrderBy>;
   /** 分组 */
@@ -11649,6 +15823,16 @@ export type UserListSubscriptionArguments = {
   roles?: InputMaybe<RoleExpression>;
   /** 租户 */
   realm?: InputMaybe<RealmExpression>;
+  /** file */
+  file?: InputMaybe<FileExpression>;
+  /** files */
+  files?: InputMaybe<FileExpression>;
+  /** booleanList */
+  booleanList?: InputMaybe<BooleanExpression>;
+  /** intList */
+  intList?: InputMaybe<IntExpression>;
+  /** typeList */
+  typeList?: InputMaybe<PermissionTypeExpression>;
   /** 包含已移除 */
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   /** 版本 */
@@ -11665,12 +15849,20 @@ export type UserListSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** 用户 文件 关系 */
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   /** 用户 手机号 关系 */
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   /** 用户 组 关系 */
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  /** 用户 booleanList 关系 */
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  /** 用户 intList 关系 */
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  /** 用户 typeList 关系 */
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   /** 排序 */
   orderBy?: InputMaybe<UserOrderBy>;
   /** 分组 */
@@ -11721,6 +15913,16 @@ export type UserMutationArguments = {
   roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
   /** 租户 */
   realm?: InputMaybe<RealmInput>;
+  /** file */
+  file?: InputMaybe<FileInput>;
+  /** files */
+  files?: InputMaybe<Array<InputMaybe<FileInput>>>;
+  /** booleanList */
+  booleanList?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
+  /** intList */
+  intList?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  /** typeList */
+  typeList?: InputMaybe<Array<InputMaybe<PermissionType>>>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   /** 版本 */
@@ -11737,12 +15939,20 @@ export type UserMutationArguments = {
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: InputMaybe<Scalars['String']>;
+  /** 用户 文件 关系 */
+  fileUserRelation?: InputMaybe<Array<InputMaybe<FileUserRelationInput>>>;
   /** 用户 手机号 关系 */
   userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
   /** 用户 组 关系 */
   groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
+  /** 用户 booleanList 关系 */
+  userBooleanListRelation?: InputMaybe<Array<InputMaybe<UserBooleanListRelationInput>>>;
+  /** 用户 intList 关系 */
+  userIntListRelation?: InputMaybe<Array<InputMaybe<UserIntListRelationInput>>>;
+  /** 用户 typeList 关系 */
+  userTypeListRelation?: InputMaybe<Array<InputMaybe<UserTypeListRelationInput>>>;
   /** 变更内容 */
   input?: InputMaybe<UserInput>;
   /** 匹配条件 */
@@ -11777,6 +15987,16 @@ export type UserOrderBy = {
   roles?: InputMaybe<RoleOrderBy>;
   /** 租户 */
   realm?: InputMaybe<RealmOrderBy>;
+  /** file */
+  file?: InputMaybe<FileOrderBy>;
+  /** files */
+  files?: InputMaybe<FileOrderBy>;
+  /** booleanList */
+  booleanList?: InputMaybe<Sort>;
+  /** intList */
+  intList?: InputMaybe<Sort>;
+  /** typeList */
+  typeList?: InputMaybe<Sort>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Sort>;
   /** 版本 */
@@ -11793,12 +16013,20 @@ export type UserOrderBy = {
   updateTime?: InputMaybe<Sort>;
   /** 创建组 */
   createGroupId?: InputMaybe<Sort>;
+  /** 用户 文件 关系 */
+  fileUserRelation?: InputMaybe<FileUserRelationOrderBy>;
   /** 用户 手机号 关系 */
   userPhonesRelation?: InputMaybe<UserPhonesRelationOrderBy>;
   /** 用户 组 关系 */
   groupUserRelation?: InputMaybe<GroupUserRelationOrderBy>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<RoleUserRelationOrderBy>;
+  /** 用户 booleanList 关系 */
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationOrderBy>;
+  /** 用户 intList 关系 */
+  userIntListRelation?: InputMaybe<UserIntListRelationOrderBy>;
+  /** 用户 typeList 关系 */
+  userTypeListRelation?: InputMaybe<UserTypeListRelationOrderBy>;
   /** 组 统计字段 */
   groupsAggregate?: InputMaybe<GroupOrderBy>;
   /** 角色 统计字段 */
@@ -11809,6 +16037,12 @@ export type UserOrderBy = {
   groupUserRelationAggregate?: InputMaybe<GroupUserRelationOrderBy>;
   /** 用户 角色 关系 统计字段 */
   roleUserRelationAggregate?: InputMaybe<RoleUserRelationOrderBy>;
+  /** 用户 booleanList 关系 统计字段 */
+  userBooleanListRelationAggregate?: InputMaybe<UserBooleanListRelationOrderBy>;
+  /** 用户 intList 关系 统计字段 */
+  userIntListRelationAggregate?: InputMaybe<UserIntListRelationOrderBy>;
+  /** 用户 typeList 关系 统计字段 */
+  userTypeListRelationAggregate?: InputMaybe<UserTypeListRelationOrderBy>;
   /** 用户 数量 */
   idCount?: InputMaybe<Sort>;
   /** ID 最大值 */
@@ -11922,6 +16156,11 @@ export type UserPhonesRelationUserArgs = {
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
+  file?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
+  booleanList?: InputMaybe<BooleanExpression>;
+  intList?: InputMaybe<IntExpression>;
+  typeList?: InputMaybe<PermissionTypeExpression>;
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<IntExpression>;
   realmId?: InputMaybe<IntExpression>;
@@ -11930,9 +16169,13 @@ export type UserPhonesRelationUserArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   groupBy?: InputMaybe<Array<Scalars['String']>>;
 };
 
@@ -12486,6 +16729,16 @@ export type UserQueryArguments = {
   roles?: InputMaybe<RoleExpression>;
   /** 租户 */
   realm?: InputMaybe<RealmExpression>;
+  /** file */
+  file?: InputMaybe<FileExpression>;
+  /** files */
+  files?: InputMaybe<FileExpression>;
+  /** booleanList */
+  booleanList?: InputMaybe<BooleanExpression>;
+  /** intList */
+  intList?: InputMaybe<IntExpression>;
+  /** typeList */
+  typeList?: InputMaybe<PermissionTypeExpression>;
   /** 包含已移除 */
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   /** 版本 */
@@ -12502,12 +16755,20 @@ export type UserQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** 用户 文件 关系 */
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   /** 用户 手机号 关系 */
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   /** 用户 组 关系 */
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  /** 用户 booleanList 关系 */
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  /** 用户 intList 关系 */
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  /** 用户 typeList 关系 */
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   /** 分组 */
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   /** 取非 */
@@ -12546,6 +16807,16 @@ export type UserSubscriptionArguments = {
   roles?: InputMaybe<RoleExpression>;
   /** 租户 */
   realm?: InputMaybe<RealmExpression>;
+  /** file */
+  file?: InputMaybe<FileExpression>;
+  /** files */
+  files?: InputMaybe<FileExpression>;
+  /** booleanList */
+  booleanList?: InputMaybe<BooleanExpression>;
+  /** intList */
+  intList?: InputMaybe<IntExpression>;
+  /** typeList */
+  typeList?: InputMaybe<PermissionTypeExpression>;
   /** 包含已移除 */
   includeDeprecated?: InputMaybe<Scalars['Boolean']>;
   /** 版本 */
@@ -12562,12 +16833,20 @@ export type UserSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** 用户 文件 关系 */
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
   /** 用户 手机号 关系 */
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   /** 用户 组 关系 */
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  /** 用户 booleanList 关系 */
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  /** 用户 intList 关系 */
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  /** 用户 typeList 关系 */
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
   /** 分组 */
   groupBy?: InputMaybe<Array<Scalars['String']>>;
   /** 取非 */
@@ -12576,6 +16855,614 @@ export type UserSubscriptionArguments = {
   cond?: InputMaybe<Conditional>;
   /** 查询表达式组 */
   exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
+};
+
+/** 用户 typeList 关系 */
+export type UserTypeListRelation = Meta & {
+  __typename?: 'UserTypeListRelation';
+  /** ID */
+  id?: Maybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: Maybe<Scalars['String']>;
+  /** 用户 */
+  user?: Maybe<User>;
+  /** typeList 引用 */
+  typeListRef?: Maybe<PermissionType>;
+  /** 已移除 */
+  isDeprecated?: Maybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: Maybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: Maybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: Maybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: Maybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: Maybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: Maybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: Maybe<Scalars['String']>;
+  /** 用户 typeList 关系 数量 */
+  idCount?: Maybe<Scalars['Int']>;
+  /** ID 最大值 */
+  idMax?: Maybe<Scalars['Int']>;
+  /** ID 最小值 */
+  idMin?: Maybe<Scalars['Int']>;
+  /** 用户 引用 数量 */
+  userRefCount?: Maybe<Scalars['Int']>;
+  /** 用户 引用 最大值 */
+  userRefMax?: Maybe<Scalars['String']>;
+  /** 用户 引用 最小值 */
+  userRefMin?: Maybe<Scalars['String']>;
+  /** typeList 引用 数量 */
+  typeListRefCount?: Maybe<Scalars['Int']>;
+  /** typeList 引用 最大值 */
+  typeListRefMax?: Maybe<PermissionType>;
+  /** typeList 引用 最小值 */
+  typeListRefMin?: Maybe<PermissionType>;
+};
+
+
+/** 用户 typeList 关系 */
+export type UserTypeListRelationUserArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
+  lastName?: InputMaybe<StringExpression>;
+  login?: InputMaybe<StringExpression>;
+  salt?: InputMaybe<StringExpression>;
+  hash?: InputMaybe<StringExpression>;
+  email?: InputMaybe<StringExpression>;
+  phones?: InputMaybe<StringExpression>;
+  disable?: InputMaybe<BooleanExpression>;
+  groups?: InputMaybe<GroupExpression>;
+  roles?: InputMaybe<RoleExpression>;
+  realm?: InputMaybe<RealmExpression>;
+  file?: InputMaybe<FileExpression>;
+  files?: InputMaybe<FileExpression>;
+  booleanList?: InputMaybe<BooleanExpression>;
+  intList?: InputMaybe<IntExpression>;
+  typeList?: InputMaybe<PermissionTypeExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  fileUserRelation?: InputMaybe<FileUserRelationExpression>;
+  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
+  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
+  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  userBooleanListRelation?: InputMaybe<UserBooleanListRelationExpression>;
+  userIntListRelation?: InputMaybe<UserIntListRelationExpression>;
+  userTypeListRelation?: InputMaybe<UserTypeListRelationExpression>;
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** 用户 typeList 关系 连接 */
+export type UserTypeListRelationConnection = {
+  __typename?: 'UserTypeListRelationConnection';
+  /** 条数 */
+  totalCount?: Maybe<Scalars['Int']>;
+  /** 分页信息 */
+  pageInfo?: Maybe<PageInfo>;
+  /** 边缘 */
+  edges?: Maybe<Array<Maybe<UserTypeListRelationEdge>>>;
+};
+
+/** 用户 typeList 关系连接 查询参数 */
+export type UserTypeListRelationConnectionQueryArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** typeList 引用 */
+  typeListRef?: InputMaybe<PermissionTypeExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 排序 */
+  orderBy?: InputMaybe<UserTypeListRelationOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserTypeListRelationExpression>>>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** 用户 typeList 关系列表 订阅参数 */
+export type UserTypeListRelationConnectionSubscriptionArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** typeList 引用 */
+  typeListRef?: InputMaybe<PermissionTypeExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 排序 */
+  orderBy?: InputMaybe<UserTypeListRelationOrderBy>;
+  /** 排序 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserTypeListRelationExpression>>>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** 用户 typeList 关系 边缘 */
+export type UserTypeListRelationEdge = {
+  __typename?: 'UserTypeListRelationEdge';
+  /** 节点 */
+  node?: Maybe<UserTypeListRelation>;
+  /** 游标 */
+  cursor?: Maybe<Scalars['String']>;
+};
+
+/** 用户 typeList 关系 查询表达式 */
+export type UserTypeListRelationExpression = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** typeList 引用 */
+  typeListRef?: InputMaybe<PermissionTypeExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserTypeListRelationExpression>>>;
+};
+
+/** 用户 typeList 关系 查询表达式 */
+export type UserTypeListRelationExpressionBase = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** typeList 引用 */
+  typeListRef?: InputMaybe<PermissionTypeExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserTypeListRelationExpression>>>;
+};
+
+/** 用户 typeList 关系 变更内容 */
+export type UserTypeListRelationInput = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Scalars['String']>;
+  /** 用户 */
+  user?: InputMaybe<UserInput>;
+  /** typeList 引用 */
+  typeListRef?: InputMaybe<PermissionType>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 匹配条件 */
+  where?: InputMaybe<UserTypeListRelationExpression>;
+};
+
+/** 用户 typeList 关系 变更内容 */
+export type UserTypeListRelationInputBase = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Scalars['String']>;
+  /** 用户 */
+  user?: InputMaybe<UserInput>;
+  /** typeList 引用 */
+  typeListRef?: InputMaybe<PermissionType>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 匹配条件 */
+  where?: InputMaybe<UserTypeListRelationExpression>;
+};
+
+/** 用户 typeList 关系列表 变更参数  */
+export type UserTypeListRelationListMutationArguments = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Scalars['String']>;
+  /** 用户 */
+  user?: InputMaybe<UserInput>;
+  /** typeList 引用 */
+  typeListRef?: InputMaybe<PermissionType>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 变更内容列表 */
+  list?: InputMaybe<Array<InputMaybe<UserTypeListRelationInput>>>;
+  /** 匹配条件 */
+  where?: InputMaybe<UserTypeListRelationExpression>;
+};
+
+/** 用户 typeList 关系列表 查询参数 */
+export type UserTypeListRelationListQueryArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** typeList 引用 */
+  typeListRef?: InputMaybe<PermissionTypeExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 排序 */
+  orderBy?: InputMaybe<UserTypeListRelationOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserTypeListRelationExpression>>>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** 用户 typeList 关系列表 订阅参数 */
+export type UserTypeListRelationListSubscriptionArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** typeList 引用 */
+  typeListRef?: InputMaybe<PermissionTypeExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 排序 */
+  orderBy?: InputMaybe<UserTypeListRelationOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserTypeListRelationExpression>>>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 变更内容列表 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** 用户 typeList 关系 变更参数 */
+export type UserTypeListRelationMutationArguments = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Scalars['String']>;
+  /** 用户 */
+  user?: InputMaybe<UserInput>;
+  /** typeList 引用 */
+  typeListRef?: InputMaybe<PermissionType>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<Scalars['Int']>;
+  /** 域 */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** 变更内容 */
+  input?: InputMaybe<UserTypeListRelationInput>;
+  /** 匹配条件 */
+  where?: InputMaybe<UserTypeListRelationExpression>;
+};
+
+/** 用户 typeList 关系 排序 */
+export type UserTypeListRelationOrderBy = {
+  /** ID */
+  id?: InputMaybe<Sort>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<Sort>;
+  /** 用户 */
+  user?: InputMaybe<UserOrderBy>;
+  /** typeList 引用 */
+  typeListRef?: InputMaybe<Sort>;
+  /** 已移除 */
+  isDeprecated?: InputMaybe<Sort>;
+  /** 版本 */
+  version?: InputMaybe<Sort>;
+  /** 域 */
+  realmId?: InputMaybe<Sort>;
+  /** 创建者 */
+  createUserId?: InputMaybe<Sort>;
+  /** 创建时间 */
+  createTime?: InputMaybe<Sort>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<Sort>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<Sort>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<Sort>;
+  /** 用户 typeList 关系 数量 */
+  idCount?: InputMaybe<Sort>;
+  /** ID 最大值 */
+  idMax?: InputMaybe<Sort>;
+  /** ID 最小值 */
+  idMin?: InputMaybe<Sort>;
+  /** 用户 引用 数量 */
+  userRefCount?: InputMaybe<Sort>;
+  /** 用户 引用 最大值 */
+  userRefMax?: InputMaybe<Sort>;
+  /** 用户 引用 最小值 */
+  userRefMin?: InputMaybe<Sort>;
+  /** typeList 引用 数量 */
+  typeListRefCount?: InputMaybe<Sort>;
+  /** typeList 引用 最大值 */
+  typeListRefMax?: InputMaybe<Sort>;
+  /** typeList 引用 最小值 */
+  typeListRefMin?: InputMaybe<Sort>;
+};
+
+/** 用户 typeList 关系 查询参数 */
+export type UserTypeListRelationQueryArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** typeList 引用 */
+  typeListRef?: InputMaybe<PermissionTypeExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 分组 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserTypeListRelationExpression>>>;
+};
+
+/** 用户 typeList 关系 订阅参数 */
+export type UserTypeListRelationSubscriptionArguments = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 用户 引用 */
+  userRef?: InputMaybe<StringExpression>;
+  /** 用户 */
+  user?: InputMaybe<UserExpression>;
+  /** typeList 引用 */
+  typeListRef?: InputMaybe<PermissionTypeExpression>;
+  /** 包含已移除 */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** 版本 */
+  version?: InputMaybe<IntExpression>;
+  /** 域 */
+  realmId?: InputMaybe<IntExpression>;
+  /** 创建者 */
+  createUserId?: InputMaybe<StringExpression>;
+  /** 创建时间 */
+  createTime?: InputMaybe<StringExpression>;
+  /** 更新者 */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** 更新时间 */
+  updateTime?: InputMaybe<StringExpression>;
+  /** 创建组 */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** 分组 */
+  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** 取非 */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** 与/或 */
+  cond?: InputMaybe<Conditional>;
+  /** 查询表达式组 */
+  exs?: InputMaybe<Array<InputMaybe<UserTypeListRelationExpression>>>;
 };
 
 export type With = {

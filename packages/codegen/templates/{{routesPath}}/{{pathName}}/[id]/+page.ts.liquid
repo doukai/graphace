@@ -15,7 +15,7 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
     {%- endif %}
     return {
         {%- if hasFileField %}
-        mutation_singleUpload_Store = createMutation_singleUpload_Store(event),
+        mutation_singleUpload_Store: createMutation_singleUpload_Store(event),
         {%- endif %}
         query_{{ name | camelCase }}_Store: event.params.id === '_' ?
             createQuery_{{ name | camelCase }}_Store(event) :

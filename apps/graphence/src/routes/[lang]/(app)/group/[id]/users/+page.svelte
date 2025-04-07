@@ -161,6 +161,31 @@
 					readonly: !permissions.auth('User::realm::WRITE'),
 					disabled: !permissions.auth('User::realm::WRITE'),
 					hidden: !permissions.auth('User::realm::READ')
+				},
+				file: {
+					readonly: !permissions.auth('User::file::WRITE'),
+					disabled: !permissions.auth('User::file::WRITE'),
+					hidden: !permissions.auth('User::file::READ')
+				},
+				files: {
+					readonly: !permissions.auth('User::files::WRITE'),
+					disabled: !permissions.auth('User::files::WRITE'),
+					hidden: !permissions.auth('User::files::READ')
+				},
+				booleanList: {
+					readonly: !permissions.auth('User::booleanList::WRITE'),
+					disabled: !permissions.auth('User::booleanList::WRITE'),
+					hidden: !permissions.auth('User::booleanList::READ')
+				},
+				intList: {
+					readonly: !permissions.auth('User::intList::WRITE'),
+					disabled: !permissions.auth('User::intList::WRITE'),
+					hidden: !permissions.auth('User::intList::READ')
+				},
+				typeList: {
+					readonly: !permissions.auth('User::typeList::WRITE'),
+					disabled: !permissions.auth('User::typeList::WRITE'),
+					hidden: !permissions.auth('User::typeList::READ')
 				}
 			}}
 			on:search={(e) => {

@@ -6,6 +6,7 @@
 	import type { Query_user_realm_Store } from '~/lib/stores/query/query_user_realm_store';
 	import type { Mutation_user_realm_Store } from '~/lib/stores/mutation/mutation_user_realm_store';
 	import type { Mutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
+	import type { Mutation_singleUpload_Store } from '~/lib/stores/mutation/mutation_singleUpload_store';
 	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
 	import type { RealmInput, MutationRealmArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
@@ -21,6 +22,7 @@
 	$: node = user?.realm;
 	$: mutation_user_realm_Store = data.mutation_user_realm_Store as Mutation_user_realm_Store;
 	$: mutation_realm_Store = data.mutation_realm_Store as Mutation_realm_Store;
+	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store as Mutation_singleUpload_Store;
 
 	let value = {};
 	let showUnbindButton = false;
@@ -138,6 +140,11 @@
 			}}
 			on:goto={(e) => to(`../../${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
+			on:upload={(e) => {
+				mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
+					e.detail.then(result.data?.singleUpload)
+				);
+			}}
 		/>
 	</CardBody>
 </Card>

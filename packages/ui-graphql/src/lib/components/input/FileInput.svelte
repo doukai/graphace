@@ -24,7 +24,7 @@
 		{readonly}
 		{disabled}
 		class={className}
-		on:change
+		on:upload
 	/>
 {:else}
 	<FileInput
@@ -36,6 +36,6 @@
 		{readonly}
 		{disabled}
 		class={className}
-		on:change
+		on:upload
 	/>
 {/if}

@@ -13,6 +13,9 @@ const query = /* GraphQL */ `mutation Mutation_user_roles($user_id: String, $use
     email
     phones
     disable
+    booleanList
+    intList
+    typeList
     isDeprecated
     version
     realmId

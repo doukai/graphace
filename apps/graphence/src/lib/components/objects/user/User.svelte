@@ -90,6 +90,21 @@
 					label: $LL.graphql.objects.User.fields.disable.name(),
 					hidden: !permissions.auth('User::disable::READ')
 				},
+				{
+					value: 'booleanList',
+					label: $LL.graphql.objects.User.fields.booleanList.name(),
+					hidden: !permissions.auth('User::booleanList::READ')
+				},
+				{
+					value: 'intList',
+					label: $LL.graphql.objects.User.fields.intList.name(),
+					hidden: !permissions.auth('User::intList::READ')
+				},
+				{
+					value: 'typeList',
+					label: $LL.graphql.objects.User.fields.typeList.name(),
+					hidden: !permissions.auth('User::typeList::READ')
+				}
 			]
 		},
 		{
@@ -153,6 +168,78 @@
 				},
 			],
 			hidden: !permissions.auth('User::realm::READ')
+		},
+		{
+			value: 'file',
+			label: $LL.graphql.objects.User.fields.file.name(),
+			options: [
+				{
+					value: 'id',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.id.name(),
+					hidden: !permissions.auth('File::id::READ')
+				},
+				{
+					value: 'name',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.name.name(),
+					hidden: !permissions.auth('File::name::READ')
+				},
+				{
+					value: 'contentType',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.contentType.name(),
+					hidden: !permissions.auth('File::contentType::READ')
+				},
+				{
+					value: 'content',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.content.name(),
+					hidden: !permissions.auth('File::content::READ')
+				},
+				{
+					value: 'url',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.url.name(),
+					hidden: !permissions.auth('File::url::READ')
+				},
+				{
+					value: 'isDeprecated',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.isDeprecated.name(),
+					hidden: !permissions.auth('File::isDeprecated::READ')
+				},
+				{
+					value: 'version',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.version.name(),
+					hidden: !permissions.auth('File::version::READ')
+				},
+				{
+					value: 'realmId',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.realmId.name(),
+					hidden: !permissions.auth('File::realmId::READ')
+				},
+				{
+					value: 'createUserId',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.createUserId.name(),
+					hidden: !permissions.auth('File::createUserId::READ')
+				},
+				{
+					value: 'createTime',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.createTime.name(),
+					hidden: !permissions.auth('File::createTime::READ')
+				},
+				{
+					value: 'updateUserId',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.updateUserId.name(),
+					hidden: !permissions.auth('File::updateUserId::READ')
+				},
+				{
+					value: 'updateTime',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.updateTime.name(),
+					hidden: !permissions.auth('File::updateTime::READ')
+				},
+				{
+					value: 'createGroupId',
+					label: $LL.graphql.objects.User.fields.file.name() + $LL.graphql.objects.File.fields.createGroupId.name(),
+					hidden: !permissions.auth('File::createGroupId::READ')
+				},
+			],
+			hidden: !permissions.auth('User::file::READ')
 		},
 	];
 
@@ -307,6 +394,78 @@
 				}
 			],
 			hidden: !permissions.auth('User::roles::READ')
+		},
+		{
+			value: 'files',
+			label: $LL.graphql.objects.User.fields.files.name(),
+			options: [
+				{
+					value: 'id',
+					label: $LL.graphql.objects.User.fields.files.name() + $LL.graphql.objects.File.fields.id.name(),
+					hidden: !permissions.auth('File::id::READ')
+				},
+				{
+					value: 'name',
+					label: $LL.graphql.objects.User.fields.files.name() + $LL.graphql.objects.File.fields.name.name(),
+					hidden: !permissions.auth('File::name::READ')
+				},
+				{
+					value: 'contentType',
+					label: $LL.graphql.objects.User.fields.files.name() + $LL.graphql.objects.File.fields.contentType.name(),
+					hidden: !permissions.auth('File::contentType::READ')
+				},
+				{
+					value: 'content',
+					label: $LL.graphql.objects.User.fields.files.name() + $LL.graphql.objects.File.fields.content.name(),
+					hidden: !permissions.auth('File::content::READ')
+				},
+				{
+					value: 'url',
+					label: $LL.graphql.objects.User.fields.files.name() + $LL.graphql.objects.File.fields.url.name(),
+					hidden: !permissions.auth('File::url::READ')
+				},
+				{
+					value: 'isDeprecated',
+					label: $LL.graphql.objects.User.fields.files.name() + $LL.graphql.objects.File.fields.isDeprecated.name(),
+					hidden: !permissions.auth('File::isDeprecated::READ')
+				},
+				{
+					value: 'version',
+					label: $LL.graphql.objects.User.fields.files.name() + $LL.graphql.objects.File.fields.version.name(),
+					hidden: !permissions.auth('File::version::READ')
+				},
+				{
+					value: 'realmId',
+					label: $LL.graphql.objects.User.fields.files.name() + $LL.graphql.objects.File.fields.realmId.name(),
+					hidden: !permissions.auth('File::realmId::READ')
+				},
+				{
+					value: 'createUserId',
+					label: $LL.graphql.objects.User.fields.files.name() + $LL.graphql.objects.File.fields.createUserId.name(),
+					hidden: !permissions.auth('File::createUserId::READ')
+				},
+				{
+					value: 'createTime',
+					label: $LL.graphql.objects.User.fields.files.name() + $LL.graphql.objects.File.fields.createTime.name(),
+					hidden: !permissions.auth('File::createTime::READ')
+				},
+				{
+					value: 'updateUserId',
+					label: $LL.graphql.objects.User.fields.files.name() + $LL.graphql.objects.File.fields.updateUserId.name(),
+					hidden: !permissions.auth('File::updateUserId::READ')
+				},
+				{
+					value: 'updateTime',
+					label: $LL.graphql.objects.User.fields.files.name() + $LL.graphql.objects.File.fields.updateTime.name(),
+					hidden: !permissions.auth('File::updateTime::READ')
+				},
+				{
+					value: 'createGroupId',
+					label: $LL.graphql.objects.User.fields.files.name() + $LL.graphql.objects.File.fields.createGroupId.name(),
+					hidden: !permissions.auth('File::createGroupId::READ')
+				},
+			],
+			hidden: !permissions.auth('User::files::READ')
 		},
 	];
 

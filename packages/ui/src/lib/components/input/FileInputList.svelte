@@ -60,8 +60,8 @@
 						if (e.currentTarget?.files?.[0]) {
 							dispatch('upload', {
 								file: e.currentTarget.files[0],
-								then: (data) => {
-									item = data;
+								then: (fileInfo) => {
+									item = fileInfo;
 								}
 							});
 						}

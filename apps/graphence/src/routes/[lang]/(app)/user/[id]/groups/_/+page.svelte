@@ -4,6 +4,7 @@
 	import { ot, to, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
 	import GroupForm from '~/lib/components/objects/group/GroupForm.svelte';
 	import type { Mutation_user_groups_Store } from '~/lib/stores/mutation/mutation_user_groups_store';
+	import type { Mutation_singleUpload_Store } from '~/lib/stores/mutation/mutation_singleUpload_store';
 	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
 	import type { GroupInput } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
@@ -16,6 +17,7 @@
 
 	$: id = data.id as string;
 	$: mutation_user_groups_Store = data.mutation_user_groups_Store as Mutation_user_groups_Store;
+	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store as Mutation_singleUpload_Store;
 
 	let value = {};
 	let errors: Record<string, Errors> = {};
@@ -116,6 +118,11 @@
 			}}
 			on:goto={(e) => to(`../../../${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
+			on:upload={(e) => {
+				mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
+					e.detail.then(result.data?.singleUpload)
+				);
+			}}
 		/>
 	</CardBody>
 </Card>

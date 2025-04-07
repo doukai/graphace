@@ -7,7 +7,7 @@
 	import type { Errors } from '@graphace/commons';
 
 	export let value: (boolean | null | undefined)[] | null | undefined = undefined;
-	export let placeholder: string = '';
+	export let placeholder: string | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
@@ -28,7 +28,7 @@
 	} = createToggleGroup({
 		type: 'multiple',
 		disabled: disabled || readonly,
-		defaultValue: value.filter((item) => item === true).map((_, index) => index + ''),
+		defaultValue: value?.filter((item) => item === true).map((_, index) => index + '') || [],
 		onValueChange: ({ curr, next }) => {
 			value = value.map((_, index) => next.includes(index + ''));
 			dispatch('change', { value });
@@ -39,7 +39,9 @@
 
 <div
 	use:melt={$root}
-	class="join data-[orientation='vertical']:flex-col tooltip {className} {contextClass}"
+	class="join data-[orientation='vertical']:flex-col {placeholder
+		? 'tooltip'
+		: ''} {className} {contextClass}"
 	data-tip={placeholder}
 >
 	<button
