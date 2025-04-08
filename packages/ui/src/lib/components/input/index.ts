@@ -17,6 +17,7 @@ import TimeInput from "./TimeInput.svelte";
 import TimeInputList from "./TimeInputList.svelte";
 import Toggle from "./Toggle.svelte";
 import ToggleList from "./ToggleList.svelte";
+import TypeaheadInput from "./TypeaheadInput.svelte";
 
 export {
     Checkbox,
@@ -37,5 +38,6 @@ export {
     TimeInput,
     TimeInputList,
     Toggle,
-    ToggleList
+    ToggleList,
+    TypeaheadInput
 }

@@ -39,54 +39,62 @@ export const createGrid = (
         }
     };
 
-    const getGridType = (typeName: string, filedName: string, subFiledName?: string): Record<string, any> | undefined => {
-        const filed = subFiledName ?
-            __schema.getType(__schema.getType(typeName)?.getField(filedName)?.getType().getNamedType().getName())?.getField(subFiledName) :
-            __schema.getType(typeName)?.getField(filedName);
-        if (filed) {
-            if (filed.getType().getNamedType().isEnum()) {
+    const getGridType = (typeName: string, fieldName: string, subFieldName?: string): Record<string, any> | undefined => {
+        const field = subFieldName ?
+            __schema.getType(__schema.getType(typeName)?.getField(fieldName)?.getType().getNamedType().getName())?.getField(subFieldName) :
+            __schema.getType(typeName)?.getField(fieldName);
+        if (field) {
+            if (field.getType().getNamedType().isEnum()) {
                 return {
                     editor: 'enum',
-                    hasList: filed.getType().hasList(),
-                    source: __schema.getType(filed.getType().getNamedType().getName())
+                    hasList: field.getType().hasList(),
+                    source: __schema.getType(field.getType().getNamedType().getName())
                         ?.getEnumValues()
-                        ?.map(enumValue => ({ label: getEnumValueLabel(filed.getType().getNamedType().getName(), enumValue.getName()), value: enumValue.getName() }))
+                        ?.map(enumValue => ({ label: getEnumValueLabel(field.getType().getNamedType().getName(), enumValue.getName()), value: enumValue.getName() }))
                 };
             }
-            switch (filed.getType().getNamedType().getName()) {
+            switch (field.getType().getNamedType().getName()) {
                 case 'Boolean':
                     return {
                         editor: 'boolean',
-                        hasList: filed.getType().hasList()
+                        hasList: field.getType().hasList()
                     };
                 case 'Int':
                 case 'Float':
                 case 'BigInteger':
                 case 'BigDecimal':
-                    return {
-                        columnType: 'numeric', editor: 'numeric',
-                        hasList: filed.getType().hasList()
-                    };
+                    if (field.getType().hasList()) {
+                        return {
+                            editor: 'numeric',
+                            hasList: field.getType().hasList()
+                        };
+                    } else {
+                        return {
+                            columnType: 'numeric',
+                            editor: 'numeric',
+                            hasList: field.getType().hasList()
+                        };
+                    }
                 case 'Date':
                     return {
                         editor: 'date',
-                        hasList: filed.getType().hasList()
+                        hasList: field.getType().hasList()
                     };
                 case 'Time':
                     return {
                         editor: 'time',
-                        hasList: filed.getType().hasList()
+                        hasList: field.getType().hasList()
                     };
                 case 'DateTime':
                 case 'Timestamp':
                     return {
                         editor: 'datetime',
-                        hasList: filed.getType().hasList()
+                        hasList: field.getType().hasList()
                     };
             }
             return {
                 editor: 'string',
-                hasList: filed.getType().hasList()
+                hasList: field.getType().hasList()
             };
         }
     };
@@ -352,6 +360,7 @@ export const createGrid = (
                                     .slice(1, div.childNodes.length - 1)
                                     .map(input => (input as HTMLInputElement).value)
                                     .filter(item => item !== null && item !== undefined)
+                                    .map(item => '' + item)
                                     .join(',');
                             }
                         } else {
@@ -915,7 +924,7 @@ export const createGrid = (
                     } else if (subFieldType.isEnum()) {
                         return value.map(item => enumValueToName(subFieldType.getName(), item)).join(',');
                     } else {
-                        return value.join(',');
+                        return value.map(item => '' + item).join(',');
                     }
                 } else {
                     if (subFieldType.getName() === 'Boolean') {
@@ -936,7 +945,7 @@ export const createGrid = (
                 } else if (fieldType.isEnum()) {
                     return value.map(item => enumValueToName(fieldType.getName(), item)).join(',');
                 } else {
-                    return value.join(',');
+                    return value.map(item => '' + item).join(',');
                 }
             } else {
                 if (fieldType.getName() === 'Boolean') {

@@ -19,7 +19,7 @@
 	export let showSelectButton: boolean = false;
 	export let showBackButton: boolean = false;
 	let className: string | undefined =
-		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2';
+		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto';
 	export { className as class };
 	export let fields: {
 		name: Option;

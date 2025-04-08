@@ -45,7 +45,7 @@
 	data-tip={placeholder}
 >
 	<button
-		class="btn btn-primary join-item shrink"
+		class="btn join-item shrink"
 		aria-label="-"
 		on:click|preventDefault={(e) => (value = [...value.slice(1)])}
 	>
@@ -66,7 +66,7 @@
 	{/each}
 	<button
 		{id}
-		class="btn btn-primary join-item shrink"
+		class="btn join-item shrink"
 		aria-label="+"
 		on:click|preventDefault={(e) => (value = [...value, false])}
 	>

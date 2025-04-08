@@ -44,7 +44,7 @@
 
 <div {id} class="{errors?.errors ? 'border-2 border-error' : ''} space-y-2">
 	{#each value || [] as item, index}
-		<div class="flex justify-between">
+		<div class="flex justify-between space-x-1">
 			{#if item}
 				<a href={downloadUrl + '/' + item.id} class="link" download>{item.name}</a>
 			{:else}
@@ -84,7 +84,7 @@
 	{/each}
 	<div class="tooltip flex items-center" data-tip={$LL.ui.inputList.add()}>
 		<button
-			class="btn btn-square btn-outline w-full"
+			class="btn btn-xs btn-square btn-outline w-full"
 			on:click|preventDefault={(e) => {
 				addItem(value.length);
 			}}

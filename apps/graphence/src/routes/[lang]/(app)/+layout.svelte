@@ -25,6 +25,7 @@
 	import { SideBarMenu, ModuleMenu, UserMenu } from '~/lib/components/menu';
 	import { setLocale, LL, locale } from '$i18n/i18n-svelte';
 	import type { LayoutData } from './$types';
+	import TypeaheadInput from '~/lib/components/menu/TypeaheadInput.svelte';
 
 	export let data: LayoutData;
 
@@ -38,6 +39,8 @@
 	setContext('ui.card-body', 'w-full md:max-h-[calc(100vh-8rem)]');
 	setContext('ui.dropdown-content', 'bg-base-200 text-base-content rounded-box shadow-xl');
 	setContext('ui.popover-content', 'bg-base-200 rounded-box shadow-xl');
+
+	let searchIndex: never[] = [];
 </script>
 
 <svelte:head>
@@ -80,6 +83,12 @@
 						<span class="uppercase text-[#E535AB]">ACE</span>
 					</div>
 				</a>
+				<TypeaheadInput
+					label={$LL.graphence.components.search.label()}
+					placeholder={$LL.graphence.components.search.label()}
+					data={searchIndex}
+					limit={8}
+				/>
 			</NavBarStart>
 			<NavBarEnd class="flex items-center space-x-1">
 				<ThemeDropdown zIndex={$zIndex + 1} />
