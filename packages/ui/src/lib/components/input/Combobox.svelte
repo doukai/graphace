@@ -17,8 +17,7 @@
 	import { createCombobox, createTagsInput, melt, type Tag } from '@melt-ui/svelte';
 	import { Check, ChevronUp, ChevronDown, XMark } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import Loading from '../loading/Loading.svelte';
-	import Empty from '../div/Empty.svelte';
+	import { Loading, Empty } from '~';
 	import { nanoid } from 'nanoid';
 
 	export let options: Option[] | null | undefined = [];

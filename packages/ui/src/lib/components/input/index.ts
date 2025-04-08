@@ -17,6 +17,7 @@ import TimeInput from "./TimeInput.svelte";
 import TimeInputList from "./TimeInputList.svelte";
 import Toggle from "./Toggle.svelte";
 import ToggleList from "./ToggleList.svelte";
+import { type TItem, tItems } from "./TypeaheadInput.svelte";
 import TypeaheadInput from "./TypeaheadInput.svelte";
 
 export {
@@ -39,5 +40,7 @@ export {
     TimeInputList,
     Toggle,
     ToggleList,
+    type TItem,
+    tItems,
     TypeaheadInput
 }

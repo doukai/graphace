@@ -4,7 +4,20 @@
 		data: any;
 		onSelect: (data: any) => void;
 	};
-	export let data: TItem[];
+
+	let data: TItem[] = [];
+
+	export const tItems = {
+		add: (tItem: TItem | TItem[]) => {
+			if (Array.isArray(tItem)) {
+				data.push(...tItem?.filter((newItem) => !data.some((item) => item.name === newItem.name)));
+			} else {
+				if (!data.some((item) => item.name === tItem.name)) {
+					data.push(tItem);
+				}
+			}
+		}
+	};
 </script>
 
 <script lang="ts">
@@ -28,11 +41,11 @@
 		os = getOS() || '';
 	});
 
-	let seachboxEl: HTMLLabelElement;
+	let rootElement: HTMLLabelElement;
 	function handleKeydown(e: KeyboardEvent) {
 		if ((e.keyCode === 75 && e.metaKey) || (e.keyCode === 75 && e.ctrlKey)) {
 			e.preventDefault();
-			let searchInput: HTMLInputElement | null = seachboxEl.querySelector('input[type=search]');
+			let searchInput: HTMLInputElement | null = rootElement.querySelector('input[type=search]');
 			if (searchInput) {
 				searchInput.focus();
 				dispatch('focus', {});
@@ -44,9 +57,9 @@
 <svelte:window on:keydown={handleKeydown} />
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
-<label class="relative flex {className}" bind:this={seachboxEl}>
+<label class="relative {className}" bind:this={rootElement}>
 	<svg
-		class="pointer-events-none absolute ml-4 self-center stroke-current opacity-60 text-base-content z-[{zIndex +
+		class="pointer-events-none absolute my-3.5 ml-4 stroke-current opacity-60 text-base-content z-[{zIndex +
 			1}]"
 		width="16"
 		height="16"
@@ -69,9 +82,8 @@
 		extract={(item) => item.name}
 		{inputAfterSelect}
 		on:select={(e) => {
-			if (e.detail.selected.onSelect) {
-				e.detail.selected.onSelect(e.detail.selected.data);
-			}
+			const tItem = e.detail.original;
+			tItem.onSelect(tItem.data);
 		}}
 		on:clear
 		on:input
@@ -82,10 +94,10 @@
 		let:result
 	>
 		<div class="py-1 text-sm font-normal">
-			{data[result.index].name}
+			{result.original.name}
 		</div>
 	</Typeahead>
-	<div class="pointer-events-none absolute right-4 self-center gap-1 opacity-50 hidden lg:flex">
+	<div class="pointer-events-none absolute right-4 top-2.5 gap-1 opacity-50 hidden lg:flex">
 		{#if ['macos'].includes(os)}
 			<kbd class="kbd kbd-sm">⌘</kbd>
 			<kbd class="kbd kbd-sm">K</kbd>

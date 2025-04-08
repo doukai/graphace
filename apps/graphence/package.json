@@ -71,7 +71,6 @@
 		"graphace-codegen": "workspace:*",
 		"graphace-codegen-preset": "workspace:*",
 		"graphql": "^16.9.0",
-		"is-plain-obj": "^4.1.0",
 		"jwt-decode": "^3.1.2",
 		"lodash": "^4.17.21",
 		"nanoid": "^4.0.2",

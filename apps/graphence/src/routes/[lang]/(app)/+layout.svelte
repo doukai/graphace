@@ -20,12 +20,15 @@
 		NavBarStart,
 		NavBarEnd,
 		ThemeDropdown,
-		LocaleDropdown
+		LocaleDropdown,
+		tItems,
+		TypeaheadInput
 	} from '@graphace/ui';
 	import { SideBarMenu, ModuleMenu, UserMenu } from '~/lib/components/menu';
+	import pages from '~/lib/data/pages.json';
 	import { setLocale, LL, locale } from '$i18n/i18n-svelte';
+	import type { NamespaceGraphqlTranslation } from '$i18n/i18n-types';
 	import type { LayoutData } from './$types';
-	import TypeaheadInput from '~/lib/components/menu/TypeaheadInput.svelte';
 
 	export let data: LayoutData;
 
@@ -40,7 +43,23 @@
 	setContext('ui.dropdown-content', 'bg-base-200 text-base-content rounded-box shadow-xl');
 	setContext('ui.popover-content', 'bg-base-200 rounded-box shadow-xl');
 
-	let searchIndex: never[] = [];
+	let open = false;
+
+	$: tItems.add(
+		pages
+			.flatMap((page) => page.menus || [page])
+			.map((page) => ({
+				name: $LL.graphql.objects[page.name as keyof NamespaceGraphqlTranslation['objects']].name(),
+				data: page,
+				onSelect: (data: any) => {
+					init(
+						'/' + $locale + data.href,
+						$LL.graphql.objects[data.name as keyof NamespaceGraphqlTranslation['objects']].name()
+					);
+					open = false;
+				}
+			}))
+	);
 </script>
 
 <svelte:head>
@@ -52,7 +71,7 @@
 	/>
 </svelte:head>
 
-<Drawer let:id class="lg:drawer-open overflow-hidden">
+<Drawer bind:open let:id class="lg:drawer-open overflow-hidden">
 	<DrawerContent {id} class="bg-base-200">
 		<NavBar zIndex={$zIndex + 1} class="sticky top-0 bg-base-100">
 			<NavBarStart class="flex items-center space-x-1">
@@ -84,10 +103,8 @@
 					</div>
 				</a>
 				<TypeaheadInput
-					label={$LL.graphence.components.search.label()}
 					placeholder={$LL.graphence.components.search.label()}
-					data={searchIndex}
-					limit={8}
+					class="max-lg:hidden"
 				/>
 			</NavBarStart>
 			<NavBarEnd class="flex items-center space-x-1">
@@ -102,7 +119,7 @@
 				<UserMenu zIndex={$zIndex + 1} />
 			</NavBarEnd>
 		</NavBar>
-		<main class="max-w-[100vw] p-1 md:p-2">
+		<main class="max-w-[100vw] lg:max-w-[calc(100vw-20rem)] p-1 md:p-2">
 			<div class="flex justify-between items-center pl-4">
 				<Breadcrumbs>
 					<li>
@@ -138,7 +155,8 @@
 	<DrawerSide {id} class="z-[{$zIndex + 2}] lg:z-[0]">
 		<div>
 			<div
-				class="bg-base-100 sticky top-0 items-center gap-2 bg-opacity-90 px-4 py-2 backdrop-blur max-lg:hidden"
+				class="bg-base-100 sticky top-0 items-center gap-2 px-4 py-2 backdrop-blur z-[{$zIndex +
+					2}]"
 			>
 				<a
 					href={null}
@@ -147,7 +165,7 @@
 					}}
 					aria-current="page"
 					aria-label={$LL.graphence.path.home()}
-					class="flex-0 btn btn-ghost px-2"
+					class="flex-0 btn btn-ghost px-2 max-lg:hidden"
 				>
 					<Iconify class="h-6 w-6" icon="logos:graphql" />
 					<div class="font-title inline-flex text-lg md:text-2xl">
@@ -155,6 +173,7 @@
 						<span class="uppercase text-[#E535AB]">ACE</span>
 					</div>
 				</a>
+				<TypeaheadInput placeholder={$LL.graphence.components.search.label()} class="lg:hidden" />
 			</div>
 			<SideBarMenu />
 		</div>

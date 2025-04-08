@@ -1,7 +1,6 @@
 import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
-import isPlainObject from "is-plain-obj";
 import { type GraphQLError, Operation, Field, Directive, type NamedStruct, type NamedStructExpression, type TreeStruct, type TreeStructExpression } from '@graphace/graphql';
 
 export function createQueryStore<T>(event: LoadEvent | RequestEvent, url: string | URL): OperationStore<T> {
@@ -429,4 +428,19 @@ export function isExtractableFile(value: any) {
         (typeof File !== "undefined" && value instanceof File) ||
         (typeof Blob !== "undefined" && value instanceof Blob)
     );
+}
+
+function isPlainObject(value: any) {
+    if (typeof value !== 'object' || value === null) {
+        return false
+    }
+
+    const prototype = Object.getPrototypeOf(value)
+    return (
+        (prototype === null ||
+            prototype === Object.prototype ||
+            Object.getPrototypeOf(prototype) === null) &&
+        !(Symbol.toStringTag in value) &&
+        !(Symbol.iterator in value)
+    )
 }
