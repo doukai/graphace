@@ -22,7 +22,7 @@
 		ThemeDropdown,
 		LocaleDropdown,
 		tItems,
-		TypeaheadInput
+		Typeahead
 	} from '@graphace/ui';
 	import { SideBarMenu, ModuleMenu, UserMenu } from '~/lib/components/menu';
 	import pages from '~/lib/data/pages.json';
@@ -102,10 +102,7 @@
 						<span class="uppercase text-[#E535AB]">ACE</span>
 					</div>
 				</a>
-				<TypeaheadInput
-					placeholder={$LL.graphence.components.search.label()}
-					class="max-lg:hidden"
-				/>
+				<Typeahead placeholder={$LL.graphence.components.search.label()} class="max-lg:hidden" />
 			</NavBarStart>
 			<NavBarEnd class="flex items-center space-x-1">
 				<ThemeDropdown zIndex={$zIndex + 1} />
@@ -132,7 +129,7 @@
 							<span>{$LL.graphence.path.home()}</span>
 						</a>
 					</li>
-					{#each $history as page}
+					{#each $history.filter((history) => history.url.pathname !== `/${$locale}`) as page}
 						<li>
 							<a
 								href={null}
@@ -173,7 +170,7 @@
 						<span class="uppercase text-[#E535AB]">ACE</span>
 					</div>
 				</a>
-				<TypeaheadInput placeholder={$LL.graphence.components.search.label()} class="lg:hidden" />
+				<Typeahead placeholder={$LL.graphence.components.search.label()} class="w-full lg:hidden" />
 			</div>
 			<SideBarMenu />
 		</div>

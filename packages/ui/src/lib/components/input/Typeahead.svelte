@@ -1,9 +1,30 @@
+<script lang="ts" context="module">
+	export type TItem = {
+		name: string;
+		data: any;
+		onSelect: (data: any) => void;
+	};
+
+	let data: TItem[] = [];
+
+	export const tItems = {
+		add: (tItem: TItem | TItem[]) => {
+			if (Array.isArray(tItem)) {
+				data.push(...tItem?.filter((newItem) => !data.some((item) => item.name === newItem.name)));
+			} else {
+				if (!data.some((item) => item.name === tItem.name)) {
+					data.push(tItem);
+				}
+			}
+		}
+	};
+</script>
+
 <script lang="ts">
 	import { onMount, createEventDispatcher } from 'svelte';
 	import Typeahead from 'svelte-typeahead';
 	import { getOS } from '@graphace/commons';
 
-	export let data: any[];
 	export let placeholder: string | undefined;
 	export let limit: number = 10;
 	export let inputAfterSelect: 'clear' | 'update' | 'keep' = 'clear';
@@ -20,11 +41,11 @@
 		os = getOS() || '';
 	});
 
-	let seachboxEl: HTMLLabelElement;
+	let rootElement: HTMLLabelElement;
 	function handleKeydown(e: KeyboardEvent) {
 		if ((e.keyCode === 75 && e.metaKey) || (e.keyCode === 75 && e.ctrlKey)) {
 			e.preventDefault();
-			let searchInput: HTMLInputElement | null = seachboxEl.querySelector('input[type=search]');
+			let searchInput: HTMLInputElement | null = rootElement.querySelector('input[type=search]');
 			if (searchInput) {
 				searchInput.focus();
 				dispatch('focus', {});
@@ -36,9 +57,9 @@
 <svelte:window on:keydown={handleKeydown} />
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
-<label class="relative flex {className}" bind:this={seachboxEl}>
+<label class="typeahead relative flex {className}" bind:this={rootElement}>
 	<svg
-		class="pointer-events-none absolute ml-4 self-center stroke-current opacity-60 text-base-content z-[{zIndex +
+		class="pointer-events-none absolute self-center ml-4 stroke-current opacity-60 text-base-content z-[{zIndex +
 			1}]"
 		width="16"
 		height="16"
@@ -60,7 +81,10 @@
 		{data}
 		extract={(item) => item.name}
 		{inputAfterSelect}
-		on:select
+		on:select={(e) => {
+			const tItem = e.detail.original;
+			tItem.onSelect(tItem.data);
+		}}
 		on:clear
 		on:input
 		on:change
@@ -70,7 +94,7 @@
 		let:result
 	>
 		<div class="py-1 text-sm font-normal">
-			{data[result.index].name}
+			{result.original.name}
 		</div>
 	</Typeahead>
 	<div class="pointer-events-none absolute right-4 self-center gap-1 opacity-50 hidden lg:flex">
@@ -85,12 +109,18 @@
 </label>
 
 <style global>
+	.typeahead.typeahead [data-svelte-typeahead][data-svelte-typeahead] {
+		background-color: transparent;
+		width: 100%;
+		max-width: 100%;
+	}
 	[data-svelte-search][data-svelte-search] input {
 		background-color: transparent;
 		color: inherit;
 		border: 2px solid transparent;
 		border-radius: var(--rounded-btn);
 		padding-left: 2.5em;
+		width: 100%;
 	}
 	[data-svelte-search][data-svelte-search] input::placeholder {
 		color: inherit;

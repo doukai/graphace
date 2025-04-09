@@ -56,4 +56,6 @@
 			</ul>
 		</DropdownContent>
 	</Dropdown>
+{:else}
+	<a class="btn btn-ghost" href={`/${$locale}/login`}>{$LL.graphence.login.login()}</a>
 {/if}

@@ -1,5 +1,6 @@
 import { goto } from '$app/navigation';
 import { type Writable, writable, derived, get } from 'svelte/store';
+import { page } from '$app/stores';
 
 export const history: Writable<{ url: URL, name?: string | undefined }[]> = writable([]);
 
@@ -11,7 +12,7 @@ export const canBack = derived(
 export function add(url: string | URL, name?: string, params?: Record<string, string | undefined>): URL {
     let toUrl: URL;
     if (typeof url === "string") {
-        toUrl = new URL(url, window.location.href);
+        toUrl = new URL(url, get(page).url.href);
     } else {
         toUrl = url;
     }
