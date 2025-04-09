@@ -5,8 +5,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark } from '@steeze-ui/heroicons';
 	import { Form, FormControl, Label } from '@graphace/ui';
-	import { StringFilter, BooleanFilter, IntFilter } from '@graphace/ui-graphql';
-	import PermissionTypeFilter from '~/lib/components/enums/permission-type/PermissionTypeFilter.svelte';
+	import { StringFilter, BooleanFilter } from '@graphace/ui-graphql';
 	import UserSelectFilter from '~/lib/components/objects/user/UserSelectFilter.svelte';
 	import GroupSelectFilter from '~/lib/components/objects/group/GroupSelectFilter.svelte';
 	import RoleSelectFilter from '~/lib/components/objects/role/RoleSelectFilter.svelte';
@@ -37,9 +36,6 @@
 			disable: undefined,
 			groups: { id: undefined },
 			roles: { id: undefined },
-			booleanList: undefined,
-			intList: undefined,
-			typeList: undefined
 		}
 	}
 
@@ -59,9 +55,6 @@
 			disable: undefined,
 			groups: { id: undefined },
 			roles: { id: undefined },
-			booleanList: undefined,
-			intList: undefined,
-			typeList: undefined
 		};
 		dispatch('filter', {});
 		$open = false;
@@ -123,18 +116,6 @@
 				<Label {id} text={$LL.graphql.objects.User.fields.roles.name()} />
 				<div class="grid grid-cols-2 gap-1">
 					<RoleSelectFilter {id} name="roles" bind:value={value.roles.id} />
-				</div>
-				<Label {id} text={$LL.graphql.objects.User.fields.booleanList.name()} />
-				<div class="grid grid-cols-2 gap-1">
-					<BooleanFilter {id} name="booleanList" bind:value={value.booleanList} />
-				</div>
-				<Label {id} text={$LL.graphql.objects.User.fields.intList.name()} />
-				<div class="grid grid-cols-2 gap-1">
-					<IntFilter {id} name="intList" bind:value={value.intList} />
-				</div>
-				<Label {id} text={$LL.graphql.objects.User.fields.typeList.name()} />
-				<div class="grid grid-cols-2 gap-1">
-					<PermissionTypeFilter {id} name="typeList" bind:value={value.typeList} />
 				</div>
 			</FormControl>
 		</Form>

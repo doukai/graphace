@@ -41,17 +41,6 @@ const query = /* GraphQL */ `mutation Mutation_role_users($role_id: String, $rol
         name
         description
       }
-      file {
-        id
-        name
-      }
-      files {
-        id
-        name
-      }
-      booleanList
-      intList
-      typeList
       isDeprecated
       version
       realmId

@@ -44,17 +44,6 @@ const query = /* GraphQL */ `mutation Mutation_group_users($group_id: String, $g
         name
         description
       }
-      file {
-        id
-        name
-      }
-      files {
-        id
-        name
-      }
-      booleanList
-      intList
-      typeList
       isDeprecated
       version
       realmId

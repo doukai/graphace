@@ -28,17 +28,6 @@ const query = /* GraphQL */ `query Query_currentUser {
       name
       description
     }
-    file {
-      id
-      name
-    }
-    files {
-      id
-      name
-    }
-    booleanList
-    intList
-    typeList
     isDeprecated
     version
     realmId

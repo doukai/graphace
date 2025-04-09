@@ -6,7 +6,6 @@
 	import UserTable from '~/lib/components/objects/user/UserTable.svelte';
 	import type { Query_userConnection_Store } from '~/lib/stores/query/query_userConnection_store';
 	import type { Mutation_user_Store } from '~/lib/stores/mutation/mutation_user_store';
-	import type { Mutation_singleUpload_Store } from '~/lib/stores/mutation/mutation_singleUpload_store';
 	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
 	import type { QueryUserConnectionArgs, UserOrderBy, MutationUserArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
@@ -21,7 +20,6 @@
 	$: nodes = $query_userConnection_Store.response.data?.userConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $query_userConnection_Store.response.data?.userConnection?.totalCount || 0;
 	$: mutation_user_Store = data.mutation_user_Store as Mutation_user_Store;
-	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store as Mutation_singleUpload_Store;
 	let args: QueryUserConnectionArgs = {};
 	let orderBy: UserOrderBy = {};
 	let pageNumber: number = 1;
@@ -142,31 +140,6 @@
 					readonly: !permissions.auth('User::realm::WRITE'),
 					disabled: !permissions.auth('User::realm::WRITE'),
 					hidden: !permissions.auth('User::realm::READ')
-				},
-				file: {
-					readonly: !permissions.auth('User::file::WRITE'),
-					disabled: !permissions.auth('User::file::WRITE'),
-					hidden: !permissions.auth('User::file::READ')
-				},
-				files: {
-					readonly: !permissions.auth('User::files::WRITE'),
-					disabled: !permissions.auth('User::files::WRITE'),
-					hidden: !permissions.auth('User::files::READ')
-				},
-				booleanList: {
-					readonly: !permissions.auth('User::booleanList::WRITE'),
-					disabled: !permissions.auth('User::booleanList::WRITE'),
-					hidden: !permissions.auth('User::booleanList::READ')
-				},
-				intList: {
-					readonly: !permissions.auth('User::intList::WRITE'),
-					disabled: !permissions.auth('User::intList::WRITE'),
-					hidden: !permissions.auth('User::intList::READ')
-				},
-				typeList: {
-					readonly: !permissions.auth('User::typeList::WRITE'),
-					disabled: !permissions.auth('User::typeList::WRITE'),
-					hidden: !permissions.auth('User::typeList::READ')
 				}
 			}}
 			on:search={(e) => {
@@ -221,11 +194,6 @@
 			}}
 			on:create={(e) => to('user/_', '_')}
 			on:goto={(e) => to(`user/${e.detail.path}`, e.detail.name)}
-			on:upload={(e) => {
-				mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
-					e.detail.then(result.data?.singleUpload)
-				);
-			}}
 		/>
 		<div class="divider" />
 		<Pagination

@@ -2,95 +2,6 @@ import type { BaseTranslation } from '../../i18n-types';
 
 const en: BaseTranslation = {
 	objects: {
-		File: {
-			name: 'File',
-			fields: {
-				id: {
-					name: 'id',
-				},
-				name: {
-					name: 'name',
-				},
-				contentType: {
-					name: 'contentType',
-				},
-				content: {
-					name: 'content',
-				},
-				url: {
-					name: 'url',
-				},
-				isDeprecated: {
-					name: 'isDeprecated',
-				},
-				version: {
-					name: 'version',
-				},
-				realmId: {
-					name: 'realmId',
-				},
-				createUserId: {
-					name: 'createUserId',
-				},
-				createTime: {
-					name: 'createTime',
-				},
-				updateUserId: {
-					name: 'updateUserId',
-				},
-				updateTime: {
-					name: 'updateTime',
-				},
-				createGroupId: {
-					name: 'createGroupId',
-				},
-				idCount: {
-					name: 'idCount',
-				},
-				idMax: {
-					name: 'idMax',
-				},
-				idMin: {
-					name: 'idMin',
-				},
-				nameCount: {
-					name: 'nameCount',
-				},
-				nameMax: {
-					name: 'nameMax',
-				},
-				nameMin: {
-					name: 'nameMin',
-				},
-				contentTypeCount: {
-					name: 'contentTypeCount',
-				},
-				contentTypeMax: {
-					name: 'contentTypeMax',
-				},
-				contentTypeMin: {
-					name: 'contentTypeMin',
-				},
-				contentCount: {
-					name: 'contentCount',
-				},
-				contentMax: {
-					name: 'contentMax',
-				},
-				contentMin: {
-					name: 'contentMin',
-				},
-				urlCount: {
-					name: 'urlCount',
-				},
-				urlMax: {
-					name: 'urlMax',
-				},
-				urlMin: {
-					name: 'urlMin',
-				}
-			}
-		},
 		Group: {
 			name: 'Group',
 			fields: {
@@ -615,21 +526,6 @@ const en: BaseTranslation = {
 				realm: {
 					name: 'realm',
 				},
-				file: {
-					name: 'file',
-				},
-				files: {
-					name: 'files',
-				},
-				booleanList: {
-					name: 'booleanList',
-				},
-				intList: {
-					name: 'intList',
-				},
-				typeList: {
-					name: 'typeList',
-				},
 				isDeprecated: {
 					name: 'isDeprecated',
 				},
@@ -654,9 +550,6 @@ const en: BaseTranslation = {
 				createGroupId: {
 					name: 'createGroupId',
 				},
-				fileUserRelation: {
-					name: 'fileUserRelation',
-				},
 				userPhonesRelation: {
 					name: 'userPhonesRelation',
 				},
@@ -665,15 +558,6 @@ const en: BaseTranslation = {
 				},
 				roleUserRelation: {
 					name: 'roleUserRelation',
-				},
-				userBooleanListRelation: {
-					name: 'userBooleanListRelation',
-				},
-				userIntListRelation: {
-					name: 'userIntListRelation',
-				},
-				userTypeListRelation: {
-					name: 'userTypeListRelation',
 				},
 				groupsAggregate: {
 					name: 'groupsAggregate',
@@ -704,24 +588,6 @@ const en: BaseTranslation = {
 				},
 				roleUserRelationConnection: {
 					name: 'roleUserRelationConnection',
-				},
-				userBooleanListRelationAggregate: {
-					name: 'userBooleanListRelationAggregate',
-				},
-				userBooleanListRelationConnection: {
-					name: 'userBooleanListRelationConnection',
-				},
-				userIntListRelationAggregate: {
-					name: 'userIntListRelationAggregate',
-				},
-				userIntListRelationConnection: {
-					name: 'userIntListRelationConnection',
-				},
-				userTypeListRelationAggregate: {
-					name: 'userTypeListRelationAggregate',
-				},
-				userTypeListRelationConnection: {
-					name: 'userTypeListRelationConnection',
 				},
 				idCount: {
 					name: 'idCount',

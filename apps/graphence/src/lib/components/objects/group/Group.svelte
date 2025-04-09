@@ -368,21 +368,6 @@
 					hidden: !permissions.auth('User::disable::READ')
 				},
 				{
-					value: 'booleanList',
-					label: $LL.graphql.objects.Group.fields.users.name() + $LL.graphql.objects.User.fields.booleanList.name(),
-					hidden: !permissions.auth('User::booleanList::READ')
-				},
-				{
-					value: 'intList',
-					label: $LL.graphql.objects.Group.fields.users.name() + $LL.graphql.objects.User.fields.intList.name(),
-					hidden: !permissions.auth('User::intList::READ')
-				},
-				{
-					value: 'typeList',
-					label: $LL.graphql.objects.Group.fields.users.name() + $LL.graphql.objects.User.fields.typeList.name(),
-					hidden: !permissions.auth('User::typeList::READ')
-				},
-				{
 					value: 'isDeprecated',
 					label: $LL.graphql.objects.Group.fields.users.name() + $LL.graphql.objects.User.fields.isDeprecated.name(),
 					hidden: !permissions.auth('User::isDeprecated::READ')

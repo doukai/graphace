@@ -3,12 +3,10 @@
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Form, FormControl, Label, Loading } from '@graphace/ui';
-	import { type Option, StringInput, BooleanInput, IntInput, FileInput, ObjectInput } from '@graphace/ui-graphql';
-	import PermissionTypeInput from '~/lib/components/enums/permission-type/PermissionTypeInput.svelte';
+	import { type Option, StringInput, BooleanInput, ObjectInput } from '@graphace/ui-graphql';
 	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
-	import FileTableDialog from '~/lib/components/objects/file/FileTableDialog.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { UserInput } from '~/lib/types/schema';
 	
@@ -34,11 +32,6 @@
 		groups: Option;
 		roles: Option;
 		realm: Option;
-		file: Option;
-		files: Option;
-		booleanList: Option;
-		intList: Option;
-		typeList: Option;
 	} = {
 		name: { readonly: false, disabled: false, hidden: false },
 		description: { readonly: false, disabled: false, hidden: false },
@@ -49,12 +42,7 @@
 		disable: { readonly: false, disabled: false, hidden: false },
 		groups: { readonly: false, disabled: false, hidden: false },
 		roles: { readonly: false, disabled: false, hidden: false },
-		realm: { readonly: false, disabled: false, hidden: false },
-		file: { readonly: false, disabled: false, hidden: false },
-		files: { readonly: false, disabled: false, hidden: false },
-		booleanList: { readonly: false, disabled: false, hidden: false },
-		intList: { readonly: false, disabled: false, hidden: false },
-		typeList: { readonly: false, disabled: false, hidden: false }
+		realm: { readonly: false, disabled: false, hidden: false }
 	};
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
@@ -249,87 +237,6 @@
 							disabled={fields.realm.disabled}
 						/>
 					{/if}
-				</FormControl>
-			{/if}
-		</slot>
-		<slot name="file">
-			{#if !fields.file.hidden}
-				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.User.fields.file.name()} />
-					<FileInput
-					 	{id}
-						name="file"
-						bind:value={value.file}
-						errors={errors.file}
-						readonly={fields.file.readonly}
-						disabled={fields.file.disabled}
-						on:upload
-					/>
-				</FormControl>
-			{/if}
-		</slot>
-		<slot name="files">
-			{#if !fields.files.hidden}
-				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.User.fields.files.name()} />
-					<FileInput
-					 	{id}
-						name="files"
-						bind:value={value.files}
-						errors={errors.files}
-						readonly={fields.files.readonly}
-						disabled={fields.files.disabled}
-						list
-						on:upload
-					/>
-				</FormControl>
-			{/if}
-		</slot>
-		<slot name="booleanList">
-			{#if !fields.booleanList.hidden}
-				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.User.fields.booleanList.name()} />
-					<BooleanInput
-					 	{id}
-						name="booleanList"
-						bind:value={value.booleanList}
-						errors={errors.booleanList}
-						readonly={fields.booleanList.readonly}
-						disabled={fields.booleanList.disabled}
-						list
-					/>
-				</FormControl>
-			{/if}
-		</slot>
-		<slot name="intList">
-			{#if !fields.intList.hidden}
-				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.User.fields.intList.name()} />
-					<IntInput
-					 	{id}
-						name="intList"
-						bind:value={value.intList}
-						errors={errors.intList}
-						readonly={fields.intList.readonly}
-						disabled={fields.intList.disabled}
-						list
-					/>
-				</FormControl>
-			{/if}
-		</slot>
-		<slot name="typeList">
-			{#if !fields.typeList.hidden}
-				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.User.fields.typeList.name()} />
-					<PermissionTypeInput
-					 	{id}
-						name="typeList"
-						bind:value={value.typeList}
-						errors={errors.typeList}
-						readonly={fields.typeList.readonly}
-						disabled={fields.typeList.disabled}
-						list
-					/>
 				</FormControl>
 			{/if}
 		</slot>

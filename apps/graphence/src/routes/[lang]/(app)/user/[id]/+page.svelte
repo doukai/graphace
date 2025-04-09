@@ -5,7 +5,6 @@
 	import UserForm from '~/lib/components/objects/user/UserForm.svelte';
 	import type { Query_user_Store } from '~/lib/stores/query/query_user_store';
 	import type { Mutation_user_Store } from '~/lib/stores/mutation/mutation_user_store';
-	import type { Mutation_singleUpload_Store } from '~/lib/stores/mutation/mutation_singleUpload_store';
 	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
 	import type { MutationUserArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
@@ -19,7 +18,6 @@
 	$: query_user_Store = data.query_user_Store as Query_user_Store;
 	$: node = $query_user_Store.response.data?.user;
 	$: mutation_user_Store = data.mutation_user_Store as Mutation_user_Store;
-	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store as Mutation_singleUpload_Store;
 
 	let value = {};
 	let errors: Record<string, Errors> = {};
@@ -114,31 +112,6 @@
 					readonly: !permissions.auth('User::realm::WRITE'),
 					disabled: !permissions.auth('User::realm::WRITE'),
 					hidden: !permissions.auth('User::realm::READ')
-				},
-				file: {
-					readonly: !permissions.auth('User::file::WRITE'),
-					disabled: !permissions.auth('User::file::WRITE'),
-					hidden: !permissions.auth('User::file::READ')
-				},
-				files: {
-					readonly: !permissions.auth('User::files::WRITE'),
-					disabled: !permissions.auth('User::files::WRITE'),
-					hidden: !permissions.auth('User::files::READ')
-				},
-				booleanList: {
-					readonly: !permissions.auth('User::booleanList::WRITE'),
-					disabled: !permissions.auth('User::booleanList::WRITE'),
-					hidden: !permissions.auth('User::booleanList::READ')
-				},
-				intList: {
-					readonly: !permissions.auth('User::intList::WRITE'),
-					disabled: !permissions.auth('User::intList::WRITE'),
-					hidden: !permissions.auth('User::intList::READ')
-				},
-				typeList: {
-					readonly: !permissions.auth('User::typeList::WRITE'),
-					disabled: !permissions.auth('User::typeList::WRITE'),
-					hidden: !permissions.auth('User::typeList::READ')
 				}
 			}}
 			on:save={(e) => {
@@ -162,11 +135,6 @@
 			}}
 			on:goto={(e) => to(e.detail.path, e.detail.name)}
 			on:back={(e) => ot()}
-			on:upload={(e) => {
-				mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
-					e.detail.then(result.data?.singleUpload)
-				);
-			}}
 		/>
 	</CardBody>
 </Card>

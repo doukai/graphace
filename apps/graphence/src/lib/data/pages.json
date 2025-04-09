@@ -1,13 +1,5 @@
 [
 	{
-        "name": "File",
-        "tags": "File",
-        "href": "/file",
-        "authPermissions": [
-            "File::*::*"
-        ]
-	},
-	{
         "name": "Group",
         "tags": "Group",
         "href": "/group",
