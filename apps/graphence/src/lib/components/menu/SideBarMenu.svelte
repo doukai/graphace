@@ -63,7 +63,7 @@
 						{/each}
 					</ul>
 				</li>
-			{:else if permissions.auth(...(menu.authPermissions || []))}
+			{:else if !menu.menus && permissions.auth(...(menu.authPermissions || []))}
 				<li>
 					<a
 						href={null}
