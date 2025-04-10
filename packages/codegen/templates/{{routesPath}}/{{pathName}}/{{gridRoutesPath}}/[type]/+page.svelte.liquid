@@ -23,12 +23,12 @@
 	$: showOptionButton = data.showOptionButton;
 	$: showFilterButton = data.fields;
 
-	$: query_{{ name | paramCase }}Connection_Store = data.query_{{ name | paramCase }}Connection_Store as OperationStore<{{ name }}Connection>;
-	$: nodes = $query_{{ name | paramCase }}Connection_Store.response.data?.{{ name | paramCase }}Connection?.edges?.map(
+	$: query_{{ name | camelCase }}Connection_Store = data.query_{{ name | camelCase }}Connection_Store as OperationStore<{{ name }}Connection>;
+	$: nodes = $query_{{ name | camelCase }}Connection_Store.response.data?.{{ name | camelCase }}Connection?.edges?.map(
 		(edge) => edge?.node
 	);
-	$: totalCount = $query_{{ name | paramCase }}Connection_Store.response.data?.{{ name | paramCase }}Connection?.totalCount || 0;
-	const mutation_{{ name | paramCase }}List_Store = data.mutation_{{ name | paramCase }}List_Store as OperationStore<{{ name }}[]>;
+	$: totalCount = $query_{{ name | camelCase }}Connection_Store.response.data?.{{ name | camelCase }}Connection?.totalCount || 0;
+	const mutation_{{ name | camelCase }}List_Store = data.mutation_{{ name | camelCase }}List_Store as OperationStore<{{ name }}[]>;
 
 	let fields: Field[] = data.fields || [];
 	let queryFields: Field[] = data.fields || [];
@@ -42,11 +42,11 @@
 		errors = {};
 		args.first = pageSize;
 		args.offset = ((to || pageNumber) - 1) * pageSize;
-		query_{{ name | paramCase }}Connection_Store
+		query_{{ name | camelCase }}Connection_Store
 			.fetch({
 				fields: [
 					createConnectionField({
-						name: '{{ name | paramCase }}Connection',
+						name: '{{ name | camelCase }}Connection',
 						args: buildArguments(args),
 						fields:
 							data.type === 'mutation'
@@ -69,10 +69,10 @@
 		args: Query{{ name }}ConnectionArgs;
 		directives?: Directive[];
 	}) => {
-		return query_{{ name | paramCase }}Connection_Store.fetch({
+		return query_{{ name | camelCase }}Connection_Store.fetch({
 			fields: [
 				createConnectionField({
-					name: '{{ name | paramCase }}Connection',
+					name: '{{ name | camelCase }}Connection',
 					args: buildArguments(params.args),
 					fields: params.fields,
 					directives: params.directives
@@ -92,7 +92,7 @@
 				{showHeader}
 				{showOptionButton}
 				{showFilterButton}
-				isFetching={$query_{{ name | paramCase }}Connection_Store.isFetching}
+				isFetching={$query_{{ name | camelCase }}Connection_Store.isFetching}
 				class="md:h-screen"
 				on:query={(e) => query()}
 				let:fields
@@ -112,14 +112,14 @@
 					{query}
 					{buildArguments}
 					on:mutation={(e) => {
-						validate('Mutation_{{ name | paramCase }}List_Arguments', e.detail.args, $locale)
+						validate('Mutation_{{ name | camelCase }}List_Arguments', e.detail.args, $locale)
 							.then((data) => {
 								errors = {};
-								mutation_{{ name | paramCase }}List_Store
+								mutation_{{ name | camelCase }}List_Store
 									.fetch({
 										fields: [
 											new Field({
-												name: '{{ name | paramCase }}List',
+												name: '{{ name | camelCase }}List',
 												fields: e.detail.fields,
 												args: e.detail.args,
 												directives: e.detail.directives
@@ -161,7 +161,7 @@
 									console.error(result.errors);
 									toast.error($LL.{{ appName }}.message.requestFailed());
 								} else if (e.detail.then) {
-									e.detail.then(result?.data?.{{ name | paramCase }}Connection?.edges?.map((edge) => edge?.node));
+									e.detail.then(result?.data?.{{ name | camelCase }}Connection?.edges?.map((edge) => edge?.node));
 								}
 							});
 					{% raw %}}}{% endraw %}
@@ -174,7 +174,7 @@
 				{showHeader}
 				{showOptionButton}
 				{showFilterButton}
-				isFetching={$query_{{ name | paramCase }}Connection_Store.isFetching}
+				isFetching={$query_{{ name | camelCase }}Connection_Store.isFetching}
 				class="md:h-screen"
 				on:query={(e) => query()}
 				let:fields

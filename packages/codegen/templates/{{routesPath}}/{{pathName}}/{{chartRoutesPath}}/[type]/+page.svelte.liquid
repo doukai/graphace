@@ -17,11 +17,11 @@
 	$: showFooter = data.showFooter;
 	$: showOptionButton = data.showOptionButton;
 	$: showFilterButton = data.fields;
-	$: query_{{ name | paramCase }}Connection_Store = data.query_{{ name | paramCase }}Connection_Store as OperationStore<{{ name }}Connection>;
-	$: nodes = $query_{{ name | paramCase }}Connection_Store.response.data?.{{ name | paramCase }}Connection?.edges?.map(
+	$: query_{{ name | camelCase }}Connection_Store = data.query_{{ name | camelCase }}Connection_Store as OperationStore<{{ name }}Connection>;
+	$: nodes = $query_{{ name | camelCase }}Connection_Store.response.data?.{{ name | camelCase }}Connection?.edges?.map(
 		(edge) => edge?.node
 	);
-	$: totalCount = $query_{{ name | paramCase }}Connection_Store.response.data?.{{ name | paramCase }}Connection?.totalCount || 0;
+	$: totalCount = $query_{{ name | camelCase }}Connection_Store.response.data?.{{ name | camelCase }}Connection?.totalCount || 0;
 
 	let fields: Field[] = data.fields || [];
 	let args: Query{{ name }}ConnectionArgs = data.args || {};
@@ -41,11 +41,11 @@
 	const query = (to?: number | undefined) => {
 		args.first = pageSize;
 		args.offset = ((to || pageNumber) - 1) * pageSize;
-		query_{{ name | paramCase }}Connection_Store
+		query_{{ name | camelCase }}Connection_Store
 			.fetch({
 				fields: [
 					createConnectionField({
-						name: '{{ name | paramCase }}Connection',
+						name: '{{ name | camelCase }}Connection',
 						args: buildArguments(args),
 						fields: [...(args?.groupBy?.map((name) => new Field({ name })) || []), ...fields],
 						directives
@@ -70,7 +70,7 @@
 			{showOptionButton}
 			{showFilterButton}
 			class="md:h-screen"
-			isFetching={$query_{{ name | paramCase }}Connection_Store.isFetching}
+			isFetching={$query_{{ name | camelCase }}Connection_Store.isFetching}
 			on:query={(e) => query()}
 			let:fields
 			let:args
