@@ -62,6 +62,7 @@
 			bind:value
 			{errors}
 			isFetching={$query_permission_Store.isFetching}
+			isMutating={$mutation_permission_Store.isFetching}
 			fields={{
 				name: {
 					readonly: !permissions.auth('Permission::name::WRITE'),

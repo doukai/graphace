@@ -90,6 +90,7 @@
 			bind:orderBy
 			{errors}
 			isFetching={$query_realmConnection_Store.isFetching}
+			isMutating={$mutation_realm_Store.isFetching}
 			fields={{
 				name: {
 					readonly: !permissions.auth('Realm::name::WRITE'),

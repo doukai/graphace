@@ -14,6 +14,7 @@
 	
 	export let value: RoleInput | null | undefined = undefined;
 	export let isFetching: boolean = false;
+	export let isMutating: boolean = false;
 	export let errors: Record<string, Errors> = {};
 	export let showRemoveButton: boolean = false;
 	export let showUnbindButton: boolean = false;
@@ -61,6 +62,7 @@
 		{showSaveButton}
 		{showSelectButton}
 		{showBackButton}
+		loading={isMutating}
 		on:save={(e) => dispatch('save', { value })}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}

@@ -94820,8 +94820,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "OBJECT"
+          "OBJECT",
+          "FIELD"
         ],
         "args": [
           {
@@ -95083,8 +95083,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "INPUT_OBJECT",
-          "OBJECT"
+          "OBJECT",
+          "INPUT_OBJECT"
         ],
         "args": [
           {
@@ -95158,8 +95158,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "INPUT_OBJECT",
-          "OBJECT"
+          "OBJECT",
+          "INPUT_OBJECT"
         ],
         "args": [
           {
@@ -95181,11 +95181,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "SUBSCRIPTION",
           "FIELD_DEFINITION",
-          "INPUT_OBJECT",
+          "QUERY",
           "MUTATION",
-          "QUERY"
+          "INPUT_OBJECT",
+          "SUBSCRIPTION"
         ],
         "args": [
           {
@@ -95271,11 +95271,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "SUBSCRIPTION",
           "FIELD_DEFINITION",
-          "INPUT_OBJECT",
+          "QUERY",
           "MUTATION",
-          "QUERY"
+          "INPUT_OBJECT",
+          "SUBSCRIPTION"
         ],
         "args": [
           {
@@ -95314,9 +95314,9 @@
         "isRepeatable": false,
         "locations": [
           "FIELD_DEFINITION",
-          "INPUT_OBJECT",
+          "OBJECT",
           "INPUT_FIELD_DEFINITION",
-          "OBJECT"
+          "INPUT_OBJECT"
         ],
         "args": [
           {
@@ -95876,11 +95876,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "SUBSCRIPTION",
           "FIELD_DEFINITION",
-          "MUTATION",
           "OBJECT",
-          "QUERY"
+          "QUERY",
+          "MUTATION",
+          "SUBSCRIPTION"
         ],
         "args": [
           {
@@ -95918,8 +95918,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "OBJECT"
+          "OBJECT",
+          "FIELD"
         ],
         "args": [
           {
@@ -95941,8 +95941,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "OBJECT"
+          "OBJECT",
+          "FIELD"
         ],
         "args": [
           {

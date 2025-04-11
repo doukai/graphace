@@ -96,6 +96,7 @@
 			bind:value
 			{errors}
 			isFetching={$query_user_realm_Store.isFetching}
+			isMutating={$mutation_user_realm_Store.isFetching || $mutation_realm_Store.isFetching}
 			fields={{
 				name: {
 					readonly: !permissions.auth('Realm::name::WRITE'),

@@ -26,6 +26,7 @@
 	export let orderBy: GroupOrderBy = {};
 	export let selectedIdList: (string | null | undefined)[] = [];
 	export let isFetching: boolean = false;
+	export let isMutating: boolean = false;
 	export let errors: Record<number, Errors> = {};
 	export let showEditButton: boolean = false;
 	export let showRemoveButton: boolean = false;
@@ -90,6 +91,7 @@
 		{showCreateButton}
 		showSelectButton={showSelectButton && selectedIdList.length > 0}
 		{showBackButton}
+		loading={isMutating}
 		on:save={(e) => dispatch('save', { value })}
 		on:remove={(e) =>
 			dispatch('remove', {

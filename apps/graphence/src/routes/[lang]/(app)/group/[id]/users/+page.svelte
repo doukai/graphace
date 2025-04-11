@@ -8,7 +8,7 @@
 	import type { Mutation_group_users_Store } from '~/lib/stores/mutation/mutation_group_users_store';
 	import type { Mutation_user_Store } from '~/lib/stores/mutation/mutation_user_store';
 	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
-	import type { UserInput, MutationUserArgs, QueryUserConnectionArgs, GroupOrderBy } from '~/lib/types/schema';
+	import type { UserInput, MutationUserArgs, QueryUserConnectionArgs, UserOrderBy } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
@@ -111,6 +111,7 @@
 			bind:orderBy
 			{errors}
 			isFetching={$query_group_usersConnection_Store.isFetching}
+			isMutating={$mutation_group_users_Store.isFetching || $mutation_user_Store.isFetching}
 			fields={{
 				name: {
 					readonly: !permissions.auth('User::name::WRITE'),

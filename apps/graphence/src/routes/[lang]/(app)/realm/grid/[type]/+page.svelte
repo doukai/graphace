@@ -111,6 +111,7 @@
 					{getFieldName}
 					{query}
 					{buildArguments}
+					isMutating={$mutation_realmList_Store.isFetching}
 					on:mutation={(e) => {
 						validate('Mutation_realmList_Arguments', e.detail.args, $locale)
 							.then((data) => {

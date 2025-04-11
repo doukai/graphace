@@ -12,6 +12,7 @@
 	export let showCreateButton: boolean = false;
 	export let showSelectButton: boolean = false;
 	export let showBackButton: boolean = false;
+	export let loading: boolean = false;
 	let className: string | undefined = 'flex space-x-1';
 	export { className as class };
 
@@ -32,6 +33,7 @@
 	<slot name="start" />
 	{#if showRemoveButton}
 		<Button
+			{loading}
 			text={$LL.ui.button.remove()}
 			class="btn-error btn-outline max-sm:btn-square"
 			on:click={(e) => {
@@ -43,6 +45,7 @@
 	{/if}
 	{#if showUnbindButton}
 		<Button
+			{loading}
 			text={$LL.ui.button.unbind()}
 			class="btn-error btn-outline max-sm:btn-square"
 			on:click={(e) => {
@@ -54,6 +57,7 @@
 	{/if}
 	{#if showSaveButton}
 		<Button
+			{loading}
 			text={$LL.ui.button.save()}
 			class="btn-secondary max-sm:btn-square"
 			on:click={(e) => {
@@ -65,6 +69,7 @@
 	{/if}
 	{#if showCreateButton}
 		<Button
+			{loading}
 			text={$LL.ui.button.create()}
 			class="btn-primary max-sm:btn-square"
 			on:click={(e) => {
@@ -76,6 +81,7 @@
 	{/if}
 	{#if showSelectButton}
 		<Button
+			{loading}
 			text={$LL.ui.button.select()}
 			class="btn-secondary btn-outline max-sm:btn-square"
 			on:click={(e) => {

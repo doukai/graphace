@@ -90,6 +90,7 @@
 			bind:orderBy
 			{errors}
 			isFetching={$query_groupConnection_Store.isFetching}
+			isMutating={$mutation_group_Store.isFetching}
 			fields={{
 				name: {
 					readonly: !permissions.auth('Group::name::WRITE'),

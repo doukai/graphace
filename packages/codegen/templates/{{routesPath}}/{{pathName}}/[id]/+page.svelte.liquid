@@ -70,6 +70,7 @@
 			bind:value
 			{errors}
 			isFetching={$query_{{ name| camelCase }}_Store.isFetching}
+			isMutating={$mutation_{{ name | camelCase }}_Store.isFetching}
 			fields={% raw %}{{{% endraw %}
 				{%- for field in fields %}
 				{{ field.fieldName }}: {

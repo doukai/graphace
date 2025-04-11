@@ -11,7 +11,7 @@
 	import type { Mutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
 	{%- endif %}
 	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
-	import type { {{ fieldObjectInfo.name }}Input, {{ mutationTypeName }}{{ fieldObjectInfo.name }}Args, {{ queryTypeName }}{{ fieldObjectInfo.name }}ConnectionArgs, {{ name }}OrderBy } from '~/{{ schemaTypesPath }}';
+	import type { {{ fieldObjectInfo.name }}Input, {{ mutationTypeName }}{{ fieldObjectInfo.name }}Args, {{ queryTypeName }}{{ fieldObjectInfo.name }}ConnectionArgs, {{ fieldObjectInfo.name }}OrderBy } from '~/{{ schemaTypesPath }}';
 	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
@@ -119,6 +119,7 @@
 			bind:orderBy
 			{errors}
 			isFetching={$query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}Connection_Store.isFetching}
+			isMutating={$mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.isFetching || $mutation_{{ fieldObjectInfo.name | camelCase }}_Store.isFetching}
 			fields={% raw %}{{{% endraw %}
 				{%- for field in fieldObjectInfo.fields %}
 				{{ field.fieldName }}: {

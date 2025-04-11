@@ -416,182 +416,6 @@ export type NamespaceGraphenceTranslation = {
 
 export type NamespaceGraphqlTranslation = {
 	objects: {
-		File: {
-			/**
-			 * F​i​l​e
-			 */
-			name: string
-			fields: {
-				id: {
-					/**
-					 * i​d
-					 */
-					name: string
-				}
-				name: {
-					/**
-					 * n​a​m​e
-					 */
-					name: string
-				}
-				contentType: {
-					/**
-					 * c​o​n​t​e​n​t​T​y​p​e
-					 */
-					name: string
-				}
-				content: {
-					/**
-					 * c​o​n​t​e​n​t
-					 */
-					name: string
-				}
-				url: {
-					/**
-					 * u​r​l
-					 */
-					name: string
-				}
-				isDeprecated: {
-					/**
-					 * i​s​D​e​p​r​e​c​a​t​e​d
-					 */
-					name: string
-				}
-				version: {
-					/**
-					 * v​e​r​s​i​o​n
-					 */
-					name: string
-				}
-				realmId: {
-					/**
-					 * r​e​a​l​m​I​d
-					 */
-					name: string
-				}
-				createUserId: {
-					/**
-					 * c​r​e​a​t​e​U​s​e​r​I​d
-					 */
-					name: string
-				}
-				createTime: {
-					/**
-					 * c​r​e​a​t​e​T​i​m​e
-					 */
-					name: string
-				}
-				updateUserId: {
-					/**
-					 * u​p​d​a​t​e​U​s​e​r​I​d
-					 */
-					name: string
-				}
-				updateTime: {
-					/**
-					 * u​p​d​a​t​e​T​i​m​e
-					 */
-					name: string
-				}
-				createGroupId: {
-					/**
-					 * c​r​e​a​t​e​G​r​o​u​p​I​d
-					 */
-					name: string
-				}
-				idCount: {
-					/**
-					 * i​d​C​o​u​n​t
-					 */
-					name: string
-				}
-				idMax: {
-					/**
-					 * i​d​M​a​x
-					 */
-					name: string
-				}
-				idMin: {
-					/**
-					 * i​d​M​i​n
-					 */
-					name: string
-				}
-				nameCount: {
-					/**
-					 * n​a​m​e​C​o​u​n​t
-					 */
-					name: string
-				}
-				nameMax: {
-					/**
-					 * n​a​m​e​M​a​x
-					 */
-					name: string
-				}
-				nameMin: {
-					/**
-					 * n​a​m​e​M​i​n
-					 */
-					name: string
-				}
-				contentTypeCount: {
-					/**
-					 * c​o​n​t​e​n​t​T​y​p​e​C​o​u​n​t
-					 */
-					name: string
-				}
-				contentTypeMax: {
-					/**
-					 * c​o​n​t​e​n​t​T​y​p​e​M​a​x
-					 */
-					name: string
-				}
-				contentTypeMin: {
-					/**
-					 * c​o​n​t​e​n​t​T​y​p​e​M​i​n
-					 */
-					name: string
-				}
-				contentCount: {
-					/**
-					 * c​o​n​t​e​n​t​C​o​u​n​t
-					 */
-					name: string
-				}
-				contentMax: {
-					/**
-					 * c​o​n​t​e​n​t​M​a​x
-					 */
-					name: string
-				}
-				contentMin: {
-					/**
-					 * c​o​n​t​e​n​t​M​i​n
-					 */
-					name: string
-				}
-				urlCount: {
-					/**
-					 * u​r​l​C​o​u​n​t
-					 */
-					name: string
-				}
-				urlMax: {
-					/**
-					 * u​r​l​M​a​x
-					 */
-					name: string
-				}
-				urlMin: {
-					/**
-					 * u​r​l​M​i​n
-					 */
-					name: string
-				}
-			}
-		}
 		Group: {
 			/**
 			 * G​r​o​u​p
@@ -1632,36 +1456,6 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				file: {
-					/**
-					 * f​i​l​e
-					 */
-					name: string
-				}
-				files: {
-					/**
-					 * f​i​l​e​s
-					 */
-					name: string
-				}
-				booleanList: {
-					/**
-					 * b​o​o​l​e​a​n​L​i​s​t
-					 */
-					name: string
-				}
-				intList: {
-					/**
-					 * i​n​t​L​i​s​t
-					 */
-					name: string
-				}
-				typeList: {
-					/**
-					 * t​y​p​e​L​i​s​t
-					 */
-					name: string
-				}
 				isDeprecated: {
 					/**
 					 * i​s​D​e​p​r​e​c​a​t​e​d
@@ -1710,12 +1504,6 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				fileUserRelation: {
-					/**
-					 * f​i​l​e​U​s​e​r​R​e​l​a​t​i​o​n
-					 */
-					name: string
-				}
 				userPhonesRelation: {
 					/**
 					 * u​s​e​r​P​h​o​n​e​s​R​e​l​a​t​i​o​n
@@ -1731,24 +1519,6 @@ export type NamespaceGraphqlTranslation = {
 				roleUserRelation: {
 					/**
 					 * r​o​l​e​U​s​e​r​R​e​l​a​t​i​o​n
-					 */
-					name: string
-				}
-				userBooleanListRelation: {
-					/**
-					 * u​s​e​r​B​o​o​l​e​a​n​L​i​s​t​R​e​l​a​t​i​o​n
-					 */
-					name: string
-				}
-				userIntListRelation: {
-					/**
-					 * u​s​e​r​I​n​t​L​i​s​t​R​e​l​a​t​i​o​n
-					 */
-					name: string
-				}
-				userTypeListRelation: {
-					/**
-					 * u​s​e​r​T​y​p​e​L​i​s​t​R​e​l​a​t​i​o​n
 					 */
 					name: string
 				}
@@ -1809,42 +1579,6 @@ export type NamespaceGraphqlTranslation = {
 				roleUserRelationConnection: {
 					/**
 					 * r​o​l​e​U​s​e​r​R​e​l​a​t​i​o​n​C​o​n​n​e​c​t​i​o​n
-					 */
-					name: string
-				}
-				userBooleanListRelationAggregate: {
-					/**
-					 * u​s​e​r​B​o​o​l​e​a​n​L​i​s​t​R​e​l​a​t​i​o​n​A​g​g​r​e​g​a​t​e
-					 */
-					name: string
-				}
-				userBooleanListRelationConnection: {
-					/**
-					 * u​s​e​r​B​o​o​l​e​a​n​L​i​s​t​R​e​l​a​t​i​o​n​C​o​n​n​e​c​t​i​o​n
-					 */
-					name: string
-				}
-				userIntListRelationAggregate: {
-					/**
-					 * u​s​e​r​I​n​t​L​i​s​t​R​e​l​a​t​i​o​n​A​g​g​r​e​g​a​t​e
-					 */
-					name: string
-				}
-				userIntListRelationConnection: {
-					/**
-					 * u​s​e​r​I​n​t​L​i​s​t​R​e​l​a​t​i​o​n​C​o​n​n​e​c​t​i​o​n
-					 */
-					name: string
-				}
-				userTypeListRelationAggregate: {
-					/**
-					 * u​s​e​r​T​y​p​e​L​i​s​t​R​e​l​a​t​i​o​n​A​g​g​r​e​g​a​t​e
-					 */
-					name: string
-				}
-				userTypeListRelationConnection: {
-					/**
-					 * u​s​e​r​T​y​p​e​L​i​s​t​R​e​l​a​t​i​o​n​C​o​n​n​e​c​t​i​o​n
 					 */
 					name: string
 				}
@@ -2843,182 +2577,6 @@ export type TranslationFunctions = {
 	}
 	graphql: {
 		objects: {
-			File: {
-				/**
-				 * File
-				 */
-				name: () => LocalizedString
-				fields: {
-					id: {
-						/**
-						 * id
-						 */
-						name: () => LocalizedString
-					}
-					name: {
-						/**
-						 * name
-						 */
-						name: () => LocalizedString
-					}
-					contentType: {
-						/**
-						 * contentType
-						 */
-						name: () => LocalizedString
-					}
-					content: {
-						/**
-						 * content
-						 */
-						name: () => LocalizedString
-					}
-					url: {
-						/**
-						 * url
-						 */
-						name: () => LocalizedString
-					}
-					isDeprecated: {
-						/**
-						 * isDeprecated
-						 */
-						name: () => LocalizedString
-					}
-					version: {
-						/**
-						 * version
-						 */
-						name: () => LocalizedString
-					}
-					realmId: {
-						/**
-						 * realmId
-						 */
-						name: () => LocalizedString
-					}
-					createUserId: {
-						/**
-						 * createUserId
-						 */
-						name: () => LocalizedString
-					}
-					createTime: {
-						/**
-						 * createTime
-						 */
-						name: () => LocalizedString
-					}
-					updateUserId: {
-						/**
-						 * updateUserId
-						 */
-						name: () => LocalizedString
-					}
-					updateTime: {
-						/**
-						 * updateTime
-						 */
-						name: () => LocalizedString
-					}
-					createGroupId: {
-						/**
-						 * createGroupId
-						 */
-						name: () => LocalizedString
-					}
-					idCount: {
-						/**
-						 * idCount
-						 */
-						name: () => LocalizedString
-					}
-					idMax: {
-						/**
-						 * idMax
-						 */
-						name: () => LocalizedString
-					}
-					idMin: {
-						/**
-						 * idMin
-						 */
-						name: () => LocalizedString
-					}
-					nameCount: {
-						/**
-						 * nameCount
-						 */
-						name: () => LocalizedString
-					}
-					nameMax: {
-						/**
-						 * nameMax
-						 */
-						name: () => LocalizedString
-					}
-					nameMin: {
-						/**
-						 * nameMin
-						 */
-						name: () => LocalizedString
-					}
-					contentTypeCount: {
-						/**
-						 * contentTypeCount
-						 */
-						name: () => LocalizedString
-					}
-					contentTypeMax: {
-						/**
-						 * contentTypeMax
-						 */
-						name: () => LocalizedString
-					}
-					contentTypeMin: {
-						/**
-						 * contentTypeMin
-						 */
-						name: () => LocalizedString
-					}
-					contentCount: {
-						/**
-						 * contentCount
-						 */
-						name: () => LocalizedString
-					}
-					contentMax: {
-						/**
-						 * contentMax
-						 */
-						name: () => LocalizedString
-					}
-					contentMin: {
-						/**
-						 * contentMin
-						 */
-						name: () => LocalizedString
-					}
-					urlCount: {
-						/**
-						 * urlCount
-						 */
-						name: () => LocalizedString
-					}
-					urlMax: {
-						/**
-						 * urlMax
-						 */
-						name: () => LocalizedString
-					}
-					urlMin: {
-						/**
-						 * urlMin
-						 */
-						name: () => LocalizedString
-					}
-				}
-			}
 			Group: {
 				/**
 				 * Group
@@ -4059,36 +3617,6 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					file: {
-						/**
-						 * file
-						 */
-						name: () => LocalizedString
-					}
-					files: {
-						/**
-						 * files
-						 */
-						name: () => LocalizedString
-					}
-					booleanList: {
-						/**
-						 * booleanList
-						 */
-						name: () => LocalizedString
-					}
-					intList: {
-						/**
-						 * intList
-						 */
-						name: () => LocalizedString
-					}
-					typeList: {
-						/**
-						 * typeList
-						 */
-						name: () => LocalizedString
-					}
 					isDeprecated: {
 						/**
 						 * isDeprecated
@@ -4137,12 +3665,6 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					fileUserRelation: {
-						/**
-						 * fileUserRelation
-						 */
-						name: () => LocalizedString
-					}
 					userPhonesRelation: {
 						/**
 						 * userPhonesRelation
@@ -4158,24 +3680,6 @@ export type TranslationFunctions = {
 					roleUserRelation: {
 						/**
 						 * roleUserRelation
-						 */
-						name: () => LocalizedString
-					}
-					userBooleanListRelation: {
-						/**
-						 * userBooleanListRelation
-						 */
-						name: () => LocalizedString
-					}
-					userIntListRelation: {
-						/**
-						 * userIntListRelation
-						 */
-						name: () => LocalizedString
-					}
-					userTypeListRelation: {
-						/**
-						 * userTypeListRelation
 						 */
 						name: () => LocalizedString
 					}
@@ -4236,42 +3740,6 @@ export type TranslationFunctions = {
 					roleUserRelationConnection: {
 						/**
 						 * roleUserRelationConnection
-						 */
-						name: () => LocalizedString
-					}
-					userBooleanListRelationAggregate: {
-						/**
-						 * userBooleanListRelationAggregate
-						 */
-						name: () => LocalizedString
-					}
-					userBooleanListRelationConnection: {
-						/**
-						 * userBooleanListRelationConnection
-						 */
-						name: () => LocalizedString
-					}
-					userIntListRelationAggregate: {
-						/**
-						 * userIntListRelationAggregate
-						 */
-						name: () => LocalizedString
-					}
-					userIntListRelationConnection: {
-						/**
-						 * userIntListRelationConnection
-						 */
-						name: () => LocalizedString
-					}
-					userTypeListRelationAggregate: {
-						/**
-						 * userTypeListRelationAggregate
-						 */
-						name: () => LocalizedString
-					}
-					userTypeListRelationConnection: {
-						/**
-						 * userTypeListRelationConnection
 						 */
 						name: () => LocalizedString
 					}

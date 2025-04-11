@@ -96,6 +96,7 @@
 			bind:value
 			{errors}
 			isFetching={$query_group_parent_Store.isFetching}
+			isMutating={$mutation_group_parent_Store.isFetching || $mutation_group_Store.isFetching}
 			fields={{
 				name: {
 					readonly: !permissions.auth('Group::name::WRITE'),

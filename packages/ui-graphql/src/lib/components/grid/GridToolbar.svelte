@@ -13,6 +13,7 @@
 	export let rowIndex: number | undefined = undefined;
 	export let colIndex: number | undefined = undefined;
 	export let pageSize: number = 10;
+	export let loading: boolean = false;
 	export let setCellsFocus: (
 		cellStart?: Cell,
 		cellEnd?: Cell,
@@ -47,16 +48,19 @@
 	<button
 		class="btn btn-xs btn-secondary"
 		use:melt={$button}
-		disabled={fields.length === 0}
+		disabled={loading || fields.length === 0}
 		on:click={(e) => dispatch('mutation', {})}
 	>
+		{#if loading}
+			<span class="loading loading-xs loading-spinner" />
+		{/if}
 		{$LL.ui_graphql.grid.buttons.save()}
 	</button>
 	<div class="divider divider-horizontal mx-0" use:melt={$separator} />
 	<button
 		class="btn btn-xs btn-primary"
 		use:melt={$button}
-		disabled={fields.length === 0}
+		disabled={loading || fields.length === 0}
 		on:click={(e) => {
 			source = [
 				...Array(pageSize)
@@ -66,21 +70,28 @@
 			dispatch('change', { source });
 		}}
 	>
+		{#if loading}
+			<span class="loading loading-xs loading-spinner" />
+		{/if}
 		{$LL.ui_graphql.grid.buttons.new()}
 	</button>
 	<button
 		class="btn btn-xs btn-primary"
 		use:melt={$button}
-		disabled={fields.length === 0}
+		disabled={loading || fields.length === 0}
 		on:click={(e) => {
 			source = [...source, {}];
 			dispatch('change', { source });
 		}}
 	>
+		{#if loading}
+			<span class="loading loading-xs loading-spinner" />
+		{/if}
 		{$LL.ui_graphql.grid.buttons.append()}
 	</button>
 	{#if rowIndex !== undefined && source[rowIndex]?.isDeprecated === true}
 		<button
+			disabled={loading}
 			on:click={(e) => {
 				if (rowIndex !== undefined) {
 					source[rowIndex].isDeprecated = undefined;
@@ -94,11 +105,15 @@
 			class="btn btn-xs btn-success"
 			use:melt={$button}
 		>
+			{#if loading}
+				<span class="loading loading-xs loading-spinner" />
+			{/if}
 			{$LL.ui_graphql.grid.buttons.canel()}
 		</button>
 	{/if}
 	{#if rowIndex !== undefined && !source[rowIndex]?.isDeprecated}
 		<button
+			disabled={loading}
 			on:click={(e) => {
 				if (rowIndex !== undefined) {
 					if (source[rowIndex]?.[idFieldName]) {
@@ -117,6 +132,9 @@
 			class="btn btn-xs btn-error"
 			use:melt={$button}
 		>
+			{#if loading}
+				<span class="loading loading-xs loading-spinner" />
+			{/if}
 			{$LL.ui_graphql.grid.buttons.remove()}
 		</button>
 	{/if}

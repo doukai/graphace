@@ -24,6 +24,7 @@
 	export let fields: Field[] = [];
 	export let queryFields: Field[] = [];
 	export let args: QueryRealmListArgs = {};
+	export let isMutating: boolean = false;
 	export let errors: Record<number, Errors> = {};
 	export let exportLimit: number = 500;
 	export let getFieldName: (fieldName: string, subFieldName?: string) => string | undefined;
@@ -137,6 +138,7 @@
 		{colIndex}
 		{pageSize}
 		{setCellsFocus}
+		loading={isMutating}
 		on:query={(e) => query()}
 		on:mutation={(e) => mutation()}
 		on:change={(e) => (source = e.detail.source)}

@@ -90,6 +90,7 @@
 			bind:orderBy
 			{errors}
 			isFetching={$query_roleConnection_Store.isFetching}
+			isMutating={$mutation_role_Store.isFetching}
 			fields={{
 				name: {
 					readonly: !permissions.auth('Role::name::WRITE'),

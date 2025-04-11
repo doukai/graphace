@@ -111,6 +111,7 @@
 					{getFieldName}
 					{query}
 					{buildArguments}
+					isMutating={$mutation_{{ name | camelCase }}List_Store.isFetching}
 					on:mutation={(e) => {
 						validate('Mutation_{{ name | camelCase }}List_Arguments', e.detail.args, $locale)
 							.then((data) => {
