@@ -144,6 +144,7 @@
 		{showSaveButton}
 		{showSelectButton}
 		{showBackButton}
+		loading={isMutating}
 		on:save={(e) => dispatch('save', { value })}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
