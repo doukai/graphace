@@ -1,0 +1,145 @@
+<script lang="ts">
+	import { getContext, createEventDispatcher } from 'svelte';
+	import { melt } from '@melt-ui/svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { ListBullet } from '@steeze-ui/heroicons';
+	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
+	import { to, Dialog, toast, modal } from '@graphace/ui';
+	import { createQuery_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_store';
+	import { createMutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
+	import {{ name }}Form from '~/{{ componentsPath }}/objects/{{ name | camelCase }}/{{ name }}Form.svelte';
+	import { getLoadEvent } from '~/utils';
+	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
+	import type { Mutation{{ name }}Args, {{ name }}Input } from '~/{{ schemaTypesPath }}';
+	import { LL, locale } from '$i18n/i18n-svelte';
+
+	export let value: {{ name }}Input | null | undefined = {};
+	export let errors: Record<string, Errors> = {};
+	export let select: boolean | undefined = false;
+	export let readonly = false;
+	export let disabled = false;
+	let className: string | undefined = 'p-1';
+	export { className as class };
+
+	const { validate } = getContext<JsonSchema>('jsonSchema');
+	const permissions = getContext<PermissionsStore>('permissions');
+
+	const dispatch = createEventDispatcher<{
+		select: {
+			value: {{ name }}Input | null | undefined;
+		};
+	}>();
+
+	const query_{{ name | camelCase }}_Store = createQuery_{{ name | camelCase }}_Store(getLoadEvent());
+	$: node = $query_{{ name | camelCase }}_Store.response.data?.{{ name | camelCase }};
+	const mutation_{{ name | camelCase }}_Store = createMutation_{{ name | camelCase }}_Store(getLoadEvent());
+	let close: () => void;
+
+	$: if (node && Object.keys(node).length > 0) {
+		value = node;
+	}
+
+	const query = () => {
+		query_{{ name | camelCase }}_Store.fetch({ {{ idName }}: { val: value?.{{ idName }} } }).then((result) => {
+			if (result.errors) {
+				console.error(result.errors);
+				toast.error($LL.{{ appName }}.message.requestFailed());
+			}
+		});
+	};
+
+	const mutation = (args: Mutation{{ name }}Args) => {
+		validate('Mutation_{{ name | camelCase }}_Arguments', args, $locale)
+			.then((data) => {
+				errors = {};
+				mutation_{{ name | camelCase }}_Store.fetch(args).then((result) => {
+					if (result.errors) {
+						console.error(result.errors);
+						errors = buildGraphQLErrors(result.errors);
+						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+						if (globalError) {
+							modal.open({
+								title: $LL.{{ appName }}.message.requestFailed(),
+								description: globalError
+							});
+						}
+					} else {
+						toast.success($LL.{{ appName }}.message.requestSuccess());
+						dispatch('select', { value: result.data?.{{ name | camelCase }} });
+						close();
+					}
+				});
+			})
+			.catch((validErrors) => {
+				errors = validErrors;
+			});
+	};
+</script>
+
+<Dialog bind:close>
+	<div class="flex items-center" slot="trigger" let:trigger let:zIndex>
+		<div class="tooltip hover:z-[{zIndex + 3}]" data-tip={$LL.ui.button.select()}>
+			<button
+				use:melt={trigger}
+				class="btn btn-square btn-outline {className}"
+				{disabled}
+				on:click={(e) => {
+					if (value?.{{ idName }}) {
+						query();
+					}
+				{% raw %}}}{% endraw %}
+			>
+				<Icon src={ListBullet} class="h-5 w-5" />
+			</button>
+		</div>
+	</div>
+	<svelte:fragment let:zIndex>
+		<{{ name }}Form
+			showSaveButton={!readonly}
+			showRemoveButton={!readonly}
+			bind:value
+			{errors}
+			isFetching={$query_{{ name | camelCase }}_Store.isFetching}
+			isMutating={$mutation_{{ name | camelCase }}_Store.isFetching}
+			fields={% raw %}{{{% endraw %}
+				{%- for field in fields %}
+				{{ field.fieldName }}: {
+					readonly: !permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE'),
+					disabled: !permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE'),
+					hidden: !permissions.auth('{{ name }}::{{ field.fieldName }}::READ')
+				}{% if forloop.last == false %},{% endif %}
+				{%- endfor %}
+			{% raw %}}}{% endraw %}
+			on:save={(e) => {
+				if (e.detail.value) {
+					if (select) {
+						dispatch('select', { value: e.detail.value });
+						close();
+					} else {
+						mutation(e.detail.value);
+					}
+				}
+			{% raw %}}}{% endraw %}
+			on:remove={(e) => {
+				if (e.detail.value) {
+					if (select) {
+						dispatch('select', { value: undefined });
+						close();
+					} else {
+						modal.open({
+							title: $LL.{{ appName }}.components.modal.removeModalTitle(),
+							confirm: () => {
+								mutation({
+									where: { {{ idName }}: { val: e.detail.value?.{{ idName }} } },
+									isDeprecated: true
+								});
+								return true;
+							}
+						});
+					}
+				}
+			{% raw %}}}{% endraw %}
+			on:goto={(e) => to(e.detail.path, e.detail.name)}
+		/>
+	</svelte:fragment>
+</Dialog>

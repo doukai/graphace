@@ -50,7 +50,7 @@
 	}>();
 </script>
 
-<div class="flex justify-end md:justify-between">
+<div class="flex justify-end sm:justify-between">
 	<span class="max-sm:hidden text-xl font-semibold self-center">
 		{$LL.graphql.objects.Permission.name()}
 	</span>
@@ -202,6 +202,7 @@
 		{showSaveButton}
 		{showSelectButton}
 		{showBackButton}
+		loading={isMutating}
 		on:save={(e) => dispatch('save', { value })}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}

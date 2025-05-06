@@ -55,7 +55,7 @@
 	let selectAll: boolean;
 </script>
 
-<div class="flex md:justify-between">
+<div class="flex sm:justify-between">
 	<span class="max-sm:hidden text-xl font-semibold self-center">
 		{$LL.graphql.objects.Realm.name()}
 	</span>

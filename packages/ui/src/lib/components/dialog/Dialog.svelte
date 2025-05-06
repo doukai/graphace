@@ -45,7 +45,7 @@
 			transition:fade={{ duration: 100 }}
 		/>
 		<div
-			class="card fixed max-w-full left-1/2 top-1/2 z-[{nextZIndex}] -translate-x-1/2 -translate-y-1/2 {className} {contextClass}"
+			class="card fixed max-md:w-full max-w-full left-1/2 top-1/2 z-[{nextZIndex}] -translate-x-1/2 -translate-y-1/2 {className} {contextClass}"
 			use:melt={$content}
 		>
 			<div class="card-body max-h-[calc(100vh-5rem)] z-[{nextZIndex}]">
