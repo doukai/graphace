@@ -133,7 +133,7 @@
 			{% raw %}}}{% endraw %}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`{{ name | paramCase }}/${e.detail.value.id}`, e.detail.value.{% if isNamed %}name{% else %}{{ idName }}{% endif %});
+					to(`{{ name | paramCase }}/${e.detail.value.{{ idName }}}`, e.detail.value.{% if isNamed %}name{% else %}{{ idName }}{% endif %});
 				}
 			{% raw %}}}{% endraw %}
 			on:remove={(e) => {
@@ -143,12 +143,12 @@
 						confirm: () => {
 							if (Array.isArray(e.detail.value)) {
 								mutation({
-									where: { id: { opr: 'IN', arr: e.detail.value.map((node) => node?.id) } },
+									where: { {{ idName }}: { opr: 'IN', arr: e.detail.value.map((node) => node?.{{ idName }}) } },
 									isDeprecated: true
 								});
 							} else {
 								mutation({
-									where: { id: { val: e.detail.value?.id } },
+									where: { {{ idName }}: { val: e.detail.value?.{{ idName }} } },
 									isDeprecated: true
 								});
 							}

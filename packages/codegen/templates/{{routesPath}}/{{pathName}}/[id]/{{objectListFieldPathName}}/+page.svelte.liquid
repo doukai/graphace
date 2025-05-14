@@ -154,7 +154,7 @@
 			{% raw %}}}{% endraw %}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`../../{{ fieldObjectInfo.name | paramCase }}/${e.detail.value.id}`, e.detail.value.{% if fieldObjectInfo.isNamed %}name{% else %}{{ fieldObjectInfo.idName }}{% endif %});
+					to(`../../{{ fieldObjectInfo.name | paramCase }}/${e.detail.value.{{ fieldObjectInfo.idName }}}`, e.detail.value.{% if fieldObjectInfo.isNamed %}name{% else %}{{ fieldObjectInfo.idName }}{% endif %});
 				}
 			{% raw %}}}{% endraw %}
 			on:remove={(e) => {
@@ -164,12 +164,12 @@
 						confirm: () => {
 							if (Array.isArray(e.detail.value)) {
 								mutation({
-									where: { id: { opr: 'IN', arr: e.detail.value.map((node) => node?.id) } },
+									where: { {{ idName }}: { opr: 'IN', arr: e.detail.value.map((node) => node?.{{ idName }}) } },
 									isDeprecated: true
 								});
 							} else {
 								mutation({
-									where: { id: { val: e.detail.value?.id } },
+									where: { {{ idName }}: { val: e.detail.value?.{{ idName }} } },
 									isDeprecated: true
 								});
 							}
@@ -185,14 +185,14 @@
 						if (Array.isArray(e.detail.value)) {
 							merge(
 								e.detail.value.map((node) => ({
-									where: { id: { val: node?.id } },
+									where: { {{ idName }}: { val: node?.{{ idName }} } },
 									isDeprecated: true
 								}))
 							);
 						} else {
 							merge([
 								{
-									where: { id: { val: e.detail.value?.id } },
+									where: { {{ idName }}: { val: e.detail.value?.{{ idName }} } },
 									isDeprecated: true
 								}
 							]);
