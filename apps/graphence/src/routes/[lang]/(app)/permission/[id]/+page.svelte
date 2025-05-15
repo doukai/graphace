@@ -111,7 +111,7 @@
 						title: $LL.graphence.components.modal.removeModalTitle(),
 						confirm: () => {
 							mutation({
-								where: { id: { val: e.detail.value?.id } },
+								where: { name: { val: e.detail.value?.name } },
 								isDeprecated: true
 							});
 							return true;

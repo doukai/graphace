@@ -172,7 +172,7 @@
 			}}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`../../permission/${e.detail.value.id}`, e.detail.value.name);
+					to(`../../permission/${e.detail.value.name}`, e.detail.value.name);
 				}
 			}}
 			on:remove={(e) => {

@@ -3,9 +3,7 @@
 	import { melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ListBullet } from '@steeze-ui/heroicons';
-	{%- if useAuth %}
-	import type { PermissionsStore } from '@graphace/commons';
-	{%- endif %}
+	import type { Errors{% if useAuth %}, PermissionsStore{% endif %} } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { to, Pagination, Dialog, toast } from '@graphace/ui';
 	import { createQuery_{{ name | camelCase }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}Connection_store';
@@ -15,6 +13,7 @@
 	import LL from '$i18n/i18n-svelte';
 
 	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
+	export let triggerErrors: Errors | undefined = undefined;
 	export let textFieldName: string | undefined = undefined;
 	export let text: string | undefined = undefined;
 	export let singleChoice: boolean | undefined = false;
@@ -46,9 +45,23 @@
 	let close: () => void;
 
 	if (Array.isArray(value)) {
+		if (textFieldName) {
+			if (value.length > 3) {
+				text = value
+					.slice(0, 3)
+					.map((node) => node?.[textFieldName])
+					.join(',')
+					.concat('...');
+			} else {
+				text = value.map((node) => node?.[textFieldName]).join(',');
+			}
+		}
 		value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
 		selectedIdList = value?.map((node) => node?.where?.{{ idName }}?.val);
 	} else if (value) {
+		if (textFieldName) {
+			text = value?.[textFieldName];
+		}
 		value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
 		selectedIdList = [value.where?.{{ idName }}?.val];
 	}
@@ -67,8 +80,13 @@
 </script>
 
 <Dialog bind:close>
-	<div class="flex items-center" slot="trigger" let:trigger let:zIndex>
-		<div class="tooltip hover:z-[{zIndex + 3}]" data-tip={$LL.ui.button.select()}>
+	<div class="flex space-x-1 items-center" slot="trigger" let:trigger let:zIndex>
+		<div
+			class="tooltip {triggerErrors ? 'tooltip-open tooltip-error ' : ''} hover:z-[{zIndex + 3}]"
+			data-tip={triggerErrors
+				? triggerErrors?.errors?.map((error) => error.message).join(', ')
+				: $LL.ui.button.select()}
+		>
 			<button
 				use:melt={trigger}
 				class="btn {text ? 'btn-link' : 'btn-square btn-outline'} {className}"
@@ -82,6 +100,7 @@
 				{/if}
 			</button>
 		</div>
+		<slot/>
 	</div>
 	<svelte:fragment let:zIndex>
 		<{{ name }}Table

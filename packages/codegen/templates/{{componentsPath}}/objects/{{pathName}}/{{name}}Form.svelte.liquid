@@ -3,7 +3,7 @@
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Form, FormControl, Label, Loading } from '@graphace/ui';
-	import { type Option, {% for scalar in scalars %}{{ scalar }}Input, {% endfor %}{% if hasFileField %}FileInput, {% endif %}ObjectInput } from '@graphace/ui-graphql';
+	import { type Option, {% for scalar in scalars %}{{ scalar }}Input, {% endfor %}{% if hasFileField %}FileInput, {% endif %}ObjectLink } from '@graphace/ui-graphql';
 	{%- for enum in enums %}
 	import {{ enum }}Input from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Input.svelte';
 	{%- endfor %}
@@ -104,27 +104,27 @@
 						{%- endif %}
 					/>
 					{%- else %}
-					{#if value.{{ idName }}}
-						<ObjectInput
-							{%- if field.isNamed %}
-							namedStruct={value.{{ field.fieldName }}}
-							{%- endif %}
-							errors={errors.{{ field.fieldName }}}
-							disabled={fields.{{ field.fieldName }}.disabled}
-							path={`${value.{{ idName }}}/{{ field.fieldName | paramCase }}`}
-							name={value.{% if isNamed %}name{% else %}{{ idName }}{% endif %} + ':' + $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-							on:goto
-						/>
-					{:else}
-						<{{ field.fieldTypeName }}TableDialog
-							bind:value={value.{{ field.fieldName }}}
-							{%- if field.isListType == false %}
-							singleChoice={true}
-							{%- endif %}
-							readonly={fields.{{ field.fieldName }}.readonly}
-							disabled={fields.{{ field.fieldName }}.disabled}
-						/>
-					{/if}
+					<{{ field.fieldTypeName }}TableDialog
+						bind:value={value.{{ field.fieldName }}}
+						{%- if field.isNamed %}
+						textFieldName="name"
+						{%- endif %}
+						triggerErrors={errors.{{ field.fieldName }}}
+						{%- if field.isListType == false %}
+						singleChoice={true}
+						{%- endif %}
+						readonly={fields.{{ field.fieldName }}.readonly}
+						disabled={fields.{{ field.fieldName }}.disabled}
+					>
+						{#if value.{{ idName }}}
+							<ObjectLink
+								disabled={fields.{{ field.fieldName }}.disabled}
+								path={`${value.{{ idName }}}/{{ field.fieldName | paramCase }}`}
+								name={value.{% if isNamed %}name{% else %}{{ idName }}{% endif %} + ':' + $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+								on:goto
+							/>
+						{/if}
+					</{{ field.fieldTypeName }}TableDialog>
 					{%- endif %}
 				</FormControl>
 			{/if}

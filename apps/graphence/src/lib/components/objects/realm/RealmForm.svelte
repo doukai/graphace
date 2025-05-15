@@ -3,7 +3,7 @@
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Form, FormControl, Label, Loading } from '@graphace/ui';
-	import { type Option, StringInput, ObjectInput } from '@graphace/ui-graphql';
+	import { type Option, StringInput, ObjectLink } from '@graphace/ui-graphql';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { RealmInput } from '~/lib/types/schema';
 	

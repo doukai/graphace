@@ -5,7 +5,7 @@
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Loading, SearchInput, Table, Td } from '@graphace/ui';
-	import { type Option, {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td, {% endfor %}{% if hasFileField %}FileTd, {% endif %}ObjectTd } from '@graphace/ui-graphql';
+	import { type Option, {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td, {% endfor %}{% if hasFileField %}FileTd, {% endif %}ObjectLink } from '@graphace/ui-graphql';
 	{%- for enum in enums %}
 	import {{ enum }}Th from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Th.svelte';
 	import {{ enum }}Td from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Td.svelte';
@@ -169,7 +169,7 @@
 						{%- for field in fields %}
 						<slot name="{{ field.fieldName }}">
 							{#if !fields.{{ field.fieldName }}.hidden}
-								{%- if field.isScalarType or field.isEnumType %}
+								{%- if field.isScalarType or field.isEnumType or field.isFile %}
 								<{{ field.fieldTypeName }}Td
 									name="{{ field.fieldName }}"
 									bind:value={node.{{ field.fieldName }}}
@@ -209,35 +209,35 @@
 									{zIndex}
 								/>
 								{%- else %}
-								{#if node.{{ idName }}}
-									<ObjectTd
+								<Td errors={errors?.[row]?.iterms?.{{ field.fieldName }}} {zIndex}>
+									<{{ field.fieldTypeName }}TableDialog
+										bind:value={node.{{ field.fieldName }}}
 										{%- if field.isNamed %}
-										namedStruct={node.{{ field.fieldName }}}
+										textFieldName="name"
 										{%- endif %}
-										errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
+										{%- if field.isListType == false %}
+										singleChoice={true}
+										{%- endif %}
+										readonly={fields.{{ field.fieldName }}.readonly}
 										disabled={fields.{{ field.fieldName }}.disabled}
-										path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`}
-										name={node.{% if isNamed %}name{% else %}{{ idName }}{% endif %} + ':' + $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-										on:goto
-										{zIndex}
-									/>
-								{:else}
-									<Td {zIndex}>
-										<{{ field.fieldTypeName }}TableDialog
-											bind:value={node.{{ field.fieldName }}}
-											{%- if field.isListType == false %}
-											singleChoice={true}
-											{%- endif %}
-											readonly={fields.{{ field.fieldName }}.readonly}
-											disabled={fields.{{ field.fieldName }}.disabled}
-											on:select={(e) =>
-												dispatch('save', {
-													value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
-												})}
-											class="btn-xs"
-										/>
-									</Td>
-								{/if}
+										on:select={(e) =>
+											dispatch('save', {
+												value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
+											})}
+										class="btn-xs"
+									>
+										{#if node.{{ idName }}}
+											<ObjectLink
+												disabled={fields.{{ field.fieldName }}.disabled}
+												path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`}
+												name={node.{% if isNamed %}name{% else %}{{ idName }}{% endif %} + ':' + $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+												on:goto
+												{zIndex}
+												class="btn-xs"
+											/>
+										{/if}
+									</{{ field.fieldTypeName }}TableDialog>
+								</Td>
 								{%- endif %}
 							{/if}
 						</slot>

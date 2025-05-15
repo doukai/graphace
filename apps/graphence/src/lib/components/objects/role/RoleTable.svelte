@@ -5,7 +5,7 @@
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Loading, SearchInput, Table, Td } from '@graphace/ui';
-	import { type Option, StringTh, StringTd, ObjectTd } from '@graphace/ui-graphql';
+	import { type Option, StringTh, StringTd, ObjectLink } from '@graphace/ui-graphql';
 	import UserTh from '~/lib/components/objects/user/UserTh.svelte';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
@@ -234,30 +234,30 @@
 						</slot>
 						<slot name="users">
 							{#if !fields.users.hidden}
-								{#if node.id}
-									<ObjectTd
-										namedStruct={node.users}
-										errors={errors?.[row]?.iterms?.users}
+								<Td errors={errors?.[row]?.iterms?.users} {zIndex}>
+									<UserTableDialog
+										bind:value={node.users}
+										textFieldName="name"
+										readonly={fields.users.readonly}
 										disabled={fields.users.disabled}
-										path={`${node.id}/users`}
-										name={node.name + ':' + $LL.graphql.objects.Role.fields.users.name()}
-										on:goto
-										{zIndex}
-									/>
-								{:else}
-									<Td {zIndex}>
-										<UserTableDialog
-											bind:value={node.users}
-											readonly={fields.users.readonly}
-											disabled={fields.users.disabled}
-											on:select={(e) =>
-												dispatch('save', {
-													value: { users: node?.users, where: { id: { val: node?.id } } }
-												})}
-											class="btn-xs"
-										/>
-									</Td>
-								{/if}
+										on:select={(e) =>
+											dispatch('save', {
+												value: { users: node?.users, where: { id: { val: node?.id } } }
+											})}
+										class="btn-xs"
+									>
+										{#if node.id}
+											<ObjectLink
+												disabled={fields.users.disabled}
+												path={`${node.id}/users`}
+												name={node.name + ':' + $LL.graphql.objects.Role.fields.users.name()}
+												on:goto
+												{zIndex}
+												class="btn-xs"
+											/>
+										{/if}
+									</UserTableDialog>
+								</Td>
 							{/if}
 						</slot>
 						<slot name="groups">
@@ -296,58 +296,58 @@
 						</slot>
 						<slot name="permissions">
 							{#if !fields.permissions.hidden}
-								{#if node.id}
-									<ObjectTd
-										errors={errors?.[row]?.iterms?.permissions}
+								<Td errors={errors?.[row]?.iterms?.permissions} {zIndex}>
+									<PermissionTableDialog
+										bind:value={node.permissions}
+										readonly={fields.permissions.readonly}
 										disabled={fields.permissions.disabled}
-										path={`${node.id}/permissions`}
-										name={node.name + ':' + $LL.graphql.objects.Role.fields.permissions.name()}
-										on:goto
-										{zIndex}
-									/>
-								{:else}
-									<Td {zIndex}>
-										<PermissionTableDialog
-											bind:value={node.permissions}
-											readonly={fields.permissions.readonly}
-											disabled={fields.permissions.disabled}
-											on:select={(e) =>
-												dispatch('save', {
-													value: { permissions: node?.permissions, where: { id: { val: node?.id } } }
-												})}
-											class="btn-xs"
-										/>
-									</Td>
-								{/if}
+										on:select={(e) =>
+											dispatch('save', {
+												value: { permissions: node?.permissions, where: { id: { val: node?.id } } }
+											})}
+										class="btn-xs"
+									>
+										{#if node.id}
+											<ObjectLink
+												disabled={fields.permissions.disabled}
+												path={`${node.id}/permissions`}
+												name={node.name + ':' + $LL.graphql.objects.Role.fields.permissions.name()}
+												on:goto
+												{zIndex}
+												class="btn-xs"
+											/>
+										{/if}
+									</PermissionTableDialog>
+								</Td>
 							{/if}
 						</slot>
 						<slot name="realm">
 							{#if !fields.realm.hidden}
-								{#if node.id}
-									<ObjectTd
-										namedStruct={node.realm}
-										errors={errors?.[row]?.iterms?.realm}
+								<Td errors={errors?.[row]?.iterms?.realm} {zIndex}>
+									<RealmTableDialog
+										bind:value={node.realm}
+										textFieldName="name"
+										singleChoice={true}
+										readonly={fields.realm.readonly}
 										disabled={fields.realm.disabled}
-										path={`${node.id}/realm`}
-										name={node.name + ':' + $LL.graphql.objects.Role.fields.realm.name()}
-										on:goto
-										{zIndex}
-									/>
-								{:else}
-									<Td {zIndex}>
-										<RealmTableDialog
-											bind:value={node.realm}
-											singleChoice={true}
-											readonly={fields.realm.readonly}
-											disabled={fields.realm.disabled}
-											on:select={(e) =>
-												dispatch('save', {
-													value: { realm: node?.realm, where: { id: { val: node?.id } } }
-												})}
-											class="btn-xs"
-										/>
-									</Td>
-								{/if}
+										on:select={(e) =>
+											dispatch('save', {
+												value: { realm: node?.realm, where: { id: { val: node?.id } } }
+											})}
+										class="btn-xs"
+									>
+										{#if node.id}
+											<ObjectLink
+												disabled={fields.realm.disabled}
+												path={`${node.id}/realm`}
+												name={node.name + ':' + $LL.graphql.objects.Role.fields.realm.name()}
+												on:goto
+												{zIndex}
+												class="btn-xs"
+											/>
+										{/if}
+									</RealmTableDialog>
+								</Td>
 							{/if}
 						</slot>
 						<th class="hover:z-[{zIndex + 3}]">

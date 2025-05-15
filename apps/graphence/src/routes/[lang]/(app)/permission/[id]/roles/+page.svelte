@@ -181,12 +181,12 @@
 						confirm: () => {
 							if (Array.isArray(e.detail.value)) {
 								mutation({
-									where: { id: { opr: 'IN', arr: e.detail.value.map((node) => node?.id) } },
+									where: { name: { opr: 'IN', arr: e.detail.value.map((node) => node?.name) } },
 									isDeprecated: true
 								});
 							} else {
 								mutation({
-									where: { id: { val: e.detail.value?.id } },
+									where: { name: { val: e.detail.value?.name } },
 									isDeprecated: true
 								});
 							}
@@ -202,14 +202,14 @@
 						if (Array.isArray(e.detail.value)) {
 							merge(
 								e.detail.value.map((node) => ({
-									where: { id: { val: node?.id } },
+									where: { name: { val: node?.name } },
 									isDeprecated: true
 								}))
 							);
 						} else {
 							merge([
 								{
-									where: { id: { val: e.detail.value?.id } },
+									where: { name: { val: e.detail.value?.name } },
 									isDeprecated: true
 								}
 							]);

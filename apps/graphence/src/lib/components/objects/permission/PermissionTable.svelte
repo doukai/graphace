@@ -5,7 +5,7 @@
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Loading, SearchInput, Table, Td } from '@graphace/ui';
-	import { type Option, IDTh, IDTd, StringTh, StringTd, ObjectTd } from '@graphace/ui-graphql';
+	import { type Option, IDTh, IDTd, StringTh, StringTd, ObjectLink } from '@graphace/ui-graphql';
 	import PermissionTypeTh from '~/lib/components/enums/permission-type/PermissionTypeTh.svelte';
 	import PermissionTypeTd from '~/lib/components/enums/permission-type/PermissionTypeTd.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
@@ -293,31 +293,31 @@
 						</slot>
 						<slot name="realm">
 							{#if !fields.realm.hidden}
-								{#if node.name}
-									<ObjectTd
-										namedStruct={node.realm}
-										errors={errors?.[row]?.iterms?.realm}
+								<Td errors={errors?.[row]?.iterms?.realm} {zIndex}>
+									<RealmTableDialog
+										bind:value={node.realm}
+										textFieldName="name"
+										singleChoice={true}
+										readonly={fields.realm.readonly}
 										disabled={fields.realm.disabled}
-										path={`${node.name}/realm`}
-										name={node.name + ':' + $LL.graphql.objects.Permission.fields.realm.name()}
-										on:goto
-										{zIndex}
-									/>
-								{:else}
-									<Td {zIndex}>
-										<RealmTableDialog
-											bind:value={node.realm}
-											singleChoice={true}
-											readonly={fields.realm.readonly}
-											disabled={fields.realm.disabled}
-											on:select={(e) =>
-												dispatch('save', {
-													value: { realm: node?.realm, where: { name: { val: node?.name } } }
-												})}
-											class="btn-xs"
-										/>
-									</Td>
-								{/if}
+										on:select={(e) =>
+											dispatch('save', {
+												value: { realm: node?.realm, where: { name: { val: node?.name } } }
+											})}
+										class="btn-xs"
+									>
+										{#if node.name}
+											<ObjectLink
+												disabled={fields.realm.disabled}
+												path={`${node.name}/realm`}
+												name={node.name + ':' + $LL.graphql.objects.Permission.fields.realm.name()}
+												on:goto
+												{zIndex}
+												class="btn-xs"
+											/>
+										{/if}
+									</RealmTableDialog>
+								</Td>
 							{/if}
 						</slot>
 						<th class="hover:z-[{zIndex + 3}]">

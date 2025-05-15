@@ -3,7 +3,7 @@
 	import { melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ListBullet } from '@steeze-ui/heroicons';
-	import type { PermissionsStore } from '@graphace/commons';
+	import type { Errors, PermissionsStore } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { to, Pagination, Dialog, toast } from '@graphace/ui';
 	import { createQuery_roleConnection_Store } from '~/lib/stores/query/query_roleConnection_store';
@@ -13,6 +13,9 @@
 	import LL from '$i18n/i18n-svelte';
 
 	export let value: RoleInput | (RoleInput | null | undefined)[] | null | undefined = undefined;
+	export let triggerErrors: Errors | undefined = undefined;
+	export let textFieldName: string | undefined = undefined;
+	export let text: string | undefined = undefined;
 	export let singleChoice: boolean | undefined = false;
 	export let readonly = false;
 	export let disabled = false;
@@ -39,16 +42,24 @@
 	let close: () => void;
 
 	if (Array.isArray(value)) {
+		if (textFieldName) {
+			if (value.length > 3) {
+				text = value
+					.slice(0, 3)
+					.map((node) => node?.[textFieldName])
+					.join(',')
+					.concat('...');
+			} else {
+				text = value.map((node) => node?.[textFieldName]).join(',');
+			}
+		}
 		value = value.map((item) => ({ where: { id: { val: item?.id } } }));
 		selectedIdList = value?.map((node) => node?.where?.id?.val);
 	} else if (value) {
+		if (textFieldName) {
+			text = value?.[textFieldName];
+		}
 		value = { where: { id: { val: value.id } } };
-		selectedIdList = [value.where?.id?.val];
-	}
-
-	$: if (Array.isArray(value)) {
-		selectedIdList = value?.map((node) => node?.where?.id?.val);
-	} else if (value) {
 		selectedIdList = [value.where?.id?.val];
 	}
 
@@ -66,17 +77,27 @@
 </script>
 
 <Dialog bind:close>
-	<div class="flex items-center" slot="trigger" let:trigger let:zIndex>
-		<div class="tooltip hover:z-[{zIndex + 3}]" data-tip={$LL.ui.button.select()}>
+	<div class="flex space-x-1 items-center" slot="trigger" let:trigger let:zIndex>
+		<div
+			class="tooltip {triggerErrors ? 'tooltip-open tooltip-error ' : ''} hover:z-[{zIndex + 3}]"
+			data-tip={triggerErrors
+				? triggerErrors?.errors?.map((error) => error.message).join(', ')
+				: $LL.ui.button.select()}
+		>
 			<button
 				use:melt={trigger}
-				class="btn btn-square btn-outline {className}"
+				class="btn {text ? 'btn-link' : 'btn-square btn-outline'} {className}"
 				{disabled}
 				on:click={(e) => query(1)}
 			>
-				<Icon src={ListBullet} class="h-5 w-5" />
+				{#if text}
+					{text}
+				{:else}
+					<Icon src={ListBullet} class="h-5 w-5" />
+				{/if}
 			</button>
 		</div>
+		<slot/>
 	</div>
 	<svelte:fragment let:zIndex>
 		<RoleTable
@@ -129,12 +150,32 @@
 			on:select={(e) => {
 				if (Array.isArray(e.detail.value)) {
 					if (singleChoice) {
-						value = [{ where: { id: { val: e.detail.value?.[0]?.id } } }];
+						value = { where: { id: { val: e.detail.value?.[0]?.id } } };
+						if (textFieldName) {
+							text = e.detail.value?.[0]?.[textFieldName];
+						}
 					} else {
 						value = e.detail.value.map((node) => ({ where: { id: { val: node?.id } } }));
+						if (textFieldName) {
+							if (e.detail.value.length > 3) {
+								text = e.detail.value
+									.slice(0, 3)
+									.map((node) => node?.[textFieldName])
+									.join(',')
+									.concat('...');
+							} else {
+								text = e.detail.value.map((node) => node?.[textFieldName]).join(',');
+							}
+						}
+					}
+				} else if (e.detail.value) {
+					value = { where: { id: { val: e.detail.value?.id } } };
+					if (textFieldName) {
+						text = e.detail.value?.[textFieldName];
 					}
 				} else {
-					value = [{ where: { id: { val: e.detail.value?.id } } }];
+					value = undefined;
+					text = undefined;
 				}
 				dispatch('select', { value });
 				close();

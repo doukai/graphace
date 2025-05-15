@@ -151,7 +151,7 @@
 			}}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`permission/${e.detail.value.id}`, e.detail.value.name);
+					to(`permission/${e.detail.value.name}`, e.detail.value.name);
 				}
 			}}
 			on:remove={(e) => {
@@ -161,12 +161,12 @@
 						confirm: () => {
 							if (Array.isArray(e.detail.value)) {
 								mutation({
-									where: { id: { opr: 'IN', arr: e.detail.value.map((node) => node?.id) } },
+									where: { name: { opr: 'IN', arr: e.detail.value.map((node) => node?.name) } },
 									isDeprecated: true
 								});
 							} else {
 								mutation({
-									where: { id: { val: e.detail.value?.id } },
+									where: { name: { val: e.detail.value?.name } },
 									isDeprecated: true
 								});
 							}

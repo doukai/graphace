@@ -3,7 +3,7 @@
 	import { melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ListBullet } from '@steeze-ui/heroicons';
-	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
+	import type { Errors, JsonSchema{% if useAuth %}, PermissionsStore{% endif %} } from '@graphace/commons';
 	import { to, Dialog, toast, modal } from '@graphace/ui';
 	import { createQuery_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_store';
 	import { createMutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
@@ -14,6 +14,7 @@
 	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: {{ name }}Input | null | undefined = {};
+	export let triggerErrors: Errors | undefined = undefined;
 	export let errors: Record<string, Errors> = {};
 	export let select: boolean | undefined = false;
 	export let readonly = false;
@@ -22,7 +23,9 @@
 	export { className as class };
 
 	const { validate } = getContext<JsonSchema>('jsonSchema');
+	{%- if useAuth %}
 	const permissions = getContext<PermissionsStore>('permissions');
+	{%- endif %}
 
 	const dispatch = createEventDispatcher<{
 		select: {
@@ -77,8 +80,13 @@
 </script>
 
 <Dialog bind:close>
-	<div class="flex items-center" slot="trigger" let:trigger let:zIndex>
-		<div class="tooltip hover:z-[{zIndex + 3}]" data-tip={$LL.ui.button.select()}>
+	<div class="flex space-x-1 items-center" slot="trigger" let:trigger let:zIndex>
+		<div
+			class="tooltip {triggerErrors ? 'tooltip-open tooltip-error ' : ''} hover:z-[{zIndex + 3}]"
+			data-tip={triggerErrors
+				? triggerErrors?.errors?.map((error) => error.message).join(', ')
+				: $LL.ui.button.select()}
+		>
 			<button
 				use:melt={trigger}
 				class="btn btn-square btn-outline {className}"
@@ -92,6 +100,7 @@
 				<Icon src={ListBullet} class="h-5 w-5" />
 			</button>
 		</div>
+		<slot/>
 	</div>
 	<svelte:fragment let:zIndex>
 		<{{ name }}Form

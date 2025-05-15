@@ -14,6 +14,7 @@
 	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: RoleInput | null | undefined = {};
+	export let triggerErrors: Errors | undefined = undefined;
 	export let errors: Record<string, Errors> = {};
 	export let select: boolean | undefined = false;
 	export let readonly = false;
@@ -77,8 +78,13 @@
 </script>
 
 <Dialog bind:close>
-	<div class="flex items-center" slot="trigger" let:trigger let:zIndex>
-		<div class="tooltip hover:z-[{zIndex + 3}]" data-tip={$LL.ui.button.select()}>
+	<div class="flex space-x-1 items-center" slot="trigger" let:trigger let:zIndex>
+		<div
+			class="tooltip {triggerErrors ? 'tooltip-open tooltip-error ' : ''} hover:z-[{zIndex + 3}]"
+			data-tip={triggerErrors
+				? triggerErrors?.errors?.map((error) => error.message).join(', ')
+				: $LL.ui.button.select()}
+		>
 			<button
 				use:melt={trigger}
 				class="btn btn-square btn-outline {className}"
@@ -92,6 +98,7 @@
 				<Icon src={ListBullet} class="h-5 w-5" />
 			</button>
 		</div>
+		<slot/>
 	</div>
 	<svelte:fragment let:zIndex>
 		<RoleForm

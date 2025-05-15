@@ -94820,8 +94820,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "OBJECT"
+          "OBJECT",
+          "FIELD"
         ],
         "args": [
           {
@@ -95083,8 +95083,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "INPUT_OBJECT",
-          "OBJECT"
+          "OBJECT",
+          "INPUT_OBJECT"
         ],
         "args": [
           {
@@ -95122,8 +95122,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
           "INLINE_FRAGMENT",
+          "FIELD",
           "FRAGMENT_SPREAD"
         ],
         "args": [
@@ -95158,8 +95158,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "INPUT_OBJECT",
-          "OBJECT"
+          "OBJECT",
+          "INPUT_OBJECT"
         ],
         "args": [
           {
@@ -95181,11 +95181,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "QUERY",
+          "SUBSCRIPTION",
+          "MUTATION",
           "FIELD_DEFINITION",
           "INPUT_OBJECT",
-          "MUTATION",
-          "SUBSCRIPTION"
+          "QUERY"
         ],
         "args": [
           {
@@ -95271,11 +95271,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "QUERY",
+          "SUBSCRIPTION",
+          "MUTATION",
           "FIELD_DEFINITION",
           "INPUT_OBJECT",
-          "MUTATION",
-          "SUBSCRIPTION"
+          "QUERY"
         ],
         "args": [
           {
@@ -95313,10 +95313,10 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "INPUT_OBJECT",
+          "OBJECT",
           "FIELD_DEFINITION",
-          "INPUT_FIELD_DEFINITION",
-          "OBJECT"
+          "INPUT_OBJECT",
+          "INPUT_FIELD_DEFINITION"
         ],
         "args": [
           {
@@ -95876,11 +95876,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "QUERY",
-          "FIELD_DEFINITION",
-          "MUTATION",
           "OBJECT",
-          "SUBSCRIPTION"
+          "SUBSCRIPTION",
+          "MUTATION",
+          "FIELD_DEFINITION",
+          "QUERY"
         ],
         "args": [
           {
@@ -95918,8 +95918,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "OBJECT"
+          "OBJECT",
+          "FIELD"
         ],
         "args": [
           {
@@ -95941,8 +95941,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "OBJECT"
+          "OBJECT",
+          "FIELD"
         ],
         "args": [
           {
@@ -95980,8 +95980,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
           "INLINE_FRAGMENT",
+          "FIELD",
           "FRAGMENT_SPREAD"
         ],
         "args": [

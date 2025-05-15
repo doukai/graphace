@@ -3,7 +3,7 @@
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Form, FormControl, Label, Loading } from '@graphace/ui';
-	import { type Option, StringInput, BooleanInput, ObjectInput } from '@graphace/ui-graphql';
+	import { type Option, StringInput, BooleanInput, ObjectLink } from '@graphace/ui-graphql';
 	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
@@ -222,23 +222,23 @@
 			{#if !fields.realm.hidden}
 				<FormControl let:id>
 					<Label {id} text={$LL.graphql.objects.User.fields.realm.name()} />
-					{#if value.id}
-						<ObjectInput
-							namedStruct={value.realm}
-							errors={errors.realm}
-							disabled={fields.realm.disabled}
-							path={`${value.id}/realm`}
-							name={value.name + ':' + $LL.graphql.objects.User.fields.realm.name()}
-							on:goto
-						/>
-					{:else}
-						<RealmTableDialog
-							bind:value={value.realm}
-							singleChoice={true}
-							readonly={fields.realm.readonly}
-							disabled={fields.realm.disabled}
-						/>
-					{/if}
+					<RealmTableDialog
+						bind:value={value.realm}
+						textFieldName="name"
+						triggerErrors={errors.realm}
+						singleChoice={true}
+						readonly={fields.realm.readonly}
+						disabled={fields.realm.disabled}
+					>
+						{#if value.id}
+							<ObjectLink
+								disabled={fields.realm.disabled}
+								path={`${value.id}/realm`}
+								name={value.name + ':' + $LL.graphql.objects.User.fields.realm.name()}
+								on:goto
+							/>
+						{/if}
+					</RealmTableDialog>
 				</FormControl>
 			{/if}
 		</slot>

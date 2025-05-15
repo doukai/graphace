@@ -8,6 +8,7 @@ import { setLocale } from '$i18n/i18n-svelte';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
+	setLoadEvent(event);
 	const locale: Locales = event.data?.locale;
 	const jwt: JsonWebToken = event.data?.jwt;
 	const permissions = createPermissions(event);
@@ -26,7 +27,6 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
 	}
 
 	setLocale(locale);
-	setLoadEvent(event);
 
 	jwtStore.set(jwt);
 

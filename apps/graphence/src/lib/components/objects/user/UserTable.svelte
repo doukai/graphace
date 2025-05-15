@@ -5,7 +5,7 @@
 	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Loading, SearchInput, Table, Td } from '@graphace/ui';
-	import { type Option, StringTh, StringTd, BooleanTh, BooleanTd, ObjectTd } from '@graphace/ui-graphql';
+	import { type Option, StringTh, StringTd, BooleanTh, BooleanTd, ObjectLink } from '@graphace/ui-graphql';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
@@ -376,31 +376,31 @@
 						</slot>
 						<slot name="realm">
 							{#if !fields.realm.hidden}
-								{#if node.id}
-									<ObjectTd
-										namedStruct={node.realm}
-										errors={errors?.[row]?.iterms?.realm}
+								<Td errors={errors?.[row]?.iterms?.realm} {zIndex}>
+									<RealmTableDialog
+										bind:value={node.realm}
+										textFieldName="name"
+										singleChoice={true}
+										readonly={fields.realm.readonly}
 										disabled={fields.realm.disabled}
-										path={`${node.id}/realm`}
-										name={node.name + ':' + $LL.graphql.objects.User.fields.realm.name()}
-										on:goto
-										{zIndex}
-									/>
-								{:else}
-									<Td {zIndex}>
-										<RealmTableDialog
-											bind:value={node.realm}
-											singleChoice={true}
-											readonly={fields.realm.readonly}
-											disabled={fields.realm.disabled}
-											on:select={(e) =>
-												dispatch('save', {
-													value: { realm: node?.realm, where: { id: { val: node?.id } } }
-												})}
-											class="btn-xs"
-										/>
-									</Td>
-								{/if}
+										on:select={(e) =>
+											dispatch('save', {
+												value: { realm: node?.realm, where: { id: { val: node?.id } } }
+											})}
+										class="btn-xs"
+									>
+										{#if node.id}
+											<ObjectLink
+												disabled={fields.realm.disabled}
+												path={`${node.id}/realm`}
+												name={node.name + ':' + $LL.graphql.objects.User.fields.realm.name()}
+												on:goto
+												{zIndex}
+												class="btn-xs"
+											/>
+										{/if}
+									</RealmTableDialog>
+								</Td>
 							{/if}
 						</slot>
 						<th class="hover:z-[{zIndex + 3}]">
