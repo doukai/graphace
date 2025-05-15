@@ -19,6 +19,7 @@
 	export let singleChoice: boolean | undefined = false;
 	export let readonly = false;
 	export let disabled = false;
+	let original: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
 	let className: string | undefined = 'p-1';
 	export { className as class };
 
@@ -45,26 +46,34 @@
 	let selectedIdList: (string | null | undefined)[] | undefined = [];
 	let close: () => void;
 
-	if (Array.isArray(value)) {
+	original = value;
+
+	if (Array.isArray(original)) {
+		value = original.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
+		selectedIdList = original?.map((node) => node?.{{ idName }});
+	} else if (original) {
+		value = { where: { {{ idName }}: { val: original.{{ idName }} } } };
+		selectedIdList = [original.{{ idName }}];
+	}
+
+	$: if (Array.isArray(original)) {
 		if (textFieldName) {
-			if (value.length > 3) {
-				text = value
+			if (original.length > 3) {
+				text = original
 					.slice(0, 3)
 					.map((node) => node?.[textFieldName])
 					.join(',')
 					.concat('...');
 			} else {
-				text = value.map((node) => node?.[textFieldName]).join(',');
+				text = original.map((node) => node?.[textFieldName]).join(',');
 			}
 		}
-		value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
-		selectedIdList = value?.map((node) => node?.where?.{{ idName }}?.val);
-	} else if (value) {
+	} else if (original) {
 		if (textFieldName) {
-			text = value?.[textFieldName];
+			text = original?.[textFieldName];
 		}
-		value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
-		selectedIdList = [value.where?.{{ idName }}?.val];
+	} else {
+		text = undefined;
 	}
 
 	const query = (to?: number | undefined) => {
@@ -111,7 +120,7 @@
 			bind:orderBy
 			showEditButton={!readonly}
 			showCreateButton={!readonly}
-			showSelectButton={!readonly && (!singleChoice || selectedIdList?.length === 1)}
+			showSelectButton={!readonly && (!singleChoice || (selectedIdList?.length || 0) <= 1)}
 			isFetching={$query_{{ name | camelCase }}Connection_Store.isFetching}
 			{zIndex}
 			fields={% raw %}{{{% endraw %}
@@ -124,39 +133,23 @@
 				{%- endfor %}
 			{% raw %}}}{% endraw %}
 			on:select={(e) => {
-				let original;
 				if (Array.isArray(e.detail.value)) {
 					if (singleChoice) {
 						original = e.detail.value?.[0];
-						value = { where: { {{ idName }}: { val: e.detail.value?.[0]?.{{ idName }} } } };
-						if (textFieldName) {
-							text = e.detail.value?.[0]?.[textFieldName];
-						}
 					} else {
 						original = e.detail.value;
-						value = e.detail.value.map((node) => ({ where: { {{ idName }}: { val: node?.{{ idName }} } } }));
-						if (textFieldName) {
-							if (e.detail.value.length > 3) {
-								text = e.detail.value
-									.slice(0, 3)
-									.map((node) => node?.[textFieldName])
-									.join(',')
-									.concat('...');
-							} else {
-								text = e.detail.value.map((node) => node?.[textFieldName]).join(',');
-							}
-						}
 					}
 				} else if (e.detail.value) {
 					original = e.detail.value;
-					value = { where: { {{ idName }}: { val: e.detail.value?.{{ idName }} } } };
-					if (textFieldName) {
-						text = e.detail.value?.[textFieldName];
-					}
 				} else {
 					original = undefined;
+				}
+				if (Array.isArray(original)) {
+					value = original.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
+				} else if (original) {
+					value = { where: { {{ idName }}: { val: original.{{ idName }} } } };
+				} else {
 					value = undefined;
-					text = undefined;
 				}
 				dispatch('select', { value, original });
 				close();
