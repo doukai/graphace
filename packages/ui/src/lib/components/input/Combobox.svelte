@@ -97,6 +97,7 @@
 			$selected = Array.isArray($selected)
 				? $selected.filter((item) => getOptionId(item.value) !== tag.id)
 				: undefined;
+			dispatch('change', { value: undefined, original: value });
 			return false;
 		}
 	});

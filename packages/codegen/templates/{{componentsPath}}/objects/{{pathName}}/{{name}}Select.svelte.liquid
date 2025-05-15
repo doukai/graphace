@@ -39,7 +39,7 @@
 
 	$: loading = $namedQueryStore.isFetching;
 
-	if (Array.isArray(value)) {
+	$: if (Array.isArray(value)) {
 		namedQueryStore
 			.fetch(query, {
 				id: { opr: 'IN', arr: value?.map((item) => item?.{{ idName }} || item?.where?.{{ idName }}?.val) }
@@ -51,6 +51,9 @@
 						value: item?.id
 					})))
 			);
+		if (where && value.some((item) => !item?.where)) {
+			value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
+		}
 	} else if (value) {
 		namedQueryStore.fetch(query, { id: { opr: 'EQ', val: value.{{ idName }} || value.where?.{{ idName }}?.val } }).then(
 			(response) =>
@@ -59,6 +62,9 @@
 					value: item?.id
 				}))?.[0])
 		);
+		if (where && !value.where) {
+			value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
+		}
 	} else if (val) {
 		namedQueryStore.fetch(query, { id: { opr: 'EQ', val } }).then(
 			(response) =>
@@ -75,14 +81,6 @@
 					value: item?.id
 				})))
 		);
-	}
-
-	if (where) {
-		if (Array.isArray(value) && value.some((item) => !item?.where)) {
-			value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
-		} else if (value && !Array.isArray(value) && !value.where) {
-			value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
-		}
 	}
 </script>
 
@@ -117,6 +115,8 @@
 			arr = [];
 		} else {
 			value = undefined;
+			val = undefined;
+			arr = [];
 		}
 		dispatch('change', { value, val, arr });
 	{% raw %}}}{% endraw %}

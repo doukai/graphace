@@ -29,6 +29,7 @@
 	const dispatch = createEventDispatcher<{
 		select: {
 			value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined;
+			original: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined;
 		};
 	}>();
 
@@ -123,13 +124,16 @@
 				{%- endfor %}
 			{% raw %}}}{% endraw %}
 			on:select={(e) => {
+				let original;
 				if (Array.isArray(e.detail.value)) {
 					if (singleChoice) {
+						original = e.detail.value?.[0];
 						value = { where: { {{ idName }}: { val: e.detail.value?.[0]?.{{ idName }} } } };
 						if (textFieldName) {
 							text = e.detail.value?.[0]?.[textFieldName];
 						}
 					} else {
+						original = e.detail.value;
 						value = e.detail.value.map((node) => ({ where: { {{ idName }}: { val: node?.{{ idName }} } } }));
 						if (textFieldName) {
 							if (e.detail.value.length > 3) {
@@ -144,15 +148,17 @@
 						}
 					}
 				} else if (e.detail.value) {
+					original = e.detail.value;
 					value = { where: { {{ idName }}: { val: e.detail.value?.{{ idName }} } } };
 					if (textFieldName) {
 						text = e.detail.value?.[textFieldName];
 					}
 				} else {
+					original = undefined;
 					value = undefined;
 					text = undefined;
 				}
-				dispatch('select', { value });
+				dispatch('select', { value, original });
 				close();
 			{% raw %}}}{% endraw %}
 			on:search={(e) => {
