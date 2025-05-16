@@ -106,6 +106,7 @@
 					{%- else %}
 					<{{ field.fieldTypeName }}TableDialog
 						bind:value={value.{{ field.fieldName }}}
+						where={true}
 						{%- if field.isNamed %}
 						textFieldName="name"
 						{%- endif %}

@@ -114,7 +114,17 @@
 						bind:checked={selectAll}
 						on:change={(e) => {
 							if (value && value.length > 0) {
-								selectedIdList = selectAll ? value.map((node) => node?.{{ idName }}) : [];
+								if (selectAll) {
+									selectedIdList = [
+										...new Set([...selectedIdList, ...value.map((node) => node?.{{ idName }})])
+									];
+								} else {
+									selectedIdList = [
+										...selectedIdList.filter(
+											(selectedId) => !value.some((node) => node?.{{ idName }} === selectedId)
+										)
+									];
+								}
 							}
 						{% raw %}}}{% endraw %}
 					/>
@@ -212,6 +222,7 @@
 								<Td errors={errors?.[row]?.iterms?.{{ field.fieldName }}} {zIndex}>
 									<{{ field.fieldTypeName }}TableDialog
 										bind:value={node.{{ field.fieldName }}}
+										where={true}
 										{%- if field.isNamed %}
 										textFieldName="name"
 										{%- endif %}
@@ -227,7 +238,6 @@
 													where: { {{ idName }}: { val: node?.{{ idName }} } }
 												}
 											})}
-										class="btn-xs"
 									>
 										{#if node.{{ idName }}}
 											<ObjectLink
@@ -236,7 +246,6 @@
 												name={node.{% if isNamed %}name{% else %}{{ idName }}{% endif %} + ':' + $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 												on:goto
 												{zIndex}
-												class="btn-xs"
 											/>
 										{/if}
 									</{{ field.fieldTypeName }}TableDialog>

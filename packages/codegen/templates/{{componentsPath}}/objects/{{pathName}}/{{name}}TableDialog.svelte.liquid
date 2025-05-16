@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { getContext, createEventDispatcher } from 'svelte';
 	import { melt } from '@melt-ui/svelte';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { ListBullet } from '@steeze-ui/heroicons';
 	import type { Errors{% if useAuth %}, PermissionsStore{% endif %} } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { to, Pagination, Dialog, toast } from '@graphace/ui';
@@ -14,13 +12,13 @@
 
 	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
 	export let triggerErrors: Errors | undefined = undefined;
-	export let textFieldName: string | undefined = undefined;
+	export let textFieldName: keyof {{ name }}Input | undefined = undefined;
 	export let text: string | undefined = undefined;
 	export let singleChoice: boolean | undefined = false;
+	export let where: boolean | undefined = false;
 	export let readonly = false;
 	export let disabled = false;
-	let original: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
-	let className: string | undefined = 'p-1';
+	let className: string | undefined = 'btn-link';
 	export { className as class };
 
 	{%- if useAuth %}
@@ -46,34 +44,34 @@
 	let selectedIdList: (string | null | undefined)[] | undefined = [];
 	let close: () => void;
 
-	original = value;
-
-	if (Array.isArray(original)) {
-		value = original.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
-		selectedIdList = original?.map((node) => node?.{{ idName }});
-	} else if (original) {
-		value = { where: { {{ idName }}: { val: original.{{ idName }} } } };
-		selectedIdList = [original.{{ idName }}];
-	}
-
-	$: if (Array.isArray(original)) {
+	if (Array.isArray(value)) {
+		selectedIdList = value?.map((node) => node?.{{ idName }} || node?.where?.{{ idName }}?.val);
 		if (textFieldName) {
-			if (original.length > 3) {
-				text = original
+			if (value.length > 3) {
+				text = value
 					.slice(0, 3)
 					.map((node) => node?.[textFieldName])
+					.filter((name) => name !== null)
 					.join(',')
 					.concat('...');
 			} else {
-				text = original.map((node) => node?.[textFieldName]).join(',');
+				text = value
+					.map((node) => node?.[textFieldName])
+					.filter((name) => name !== null)
+					.join(',');
 			}
 		}
-	} else if (original) {
-		if (textFieldName) {
-			text = original?.[textFieldName];
+		if (where && value.some((item) => !item?.where)) {
+			value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
 		}
-	} else {
-		text = undefined;
+	} else if (value) {
+		selectedIdList = [value.{{ idName }} || value?.where?.{{ idName }}?.val];
+		if (textFieldName) {
+			text = value?.[textFieldName] + '';
+		}
+		if (where && !value.where) {
+			value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
+		}
 	}
 
 	const query = (to?: number | undefined) => {
@@ -92,25 +90,25 @@
 <Dialog bind:close>
 	<div class="flex space-x-1 items-center" slot="trigger" let:trigger let:zIndex>
 		<div
-			class="tooltip {triggerErrors ? 'tooltip-open tooltip-error ' : ''} hover:z-[{zIndex + 3}]"
+			class={triggerErrors ? 'tooltip tooltip-open tooltip-error hover:z-[{zIndex + 3}]' : ''}
 			data-tip={triggerErrors
 				? triggerErrors?.errors?.map((error) => error.message).join(', ')
-				: $LL.ui.button.select()}
+				: undefined}
 		>
 			<button
 				use:melt={trigger}
-				class="btn {text ? 'btn-link' : 'btn-square btn-outline'} {className}"
+				class="btn p-1 {className}"
 				{disabled}
 				on:click={(e) => query(1)}
 			>
 				{#if text}
 					{text}
 				{:else}
-					<Icon src={ListBullet} class="h-5 w-5" />
+					{$LL.ui.button.select()}
 				{/if}
 			</button>
 		</div>
-		<slot/>
+		<slot />
 	</div>
 	<svelte:fragment let:zIndex>
 		<{{ name }}Table
@@ -133,24 +131,54 @@
 				{%- endfor %}
 			{% raw %}}}{% endraw %}
 			on:select={(e) => {
+				let original;
 				if (Array.isArray(e.detail.value)) {
 					if (singleChoice) {
-						original = e.detail.value?.[0];
+						original = e.detail.value?.[0] || null;
 					} else {
 						original = e.detail.value;
 					}
 				} else if (e.detail.value) {
 					original = e.detail.value;
 				} else {
-					original = undefined;
+					original = null;
 				}
+
 				if (Array.isArray(original)) {
-					value = original.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
+					if (textFieldName) {
+						if (original.length > 3) {
+							text = original
+								.slice(0, 3)
+								.map((node) => node?.[textFieldName])
+								.filter((name) => name !== null)
+								.join(',')
+								.concat('...');
+						} else {
+							text = original
+								.map((node) => node?.[textFieldName])
+								.filter((name) => name !== null)
+								.join(',');
+						}
+					}
+					if (where) {
+						value = original.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
+					} else {
+						value = original;
+					}
 				} else if (original) {
-					value = { where: { {{ idName }}: { val: original.{{ idName }} } } };
+					if (textFieldName) {
+						text = original?.[textFieldName] + '';
+					}
+					if (where) {
+						value = { where: { {{ idName }}: { val: original.{{ idName }} } } };
+					} else {
+						value = original;
+					}
 				} else {
-					value = undefined;
+					text = undefined;
+					value = null;
 				}
+
 				dispatch('select', { value, original });
 				close();
 			{% raw %}}}{% endraw %}

@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { getContext, createEventDispatcher } from 'svelte';
 	import { melt } from '@melt-ui/svelte';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { ListBullet } from '@steeze-ui/heroicons';
 	import type { Errors, JsonSchema{% if useAuth %}, PermissionsStore{% endif %} } from '@graphace/commons';
 	import { to, Dialog, toast, modal } from '@graphace/ui';
 	import { createQuery_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_store';
@@ -15,11 +13,14 @@
 
 	export let value: {{ name }}Input | null | undefined = {};
 	export let triggerErrors: Errors | undefined = undefined;
+	export let textFieldName: keyof {{ name }}Input | undefined = undefined;
+	export let text: string | undefined = undefined;
 	export let errors: Record<string, Errors> = {};
 	export let select: boolean | undefined = false;
+	export let where: boolean | undefined = false;
 	export let readonly = false;
 	export let disabled = false;
-	let className: string | undefined = 'p-1';
+	let className: string | undefined = 'btn-link';
 	export { className as class };
 
 	const { validate } = getContext<JsonSchema>('jsonSchema');
@@ -30,6 +31,7 @@
 	const dispatch = createEventDispatcher<{
 		select: {
 			value: {{ name }}Input | null | undefined;
+			original: {{ name }}Input | null | undefined;
 		};
 	}>();
 
@@ -40,6 +42,14 @@
 
 	$: if (node && Object.keys(node).length > 0) {
 		value = node;
+	}
+
+	if (textFieldName) {
+		text = value?.[textFieldName] + '';
+	}
+
+	if (where && value && !value.where) {
+		value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
 	}
 
 	const query = () => {
@@ -68,7 +78,7 @@
 						}
 					} else {
 						toast.success($LL.{{ appName }}.message.requestSuccess());
-						dispatch('select', { value: result.data?.{{ name | camelCase }} });
+						dispatch('select', { value: result.data?.{{ name | camelCase }}, original: args });
 						close();
 					}
 				});
@@ -82,14 +92,14 @@
 <Dialog bind:close>
 	<div class="flex space-x-1 items-center" slot="trigger" let:trigger let:zIndex>
 		<div
-			class="tooltip {triggerErrors ? 'tooltip-open tooltip-error ' : ''} hover:z-[{zIndex + 3}]"
+			class={triggerErrors ? 'tooltip tooltip-open tooltip-error hover:z-[{zIndex + 3}]' : ''}
 			data-tip={triggerErrors
 				? triggerErrors?.errors?.map((error) => error.message).join(', ')
-				: $LL.ui.button.select()}
+				: undefined}
 		>
 			<button
 				use:melt={trigger}
-				class="btn btn-square btn-outline {className}"
+				class="btn p-1 {className}"
 				{disabled}
 				on:click={(e) => {
 					if (value?.{{ idName }}) {
@@ -97,7 +107,11 @@
 					}
 				{% raw %}}}{% endraw %}
 			>
-				<Icon src={ListBullet} class="h-5 w-5" />
+				{#if text}
+					{text}
+				{:else}
+					{$LL.ui.button.select()}
+				{/if}
 			</button>
 		</div>
 		<slot/>
@@ -121,8 +135,17 @@
 			{% raw %}}}{% endraw %}
 			on:save={(e) => {
 				if (e.detail.value) {
+					const original = e.detail.value;
+					if (textFieldName) {
+						text = original?.[textFieldName] + '';
+					}
+					if (where) {
+						value = { where: { {{ idName }}: { val: original.{{ idName }} } } };
+					} else {
+						value = original;
+					}
 					if (select) {
-						dispatch('select', { value: e.detail.value });
+						dispatch('select', { value, original });
 						close();
 					} else {
 						mutation(e.detail.value);
@@ -131,8 +154,11 @@
 			{% raw %}}}{% endraw %}
 			on:remove={(e) => {
 				if (e.detail.value) {
+					const original = e.detail.value;
+					text = undefined;
+					value = null;
 					if (select) {
-						dispatch('select', { value: undefined });
+						dispatch('select', { value, original });
 						close();
 					} else {
 						modal.open({

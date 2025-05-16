@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { getContext, createEventDispatcher } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Link } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
 	import type { NamedStruct } from '@graphace/graphql';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
@@ -60,17 +58,15 @@
 			{_namedStruct.name}
 		</a>
 	{:else}
-		<div class="tooltip hover:z-[{zIndex + 3}]" data-tip={$LL.ui_graphql.table.editBtn()}>
-			<button
-				{id}
-				{disabled}
-				class="btn btn-square btn-outline {errors ? 'btn-error' : ''} {className}"
-				on:click|preventDefault={(e) => {
-					dispatch('goto', { path, name });
-				}}
-			>
-				<Icon src={Link} class="h-5 w-5" />
-			</button>
-		</div>
+		<button
+			{id}
+			{disabled}
+			class="btn p-1 btn-link {errors ? 'btn-error' : ''} {className}"
+			on:click|preventDefault={(e) => {
+				dispatch('goto', { path, name });
+			}}
+		>
+			{$LL.ui_graphql.table.editBtn()}
+		</button>
 	{/if}
 </div>
