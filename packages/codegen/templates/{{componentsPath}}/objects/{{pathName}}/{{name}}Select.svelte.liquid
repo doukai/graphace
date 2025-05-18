@@ -34,7 +34,7 @@
 	$: options =
 		$namedQueryStore.response.data?.{{ name | camelCase }}List?.map((item) => ({
 			label: item?.name,
-			value: item?.id
+			value: item?.{{ idName }}
 		})) || [];
 
 	$: loading = $namedQueryStore.isFetching;
@@ -42,43 +42,43 @@
 	$: if (Array.isArray(value)) {
 		namedQueryStore
 			.fetch(query, {
-				id: { opr: 'IN', arr: value?.map((item) => item?.{{ idName }} || item?.where?.{{ idName }}?.val) }
+				{{ idName }}: { opr: 'IN', arr: value?.map((item) => item?.{{ idName }} || item?.where?.{{ idName }}?.val) }
 			})
 			.then(
 				(response) =>
 					(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
 						label: item?.name,
-						value: item?.id
+						value: item?.{{ idName }}
 					})))
 			);
 		if (where && value.some((item) => !item?.where)) {
 			value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
 		}
 	} else if (value) {
-		namedQueryStore.fetch(query, { id: { opr: 'EQ', val: value.{{ idName }} || value.where?.{{ idName }}?.val } }).then(
+		namedQueryStore.fetch(query, { {{ idName }}: { opr: 'EQ', val: value.{{ idName }} || value.where?.{{ idName }}?.val } }).then(
 			(response) =>
 				(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
 					label: item?.name,
-					value: item?.id
+					value: item?.{{ idName }}
 				}))?.[0])
 		);
 		if (where && !value.where) {
 			value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
 		}
 	} else if (val) {
-		namedQueryStore.fetch(query, { id: { opr: 'EQ', val } }).then(
+		namedQueryStore.fetch(query, { {{ idName }}: { opr: 'EQ', val } }).then(
 			(response) =>
 				(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
 					label: item?.name,
-					value: item?.id
+					value: item?.{{ idName }}
 				}))?.[0])
 		);
 	} else if (arr && arr.length > 0) {
-		namedQueryStore.fetch(query, { id: { opr: 'IN', arr } }).then(
+		namedQueryStore.fetch(query, { {{ idName }}: { opr: 'IN', arr } }).then(
 			(response) =>
 				(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
 					label: item?.name,
-					value: item?.id
+					value: item?.{{ idName }}
 				})))
 		);
 	}

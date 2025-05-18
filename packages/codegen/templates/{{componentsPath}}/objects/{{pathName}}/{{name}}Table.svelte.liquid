@@ -220,26 +220,27 @@
 								/>
 								{%- else %}
 								<Td errors={errors?.[row]?.iterms?.{{ field.fieldName }}} {zIndex}>
-									<{{ field.fieldTypeName }}TableDialog
-										bind:value={node.{{ field.fieldName }}}
-										where={true}
-										{%- if field.isNamed %}
-										textFieldName="name"
-										{%- endif %}
-										{%- if field.isListType == false %}
-										singleChoice={true}
-										{%- endif %}
-										readonly={fields.{{ field.fieldName }}.readonly}
-										disabled={fields.{{ field.fieldName }}.disabled}
-										on:select={(e) =>
-											dispatch('save', {
-												value: {
-													{{ field.fieldName }}: node?.{{ field.fieldName }} || null,
-													where: { {{ idName }}: { val: node?.{{ idName }} } }
-												}
-											})}
-									>
-										{#if node.{{ idName }}}
+									<div class="flex space-x-1">
+										<{{ field.fieldTypeName }}TableDialog
+											bind:value={node.{{ field.fieldName }}}
+											where={true}
+											{%- if field.isNamed %}
+											textFieldName="name"
+											{%- endif %}
+											{%- if field.isListType == false %}
+											singleChoice={true}
+											{%- endif %}
+											readonly={fields.{{ field.fieldName }}.readonly}
+											disabled={fields.{{ field.fieldName }}.disabled}
+											on:select={(e) =>
+												dispatch('save', {
+													value: {
+														{{ field.fieldName }}: node?.{{ field.fieldName }} || null,
+														where: { {{ idName }}: { val: node?.{{ idName }} } }
+													}
+												})}
+										/>
+										{#if node.{{idName}}}
 											<ObjectLink
 												disabled={fields.{{ field.fieldName }}.disabled}
 												path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`}
@@ -248,7 +249,7 @@
 												{zIndex}
 											/>
 										{/if}
-									</{{ field.fieldTypeName }}TableDialog>
+									</div>
 								</Td>
 								{%- endif %}
 							{/if}

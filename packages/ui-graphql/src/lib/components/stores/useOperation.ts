@@ -229,9 +229,9 @@ export function createNamedQueryStore(event: LoadEvent | RequestEvent, url: stri
     const { subscribe, set, update } = data;
 
     const fetch = async (query: { fieldName: string, idName: string }, variables?: NamedStructExpression & { first?: number | undefined } | undefined) => {
-        const graphql = /* GraphQL */ `query ${query.fieldName}NamedQuery($id: StringExpression, $name: StringExpression, $description: StringExpression, $first: Int) {
-	${query.fieldName}(${query.idName}: $id, name: $name, description: $description, first: $first) {
-		id: ${query.idName}
+        const graphql = /* GraphQL */ `query ${query.fieldName}NamedQuery($${query.idName}: StringExpression, $name: StringExpression, $description: StringExpression, $first: Int) {
+	${query.fieldName}(${query.idName}: $${query.idName}, name: $name, description: $description, first: $first) {
+		${query.idName}
 		name
 		description
 	}
@@ -283,9 +283,9 @@ export function createTreeQueryStore(event: LoadEvent | RequestEvent, url: strin
     const { subscribe, set, update } = data;
 
     const fetch = async (query: { fieldName: string, idName: string }, variables?: TreeStructExpression & { first?: number | undefined } | undefined) => {
-        const graphql = /* GraphQL */ `query ${query.fieldName}TreeQuery($id: StringExpression, $parentId: StringExpression, $name: StringExpression, $first: Int) {
-	${query.fieldName}(${query.idName}: $id, parentId: $parentId, name: $name, first: $first) {
-		id: ${query.idName}
+        const graphql = /* GraphQL */ `query ${query.fieldName}TreeQuery($${query.idName}: StringExpression, $parentId: StringExpression, $name: StringExpression, $first: Int) {
+	${query.fieldName}(${query.idName}: $${query.idName}, parentId: $parentId, name: $name, first: $first) {
+		${query.idName}
 		parentId
 		name
 	}

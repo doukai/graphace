@@ -26,47 +26,45 @@
 	}>();
 </script>
 
-<div class="flex items-center">
-	{#if _namedStruct && Array.isArray(_namedStruct) && _namedStruct.length > 0}
-		<a
-			{id}
-			class="link {errors ? 'link-error' : ''}"
-			href={null}
-			on:click|preventDefault={(e) => {
-				dispatch('goto', { path, name });
-			}}
-		>
-			{#if _namedStruct && _namedStruct.length > 3}
-				{_namedStruct
-					.map((item) => item.name)
-					.slice(0, 3)
-					.join(',')
-					.concat('...')}
-			{:else}
-				{_namedStruct.map((item) => item.name).join(',')}
-			{/if}
-		</a>
-	{:else if _namedStruct && !Array.isArray(_namedStruct)}
-		<a
-			{id}
-			class="link {errors ? 'link-error' : ''}"
-			href={null}
-			on:click|preventDefault={(e) => {
-				dispatch('goto', { path, name });
-			}}
-		>
-			{_namedStruct.name}
-		</a>
-	{:else}
-		<button
-			{id}
-			{disabled}
-			class="btn p-1 btn-link {errors ? 'btn-error' : ''} {className}"
-			on:click|preventDefault={(e) => {
-				dispatch('goto', { path, name });
-			}}
-		>
-			{$LL.ui_graphql.table.editBtn()}
-		</button>
-	{/if}
-</div>
+{#if _namedStruct && Array.isArray(_namedStruct) && _namedStruct.length > 0}
+	<a
+		{id}
+		class="link {errors ? 'link-error' : ''}"
+		href={null}
+		on:click|preventDefault={(e) => {
+			dispatch('goto', { path, name });
+		}}
+	>
+		{#if _namedStruct && _namedStruct.length > 3}
+			{_namedStruct
+				.map((item) => item.name)
+				.slice(0, 3)
+				.join(',')
+				.concat('...')}
+		{:else}
+			{_namedStruct.map((item) => item.name).join(',')}
+		{/if}
+	</a>
+{:else if _namedStruct && !Array.isArray(_namedStruct)}
+	<a
+		{id}
+		class="link {errors ? 'link-error' : ''}"
+		href={null}
+		on:click|preventDefault={(e) => {
+			dispatch('goto', { path, name });
+		}}
+	>
+		{_namedStruct.name}
+	</a>
+{:else}
+	<button
+		{id}
+		{disabled}
+		class="btn p-1 btn-link {errors ? 'btn-error' : ''} {className}"
+		on:click|preventDefault={(e) => {
+			dispatch('goto', { path, name });
+		}}
+	>
+		{$LL.ui_graphql.table.editBtn()}
+	</button>
+{/if}

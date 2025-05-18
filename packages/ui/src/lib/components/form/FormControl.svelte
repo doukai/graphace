@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import type { Errors } from '@graphace/commons';
 	import { nanoid } from 'nanoid';
 
 	let className: string | undefined = '';

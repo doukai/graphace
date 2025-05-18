@@ -2,7 +2,7 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
-	import { Buttons, Empty, Form, FormControl, Label, Loading } from '@graphace/ui';
+	import { Buttons, Empty, Form, ErrorLabels, FormControl, Label, Loading } from '@graphace/ui';
 	import { type Option, {% for scalar in scalars %}{{ scalar }}Input, {% endfor %}{% if hasFileField %}FileInput, {% endif %}ObjectLink } from '@graphace/ui-graphql';
 	{%- for enum in enums %}
 	import {{ enum }}Input from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Input.svelte';
@@ -104,20 +104,20 @@
 						{%- endif %}
 					/>
 					{%- else %}
-					<{{ field.fieldTypeName }}TableDialog
-						bind:value={value.{{ field.fieldName }}}
-						where={true}
-						{%- if field.isNamed %}
-						textFieldName="name"
-						{%- endif %}
-						triggerErrors={errors.{{ field.fieldName }}}
-						{%- if field.isListType == false %}
-						singleChoice={true}
-						{%- endif %}
-						readonly={fields.{{ field.fieldName }}.readonly}
-						disabled={fields.{{ field.fieldName }}.disabled}
-					>
-						{#if value.{{ idName }}}
+					<div class="flex space-x-1">
+						<{{ field.fieldTypeName }}TableDialog
+							bind:value={value.{{ field.fieldName }}}
+							where={true}
+							{%- if field.isNamed %}
+							textFieldName="name"
+							{%- endif %}
+							{%- if field.isListType == false %}
+							singleChoice={true}
+							{%- endif %}
+							readonly={fields.{{ field.fieldName }}.readonly}
+							disabled={fields.{{ field.fieldName }}.disabled}
+						/>
+						{#if value.{{idName}}}
 							<ObjectLink
 								disabled={fields.{{ field.fieldName }}.disabled}
 								path={`${value.{{ idName }}}/{{ field.fieldName | paramCase }}`}
@@ -125,7 +125,8 @@
 								on:goto
 							/>
 						{/if}
-					</{{ field.fieldTypeName }}TableDialog>
+					</div>
+					<ErrorLabels {id} errors={errors.{{ field.fieldName }}} />
 					{%- endif %}
 				</FormControl>
 			{/if}

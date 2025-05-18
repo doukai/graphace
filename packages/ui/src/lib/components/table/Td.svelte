@@ -7,10 +7,10 @@
 	export { className as class };
 </script>
 
-<td>
+<td class={className}>
 	<div
-		class="{errors ? `tooltip tooltip-open tooltip-error hover:z-[${zIndex + 3}]` : ''} {className}"
-		data-tip={errors?.errors?.map((error) => error.message).join(', ')}
+		class={errors ? `tooltip tooltip-open tooltip-error hover:z-[${zIndex + 3}]` : undefined}
+		data-tip={errors ? errors?.errors?.map((error) => error.message).join(', ') : undefined}
 	>
 		<slot />
 	</div>

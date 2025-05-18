@@ -13,7 +13,6 @@ import IDFilter from "./IDFilter.svelte";
 import IDInput from "./IDInput.svelte";
 import IntFilter from "./IntFilter.svelte";
 import IntInput from "./IntInput.svelte";
-import ObjectInput from "./ObjectInput.svelte";
 import ObjectLink from "./ObjectLink.svelte";
 import ObjectSelect from "./ObjectSelect.svelte";
 import OperatorSelect from "./OperatorSelect.svelte";
@@ -40,7 +39,6 @@ export {
     IDInput,
     IntFilter,
     IntInput,
-    ObjectInput,
     ObjectLink,
     ObjectSelect,
     OperatorSelect,

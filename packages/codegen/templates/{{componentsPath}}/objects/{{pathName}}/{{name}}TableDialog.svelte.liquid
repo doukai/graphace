@@ -11,7 +11,6 @@
 	import LL from '$i18n/i18n-svelte';
 
 	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
-	export let triggerErrors: Errors | undefined = undefined;
 	export let textFieldName: keyof {{ name }}Input | undefined = undefined;
 	export let text: string | undefined = undefined;
 	export let singleChoice: boolean | undefined = false;
@@ -88,28 +87,15 @@
 </script>
 
 <Dialog bind:close>
-	<div class="flex space-x-1 items-center" slot="trigger" let:trigger let:zIndex>
-		<div
-			class={triggerErrors ? 'tooltip tooltip-open tooltip-error hover:z-[{zIndex + 3}]' : ''}
-			data-tip={triggerErrors
-				? triggerErrors?.errors?.map((error) => error.message).join(', ')
-				: undefined}
-		>
-			<button
-				use:melt={trigger}
-				class="btn p-1 {className}"
-				{disabled}
-				on:click={(e) => query(1)}
-			>
-				{#if text}
-					{text}
-				{:else}
-					{$LL.ui.button.select()}
-				{/if}
-			</button>
-		</div>
-		<slot />
-	</div>
+	<svelte:fragment slot="trigger" let:trigger let:zIndex>
+		<button use:melt={trigger} class="btn p-1 {className}" {disabled} on:click={(e) => query(1)}>
+			{#if text}
+				{text}
+			{:else}
+				{$LL.ui.button.select()}
+			{/if}
+		</button>
+	</svelte:fragment>
 	<svelte:fragment let:zIndex>
 		<{{ name }}Table
 			value={nodes}

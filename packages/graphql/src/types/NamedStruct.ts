@@ -1,19 +1,19 @@
 import { StringExpression } from "./StringExpression.js";
 
 export type NamedStruct = {
-    id: string;
+    [key: string]: any;
     name?: string | null | undefined;
     description?: string | null | undefined;
 }
 
 export type NamedStructInput = {
-    id?: string | null | undefined;
+    [key: string]: any;
     name?: string | null | undefined;
     description?: string | null | undefined;
 }
 
 export type NamedStructExpression = {
-    id?: StringExpression | null | undefined;
+    [key: string]: any;
     name?: StringExpression | null | undefined,
     description?: StringExpression | null | undefined,
 }
