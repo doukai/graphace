@@ -3,6 +3,7 @@
 	import { melt } from '@melt-ui/svelte';
 	import type { Errors, JsonSchema{% if useAuth %}, PermissionsStore{% endif %} } from '@graphace/commons';
 	import { to, Dialog, toast, modal } from '@graphace/ui';
+	import { type Option } from '@graphace/ui-graphql';
 	import { createQuery_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_store';
 	import { createMutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
 	import {{ name }}Form from '~/{{ componentsPath }}/objects/{{ name | camelCase }}/{{ name }}Form.svelte';
@@ -16,6 +17,7 @@
 	export let text: string | undefined = undefined;
 	export let errors: Record<string, Errors> = {};
 	export let select: boolean | undefined = false;
+	export let clearAfterSelect: boolean | undefined = false;
 	export let where: boolean | undefined = false;
 	export let readonly = false;
 	export let disabled = false;
@@ -25,6 +27,19 @@
 	const { validate } = getContext<JsonSchema>('jsonSchema');
 	{%- if useAuth %}
 	const permissions = getContext<PermissionsStore>('permissions');
+	export let fields: {
+		{%- for field in fields %}
+		{{ field.fieldName }}: Option;
+		{%- endfor %}
+	} = {
+		{%- for field in fields %}
+		{{ field.fieldName }}: {
+			readonly: !permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE'),
+			disabled: !permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE'),
+			hidden: !permissions.auth('{{ name }}::{{ field.fieldName }}::READ')
+		}{% if forloop.last == false %},{% endif %}
+		{%- endfor %}
+	};
 	{%- endif %}
 
 	const dispatch = createEventDispatcher<{
@@ -78,6 +93,9 @@
 					} else {
 						toast.success($LL.{{ appName }}.message.requestSuccess());
 						dispatch('select', { value: result.data?.{{ name | camelCase }}, original: args });
+						if (clearAfterSelect) {
+							value = {};
+						}
 						close();
 					}
 				});
@@ -91,7 +109,7 @@
 <Dialog bind:close>
 	<svelte:fragment slot="trigger" let:trigger let:zIndex>
 		<button use:melt={trigger}
-			class="btn p-1 {className}"
+			class="btn {className}"
 			{disabled}
 			on:click={(e) => {
 				if (value?.{{ idName }}) {
@@ -114,15 +132,9 @@
 			{errors}
 			isFetching={$query_{{ name | camelCase }}_Store.isFetching}
 			isMutating={$mutation_{{ name | camelCase }}_Store.isFetching}
-			fields={% raw %}{{{% endraw %}
-				{%- for field in fields %}
-				{{ field.fieldName }}: {
-					readonly: !permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE'),
-					disabled: !permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE'),
-					hidden: !permissions.auth('{{ name }}::{{ field.fieldName }}::READ')
-				}{% if forloop.last == false %},{% endif %}
-				{%- endfor %}
-			{% raw %}}}{% endraw %}
+			{%- if useAuth %}
+			{fields}
+			{%- endif %}
 			on:save={(e) => {
 				if (e.detail.value) {
 					const original = e.detail.value;
@@ -136,6 +148,9 @@
 					}
 					if (select) {
 						dispatch('select', { value, original });
+						if (clearAfterSelect) {
+							value = {};
+						}
 						close();
 					} else {
 						mutation(e.detail.value);
@@ -149,6 +164,9 @@
 					value = null;
 					if (select) {
 						dispatch('select', { value, original });
+						if (clearAfterSelect) {
+							value = {};
+						}
 						close();
 					} else {
 						modal.open({

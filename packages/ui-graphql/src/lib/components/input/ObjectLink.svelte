@@ -60,7 +60,7 @@
 	<button
 		{id}
 		{disabled}
-		class="btn p-1 btn-link {errors ? 'btn-error' : ''} {className}"
+		class="btn btn-link {errors ? 'btn-error' : ''} {className}"
 		on:click|preventDefault={(e) => {
 			dispatch('goto', { path, name });
 		}}

@@ -40,12 +40,14 @@
 	export let showCreateButton: boolean = false;
 	export let showSelectButton: boolean = false;
 	export let showBackButton: boolean = false;
+	export let showSearchInput: boolean = false;
+	export let title: string | undefined = undefined;
 	export let zIndex: number = 0;
 	let className: string | undefined = undefined;
 	export { className as class };
 	export let fields: {
 		{%- for field in fields %}
-		{{ field.fieldName }}: Option;
+		{{ field.fieldName }}: Option | undefined;
 		{%- endfor %}
 	} = {
 		{%- for field in fields %}
@@ -58,9 +60,18 @@
 	const dispatch = createEventDispatcher<{
 		search: { value: string | undefined };
 		query: { args: {{ queryTypeName }}{{ name }}ListArgs; orderBy: {{ name }}OrderBy };
-		remove: { value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined };
-		unbind: { value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined };
-		edit: { value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined };
+		remove: { 
+			value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined;
+			row?: number | undefined;
+		};
+		unbind: { 
+			value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined;
+			row?: number | undefined;
+		};
+		edit: { 
+			value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined;
+			row?: number | undefined;
+		};
 		save: { value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined };
 		select: { value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined };
 		create: {};
@@ -72,7 +83,11 @@
 
 <div class="flex sm:justify-between">
 	<span class="max-sm:hidden text-xl font-semibold self-center">
-		{$LL.graphql.objects.{{ name }}.name()}
+		{#if title}
+			{title}
+		{:else}
+			{$LL.graphql.objects.{{ name }}.name()}
+		{/if}
 	</span>
 	<Buttons
 		class="flex space-x-1 max-sm:w-full"
@@ -99,7 +114,9 @@
 		on:create
 		on:back
 	>
-		<SearchInput slot="start" on:search />
+		{#if showSearchInput}
+			<SearchInput slot="start" on:search />
+		{/if}
 	</Buttons>
 </div>
 <div class="divider" />
@@ -131,7 +148,7 @@
 				</label>
 			</th>
 			{%- for field in fields %}
-			{#if !fields.{{ field.fieldName }}.hidden}
+			{#if !fields.{{ field.fieldName }}?.hidden}
 				{%- if field.isScalarType or field.isEnumType %}
 				<{{ field.fieldTypeName }}Th
 					name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
@@ -178,7 +195,7 @@
 						</th>
 						{%- for field in fields %}
 						<slot name="{{ field.fieldName }}">
-							{#if !fields.{{ field.fieldName }}.hidden}
+							{#if !fields.{{ field.fieldName }}?.hidden}
 								{%- if field.isScalarType or field.isEnumType or field.isFile %}
 								<{{ field.fieldTypeName }}Td
 									name="{{ field.fieldName }}"
@@ -191,8 +208,8 @@
 										dispatch('save', {
 											value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
 										})}
-									readonly={fields.{{ field.fieldName }}.readonly}
-									disabled={fields.{{ field.fieldName }}.disabled}
+									readonly={fields.{{ field.fieldName }}?.readonly}
+									disabled={fields.{{ field.fieldName }}?.disabled}
 									{%- else %}
 									readonly
 									{%- endif %}
@@ -210,8 +227,8 @@
 									list
 									{%- endif %}
 									errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
-									readonly={fields.{{ field.fieldName }}.readonly}
-									disabled={fields.{{ field.fieldName }}.disabled}
+									readonly={fields.{{ field.fieldName }}?.readonly}
+									disabled={fields.{{ field.fieldName }}?.disabled}
 									on:save={(e) =>
 										dispatch('save', {
 											value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
@@ -230,8 +247,8 @@
 											{%- if field.isListType == false %}
 											singleChoice={true}
 											{%- endif %}
-											readonly={fields.{{ field.fieldName }}.readonly}
-											disabled={fields.{{ field.fieldName }}.disabled}
+											readonly={fields.{{ field.fieldName }}?.readonly}
+											disabled={fields.{{ field.fieldName }}?.disabled}
 											on:select={(e) =>
 												dispatch('save', {
 													value: {
@@ -242,7 +259,7 @@
 										/>
 										{#if node.{{idName}}}
 											<ObjectLink
-												disabled={fields.{{ field.fieldName }}.disabled}
+												disabled={fields.{{ field.fieldName }}?.disabled}
 												path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`}
 												name={node.{% if isNamed %}name{% else %}{{ idName }}{% endif %} + ':' + $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 												on:goto
@@ -261,7 +278,7 @@
 									<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.editBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
-											on:click|preventDefault={(e) => dispatch('edit', { value: node })}
+											on:click|preventDefault={(e) => dispatch('edit', { value: node, row })}
 										>
 											<Icon src={PencilSquare} solid />
 										</button>
@@ -271,7 +288,7 @@
 									<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.unbindBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
-											on:click|preventDefault={(e) => dispatch('unbind', { value: node })}
+											on:click|preventDefault={(e) => dispatch('unbind', { value: node, row })}
 										>
 											<Icon src={ArchiveBoxXMark} solid />
 										</button>
@@ -281,7 +298,7 @@
 									<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.removeBtn()}>
 										<button
 											class="btn btn-square btn-ghost btn-xs"
-											on:click|preventDefault={(e) => dispatch('remove', { value: node })}
+											on:click|preventDefault={(e) => dispatch('remove', { value: node, row })}
 										>
 											<Icon src={Trash} solid />
 										</button>
