@@ -85,8 +85,7 @@ const renders: Record<Template, Render> = {
         return {
             content: buildFileContent(config.template,
                 {
-                    objects: getObjectTypes(schema)
-                        .filter(type => inRouteObject(type.name)),
+                    objects: getObjectTypes(schema),
                     enums: getEnumTypes(schema),
                     ...buildConfig(config)
                 }
@@ -97,8 +96,7 @@ const renders: Record<Template, Render> = {
         return {
             content: buildFileContent(config.template,
                 {
-                    objects: getObjectTypes(schema)
-                        .filter(type => inRouteObject(type.name)),
+                    objects: getObjectTypes(schema),
                     enums: getEnumTypes(schema),
                     ...buildConfig(config)
                 }

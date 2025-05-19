@@ -68,7 +68,9 @@
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
 		on:back
-	/>
+	>
+		<slot />
+	</Buttons>
 </div>
 <div class="divider" />
 <Form class={className}>
