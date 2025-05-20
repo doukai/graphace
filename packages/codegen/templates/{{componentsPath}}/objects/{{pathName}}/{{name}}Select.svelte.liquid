@@ -40,28 +40,39 @@
 	$: loading = $namedQueryStore.isFetching;
 
 	$: if (Array.isArray(value)) {
-		namedQueryStore
-			.fetch(query, {
-				{{ idName }}: { opr: 'IN', arr: value?.map((item) => item?.{{ idName }} || item?.where?.{{ idName }}?.val) }
-			})
-			.then(
-				(response) =>
-					(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
-						label: item?.name,
-						value: item?.{{ idName }}
-					})))
-			);
+		if(value.some((item) => !item?.name)){
+			namedQueryStore
+				.fetch(query, {
+					{{ idName }}: { opr: 'IN', arr: value?.map((item) => item?.{{ idName }} || item?.where?.{{ idName }}?.val) }
+				})
+				.then(
+					(response) =>
+						(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
+							label: item?.name,
+							value: item?.{{ idName }}
+						})))
+				);
+		} else {
+			selected = value?.map((item) => ({
+				label: item?.name,
+				value: item?.{{ idName }}
+			}))
+		}
 		if (where && value.some((item) => !item?.where)) {
 			value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
 		}
 	} else if (value) {
-		namedQueryStore.fetch(query, { {{ idName }}: { opr: 'EQ', val: value.{{ idName }} || value.where?.{{ idName }}?.val } }).then(
-			(response) =>
-				(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
-					label: item?.name,
-					value: item?.{{ idName }}
-				}))?.[0])
-		);
+		if (!value.name) {
+			namedQueryStore.fetch(query, { {{ idName }}: { opr: 'EQ', val: value.{{ idName }} || value.where?.{{ idName }}?.val } }).then(
+				(response) =>
+					(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
+						label: item?.name,
+						value: item?.{{ idName }}
+					}))?.[0])
+			);
+		} else {
+			selected = { label: value?.name, value: value?.{{ idName }} };
+		}
 		if (where && !value.where) {
 			value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
 		}

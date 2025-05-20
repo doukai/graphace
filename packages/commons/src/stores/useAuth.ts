@@ -88,16 +88,25 @@ export function createPermissions(
             return $jwt?.is_root || authPermissions.map(authPermission => authPermission.split("::"))
                 .map(authParts => {
                     const authType = authParts[0];
-                    if (authParts[1] === '*' && authParts[2] === '*') {
-                        return $jwt?.permission_types?.includes(authType);
+                    const authField = authParts[1];
+                    const authPermissionType = authParts[2];
+                    if (authField === '*' && authPermissionType === '*') {
+                        return $jwt?.permission_types?.includes('ANY') ||
+                            $jwt?.permission_types?.includes(authType);
+                    } else if (authPermissionType === '*') {
+                        const $typePermissionRecord = get(typePermissionRecord);
+                        return $jwt?.permission_types?.includes('ANY') ||
+                            ($typePermissionRecord[authType] || []).map(permissions => permissions.split("::"))
+                                .some(parts => parts[1] === 'ANY' || authField === parts[1])
                     } else {
                         const $typePermissionRecord = get(typePermissionRecord);
-                        return ($typePermissionRecord[authType] || []).map(permissions => permissions.split("::"))
-                            .some(parts =>
-                                (authParts[0] === '*' || authParts[0] === parts[0]) &&
-                                (authParts[1] === '*' || authParts[1] === parts[1]) &&
-                                (authParts[2] === '*' || authParts[2] === parts[2])
-                            )
+                        return ($typePermissionRecord['ANY'] || []).map(permissions => permissions.split("::"))
+                            .some(parts => parts[2] === 'ANY' || authPermissionType === parts[2]) ||
+                            ($typePermissionRecord[authType] || []).map(permissions => permissions.split("::"))
+                                .some(parts =>
+                                    (parts[1] === 'ANY' || authField === parts[1]) &&
+                                    (parts[2] === 'ANY' || authPermissionType === parts[2])
+                                )
                     }
                 })
                 .reduce((pre, cur) => pre && cur, true) || false;
