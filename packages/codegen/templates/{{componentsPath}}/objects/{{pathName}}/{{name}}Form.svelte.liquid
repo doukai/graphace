@@ -84,7 +84,7 @@
 					<Label {id} text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} />
 					{%- if field.isScalarType or field.isEnumType or field.isFile %}
 					<{{ field.fieldTypeName }}Input
-					 	{id}
+						{id}
 						name="{{ field.fieldName }}"
 						bind:value={value.{{ field.fieldName }}}
 						errors={errors.{{ field.fieldName }}}
@@ -99,7 +99,7 @@
 					/>
 					{%- elsif field.isSelect %}
 					<{{ field.fieldTypeName }}Select
-					 	{id}
+						{id}
 						name="{{ field.fieldName }}"
 						errors={errors.{{ field.fieldName }}}
 						bind:value={value.{{ field.fieldName }}}

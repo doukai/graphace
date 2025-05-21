@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
+	import { melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { PencilSquare, Trash, ArchiveBoxXMark } from '@steeze-ui/heroicons';
+	import { PencilSquare, Trash, ArchiveBoxXMark, Funnel } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Loading, SearchInput, Table, Td } from '@graphace/ui';
 	import { type Option, {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td, {% endfor %}{% if hasFileField %}FileTd, {% endif %}ObjectLink } from '@graphace/ui-graphql';
+	import {{ name }}Filter from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Filter.svelte';
 	{%- for enum in enums %}
 	import {{ enum }}Th from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Th.svelte';
 	import {{ enum }}Td from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Td.svelte';
@@ -114,208 +116,374 @@
 		on:create
 		on:back
 	>
-		{#if showSearchInput}
-			<SearchInput slot="start" on:search />
-		{/if}
+		<svelte:fragment slot="start">
+			{#if showSearchInput}
+				<SearchInput on:search />
+			{/if}
+			<div class="md:hidden">
+				<{{ name }}Filter
+					bind:value={args}
+					let:trigger
+					on:filter={(e) => dispatch('query', { args, orderBy })}
+				>
+					<div class="tooltip" data-tip={$LL.{{ appName }}.components.query.filter()}>
+						<button class="btn btn-square" use:melt={trigger}>
+							<Icon src={Funnel} class="h-5 w-5" />
+						</button>
+					</div>
+				</{{ name }}Filter>
+			</div>
+		</svelte:fragment>
 		<slot />
 	</Buttons>
 </div>
 <div class="divider" />
-<Table {zIndex} class={className}>
-	<thead>
-		<tr>
-			<th class="w-0">
-				<label>
-					<input
-						type="checkbox"
-						class="checkbox"
-						bind:checked={selectAll}
-						on:change={(e) => {
-							if (value && value.length > 0) {
-								if (selectAll) {
-									selectedIdList = [
-										...new Set([...selectedIdList, ...value.map((node) => node?.{{ idName }})])
-									];
-								} else {
-									selectedIdList = [
-										...selectedIdList.filter(
-											(selectedId) => !value.some((node) => node?.{{ idName }} === selectedId)
-										)
-									];
-								}
-							}
-						{% raw %}}}{% endraw %}
-					/>
-				</label>
-			</th>
-			{%- for field in fields %}
-			{#if !fields.{{ field.fieldName }}?.hidden}
-				{%- if field.isScalarType or field.isEnumType %}
-				<{{ field.fieldTypeName }}Th
-					name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-					bind:value={args.{{ field.fieldName }}}
-					{%- if field.isListType == false %}
-					bind:sort={orderBy.{{ field.fieldName }}}
-					{%- endif %}
-					on:filter={(e) => dispatch('query', { args, orderBy })}
-				/>
-				{%- elsif field.inQueryArgs %}
-				<{{ field.fieldTypeName }}Th
-					name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-					bind:value={args.{{ field.fieldName }}}
-					on:filter={(e) => dispatch('query', { args, orderBy })}
-				/>
-				{%- else %}
-				<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
-				{%- endif %}
-			{/if}
-			{%- endfor %}
-			<th class="w-0" />
-		</tr>
-	</thead>
-	<tbody>
-		{#if isFetching}
+<div class="max-sm:hidden">
+	<Table {zIndex} class={className}>
+		<thead>
 			<tr>
-				<td colspan="999">
-					<Loading class="loading-lg" />
-				</td>
+				<th class="w-0">
+					<label>
+						<input
+							type="checkbox"
+							class="checkbox"
+							bind:checked={selectAll}
+							on:change={(e) => {
+								if (value && value.length > 0) {
+									if (selectAll) {
+										selectedIdList = [
+											...new Set([...selectedIdList, ...value.map((node) => node?.{{ idName }})])
+										];
+									} else {
+										selectedIdList = [
+											...selectedIdList.filter(
+												(selectedId) => !value.some((node) => node?.{{ idName }} === selectedId)
+											)
+										];
+									}
+								}
+							{% raw %}}}{% endraw %}
+						/>
+					</label>
+				</th>
+				{%- for field in fields %}
+				{#if !fields.{{ field.fieldName }}?.hidden}
+					{%- if field.isScalarType or field.isEnumType %}
+					<{{ field.fieldTypeName }}Th
+						name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+						bind:value={args.{{ field.fieldName }}}
+						{%- if field.isListType == false %}
+						bind:sort={orderBy.{{ field.fieldName }}}
+						{%- endif %}
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+					/>
+					{%- elsif field.inQueryArgs %}
+					<{{ field.fieldTypeName }}Th
+						name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+						bind:value={args.{{ field.fieldName }}}
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+					/>
+					{%- else %}
+					<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
+					{%- endif %}
+				{/if}
+				{%- endfor %}
+				<th class="w-0" />
 			</tr>
-		{:else if value && value.length > 0}
-			{#each value as node, row}
-				{#if node}
-					<tr class="hover">
-						<th>
-							<label>
-								<input
-									type="checkbox"
-									class="checkbox"
-									bind:group={selectedIdList}
-									value={node.{{ idName }}}
-								/>
-							</label>
-						</th>
+		</thead>
+		<tbody>
+			{#if isFetching}
+				<tr>
+					<td colspan="999">
+						<Loading class="loading-lg" />
+					</td>
+				</tr>
+			{:else if value && value.length > 0}
+				{#each value as node, row}
+					{#if node}
+						<tr class="hover">
+							<th>
+								<label>
+									<input
+										type="checkbox"
+										class="checkbox"
+										bind:group={selectedIdList}
+										value={node.{{ idName }}}
+									/>
+								</label>
+							</th>
+							{%- for field in fields %}
+							<slot name="{{ field.fieldName }}">
+								{#if !fields.{{ field.fieldName }}?.hidden}
+									{%- if field.isScalarType or field.isEnumType or field.isFile %}
+									<{{ field.fieldTypeName }}Td
+										name="{{ field.fieldName }}"
+										bind:value={node.{{ field.fieldName }}}
+										{%- if field.isListType %}
+										list
+										{%- endif %}
+										{%- if field.inMutationArgs and field.fieldName != idName %}
+										on:save={(e) =>
+											dispatch('save', {
+												value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
+											})}
+										readonly={fields.{{ field.fieldName }}?.readonly}
+										disabled={fields.{{ field.fieldName }}?.disabled}
+										{%- else %}
+										readonly
+										{%- endif %}
+										errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
+										{%- if field.isFile %}
+										on:upload
+										{%- endif %}
+										{zIndex}
+									/>
+									{%- elsif field.isSelect %}
+									<{{ field.fieldTypeName }}SelectTd
+										name="{{ field.fieldName }}"
+										bind:value={node.{{ field.fieldName }}}
+										{%- if field.isListType %}
+										list
+										{%- endif %}
+										errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
+										readonly={fields.{{ field.fieldName }}?.readonly}
+										disabled={fields.{{ field.fieldName }}?.disabled}
+										on:save={(e) =>
+											dispatch('save', {
+												value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
+											})}
+										{zIndex}
+									/>
+									{%- else %}
+									<Td errors={errors?.[row]?.iterms?.{{ field.fieldName }}} {zIndex}>
+										<div class="flex space-x-1">
+											<{{ field.fieldTypeName }}TableDialog
+												bind:value={node.{{ field.fieldName }}}
+												where={true}
+												{%- if field.isNamed %}
+												textFieldName="name"
+												{%- endif %}
+												{%- if field.isListType == false %}
+												singleChoice={true}
+												{%- endif %}
+												readonly={fields.{{ field.fieldName }}?.readonly}
+												disabled={fields.{{ field.fieldName }}?.disabled}
+												on:select={(e) =>
+													dispatch('save', {
+														value: {
+															{{ field.fieldName }}: node?.{{ field.fieldName }} || null,
+															where: { {{ idName }}: { val: node?.{{ idName }} } }
+														}
+													})}
+											/>
+											{#if node.{{idName}}}
+												<ObjectLink
+													disabled={fields.{{ field.fieldName }}?.disabled}
+													path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`}
+													name={node.{% if isNamed %}name{% else %}{{ idName }}{% endif %} + ':' + $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+													on:goto
+													{zIndex}
+												/>
+											{/if}
+										</div>
+									</Td>
+									{%- endif %}
+								{/if}
+							</slot>
+							{%- endfor %}
+							<th class="hover:z-[{zIndex + 3}]">
+								<div class="flex space-x-1">
+									{#if showEditButton}
+										<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.editBtn()}>
+											<button
+												class="btn btn-square btn-ghost btn-xs"
+												on:click|preventDefault={(e) => dispatch('edit', { value: node, row })}
+											>
+												<Icon src={PencilSquare} solid />
+											</button>
+										</div>
+									{/if}
+									{#if showUnbindButton}
+										<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.unbindBtn()}>
+											<button
+												class="btn btn-square btn-ghost btn-xs"
+												on:click|preventDefault={(e) => dispatch('unbind', { value: node, row })}
+											>
+												<Icon src={ArchiveBoxXMark} solid />
+											</button>
+										</div>
+									{/if}
+									{#if showRemoveButton}
+										<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.removeBtn()}>
+											<button
+												class="btn btn-square btn-ghost btn-xs"
+												on:click|preventDefault={(e) => dispatch('remove', { value: node, row })}
+											>
+												<Icon src={Trash} solid />
+											</button>
+										</div>
+									{/if}
+								</div>
+							</th>
+						</tr>
+					{/if}
+				{/each}
+			{:else}
+				<tr>
+					<td colspan="999">
+						<Empty class="badge-lg" />
+					</td>
+				</tr>
+			{/if}
+		</tbody>
+	</Table>
+</div>
+<div class="md:hidden">
+	{#if isFetching}
+		<Loading />
+	{:else if value && value.length > 0}
+		{#each value as node, row}
+			{#if node}
+				<Table {zIndex} class={className}>
+					<thead>
+						<tr>
+							<th class="w-0">
+								<label>
+									<input
+										type="checkbox"
+										class="checkbox"
+										bind:group={selectedIdList}
+										value={node.{{ idName }}}
+									/>
+								</label>
+							</th>
+							<th class="flex justify-end hover:z-[{zIndex + 3}]">
+								<div class="flex space-x-1">
+									{#if showEditButton}
+										<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.editBtn()}>
+											<button
+												class="btn btn-square btn-ghost btn-xs"
+												on:click|preventDefault={(e) => dispatch('edit', { value: node, row })}
+											>
+												<Icon src={PencilSquare} solid />
+											</button>
+										</div>
+									{/if}
+									{#if showUnbindButton}
+										<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.unbindBtn()}>
+											<button
+												class="btn btn-square btn-ghost btn-xs"
+												on:click|preventDefault={(e) => dispatch('unbind', { value: node, row })}
+											>
+												<Icon src={ArchiveBoxXMark} solid />
+											</button>
+										</div>
+									{/if}
+									{#if showRemoveButton}
+										<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.removeBtn()}>
+											<button
+												class="btn btn-square btn-ghost btn-xs"
+												on:click|preventDefault={(e) => dispatch('remove', { value: node, row })}
+											>
+												<Icon src={Trash} solid />
+											</button>
+										</div>
+									{/if}
+								</div>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
 						{%- for field in fields %}
 						<slot name="{{ field.fieldName }}">
 							{#if !fields.{{ field.fieldName }}?.hidden}
-								{%- if field.isScalarType or field.isEnumType or field.isFile %}
-								<{{ field.fieldTypeName }}Td
-									name="{{ field.fieldName }}"
-									bind:value={node.{{ field.fieldName }}}
-									{%- if field.isListType %}
-									list
-									{%- endif %}
-									{%- if field.inMutationArgs and field.fieldName != idName %}
-									on:save={(e) =>
-										dispatch('save', {
-											value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
-										})}
-									readonly={fields.{{ field.fieldName }}?.readonly}
-									disabled={fields.{{ field.fieldName }}?.disabled}
+								<tr class="hover">
+									<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
+									{%- if field.isScalarType or field.isEnumType or field.isFile %}
+									<{{ field.fieldTypeName }}Td
+										name="{{ field.fieldName }}"
+										bind:value={node.{{ field.fieldName }}}
+										{%- if field.isListType %}
+										list
+										{%- endif %}
+										{%- if field.inMutationArgs and field.fieldName != idName %}
+										on:save={(e) =>
+											dispatch('save', {
+												value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
+											})}
+										readonly={fields.{{ field.fieldName }}?.readonly}
+										disabled={fields.{{ field.fieldName }}?.disabled}
+										{%- else %}
+										readonly
+										{%- endif %}
+										errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
+										{%- if field.isFile %}
+										on:upload
+										{%- endif %}
+										{zIndex}
+									/>
+									{%- elsif field.isSelect %}
+									<{{ field.fieldTypeName }}SelectTd
+										name="{{ field.fieldName }}"
+										bind:value={node.{{ field.fieldName }}}
+										{%- if field.isListType %}
+										list
+										{%- endif %}
+										errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
+										readonly={fields.{{ field.fieldName }}?.readonly}
+										disabled={fields.{{ field.fieldName }}?.disabled}
+										on:save={(e) =>
+											dispatch('save', {
+												value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
+											})}
+										{zIndex}
+									/>
 									{%- else %}
-									readonly
-									{%- endif %}
-									errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
-									{%- if field.isFile %}
-									on:upload
-									{%- endif %}
-									{zIndex}
-								/>
-								{%- elsif field.isSelect %}
-								<{{ field.fieldTypeName }}SelectTd
-									name="{{ field.fieldName }}"
-									bind:value={node.{{ field.fieldName }}}
-									{%- if field.isListType %}
-									list
-									{%- endif %}
-									errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
-									readonly={fields.{{ field.fieldName }}?.readonly}
-									disabled={fields.{{ field.fieldName }}?.disabled}
-									on:save={(e) =>
-										dispatch('save', {
-											value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
-										})}
-									{zIndex}
-								/>
-								{%- else %}
-								<Td errors={errors?.[row]?.iterms?.{{ field.fieldName }}} {zIndex}>
-									<div class="flex space-x-1">
-										<{{ field.fieldTypeName }}TableDialog
-											bind:value={node.{{ field.fieldName }}}
-											where={true}
-											{%- if field.isNamed %}
-											textFieldName="name"
-											{%- endif %}
-											{%- if field.isListType == false %}
-											singleChoice={true}
-											{%- endif %}
-											readonly={fields.{{ field.fieldName }}?.readonly}
-											disabled={fields.{{ field.fieldName }}?.disabled}
-											on:select={(e) =>
-												dispatch('save', {
-													value: {
-														{{ field.fieldName }}: node?.{{ field.fieldName }} || null,
-														where: { {{ idName }}: { val: node?.{{ idName }} } }
-													}
-												})}
-										/>
-										{#if node.{{idName}}}
-											<ObjectLink
+									<Td errors={errors?.[row]?.iterms?.{{ field.fieldName }}} {zIndex}>
+										<div class="flex space-x-1">
+											<{{ field.fieldTypeName }}TableDialog
+												bind:value={node.{{ field.fieldName }}}
+												where={true}
+												{%- if field.isNamed %}
+												textFieldName="name"
+												{%- endif %}
+												{%- if field.isListType == false %}
+												singleChoice={true}
+												{%- endif %}
+												readonly={fields.{{ field.fieldName }}?.readonly}
 												disabled={fields.{{ field.fieldName }}?.disabled}
-												path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`}
-												name={node.{% if isNamed %}name{% else %}{{ idName }}{% endif %} + ':' + $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-												on:goto
-												{zIndex}
+												on:select={(e) =>
+													dispatch('save', {
+														value: {
+															{{ field.fieldName }}: node?.{{ field.fieldName }} || null,
+															where: { {{ idName }}: { val: node?.{{ idName }} } }
+														}
+													})}
 											/>
-										{/if}
-									</div>
-								</Td>
+											{#if node.{{idName}}}
+												<ObjectLink
+													disabled={fields.{{ field.fieldName }}?.disabled}
+													path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`}
+													name={node.{% if isNamed %}name{% else %}{{ idName }}{% endif %} + ':' + $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+													on:goto
+													{zIndex}
+												/>
+											{/if}
+										</div>
+									</Td>
+								</tr>
 								{%- endif %}
 							{/if}
 						</slot>
 						{%- endfor %}
-						<th class="hover:z-[{zIndex + 3}]">
-							<div class="flex space-x-1">
-								{#if showEditButton}
-									<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.editBtn()}>
-										<button
-											class="btn btn-square btn-ghost btn-xs"
-											on:click|preventDefault={(e) => dispatch('edit', { value: node, row })}
-										>
-											<Icon src={PencilSquare} solid />
-										</button>
-									</div>
-								{/if}
-								{#if showUnbindButton}
-									<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.unbindBtn()}>
-										<button
-											class="btn btn-square btn-ghost btn-xs"
-											on:click|preventDefault={(e) => dispatch('unbind', { value: node, row })}
-										>
-											<Icon src={ArchiveBoxXMark} solid />
-										</button>
-									</div>
-								{/if}
-								{#if showRemoveButton}
-									<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.removeBtn()}>
-										<button
-											class="btn btn-square btn-ghost btn-xs"
-											on:click|preventDefault={(e) => dispatch('remove', { value: node, row })}
-										>
-											<Icon src={Trash} solid />
-										</button>
-									</div>
-								{/if}
-							</div>
-						</th>
-					</tr>
+					</tbody>
+				</Table>
+				{#if row < value.length - 1}
+					<div class="divider my-0" />
 				{/if}
-			{/each}
-		{:else}
-			<tr>
-				<td colspan="999">
-					<Empty class="badge-lg" />
-				</td>
-			</tr>
-		{/if}
-	</tbody>
-</Table>
+			{/if}
+		{/each}
+	{:else}
+		<Empty />
+	{/if}
+</div>
