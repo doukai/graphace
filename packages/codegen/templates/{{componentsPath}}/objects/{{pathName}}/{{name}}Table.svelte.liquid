@@ -120,7 +120,7 @@
 			{#if showSearchInput}
 				<SearchInput on:search />
 			{/if}
-			<div class="md:hidden">
+			<div class="sm:hidden">
 				<{{ name }}Filter
 					bind:value={args}
 					let:trigger
@@ -338,7 +338,7 @@
 		</tbody>
 	</Table>
 </div>
-<div class="md:hidden">
+<div class="sm:hidden">
 	{#if isFetching}
 		<Loading />
 	{:else if value && value.length > 0}

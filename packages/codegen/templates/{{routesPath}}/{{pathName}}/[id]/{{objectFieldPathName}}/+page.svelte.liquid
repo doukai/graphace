@@ -125,7 +125,7 @@
 						title: $LL.{{ appName }}.components.modal.removeModalTitle(),
 						confirm: () => {
 							mutation({
-								where: { {{ idName }}: { val: e.detail.value?.{{ idName }} } },
+								where: { {{ fieldObjectInfo.idName }}: { val: e.detail.value?.{{ fieldObjectInfo.idName }} } },
 								isDeprecated: true
 							});
 							return true;
