@@ -9,11 +9,11 @@
 	import {{ name }}Form from '~/{{ componentsPath }}/objects/{{ name | camelCase }}/{{ name }}Form.svelte';
 	import { getLoadEvent } from '~/utils';
 	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
-	import type { Mutation{{ name }}Args, {{ name }}Input } from '~/{{ schemaTypesPath }}';
+	import type { {{ name }}, Mutation{{ name }}Args, {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: {{ name }}Input | null | undefined = {};
-	export let textFieldName: keyof {{ name }}Input | undefined = undefined;
+	export let textFieldName: (keyof {{ name }} & keyof {{ name }}Input) | undefined = undefined;
 	export let text: string | undefined = undefined;
 	export let errors: Record<string, Errors> = {};
 	export let select: boolean | undefined = false;
@@ -58,8 +58,18 @@
 		value = node;
 	}
 
-	if (textFieldName) {
-		text = value?.[textFieldName] + '';
+ 	$: if (value) {
+		if (textFieldName) {
+			if (!value?.[textFieldName]) {
+				query_{{ name | camelCase }}_Store
+					.fetch({
+						{{ idName }}: { opr: 'EQ', val: value.{{ idName }} || value.where?.{{ idName }}?.val }
+					})
+					.then((response) => (text = response.data?.{{ name | camelCase }}?.[textFieldName] + ''));
+			} else {
+				text = value?.[textFieldName] + '';
+			}
+		}
 	}
 
 	if (where && value && !value.where) {
@@ -67,7 +77,7 @@
 	}
 
 	const query = () => {
-		query_{{ name | camelCase }}_Store.fetch({ {{ idName }}: { val: value?.{{ idName }} } }).then((result) => {
+		query_{{ name | camelCase }}_Store.fetch({ {{ idName }}: { val: value?.{{ idName }} || value?.where?.{{ idName }}?.val } }).then((result) => {
 			if (result.errors) {
 				console.error(result.errors);
 				toast.error($LL.{{ appName }}.message.requestFailed());

@@ -256,6 +256,18 @@
 									/>
 									{%- else %}
 									<Td errors={errors?.[row]?.iterms?.{{ field.fieldName }}} {zIndex}>
+										{#if node.{{idName}}}
+											<ObjectLink
+												{%- if field.isNamed %}
+												namedStruct={node.{{ field.fieldName }}}
+												{%- endif %}
+												disabled={fields.{{ field.fieldName }}?.disabled}
+												path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`}
+												name={node.{% if isNamed %}name{% else %}{{ idName }}{% endif %} + ':' + $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+												on:goto
+												{zIndex}
+											/>
+										{/if}
 										<div class="flex space-x-1">
 											<{{ field.fieldTypeName }}TableDialog
 												bind:value={node.{{ field.fieldName }}}
@@ -276,15 +288,6 @@
 														}
 													})}
 											/>
-											{#if node.{{idName}}}
-												<ObjectLink
-													disabled={fields.{{ field.fieldName }}?.disabled}
-													path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`}
-													name={node.{% if isNamed %}name{% else %}{{ idName }}{% endif %} + ':' + $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-													on:goto
-													{zIndex}
-												/>
-											{/if}
 										</div>
 									</Td>
 									{%- endif %}
@@ -440,7 +443,18 @@
 									/>
 									{%- else %}
 									<Td errors={errors?.[row]?.iterms?.{{ field.fieldName }}} {zIndex}>
-										<div class="flex space-x-1">
+										{#if node.{{idName}}}
+											<ObjectLink
+												{%- if field.isNamed %}
+												namedStruct={node.{{ field.fieldName }}}
+												{%- endif %}
+												disabled={fields.{{ field.fieldName }}?.disabled}
+												path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`}
+												name={node.{% if isNamed %}name{% else %}{{ idName }}{% endif %} + ':' + $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+												on:goto
+												{zIndex}
+											/>
+										{:else}
 											<{{ field.fieldTypeName }}TableDialog
 												bind:value={node.{{ field.fieldName }}}
 												where={true}
@@ -452,24 +466,8 @@
 												{%- endif %}
 												readonly={fields.{{ field.fieldName }}?.readonly}
 												disabled={fields.{{ field.fieldName }}?.disabled}
-												on:select={(e) =>
-													dispatch('save', {
-														value: {
-															{{ field.fieldName }}: node?.{{ field.fieldName }} || null,
-															where: { {{ idName }}: { val: node?.{{ idName }} } }
-														}
-													})}
 											/>
-											{#if node.{{idName}}}
-												<ObjectLink
-													disabled={fields.{{ field.fieldName }}?.disabled}
-													path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`}
-													name={node.{% if isNamed %}name{% else %}{{ idName }}{% endif %} + ':' + $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-													on:goto
-													{zIndex}
-												/>
-											{/if}
-										</div>
+										{/if}
 									</Td>
 								</tr>
 								{%- endif %}

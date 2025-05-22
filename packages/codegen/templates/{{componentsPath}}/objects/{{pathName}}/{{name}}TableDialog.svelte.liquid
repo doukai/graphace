@@ -8,11 +8,12 @@
 	import { createQuery_{{ name | camelCase }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}Connection_store';
 	import {{ name }}Table from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Table.svelte';
 	import { getLoadEvent } from '~/utils';
-	import type { {{ queryTypeName }}{{ name }}ConnectionArgs, {{ name }}OrderBy, {{ name }}Input } from '~/{{ schemaTypesPath }}';
+	import type { {{ name }}, {{ queryTypeName }}{{ name }}ConnectionArgs, {{ name }}OrderBy, {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	import LL from '$i18n/i18n-svelte';
 
-	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
-	export let textFieldName: keyof {{ name }}Input | undefined = undefined;
+	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined =
+		undefined;
+	export let textFieldName: (keyof {{ name }} & keyof {{ name }}Input) | undefined = undefined;
 	export let text: string | undefined = undefined;
 	export let singleChoice: boolean | undefined = false;
 	export let where: boolean | undefined = false;
@@ -56,32 +57,65 @@
 	let pageSize: number = 10;
 	let selectedIdList: (string | null | undefined)[] | undefined = [];
 	let close: () => void;
+	
+	$: if (Array.isArray(value)) {
+		if (textFieldName) {
+			if (value.some((item) => !item?.[textFieldName])) {
+				query_{{ name | camelCase }}Connection_Store
+					.fetch({
+						{{ idName }}: { opr: 'IN', arr: value?.map((item) => item?.{{ idName }} || item?.where?.{{ idName }}?.val) },
+						first: 3
+					})
+					.then(
+						(response) =>
+							(text = response.data?.{{ name | camelCase }}Connection?.edges
+								?.map((edge) => edge?.node?.[textFieldName])
+								.join(',')
+								.concat('...'))
+					);
+			} else {
+				if (value.length > 3) {
+					text = value
+						.slice(0, 3)
+						.map((node) => node?.[textFieldName])
+						.filter((name) => name !== null)
+						.join(',')
+						.concat('...');
+				} else {
+					text = value
+						.map((node) => node?.[textFieldName])
+						.filter((name) => name !== null)
+						.join(',');
+				}
+			}
+		}
+	} else if (value) {
+		if (textFieldName) {
+			if (!value?.[textFieldName]) {
+				query_{{ name | camelCase }}Connection_Store
+					.fetch({
+						{{ idName }}: { opr: 'EQ', val: value.{{ idName }} || value.where?.{{ idName }}?.val }
+					})
+					.then(
+						(response) =>
+							(text =
+								response.data?.{{ name | camelCase }}Connection?.edges?.map(
+									(edge) => edge?.node?.[textFieldName]
+								)?.[0] + '')
+					);
+			} else {
+				text = value?.[textFieldName] + '';
+			}
+		}
+	}
 
 	if (Array.isArray(value)) {
 		selectedIdList = value?.map((node) => node?.{{ idName }} || node?.where?.{{ idName }}?.val);
-		if (textFieldName) {
-			if (value.length > 3) {
-				text = value
-					.slice(0, 3)
-					.map((node) => node?.[textFieldName])
-					.filter((name) => name !== null)
-					.join(',')
-					.concat('...');
-			} else {
-				text = value
-					.map((node) => node?.[textFieldName])
-					.filter((name) => name !== null)
-					.join(',');
-			}
-		}
 		if (where && value.some((item) => !item?.where)) {
 			value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
 		}
 	} else if (value) {
 		selectedIdList = [value.{{ idName }} || value?.where?.{{ idName }}?.val];
-		if (textFieldName) {
-			text = value?.[textFieldName] + '';
-		}
 		if (where && !value.where) {
 			value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
 		}

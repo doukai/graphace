@@ -111,7 +111,17 @@
 						{%- endif %}
 					/>
 					{%- else %}
-					<div class="flex space-x-1">
+					{#if value.{{idName}}}
+						<ObjectLink
+							{%- if field.isNamed %}
+							namedStruct={value.{{ field.fieldName }}}
+							{%- endif %}
+							disabled={fields.{{ field.fieldName }}?.disabled}
+							path={`${value.{{ idName }}}/{{ field.fieldName | paramCase }}`}
+							name={value.{% if isNamed %}name{% else %}{{ idName }}{% endif %} + ':' + $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+							on:goto
+						/>
+					{:else}
 						<{{ field.fieldTypeName }}TableDialog
 							bind:value={value.{{ field.fieldName }}}
 							where={true}
@@ -124,14 +134,8 @@
 							readonly={fields.{{ field.fieldName }}?.readonly}
 							disabled={fields.{{ field.fieldName }}?.disabled}
 						/>
-						{#if value.{{idName}}}
-							<ObjectLink
-								disabled={fields.{{ field.fieldName }}?.disabled}
-								path={`${value.{{ idName }}}/{{ field.fieldName | paramCase }}`}
-								name={value.{% if isNamed %}name{% else %}{{ idName }}{% endif %} + ':' + $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-								on:goto
-							/>
-						{/if}
+					{/if}
+					<div class="flex space-x-1">
 					</div>
 					<ErrorLabels {id} errors={errors.{{ field.fieldName }}} />
 					{%- endif %}
