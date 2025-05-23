@@ -333,7 +333,7 @@
 	<div class="flex space-x-1">
 		<div class="w-full">
 			<Combobox
-				multiple={true}
+				multiple
 				options={filteredSelectOptions}
 				bind:value={selectColumns}
 				on:search={(e) => {
@@ -409,7 +409,7 @@
 						<FormControl let:id>
 							<Label {id} text={$LL.{{ appName }}.components.query.joinColumns()} />
 							<Combobox
-								multiple={true}
+								multiple
 								options={filteredJoinColumnOptions}
 								bind:value={joinColumns}
 								on:search={(e) => {
@@ -430,7 +430,7 @@
 						<FormControl let:id>
 							<Label {id} text={$LL.{{ appName }}.components.query.orderBy()} />
 							<Combobox
-								multiple={true}
+								multiple
 								options={filteredOrderByOptions}
 								bind:value={orderByColumns}
 								on:search={(e) => {

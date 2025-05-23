@@ -13,7 +13,7 @@
 	export let errors: Errors | undefined = undefined;
 	export let disabled = false;
 	export let zIndex: number | undefined = 0;
-	let className: string | undefined = '';
+	let className: string | undefined = 'btn-link p-0';
 	export { className as class };
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
@@ -60,7 +60,7 @@
 	<button
 		{id}
 		{disabled}
-		class="btn btn-link {errors ? 'btn-error' : ''} {className}"
+		class="btn {errors ? 'btn-error' : ''} {className}"
 		on:click|preventDefault={(e) => {
 			dispatch('goto', { path, name });
 		}}

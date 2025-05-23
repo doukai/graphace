@@ -3,6 +3,7 @@
 	import type { Errors, JsonSchema{% if useAuth %}, PermissionsStore{% endif %} } from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
 	import {{ fieldObjectInfo.name }}Form from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}Form.svelte';
+	import {{ fieldObjectInfo.name }}TableDialog from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}TableDialog.svelte';
 	import type { Query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_store';
 	import type { Mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_store';
 	import type { Mutation_{{ fieldObjectInfo.name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ fieldObjectInfo.name | camelCase }}_store';
@@ -98,7 +99,7 @@
 <Card>
 	<CardBody>
 		<{{ fieldObjectInfo.name }}Form
-			showSaveButton={true}
+			showSaveButton
 			{showUnbindButton}
 			showBackButton={$canBack}
 			bind:value
@@ -151,6 +152,17 @@
 				);
 			{% raw %}}}{% endraw %}
 			{%- endif %}
-		/>
+		>
+			<{{ fieldObjectInfo.name }}TableDialog
+				where
+				singleChoice
+				class="btn-accent"
+				on:select={(e) => {
+					if (!Array.isArray(e.detail.value)) {
+						merge(e.detail.value);
+					}
+				{% raw %}}}{% endraw %}
+			/>
+		</{{ fieldObjectInfo.name }}Form>
 	</CardBody>
 </Card>

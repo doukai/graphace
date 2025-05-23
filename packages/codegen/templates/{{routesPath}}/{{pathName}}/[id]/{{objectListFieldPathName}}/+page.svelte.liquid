@@ -4,6 +4,7 @@
 	import { buildArguments } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import {{ fieldObjectInfo.name }}Table from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}Table.svelte';
+	import {{ fieldObjectInfo.name }}TableDialog from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}TableDialog.svelte';
 	import type { Query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}Connection_store';
 	import type { Mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_store';
 	import type { Mutation_{{ fieldObjectInfo.name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ fieldObjectInfo.name | camelCase }}_store';
@@ -110,11 +111,11 @@
 <Card>
 	<CardBody>
 		<{{ fieldObjectInfo.name }}Table
-			showUnbindButton={true}
-			showEditButton={true}
-			showCreateButton={true}
+			showUnbindButton
+			showEditButton
+			showCreateButton
 			showBackButton={$canBack}
-			showSearchInput={true}
+			showSearchInput
 			value={nodes}
 			bind:args
 			bind:orderBy
@@ -158,13 +159,6 @@
 					to(`../../{{ fieldObjectInfo.name | paramCase }}/${e.detail.value.{{ fieldObjectInfo.idName }}}`, e.detail.value.{% if fieldObjectInfo.isNamed %}name{% else %}{{ fieldObjectInfo.idName }}{% endif %});
 				}
 			{% raw %}}}{% endraw %}
-			on:select={(e) => {
-				if (Array.isArray(e.detail.value)) {
-					merge(e.detail.value);
-				} else {
-					merge([e.detail.value]);
-				}
-			}}
 			on:remove={(e) => {
 				if (e.detail.value) {
 					modal.open({
@@ -219,7 +213,19 @@
 				);
 			{% raw %}}}{% endraw %}
 			{%- endif %}
-		/>
+		>
+			<{{ fieldObjectInfo.name }}TableDialog
+				where
+				class="btn-accent"
+				on:select={(e) => {
+					if (Array.isArray(e.detail.value)) {
+						merge(e.detail.value);
+					} else {
+						merge([e.detail.value]);
+					}
+				{% raw %}}}{% endraw %}
+			/>
+		</{{ fieldObjectInfo.name }}Table>
 		<div class="divider" />
 		<Pagination
 			bind:pageSize

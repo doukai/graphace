@@ -26,11 +26,11 @@
 		}
 	});
 
-	export const open = () => {
+	export const open: (() => void) | undefined = () => {
 		$isOpen = true;
 	};
 
-	export const close = () => {
+	export const close: (() => void) | undefined = () => {
 		$isOpen = false;
 	};
 </script>

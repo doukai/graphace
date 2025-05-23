@@ -21,7 +21,7 @@
 	export let where: boolean | undefined = false;
 	export let readonly = false;
 	export let disabled = false;
-	let className: string | undefined = 'btn-link';
+	let className: string | undefined = 'btn-link p-0';
 	export { className as class };
 
 	const { validate } = getContext<JsonSchema>('jsonSchema');
@@ -52,7 +52,7 @@
 	const query_{{ name | camelCase }}_Store = createQuery_{{ name | camelCase }}_Store(getLoadEvent());
 	$: node = $query_{{ name | camelCase }}_Store.response.data?.{{ name | camelCase }};
 	const mutation_{{ name | camelCase }}_Store = createMutation_{{ name | camelCase }}_Store(getLoadEvent());
-	let close: () => void;
+	export let close: () => void | undefined = undefined;
 
 	$: if (node && Object.keys(node).length > 0) {
 		value = node;

@@ -103,7 +103,7 @@
 						name="{{ field.fieldName }}"
 						errors={errors.{{ field.fieldName }}}
 						bind:value={value.{{ field.fieldName }}}
-						where={true}
+						where
 						readonly={fields.{{ field.fieldName }}?.readonly}
 						disabled={fields.{{ field.fieldName }}?.disabled}
 						{%- if field.isListType %}
@@ -124,19 +124,17 @@
 					{:else}
 						<{{ field.fieldTypeName }}TableDialog
 							bind:value={value.{{ field.fieldName }}}
-							where={true}
+							where
 							{%- if field.isNamed %}
 							textFieldName="name"
 							{%- endif %}
 							{%- if field.isListType == false %}
-							singleChoice={true}
+							singleChoice
 							{%- endif %}
 							readonly={fields.{{ field.fieldName }}?.readonly}
 							disabled={fields.{{ field.fieldName }}?.disabled}
 						/>
 					{/if}
-					<div class="flex space-x-1">
-					</div>
 					<ErrorLabels {id} errors={errors.{{ field.fieldName }}} />
 					{%- endif %}
 				</FormControl>

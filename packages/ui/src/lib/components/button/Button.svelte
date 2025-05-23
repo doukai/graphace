@@ -9,8 +9,8 @@
 	const contextClass = getContext<string>('ui.button') || '';
 </script>
 
-<div class="tooltip" data-tip={text}>
-	<button disabled={loading} class="btn {className} {contextClass} md:hidden" on:click>
+<div class="tooltip md:hidden" data-tip={text}>
+	<button disabled={loading} class="btn {className} {contextClass}" on:click>
 		{#if loading}
 			<span class="loading loading-spinner" />
 		{:else}
