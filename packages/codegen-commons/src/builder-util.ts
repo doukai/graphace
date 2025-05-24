@@ -25,7 +25,8 @@ import {
     isNamedStruct,
     fieldTypeIsFile,
     getOriginalTypeName,
-    hasFileField
+    hasFileField,
+    getPairField
 } from "./introspection";
 import type { BuilderConfig, ObjectInfo, FieldInfo, ImportInfo } from "./types/types";
 
@@ -163,6 +164,13 @@ export function isSelectField(typeName: string, fieldName: string, fieldTypeName
             .find(fieldConfig => fieldConfig.name === fieldName)?.select !== false ||
         false
 }
+export function isTableField(typeName: string, fieldName: string): boolean {
+    return (builderConfig?.objects || [])
+        .filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any')
+        .flatMap(objectConfig => objectConfig.fields || [])
+        .find(fieldConfig => fieldConfig.name === fieldName)?.table === true ||
+        false
+}
 
 export const getObjectInfo = (schema: GraphQLSchema, name: string): ObjectInfo | undefined => {
     const type = schema.getType(name);
@@ -196,6 +204,7 @@ export const getImportInfo = (fields: FieldInfo[]): ImportInfo | undefined => {
         enums: getEnumNames(fields),
         objects: getObjectNames(fields),
         selects: getSelectObjectNames(fields),
+        tables: getTableObjectNames(fields),
         nonSelects: getNonSelectObjectNames(fields)
     };
 }
@@ -228,6 +237,7 @@ export const getQueryFieldInfo = (schema: GraphQLSchema, name: string): FieldInf
             isNamed: fieldTypeIsNamedStruct(field.type),
             isFile: fieldTypeIsFile(field.type),
             isSelect: false,
+            isTable: false,
             inQueryArgs: false,
             inMutationArgs: false,
             inGraphQL: inGraphQLField(getQueryTypeName(), name, fieldType.name),
@@ -270,6 +280,7 @@ export const getMutationFieldInfo = (schema: GraphQLSchema, name: string): Field
             isNamed: fieldTypeIsNamedStruct(field.type),
             isFile: fieldTypeIsFile(field.type),
             isSelect: false,
+            isTable: false,
             inQueryArgs: false,
             inMutationArgs: false,
             inGraphQL: inGraphQLField(getMutationTypeName(), name, fieldType.name),
@@ -310,6 +321,7 @@ export const getFieldInfos = (schema: GraphQLSchema, type: GraphQLNamedType): Fi
                     originalFieldTypeName: getOriginalTypeName(fieldType),
                     tsTypeName: getTSTypeName(fieldType.name),
                     fieldTypeIdName: getIDFieldName(fieldType),
+                    pairFieldName: getPairField(type, field)?.name,
                     args: field.args
                         ?.map(arg => ({
                             inputName: arg.name,
@@ -327,6 +339,7 @@ export const getFieldInfos = (schema: GraphQLSchema, type: GraphQLNamedType): Fi
                     isNamed: fieldTypeIsNamedStruct(field.type),
                     isFile: fieldTypeIsFile(field.type),
                     isSelect: isSelectField(type.name, field.name, fieldType.name),
+                    isTable: fieldTypeIsList(field.type) && isTableField(type.name, field.name),
                     inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),
                     inMutationArgs: fieldInMutationArgs(schema, type.name, field.name),
                     inGraphQL: inGraphQLField(type.name, field.name, fieldType.name),
@@ -467,10 +480,22 @@ export function getSelectObjectNames(fields: FieldInfo[] | undefined): string[] 
     }
     return [];
 }
+
 export function getNonSelectObjectNames(fields: FieldInfo[] | undefined): string[] {
     const objectNames = fields
         ?.filter(field => field.isObjectType)
         ?.filter(field => !field.isSelect)
+        .map(field => field.fieldTypeName);
+    if (objectNames) {
+        return Array.from(new Set(objectNames));
+    }
+    return [];
+}
+
+export function getTableObjectNames(fields: FieldInfo[] | undefined): string[] {
+    const objectNames = fields
+        ?.filter(field => field.isObjectType)
+        ?.filter(field => field.isTable)
         .map(field => field.fieldTypeName);
     if (objectNames) {
         return Array.from(new Set(objectNames));

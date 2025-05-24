@@ -3,7 +3,6 @@
 	import type { Errors, JsonSchema{% if useAuth %}, PermissionsStore{% endif %} } from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
 	import {{ fieldObjectInfo.name }}Form from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}Form.svelte';
-	import {{ fieldObjectInfo.name }}TableDialog from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}TableDialog.svelte';
 	import type { Mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_store';
 	{%- if hasFileField %}
 	import type { Mutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
@@ -89,17 +88,6 @@
 				);
 			{% raw %}}}{% endraw %}
 			{%- endif %}
-		>
-			<{{ fieldObjectInfo.name }}TableDialog
-				where
-				singleChoice
-				class="btn-accent"
-				on:select={(e) => {
-					if (!Array.isArray(e.detail.value)) {
-						merge(e.detail.value);
-					}
-				{% raw %}}}{% endraw %}
-			/>
-		</{{ fieldObjectInfo.name }}Form>
+		/>
 	</CardBody>
 </Card>

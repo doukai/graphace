@@ -91,6 +91,7 @@
 			<Icon slot="sm" src={Link} class="h-6 w-6" solid />
 		</Button>
 	{/if}
+	<slot />
 	{#if showBackButton}
 		<Button
 			text={$LL.ui.button.back()}
@@ -102,5 +103,4 @@
 			<Icon slot="sm" src={ArrowUturnLeft} class="h-6 w-6" solid />
 		</Button>
 	{/if}
-	<slot />
 </div>

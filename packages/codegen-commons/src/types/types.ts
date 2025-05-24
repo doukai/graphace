@@ -15,6 +15,7 @@ export type ObjectConfig = {
     inRoute?: boolean;
     inComponent?: boolean;
     select?: boolean;
+    table?: boolean;
     fields?: FieldConfig[];
     isContainer?: boolean;
 }
@@ -30,6 +31,7 @@ export type FieldConfig = {
     inList?: boolean;
     inDetail?: boolean;
     select?: boolean;
+    table?: boolean;
 }
 
 export type EnumConfig = {
@@ -59,6 +61,7 @@ export type ImportInfo = {
     enums: string[];
     objects: string[];
     selects: string[];
+    tables: string[];
     nonSelects: string[];
 }
 
@@ -69,6 +72,7 @@ export type FieldInfo = {
     fieldTypeIdName: string | undefined;
     originalFieldName: string;
     originalFieldTypeName: string;
+    pairFieldName?: string | undefined;
     args: InputInfo[] | undefined;
     isScalarType: boolean;
     isEnumType: boolean;
@@ -81,6 +85,7 @@ export type FieldInfo = {
     isNamed: boolean;
     isFile: boolean;
     isSelect: boolean;
+    isTable: boolean;
     inQueryArgs: boolean;
     inMutationArgs: boolean;
     inQuery: boolean;

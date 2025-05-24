@@ -154,6 +154,9 @@
 			{%- endif %}
 		>
 			<{{ fieldObjectInfo.name }}TableDialog
+				{%- if fieldInfo.pairFieldName %}
+				args={% raw %}{{{% endraw %} not: true, {{ fieldInfo.pairFieldName }}: { {{ idName }}: { val: {{ name | camelCase }}?.{{ idName }} } } {% raw %}}}{% endraw %}
+				{%- endif %}
 				where
 				singleChoice
 				class="btn-accent"

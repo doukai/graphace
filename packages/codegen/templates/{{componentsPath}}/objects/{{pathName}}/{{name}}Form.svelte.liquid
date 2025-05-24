@@ -10,6 +10,10 @@
 	{%- for select in selects %}
 	import {{ select }}Select from '~/{{ componentsPath }}/objects/{{ select | paramCase }}/{{ select }}Select.svelte';
 	{%- endfor %}
+	{%- for table in tables %}
+	import {{ table }}Table from '~/{{ componentsPath }}/objects/{{ table | paramCase }}/{{ table }}Table.svelte';
+	import {{ table }}FormDialog from '~/{{ componentsPath }}/objects/{{ table | paramCase }}/{{ table }}FormDialog.svelte';
+	{%- endfor %}
 	{%- for dialog in nonSelects %}
 	import {{ dialog }}TableDialog from '~/{{ componentsPath }}/objects/{{ dialog | paramCase }}/{{ dialog }}TableDialog.svelte';
 	{%- endfor %}
@@ -80,6 +84,33 @@
 		{%- for field in fields %}
 		<slot name="{{ field.fieldName }}">
 			{#if !fields.{{ field.fieldName }}?.hidden}
+				{%- if field.isTable %}
+				<div class="col-span-full">
+					<{{ field.fieldTypeName }}Table
+						title={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+						showRemoveButton
+						bind:value={value.{{ field.fieldName }}}
+						errors={errors.{{ field.fieldName }}}
+						{isFetching}
+						{isMutating}
+						on:remove={(e) => {
+							if (e.detail.row !== undefined) {
+								value.{{ field.fieldName }} = [...(value.{{ field.fieldName }}?.splice(e.detail.row + 1, 1) || [])];
+							}
+						{% raw %}}}{% endraw %}
+					>
+						<{{ field.fieldTypeName }}FormDialog
+							select
+							clearAfterSelect
+							class="btn-accent"
+							on:select={(e) => {
+								value.{{ field.fieldName }} = [...(value.{{ field.fieldName }} || []), e.detail.value];
+							{% raw %}}}{% endraw %}
+						/>
+					</{{ field.fieldTypeName }}Table>
+					<ErrorLabels errors={errors.{{ field.fieldName }}} />
+				</div>
+				{%- else %}
 				<FormControl let:id>
 					<Label {id} text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} />
 					{%- if field.isScalarType or field.isEnumType or field.isFile %}
@@ -138,6 +169,7 @@
 					<ErrorLabels {id} errors={errors.{{ field.fieldName }}} />
 					{%- endif %}
 				</FormControl>
+				{%- endif %}
 			{/if}
 		</slot>
 		{%- endfor %}
